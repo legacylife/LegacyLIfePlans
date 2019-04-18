@@ -20,10 +20,42 @@
     position: absolute;
     left: 0;
     bottom: 0;
-    padding: 10px;
-    background: #fff;
+    padding: 19px 5px;
+    background: #f6f7f7;
     width: 98.9%;
+    color: #666;
+    text-align: center;
+    border-top: 1px solid #e4e1e1;
+    p{
+        margin: 0;
+    }
+
 }
+.login-sub-wrapper{
+    border: 1px solid #d1dbde;
+    background: #fff;
+    border-radius: 4px;
+    padding: 40px;
+
+    .login-header-text{
+        font-size: 28px;
+        color: #222324;
+    }
+    .login-header-desc{
+        font-size: 20px;
+        color: #000;
+    }
+}
+.login-footer{
+    margin-top: 30px;
+    text-align: center;
+    font-size: 16px;
+    color: #000;
+    a{
+        color: #c72128;
+    }
+}
+
 
 html:not(.abcd){
     height: auto !important;
