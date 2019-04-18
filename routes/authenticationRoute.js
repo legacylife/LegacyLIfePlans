@@ -26,7 +26,10 @@ var auth = jwt({
 
 //function to check and signin user details
 function signin(req, res) {
-  if(req.body.socialMediaToken && req.body.socialMediaToken != "") {
+
+  console.log(req.body);
+  
+  /*if(req.body.socialMediaToken && req.body.socialMediaToken != "") {
       User.findOne({ $or: [ {socialMediaToken: req.body.socialMediaToken}, {username: req.body.username} ] }, function(err,user){
         if (err) {
           res.status(404).send(resFormat.rError(err))
@@ -47,8 +50,9 @@ function signin(req, res) {
           // res.status(200).send(resFormat.rError("You do not have account connected with this email ID. Please signup instead."))
         }
       })
-  } else {
-    passport.authenticate('local', function(err, user, info) {
+  } else {*/
+    passport.authenticate('local', function(err, user, info) {      
+
       if (err) {
         res.status(404).send(resFormat.rError(err))
       } else if(user && user.message == "WrongMethod") {
@@ -69,7 +73,7 @@ function signin(req, res) {
         res.status(200).send(resFormat.rError("Please enter correct password."))
       }
     })(req, res)
-  }
+  //}
 }
 
 //function to create or register new user
@@ -289,6 +293,9 @@ const resetPassword = function(req,res) {
 //function to generate reset password link for user
 function forgotPassword (req, res) {
   //find user based on email id
+
+  console.log(req.body);
+
   User.findOne({"username": req.body.username}, {}, function(err, user) {
     if (err) {
       res.status(401).send(resFormat.rError(err))

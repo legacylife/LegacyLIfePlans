@@ -1,5 +1,5 @@
 var constants = {
-  secret: "LLP",
+  secret: "Benchpoint",
   database: {
     url: process.env.dbURI || 'mongodb://localhost:27017/llp'
   },
