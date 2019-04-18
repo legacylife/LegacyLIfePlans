@@ -1,8 +1,7 @@
 /*---- Session (Sign in, sign up, forgot, lockscreen) -----*/
 .page-wrap {
   display: flex;
-  align-items: center;
-  padding: 40px 1rem;
+  padding: 40px 10px 10px;
   height: 100%;
 }
 .session-progress {
@@ -13,9 +12,8 @@
   border-top-right-radius: 4px;
 }
 .session-form-hold {
-  width: 100%;
-  max-width: 400px;
   margin: 0 auto;
+  flex-basis: 555px;
 }
 .session-form-hold > .mat-card {
   margin: 0;    

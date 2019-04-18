@@ -1,0 +1,42 @@
+/*-- For header (start here) --*/
+.auth-header{
+    display: flex;
+    align-items: center;
+    padding: 9px 5px;
+    box-shadow: 0 0 12px #7b7473;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 99999;
+    background: #fff;
+
+    img{
+        margin: 0 auto;
+    }
+}
+
+.auth-footer{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 10px;
+    background: #fff;
+    width: 98.9%;
+}
+
+html:not(.abcd){
+    height: auto !important;
+    min-height: 100% !important;
+    position: relative !important;
+    overflow: auto !important;
+    background: #f6f7f7 !important;
+} 
+
+body:not(.abcd){
+    height: auto !important;
+    position: initial !important;
+    overflow: auto !important;
+    margin-bottom: 57px;
+    margin-top: 63px;
+}

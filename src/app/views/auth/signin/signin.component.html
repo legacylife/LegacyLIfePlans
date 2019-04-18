@@ -1,4 +1,8 @@
-<div class="page-wrap height-100 mat-bg-primary">
+<header class="auth-header">
+  <img src="assets/images/arkenea/small-logo.png" alt="">
+</header>
+
+<div class="page-wrap mat-bg-primary">
   <div class="session-form-hold">
     <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar>
     <mat-card>
@@ -10,40 +14,24 @@
         <form [formGroup]="signinForm" (ngSubmit)="signin()">
           <div class="">
             <mat-form-field class="full-width">
-              <input
-                matInput
-                name="username"
-                [formControl]="signinForm.controls['username']"
-                placeholder="Username"
-                value="">
+              <input matInput name="username" [formControl]="signinForm.controls['username']" placeholder="Username" value="">
             </mat-form-field>
-            <small 
-              *ngIf="signinForm.controls['username'].hasError('required') && signinForm.controls['username'].touched" 
-              class="form-error-msg"> Username is required </small>
+            <small *ngIf="signinForm.controls['username'].hasError('required') && signinForm.controls['username'].touched" class="form-error-msg">
+            Username is required </small>
           </div>
 
           <div class="">
             <mat-form-field class="full-width">
-              <input 
-                type="password"
-                name="password"
-                matInput
-                [formControl]="signinForm.controls['password']"
-                placeholder="Password" 
-                value="">
+              <input type="password" name="password" matInput [formControl]="signinForm.controls['password']" placeholder="Password" value="">
             </mat-form-field>
-            <small 
-              *ngIf="signinForm.controls['password'].hasError('required') && signinForm.controls['password'].touched" 
-              class="form-error-msg"> Password is required </small>
+            <small *ngIf="signinForm.controls['password'].hasError('required') && signinForm.controls['password'].touched" class="form-error-msg">
+            Password is required </small>
           </div>
-          
+
           <div class="pb-1">
-            <mat-checkbox
-              name="rememberMe"
-              [formControl]="signinForm.controls['rememberMe']"
-              class="pb-1">Remember this computer</mat-checkbox>
+            <mat-checkbox name="rememberMe" [formControl]="signinForm.controls['rememberMe']" class="pb-1">Remember this computer</mat-checkbox>
           </div>
-          
+
           <button mat-raised-button class="mat-primary full-width mb-1" [disabled]="signinForm.invalid">Sign in</button>
           <div class="text-center">
             <a [routerLink]="'/sessions/forgot-password'" class="mat-primary text-center full-width">Forgot password</a>
@@ -56,3 +44,6 @@
   </div>
 </div>
 
+<footer class="auth-footer">
+  <p>© 2019 Legacy Life Plans</p>
+</footer>
