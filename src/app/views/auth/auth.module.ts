@@ -17,6 +17,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { LockscreenComponent } from './lockscreen/lockscreen.component';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { AuthRoutes } from "./auth.routing";
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ErrorComponent } from './error/error.component';
@@ -35,6 +36,6 @@ import { ErrorComponent } from './error/error.component';
     FlexLayoutModule,
     RouterModule.forChild(AuthRoutes)
   ],
-  declarations: [ForgotPasswordComponent, LockscreenComponent, SigninComponent, SignupComponent, NotFoundComponent, ErrorComponent]
+  declarations: [ForgotPasswordComponent, LockscreenComponent, SigninComponent, SignupComponent, ResetPasswordComponent, NotFoundComponent, ErrorComponent]
 })
 export class AuthModule { }

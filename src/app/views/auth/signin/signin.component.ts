@@ -15,8 +15,8 @@ export class SigninComponent implements OnInit {
   @ViewChild(MatButton) submitButton: MatButton;
   @ViewChild("usernameField") usernameField: ElementRef;
   @ViewChild("passwordField") passwordField: ElementRef;
-  public signinForm: FormGroup;
 
+  public signinForm: FormGroup;
   errMessage: string = ""
   emailEntered: Boolean = false
 
@@ -58,7 +58,7 @@ export class SigninComponent implements OnInit {
           localStorage.setItem("fullName", userData.name)
           this.router.navigate(['/', 'authentication', 'signup'])
         } else {
-          location.href = '/';
+          location.href = '/admin';
         }
       } else {
         this.errMessage = result.data.message || result.data;

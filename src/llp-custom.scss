@@ -1,0 +1,74 @@
+/*-- For header (start here) --*/
+.auth-header{
+    display: flex;
+    align-items: center;
+    padding: 9px 5px;
+    box-shadow: 0 0 12px #7b7473;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 99999;
+    background: #fff;
+
+    img{
+        margin: 0 auto;
+    }
+}
+
+.auth-footer{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 19px 5px;
+    background: #f6f7f7;
+    width: 98.9%;
+    color: #666;
+    text-align: center;
+    border-top: 1px solid #e4e1e1;
+    p{
+        margin: 0;
+    }
+
+}
+.login-sub-wrapper{
+    border: 1px solid #d1dbde;
+    background: #fff;
+    border-radius: 4px;
+    padding: 40px;
+
+    .login-header-text{
+        font-size: 28px;
+        color: #222324;
+    }
+    .login-header-desc{
+        font-size: 20px;
+        color: #000;
+    }
+}
+.login-footer{
+    margin-top: 30px;
+    text-align: center;
+    font-size: 16px;
+    color: #000;
+    a{
+        color: #c72128;
+    }
+}
+
+
+html:not(.abcd){
+    height: auto !important;
+    min-height: 100% !important;
+    position: relative !important;
+    overflow: auto !important;
+    background: #f6f7f7 !important;
+} 
+
+body:not(.abcd){
+    height: auto !important;
+    position: initial !important;
+    overflow: auto !important;
+    margin-bottom: 57px;
+    margin-top: 63px;
+}
