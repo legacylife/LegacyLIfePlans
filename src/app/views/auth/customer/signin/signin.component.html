@@ -1,0 +1,63 @@
+<header class="auth-header">
+  <img src="assets/images/arkenea/small-logo.png" alt="">
+</header>
+
+<div class="page-wrap mat-bg-primary">
+  <div class="session-form-hold">
+    
+    <div class="login-sub-wrapper">
+      <!-- <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar> -->
+      <mat-card-content>
+          <div class="text-center pb-1">
+            <h2 class="login-header-text m-0">Customer Login</h2>
+            <p class="login-header-desc">Continue to your LLP account</p>
+          </div>
+          <form [formGroup]="signinForm" (ngSubmit)="signin()" class="llp-form-wrapper">
+            <div class="">
+              <mat-form-field class="full-width">
+                <input matInput name="username" [formControl]="signinForm.controls['username']" placeholder="Email*" value="">
+              </mat-form-field>
+              <!-- <small *ngIf="signinForm.controls['username'].hasError('required') && signinForm.controls['username'].touched" class="form-error-msg">
+              Username is required </small> -->
+            </div>
+  
+            <div class="">
+              <mat-form-field class="full-width">
+                <input type="password" name="password" matInput [formControl]="signinForm.controls['password']" placeholder="Password*" value="">
+              </mat-form-field>
+              <!-- <small *ngIf="signinForm.controls['password'].hasError('required') && signinForm.controls['password'].touched" class="form-error-msg">
+              Password is required </small> -->
+            </div>
+  
+            <div class="remember-wrap">
+              <mat-checkbox name="rememberMe" [formControl]="signinForm.controls['rememberMe']">Remember me</mat-checkbox>
+              <a class="">Forgot Password?</a>
+            </div>
+  
+            <!-- <button mat-raised-button class="mat-primary full-width mb-1" [disabled]="signinForm.invalid">Sign in</button> -->
+            <button mat-raised-button class="llp--primary--btn full-width form--action--btn" [disabled]="signinForm.invalid">Sign in</button>
+            <!-- <div class="text-center">
+              <a [routerLink]="'/sessions/forgot-password'" class="mat-primary text-center full-width">Forgot password</a>
+              <span fxFlex></span>
+              <a [routerLink]="'/sessions/signup'" class="mat-primary text-center full-width">Create a new account</a>
+            </div> -->
+            <div class="text-center bot-txt">
+              <p>Don't have an account? <a [routerLink]="'/auth/advisor/signup'"> Sign Up</a></p>
+            </div>
+          </form>
+        </mat-card-content>
+    </div>
+
+    <div class="login-footer">
+      <p>Are you a Customer? <a [routerLink]="'/auth/advisor/signup'">Register here</a></p>
+    </div>
+    
+
+
+  </div>
+  
+</div>
+
+<footer class="auth-footer">
+  <p>© 2019 Legacy Life Plans</p>
+</footer>
