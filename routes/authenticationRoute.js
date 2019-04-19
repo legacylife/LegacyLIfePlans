@@ -17,6 +17,7 @@ const User = require('./../models/Users')
 var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
+const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 const s3 = require('./../helpers/s3Upload')
 
 var auth = jwt({
@@ -27,32 +28,10 @@ var auth = jwt({
 //function to check and signin user details
 function signin(req, res) {
 
-  console.log(req.body);
+  console.log("body=>", req.body);
   
-  /*if(req.body.socialMediaToken && req.body.socialMediaToken != "") {
-      User.findOne({ $or: [ {socialMediaToken: req.body.socialMediaToken}, {username: req.body.username} ] }, function(err,user){
-        if (err) {
-          res.status(404).send(resFormat.rError(err))
-        } else if (user) {
-          var token = user.generateJwt()
-          var params = {lastLoggedInOn: new Date(), loginCount: user.loginCount == undefined ? 1 : user.loginCount + 1, socialMediaToken: req.body.socialMediaToken}
-          const startDate = user.createdOn || user.lastLoggedInOn
-          User.updateOne({ _id: user._id },{ $set: params} , function(err, updatedUser) {
-            if (err) {
-              res.send(resFormat.rError(err))
-            } else {
-              let result = { token, userId: _id, userType, "message": "Successfully logged in!" }
-              res.status(200).send(resFormat.rSuccess(result))
-            }
-          })
-        } else {
-          res.send(resFormat.rSuccess({ code: "NewUser", message: "You do not have account connected with this email ID. Please signup instead." }))
-          // res.status(200).send(resFormat.rError("You do not have account connected with this email ID. Please signup instead."))
-        }
-      })
-  } else {*/
     passport.authenticate('local', function(err, user, info) {      
-
+      console.log("User details =>",user)
       if (err) {
         res.status(404).send(resFormat.rError(err))
       } else if(user && user.message == "WrongMethod") {
@@ -65,7 +44,7 @@ function signin(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              let result = { token, userId: _id, userType, "message": "Successfully logged in!" }
+              let result = { token, userId: user._id, userType : user.userType, "message": "Successfully logged in!" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -73,7 +52,7 @@ function signin(req, res) {
         res.status(200).send(resFormat.rError("Please enter correct password."))
       }
     })(req, res)
-  //}
+  
 }
 
 //function to create or register new user
@@ -311,7 +290,7 @@ function forgotPassword (req, res) {
           res.status(500).send(resFormat.rError(err))
         }
         let clientUrl = constants.clientUrl
-        var link =  clientUrl + '/authentication/reset/' + new Buffer(user._id.toString()).toString('base64');
+        var link =  clientUrl + '/auth/admin/reset-password/' + new Buffer(user._id.toString()).toString('base64');
 
         //forgot password email template
         emailTemplatesRoute.getEmailTemplateByCode("ForgotPassword").then((template) => {

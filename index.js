@@ -24,21 +24,19 @@ app.use(helmet())
 app.set('view engine', 'jade');
 app.use(logger('dev'))
 app.use(busboy({ immediate: true }));
-app.use('/api', routesApi);
-
-app.use(express.static(path.join(__dirname, 'dist')));
-
-app.use('/', express.static(path.join(__dirname, 'dist')))
-app.get('/*', (req, res) => {
-  res.sendFile(__dirname + '/dist/index.html');
-})
 
 app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 app.use(cookieParser())
 app.use(cors())
-
 app.use(passport.initialize())
+
+app.use('/api', routesApi);
+app.use(express.static(path.join(__dirname, 'dist')));
+app.use('/', express.static(path.join(__dirname, 'dist')))
+app.get('/*', (req, res) => {
+  res.sendFile(__dirname + '/dist/index.html');
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

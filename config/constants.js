@@ -19,12 +19,12 @@ var constants = {
     serveUrl: "https://llp.s3.amazonaws.com"
   },
   ses: {
-    key: "",
-    secret: "",
-    fromEmail: "support@llp.com",
+    key: "AKIAJUP324GN7JSNK5XQ",
+    secret: "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",
+    fromEmail: "dineshpatil@arkenea.com",
   },
   clientUrl: process.env.clientUrl || 'http://localhost:4200',
-  mailServerUrl : process.env.mailServerUri || 'http://localhost:3000',
+  mailServerUrl : process.env.mailServerUri || 'http://localhost:8080',
   socialMedia: {
     facebook: {
       clientId: ''
