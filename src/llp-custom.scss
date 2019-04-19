@@ -1,3 +1,5 @@
+@import 'llp-global-styles.scss';
+
 /*-- For header (start here) --*/
 .auth-header{
     display: flex;
@@ -43,7 +45,8 @@
     }
     .login-header-desc{
         font-size: 20px;
-        color: #000;
+        color: $clr--4;
+        margin-top: 30px;
     }
 }
 .login-footer{
@@ -55,7 +58,25 @@
         color: #c72128;
     }
 }
+.otp-sec{
+    display: flex;
+    flex-direction: column;
+    position: relative;
 
+    .otp-note{
+        color: $clr--4;
+        font-size: 16px;
+        line-height: 25px;
+        margin-bottom: 10px;
+    }
+    .resend-otp{
+        position: absolute;
+        right: 0;
+        top: 0;
+        color: $clr--2;
+        font-size: 16px;
+    }
+}
 
 html:not(.abcd){
     height: auto !important;

@@ -10,9 +10,9 @@
       <mat-card-content>
           <div class="text-center pb-1">
             <h2 class="login-header-text m-0">Login</h2>
-            <h4 class="login-header-desc">Continue to your LLP account</h4>
+            <p class="login-header-desc">Continue to your LLP account</p>
           </div>
-          <form [formGroup]="signinForm" (ngSubmit)="signin()">
+          <form [formGroup]="signinForm" (ngSubmit)="signin()" class="llp-form-wrapper">
             <div class="">
               <mat-form-field class="full-width">
                 <input matInput name="username" [formControl]="signinForm.controls['username']" placeholder="Email*" value="">
@@ -29,23 +29,27 @@
               Password is required </small> -->
             </div>
   
-            <div class="pb-1">
-              <mat-checkbox name="rememberMe" [formControl]="signinForm.controls['rememberMe']" class="pb-1">Remember this computer</mat-checkbox>
+            <div class="remember-wrap">
+              <mat-checkbox name="rememberMe" [formControl]="signinForm.controls['rememberMe']">Remember me</mat-checkbox>
+              <a class="">Forgot Password?</a>
             </div>
   
             <!-- <button mat-raised-button class="mat-primary full-width mb-1" [disabled]="signinForm.invalid">Sign in</button> -->
-            <button mat-raised-button class="llp--primary--btn full-width mb-1">Sign in</button>
-            <div class="text-center">
+            <button mat-raised-button class="llp--primary--btn full-width form--action--btn" [disabled]="signinForm.invalid">Sign in</button>
+            <!-- <div class="text-center">
               <a [routerLink]="'/sessions/forgot-password'" class="mat-primary text-center full-width">Forgot password</a>
               <span fxFlex></span>
               <a [routerLink]="'/sessions/signup'" class="mat-primary text-center full-width">Create a new account</a>
+            </div> -->
+            <div class="text-center bot-txt">
+              <p>Don't have an account? <a [routerLink]="'/auth/advisor/signup'"> Sign Up</a></p>
             </div>
           </form>
         </mat-card-content>
     </div>
 
     <div class="login-footer">
-      <p>Are you a Customer? <a>Register here</a></p>
+      <p>Are you a Customer? <a [routerLink]="'/auth/advisor/signup'">Register here</a></p>
     </div>
     
 

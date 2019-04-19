@@ -1,78 +1,62 @@
-<div class="page-wrap height-100 mat-bg-primary">
+<header class="auth-header">
+  <img src="assets/images/arkenea/small-logo.png" alt="">
+</header>
+
+<div class="page-wrap mat-bg-primary">
   <div class="session-form-hold">
-    <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar>
-    <mat-card>
+    
+    <div class="login-sub-wrapper">
+      <!-- <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar> -->
       <mat-card-content>
-        <div class="text-center pb-1">
-          <img src="assets/images/logo-full.png" alt="" class="mb-05">
-          <p class="text-muted m-0">Sign up to use our service</p>
-        </div>
-        <form [formGroup]="signupForm"  (ngSubmit)="signup()">
-          <div class="">
-            <mat-form-field class="full-width">
-              <input
-                matInput
-                type="email"
-                name="email"
-                [formControl]="signupForm.controls['email']"
-                placeholder="Your Email"
-                value="">
-            </mat-form-field>
-            <small 
-              *ngIf="signupForm.controls['email'].hasError('required') && signupForm.controls['email'].touched" 
-              class="form-error-msg"> Email is required </small>
+          <div class="text-center pb-1">
+            <h2 class="login-header-text m-0">Sign Up</h2>
+            <p class="login-header-desc">Start building your legacy</p>
+          </div>
+          <form (ngSubmit)="signup()" class="llp-form-wrapper">
+            <div class="">
+              <mat-form-field class="full-width">
+                <input matInput name="username" placeholder="Email*" value="">
+              </mat-form-field>
+            </div>
+  
+            <div class="">
+              <mat-form-field class="full-width">
+                <input type="password" name="password" matInput  placeholder="Password*" value="">
+              </mat-form-field>
+            </div>
+  
+            <div class="otp-sec">
+              <label class="otp-note">A One Time Passcode has been sent your email. Please enter the 
+                OTP below to verify your Email Address.</label>
+                <mat-form-field class="full-width">
+                  <input type="text" matInput name="otp" placeholder="Enter OTP" value="">
+                  <div class="resend-otp">
+                    <a>Resend OTP</a>
+                  </div>
+                </mat-form-field>  
+            </div>
+  
+            <!-- <button mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1">Proceed</button> -->
 
-              <small 
-                *ngIf="signupForm.controls['email'].hasError('email') && signupForm.controls['email'].touched" 
-                class="form-error-msg"> Invaild email address </small>
-          </div>
+            <button mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1">Start your 90 days free trial</button>
 
-          <div class="">
-            <mat-form-field class="full-width">
-              <input 
-                type="password"
-                name="password"
-                matInput
-                [formControl]="signupForm.controls['password']"
-                placeholder="Password" 
-                value="">
-            </mat-form-field>
-            <small 
-              *ngIf="signupForm.controls['password'].hasError('required') && signupForm.controls['password'].touched" 
-              class="form-error-msg"> Password is required </small>
-          </div>
-          
-          <div class="">
-            <mat-form-field class="full-width">
-              <input
-                type="password"
-                name="confirmPassword"
-                matInput
-                [formControl]="signupForm.controls['confirmPassword']"
-                placeholder="Confirm Password"
-                value="">
-            </mat-form-field>
-            <small *ngIf="signupForm.controls['confirmPassword'].hasError('required') && signupForm.controls['confirmPassword'].touched" class="form-error-msg">Confirm password is required.</small>
-            <small *ngIf="signupForm.controls['confirmPassword'].hasError('equalTo')" class="form-error-msg">Passwords do not math.</small>
-          </div>
-          
-          <div class="pb-1">
-            <mat-checkbox
-              name="agreed"
-              [formControl]="signupForm.controls['agreed']"
-              class="pb-1">I have read and agree to the terms of service.</mat-checkbox>
+            <div class="text-center bot-txt">
+              <p>Already a member?  <a [routerLink]="'/auth/advisor/signin'"> Login</a></p>
+            </div>
 
-              <small 
-                *ngIf="signupForm.controls['agreed'].hasError('agreed') && signupForm.controls['agreed'].touched" 
-                class="form-error-msg"> You must agree to the terms and conditions </small>
-          </div>
+          </form>
+        </mat-card-content>
+    </div>
 
-          <button mat-raised-button class="mat-primary full-width mb-1" [disabled]="signupForm.invalid">Sign up</button>
-          <div class="text-center">
-            <a [routerLink]="'/sessions/signin'" class="mat-primary text-center full-width">Sign in to existing account</a>
-          </div>
-        </form>
-      </mat-card-content>
-    </mat-card>
+    
+    <div class="login-footer">
+     &nbsp;
+    </div>
+
   </div>
+  
 </div>
+
+<footer class="auth-footer">
+  <p>© 2019 Legacy Life Plans</p>
+</footer>
