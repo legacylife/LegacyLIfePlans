@@ -97,7 +97,74 @@
 }
 
 /*! LLP Fonts (end here) */
-
-body {
+body,p,a {
     font-family: 'latoregular' !important;
+    color: #222324;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
+    font-family: 'latobold';
+}
+
+// font's veriable
+$font--lato--regular: latoregular;
+$font--lato--light: latolight;
+$font--lato--medium: latomedium;
+$font--lato--bold: latobold;
+
+// color's veriable
+$clr--1: #fff;
+$clr--2: #c72128;
+$clr--3: #222324;
+$clr--4: #000;
+$clr--5: #727a33;
+
+
+@mixin primary-btn-style{
+    font-size: 16px  ;
+    font-family: $font--lato--regular;
+    border-radius: 20px;
+    padding: 3px 20px  ;
+    height: 42px; 
+}
+
+// primary red button
+body .mat-button, 
+body .mat-raised-button, 
+body .mat-icon-button, 
+body .mat-stroked-button, 
+body .mat-flat-button, 
+body .mat-fab, 
+body .mat-mini-fab{
+    @include primary-btn-style;
+}
+
+.llp--primary--btn{
+    color: $clr--1 !important;
+    background-color: $clr--2 !important;
+}
+
+
+// Checkbox
+.mat-checkbox{
+    .mat-checkbox-inner-container{
+        margin-right: 15px;
+    }
+    .mat-checkbox-frame{
+        border-color: $clr--5 !important;
+    }
+    .mat-checkbox-label{
+        color: $clr--4;
+        font-size: 16px;
+    }
+    .mat-checkbox-ripple{
+        .mat-ripple-element{
+            background-color: $clr--5 !important;
+        }   
+    }
+    &.mat-checkbox-checked{
+        .mat-checkbox-background{
+            background-color: $clr--5 !important;
+        }
+    }
 }
