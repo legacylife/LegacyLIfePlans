@@ -24,7 +24,7 @@ export const AuthRoutes: Routes = [
       data: { title: 'Customer Signup' }
     }, {
       path: 'signin',
-      component: CustomerSignupComponent,
+      component: CustomerSigninComponent,
       data: { title: 'Customer Signin' }
     }, {
       path: 'forgot-password',
