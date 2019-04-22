@@ -159,14 +159,25 @@
           <!-- step 4 -->
           <mat-step>
               <div class="info--content">
-                  <div class="text-center pb-1">
+                  <div class="text-center pb-0">
                     <h2 class="login-header-text m-0">Business Documents</h2>
-                    <p class="login-header-desc">Upload your business documents for verification for e.g. business license</p>
+                    <p class="login-header-desc">Upload your business documents for verification for e.g. businesslicense</p>
                   </div>
   
+                  <div class="upload--buss--docs--sec">
+                    <label>Upload your business documents</label>
+                    <div class="upload--box">
+                        <input type="file" />
+                        
+                        <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                        <div class="select--file">Select file from your computer</div>
+
+                    </div>
+                    <div class="file--details">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+                  </div>
                
                   <div class="text-center">
-                    <button mat-raised-button matStepperNext class="llp--primary--btn full-width mb-1">COmplete</button>
+                    <button mat-raised-button matStepperNext class="llp--primary--btn full-width mb-1">Complete</button>
                     <button mat-raised-button matStepperPrevious class="llp--back--btn">
                       <mat-icon>arrow_back</mat-icon> Back</button>
                   </div>
