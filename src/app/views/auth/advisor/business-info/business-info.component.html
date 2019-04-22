@@ -23,7 +23,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="Last Name" formControlName="firstCtrl" required>
+                  <input matInput placeholder="Last Name">
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
@@ -70,11 +70,11 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="Address line 2 (optional)" formControlName="secondCtrl">
+                  <input matInput placeholder="Address line 2 (optional)">
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput type="number" placeholder="Zip code" formControlName="secondCtrl">
+                  <input matInput type="number" placeholder="Zip code" >
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
@@ -122,7 +122,7 @@
                     <mat-option value="option">Not all</mat-option>
                     <mat-option value="option">Only One</mat-option>
                   </mat-select>
-                </mat-form-field>                
+                </mat-form-field>
 
                 <mat-radio-group aria-label="Select an option" class="llp-radio">
                   <div class="checkbox-label">What agency oversees your business?</div>
@@ -130,20 +130,20 @@
                   <mat-radio-button value="2" class="mx-15">SEC</mat-radio-button>
                   <mat-radio-button value="3" class="mx-15">Both</mat-radio-button>
                 </mat-radio-group>
-                
+
                 <mat-form-field class="full-width">
-                    <input matInput placeholder="Who is your managing principle?" formControlName="thirdCtrl">
-                  </mat-form-field>
+                  <input matInput placeholder="Who is your managing principle?" formControlName="thirdCtrl">
+                </mat-form-field>
 
-                  <mat-radio-group aria-label="Select an option" class="llp-radio">
-                      <div class="checkbox-label">Do you manage other producers?</div>
-                      <mat-radio-button value="1" class="mx-15 ml-0">Yes </mat-radio-button>
-                      <mat-radio-button value="2" class="mx-15">No</mat-radio-button>
-                    </mat-radio-group>
+                <mat-radio-group aria-label="Select an option" class="llp-radio">
+                  <div class="checkbox-label">Do you manage other producers?</div>
+                  <mat-radio-button value="1" class="mx-15 ml-0">Yes </mat-radio-button>
+                  <mat-radio-button value="2" class="mx-15">No</mat-radio-button>
+                </mat-radio-group>
 
-                    <mat-form-field class="full-width">
-                        <input matInput placeholder="If yes, how many?" formControlName="">
-                      </mat-form-field>
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="If yes, how many?">
+                </mat-form-field>
 
                 <div class="text-center">
                   <button mat-raised-button matStepperNext class="llp--primary--btn full-width mb-1">Next</button>
@@ -158,30 +158,30 @@
 
           <!-- step 4 -->
           <mat-step>
-              <div class="info--content">
-                  <div class="text-center pb-0">
-                    <h2 class="login-header-text m-0">Business Documents</h2>
-                    <p class="login-header-desc">Upload your business documents for verification for e.g. businesslicense</p>
-                  </div>
-  
-                  <div class="upload--buss--docs--sec">
-                    <label>Upload your business documents</label>
-                    <div class="upload--box">
-                        <input type="file" />
-                        
-                        <mat-icon class="cloud-icon">cloud_upload</mat-icon>
-                        <div class="select--file">Select file from your computer</div>
+            <div class="info--content">
+              <div class="text-center pb-0">
+                <h2 class="login-header-text m-0">Business Documents</h2>
+                <p class="login-header-desc">Upload your business documents for verification for e.g. businesslicense</p>
+              </div>
 
-                    </div>
-                    <div class="file--details">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
-                  </div>
-               
-                  <div class="text-center">
-                    <button mat-raised-button matStepperNext class="llp--primary--btn full-width mb-1">Complete</button>
-                    <button mat-raised-button matStepperPrevious class="llp--back--btn">
-                      <mat-icon>arrow_back</mat-icon> Back</button>
-                  </div>
+              <div class="upload--buss--docs--sec">
+                <label>Upload your business documents</label>
+                <div class="upload--box">
+                  <input type="file" />
+
+                  <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                  <div class="select--file">Select file from your computer</div>
+
                 </div>
+                <div class="file--details">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+              </div>
+
+              <div class="text-center">
+                <button mat-raised-button matStepperNext class="llp--primary--btn full-width mb-1">Complete</button>
+                <button mat-raised-button matStepperPrevious class="llp--back--btn">
+                  <mat-icon>arrow_back</mat-icon> Back</button>
+              </div>
+            </div>
 
             <div>
               <!-- <button mat-raised-button mat-button (click)="stepper.reset()">Reset</button> -->

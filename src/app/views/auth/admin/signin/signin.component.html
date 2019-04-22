@@ -31,7 +31,7 @@
   
             <div class="remember-wrap">
               <mat-checkbox name="rememberMe" [formControl]="signinForm.controls['rememberMe']">Remember me</mat-checkbox>
-              <a class="">Forgot Password?</a>
+              <a [routerLink]="'/auth/forgot-password'" >Forgot Password?</a>
             </div>
   
             <!-- <button mat-raised-button class="mat-primary full-width mb-1" [disabled]="signinForm.invalid">Sign in</button> -->

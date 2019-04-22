@@ -19,6 +19,12 @@ import { BusinessInfoComponent } from './advisor/business-info/business-info.com
 
 export const AuthRoutes: Routes = [
   {
+    path: 'forgot-password',
+      component: ForgotPasswordComponent,
+      data: { title: 'Forgot password' }
+  },
+  
+  {
     path: 'customer',
     children: [{
       path: 'signup',
