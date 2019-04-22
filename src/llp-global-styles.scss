@@ -119,6 +119,8 @@ $clr--3: #222324;
 $clr--4: #000;
 $clr--5: #727a33;
 $clr--6: #828385;
+$clr--7: #e7ebcd;
+$clr--8: #757575;
 
 
 @mixin primary-btn-style{
@@ -145,6 +147,16 @@ body .mat-mini-fab{
     background-color: $clr--2 !important;
 }
 
+.llp--back--btn{
+    @include primary-btn-style;
+    box-shadow: none !important;
+    color: $clr--2 !important;
+    .mat-icon{
+        margin-right: 10px;
+        color: $clr--3;
+    }
+}
+
 
 // Checkbox
 .mat-checkbox{
@@ -169,6 +181,45 @@ body .mat-mini-fab{
         }
     }
 }
+
+// radio 
+.mat-radio-group{
+    .checkbox-label{
+        color: $clr--3;
+        margin-bottom: 13px;
+        font-family: $font--lato--bold;
+        font-size: 16px;
+    }
+    .mat-radio-label{
+        .mat-radio-label-content{
+            color: $clr--3;
+            font-size: 16px;
+        }
+        .mat-radio-outer-circle{
+            border-color: $clr--8;
+        }      
+        
+    }
+    .mat-radio-checked{
+        .mat-radio-inner-circle{
+            background-color:$clr--2 !important;      
+        }
+        .mat-radio-outer-circle{    
+            border-color:$clr--2 !important; 
+        }
+    }
+    .mat-radio-ripple{
+        .mat-ripple-element{
+            background-color:$clr--2 !important;             
+        }
+    }
+    &.llp-radio{
+        display: inline-table;
+        width: 100%;
+        margin-bottom: 25px;
+    }
+}
+
 
 // Form Element
 body{
@@ -222,3 +273,54 @@ body{
         }    
     }
 }
+
+
+// Stepper 
+
+body{ 
+    .stepper--wrapper{
+       
+        .mat-horizontal-stepper-header{
+            height: 30px;
+            padding: 0;
+        }
+        .mat-step-header {
+            &.cdk-program-focused{
+                background-color: transparent;
+            }
+
+            .mat-step-label{
+                display: none;
+            }
+            .mat-step-icon{
+                background-color: $clr--7;
+                color: $clr--3;
+                font-family: $font--lato--bold;
+                &.mat-step-icon-state-edit{
+                    background-color: $clr--2;
+                    color: $clr--1;
+                }
+
+                .mat-step-icon-content{
+                    line-height: 10px;
+                }
+            } 
+            .mat-step-icon-selected {
+                background-color: $clr--2; 
+                color: $clr--1;
+             }       
+        }
+        .mat-stepper-horizontal-line{
+            border-top: 2px solid $clr--7;            
+        }
+        .mat-horizontal-stepper-header-container{
+            pointer-events: none;
+        }
+    }
+}
+
+
+// Helper classes 
+.text-left{text-align: left !important}
+.text-right{text-align: right !important}
+.mx-15{margin: 0 15px !important;}

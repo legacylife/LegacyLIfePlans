@@ -1,0 +1,21 @@
+.busi--info--wrapper{
+    .login-header-desc{
+        text-align: left;
+        font-size: 16px;
+    }
+    ::ng-deep .mat-horizontal-content-container{
+        padding: 0;
+    }
+  
+
+    .info--content{
+        margin-top: 33px;
+    }
+
+    ::ng-deep .mat-form-field-prefix{
+        width: 40px;
+        font-size: 16px;
+        color: #222324;
+    }
+  
+}

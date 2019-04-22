@@ -15,6 +15,8 @@ import { CustomerSigninComponent } from './customer/signin/signin.component';
 import { AdminSignupComponent } from './admin/signup/signup.component';
 import { AdminSigninComponent } from './admin/signin/signin.component';
 
+import { BusinessInfoComponent } from './advisor/business-info/business-info.component';
+
 export const AuthRoutes: Routes = [
   {
     path: 'customer',
@@ -56,13 +58,13 @@ export const AuthRoutes: Routes = [
       component: AdvisorSigninComponent,
       data: { title: 'Advisor Signin' }
     }, {
+      path: 'businessinfo',
+      component: BusinessInfoComponent,
+      data: { title: 'BusinessInfo' }
+    }, {
       path: 'forgot-password',
       component: ForgotPasswordComponent,
       data: { title: 'Forgot password' }
-    }, {
-      path: 'lockscreen',
-      component: LockscreenComponent,
-      data: { title: 'Lockscreen' }
     }, {
       path: '404',
       component: NotFoundComponent,
