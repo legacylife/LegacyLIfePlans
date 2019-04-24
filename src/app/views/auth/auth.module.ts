@@ -24,6 +24,7 @@ import { AuthRoutes } from './auth.routing';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ErrorComponent } from './error/error.component';
 
+import { SigninComponent } from './signin/signin.component';
 import { AdvisorSigninComponent } from './advisor/signin/signin.component';
 import { AdvisorSignupComponent } from './advisor/signup/signup.component';
 import { CustomerSignupComponent } from './customer/signup/signup.component';
@@ -52,7 +53,7 @@ import { BusinessInfoComponent } from './advisor/business-info/business-info.com
     MatFormFieldModule,
     RouterModule.forChild(AuthRoutes)
   ],
-  declarations: [ForgotPasswordComponent, LockscreenComponent,
+  declarations: [SigninComponent, ForgotPasswordComponent, LockscreenComponent,
     NotFoundComponent, ErrorComponent, AdvisorSigninComponent, AdvisorSignupComponent,
     CustomerSignupComponent, CustomerSigninComponent, AdminSignupComponent, AdminSigninComponent, BusinessInfoComponent]
 })

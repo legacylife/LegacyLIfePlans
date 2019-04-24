@@ -17,11 +17,18 @@ import { AdminSigninComponent } from './admin/signin/signin.component';
 
 import { BusinessInfoComponent } from './advisor/business-info/business-info.component';
 
+import { SigninComponent } from './signin/signin.component';
+
 export const AuthRoutes: Routes = [
   {
     path: 'forgot-password',
       component: ForgotPasswordComponent,
       data: { title: 'Forgot password' }
+  },
+  {
+    path: 'signin',
+      component: SigninComponent,
+      data: { title: 'SignIn' }
   },
   
   {
