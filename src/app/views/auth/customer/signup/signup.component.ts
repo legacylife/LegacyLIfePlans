@@ -12,7 +12,10 @@ export class CustomerSignupComponent implements OnInit {
   @ViewChild(MatProgressBar) progressBar: MatProgressBar;
   @ViewChild(MatButton) submitButton: MatButton;
 
-  signupForm: FormGroup
+  signupForm: FormGroup;
+  custFreeTrailBtn = false;
+  custProceedBtn = true;
+  custOtpSec = false;
   constructor() {}
 
   ngOnInit() {
@@ -33,12 +36,10 @@ export class CustomerSignupComponent implements OnInit {
     })
   }
 
-  signup() {
-    const signupData = this.signupForm.value;
-    console.log(signupData);
-
-    this.submitButton.disabled = true;
-    this.progressBar.mode = 'indeterminate';
+  custProceed() {
+    this.custFreeTrailBtn = true;
+    this.custProceedBtn = false;
+    this.custOtpSec = true;
   }
 
 }

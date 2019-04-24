@@ -13,6 +13,10 @@ export class AdvisorSignupComponent implements OnInit {
   @ViewChild(MatButton) submitButton: MatButton;
 
   signupForm: FormGroup
+
+  advisorOtp = false;
+  freeTrailBtn = false;
+  proceedBtn = true;
   constructor() {}
 
   ngOnInit() {
@@ -33,12 +37,10 @@ export class AdvisorSignupComponent implements OnInit {
     })
   }
 
-  signup() {
-    const signupData = this.signupForm.value;
-    console.log(signupData);
-
-    this.submitButton.disabled = true;
-    this.progressBar.mode = 'indeterminate';
+  toproceed() {
+    this.advisorOtp = true;
+    this.freeTrailBtn =true;
+    this.proceedBtn = false;
   }
 
 }

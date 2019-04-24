@@ -9,10 +9,10 @@
       <!-- <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar> -->
       <mat-card-content>
         <div class="text-center pb-1">
-          <h2 class="login-header-text m-0">ALl Login</h2>
+          <h2 class="login-header-text m-0">Login</h2>
           <p class="login-header-desc">Continue to your LLP account</p>
         </div>
-        <form [formGroup]="signinForm" class="llp-form-wrapper">
+        <form class="llp-form-wrapper">
           <div class="">
             <mat-form-field class="full-width">
               <input matInput name="username" placeholder="Email" value="" required>
@@ -25,7 +25,7 @@
             </mat-form-field>
           </div>
 
-          <div class="otp-sec">
+          <div class="otp-sec" *ngIf="otpsec">
             <label class="otp-note">A One Time Passcode has been sent your email. Please enter the 
               OTP below to verify your Email Address.</label>
               <mat-form-field class="full-width">
@@ -37,10 +37,10 @@
           </div>
 
           <div class="remember-wrap">
-            <mat-checkbox name="rememberMe">Remember me</mat-checkbox>
+            <!-- <mat-checkbox name="rememberMe">Remember me</mat-checkbox> -->
             <a [routerLink]="'/auth/forgot-password'">Forgot Password?</a>
           </div>
-          <button mat-raised-button class="llp--primary--btn full-width form--action--btn">Sign in</button>
+          <button mat-raised-button class="llp--primary--btn full-width form--action--btn" (click)="loginClick();">Login</button>
 
           <div class="text-center bot-txt">
             <p>Don't have an account?

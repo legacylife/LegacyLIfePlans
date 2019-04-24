@@ -9,13 +9,14 @@ import { Validators, FormGroup, FormControl } from '@angular/forms';
 })
 export class SigninComponent implements OnInit {
 
+  otpsec = false;
   constructor() { }
 
   ngOnInit() {
-  
   }
 
-  signin() {
+  loginClick() {
+    this.otpsec = true;
   }
 
 }

@@ -25,7 +25,7 @@
               </mat-form-field>
             </div>
   
-            <div class="otp-sec">
+            <div class="otp-sec" *ngIf="advisorOtp">
               <label class="otp-note">A One Time Passcode has been sent your email. Please enter the 
                 OTP below to verify your Email Address.</label>
                 <mat-form-field class="full-width">
@@ -36,9 +36,9 @@
                 </mat-form-field>  
             </div>
   
-            <!-- <button mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1">Proceed</button> -->
+            <button mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" (click)="toproceed();" *ngIf="proceedBtn">Proceed</button>
 
-            <button [routerLink]="'/auth/advisor/businessinfo'" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1">Start your 90 days free trial</button>
+            <button *ngIf="freeTrailBtn" [routerLink]="'/auth/advisor/businessinfo'" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1">Start your 90 days free trial</button>
 
             <div class="text-center bot-txt">
               <p>Already a member?  <a [routerLink]="'/auth/signin'"> Login</a></p>
@@ -50,7 +50,7 @@
 
     
     <div class="login-footer">
-     &nbsp;
+      <p>Are you a Customer? <a [routerLink]="'/auth/customer/signup'">Register here</a></p>
     </div>
 
   </div>

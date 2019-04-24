@@ -164,7 +164,7 @@ body .mat-mini-fab{
         margin-right: 15px;
     }
     .mat-checkbox-frame{
-        border-color: $clr--5 !important;
+        border-color: $clr--2 !important;
     }
     .mat-checkbox-label{
         color: $clr--4;
@@ -172,12 +172,12 @@ body .mat-mini-fab{
     }
     .mat-checkbox-ripple{
         .mat-ripple-element{
-            background-color: $clr--5 !important;
+            background-color: $clr--2 !important;
         }   
     }
     &.mat-checkbox-checked{
         .mat-checkbox-background{
-            background-color: $clr--5 !important;
+            background-color: $clr--2 !important;
         }
     }
 }
@@ -228,7 +228,8 @@ body{
             .mat-form-field{
                 .mat-form-field-label {
                     font-size: 16px;
-                    color: $clr--6;
+                    color: $clr--6;  
+                    font-family: $font--lato--regular;                  
                 }
             }
             &.mat-form-field-invalid{
@@ -241,6 +242,7 @@ body{
                 .mat-input-element{
                     font-size: 16px;
                     color: $clr--3;
+                    font-family: $font--lato--regular;
                 }
                 .mat-form-field-label-wrapper{
                     top: -16px;
@@ -257,6 +259,7 @@ body{
                 a{
                     font-size: 16px;
                     color: $clr--2;
+                    margin-left: auto;
                     
                 }
             } 
