@@ -19,6 +19,8 @@ import { BusinessInfoComponent } from './advisor/business-info/business-info.com
 
 import { SigninComponent } from './signin/signin.component';
 import { UpdateProfileComponent } from './customer/update-profile/update-profile.component';
+import { SetPasswordComponent } from './advisor/set-password/set-password.component';
+import { ThankYouComponent } from './advisor/thank-you/thank-you.component';
 
 export const AuthRoutes: Routes = [
   {
@@ -80,13 +82,13 @@ export const AuthRoutes: Routes = [
       component: ForgotPasswordComponent,
       data: { title: 'Forgot password' }
     }, {
-      path: '404',
-      component: NotFoundComponent,
-      data: { title: 'Not Found' }
+      path: 'set-password',
+      component: SetPasswordComponent,
+      data: { title: 'Set Password' }
     }, {
-      path: 'error',
-      component: ErrorComponent,
-      data: { title: 'Error' }
+      path: 'thank-you',
+      component: ThankYouComponent,
+      data: { title: 'Thank You' }
     }]
   },
 

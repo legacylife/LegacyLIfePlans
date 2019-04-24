@@ -37,6 +37,8 @@ import { AdminSigninComponent } from './admin/signin/signin.component';
 
 import { BusinessInfoComponent } from './advisor/business-info/business-info.component';
 import { UpdateProfileComponent } from './customer/update-profile/update-profile.component';
+import { SetPasswordComponent } from './advisor/set-password/set-password.component';
+import { ThankYouComponent } from './advisor/thank-you/thank-you.component';
 
 @NgModule({
   imports: [
@@ -60,8 +62,9 @@ import { UpdateProfileComponent } from './customer/update-profile/update-profile
   ],
   declarations: [SigninComponent, ForgotPasswordComponent, LockscreenComponent,
     NotFoundComponent, ErrorComponent, AdvisorSigninComponent, AdvisorSignupComponent,
-    CustomerSignupComponent, CustomerSigninComponent, AdminSignupComponent, 
-    AdminSigninComponent, BusinessInfoComponent, UpdateProfileComponent],
+    CustomerSignupComponent, CustomerSigninComponent, AdminSignupComponent,
+    AdminSigninComponent, BusinessInfoComponent, UpdateProfileComponent, SetPasswordComponent, 
+    ThankYouComponent],
     providers: [
       MatDatepickerModule,
     ]
