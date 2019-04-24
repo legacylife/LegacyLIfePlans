@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from "@angular/router";
+import { RouterModule } from '@angular/router';
 import { MatStepperModule } from '@angular/material/stepper';
 import {MatRadioModule} from '@angular/material/radio';
 import {
@@ -12,7 +12,9 @@ import {
   MatCheckboxModule,
   MatIconModule,
   MatFormFieldModule,
-  MatSelectModule
+  MatSelectModule,
+  MatDatepickerModule,
+  MatNativeDateModule
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -34,6 +36,7 @@ import { AdminSigninComponent } from './admin/signin/signin.component';
 
 
 import { BusinessInfoComponent } from './advisor/business-info/business-info.component';
+import { UpdateProfileComponent } from './customer/update-profile/update-profile.component';
 
 @NgModule({
   imports: [
@@ -51,10 +54,16 @@ import { BusinessInfoComponent } from './advisor/business-info/business-info.com
     MatRadioModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     RouterModule.forChild(AuthRoutes)
   ],
   declarations: [SigninComponent, ForgotPasswordComponent, LockscreenComponent,
     NotFoundComponent, ErrorComponent, AdvisorSigninComponent, AdvisorSignupComponent,
-    CustomerSignupComponent, CustomerSigninComponent, AdminSignupComponent, AdminSigninComponent, BusinessInfoComponent]
+    CustomerSignupComponent, CustomerSigninComponent, AdminSignupComponent, 
+    AdminSigninComponent, BusinessInfoComponent, UpdateProfileComponent],
+    providers: [
+      MatDatepickerModule,
+    ]
 })
 export class AuthModule { }

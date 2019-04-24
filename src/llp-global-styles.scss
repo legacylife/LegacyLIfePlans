@@ -111,6 +111,9 @@ $font--lato--regular: latoregular;
 $font--lato--light: latolight;
 $font--lato--medium: latomedium;
 $font--lato--bold: latobold;
+$font--lato--italic: latoitalic;
+$font--lato--bold--italic: latobold_italic;
+
 
 // color's veriable
 $clr--1: #fff;
@@ -121,6 +124,8 @@ $clr--5: #727a33;
 $clr--6: #828385;
 $clr--7: #e7ebcd;
 $clr--8: #757575;
+$clr--9: #d1dbde;
+$clr--10: #131321;
 
 
 @mixin primary-btn-style{
@@ -318,6 +323,22 @@ body{
         }
         .mat-horizontal-stepper-header-container{
             pointer-events: none;
+        }
+    }
+}
+
+// Datepicker
+
+body{
+    .llp-datepicker{
+        .mat-form-field-prefix,
+        .mat-form-field-suffix{
+            .mat-icon-button{
+                padding: 0px 5px 5px 4px; 
+                font-size: 16px;
+                color: $clr--8;
+            }
+            
         }
     }
 }

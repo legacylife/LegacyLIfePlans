@@ -12,7 +12,7 @@
             <h2 class="login-header-text m-0">Customer  Sign Up </h2>
             <p class="login-header-desc">Start building your legacy</p>
           </div>
-          <form (ngSubmit)="signup()" class="llp-form-wrapper">
+          <form  class="llp-form-wrapper">
             <div class="">
               <mat-form-field class="full-width">
                 <input matInput name="username" placeholder="Email*" value="">
@@ -38,7 +38,7 @@
   
             <button *ngIf="custProceedBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" (click)="custProceed()">Proceed</button>
 
-            <button *ngIf="custFreeTrailBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1">Start your 90 days free trial</button>
+            <button [routerLink]="'/auth/customer/update-profile'" *ngIf="custFreeTrailBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1">Start your 90 days free trial</button>
 
             <div class="text-center bot-txt">
               <p>Already a member?  <a [routerLink]="'/auth/signin'"> Login</a></p>

@@ -18,6 +18,7 @@ import { AdminSigninComponent } from './admin/signin/signin.component';
 import { BusinessInfoComponent } from './advisor/business-info/business-info.component';
 
 import { SigninComponent } from './signin/signin.component';
+import { UpdateProfileComponent } from './customer/update-profile/update-profile.component';
 
 export const AuthRoutes: Routes = [
   {
@@ -46,9 +47,9 @@ export const AuthRoutes: Routes = [
       component: ForgotPasswordComponent,
       data: { title: 'Forgot password' }
     }, {
-      path: 'lockscreen',
-      component: LockscreenComponent,
-      data: { title: 'Lockscreen' }
+      path: 'update-profile',
+      component: UpdateProfileComponent,
+      data: { title: 'Update Profile' }
     }, {
       path: '404',
       component: NotFoundComponent,
