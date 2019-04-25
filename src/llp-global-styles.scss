@@ -126,6 +126,9 @@ $clr--7: #e7ebcd;
 $clr--8: #757575;
 $clr--9: #d1dbde;
 $clr--10: #131321;
+$clr--11: #f8ccd0;
+$clr--12: #fff2f3;
+$clr--13: #666;
 
 
 @mixin primary-btn-style{
@@ -343,6 +346,32 @@ body{
     }
 }
 
+/* Tooltip  */
+
+body{
+
+    .red--alert{
+        font-size: 17px;
+        position: absolute;
+        right: 0;
+        top: 5px;
+        color: $clr--2;
+        width: 15px;
+        height: 10px;
+    }
+
+    .mat-tooltip{
+        &.llp--tooltip {
+            font-size: 13px ;
+            padding: 8px 15px ;        
+        }
+        &.error{
+            background-color: $clr--12 ;
+            border: 1px solid $clr--11 ;
+            color: $clr--13 ;
+        }
+    }
+}
 
 // Helper classes 
 .text-left{text-align: left !important}

@@ -14,7 +14,8 @@ import {
   MatFormFieldModule,
   MatSelectModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatTooltipModule
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -60,6 +61,7 @@ import { PasswordResetSuccessfulComponent } from './password-reset-successful/pa
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatTooltipModule,
     RouterModule.forChild(AuthRoutes)
   ],
   declarations: [SigninComponent, ForgotPasswordComponent, LockscreenComponent,
