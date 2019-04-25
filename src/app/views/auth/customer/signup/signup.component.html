@@ -9,7 +9,7 @@
       <!-- <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar> -->
       <mat-card-content>
           <div class="text-center pb-1">
-            <h2 class="login-header-text m-0">Customer  Sign Up </h2>
+            <h2 class="login-header-text m-0">Sign Up </h2>
             <p class="login-header-desc">Start building your legacy</p>
           </div>
           <form  class="llp-form-wrapper">
@@ -34,11 +34,15 @@
                     <a>Resend OTP</a>
                   </div>
                 </mat-form-field>  
+
+                <p class="terms--policy">By signing up, you agree to our <a>Terms of Use </a> and <a>Privacy Policy</a></p>
             </div>
+
+            
   
             <button *ngIf="custProceedBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" (click)="custProceed()">Proceed</button>
 
-            <button [routerLink]="'/auth/customer/update-profile'" *ngIf="custFreeTrailBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1">Start your 90 days free trial</button>
+            <button [routerLink]="'/auth/customer/update-profile'" *ngIf="custFreeTrailBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1">Continue</button>
 
             <div class="text-center bot-txt">
               <p>Already a member?  <a [routerLink]="'/auth/signin'"> Login</a></p>

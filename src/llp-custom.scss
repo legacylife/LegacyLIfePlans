@@ -37,7 +37,7 @@
     border: 1px solid #d1dbde;
     background: #fff;
     border-radius: 4px;
-    padding: 40px;
+    padding: 35px 40px;
 
     .login-header-text{
         font-size: 28px;
@@ -47,6 +47,7 @@
         font-size: 20px;
         color: $clr--4;
         margin-top: 30px;
+        margin-bottom: 0;
     }
 }
 .login-footer{

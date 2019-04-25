@@ -21,6 +21,7 @@ import { SigninComponent } from './signin/signin.component';
 import { UpdateProfileComponent } from './customer/update-profile/update-profile.component';
 import { SetPasswordComponent } from './advisor/set-password/set-password.component';
 import { ThankYouComponent } from './advisor/thank-you/thank-you.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 export const AuthRoutes: Routes = [
   {
@@ -33,7 +34,11 @@ export const AuthRoutes: Routes = [
       component: SigninComponent,
       data: { title: 'SignIn' }
   },
-  
+  {
+    path: 'reset-password',
+      component: ResetPasswordComponent,
+      data: { title: 'reset password' }
+  },
   {
     path: 'customer',
     children: [{

@@ -9,32 +9,27 @@
       <!-- <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar> -->
       <mat-card-content>
           <div class="text-center pb-1">
-            <h2 class="login-header-text m-0">Advisor Sign Up </h2>
+            <h2 class="login-header-text m-0">Sign Up </h2>
             <p class="login-header-desc">Start building your legacy</p>
           </div>
           <form (ngSubmit)="signup()" class="llp-form-wrapper">
-            <div class="">
+            <div class="const--height">
               <mat-form-field class="full-width">
                 <input matInput name="username" placeholder="Email*" value="">
               </mat-form-field>
+              <div class="otp-sec" *ngIf="advisorOtp">
+                <label class="otp-note">A One Time Passcode has been sent your email. Please enter the 
+                  OTP below to verify your Email Address.</label>
+                  <mat-form-field class="full-width">
+                    <input type="text" matInput name="otp" placeholder="Enter OTP" value="">
+                    <div class="resend-otp">
+                      <a>Resend OTP</a>
+                    </div>
+                  </mat-form-field>  
+              </div>
             </div>
-  
-            <div class="">
-              <mat-form-field class="full-width">
-                <input type="password" name="password" matInput  placeholder="Password*" value="">
-              </mat-form-field>
-            </div>
-  
-            <div class="otp-sec" *ngIf="advisorOtp">
-              <label class="otp-note">A One Time Passcode has been sent your email. Please enter the 
-                OTP below to verify your Email Address.</label>
-                <mat-form-field class="full-width">
-                  <input type="text" matInput name="otp" placeholder="Enter OTP" value="">
-                  <div class="resend-otp">
-                    <a>Resend OTP</a>
-                  </div>
-                </mat-form-field>  
-            </div>
+   
+            
   
             <button mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" (click)="toproceed();" *ngIf="proceedBtn">Proceed</button>
 
