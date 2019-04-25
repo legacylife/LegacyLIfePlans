@@ -40,6 +40,7 @@ import { UpdateProfileComponent } from './customer/update-profile/update-profile
 import { SetPasswordComponent } from './advisor/set-password/set-password.component';
 import { ThankYouComponent } from './advisor/thank-you/thank-you.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { PasswordResetSuccessfulComponent } from './password-reset-successful/password-reset-successful.component';
 
 @NgModule({
   imports: [
@@ -65,7 +66,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     NotFoundComponent, ErrorComponent, AdvisorSigninComponent, AdvisorSignupComponent,
     CustomerSignupComponent, CustomerSigninComponent, AdminSignupComponent,
     AdminSigninComponent, BusinessInfoComponent, UpdateProfileComponent, SetPasswordComponent,
-    ThankYouComponent, ResetPasswordComponent],
+    ThankYouComponent, ResetPasswordComponent, PasswordResetSuccessfulComponent],
     providers: [
       MatDatepickerModule,
     ]
