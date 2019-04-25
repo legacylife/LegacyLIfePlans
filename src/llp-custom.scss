@@ -79,7 +79,7 @@
     }
 }
 
-html:not(.abcd){
+html.llp--auth--wrapper{
     height: auto !important;
     min-height: 100% !important;
     position: relative !important;
@@ -87,7 +87,7 @@ html:not(.abcd){
     background: #f6f7f7 !important;
 } 
 
-body:not(.abcd){
+body.llp--auth--wrapper{
     height: auto !important;
     position: initial !important;
     overflow: auto !important;
