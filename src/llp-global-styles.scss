@@ -225,6 +225,10 @@ body .mat-mini-fab{
         display: inline-table;
         width: 100%;
         margin-bottom: 25px;
+
+        .mat-radio-button{
+            margin-right: 30px;
+        }
     }
 }
 
@@ -379,3 +383,5 @@ body{
 .mx-15{margin: 0 15px !important;}
 .my-15{margin: 15px 0 !important;}
 .px-40{padding: 0 40px !important;}
+.mr-20{margin-right: 20px !important}
+.mr-30{margin-right: 30px !important}
