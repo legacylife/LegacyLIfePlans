@@ -13,3 +13,24 @@
 .proceed--action--btn{
     margin-top: 100px;
 }
+.know--more--sec{
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 370px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 40px 30px 40px;
+    color: #fff;    
+    text-align: center;
+
+    h3{
+        font-size: 30px;  
+        margin: 0 0 14px 0;      
+    }
+    p{
+        font-size: 16px;  
+        margin-bottom: 22px;
+        color: #fff;
+    }
+}
