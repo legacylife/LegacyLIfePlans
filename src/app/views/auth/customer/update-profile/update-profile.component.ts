@@ -10,7 +10,8 @@ import { CustomValidators } from 'ng2-validation';
 })
 export class UpdateProfileComponent implements OnInit {
 
-
+  date: any
+  chosenYearHandler: any
 
   ngOnInit() {
 
