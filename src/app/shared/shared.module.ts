@@ -34,6 +34,7 @@ import { SidebarSideComponent } from './components/sidebar-side/sidebar-side.com
 import { HeaderTopComponent } from './components/header-top/header-top.component';
 import { customerHeaderTopComponent } from './components/customer-header/customer-header-top.component';
 import { AdvisorHeaderTopComponent } from './components/advisor-header/advisor-header-top.component';
+import { LandingAdvisorHeaderTopComponent } from './components/landing-advisor-header/landing-advisor-header-top.component';
 import { SidebarTopComponent } from './components/sidebar-top/sidebar-top.component';
 
 // ONLY FOR DEMO (Removable without changing any layout configuration)
@@ -70,6 +71,7 @@ import { LayoutService } from './services/layout.service';
 import { NavigationService } from './services/navigation.service';
 import { CustNavService } from './services/customer-nav-links.service';
 import { AdvisorNavService } from './services/advisor-nav-links.service';
+import { LandingAdvisorNavService } from './services/landing-advisor-nav-links.service';
 import { RoutePartsService } from './services/route-parts.service';
 import { AuthGuard } from './services/auth/auth.guard';
 import { AppConfirmService } from './services/app-confirm/app-confirm.service';
@@ -86,6 +88,7 @@ const classesToInclude = [
   HeaderTopComponent,
   customerHeaderTopComponent,
   AdvisorHeaderTopComponent,
+  LandingAdvisorHeaderTopComponent,
   SidebarTopComponent,
   SidenavComponent,
   NotificationsComponent,
@@ -144,6 +147,7 @@ const classesToInclude = [
     NavigationService,
     CustNavService,
     AdvisorNavService,
+    LandingAdvisorNavService,
     RoutePartsService,
     AuthGuard,
     AppConfirmService,

@@ -5,7 +5,7 @@ import { AdvisorHomeComponent } from './advisor-home/advisor-home.component';
 
 export const LandingRoutes: Routes = [
   {
-    path: 'home',
+    path: '',
     component: HomeComponent,
     data: { title: 'Home' }
   },
