@@ -1,8 +1,179 @@
-<h1 class="mat-display-1 text-center mt-1">
+<!-- <h1 class="mat-display-1 text-center mt-1">
 
     Welcome to LLP!</h1>
 <div class="text-center">
     <button [routerLink]="'/auth/admin/signin'" mat-raised-button class="mt-1 mb-1 ml-1">Admin</button>
     <button [routerLink]="'/auth/signin'" mat-raised-button class="mat-primary mt-1 mb-1 ml-1">Customer</button>
     <button [routerLink]="'/auth/signin'" mat-raised-button class="mat-primary mt-1 mb-1 ml-1">Adviser</button>
-</div>
+</div> -->
+
+<!-- <mat-card class="p-0">
+    <mat-card-title class="">
+      <div class="card-title-text">Plans and Pricing</div>
+      <mat-divider></mat-divider>
+    </mat-card-title>
+    <mat-card-content>
+      <mat-slide-toggle [(ngModel)]="isAnnualSelected" color="primary" class="mb-1">Get upto 10% discount annually</mat-slide-toggle>
+   -->
+      <!-- <div fxLayout="row wrap"> -->
+        <!-- Pricing box -->
+        <!-- <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
+          <mat-card class="plan-pricing text-center p-0">
+            <mat-card-title class="light-gray">
+              <div class="card-title-text">
+                <div class="">Developer</div>
+                <div class="text-sm text-muted">For New Developers</div>
+              </div>
+              <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content>
+              <h1><strong>FREE</strong></h1>
+              <mat-list dense class="mb-1">
+                <mat-list-item>10GB of Bandwidth</mat-list-item>
+                <mat-list-item>Max 50 connection</mat-list-item>
+                <mat-list-item>512MB RAM</mat-list-item>
+                <mat-list-item class="text-muted">Unlimited access</mat-list-item>
+                <mat-list-item class="text-muted">Unlimited User</mat-list-item>
+                <mat-list-item class="text-muted">Data analytics</mat-list-item>
+              </mat-list>
+              <button mat-raised-button class="mat-accent">Choose</button>
+            </mat-card-content>
+          </mat-card>
+        </div> -->
+        <!-- Pricing box -->
+        <!-- <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
+          <mat-card class="plan-pricing text-center p-0">
+            <mat-card-title class="mat-bg-primary">
+              <div class="card-title-text">
+                <div class="">Starter</div>
+                <div class="text-sm text-muted-white">For Professional Developers</div>
+              </div>
+              <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content>
+              <h1>
+                <strong>$ 
+                <span *ngIf="!isAnnualSelected">{{30}} /Mo</span>
+                <span *ngIf="isAnnualSelected">{{30 * 12 * .9}} /Yr</span>
+                </strong>
+              </h1>
+              <mat-list dense class="mb-1">
+                <mat-list-item>100GB of Bandwidth</mat-list-item>
+                <mat-list-item>Max 500 connection</mat-list-item>
+                <mat-list-item>1GB RAM</mat-list-item>
+                <mat-list-item>Unlimited access</mat-list-item>
+                <mat-list-item class="text-muted">Unlimited User</mat-list-item>
+                <mat-list-item class="text-muted">Data analytics</mat-list-item>
+              </mat-list>
+              <button mat-raised-button class="mat-accent">Choose</button>
+            </mat-card-content>
+          </mat-card>
+        </div> -->
+        <!-- Pricing box -->
+        <!-- <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
+          <mat-card class="plan-pricing text-center p-0">
+            <mat-card-title class="light-gray">
+              <div class="card-title-text">
+                <div class="">Business</div>
+                <div class="text-sm text-muted">For Small Businesses</div>
+              </div>
+              <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content>
+              <h1>
+                <strong>$ 
+                <span *ngIf="!isAnnualSelected">{{60}} /Mo</span>
+                <span *ngIf="isAnnualSelected">{{60 * 12 * .9}} /Yr</span>
+                </strong>
+              </h1>
+              <mat-list dense class="mb-1">
+                <mat-list-item>100GB of Bandwidth</mat-list-item>
+                <mat-list-item>Max 1500 connection</mat-list-item>
+                <mat-list-item>2GB RAM</mat-list-item>
+                <mat-list-item>Unlimited access</mat-list-item>
+                <mat-list-item>Unlimited User</mat-list-item>
+                <mat-list-item class="text-muted">Data analytics</mat-list-item>
+              </mat-list>
+              <button mat-raised-button class="mat-accent">Choose</button>
+            </mat-card-content>
+          </mat-card>
+        </div> -->
+        <!-- Pricing box -->
+        <!-- <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="50">
+          <mat-card class="plan-pricing text-center p-0">
+            <mat-card-title class="light-gray">
+              <div class="card-title-text">
+                <div class="">Enterprise</div>
+                <div class="text-sm text-muted">For Large companies</div>
+              </div>
+              <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content>
+              <h1>
+                <strong>$ 
+                <span *ngIf="!isAnnualSelected">{{160}} /Mo</span>
+                <span *ngIf="isAnnualSelected">{{160 * 12 * .9}} /Yr</span>
+                </strong>
+              </h1>
+              <mat-list dense class="mb-1">
+                <mat-list-item>1000GB of Bandwidth</mat-list-item>
+                <mat-list-item>Max 5000 connection</mat-list-item>
+                <mat-list-item>8GB RAM</mat-list-item>
+                <mat-list-item>Unlimited access</mat-list-item>
+                <mat-list-item>Unlimited User</mat-list-item>
+                <mat-list-item>Data analytics</mat-list-item>
+              </mat-list>
+              <button mat-raised-button class="mat-accent">Choose</button>
+            </mat-card-content>
+          </mat-card>
+        </div> -->
+  
+      <!-- </div>
+    </mat-card-content>
+  </mat-card> -->
+  
+  
+  <div fxLayout="row wrap" fxLayoutGap="10px" >
+      <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="20" fxFlex.lg="49" fxFlex.xl="33.33">01</div>
+      <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="20" fxFlex.lg="49" fxFlex.xl="33.33">02</div>
+      <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="20" fxFlex.lg="49" fxFlex.xl="33.33">03</div>
+      <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="20" fxFlex.lg="49" fxFlex.xl="33.33">04</div>
+      <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="20" fxFlex.lg="49" fxFlex.xl="33.33">05</div>
+  </div>
+
+
+  <mat-grid-list [cols]="breakpoint" rowHeight="100px" (window:resize)="onResize($event)">
+    <mat-grid-tile>1</mat-grid-tile>
+    <mat-grid-tile>2</mat-grid-tile>
+    <mat-grid-tile>3</mat-grid-tile>
+    <mat-grid-tile>4</mat-grid-tile>
+    <mat-grid-tile>5</mat-grid-tile>
+    <mat-grid-tile>6</mat-grid-tile>
+  </mat-grid-list>
+
+
+  <mat-grid-list class="mt-1" cols = "4" rowHeight = "100px" >
+    <mat-grid-tile [colspan] = "3"[rowspan] = "1"> 01  </mat-grid-tile>
+    <mat-grid-tile [colspan] = "1"[rowspan] = "2"> 02 </mat-grid-tile>
+    <mat-grid-tile [colspan] = "1"[rowspan] = "1"> 03 </mat-grid-tile>
+    <mat-grid-tile [colspan] = "2"[rowspan] = "1"> 04 </mat-grid-tile>
+ </mat-grid-list>
+
+
+ <div layout="layout-gt-xs">
+      <div class="col">
+        1 of 2
+      </div>
+      <div class="col-6">
+        2 of 2
+      </div>
+      <div class="col">
+        1 of 3
+      </div>
+      <div class="col">
+        2 of 3
+      </div>
+      <div class="col">
+        3 of 3
+      </div>
+    </div>
