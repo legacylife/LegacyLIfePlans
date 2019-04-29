@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LayoutService } from '../../services/layout.service';
+import { NavigationService } from '../../../shared/services/navigation.service';
+// import { AdvisorNavigationService } from '../../../shared/services/pre-login-advisor.service';
 
 @Component({
   selector: 'app-landing-advisor-header-top',
@@ -29,7 +31,7 @@ export class LandingAdvisorHeaderTopComponent implements OnInit, OnDestroy {
     private navService: LandingAdvisorNavService,
     public themeService: ThemeService,
     public translate: TranslateService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
   ) { }
 
   ngOnInit() {

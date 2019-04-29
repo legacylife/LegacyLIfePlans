@@ -11,7 +11,23 @@
             &.menu{
                 padding-right: 50px;
                 margin-left: auto;
+                li{
+                    a{
+                        font-size: 16px;
+                        color: #222324;
+                        padding: 0 30px;
+                        margin: 0;
+                        border: none;
+                    }
+
+                    &:hover{
+                        a{
+                            color: #c72128;
+                        }
+                    }
+                }
             }
         }
     }
 }
+

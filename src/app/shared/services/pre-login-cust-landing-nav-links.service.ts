@@ -31,13 +31,13 @@ export class LandingCustomerNavService {
   // tslint:disable-next-line:member-ordering
   iconMenu: IMenuItem[] = [
     {
-      name: 'cust 1',
+      name: 'Home',
       type: 'link',
       tooltip: '',
       state: ''
     },
     {
-      name: 'About',
+      name: 'About Us',
       type: 'link',
       tooltip: '',
       state: '/aboutus'
@@ -47,6 +47,12 @@ export class LandingCustomerNavService {
       type: 'link',
       tooltip: '',
       state: ''
+    },
+    {
+      name: 'For Advisor',
+      type: 'link',
+      tooltip: '',
+      state: '/pre-advisor'
     },
     {
       type: 'separator',

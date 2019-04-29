@@ -25,6 +25,7 @@ import { SharedModule } from './../../shared/shared.module';
 
 import { AdvisorLandingRoutes } from './advisor-landing.routing';
 import { HomeComponent } from './home/home.component';
+import { AdvAboutUsComponent } from './adv-about-us/adv-about-us.component';
 
 @NgModule({
   imports: [
@@ -52,6 +53,7 @@ import { HomeComponent } from './home/home.component';
   ],
   declarations: [
     HomeComponent,
+    AdvAboutUsComponent
   ]
 })
 export class AdvisorLandingModule { }

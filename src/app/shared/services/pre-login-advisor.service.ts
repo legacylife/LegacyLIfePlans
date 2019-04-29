@@ -25,34 +25,50 @@ interface IBadge {
 }
 
 @Injectable()
-export class LandingAdvisorNavService {
+export class AdvisorNavigationService {
   constructor() { }
 
-  // tslint:disable-next-line:member-ordering
   iconMenu: IMenuItem[] = [
     {
-      name: 'Home',
-      type: 'link',
-      tooltip: '',
-      state: '/pre-advisor'
+      name: 'HOME',
+      type: 'icon',
+      tooltip: 'Home',
+      icon: 'home',
+      state: 'home'
     },
     {
-      name: 'About Us',
-      type: 'link',
-      tooltip: '',
-      state: '/pre-advisor/aboutus'
+      name: 'PROFILE',
+      type: 'icon',
+      tooltip: 'Profile',
+      icon: 'person',
+      state: 'profile/overview'
     },
     {
-      name: 'For Customers',
-      type: 'link',
-      tooltip: '',
-      state: ''
+      name: 'TOUR',
+      type: 'icon',
+      tooltip: 'Tour',
+      icon: 'flight_takeoff',
+      state: 'tour'
     },
     {
       type: 'separator',
       name: 'Main Items'
+    },
+    {
+      name: 'DASHBOARD01',
+      type: 'link',
+      tooltip: 'Dashboard',
+      icon: 'dashboard',
+      state: 'admin'
+    },
+    {
+      name: 'DOC010000',
+      type: 'extLink',
+      tooltip: 'Documentation',
+      icon: 'library_books',
+      state: 'admin/Nested3'
     }
-  ];
+  ]
 
   // Icon menu TITLE at the very top of navigation.
   // This title will appear if any icon type item is present in menu.
