@@ -46,6 +46,7 @@ import { AdvisorLayoutComponent } from './components/layouts/advisor-layout/advi
 import { AuthLayoutComponent } from './components/layouts/auth-layout/auth-layout.component';
 import { CustomerLayoutComponent } from './components/layouts/customer-layout/customer-layout.component';
 import { LandingLayoutComponent } from './components/layouts/landing-layout/landing-layout.component';
+import { AdvisorLandingLayoutComponent } from './components/layouts/advisor-landing-layout/advisor-landing-layout.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
@@ -62,7 +63,7 @@ import { EgretSideNavToggleDirective } from './directives/egret-side-nav-toggle.
 
 // PIPES
 import { RelativeTimePipe } from './pipes/relative-time.pipe';
-import { ExcerptPipe } from "./pipes/excerpt.pipe";
+import { ExcerptPipe } from './pipes/excerpt.pipe';
 import { GetValueByKeyPipe } from './pipes/get-value-by-key.pipe';
 
 // SERVICES
@@ -71,7 +72,7 @@ import { LayoutService } from './services/layout.service';
 import { NavigationService } from './services/navigation.service';
 import { CustNavService } from './services/customer-nav-links.service';
 import { AdvisorNavService } from './services/advisor-nav-links.service';
-import { LandingAdvisorNavService } from './services/landing-advisor-nav-links.service';
+import { LandingAdvisorNavService } from './services/pre-login-cust-landing-nav-links.service';
 import { RoutePartsService } from './services/route-parts.service';
 import { AuthGuard } from './services/auth/auth.guard';
 import { AppConfirmService } from './services/app-confirm/app-confirm.service';
@@ -99,6 +100,7 @@ const classesToInclude = [
   AuthLayoutComponent,
   CustomerLayoutComponent,
   LandingLayoutComponent,
+  AdvisorLandingLayoutComponent,
   BreadcrumbComponent,
   AppComfirmComponent,
   AppLoaderComponent,

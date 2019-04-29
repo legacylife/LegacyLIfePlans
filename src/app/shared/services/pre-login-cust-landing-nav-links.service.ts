@@ -34,21 +34,18 @@ export class LandingAdvisorNavService {
       name: 'HOME',
       type: 'link',
       tooltip: '',
-      icon: 'home',
       state: ''
     },
     {
       name: 'About',
       type: 'link',
       tooltip: '',
-      icon: 'person',
-      state: ''
+      state: '/aboutus'
     },
     {
       name: 'How LLP Hired',
       type: 'link',
       tooltip: '',
-      icon: '',
       state: ''
     },
     {

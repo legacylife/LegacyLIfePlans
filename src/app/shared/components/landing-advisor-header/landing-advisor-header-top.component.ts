@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy, Renderer2 } from '@angular/core';
-import { LandingAdvisorNavService } from '../../../shared/services/landing-advisor-nav-links.service';
+import { LandingAdvisorNavService } from '../../../shared/services/pre-login-cust-landing-nav-links.service';
 import { Subscription } from 'rxjs';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -7,7 +7,8 @@ import { LayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'app-landing-advisor-header-top',
-  templateUrl: './landing-advisor-header-top.component.html'
+  templateUrl: './landing-advisor-header-top.component.html',
+  styleUrls: ['./landing-advisor-header-top.component.scss']
 })
 export class LandingAdvisorHeaderTopComponent implements OnInit, OnDestroy {
   layoutConf: any;

@@ -4,6 +4,7 @@ import { AdvisorLayoutComponent } from './shared/components/layouts/advisor-layo
 import { AuthLayoutComponent } from './shared/components/layouts/auth-layout/auth-layout.component';
 import { CustomerLayoutComponent } from './shared/components/layouts/customer-layout/customer-layout.component';
 import { LandingLayoutComponent } from './shared/components/layouts/landing-layout/landing-layout.component';
+import { AdvisorLandingLayoutComponent } from './shared/components/layouts/advisor-landing-layout/advisor-landing-layout.component';
 import { AuthGuard } from './shared/services/auth/auth.guard';
 
 export const rootRouterConfig: Routes = [
@@ -18,6 +19,28 @@ export const rootRouterConfig: Routes = [
       }
     ]
   }, {
+    path: '',
+    component: AdvisorLandingLayoutComponent,
+    children: [
+      {
+        path: 'pre-advisor',
+        loadChildren: './views/advisor-landing/advisor-landing.module#AdvisorLandingModule',
+        data: { title: 'Advisor Pre-login Landing'}
+      }
+    ]
+  },
+   // {
+  //   path: '',
+  //   component: AdvisorLandingLayoutComponent,
+  //   children: [
+  //     {
+  //       path: '',
+  //       loadChildren: './views/advisor-landing/advisor-landing.module#AdvisorLandingModule',
+  //       data: { title: 'Advisor Landing'}
+  //     }
+  //   ]
+  // },
+   {
     path: '',
     component: AuthLayoutComponent,
     children: [

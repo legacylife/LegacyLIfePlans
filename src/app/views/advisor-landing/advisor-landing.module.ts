@@ -23,9 +23,8 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
 
-import { LandingRoutes } from './landing.routing';
+import { AdvisorLandingRoutes } from './advisor-landing.routing';
 import { HomeComponent } from './home/home.component';
-import { CustAboutUsComponent } from './about-us/about-us.component';
 
 @NgModule({
   imports: [
@@ -49,11 +48,10 @@ import { CustAboutUsComponent } from './about-us/about-us.component';
     ChartsModule,
     FileUploadModule,
     SharedModule,
-    RouterModule.forChild(LandingRoutes)
+    RouterModule.forChild(AdvisorLandingRoutes)
   ],
   declarations: [
     HomeComponent,
-    CustAboutUsComponent
   ]
 })
-export class LandingModule { }
+export class AdvisorLandingModule { }
