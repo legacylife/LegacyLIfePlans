@@ -25,13 +25,13 @@ interface IBadge {
 }
 
 @Injectable()
-export class LandingCustomerNavService {
+export class LandingAdvisorNavService {
   constructor() { }
 
   // tslint:disable-next-line:member-ordering
   iconMenu: IMenuItem[] = [
     {
-      name: 'cust 1',
+      name: 'Adv 1',
       type: 'link',
       tooltip: '',
       state: ''

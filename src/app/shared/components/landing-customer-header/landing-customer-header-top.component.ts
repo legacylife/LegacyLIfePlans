@@ -1,16 +1,16 @@
 import { Component, OnInit, Input, OnDestroy, Renderer2 } from '@angular/core';
-import { LandingAdvisorNavService } from '../../../shared/services/pre-login-advisor-landing-nav-links.service';
+import { LandingCustomerNavService } from '../../../shared/services/pre-login-cust-landing-nav-links.service';
 import { Subscription } from 'rxjs';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LayoutService } from '../../services/layout.service';
 
 @Component({
-  selector: 'app-landing-advisor-header-top',
-  templateUrl: './landing-advisor-header-top.component.html',
-  styleUrls: ['./landing-advisor-header-top.component.scss']
+  selector: 'app-landing-customer-header-top',
+  templateUrl: './landing-customer-header-top.component.html',
+  styleUrls: ['./landing-customer-header-top.component.scss']
 })
-export class LandingAdvisorHeaderTopComponent implements OnInit, OnDestroy {
+export class LandingCustomerHeaderTopComponent implements OnInit, OnDestroy {
   layoutConf: any;
   menuItems:any;
   menuItemSub: Subscription;
@@ -26,7 +26,7 @@ export class LandingAdvisorHeaderTopComponent implements OnInit, OnDestroy {
   @Input() notificPanel;
   constructor(
     private layout: LayoutService,
-    private navService: LandingAdvisorNavService,
+    private navService: LandingCustomerNavService,
     public themeService: ThemeService,
     public translate: TranslateService,
     private renderer: Renderer2

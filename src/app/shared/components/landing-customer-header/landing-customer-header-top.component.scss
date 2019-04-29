@@ -1,0 +1,17 @@
+.llp--landing--wrapper{
+    .topnav{
+        height: 100px;
+        .topbar-branding{
+            margin-left: 50px;
+            img{
+                height: auto;
+            }   
+        }
+        ul{
+            &.menu{
+                padding-right: 50px;
+                margin-left: auto;
+            }
+        }
+    }
+}

@@ -1,0 +1,27 @@
+<div class="header-topnav mat-elevation-z2">
+  <div class="llp--landing--wrapper">
+    <div class="topnav">
+      <!-- App Logo -->
+      <div class="topbar-branding">
+        <img src="assets/images/arkenea/small-logo.png" alt="" class="app-logo">
+      </div>
+
+      <ul class="menu" *ngIf="!layoutConf.isMobile">
+        <li *ngFor="let item of menuItems; let i = index;">
+          <div *ngIf="item.type !== 'separator'" routerLinkActive="open">
+            <a matRipple routerLink="/{{item.state}}" *ngIf="item.type === 'link'">
+              {{item.name | translate}}
+            </a>      
+          </div>
+        </li>
+      </ul>
+      <!-- End Navigation -->
+     
+      <!-- Top left user menu -->
+      <button mat-icon-button class="mr-1" (click)="toggleSidenav()" *ngIf="layoutConf.isMobile">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+    </div>
+  </div>
+</div>
