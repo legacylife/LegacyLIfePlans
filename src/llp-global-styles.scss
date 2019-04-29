@@ -129,6 +129,7 @@ $clr--10: #131321;
 $clr--11: #f8ccd0;
 $clr--12: #fff2f3;
 $clr--13: #666;
+$clr--14: #e0e0e0;
 
 
 @mixin primary-btn-style{
@@ -385,3 +386,4 @@ body{
 .px-40{padding: 0 40px !important;}
 .mr-20{margin-right: 20px !important}
 .mr-30{margin-right: 30px !important}
+.align--items--center{align-items: center;}

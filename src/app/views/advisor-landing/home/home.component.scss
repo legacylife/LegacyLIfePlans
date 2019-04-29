@@ -1,0 +1,144 @@
+@import 'llp-global-styles.scss';
+
+@mixin landing--btn{
+    font-size: 16px  ;
+    font-family: $font--lato--regular;
+    border-radius: 4px;
+    padding: 3px 20px  ;
+    height: 60px; 
+    width: 200px;
+}
+
+.landing--primary--btn{
+    @include landing--btn;
+    background-color: $clr--2 ;
+    color: $clr--1;
+}
+.landing--secondary--btn{
+    @include landing--btn;
+    background-color: transparent ;
+    border: 1px solid $clr--1;
+    color: $clr--1;
+}
+
+.advisor--landing--wrapper{
+
+    .get--hired--wrapper{    
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 100%;
+        height: 850px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;  
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0000009c;
+            z-index: 1;
+        }
+
+        .banner--content{
+            z-index: 2;
+            color: $clr--1;
+            h3{
+                font-size: 90px;
+                margin: 38px 0;
+                text-transform: uppercase;
+                font-family:$font--lato--bold;
+            }
+            h6{
+                font-size: 28px;  
+                margin: 0;    
+                font-family: $font--lato--regular;
+                &.info{
+                    margin-bottom: 70px;
+                }      
+            }
+            .landing--secondary--btn{
+                margin-left: 20px;
+            }
+        }
+        
+    }
+
+    .hired--steps{
+        padding: 50px 0;
+        background-color: $clr--1;
+        box-shadow: 0 0 5px #ddd;
+        height: auto; 
+        
+        .steps--section{
+            border-right: 1px solid $clr--14;
+            padding:0 45px;
+
+            .step--header{
+                display: flex;
+                margin-bottom: 25px;
+                .icon{
+                    margin-right: 20px;
+                    display: inline-block;
+                }
+                h5{
+                    font-size: 22px;
+                    color: $clr--3;
+                    margin: 0;
+                }
+            }
+            .step--body{
+                p{
+                    margin: 0;
+                    font-size: 16px;
+                    color: $clr--4;
+                    line-height: 30px;
+                }
+            }
+        }
+    }
+
+    .signature--wrapper{
+        color: $clr--4;
+        h4{
+            font-size: 40px;
+            margin: 0 0 30px 0;
+        }
+        p{
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 30px;
+            &:last-child{
+                margin-bottom: 0;
+            }
+        }
+        
+    }
+
+}
+
+.icon--create--profile{
+    background: url('assets/images/arkenea/create-profile.png');
+    width: 21px;
+    height: 25px;
+}
+.icon--contact-lead{
+    background: url('assets/images/arkenea/contact-leads.png');
+    width: 25px;
+    height: 25px;
+}
+.icon--get--hired{
+    background: url('assets/images/arkenea/get-hired.png');
+    width: 20px;
+    height: 22px;
+}
+.bottom-space{
+    margin-bottom: 100px;
+}
