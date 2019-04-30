@@ -1,0 +1,209 @@
+<header class="auth-header">
+  <img src="assets/images/arkenea/small-logo.png" alt="">
+</header>
+
+<div class="page-wrap mat-bg-primary busi--info--wrapper">
+  <div class="session-form-hold">
+
+    <div class="login-sub-wrapper">
+      <div class="stepper--wrapper">
+
+        <mat-horizontal-stepper [linear]="!isLinear" #stepper>
+
+          <!-- step 1 -->
+          <mat-step [stepControl]="firstFormGroup">
+            <form [formGroup]="firstFormGroup" class="llp-form-wrapper">
+              <div class="info--content">
+                <div class="text-center pb-1">
+                  <h2 class="login-header-text m-0">Business Information </h2>
+                  <p class="login-header-desc">Please use the same full legal name and address as specified in the business license.</p>
+                </div>
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="First Name" formControlName="firstCtrl" required>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Last Name">
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                  <mat-select placeholder="Years of service">
+                    <mat-option value="option">Select number of years</mat-option>
+                    <mat-option value="option">2001</mat-option>
+                    <mat-option value="option">2002</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                  <mat-select placeholder="Business type">
+                    <mat-option value="option">Select business type</mat-option>
+                    <mat-option value="option">ABC</mat-option>
+                    <mat-option value="option">lorem </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                  <mat-select placeholder="Industry/Domain">
+                    <mat-option value="option">Select industry/domain type</mat-option>
+                    <mat-option value="option">2001</mat-option>
+                    <mat-option value="option">2002</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div>
+                  <button mat-raised-button matStepperNext class="llp--primary--btn full-width mb-0">Next</button>
+                </div>
+              </div>
+            </form>
+          </mat-step>
+
+          <!-- step 2 -->
+          <mat-step [stepControl]="secondFormGroup">
+            <form [formGroup]="secondFormGroup" class="llp-form-wrapper">
+
+              <div class="info--content">
+                <div class="text-center pb-1">
+                  <h2 class="login-header-text m-0">Business Address </h2>
+                  <p class="login-header-desc">Enter the same address as shown on your business certificate</p>
+                </div>
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Address line 1" formControlName="secondCtrl">
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Address line 2 (optional)">
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                  <input matInput type="number" placeholder="Zip code" >
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="City">
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                  <mat-select placeholder="State">
+                    <mat-option value="option">Select a state</mat-option>
+                    <mat-option value="option">Maharashtra</mat-option>
+                    <mat-option value="option">Goa</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Business phone" type="tel" class="example-right-align">
+                  <span matPrefix>+1</span>
+                  <span matSuffix>.00</span>
+                </mat-form-field>
+
+                <div class="text-center">
+                  <button mat-raised-button matStepperNext class="llp--primary--btn full-width mb-1">Next</button>
+                  <button mat-raised-button matStepperPrevious class="llp--back--btn">
+                    <mat-icon>arrow_back</mat-icon> Back</button>
+                </div>
+              </div>
+              <div>
+
+              </div>
+            </form>
+          </mat-step>
+
+          <!-- step 3 -->
+          <mat-step [stepControl]="thirdFormGroup">
+            <form [formGroup]="thirdFormGroup" class="llp-form-wrapper">
+              <div class="info--content">
+                <div class="text-center pb-1">
+                  <h2 class="login-header-text m-0">License Information</h2>
+                  <p class="login-header-desc">Enter your business license information</p>
+                </div>
+
+                <mat-form-field class="full-width">
+                  <mat-select placeholder="Active license held">
+                    <mat-option value="option">Click checkbox all that apply</mat-option>
+                    <mat-option value="option">Not all</mat-option>
+                    <mat-option value="option">Only One</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-radio-group aria-label="Select an option" class="llp-radio">
+                  <div class="checkbox-label">What agency oversees your business?</div>
+                  <mat-radio-button value="1" class="">FINRA</mat-radio-button>
+                  <mat-radio-button value="2" class="">SEC</mat-radio-button>
+                  <mat-radio-button value="3" class="">Both</mat-radio-button>
+                </mat-radio-group>
+
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Who is your managing principle?" formControlName="thirdCtrl">
+                </mat-form-field>
+
+                <mat-radio-group aria-label="Select an option" class="llp-radio">
+                  <div class="checkbox-label">Do you manage other producers?</div>
+                  <mat-radio-button value="1" class="ml-0">Yes </mat-radio-button>
+                  <mat-radio-button value="2" class="">No</mat-radio-button>
+                </mat-radio-group>
+
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="If yes, how many?">
+                </mat-form-field>
+
+                <div class="text-center">
+                  <button mat-raised-button matStepperNext class="llp--primary--btn full-width mb-1">Next</button>
+                  <button mat-raised-button matStepperPrevious class="llp--back--btn">
+                    <mat-icon>arrow_back</mat-icon> Back</button>
+                </div>
+              </div>
+              <div>
+              </div>
+            </form>
+          </mat-step>
+
+          <!-- step 4 -->
+          <mat-step>
+            <div class="info--content">
+              <div class="text-center pb-0">
+                <h2 class="login-header-text m-0">Business Documents</h2>
+                <p class="login-header-desc">Upload your business documents for verification for e.g. businesslicense</p>
+              </div>
+
+              <div class="upload--buss--docs--sec">
+                <label>Upload your business documents</label>
+                <div class="upload--box">
+                  <input type="file" />
+
+                  <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                  <div class="select--file">Select file from your computer</div>
+
+                </div>
+                <div class="file--details">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+              </div>
+
+              <div class="text-center">
+                <button [routerLink]="'/auth/advisor/set-password'" mat-raised-button matStepperNext class="llp--primary--btn full-width mb-1">Complete</button>
+                <button mat-raised-button matStepperPrevious class="llp--back--btn">
+                  <mat-icon>arrow_back</mat-icon> Back</button>
+              </div>
+            </div>
+
+            <div>
+              <!-- <button mat-raised-button mat-button (click)="stepper.reset()">Reset</button> -->
+            </div>
+          </mat-step>
+        </mat-horizontal-stepper>
+
+      </div>
+    </div>
+
+
+    <div class="login-footer">
+      <p>Already a member?
+        <a [routerLink]="'/auth/signin'">Login</a>
+      </p>
+    </div>
+
+
+  </div>
+
+</div>
+
+<footer class="auth-footer">
+  <p>© 2019 Legacy Life Plans</p>
+</footer>

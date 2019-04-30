@@ -1,0 +1,63 @@
+.busi--info--wrapper{
+    .login-header-desc{
+        text-align: left;
+        font-size: 16px;
+    }
+    ::ng-deep .mat-horizontal-content-container{
+        padding: 0;
+    }
+  
+
+    .info--content{
+        margin-top: 33px;
+    }
+
+    ::ng-deep .mat-form-field-prefix{
+        width: 40px;
+        font-size: 16px;
+        color: #222324;
+    }
+  
+    .upload--buss--docs--sec{
+        label{
+            font-size: 16px;
+            margin: 0;
+            color: #222324;
+            font-family: 'latobold';
+        }
+        .upload--box{
+            margin: 15px 0;
+            border: 1px dashed #c72128;
+            padding: 25px 0 25px 0;
+            width: 100%;
+            height: 136px;
+            text-align: center;
+            position: relative;
+            border-radius: 4px;
+
+            input{
+                opacity: 0;
+                height: inherit;
+                width: inherit;
+                cursor: pointer;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+            .select--file{
+                color: #c72128;
+                font-size: 16px;
+            }
+            .cloud-icon{
+                color: #c72128;
+                font-size: 50px;
+                margin-bottom: 10px;
+            }
+        }
+        .file--details{
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 27px;
+        }
+    }
+}

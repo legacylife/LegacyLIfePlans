@@ -1,0 +1,62 @@
+<header class="auth-header">
+  <img src="assets/images/arkenea/small-logo.png" alt="">
+</header>
+
+<div class="page-wrap mat-bg-primary">
+  <div class="session-form-hold">
+    
+    <div class="login-sub-wrapper">
+      <!-- <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar> -->
+      <mat-card-content>
+          <div class="text-center pb-1">
+            <h2 class="login-header-text m-0">Admin Sign Up</h2>
+            <p class="login-header-desc">Start building your legacy</p>
+          </div>
+          <form (ngSubmit)="signup()" class="llp-form-wrapper">
+            <div class="">
+              <mat-form-field class="full-width">
+                <input matInput name="username" placeholder="Email*" value="">
+              </mat-form-field>
+            </div>
+  
+            <div class="">
+              <mat-form-field class="full-width">
+                <input type="password" name="password" matInput  placeholder="Password*" value="">
+              </mat-form-field>
+            </div>
+  
+            <div class="otp-sec">
+              <label class="otp-note">A One Time Passcode has been sent your email. Please enter the 
+                OTP below to verify your Email Address.</label>
+                <mat-form-field class="full-width">
+                  <input type="text" matInput name="otp" placeholder="Enter OTP" value="">
+                  <div class="resend-otp">
+                    <a>Resend OTP</a>
+                  </div>
+                </mat-form-field>  
+            </div>
+  
+            <!-- <button mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1">Proceed</button> -->
+
+            <button [routerLink]="'/auth/advisor/businessinfo'"  mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1">Start your 90 days free trial</button>
+
+            <div class="text-center bot-txt">
+              <p>Already a member?  <a [routerLink]="'/auth/signin'"> Login</a></p>
+            </div>
+
+          </form>
+        </mat-card-content>
+    </div>
+
+    
+    <div class="login-footer">
+     &nbsp;
+    </div>
+
+  </div>
+  
+</div>
+
+<footer class="auth-footer">
+  <p>© 2019 Legacy Life Plans</p>
+</footer>

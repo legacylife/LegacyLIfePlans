@@ -1,3 +1,5 @@
+@import 'llp-global-styles.scss';
+
 /*-- For header (start here) --*/
 .auth-header{
     display: flex;
@@ -35,7 +37,7 @@
     border: 1px solid #d1dbde;
     background: #fff;
     border-radius: 4px;
-    padding: 40px;
+    padding: 35px 40px;
 
     .login-header-text{
         font-size: 28px;
@@ -43,7 +45,9 @@
     }
     .login-header-desc{
         font-size: 20px;
-        color: #000;
+        color: $clr--4;
+        margin-top: 30px;
+        margin-bottom: 0;
     }
 }
 .login-footer{
@@ -55,9 +59,27 @@
         color: #c72128;
     }
 }
+.otp-sec{
+    display: flex;
+    flex-direction: column;
+    position: relative;
 
+    .otp-note{
+        color: $clr--4;
+        font-size: 16px;
+        line-height: 25px;
+        margin-bottom: 10px;
+    }
+    .resend-otp{
+        position: absolute;
+        right: 0;
+        top: 0;
+        color: $clr--2;
+        font-size: 16px;
+    }
+}
 
-html:not(.abcd){
+html.llp--auth--wrapper{
     height: auto !important;
     min-height: 100% !important;
     position: relative !important;
@@ -65,10 +87,71 @@ html:not(.abcd){
     background: #f6f7f7 !important;
 } 
 
-body:not(.abcd){
+body.llp--auth--wrapper{
     height: auto !important;
     position: initial !important;
     overflow: auto !important;
     margin-bottom: 57px;
     margin-top: 63px;
 }
+
+
+
+/* -- 
+    Media Query (start here)
+------------------------------------------*/
+@media (max-width: 374px){
+    .mat-radio-group.llp-radio .mat-radio-button {
+        display: block;
+        margin: 0 0 10px 0;
+    }
+}
+@media (max-width: 639px){
+    .login-sub-wrapper{
+        padding: 25px;
+    }
+    .login-sub-wrapper .login-header-text {
+        font-size: 23px;
+    }
+    .login-sub-wrapper .login-header-desc{
+        font-size: 17px;
+    }
+    .const--height {
+        height:234px !important;
+    }
+    .admin-note{
+        margin-top: 20px !important;
+    }
+    .know--more--sec h3{
+        font-size: 23px !important;
+    }
+    .know--more--sec p{
+        font-size: 14px !important;
+    }
+    .know--more--sec{
+        height: 291px !important;
+    }
+    .mat-form-field-infix{
+        width: 100% !important;
+    }
+   
+}
+@media (min-width: 640px){
+  
+}
+    
+@media (min-width: 768px){
+    
+}
+    
+@media (min-width: 1024px){
+    
+}
+    
+@media (min-width: 1200px){
+    
+}
+
+/* -- 
+    Media Query (end here)
+------------------------------------------*/

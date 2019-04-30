@@ -10,7 +10,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "yarn":"yarn"
+    "yarn": "yarn"
   },
   "private": true,
   "dependencies": {
@@ -49,6 +49,7 @@
     "ngx-pagination": "3.1.0",
     "ngx-perfect-scrollbar": "6.1.0",
     "ngx-quill": "2.0.4",
+    "node-sass": "^4.12.0",
     "perfect-scrollbar": "1.4.0",
     "rxjs": "6.1.0",
     "rxjs-compat": "6.1.0",

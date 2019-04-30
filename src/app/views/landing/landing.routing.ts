@@ -1,17 +1,17 @@
 import { Routes } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
-import { AdvisorHomeComponent } from './advisor-home/advisor-home.component';
+import { CustAboutUsComponent } from './about-us/about-us.component';
 
 export const LandingRoutes: Routes = [
   {
-    path: 'home',
+    path: '',
     component: HomeComponent,
     data: { title: 'Home' }
   },
   {
-    path: 'advisor-home',
-    component: AdvisorHomeComponent,
+    path: 'aboutus',
+    component: CustAboutUsComponent,
     data: { title: 'AdvisorHome' }
   }
 ];

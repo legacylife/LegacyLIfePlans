@@ -8,9 +8,15 @@ import {MatGridListModule} from '@angular/material/grid-list';
 })
 export class HomeComponent implements OnInit {
 
+  breakpoint: number;
   constructor() { }
 
   ngOnInit() {
+    this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
+    this.breakpoint = (window.innerWidth <= 600) ? 3 : 6;
   }
-
+  onResize(event) {
+    this.breakpoint = (event.target.innerWidth <= 400) ? 1 : 6;
+    this.breakpoint = (event.target.innerWidth <= 600) ? 3 : 6;
+  }
 }

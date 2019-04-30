@@ -1,1 +1,389 @@
 
+/*! LLP Fonts (start here) */
+@font-face {
+    font-family: 'latoregular';
+    src: url('assets/llp-fonts/lato-regular_0-webfont.woff2') format('woff2'),
+         url('assets/llp-fonts/lato-regular_0-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'latolight';
+    src: url('assets/llp-fonts/lato-lig_0-webfont.woff2') format('woff2'),
+         url('assets/llp-fonts/lato-lig_0-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'latoblack';
+    src: url('assets/llp-fonts/lato-black_0-webfont.woff2') format('woff2'),
+         url('assets/llp-fonts/lato-black_0-webfont.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'latomedium';
+    src: url('assets/llp-fonts/lato-medium_0-webfont.woff2') format('woff2'),
+         url('assets/llp-fonts/lato-medium_0-webfont.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'latobold';
+    src: url('assets/llp-fonts/lato-bold_0-webfont.woff2') format('woff2'),
+         url('assets/llp-fonts/lato-bold_0-webfont.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'latoheavy';
+    src: url('assets/llp-fonts/lato-heavy_0-webfont.woff2') format('woff2'),
+         url('assets/llp-fonts/lato-heavy_0-webfont.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'latoitalic';
+    src: url('assets/llp-fonts/lato-italic_0-webfont.woff2') format('woff2'),
+         url('assets/llp-fonts/lato-italic_0-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal; 
+}
+
+
+@font-face {
+    font-family: 'latohairline';
+    src: url('assets/llp-fonts/lato-hai_0-webfont.woff2') format('woff2'),
+         url('assets/llp-fonts/lato-hai_0-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'latoheavy_italic';
+    src: url('assets/llp-fonts/lato-heavyitalic_0-webfont.woff2') format('woff2'),
+         url('assets/llp-fonts/lato-heavyitalic_0-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'latolight_italic';
+    src: url('assets/llp-fonts/lato-ligita_0-webfont.woff2') format('woff2'),
+         url('assets/llp-fonts/lato-ligita_0-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'latobold_italic';
+    src: url('assets/llp-fonts/lato-bolditalic_0-webfont.woff2') format('woff2'),
+         url('assets/llp-fonts/lato-bolditalic_0-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'latoblack_italic';
+    src: url('assets/llp-fonts/lato-blackitalic_0-webfont.woff2') format('woff2'),
+         url('assets/llp-fonts/lato-blackitalic_0-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'latohairline_italic';
+    src: url('assets/llp-fonts/lato-haiita_0-webfont.woff2') format('woff2'),
+         url('assets/llp-fonts/lato-haiita_0-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*! LLP Fonts (end here) */
+body,p,a {
+    font-family: 'latoregular' !important;
+    color: #222324;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
+    font-family: 'latobold';
+}
+
+// font's veriable
+$font--lato--regular: latoregular;
+$font--lato--light: latolight;
+$font--lato--medium: latomedium;
+$font--lato--bold: latobold;
+$font--lato--italic: latoitalic;
+$font--lato--bold--italic: latobold_italic;
+
+
+// color's veriable
+$clr--1: #fff;
+$clr--2: #c72128;
+$clr--3: #222324;
+$clr--4: #000;
+$clr--5: #727a33;
+$clr--6: #828385;
+$clr--7: #e7ebcd;
+$clr--8: #757575;
+$clr--9: #d1dbde;
+$clr--10: #131321;
+$clr--11: #f8ccd0;
+$clr--12: #fff2f3;
+$clr--13: #666;
+$clr--14: #e0e0e0;
+
+
+@mixin primary-btn-style{
+    font-size: 16px  ;
+    font-family: $font--lato--regular;
+    border-radius: 20px;
+    padding: 3px 20px  ;
+    height: 42px; 
+}
+
+// primary red button
+body .mat-button, 
+body .mat-raised-button, 
+body .mat-icon-button, 
+body .mat-stroked-button, 
+body .mat-flat-button, 
+body .mat-fab, 
+body .mat-mini-fab{
+    @include primary-btn-style;
+}
+
+.llp--primary--btn{
+    color: $clr--1 !important;
+    background-color: $clr--2 !important;
+}
+
+.llp--back--btn{
+    @include primary-btn-style;
+    box-shadow: none !important;
+    color: $clr--2 !important;
+    .mat-icon{
+        margin-right: 10px;
+        color: $clr--3;
+    }
+}
+
+
+// Checkbox
+.mat-checkbox{
+    .mat-checkbox-inner-container{
+        margin-right: 15px;
+    }
+    .mat-checkbox-frame{
+        border-color: $clr--2 !important;
+    }
+    .mat-checkbox-label{
+        color: $clr--4;
+        font-size: 16px;
+    }
+    .mat-checkbox-ripple{
+        .mat-ripple-element{
+            background-color: $clr--2 !important;
+        }   
+    }
+    &.mat-checkbox-checked{
+        .mat-checkbox-background{
+            background-color: $clr--2 !important;
+        }
+    }
+}
+
+// radio 
+.mat-radio-group{
+    .checkbox-label{
+        color: $clr--3;
+        margin-bottom: 13px;
+        font-family: $font--lato--bold;
+        font-size: 16px;
+    }
+    .mat-radio-label{
+        .mat-radio-label-content{
+            color: $clr--3;
+            font-size: 16px;
+        }
+        .mat-radio-outer-circle{
+            border-color: $clr--8;
+        }      
+        
+    }
+    .mat-radio-checked{
+        .mat-radio-inner-circle{
+            background-color:$clr--2 !important;      
+        }
+        .mat-radio-outer-circle{    
+            border-color:$clr--2 !important; 
+        }
+    }
+    .mat-radio-ripple{
+        .mat-ripple-element{
+            background-color:$clr--2 !important;             
+        }
+    }
+    &.llp-radio{
+        display: inline-table;
+        width: 100%;
+        margin-bottom: 25px;
+
+        .mat-radio-button{
+            margin-right: 30px;
+        }
+    }
+}
+
+
+// Form Element
+body{
+    form{
+        &.llp-form-wrapper{
+            .mat-form-field{
+                .mat-form-field-label {
+                    font-size: 16px;
+                    color: $clr--6;  
+                    font-family: $font--lato--regular;                  
+                }
+            }
+            &.mat-form-field-invalid{
+                color: $clr--2;
+            }   
+            .mat-form-field-wrapper{
+                margin-bottom: 15px;
+            }  
+            .mat-form-field-infix{
+                .mat-input-element{
+                    font-size: 16px;
+                    color: $clr--3;
+                    font-family: $font--lato--regular;
+                }
+                .mat-form-field-label-wrapper{
+                    top: -16px;
+                }
+            } 
+            .form--action--btn{
+                margin: 30px 0 25px 0;
+            }
+            .remember-wrap{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                a{
+                    font-size: 16px;
+                    color: $clr--2;
+                    margin-left: auto;
+                    
+                }
+            } 
+            .bot-txt{
+                p{
+                    margin: 0;
+                    font-size: 16px;
+                    color: $clr--4;
+                    a{
+                        color: $clr--2;
+                    }
+                }
+            } 
+        }    
+    }
+}
+
+
+// Stepper 
+
+body{ 
+    .stepper--wrapper{
+       
+        .mat-horizontal-stepper-header{
+            height: 30px;
+            padding: 0;
+        }
+        .mat-step-header {
+            &.cdk-program-focused{
+                background-color: transparent;
+            }
+
+            .mat-step-label{
+                display: none;
+            }
+            .mat-step-icon{
+                background-color: $clr--7;
+                color: $clr--3;
+                font-family: $font--lato--bold;
+                &.mat-step-icon-state-edit{
+                    background-color: $clr--2;
+                    color: $clr--1;
+                }
+
+                .mat-step-icon-content{
+                    line-height: 10px;
+                }
+            } 
+            .mat-step-icon-selected {
+                background-color: $clr--2; 
+                color: $clr--1;
+             }       
+        }
+        .mat-stepper-horizontal-line{
+            border-top: 2px solid $clr--7;            
+        }
+        .mat-horizontal-stepper-header-container{
+            pointer-events: none;
+        }
+    }
+}
+
+// Datepicker
+
+body{
+    .llp-datepicker{
+        .mat-form-field-prefix,
+        .mat-form-field-suffix{
+            .mat-icon-button{
+                padding: 0px 5px 5px 4px; 
+                font-size: 16px;
+                color: $clr--8;
+            }
+            
+        }
+    }
+}
+
+/* Tooltip  */
+
+body{
+
+    .red--alert{
+        font-size: 17px;
+        position: absolute;
+        right: 0;
+        top: 5px;
+        color: $clr--2;
+        width: 15px;
+        height: 10px;
+    }
+
+    .mat-tooltip{
+        &.llp--tooltip {
+            font-size: 13px ;
+            padding: 8px 15px ;        
+        }
+        &.error{
+            background-color: $clr--12 ;
+            border: 1px solid $clr--11 ;
+            color: $clr--13 ;
+        }
+    }
+}
+
+// Helper classes 
+.text-left{text-align: left !important}
+.text-right{text-align: right !important}
+.mx-15{margin: 0 15px !important;}
+.my-15{margin: 15px 0 !important;}
+.px-40{padding: 0 40px !important;}
+.mr-20{margin-right: 20px !important}
+.mr-30{margin-right: 30px !important}
+.align--items--center{align-items: center;}

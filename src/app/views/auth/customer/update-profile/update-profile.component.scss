@@ -1,0 +1,60 @@
+@import 'llp-global-styles.scss';
+
+.congo--wrapper{
+    display: flex;
+    flex-direction: column;
+    //border-bottom: 1px solid $clr--9;
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+
+    .con--image{
+        margin: 0 auto 30px auto;
+        background-repeat: no-repeat;
+
+        span{
+            //font-family: $font--lato--bold--italic;
+            font-size: 20px;
+            //color: $clr--10;
+            padding: 0 31px;
+        }
+    }
+
+    p{
+        text-align: center;
+        font-size: 20px;
+        //color: $clr--4;
+        margin: 0;
+    }
+}
+.profile--pic{
+    position: relative;
+    margin: 18px auto 30px auto; 
+    width: 125px;
+    height: 125px;
+
+    .pic--box{
+        width: 125px;
+        height: 125px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 0 auto;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+  
+    }
+    .edit--pic{
+        font-size: 19px;
+        //color: $clr--2;
+        margin-left: auto;
+        position: absolute;
+        right: -4px;
+        bottom: -12px;
+        cursor: pointer;
+    }
+}
+::ng-deep .mat-form-field-prefix {
+    width: 40px;
+    font-size: 16px;
+    //color: $clr--3;
+}
