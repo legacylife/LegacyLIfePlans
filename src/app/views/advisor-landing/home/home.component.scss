@@ -457,3 +457,24 @@
 {
     color: $clr--1 !important;
 }
+
+
+/* Media query (start here)*/
+
+@media only screen and (min-width: 599px) {}
+@media only screen and (min-width: 600px) and (max-width: 959px){
+    .advisor--landing--wrapper .hired--steps .steps--section {
+        padding: 0px 25px;
+    }
+    .advisor--landing--wrapper .hire--process--wrapper .hire--content {
+        width: 100%;
+    }
+}
+@media only screen and (min-width: 960px) and (max-width: 979px){
+    
+}
+@media only screen and (min-width: 980px) and (max-width: 1279px){}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){}
+@media only screen and (min-width: 1441px) and (max-width: 1550px){}
+
+/* Media query (end here)*/
