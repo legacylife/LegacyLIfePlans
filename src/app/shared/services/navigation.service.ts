@@ -55,19 +55,17 @@ export class NavigationService {
       name: 'Main Items'
     },
     {
-      name: 'DASHBOARD01',
-      type: 'link',
-      tooltip: 'Dashboard',
-      icon: 'dashboard',
-      state: 'admin'
+      name: 'User Management',
+      type: 'dropDown',
+      tooltip: 'Profile',
+      icon: 'person',
+      state: 'admin',
+      sub: [
+        { name: 'Admin Users', state: 'userlist' },
+        { name: 'Customers', state: 'customerlist' },
+        { name: 'Advisors', state: 'advisorlist' },
+      ]
     },
-    {
-      name: 'DOC01',
-      type: 'extLink',
-      tooltip: 'Documentation',
-      icon: 'library_books',
-      state: 'admin/Nested3'
-    }
   ]
 
   // Icon menu TITLE at the very top of navigation.

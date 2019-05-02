@@ -1,0 +1,40 @@
+<div class="alert-container" *ngIf="successMessage != '' || errorMessage != ''">
+  <div class="alert alert-success text-center" *ngIf="successMessage != ''"><span>{{successMessage}}</span><button class="btn btn-alert text-success pull-right" (click)="successMessage = ''">x</button></div>
+  <div class="alert alert-danger text-center" *ngIf="errorMessage != ''"><span>{{errorMessage}}</span><button class="btn btn-alert text-danger pull-right" (click)="errorMessage = ''">x</button></div>
+</div>
+<div class="loading" [hidden]="!showLoading" >
+  <div>
+    <p>Loading...</p>
+  </div>
+</div>
+
+<div class="container-fluid bp-products-wrapper p-0">
+  <div class="row" >
+    <div class="col-12">
+      <section class="col-12">
+     <div class="row">    
+       <mat-form-field class="margin-333" style="width: 100%">
+          <input 
+          matInput 
+          placeholder="Type to filter all columns" 
+          value=""
+          (keyup)='updateFilter($event)'>
+        </mat-form-field>
+        
+        <div class="mat-box-shadow margin-333">
+            <ngx-datatable class="material bg-white" 
+            [columnMode]="'force'"  
+            [headerHeight]="50"
+            [footerHeight]="50" 
+            [rowHeight]="50"
+            [limit]="10"
+            [rows]="rows"
+            [columns]="columns">
+            </ngx-datatable>
+        </div>
+      </div>  
+        
+      </section>
+    </div>
+  </div>
+</div>

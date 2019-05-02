@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,FormBuilder, Validators, FormGroup,ReactiveFormsModule } from '@angular/forms';
 import { 
   MatListModule,
   MatIconModule,
@@ -22,20 +22,19 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
-
-import { AppGalleryComponent } from './app-gallery/app-gallery.component';
-import { AppPricingComponent } from './app-pricing/app-pricing.component';
-import { AppUsersComponent } from './app-users/app-users.component';
 import { AppBlankComponent } from './app-blank/app-blank.component';
 import { AdminRoutes } from "./admin.routing";
-import { Nested1Component } from './nested1/nested1.component';
-import { Nested2Component } from './nested2/nested2.component';
-import { Nested3Component } from './nested3/nested3.component';
+import { userlistComponent } from './userlist/userlist.component';
+import { userviewComponent } from './userlist/userview.component';
+import { customerlistComponent } from './customerlist/customerlist.component';
+import { advisorlistComponent } from './advisorlist/advisorlist.component';
+import { NgxTablePopupComponent } from './userlist/ngx-table-popup/ngx-table-popup.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatListModule,
     MatIconModule,
     MatButtonModule,
@@ -57,10 +56,8 @@ import { Nested3Component } from './nested3/nested3.component';
     RouterModule.forChild(AdminRoutes)
   ],
   declarations: [
-    AppGalleryComponent, 
-    AppPricingComponent, 
-    AppUsersComponent, 
-    AppBlankComponent, Nested1Component, Nested2Component, Nested3Component
-  ]
+    AppBlankComponent, userlistComponent,userviewComponent, customerlistComponent, advisorlistComponent, NgxTablePopupComponent
+  ],
+  entryComponents: [NgxTablePopupComponent]
 })
 export class AdminModule { }

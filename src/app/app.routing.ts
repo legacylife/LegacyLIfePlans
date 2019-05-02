@@ -29,17 +29,6 @@ export const rootRouterConfig: Routes = [
       }
     ]
   },
-   // {
-  //   path: '',
-  //   component: AdvisorLandingLayoutComponent,
-  //   children: [
-  //     {
-  //       path: '',
-  //       loadChildren: './views/advisor-landing/advisor-landing.module#AdvisorLandingModule',
-  //       data: { title: 'Advisor Landing'}
-  //     }
-  //   ]
-  // },
    {
     path: '',
     component: AuthLayoutComponent,

@@ -1,20 +1,26 @@
 import { Routes } from '@angular/router';
-
-import { AppGalleryComponent } from './app-gallery/app-gallery.component';
-import { AppPricingComponent } from './app-pricing/app-pricing.component';
-import { AppUsersComponent } from './app-users/app-users.component';
 import { AppBlankComponent } from './app-blank/app-blank.component';
-import { Nested1Component } from './nested1/nested1.component';
-import { Nested2Component } from './nested2/nested2.component';
-import { Nested3Component } from './nested3/nested3.component';
+import { userlistComponent } from './userlist/userlist.component';
+import { userviewComponent } from './userlist/userview.component';
+import { customerlistComponent } from './customerlist/customerlist.component';
+import { advisorlistComponent } from './advisorlist/advisorlist.component';
 
 export const AdminRoutes: Routes = [
   {
     path: '',
     component: AppBlankComponent,
     data: { title: 'Blank', breadcrumb: 'BLANK' }
-  }, {
-    path: 'Nested3',
-    component: Nested3Component
-  }
+  },{
+    path: 'userlist',
+    component: userlistComponent
+  },{
+    path: 'userview/:id',
+    component: userviewComponent
+  },{
+    path: 'customerlist',
+    component: customerlistComponent
+  },{
+    path: 'advisorlist',
+    component: advisorlistComponent
+  }  
 ];

@@ -33,7 +33,6 @@ import { AdvisorSignupComponent } from './advisor/signup/signup.component';
 import { CustomerSignupComponent } from './customer/signup/signup.component';
 import { CustomerSigninComponent } from './customer/signin/signin.component';
 import { AdminSignupComponent } from './admin/signup/signup.component';
-import { AdminSigninComponent } from './admin/signin/signin.component';
 
 
 import { BusinessInfoComponent } from './advisor/business-info/business-info.component';
@@ -67,7 +66,8 @@ import { PasswordResetSuccessfulComponent } from './password-reset-successful/pa
   declarations: [SigninComponent, ForgotPasswordComponent, LockscreenComponent,
     NotFoundComponent, ErrorComponent, AdvisorSigninComponent, AdvisorSignupComponent,
     CustomerSignupComponent, CustomerSigninComponent, AdminSignupComponent,
-    AdminSigninComponent, BusinessInfoComponent, UpdateProfileComponent, SetPasswordComponent,
+    //AdminSigninComponent, 
+    BusinessInfoComponent, UpdateProfileComponent, SetPasswordComponent,
     ThankYouComponent, ResetPasswordComponent, PasswordResetSuccessfulComponent],
     providers: [
       MatDatepickerModule,

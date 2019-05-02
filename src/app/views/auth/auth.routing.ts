@@ -13,7 +13,6 @@ import { CustomerSignupComponent } from './customer/signup/signup.component';
 import { CustomerSigninComponent } from './customer/signin/signin.component';
 
 import { AdminSignupComponent } from './admin/signup/signup.component';
-import { AdminSigninComponent } from './admin/signin/signin.component';
 
 import { BusinessInfoComponent } from './advisor/business-info/business-info.component';
 
@@ -109,10 +108,6 @@ export const AuthRoutes: Routes = [
       path: 'signup',
       component: AdminSignupComponent,
       data: { title: 'Advisor Signup' }
-    }, {
-      path: 'signin',
-      component: AdminSigninComponent,
-      data: { title: 'Advisor Signin' }
     }, {
       path: 'forgot-password',
       component: ForgotPasswordComponent,
