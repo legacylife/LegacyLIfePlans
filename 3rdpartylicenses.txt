@@ -74,6 +74,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
+@angular/material/form-field
+
 @angular/material/card
 
 moment
@@ -914,16 +916,16 @@ MIT
 
 @angular/material/icon
 
-@angular/material/grid-list
+@angular/material/divider
 
 @angular/material/menu
-
-@angular/material/divider
 
 @angular/material/core
 
 @angular/forms
 MIT
+
+@angular/material/grid-list
 
 @angular/material/select
 
@@ -1389,8 +1391,6 @@ SOFTWARE.
 
 
 @angular/material/datepicker
-
-@angular/material/form-field
 
 @angular/material/checkbox
 

@@ -5,7 +5,8 @@
     padding: .333333rem;
     overflow-x: hidden;
     position: relative;
-    min-height: 450px;
+    // min-height: 450px;
+    height: 100%;
   }
 }
 
@@ -191,13 +192,12 @@
 .app-admin-container.navigation-top {
   .main-content-wrap {
     float: none;
-    height: calc(100vh - 48px);
+    height: calc(100vh - 100px);
   }
   .rightside-content-hold {
-    max-width: 1400px;
+    max-width: 100%;
     margin: 0 auto;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding:0;
   }
   .sidebar-panel {
     overflow: hidden;
