@@ -41,12 +41,12 @@ export const rootRouterConfig: Routes = [
     ]
   }, {
     path: '',
-    component: AdminLayoutComponent,
+    component: AuthLayoutComponent,
     canActivate: [AuthGuard],
     children: [
       {
         path: 'admin',
-        loadChildren: './views/admin/admin.module#AdminModule',
+        loadChildren: './views/admin/auth.module#AuthModule',
         data: { title: 'Others', breadcrumb: 'OTHERS'}
       }
     ]
@@ -75,4 +75,3 @@ export const rootRouterConfig: Routes = [
     redirectTo: 'auth/404'
   }
 ];
-

@@ -24,6 +24,12 @@ import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
 import { AppBlankComponent } from './app-blank/app-blank.component';
 import { AdminRoutes } from "./admin.routing";
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { LockscreenComponent } from './lockscreen/lockscreen.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { ErrorComponent } from './error/error.component';
+
 import { userlistComponent } from './userlist/userlist.component';
 import { userviewComponent } from './userlist/userview.component';
 import { customerlistComponent } from './customerlist/customerlist.component';
@@ -56,7 +62,7 @@ import { NgxTablePopupComponent } from './userlist/ngx-table-popup/ngx-table-pop
     RouterModule.forChild(AdminRoutes)
   ],
   declarations: [
-    AppBlankComponent, userlistComponent,userviewComponent, customerlistComponent, advisorlistComponent, NgxTablePopupComponent
+    AppBlankComponent,userlistComponent,userviewComponent, customerlistComponent, advisorlistComponent, NgxTablePopupComponent
   ],
   entryComponents: [NgxTablePopupComponent]
 })

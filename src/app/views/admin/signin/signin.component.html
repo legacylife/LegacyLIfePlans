@@ -1,0 +1,41 @@
+<header class="auth-header">
+  <img src="assets/images/arkenea/small-logo.png" alt="">
+</header>
+<div class="page-wrap mat-bg-primary">
+	<div class="session-form-hold">
+	<br /><br /><br />
+    <div class="login-sub-wrapper">
+      <mat-card-content>
+        <div class="text-center pb-1">
+          <h2 class="login-header-text m-0">Login</h2>
+          <p class="login-header-desc">Continue to your LLP account</p>
+        </div>
+        <form class="llp-form-wrapper" [formGroup]="llpsigninForm"  (ngSubmit)="llpsignin()">
+          <div class="">
+            <mat-form-field class="full-width">
+              <input matInput name="username" placeholder="Email" [formControl]="llpsigninForm.controls['username']" value="" required>
+              <mat-icon matTooltip="Please enter email id" matTooltipClass="llp--tooltip error" 
+              *ngIf="llpsigninForm.controls['username'].hasError('required') && llpsigninForm.controls['username'].touched"
+               class="red--alert">help_outline</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="">
+            <mat-form-field class="full-width">
+              <input type="password" name="password" matInput [formControl]="llpsigninForm.controls['password']"  placeholder="Password" value="" required>
+              <mat-icon matTooltip="Please enter password" matTooltipClass="llp--tooltip error" class="red--alert"
+              *ngIf="llpsigninForm.controls['password'].hasError('required') && llpsigninForm.controls['password'].touched">help_outline</mat-icon>
+            </mat-form-field>
+          </div>
+		 <div class="remember-wrap">
+            <a [routerLink]="'/admin/forgot-password'">Forgot Password?</a>
+          </div>
+          <button mat-raised-button class="llp--primary--btn full-width form--action--btn"  [disabled]="llpsigninForm.invalid">Login</button>
+        </form>
+      </mat-card-content>
+    </div>
+  </div>
+</div>
+<footer class="auth-footer">
+  <p>© 2019 Legacy Life Plans</p>
+</footer>

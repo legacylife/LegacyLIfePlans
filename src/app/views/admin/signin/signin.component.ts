@@ -1,0 +1,59 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatProgressBar, MatButton } from '@angular/material';
+import { APIService } from './../../../api.service';
+import { Router, NavigationEnd, ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { RoutePartsService } from "../../../shared/services/route-parts.service";
+import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
+
+@Component({
+  selector: 'app-signin',
+  templateUrl: './signin.component.html',
+  styleUrls: ['./signin.component.css']
+})
+export class signinComponent implements OnInit {
+  @ViewChild(MatButton) submitButton: MatButton;
+
+  otpsec = false;
+  llpsigninForm: FormGroup; 
+  const userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
+
+  localStorage.clear()
+  sessionStorage.clear()
+
+  successMessage: string = ""
+  errMessage: string = ""
+  constructor( private router: Router,private activeRoute: ActivatedRoute,private api: APIService,private fb: FormBuilder, private loader: AppLoaderService) { }
+
+  ngOnInit() {
+	  this.llpsigninForm = new FormGroup({
+		  username: new FormControl('', Validators.required),
+		  password: new FormControl('', Validators.required)
+		})
+  }
+
+  loginClick() {
+    this.otpsec = true;
+  }
+  
+  llpsignin () {
+     const signupData = this.llpsigninForm.value;
+    this.api.apiRequest('post', 'auth/signin', signupData).subscribe(result => {
+      //console.error("------result----"+result)	
+      if(result.status == "success"){
+          localStorage.setItem("username", userData.email)
+          localStorage.setItem("fullName", userData.name)
+          this.router.navigate(['/', 'admin', 'userlist'])
+      } else {
+        this.errMessage = result.data.message || result.data;
+        this.llpsigninForm.controls['username'].enable();
+        this.llpsigninForm.controls['password'].setValue('');
+        this.llpsigninForm.controls['password'].markAsUntouched();
+      }
+    }, (err) => {
+      console.error("------error----"+err)
+    })
+    // this.submitButton.disabled = true;
+  }
+
+}

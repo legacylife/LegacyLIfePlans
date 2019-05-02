@@ -15,7 +15,9 @@ import { filter } from 'rxjs/operators';
 export class AppComponent implements OnInit, AfterViewInit {
   appTitle = 'LLP';
   pageTitle = '';
-
+  userId: string
+  userType: string
+  
   constructor(
     public title: Title, 
     private router: Router, 
@@ -23,7 +25,20 @@ export class AppComponent implements OnInit, AfterViewInit {
     private routePartsService: RoutePartsService,
     private themeService: ThemeService,
     private renderer: Renderer2
-  ) { }
+  ) {
+  /*  console.log('asdasd');
+   this.userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
+	this.userType = localStorage.getItem("userType") || sessionStorage.getItem("userType")
+
+ if(!this.userId || !this.userType) {
+     console.log('asdasd2345 2345235235');
+      const url = window.location.href;
+      const urlArray = url.split('/admin');
+      if(urlArray.indexOf('auth') === -1) {
+        router.navigate(['auth/','admin/' 'signin']);
+      }
+    }*/
+   }
 
   ngOnInit() {
     this.changePageTitle();

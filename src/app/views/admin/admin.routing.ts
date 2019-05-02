@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AppBlankComponent } from './app-blank/app-blank.component';
+import { signinComponent } from './signin/signin.component';
 import { userlistComponent } from './userlist/userlist.component';
 import { userviewComponent } from './userlist/userview.component';
 import { customerlistComponent } from './customerlist/customerlist.component';
@@ -10,6 +11,9 @@ export const AdminRoutes: Routes = [
     path: '',
     component: AppBlankComponent,
     data: { title: 'Blank', breadcrumb: 'BLANK' }
+  },{
+    path: 'signin',
+    component: signinComponent
   },{
     path: 'userlist',
     component: userlistComponent
