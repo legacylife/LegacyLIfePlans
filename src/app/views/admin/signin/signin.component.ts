@@ -16,10 +16,10 @@ export class signinComponent implements OnInit {
 
   otpsec = false;
   llpsigninForm: FormGroup; 
-  const userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
+  //const userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
 
-  localStorage.clear()
-  sessionStorage.clear()
+  //localStorage.clear();
+  //sessionStorage.clear();
 
   successMessage: string = ""
   errMessage: string = ""
@@ -36,13 +36,20 @@ export class signinComponent implements OnInit {
     this.otpsec = true;
   }
   
-  llpsignin () {
-     const signupData = this.llpsigninForm.value;
-    this.api.apiRequest('post', 'auth/signin', signupData).subscribe(result => {
-      //console.error("------result----"+result)	
+  llpsignin (userData = null) {
+    let signInData = {
+      username:  this.llpsigninForm.controls['username'].value,
+      password: this.llpsigninForm.controls['password'].value,
+      //stayLoggedIn:  this.llpsigninForm.controls['rememberMe'].value,
+      userType: "AdminWeb"
+    }
+
+    this.api.apiRequest('post', 'auth/signin', signInData).subscribe(result => {
+      console.log(result);
       if(result.status == "success"){
-          localStorage.setItem("username", userData.email)
-          localStorage.setItem("fullName", userData.name)
+        userData = result.data;
+          localStorage.setItem("userId", userData.userId)
+          localStorage.setItem("userType", userData.userType)
           this.router.navigate(['/', 'admin', 'userlist'])
       } else {
         this.errMessage = result.data.message || result.data;

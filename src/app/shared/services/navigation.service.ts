@@ -66,6 +66,14 @@ export class NavigationService {
         { name: 'Advisors', state: 'advisorlist' },
       ]
     },
+    
+    {
+      name: 'CMS',
+      type: 'link',
+      tooltip: 'Content Management System',
+      icon: 'person',
+      state: 'admin/cms'
+    }
   ]
 
   // Icon menu TITLE at the very top of navigation.

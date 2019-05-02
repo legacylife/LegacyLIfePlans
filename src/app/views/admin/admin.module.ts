@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule,FormBuilder, Validators, FormGroup,ReactiveFormsModule } from '@angular/forms';
+import { QuillModule } from 'ngx-quill';
 import { 
   MatListModule,
   MatIconModule,
@@ -34,6 +35,8 @@ import { userlistComponent } from './userlist/userlist.component';
 import { userviewComponent } from './userlist/userview.component';
 import { customerlistComponent } from './customerlist/customerlist.component';
 import { advisorlistComponent } from './advisorlist/advisorlist.component';
+import { cmslistComponent } from './cms/cms.component';
+import { cmseditComponent } from './cms/cmsedit.component';
 import { NgxTablePopupComponent } from './userlist/ngx-table-popup/ngx-table-popup.component';
 
 @NgModule({
@@ -59,10 +62,12 @@ import { NgxTablePopupComponent } from './userlist/ngx-table-popup/ngx-table-pop
     ChartsModule,
     FileUploadModule,
     SharedModule,
+    QuillModule,
     RouterModule.forChild(AdminRoutes)
   ],
   declarations: [
-    AppBlankComponent,userlistComponent,userviewComponent, customerlistComponent, advisorlistComponent, NgxTablePopupComponent
+    AppBlankComponent, userlistComponent,userviewComponent, customerlistComponent, 
+    advisorlistComponent, NgxTablePopupComponent, cmslistComponent, cmseditComponent
   ],
   entryComponents: [NgxTablePopupComponent]
 })
