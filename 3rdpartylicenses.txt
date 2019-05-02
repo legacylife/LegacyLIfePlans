@@ -914,18 +914,18 @@ MIT
 
 @angular/material/icon
 
+@angular/material/grid-list
+
+@angular/material/menu
+
+@angular/material/divider
+
 @angular/material/core
 
 @angular/forms
 MIT
 
 @angular/material/select
-
-@angular/material/grid-list
-
-@angular/material/menu
-
-@angular/material/divider
 
 @angular/material/list
 
