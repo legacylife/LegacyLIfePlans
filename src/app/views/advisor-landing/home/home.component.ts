@@ -38,10 +38,50 @@ export class HomeComponent implements OnInit {
       photo : "assets/images/arkenea/james.png",
       title : 'CFC, CIF'
     },
-    
   ];
-  slideConfig = { "slidesToShow": 3, "slidesToScroll": 1};
+  slideConfig = { 'slidesToShow': 3, 'slidesToScroll': 1 , responsive : [
+    {
+      breakpoint: 1212,
+      settings: {
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 2
+      }
+    },
+    {
+      breakpoint: 820,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 1
+      }
+    }
+  ]};
+  // autoplaySpeed: 10000,autoplay : true,
+  slideConfigTwo = { 'slidesToShow': 3, 'centerMode': true,   'slidesToScroll': 1 , responsive : [
+    {
+      breakpoint: 1212,
+      settings: {
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 2
+      }
+    },
+    {
+      breakpoint: 820,
+      settings: {
+        arrows: false,
+        centerMode: true,
+        centerPadding: '40px',
+        slidesToShow: 1
+      }
+    }
+  ]};
+
+
   // autoplay : true, autoplaySpeed: 1000 
+
   constructor() { }
 
   ngOnInit() {

@@ -162,33 +162,30 @@
       <div class="featured--advisors text-center">
         <h1 class="landing-main-header">Featured Advisors</h1>
         <p>Leads and Strong Management with LLP</p>
-
         <div class="fa--slider relative">
           <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" (init)="slickInit($event)" (breakpoint)="breakpoint($event)"
             (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
             <div ngxSlickItem *ngFor="let slide of slides" class="slide">
 
               <div class="advisor--details">
-                  <div class="advisor--photo">
-                      <img src="{{slide.photo}}" />
-                    </div>
-                    <div class="advisor--name">
-                      {{slide.name}}
-                    </div>
-                    <div class="advisor--title">
-                      {{slide.title}}
-                    </div>
+                <div class="advisor--photo">
+                  <img src="{{slide.photo}}" />
+                </div>
+                <div class="advisor--name">
+                  {{slide.name}}
+                </div>
+                <div class="advisor--title">
+                  {{slide.title}}
+                </div>
               </div>
-
-
             </div>
           </ngx-slick-carousel>
-
-          <button mat-raised-button class="llp--slider--button prev" (click)="slickModal.slickPrev()"> <mat-icon>keyboard_arrow_left</mat-icon>  </button>
-          <button mat-raised-button class="llp--slider--button next" (click)="slickModal.slickNext()"> <mat-icon>keyboard_arrow_right</mat-icon>  </button>
-
-          <!-- <button (click)="slickModal.slickPrev()">Back</button>
-          <button (click)="slickModal.slickNext()">Next</button> -->
+          <button mat-raised-button class="llp--slider--button prev" (click)="slickModal.slickPrev()">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+          </button>
+          <button mat-raised-button class="llp--slider--button next" (click)="slickModal.slickNext()">
+            <mat-icon>keyboard_arrow_right</mat-icon>
+          </button>
         </div>
       </div>
     </div>
@@ -225,10 +222,47 @@
       </div>
     </div>
 
-    <div class="llp--container">
+    <div class="container--full--width">
       <div class="featured--advisors text-center">
         <h1 class="landing-main-header">What People Say?</h1>
         <p>Testimonials from our peoples</p>
+
+        <div class="testimonial--wrapper">
+          <div class="testimonial--header">
+            <i class="icon-quote"></i>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+              Lorem Ipsum is simply dummy text of the printing.</p>              
+          </div>
+          <div class="testimonial--body">
+            <div class="testmnl--user--pic">
+              <img src="assets/images/arkenea/user-male.png">
+            </div>
+            <h5>John Smith</h5>
+            <h6>CFC, CIF</h6>
+          </div>
+        </div>
+
+        <div class="fa--slider relative">
+            <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfigTwo" (init)="slickInit($event)" (breakpoint)="breakpoint($event)"
+              (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
+              <div ngxSlickItem *ngFor="let slide of slides" class="slide">
+  
+                <div class="advisor--details">
+                  <div class="advisor--photo">
+                    <img src="{{slide.photo}}" />
+                  </div>
+                  <div class="advisor--name">
+                    {{slide.name}}
+                  </div>
+                  <div class="advisor--title">
+                    {{slide.title}}
+                  </div>
+                </div>
+              </div>
+            </ngx-slick-carousel>
+           
+          </div>
+
       </div>
     </div>
 

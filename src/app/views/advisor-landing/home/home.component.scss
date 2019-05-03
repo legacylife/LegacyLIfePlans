@@ -306,8 +306,57 @@
             }
            
         }
+        
     }
+    .testimonial--wrapper{
+        width: 40%;
 
+        .testimonial--header{
+            background-color: #f6f7f7;
+            padding: 40px 45px;
+            text-align: center;
+
+            .icon-quote{
+                background-image: url('assets/images/arkenea/quote.png');
+                background-repeat: no-repeat;
+                width: 31px;
+                height: 24px;
+                display: inline-block;
+                margin-bottom: 27px;
+            }
+            p{
+                line-height: 1.67;
+                color: $clr--3;
+                font-size: 18px;
+                margin: 0;
+                height: 126px;
+                overflow: auto;
+            }
+        }
+
+        .testimonial--body{
+            padding-top: 30px;
+            .testmnl--user--pic{
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                background-color: #f6f7f7;
+                overflow: hidden;
+                margin: 0 auto;
+            }
+            h5{
+                font-size: 18px;
+                color: $clr--3;
+                margin: 20px 0 15px 0;
+            }
+            h6{
+                font-size: 16px;
+                color: $clr--3;
+                margin: 0;
+                font-family: $font--lato--light;
+            }
+        }
+    }
     .profile--highlights{
         .profile-content{
             .easy-way{
@@ -666,7 +715,21 @@
     .landing--primary--btn.w161 {
         width: 100%;
     }
-    
+    .llp--slider--button.next{
+        right: 10px;
+    }
+    .llp--slider--button.prev{
+        left: 10px;
+    }
+    .advisor--landing--wrapper .featured--advisors .fa--slider .advisor--details .advisor--photo{
+        width: 100%;
+    }
+    .advisor--landing--wrapper .featured--advisors .fa--slider .advisor--details .advisor--photo img{
+        margin: 0 auto;
+    }
+    .advisor--landing--wrapper .featured--advisors .fa--slider .advisor--details{
+        padding-bottom: 50px;
+    }
     
 }
 @media only screen and (min-width: 600px) and (max-width: 959px){
@@ -748,11 +811,29 @@
     .landing--primary--btn.w161{
         width: auto;
     }
+    .llp--slider--button.next{
+        right: 40px;
+    }
+    .llp--slider--button.prev{
+        left: 40px;
+    }
 }
 @media only screen and (min-width: 960px) and (max-width: 979px){
-    
+    .llp--slider--button.next{
+        right: 40px;
+    }
+    .llp--slider--button.prev{
+        left: 40px;
+    }
 }
-@media only screen and (min-width: 980px) and (max-width: 1279px){}
+@media only screen and (min-width: 980px) and (max-width: 1279px){
+    .llp--slider--button.next{
+        right: 40px;
+    }
+    .llp--slider--button.prev{
+        left: 40px;
+    }
+}
 @media only screen and (min-width: 1280px) and (max-width: 1440px){}
 @media only screen and (min-width: 1441px) and (max-width: 1550px){}
 
