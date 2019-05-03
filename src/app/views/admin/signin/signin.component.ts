@@ -55,7 +55,7 @@ export class signinComponent implements OnInit {
           localStorage.setItem("userId", userData.userId)
           localStorage.setItem("userType", userData.userType)
 		  //window.location.href = "http://localhost:4200/admin/userlist";
-          this.router.navigate(['/', 'admin', 'userlist'])
+          this.router.navigate(['/', 'llp-admin', 'userlist'])
 
       } else {
         this.errMessage = result.data.message || result.data;

@@ -65,10 +65,7 @@ export const rootRouterConfig: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
-        path: 'admin/signin',
-        loadChildren: './views/admin/auth.module#AuthModule',
-      },{
-        path: 'admin/forgot-password',
+        path: 'admin',
         loadChildren: './views/admin/auth.module#AuthModule',
       }
     ]
@@ -78,7 +75,7 @@ export const rootRouterConfig: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
-        path: 'admin',
+        path: 'llp-admin',
         loadChildren: './views/admin/admin.module#AdminModule',
         data: { title: 'Others', breadcrumb: 'OTHERS'}
       }
