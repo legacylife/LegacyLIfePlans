@@ -6,7 +6,6 @@ import { customerlistComponent } from './customerlist/customerlist.component';
 import { advisorlistComponent } from './advisorlist/advisorlist.component';
 import { cmslistComponent } from './cms/cms.component';
 import { cmseditComponent } from './cms/cmsedit.component';
-
 export const AdminRoutes: Routes = [
   {
     path: '',

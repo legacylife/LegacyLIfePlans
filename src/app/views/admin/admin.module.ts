@@ -25,9 +25,7 @@ import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
 import { AppBlankComponent } from './app-blank/app-blank.component';
 import { AdminRoutes } from "./admin.routing";
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LockscreenComponent } from './lockscreen/lockscreen.component';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ErrorComponent } from './error/error.component';
 
