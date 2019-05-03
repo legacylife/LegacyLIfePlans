@@ -14,7 +14,7 @@
                             <input
                             matInput
                             name="pagetitle"
-                            formControlName="pagetitle"
+                            [formControl]="cmsForm.controls['pageTitle']"
                             placeholder="Page Title"
                             value="">
                         </mat-form-field>                        
@@ -27,7 +27,7 @@
                             <mat-card-content class="p-0">
                               <quill-editor 
                               theme="snow" 
-                              name="bodytext" 
+                              name="bodytext"                               
                               ></quill-editor>
                             </mat-card-content>
                           </mat-card>                        
