@@ -350,17 +350,6 @@ function common(req, res) {
   })
 }
 
-router.post('/reset-password-token', function(req, res){		
-	User.findOne({token:req.body.userId}, function(err, userDetails){		
-    if(userDetails){
-      res.send(resFormat.rSuccess('Success'))
-    } else {
-	  var errMsg = 'Invalid link, Please try again.'
-      res.send(resFormat.rError(errMsg))
-    }
-  })
-})
-
 
 //function to check if email present for any user
 async function checkEmail(req, res){
