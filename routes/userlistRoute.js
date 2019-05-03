@@ -74,12 +74,32 @@ function details (req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-		 console.log("PK---- "+userList)
       res.send(resFormat.rSuccess(userList))
     }
   })
 }
 
+function updateStatus (req, res) {
+	 let {query} = req.body;
+	 let fields = { id:1, username: 1 , status: 1 }
+	 User.findOne(query, fields, function(err, userList) { 
+		if(err){
+		  res.status(401).send(resFormat.rError(err))
+		} else {
+			var upStatus = 'Active';
+			if(userList.status=='Active'){upStatus = 'In-Active'; }
+		  var params = {status: upStatus}
+		 	  User.update({ _id: userList._id },{ $set: params} , function(err, updatedUser) {
+				if (err) {
+				  res.send(resFormat.rError(err))
+				} else {
+				  let result = {userId: updatedUser._id, userType : updatedUser.userType, "message": "Update status successfully!" }
+				  res.status(200).send(resFormat.rSuccess(result))
+				}
+			  })
+		}
+	 })
+}
 function addNewMember (req, res) {
     let newMem = new User()
     //newMem.userId = req.body.userId
@@ -126,11 +146,12 @@ function common(req, res) {
 
 
 
-router.post("/list", list)
-router.post("/addmember", addNewMember)
+router.post("/list", list);
+router.post("/addmember", addNewMember);
+router.post("/updatestatus", updateStatus);
 /*router.get(["/view/:id", "/:id"], details)*/
-router.post(["/view"], details)
-router.post("/common", common)
+router.post(["/view"], details);
+router.post("/common", common);
 
 
 module.exports = router
