@@ -26,11 +26,15 @@ import { SharedModule } from './../../shared/shared.module';
 import { AdvisorLandingRoutes } from './advisor-landing.routing';
 import { HomeComponent } from './home/home.component';
 import { AdvAboutUsComponent } from './adv-about-us/adv-about-us.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+
+
 
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
+    FormsModule,    
+    SlickCarouselModule,
     MatListModule,
     MatIconModule,
     MatButtonModule,

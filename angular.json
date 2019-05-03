@@ -19,12 +19,17 @@
             "assets": [
               "src/assets",
               "src/favicon.ico",
-			  "src/.htaccess"
+              "src/.htaccess"
             ],
             "styles": [
-              "src/assets/styles/app.scss"
+              "src/assets/styles/app.scss",
+              "node_modules/slick-carousel/slick/slick.scss",
+              "node_modules/slick-carousel/slick/slick-theme.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/slick-carousel/slick/slick.min.js"
+            ]
           },
           "configurations": {
             "production": {

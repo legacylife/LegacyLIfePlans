@@ -379,8 +379,29 @@ body{
 }
 
 
-// Header > right > profile pic section
-
+// slider button (next,prev)
+.llp--slider--button{
+    padding: 0;
+    height: 40px;
+    min-width: 40px;
+    .mat-icon{
+        height: 26px;
+        width: 24px;
+        font-size: 23px;
+        color: $clr--3;
+    }
+    &.prev{        
+        left: -35px;
+    }
+    &.next{       
+        right: -35px ;
+    }
+    &.prev,
+    &.next{
+        position: absolute;
+        top: 35%
+    }
+}
 
 
 
@@ -395,3 +416,4 @@ body{
 .align--items--center{align-items: center;}
 .border-0{border: none !important}
 .justify--content--space--around{justify-content: space-around}
+.relative{position: relative !important;}
