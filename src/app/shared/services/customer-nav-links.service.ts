@@ -35,7 +35,7 @@ export class CustNavService {
       type: 'link',
       tooltip: 'Home',
       icon: 'home',
-      state: 'customer/nested1'
+      state: 'customer'
     },
     {
       name: 'People',

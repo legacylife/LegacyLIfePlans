@@ -95,6 +95,106 @@ body.llp--auth--wrapper{
     margin-top: 63px;
 }
 
+body{
+    .llp--topnavbar{
+        &.header-topnav{
+            .topbar-branding{
+                height: 60px;
+                margin-left: 0;
+                margin-right: 35px;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                img{
+                    height: auto;
+                }
+            }
+            .topnav{
+                ul{
+                    &.menu{
+                        li{
+                            div{
+                                &.open{
+                                    a{
+                                        color: $clr--2;
+                                        border: none;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    &.header--ul{
+                        li{
+                            a{
+                                font-size: 16px;
+                                color: $clr--3;
+                                padding: 13px 27px;
+
+                                .home{
+                                    font-size: 20px;
+                                    width: 27px;
+                                }
+                                .icon-trustees{
+                                    font-size: 21px;
+                                    width: 30px;
+                                }
+                                .icon-professionals{
+                                    font-size: 21px;
+                                    width: 27px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }           
+            .logout--wrapper{
+                width: 35px;
+                height: 35px;
+                position: relative;
+                .logout--user--image{
+                    width: 35px;
+                    height: 35px;
+                    background-color: #e6e7ec;
+                    line-height: 48px;
+                    text-align: center;
+                    position: relative;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    img{
+                        max-width: 100%;
+                        max-height: 100%;
+                        height: auto;
+                    }
+                }
+            }
+        }
+        .invite--btn{
+            background-color: $clr--2;
+            color: $clr--1;
+            height: 32px;
+            margin: 0 28px 0 4px;
+            line-height: 26px;
+
+            .mat-button-wrapper{
+                line-height: 26px;
+                .mat-icon{
+                    font-size: 17px;
+                    height: 20px;
+                    margin-right: 8px;
+                    width: 15px;
+                }
+            }
+        }
+    }
+}    
+
+
+// Custome Container 
+.llp--container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
 
 
 /* -- 

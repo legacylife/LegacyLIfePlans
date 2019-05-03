@@ -23,14 +23,11 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
 
-import { AppGalleryComponent } from './app-gallery/app-gallery.component';
-import { AppPricingComponent } from './app-pricing/app-pricing.component';
-import { AppUsersComponent } from './app-users/app-users.component';
-import { AppBlankComponent } from './app-blank/app-blank.component';
+import { CustomerHomeComponent } from './customer-home/customer-home.component';
+import { CustomerTrusteesComponent } from './customer-trustees/customer-trustees.component';
+import { CustomerProfessionalComponent } from './customer-professionals/customer-professionals.component';
 import { CustomerRoutes } from './customer.routing';
-import { Nested1Component } from './nested1/nested1.component';
-import { Nested2Component } from './nested2/nested2.component';
-import { Nested3Component } from './nested3/nested3.component';
+
 
 @NgModule({
   imports: [
@@ -57,10 +54,9 @@ import { Nested3Component } from './nested3/nested3.component';
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [
-    AppGalleryComponent,
-    AppPricingComponent,
-    AppUsersComponent,
-    AppBlankComponent, Nested1Component, Nested2Component, Nested3Component
+    CustomerTrusteesComponent,
+    CustomerHomeComponent,
+    CustomerProfessionalComponent
   ]
 })
 export class CustomerModule { }
