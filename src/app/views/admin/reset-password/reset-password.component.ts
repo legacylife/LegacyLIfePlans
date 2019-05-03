@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatProgressBar, MatButton } from '@angular/material';
+import { MatProgressBar, MatButton, MatSnackBar } from '@angular/material';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
+import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { CustomValidators } from 'ng2-validation';
 import { APIService } from './../../../api.service';
 
@@ -16,13 +18,11 @@ const confirmPassword = new FormControl('', CustomValidators.equalTo(password));
 })
 export class ResetPasswordComponent implements OnInit {
   public resetForm: FormGroup;
-  errorMessage: string = ""
-  successMessage: string = ""
   userId: string = ""
 
   @ViewChild(MatProgressBar) progressBar: MatProgressBar;
   @ViewChild(MatButton) submitButton: MatButton;
-  constructor(private api:APIService, private fb: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(private api:APIService, private fb: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute,private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) {}
 
   ngOnInit() {
     this.resetForm = this.fb.group( {
@@ -32,31 +32,44 @@ export class ResetPasswordComponent implements OnInit {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.userId = params.id
     })
+	
+	this.checkToken();
   }
   onSubmit() {
-    const req_vars = { password:  this.resetForm.controls['password'].value, userId: this.userId, userType: "AdminWeb" }
+    this.loader.open();
+    const req_vars = { password: this.resetForm.controls['password'].value, userId: this.userId, userType: "AdminWeb"}
 
     this.api.apiRequest('post', 'auth/resetPassword', req_vars).subscribe(result => {
+	this.loader.close();
       if(result.status == "success"){
-        this.successMessage = result.data;
-        this.hideAlerts()
+	    this.snack.open(result.data, 'OK', { duration: 4000 })
+       
         setTimeout(() => {
           this.router.navigate ( [ 'llp-admin', 'password-reset-success' ] );
         }, 2000);
       } else {
-        this.errorMessage = result.data.message || result.data;
-        this.hideAlerts()
+		  this.snack.open(result.data, 'OK', { duration: 4000 })
       }
     }, (err) => {
-      console.error(err)
+      // console.error(err)
+	   this.snack.open(err, 'OK', { duration: 4000 })
+    })
+  }
+  
+  //function to get events
+  checkToken() {
+	 let req_vars = {
+      userId: this.userId ,
+      userType: "AdminWeb"
+    }
+	
+    this.api.apiRequest('post', 'auth/reset-password-token', req_vars).subscribe(result => {
+      if(result.status == "error"){
+		this.snack.open(result.data, 'OK', { duration: 6000 })
+      } else {
+       console.log(result.data)
+      }
     })
   }
 
-  //function to hide alerts
-  hideAlerts = () => {
-    setTimeout(()=> {
-      this.successMessage = ""
-      this.errorMessage = ""
-    }, 3000)
-  }
 }

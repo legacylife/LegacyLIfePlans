@@ -59,8 +59,8 @@ export class signinComponent implements OnInit {
       } else {
         //this.errMessage = result.data.message || result.data;
         this.llpsigninForm.controls['username'].enable();
-var emails = this.llpsigninForm.controls['username'].value
-        //this.llpsigninForm.controls['password'].setValue('');
+		var emails = this.llpsigninForm.controls['username'].value
+      
         this.llpsigninForm.controls['password'].markAsUntouched();
 		this.llpsigninForm = new FormGroup({
 		  username: new FormControl('', Validators.required),
