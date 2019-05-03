@@ -1,20 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 import { 
-  MatListModule,
   MatIconModule,
   MatButtonModule,
   MatCardModule,
   MatMenuModule,
   MatSlideToggleModule,
-  MatGridListModule,
   MatChipsModule,
   MatCheckboxModule,
   MatRadioModule,
   MatTabsModule,
   MatInputModule,
+  MatSelectModule,
+  MatSliderModule,
+  MatExpansionModule,
+  MatSnackBarModule,
+  MatFormFieldModule,
+  MatListModule,
+  MatSidenavModule,
+  MatRippleModule,
+  MatGridListModule,
   MatProgressBarModule
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -36,6 +43,7 @@ import { CustomerRoutes } from './customer.routing';
     MatListModule,
     MatIconModule,
     MatButtonModule,
+    MatFormFieldModule,
     MatCardModule,
     MatMenuModule,
     MatSlideToggleModule,
@@ -51,6 +59,14 @@ import { CustomerRoutes } from './customer.routing';
     ChartsModule,
     FileUploadModule,
     SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatExpansionModule,
+    MatSliderModule,
+    MatSnackBarModule,
+    MatSidenavModule,
+    MatSelectModule,
+    MatRippleModule,
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [
