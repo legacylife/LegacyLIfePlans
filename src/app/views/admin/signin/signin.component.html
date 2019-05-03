@@ -27,8 +27,8 @@
               *ngIf="llpsigninForm.controls['password'].hasError('required') && llpsigninForm.controls['password'].touched">help_outline</mat-icon>
             </mat-form-field>
           </div>
-		 <div class="remember-wrap">
-            <a [routerLink]="'/admin/forgot-password'">Forgot Password?</a>
+		      <div class="remember-wrap">
+            <a [routerLink]="'/llp-admin/forgot-password'">Forgot Password?</a>
           </div>
           <button mat-raised-button class="llp--primary--btn full-width form--action--btn"  [disabled]="llpsigninForm.invalid">Login</button>
         </form>

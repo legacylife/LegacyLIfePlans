@@ -51,11 +51,9 @@ export class signinComponent implements OnInit {
       
       if(result.status == "success"){
         userData = result.data;
-		//console.log(userData.userId);
           localStorage.setItem("userId", userData.userId)
           localStorage.setItem("userType", userData.userType)
-		  //window.location.href = "http://localhost:4200/admin/userlist";
-          this.router.navigate(['/', 'llp-admin', 'userlist'])
+          this.router.navigate(['/', 'admin', 'userlist'])
 
       } else {
         this.errMessage = result.data.message || result.data;
@@ -66,7 +64,6 @@ export class signinComponent implements OnInit {
     }, (err) => {
       console.error("------error----"+err)
     })
-    // this.submitButton.disabled = true;
   }
 
 }

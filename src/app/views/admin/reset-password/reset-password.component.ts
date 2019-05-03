@@ -25,17 +25,13 @@ export class ResetPasswordComponent implements OnInit {
   constructor(private api:APIService, private fb: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-  
     this.resetForm = this.fb.group( {
       password: password,
       confirmPassword: confirmPassword
     });
     this.activatedRoute.params.subscribe((params: Params) => {
       this.userId = params.id
-
-      this.checkToken()	
     })
- 
   }
   onSubmit() {
     const req_vars = { password:  this.resetForm.controls['password'].value, userId: this.userId, userType: "AdminWeb" }
@@ -53,22 +49,6 @@ export class ResetPasswordComponent implements OnInit {
       }
     }, (err) => {
       console.error(err)
-    })
-  }
-
-  //function to get events
-  checkToken() {
-	 let req_vars = {
-      userId: this.userId ,
-      userType: "AdminWeb"
-    }
-	
-    this.api.apiRequest('post', 'auth/reset-password-token', req_vars).subscribe(result => {
-      if(result.status == "error"){
-        console.log(result.data)
-      } else {
-      
-      }
     })
   }
 
