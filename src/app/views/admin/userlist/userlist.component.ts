@@ -17,10 +17,7 @@ import { delay } from 'rxjs/operators';
 })
 export class userlistComponent implements OnInit {
   userId: string
-  closeResult: string;
-  showLoading: boolean
-  successMessage: string = ""
-  errorMessage: string = ""
+  closeResult: string;  
   showOrgSugg: boolean = true
   checkedData: any = []
   userType: string = ""
@@ -47,7 +44,6 @@ export class userlistComponent implements OnInit {
 
   //function to get all events
   getLists = (query = {}, search = false) => {
-    this.showLoading = false
     const req_vars = {
       query: Object.assign({ userType: "AdminWeb" }, query),
 	  fields: {},
@@ -56,6 +52,7 @@ export class userlistComponent implements OnInit {
 	  order: {},
     }
     this.api.apiRequest('post', 'userlist/list',req_vars).subscribe(result => {
+	 this.loader.close();
       if(result.status == "error"){
 		  this.items = [];
 		  console.log(result.data)        
@@ -65,15 +62,13 @@ export class userlistComponent implements OnInit {
       }
     }, (err) => {
       console.error(err)
-      this.showLoading = false
     })
   }
 
  //function to hide alerts
   hideAlert() {
     setTimeout(()=>{
-      this.successMessage = ""
-      this.errorMessage = ""
+
     },5000)
   }
   
@@ -130,7 +125,32 @@ export class userlistComponent implements OnInit {
         }
       })
   }
-  deleteItem(row) {
+  statusChange(row) {  
+    this.confirmService.confirm({message: `Do you want to update status for "${row.username}?"`})
+      .subscribe(res => {
+        if (res) {
+          this.loader.open();
+		  var query = {};
+		  const req_vars = {
+			  query: Object.assign({_id:row._id,userType: "AdminWeb"}, query)
+			}
+			this.api.apiRequest('post', 'userlist/updatestatus',req_vars).subscribe(result => {
+			  if(result.status == "error"){
+				this.loader.close();
+				this.snack.open(result.data.message, 'OK', { duration: 4000 })
+			  } else {
+			    this.getLists()
+			    this.loader.close();
+				this.snack.open(result.data.message, 'OK', { duration: 4000 })
+			  }
+			}, (err) => {
+			  console.error(err)
+			  this.loader.close();
+			})
+        }
+      })
+  }
+ /* deleteItem(row) {
     this.confirmService.confirm({message: `Delete ${row.name}?`})
       .subscribe(res => {
         if (res) {
@@ -144,8 +164,17 @@ export class userlistComponent implements OnInit {
         }
       })
   }
-
-   
+  removeItem(row) {
+    let i = this.items.indexOf(row);
+    this.items.splice(i, 1);
+    return of(this.items.slice()).pipe(delay(1000));
+  }  
+  */
+  updateStatus(row) {
+    let i = this.items.indexOf(row);
+    this.items.splice(i, 1);
+    return of(this.items.slice()).pipe(delay(1000));
+  }  
   addItem(item): Observable<any> {
     item._id = Math.round(Math.random() * 10000000000).toString();
     this.items.unshift(item);
@@ -160,9 +189,5 @@ export class userlistComponent implements OnInit {
     })
     return of(this.items.slice()).pipe(delay(1000));
   }
-  removeItem(row) {
-    let i = this.items.indexOf(row);
-    this.items.splice(i, 1);
-    return of(this.items.slice()).pipe(delay(1000));
-  }
+  
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgModule,Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { MatProgressBar, MatButton } from '@angular/material';
@@ -19,18 +19,19 @@ export class signinComponent implements OnInit {
   llpsigninForm: FormGroup; 
   //const userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
 
-  //localStorage.clear();
-  //sessionStorage.clear();
+  localStorage.clear();
+  sessionStorage.clear();
 
   successMessage: string = ""
-  errMessage: string = ""
-  constructor( private router: Router,private activeRoute: ActivatedRoute,private api: APIService,private fb: FormBuilder, private loader: AppLoaderService) { }
+  //errMessage: string = ""
+  constructor(private router: Router,private activeRoute: ActivatedRoute,private api: APIService,private fb: FormBuilder, private loader: AppLoaderService) { }
 
   ngOnInit() {
-      localStorage.clear()
-      sessionStorage.clear()
+      localStorage.clear();
+      sessionStorage.clear();
+
 	  this.llpsigninForm = new FormGroup({
-		  username: new FormControl('', Validators.required),
+		  username: new FormControl('', [Validators.required, Validators.pattern(/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i)]),
 		  password: new FormControl('', Validators.required)
 		})
   }
@@ -56,14 +57,24 @@ export class signinComponent implements OnInit {
           this.router.navigate(['/', 'admin', 'userlist'])
 
       } else {
-        this.errMessage = result.data.message || result.data;
+        //this.errMessage = result.data.message || result.data;
         this.llpsigninForm.controls['username'].enable();
-        this.llpsigninForm.controls['password'].setValue('');
+var emails = this.llpsigninForm.controls['username'].value
+        //this.llpsigninForm.controls['password'].setValue('');
         this.llpsigninForm.controls['password'].markAsUntouched();
+		this.llpsigninForm = new FormGroup({
+		  username: new FormControl('', Validators.required),
+		  password: new FormControl('', [this.customValidator])
+		})
+		this.llpsigninForm.controls['username'].setValue(emails);
       }
     }, (err) => {
-      console.error("------error----"+err)
+      
     })
+  }
+  
+   public customValidator(control: FormControl) {
+  	 return { 'invalid': true };
   }
 
 }

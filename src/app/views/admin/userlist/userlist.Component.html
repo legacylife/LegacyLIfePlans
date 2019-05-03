@@ -1,7 +1,3 @@
-<div class="alert-container" *ngIf="successMessage != '' || errorMessage != ''">
-  <div class="alert alert-success text-center" *ngIf="successMessage != ''"><span>{{successMessage}}</span><button class="btn btn-alert text-success pull-right" (click)="successMessage = ''">x</button></div>
-  <div class="alert alert-danger text-center" *ngIf="errorMessage != ''"><span>{{errorMessage}}</span><button class="btn btn-alert text-danger pull-right" (click)="errorMessage = ''">x</button></div>
-</div>
 <div class="m-333">
   <!-- <span fxFlex></span> -->
   <button mat-raised-button class="mb-05" color="primary" (click)="openPopUp({}, true)">Add Member</button>
@@ -46,7 +42,7 @@
           </ngx-datatable-column>
           <ngx-datatable-column name="Status" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              <mat-chip mat-sm-chip [color]="'primary'" [selected]="row.status">{{row.status ? 'active' : 'in-active'}}</mat-chip>
+              <mat-chip mat-sm-chip [color]="'primary'" [selected]="row.status" (click)="statusChange(row)">{{row.status}}</mat-chip>
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column name="Actions" [flexGrow]="1">

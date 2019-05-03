@@ -13,9 +13,13 @@
         <form class="llp-form-wrapper" [formGroup]="llpsigninForm"  (ngSubmit)="llpsignin()">
           <div class="">
             <mat-form-field class="full-width">
-              <input matInput name="username" placeholder="Email" [formControl]="llpsigninForm.controls['username']" value="" required>
+              <input matInput type="email" name="username" placeholder="Email" [formControl]="llpsigninForm.controls['username']" value="" required>
               <mat-icon matTooltip="Please enter email id" matTooltipClass="llp--tooltip error" 
               *ngIf="llpsigninForm.controls['username'].hasError('required') && llpsigninForm.controls['username'].touched"
+               class="red--alert">help_outline</mat-icon>
+               
+               <mat-icon matTooltip="Please Enter valid email Id." matTooltipClass="llp--tooltip error" 
+              *ngIf="llpsigninForm.controls['username'].hasError('pattern') && llpsigninForm.controls['username'].touched"
                class="red--alert">help_outline</mat-icon>
             </mat-form-field>
           </div>
@@ -25,6 +29,10 @@
               <input type="password" name="password" matInput [formControl]="llpsigninForm.controls['password']"  placeholder="Password" value="" required>
               <mat-icon matTooltip="Please enter password" matTooltipClass="llp--tooltip error" class="red--alert"
               *ngIf="llpsigninForm.controls['password'].hasError('required') && llpsigninForm.controls['password'].touched">help_outline</mat-icon>
+
+              <mat-icon matTooltip="Please enter correct password." matTooltipClass="llp--tooltip error" class="red--alert"
+                  *ngIf="llpsigninForm.controls['password'].invalid">help_outline</mat-icon>
+                  
             </mat-form-field>
           </div>
 		      <div class="remember-wrap">

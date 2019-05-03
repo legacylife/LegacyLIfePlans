@@ -1,64 +1,88 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
+import { MatSnackBar } from '@angular/material';
+import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
+import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
+import { egretAnimations } from "../../../shared/animations/egret-animations";
+
+
 @Component({
   selector: 'customerlist',
   templateUrl: './customerlist.component.html',
   styleUrls: ['./customerlist.component.scss'],
+  animations: egretAnimations
 })
 export class customerlistComponent implements OnInit {
   userId: string;
-  customerlistdata:[];
   closeResult: string;
-  showLoading: boolean
-  successMessage: string = ""
-  errorMessage: string = ""
   userType: string = ""
-  selectedUserId: string = "" 
   totalRecords: number = 0
-  showOrgSugg: boolean = true
-  checkedData: any = []
+  showOrgSugg: boolean = true  
   rows = [];
   columns = [];
-  temp = [];
+  temp = [];  
   
- constructor(private api: APIService, private route: ActivatedRoute, private router:Router) { }   
+  constructor(private api: APIService, private route: ActivatedRoute, private router:Router,  private snack: MatSnackBar,  private confirmService: AppConfirmService, private loader: AppLoaderService) { }   
   ngOnInit() {
     this.userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
     this.userType = localStorage.getItem("userType") || sessionStorage.getItem("userType")
-    this.getLists()
+	if(!this.userId || !this.userType || this.userType!='AdminWeb'){
+		 this.router.navigate(['/', 'admin', 'signin'])
+	}else{	
+     this.getLists();
+	 //this.loader.open();
+	}
   }
 
   //function to get all events
   getLists = (query = {}, search = false) => {
-    this.showLoading = false
     const req_vars = {
-      query: Object.assign({ userType: "TeamMember" }, query),
-	  fields: {},
-      offset: '',
-	  limit: '',
-	  order: {},
+      query: Object.assign({ userType: "TeamMember" }, query)
     }
-	console.log(req_vars);
     this.api.apiRequest('post', 'userlist/list', req_vars).subscribe(result => {
+	  this.loader.close();
       if(result.status == "error"){
-		  console.log(result.data)        
+	  this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
-		this.customerlistdata = this.rows = this.temp = result.data.userList		
+		this.rows = this.temp = result.data.userList		
 		this.columns = this.getDataConf();
        	this.totalRecords = result.data.totalUsers       	
       }
     }, (err) => {
       console.error(err)
-      this.showLoading = false
     })
+  }
+  statusChange(row) {  
+    this.confirmService.confirm({message: `Do you want to update status for "${row.username}?"`})
+      .subscribe(res => {
+        if (res) {
+          this.loader.open();
+		  var query = {};
+		  const req_vars = {
+			  query: Object.assign({_id:row._id}, query)
+			}
+			this.api.apiRequest('post', 'userlist/updatestatus',req_vars).subscribe(result => {
+			  if(result.status == "error"){
+				this.loader.close();
+				this.snack.open(result.data.message, 'OK', { duration: 4000 })
+			  } else {
+			    this.getLists()
+			    this.loader.close();
+				this.snack.open(result.data.message, 'OK', { duration: 4000 })
+			  }
+			}, (err) => {
+			  console.error(err)
+			  this.loader.close();
+			})
+        }
+      })
   }
   
     //function to hide alerts
   hideAlert() {
     setTimeout(()=>{
-      this.successMessage = ""
-      this.errorMessage = ""
+
     },5000)
   }
   
