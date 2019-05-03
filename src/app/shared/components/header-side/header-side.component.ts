@@ -2,6 +2,8 @@ import { Component, OnInit, EventEmitter, Input, Output, Renderer2 } from '@angu
 import { ThemeService } from '../../services/theme.service';
 import { LayoutService } from '../../services/layout.service';
 import { TranslateService } from '@ngx-translate/core';
+import { APIService } from './../../../api.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-header-side',
@@ -23,12 +25,22 @@ export class HeaderSideComponent implements OnInit {
     private themeService: ThemeService,
     private layout: LayoutService,
     public translate: TranslateService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private api: APIService,
+    private route: ActivatedRoute,
+    private router:Router
   ) {}
   ngOnInit() {
+    
     this.egretThemes = this.themeService.egretThemes;
-    this.layoutConf = this.layout.layoutConf;
-    this.translate.use(this.currentLang);
+    
+    if(!this.api.isLoggedIn()){
+      this.router.navigate(['/', 'llp-admin', 'signin'])
+    }
+    else {
+      this.layoutConf = this.layout.layoutConf; 
+      this.translate.use(this.currentLang);
+    }
   }
   setLang(e) {
     console.log(e)
@@ -64,5 +76,9 @@ export class HeaderSideComponent implements OnInit {
       sidebarStyle: 'compact'
     }, {transitionClass: true})
 
+  }
+
+  logout = () => {
+    this.api.logout();
   }
 }

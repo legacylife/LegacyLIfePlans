@@ -37,8 +37,8 @@ export class ForgotPasswordComponent implements OnInit {
         this.successMessage = result.data;
         this.hideAlerts();
         setTimeout(() => {
-          this.router.navigate ( [ 'authentication', 'signin' ] );
-        }, 5000);
+          this.router.navigate ( [ 'llp-admin', 'forgot-password-success' ] );
+        }, 2000);
       } else {
         this.errorMessage = result.data.message || result.data;
         this.hideAlerts();

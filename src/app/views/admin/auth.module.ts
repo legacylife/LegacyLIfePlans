@@ -22,6 +22,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { LockscreenComponent } from './lockscreen/lockscreen.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { signinComponent } from './signin/signin.component';
+import { PasswordResetSuccessfulComponent } from './password-reset-successful/password-reset-successful.component';
+import { ForgotPasswordSuccessfulComponent } from './password-reset-successful/forgot-password-successful.component';
 import { AuthRoutes } from './auth.routing';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ErrorComponent } from './error/error.component';
@@ -47,7 +49,9 @@ import { ErrorComponent } from './error/error.component';
     MatTooltipModule,
     RouterModule.forChild(AuthRoutes)
   ],
-  declarations: [ForgotPasswordComponent, LockscreenComponent, signinComponent, ResetPasswordComponent, NotFoundComponent, ErrorComponent],
+  declarations: [ForgotPasswordComponent, LockscreenComponent, signinComponent, 
+    ResetPasswordComponent, NotFoundComponent, ErrorComponent, PasswordResetSuccessfulComponent,
+    ForgotPasswordSuccessfulComponent],
    providers: [
       MatDatepickerModule,
     ]

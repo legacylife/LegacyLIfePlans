@@ -41,8 +41,8 @@ export class ResetPasswordComponent implements OnInit {
         this.successMessage = result.data;
         this.hideAlerts()
         setTimeout(() => {
-          this.router.navigate ( [ 'authentication', 'signin' ] );
-        }, 5000);
+          this.router.navigate ( [ 'llp-admin', 'password-reset-success' ] );
+        }, 2000);
       } else {
         this.errorMessage = result.data.message || result.data;
         this.hideAlerts()

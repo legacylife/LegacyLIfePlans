@@ -17,9 +17,14 @@ export class userviewComponent implements OnInit {
 
  constructor(private api: APIService, private route: ActivatedRoute, private router:Router) { }   
   ngOnInit() {
+    if(!this.api.isLoggedIn()){
+      this.router.navigate(['/', 'llp-admin', 'signin'])
+    }
+
     this.userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
-    this.userType = localStorage.getItem("userType") || sessionStorage.getItem("userType")
-	const locationArray = location.href.split('/')
+    this.userType = localStorage.getItem("userType") || sessionStorage.getItem("userType")   
+
+	  const locationArray = location.href.split('/')
     this.selectedUserId = locationArray[locationArray.length - 1]
     this.getUser()
   }

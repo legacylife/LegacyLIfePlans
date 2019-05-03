@@ -165,7 +165,7 @@ private removeKeyFromStorage(key): any {
     window.localStorage.clear();
     window.sessionStorage.clear();
 
-    this.router.navigate(["authentication","signin"])
+    this.router.navigate(["llp-admin","signin"])
   }
 
   //function to make request to server
