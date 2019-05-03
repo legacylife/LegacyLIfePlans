@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatProgressBar, MatButton } from '@angular/material';
+import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
-import { Router, NavigationEnd, ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { MatProgressBar, MatButton } from '@angular/material';
 import { RoutePartsService } from "../../../shared/services/route-parts.service";
 import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
+//import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-signin',
@@ -45,12 +46,15 @@ export class signinComponent implements OnInit {
     }
 
     this.api.apiRequest('post', 'auth/signin', signInData).subscribe(result => {
-      console.log(result);
+      
       if(result.status == "success"){
         userData = result.data;
+		//console.log(userData.userId);
           localStorage.setItem("userId", userData.userId)
           localStorage.setItem("userType", userData.userType)
+		  //window.location.href = "http://localhost:4200/admin/userlist";
           this.router.navigate(['/', 'admin', 'userlist'])
+
       } else {
         this.errMessage = result.data.message || result.data;
         this.llpsigninForm.controls['username'].enable();

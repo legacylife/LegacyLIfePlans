@@ -40,17 +40,6 @@ export const rootRouterConfig: Routes = [
       }
     ]
   }, {
-    path: '',
-    component: AuthLayoutComponent,
-    canActivate: [AuthGuard],
-    children: [
-      {
-        path: 'admin',
-        loadChildren: './views/admin/auth.module#AuthModule',
-        data: { title: 'Others', breadcrumb: 'OTHERS'}
-      }
-    ]
-  }, {
     path: 'customer',
     component: CustomerLayoutComponent,
     children: [
@@ -68,6 +57,28 @@ export const rootRouterConfig: Routes = [
         path: 'advisor',
         loadChildren: './views/advisor/advisor.module#AdvisorModule',
         data: { title: 'Customer'}
+      }
+    ]
+  }, {
+    path: '',
+    component: AuthLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'admin/signin',
+        loadChildren: './views/admin/auth.module#AuthModule',
+        data: { title: 'Others', breadcrumb: 'OTHERS'}
+      }
+    ]
+  },{
+    path: '',
+    component: AdminLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'admin',
+        loadChildren: './views/admin/admin.module#AdminModule',
+        data: { title: 'Others', breadcrumb: 'OTHERS'}
       }
     ]
   }, {
