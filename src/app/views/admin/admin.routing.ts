@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { AppBlankComponent } from './app-blank/app-blank.component';
-
 import { userlistComponent } from './userlist/userlist.component';
 import { userviewComponent } from './userlist/userview.component';
 import { customerlistComponent } from './customerlist/customerlist.component';

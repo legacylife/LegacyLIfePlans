@@ -67,10 +67,12 @@ export const rootRouterConfig: Routes = [
       {
         path: 'admin/signin',
         loadChildren: './views/admin/auth.module#AuthModule',
-        data: { title: 'Others', breadcrumb: 'OTHERS'}
+      },{
+        path: 'admin/forgot-password',
+        loadChildren: './views/admin/auth.module#AuthModule',
       }
     ]
-  },{
+  }, {
     path: '',
     component: AdminLayoutComponent,
     canActivate: [AuthGuard],
