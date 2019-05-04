@@ -5,6 +5,7 @@ var jwt = require('jsonwebtoken')
 var constants = require("./../config/constants")
 
 var userSchema = new mongoose.Schema({
+  // Common fields
   username: {
     type: String,
     unique: true,
@@ -14,72 +15,81 @@ var userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  fullName: String,
-  first_name: String,
-  last_name: String,
-  phone_number: String,  
-  address_line1: String,
-  address_line2: String,  
-  zipcode: String,
-  state: String,
-  country: String,  
-  country: String,    
-  socialMediaToken: String,
-  socialPlatform: { type: String, default:'Email' },
   hash: String,
   salt: String,
+  fullName: String,
+  firstName: String,
+  middleName: String,
+  lastName: String,
+  dateOfBirth: String,
+  phoneNumber: [{
+    prefix: String,
+    phonenumber: String
+  }],  
+  addressLine1: String,
+  addressLine2: String,  
+  zipcode: String,
+  city : String,
+  state: String,
+  country: String,
+  socialMediaToken: String,
+  socialPlatform: { type: String, default:'Email' },   
+  profilePicture: String,
+  // Advisor fields
+  businessName : String, 
+  yearsOfService : String, 
+  industryDomain : String, 
+  bioText : String, 
+  socialMediaLinks : {
+      facebook : String, 
+      twitter : String
+  }, 
+  websites : Array, 
+  businessPhonePrefix : String, 
+  businessPhoneNumber : String, 
+  activeLicenceHeld : String, 
+  agencyOversees : String, 
+  managingPrincipleName : String, 
+  advisorDocuments : Array,
+  folders:Array,
+  // Subscription fields
+  manageOtherProceducers : String, 
+  howManyProducers : String, 
+  subscription_detail : {
+      customer_id : String, 
+      plan : String, 
+      start_date : Date, 
+      end_date : Date
+  },
+  // System manage fields
+  otpCode : String,
+  lastLoggedInOn: {
+    type: Date,
+    required: true
+  }, 
+  loginCount: Number,
+  resetPasswordToken: String,
+  resetPasswordExpiry: Date, 
+  expiryDate: Date,
+  stripeCustomerId: String,
   emailVerified: {
     type: Boolean,
     default: false,
     required: true
-  },
-  profilePicture: String,
-  lastLoggedInOn: {
-    type: Date,
-    required: true
-  },
-  emailApiCode: String,
-  nylasDetails: {
-    namespace_id: String,
-    account_id: String,
-    sid: String,
-    access_token: String,
-    provider: String,
-    email_address: String
-  },
+  },  
+  ipAddress : String, 
+  latitude : String, 
+  longitude : String,     
+  signupApprovalDate : String, 
+  signupArrovalStatus : String, 
+  approveRejectReason : String,      
+  accessToken : String,
+
   createdOn: Date,
+  createdBy: String,  
   modifiedOn: Date,
+  modifiedBy: String,
   status: String,
-  loginCount: Number,
-  resetPasswordToken: String,
-  resetPasswordExpiry: Date,
-  folders:[{
-    id: String,
-    account_id: String,
-    name: String,
-    display_name: String
-  }],
-  contactSynced: Boolean,
-  dealsCreated: { type: Boolean, default: false },
-  calendarSynced: Boolean,
-  emailCalendarId: String,
-  gmailCreds: {},
-  officeCreds: {},
-  emailApiType: { type: String, default: 'gmail' }, //gmail, outlook & other
-  gmailUserId: String,
-  mailChimp: {
-    api_endpoint: String,
-    access_token: String,
-    login_email: String,
-    login_name: String
-  },
-  teamId: String,
-  expiryDate: Date,
-  stripeCustomerId: String,
-  pipelines: Array,
-  lastPipelineName: String,
-  coachStepsCompleted: Array,
-  coachCompleted: Boolean
 })
 
 //function to set password

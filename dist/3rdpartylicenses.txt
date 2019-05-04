@@ -74,6 +74,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
+@angular/material/radio
+
+@angular/material/checkbox
+
 @angular/material/slide-toggle
 
 moment
@@ -1001,18 +1005,18 @@ MIT
 
 @angular/material/divider
 
+@angular/material/grid-list
+
 @angular/material/menu
 
-@angular/material/core
+@angular/material/list
 
 @angular/forms
 MIT
 
-@angular/material/grid-list
+@angular/material/core
 
 @angular/material/select
-
-@angular/material/list
 
 @angular/material/tooltip
 
@@ -1425,11 +1429,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
-@angular/material/checkbox
-
 @angular/material/stepper
-
-@angular/material/radio
 
 ngx-quill
 MIT
@@ -1457,3 +1457,6 @@ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
+
+
+@angular/material/tabs

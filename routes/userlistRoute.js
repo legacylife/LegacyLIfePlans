@@ -118,7 +118,7 @@ function addNewMember (req, res) {
     let newMem = new User()
     //newMem.userId = req.body.userId
     newMem.fullName = req.body.fullName
-	newMem.userType = 'AdminWeb'
+	newMem.userType = 'sysadmin'
 	newMem.username = req.body.username
     if(req.body.status){
    	 newMem.status = "Active"

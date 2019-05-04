@@ -44,7 +44,7 @@ function signin(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              let result = { token, userId: user._id, userType : user.userType, first_name : user.first_name, last_name : user.last_name, "message": "Successfully logged in!" }
+              let result = { token, userId: user._id, userType : user.userType, firstName : user.firstName, lastName : user.lastName, "message": "Successfully logged in!" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -59,7 +59,7 @@ function signin(req, res) {
 function create(req, res) {
   var user = new User()
   user.username = req.body.username
-  user.userType = req.body.userType ? req.body.userType : "AdminWeb"
+  user.userType = req.body.userType ? req.body.userType : "sysadmin"
   user.lastLoggedInOn = new Date();
 
   if(req.body.username == '' || req.body.fullName == '' || req.body.password == '') {
