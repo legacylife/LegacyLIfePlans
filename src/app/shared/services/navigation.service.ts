@@ -29,7 +29,7 @@ export class NavigationService {
   constructor() { }
 
   iconMenu: IMenuItem[] = [
-    {
+    /*{
       name: 'HOME',
       type: 'icon',
       tooltip: 'Home',
@@ -53,7 +53,7 @@ export class NavigationService {
     {
       type: 'separator',
       name: 'Main Items'
-    },
+    },*/
     {
       name: 'User Management',
       type: 'dropDown',

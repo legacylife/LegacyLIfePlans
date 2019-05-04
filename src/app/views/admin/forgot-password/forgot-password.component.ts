@@ -27,7 +27,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
   submitEmail() {
    this.loader.open();
-    let req_vars = { username:  this.forgotForm.controls['email'].value, userType: "AdminWeb" }
+    let req_vars = { username:  this.forgotForm.controls['email'].value, userType: "sysadmin" }
     this.api.apiRequest('post', 'auth/forgotPassword', req_vars).subscribe(result => {
 		this.loader.close();
       if(result.status == "success"){

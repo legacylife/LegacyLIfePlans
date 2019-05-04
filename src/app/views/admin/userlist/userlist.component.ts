@@ -43,7 +43,7 @@ export class userlistComponent implements OnInit {
   //function to get all events
   getLists = (query = {}, search = false) => {
     const req_vars = {
-      query: Object.assign({ userType: "AdminWeb" }, query),
+      query: Object.assign({ userType: "sysadmin" }, query),
 	  fields: {},
       offset: '',
 	  limit: '',
@@ -126,7 +126,7 @@ export class userlistComponent implements OnInit {
           this.loader.open();
 		  var query = {};
 		  const req_vars = {
-			  query: Object.assign({_id:row._id,userType: "AdminWeb"}, query)
+			  query: Object.assign({_id:row._id,userType: "sysadmin"}, query)
 			}
 			this.api.apiRequest('post', 'userlist/updatestatus',req_vars).subscribe(result => {
 			  if(result.status == "error"){

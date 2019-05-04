@@ -35,7 +35,7 @@ export class customerlistComponent implements OnInit {
   //function to get all events
   getLists = (query = {}, search = false) => {
     const req_vars = {
-      query: Object.assign({ userType: "TeamMember" }, query)
+      query: Object.assign({ userType: "customer" }, query)
     }
     this.api.apiRequest('post', 'userlist/list', req_vars).subscribe(result => {
 	  this.loader.close();

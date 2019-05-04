@@ -38,7 +38,7 @@ export class signinComponent implements OnInit {
       username:  this.llpsigninForm.controls['username'].value,
       password: this.llpsigninForm.controls['password'].value,
       //stayLoggedIn:  this.llpsigninForm.controls['rememberMe'].value,
-      userType: "AdminWeb"
+      userType: "sysadmin"
     }
 	this.loader.open();
     this.api.apiRequest('post', 'auth/signin', signInData).subscribe(result => {
@@ -47,8 +47,8 @@ export class signinComponent implements OnInit {
         userData = result.data;
           localStorage.setItem("userId", userData.userId)
           localStorage.setItem("userType", userData.userType)
-		  localStorage.setItem("firstName", userData.first_name)
-		  localStorage.setItem("lastName", userData.last_name)
+		  localStorage.setItem("firstName", userData.firstName)
+		  localStorage.setItem("lastName", userData.lastName)
 		  this.snack.open(result.data.message, 'OK', { duration: 4000 })
           this.router.navigate(['/', 'admin', 'userlist'])
 

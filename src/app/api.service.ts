@@ -125,7 +125,7 @@ private removeKeyFromStorage(key): any {
         if (response.data && response.data.token) {
           console.log(data.userType)
           //check if user type is same
-          if( data.userType === response.data.userType || (data.userType == "AdminWeb" && response.data.userType == "TeamMember")) {
+          if( data.userType === response.data.userType || (data.userType == "sysadmin" && response.data.userType == "TeamMember")) {
             const { token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId } = response.data
             this.saveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data)
             return response

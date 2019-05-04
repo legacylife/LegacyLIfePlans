@@ -11,6 +11,7 @@ import { egretAnimations } from "../../../shared/animations/egret-animations";
   templateUrl: './advisorlist.component.html',
   styleUrls: ['./advisorlist.component.scss'],
   animations: egretAnimations
+  
 })
 export class advisorlistComponent implements OnInit {
   userId: string
@@ -33,7 +34,7 @@ export class advisorlistComponent implements OnInit {
   //function to get all events
   getLists = (query = {}, search = false) => {
     const req_vars = {
-      query: Object.assign({ userType: "TeamMember" }, query),
+      query: Object.assign({ userType: "advisor" }, query),
 	  fields: {},
       offset: '',
 	  limit: '',

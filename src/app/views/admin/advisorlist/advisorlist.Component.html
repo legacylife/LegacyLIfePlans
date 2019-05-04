@@ -1,4 +1,5 @@
-<div class="row">    
+<h4 matDialogTitle>Advisors</h4>
+    
 <mat-form-field class="margin-333" style="width: 100%">
   <input 
   matInput 
@@ -16,24 +17,60 @@
           [footerHeight]="50"
           [limit]="10"
           [rowHeight]="'auto'">
-          <ngx-datatable-column name="Name" [flexGrow]="1">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row?.fullName }}
-            </ng-template>
-          </ngx-datatable-column>
           <ngx-datatable-column name="Email" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{ row?.username }}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Type" [flexGrow]="1">
+          <ngx-datatable-column name="Verified Status" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row?.userType }}
+              {{ row?.status }}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Logged On" [flexGrow]="1">
+          <ngx-datatable-column name="Name" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row?.lastLoggedInOn ? row.lastLoggedInOn : '--'}}
+              {{ row?.firstName +' '+ row?.lastName}}
+            </ng-template>
+          </ngx-datatable-column>          
+          <ngx-datatable-column name="Business Name" [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row?.businessName }}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="State" [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row?.state }}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="City" [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row?.city }}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Zipcode" [flexGrow]="1">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row?.zipcode }}
+              </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Subscription Status" [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row?.subscription_detail.end_date}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Expiry Date" [flexGrow]="1">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row?.subscription_detail.end_date}}
+              </ng-template>
+            </ngx-datatable-column>
+          <ngx-datatable-column name="Sign up Request" [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row?.subscription_detail.createdOn}}
+            </ng-template>
+          </ngx-datatable-column>
+
+          <ngx-datatable-column name="Sign up approval" [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row?.subscription_detail.signupApprovalDate}}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column name="Status" [flexGrow]="1">
@@ -49,4 +86,3 @@
         </ngx-datatable>
   </mat-card-content>
 </mat-card>
-</div>

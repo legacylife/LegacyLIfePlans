@@ -23,7 +23,8 @@ export const AdminRoutes: Routes = [
     component: customerlistComponent
   },{
     path: 'advisorlist',
-    component: advisorlistComponent
+    component: advisorlistComponent,
+    data: { title: 'NgX Table', breadcrumb: 'NgX Table' }
   },{
     path: 'cms',
     component: cmslistComponent,

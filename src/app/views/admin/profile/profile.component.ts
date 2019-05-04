@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit {
   //function to get all events
   getProfile = (query = {}, search = false) => {
     const req_vars = {
-      query: Object.assign({_id: this.userId,userType: "AdminWeb" }, query)
+      query: Object.assign({_id: this.userId,userType: "sysadmin" }, query)
     }
 	//this.loader.open();
     this.api.apiRequest('post', 'userlist/getprofile',req_vars).subscribe(result => {
@@ -70,7 +70,7 @@ export class ProfileComponent implements OnInit {
     let profileInData = {
       first_name:  this.llpProfileForm.controls['first_name'].value,
       last_name: this.llpProfileForm.controls['last_name'].value,
-      userType: "AdminWeb"
+      userType: "sysadmin"
     }
  }
  
@@ -78,7 +78,7 @@ export class ProfileComponent implements OnInit {
     let profileInData = {
       first_name:  this.llpProfileForm.controls['first_name'].value,
       last_name: this.llpProfileForm.controls['last_name'].value,
-      userType: "AdminWeb"
+      userType: "sysadmin"
     }
  }
  
