@@ -70,7 +70,7 @@
         </div> -->
 
         <!-- Day first -->
-        <div class="day--first" *ng-if="">
+        <div class="day--first" *ngIf="">
 
           <mat-card class="empty--section p-0">
             <mat-card-header class="m-0">
@@ -127,6 +127,7 @@
         <!-- Day 2nd -->
         <div class="day--second">
 
+          <!-- Recently Accessed Files  -->
           <mat-card class="empty--section p-0">
             <mat-card-header class="m-0">
               <mat-card-title class="m-0">Recently Accessed Files </mat-card-title>
@@ -160,6 +161,7 @@
             </mat-card-content>
           </mat-card>
 
+          <!-- My Appointees -->
           <mat-card class="empty--section p-0">
             <mat-card-header class="m-0">
               <mat-card-title class="m-0">My Appointees</mat-card-title>
@@ -167,24 +169,162 @@
 
             <mat-card-content class="appointees--wrapper">
 
-              <div fxLayout="row wrap">
-                <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="20" fxFlex.lg="33.33" fxFlex.xl="33.33">
-                  
-                  <mat-card class="tp-card">
-                    <mat-card-header>
-                      <div mat-card-avatar class="tp-header-image"></div>
-                      <mat-card-title>HTML5</mat-card-title>
-                      <mat-card-subtitle>HTML Basics</mat-card-subtitle>
-                    </mat-card-header>
-                    <mat-card-content>
-                      <p>Shared Documents </p>
-                    </mat-card-content>
-                  </mat-card>
+              <mat-card class="appointees--section p-0">
+                <mat-card-header class="m-0">
+                  <mat-card-title class="m-0">
+                    <div class="appointees--pic">
+                      <img src="assets/images/arkenea/face-7.jpg" />
+                    </div>
+                    <div class="appointees--desc">
+                      <h5>Allen Barry</h5>
+                      <p class="m-0">barryallen@gmail.com</p>
+                    </div>
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <h4>Shared Documents</h4>
+                  <div class="files--folder">
+                    <mat-icon>insert_drive_file</mat-icon>
+                    24 Files
+                  </div>
+                  <div class="files--folder mb-0">
+                    <mat-icon>folder</mat-icon>
+                    9 Folders
+                  </div>
+                </mat-card-content>
+              </mat-card>
 
-                </div>
-                <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="20" fxFlex.lg="33.33" fxFlex.xl="33.33">02</div>
-                <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="20" fxFlex.lg="33.33" fxFlex.xl="33.33">03</div>
-              </div>
+              <mat-card class="appointees--section p-0">
+                <mat-card-header class="m-0">
+                  <mat-card-title class="m-0">
+                    <div class="appointees--pic">
+                      <img src="assets/images/arkenea/emily.png" />
+                    </div>
+                    <div class="appointees--desc">
+                      <h5>Johnson Smith</h5>
+                      <p class="m-0">johnson.smith@gmail.com</p>
+                    </div>
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <h4>Shared Documents</h4>
+                  <div class="files--folder">
+                    <mat-icon>insert_drive_file</mat-icon>
+                    24 Files
+                  </div>
+                  <div class="files--folder mb-0">
+                    <mat-icon>folder</mat-icon>
+                    9 Folders
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card class="appointees--section p-0">
+                <mat-card-header class="m-0">
+                  <mat-card-title class="m-0">
+                    <div class="appointees--pic">
+                      <img src="assets/images/arkenea/james.png" />
+                    </div>
+                    <div class="appointees--desc">
+                      <h5>Emily Doe</h5>
+                      <p class="m-0">emilydoe@gmail.com</p>
+                    </div>
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <h4>Shared Documents</h4>
+                  <div class="files--folder">
+                    <mat-icon>insert_drive_file</mat-icon>
+                    24 Files
+                  </div>
+                  <div class="files--folder mb-0">
+                    <mat-icon>folder</mat-icon>
+                    9 Folders
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+            </mat-card-content>
+          </mat-card>
+
+          <!-- My Advisors -->
+          <mat-card class="empty--section p-0">
+            <mat-card-header class="m-0">
+              <mat-card-title class="m-0">My Advisors</mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content class="appointees--wrapper">
+
+              <mat-card class="appointees--section p-0">
+                <mat-card-header class="m-0">
+                  <mat-card-title class="m-0">
+                    <div class="appointees--pic">
+                      <img src="assets/images/arkenea/user-male.png" />
+                    </div>
+                    <div class="appointees--desc">
+                      <h5>James Anderson</h5>
+                      <p class="m-0">CFA, CIC</p>
+                    </div>
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <h4>Specialities</h4>
+                  <div class="files--folder my--ad--ff mb-0">
+                    <mat-icon>insert_drive_file</mat-icon>
+                    <div class="sp--details">
+                      Insurance Agent, Attorney, Accountant, Financial Planner
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card class="appointees--section p-0">
+                <mat-card-header class="m-0">
+                  <mat-card-title class="m-0">
+                    <div class="appointees--pic">
+                      <img src="assets/images/arkenea/ca.jpg" />
+                    </div>
+                    <div class="appointees--desc">
+                      <h5>Johnson Smith</h5>
+                      <p class="m-0">CFA, CIC</p>
+                    </div>
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <h4>Specialities</h4>
+                  <div class="files--folder my--ad--ff mb-0">
+                    <mat-icon>insert_drive_file</mat-icon>
+                    <div class="sp--details">
+                      Insurance Agent, Attorney, Accountant
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card class="appointees--section p-0">
+                <mat-card-header class="m-0">
+                  <mat-card-title class="m-0">
+                    <div class="appointees--pic">
+                      <img src="assets/images/arkenea/emily.png" />
+                    </div>
+                    <div class="appointees--desc">
+                      <h5>John Doe</h5>
+                      <p class="m-0">CFA, CIC</p>
+                    </div>
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <h4>Specialities</h4>
+                  <div class="files--folder my--ad--ff mb-0">
+                    <mat-icon>insert_drive_file</mat-icon>
+                    <div class="sp--details">
+                      Insurance Agent, Attorney, lawyer Financial Planner
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+
 
             </mat-card-content>
           </mat-card>
