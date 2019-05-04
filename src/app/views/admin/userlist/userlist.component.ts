@@ -29,8 +29,6 @@ export class userlistComponent implements OnInit {
   public items: any[];
   //public getItemSub: Subscription;
 
-
-
  constructor(private api: APIService, private route: ActivatedRoute, private router:Router,  private dialog: MatDialog, private snack: MatSnackBar,  private confirmService: AppConfirmService, private loader: AppLoaderService) { }   
   ngOnInit() {
     this.userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
@@ -65,13 +63,6 @@ export class userlistComponent implements OnInit {
     })
   }
 
- //function to hide alerts
-  hideAlert() {
-    setTimeout(()=>{
-
-    },5000)
-  }
-  
 //table
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
@@ -126,7 +117,10 @@ export class userlistComponent implements OnInit {
       })
   }
   statusChange(row) {  
-    this.confirmService.confirm({message: `Do you want to update status for "${row.username}?"`})
+  var stat = 'activate';
+  if(row.status=='Active')
+  stat = 'deactivate';
+  this.confirmService.confirm({message: `Are you sure you want to ${stat}? this account?`})	// for "${row.username}?"
       .subscribe(res => {
         if (res) {
           this.loader.open();

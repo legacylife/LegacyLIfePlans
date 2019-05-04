@@ -1,37 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
+import { MatSnackBar } from '@angular/material';
+import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
+import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
+import { egretAnimations } from "../../../shared/animations/egret-animations";
+
 @Component({
   selector: 'advisorlist',
   templateUrl: './advisorlist.component.html',
   styleUrls: ['./advisorlist.component.scss'],
+  animations: egretAnimations
 })
 export class advisorlistComponent implements OnInit {
   userId: string
-  closeResult: string;
-  showLoading: boolean
-  successMessage: string = ""
-  errorMessage: string = ""
-  showOrgSugg: boolean = true
-  checkedData: any = []
   userType: string = ""
-  selectedUserId: string = "" 
-  totalRecords: number = 0
   rows = [];
   columns = [];
   temp = [];
   advisorlistdata = [];
-    
- constructor(private api: APIService, private route: ActivatedRoute, private router:Router) { }   
+
+  constructor(private api: APIService, private route: ActivatedRoute, private router:Router,  private snack: MatSnackBar,  private confirmService: AppConfirmService, private loader: AppLoaderService) { }   
   ngOnInit() {
     this.userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
     this.userType = localStorage.getItem("userType") || sessionStorage.getItem("userType")
+    if(!this.api.isLoggedIn()){
+      this.router.navigate(['/', 'llp-admin', 'signin'])
+    } 
     this.getLists()
   }
 
   //function to get all events
   getLists = (query = {}, search = false) => {
-    this.showLoading = false
     const req_vars = {
       query: Object.assign({ userType: "TeamMember" }, query),
 	  fields: {},
@@ -44,49 +44,40 @@ export class advisorlistComponent implements OnInit {
 		  console.log(result.data)        
       } else {
 		this.advisorlistdata = this.rows = this.temp = result.data.userList		
-		this.columns = this.getDataConf();
-       	this.totalRecords = result.data.totalUsers
       }
     }, (err) => {
       console.error(err)
-      this.showLoading = false
     })
   }
+ statusChange(row) {  
+  var stat = 'activate';
+  if(row.status=='Active')
+  stat = 'deactivate';
 
-    //function to hide alerts
-  hideAlert() {
-    setTimeout(()=>{
-      this.successMessage = ""
-      this.errorMessage = ""
-    },5000)
+  this.confirmService.confirm({message: `Are you sure you want to ${stat}? this account?`})
+      .subscribe(res => {
+        if (res) {
+          this.loader.open();
+		  var query = {};
+		  const req_vars = {
+			  query: Object.assign({_id:row._id}, query)
+			}
+			this.api.apiRequest('post', 'userlist/updatestatus',req_vars).subscribe(result => {
+			  if(result.status == "error"){
+				this.loader.close();
+				this.snack.open(result.data.message, 'OK', { duration: 4000 })
+			  } else {
+			    this.getLists()
+			    this.loader.close();
+				this.snack.open(result.data.message, 'OK', { duration: 4000 })
+			  }
+			}, (err) => {
+			  console.error(err)
+			  this.loader.close();
+			})
+        }
+      })
   }
-  
-  
- getDataConf(){
-    return [     
-      {
-        prop: 'fullName',
-        name: 'Name'
-      },
-      {
-        prop: 'username',
-        name: 'Email'
-      },
-      {
-        prop: 'userType',
-        name: 'Type'
-      },
-      {
-        prop: 'status',
-        name: 'Status'
-      },
-      {
-        prop: 'lastLoggedInOn',
-        name: 'Last Login date'
-      }
-    ];
-  }
-
   
 //table
   updateFilter(event) {

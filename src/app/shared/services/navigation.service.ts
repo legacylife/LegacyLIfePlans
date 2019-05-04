@@ -71,7 +71,7 @@ export class NavigationService {
       name: 'CMS',
       type: 'link',
       tooltip: 'Content Management System',
-      icon: 'person',
+      icon: 'pages',
       state: 'admin/cms'
     }
   ]

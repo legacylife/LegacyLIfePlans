@@ -28,7 +28,6 @@ import { AdminRoutes } from "./admin.routing";
 import { LockscreenComponent } from './lockscreen/lockscreen.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ErrorComponent } from './error/error.component';
-
 import { userlistComponent } from './userlist/userlist.component';
 import { userviewComponent } from './userlist/userview.component';
 import { customerlistComponent } from './customerlist/customerlist.component';
@@ -36,6 +35,7 @@ import { advisorlistComponent } from './advisorlist/advisorlist.component';
 import { cmslistComponent } from './cms/cms.component';
 import { cmseditComponent } from './cms/cmsedit.component';
 import { NgxTablePopupComponent } from './userlist/ngx-table-popup/ngx-table-popup.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   imports: [
@@ -65,7 +65,7 @@ import { NgxTablePopupComponent } from './userlist/ngx-table-popup/ngx-table-pop
   ],
   declarations: [
     AppBlankComponent, userlistComponent,userviewComponent, customerlistComponent, 
-    advisorlistComponent, NgxTablePopupComponent, cmslistComponent, cmseditComponent
+    advisorlistComponent, NgxTablePopupComponent, cmslistComponent, cmseditComponent,ProfileComponent
   ],
   entryComponents: [NgxTablePopupComponent]
 })

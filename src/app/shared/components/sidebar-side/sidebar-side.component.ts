@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { NavigationService } from "../../../shared/services/navigation.service";
+import { APIService } from './../../../api.service';
 import { ThemeService } from '../../services/theme.service';
 import { Subscription } from "rxjs";
 // import PerfectScrollbar from 'perfect-scrollbar';
@@ -14,12 +15,17 @@ export class SidebarSideComponent implements OnInit, OnDestroy, AfterViewInit {
   public hasIconTypeMenuItem: boolean;
   public iconTypeMenuTitle: string;
   private menuItemsSub: Subscription;
+  firstName: string
+  lastName: string = ""
   constructor(
     private navService: NavigationService,
-    public themeService: ThemeService,
+    public themeService: ThemeService,private api: APIService
   ) { }
 
   ngOnInit() {
+    this.firstName = localStorage.getItem("firstName") || sessionStorage.getItem("firstName")
+    this.lastName = localStorage.getItem("lastName") || sessionStorage.getItem("lastName")
+	
     this.iconTypeMenuTitle = this.navService.iconTypeMenuTitle;
     this.menuItemsSub = this.navService.menuItems$.subscribe(menuItem => {
       this.menuItems = menuItem;
@@ -41,6 +47,9 @@ export class SidebarSideComponent implements OnInit, OnDestroy, AfterViewInit {
     if(this.menuItemsSub) {
       this.menuItemsSub.unsubscribe()
     }
+  }
+  logout = () => {
+    this.api.logout();
   }
 
 }

@@ -6,6 +6,7 @@ import { customerlistComponent } from './customerlist/customerlist.component';
 import { advisorlistComponent } from './advisorlist/advisorlist.component';
 import { cmslistComponent } from './cms/cms.component';
 import { cmseditComponent } from './cms/cmsedit.component';
+import { ProfileComponent } from './profile/profile.component';
 export const AdminRoutes: Routes = [
   {
     path: '',
@@ -25,9 +26,14 @@ export const AdminRoutes: Routes = [
     component: advisorlistComponent
   },{
     path: 'cms',
-    component: cmslistComponent
+    component: cmslistComponent,
+	data: { title: 'NgX Table', breadcrumb: 'NgX Table' }
   },{
     path: 'cmsedit/:id',
     component: cmseditComponent
-  }  
+  },{
+	path: 'profile', 
+	component: ProfileComponent,
+	data: { title: 'Profile', breadcrumb: 'PROFILE'}
+  }
 ];

@@ -42,15 +42,9 @@ export class HeaderSideComponent implements OnInit {
       this.translate.use(this.currentLang);
     }
   }
-  setLang(e) {
-    console.log(e)
-    this.translate.use(this.currentLang);
-  }
+  
   changeTheme(theme) {
     this.themeService.changeTheme(this.renderer, theme);
-  }
-  toggleNotific() {
-    this.notificPanel.toggle();
   }
   toggleSidenav() {
     if(this.layoutConf.sidebarStyle === 'closed') {
@@ -75,7 +69,6 @@ export class HeaderSideComponent implements OnInit {
     this.layout.publishLayoutChange({
       sidebarStyle: 'compact'
     }, {transitionClass: true})
-
   }
 
   logout = () => {

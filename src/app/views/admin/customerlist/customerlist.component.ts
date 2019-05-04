@@ -6,7 +6,6 @@ import { AppConfirmService } from '../../../shared/services/app-confirm/app-conf
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { egretAnimations } from "../../../shared/animations/egret-animations";
 
-
 @Component({
   selector: 'customerlist',
   templateUrl: './customerlist.component.html',
@@ -17,22 +16,20 @@ export class customerlistComponent implements OnInit {
   userId: string;
   closeResult: string;
   userType: string = ""
-  totalRecords: number = 0
   showOrgSugg: boolean = true  
   rows = [];
-  columns = [];
   temp = [];  
   
   constructor(private api: APIService, private route: ActivatedRoute, private router:Router,  private snack: MatSnackBar,  private confirmService: AppConfirmService, private loader: AppLoaderService) { }   
   ngOnInit() {
     this.userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
     this.userType = localStorage.getItem("userType") || sessionStorage.getItem("userType")
-	if(!this.userId || !this.userType || this.userType!='AdminWeb'){
-		 this.router.navigate(['/', 'admin', 'signin'])
-	}else{	
+	if(!this.api.isLoggedIn()){
+      this.router.navigate(['/', 'llp-admin', 'signin'])
+    } 
+	
      this.getLists();
 	 //this.loader.open();
-	}
   }
 
   //function to get all events
@@ -46,15 +43,16 @@ export class customerlistComponent implements OnInit {
 	  this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
 		this.rows = this.temp = result.data.userList		
-		this.columns = this.getDataConf();
-       	this.totalRecords = result.data.totalUsers       	
       }
     }, (err) => {
       console.error(err)
     })
   }
   statusChange(row) {  
-    this.confirmService.confirm({message: `Do you want to update status for "${row.username}?"`})
+  var stat = 'activate';
+  if(row.status=='Active')
+  stat = 'deactivate';
+  this.confirmService.confirm({message: `Are you sure you want to ${stat}? this account?`})
       .subscribe(res => {
         if (res) {
           this.loader.open();
@@ -78,41 +76,7 @@ export class customerlistComponent implements OnInit {
         }
       })
   }
-  
-    //function to hide alerts
-  hideAlert() {
-    setTimeout(()=>{
-
-    },5000)
-  }
-  
-  
- getDataConf(){
-    return [     
-      {
-        prop: 'fullName',
-        name: 'Name'
-      },
-      {
-        prop: 'username',
-        name: 'Email'
-      },
-      {
-        prop: 'userType',
-        name: 'Type'
-      },
-      {
-        prop: 'status',
-        name: 'Status'
-      },
-      {
-        prop: 'lastLoggedInOn',
-        name: 'Last Login date'
-      }
-    ];
-  }
-
-  
+   
 //table
   updateFilter(event) {
     const val = event.target.value.toLowerCase();

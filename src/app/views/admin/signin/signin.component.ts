@@ -1,7 +1,7 @@
 import { NgModule,Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
-import { MatProgressBar, MatButton } from '@angular/material';
+import { MatProgressBar, MatButton, MatSnackBar } from '@angular/material';
 import { RoutePartsService } from "../../../shared/services/route-parts.service";
 import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
@@ -17,9 +17,7 @@ export class signinComponent implements OnInit {
 
   otpsec = false;
   llpsigninForm: FormGroup;
-
-  successMessage: string = ""
-  constructor(private router: Router,private activeRoute: ActivatedRoute,private api: APIService,private fb: FormBuilder, private loader: AppLoaderService) { }
+  constructor(private router: Router,private activeRoute: ActivatedRoute,private api: APIService,private fb: FormBuilder,  private snack: MatSnackBar, private loader: AppLoaderService) { }
 
   ngOnInit() {
       localStorage.clear();
@@ -42,17 +40,19 @@ export class signinComponent implements OnInit {
       //stayLoggedIn:  this.llpsigninForm.controls['rememberMe'].value,
       userType: "AdminWeb"
     }
-
+	this.loader.open();
     this.api.apiRequest('post', 'auth/signin', signInData).subscribe(result => {
-      
+	  this.loader.close();
       if(result.status == "success"){
         userData = result.data;
           localStorage.setItem("userId", userData.userId)
           localStorage.setItem("userType", userData.userType)
+		  localStorage.setItem("firstName", userData.first_name)
+		  localStorage.setItem("lastName", userData.last_name)
+		  this.snack.open(result.data.message, 'OK', { duration: 4000 })
           this.router.navigate(['/', 'admin', 'userlist'])
 
       } else {
-        //this.errMessage = result.data.message || result.data;
         this.llpsigninForm.controls['username'].enable();
 		var emails = this.llpsigninForm.controls['username'].value
       
@@ -61,7 +61,7 @@ export class signinComponent implements OnInit {
 		  username: new FormControl('', Validators.required),
 		  password: new FormControl('', [this.customValidator])
 		})
-		this.llpsigninForm.controls['username'].setValue(emails);
+		this.llpsigninForm.controls['username'].setValue(emails);		
       }
     }, (err) => {
       
