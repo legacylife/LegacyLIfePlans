@@ -100,6 +100,20 @@ function updateStatus (req, res) {
 		}
 	 })
 }
+
+function profile (req, res) {
+	 let {query} = req.body;
+	 let fields = {}
+	 User.findOne(query, fields, function(err, userProfile) { 
+		if(err){
+		  res.status(401).send(resFormat.rError(err))
+		} else {
+		  let result = { userProfile, "message": "Get profile details successfully!" }
+		  res.status(200).send(resFormat.rSuccess(result))
+		}
+	 })
+}
+
 function addNewMember (req, res) {
     let newMem = new User()
     //newMem.userId = req.body.userId
@@ -150,6 +164,7 @@ router.post("/list", list);
 router.post("/addmember", addNewMember);
 router.post("/updatestatus", updateStatus);
 /*router.get(["/view/:id", "/:id"], details)*/
+router.post(["/getprofile"], profile);
 router.post(["/view"], details);
 router.post("/common", common);
 
