@@ -13,7 +13,7 @@ var auth = jwt({
 
 //function to update cms page content
 function update(req, res) {
-
+  console.log(req.body)
   Cms.update({ _id: req.body._id },{ $set: req.body} ,(err, updateCms)=>{
     if (err) {
       res.send(resFormat.rError(err))
@@ -55,7 +55,7 @@ function view (req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      res.send(resFormat.rSuccess(templateDetails))
+      res.send(resFormat.rSuccess(cmsDetails))
     }
   })
 }
