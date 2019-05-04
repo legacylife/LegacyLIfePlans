@@ -16,14 +16,9 @@ export class signinComponent implements OnInit {
   @ViewChild(MatButton) submitButton: MatButton;
 
   otpsec = false;
-  llpsigninForm: FormGroup; 
-  //const userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
-
-  localStorage.clear();
-  sessionStorage.clear();
+  llpsigninForm: FormGroup;
 
   successMessage: string = ""
-  //errMessage: string = ""
   constructor(private router: Router,private activeRoute: ActivatedRoute,private api: APIService,private fb: FormBuilder, private loader: AppLoaderService) { }
 
   ngOnInit() {
