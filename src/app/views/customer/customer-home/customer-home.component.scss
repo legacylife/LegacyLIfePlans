@@ -1,0 +1,108 @@
+.llp--content--wrapper{
+     margin: 15px 0 0 15px;
+
+    //  1st
+
+    .empty--section{
+        margin: 0 0 15px 0;       
+        box-shadow: none;
+        border-radius: 2px;
+
+        .mat-card-header{
+            padding: 0 25px;
+            height: 55px;
+            background-color: #e7ebcd;
+            display: flex;
+            align-items: center;
+
+            ::ng-deep .mat-card-header-text{
+                margin: 0;
+                font-size: 16px;
+                color: #222324;
+            }
+        }
+        .mat-card-content{
+            border: 1px solid #e1e5c7;
+            border-top: none;
+            padding: 20px 25px;
+
+            .info{
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 20px;
+            }
+            .build--ur--legacy{
+                border-radius: 2px;
+                border: dashed 1px #c72128;
+                max-width:345px;
+                height: 136px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 0 10px;
+                text-align: center;
+
+                .mat-icon{
+                    color: #c72128;
+                    font-size: 46px;
+                    height: 54px;
+                    width: 38px;
+                }
+                p{
+                    font-size: 14px;
+                    color: #000;
+                    margin: 0;                
+                    a{
+                        color: #c72128;
+                        font-size: 16px;
+                    }
+                }
+            }
+            .search-ad{
+                font-size: 14px;
+                color: #000;
+                margin: 20px 0 0 0;
+                a{
+                    color: #c72128;
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+
+    // 2nd 
+
+    .files--wrapper{
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding-top: 0 !important;
+
+        .recent--acc--files{
+            width: 165px;
+            height: 172px;
+            border: solid 1px #dadce0;
+            border-radius: 2px;
+            padding: 0 10px;
+            text-align: center;
+            margin-top: 20px;
+            
+            .file--name{
+                font-size: 15px;
+                color: #333;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .mat-icon{
+                color: #757575;
+                font-size: 42px;
+                margin: 48px 0;
+                height: 38px;
+                width: 44px
+            }
+        }
+    }
+}

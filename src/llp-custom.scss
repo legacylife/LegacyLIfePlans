@@ -199,6 +199,69 @@ body{
 
 
 /* -- 
+    left--panel view css (start here)
+------------------------------------------*/
+body{
+    .llp--left--panel--view{
+        .mat-drawer-side{
+            border-right: none;            
+        }
+        .shop-filters-wrap{
+            &.llp--left--panel{
+                margin-top: 15px;
+                border-radius: 2px;
+                box-shadow: 0 0 5px 0 rgba(140, 138, 138, 0.3);
+                background-color: $clr--1;
+                padding: 0;
+                footer,
+                header{
+                    height: 56px;
+                    background-color: $clr--2;
+                    color: $clr--1;
+                    border-top-left-radius: 2px;
+                    border-top-right-radius: 2px;
+                    display: flex;
+                    align-items: center;
+                    padding: 0 10px 0 20px;
+                    font-size: 18px;
+                    font-family: $font--lato--bold;
+                }
+                footer{
+                    background-color: $clr--1;
+                    color: $clr--3
+                }
+                .legacy--list{
+                    list-style-type: none;
+                    li{
+                        a{
+                            padding: 5px 20px;
+                            display: flex;
+                            align-items: center;
+                            border-bottom: 1px solid $clr--15;
+                            min-height: 34px;
+                            font-size: 14px;
+                            color: $clr--3;
+                            line-height: 22px;
+
+                            .icon-file{
+                                font-size: 21px;
+                                width: 34px;
+                                height: 16px;                                                
+                            }
+                        }
+                    }
+                }
+            }               
+        }
+        }
+}
+
+
+/* -- 
+    left--panel view css (end here)
+------------------------------------------*/
+
+/* -- 
     Media Query (start here)
 ------------------------------------------*/
 @media (max-width: 374px){
