@@ -1,29 +1,79 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
+import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
+import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 
 @Component({
   selector: 'cmsedit',
   templateUrl: './cmsedit.component.html'
 })
 export class cmseditComponent implements OnInit {
-  
+
   cmsForm: FormGroup
-  constructor() {}
+  cmsPageId: string
+  pageTitle: string
+  PageBody: string
+  row : any
+  constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private loader: AppLoaderService) { }
 
   ngOnInit() {
-    const pagetitle = new FormControl('', Validators.required);
 
     this.cmsForm = new FormGroup({
-      pagetitle: new FormControl('', [Validators.required]),
+      pageTitle: new FormControl('', [Validators.required]),
+      pageBody: new FormControl('', [Validators.required]),
+    })
+
+    this.activeRoute.params.subscribe(params => {
+      this.cmsPageId = params.id;
+      this.getPageDetails()
+    });
+  }
+
+  getPageDetails = (query = {}, search = false) => {
+
+    const req_vars = {
+      query: Object.assign({ _id: this.cmsPageId }, query),
+    }
+
+    this.api.apiRequest('post', 'cms/view', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        this.row = result.data
+        this.cmsForm.controls['pageTitle'].setValue(this.row.pageTitle); 
+        this.cmsForm.controls['pageBody'].setValue(this.row.pageBody);
+      }
+    }, (err) => {
+      console.error(err)
     })
   }
 
-  signup() {
-    const cmsData = this.cmsForm.value;
-    console.log(cmsData);   
+  updatePage() {
+    let pageData = {
+      pageTitle: this.cmsForm.controls['pageTitle'].value,
+      pageBody: this.cmsForm.controls['pageBody'].value
+    }
+
+    const req_vars = {
+      "_id":this.row._id,
+      "pageTitle": this.cmsForm.controls['pageTitle'].value,
+      "pageBody": this.cmsForm.controls['pageBody'].value
+    }
+
+    this.api.apiRequest('post', 'cms/update', req_vars).subscribe(result => {
+      if(result.status == "error"){
+        //this.errorMessage = result.data
+      } else {
+        //this.successMessage = result.data
+        console.log(result.data)
+      }
+      
+    }, (err) => {
+      console.log("Error in update")
+    })
+    //this.form.reset()  
   }
 
 }
