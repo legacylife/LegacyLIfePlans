@@ -79,6 +79,22 @@ function details (req, res) {
   })
 }
 
+//function get details of user from url param
+function view (req, res) {
+  let { query} = req.body
+  let fields = { }
+  if(req.body.fields) {
+	fields = req.body.fields
+  }
+    User.findOne(query, fields, function(err, userList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(userList))
+    }
+  })
+}
+
 function updateStatus (req, res) {
 	 let {query} = req.body;
 	 let fields = { id:1, username: 1 , status: 1 }
@@ -188,6 +204,7 @@ router.post("/updatestatus", updateStatus);
 router.post("/updateprofile", updateProfile);
 router.post(["/getprofile"], profile);
 router.post(["/view"], details);
+router.post(["/viewall"], view);
 router.post("/common", common);
 /*router.get(["/view/:id", "/:id"], details)*/
 
