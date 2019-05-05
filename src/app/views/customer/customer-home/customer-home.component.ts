@@ -32,6 +32,8 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   public isSideNavOpen: boolean;
   public viewMode: string = 'grid-view';
   public currentPage: any;
+  dayFirst = true;
+  daySeco = false;
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
   public products: any[];
@@ -57,6 +59,10 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
     this.filterForm = this.fb.group({
       search: ['']
     })
+  }
+  showSecoDay() {
+    this.dayFirst = false;
+    this.daySeco = true;
   }
   ngOnDestroy() {
 

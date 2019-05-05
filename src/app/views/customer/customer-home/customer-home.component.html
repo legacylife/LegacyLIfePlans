@@ -1,4 +1,4 @@
-<div class="container llp--left--panel--view p-0">
+<div class="container llp--left--panel--view">
   <mat-sidenav-container>
 
 
@@ -63,14 +63,14 @@
       <div class="full-width">
 
         <!-- toggleSideNav -->
-        <!-- <div fxLayout="row" fxLayout.lt-sm="column" class="shop-top-toolbar">
-          <button mat-icon-button class="mr-1" (click)="toggleSideNav()">
+        <div class="shop-top-toolbar p-0 llp--toggle-btn">
+          <button mat-icon-button class="p-0" (click)="toggleSideNav()">
             <mat-icon>short_text</mat-icon>
           </button>
-        </div> -->
+        </div>
 
         <!-- Day first -->
-        <div class="day--first" *ngIf="">
+        <div class="day--first"  *ngIf="dayFirst">
 
           <mat-card class="empty--section p-0">
             <mat-card-header class="m-0">
@@ -82,7 +82,7 @@
               <div class="build--ur--legacy">
                 <mat-icon>insert_drive_file</mat-icon>
                 <p>Start building your legacy!
-                  <a>Click here</a>
+                  <a (click)="showSecoDay()" >Click here</a>
                 </p>
               </div>
             </mat-card-content>
@@ -125,7 +125,7 @@
         </div>
 
         <!-- Day 2nd -->
-        <div class="day--second">
+        <div class="day--second"  *ngIf="daySeco">
 
           <!-- Recently Accessed Files  -->
           <mat-card class="empty--section p-0">

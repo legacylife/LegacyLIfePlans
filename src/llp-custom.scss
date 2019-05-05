@@ -202,7 +202,17 @@ body{
     left--panel view css (start here)
 ------------------------------------------*/
 body{
+    .llp--toggle-btn{
+        display: none;
+    }
+    .llp--content--wrapper{
+        margin: 15px 0 0 0;
+    }
     .llp--left--panel--view{
+        .shop-sidebar{
+            width: 243px;
+            padding-right: 15px;
+        }
         .mat-drawer-side{
             border-right: none;            
         }
@@ -300,21 +310,46 @@ body{
     }
    
 }
-@media (min-width: 640px){
-  
+
+
+@media only screen and (max-width: 599px) {
+    body .llp--toggle-btn{
+        display: block;
+    }
+    body .llp--left--panel--view {
+        padding: 0;
+    }
+    body .llp--left--panel--view .shop-filters-wrap.llp--left--panel{
+        margin-top: 0;
+    }
+    body .llp--left--panel--view .shop-sidebar{
+        padding: 0;
+    }
+    .llp--content--wrapper{
+        padding: 0 15px;
+    }
 }
-    
-@media (min-width: 768px){
-    
+@media only screen and (min-width: 600px) and (max-width: 959px){
+    body .llp--toggle-btn{
+        display: block;
+    }
+    body .llp--left--panel--view {
+        padding: 0;
+    }
+    body .llp--left--panel--view .shop-filters-wrap.llp--left--panel{
+        margin-top: 0;
+    }
+    body .llp--left--panel--view .shop-sidebar{
+        padding: 0;
+    }
+    .llp--content--wrapper{
+        padding: 0 15px;
+    }
 }
-    
-@media (min-width: 1024px){
-    
-}
-    
-@media (min-width: 1200px){
-    
-}
+@media only screen and (min-width: 960px) and (max-width: 979px){}
+@media only screen and (min-width: 980px) and (max-width: 1279px){}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){}
+@media only screen and (min-width: 1441px) and (max-width: 1550px){}
 
 /* -- 
     Media Query (end here)

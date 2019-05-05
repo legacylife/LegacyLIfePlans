@@ -1,5 +1,4 @@
 .llp--content--wrapper{
-     margin: 15px 0 0 15px;
 
     //  1st
 
@@ -113,7 +112,7 @@
         flex-wrap: wrap;
 
         .appointees--section{
-            width: 345px;
+            width: 32%;
             height: auto;
             border: solid 1px #dadce0;
             border-radius: 2px;
@@ -196,3 +195,63 @@
         }
     }
 }
+
+/* Media query (start here)*/
+
+@media only screen and (max-width: 599px) {
+    .llp--content--wrapper .appointees--wrapper .appointees--section{
+        width: 100%;
+    }
+    .llp--content--wrapper .empty--section .mat-card-content{
+        padding: 15px 10px
+    }
+    .llp--content--wrapper .files--wrapper .recent--acc--files{
+        width: 47%;
+        height: 150px;
+    }
+    .llp--content--wrapper .files--wrapper .recent--acc--files .mat-icon {
+        font-size: 34px;
+        margin: 36px 0;
+        height: 38px;
+        width: 44px;
+    }
+}
+@media only screen and (min-width: 600px) and (max-width: 959px){
+    .llp--content--wrapper .appointees--wrapper .appointees--section{
+        width: 48%;
+    }
+    .llp--content--wrapper .appointees--wrapper .appointees--section{
+        width: 48%;
+    }
+    .llp--content--wrapper .files--wrapper .recent--acc--files{
+        flex-grow: 1;
+        margin-right: 15px;
+    }
+}
+@media only screen and (min-width: 960px) and (max-width: 979px){
+    .llp--content--wrapper .appointees--wrapper .appointees--section{
+        width: 48%;
+    }
+    .llp--content--wrapper .appointees--wrapper .appointees--section{
+        width: 48%;
+    }
+    .llp--content--wrapper .files--wrapper .recent--acc--files{
+        flex-grow: 1;
+        margin-right: 15px;
+    }
+}
+@media only screen and (min-width: 980px) and (max-width: 1279px){
+    .llp--content--wrapper .appointees--wrapper .appointees--section{
+        width: 48%;
+    }
+    .llp--content--wrapper .files--wrapper .recent--acc--files{
+        flex-grow: 1;
+        margin-right: 15px;
+    }
+}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){
+
+}
+@media only screen and (min-width: 1441px) and (max-width: 1550px){}
+
+/* Media query (end here)*/
