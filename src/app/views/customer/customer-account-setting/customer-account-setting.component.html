@@ -1,0 +1,135 @@
+<div class="container llp--left--panel--view cust--acc--sett--wrapper">
+  <mat-sidenav-container>
+
+
+    <mat-sidenav EgretSideNavToggle class="shop-sidebar llp--menu--list">
+      <div class="shop-filters-wrap llp--left--panel">
+
+
+
+        <mat-card class="account--profile">
+          <div class="account--pic--wrapper">
+            <div class="account--pic">
+              <img src="assets/images/arkenea/face-7.jpg" />
+            </div>
+            <div class="edit--pic">
+              <mat-icon>edit</mat-icon>
+            </div>
+          </div>
+
+          <div class="acc--user--details text-center">
+            <h2>Jone Smith</h2>
+            <p>Cleveland, Ohio - 15017</p>
+            <div class="sta--m">
+              <mat-icon>star</mat-icon> Standard member</div>
+          </div>
+
+          <div class="email--phone">
+            <mat-icon>markunread</mat-icon>
+            <span>john.smith@gmail.com</span>
+          </div>
+          <div class="email--phone mb-0">
+            <mat-icon>phone</mat-icon>
+            <span>+1 9876543210</span>
+          </div>
+
+
+        </mat-card>
+
+
+      </div>
+    </mat-sidenav>
+
+
+    <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
+      <!-- Filters -->
+
+      <!-- Right side -->
+      <div class="full-width">
+
+        <!-- toggleSideNav -->
+        <div class="shop-top-toolbar p-0 llp--toggle-btn">
+          <button mat-icon-button class="p-0" (click)="toggleSideNav()">
+            <mat-icon>short_text</mat-icon>
+          </button>
+        </div>
+
+        <!-- Account details -->
+
+        <mat-tab-group class="acc--sett--tab">
+          <mat-tab label="Account Details">
+            <!-- account details -->
+            <div class="account--details">
+              <div fxLayout="row wrap">
+                <div fxFlex.xl="50">
+                  <form class="llp-form-wrapper">
+                    <mat-form-field class="full-width">
+                      <input matInput name="username" placeholder="First Name" value="John">
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                      <input matInput name="lname" placeholder="Last Name" value="Smith">
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="Primary phone" type="tel" value="9876543210" class="">
+                      <span matPrefix>+1</span>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="Secondary phone" type="tel" value="9876543210" class="">
+                      <span matPrefix>+1</span>
+                    </mat-form-field>
+
+                    <!-- <mat-form-field  class="full-width llp-datepicker">
+                              <input matInput [matDatepicker]="dp" placeholder="Date of Birth" [formControl]="date">
+                              <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                              <mat-datepicker #dp
+                                              startView="multi-year"
+                                              panelClass="example-month-picker">
+                              </mat-datepicker>
+                            </mat-form-field> -->
+
+
+
+                    <mat-form-field class="full-width no-mar">
+                      <input matInput name="email" placeholder="Email Address" value="john.smith@gmail.com">
+                    </mat-form-field>
+
+                    <div class="full-width text-right">
+                        <a class="clr--red">Change password</a>
+                    </div>
+
+                  </form>
+                </div>
+                <div fxFlex="50">
+                  <div class="manage--sub--section">
+                    <header>
+                      <div class="stan--plan"> Standard plan</div>
+                      <div class="ur--sub">Your subscription will automatically 
+                          renew on <span>06/07/2019</span></div>
+                    </header>
+                    <div class="">
+                        <mat-slide-toggle>OFF</mat-slide-toggle>
+                    </div>
+                  </div>
+                  <div class="full-width text-right">
+                      <a class="clr--red">Deactivate account</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+
+          </mat-tab>
+          <mat-tab label="Address"> Content 2 </mat-tab>
+        </mat-tab-group>
+
+
+      </div>
+
+    </div>
+  </mat-sidenav-container>
+</div>

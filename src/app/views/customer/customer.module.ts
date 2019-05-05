@@ -22,7 +22,8 @@ import {
   MatSidenavModule,
   MatRippleModule,
   MatGridListModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatDatepickerModule
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -33,6 +34,7 @@ import { SharedModule } from './../../shared/shared.module';
 import { CustomerHomeComponent } from './customer-home/customer-home.component';
 import { CustomerTrusteesComponent } from './customer-trustees/customer-trustees.component';
 import { CustomerProfessionalComponent } from './customer-professionals/customer-professionals.component';
+import { CustomerAccountSettingComponent } from './customer-account-setting/customer-account-setting.component';
 import { CustomerRoutes } from './customer.routing';
 
 
@@ -67,12 +69,17 @@ import { CustomerRoutes } from './customer.routing';
     MatSidenavModule,
     MatSelectModule,
     MatRippleModule,
+    MatDatepickerModule,
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [
     CustomerTrusteesComponent,
     CustomerHomeComponent,
+    CustomerAccountSettingComponent,
     CustomerProfessionalComponent
+  ],
+  providers: [
+    MatDatepickerModule,
   ]
 })
 export class CustomerModule { }
