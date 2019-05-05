@@ -6,6 +6,12 @@ import { MatSnackBar } from '@angular/material';
 import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { RoutePartsService } from "../../../shared/services/route-parts.service";
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
+import { CustomValidators } from 'ng2-validation';
+
+const passwordRegex: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!#%*?&])[A-Za-z\d$@$!#%*?&]{6,16}/
+const password = new FormControl('', [Validators.required, Validators.pattern(passwordRegex)]);
+const NewPassword = new FormControl('', [Validators.required, Validators.pattern(passwordRegex)]);
+const confirmPassword = new FormControl('', CustomValidators.equalTo(NewPassword));
 
 @Component({
   selector: 'app-profile',
@@ -32,14 +38,15 @@ export class ProfileComponent implements OnInit {
       this.router.navigate(['/', 'llp-admin', 'signin'])
     }else{ 
 	 this.llpProfileForm = new FormGroup({
-		  first_name: new FormControl('', Validators.required),
- 		  last_name: new FormControl('', Validators.required)
+		  firstName: new FormControl('', Validators.required),
+ 		  lastName: new FormControl('', Validators.required),
+ 		  phoneNumber: new FormControl('', Validators.required)		  
 	 })
 	 
 	 this.llpPasswordForm = new FormGroup({
-		  first_name: new FormControl('', Validators.required),
- 		  last_name: new FormControl('', Validators.required),
- 		  country: new FormControl('', Validators.required)		  
+		  password: new FormControl('', Validators.required),
+      NewPassword: new FormControl('', Validators.required),
+ 		  confirmPassword: new FormControl('', Validators.required)		  
 	 })
     this.getProfile()
 	}
@@ -58,8 +65,9 @@ export class ProfileComponent implements OnInit {
 		  console.log(result.data)        
       } else {
 		this.rows = result.data.userProfile;
-		this.llpProfileForm.controls['first_name'].setValue(this.rows.first_name); 
-        this.llpProfileForm.controls['last_name'].setValue(this.rows.last_name);		
+	    	this.llpProfileForm.controls['firstName'].setValue(this.rows.firstName); 
+        this.llpProfileForm.controls['lastName'].setValue(this.rows.lastName);		
+		    this.llpProfileForm.controls['phoneNumber'].setValue(this.rows.phoneNumber[0].prefix+' '+this.rows.phoneNumber[0].phonenumber);		
       }
     }, (err) => {
       console.error(err)
@@ -68,18 +76,49 @@ export class ProfileComponent implements OnInit {
 
  llpprofile (userData = null) {
     let profileInData = {
-      first_name:  this.llpProfileForm.controls['first_name'].value,
-      last_name: this.llpProfileForm.controls['last_name'].value,
-      userType: "sysadmin"
+      firstName:  this.llpProfileForm.controls['firstName'].value,
+      lastName: this.llpProfileForm.controls['lastName'].value
     }
+    var query = {};
+    var proquery = {};
+    const req_vars = {
+      query: Object.assign({_id:this.userId,userType: "sysadmin"}),
+      proquery: Object.assign(profileInData)
+    }
+	 this.loader.open();
+	 this.api.apiRequest('post', 'userlist/updateprofile',req_vars).subscribe(result => {
+	 this.loader.close();
+      if(result.status == "error"){
+		this.snack.open(result.data.message, 'OK', { duration: 4000 })		  
+      } else {
+		this.rows = result.data.userProfile;
+		localStorage.setItem("firstName", this.rows.firstName)
+		localStorage.setItem("lastName", this.rows.lastName)	
+			   
+		this.llpProfileForm.controls['firstName'].setValue(this.rows.firstName); 
+    this.llpProfileForm.controls['lastName'].setValue(this.rows.lastName);		
+		this.llpProfileForm.controls['phoneNumber'].setValue(this.rows.phoneNumber[0].prefix+' '+this.rows.phoneNumber[0].phonenumber);				
+		this.snack.open(result.data.message, 'OK', { duration: 4000 })		  
+      }	  
+    }, (err) => {
+      console.error(err)
+    })
+	
  }
  
  llppassword (userData = null) {
     let profileInData = {
-      first_name:  this.llpProfileForm.controls['first_name'].value,
-      last_name: this.llpProfileForm.controls['last_name'].value,
+      password:  this.llpProfileForm.controls['password'].value,
+      NewPassword:  this.llpProfileForm.controls['NewPassword'].value,
+      confirmPassword: this.llpProfileForm.controls['confirmPassword'].value,
       userType: "sysadmin"
     }
+
+
+
+
+    
+	
  }
  
  public fileOverBase(e: any): void {
