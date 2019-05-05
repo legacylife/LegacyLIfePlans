@@ -5,29 +5,280 @@
         <img src="assets/images/sq-face-220.jpg" alt="">
       </div>
       <div class="profile-title text-center mb-1">
-        <div class="main-title"></div>
-        <div class="subtitle mb-05"></div>
-        <div class="text-muted"></div>
+        <div class="main-title">{{row?.firstName +' ' + row?.lastName}}</div>
+        <div class="text-muted">{{row?.bioText}}</div>
       </div>
-    </mat-card>
 
-    <!-- Contact Information -->
-    <mat-card class="default">
-      <mat-card-title>Contact Information</mat-card-title>
       <mat-card-content class="pt-0">
         <mat-list>
-          <mat-list-item><mat-icon class="mr-1">public</mat-icon> www.mhrafi.com</mat-list-item>
-          <mat-list-item><mat-icon class="mr-1">email</mat-icon> </mat-list-item>
-          <mat-list-item><mat-icon class="mr-1">phone</mat-icon> </mat-list-item>
-		  <mat-list-item><mat-icon class="mr-1">public</mat-icon></mat-list-item>          
-          <mat-list-item><mat-icon class="mr-1">add_location</mat-icon> SUST, Sylhet, BD</mat-list-item>
+          <mat-list-item>
+            <mat-icon class="mr-1">public</mat-icon> {{row?.websites}}</mat-list-item>
+          <mat-list-item>
+            <mat-icon class="mr-1">email</mat-icon> {{row?.username}}</mat-list-item>
+          <mat-list-item>
+            <mat-icon class="mr-1">phone</mat-icon> {{row?.phoneNumber[0].prefix +''+ row?.phoneNumber[0].phonenumber}}</mat-list-item>          
         </mat-list>
       </mat-card-content>
+
     </mat-card>
   </div>
 
-<!-- Profile Views -->
+  <!-- Profile Views -->
   <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="calc(100% - 300px)">
-    <router-outlet></router-outlet>
+    <div fxLayout="row wrap">
+      <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
+        <!-- Basic Info starts -->
+        <mat-card class="default">
+          <mat-card-title>Basic Info</mat-card-title>
+          <mat-card-content class="p-0">
+            <mat-list class="compact-list mb-1">
+              <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Date Of Birth</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.dateOfBirth}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Address Line 1</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.addressLine1}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Address Line 2</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.addressLine2}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">City</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40">{{row?.city}}</div>
+                  </div>
+                </mat-list-item>
+                <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">State</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40">{{row?.state}}</div>
+                  </div>
+                </mat-list-item>
+                <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">Zipcode</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40">{{row?.zipcode}}</div>
+                  </div>
+                </mat-list-item>
+              <mat-list-item class="">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Status</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.status}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Verified Status</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.addressLine2}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="">
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">Last log in date and time</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40">{{row?.lastLoggedInOn}}</div>
+                  </div>
+                </mat-list-item>
+                
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+        <!-- Basic Info ends -->
+
+        <!-- Admin panel section list  -->
+        <mat-card class="default" *ngIf="row?.userType == 'sysadmin'">
+          <mat-card-title>Access To Sections</mat-card-title>
+          <mat-card-content class="p-0">
+            <div class="list-tasktype">
+              <div class="tasktype-item" *ngFor="let t of adminSections">
+                <mat-checkbox class="mr-1" disabled></mat-checkbox>
+                <span>{{t.name}}</span>
+              </div>
+            </div>            
+          </mat-card-content>
+        </mat-card>
+        <!-- Admin panel section list ends -->
+
+        <!-- Subscription starts -->
+        <mat-card class="default" *ngIf="row?.userType != 'sysadmin'">
+          <mat-card-title>Subscription Details</mat-card-title>
+          <mat-card-content class="p-0">
+            <mat-list class="compact-list mb-1">
+              <mat-list-item class="">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Subscription status</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">Trial account</div>
+                </div>
+              </mat-list-item>
+
+              <mat-list-item class="">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Plan Expire Date</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.subscription_detail.end_date}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="">
+              <div fxLayout="row" fxFlex="100">
+                <h6 class="m-0 mr-1">Subscription Plan</h6>
+                <span fxFlex></span>
+                <div fxFlex="40">6 Month</div>
+              </div>
+            </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+        <!-- Subscription ends -->
+      </div>
+
+      <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
+          <!-- List of trustees starts -->
+          <mat-card class="default" *ngIf="row?.userType == 'customer'">
+            <mat-card-title>List of trustees</mat-card-title>
+            <mat-card-content class="p-0">
+              <mat-list class="compact-list mb-1">
+                <mat-list-item class="">
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">Swapnil Shahane</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40">swapnil@arkenea.com</div>
+                    <span fxFlex></span>
+                    <mat-chip mat-sm-chip color="primary" [selected]="true">{{'Accepted'}}</mat-chip>
+                  </div>
+                </mat-list-item>
+                <mat-list-item class="">
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">Ravina Wafgoankar</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40">ravina@arkenea.com</div>
+                    <span fxFlex></span>
+                    <mat-chip mat-sm-chip color="primary" [selected]="false">{{'Pending'}}</mat-chip>
+                  </div>
+                </mat-list-item>
+              </mat-list>
+            </mat-card-content>
+          </mat-card>
+          <!-- List of trustees ends -->
+
+          <!-- List of advisors starts -->
+          <mat-card class="default" *ngIf="row?.userType == 'customer'">
+            <mat-card-title>List of Advisors</mat-card-title>
+            <mat-card-content class="p-0">
+              <mat-list class="compact-list mb-1">
+              <mat-list-item class="">
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">Nilesh Yadav</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40">nilesh@arkenea.com</div>
+                    <span fxFlex></span>
+                    <mat-chip mat-sm-chip color="primary" [selected]="false">{{'Pending'}}</mat-chip>
+                  </div>
+                </mat-list-item>
+                <mat-list-item class="">
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">Dinesh Patil</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40">dineshpatil@arkenea.com</div>
+                    <span fxFlex></span>
+                    <mat-chip mat-sm-chip color="primary" [selected]="true">{{'Accepted'}}</mat-chip>
+                  </div>
+                </mat-list-item>                
+              </mat-list>
+            </mat-card-content>
+          </mat-card>
+          <!-- List of advisors ends -->
+
+          <!-- List of customer starts -->
+          <mat-card class="default" *ngIf="row?.userType == 'advisor'">
+            <mat-card-title>List of customer</mat-card-title>
+            <mat-card-content class="p-0">
+              <mat-list class="compact-list mb-1">
+                <mat-list-item class="">
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">Kiran Jagtap</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40">kiran@arkenea.com</div>
+                    <span fxFlex></span>
+                    <mat-chip mat-sm-chip color="primary" [selected]="true">{{'Accepted'}}</mat-chip>
+                  </div>
+                </mat-list-item>
+                <mat-list-item class="">
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">Ravina Wafgoankar</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40">ravina@arkenea.com</div>
+                    <span fxFlex></span>
+                    <mat-chip mat-sm-chip color="primary" [selected]="false">{{'Pending'}}</mat-chip>
+                  </div>
+                </mat-list-item>
+              </mat-list>
+            </mat-card-content>
+          </mat-card>
+          <!-- List of customer ends -->
+
+          <!-- List of advisors starts -->
+          <mat-card class="default" *ngIf="row?.userType != 'sysadmin'">
+            <mat-card-title>Others</mat-card-title>
+            <mat-card-content class="p-0">
+              <mat-list class="compact-list mb-1">
+              <mat-list-item class="" *ngIf="row?.userType == 'customer'">
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">Count of own legacy files</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40">0</div>
+                  </div>
+                </mat-list-item>
+              <mat-list-item class="" *ngIf="row?.userType == 'advisor'">
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">Referral target status</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40"></div>
+                  </div>
+                </mat-list-item>
+              <mat-list-item class="" *ngIf="row?.userType == 'advisor'">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Monthly history of referral targets</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40"></div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="" *ngIf="row?.userType == 'advisor'">
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">Any active advertisement subscription</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40"></div>
+                  </div>
+                </mat-list-item>
+              <mat-list-item class="" *ngIf="row?.userType == 'advisor'">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Count of clients</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">0</div>
+                </div>
+              </mat-list-item>                                
+              </mat-list>
+            </mat-card-content>
+          </mat-card>
+          <!-- List of advisors ends -->
+
+        </div>
+    </div>
   </div>
 </div>

@@ -11,8 +11,9 @@ export class userviewComponent implements OnInit {
   successMessage: string = ""
   errorMessage: string = ""
   userType: string = ""
-  row = [];
-  selectedUserId:string = ""
+  row : any;
+  selectedUserId:string = "";
+  adminSections = [];
   //public getItemSub: Subscription;
 
  constructor(private api: APIService, private route: ActivatedRoute, private router:Router) { }   
@@ -27,6 +28,35 @@ export class userviewComponent implements OnInit {
 	  const locationArray = location.href.split('/')
     this.selectedUserId = locationArray[locationArray.length - 1]
     this.getUser()
+
+    this.adminSections = [{
+      name: 'User Management',
+      status: 0
+    }, {
+      name: 'Advisor Management',
+      status: 0
+    }, {
+      name: 'Activity Log',
+      status: 1
+    }, {
+      name: 'Zip Code map',
+      status: 1
+    }, {
+      name: 'CMS pages',
+      status: 1
+    },{
+      name: 'Referral program',
+      status: 0
+    }, {
+      name: 'Advertisement management',
+      status: 1
+    }, {
+      name: 'Deceased requests',
+      status: 1
+    }, {
+      name: 'Admin Management',
+      status: 1
+    }]
   }
 
   //function to get all events
@@ -36,11 +66,12 @@ export class userviewComponent implements OnInit {
       query: Object.assign({_id:this.selectedUserId}, query),
     }
  
-    this.api.apiRequest('post', 'userlist/view', req_vars).subscribe(result => {
+    this.api.apiRequest('post', 'userlist/viewall', req_vars).subscribe(result => {
       if(result.status == "error"){
 		  console.log(result.data)        
       } else {
-	 	 this.row = result.data		
+      this.row = result.data	
+      console.log(this.row)	
       }
     }, (err) => {
       console.error(err)
@@ -49,5 +80,6 @@ export class userviewComponent implements OnInit {
 	
 	
   }
+  
 
 }
