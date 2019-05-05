@@ -101,6 +101,28 @@ function updateStatus (req, res) {
 	 })
 }
 
+function updateProfile (req, res) {
+   let {query} = req.body;
+   	 let fields = { id:1, username: 1 , status: 1 }
+	 User.findOne(query, function(err, updatedUser) {     
+		if(err){
+		  res.status(401).send(resFormat.rError(err))
+		} else {
+			  let {proquery} = req.body;
+		    User.update({ _id:updatedUser._id},{$set:proquery},function(err,updated){
+				if (err) {
+				  res.send(resFormat.rError(err))
+				} else {
+          User.findOne(query, function(err, updatedUser) { 
+				    let result = {"userProfile":{userId: updatedUser._id, userType : updatedUser.userType,firstName: updatedUser.firstName, lastName : updatedUser.lastName, phoneNumber : updatedUser.phoneNumber}, "message": "Profile update successfully!" }
+            res.status(200).send(resFormat.rSuccess(result));
+          });
+				}
+			  })
+		}
+	 })
+}
+
 function profile (req, res) {
 	 let {query} = req.body;
 	 let fields = {}
@@ -163,10 +185,10 @@ function common(req, res) {
 router.post("/list", list);
 router.post("/addmember", addNewMember);
 router.post("/updatestatus", updateStatus);
-/*router.get(["/view/:id", "/:id"], details)*/
+router.post("/updateprofile", updateProfile);
 router.post(["/getprofile"], profile);
 router.post(["/view"], details);
 router.post("/common", common);
-
+/*router.get(["/view/:id", "/:id"], details)*/
 
 module.exports = router
