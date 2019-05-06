@@ -39,6 +39,30 @@ export class HomeComponent implements OnInit {
       title : 'CFC, CIF'
     },
   ];
+  testomonial = [
+    {
+      clientSays: 'Lorem Ipsum is simply dummy e industrys Lorem Ipsum is simply dummy text of the printing.',
+      clientPic: "assets/images/arkenea/james.png",
+      clientName: 'John Smith',
+      clientDesc: 'CFC, CIF'
+
+    },
+    {
+      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
+      clientPic: "assets/images/arkenea/user-male.png",
+      clientName: 'John Smith',
+      clientDesc: 'CFC, CIF'
+
+    },
+    {
+      clientSays: 'Lorem Ipsum is simply dummy text ofs simply dummy text of the printing.',
+      clientPic: "assets/images/arkenea/john.png",
+      clientName: 'John Smith',
+      clientDesc: 'CFC, CIF'
+
+    }
+];
+
   slideConfig = { 'slidesToShow': 3, 'slidesToScroll': 1 , responsive : [
     {
       breakpoint: 1212,
@@ -96,6 +120,11 @@ export class HomeComponent implements OnInit {
   slickInit(e) {
     console.log('slick initialized');
   }
+  
+  slickInit2(e) {
+    console.log('slick initialized');
+  }
+  
 
   breakpoint(e) {
     console.log('breakpoint');

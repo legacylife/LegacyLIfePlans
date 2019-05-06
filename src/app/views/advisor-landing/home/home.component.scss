@@ -309,7 +309,8 @@
         
     }
     .testimonial--wrapper{
-        width: 40%;
+        width: 95%;
+        margin-bottom: 100px;
 
         .testimonial--header{
             background-color: #f6f7f7;
@@ -367,9 +368,9 @@
                 line-height: 60px;
             }
             .info{
-                font-size: 16px;
+                font-size: 18px;
                 color: $clr--4;
-                margin-bottom: 40px;
+                margin-bottom: 25px;
             }
             h5{
                 margin: 0 0 25px 0 ;
@@ -380,7 +381,7 @@
                 padding: 0;
                 list-style-type: none;
                 li{
-                    font-size: 22px;
+                    font-size: 16px;
                     color: $clr--4;
                     display: block;
                     margin-bottom: 10px;
@@ -552,7 +553,7 @@
         font-size: 15px;
     }
     .advisor--landing--wrapper .get--hired--wrapper{
-        height: 358px;
+        height: 386px;
         padding-top: 25px;
         justify-content: flex-start;
     }
@@ -602,7 +603,7 @@
         height: 212px;
     }
     .advisor--landing--wrapper .hire--process--wrapper .hire--content h3{
-        font-size: 27px;
+        font-size: 28px;
     }
     .advisor--landing--wrapper .hire--process--wrapper .hire--content p {
         font-size: 17px;
