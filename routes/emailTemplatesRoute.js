@@ -39,7 +39,7 @@ function list(req, res) {
     if(templateCount) {
       totalRecords = templateCount
     }
-    EmailTemplate.find(query, fields, function(err, templateList) {
+    EmailTemplate.find(query, fields, function(err, templateList) {	
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {

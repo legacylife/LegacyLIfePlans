@@ -6,4 +6,8 @@ router.use("/userlist", require("./routes/userlistRoute"))
 router.use("/cms", require("./routes/cmsRoute"))
 router.use("/emailtemp", require("./routes/emailTemplatesRoute"))
 
+
+
+
+
 module.exports = router
