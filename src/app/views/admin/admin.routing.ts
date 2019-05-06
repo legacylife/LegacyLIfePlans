@@ -14,27 +14,31 @@ export const AdminRoutes: Routes = [
     data: { title: 'Blank', breadcrumb: 'BLANK' }
   },{
     path: 'userlist',
-    component: userlistComponent
+    component: userlistComponent,
+    data: { title: 'Admin Users List', breadcrumb: 'Admin Users List' }
   },{
     path: 'userview/:id',
-    component: userviewComponent
+    component: userviewComponent,
+    data: { title: 'User Detail Page', breadcrumb: 'User Detail Page' }
   },{
     path: 'customerlist',
-    component: customerlistComponent
+    component: customerlistComponent,
+	  data: { title: 'Customers List', breadcrumb: 'Customers List'}
   },{
     path: 'advisorlist',
     component: advisorlistComponent,
-    data: { title: 'NgX Table', breadcrumb: 'NgX Table' }
+    data: { title: 'Advisors List', breadcrumb: 'Advisors List' }
   },{
     path: 'cms',
     component: cmslistComponent,
-	data: { title: 'NgX Table', breadcrumb: 'NgX Table' }
+	  data: { title: 'CMS Pages Table', breadcrumb: 'CMS Pages' }
   },{
     path: 'cmsedit/:id',
-    component: cmseditComponent
+    component: cmseditComponent,
+    data: { title: 'CMS Pages Table', breadcrumb: 'CMS Pages' }
   },{
-	path: 'profile', 
-	component: ProfileComponent,
-	data: { title: 'Profile', breadcrumb: 'PROFILE'}
+	  path: 'profile', 
+	  component: ProfileComponent,
+	  data: { title: 'Profile', breadcrumb: 'PROFILE'}
   }
 ];

@@ -77,7 +77,7 @@ export const rootRouterConfig: Routes = [
       {
         path: 'admin',
         loadChildren: './views/admin/admin.module#AdminModule',
-        data: { title: 'Others', breadcrumb: 'OTHERS'}
+        data: { title: 'Dashboard', breadcrumb: 'Dashboard'}
       }
     ]
   }, {

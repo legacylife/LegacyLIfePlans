@@ -186,7 +186,9 @@
                         value="">
                 </mat-form-field>
                 
-               
+                <small 
+                *ngIf="llpPasswordForm.controls['password'].hasError('invalid') && llpPasswordForm.controls['password'].touched" 
+                class="form-error-msg"> Please enter the currect current password </small>  
 
                 <mat-form-field class="full-width">                  
                         <input
@@ -215,11 +217,11 @@
                   value="">
                 </mat-form-field>     
                 <small 
-                *ngIf="llpPasswordForm.controls['confirmPassword'].hasError('equalTo')" 
+                *ngIf="llpPasswordForm.controls['confirmPassword'].hasError('equalTo') && llpPasswordForm.controls['confirmPassword'].touched"
                 class="form-error-msg"> Password mismatch </small>                                      
             </div> 
             
-            <button mat-raised-button color="primary" >Save</button>
+            <button mat-raised-button color="primary" [disabled]="llpPasswordForm.invalid">Save</button>
           </form>
       </mat-card-content>
     </mat-tab>
