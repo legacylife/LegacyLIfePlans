@@ -100,7 +100,7 @@
           </form>
       </mat-card-content>
     </mat-tab>
-      <mat-tab label="Profile Picture">
+   <!-- <mat-tab label="Profile Picture">
       <mat-card-content>
         <div class="mb-1 mt-1">
           <p>Upload a profile picture</p>
@@ -170,35 +170,56 @@
             </ng-template>
         </table>
       </mat-card-content>
-    </mat-tab>
+    </mat-tab>-->
     <mat-tab label="Change Password">
       <mat-card-content class="mt-1">
          <form class="llp-form-wrapper" [formGroup]="llpPasswordForm"  (ngSubmit)="llppassword()">
-            <mat-form-field class="full-width">
-              <input
-              matInput
-              name="password"
-              placeholder="Password"
-              value="">
-            </mat-form-field>
-            
-            <mat-form-field class="full-width">
-                <input
-                matInput
-                name="NewPassword"
-                placeholder="New password"
-                value="">
-            </mat-form-field>       
-            
+            <div fxLayout="row wrap">
+                <mat-form-field class="full-width">
+                        <input
+                        type="password"
+                        required
+                        [formControl]="llpPasswordForm.controls['password']"
+                        matInput
+                        name="password"
+                        placeholder="Current Password"
+                        value="">
+                </mat-form-field>
+                
                
-            <mat-form-field class="full-width">
-              <input
-              matInput
-              name="confirmPassword"
-              placeholder="Confirm new password"
-              value="">
-            </mat-form-field>                       
-            <button mat-raised-button color="primary">Save</button>
+
+                <mat-form-field class="full-width">                  
+                        <input
+                        type="password"
+                        required
+                        [formControl]="llpPasswordForm.controls['NewPassword']"                
+                        matInput
+                        name="NewPassword"
+                        placeholder="New password"
+                        value="">
+               </mat-form-field>            
+                <small 
+                *ngIf="llpPasswordForm.controls['NewPassword'].hasError('pattern') && llpPasswordForm.controls['NewPassword'].touched" 
+                class="form-error-msg"> New Password must be at least 6 characters long, alpha numeric with at least one-special character </small>   
+                <small 
+                    *ngIf="llpPasswordForm.controls['NewPassword'].hasError('minlength') && llpPasswordForm.controls['NewPassword'].touched" 
+                    class="form-error-msg"> New Password require at least {{llpPasswordForm.controls['NewPassword'].errors.minlength.requiredLength}} characters </small>                     
+                <mat-form-field class="full-width">
+                  <input
+                  matInput
+                  type="password"
+                  required
+                  [formControl]="llpPasswordForm.controls['confirmPassword']"              
+                  name="confirmPassword"
+                  placeholder="Confirm new password"
+                  value="">
+                </mat-form-field>     
+                <small 
+                *ngIf="llpPasswordForm.controls['confirmPassword'].hasError('equalTo')" 
+                class="form-error-msg"> Password mismatch </small>                                      
+            </div> 
+            
+            <button mat-raised-button color="primary" >Save</button>
           </form>
       </mat-card-content>
     </mat-tab>

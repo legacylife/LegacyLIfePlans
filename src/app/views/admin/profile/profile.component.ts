@@ -8,10 +8,10 @@ import { RoutePartsService } from "../../../shared/services/route-parts.service"
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { CustomValidators } from 'ng2-validation';
 
-const passwordRegex: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!#%*?&])[A-Za-z\d$@$!#%*?&]{6,16}/
-const password = new FormControl('', [Validators.required, Validators.pattern(passwordRegex)]);
-const NewPassword = new FormControl('', [Validators.required, Validators.pattern(passwordRegex)]);
-const confirmPassword = new FormControl('', CustomValidators.equalTo(NewPassword));
+ const passwordRegex: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!#%*?&])[A-Za-z\d$@$!#%*?&]{6,16}/
+ const password = new FormControl('', [Validators.required, Validators.pattern(passwordRegex)]);
+ const NewPassword = new FormControl('', [Validators.required, Validators.pattern(passwordRegex), Validators.minLength(6)]);
+ const confirmPassword = new FormControl('', CustomValidators.equalTo(NewPassword));
 
 @Component({
   selector: 'app-profile',
@@ -28,28 +28,30 @@ export class ProfileComponent implements OnInit {
   llpProfileForm: FormGroup;
   llpPasswordForm: FormGroup;
 
+  
   constructor(private router: Router,private activeRoute: ActivatedRoute,private api: APIService,private fb: FormBuilder,  private snack: MatSnackBar, private loader: AppLoaderService) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
     this.userType = localStorage.getItem("userType") || sessionStorage.getItem("userType")
     
-    if(!this.api.isLoggedIn()){
+   if(!this.api.isLoggedIn()){
       this.router.navigate(['/', 'llp-admin', 'signin'])
     }else{ 
 	 this.llpProfileForm = new FormGroup({
-		  firstName: new FormControl('', Validators.required),
- 		  lastName: new FormControl('', Validators.required),
- 		  phoneNumber: new FormControl('', Validators.required)		  
+	 	  firstName: new FormControl('', Validators.required),
+ 	 	  lastName: new FormControl('', Validators.required),
+ 	 	  phoneNumber: new FormControl('', Validators.required)		  
 	 })
-	 
+   
 	 this.llpPasswordForm = new FormGroup({
-		  password: new FormControl('', Validators.required),
-      NewPassword: new FormControl('', Validators.required),
- 		  confirmPassword: new FormControl('', Validators.required)		  
-	 })
+	 	  password: new FormControl('', Validators.required),
+      NewPassword: new FormControl('', [Validators.required, Validators.pattern(passwordRegex), Validators.minLength(6)]),
+ 	 	  confirmPassword: new FormControl('', [Validators.required,CustomValidators.equalTo(NewPassword)])		  
+   })
+   
     this.getProfile()
-	}
+	 }
   }
   
   //function to get all events
@@ -107,20 +109,35 @@ export class ProfileComponent implements OnInit {
  }
  
  llppassword (userData = null) {
-    let profileInData = {
-      password:  this.llpProfileForm.controls['password'].value,
-      NewPassword:  this.llpProfileForm.controls['NewPassword'].value,
-      confirmPassword: this.llpProfileForm.controls['confirmPassword'].value,
+    let passwordData = {
+      userId:  this.userId,
+      password:  this.llpPasswordForm.controls['password'].value,
+      newPassword:  this.llpPasswordForm.controls['NewPassword'].value,
+      confirmPassword: this.llpPasswordForm.controls['confirmPassword'].value,
       userType: "sysadmin"
     }
-
-
-
-
+    this.loader.open();
+  this.api.apiRequest('post', 'auth/changePassword',passwordData).subscribe(result => {
+    this.loader.close();
+     if(result.status == "error"){
+      this.snack.open(result.data, 'OK', { duration: 4000 })		  
+      /*this.llpPasswordForm = new FormGroup({
+        password: new FormControl('', [this.passwordsValidator]),
+        NewPassword: new FormControl(''),
+ 	 	    confirmPassword: new FormControl('')		  
+       })*/      
+     } else {
+      this.snack.open(result.data.message, 'OK', { duration: 4000 })		  
+     }	  
+   }, (err) => {
+     console.error(err)
+   })
     
 	
  }
- 
+ public passwordsValidator(control: FormControl) {
+  return { 'invalid': true };
+}
  public fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
   }
