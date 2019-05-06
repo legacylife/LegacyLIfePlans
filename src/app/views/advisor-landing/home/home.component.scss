@@ -181,15 +181,17 @@
         margin-top: -175px;
 
         .steps--section{
-            height: 370px;
+            height:480px;;
             background-color: $clr--1;
             box-shadow: -2.6px 1.5px 7px 0 rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             padding: 0 35px;
             text-align: center;
+            .step--header{
+                margin-top: 35px;
+            }
 
             &.step--3,
             &.step--2{
@@ -218,8 +220,6 @@
                 
             }
             .step--body{
-                height: 120px;
-                overflow: auto;
                 p{
                     margin: 0;
                     font-size: 16px;
@@ -252,7 +252,7 @@
         .history{
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
+            justify-content: space-around;
             margin-top: 75px;
             h5{
                 font-family: $font--lato--bold;
@@ -503,7 +503,8 @@
 .icon--clients{
     background: url('assets/images/arkenea/clients.png');
     width: 50px;
-    height: 42px;
+    height: 47px;
+    background-repeat: no-repeat;
 }
 .icon--leads{
     background: url('assets/images/arkenea/leads.png');
@@ -616,9 +617,12 @@
         margin: 23px 0;
     }
     .advisor--landing--wrapper .hired--process--steps .steps--section {
-        height: 300px;
+        height: auto;
         padding: 0 12px;
         margin-top: 25px;
+    }
+    .advisor--landing--wrapper .hired--process--steps .steps--section .step--body{
+        margin-bottom: 20px;
     }
     .advisor--landing--wrapper .green-divider{
         margin: 60px auto;
@@ -738,7 +742,7 @@
         padding: 0px 25px;
     }    
     .advisor--landing--wrapper .get--hired--wrapper{
-        height: 343px;
+        height: 390px;
         justify-content: flex-start;
         padding-top: 30px;
     }
@@ -786,12 +790,10 @@
     .advisor--landing--wrapper .hire--process--wrapper .hire--content p{
         font-size: 24px;
         margin: 8px 0 0 0;
-    }
+    }  
     .advisor--landing--wrapper .hired--process--steps .steps--section{
+        height: 497px;
         padding: 0 10px;
-    }
-    .advisor--landing--wrapper .hired--process--steps .steps--section{
-        height: 284px;
     }
     .advisor--landing--wrapper .hired--process--steps .steps--section .step--header h5{
         margin: 20px 0;
@@ -837,5 +839,22 @@
 }
 @media only screen and (min-width: 1280px) and (max-width: 1440px){}
 @media only screen and (min-width: 1441px) and (max-width: 1550px){}
+@media (device-height: 768px) and (device-width: 1024px){
+    .advisor--landing--wrapper .get--hired--wrapper .banner--content h3{
+        font-size: 63px;
+    }
+    .advisor--landing--wrapper .get--hired--wrapper{
+        height: 670px;
+    }
+    .advisor--landing--wrapper .hired--process--steps .steps--section{
+        height: 514px;
+    }
+    .advisor--landing--wrapper .hire--process--wrapper .hire--content{
+        width: 77%;
+    }
+    .advisor--landing--wrapper .llp--hired .history{
+        justify-content: space-around;
+    }
+}  
 
 /* Media query (end here)*/
