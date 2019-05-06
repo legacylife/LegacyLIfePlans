@@ -5,13 +5,23 @@
       <mat-form-field class="full-width">
         <input
         matInput
-        name="fullName"
-        [formControl]="itemForm.controls['fullName']"
-        placeholder="Name">
+        name="firstName"
+        [formControl]="itemForm.controls['firstName']"
+        placeholder="First Name">
       </mat-form-field>
     </div>
 
     <div fxFlex="50"  class="pr-1">
+        <mat-form-field class="full-width">
+          <input
+          matInput
+          name="lastName"
+          [formControl]="itemForm.controls['lastName']"
+          placeholder="Last Name">
+        </mat-form-field>
+      </div>
+
+    <div fxFlex="100"  class="pr-1">
       <mat-form-field class="full-width">
         <input
         matInput
@@ -21,10 +31,23 @@
         placeholder="Email">
       </mat-form-field>
     </div>
-    
-    <div fxFlex="50"  class="pt-1 pr-1">
-      <mat-slide-toggle [formControl]="itemForm.controls['status']">Active Customer</mat-slide-toggle>
+
+    <div fxFlex="100">
+        <Label>Access Sections</Label>
+        <div class="pb-1" *ngFor="let t of adminSections">
+            <Label>{{t.name}}    </Label>
+            <mat-radio-group  class="full-width"
+            name="{{t.code}}" 
+            [formControl]="itemForm.controls[t.code]">
+                <mat-radio-button value="fullaccess">Full Access  </mat-radio-button>
+                <mat-radio-button value="denyall">Deny All</mat-radio-button>
+            </mat-radio-group>
+        </div>        
     </div>
+    
+    <!-- <div fxFlex="50"  class="pt-1 pr-1">
+      <mat-slide-toggle [formControl]="itemForm.controls['status']">Active Customer</mat-slide-toggle>
+    </div> -->
 
     <div fxFlex="100" class="mt-1">
       <button mat-raised-button color="primary" [disabled]="itemForm.invalid">Save</button>
