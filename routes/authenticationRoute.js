@@ -200,7 +200,7 @@ function details (req, res) {
 
 //function to change users password
 const changePassword = function(req,res) {
-
+  console.log("Change password :-     ");
   User.findOne({ _id: req.body.userId }, function(err, userDetails) {
     if (err) {
       res.send(resFormat.rError(err))
@@ -209,13 +209,14 @@ const changePassword = function(req,res) {
       if (req.body.password && !user.validPassword(req.body.password, userDetails)) {
         res.send(resFormat.rError('Please enter the correct current password'))
       } else {
-        const { salt, hash } = user.setPassword(req.body.newPassword)
-
+        const { salt, hash } = user.setPassword(req.body.newPassword);
+        console.log("here............................ "+req.body.newPassword);
         User.update({ _id: req.body.userId},{ $set: { salt, hash}} ,(err, updatedUser)=>{
           if (err) {
-            res.send(resFormat.rError(err))
-          } else {
-            res.send(resFormat.rSuccess('Password has been changed successfully'))
+            res.send({"message":resFormat.rError(err)})
+          } else {            
+            let result = {"message": "Password has been changed successfully status successfully!" }
+            res.status(200).send(resFormat.rSuccess(result))
           }
         })
       }
