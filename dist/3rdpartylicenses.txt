@@ -656,8 +656,6 @@ THE SOFTWARE.
 babel-runtime
 MIT
 
-@angular/material/progress-bar
-
 libphonenumber-js
 MIT
 (The MIT License)
@@ -687,6 +685,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 @angular/material/form-field
 
 @angular/material/card
+
+@angular/material/progress-bar
 
 @angular/material/datepicker
 
