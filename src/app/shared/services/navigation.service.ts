@@ -65,15 +65,28 @@ export class NavigationService {
         { name: 'Customers', state: 'customerlist' },
         { name: 'Advisors', state: 'advisorlist' },
       ]
+    },    
+	{
+      name: 'Zip Code map',
+      type: 'link',
+      tooltip: 'Zip Code map',
+      icon: 'add_location',
+      state: 'admin/map'
     },
-    
     {
       name: 'CMS',
       type: 'link',
       tooltip: 'Content Management System',
       icon: 'pages',
       state: 'admin/cms'
-    }
+    },
+	{
+      name: 'Email Templates',
+      type: 'link',
+      tooltip: 'Email Templates Management System',
+      icon: 'email',
+      state: 'admin/email-template'
+    }	
   ]
 
   // Icon menu TITLE at the very top of navigation.

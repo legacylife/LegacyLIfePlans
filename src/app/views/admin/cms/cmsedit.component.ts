@@ -23,6 +23,7 @@ export class cmseditComponent implements OnInit {
     this.cmsForm = new FormGroup({
       pageTitle: new FormControl('', [Validators.required]),
       pageBody: new FormControl('', [Validators.required]),
+      pageFor: new FormControl('', [Validators.required]),
     })
 
     this.activeRoute.params.subscribe(params => {
@@ -44,6 +45,7 @@ export class cmseditComponent implements OnInit {
         this.row = result.data
         this.cmsForm.controls['pageTitle'].setValue(this.row.pageTitle); 
         this.cmsForm.controls['pageBody'].setValue(this.row.pageBody);
+        this.cmsForm.controls['pageFor'].setValue(this.row.pageFor);
       }
     }, (err) => {
       console.error(err)
@@ -53,13 +55,15 @@ export class cmseditComponent implements OnInit {
   updatePage() {
     let pageData = {
       pageTitle: this.cmsForm.controls['pageTitle'].value,
-      pageBody: this.cmsForm.controls['pageBody'].value
+      pageBody: this.cmsForm.controls['pageBody'].value,
+      pageFor: this.cmsForm.controls['pageFor'].value
     }
 
     const req_vars = {
       "_id":this.row._id,
       "pageTitle": this.cmsForm.controls['pageTitle'].value,
-      "pageBody": this.cmsForm.controls['pageBody'].value
+      "pageBody": this.cmsForm.controls['pageBody'].value,
+      "pageFor": this.cmsForm.controls['pageFor'].value
     }
 
     this.api.apiRequest('post', 'cms/update', req_vars).subscribe(result => {

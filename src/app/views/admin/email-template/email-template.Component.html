@@ -1,0 +1,48 @@
+<div class="row">    
+<mat-form-field class="margin-333" style="width: 100%">
+  <input 
+  matInput 
+  placeholder="Type to filter all columns" 
+  value=""
+  (keyup)='updateFilter($event)'
+  >
+</mat-form-field>
+<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+  <mat-card-content class="p-0">
+    <ngx-datatable
+          class="material ml-0 mr-0"
+          [rows]="rows"
+          [columnMode]="'flex'"
+          [headerHeight]="50"
+          [footerHeight]="50"
+          [limit]="10"
+          [rowHeight]="'auto'">
+          <ngx-datatable-column name="Email Code" [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row?.code }}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Email Title" [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row?.title }}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Email Subject" [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row?.mailSubject }}
+            </ng-template>
+          </ngx-datatable-column>          
+          <ngx-datatable-column name="Status" [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <mat-chip mat-sm-chip [color]="'primary'" [selected]="row.status">{{row.status ? 'active' : 'in-active'}}</mat-chip>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Actions" [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>              
+              <a mat-icon-button mat-sm-button color="primary" class="mb-1" [routerLink]="['/admin/email-template-edit', row._id]" title="View"><mat-icon style="font-size: 32px;">edit</mat-icon></a>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+  </mat-card-content>
+</mat-card>
+</div>

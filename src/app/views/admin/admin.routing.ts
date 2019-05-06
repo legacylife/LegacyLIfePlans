@@ -7,6 +7,10 @@ import { advisorlistComponent } from './advisorlist/advisorlist.component';
 import { cmslistComponent } from './cms/cms.component';
 import { cmseditComponent } from './cms/cmsedit.component';
 import { ProfileComponent } from './profile/profile.component';
+import { EmailTemplateComponent } from './email-template/email-template.component';
+import { EmailTemplateEditComponent } from './email-template/email-template-edit.component';
+import { MapComponent } from './map/map.component';
+
 export const AdminRoutes: Routes = [
   {
     path: '',
@@ -31,14 +35,27 @@ export const AdminRoutes: Routes = [
   },{
     path: 'cms',
     component: cmslistComponent,
-	  data: { title: 'CMS Pages Table', breadcrumb: 'CMS Pages' }
+	  data: { title: 'CMS Pages', breadcrumb: 'CMS Pages' }
   },{
     path: 'cmsedit/:id',
     component: cmseditComponent,
-    data: { title: 'CMS Pages Table', breadcrumb: 'CMS Pages' }
+    data: { title: 'CMS Pages', breadcrumb: 'CMS Pages' }
   },{
-	  path: 'profile', 
-	  component: ProfileComponent,
-	  data: { title: 'Profile', breadcrumb: 'PROFILE'}
+    path: 'email-template',
+    component: EmailTemplateComponent,
+	  data: { title: 'Email Templates', breadcrumb: 'Email Templates' }
+  },{
+    path: 'email-template-edit/:id',
+    component: EmailTemplateEditComponent,
+    data: { title: 'Edit Email Template', breadcrumb: 'Edit Email Template' }
+  },{
+    path: 'map',
+    component: MapComponent,
+    data: { title: 'Zip Code Map', breadcrumb: 'Zip Code Map' }
+  },
+  {
+	path: 'profile', 
+	component: ProfileComponent,
+	data: { title: 'Profile', breadcrumb: 'PROFILE'}
   }
 ];

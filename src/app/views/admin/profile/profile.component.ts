@@ -46,7 +46,7 @@ export class ProfileComponent implements OnInit {
    
 	 this.llpPasswordForm = new FormGroup({
 	 	  password: new FormControl('', Validators.required),
-      NewPassword: new FormControl('', [Validators.required, Validators.pattern(passwordRegex), Validators.minLength(6)]),
+     	  NewPassword: new FormControl('', [Validators.required, Validators.pattern(passwordRegex), Validators.minLength(6)]),
  	 	  confirmPassword: new FormControl('', [Validators.required,CustomValidators.equalTo(NewPassword)])		  
    })
    

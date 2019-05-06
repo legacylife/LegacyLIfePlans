@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule,FormBuilder, Validators, FormGroup,ReactiveFormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
+
 import { 
   MatListModule,
   MatIconModule,
@@ -34,8 +35,12 @@ import { customerlistComponent } from './customerlist/customerlist.component';
 import { advisorlistComponent } from './advisorlist/advisorlist.component';
 import { cmslistComponent } from './cms/cms.component';
 import { cmseditComponent } from './cms/cmsedit.component';
+import { EmailTemplateComponent } from './email-template/email-template.component';
+import { EmailTemplateEditComponent } from './email-template/email-template-edit.component';
 import { NgxTablePopupComponent } from './userlist/ngx-table-popup/ngx-table-popup.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AgmCoreModule } from '@agm/core';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   imports: [
@@ -61,11 +66,11 @@ import { ProfileComponent } from './profile/profile.component';
     FileUploadModule,
     SharedModule,
     QuillModule,
-    RouterModule.forChild(AdminRoutes)
+    AgmCoreModule.forRoot({ apiKey: 'AIzaSyBNcjxo_35qnEG17dQvvftWa68eZWepYE0' }),
+    RouterModule.forChild(AdminRoutes)	  
   ],
   declarations: [
-    AppBlankComponent, userlistComponent,userviewComponent, customerlistComponent, 
-    advisorlistComponent, NgxTablePopupComponent, cmslistComponent, cmseditComponent,ProfileComponent
+    AppBlankComponent,userlistComponent,userviewComponent,customerlistComponent,advisorlistComponent,NgxTablePopupComponent,cmslistComponent,cmseditComponent,ProfileComponent,EmailTemplateComponent,EmailTemplateEditComponent,MapComponent
   ],
   entryComponents: [NgxTablePopupComponent]
 })
