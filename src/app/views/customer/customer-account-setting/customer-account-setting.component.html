@@ -61,7 +61,7 @@
             <!-- account details -->
             <div class="account--details">
               <div fxLayout="row wrap">
-                <div fx.Flex.sm="100" fxFlex.xl="50">
+                <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="49" fxFlex.xl="33.33">
                   <form class="llp-form-wrapper">
                     <mat-form-field class="full-width">
                       <input matInput name="username" placeholder="First Name" value="John">
@@ -95,36 +95,77 @@
                     </mat-form-field>
 
                     <div class="full-width text-right">
-                        <a class="clr--red">Change password</a>
+                      <a class="clr--red fnt--16">Change password</a>
                     </div>
 
                   </form>
                 </div>
-                <div fx.Flex.sm="100" fxFlex.xl="50">
+                <div fxFlex.xs="100" fxFlex.sm="60" fxFlex.md="60" fxFlex.lg="49" fxFlex.xl="33.33">
                   <div class="manage--sub--section">
                     <header>
                       <div class="stan--plan"> Standard plan</div>
-                      <div class="ur--sub">Your subscription will automatically 
-                          renew on <span>06/07/2019</span></div>
+                      <div class="ur--sub">Your subscription will automatically renew on
+                        <span>06/07/2019</span>
+                      </div>
                     </header>
-                    <div class="">
-                        <mat-slide-toggle>OFF</mat-slide-toggle>
+                    <div class="llp--slide--wrapper">
+                      <div class="set-auto">Set auto-payment option</div>
+                      <mat-slide-toggle class="llp--slide--toggle">OFF</mat-slide-toggle>
+                    </div>
+                    <p class="turning">Turning the auto-payment option ON will automatically deduct the subscription amount from your associated
+                      card
+                    </p>
+                    <div class="manage--cancel">
+                      <button mat-raised-button class="llp--primary--green--btn">Manage subscription</button>
+                      <a class="clr--red">Cancel subscription</a>
                     </div>
                   </div>
-                  <div class="full-width text-right">
-                      <a class="clr--red">Deactivate account</a>
+                  <div class="deactivate--acc">
+                    <a class="clr--red fnt--16">Deactivate account</a>
                   </div>
                 </div>
               </div>
+              <div fx.Flex="100" class="text-center mt--30">
+                <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
+                <button mat-raised-button class="llp--primary--btn">Save</button>
+              </div>
             </div>
 
+          </mat-tab>
+          <mat-tab label="Address">
 
+            <!-- Address details -->
+            <div class="account--details">
+              <div fxLayout="row wrap" fxLayoutGap-sm="5px" fxLayoutGap="30px">
+                <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                  <form class="llp-form-wrapper">
+                    
+                    <mat-form-field class="full-width">
+                      <textarea matInput placeholder="Address line 1"></textarea>
+                    </mat-form-field>
 
+                    <mat-form-field class="full-width">
+                      <textarea matInput placeholder="Address line 2 (optional)"></textarea>
+                    </mat-form-field>
 
-
+                  </form>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                  <mat-form-field class="full-width">
+                    <input matInput name="city" placeholder="City" value="">
+                  </mat-form-field>
+                  <mat-form-field class="full-width">
+                    <input matInput name="ZipCode" placeholder="Zip Code" value="">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div fx.Flex="100" class="text-center mt--30">
+                <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
+                <button mat-raised-button class="llp--primary--btn">Save</button>
+              </div>
+            </div>
 
           </mat-tab>
-          <mat-tab label="Address"> Content 2 </mat-tab>
         </mat-tab-group>
 
 

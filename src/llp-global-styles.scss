@@ -136,7 +136,7 @@ $clr--15: #e4e1e1;
 @mixin primary-btn-style{
     font-size: 16px  ;
     font-family: $font--lato--regular;
-    border-radius: 20px;
+    border-radius: 2px;
     padding: 3px 20px  ;
     height: 42px; 
 }
@@ -155,6 +155,17 @@ body .mat-mini-fab{
 .llp--primary--btn{
     color: $clr--1 !important;
     background-color: $clr--2 !important;
+    border: 1px solid $clr--2;
+}
+.llp--secondary--btn{
+    color: $clr--2 !important;
+    background-color: #fff !important;
+    border: 1px solid $clr--2;
+}
+
+.llp--primary--green--btn{
+    color: $clr--1 !important;
+    background-color: $clr--5 !important;
 }
 
 .llp--back--btn{
@@ -288,6 +299,11 @@ body{
                 }
             } 
         }    
+        textarea.mat-input-element {
+            padding: 2px 0;
+            margin: -12px 0;
+            resize: none;
+        }
     }
 }
 
@@ -404,13 +420,27 @@ body{
     }
 }
 
-
+// 
+.egret-indigo .mat-slide-toggle-bar{
+    background-color: $clr--2 !important
+}
+.llp--slide--toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: $clr--5 !important;
+}
+.llp--slide--toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color:  $clr--1 !important;
+}
+.llp--slide--toggle .mat-slide-toggle-content{
+    font-size: 16px;
+    font-family: $font--lato--regular;
+}
 
 // Helper classes 
 .text-left{text-align: left !important}
 .text-right{text-align: right !important}
 .mx-15{margin: 0 15px !important;}
 .my-15{margin: 15px 0 !important;}
+.mt--30{margin-top: 30px !important;}
 .px-40{padding: 0 40px !important;}
 .mr-20{margin-right: 20px !important}
 .mr-30{margin-right: 30px !important}
@@ -419,3 +449,6 @@ body{
 .justify--content--space--around{justify-content: space-around}
 .relative{position: relative !important;}
 .clr--red{color:$clr--2 !important}
+.fnt--18{font-size: 18px;}
+.fnt--16{font-size: 16px;}
+.fnt--14{font-size: 14px;}
