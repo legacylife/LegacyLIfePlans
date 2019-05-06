@@ -196,8 +196,6 @@ function common(req, res) {
   })
 }
 
-
-
 router.post("/list", list);
 router.post("/addmember", addNewMember);
 router.post("/updatestatus", updateStatus);

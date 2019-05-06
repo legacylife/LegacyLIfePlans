@@ -210,7 +210,6 @@ const changePassword = function(req,res) {
         res.send(resFormat.rError('Please enter the correct current password'))
       } else {
         const { salt, hash } = user.setPassword(req.body.newPassword);
-        console.log("here............................ "+req.body.newPassword);
         User.update({ _id: req.body.userId},{ $set: { salt, hash}} ,(err, updatedUser)=>{
           if (err) {
             res.send({"message":resFormat.rError(err)})
