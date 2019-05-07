@@ -10,6 +10,10 @@ import { ProfileComponent } from './profile/profile.component';
 import { EmailTemplateComponent } from './email-template/email-template.component';
 import { EmailTemplateEditComponent } from './email-template/email-template-edit.component';
 import { MapComponent } from './map/map.component';
+import { ReferralProgramComponent } from './referral-program/referral-program.component';
+import { ActivityLogComponent } from './activity-log/activity-log.component';
+import { AddManagementComponent } from './ad-management/ad-management.component';
+import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests.component';
 
 export const AdminRoutes: Routes = [
   {
@@ -57,5 +61,21 @@ export const AdminRoutes: Routes = [
 	path: 'profile', 
 	component: ProfileComponent,
 	data: { title: 'Profile', breadcrumb: 'PROFILE'}
+  },{
+    path: 'referral-program',
+    component: ReferralProgramComponent,
+    data: { title: 'Referral program', breadcrumb: 'Referral program' }
+  },{
+    path: 'activity-log',
+    component: ActivityLogComponent,
+    data: { title: 'Activity Log', breadcrumb: 'Activity Log' }
+  },{
+    path: 'ad-management',
+    component: AddManagementComponent,
+    data: { title: 'Advertisement management', breadcrumb: 'Advertisement management' }
+  },{
+    path: 'deceased-requests',
+    component: DeceasedRequestsComponent,
+    data: { title: 'Deceased requests', breadcrumb: 'Deceased requests' }
   }
 ];

@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { APIService } from './../../../../api.service';
-import { adminSections } from '../../../../config'
+import { adminSections } from '../../../../config';
 
 @Component({
   selector: 'app-ngx-table-popup',

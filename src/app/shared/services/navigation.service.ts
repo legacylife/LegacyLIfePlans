@@ -55,23 +55,17 @@ export class NavigationService {
       name: 'Main Items'
     },*/
     {
-      name: 'User Management',
+      name: 'USER MANAGEMENT',
       type: 'dropDown',
       tooltip: 'Profile',
       icon: 'person',
       state: 'admin',
       sub: [
-        { name: 'Admin Users', state: 'userlist' },
-        { name: 'Customers', state: 'customerlist' },
-        { name: 'Advisors', state: 'advisorlist' },
+        { name: 'ADMIN USERS', state: 'userlist' },
+        { name: 'ADVISORS', state: 'advisorlist' },
+        { name: 'CUSTOMERS', state: 'customerlist' },
+        
       ]
-    },    
-	{
-      name: 'Zip Code map',
-      type: 'link',
-      tooltip: 'Zip Code map',
-      icon: 'add_location',
-      state: 'admin/map'
     },
     {
       name: 'CMS',
@@ -80,8 +74,43 @@ export class NavigationService {
       icon: 'pages',
       state: 'admin/cms'
     },
-	{
-      name: 'Email Templates',
+    {
+      name: 'REFERRAL PROGRAME',
+      type: 'link',
+      tooltip: 'Referral program',
+      icon: 'card_giftcard',
+      state: 'admin/referral-program'
+    },
+    {
+      name: 'ACTIVITY LOG',
+      type: 'link',
+      tooltip: 'Activity Log',
+      icon: 'pages',
+      state: 'admin/activity-log'
+    },   
+    {
+      name: 'ADVERTISEMENT MANAGEMENT',
+      type: 'link',
+      tooltip: 'Advertisement management',
+      icon: 'pages',
+      state: 'admin/ad-management'
+    }, 
+	  {
+      name: 'ZIP CODE MAP',
+      type: 'link',
+      tooltip: 'Zip Code map',
+      icon: 'add_location',
+      state: 'admin/map'
+    },
+    {
+      name: 'DECEASED REQUESTS',
+      type: 'link',
+      tooltip: 'Deceased requests',
+      icon: 'add_location',
+      state: 'admin/deceased-requests'
+    },
+	  {
+      name: 'EMAIL TEMPLATES',
       type: 'link',
       tooltip: 'Email Templates Management System',
       icon: 'email',

@@ -41,6 +41,10 @@ import { NgxTablePopupComponent } from './userlist/ngx-table-popup/ngx-table-pop
 import { ProfileComponent } from './profile/profile.component';
 import { AgmCoreModule } from '@agm/core';
 import { MapComponent } from './map/map.component';
+import { ReferralProgramComponent } from './referral-program/referral-program.component';
+import { ActivityLogComponent } from './activity-log/activity-log.component';
+import { AddManagementComponent } from './ad-management/ad-management.component';
+import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests.component';
 
 @NgModule({
   imports: [
@@ -70,7 +74,10 @@ import { MapComponent } from './map/map.component';
     RouterModule.forChild(AdminRoutes)	  
   ],
   declarations: [
-    AppBlankComponent,userlistComponent,userviewComponent,customerlistComponent,advisorlistComponent,NgxTablePopupComponent,cmslistComponent,cmseditComponent,ProfileComponent,EmailTemplateComponent,EmailTemplateEditComponent,MapComponent
+    AppBlankComponent,userlistComponent,userviewComponent,customerlistComponent,advisorlistComponent,
+    NgxTablePopupComponent,cmslistComponent,cmseditComponent,ProfileComponent,EmailTemplateComponent,
+    EmailTemplateEditComponent,MapComponent,ReferralProgramComponent, ActivityLogComponent, AddManagementComponent,
+    DeceasedRequestsComponent
   ],
   entryComponents: [NgxTablePopupComponent]
 })
