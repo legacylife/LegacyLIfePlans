@@ -15,7 +15,8 @@ import {
   MatSelectModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatDialogModule
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -42,6 +43,8 @@ import { SetPasswordComponent } from './advisor/set-password/set-password.compon
 import { ThankYouComponent } from './advisor/thank-you/thank-you.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { PasswordResetSuccessfulComponent } from './password-reset-successful/password-reset-successful.component';
+import { SubscriptionComponent } from './subscription/subscription.component';
+import { ReferAndEarnComponent } from './subscription/refer-and-earn/refer-and-earn.component';
 
 @NgModule({
   imports: [
@@ -62,13 +65,15 @@ import { PasswordResetSuccessfulComponent } from './password-reset-successful/pa
     MatDatepickerModule,
     MatNativeDateModule,
     MatTooltipModule,
+    MatDialogModule,
     RouterModule.forChild(AuthRoutes)
   ],
   declarations: [SigninComponent, ForgotPasswordComponent, LockscreenComponent,
     NotFoundComponent, ErrorComponent, AdvisorSigninComponent, AdvisorSignupComponent,
     CustomerSignupComponent, CustomerSigninComponent, AdminSignupComponent,
     AdminSigninComponent, BusinessInfoComponent, UpdateProfileComponent, SetPasswordComponent,
-    ThankYouComponent, ResetPasswordComponent, PasswordResetSuccessfulComponent],
+    ThankYouComponent, ResetPasswordComponent, PasswordResetSuccessfulComponent, SubscriptionComponent, ReferAndEarnComponent],
+    entryComponents: [ReferAndEarnComponent],
     providers: [
       MatDatepickerModule,
     ]
