@@ -118,11 +118,12 @@ export class userlistComponent implements OnInit {
       })
   }
   statusChange(row) {  
-  var stat = 'activate';
-  if(row.status=='Active')
-  stat = 'deactivate';
-  this.confirmService.confirm({message: `Are you sure you want to ${stat}? this account?`})	// for "${row.username}?"
-      .subscribe(res => {
+    var statMsg = "Are you sure you want to re-activate this user, `${row.username}?` Access to the admin panel account for the user."
+    if(row.status == 'Active'){
+	 statMsg = "Are you sure you want to deactivate this user, `${row.username}?` Access to the admin panel account will be locked for the user."
+	}
+
+     this.confirmService.confirm({message: statMsg}).subscribe(res => {
         if (res) {
           this.loader.open();
 		  var query = {};

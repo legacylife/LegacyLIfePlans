@@ -17,24 +17,24 @@
           [footerHeight]="50"
           [limit]="10"
           [rowHeight]="'auto'">
-          <ngx-datatable-column name="Email Code" [flexGrow]="1">
+          <ngx-datatable-column name="Email Code" prop="code" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{ row?.code }}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Email Title" [flexGrow]="1">
+          <ngx-datatable-column name="Email Title" prop="title" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{ row?.title }}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Email Subject" [flexGrow]="1">
+          <ngx-datatable-column name="Email Subject" prop="mailSubject" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{ row?.mailSubject }}
             </ng-template>
           </ngx-datatable-column>          
           <ngx-datatable-column name="Status" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              <mat-chip mat-sm-chip [color]="'primary'" [selected]="row.status">{{row.status ? 'active' : 'in-active'}}</mat-chip>
+              <mat-chip mat-sm-chip>{{row.status ? 'Active' : 'In-Active'}}</mat-chip>
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column name="Actions" [flexGrow]="1">

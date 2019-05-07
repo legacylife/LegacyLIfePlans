@@ -23,7 +23,7 @@
         </ngx-datatable-column>
         <ngx-datatable-column name="Status" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            <mat-chip mat-sm-chip [color]="'primary'" [selected]="row.status">{{row.status ? 'active' : 'in-active'}}</mat-chip>
+            <mat-chip mat-sm-chip>{{row.status ? 'Active' : 'In-Active'}}</mat-chip>
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column name="Actions" [flexGrow]="1">

@@ -51,11 +51,12 @@ export class advisorlistComponent implements OnInit {
     })
   }
   statusChange(row) {
-    var stat = 'activate';
-    if (row.status == 'Active')
-      stat = 'deactivate';
-
-    this.confirmService.confirm({ message: `Are you sure you want to ${stat}? this account?` })
+    var statMsg = "Are you sure you want to re-activate this user, `${row.username}?` Access to the website account for the advisor, trustees and advisors will be re-opened as per the subscription status of this customer."
+    if(row.status == 'Active'){
+	 statMsg = "Are you sure you want to deactivate this user, `${row.username}?` Access to the website account will be locked for the advisor, trustees and advisors. This does not affect the data uploaded by the customer."
+	}
+	
+     this.confirmService.confirm({message: statMsg})
       .subscribe(res => {
         if (res) {
           this.loader.open();
