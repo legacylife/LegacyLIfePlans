@@ -17,7 +17,7 @@ export class customerlistComponent implements OnInit {
   closeResult: string;
   userType: string = ""
   showOrgSugg: boolean = true  
-  rows = [];
+  public rows: any[];
   temp = [];  
   
   constructor(private api: APIService, private route: ActivatedRoute, private router:Router,  private snack: MatSnackBar,  private confirmService: AppConfirmService, private loader: AppLoaderService) { }   

@@ -1,6 +1,6 @@
 <div fxLayout="row wrap">
   <div fxFlex="100" fxFlex.gt-md="300px" fxFlex.gt-sm="50">
-    <mat-card class="profile-sidebar mb-1 pb-0">
+   <!-- <mat-card class="profile-sidebar mb-1 pb-0">
       <div class="propic text-center">
         <img src="assets/images/sq-face-220.jpg" alt="">
       </div>
@@ -9,17 +9,17 @@
         <div class="subtitle mb-05"></div>
         <div class="text-muted"></div>
       </div>
-    </mat-card>
+    </mat-card>-->
     <!-- Contact Information -->
     <mat-card class="default">
       <mat-card-title>Contact Information</mat-card-title>
       <mat-card-content class="pt-0">
         <mat-list>
           <mat-list-item><mat-icon class="mr-1">public</mat-icon> www.mhrafi.com</mat-list-item>
-          <mat-list-item><mat-icon class="mr-1">email</mat-icon> </mat-list-item>
-          <mat-list-item><mat-icon class="mr-1">phone</mat-icon> </mat-list-item>
-		  <mat-list-item><mat-icon class="mr-1">public</mat-icon></mat-list-item>          
-          <mat-list-item><mat-icon class="mr-1">add_location</mat-icon> SUST, Sylhet, BD</mat-list-item>
+          <mat-list-item><mat-icon class="mr-1">email</mat-icon> {{ rows?.username }} </mat-list-item>
+          <mat-list-item><mat-icon class="mr-1">phone</mat-icon>  {{ rows?.phoneNumber[0]['prefix'] }} {{ rows?.phoneNumber[0]['phonenumber'] }} </mat-list-item>
+		      <mat-list-item><mat-icon class="mr-1">public</mat-icon></mat-list-item>          
+          <mat-list-item><mat-icon class="mr-1">add_location</mat-icon> {{ rows?.city }} {{ rows?.zipcode }},{{ rows?.state }},{{ rows?.country }} </mat-list-item>
         </mat-list>
       </mat-card-content>
     </mat-card>

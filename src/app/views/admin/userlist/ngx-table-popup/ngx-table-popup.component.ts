@@ -13,6 +13,7 @@ export class NgxTablePopupComponent implements OnInit {
   adminSections = [];
   url : string;
   RequestData : any;
+  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NgxTablePopupComponent>,
@@ -25,7 +26,7 @@ export class NgxTablePopupComponent implements OnInit {
   }
   buildItemForm(item) {
   console.log("Item info",item)
-  
+   
     this.itemForm = this.fb.group({
       firstName: [item.firstName || '', Validators.required],
       lastName: [item.lastName || '', Validators.required],

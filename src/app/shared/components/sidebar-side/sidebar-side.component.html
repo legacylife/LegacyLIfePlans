@@ -1,8 +1,8 @@
 <div class="sidebar-panel">
   <div id="scroll-area" [perfectScrollbar] class="navigation-hold" fxLayout="column">
     <!-- App Logo -->
-    <div class="branding default-bg">
-      <img src="assets/images/small-logo.png" alt="" class="app-logo">
+    <div class="branding default-bg">      
+      <img src="assets/images/small-logo.png" alt="" height="41px;" class="app-logoTEST">
       <!-- Two different logos for dark and light themes 
       <img 
       src="assets/images/logo-text-white.png" 
@@ -15,13 +15,13 @@
       class="app-logo-text"
       *ngIf="themeService.activatedTheme?.name?.indexOf('dark') === -1">-->
     </div>
-
     <!-- Sidebar user -->
     <div class="app-user">
-      <div class="app-user-photo">
+      <!--<div class="app-user-photo">
         <img src="assets/images/face-7.jpg" alt="">
-      </div>
-      <span class="app-user-name mb-05">
+      </div>-->
+      <mat-divider class="mat-divider mat-divider-horizontal" role="separator" aria-orientation="horizontal"></mat-divider>
+      <span class="app-user-name mb-01">
         <mat-icon class="icon-xs text-muted">lock</mat-icon> 
         {{this.firstName}} {{this.lastName}}
       </span>
@@ -31,8 +31,9 @@
         class="text-muted"
         mat-icon-button 
         mat-xs-button
-         routerLink="/admin/profile/">
-          <mat-icon>settings</mat-icon>
+        matTooltip="Profile"
+        routerLink="/admin/profile/">
+          <mat-icon>account_box</mat-icon>
         </button>
         <button 
         class="text-muted"
@@ -42,8 +43,8 @@
        (click)="logout()">
           <mat-icon>exit_to_app</mat-icon>
         </button>
-        
       </div>
+      <mat-divider class="mat-divider mat-divider-horizontal" role="separator" aria-orientation="horizontal" style="margin-top:100px"></mat-divider>
     </div>
     <!-- Navigation -->
     <app-sidenav [items]="menuItems" [hasIconMenu]="hasIconTypeMenuItem" [iconMenuTitle]="iconTypeMenuTitle"></app-sidenav>

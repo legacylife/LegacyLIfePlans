@@ -92,14 +92,14 @@ export class NavigationService {
       name: 'ADVERTISEMENT MANAGEMENT',
       type: 'link',
       tooltip: 'Advertisement management',
-      icon: 'pages',
+      icon: 'business',
       state: 'admin/ad-management'
     }, 
 	  {
       name: 'ZIP CODE MAP',
       type: 'link',
       tooltip: 'Zip Code map',
-      icon: 'add_location',
+      icon: 'map',
       state: 'admin/map'
     },
     {

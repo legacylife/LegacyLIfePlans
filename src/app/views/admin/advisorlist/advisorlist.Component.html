@@ -15,22 +15,22 @@
           [footerHeight]="50"
           [limit]="10"
           [rowHeight]="'auto'">
-          <ngx-datatable-column name="Email" [flexGrow]="1">
+          <ngx-datatable-column name="Email" prop="username" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{ row?.username }}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Verified Status" [flexGrow]="1">
+          <ngx-datatable-column name="Verified Status" prop="status" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{ row?.status }}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Name" [flexGrow]="1">
+          <ngx-datatable-column name="Name" prop="firstName" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{ row?.firstName +' '+ row?.lastName}}
             </ng-template>
           </ngx-datatable-column>          
-          <ngx-datatable-column name="Business Name" [flexGrow]="1">
+          <ngx-datatable-column name="Business Name" prop="businessName" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{ row?.businessName }}
             </ng-template>
@@ -50,23 +50,23 @@
                 {{ row?.zipcode }}
               </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Subscription Status" [flexGrow]="1">
+          <ngx-datatable-column name="Subscription Status" prop="end_date" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{ row?.subscription_detail.end_date}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Expiry Date" [flexGrow]="1">
+          <ngx-datatable-column name="Expiry Date" prop="end_date" [flexGrow]="1">
               <ng-template let-row="row" ngx-datatable-cell-template>
                 {{ row?.subscription_detail.end_date}}
               </ng-template>
             </ngx-datatable-column>
-          <ngx-datatable-column name="Sign up Request" [flexGrow]="1">
+          <ngx-datatable-column name="Sign up Request" prop="createdOn" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{ row?.subscription_detail.createdOn}}
             </ng-template>
           </ngx-datatable-column>
 
-          <ngx-datatable-column name="Sign up approval" [flexGrow]="1">
+          <ngx-datatable-column name="Sign up approval" prop="signupApprovalDate" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{ row?.subscription_detail.signupApprovalDate}}
             </ng-template>
@@ -76,7 +76,7 @@
               <mat-chip mat-sm-chip [color]="'primary'" [selected]="row.status" (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Actions" [flexGrow]="1">
+          <ngx-datatable-column name="Actions" [sortable]="false" [draggable]="false" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
              <a mat-icon-button mat-sm-button color="primary" class="mb-1" title="View" [routerLink]="['/admin/userview', row._id]"><mat-icon style="font-size: 32px;">pageview</mat-icon></a>
             </ng-template>

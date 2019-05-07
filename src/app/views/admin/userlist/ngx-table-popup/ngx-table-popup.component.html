@@ -32,7 +32,23 @@
       </mat-form-field>
     </div>
 
-    <div fxFlex="100">
+	
+    
+   <mat-card class="default" *ngFor="let t of adminSections"> 
+    <mat-card-content class="pt-0">
+        <mat-list >
+          <Label>{{t.name}}</Label>
+            <mat-radio-group  class="full-width" name="{{t.code}}" [formControl]="itemForm.controls[t.code]">
+              <mat-list-item>
+                <mat-radio-button value="fullaccess">Full Access </mat-radio-button>   <mat-radio-button value="denyall"> Deny All</mat-radio-button>
+              </mat-list-item>
+        	</mat-radio-group>
+      
+        </mat-list>
+    </mat-card-content>
+   </mat-card>  
+
+    <!--<div fxFlex="100">
         <Label>Access Sections</Label>
         <div class="pb-1" *ngFor="let t of adminSections">
             <Label>{{t.name}}    </Label>
@@ -44,11 +60,9 @@
             </mat-radio-group>
         </div>        
     </div>
-    
-    <!-- <div fxFlex="50"  class="pt-1 pr-1">
+    <div fxFlex="50"  class="pt-1 pr-1">
       <mat-slide-toggle [formControl]="itemForm.controls['status']">Active Customer</mat-slide-toggle>
     </div> -->
-
     <div fxFlex="100" class="mt-1">
       <button mat-raised-button color="primary" [disabled]="itemForm.invalid">Save</button>
       <span fxFlex></span>
