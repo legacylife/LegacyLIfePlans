@@ -35,6 +35,8 @@ var userSchema = new mongoose.Schema({
   socialMediaToken: String,
   socialPlatform: { type: String, default:'Email' },   
   profilePicture: String,
+
+  sectionAccess:Object,
   // Advisor fields
   businessName : String, 
   yearsOfService : String, 
@@ -65,7 +67,7 @@ var userSchema = new mongoose.Schema({
   otpCode : String,
   lastLoggedInOn: {
     type: Date,
-    required: true
+    //required: true
   }, 
   loginCount: Number,
   resetPasswordToken: String,
