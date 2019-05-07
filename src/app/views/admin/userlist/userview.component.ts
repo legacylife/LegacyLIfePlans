@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
+import { adminSections } from '../../../config';
 
 @Component({
   selector: 'userview',
@@ -14,7 +15,6 @@ export class userviewComponent implements OnInit {
   row : any;
   selectedUserId:string = "";
   adminSections = [];
-  //public getItemSub: Subscription;
 
  constructor(private api: APIService, private route: ActivatedRoute, private router:Router) { }   
   ngOnInit() {
@@ -22,41 +22,10 @@ export class userviewComponent implements OnInit {
       this.router.navigate(['/', 'llp-admin', 'signin'])
     }
 
-    this.userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
-    this.userType = localStorage.getItem("userType") || sessionStorage.getItem("userType")   
-
 	  const locationArray = location.href.split('/')
     this.selectedUserId = locationArray[locationArray.length - 1]
     this.getUser()
-
-    this.adminSections = [{
-      name: 'User Management',
-      status: 0
-    }, {
-      name: 'Advisor Management',
-      status: 0
-    }, {
-      name: 'Activity Log',
-      status: 1
-    }, {
-      name: 'Zip Code map',
-      status: 1
-    }, {
-      name: 'CMS pages',
-      status: 1
-    },{
-      name: 'Referral program',
-      status: 0
-    }, {
-      name: 'Advertisement management',
-      status: 1
-    }, {
-      name: 'Deceased requests',
-      status: 1
-    }, {
-      name: 'Admin Management',
-      status: 1
-    }]
+    this.adminSections = adminSections
   }
 
   //function to get all events

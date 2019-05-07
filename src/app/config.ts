@@ -64,3 +64,32 @@ export const coachSteps = [{
   task: "Keep track of all your product offerings at a single glance.",
   link: "/product"
 }]
+
+export const adminSections = [{
+  name: 'User Management',
+  code: "usermanagement"
+}, {
+  name: 'Advisor Management',
+  code: "advisormanagement"
+}, {
+  name: 'Activity Log',
+  code: "activitylog"
+}, {
+  name: 'Zip Code map',
+  code: "zipcodemap"
+}, {
+  name: 'CMS pages',
+  code: "cms"
+},{
+  name: 'Referral program',
+  code: "referral"
+}, {
+  name: 'Advertisement management',
+  code: "addmanagement"
+}, {
+  name: 'Deceased requests',
+  code: "deceasedrequest"
+}, {
+  name: 'Admin Management',
+  code: "adminmanagement"
+}]

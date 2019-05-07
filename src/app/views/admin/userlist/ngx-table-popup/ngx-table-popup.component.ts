@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { APIService } from './../../../../api.service';
+import { adminSections } from '../../../../config'
 
 @Component({
   selector: 'app-ngx-table-popup',
@@ -10,6 +11,8 @@ import { APIService } from './../../../../api.service';
 export class NgxTablePopupComponent implements OnInit {
   public itemForm: FormGroup;
   adminSections = [];
+  url : string;
+  RequestData : any;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NgxTablePopupComponent>,
@@ -17,66 +20,36 @@ export class NgxTablePopupComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.buildItemForm(this.data.payload)
-
-    this.adminSections = [{
-      name: 'User Management',
-      code: "usermanagement"
-    }, {
-      name: 'Advisor Management',
-      code: "advisormanagement"
-    }, {
-      name: 'Activity Log',
-      code: "activitylog"
-    }, {
-      name: 'Zip Code map',
-      code: "zipcodemap"
-    }, {
-      name: 'CMS pages',
-      code: "cms"
-    },{
-      name: 'Referral program',
-      code: "referral"
-    }, {
-      name: 'Advertisement management',
-      code: "addmanagement"
-    }, {
-      name: 'Deceased requests',
-      code: "deceasedrequest"
-    }, {
-      name: 'Admin Management',
-      code: "adminmanagement"
-    }]
-
-
-
+    this.buildItemForm(this.data.payload) 
+    this.adminSections = adminSections
   }
   buildItemForm(item) {
-  console.log('buildItemForm')
+  console.log("Item info",item)
   
     this.itemForm = this.fb.group({
       firstName: [item.firstName || '', Validators.required],
       lastName: [item.lastName || '', Validators.required],
       username: [item.username || '', Validators.required],
       status: [item.status || false],
-      usermanagement: [item.usermanagement || '', Validators.required],
-      advisormanagement: [item.advisormanagement || '', Validators.required],
-      activitylog: [item.activitylog || '', Validators.required],
-      zipcodemap: [item.zipcodemap || '', Validators.required],
-      cms: [item.cms || '', Validators.required],
-      referral: [item.referral || '', Validators.required],
-      addmanagement: [item.addmanagement || '', Validators.required],
-      deceasedrequest: [item.deceasedrequest || '', Validators.required],
-      adminmanagement: [item.adminmanagement || '', Validators.required]
+      usermanagement: [(item.sectionAccess && item.sectionAccess.usermanagement) || '', Validators.required],
+      advisormanagement: [(item.sectionAccess && item.sectionAccess.advisormanagement) || '', Validators.required],
+      activitylog: [(item.sectionAccess && item.sectionAccess.activitylog) || '', Validators.required],
+      zipcodemap: [(item.sectionAccess && item.sectionAccess.zipcodemap) || '', Validators.required],
+      cms: [(item.sectionAccess && item.sectionAccess.cms) || '', Validators.required],
+      referral: [(item.sectionAccess && item.sectionAccess.referral) || '', Validators.required],
+      addmanagement: [(item.sectionAccess && item.sectionAccess.addmanagement) || '', Validators.required],
+      deceasedrequest: [(item.sectionAccess && item.sectionAccess.deceasedrequest) || '', Validators.required],
+      adminmanagement: [(item.sectionAccess && item.sectionAccess.adminmanagement) || '', Validators.required]
     })
   }
 
   submit() {
-    let RequestData = {
+    let userData = this.data.payload;
+    this.RequestData = {
       firstName: this.itemForm.controls['firstName'].value,
       lastName: this.itemForm.controls['lastName'].value,
       username: this.itemForm.controls['username'].value,
-      status: this.itemForm.controls['status'].value,      
+      status: 'Active',      
       userType: "sysadmin",      
       sectionAccess : {
         "usermanagement" : this.itemForm.controls['usermanagement'].value,
@@ -89,9 +62,17 @@ export class NgxTablePopupComponent implements OnInit {
         "deceasedrequest" : this.itemForm.controls['deceasedrequest'].value,
         "adminmanagement" : this.itemForm.controls['adminmanagement'].value
       }
+      
+    }
+    if(userData._id){
+      this.RequestData._id = userData._id;
+      this.url = 'userlist/updateProfile';
+    }
+    else {
+      this.url = 'userlist/addmember';
     }
    
-   this.api.apiRequest('post', 'userlist/addmember', RequestData).subscribe(result => {
+   this.api.apiRequest('post', this.url, this.RequestData).subscribe(result => {
       if(result.status == "error"){
 		 this.dialogRef.close(this.itemForm.value)
       } else {
