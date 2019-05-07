@@ -91,6 +91,7 @@ var userSchema = new mongoose.Schema({
   createdBy: String,  
   modifiedOn: Date,
   modifiedBy: String,
+  token: String,  
   status: String,
 })
 

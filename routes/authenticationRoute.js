@@ -281,16 +281,17 @@ function forgotPassword (req, res) {
     } else if(!user){
       res.send(resFormat.rError("Looks like your account does not exist. Sign up to create an account."))
     } else{
+  	  var tokens = generateToken(85);
       var date = new Date()
       user.resetPasswordExpiry = date.setHours(date.getHours() + 48)
-
+	  user.token = tokens
       //update password reset expiry date for user
       user.save(function(err, newUser) {
         if (err) {
           res.status(500).send(resFormat.rError(err))
         }
         let clientUrl = constants.clientUrl
-        var link =  clientUrl + '/llp-admin/reset-password/' + new Buffer(user._id.toString()).toString('base64');
+        var link =  clientUrl + '/llp-admin/reset-password/' + tokens;
 
         //forgot password email template
         emailTemplatesRoute.getEmailTemplateByCode("ForgotPassword").then((template) => {
@@ -384,6 +385,15 @@ async function checkEmail(req, res){
   } catch (e) {
     res.status(401).send(resFormat.rError(e.message))
   }
+}
+
+function generateToken(n) {
+    var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    var token = '';
+    for(var i = 0; i < n; i++) {
+        token += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return token;
 }
 
 router.post(["/signup", "/register"], create)
