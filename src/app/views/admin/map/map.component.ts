@@ -19,11 +19,15 @@ export class MapComponent implements OnInit {
     { lat: 24.919298, lng: 91.831699 }
   ];
   circleMapRadius = 50000;
-  
-  constructor(private api: APIService, private route: ActivatedRoute, private router:Router) { }   
+  aceessSection: any;
+
+  constructor(private api: APIService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-  
+    if (!this.api.isLoggedIn()) {
+      this.router.navigate(['/', 'llp-admin', 'signin'])
+    }
+    this.aceessSection = this.api.getUserAccess('zipcodemap')
   }
 
   circleMapRadiusChange(radius) {

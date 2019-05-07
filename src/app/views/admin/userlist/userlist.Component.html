@@ -1,8 +1,9 @@
-<div class="m-333">
+
+<div class="m-333" *ngIf="aceessSection">
   <!-- <span fxFlex></span> -->
   <button mat-raised-button class="mb-05 mt-1" color="primary" (click)="openPopUp({}, true)">Add Member</button>
 </div>
-<div class="row">    
+<div class="row" *ngIf="aceessSection">    
 <mat-form-field class="margin-333" style="width: 100%">
   <input 
   matInput 
@@ -56,4 +57,8 @@
         </ngx-datatable>
   </mat-card-content>
 </mat-card>
+</div>
+
+<div class="row" *ngIf="!aceessSection">
+  <p>You don't have permission to this section.</p>
 </div>

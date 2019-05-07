@@ -1,73 +1,73 @@
-<div class="row">    
-<mat-form-field class="margin-333" style="width: 100%">
-  <input matInput placeholder="Type to filter all columns" value="" (keyup)='updateFilter($event)'>
-</mat-form-field>
-<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
-  <mat-card-content class="p-0">
-    <ngx-datatable
-          class="material ml-0 mr-0"
-          [rows]="rows"
-          [columnMode]="'flex'"
-          [headerHeight]="50"
-          [footerHeight]="50"
-          [limit]="10"
-          [rowHeight]="'auto'">
-          <ngx-datatable-column name="Email" prop="username" [flexGrow]="1">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-             {{ row?.username }}
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Verified Status" prop="status" [flexGrow]="1">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row?.status }}
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Name" prop="firstName" [flexGrow]="1">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row?.firstName +' '+ row?.lastName}}
-              </ng-template>
-            </ngx-datatable-column>          
-            <ngx-datatable-column name="State" [flexGrow]="1">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row?.state }}
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="City" [flexGrow]="1">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row?.city }}
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Zipcode" [flexGrow]="1">
-                <ng-template let-row="row" ngx-datatable-cell-template>
-                  {{ row?.zipcode }}
-                </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Subscription Status" prop="end_date" [flexGrow]="1">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row?.subscription_detail.end_date}}
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column name="Expiry Date"  prop="end_date"  [flexGrow]="1">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row?.subscription_detail.end_date}}
-              </ng-template>
-            </ngx-datatable-column> 
-            <ngx-datatable-column name="Own legacy count" [flexGrow]="1">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                0
-              </ng-template>
-            </ngx-datatable-column>           
-            <ngx-datatable-column name="Status" [flexGrow]="1">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                <mat-chip mat-sm-chip [color]="'primary'" [selected]="row.status" (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
-              </ng-template>
-            </ngx-datatable-column>            
-            <ngx-datatable-column name="Actions" [sortable]="false" [draggable]="false" [flexGrow]="1">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-               <a mat-icon-button mat-sm-button color="primary" class="mb-1" title="View" [routerLink]="['/admin/userview', row._id]"><mat-icon style="font-size: 32px;">pageview</mat-icon></a>
-              </ng-template>
-            </ngx-datatable-column>
-        </ngx-datatable>
-  </mat-card-content>
-</mat-card>
+<div class="row" *ngIf="aceessSection">
+  <mat-form-field class="margin-333" style="width: 100%">
+    <input matInput placeholder="Type to filter all columns" value="" (keyup)='updateFilter($event)'>
+  </mat-form-field>
+  <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+    <mat-card-content class="p-0">
+      <ngx-datatable class="material ml-0 mr-0" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [limit]="10"
+        [rowHeight]="'auto'">
+        <ngx-datatable-column name="Email" prop="username" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.username }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Verified Status" prop="status" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.status }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Name" prop="firstName" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.firstName +' '+ row?.lastName}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="State" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.state }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="City" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.city }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Zipcode" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.zipcode }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Subscription Status" prop="end_date" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.subscription_detail.end_date}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Expiry Date" prop="end_date" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.subscription_detail.end_date}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Own legacy count" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            0
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Status" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <mat-chip mat-sm-chip [color]="'primary'" [selected]="row.status" (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Actions" [sortable]="false" [draggable]="false" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <a mat-icon-button mat-sm-button color="primary" class="mb-1" title="View" [routerLink]="['/admin/userview', row._id]">
+              <mat-icon style="font-size: 32px;">pageview</mat-icon>
+            </a>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div class="row" *ngIf="!aceessSection">
+  <p>You don't have permission to this section.</p>
 </div>

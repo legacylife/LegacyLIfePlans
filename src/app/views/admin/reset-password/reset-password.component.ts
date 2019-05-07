@@ -22,52 +22,52 @@ export class ResetPasswordComponent implements OnInit {
 
   @ViewChild(MatProgressBar) progressBar: MatProgressBar;
   @ViewChild(MatButton) submitButton: MatButton;
-  constructor(private api:APIService, private fb: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute,private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) {}
+  constructor(private api: APIService, private fb: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
 
   ngOnInit() {
-    this.resetForm = this.fb.group( {
+    this.resetForm = this.fb.group({
       password: password,
       confirmPassword: confirmPassword
     });
     this.activatedRoute.params.subscribe((params: Params) => {
       this.userId = params.id
     })
-	
-	this.checkToken();
+
+    this.checkToken();
   }
   onSubmit() {
     this.loader.open();
-    const req_vars = { password: this.resetForm.controls['password'].value, userId: this.userId, userType: "sysadmin"}
+    const req_vars = { password: this.resetForm.controls['password'].value, userId: this.userId, userType: "sysadmin" }
 
     this.api.apiRequest('post', 'auth/resetPassword', req_vars).subscribe(result => {
-	this.loader.close();
-      if(result.status == "success"){
-	    this.snack.open(result.data, 'OK', { duration: 4000 })
-       
+      this.loader.close();
+      if (result.status == "success") {
+        this.snack.open(result.data, 'OK', { duration: 4000 })
+
         setTimeout(() => {
-          this.router.navigate ( [ 'llp-admin', 'password-reset-success' ] );
+          this.router.navigate(['llp-admin', 'password-reset-success']);
         }, 2000);
       } else {
-		  this.snack.open(result.data, 'OK', { duration: 4000 })
+        this.snack.open(result.data, 'OK', { duration: 4000 })
       }
     }, (err) => {
       // console.error(err)
-	   this.snack.open(err, 'OK', { duration: 4000 })
+      this.snack.open(err, 'OK', { duration: 4000 })
     })
   }
-  
+
   //function to get events
   checkToken() {
-	 let req_vars = {
-      userId: this.userId ,
+    let req_vars = {
+      userId: this.userId,
       userType: "sysadmin"
     }
-	
+
     this.api.apiRequest('post', 'auth/reset-password-token', req_vars).subscribe(result => {
-      if(result.status == "error"){
-		this.snack.open(result.data, 'OK', { duration: 6000 })
+      if (result.status == "error") {
+        this.snack.open(result.data, 'OK', { duration: 6000 })
       } else {
-       console.log(result.data)
+        console.log(result.data)
       }
     })
   }

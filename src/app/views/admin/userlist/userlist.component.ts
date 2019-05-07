@@ -26,17 +26,18 @@ export class userlistComponent implements OnInit {
   rows = [];
   columns = [];
   temp = [];
+  loggedInUserDetails : any;
+  aceessSection : any;
   public items: any[];
+  
   //public getItemSub: Subscription;
 
  constructor(private api: APIService, private route: ActivatedRoute, private router:Router,  private dialog: MatDialog, private snack: MatSnackBar,  private confirmService: AppConfirmService, private loader: AppLoaderService) { }   
   ngOnInit() {
-    this.userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
-    this.userType = localStorage.getItem("userType") || sessionStorage.getItem("userType")
-    
     if(!this.api.isLoggedIn()){
       this.router.navigate(['/', 'llp-admin', 'signin'])
     } 
+    this.aceessSection = this.api.getUserAccess('adminmanagement')
     this.getLists()
   }
 

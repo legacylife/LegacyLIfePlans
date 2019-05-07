@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule,FormBuilder, Validators, FormGroup,ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
 
-import { 
+import {
   MatListModule,
   MatIconModule,
   MatButtonModule,
@@ -18,7 +18,7 @@ import {
   MatTabsModule,
   MatInputModule,
   MatProgressBarModule
- } from '@angular/material';
+} from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
@@ -71,12 +71,12 @@ import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests
     SharedModule,
     QuillModule,
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyBNcjxo_35qnEG17dQvvftWa68eZWepYE0' }),
-    RouterModule.forChild(AdminRoutes)	  
+    RouterModule.forChild(AdminRoutes)
   ],
   declarations: [
-    AppBlankComponent,userlistComponent,userviewComponent,customerlistComponent,advisorlistComponent,
-    NgxTablePopupComponent,cmslistComponent,cmseditComponent,ProfileComponent,EmailTemplateComponent,
-    EmailTemplateEditComponent,MapComponent,ReferralProgramComponent, ActivityLogComponent, AddManagementComponent,
+    AppBlankComponent, userlistComponent, userviewComponent, customerlistComponent, advisorlistComponent,
+    NgxTablePopupComponent, cmslistComponent, cmseditComponent, ProfileComponent, EmailTemplateComponent,
+    EmailTemplateEditComponent, MapComponent, ReferralProgramComponent, ActivityLogComponent, AddManagementComponent,
     DeceasedRequestsComponent
   ],
   entryComponents: [NgxTablePopupComponent]

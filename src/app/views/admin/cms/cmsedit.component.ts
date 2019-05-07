@@ -16,9 +16,15 @@ export class cmseditComponent implements OnInit {
   pageTitle: string
   PageBody: string
   row : any
+  aceessSection : any;
   constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private loader: AppLoaderService) { }
 
   ngOnInit() {
+
+    if(!this.api.isLoggedIn()){
+      this.router.navigate(['/', 'llp-admin', 'signin'])
+    } 
+    this.aceessSection = this.api.getUserAccess('cms')
 
     this.cmsForm = new FormGroup({
       pageTitle: new FormControl('', [Validators.required]),

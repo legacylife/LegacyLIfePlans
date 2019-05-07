@@ -14,7 +14,7 @@ import { AppLoaderService } from '../../../shared/services/app-loader/app-loader
 })
 export class signinComponent implements OnInit {
   @ViewChild(MatButton) submitButton: MatButton;
-
+  public sectionAccessPk: any[];
   otpsec = false;
   llpsigninForm: FormGroup;
   constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
@@ -45,10 +45,13 @@ export class signinComponent implements OnInit {
       this.loader.close();
       if (result.status == "success") {
         userData = result.data;
+        console.log("user data after signup",userData.sectionAccess.activitylog)
         localStorage.setItem("userId", userData.userId)
         localStorage.setItem("userType", userData.userType)
         localStorage.setItem("firstName", userData.firstName)
         localStorage.setItem("lastName", userData.lastName)
+        localStorage.setItem("sectionAccess", JSON.stringify(userData.sectionAccess))
+        
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
         this.router.navigate(['/', 'admin', 'userlist'])
 

@@ -1,59 +1,46 @@
-<!---<div class="m-333">
- <button class="mt-1" mat-raised-button color="primary" routerLink="/admin/cms"><mat-icon>chevron_left</mat-icon> Back </button>
-</div>-->
-<mat-card class="p-0">
+<mat-card class="p-0" *ngIf="aceessSection">
     <mat-card-title class="">
-      <!--  <div class="card-title-text">Form validation</div>-->
+        <!--  <div class="card-title-text">Form validation</div>-->
         <mat-divider></mat-divider>
     </mat-card-title>
     <mat-card-content>
-        <form [formGroup]="cmsForm" method="post" (ngSubmit)="updatePage()" >
+        <form [formGroup]="cmsForm" method="post" (ngSubmit)="updatePage()">
             <div fxLayout="row wrap">
                 <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0">
                     <div class="pb-0">
                         <mat-form-field class="full-width">
-                            <input
-                            matInput
-                            name="pagetitle"
-                            [formControl]="cmsForm.controls['pageTitle']"
-                            placeholder="Page Title"
-                            value="">
-                        </mat-form-field>                        
+                            <input matInput name="pagetitle" [formControl]="cmsForm.controls['pageTitle']" placeholder="Page Title" value="">
+                        </mat-form-field>
                     </div>
                 </div>
-                
+
                 <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0">
-                        <div class="pb-0">
-                            <mat-form-field class="full-width">
-                                <input
-                                matInput
-                                name="pageFor"
-                                [formControl]="cmsForm.controls['pageFor']"
-                                placeholder="Page For all, customers or advisors"
+                    <div class="pb-0">
+                        <mat-form-field class="full-width">
+                            <input matInput name="pageFor" [formControl]="cmsForm.controls['pageFor']" placeholder="Page For all, customers or advisors"
                                 value="">
-                            </mat-form-field>                        
-                        </div>
-                </div>
-                <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0">
-                        <div class="pb-0">
-                        </div>
+                        </mat-form-field>
+                    </div>
                 </div>
                 <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0">
                     <div class="pb-0">
-                        <mat-card class="p-0">                            
-                            <mat-card-content class="p-0">
-                              <quill-editor 
-                              theme="snow" 
-                              name="bodytext"
-                              [formControl]="cmsForm.controls['pageBody']"                               
-                              ></quill-editor>
-                            </mat-card-content>
-                          </mat-card>                        
                     </div>
-                </div>                        
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0">
+                    <div class="pb-0">
+                        <mat-card class="p-0">
+                            <mat-card-content class="p-0">
+                                <quill-editor theme="snow" name="bodytext" [formControl]="cmsForm.controls['pageBody']"></quill-editor>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
             </div>
             <button mat-raised-button color="primary" [disabled]="cmsForm.invalid">Submit</button>
         </form>
     </mat-card-content>
 </mat-card>
 
+<div class="row" *ngIf="!aceessSection">
+    <p>You don't have permission to this section.</p>
+</div>

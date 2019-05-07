@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatStepperModule } from '@angular/material/stepper';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
 import {
   MatProgressBarModule,
   MatButtonModule,
@@ -12,11 +12,11 @@ import {
   MatCheckboxModule,
   MatIconModule,
   MatFormFieldModule,
-  MatSelectModule,    
+  MatSelectModule,
   MatDatepickerModule,
   MatNativeDateModule,
   MatTooltipModule
- } from '@angular/material';
+} from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LockscreenComponent } from './lockscreen/lockscreen.component';
@@ -49,11 +49,11 @@ import { ErrorComponent } from './error/error.component';
     MatTooltipModule,
     RouterModule.forChild(AuthRoutes)
   ],
-  declarations: [ForgotPasswordComponent, LockscreenComponent, signinComponent, 
+  declarations: [ForgotPasswordComponent, LockscreenComponent, signinComponent,
     ResetPasswordComponent, NotFoundComponent, ErrorComponent, PasswordResetSuccessfulComponent,
     ForgotPasswordSuccessfulComponent],
-   providers: [
-      MatDatepickerModule,
-    ]
+  providers: [
+    MatDatepickerModule,
+  ]
 })
 export class AuthModule { }

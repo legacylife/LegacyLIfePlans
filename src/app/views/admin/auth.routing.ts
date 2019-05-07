@@ -9,41 +9,41 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { ErrorComponent } from './error/error.component';
 
 export const AuthRoutes: Routes = [
-   {
-    path: '',
-      component: signinComponent,
-      data: { title: 'SignIn' }
-    }, {
-    path: 'signin',
-      component: signinComponent,
-      data: { title: 'SignIn' }
-    },{
-    path: 'forgot-password',
-	  component: ForgotPasswordComponent,
-	  data: { title: 'Forgot password' }
+	{
+		path: '',
+		component: signinComponent,
+		data: { title: 'SignIn' }
 	}, {
-	path: 'reset-password/:id',
-	  component: ResetPasswordComponent,
-	  data: { title: 'Reset password' }
-	},{
-    path: 'forgot-password-success',
-	  component: ForgotPasswordSuccessfulComponent,
-	  data: { title: 'Forgot password thank you' }
-	},{
-    path: 'password-reset-success',
-	  component: PasswordResetSuccessfulComponent,
-	  data: { title: 'Reset password thank you' }
+		path: 'signin',
+		component: signinComponent,
+		data: { title: 'SignIn' }
 	}, {
-	path: 'lockscreen',
-	  component: LockscreenComponent,
-	  data: { title: 'Lockscreen' }
+		path: 'forgot-password',
+		component: ForgotPasswordComponent,
+		data: { title: 'Forgot password' }
 	}, {
-	path: '404',
-	  component: NotFoundComponent,
-	  data: { title: 'Not Found' }
+		path: 'reset-password/:id',
+		component: ResetPasswordComponent,
+		data: { title: 'Reset password' }
 	}, {
-	path: 'error',
-	  component: ErrorComponent,
-	  data: { title: 'Error' }
+		path: 'forgot-password-success',
+		component: ForgotPasswordSuccessfulComponent,
+		data: { title: 'Forgot password thank you' }
+	}, {
+		path: 'password-reset-success',
+		component: PasswordResetSuccessfulComponent,
+		data: { title: 'Reset password thank you' }
+	}, {
+		path: 'lockscreen',
+		component: LockscreenComponent,
+		data: { title: 'Lockscreen' }
+	}, {
+		path: '404',
+		component: NotFoundComponent,
+		data: { title: 'Not Found' }
+	}, {
+		path: 'error',
+		component: ErrorComponent,
+		data: { title: 'Error' }
 	}
 ];

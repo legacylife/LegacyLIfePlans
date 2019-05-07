@@ -1,3 +1,6 @@
-<p class="m-333">
-  This Activity Log section.
-</p>
+<div class="row" *ngIf="aceessSection">
+  <p>This is Activity Log section.</p>
+</div>
+<div class="row" *ngIf="!aceessSection">
+  <p>You don't have permission to this section.</p>
+</div>

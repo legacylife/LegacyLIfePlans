@@ -24,6 +24,9 @@ export class APIService {
   private token: string
   private userId: string
   private userType: string
+  private sectionAccess: any
+  private userInfo : any
+  private accessSection : any
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -79,12 +82,32 @@ private removeKeyFromStorage(key): any {
 }
 
 //function to get user id from localStorage
-  public getUser(): string {
+  public getUser(): any {
     if (!this.userId) {
       this.userId = this.getKeyFromStorage('userId')
       this.userType = this.getKeyFromStorage('userType')
+      this.sectionAccess = this.getKeyFromStorage('sectionAccess')
+      this.userInfo = {"userId" :this.userId, "userType" : this.userType, "sectionAccess" : this.sectionAccess}
     }
-    return this.userId
+    return this.userInfo
+  }
+
+  public checkPermission(key): any {
+    this.sectionAccess = this.getKeyFromStorage('sectionAccess')
+    this.accessSection = JSON.parse(this.sectionAccess)
+  }
+
+  public getUserAccess(key): any {
+    let accessFlag = false;    
+    this.sectionAccess = this.getKeyFromStorage('sectionAccess')
+    if(this.sectionAccess){
+      this.accessSection = JSON.parse(this.sectionAccess)
+      if(this.accessSection.usermanagement == 'fullaccess')
+        accessFlag = true;
+      else 
+        accessFlag = false;
+    }
+    return accessFlag
   }
 
 //function to get token & userId  from token payload
@@ -123,7 +146,6 @@ private removeKeyFromStorage(key): any {
     const request = base.pipe(
       map((response: TokenResponse) => {
         if (response.data && response.data.token) {
-          console.log(data.userType)
           //check if user type is same
           if( data.userType === response.data.userType || (data.userType == "sysadmin" && response.data.userType == "TeamMember")) {
             const { token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId } = response.data
@@ -161,6 +183,7 @@ private removeKeyFromStorage(key): any {
     this.removeKeyFromStorage('token')
     this.removeKeyFromStorage('expiryDate')
     this.removeKeyFromStorage('userHeaderDetails')
+    this.removeKeyFromStorage('sectionAccess')
 
     window.localStorage.clear();
     window.sessionStorage.clear();

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { APIService } from './../../../api.service';
 
 @Component({
   selector: 'referral-program',
@@ -6,10 +8,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./referral-program.component.css']
 })
 export class ReferralProgramComponent implements OnInit {
-
-  constructor() { }
+  aceessSection : any;
+  constructor(private api: APIService, private route: ActivatedRoute, private router:Router) { }
 
   ngOnInit() {
+    if(!this.api.isLoggedIn()){
+      this.router.navigate(['/', 'llp-admin', 'signin'])
+    } 
+    this.aceessSection = this.api.getUserAccess('referral')
   }
 
 }

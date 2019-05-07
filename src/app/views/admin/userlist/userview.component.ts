@@ -15,6 +15,7 @@ export class userviewComponent implements OnInit {
   row : any;
   selectedUserId:string = "";
   adminSections = [];
+  loggedInUserDetails : any;
 
  constructor(private api: APIService, private route: ActivatedRoute, private router:Router) { }   
   ngOnInit() {
@@ -24,8 +25,9 @@ export class userviewComponent implements OnInit {
 
 	  const locationArray = location.href.split('/')
     this.selectedUserId = locationArray[locationArray.length - 1]
-    this.getUser()
+    this.loggedInUserDetails = this.api.getUser()
     this.adminSections = adminSections
+    this.getUser()
   }
 
   //function to get all events

@@ -20,60 +20,60 @@ export const AdminRoutes: Routes = [
     path: '',
     component: AppBlankComponent,
     data: { title: 'Blank', breadcrumb: 'BLANK' }
-  },{
+  }, {
     path: 'userlist',
     component: userlistComponent,
     data: { title: 'Admin Users List', breadcrumb: 'Admin Users List' }
-  },{
+  }, {
     path: 'userview/:id',
     component: userviewComponent,
     data: { title: 'User Detail Page', breadcrumb: 'User Detail Page' }
-  },{
+  }, {
     path: 'customerlist',
     component: customerlistComponent,
-	  data: { title: 'Customers List', breadcrumb: 'Customers List'}
-  },{
+    data: { title: 'Customers List', breadcrumb: 'Customers List' }
+  }, {
     path: 'advisorlist',
     component: advisorlistComponent,
     data: { title: 'Advisors List', breadcrumb: 'Advisors List' }
-  },{
+  }, {
     path: 'cms',
     component: cmslistComponent,
-	  data: { title: 'CMS Pages', breadcrumb: 'CMS Pages' }
-  },{
+    data: { title: 'CMS Pages', breadcrumb: 'CMS Pages' }
+  }, {
     path: 'cmsedit/:id',
     component: cmseditComponent,
     data: { title: 'CMS Pages', breadcrumb: 'CMS Pages' }
-  },{
+  }, {
     path: 'email-template',
     component: EmailTemplateComponent,
-	  data: { title: 'Email Templates', breadcrumb: 'Email Templates' }
-  },{
+    data: { title: 'Email Templates', breadcrumb: 'Email Templates' }
+  }, {
     path: 'email-template-edit/:id',
     component: EmailTemplateEditComponent,
     data: { title: 'Edit Email Template', breadcrumb: 'Edit Email Template' }
-  },{
+  }, {
     path: 'map',
     component: MapComponent,
     data: { title: 'Zip Code Map', breadcrumb: 'Zip Code Map' }
   },
   {
-	path: 'profile', 
-	component: ProfileComponent,
-	data: { title: 'Profile', breadcrumb: 'PROFILE'}
-  },{
+    path: 'profile',
+    component: ProfileComponent,
+    data: { title: 'Profile', breadcrumb: 'PROFILE' }
+  }, {
     path: 'referral-program',
     component: ReferralProgramComponent,
     data: { title: 'Referral program', breadcrumb: 'Referral program' }
-  },{
+  }, {
     path: 'activity-log',
     component: ActivityLogComponent,
     data: { title: 'Activity Log', breadcrumb: 'Activity Log' }
-  },{
+  }, {
     path: 'ad-management',
     component: AddManagementComponent,
     data: { title: 'Advertisement management', breadcrumb: 'Advertisement management' }
-  },{
+  }, {
     path: 'deceased-requests',
     component: DeceasedRequestsComponent,
     data: { title: 'Deceased requests', breadcrumb: 'Deceased requests' }

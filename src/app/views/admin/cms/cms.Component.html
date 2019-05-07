@@ -1,48 +1,43 @@
-<div class="row">    
-<mat-form-field class="margin-333" style="width: 100%">
-  <input 
-  matInput 
-  placeholder="Type to filter all columns" 
-  value=""
-  (keyup)='updateFilter($event)'
-  >
-</mat-form-field>
-<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
-  <mat-card-content class="p-0">
-    <ngx-datatable
-          class="material ml-0 mr-0"
-          [rows]="rows"
-          [columnMode]="'flex'"
-          [headerHeight]="50"
-          [footerHeight]="50"
-          [limit]="10"
-          [rowHeight]="'auto'">
-          <ngx-datatable-column name="Page For" [flexGrow]="1">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row?.pageFor }}
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Page Title" [flexGrow]="1">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row?.pageTitle }}
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Page Code" [flexGrow]="1">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row?.pageCode }}
-            </ng-template>
-          </ngx-datatable-column>          
-          <ngx-datatable-column name="Status" [flexGrow]="1">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <mat-chip mat-sm-chip [color]="'primary'" [selected]="row.status">{{row.status ? 'active' : 'in-active'}}</mat-chip>
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Actions" [flexGrow]="1">
-            <ng-template let-row="row" ngx-datatable-cell-template>              
-              <a mat-icon-button mat-sm-button color="primary" class="mb-1" [routerLink]="['/admin/cmsedit', row._id]" title="View"><mat-icon style="font-size: 32px;">edit</mat-icon></a>
-            </ng-template>
-          </ngx-datatable-column>
-        </ngx-datatable>
-  </mat-card-content>
-</mat-card>
+<div class="row" *ngIf="aceessSection">
+  <mat-form-field class="margin-333" style="width: 100%">
+    <input matInput placeholder="Type to filter all columns" value="" (keyup)='updateFilter($event)'>
+  </mat-form-field>
+  <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+    <mat-card-content class="p-0">
+      <ngx-datatable class="material ml-0 mr-0" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [limit]="10"
+        [rowHeight]="'auto'">
+        <ngx-datatable-column name="Page For" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.pageFor }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Page Title" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.pageTitle }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Page Code" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.pageCode }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Status" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <mat-chip mat-sm-chip [color]="'primary'" [selected]="row.status">{{row.status ? 'active' : 'in-active'}}</mat-chip>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Actions" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <a mat-icon-button mat-sm-button color="primary" class="mb-1" [routerLink]="['/admin/cmsedit', row._id]" title="View">
+              <mat-icon style="font-size: 32px;">edit</mat-icon>
+            </a>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div class="row" *ngIf="!aceessSection">
+  <p>You don't have permission to this section.</p>
 </div>
