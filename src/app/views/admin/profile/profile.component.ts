@@ -41,16 +41,16 @@ export class ProfileComponent implements OnInit {
 	 this.llpProfileForm = new FormGroup({
 	 	  firstName: new FormControl('', Validators.required),
  	 	  lastName: new FormControl('', Validators.required),
- 	 	  phoneNumber: new FormControl('', Validators.required)		  
-	 })
-   
-	 this.llpPasswordForm = new FormGroup({
-	 	  password: new FormControl('', Validators.required),
-     	  NewPassword: new FormControl('', [Validators.required, Validators.pattern(passwordRegex), Validators.minLength(6)]),
- 	 	  confirmPassword: new FormControl('', [Validators.required,CustomValidators.equalTo(NewPassword)])		  
+ 	 	  //phoneNumber: new FormControl('', Validators.required)		  
    })
    
-    this.getProfile()
+   this.llpPasswordForm = this.fb.group({
+    password:password,
+    NewPassword: NewPassword,
+    confirmPassword: confirmPassword
+  });
+   
+	 this.getProfile()
 	 }
   }
   
@@ -69,7 +69,7 @@ export class ProfileComponent implements OnInit {
 		this.rows = result.data.userProfile;
 	    	this.llpProfileForm.controls['firstName'].setValue(this.rows.firstName); 
         this.llpProfileForm.controls['lastName'].setValue(this.rows.lastName);		
-		    this.llpProfileForm.controls['phoneNumber'].setValue(this.rows.phoneNumber[0].prefix+' '+this.rows.phoneNumber[0].phonenumber);		
+		    //this.llpProfileForm.controls['phoneNumber'].setValue(this.rows.phoneNumber[0].prefix+' '+this.rows.phoneNumber[0].phonenumber);		
       }
     }, (err) => {
       console.error(err)
@@ -99,7 +99,7 @@ export class ProfileComponent implements OnInit {
 			   
 		this.llpProfileForm.controls['firstName'].setValue(this.rows.firstName); 
     this.llpProfileForm.controls['lastName'].setValue(this.rows.lastName);		
-		this.llpProfileForm.controls['phoneNumber'].setValue(this.rows.phoneNumber[0].prefix+' '+this.rows.phoneNumber[0].phonenumber);				
+		//this.llpProfileForm.controls['phoneNumber'].setValue(this.rows.phoneNumber[0].prefix+' '+this.rows.phoneNumber[0].phonenumber);				
 		this.snack.open(result.data.message, 'OK', { duration: 4000 })		  
       }	  
     }, (err) => {
@@ -120,12 +120,7 @@ export class ProfileComponent implements OnInit {
   this.api.apiRequest('post', 'auth/changePassword',passwordData).subscribe(result => {
     this.loader.close();
      if(result.status == "error"){
-      this.snack.open(result.data, 'OK', { duration: 4000 })		  
-      /*this.llpPasswordForm = new FormGroup({
-        password: new FormControl('', [this.passwordsValidator]),
-        NewPassword: new FormControl(''),
- 	 	    confirmPassword: new FormControl('')		  
-       })*/      
+      this.llpPasswordForm.controls['password'].setErrors({'invalid': true});
      } else {
       this.snack.open(result.data.message, 'OK', { duration: 4000 })		  
      }	  

@@ -67,7 +67,7 @@ export class NgxTablePopupComponent implements OnInit {
     }
     if(userData._id){
       this.RequestData._id = userData._id;
-      this.url = 'userlist/updateProfile';
+      this.url = 'userlist/updateadminprofile';
     }
     else {
       this.url = 'userlist/addmember';

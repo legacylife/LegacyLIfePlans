@@ -82,19 +82,13 @@ private removeKeyFromStorage(key): any {
 }
 
 //function to get user id from localStorage
-  public getUser(): any {
+  public getUser(): string {
     if (!this.userId) {
       this.userId = this.getKeyFromStorage('userId')
       this.userType = this.getKeyFromStorage('userType')
       this.sectionAccess = this.getKeyFromStorage('sectionAccess')
-      this.userInfo = {"userId" :this.userId, "userType" : this.userType, "sectionAccess" : this.sectionAccess}
     }
-    return this.userInfo
-  }
-
-  public checkPermission(key): any {
-    this.sectionAccess = this.getKeyFromStorage('sectionAccess')
-    this.accessSection = JSON.parse(this.sectionAccess)
+    return this.userId
   }
 
   public getUserAccess(key): any {
