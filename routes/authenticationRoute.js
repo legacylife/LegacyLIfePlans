@@ -279,8 +279,6 @@ const resetPassword = function(req,res) {
 function forgotPassword (req, res) {
   //find user based on email id
 
-  console.log(req.body);
-
   User.findOne({"username": req.body.username}, {}, function(err, user) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -290,7 +288,7 @@ function forgotPassword (req, res) {
   	  var tokens = generateToken(85);
       var date = new Date()
       user.resetPasswordExpiry = date.setHours(date.getHours() + 48)
-	  user.token = tokens
+	    user.token = tokens
       //update password reset expiry date for user
       user.save(function(err, newUser) {
         if (err) {

@@ -194,22 +194,25 @@ function addNewMember(req, res) {
     newMem.status = "Inactive"
   }
   newMem.createdOn = new Date()
+  var tokens = generateToken(85);
+  newMem.token = tokens
 
   newMem.save(function (err, newMemRecord) {
     if (err) {
       console.log(err)
       res.status(500).send(resFormat.rError(err))
     } else {
-      let mem = req.body
+      let mem = req.body      
 
       let clientUrl = constants.clientUrl
-      var link =  clientUrl + '/llp-admin/reset-password/' + new Buffer(newMemRecord._id.toString()).toString('base64');
+      var link =  clientUrl + '/llp-admin/reset-password/' + tokens;
 
       //set new password email template
       emailTemplatesRoute.getEmailTemplateByCode("setNewPassword").then((template) => {
         if(template) {
           template = JSON.parse(JSON.stringify(template));
-          let body = template.mailBody.replace("{link}", link,"{email_id}",newMemRecord.username);
+          let body = template.mailBody.replace("{link}", link);
+          body = body.replace("{email_id}",newMemRecord.username);
           const mailOptions = {
             to : req.body.username,
             subject : template.mailSubject,
@@ -248,6 +251,15 @@ function common(req, res) {
       })
     }
   })
+}
+
+function generateToken(n) {
+  var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  var token = '';
+  for(var i = 0; i < n; i++) {
+      token += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return token;
 }
 
 router.post("/list", list);
