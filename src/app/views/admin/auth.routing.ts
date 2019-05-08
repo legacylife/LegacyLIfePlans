@@ -45,5 +45,9 @@ export const AuthRoutes: Routes = [
 		path: 'error',
 		component: ErrorComponent,
 		data: { title: 'Error' }
+	},
+	{
+	  path: '**',
+	  redirectTo: '/llp-admin/error'
 	}
 ];

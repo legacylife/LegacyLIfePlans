@@ -1,11 +1,19 @@
+<header class="auth-header">
+  <img src="assets/images/arkenea/small-logo.png" alt="">
+</header>
+<br><br>
 <div class="page-wrap height-100 default-bg">
   <div class="app-error">
     <div class="fix">
-      <mat-icon class="error-icon" color="warn">warning</mat-icon>
+      <mat-icon class="error-icon" color="error">error</mat-icon>
       <div class="error-text">
-        <h1 class="error-title">500</h1>
-        <div class="error-subtitle">Server Error!</div>
-      </div>
+        <h1 class="error-title">Error</h1>        
+      </div>      
+    </div>
+    <div class="">      
+      <div class="">
+        <div class="error-subtitle">The URL provided contains an invalid Command or Value. Please check the URL again.</div>
+      </div>      
     </div>
     
     <div class="error-actions">
@@ -13,10 +21,10 @@
       mat-raised-button 
       color="primary"
       class="mb-1 mr-05"
-      [routerLink]="['/dashboard']">Back to Dashboard</button>
-      <button 
+      [routerLink]="['/llp-admin/signin']">Back to Login</button>
+      <!-- <button 
       mat-raised-button 
-      color="warn">Report this Problem</button>
+      color="warn">Report this Problem</button> -->
     </div>
   </div>
 </div>

@@ -14,7 +14,7 @@ import { ReferralProgramComponent } from './referral-program/referral-program.co
 import { ActivityLogComponent } from './activity-log/activity-log.component';
 import { AddManagementComponent } from './ad-management/ad-management.component';
 import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests.component';
-
+import { ErrorComponent } from './error/error.component';
 export const AdminRoutes: Routes = [
   {
     path: '',
@@ -77,5 +77,9 @@ export const AdminRoutes: Routes = [
     path: 'deceased-requests',
     component: DeceasedRequestsComponent,
     data: { title: 'Deceased requests', breadcrumb: 'Deceased requests' }
+  },
+  {
+    path: '**',
+    redirectTo: '/llp-admin/error'
   }
 ];

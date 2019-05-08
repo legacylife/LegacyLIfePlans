@@ -37,7 +37,7 @@ export class ResetPasswordComponent implements OnInit {
   }
   onSubmit() {
     this.loader.open();
-    const req_vars = { password: this.resetForm.controls['password'].value, userId: this.userId, userType: "sysadmin" }
+    const req_vars = { password: this.resetForm.controls['password'].value, token: this.userId, userType: "sysadmin" }
 
     this.api.apiRequest('post', 'auth/resetPassword', req_vars).subscribe(result => {
       this.loader.close();
@@ -65,6 +65,7 @@ export class ResetPasswordComponent implements OnInit {
 
     this.api.apiRequest('post', 'auth/reset-password-token', req_vars).subscribe(result => {
       if (result.status == "error") {
+        this.router.navigate(['llp-admin', 'error']);
         this.snack.open(result.data, 'OK', { duration: 6000 })
       } else {
         console.log(result.data)
