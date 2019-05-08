@@ -212,7 +212,7 @@ function addNewMember(req, res) {
         if(template) {
           template = JSON.parse(JSON.stringify(template));
           let body = template.mailBody.replace("{link}", link);
-          body = body.replace("{email_id}",newMemRecord.username);
+          body = body.replace("{email_id}",newMem.username);
           const mailOptions = {
             to : req.body.username,
             subject : template.mailSubject,
