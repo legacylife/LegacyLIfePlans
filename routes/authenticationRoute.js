@@ -252,21 +252,27 @@ const changeEmail = function( req, res){
 
 //function to reset the password
 const resetPassword = function(req,res) {
-  User.findOne({_id: mongoose.Types.ObjectId(new Buffer(req.body.userId, 'base64').toString('ascii'))}, function(err, userDetails) {
-    if (err) {
-      res.send(resFormat.rError(err))
-    } else {
-      const user = new User()
-      const { salt, hash } = user.setPassword(req.body.password)
-      User.update({ _id: userDetails._id},{ $set: { salt, hash}} ,(err, updatedUser)=>{
-        if (err) {
-          res.send(resFormat.rError(err))
-        } else {
-          res.send(resFormat.rSuccess('Password has been updated'))
-        }
-      })
-    }
-  })
+  if(req.body.token){
+    User.findOne({token: req.body.token}, function(err, userDetails) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        const user = new User()
+        const { salt, hash } = user.setPassword(req.body.password)
+        User.update({ _id: userDetails._id},{ $set: { salt, hash,"token" :""},} ,(err, updatedUser)=>{
+          if (err) {
+            res.send(resFormat.rError(err))
+          } else {
+            res.send(resFormat.rSuccess('Password Reset Successful!'))
+          }
+        })
+      }
+    })
+  }
+  else {
+    res.send(resFormat.rError("Invalid Link"))
+  }
+    
 }
 
 //function to generate reset password link for user
@@ -352,7 +358,7 @@ function common(req, res) {
 }
 
 router.post('/reset-password-token', function(req, res){		
-	User.findOne({token:req.body.userId}, function(err, userDetails){		
+	User.findOne({token:req.body.userId}, function(err, userDetails){	
     if(userDetails){
       res.send(resFormat.rSuccess('Success'))
     } else {

@@ -19,9 +19,9 @@ var constants = {
     serveUrl: "https://llp.s3.amazonaws.com"
   },
   ses: {
-    key: "AKIAJUP324GN7JSNK5XQ",
-    secret: "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",
-    fromEmail: "dineshpatil@arkenea.com",
+    key: "AKIAUPQ3GZ6WJFHZAMNB",
+    secret: "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",
+    fromEmail: "subodh@arkenea.com",
   },
   clientUrl: process.env.clientUrl || 'http://localhost:4200',
   mailServerUrl : process.env.mailServerUri || 'http://localhost:8080',
