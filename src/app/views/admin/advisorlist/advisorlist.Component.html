@@ -40,7 +40,7 @@
           {{ row?.zipcode }}
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Subscription Status" prop="end_date" [flexGrow]="1">
+      <ngx-datatable-column name="Subscription Status" prop="end_date" [flexGrow]="1.1">
         <ng-template let-row="row" ngx-datatable-cell-template>
           {{ row?.subscription_detail.end_date}}
         </ng-template>
@@ -50,13 +50,13 @@
           {{ row?.subscription_detail.end_date}}
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Sign up Request" prop="createdOn" [flexGrow]="1">
+      <ngx-datatable-column name="Sign up Request" prop="createdOn" [flexGrow]="1.1">
         <ng-template let-row="row" ngx-datatable-cell-template>
           {{ row?.subscription_detail.createdOn}}
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column name="Sign up approval" prop="signupApprovalDate" [flexGrow]="1">
+      <ngx-datatable-column name="Sign up approval" prop="signupApprovalDate" [flexGrow]="1.1">
         <ng-template let-row="row" ngx-datatable-cell-template>
           {{ row?.subscription_detail.signupApprovalDate}}
         </ng-template>

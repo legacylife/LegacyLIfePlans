@@ -1,8 +1,7 @@
-{{loggedInUserDetails}}
 <div fxLayout="row wrap">
   <div fxFlex="100" fxFlex.gt-md="300px" fxFlex.gt-sm="50">
     <mat-card class="profile-sidebar mb-1 pb-0">
-      <div class="propic text-center">
+      <div class="propic text-center" *ngIf="row?.userType != 'sysadmin'">
         <img src="assets/images/sq-face-220.jpg" alt="">
       </div>
       <div class="profile-title text-center mb-1">         
@@ -12,11 +11,11 @@
 
       <mat-card-content class="pt-0">
         <mat-list>
-          <mat-list-item>
+          <mat-list-item *ngIf="row?.userType != 'sysadmin'">
             <mat-icon class="mr-1">public</mat-icon> {{row?.websites}}</mat-list-item>
           <mat-list-item>
             <mat-icon class="mr-1">email</mat-icon> {{row?.username}}</mat-list-item>
-          <mat-list-item>
+          <mat-list-item *ngIf="row?.userType != 'sysadmin'">
             <mat-icon class="mr-1">phone</mat-icon> {{row?.phoneNumber[0].prefix +''+ row?.phoneNumber[0].phonenumber}}</mat-list-item>          
         </mat-list>
       </mat-card-content>

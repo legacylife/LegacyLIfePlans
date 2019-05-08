@@ -105,23 +105,23 @@ export class userlistComponent implements OnInit {
             .subscribe(data => {
               this.items = data;
               this.loader.close();			  
-              this.snack.open('Member Added!', 'OK', { duration: 4000 })
+              this.snack.open('Admin Member Added!', 'OK', { duration: 4000 })
             })
         } else {
           this.updateItem(data._id, res)
             .subscribe(data => {
               this.items = data;
               this.loader.close();
-              this.snack.open('Member Updated!', 'OK', { duration: 4000 })
+              this.snack.open('Admin Member Updated!', 'OK', { duration: 4000 })
             })
         }
       })
   }
   statusChange(row) {  
-    var statMsg = "Are you sure you want to re-activate this user, `${row.username}?` Access to the admin panel account for the user."
+    var statMsg = 'Are you sure you want to re-activate this user, '+row.username+' Access to the admin panel account for the user.'
     if(row.status == 'Active'){
-	 statMsg = "Are you sure you want to deactivate this user, `${row.username}?` Access to the admin panel account will be locked for the user."
-	}
+	    statMsg = 'Are you sure you want to deactivate this user, '+row.username+' Access to the admin panel account will be locked for the user.'
+	  }
 
      this.confirmService.confirm({message: statMsg}).subscribe(res => {
         if (res) {

@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { egretAnimations } from "../../../shared/animations/egret-animations";
+
+
 @Component({
-  selector: 'app-email-template',
+  selector: 'email-template',
   templateUrl: './email-template.component.html',
   styleUrls: ['./email-template.component.scss'],
   animations: egretAnimations

@@ -5,11 +5,12 @@ import { MatSnackBar } from '@angular/material';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { egretAnimations } from "../../../shared/animations/egret-animations";
+import "./customerlist.component.css";
 
 @Component({
   selector: 'customerlist',
   templateUrl: './customerlist.component.html',
-  styleUrls: ['./customerlist.component.scss'],
+  styleUrls: ['./customerlist.component.css'],
   animations: egretAnimations
 })
 export class customerlistComponent implements OnInit {
@@ -49,9 +50,9 @@ export class customerlistComponent implements OnInit {
     })
   }
   statusChange(row) {
-    var statMsg = "Are you sure you want to re-activate this user, `${row.username}?` Access to the website account for the customer, trustees and advisors will be re-opened as per the subscription status of this customer."
+    var statMsg = "Are you sure you want to re-activate this user, "+row.username+" Access to the website account for the customer, trustees and advisors will be re-opened as per the subscription status of this customer."
     if(row.status == 'Active'){
-	 statMsg = "Are you sure you want to deactivate this user, `${row.username}?` Access to the website account will be locked for the customer, trustees and advisors. This does not affect the data uploaded by the customer."
+	 statMsg = "Are you sure you want to deactivate this user, "+row.username+" Access to the website account will be locked for the customer, trustees and advisors. This does not affect the data uploaded by the customer."
 	}
      this.confirmService.confirm({message: statMsg})
       .subscribe(res => {

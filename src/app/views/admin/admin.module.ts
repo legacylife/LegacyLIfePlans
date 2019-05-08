@@ -17,7 +17,8 @@ import {
   MatRadioModule,
   MatTabsModule,
   MatInputModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatTooltipModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -70,6 +71,7 @@ import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests
     FileUploadModule,
     SharedModule,
     QuillModule,
+    MatTooltipModule,
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyBNcjxo_35qnEG17dQvvftWa68eZWepYE0' }),
     RouterModule.forChild(AdminRoutes)
   ],

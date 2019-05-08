@@ -39,7 +39,7 @@
           </ngx-datatable-column>
           <ngx-datatable-column name="Actions" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>              
-              <a mat-icon-button mat-sm-button color="primary" class="mb-1" [routerLink]="['/admin/email-template-edit', row._id]" title="View"><mat-icon style="font-size: 32px;">edit</mat-icon></a>
+              <a mat-icon-button mat-sm-button color="primary" class="mb-1" [routerLink]="['/admin/email-template-edit', row._id]" mattooltip="Toggle Collapse" title="Edit"><mat-icon style="font-size: 32px;">edit</mat-icon></a>
             </ng-template>
           </ngx-datatable-column>
         </ngx-datatable>
