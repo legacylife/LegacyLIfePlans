@@ -1,0 +1,16 @@
+.ll--modal--body{
+    height: 300px;
+    overflow-y: scroll;
+    .rules{
+        font-size: 20px;
+        color: #000000;
+        margin-bottom: 25px;
+        display: flex;
+    }
+    p{
+        font-size: 14px;
+        color: #222324;
+        line-height: 1.79;
+    }
+}
+

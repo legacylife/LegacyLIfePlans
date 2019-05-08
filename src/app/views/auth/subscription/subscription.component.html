@@ -39,7 +39,7 @@
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="26" fxFlex.lg="30" fxFlex.xl="30">
                 <div class="actions">
                 <button mat-raised-button class="llp--primary--btn">I am interested</button>
-                <a href="#" class="know--more">Know more</a>
+                <a class="know--more" (click)="openllpmodal();">Know more</a>
                 </div>
             </div>
         </div>
@@ -48,5 +48,5 @@
   </div>
 </div>
 <div class="text-center">
-    <button mat-raised-button class="llp--primary--btn" (click)="openllpmodal();">Go to my account</button>
+    <button mat-raised-button class="llp--primary--btn">Go to my account</button>
 </div>

@@ -155,12 +155,12 @@ body .mat-mini-fab{
 .llp--primary--btn{
     color: $clr--1 !important;
     background-color: $clr--2 !important;
-    border: 1px solid $clr--2;
+    border: 1px solid $clr--2 !important;
 }
 .llp--secondary--btn{
     color: $clr--2 !important;
     background-color: #fff !important;
-    border: 1px solid $clr--2;
+    border: 1px solid $clr--2 !important;
 }
 
 .llp--primary--green--btn{
@@ -418,6 +418,50 @@ body{
     }
 }
 
+// Modal
+body{
+    .mat-dialog-container{
+        padding: 0;
+        overflow: visible;
+
+        .ll--modal--footer,
+        .ll--modal--header{
+            position: relative;
+            height: 100px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            font-size: 28px;
+            color: $clr--3;
+            font-family: $font--lato--bold;
+            justify-content: center;
+
+            .icon--cross{
+                position: absolute;
+                right: -9px;
+                top: -11px;
+                z-index: 11111111;
+                color: red;
+                background: #fff;
+                border-radius: 50%;
+                height: auto;
+                width: auto;
+                font-size: 30px;
+                cursor: pointer;
+            }
+        }
+        .ll--modal--body{
+            padding: 0 25px;
+        }
+        .ll--modal--footer{
+            .llp--secondary--btn{
+                margin-right: 30px;
+            }
+        }
+    }
+}
+
+
 // 
 .egret-indigo .mat-slide-toggle-bar{
     background-color: $clr--2 !important
@@ -450,3 +494,27 @@ body{
 .fnt--18{font-size: 18px;}
 .fnt--16{font-size: 16px;}
 .fnt--14{font-size: 14px;}
+
+
+
+/* Media query (start here)*/
+
+@media only screen and (max-width: 599px) {
+    body .mat-dialog-container .ll--modal--footer{
+        flex-direction: column;
+        height: 120px;
+    }
+    body .mat-dialog-container .ll--modal--footer .llp--secondary--btn{
+        margin: 15px 0 0 0;
+    }
+    body .mat-dialog-container .ll--modal--footer .llp--primary--btn{
+        order: -1;
+    }
+}
+@media only screen and (min-width: 600px) and (max-width: 959px){}
+@media only screen and (min-width: 960px) and (max-width: 979px){}
+@media only screen and (min-width: 980px) and (max-width: 1279px){}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){}
+@media only screen and (min-width: 1441px) and (max-width: 1550px){}
+
+/* Media query (end here)*/

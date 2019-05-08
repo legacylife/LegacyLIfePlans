@@ -17,7 +17,7 @@ export class SubscriptionComponent implements OnInit {
 
   openllpmodal(): void {
     const dialogRef = this.dialog.open(ReferAndEarnComponent, {
-      width: '1300px',
+      width: '720px',
     });
 
     dialogRef.afterClosed().subscribe(result => {});
