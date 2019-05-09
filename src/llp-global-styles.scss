@@ -178,6 +178,19 @@ body .mat-mini-fab{
     }
 }
 
+.backBtn--with--icon{
+    width: 143px;
+    margin: 15px 0;
+    box-shadow: none !important;
+    padding: 0;
+    border-radius: 4px;    
+    .mat-icon{
+        height: 20px;
+        width: 20px;
+        font-size: 19px;
+        margin-right: 6px;
+    }
+}
 
 // Checkbox
 .mat-checkbox{
@@ -461,6 +474,36 @@ body{
     }
 }
 
+// Card
+
+body{
+    .mat-card{
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none !important;
+
+        .mat-card-title{
+            border-top-left-radius: 2px;
+            border-top-right-radius: 2px;
+            background-color: #e7ebcd;
+            margin-bottom: 0;
+
+            .card-title-text{
+                color: #222324;
+                font-size: 16px;
+                font-family: $font--lato--bold;
+            }
+        }
+        .mat-card-content{
+            border: solid 1px #e1e5c7;
+            border-top: none;
+            border-bottom-left-radius: 2px;
+            border-bottom-right-radius: 2px;
+        }
+    }
+}
+
+
 
 // 
 .egret-indigo .mat-slide-toggle-bar{
@@ -494,6 +537,7 @@ body{
 .fnt--18{font-size: 18px;}
 .fnt--16{font-size: 16px;}
 .fnt--14{font-size: 14px;}
+.tran--bg{background-color: transparent !important}
 
 
 

@@ -1,7 +1,6 @@
 <div class="container llp--left--panel--view cust--acc--sett--wrapper">
   <mat-sidenav-container>
 
-
     <mat-sidenav EgretSideNavToggle class="shop-sidebar llp--menu--list">
       <div class="shop-filters-wrap llp--left--panel">
 
@@ -40,7 +39,6 @@
       </div>
     </mat-sidenav>
 
-
     <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
       <!-- Filters -->
 
@@ -61,7 +59,7 @@
             <!-- account details -->
             <div class="account--details">
               <div fxLayout="row wrap">
-                <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="49" fxFlex.xl="33.33">
+                <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
                   <form class="llp-form-wrapper">
                     <mat-form-field class="full-width">
                       <input matInput name="username" placeholder="First Name" value="John">
@@ -100,7 +98,7 @@
 
                   </form>
                 </div>
-                <div fxFlex.xs="100" fxFlex.sm="60" fxFlex.md="60" fxFlex.lg="49" fxFlex.xl="33.33">
+                <div fxFlex.xs="100" fxFlex.sm="60" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60">
                   <div class="manage--sub--section">
                     <header>
                       <div class="stan--plan"> Standard plan</div>
@@ -116,7 +114,7 @@
                       card
                     </p>
                     <div class="manage--cancel">
-                      <button mat-raised-button class="llp--primary--green--btn">Manage subscription</button>
+                      <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/customer/customer-subscription'" >Manage subscription</button>
                       <a class="clr--red">Cancel subscription</a>
                     </div>
                   </div>

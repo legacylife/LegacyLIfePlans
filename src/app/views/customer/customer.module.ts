@@ -35,6 +35,7 @@ import { CustomerHomeComponent } from './customer-home/customer-home.component';
 import { CustomerTrusteesComponent } from './customer-trustees/customer-trustees.component';
 import { CustomerProfessionalComponent } from './customer-professionals/customer-professionals.component';
 import { CustomerAccountSettingComponent } from './customer-account-setting/customer-account-setting.component';
+import { CustomerSubscriptionComponent } from './customer-subscription/customer-subscription.component';
 import { CustomerRoutes } from './customer.routing';
 
 
@@ -76,6 +77,7 @@ import { CustomerRoutes } from './customer.routing';
     CustomerTrusteesComponent,
     CustomerHomeComponent,
     CustomerAccountSettingComponent,
+    CustomerSubscriptionComponent,
     CustomerProfessionalComponent
   ],
   providers: [

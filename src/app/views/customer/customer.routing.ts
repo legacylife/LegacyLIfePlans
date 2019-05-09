@@ -4,6 +4,7 @@ import { CustomerTrusteesComponent } from './customer-trustees/customer-trustees
 import { CustomerHomeComponent } from './customer-home/customer-home.component';
 import { CustomerProfessionalComponent } from './customer-professionals/customer-professionals.component';
 import { CustomerAccountSettingComponent } from './customer-account-setting/customer-account-setting.component';
+import { CustomerSubscriptionComponent } from './customer-subscription/customer-subscription.component';
 
 export const CustomerRoutes: Routes = [
   {
@@ -22,5 +23,10 @@ export const CustomerRoutes: Routes = [
     path: 'account-setting',
     component: CustomerAccountSettingComponent,
     data: { title: 'Account Setting', breadcrumb: 'Customer' }
+  }
+  , {
+    path: 'customer-subscription',
+    component: CustomerSubscriptionComponent,
+    data: { title: 'Customer Subscription' }
   }
 ];
