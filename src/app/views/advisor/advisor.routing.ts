@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
 
-import { AppBlankComponent } from './app-blank/app-blank.component';
+import { AdvisorDashboardComponent } from './advisor-dashboard/advisor-dashboard.component';
 import { LegaciesComponent } from './legacies/legacies.component';
 
 export const AdviserRoutes: Routes = [
   {
     path: '',
-    component: AppBlankComponent
+    component: AdvisorDashboardComponent
   },
   {
     path: 'legacies',

@@ -23,7 +23,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
 
-import { AppBlankComponent } from './app-blank/app-blank.component';
+import { AdvisorDashboardComponent } from './advisor-dashboard/advisor-dashboard.component';
 import { LegaciesComponent } from './legacies/legacies.component';
 import { AdviserRoutes } from './advisor.routing';
 
@@ -52,7 +52,7 @@ import { AdviserRoutes } from './advisor.routing';
     RouterModule.forChild(AdviserRoutes)
   ],
   declarations: [
-    AppBlankComponent,
+    AdvisorDashboardComponent,
     LegaciesComponent
   ]
 })

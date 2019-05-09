@@ -1,0 +1,28 @@
+/* @import '../llp-global-styles.scss'; */
+
+.ad--wrapper{
+    margin-top: 15px;
+
+    .recent--update--section{
+        padding: 20px 23px;
+        p{
+            color: #666666;
+            font-size: 14px;
+            margin: 0 0 20px 0;
+        }
+        .red--box{
+            border: solid 1px #c72128;
+            height: 147px;
+            border-radius: 2px;
+            padding: 10px;
+            p{
+                font-size: 16px;
+                color: #000;
+                margin: 15px 0 0 0;
+                a{
+                    color: #c72128;
+                }
+            }
+        }
+    }
+}
