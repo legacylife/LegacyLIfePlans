@@ -4,54 +4,56 @@
 
     <mat-sidenav EgretSideNavToggle class="shop-sidebar llp--menu--list">
       <div class="shop-filters-wrap llp--left--panel">
-        <header>My Legacy</header>
-        <ul class="legacy--list m-0 p-0">
-          <li>
-            <a>
-              <mat-icon class="icon-file">insert_drive_file</mat-icon> My Essentials</a>
-          </li>
-          <li>
-            <a>
-              <mat-icon class="icon-file">hotel</mat-icon> Insurance Finance & Debt</a>
-          </li>
-          <li>
-            <a>
-              <mat-icon class="icon-file">hourglass_empty</mat-icon> Pets</a>
-          </li>
-          <li>
-            <a>
-              <mat-icon class="icon-file">image_aspect_ratio</mat-icon> Special Needs</a>
-          </li>
-          <li>
-            <a>
-              <mat-icon class="icon-file">insert_link</mat-icon>Legal Stuff</a>
-          </li>
-          <li>
-            <a>
-              <mat-icon class="icon-file">keyboard</mat-icon> Passwords & Digital Assests</a>
-          </li>
-          <li>
-            <a>
-              <mat-icon class="icon-file">kitchen</mat-icon>Emergency Contacts</a>
-          </li>
-          <li>
-            <a>
-              <mat-icon class="icon-file">laptop</mat-icon>Real Estates & Assets</a>
-          </li>
-          <li>
-            <a>
-              <mat-icon class="icon-file">line_style</mat-icon> Time Capsule</a>
-          </li>
-          <li>
-            <a>
-              <mat-icon class="icon-file">linked_camera</mat-icon>Legacy Life Letters & Messages</a>
-          </li>
-          <li>
-            <a>
-              <mat-icon class="icon-file">local_airport</mat-icon> Final Wishes</a>
-          </li>
-        </ul>
-        <footer>Shared Legacies</footer>
+        <div class="shadow--sec">
+          <header>My Legacy</header>
+          <ul class="legacy--list m-0 p-0">
+            <li>
+              <a>
+                <mat-icon class="icon-file">insert_drive_file</mat-icon> My Essentials</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">hotel</mat-icon> Insurance Finance & Debt</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">hourglass_empty</mat-icon> Pets</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">image_aspect_ratio</mat-icon> Special Needs</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">insert_link</mat-icon>Legal Stuff</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">keyboard</mat-icon> Passwords & Digital Assests</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">kitchen</mat-icon>Emergency Contacts</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">laptop</mat-icon>Real Estates & Assets</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">line_style</mat-icon> Time Capsule</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">linked_camera</mat-icon>Legacy Life Letters & Messages</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">local_airport</mat-icon> Final Wishes</a>
+            </li>
+          </ul>
+          <footer>Shared Legacies</footer>
+        </div>
       </div>
     </mat-sidenav>
 
@@ -70,7 +72,7 @@
         </div>
 
         <!-- Day first -->
-        <div class="day--first"  *ngIf="dayFirst">
+        <div class="day--first" *ngIf="dayFirst">
 
           <mat-card class="empty--section p-0">
             <mat-card-header class="m-0">
@@ -82,7 +84,7 @@
               <div class="build--ur--legacy">
                 <mat-icon>insert_drive_file</mat-icon>
                 <p>Start building your legacy!
-                  <a (click)="showSecoDay()" >Click here</a>
+                  <a (click)="showSecoDay()">Click here</a>
                 </p>
               </div>
             </mat-card-content>
@@ -125,7 +127,7 @@
         </div>
 
         <!-- Day 2nd -->
-        <div class="day--second"  *ngIf="daySeco">
+        <div class="day--second" *ngIf="daySeco">
 
           <!-- Recently Accessed Files  -->
           <mat-card class="empty--section p-0">
