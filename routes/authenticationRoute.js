@@ -31,11 +31,14 @@ function signin(req, res) {
   console.log("body=>", req.body);
   
     passport.authenticate('local', function(err, user, info) {      
-      console.log("User details =>",user)
+      console.log("User details =>",info)
       if (err) {
         res.status(404).send(resFormat.rError(err))
-      } else if(user && user.message == "WrongMethod") {
-        res.status(200).send(resFormat.rError("You might have signed up using google. Please login with google."))
+      } else if(info && info.message == "User is not Active") {
+        res.status(200).send(resFormat.rError("Your account is in an inactive state. Please contact to system admin."))
+      }
+      else if(info && info.message == "User not found") {
+        res.status(200).send(resFormat.rError("Username with \""+req.body.username+"\" doesn't exist in system."))
       }
       else if (user) {
           var token = user.generateJwt()
@@ -49,7 +52,7 @@ function signin(req, res) {
             }
           })
       } else {
-        res.status(200).send(resFormat.rError("Please enter correct password."))
+        res.status(200).send(resFormat.rError("Invalid login credentials."))
       }
     })(req, res)
   

@@ -23,7 +23,7 @@ var constants = {
     secret: "GI/4d3sT5WtV4Rg/QtxRPVo2RsRn71PH/ZdKHt99",
     fromEmail: "subodh@arkenea.com",
   },
-  clientUrl: process.env.clientUrl || 'http://ec2-3-212-172-15.compute-1.amazonaws.com:8080',
+  clientUrl: process.env.clientUrl || 'http://ec2-3-212-172-15.compute-1.amazonaws.com:8080', 
   mailServerUrl : process.env.mailServerUri || 'http://ec2-3-212-172-15.compute-1.amazonaws.com:8080',
   socialMedia: {
     facebook: {
