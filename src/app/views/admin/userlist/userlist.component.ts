@@ -17,54 +17,55 @@ import { delay } from 'rxjs/operators';
 })
 export class userlistComponent implements OnInit {
   userId: string
-  closeResult: string;  
+  closeResult: string;
   showOrgSugg: boolean = true
   checkedData: any = []
   userType: string = ""
-  selectedUserId: string = "" 
+  selectedUserId: string = ""
   totalRecords: number = 0
   rows = [];
   columns = [];
   temp = [];
-  loggedInUserDetails : any;
-  aceessSection : any;
+  loggedInUserDetails: any;
+  aceessSection: any;
   public items: any[];
-  
+
   //public getItemSub: Subscription;
 
- constructor(private api: APIService, private route: ActivatedRoute, private router:Router,  private dialog: MatDialog, private snack: MatSnackBar,  private confirmService: AppConfirmService, private loader: AppLoaderService) { }   
+  constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private dialog: MatDialog, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
   ngOnInit() {
-    if(!this.api.isLoggedIn()){
+    if (!this.api.isLoggedIn()) {
       this.router.navigate(['/', 'llp-admin', 'signin'])
-    } 
+    }
     this.aceessSection = this.api.getUserAccess('adminmanagement')
+    this.userId = this.api.getUser()
     this.getLists()
   }
 
   //function to get all events
   getLists = (query = {}, search = false) => {
     const req_vars = {
-      query: Object.assign({ userType: "sysadmin" }, query),
-	  fields: {},
+      query: Object.assign({ userType: "sysadmin", "_id": { $ne: this.userId } }, query),
+      fields: {},
       offset: '',
-	  limit: '',
-	  order: {},
+      limit: '',
+      order: {},
     }
-    this.api.apiRequest('post', 'userlist/list',req_vars).subscribe(result => {
-	 this.loader.close();
-      if(result.status == "error"){
-		  this.items = [];
-		  console.log(result.data)        
+    this.api.apiRequest('post', 'userlist/list', req_vars).subscribe(result => {
+      this.loader.close();
+      if (result.status == "error") {
+        this.items = [];
+        console.log(result.data)
       } else {
-		this.items = this.rows = this.temp = result.data.userList		
-		//this.getItemSub = this.totalRecords = result.data.totalUsers
+        this.items = this.rows = this.temp = result.data.userList
+        //this.getItemSub = this.totalRecords = result.data.totalUsers
       }
     }, (err) => {
       console.error(err)
     })
   }
 
-//table
+  //table
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
     var columns = Object.keys(this.temp[0]);
@@ -74,7 +75,7 @@ export class userlistComponent implements OnInit {
     // console.log(columns);
     if (!columns.length)
       return;
-    const rows = this.temp.filter(function(d) {
+    const rows = this.temp.filter(function (d) {
       for (let i = 0; i <= columns.length; i++) {
         let column = columns[i];
         // console.log(d[column]);
@@ -95,7 +96,7 @@ export class userlistComponent implements OnInit {
     })
     dialogRef.afterClosed()
       .subscribe(res => {
-        if(!res) {
+        if (!res) {
           // If user press cancel
           return;
         }
@@ -104,73 +105,55 @@ export class userlistComponent implements OnInit {
           this.addItem(res)
             .subscribe(data => {
               this.items = data;
-              this.loader.close();			  
+              this.getLists()
+              this.loader.close();
               this.snack.open('Admin Member Added!', 'OK', { duration: 4000 })
             })
         } else {
           this.updateItem(data._id, res)
             .subscribe(data => {
               this.items = data;
+              this.getLists()
               this.loader.close();
               this.snack.open('Admin Member Updated!', 'OK', { duration: 4000 })
             })
         }
       })
   }
-  statusChange(row) {  
-    var statMsg = 'Are you sure you want to re-activate this user, '+row.username+' Access to the admin panel account for the user.'
-    if(row.status == 'Active'){
-	    statMsg = 'Are you sure you want to deactivate this user, '+row.username+' Access to the admin panel account will be locked for the user.'
-	  }
+  statusChange(row) {
+    var statMsg = 'Are you sure you want to re-activate this user, ' + row.username + ' Access to the admin panel account for the user.'
+    if (row.status == 'Active') {
+      statMsg = 'Are you sure you want to deactivate this user, ' + row.username + ' Access to the admin panel account will be locked for the user.'
+    }
 
-     this.confirmService.confirm({message: statMsg}).subscribe(res => {
-        if (res) {
-          this.loader.open();
-		  var query = {};
-		  const req_vars = {
-			  query: Object.assign({_id:row._id,userType: "sysadmin"}, query)
-			}
-			this.api.apiRequest('post', 'userlist/updatestatus',req_vars).subscribe(result => {
-			  if(result.status == "error"){
-				this.loader.close();
-				this.snack.open(result.data.message, 'OK', { duration: 4000 })
-			  } else {
-			    this.getLists()
-			    this.loader.close();
-				this.snack.open(result.data.message, 'OK', { duration: 4000 })
-			  }
-			}, (err) => {
-			  console.error(err)
-			  this.loader.close();
-			})
+    this.confirmService.confirm({ message: statMsg }).subscribe(res => {
+      if (res) {
+        this.loader.open();
+        var query = {};
+        const req_vars = {
+          query: Object.assign({ _id: row._id, userType: "sysadmin" }, query)
         }
-      })
+        this.api.apiRequest('post', 'userlist/updatestatus', req_vars).subscribe(result => {
+          if (result.status == "error") {
+            this.loader.close();
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          } else {
+            this.getLists()
+            this.loader.close();
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          }
+        }, (err) => {
+          console.error(err)
+          this.loader.close();
+        })
+      }
+    })
   }
- /* deleteItem(row) {
-    this.confirmService.confirm({message: `Delete ${row.name}?`})
-      .subscribe(res => {
-        if (res) {
-          this.loader.open();
-          this.removeItem(row)
-            .subscribe(data => {
-              this.items = data;
-              this.loader.close();
-              this.snack.open('Member deleted!', 'OK', { duration: 4000 })
-            })
-        }
-      })
-  }
-  removeItem(row) {
-    let i = this.items.indexOf(row);
-    this.items.splice(i, 1);
-    return of(this.items.slice()).pipe(delay(1000));
-  }  
-  */
   updateStatus(row) {
     let i = this.items.indexOf(row);
     this.items.splice(i, 1);
     return of(this.items.slice()).pipe(delay(1000));
-  }  
+  }
   addItem(item): Observable<any> {
     item._id = Math.round(Math.random() * 10000000000).toString();
     this.items.unshift(item);
@@ -178,12 +161,12 @@ export class userlistComponent implements OnInit {
   }
   updateItem(id, item) {
     this.items = this.items.map(i => {
-      if(i._id === id) {
+      if (i._id === id) {
         return Object.assign({}, i, item);
       }
       return i;
     })
     return of(this.items.slice()).pipe(delay(1000));
   }
-  
+
 }

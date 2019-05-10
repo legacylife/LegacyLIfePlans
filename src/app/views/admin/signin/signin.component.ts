@@ -65,6 +65,7 @@ export class signinComponent implements OnInit {
           password: new FormControl('', Validators.required)
         })
         this.llpsigninForm.controls['username'].setValue(emails);
+        this.snack.open(result.data, 'OK', { duration: 4000 })
       }
     }, (err) => {
 
