@@ -3,11 +3,11 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { LockscreenComponent } from './lockscreen/lockscreen.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ErrorComponent } from './error/error.component';
-import { BusinessInfoComponent } from './advisor/business-info/business-info.component';
+//import { BusinessInfoComponent } from './../advisor/business-info/business-info.component';
 import { SigninComponent } from './signin/signin.component';
-import { UpdateProfileComponent } from './customer/update-profile/update-profile.component';
-import { SetPasswordComponent } from './advisor/set-password/set-password.component';
-import { ThankYouComponent } from './advisor/thank-you/thank-you.component';
+//import { UpdateProfileComponent } from './../customer/update-profile/update-profile.component';
+//import { SetPasswordComponent } from './../advisor/set-password/set-password.component';
+//import { ThankYouComponent } from './../advisor/thank-you/thank-you.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { PasswordResetSuccessfulComponent } from './password-reset-successful/password-reset-successful.component';
 

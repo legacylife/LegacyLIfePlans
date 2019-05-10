@@ -5,8 +5,6 @@ import { AdvisorLandingLayoutComponent } from './shared/components/layouts/advis
 import { CustomerLayoutComponent } from './shared/components/layouts/customer-layout/customer-layout.component';
 import { LandingLayoutComponent } from './shared/components/layouts/landing-layout/landing-layout.component';
 import { AuthGuard } from './shared/services/auth/auth.guard';
-//import { CustomerSignupComponent } from './views/auth/customer/signup/signup.component';
-//import { AdvisorSignupComponent } from './views/auth/advisor/signup/signup.component';
 
 export const rootRouterConfig: Routes = [
   {
@@ -31,16 +29,16 @@ export const rootRouterConfig: Routes = [
     },
   ]
   }, 
-   /*
   {
     path: 'advisor',
     children: [{
       path: 'signup',
-      component: AdvisorSignupComponent,
+      component: AuthLayoutComponent,
+      loadChildren: './views/advisor/advisor.module#AdvisorModule',
       data: { title: 'Advisor Signup' }
     },
   ]
-  },*/{
+  },{
     path: '',
     component: AuthLayoutComponent,
     canActivate: [AuthGuard],

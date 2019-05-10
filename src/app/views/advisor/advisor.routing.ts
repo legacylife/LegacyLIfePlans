@@ -1,15 +1,23 @@
 import { Routes } from '@angular/router';
+import { AdvisorSignupComponent } from './signup/signup.component';
+import { BusinessInfoComponent } from './business-info/business-info.component';
+import { SetPasswordComponent } from './set-password/set-password.component';
+import { AdvisorSigninComponent } from './signin/signin.component';
+import { ThankYouComponent } from './thank-you/thank-you.component';
 
-import { AppBlankComponent } from './app-blank/app-blank.component';
-import { LegaciesComponent } from './legacies/legacies.component';
-
-export const AdviserRoutes: Routes = [
+export const AdvisorRoutes: Routes = [
   {
-    path: '',
-    component: AppBlankComponent
-  },
-  {
-    path: 'legacies',
-    component: LegaciesComponent
+    path: 'signin',
+    component: AdvisorSignupComponent,
+    data: { title: 'Blank', breadcrumb: 'BLANK' }
+  },{
+    path: 'signup',
+    component: AdvisorSignupComponent,
+    data: { title: 'Blank', breadcrumb: 'BLANK' }
+  }
+  ,{
+    path: 'business-info',
+    component: BusinessInfoComponent,
+    data: { title: 'Blank', breadcrumb: 'BLANK' }
   }
 ];

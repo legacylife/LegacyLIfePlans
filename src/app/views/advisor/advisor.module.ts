@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import {
+import { MatStepperModule } from '@angular/material/stepper';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { 
   MatListModule,
   MatIconModule,
   MatButtonModule,
@@ -15,22 +16,30 @@ import {
   MatRadioModule,
   MatTabsModule,
   MatInputModule,
-  MatProgressBarModule
+  MatSelectModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatFormFieldModule,
+  MatProgressBarModule,
+  MatTooltipModule
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
-
-import { AppBlankComponent } from './app-blank/app-blank.component';
-import { LegaciesComponent } from './legacies/legacies.component';
-import { AdviserRoutes } from './advisor.routing';
+import { AdvisorRoutes } from './advisor.routing';
+import { AdvisorSignupComponent } from './signup/signup.component';
+import { BusinessInfoComponent } from './business-info/business-info.component';
+import { SetPasswordComponent } from './set-password/set-password.component';
+import { AdvisorSigninComponent } from './signin/signin.component';
+import { ThankYouComponent } from './thank-you/thank-you.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatListModule,
     MatIconModule,
     MatButtonModule,
@@ -49,11 +58,18 @@ import { AdviserRoutes } from './advisor.routing';
     ChartsModule,
     FileUploadModule,
     SharedModule,
-    RouterModule.forChild(AdviserRoutes)
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTooltipModule,
+    MatSelectModule,
+    MatStepperModule,
+    RouterModule.forChild(AdvisorRoutes)
   ],
   declarations: [
-    AppBlankComponent,
-    LegaciesComponent
+    AdvisorSignupComponent,BusinessInfoComponent,SetPasswordComponent,AdvisorSigninComponent,ThankYouComponent
+  ],providers: [
+    MatDatepickerModule,
   ]
 })
 export class AdvisorModule { }
