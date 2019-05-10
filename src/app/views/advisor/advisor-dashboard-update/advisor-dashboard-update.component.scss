@@ -1,0 +1,36 @@
+ @import '~llp-global-styles.scss'; 
+ @import '../advisor-dashboard/advisor-dashboard.component.scss';
+
+
+.ad--wrapper{
+    .ad--nav--list{
+        padding: 0;
+        margin-bottom: 15px;
+        border: 1px solid #dadce0;
+        border-radius: 2px;
+        ::ng-deep .mat-list-item{
+            .mat-list-item-content{
+                padding: 0 10px 0 15px;
+                .mat-icon-button{
+                    padding: 0;
+                    height: 21px;
+                    line-height: 0;
+                    width: 21px;
+                    border-radius: 50%;
+                    align-self: flex-start;
+                    margin-top: 9px;
+                    .mat-icon{
+                        font-size: 22px;
+                        color: #222324;
+                    }
+                }
+            }
+        }
+        .profile--pic{
+            width: 48px;
+            height: 48px;
+            border: 1px solid #ddd;
+            
+        }
+    }
+}

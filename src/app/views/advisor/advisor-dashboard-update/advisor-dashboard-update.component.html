@@ -1,0 +1,86 @@
+<div class="container ad--wrapper">
+  <div fxLayout="row wrap">
+    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="75" fxFlex.lg="80" fxFlex.xl="80">
+      <mat-card class="p-0">
+        <mat-card-title class="">
+          <div class="card-title-text">Recent updates</div>
+          <mat-divider></mat-divider>
+        </mat-card-title>
+
+        <mat-card-content class="recent--update--section">
+
+          <mat-nav-list class="ad--nav--list">
+              
+            <mat-list-item>
+              <div mat-list-avatar class="profile--pic">
+                d
+              </div>
+
+                <!-- <img alt="" class="mr-1 mat-list-avatar" mat-list-avatar="" src="assets/images/face-1.jpg"> -->
+              <div mat-line>
+                11111111111
+              </div>
+              <p mat-line>
+                33333333333
+              </p>
+              <button mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </mat-list-item>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>View profile</button>
+              <button mat-menu-item>Add contact</button>
+            </mat-menu>
+          </mat-nav-list>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="25" fxFlex.lg="20" fxFlex.xl="20" class="reverse--order--sm">
+      <div class="right--panel--wrapper">
+        <div fxLayout="row wrap">
+          <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+            <div class="right--boxes">
+              <mat-card class="p-0">
+                <mat-card-title class="">
+                  <div class="card-title-text">Invitation Status</div>
+                  <mat-divider></mat-divider>
+                </mat-card-title>
+                <mat-card-content class="invite--body--section">
+                  <h4 class="count">12
+                    <span>/45</span>
+                  </h4>
+                  <p class="daysgo">9 days to go</p>
+                  <p class="invites">Invites sent in this month</p>
+                  <button mat-raised-button class="llp--primary--btn">Invite Now</button>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+          <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+            <div class="right--boxes mr-0">
+              <mat-card class="p-0">
+                <mat-card-title class="">
+                  <div class="card-title-text">Monthly Leads</div>
+                  <mat-divider></mat-divider>
+                </mat-card-title>
+                <mat-card-content class="invite--body--section">
+                  <h4 class="count">7
+                    <span></span>
+                  </h4>
+                  <div class="adjust">
+                    <p class="invites">7 users have shown interest
+                    </p>
+                    <button mat-raised-button class="llp--primary--btn">View All</button>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>

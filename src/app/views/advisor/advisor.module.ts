@@ -24,6 +24,7 @@ import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
 
 import { AdvisorDashboardComponent } from './advisor-dashboard/advisor-dashboard.component';
+import { AdvisorDashboardUpdateComponent } from './advisor-dashboard-update/advisor-dashboard-update.component';
 import { LegaciesComponent } from './legacies/legacies.component';
 import { AdviserRoutes } from './advisor.routing';
 
@@ -53,7 +54,8 @@ import { AdviserRoutes } from './advisor.routing';
   ],
   declarations: [
     AdvisorDashboardComponent,
-    LegaciesComponent
+    LegaciesComponent,
+    AdvisorDashboardUpdateComponent
   ]
 })
 export class AdvisorModule { }
