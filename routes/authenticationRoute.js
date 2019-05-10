@@ -29,30 +29,38 @@ var auth = jwt({
 function signin(req, res) {
 
   console.log("body=>", req.body);
-  
-    passport.authenticate('local', function(err, user, info) {      
-      console.log("User details =>",info)
+  // console.log("User details =>",user)
+    passport.authenticate('local', function(err, user, info) {            
       if (err) {
-        res.status(404).send(resFormat.rError(err))
+        let result = {"message": err};
+        res.status(404).send(resFormat.rError(result));
       } else if(info && info.message == "User is not Active") {
-        res.status(200).send(resFormat.rError("Your account is in an inactive state. Please contact to system admin."))
+        let result = {"message": "Your account is in an inactive state. Please contact to system admin.","invalidEmail":true,"invalidPassword":false}
+        res.status(200).send(resFormat.rError(result))
       }
       else if(info && info.message == "User not found") {
-        res.status(200).send(resFormat.rError("Username with \""+req.body.username+"\" doesn't exist in system."))
+        let result = {"message": "Email with \""+req.body.username+"\" doesn't exist in system.","invalidEmail":true,"invalidPassword":false}
+        res.status(200).send(resFormat.rError(result))       
       }
       else if (user) {
+        if(user.userType == req.body.userType){
           var token = user.generateJwt()
           var params = {lastLoggedInOn: new Date(), loginCount: user.loginCount == undefined ? 1 : user.loginCount + 1}
           User.update({ _id: user._id },{ $set: params} , function(err, updatedUser) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              let result = { token, userId: user._id, userType : user.userType, firstName : user.firstName, lastName : user.lastName, sectionAccess : user.sectionAccess, "message": "Successfully logged in!" }
+              let result = { token, userId: user._id, userType : user.userType, firstName : user.firstName, lastName : user.lastName, sectionAccess : user.sectionAccess, "message": "Successfully logged in!","invalidEmail":false,"invalidPassword":false}
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
+        }else{
+          let result = {"message": `"Email with ${req.body.username} doesn't exist in admin system."`,"invalidEmail":true,"invalidPassword":false}
+          res.status(200).send(resFormat.rError(result))
+        }       
       } else {
-        res.status(200).send(resFormat.rError("Invalid login credentials."))
+        let result = {"message": "Invalid login credentials.","invalidEmail":false,"invalidPassword":true}
+        res.status(200).send(resFormat.rError(result))
       }
     })(req, res)
   
@@ -297,10 +305,13 @@ function forgotPassword (req, res) {
         if (err) {
           res.status(500).send(resFormat.rError(err))
         }
-        let clientUrl = constants.clientUrl
-        var link =  clientUrl + '/llp-admin/reset-password/' + tokens;
-
-        //forgot password email template
+        let clientUrl = constants.clientUrl;
+        var link =  clientUrl + '/reset-password/' + tokens;
+        if(req.body.userType=='sysadmin'){
+          var link =  clientUrl + '/llp-admin/reset-password/' + tokens;
+        }
+       
+       //forgot password email template
         emailTemplatesRoute.getEmailTemplateByCode("ForgotPassword").then((template) => {
           if(template) {
             template = JSON.parse(JSON.stringify(template));
