@@ -28,6 +28,15 @@ export const rootRouterConfig: Routes = [
       data: { title: 'Customer Signup' }
     },
   ]
+  },{
+    path: 'customer',
+    children: [{
+      path: 'customer',
+      component: CustomerLayoutComponent,
+      loadChildren: './views/customer/customer.module#CustomerModule',
+      data: { title: 'Customer Signup' }
+    },
+  ]
   }, 
   {
     path: 'advisor',

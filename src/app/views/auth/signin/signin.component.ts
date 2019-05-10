@@ -16,14 +16,19 @@ export class SigninComponent implements OnInit {
   @ViewChild(MatButton) submitButton: MatButton;
   
   otpsec = false;
-  llpsigninForm: FormGroup; 
+  llpCustsigninForm: FormGroup; 
+  invalidEmail: boolean;
+  invalidMessage: string;
+  username: FormControl 
+  password: FormControl;
+
   constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
 
   ngOnInit() {
     localStorage.clear();
     sessionStorage.clear();
 
-    this.llpsigninForm = new FormGroup({
+    this.llpCustsigninForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.pattern(/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i)]),
       password: new FormControl('', Validators.required)
     })
@@ -33,19 +38,19 @@ export class SigninComponent implements OnInit {
     this.otpsec = true;
   }
 
-  llpsignin(userData = null) {
+  
+  llpCustSignin(userData = null) {
     let signInData = {
-      username: this.llpsigninForm.controls['username'].value,
-      password: this.llpsigninForm.controls['password'].value,
-      //stayLoggedIn:  this.llpsigninForm.controls['rememberMe'].value,
-      userType: "sysadmin"
+      username: this.llpCustsigninForm.controls['username'].value,
+      password: this.llpCustsigninForm.controls['password'].value,
+      //stayLoggedIn:  this.llpCustsigninForm.controls['rememberMe'].value,
+      userType: "customer"
     }
     this.loader.open();
     this.api.apiRequest('post', 'auth/signin', signInData).subscribe(result => {
       this.loader.close();
       if (result.status == "success") {
         userData = result.data;
-        console.log("user data after signup",userData.sectionAccess.activitylog)
         localStorage.setItem("userId", userData.userId)
         localStorage.setItem("userType", userData.userType)
         localStorage.setItem("firstName", userData.firstName)
@@ -53,26 +58,25 @@ export class SigninComponent implements OnInit {
         localStorage.setItem("sectionAccess", JSON.stringify(userData.sectionAccess))
         
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
-        this.router.navigate(['/', 'admin', 'userlist'])
+        this.router.navigate(['/', 'customer', 'dashboard'])
 
       } else {
-        this.llpsigninForm.controls['username'].enable();
-        var emails = this.llpsigninForm.controls['username'].value
-
-        this.llpsigninForm.controls['password'].markAsUntouched();
-        this.llpsigninForm = new FormGroup({
-          username: new FormControl('', Validators.required),
-          password: new FormControl('', Validators.required)
-        })
-        this.llpsigninForm.controls['username'].setValue(emails);
+        this.llpCustsigninForm.controls['username'].enable();
+        var emails = this.llpCustsigninForm.controls['username'].value
+        //this.llpCustsigninForm.controls['username'].markAsUntouched();//this.llpCustsigninForm.controls['password'].markAsUntouched();
+        if(result.data.invalidEmail){
+          this.invalidEmail = true;
+          this.invalidMessage = result.data.message
+          this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : true})
+        }else{ 
+          this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false})} 
+      }
+      if(result.data.invalidPassword){
+        this.llpCustsigninForm.controls['password'].setErrors({'invalid' : true});
       }
     }, (err) => {
 
     })
-  }
-
-  public customValidator(control: FormControl) {
-    return { 'invalid': true };
   }
 
 }

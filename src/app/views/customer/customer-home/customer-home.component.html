@@ -1,0 +1,339 @@
+<div class="container llp--left--panel--view">
+  <mat-sidenav-container>
+
+
+    <mat-sidenav EgretSideNavToggle class="shop-sidebar llp--menu--list">
+      <div class="shop-filters-wrap llp--left--panel">
+        <div class="shadow--sec">
+          <header>My Legacy</header>
+          <ul class="legacy--list m-0 p-0">
+            <li>
+              <a>
+                <mat-icon class="icon-file">insert_drive_file</mat-icon> My Essentials</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">hotel</mat-icon> Insurance Finance & Debt</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">hourglass_empty</mat-icon> Pets</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">image_aspect_ratio</mat-icon> Special Needs</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">insert_link</mat-icon>Legal Stuff</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">keyboard</mat-icon> Passwords & Digital Assests</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">kitchen</mat-icon>Emergency Contacts</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">laptop</mat-icon>Real Estates & Assets</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">line_style</mat-icon> Time Capsule</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">linked_camera</mat-icon>Legacy Life Letters & Messages</a>
+            </li>
+            <li>
+              <a>
+                <mat-icon class="icon-file">local_airport</mat-icon> Final Wishes</a>
+            </li>
+          </ul>
+          <footer>Shared Legacies</footer>
+        </div>
+      </div>
+    </mat-sidenav>
+
+
+    <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
+      <!-- Filters -->
+
+      <!-- Right side -->
+      <div class="full-width">
+
+        <!-- toggleSideNav -->
+        <div class="shop-top-toolbar p-0 llp--toggle-btn">
+          <button mat-icon-button class="p-0" (click)="toggleSideNav()">
+            <mat-icon>short_text</mat-icon>
+          </button>
+        </div>
+
+        <!-- Day first -->
+        <div class="day--first" *ngIf="dayFirst">
+
+          <mat-card class="empty--section p-0">
+            <mat-card-header class="m-0">
+              <mat-card-title class="m-0">Recently Accessed Files </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+              <p class="info">See your recently accessed files here. Currently you have no files available.</p>
+              <div class="build--ur--legacy">
+                <mat-icon>insert_drive_file</mat-icon>
+                <p>Start building your legacy!
+                  <a (click)="showSecoDay()">Click here</a>
+                </p>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+
+          <mat-card class="empty--section p-0">
+            <mat-card-header class="m-0">
+              <mat-card-title class="m-0">My Appointees </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p class="info">Share your documents with your trusted ones. View your appointees in this section.</p>
+              <div class="build--ur--legacy">
+                <mat-icon>people_outline</mat-icon>
+                <p>
+                  <a>Add Appointees</a>
+                </p>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="empty--section p-0">
+            <mat-card-header class="m-0">
+              <mat-card-title class="m-0">My Advisors </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p class="info">See your professional advisors here.</p>
+              <div class="build--ur--legacy">
+                <mat-icon>people</mat-icon>
+                <p>
+                  <a>Search Advisors</a>
+                </p>
+              </div>
+              <p class="search-ad">Seeking professional help in managing your legacy?
+                <a> Find right professionals now </a>
+              </p>
+            </mat-card-content>
+          </mat-card>
+
+        </div>
+
+        <!-- Day 2nd -->
+        <div class="day--second" *ngIf="daySeco">
+
+          <!-- Recently Accessed Files  -->
+          <mat-card class="empty--section p-0">
+            <mat-card-header class="m-0">
+              <mat-card-title class="m-0">Recently Accessed Files </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content class="files--wrapper">
+              <div class="recent--acc--files">
+                <mat-icon>insert_drive_file</mat-icon>
+                <p class="m-0 file--name">My wishes for the ...</p>
+              </div>
+              <div class="recent--acc--files">
+                <mat-icon>insert_drive_file</mat-icon>
+                <p class="m-0 file--name">Tata AIA Life Insurance</p>
+              </div>
+              <div class="recent--acc--files">
+                <mat-icon>insert_drive_file</mat-icon>
+                <p class="m-0 file--name">Memories of happy ...</p>
+              </div>
+              <div class="recent--acc--files">
+                <mat-icon>insert_drive_file</mat-icon>
+                <p class="m-0 file--name">My will_final draft</p>
+              </div>
+              <div class="recent--acc--files">
+                <mat-icon>insert_drive_file</mat-icon>
+                <p class="m-0 file--name">My wishes for the ...</p>
+              </div>
+              <div class="recent--acc--files">
+                <mat-icon>insert_drive_file</mat-icon>
+                <p class="m-0 file--name">Tata AIA Life Insurance</p>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- My Appointees -->
+          <mat-card class="empty--section p-0">
+            <mat-card-header class="m-0">
+              <mat-card-title class="m-0">My Appointees</mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content class="appointees--wrapper">
+
+              <mat-card class="appointees--section p-0">
+                <mat-card-header class="m-0">
+                  <mat-card-title class="m-0">
+                    <div class="appointees--pic">
+                      <img src="assets/images/arkenea/face-7.jpg" />
+                    </div>
+                    <div class="appointees--desc">
+                      <h5>Allen Barry</h5>
+                      <p class="m-0">barryallen@gmail.com</p>
+                    </div>
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <h4>Shared Documents</h4>
+                  <div class="files--folder">
+                    <mat-icon>insert_drive_file</mat-icon>
+                    24 Files
+                  </div>
+                  <div class="files--folder mb-0">
+                    <mat-icon>folder</mat-icon>
+                    9 Folders
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card class="appointees--section p-0">
+                <mat-card-header class="m-0">
+                  <mat-card-title class="m-0">
+                    <div class="appointees--pic">
+                      <img src="assets/images/arkenea/emily.png" />
+                    </div>
+                    <div class="appointees--desc">
+                      <h5>Johnson Smith</h5>
+                      <p class="m-0">johnson.smith@gmail.com</p>
+                    </div>
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <h4>Shared Documents</h4>
+                  <div class="files--folder">
+                    <mat-icon>insert_drive_file</mat-icon>
+                    24 Files
+                  </div>
+                  <div class="files--folder mb-0">
+                    <mat-icon>folder</mat-icon>
+                    9 Folders
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card class="appointees--section p-0">
+                <mat-card-header class="m-0">
+                  <mat-card-title class="m-0">
+                    <div class="appointees--pic">
+                      <img src="assets/images/arkenea/james.png" />
+                    </div>
+                    <div class="appointees--desc">
+                      <h5>Emily Doe</h5>
+                      <p class="m-0">emilydoe@gmail.com</p>
+                    </div>
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <h4>Shared Documents</h4>
+                  <div class="files--folder">
+                    <mat-icon>insert_drive_file</mat-icon>
+                    24 Files
+                  </div>
+                  <div class="files--folder mb-0">
+                    <mat-icon>folder</mat-icon>
+                    9 Folders
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+            </mat-card-content>
+          </mat-card>
+
+          <!-- My Advisors -->
+          <mat-card class="empty--section p-0">
+            <mat-card-header class="m-0">
+              <mat-card-title class="m-0">My Advisors</mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content class="appointees--wrapper">
+
+              <mat-card class="appointees--section p-0">
+                <mat-card-header class="m-0">
+                  <mat-card-title class="m-0">
+                    <div class="appointees--pic">
+                      <img src="assets/images/arkenea/user-male.png" />
+                    </div>
+                    <div class="appointees--desc">
+                      <h5>James Anderson</h5>
+                      <p class="m-0">CFA, CIC</p>
+                    </div>
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <h4>Specialities</h4>
+                  <div class="files--folder my--ad--ff mb-0">
+                    <mat-icon>insert_drive_file</mat-icon>
+                    <div class="sp--details">
+                      Insurance Agent, Attorney, Accountant, Financial Planner
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card class="appointees--section p-0">
+                <mat-card-header class="m-0">
+                  <mat-card-title class="m-0">
+                    <div class="appointees--pic">
+                      <img src="assets/images/arkenea/ca.jpg" />
+                    </div>
+                    <div class="appointees--desc">
+                      <h5>Johnson Smith</h5>
+                      <p class="m-0">CFA, CIC</p>
+                    </div>
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <h4>Specialities</h4>
+                  <div class="files--folder my--ad--ff mb-0">
+                    <mat-icon>insert_drive_file</mat-icon>
+                    <div class="sp--details">
+                      Insurance Agent, Attorney, Accountant
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card class="appointees--section p-0">
+                <mat-card-header class="m-0">
+                  <mat-card-title class="m-0">
+                    <div class="appointees--pic">
+                      <img src="assets/images/arkenea/emily.png" />
+                    </div>
+                    <div class="appointees--desc">
+                      <h5>John Doe</h5>
+                      <p class="m-0">CFA, CIC</p>
+                    </div>
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <h4>Specialities</h4>
+                  <div class="files--folder my--ad--ff mb-0">
+                    <mat-icon>insert_drive_file</mat-icon>
+                    <div class="sp--details">
+                      Insurance Agent, Attorney, lawyer Financial Planner
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+
+
+            </mat-card-content>
+          </mat-card>
+
+        </div>
+      </div>
+
+    </div>
+  </mat-sidenav-container>
+</div>

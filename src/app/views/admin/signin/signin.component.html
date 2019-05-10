@@ -20,6 +20,10 @@
                <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" 
               *ngIf="llpsigninForm.controls['username'].hasError('pattern') && llpsigninForm.controls['username'].touched"
                class="red--alert">help_outline</mat-icon>
+
+               <mat-icon matTooltip="{{invalidMessage}}" matTooltipClass="llp--tooltip error" 
+               *ngIf="invalidEmail"
+                class="red--alert">help_outline</mat-icon>
             </mat-form-field>
           </div>
 

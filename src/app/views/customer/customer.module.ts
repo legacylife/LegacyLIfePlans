@@ -21,7 +21,12 @@ import {
   MatNativeDateModule,
   MatFormFieldModule,
   MatProgressBarModule,
-  MatTooltipModule
+  MatTooltipModule,
+
+  MatExpansionModule,
+  MatSliderModule,
+  MatSnackBarModule,
+  MatSidenavModule
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -32,6 +37,7 @@ import { SharedModule } from './../../shared/shared.module';
 import { CustomerRoutes } from './customer.routing';
 import { CustomerSignupComponent } from './signup/signup.component';
 import { UpdateProfileComponent } from './update-profile/update-profile.component';
+import { CustomerHomeComponent } from './customer-home/customer-home.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -60,10 +66,15 @@ import { UpdateProfileComponent } from './update-profile/update-profile.componen
     MatNativeDateModule,
     MatTooltipModule,
     MatSelectModule,
+
+    MatExpansionModule,
+    MatSliderModule,
+    MatSnackBarModule,
+    MatSidenavModule,
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [
-    CustomerSignupComponent,UpdateProfileComponent
+    CustomerSignupComponent,UpdateProfileComponent,CustomerHomeComponent
   ],providers: [
     MatDatepickerModule,
   ]

@@ -14,9 +14,13 @@ import { AppLoaderService } from '../../../shared/services/app-loader/app-loader
 })
 export class signinComponent implements OnInit {
   @ViewChild(MatButton) submitButton: MatButton;
-  public sectionAccessPk: any[];
   otpsec = false;
   llpsigninForm: FormGroup;
+  invalidEmail: boolean;
+  invalidMessage: string;
+  username: FormControl 
+  password: FormControl;
+   
   constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
 
   ngOnInit() {
@@ -33,7 +37,7 @@ export class signinComponent implements OnInit {
     this.otpsec = true;
   }
 
-  llpsignin(userData = null) {
+  llpsignin12(userData = null) {
     let signInData = {
       username: this.llpsigninForm.controls['username'].value,
       password: this.llpsigninForm.controls['password'].value,
@@ -65,15 +69,56 @@ export class signinComponent implements OnInit {
           password: new FormControl('', Validators.required)
         })
         this.llpsigninForm.controls['username'].setValue(emails);
-        this.snack.open(result.data, 'OK', { duration: 4000 })
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
 
     })
   }
 
-  public customValidator(control: FormControl) {
-    return { 'invalid': true };
+  llpsignin(userData = null) {
+    let signInData = {
+      username: this.llpsigninForm.controls['username'].value,
+      password: this.llpsigninForm.controls['password'].value,
+      //stayLoggedIn:  this.llpsigninForm.controls['rememberMe'].value,
+      userType: "sysadmin"
+    }
+    this.loader.open();
+    this.api.apiRequest('post', 'auth/signin', signInData).subscribe(result => {
+      this.loader.close();
+      if (result.status == "success") {
+        userData = result.data;
+        localStorage.setItem("userId", userData.userId)
+        localStorage.setItem("userType", userData.userType)
+        localStorage.setItem("firstName", userData.firstName)
+        localStorage.setItem("lastName", userData.lastName)
+        localStorage.setItem("sectionAccess", JSON.stringify(userData.sectionAccess))
+        
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        this.router.navigate(['/', 'admin', 'userlist'])
+
+      } else {
+        this.llpsigninForm.controls['username'].enable();
+        var emails = this.llpsigninForm.controls['username'].value
+        //this.llpsigninForm.controls['username'].markAsUntouched();//this.llpsigninForm.controls['password'].markAsUntouched();
+        if(result.data.invalidEmail){
+          this.invalidEmail = true;
+          this.invalidMessage = result.data.message
+          this.llpsigninForm.controls['username'].setErrors({'invalidEmail' : true});
+        }else{
+          this.llpsigninForm.controls['username'].setErrors({'invalidEmail' : false});
+        }
+
+        if(result.data.invalidPassword){
+          this.llpsigninForm.controls['password'].setErrors({'invalid' : true});
+        }
+        
+      }
+    }, (err) => {
+ 
+    })
   }
+
+
 
 }

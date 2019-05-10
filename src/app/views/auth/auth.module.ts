@@ -33,7 +33,7 @@ import { SigninComponent } from './signin/signin.component';
 // BusinessInfoComponent, UpdateProfileComponent, SetPasswordComponent,ThankYouComponent,
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { PasswordResetSuccessfulComponent } from './password-reset-successful/password-reset-successful.component';
-
+import { ForgotPasswordSuccessfulComponent } from './password-reset-successful/forgot-password-successful.component';
 
 @NgModule({
   imports: [
@@ -57,7 +57,7 @@ import { PasswordResetSuccessfulComponent } from './password-reset-successful/pa
     RouterModule.forChild(AuthRoutes)
   ],
   declarations: [SigninComponent, ForgotPasswordComponent, LockscreenComponent,
-    NotFoundComponent, ErrorComponent, ResetPasswordComponent, PasswordResetSuccessfulComponent],
+    NotFoundComponent, ErrorComponent, ResetPasswordComponent, PasswordResetSuccessfulComponent,ForgotPasswordSuccessfulComponent],
     providers: [
       MatDatepickerModule,
     ]

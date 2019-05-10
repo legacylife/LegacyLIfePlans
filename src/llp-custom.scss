@@ -230,9 +230,14 @@ body{
             &.llp--left--panel{
                 margin-top: 15px;
                 border-radius: 2px;
-                box-shadow: 0 0 5px 0 rgba(140, 138, 138, 0.3);
-                background-color: $clr--1;
+                // box-shadow: 0 0 5px 0 rgba(140, 138, 138, 0.3);
+                // background-color: $clr--1;
                 padding: 0;
+
+                .shadow--sec{
+                    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+                    margin: .333333rem;
+                }
                 footer,
                 header{
                     height: 56px;
@@ -331,12 +336,16 @@ body{
     }
     body .llp--left--panel--view .shop-filters-wrap.llp--left--panel{
         margin-top: 0;
+        background-color: $clr--1;
     }
     body .llp--left--panel--view .llp--menu--list{
         padding: 0;
     }
     .llp--content--wrapper{
         padding: 0 15px;
+    }
+    body .llp--left--panel--view .shop-filters-wrap.llp--left--panel .shadow--sec{
+        margin: 0;
     }
 }
 @media only screen and (min-width: 600px) and (max-width: 959px){
@@ -348,6 +357,10 @@ body{
     }
     body .llp--left--panel--view .shop-filters-wrap.llp--left--panel{
         margin-top: 0;
+        background-color: $clr--1;
+    }
+    body .llp--left--panel--view .shop-filters-wrap.llp--left--panel .shadow--sec{
+        margin: 0;
     }
     body .llp--left--panel--view .llp--menu--list{
         padding: 0;
