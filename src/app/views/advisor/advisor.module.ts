@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {
   MatListModule,
   MatIconModule,
@@ -15,7 +15,19 @@ import {
   MatRadioModule,
   MatTabsModule,
   MatInputModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+
+
+  MatSelectModule,
+  MatSliderModule,
+  MatExpansionModule,
+  MatSnackBarModule,
+  MatFormFieldModule,
+  MatSidenavModule,
+  MatRippleModule,
+  MatDatepickerModule,
+
+
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -23,6 +35,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
 
+import { AdvisorAccountSettingComponent } from './advisor-account-setting/advisor-account-setting.component';
 import { AdvisorDashboardComponent } from './advisor-dashboard/advisor-dashboard.component';
 import { AdvisorDashboardUpdateComponent } from './advisor-dashboard-update/advisor-dashboard-update.component';
 import { LegaciesComponent } from './legacies/legacies.component';
@@ -50,12 +63,22 @@ import { AdviserRoutes } from './advisor.routing';
     ChartsModule,
     FileUploadModule,
     SharedModule,
+    MatSelectModule,
+    MatSliderModule,
+    MatExpansionModule,
+    MatSnackBarModule,
+    MatFormFieldModule,
+    MatSidenavModule,
+    MatRippleModule,
+    MatDatepickerModule,
+    ReactiveFormsModule,
     RouterModule.forChild(AdviserRoutes)
   ],
   declarations: [
     AdvisorDashboardComponent,
     LegaciesComponent,
-    AdvisorDashboardUpdateComponent
+    AdvisorDashboardUpdateComponent,
+    AdvisorAccountSettingComponent
   ]
 })
 export class AdvisorModule { }

@@ -1,0 +1,92 @@
+@import 'llp-global-styles.scss';
+@import '../../customer/customer-account-setting/customer-account-setting.component.scss';
+
+.ad--acc--sett--wrapper{
+    .feature--profile{
+        border-top: 1px solid #ddd;
+        padding-top: 25px;
+        margin-top: 25px;
+        .sett--fp{
+            color: #222324;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-family: $font--lato--bold;
+            .mat-icon{
+                font-size: 20px;
+                height: 20px;
+                margin-right: 5px;
+            }
+        }
+        .pro--info{
+            font-size: 16px;
+            line-height: 25px;
+        }
+        .validate{
+            margin: 0;
+            font-size: 16px;
+            span{
+                font-family: $font--lato--bold
+            }
+        }
+    }
+}
+.llp--left--panel--view.cust--acc--sett--wrapper .manage--sub--section header .ur--sub{
+    width: 100%;
+}
+.llp--left--panel--view.cust--acc--sett--wrapper .manage--sub--section header .ur--sub span{
+    display: block
+}
+.invite--body--section {
+    border: none;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.invite--body--section .count {
+    font-family: $font--lato--bold;
+    font-size: 45px;
+    margin: 20px 0 5px;
+}
+.invite--body--section .daysgo {
+    margin: 0;
+    font-family: $font--lato--italic !important;
+    font-size: 22px;
+}
+.invite--body--section .invites {
+    font-size: 16px;
+    color: #222324;
+    margin-bottom: 15px;
+    margin-top: 32px;
+}
+.invite--body--section .llp--primary--btn {
+    width: 168px;
+}
+.invite--body--section .count span {
+    font-size: 26px;
+    font-family: $font--lato--regular;
+}
+.black--header{
+    margin-bottom: 20px;
+}
+.pad--r--lg{
+    padding-right: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Media query (start here)*/
+
+/* Media query (end here)*/

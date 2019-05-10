@@ -316,6 +316,10 @@ body{
             resize: none;
         }
     }
+    .mat-select-value-text{
+        font-family: $font--lato--regular;
+        font-size: 16px;
+    }
 }
 
 
@@ -500,7 +504,21 @@ body{
             border-bottom-left-radius: 2px;
             border-bottom-right-radius: 2px;
         }
+
+        &.black--header{
+            box-shadow: 0 0 5px 0 rgba(140, 138, 138, 0.3) !important;
+            .mat-card-title{
+                background-color: #222324;                
+                .card-title-text{
+                    color: #fff;
+                }
+            }
+            .mat-card-content{
+                border: none;
+            }
+        }
     }
+   
 }
 
 

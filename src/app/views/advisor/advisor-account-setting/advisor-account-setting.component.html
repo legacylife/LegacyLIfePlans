@@ -1,0 +1,204 @@
+<div class="container llp--left--panel--view cust--acc--sett--wrapper ad--acc--sett--wrapper">
+  <mat-sidenav-container>
+
+    <mat-sidenav EgretSideNavToggle class="shop-sidebar llp--menu--list">
+      <div class="shop-filters-wrap llp--left--panel">
+
+
+
+        <mat-card class="account--profile">
+          <div class="account--pic--wrapper">
+            <div class="account--pic">
+              <img src="assets/images/arkenea/james.png" />
+            </div>
+            <div class="edit--pic">
+              <mat-icon>edit</mat-icon>
+            </div>
+          </div>
+
+          <div class="acc--user--details text-center">
+            <h2>James Anderson</h2>
+            <p>Cleveland, Ohio - 15017</p>
+            <div class="sta--m">
+              <mat-icon>star</mat-icon> Standard member</div>
+          </div>
+
+          <div class="email--phone">
+            <mat-icon>markunread</mat-icon>
+            <span>john.smith@gmail.com</span>
+          </div>
+          <div class="email--phone mb-0">
+            <mat-icon>phone</mat-icon>
+            <span>+1 9876543210</span>
+          </div>
+
+          <div class="feature--profile">
+            <div class="sett--fp">
+              <mat-icon>settings</mat-icon>
+              Featured Profile
+            </div>
+            <p class="pro--info">Your profile information will be visible to the end users on LLP.</p>
+
+            <p class="validate">
+              <span>Valid till:</span> 29 Apr</p>
+          </div>
+
+
+        </mat-card>
+
+
+      </div>
+    </mat-sidenav>
+
+    <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
+      <!-- Filters -->
+
+      <!-- Right side -->
+      <div class="full-width">
+
+        <!-- toggleSideNav -->
+        <div class="shop-top-toolbar p-0 llp--toggle-btn">
+          <button mat-icon-button class="p-0" (click)="toggleSideNav()">
+            <mat-icon>short_text</mat-icon>
+          </button>
+        </div>
+
+        <!-- Account details -->
+
+        <mat-tab-group class="acc--sett--tab">
+          <mat-tab label="Account Details">
+            <!-- account details -->
+            <div class="account--details">
+              <div fxLayout="row wrap">
+                <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
+                  <form class="llp-form-wrapper">
+                    <mat-form-field class="full-width">
+                      <input matInput name="username" placeholder="First Name" value="John">
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                      <input matInput name="lname" placeholder="Last Name" value="Smith">
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="Primary phone" type="tel" value="9876543210" class="">
+                      <span matPrefix>+1</span>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="Secondary phone" type="tel" value="9876543210" class="">
+                      <span matPrefix>+1</span>
+                    </mat-form-field>
+
+                    <!-- <mat-form-field  class="full-width llp-datepicker">
+                              <input matInput [matDatepicker]="dp" placeholder="Date of Birth" [formControl]="date">
+                              <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                              <mat-datepicker #dp
+                                              startView="multi-year"
+                                              panelClass="example-month-picker">
+                              </mat-datepicker>
+                            </mat-form-field> -->
+
+
+
+                    <mat-form-field class="full-width no-mar">
+                      <input matInput name="email" placeholder="Email Address" value="john.smith@gmail.com">
+                    </mat-form-field>
+
+                    <div class="full-width text-right">
+                      <a class="clr--red fnt--16">Change password</a>
+                    </div>
+
+                  </form>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="60" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60">
+                  <div class="manage--sub--section">
+                    <header>
+                      <div class="stan--plan"> Free Access</div>
+                      <div class="ur--sub">Valid till
+                        <span>06/07/2019</span>
+                      </div>
+                    </header>
+
+                    <mat-card class="p-0 black--header">
+                      <mat-card-title class="">
+                        <div class="card-title-text">Invitation Status</div>
+                        <mat-divider></mat-divider>
+                      </mat-card-title>
+                      <mat-card-content class="invite--body--section">
+                        <h4 class="count">12
+                          <span>/45</span>
+                        </h4>
+                        <p class="daysgo">9 days to go</p>
+                        <p class="invites">Invites sent in this month</p>
+                        <button mat-raised-button class="llp--primary--btn">Invite Now</button>
+                      </mat-card-content>
+                    </mat-card>
+
+                    <div class="manage--cancel">
+                      <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/customer/customer-subscription'">Manage subscription</button>
+                    </div>
+                  </div>
+                  <div class="deactivate--acc">
+                    <a class="clr--red fnt--16">Deactivate account</a>
+                  </div>
+                </div>
+              </div>
+              <div fx.Flex="100" class="text-center mt--30">
+                <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
+                <button mat-raised-button class="llp--primary--btn">Save</button>
+              </div>
+            </div>
+
+          </mat-tab>
+          <mat-tab label="Business information">
+
+            <!-- Address details -->
+            <div class="account--details">
+              <form class="llp-form-wrapper">
+               
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
+                    <mat-form-field class="full-width">
+                      <input matInput name="City" placeholder="Business name" value="Arkenea">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                   
+
+                    <mat-form-field  class="full-width">
+                        <mat-label>Years of service</mat-label>
+                        <mat-select [(value)]="selected">
+                          <mat-option>None</mat-option>
+                          <mat-option value="option1">Select number of years</mat-option>
+                          <mat-option value="option2">Option 2</mat-option>
+                          <mat-option value="option3">Option 3</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      
+
+                  </div>
+                </div>
+
+                
+               
+
+                <div fx.Flex="100" class="text-center mt--30">
+                  <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
+                  <button mat-raised-button class="llp--primary--btn">Save</button>
+                </div>
+              </form>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="License & documents">
+            License & documents
+          </mat-tab>
+
+
+        </mat-tab-group>
+
+
+      </div>
+
+    </div>
+  </mat-sidenav-container>
+</div>
