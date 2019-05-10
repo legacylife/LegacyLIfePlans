@@ -55,11 +55,11 @@
     [ngClass]="{'visible': layoutConf.sidebarStyle !== 'closed' && layoutConf.isMobile}"
     (click)="closeSidebar()"></div>
     
-    <!-- Notificaation bar
+    <!-- Notificaation bar -->
     <mat-sidenav #notificationPanel mode="over" class="" position="end">
       <div class="navigation-hold" fxLayout="column">
         <app-notifications [notificPanel]="notificationPanel"></app-notifications>
       </div>
-    </mat-sidenav> -->
+    </mat-sidenav>
   </mat-sidenav-container>
 </div>

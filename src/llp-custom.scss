@@ -95,7 +95,191 @@ body.llp--auth--wrapper{
     margin-top: 63px;
 }
 
+body{
+    .llp--topnavbar{
+        &.header-topnav{
+            .topbar-branding{
+                height: 60px;
+                margin-left: 0;
+                margin-right: 35px;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                img{
+                    height: auto;
+                    cursor: pointer;
+                }
+            }
+            .topnav{
+                ul{
+                    &.menu{
+                        li{
+                            div{
+                                &.open{
+                                    a{
+                                        color: $clr--2;
+                                        border: none;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    &.header--ul{
+                        li{
+                            a{
+                                font-size: 16px;
+                                color: $clr--3;
+                                padding: 13px 27px;
 
+                                .home{
+                                    font-size: 20px;
+                                    width: 27px;
+                                }
+                                .icon-trustees{
+                                    font-size: 21px;
+                                    width: 30px;
+                                }
+                                .icon-professionals{
+                                    font-size: 21px;
+                                    width: 27px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }           
+            .logout--wrapper{
+                width: 35px;
+                height: 35px;
+                position: relative;
+                .logout--user--image{
+                    width: 35px;
+                    height: 35px;
+                    background-color: #e6e7ec;
+                    line-height: 48px;
+                    text-align: center;
+                    position: relative;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    img{
+                        max-width: 100%;
+                        max-height: 100%;
+                        height: auto;
+                    }
+                }
+            }
+        }
+        .invite--btn{
+            background-color: $clr--2;
+            color: $clr--1;
+            height: 32px;
+            margin: 0 28px 0 4px;
+            line-height: 26px;
+
+            .mat-button-wrapper{
+                line-height: 26px;
+                .mat-icon{
+                    font-size: 17px;
+                    height: 20px;
+                    margin-right: 8px;
+                    width: 15px;
+                }
+            }
+        }
+    }
+}    
+
+
+// Custome Container 
+.llp--container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+.mat-form-field-prefix {
+    width: 40px;
+    font-size: 16px;
+    color: #222324;
+}
+.no-mar{
+    .mat-form-field-wrapper{
+        margin-bottom: 0 !important;
+    }
+} 
+
+
+/* -- 
+    left--panel view css (start here)
+------------------------------------------*/
+body{
+    .llp--toggle-btn{
+        display: none;
+    }
+    .llp--content--wrapper{
+        margin: 15px 0 0 0;
+    }
+    .llp--left--panel--view{
+        .llp--menu--list{
+            width: 243px;
+            padding-right: 15px;
+        }
+        .mat-drawer-side{
+            border-right: none;            
+        }
+        .shop-filters-wrap{
+            &.llp--left--panel{
+                margin-top: 15px;
+                border-radius: 2px;
+                box-shadow: 0 0 5px 0 rgba(140, 138, 138, 0.3);
+                background-color: $clr--1;
+                padding: 0;
+                footer,
+                header{
+                    height: 56px;
+                    background-color: $clr--2;
+                    color: $clr--1;
+                    border-top-left-radius: 2px;
+                    border-top-right-radius: 2px;
+                    display: flex;
+                    align-items: center;
+                    padding: 0 10px 0 20px;
+                    font-size: 18px;
+                    font-family: $font--lato--bold;
+                }
+                footer{
+                    background-color: $clr--1;
+                    color: $clr--3
+                }
+                .legacy--list{
+                    list-style-type: none;
+                    li{
+                        a{
+                            padding: 5px 20px;
+                            display: flex;
+                            align-items: center;
+                            border-bottom: 1px solid $clr--15;
+                            min-height: 34px;
+                            font-size: 14px;
+                            color: $clr--3;
+                            line-height: 22px;
+
+                            .icon-file{
+                                font-size: 21px;
+                                width: 34px;
+                                height: 16px;                                                
+                            }
+                        }
+                    }
+                }
+            }               
+        }
+        }
+}
+
+
+/* -- 
+    left--panel view css (end here)
+------------------------------------------*/
 
 /* -- 
     Media Query (start here)
@@ -136,21 +320,46 @@ body.llp--auth--wrapper{
     }
    
 }
-@media (min-width: 640px){
-  
+
+
+@media only screen and (max-width: 599px) {
+    body .llp--toggle-btn{
+        display: block;
+    }
+    body .llp--left--panel--view {
+        padding: 0;
+    }
+    body .llp--left--panel--view .shop-filters-wrap.llp--left--panel{
+        margin-top: 0;
+    }
+    body .llp--left--panel--view .llp--menu--list{
+        padding: 0;
+    }
+    .llp--content--wrapper{
+        padding: 0 15px;
+    }
 }
-    
-@media (min-width: 768px){
-    
+@media only screen and (min-width: 600px) and (max-width: 959px){
+    body .llp--toggle-btn{
+        display: block;
+    }
+    body .llp--left--panel--view {
+        padding: 0;
+    }
+    body .llp--left--panel--view .shop-filters-wrap.llp--left--panel{
+        margin-top: 0;
+    }
+    body .llp--left--panel--view .llp--menu--list{
+        padding: 0;
+    }
+    .llp--content--wrapper{
+        padding: 0 15px;
+    }
 }
-    
-@media (min-width: 1024px){
-    
-}
-    
-@media (min-width: 1200px){
-    
-}
+@media only screen and (min-width: 960px) and (max-width: 979px){}
+@media only screen and (min-width: 980px) and (max-width: 1279px){}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){}
+@media only screen and (min-width: 1441px) and (max-width: 1550px){}
 
 /* -- 
     Media Query (end here)

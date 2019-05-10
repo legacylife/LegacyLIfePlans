@@ -6,11 +6,15 @@
         height: 100px;
         .topbar-branding{
             margin-left: 50px;
+            padding: 0;
             img{
                 height: auto;
+                cursor: pointer;
             }   
         }
         ul{
+            display: flex;
+            align-items: center;
             &.menu{
                 padding-right: 50px;
                 margin-left: auto;
@@ -18,7 +22,7 @@
                     a{
                         font-size: 16px;
                         color: #222324;
-                        padding: 0 30px;
+                        padding: 0 20px;
                         margin: 0;
                         border: none;
                     }
@@ -28,9 +32,125 @@
                             color: #c72128;
                         }
                     }
+
+                    &.for-customer{
+                        margin-right: 40px;
+                        margin-left: 19px;
+                        a{
+                            height: 59px;
+                            border: 1px solid #c72128;
+                            color: #c72128;
+                            border-radius: 4px;
+                            padding: 0 40px;
+                        }
+                        
+                    }
+                    &.sign-up{
+                        margin-right: 18px;
+                        a{
+                            height: 59px;
+                            border: 1px solid #c72128;
+                            background: #c72128;
+                            color: #fff;
+                            border-radius: 4px;
+                            padding: 0 40px;
+                        }
+                    }
+                    &.login{
+                        a{
+                            color: #c72128;
+                        }
+                    }
                 }
             }
         }
     }
+    .llp--menu--btn{
+        padding: 0;
+        margin-left: auto;
+        border: 1px solid #c72128;
+        border-radius: 2px;
+        color: #c72128;
+        line-height: 22px;
+        height: 36px;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+    }
 }
 
+
+
+/* Media query (start here)*/
+@media only screen and (min-width: 599px) {}
+@media only screen and (min-width: 600px) and (max-width: 959px){}
+@media only screen and (min-width: 960px) and (max-width: 979px){
+    .llp--landing--wrapper .topnav .topbar-branding{
+        margin-left: 15px;
+    }
+    .llp--landing--wrapper .topnav ul.menu{
+        padding-right: 14px;
+    }
+    .llp--landing--wrapper .topnav ul.menu li a{
+        padding: 0px 4px;
+        font-size: 14px;
+    }
+    .llp--landing--wrapper .topnav ul.menu li.sign-up a,
+    .llp--landing--wrapper .topnav ul.menu li.for-customer a{
+        padding: 0 8px;
+        height: 37px;
+    }
+    .llp--landing--wrapper .topnav ul.menu li.for-customer{
+        margin-right: 10px;
+        margin-left: 10px
+    }
+}
+@media only screen and (min-width: 980px) and (max-width: 1279px){
+    .llp--landing--wrapper .topnav .topbar-branding{
+        margin-left: 20px;
+    }
+    .llp--landing--wrapper .topnav ul.menu{
+        padding-right: 15px;
+    }
+    .llp--landing--wrapper .topnav ul.menu li a{
+        padding: 0px 5px;
+        font-size: 15px;
+    }
+    .llp--landing--wrapper .topnav ul.menu li.sign-up a,
+    .llp--landing--wrapper .topnav ul.menu li.for-customer a{
+        padding: 0 8px;
+        height: 45px;
+    }
+ 
+    .llp--landing--wrapper .topnav ul.menu li.for-customer{
+        margin-right: 10px;
+        margin-left: 10px
+    }
+    .llp--landing--wrapper .topnav ul.menu li.sign-up{
+        margin-right: 5px;
+    }
+}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){
+    .llp--landing--wrapper .topnav .topbar-branding{
+        margin-left: 20px;
+    }
+    .llp--landing--wrapper .topnav ul.menu{
+        padding-right: 15px;
+    }
+    .llp--landing--wrapper .topnav ul.menu li a{
+        padding: 0 10px;
+    }
+    .llp--landing--wrapper .topnav ul.menu li.for-customer a{
+        padding: 0 18px
+    }
+    .llp--landing--wrapper .topnav ul.menu li.for-customer{
+        margin-right: 25px;
+        margin-left: 15px
+    }
+}
+@media only screen and (min-width: 1441px) and (max-width: 1550px){
+    .llp--landing--wrapper .topnav ul.menu li a{
+        padding: 0 10px;
+    }
+}
+
+
+
+/* Media query (end here)*/

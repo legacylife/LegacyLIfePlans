@@ -22,25 +22,17 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 // import { CommonDirectivesModule } from './sdirectives/common/common-directives.module';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LockscreenComponent } from './lockscreen/lockscreen.component';
-
 import { AuthRoutes } from './auth.routing';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ErrorComponent } from './error/error.component';
-
 import { SigninComponent } from './signin/signin.component';
-import { AdvisorSigninComponent } from './advisor/signin/signin.component';
-import { AdvisorSignupComponent } from './advisor/signup/signup.component';
-import { CustomerSignupComponent } from './customer/signup/signup.component';
-import { CustomerSigninComponent } from './customer/signin/signin.component';
-import { AdminSignupComponent } from './admin/signup/signup.component';
-
-
 import { BusinessInfoComponent } from './advisor/business-info/business-info.component';
 import { UpdateProfileComponent } from './customer/update-profile/update-profile.component';
 import { SetPasswordComponent } from './advisor/set-password/set-password.component';
 import { ThankYouComponent } from './advisor/thank-you/thank-you.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { PasswordResetSuccessfulComponent } from './password-reset-successful/password-reset-successful.component';
+
 
 @NgModule({
   imports: [
@@ -64,10 +56,7 @@ import { PasswordResetSuccessfulComponent } from './password-reset-successful/pa
     RouterModule.forChild(AuthRoutes)
   ],
   declarations: [SigninComponent, ForgotPasswordComponent, LockscreenComponent,
-    NotFoundComponent, ErrorComponent, AdvisorSigninComponent, AdvisorSignupComponent,
-    CustomerSignupComponent, CustomerSigninComponent, AdminSignupComponent,
-    //AdminSigninComponent, 
-    BusinessInfoComponent, UpdateProfileComponent, SetPasswordComponent,
+    NotFoundComponent, ErrorComponent, BusinessInfoComponent, UpdateProfileComponent, SetPasswordComponent,
     ThankYouComponent, ResetPasswordComponent, PasswordResetSuccessfulComponent],
     providers: [
       MatDatepickerModule,

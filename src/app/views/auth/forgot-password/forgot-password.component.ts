@@ -12,7 +12,6 @@ export class ForgotPasswordComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  console.log('ForgotPasswordComponent Front');
   }
   submitEmail() {
     this.submitButton.disabled = true;

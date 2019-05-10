@@ -3,22 +3,52 @@
     <div class="topnav">
       <!-- App Logo -->
       <div class="topbar-branding">
-        <img src="assets/images/arkenea/small-logo.png" alt="" class="app-logo">
+        <img routerLink="" src="assets/images/arkenea/small-logo.png" alt="" class="app-logo">
       </div>
 
       <ul class="menu" *ngIf="!layoutConf.isMobile">
-        <li *ngFor="let item of menuItems; let i = index;">
+        <!-- <li *ngFor="let item of menuItems; let i = index;">
           <div *ngIf="item.type !== 'separator'" routerLinkActive="open">
             <a matRipple routerLink="/{{item.state}}" *ngIf="item.type === 'link'">
               {{item.name | translate}}
             </a>      
           </div>
+        </li> -->
+        <li>
+          <a matRipple routerLink="">Home</a>
+        </li>
+        <li>
+          <a matRipple routerLink="/aboutus">About Us</a>
+        </li>
+        <li>
+          <a matRipple routerLink="">How LLP Hired</a>
+        </li>
+        <li>
+          <a matRipple routerLink="">Leads</a>
+        </li>
+        <li>
+          <a matRipple routerLink="">Profile</a>
+        </li>
+        <li>
+          <a matRipple routerLink="">Testimonials</a>
+        </li>
+        <li>
+          <a matRipple routerLink="">Contact Us </a>
+        </li>
+        <li class="for-customer">
+          <a matRipple routerLink="/customer">For Customers </a>
+        </li>
+        <li class="sign-up">
+          <a matRipple routerLink="/customer/signup">Sign Up</a>
+        </li>
+        <li class="login">
+          <a matRipple routerLink="/signin">Login</a>
         </li>
       </ul>
       <!-- End Navigation -->
-     
+
       <!-- Top left user menu -->
-      <button mat-icon-button class="mr-1" (click)="toggleSidenav()" *ngIf="layoutConf.isMobile">
+      <button mat-icon-button class="mr-1 llp--menu--btn" (click)="toggleSidenav()" *ngIf="layoutConf.isMobile">
         <mat-icon>menu</mat-icon>
       </button>
 

@@ -4,21 +4,22 @@
 
 <div class="page-wrap mat-bg-primary">
   <div class="session-form-hold">
-
     <div class="login-sub-wrapper">
-      <!-- <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar> -->
       <mat-card-content>
         <div class="text-center pb-1">
           <h2 class="login-header-text m-0">Login</h2>
           <p class="login-header-desc">Continue to your LLP account</p>
         </div>
-        
-        <form class="llp-form-wrapper" [formGroup]="llpsigninForm"  (ngSubmit)="llpsignup()">
+        <form class="llp-form-wrapper" [formGroup]="llpsigninForm"  (ngSubmit)="llpsignin()">
           <div class="">
             <mat-form-field class="full-width">
-              <input matInput name="username" placeholder="Email" [formControl]="llpsigninForm.controls['username']" value="" required>
+              <input matInput type="email" name="username" placeholder="Email" [formControl]="llpsigninForm.controls['username']" value="" required>
               <mat-icon matTooltip="Please enter email id" matTooltipClass="llp--tooltip error" 
               *ngIf="llpsigninForm.controls['username'].hasError('required') && llpsigninForm.controls['username'].touched"
+               class="red--alert">help_outline</mat-icon>
+               
+               <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" 
+              *ngIf="llpsigninForm.controls['username'].hasError('pattern') && llpsigninForm.controls['username'].touched"
                class="red--alert">help_outline</mat-icon>
             </mat-form-field>
           </div>
@@ -28,30 +29,22 @@
               <input type="password" name="password" matInput [formControl]="llpsigninForm.controls['password']"  placeholder="Password" value="" required>
               <mat-icon matTooltip="Please enter password" matTooltipClass="llp--tooltip error" class="red--alert"
               *ngIf="llpsigninForm.controls['password'].hasError('required') && llpsigninForm.controls['password'].touched">help_outline</mat-icon>
-            </mat-form-field>
-          </div>
 
-          <div class="otp-sec" *ngIf="otpsec">
-            <label class="otp-note">A One Time Passcode has been sent your email. Please enter the 
-              OTP below to verify your Email Address.</label>
-              <mat-form-field class="full-width">
-                <input type="text" matInput name="otp" placeholder="Enter OTP" value="">
-                <div class="resend-otp">
-                  <a>Resend OTP</a>
-                </div>
-              </mat-form-field>  
+              <mat-icon matTooltip="Please enter correct password." matTooltipClass="llp--tooltip error" class="red--alert"
+                  *ngIf="llpsigninForm.controls['password'].invalid">help_outline</mat-icon>
+            </mat-form-field>
           </div>
 
           <div class="remember-wrap">
             <!-- <mat-checkbox name="rememberMe">Remember me</mat-checkbox> -->
-            <a [routerLink]="'/auth/forgot-password'">Forgot Password?</a>
+            <a [routerLink]="'/forgot-password'">Forgot Password?</a>
           </div>
           <!-- <button mat-raised-button class="llp--primary--btn full-width form--action--btn" (click)="loginClick();">Login</button> -->
           <button mat-raised-button class="llp--primary--btn full-width form--action--btn"  [disabled]="llpsigninForm.invalid">Login</button>
 
           <div class="text-center bot-txt">
             <p>Don't have an account?
-              <a [routerLink]="'/auth/customer/signup'"> Sign Up</a>
+              <a [routerLink]="'/customer/signup'"> Sign Up</a>
             </p>
           </div>
         </form>

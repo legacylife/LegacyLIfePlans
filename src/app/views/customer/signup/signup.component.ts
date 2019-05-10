@@ -18,7 +18,7 @@ export class CustomerSignupComponent implements OnInit {
   custOtpSec = false;
   constructor() {}
 
-  ngOnInit() {
+  ngOnInit() {console.log('CustomerSignupComponent');
     const password = new FormControl('', Validators.required);
     const confirmPassword = new FormControl('', CustomValidators.equalTo(password));
 

@@ -1,65 +1,46 @@
 import { Routes } from '@angular/router';
 import { AdminLayoutComponent } from './shared/components/layouts/admin-layout/admin-layout.component';
-import { AdvisorLayoutComponent } from './shared/components/layouts/advisor-layout/advisor-layout.component';
 import { AuthLayoutComponent } from './shared/components/layouts/auth-layout/auth-layout.component';
+import { AdvisorLandingLayoutComponent } from './shared/components/layouts/advisor-landing-layout/advisor-landing-layout.component';
 import { CustomerLayoutComponent } from './shared/components/layouts/customer-layout/customer-layout.component';
 import { LandingLayoutComponent } from './shared/components/layouts/landing-layout/landing-layout.component';
-import { AdvisorLandingLayoutComponent } from './shared/components/layouts/advisor-landing-layout/advisor-landing-layout.component';
 import { AuthGuard } from './shared/services/auth/auth.guard';
+//import { CustomerSignupComponent } from './views/auth/customer/signup/signup.component';
+//import { AdvisorSignupComponent } from './views/auth/advisor/signup/signup.component';
 
 export const rootRouterConfig: Routes = [
   {
     path: '',
-    component: LandingLayoutComponent,
-    children: [
-      {
-        path: '',
-        loadChildren: './views/landing/landing.module#LandingModule',
-        data: { title: 'Landing'}
-      }
-    ]
-  }, {
-    path: '',
     component: AdvisorLandingLayoutComponent,
-    children: [
-      {
-        path: 'pre-advisor',
-        loadChildren: './views/advisor-landing/advisor-landing.module#AdvisorLandingModule',
-        data: { title: 'Advisor Pre-login Landing'}
-      }
-    ]
+    loadChildren: './views/advisor-landing/advisor-landing.module#AdvisorLandingModule',
+    data: { title: 'LLP', breadcrumb: 'Home'}
   },
-   {
+  {
     path: '',
     component: AuthLayoutComponent,
-    children: [
-      {
-        path: 'auth',
-        loadChildren: './views/auth/auth.module#AuthModule',
-        data: { title: 'Authentication'}
-      }
-    ]
-  }, {
+    loadChildren: './views/auth/auth.module#AuthModule',
+    data: { title: 'LLP', breadcrumb: 'Signin'}
+  },
+ {
     path: 'customer',
-    component: CustomerLayoutComponent,
-    children: [
-      {
-        path: '',
-        loadChildren: './views/customer/customer.module#CustomerModule',
-        data: { title: 'Customer'}
-      }
-    ]
-  }, {
-    path: '',
-    component: AdvisorLayoutComponent,
-    children: [
-      {
-        path: 'advisor',
-        loadChildren: './views/advisor/advisor.module#AdvisorModule',
-        data: { title: 'Customer'}
-      }
-    ]
-  }, {
+    children: [{
+      path: '',
+      component: AuthLayoutComponent,
+      loadChildren: './views/customer/customer.module#CustomerModule',
+      data: { title: 'Customer Signup' }
+    },
+  ]
+  }, 
+   /*
+  {
+    path: 'advisor',
+    children: [{
+      path: 'signup',
+      component: AdvisorSignupComponent,
+      data: { title: 'Advisor Signup' }
+    },
+  ]
+  },*/{
     path: '',
     component: AuthLayoutComponent,
     canActivate: [AuthGuard],
@@ -69,7 +50,7 @@ export const rootRouterConfig: Routes = [
         loadChildren: './views/admin/auth.module#AuthModule',
       }
     ]
-  }, {
+  },{
     path: '',
     component: AdminLayoutComponent,
     canActivate: [AuthGuard],
@@ -80,7 +61,7 @@ export const rootRouterConfig: Routes = [
         data: { title: 'Dashboard', breadcrumb: 'Dashboard'}
       }
     ]
-  }, {
+  },{
     path: '**',
     redirectTo: 'auth/404'
   }
