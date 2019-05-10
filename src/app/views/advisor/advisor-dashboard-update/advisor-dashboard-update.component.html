@@ -249,19 +249,24 @@
         <div fxLayout="row wrap">
           <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
             <div class="right--boxes">
-              <mat-card class="p-0">
-                <mat-card-title class="">
-                  <div class="card-title-text">Invitation Status</div>
-                  <mat-divider></mat-divider>
-                </mat-card-title>
-                <mat-card-content class="invite--body--section">
-                  <h4 class="count">12
-                    <span>/45</span>
-                  </h4>
-                  <p class="daysgo">9 days to go</p>
-                  <p class="invites">Invites sent in this month</p>
-                  <button mat-raised-button class="llp--primary--btn">Invite Now</button>
+              
+              <mat-card class="p-0 target--completed">
+                <mat-card-content class="">
+                  <div class="header--wrapper">
+                    <header class="sub--header" style="background-image: url('assets/images/arkenea/congratulations.png')">
+                      <span>Congratulations!</span>
+                    </header>
+                    <p class="warn">
+                      Your <span>Free Trial</span>
+                      period has been
+                      extended for
+                      30 days!</p>                      
+                  </div>
+                  <div class="free--access">
+                    Free access valid till 17 April
+                  </div>
                 </mat-card-content>
+
               </mat-card>
             </div>
           </div>

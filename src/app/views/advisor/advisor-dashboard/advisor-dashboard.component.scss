@@ -81,6 +81,88 @@
                 }
             }
         }
+
+        .target--completed{
+            box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important;
+            height: 300px;
+
+            .mat-card-content{
+                border: none;
+                height: 300px;
+                padding: 0 15px;
+
+                .header--wrapper {
+                    width: 100%;
+                    margin: 20px auto 0;
+                    display: flex;
+                    flex-direction: column;
+                    position: relative;
+                    justify-content: center;
+                    align-items: center;
+
+                    .sub--header {
+                        margin: 0;
+                        background-repeat: no-repeat;
+                        
+                        span {
+                            font-family: $font--lato--bold--italic;
+                            font-size: 20px;
+                            color: #131321;
+                            padding: 0 31px;
+                        }                        
+                    }
+                    .warn{
+                        width: 80%;
+                        margin: 35px auto 0;
+                        text-align: center;
+                        font-size: 22px;
+                        color: #222324;
+                        font-family: $font--lato--bold !important;
+                        span{
+                            color: #ecbe00;     
+                            text-transform: uppercase;                       
+                        }
+                    }
+
+                    &::before{
+                        content: "";
+                        background-image : url("assets/images/arkenea/leafs-left.png");
+                        width: 63px;
+                        height: 120px;
+                        position: absolute;
+                        left: 0;
+                        top: 35px;
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                    }
+                    &::after{
+                        content: "";
+                        background-image : url("assets/images/arkenea/leafs-right.png");
+                        width: 37px;
+                        height: 120px;
+                        position: absolute;
+                        right: 0;
+                        bottom: 0px;
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                    }
+                    
+                }
+                .free--access{
+                    font-size: 16px;
+                    color: #222324;
+                    width: 55%;
+                    text-align: center;
+                    margin: 20px auto 0;
+                    font-family: $font--lato--regular;
+                    position: absolute;
+                    bottom: 12px;
+                    left: 25%;
+                }
+            }
+            
+            
+        }
     }
 }
 
