@@ -17,10 +17,12 @@ import {
   MatTabsModule,
   MatInputModule,
   MatSelectModule,
+  
   MatDatepickerModule,
   MatNativeDateModule,
   MatFormFieldModule,
   MatProgressBarModule,
+  MatProgressSpinnerModule,
   MatTooltipModule,
 
   MatExpansionModule,
@@ -56,6 +58,7 @@ import { CustomerHomeComponent } from './customer-home/customer-home.component';
     MatTabsModule,
     MatInputModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
     FlexLayoutModule,
     NgxDatatableModule,
     ChartsModule,
