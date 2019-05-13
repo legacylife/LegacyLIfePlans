@@ -144,6 +144,13 @@ body{
                                     width: 27px;
                                 }
                             }
+                            &.more--link{
+                                a{
+                                    &::after{
+                                        content: '';
+                                    }
+                                }
+                            }
                         }
                     }
                 }

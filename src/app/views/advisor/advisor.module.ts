@@ -37,6 +37,7 @@ import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
 
 import { AdvisorAccountSettingComponent } from './advisor-account-setting/advisor-account-setting.component';
+import { AdvisorSubscriptionComponent } from './advisor-subscription/advisor-subscription.component';
 import { AdvisorDashboardComponent } from './advisor-dashboard/advisor-dashboard.component';
 import { AdvisorDashboardUpdateComponent } from './advisor-dashboard-update/advisor-dashboard-update.component';
 import { LegaciesComponent } from './legacies/legacies.component';
@@ -80,7 +81,8 @@ import { AdviserRoutes } from './advisor.routing';
     AdvisorDashboardComponent,
     LegaciesComponent,
     AdvisorDashboardUpdateComponent,
-    AdvisorAccountSettingComponent
+    AdvisorAccountSettingComponent,
+    AdvisorSubscriptionComponent
   ]
 })
 export class AdvisorModule { }

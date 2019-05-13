@@ -524,7 +524,58 @@ body{
 
 body{
     .llp--menu--droupdown{
-
+        width: 193px;
+        .mat-menu-content{
+            margin: 0 10px;
+            .mat-menu-item{
+                line-height: 43px;
+                height: 43px;
+                padding: 0 10px;
+                span{
+                    font-size: 16px;
+                    color: #222324;
+                    font-family: $font--lato--regular;
+                }
+                .mat-icon{
+                    color: #222324;
+                    height: 20px;
+                    width: 20px;
+                    font-size: 20px;
+                    margin-right: 10px;
+                }
+                &.get--feature{
+                    border-radius: 2px;
+                    background-color: #f9e17f;
+                }
+            }
+        } 
+    }
+    .more--options{
+        width: 183px;
+        .mat-menu-content{
+            margin: 0 10px;
+            .mat-menu-item{
+                line-height: 43px;
+                height: 43px;
+                padding: 0 10px;
+                span{
+                    font-size: 16px;
+                    color: #222324;
+                    font-family: $font--lato--regular;
+                }
+                .mat-icon{
+                    color: #222324;
+                    height: 20px;
+                    width: 20px;
+                    font-size: 20px;
+                    margin-right: 10px;
+                }
+                &.get--feature{
+                    border-radius: 2px;
+                    background-color: #f9e17f;
+                }
+            }
+        }
     }
 }
 

@@ -1,13 +1,13 @@
 <div class="header-topnav mat-elevation-z2 llp--topnavbar">
-    <div class="container">
-      <div class="topnav">
-        <!-- App Logo -->
-        <div class="topbar-branding">
-          <img routerLink="/pre-advisor" src="assets/images/arkenea/small-logo.png" alt="" class="app-logo">
-        </div>
-  
-        <ul class="menu header--ul" *ngIf="!layoutConf.isMobile">
-          <!-- <li *ngFor="let item of menuItems; let i = index;">
+  <div class="container">
+    <div class="topnav">
+      <!-- App Logo -->
+      <div class="topbar-branding">
+        <img routerLink="/pre-advisor" src="assets/images/arkenea/small-logo.png" alt="" class="app-logo">
+      </div>
+
+      <ul class="menu header--ul" *ngIf="!layoutConf.isMobile">
+        <!-- <li *ngFor="let item of menuItems; let i = index;">
             <div *ngIf="item.type !== 'separator'" routerLinkActive="open">
               <a matRipple routerLink="/{{item.state}}" *ngIf="item.type === 'link'">
                 <mat-icon>{{item.icon}}</mat-icon>
@@ -15,64 +15,79 @@
               </a>      
             </div>
           </li> -->
-  
-          <li>
-            <a matRipple routerLink="/advisor">
-              <mat-icon class="home">home</mat-icon> Home</a>
-          </li>
-          <li>
-            <a matRipple routerLink="/advisor/legacies">
-              <mat-icon class="icon-trustees">people</mat-icon> Legacies</a>
-          </li>
-          <li>
-            <a matRipple routerLink="/advisor">
-              <mat-icon class="icon-professionals">perm_identity</mat-icon> Leads</a>
-          </li>
-  
-        </ul>
-        <span fxFlex></span>
-        <!-- End Navigation -->
-  
-  
-        <!-- invite -->
-  
-        <button mat-button>
-          <mat-icon>search</mat-icon>
-        </button>
-  
-        <button mat-raised-button class="invite--btn">
-          <mat-icon>markunread</mat-icon>Invite</button>
-  
-        <!-- User profile pic -->
-        <div class="logout--wrapper" mat-icon-button [matMenuTriggerFor]="accountMenu">
-          <div class="logout--user--image">
-            <img src="assets/images/arkenea/Vicky-Kaushal-1.jpg" alt="">
-          </div>
+
+        <li>
+          <a matRipple routerLink="/advisor">
+            <mat-icon class="home">home</mat-icon> Home</a>
+        </li>
+        <li>
+          <a matRipple routerLink="/advisor/legacies">
+            <mat-icon class="icon-trustees">people</mat-icon> Legacies</a>
+        </li>
+        <li>
+          <a matRipple routerLink="/advisor">
+            <mat-icon class="icon-professionals">perm_identity</mat-icon> Leads</a>
+        </li>
+        <li class="more--link">
+          <a mat-button [matMenuTriggerFor]="afterMenu1">
+            <mat-icon>more_horiz</mat-icon> More </a>
+          <mat-menu #afterMenu1="matMenu" class="more--options">
+            <button mat-menu-item>
+              <mat-icon>list
+              </mat-icon>
+              <span>To dos </span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>book</mat-icon>
+              <span>Coach’s Corner</span>
+            </button>
+          </mat-menu>
+        </li>
+
+      </ul>
+      <span fxFlex></span>
+      <!-- End Navigation -->
+
+
+      <!-- invite -->
+
+      <button mat-button>
+        <mat-icon>search</mat-icon>
+      </button>
+
+      <button mat-raised-button class="invite--btn">
+        <mat-icon>markunread</mat-icon>Invite</button>
+
+      <!-- User profile pic -->
+      <div class="logout--wrapper" mat-icon-button [matMenuTriggerFor]="accountMenu">
+        <div class="logout--user--image">
+          <img src="assets/images/arkenea/Vicky-Kaushal-1.jpg" alt="">
         </div>
-  
-        <mat-menu #accountMenu="matMenu">
-          <button mat-menu-item [routerLink]="['/profile/overview']">
-            <mat-icon>account_box</mat-icon>
-            <span>Customer Profile</span>
-          </button>
-          <button mat-menu-item [routerLink]="['/profile/settings']">
-            <mat-icon>settings</mat-icon>
-            <span>Customer Account Settings</span>
-          </button>
-          <button mat-menu-item>
-            <mat-icon>notifications_off</mat-icon>
-            <span>Customer Disable alerts</span>
-          </button>
-          <button mat-menu-item [routerLink]="['/sessions/signin']">
-            <mat-icon>exit_to_app</mat-icon>
-            <span>Customer Sign out</span>
-          </button>
-        </mat-menu>
-        <!-- Mobile screen menu toggle -->
-        <button mat-icon-button class="mr-1" (click)="toggleSidenav()" *ngIf="layoutConf.isMobile">
-          <mat-icon>menu</mat-icon>
-        </button>
-  
       </div>
+
+      <mat-menu #accountMenu="matMenu" class="llp--menu--droupdown" xPosition="before">
+        <button class="get--feature" mat-menu-item [routerLink]="['/profile/overview']">
+          <mat-icon>settings</mat-icon>
+          <span>Get Featured</span>
+        </button>
+        <button mat-menu-item [routerLink]="['/advisor/account-setting']">
+          <mat-icon>settings</mat-icon>
+          <span>Account Settings</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>monetization_on</mat-icon>
+          <span>Payment</span>
+        </button>
+        <button mat-menu-item [routerLink]="['/sessions/signin']">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Log out</span>
+        </button>
+      </mat-menu>
+      <!-- Mobile screen menu toggle -->
+      <button mat-icon-button class="mr-1" (click)="toggleSidenav()" *ngIf="layoutConf.isMobile">
+        <mat-icon>menu</mat-icon>
+      </button>
+
     </div>
   </div>
+</div>
