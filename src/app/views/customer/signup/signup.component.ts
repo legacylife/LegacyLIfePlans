@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Pipe, PipeTransform  } from '@angular/core';
 import { MatProgressBar, MatButton, MatSnackBar } from '@angular/material';
 import { APIService } from './../../../api.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -6,28 +6,38 @@ import { RoutePartsService } from "../../../shared/services/route-parts.service"
 import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
+import { Observable, of } from 'rxjs';
+import 'rxjs/add/observable/timer'
+import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/take'
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
+
 export class CustomerSignupComponent implements OnInit {
   @ViewChild(MatProgressBar) progressBar: MatProgressBar;
   @ViewChild(MatButton) submitButton: MatButton;
-
+  transform(value: number): string {
+    const minutes: number = Math.floor(value / 60);
+    return ('00' + minutes).slice(-2) + ':' + ('00' + Math.floor(value - minutes * 60)).slice(-2);
+  }
   llpCustsignupForm: FormGroup;
   llpCustotpForm: FormGroup;
   custFreeTrailBtn = false;
   custProceedBtn = true;
   custOtpSec = false;
-  ResendBtn = false;
   invalidMessage: string;
   invalidOtpMessage:string;
   EmailExist: boolean;
   invalidOTP: boolean;
   passwordRegex: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!#%*?&])[A-Za-z\d$@$!#%*?&]{6,16}/
-
+  countDown;
+  counter = 0;
+  tick = 0;
+  
   constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) {}
   ngOnInit() {
       this.llpCustsignupForm = new FormGroup({
@@ -38,6 +48,8 @@ export class CustomerSignupComponent implements OnInit {
       this.llpCustotpForm = new FormGroup({
         otp: new FormControl('', Validators.required)// CustomValidators.number({min: 6, max: 6})
       });      
+          
+      
   }
 
   custProceed() {
@@ -49,9 +61,6 @@ export class CustomerSignupComponent implements OnInit {
     this.api.apiRequest('post', 'auth/checkEmail', req_vars).subscribe(result => {          
       if(result.status == "success"){        
         this.loader.close();
-       /* this.llpCustotpForm = new FormGroup({
-          otp: new FormControl('', Validators.required)// CustomValidators.number({min: 6, max: 6})
-        });*/
         if(result.data.code == "Exist"){        
           this.llpCustsignupForm.controls['username'].enable();
           this.invalidMessage = result.data.message;
@@ -62,11 +71,7 @@ export class CustomerSignupComponent implements OnInit {
           this.custProceedBtn = false;
           this.custOtpSec = true;        
           this.llpCustsignupForm.controls['username'].setErrors({'EmailExist' : false})
-          
-          setTimeout(function () {
-            this.ResendBtn = true; 
-         }, 4000);
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          this.clockCall();
         }
       } else {
         this.loader.close();
@@ -75,7 +80,6 @@ export class CustomerSignupComponent implements OnInit {
     }, (err) => {
       this.loader.close();
       console.error(err)
-      //this.errorMessage = err.message      
     }) 
  }
 
@@ -86,6 +90,8 @@ export class CustomerSignupComponent implements OnInit {
       if(result.status == "success"){   
         this.loader.close();     
         if(result.data.code == "success"){        
+          localStorage.setItem("UserEmail", this.llpCustsignupForm.controls['username'].value);
+
           this.snack.open(result.data.message, 'OK', { duration: 4000 })          
           this.router.navigate(['/', 'customer', 'update-profile']);
         }else{          
@@ -112,31 +118,29 @@ export class CustomerSignupComponent implements OnInit {
         userType: "customer" 
       }
       console.log(req_vars);
-  /*
-      this.api.apiRequest('post', 'auth/signup', req_vars).subscribe(result => {
-        if(result.status == "success"){
-          //this.successMessage = "Congratulations! You are signed up successfully."
-          setTimeout(() => {
-            this.router.navigate ( [ '/' ] )
-          }, 3000)
-        } else {
-          //this.errorMessage = result.data.message || result.data;
-          
-        }
-
-      }, (err) => {
-        console.error(err)
-        //this.errorMessage = err.message      
-      })
-
-    */
+     //this.successMessage = "Congratulations! You are signed up successfully."
+         
   }
 
   ResendOtpProceed() {  
-
+    this.custProceed();
   }
 
-
-
+  clockCall() {  
+    this.counter = 30;
+    this.tick = 1000;
+    this.countDown = Observable.timer(0, this.tick)
+      .take(this.counter)
+      .map(() => --this.counter);
+  }
+}
+@Pipe({
+  name: 'formatTime'
+})
+export class FormatTimePipe implements PipeTransform {
+  transform(value: number): string {
+    const minutes: number = Math.floor(value / 60);
+    return ('00' + minutes).slice(-2) + ':' + ('00' + Math.floor(value - minutes * 60)).slice(-2);     
+  }
 
 }

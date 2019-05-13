@@ -37,9 +37,10 @@ import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
 
 import { CustomerRoutes } from './customer.routing';
-import { CustomerSignupComponent } from './signup/signup.component';
+import { CustomerSignupComponent,FormatTimePipe } from './signup/signup.component';
 import { UpdateProfileComponent } from './update-profile/update-profile.component';
 import { CustomerHomeComponent } from './customer-home/customer-home.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -77,9 +78,9 @@ import { CustomerHomeComponent } from './customer-home/customer-home.component';
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [
-    CustomerSignupComponent,UpdateProfileComponent,CustomerHomeComponent
+    CustomerSignupComponent,UpdateProfileComponent,CustomerHomeComponent,FormatTimePipe
   ],providers: [
     MatDatepickerModule,
-  ]
+  ],bootstrap: [CustomerSignupComponent]
 })
 export class CustomerModule { }

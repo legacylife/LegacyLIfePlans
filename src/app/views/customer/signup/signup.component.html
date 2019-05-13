@@ -3,8 +3,12 @@
 </header>
 
 <div class="page-wrap mat-bg-primary">
-  <div class="session-form-hold">
-  
+   <!-- <mat-progress-spinner [color]="'primary'" [mode]="'determinate'" [value]="40"> </mat-progress-spinner>
+      <h4 class="primary-btn">{{countDown | async | formatTime}}</h4>-->
+   
+      
+
+  <div class="session-form-hold"> 
     <div class="login-sub-wrapper">
       <!-- <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar>  (ngSubmit)="llpCustSignup()"-->
       <mat-card-content>
@@ -53,12 +57,8 @@
                 <mat-form-field class="full-width">
                   <input type="text" matInput name="otp" placeholder="Enter OTP"  [formControl]="llpCustotpForm.controls['otp']" value="">
 
-                    
-
-                   
-
-                    
-                  <div  *ngIf="ResendBtn" class="resend-otp" (click)="ResendOtpProceed()">
+                  <div *ngIf="counter !== 0" class="resend-otp">{{countDown | async | formatTime}}</div>
+                  <div *ngIf="counter == 0" class="resend-otp" (click)="ResendOtpProceed()">
                     <a>Resend OTP</a>
                   </div>
                   <mat-icon matTooltip="Please enter OTP" matTooltipClass="llp--tooltip error" class="red--alert"
@@ -72,7 +72,7 @@
 
                 <p class="terms--policy">By signing up, you agree to our <a>Terms of Use </a> and <a>Privacy Policy</a></p>
             </div>
-            <button *ngIf="custFreeTrailBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1"  (click)="OtpProceed()">Continue</button> 
+            <button *ngIf="custFreeTrailBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" (click)="OtpProceed()">Continue</button> 
           </form>
           
           
