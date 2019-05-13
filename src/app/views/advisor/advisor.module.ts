@@ -26,6 +26,7 @@ import {
   MatSidenavModule,
   MatRippleModule,
   MatDatepickerModule,
+  MatNativeDateModule,
 
 
  } from '@angular/material';
@@ -72,6 +73,7 @@ import { AdviserRoutes } from './advisor.routing';
     MatRippleModule,
     MatDatepickerModule,
     ReactiveFormsModule,
+    MatNativeDateModule,
     RouterModule.forChild(AdviserRoutes)
   ],
   declarations: [

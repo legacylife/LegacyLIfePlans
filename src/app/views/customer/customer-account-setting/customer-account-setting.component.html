@@ -77,16 +77,12 @@
                       <span matPrefix>+1</span>
                     </mat-form-field>
 
-                    <!-- <mat-form-field  class="full-width llp-datepicker">
-                              <input matInput [matDatepicker]="dp" placeholder="Date of Birth" [formControl]="date">
-                              <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-                              <mat-datepicker #dp
-                                              startView="multi-year"
-                                              panelClass="example-month-picker">
-                              </mat-datepicker>
-                            </mat-form-field> -->
-
-
+                    <mat-form-field class="full-width llp-datepicker">
+                      <input matInput [matDatepicker]="dp" placeholder="Date of Birth" [formControl]="date">
+                      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                      <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
+                      </mat-datepicker>
+                    </mat-form-field>
 
                     <mat-form-field class="full-width no-mar">
                       <input matInput name="email" placeholder="Email Address" value="john.smith@gmail.com">
@@ -114,7 +110,7 @@
                       card
                     </p>
                     <div class="manage--cancel">
-                      <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/customer/customer-subscription'" >Manage subscription</button>
+                      <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/customer/customer-subscription'">Manage subscription</button>
                       <a class="clr--red">Cancel subscription</a>
                     </div>
                   </div>
@@ -148,27 +144,27 @@
                   </div>
                 </div>
                 <div fxLayout="row wrap" fxLayoutGap-sm="5px" fxLayoutGap="30px">
-                    <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
-                      <mat-form-field class="full-width">
-                        <input matInput name="City" placeholder="City" value="">
-                      </mat-form-field>
-                    </div>
-                    <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
-                        <mat-form-field class="full-width">
-                            <mat-select placeholder="Select a state">
-                              <mat-option value="option">Maharashtra</mat-option>
-                              <mat-option value="option">Goa</mat-option>
-                            </mat-select>
-                          </mat-form-field>
-                    </div>
+                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                    <mat-form-field class="full-width">
+                      <input matInput name="City" placeholder="City" value="">
+                    </mat-form-field>
                   </div>
-                  <div fxLayout="row wrap" fxLayoutGap-sm="5px" fxLayoutGap="30px">
-                      <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
-                        <mat-form-field class="full-width">
-                          <input matInput name="ZipCode" placeholder="Zip Code" value="">
-                        </mat-form-field>
-                      </div>
-                    </div>
+                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                    <mat-form-field class="full-width">
+                      <mat-select placeholder="Select a state">
+                        <mat-option value="option">Maharashtra</mat-option>
+                        <mat-option value="option">Goa</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fxLayout="row wrap" fxLayoutGap-sm="5px" fxLayoutGap="30px">
+                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                    <mat-form-field class="full-width">
+                      <input matInput name="ZipCode" placeholder="Zip Code" value="">
+                    </mat-form-field>
+                  </div>
+                </div>
                 <div fx.Flex="100" class="text-center mt--30">
                   <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
                   <button mat-raised-button class="llp--primary--btn">Save</button>

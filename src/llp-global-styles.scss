@@ -552,6 +552,7 @@ body{
 .my-15{margin: 15px 0 !important;}
 .mt--30{margin-top: 30px !important;}
 .px-40{padding: 0 40px !important;}
+.pr-2 {padding-right: 2rem !important;}
 .mr-20{margin-right: 20px !important}
 .mr-30{margin-right: 30px !important}
 .align--items--center{align-items: center;}
@@ -559,9 +560,9 @@ body{
 .justify--content--space--around{justify-content: space-around}
 .relative{position: relative !important;}
 .clr--red{color:$clr--2 !important}
-.fnt--18{font-size: 18px;}
-.fnt--16{font-size: 16px;}
-.fnt--14{font-size: 14px;}
+.fnt--18{font-size: 18px !important;}
+.fnt--16{font-size: 16px !important;}
+.fnt--14{font-size: 14px !important;}
 .tran--bg{background-color: transparent !important}
 
 

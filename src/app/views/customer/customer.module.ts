@@ -23,7 +23,8 @@ import {
   MatRippleModule,
   MatGridListModule,
   MatProgressBarModule,
-  MatDatepickerModule
+  MatDatepickerModule,
+  MatNativeDateModule,
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -71,6 +72,7 @@ import { CustomerRoutes } from './customer.routing';
     MatSelectModule,
     MatRippleModule,
     MatDatepickerModule,
+    MatNativeDateModule,
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [

@@ -88,14 +88,12 @@
                       <span matPrefix>+1</span>
                     </mat-form-field>
 
-                    <!-- <mat-form-field  class="full-width llp-datepicker">
-                              <input matInput [matDatepicker]="dp" placeholder="Date of Birth" [formControl]="date">
-                              <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-                              <mat-datepicker #dp
-                                              startView="multi-year"
-                                              panelClass="example-month-picker">
-                              </mat-datepicker>
-                            </mat-form-field> -->
+                    <mat-form-field class="full-width llp-datepicker">
+                      <input matInput [matDatepicker]="dp" placeholder="Date of Birth" [formControl]="date">
+                      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                      <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
+                      </mat-datepicker>
+                    </mat-form-field>
 
 
 
@@ -151,35 +149,201 @@
           </mat-tab>
           <mat-tab label="Business information">
 
-            <!-- Address details -->
-            <div class="account--details">
+            <!-- Business Information  -->
+            <div class="business--information">
               <form class="llp-form-wrapper">
-               
+                <h3 class="header--text">Business Information</h3>
+
                 <div fxLayout="row wrap">
-                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
                       <input matInput name="City" placeholder="Business name" value="Arkenea">
                     </mat-form-field>
                   </div>
-                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
-                   
-
-                    <mat-form-field  class="full-width">
-                        <mat-label>Years of service</mat-label>
-                        <mat-select [(value)]="selected">
-                          <mat-option>None</mat-option>
-                          <mat-option value="option1">Select number of years</mat-option>
-                          <mat-option value="option2">Option 2</mat-option>
-                          <mat-option value="option3">Option 3</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                      
-
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                    <mat-form-field class="full-width">
+                      <mat-label>Years of service</mat-label>
+                      <mat-select [(value)]="selected">
+                        <mat-option>None</mat-option>
+                        <mat-option value="option1">Select number of years</mat-option>
+                        <mat-option value="option2">Option 2</mat-option>
+                        <mat-option value="option3">Option 3</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
+                    <mat-form-field class="full-width">
+                      <mat-label>Business type</mat-label>
+                      <mat-select [(value)]="selected">
+                        <mat-option>None</mat-option>
+                        <mat-option value="option1">Select business type</mat-option>
+                        <mat-option value="option2">Option 2</mat-option>
+                        <mat-option value="option3">Option 3</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                    <mat-form-field class="full-width">
+                      <mat-label>Industry/Domain</mat-label>
+                      <mat-select [(value)]="selected">
+                        <mat-option>None</mat-option>
+                        <mat-option value="option1">Select industry/domain type</mat-option>
+                        <mat-option value="option2">Option 2</mat-option>
+                        <mat-option value="option3">Option 3</mat-option>
+                      </mat-select>
+                    </mat-form-field>
                   </div>
                 </div>
 
-                
-               
+                <h3 class="header--text">Business Address</h3>
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
+                    <mat-form-field class="full-width">
+                      <input matInput name="City" placeholder="Address line 1" value="Wakad, pune">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                    <mat-form-field class="full-width">
+                      <input matInput name="City" placeholder="Address line 2 (optional)" value="">
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
+                    <mat-form-field class="full-width">
+                      <input matInput name="City" placeholder="City" value="">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                    <mat-form-field class="full-width">
+                      <mat-label>State</mat-label>
+                      <mat-select [(value)]="selected">
+                        <mat-option>None</mat-option>
+                        <mat-option value="option1">Select a state</mat-option>
+                        <mat-option value="option2">Option 2</mat-option>
+                        <mat-option value="option3">Option 3</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
+                    <mat-form-field class="full-width">
+                      <input matInput name="City" placeholder="Zip Code" value="">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="Business Phone" type="tel" value="9876543210" class="">
+                      <span matPrefix>+1</span>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+
+                <h3 class="header--text">Featured Information</h3>
+                <p class="header--desc">The following information appears on your featured profile.</p>
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
+                    <mat-form-field class="full-width about--txtarea">
+                      <textarea matInput placeholder="About you" value="Your professional summary, achievements, client experience"></textarea>
+                      <div class="char--limit">0 / 500 chars</div>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                    <h3 class="header--text fnt--16 mb-1">Awards and Organizations</h3>
+
+                    <div fxLayout="row wrap">
+                      <div fxFlex.xs="100" fxFlex.sm="65" fxFlex.md="65" fxFlex.lg="65" fxFlex.xl="65" class="pad--r--lg">
+                        <mat-form-field class="full-width">
+                          <input matInput name="City" placeholder="Title" value="Design Awards">
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex.xs="95" fxFlex.sm="30" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pr-2">
+                        <mat-form-field class="full-width">
+                          <input matInput name="City" placeholder="Year" value="2014">
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
+                        <mat-icon class="mt-1 clr--red">delete</mat-icon>
+                      </div>
+                    </div>
+                    <div fxLayout="row wrap">
+                      <div fxFlex.xs="100" fxFlex.sm="65" fxFlex.md="65" fxFlex.lg="65" fxFlex.xl="65" class="pad--r--lg">
+                        <mat-form-field class="full-width">
+                          <input matInput name="City" placeholder="Title" value="Drawing Awards">
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex.xs="95" fxFlex.sm="30" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pr-2">
+                        <mat-form-field class="full-width">
+                          <input matInput name="City" placeholder="Year" value="2019">
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
+                        <mat-icon class="mt-1 clr--red">delete</mat-icon>
+                      </div>
+                    </div>
+                    <div fxLayout="row wrap">
+                      <div fxFlex.xs="100">
+                        <div class="add--new">
+                          <mat-icon>add_circle</mat-icon>
+                          Add New
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <h3 class="header--text fnt--16 mb-1">Social Media</h3>
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
+                    <mat-form-field class="full-width">
+                      <input matInput name="City" placeholder="Facebook" value="">
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                      <input matInput name="City" placeholder="Twitter" value="">
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                      <input matInput name="City" placeholder="LinkedIn" value="">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                    <h3 class="header--text fnt--16 mb-1">Websites</h3>
+
+                    <div fxLayout="row wrap">
+                      <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
+                        <mat-form-field class="full-width">
+                          <input matInput name="City" placeholder="URL" value="www.loremipsum.com">
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
+                        <mat-icon class="mt-1 clr--red">delete</mat-icon>
+                      </div>
+                    </div>
+                    <div fxLayout="row wrap">
+                      <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
+                        <mat-form-field class="full-width">
+                          <input matInput name="City" placeholder="URL" value="www.loremipsum.com">
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
+                        <mat-icon class="mt-1 clr--red">delete</mat-icon>
+                      </div>
+                    </div>
+
+                    <div fxLayout="row wrap">
+                      <div fxFlex.xs="100">
+                        <div class="add--new">
+                          <mat-icon>add_circle</mat-icon>
+                          Add New
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 <div fx.Flex="100" class="text-center mt--30">
                   <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
@@ -190,7 +354,102 @@
           </mat-tab>
 
           <mat-tab label="License & documents">
-            License & documents
+            <!-- License & documents -->
+            <div class="business--information">
+              <form class="llp-form-wrapper">
+                <h3 class="header--text">License Information</h3>
+
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
+                    <mat-form-field class="full-width">
+                      <mat-label>Active license held</mat-label>
+                      <mat-select [(value)]="selected">
+                        <mat-option>None</mat-option>
+                        <mat-option value="option1">Click checkbox all that apply</mat-option>
+                        <mat-option value="option2">Option 2</mat-option>
+                        <mat-option value="option3">Option 3</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                    <mat-radio-group aria-label="Select an option" class="llp-radio">
+                      <div class="checkbox-label">What agency oversees your business?</div>
+                      <mat-radio-button value="1" class="">FINRA</mat-radio-button>
+                      <mat-radio-button value="2" class="">SEC</mat-radio-button>
+                      <mat-radio-button value="3" class="">Both</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
+                    <mat-form-field class="full-width">
+                      <input matInput name="City" placeholder="Who is your managing principle?" value="">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                    <mat-radio-group aria-label="Select an option" class="llp-radio">
+                      <div class="checkbox-label">Do you manage other producers?</div>
+                      <mat-radio-button value="1" class="">Yes</mat-radio-button>
+                      <mat-radio-button value="2" class="">No</mat-radio-button>
+                    </mat-radio-group>
+                    <mat-form-field class="full-width">
+                      <input matInput name="City" placeholder="If yes, how many?" value="">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <h3 class="header--text">Business Documents</h3>
+                <div fxLayout="row">
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                    <p class="header--desc upload--doc">Upload your business documents for verification for e.g. business license</p>                  
+                    
+
+                  </div>
+                </div>
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
+                      <div class="upload--buss--docs--sec">
+                          <label>Upload your business documents</label>
+                          <div class="upload--box">
+                            <input type="file" />
+          
+                            <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                            <div class="select--file">Select file from your computer</div>
+          
+                          </div>
+                          <div class="file--details">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+                        </div>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50">
+                      <h3 class="header--text fnt--16">Uploaded documents</h3>
+                      <mat-chip-list class="doc--list">
+                          <mat-chip>Business card.jpg <mat-icon matChipRemove>close</mat-icon></mat-chip>
+                          <mat-chip>proof of credentials.pdf <mat-icon matChipRemove>close</mat-icon></mat-chip>
+                          <mat-chip>License_8-Apr.pdf <mat-icon matChipRemove>close</mat-icon></mat-chip>
+                        </mat-chip-list>
+                  </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <div fx.Flex="100" class="text-center mt--30">
+                  <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
+                  <button mat-raised-button class="llp--primary--btn">Save</button>
+                </div>
+              </form>
+            </div>
           </mat-tab>
 
 
