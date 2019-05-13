@@ -46,6 +46,7 @@ import { PasswordResetSuccessfulComponent } from './password-reset-successful/pa
 import { SubscriptionComponent } from './subscription/subscription.component';
 import { ReferAndEarnComponent } from './subscription/refer-and-earn/refer-and-earn.component';
 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -72,7 +73,8 @@ import { ReferAndEarnComponent } from './subscription/refer-and-earn/refer-and-e
     NotFoundComponent, ErrorComponent, AdvisorSigninComponent, AdvisorSignupComponent,
     CustomerSignupComponent, CustomerSigninComponent, AdminSignupComponent,
     AdminSigninComponent, BusinessInfoComponent, UpdateProfileComponent, SetPasswordComponent,
-    ThankYouComponent, ResetPasswordComponent, PasswordResetSuccessfulComponent, SubscriptionComponent, ReferAndEarnComponent],
+    ThankYouComponent, ResetPasswordComponent, PasswordResetSuccessfulComponent, SubscriptionComponent, 
+    ReferAndEarnComponent],
     entryComponents: [ReferAndEarnComponent],
     providers: [
       MatDatepickerModule,

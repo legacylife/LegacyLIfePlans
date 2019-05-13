@@ -10,6 +10,9 @@ import { egretAnimations } from '../../../shared/animations/egret-animations';
 import { MatProgressBar, MatButton } from '@angular/material';
 import { Validators} from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { AdvisorChangePassComponent } from '../advisor-account-setting/advisor-change-pass/advisor-change-pass.component';
+
 
 @Component({
   selector: 'app-advisor-account-setting',
@@ -17,56 +20,23 @@ import { CustomValidators } from 'ng2-validation';
   styleUrls: ['./advisor-account-setting.component.scss'],
   animations: [egretAnimations]
 })
-export class AdvisorAccountSettingComponent implements OnInit, OnDestroy {
-  public isSideNavOpen: boolean;
-  public viewMode: string = 'grid-view';
-  public currentPage: any;
-  dayFirst = true;
-  daySeco = false;
-  date: any;
-  chosenYearHandler: any;
+export class AdvisorAccountSettingComponent implements OnInit {
+
   selected = 'option1';
 
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
-  public products: any[];
-  public categories: any[];
-  public activeCategory: string = 'all';
-  public filterForm: FormGroup;
-  public cart: any[];
-  public cartData: any;
-
-  constructor(
-    // private shopService: ShopService,
-    private fb: FormBuilder,
-    private snackBar: MatSnackBar
-  ) { }
+  constructor( public dialog: MatDialog) { }
 
   ngOnInit() {
-    // this.categories$ = this.shopService.getCategories();
-    this.categories = ["My essentials", "Pets"]
+    }
 
-   
-    this.products = []
-    this.cartData = []
-    this.filterForm = this.fb.group({
-      search: ['']
-    })
-  }
-  showSecoDay() {
-    this.dayFirst = false;
-    this.daySeco = true;
-  }
-  ngOnDestroy() {
+    changePasspordModal(): void {
+      const dialogRef = this.dialog.open(AdvisorChangePassComponent, {
+        width: '555px',
+      });
+      dialogRef.afterClosed().subscribe(result => {});
+    }
 
   }
 
-  setActiveCategory(category) {
-    this.activeCategory = category;
-    this.filterForm.controls['category'].setValue(category)
-  }
-
-  toggleSideNav() {
-    this.sideNav.opened = !this.sideNav.opened;
-  }
-}

@@ -27,6 +27,7 @@ import {
   MatRippleModule,
   MatDatepickerModule,
   MatNativeDateModule,
+  MatDialogModule
 
 
  } from '@angular/material';
@@ -37,6 +38,7 @@ import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
 
 import { AdvisorAccountSettingComponent } from './advisor-account-setting/advisor-account-setting.component';
+import { AdvisorChangePassComponent } from './advisor-account-setting/advisor-change-pass/advisor-change-pass.component';
 import { AdvisorSubscriptionComponent } from './advisor-subscription/advisor-subscription.component';
 import { AdvisorDashboardComponent } from './advisor-dashboard/advisor-dashboard.component';
 import { AdvisorDashboardUpdateComponent } from './advisor-dashboard-update/advisor-dashboard-update.component';
@@ -75,6 +77,7 @@ import { AdviserRoutes } from './advisor.routing';
     MatDatepickerModule,
     ReactiveFormsModule,
     MatNativeDateModule,
+    MatDialogModule,
     RouterModule.forChild(AdviserRoutes)
   ],
   declarations: [
@@ -82,7 +85,9 @@ import { AdviserRoutes } from './advisor.routing';
     LegaciesComponent,
     AdvisorDashboardUpdateComponent,
     AdvisorAccountSettingComponent,
-    AdvisorSubscriptionComponent
-  ]
+    AdvisorSubscriptionComponent,
+    AdvisorChangePassComponent
+  ],
+  entryComponents: [AdvisorChangePassComponent],
 })
 export class AdvisorModule { }
