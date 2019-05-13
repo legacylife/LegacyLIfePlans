@@ -86,7 +86,6 @@ var userSchema = new mongoose.Schema({
   signupArrovalStatus : String, 
   approveRejectReason : String,      
   accessToken : String,
-
   createdOn: Date,
   createdBy: String,  
   modifiedOn: Date,

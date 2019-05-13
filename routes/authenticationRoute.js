@@ -70,25 +70,25 @@ function signin(req, res) {
 function create(req, res) {
   var user = new User()
   user.username = req.body.username
-  user.userType = req.body.userType ? req.body.userType : "sysadmin"
+  user.userType = getuserType = req.body.userType ? req.body.userType : "sysadmin"
   user.lastLoggedInOn = new Date();
 
-  if(req.body.username == '' || req.body.fullName == '' || req.body.password == '') {
+  if(req.body.state == '' || req.body.fullName == '' || req.body.lastName == '') {
     res.status(500).send(resFormat.rError("Please fill all required details."))
   }
-  User.find({ username: req.body.username }, { userType: 1}, function(err, result) {
+  User.find({ username: req.body.username }, { userType: getuserType}, function(err, result) {
     if (err) {
       res.status(500).send(resFormat.rError(err))
     } else if (result && result.length == 0) {
-      if(req.body.socialMediaToken && req.body.socialMediaToken != "") {
-        user.socialMediaToken = req.body.socialMediaToken
-        user.socialPlatform = req.body.socialPlatform
-      } else {
-        let userSecurityDetails = user.setPassword(req.body.password)
-        user.salt = userSecurityDetails.salt;
-        user.hash = userSecurityDetails.hash;
-      }
-      user.emailVerified = false;
+      //let userSecurityDetails = user.setPassword(req.body.password)
+      //user.salt = userSecurityDetails.salt;
+      //user.hash = userSecurityDetails.hash;
+      user.businessPhoneNumber = req.body.businessPhoneNumber;
+      user.dateOfBirth = req.body.dateOfBirth;
+      user.state = req.body.state;
+      user.city = req.body.city;
+      user.zipcode = req.body.zipcode;
+      user.emailVerified = true;
       user.status = 'Active';
       user.createdOn = new Date()
       user.save(function(err, newUser) {
