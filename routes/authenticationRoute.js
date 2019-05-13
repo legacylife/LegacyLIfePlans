@@ -14,12 +14,12 @@ const Busboy = require('busboy')
 // const Mailchimp = require('mailchimp-api-v3')
 
 const User = require('./../models/Users')
+const OtpCheck = require('./../models/OtpCheck')
 var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 const s3 = require('./../helpers/s3Upload')
-
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -46,7 +46,7 @@ function signin(req, res) {
         if(user.userType == req.body.userType){
           var token = user.generateJwt()
           var params = {lastLoggedInOn: new Date(), loginCount: user.loginCount == undefined ? 1 : user.loginCount + 1}
-          User.update({ _id: user._id },{ $set: params} , function(err, updatedUser) {
+          User.updateOne({ _id: user._id },{ $set: params} , function(err, updatedUser) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
@@ -124,7 +124,7 @@ router.post('/updateProfilePic', function(req, res){
         file.pipe(fstream);
         fstream.on('close', async function(){
           await s3.uploadFile(newFilename, profilePicturesPath)
-          User.update({ _id: authTokens.userId },{ $set: { profilePicture: newFilename}} , function(err, updatedUser) {
+          User.updateOne({ _id: authTokens.userId },{ $set: { profilePicture: newFilename}} , function(err, updatedUser) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
@@ -147,7 +147,7 @@ function update(req, res) {
         if(exUsers && exUsers.length > 0) {
           res.send(resFormat.rError("This email id is already taken by another user."))
         } else {
-          User.update({ _id: req.body._id },{ $set: req.body} , function(err, updatedUser) {
+          User.updateOne({ _id: req.body._id },{ $set: req.body} , function(err, updatedUser) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
@@ -158,8 +158,7 @@ function update(req, res) {
     })
 
   } else {
-    console.log(req.body)
-    User.update({ _id: req.body._id },{ $set: req.body} , function(err, updatedUser) {
+    User.updateOne({ _id: req.body._id },{ $set: req.body} , function(err, updatedUser) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
@@ -221,7 +220,7 @@ const changePassword = function(req,res) {
         res.send(resFormat.rError('Please enter the correct current password'))
       } else {
         const { salt, hash } = user.setPassword(req.body.newPassword);
-        User.update({ _id: req.body.userId},{ $set: { salt, hash}} ,(err, updatedUser)=>{
+        User.updateOne({ _id: req.body.userId},{ $set: { salt, hash}} ,(err, updatedUser)=>{
           if (err) {
             res.send({"message":resFormat.rError(err)})
           } else {            
@@ -245,7 +244,7 @@ const changeEmail = function( req, res){
          res.send(resFormat.rError('Current Password is wrong'))
       } else {
         let set = { username: req.body.username }
-        User.update({_id:req.body._id},{$set: set}, { runValidators: true, context: 'query' }, (err, updateUser) =>{
+        User.updateOne({_id:req.body._id},{$set: set}, { runValidators: true, context: 'query' }, (err, updateUser) =>{
           if (err){
             if(err.name == "ValidationError"){
               res.send(resFormat.rError("Email ID has been already registered"))
@@ -270,7 +269,7 @@ const resetPassword = function(req,res) {
       } else {
         const user = new User()
         const { salt, hash } = user.setPassword(req.body.password)
-        User.update({ _id: userDetails._id},{ $set: { salt, hash,"token" :""},} ,(err, updatedUser)=>{
+        User.updateOne({ _id: userDetails._id},{ $set: { salt, hash,"token" :""},} ,(err, updatedUser)=>{
           if (err) {
             res.send(resFormat.rError(err))
           } else {
@@ -339,7 +338,7 @@ function s3Upload(params, options, userId) {
         res.send(resFormat.rError(err))
     } else {
       console.log(data)
-      User.update({ _id: userId },{ $set: { profilePicture: filename}} , function(err, updatedUser) {
+      User.updateOne({ _id: userId },{ $set: { profilePicture: filename}} , function(err, updatedUser) {
         if (err) {
             res.send(resFormat.rError(err))
           } else {
@@ -357,7 +356,6 @@ function common(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-
       Models[req.body.rc[0]].find(req.body.query, req.body.fields, function(err,resultData){
         if (err) {
           res.status(401).send(resFormat.rError(err))
@@ -380,29 +378,96 @@ router.post('/reset-password-token', function(req, res){
   })
 })
 
-
 //function to check if email present for any user
 async function checkEmail(req, res){
-  try {
-    const { username, socialMediaToken } = req.body
+  try {   
+    const { username } = req.body;
     User.findOne({ username: username }, {username: 1}, function(err, user){
       if(err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-        if(user) {
-          if(socialMediaToken) {
-            signin(req, res)
-          } else {
-            res.send(resFormat.rSuccess({ code: "Exist", message: "You have already signup. Please login with your account." }))
-          }
-        } else {
-          res.send(resFormat.rSuccess({ code: "NewUser", message: "User not found in database." }))
+        if(user) {         
+            res.send(resFormat.rSuccess({ code: "Exist", message: "You have already signup. Please login with your account." }))        
+        } else {          
+          OtpCheck.findOne({ username: username }, {username: 1}, function(err, found){   
+            if(err) {
+              res.status(401).send(resFormat.rError(err))
+            }else{             
+              var otp = generateOtp(6);
+              if(found){       
+                OtpCheck.updateOne({ _id: found._id },{ $set: {otpCode:otp,status:'Active'}} , function(err, updatedUser) {
+                  if (err) {
+                    res.send(resFormat.rError(err))
+                  } else {                  
+                    stat = sendOtpMail(req.body.username,otp);
+                    //if(stat){
+                    res.send(resFormat.rSuccess({code: "success", message: 'We have sent you reset instructions. Please check your email.'}))                    
+                    /*}else{
+                      res.send(resFormat.rSuccess({code: "error", message: 'Somnething Wrong! Please try again.'}))
+                    }*/
+                  }
+                })
+              }else{
+                let OtpC = new OtpCheck();  
+                OtpC.username = req.body.username;
+                OtpC.otpCode = otp;
+                OtpC.status = 'Active';
+                OtpC.save(function(err, newUser) {
+                  if(err){
+                    res.status(500).send(resFormat.rError(err));
+                  }else{
+                    stat = sendOtpMail(req.body.username,otp);
+                    res.send(resFormat.rSuccess({code: "success", message: 'We have sent you reset instructions. Please check your email.'}))
+                  }
+                }) //update password reset expiry date for user ends          
+              }  
+            }
+          });// res.send(resFormat.rSuccess({ code: "NewUser", message: "User not found in database." }))         
         }
-      }// end of else of user
+      } // end of else of user
     }) //end of user find
   } catch (e) {
     res.status(401).send(resFormat.rError(e.message))
   }
+}
+
+async function checkUserOtp(req, res){
+  try {
+    let { query } = req.body;   
+    OtpCheck.findOne(query, function(err, otpdata){
+      if(err) {
+          res.send(resFormat.rSuccess({ code: "error", message: "Wrong OTP! Please try again later." }))    
+      } else {   
+        if(otpdata){
+          res.send(resFormat.rSuccess({ code: "success", message: "You have signup. Please login with your account." }))     
+        }else{
+          res.send(resFormat.rSuccess({ code: "error", message: "Wrong OTP! Please try again later." }))    
+        }
+      }
+    }) 
+  } catch (e) {
+    res.status(401).send(resFormat.rError(e.message))
+  }
+}
+
+
+function sendOtpMail(emailId,otpN) {
+  emailTemplatesRoute.getEmailTemplateByCode("SignupOTP").then((template) => {
+  if(template) {
+    template = JSON.parse(JSON.stringify(template));
+    let body = template.mailBody.replace({"{OTP}":otpN},{"{emailId}": emailId});
+    const mailOptions = {
+      to : 'pankajk@arkenea.com',//emailId
+      subject : template.mailSubject,
+      html: body
+    }
+   // sendEmail(mailOptions)    
+  } else {
+    res.status(401).send(resFormat.rError('Some error Occured'));
+    return false;
+  }
+  })
+
 }
 
 function generateToken(n) {
@@ -412,6 +477,15 @@ function generateToken(n) {
         token += chars[Math.floor(Math.random() * chars.length)];
     }
     return token;
+}
+
+function generateOtp(n) {
+  var chars = '0123456789';
+  var token = '';
+  for(var i = 0; i < n; i++) {
+      token += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return token;
 }
 
 router.post(["/signup", "/register"], create)
@@ -426,5 +500,6 @@ router.post("/forgotPassword", forgotPassword)
 router.post("/changeEmail", changeEmail)
 router.post("/common", common)
 router.post("/checkEmail", checkEmail)
+router.post("/checkOtp", checkUserOtp)
 
 module.exports = router
