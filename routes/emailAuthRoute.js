@@ -32,7 +32,7 @@ function storeSecurityDetails(req, res) {
 router.post('/getThreads', function(req,res){
   if(req.body.userId) {
     if(req.body.update) {
-      User.update({ "_id": mongoose.Types.ObjectId(req.body.userId)}, {"$set": {emailApiCode: req.body.authCode}}, function(err, updatedUser){
+      User.updateOne({ "_id": mongoose.Types.ObjectId(req.body.userId)}, {"$set": {emailApiCode: req.body.authCode}}, function(err, updatedUser){
         if(err) {
           console.log(err)
         }

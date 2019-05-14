@@ -15,7 +15,7 @@ var auth = jwt({
 //function to update email template
 function update(req, res) {
 
-    EmailTemplate.update({ _id: req.body._id },{ $set: req.body} ,(err, updateEmailTemplate)=>{
+    EmailTemplate.updateOne({ _id: req.body._id },{ $set: req.body} ,(err, updateEmailTemplate)=>{
     if (err) {
       res.send(resFormat.rError(err))
     } else {

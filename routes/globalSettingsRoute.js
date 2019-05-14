@@ -31,7 +31,7 @@ function create (req, res) {
 //function to update global settings
 function update(req, res) {
 
-    GlobalSetting.update({ _id: req.body._id },{ $set: req.body} ,(err, updateGlobalSetting)=>{
+    GlobalSetting.updateOne({ _id: req.body._id },{ $set: req.body} ,(err, updateGlobalSetting)=>{
     if (err) {
       res.send(resFormat.rError(err))
     } else {
