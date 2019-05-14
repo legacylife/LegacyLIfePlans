@@ -22,10 +22,10 @@ export class NgxTablePopupComponent implements OnInit {
 
   ngOnInit() {
     this.buildItemForm(this.data.payload) 
-    this.adminSections = adminSections
+    this.adminSections = adminSections; console.log("Item info",adminSections)
   }
   buildItemForm(item) {
-  console.log("Item info",item)
+ 
    
     this.itemForm = this.fb.group({
       firstName: [item.firstName || '', Validators.required],

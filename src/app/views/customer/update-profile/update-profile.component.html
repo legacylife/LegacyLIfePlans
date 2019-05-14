@@ -19,14 +19,15 @@
         </div>
         <div class="profile--pic">
           <div class="pic--box" style="background-image: url('assets/images/arkenea/uri.jpg')"></div>
-          <mat-icon class="edit--pic" title="edit user image">edit</mat-icon>
+          <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+          <mat-icon class="edit--pic" title="edit user image" (click)="fileInput.click()">edit</mat-icon>
         </div>
         <form class="llp-form-wrapper" [formGroup]="llpCustsignupProfileForm" (ngSubmit)="llpCustSignup()">
           <div class="row wrap">
             <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
               <div class="pb-1">
                 <mat-form-field class="full-width">
-                  <input matInput name="firstName" placeholder="First Name" value="" [formControl]="llpCustsignupProfileForm.controls['firstName']" >
+                  <input matInput name="firstName" placeholder="First Name*" value="" [formControl]="llpCustsignupProfileForm.controls['firstName']" >
                 </mat-form-field>
               </div>
             </div>
@@ -34,21 +35,21 @@
             <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
               <div class="pb-1">
                 <mat-form-field class="full-width">
-                  <input matInput name="lastName" placeholder="Last Name" value="" [formControl]="llpCustsignupProfileForm.controls['lastName']">
+                  <input matInput name="lastName" placeholder="Last Name*" value="" [formControl]="llpCustsignupProfileForm.controls['lastName']">
                 </mat-form-field>
               </div>
             </div>
           </div>
 
           <mat-form-field class="full-width">
-            <input matInput placeholder="Business phone" type="tel" value="" name="businessPhoneNumber" class="example-right-align" [formControl]="llpCustsignupProfileForm.controls['businessPhoneNumber']">
+            <input matInput placeholder="Business phone*" type="tel" value="" name="businessPhoneNumber" class="example-right-align" [formControl]="llpCustsignupProfileForm.controls['businessPhoneNumber']">
             <span matPrefix>+1</span>
             <span matSuffix>.00</span>
           </mat-form-field>
 
           <div>
               <mat-form-field  class="full-width llp-datepicker"> <!-- [formControl]="date" -->
-                  <input matInput [matDatepicker]="dp" placeholder="Date of Birth" [formControl]="llpCustsignupProfileForm.controls['dateOfBirth']"> 
+                  <input matInput [matDatepicker]="dp" placeholder="Date of Birth*" [formControl]="llpCustsignupProfileForm.controls['dateOfBirth']"> 
                   <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                   <mat-datepicker #dp
                                   startView="multi-year"
@@ -57,21 +58,23 @@
                 </mat-form-field>
           </div>
           <mat-form-field class="full-width">
-            <input matInput name="city" placeholder="City" value="" [formControl]="llpCustsignupProfileForm.controls['city']">
+            <input matInput name="city" placeholder="City*" value="" [formControl]="llpCustsignupProfileForm.controls['city']">
           </mat-form-field>
+
+
           <mat-form-field class="full-width">
-            <mat-select placeholder="State" [formControl]="llpCustsignupProfileForm.controls['state']">
-              <mat-option value="option">Select a state</mat-option>
-              <mat-option value="option">Maharashtra</mat-option>
-              <mat-option value="option">Goa</mat-option>
+            <mat-select placeholder="State*" [formControl]="llpCustsignupProfileForm.controls['state']">
+              <mat-option value="">Select a state</mat-option>
+              <mat-option *ngFor="let option of stateList"
+              [value]="option.state_name">{{option.state_name}}</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field class="full-width">
-            <input matInput name="zipcode" placeholder="Zip code" value="" [formControl]="llpCustsignupProfileForm.controls['zipcode']">
+            <input matInput name="zipcode" placeholder="Zip code*" value="" [formControl]="llpCustsignupProfileForm.controls['zipcode']">
           </mat-form-field>
 
-          <button mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1">Update and Proceed</button>
+          <button mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" [disabled]="llpCustsignupProfileForm.invalid">Update and Proceed</button>
 
           <div class="text-center bot-txt">
             <p><a (click)="skipSignup()"> Skip</a></p>
