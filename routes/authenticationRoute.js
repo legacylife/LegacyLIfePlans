@@ -417,6 +417,7 @@ async function checkEmail(req, res){
               }else{
                 let OtpC = new OtpCheck();  
                 OtpC.username = req.body.username;
+                OtpC.password = req.body.password;
                 OtpC.otpCode = otp;
                 OtpC.status = 'Active';
                 OtpC.save(function(err, newUser) {
@@ -440,15 +441,41 @@ async function checkEmail(req, res){
 
 async function checkUserOtp(req, res){
   try {
-    let { query } = req.body;   
+    console.log("sdklfjhaskdhfksadhfh",req.body,"khgjgjhgjhgjhg")
+    
+    
+    let { query } = req.body;
+    let password = query.password; 
+    console.log("password>>>>>>",password,"11111111111111111111")
     OtpCheck.findOne(query, function(err, otpdata){
+      console.log(err)
       if(err) {
           res.send(resFormat.rSuccess({ code: "error", message: "Wrong OTP! Please try again later." }))    
       } else {   
         if(otpdata){
 
+          var user = new User()
+          user.username = query.username
+          user.userType = query.userType ? query.userType : "sysadmin"
+          user.lastLoggedInOn = new Date();
 
-          res.send(resFormat.rSuccess({ code: "success", message: "You have signup. Please login with your account." }))     
+          user.emailVerified = true;
+          user.status = 'Active';
+          user.createdOn = new Date()
+
+          let userSecurityDetails = user.setPassword(password)
+          user.salt = userSecurityDetails.salt;
+          user.hash = userSecurityDetails.hash;
+
+          user.save(function(err, newUser) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              let data = newUser;
+              res.send(resFormat.rSuccess({ data : newUser, code: "success", message: "You have signup. Please login with your account." }))     
+            }
+          })
+          
         }else{
           res.send(resFormat.rSuccess({ code: "error", message: "Wrong OTP! Please try again later." }))    
         }
@@ -463,7 +490,8 @@ function sendOtpMail(emailId,otpN) {
   emailTemplatesRoute.getEmailTemplateByCode("SignupOTP").then((template) => {
   if(template) {
     template = JSON.parse(JSON.stringify(template));
-    let body = template.mailBody.replace({"{OTP}":otpN},{"{emailId}": emailId});
+    let body = template.mailBody.replace("{OTP}", otpN);
+    body = body.replace("{emailId}", emailId);
     const mailOptions = {
       to : emailId,//'pankajk@arkenea.com',
       subject : template.mailSubject,
