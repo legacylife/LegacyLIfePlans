@@ -27,6 +27,7 @@ import { LandingRoutes } from './landing.routing';
 import { HomeComponent } from './home/home.component';
 import { CustAboutUsComponent } from './about-us/about-us.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { TearnsOfUseComponent } from './tearns-of-use/tearns-of-use.component';
 
 @NgModule({
   imports: [
@@ -55,7 +56,8 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
   declarations: [
     HomeComponent,
     CustAboutUsComponent,
-    PrivacyPolicyComponent
+    PrivacyPolicyComponent,
+    TearnsOfUseComponent
   ]
 })
 export class LandingModule { }
