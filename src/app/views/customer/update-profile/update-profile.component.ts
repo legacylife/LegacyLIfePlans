@@ -14,12 +14,15 @@ import { AppLoaderService } from '../../../shared/services/app-loader/app-loader
 })
 export class UpdateProfileComponent implements OnInit {
 
+  userId : string
   date: any;
   chosenYearHandler: any;
   llpCustsignupProfileForm: FormGroup;
   stateList:any;
   state_name:string;
   short_code:string;
+  uploadedFile: File
+  profilePicture: string = "assets/images/arkenea/uri.jpg"
 
   constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) {}
   ngOnInit() {
@@ -53,8 +56,9 @@ export class UpdateProfileComponent implements OnInit {
   }
 
   llpCustSignup() {  
-    //this.loader.open();
+    this.loader.open();
     let UserEmail = localStorage.getItem("UserEmail")
+    let img = document.getElementById('profilePicture') as HTMLInputElement
     let req_vars = { username:UserEmail,
                      firstName: this.llpCustsignupProfileForm.controls['firstName'].value,
                      lastName: this.llpCustsignupProfileForm.controls['lastName'].value,
@@ -67,18 +71,84 @@ export class UpdateProfileComponent implements OnInit {
     console.log(req_vars.firstName,req_vars.lastName,req_vars.businessPhoneNumber,req_vars.dateOfBirth,req_vars.state,req_vars.city,req_vars.zipcode);
 
     this.api.apiRequest('post', 'auth/signup', req_vars).subscribe(result => {
+            
+	    if(img.files && img.files.length > 0) {
+	        this.userId = result.data.userId
+	        this.saveProfilePicture()
+	    }
 	    if(result.status == "success"){
-        this.loader.close();
+        
           this.snack.open('We have sent you reset instructions. Please check your email.', 'OK', { duration: 4000 })
           this.router.navigate(['/', 'customer', 'dashboard']);
       } else {
-        //this.loader.close();
+        this.loader.close();
         console.log(result.data);
         this.snack.open(result.data, 'OK', { duration: 4000 })
       }
     }, (err) => {
       console.error(err)
     })
+  }
+
+  saveProfilePicture() {
+    const fd = new FormData()
+    alert(this.userId)
+    fd.append('userId', this.userId)
+    fd.append('profilePicture', this.uploadedFile, this.uploadedFile.name);
+    this.api.apiRequest('post','auth/updateProfilePic', fd).subscribe((result:any) => {
+      if(result.status == "success") {
+        let userHeaderDetails = sessionStorage.getItem("userHeaderDetails")
+        let userDetails = JSON.parse(userHeaderDetails)
+        userDetails.profilePicture = result.data.profilePicture
+        userHeaderDetails = JSON.stringify(userDetails)
+        if(localStorage.getItem("userHeaderDetails")) {
+          localStorage.setItem("userHeaderDetails", userHeaderDetails)
+        } else {
+          sessionStorage.setItem("userHeaderDetails", userHeaderDetails)
+        }
+      } else {
+        //this.errorMessage = result.data
+      }
+      //this.getUserDetails();
+      //this.redirect()
+      this.hideAlerts()
+    }, (err) => {
+      //this.errorMessage = err.error.data
+    })
+  }
+
+  //function to show profile
+  showSelectedProfilePicture() {
+    let img = document.getElementById('profilePicture') as HTMLInputElement
+    this.uploadedFile = img.files[0]
+    const filenameArray = this.uploadedFile.name.split('.')
+    const ext = filenameArray[filenameArray.length - 1].toLowerCase()
+    const validExt = ['jpg', 'jpeg', 'png', 'gif']
+    //console.log(this.uploadedFile)
+    if(this.uploadedFile.size > 5242880) {
+      //this.errorMessage = "Profile picture must be less than 5 MB."
+      this.hideAlerts()
+    } else if(validExt.indexOf(ext) > -1){
+      let reader = new FileReader()
+      reader.onloadend = () => {
+        console.log("result array >>>>>"+reader.result)
+        img.src = reader.result
+        this.profilePicture = reader.result
+      }
+      reader.readAsDataURL(this.uploadedFile)
+    } else {
+      //this.errorMessage = "Please select valid image. Valid extentions are jpg, jpeg, png, gif"
+      this.hideAlerts()
+    }
+  }
+
+  //function to hide alerts
+  hideAlerts = () => {
+    setTimeout(()=> {
+      //this.successMessage = ""
+      //this.errorMessage = ""
+      alert("HI")
+    }, 4000)
   }
 
 }

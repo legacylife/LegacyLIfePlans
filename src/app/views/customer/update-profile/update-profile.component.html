@@ -18,9 +18,9 @@
           <h2 class="login-header-text m-0">Update Your Profile Details </h2>
         </div>
         <div class="profile--pic">
-          <div class="pic--box" style="background-image: url('assets/images/arkenea/uri.jpg')"></div>
-          <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
-          <mat-icon class="edit--pic" title="edit user image" (click)="fileInput.click()">edit</mat-icon>
+          <div class="pic--box" [ngStyle]="{'background-image': 'url(' + profilePicture + ')' }"></div>
+          <mat-icon class="edit--pic" title="edit user image" (click)="profilePic.click()">edit</mat-icon>
+          <input type="file" name="profilePicture" #profilePic id="profilePicture" class="profile-pic-input" (change)="showSelectedProfilePicture()" accept="image/*" />
         </div>
         <form class="llp-form-wrapper" [formGroup]="llpCustsignupProfileForm" (ngSubmit)="llpCustSignup()">
           <div class="row wrap">
