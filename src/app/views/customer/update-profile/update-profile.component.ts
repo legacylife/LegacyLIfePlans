@@ -77,7 +77,7 @@ export class UpdateProfileComponent implements OnInit {
 	        this.saveProfilePicture()
 	    }
 	    if(result.status == "success"){
-        
+        this.loader.close();
           this.snack.open('We have sent you reset instructions. Please check your email.', 'OK', { duration: 4000 })
           this.router.navigate(['/', 'customer', 'dashboard']);
       } else {
@@ -97,6 +97,7 @@ export class UpdateProfileComponent implements OnInit {
     fd.append('profilePicture', this.uploadedFile, this.uploadedFile.name);
     this.api.apiRequest('post','auth/updateProfilePic', fd).subscribe((result:any) => {
       if(result.status == "success") {
+        this.loader.close();
         let userHeaderDetails = sessionStorage.getItem("userHeaderDetails")
         let userDetails = JSON.parse(userHeaderDetails)
         userDetails.profilePicture = result.data.profilePicture
