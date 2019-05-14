@@ -48,7 +48,7 @@
    
               </mat-form-field>
             </div>
-            <button *ngIf="custProceedBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" (click)="custProceed()">Proceed</button>
+            <button *ngIf="custProceedBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" [disabled]="llpCustsignupForm.invalid" (click)="custProceed()">Proceed</button>
           </form>
           <form  class="llp-form-wrapper"  [formGroup]="llpCustotpForm">
             <div class="otp-sec" *ngIf="custOtpSec">
@@ -72,7 +72,7 @@
 
                 <p class="terms--policy">By signing up, you agree to our <a>Terms of Use </a> and <a>Privacy Policy</a></p>
             </div>
-            <button *ngIf="custFreeTrailBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" (click)="OtpProceed()">Continue</button> 
+            <button *ngIf="custFreeTrailBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" [disabled]="llpCustotpForm.invalid" (click)="OtpProceed()">Continue</button> 
           </form>
           
           
