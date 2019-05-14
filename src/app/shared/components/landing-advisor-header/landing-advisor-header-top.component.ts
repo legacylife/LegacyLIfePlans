@@ -17,7 +17,7 @@ export class LandingAdvisorHeaderTopComponent implements OnInit, OnDestroy {
   menuItems:any;
   menuItemSub: Subscription;
   egretThemes: any[] = [];
-  currentLang = 'en';
+  currentLang = 'en';routeParts:any[];
   availableLangs = [{
     name: 'English',
     code: 'en',

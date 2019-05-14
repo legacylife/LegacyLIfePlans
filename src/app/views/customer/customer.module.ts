@@ -28,7 +28,8 @@ import {
   MatExpansionModule,
   MatSliderModule,
   MatSnackBarModule,
-  MatSidenavModule
+  MatSidenavModule,
+  MatDialogModule
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -40,7 +41,8 @@ import { CustomerRoutes } from './customer.routing';
 import { CustomerSignupComponent,FormatTimePipe } from './signup/signup.component';
 import { UpdateProfileComponent } from './update-profile/update-profile.component';
 import { CustomerHomeComponent } from './customer-home/customer-home.component';
-
+import { CustomerAccountSettingComponent } from './customer-account-setting/customer-account-setting.component';
+import { ChangePassComponent } from './customer-account-setting/change-pass/change-pass.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -75,12 +77,13 @@ import { CustomerHomeComponent } from './customer-home/customer-home.component';
     MatSliderModule,
     MatSnackBarModule,
     MatSidenavModule,
+    MatDialogModule,
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [
-    CustomerSignupComponent,UpdateProfileComponent,CustomerHomeComponent,FormatTimePipe
+    CustomerSignupComponent,UpdateProfileComponent,CustomerHomeComponent,FormatTimePipe,CustomerAccountSettingComponent,ChangePassComponent,
   ],providers: [
     MatDatepickerModule,
-  ],bootstrap: [CustomerSignupComponent]
+  ],bootstrap: [CustomerSignupComponent], entryComponents: [ChangePassComponent],
 })
 export class CustomerModule { }

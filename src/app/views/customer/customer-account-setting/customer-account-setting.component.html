@@ -1,0 +1,174 @@
+<div class="container llp--left--panel--view cust--acc--sett--wrapper">
+  <mat-sidenav-container>
+
+    <mat-sidenav EgretSideNavToggle class="shop-sidebar llp--menu--list">
+      <div class="shop-filters-wrap llp--left--panel">
+
+
+
+        <mat-card class="account--profile">
+          <div class="account--pic--wrapper">
+            <div class="account--pic">
+              <img src="assets/images/arkenea/face-7.jpg" />
+            </div>
+            <div class="edit--pic">
+              <mat-icon>edit</mat-icon>
+            </div>
+          </div>
+
+          <div class="acc--user--details text-center">
+            <h2>Jone Smith</h2>
+            <p>Cleveland, Ohio - 15017</p>
+            <div class="sta--m">
+              <mat-icon>star</mat-icon> Standard member</div>
+          </div>
+
+          <div class="email--phone">
+            <mat-icon>markunread</mat-icon>
+            <span>john.smith@gmail.com</span>
+          </div>
+          <div class="email--phone mb-0">
+            <mat-icon>phone</mat-icon>
+            <span>+1 9876543210</span>
+          </div>
+        </mat-card>
+      </div>
+    </mat-sidenav>
+    <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
+      <!-- Filters -->
+      <!-- Right side -->
+      <div class="full-width">
+        <!-- toggleSideNav -->
+        <div class="shop-top-toolbar p-0 llp--toggle-btn">
+          <button mat-icon-button class="p-0" (click)="toggleSideNav()">
+            <mat-icon>short_text</mat-icon>
+          </button>
+        </div>
+        <!-- Account details -->
+        <mat-tab-group class="acc--sett--tab">
+          <mat-tab label="Account Details">
+            <!-- account details -->
+            <div class="account--details">
+              <div fxLayout="row wrap">
+                <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
+                  <form class="llp-form-wrapper" [formGroup]="ProfileForm" (ngSubmit)="ProfileSubmit()">
+                    <mat-form-field class="full-width">
+                      <input matInput name="username" placeholder="First Name*" value=""  [formControl]="ProfileForm.controls['firstName']">
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                      <input matInput name="lname" placeholder="Last Name*" value="" [formControl]="ProfileForm.controls['lastName']">
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="Primary phone*" type="tel" value="" class="" [formControl]="ProfileForm.controls['businessPhoneNumber']">
+                      <span matPrefix>+1</span>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="Secondary phone" type="tel" value="" class="" [formControl]="ProfileForm.controls['phoneNumber']">
+                      <span matPrefix>+1</span>
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width llp-datepicker">
+                      <input matInput [matDatepicker]="dp" placeholder="Date of Birth" [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
+                      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                      <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
+                      </mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width no-mar">
+                      <input matInput name="email" placeholder="Email Address" value="john.smith@gmail.com" aria-readonly="true" readonly>
+                    </mat-form-field>
+
+                    <div class="full-width text-right">
+                      <a class="clr--red fnt--16" (click)="changePasspordModal()">Change password</a>
+                    </div>
+
+                  </form>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="60" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60">
+                  <div class="manage--sub--section">
+                    <header>
+                      <div class="stan--plan"> Standard plan</div>
+                      <div class="ur--sub">Your subscription will automatically renew on
+                        <span>06/07/2019</span>
+                      </div>
+                    </header>
+                    <div class="llp--slide--wrapper">
+                      <div class="set-auto">Set auto-payment option</div>
+                      <mat-slide-toggle class="llp--slide--toggle">OFF</mat-slide-toggle>
+                    </div>
+                    <p class="turning">Turning the auto-payment option ON will automatically deduct the subscription amount from your associated
+                      card
+                    </p>
+                    <div class="manage--cancel">
+                      <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/customer/customer-subscription'">Manage subscription</button>
+                      <a class="clr--red">Cancel subscription</a>
+                    </div>
+                  </div>
+                  <div class="deactivate--acc">
+                    <a class="clr--red fnt--16">Deactivate account</a>
+                  </div>
+                </div>
+              </div>
+              <div fx.Flex="100" class="text-center mt--30">
+                <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
+                <button mat-raised-button class="llp--primary--btn" [disabled]="ProfileForm.invalid">Save</button>
+              </div>
+            </div>
+
+          </mat-tab>
+          <mat-tab label="Address">
+
+            <!-- Address details -->
+            <div class="account--details">
+              <form class="llp-form-wrapper" [formGroup]="AddressForm" (ngSubmit)="AddressSubmit()">
+                <div fxLayout="row wrap" fxLayoutGap-sm="5px" fxLayoutGap="30px">
+                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                    <mat-form-field class="full-width">
+                      <input matInput name="addressLine1" placeholder="Address line 1*" value="" [formControl]="AddressForm.controls['addressLine1']">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                    <mat-form-field class="full-width">
+                      <input matInput name="addressLine2" placeholder="Address line 2 (optional)" value="" [formControl]="AddressForm.controls['addressLine2']">
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fxLayout="row wrap" fxLayoutGap-sm="5px" fxLayoutGap="30px">
+                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                    <mat-form-field class="full-width">
+                      <input matInput name="City" placeholder="City*" value="" [formControl]="AddressForm.controls['city']">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                    <mat-form-field class="full-width">
+                      <mat-select placeholder="State*" [formControl]="AddressForm.controls['state']">
+                        <mat-option value="">Select a state</mat-option>
+                        <mat-option *ngFor="let option of stateList"
+                        [value]="option.state_name">{{option.state_name}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fxLayout="row wrap" fxLayoutGap-sm="5px" fxLayoutGap="30px">
+                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                    <mat-form-field class="full-width">
+                      <input matInput name="ZipCode" placeholder="Zip Code*" value="" [formControl]="AddressForm.controls['zipcode']">
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fx.Flex="100" class="text-center mt--30">
+                  <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
+                  <button mat-raised-button class="llp--primary--btn" [disabled]="AddressForm.invalid">Save</button>
+                </div>
+              </form>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+
+
+      </div>
+
+    </div>
+  </mat-sidenav-container>
+</div>

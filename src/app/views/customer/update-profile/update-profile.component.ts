@@ -22,6 +22,7 @@ export class UpdateProfileComponent implements OnInit {
   state_name:string;
   short_code:string;
   uploadedFile: File
+  maxDate = new Date(new Date())
   profilePicture: string = "assets/images/arkenea/uri.jpg"
 
   constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) {}
@@ -68,10 +69,8 @@ export class UpdateProfileComponent implements OnInit {
                      city: this.llpCustsignupProfileForm.controls['city'].value,
                      zipcode: this.llpCustsignupProfileForm.controls['zipcode'].value,                     
                      userType: "customer" }
-    console.log(req_vars.firstName,req_vars.lastName,req_vars.businessPhoneNumber,req_vars.dateOfBirth,req_vars.state,req_vars.city,req_vars.zipcode);
-
-    this.api.apiRequest('post', 'auth/signup', req_vars).subscribe(result => {
-            
+   //console.log(req_vars.firstName,req_vars.lastName,req_vars.businessPhoneNumber,req_vars.dateOfBirth,req_vars.state,req_vars.city,req_vars.zipcode);
+    this.api.apiRequest('post', 'auth/signup', req_vars).subscribe(result => {        
 	    if(img.files && img.files.length > 0) {
 	        this.userId = result.data.userId
 	        this.saveProfilePicture()
@@ -133,8 +132,8 @@ export class UpdateProfileComponent implements OnInit {
       let reader = new FileReader()
       reader.onloadend = () => {
         console.log("result array >>>>>"+reader.result)
-        img.src = reader.result
-        this.profilePicture = reader.result
+        img.src = reader.result;
+        this.profilePicture = reader.result;
       }
       reader.readAsDataURL(this.uploadedFile)
     } else {
