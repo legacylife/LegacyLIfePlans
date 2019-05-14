@@ -26,6 +26,7 @@ import { SharedModule } from './../../shared/shared.module';
 import { LandingRoutes } from './landing.routing';
 import { HomeComponent } from './home/home.component';
 import { CustAboutUsComponent } from './about-us/about-us.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 @NgModule({
   imports: [
@@ -53,7 +54,8 @@ import { CustAboutUsComponent } from './about-us/about-us.component';
   ],
   declarations: [
     HomeComponent,
-    CustAboutUsComponent
+    CustAboutUsComponent,
+    PrivacyPolicyComponent
   ]
 })
 export class LandingModule { }

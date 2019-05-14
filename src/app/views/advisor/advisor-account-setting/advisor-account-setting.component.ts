@@ -23,6 +23,11 @@ import { AdvisorChangePassComponent } from '../advisor-account-setting/advisor-c
 export class AdvisorAccountSettingComponent implements OnInit {
 
   selected = 'option1';
+  public currentPage: any;
+  dayFirst = true;
+  daySeco = false;
+  date: any;
+  chosenYearHandler: any;
 
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
@@ -37,6 +42,8 @@ export class AdvisorAccountSettingComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe(result => {});
     }
-
+    toggleSideNav() {
+      this.sideNav.opened = !this.sideNav.opened;
+    }
   }
 
