@@ -10,13 +10,12 @@ var constants = {
     appSecret: "27g7mvf6f606237rhxvsi21v8",
   },
   s3Details: {
-    url : "https://s3.amazonaws.com/llp",
-    bucketName: "llp",
-    awsKey: "",
-    awsSecret: "",
-    dealFilesPath: "dealFiles/",
+    url : "https://s3.amazonaws.com/llp-dev",
+    bucketName: "llp-dev",
+    awsKey: "AKIAUPQ3GZ6WDCCRWVY5",
+    awsSecret: "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",
     profilePicturesPath: "profilePictures/",
-    serveUrl: "https://llp.s3.amazonaws.com"
+    serveUrl: "https://llp-dev.s3.amazonaws.com"
   },
   ses: {
     key: "AKIAUPQ3GZ6WJFHZAMNB",

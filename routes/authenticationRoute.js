@@ -24,6 +24,7 @@ var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
 })
+const profilePicturesPath = constants.s3Details.profilePicturesPath
 
 //function to check and signin user details
 function signin(req, res) {
@@ -123,7 +124,7 @@ router.post('/updateProfilePic', function(req, res){
     })
 
     req.busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-      if(authTokens.userId && authTokens.authCode ) {
+      if(authTokens.userId ) {
         let ext = filename.split('.')
         ext = ext[ext.length - 1]
         const newFilename = authTokens.userId +'-'+ new Date().getTime()+`.${ext}`
