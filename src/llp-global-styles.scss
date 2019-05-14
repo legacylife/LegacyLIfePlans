@@ -579,7 +579,12 @@ body{
     }
 }
 
-
+// disable button 
+body{
+    .mat-raised-button[disabled]{
+        opacity: 0.7;
+    }
+}
 
 // 
 .egret-indigo .mat-slide-toggle-bar{

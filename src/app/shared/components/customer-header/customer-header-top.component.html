@@ -28,6 +28,21 @@
           <a matRipple routerLink="/customer/professionals">
             <mat-icon class="icon-professionals">perm_identity</mat-icon> Professionals</a>
         </li>
+        <li class="more--link">
+          <a mat-button [matMenuTriggerFor]="afterMenu1">
+            <mat-icon>more_horiz</mat-icon> More </a>
+          <mat-menu #afterMenu1="matMenu" class="more--options">
+            <button mat-menu-item>
+              <mat-icon>list
+              </mat-icon>
+              <span>To dos </span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>book</mat-icon>
+              <span>Coach’s Corner</span>
+            </button>
+          </mat-menu>
+        </li>
 
       </ul>
       <span fxFlex></span>
@@ -50,22 +65,22 @@
         </div>
       </div>
 
-      <mat-menu #accountMenu="matMenu">
-        <button mat-menu-item [routerLink]="['/profile/overview']">
-          <mat-icon>account_box</mat-icon>
-          <span>Customer Profile</span>
-        </button>
-        <button mat-menu-item [routerLink]="['/profile/settings']">
+      <mat-menu #accountMenu="matMenu" class="llp--menu--droupdown" xPosition="before">
+        <button class="get--feature" mat-menu-item [routerLink]="['/profile/overview']">
           <mat-icon>settings</mat-icon>
-          <span>Customer Account Settings</span>
+          <span>Get Featured</span>
+        </button>
+        <button mat-menu-item [routerLink]="['/customer/account-setting']">
+          <mat-icon>settings</mat-icon>
+          <span>Account Settings</span>
         </button>
         <button mat-menu-item>
-          <mat-icon>notifications_off</mat-icon>
-          <span>Customer Disable alerts</span>
+          <mat-icon>monetization_on</mat-icon>
+          <span>Payment</span>
         </button>
         <button mat-menu-item [routerLink]="['/sessions/signin']">
           <mat-icon>exit_to_app</mat-icon>
-          <span>Customer Sign out</span>
+          <span>Log out</span>
         </button>
       </mat-menu>
       <!-- Mobile screen menu toggle -->

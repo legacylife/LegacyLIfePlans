@@ -13,6 +13,7 @@
             background-color: #e7ebcd;
             display: flex;
             align-items: center;
+            justify-content: space-between;
 
             ::ng-deep .mat-card-header-text{
                 margin: 0;
@@ -67,6 +68,11 @@
                     font-size: 16px;
                 }
             }
+        }
+        .myadd--search{
+            height: 18px;
+            width: 18px;
+            font-size: 18px;
         }
     }
 
@@ -129,6 +135,7 @@
                 .mat-card-title{
                     display: flex;
                     align-items: center;
+                    background-color: transparent;
                 }
 
                 .appointees--pic{

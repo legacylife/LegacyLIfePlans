@@ -6,9 +6,12 @@
   
 
   <div class="header--wrapper">
-    <header class="sub--header" style="background-image: url('assets/images/arkenea/congratulations.png')">
+    <header class="sub--header" style="background-image: url('assets/images/arkenea/congratulations-lg.png')">
       <span>Congratulations!</span>
     </header>
+    <header class="sub--header show--mobile" style="background-image: url('assets/images/arkenea/congratulations.png')">
+        <span>Congratulations!</span>
+      </header>
 
     <p class="warn">
       <span>90 days</span> free access to all features has been unlocked for your account!</p>
@@ -38,7 +41,7 @@
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="26" fxFlex.lg="30" fxFlex.xl="30">
                 <div class="actions">
-                <button mat-raised-button class="llp--primary--btn">I am interested</button>
+                <button mat-raised-button class="llp--primary--btn iam--inte--btn">I am interested</button>
                 <a class="know--more" (click)="openllpmodal();">Know more</a>
                 </div>
             </div>
@@ -48,5 +51,5 @@
   </div>
 </div>
 <div class="text-center">
-    <button mat-raised-button class="llp--primary--btn">Go to my account</button>
+    <button mat-raised-button class="llp--primary--btn go--to--acc">Go to my account</button>
 </div>

@@ -17,13 +17,21 @@
 
 
         .sub--header{
+            &.show--mobile{
+                display: none;
+                span {
+                    font-size: 20px;
+                    padding: 0 30px;
+                }
+            }
+
             margin: 0 auto 30px;
             background-repeat: no-repeat;
             span {
                 font-family: $font--lato--italic;
-                font-size: 20px;
+                font-size: 36px;
                 color: $clr--10;
-                padding: 0 31px;
+                padding: 0 50px;
             }
         }
 
@@ -145,7 +153,16 @@
                 left: 0;
             }
         }
-    }
+    }   
+}
+.go--to--acc{
+    width: 185px;
+}
+.iam--inte--btn{
+    width: 165px;
+}
+::ng-deep .llp--secondary--btn{
+    background-color: white !important;
 }
 /* Media query (start here)*/
 
@@ -173,9 +190,14 @@
     .subscription--wrapper .free--trail .refer--earn .refer--row .actions {
         margin-top: 25px;
     }
+    .subscription--wrapper .header--wrapper .sub--header,
     .subscription--wrapper .free--trail .refer--earn .refer--earn--img{
         display: none;
     }
+    .subscription--wrapper .header--wrapper .sub--header.show--mobile {
+        display: block;
+    }
+   
 }
 @media only screen and (min-width: 600px) and (max-width: 959px){
     .subscription--wrapper .free--trail .refer--earn {

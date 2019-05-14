@@ -31,21 +31,21 @@ export class NavigationService {
   iconMenu: IMenuItem[] = [
     {
       name: 'HOME',
-      type: 'icon',
+      type: 'link',
       tooltip: 'Home',
       icon: 'home',
       state: 'home'
     },
     {
       name: 'PROFILE',
-      type: 'icon',
+      type: 'link',
       tooltip: 'Profile',
       icon: 'person',
       state: 'profile/overview'
     },
     {
       name: 'TOUR',
-      type: 'icon',
+      type: 'link',
       tooltip: 'Tour',
       icon: 'flight_takeoff',
       state: 'tour'
