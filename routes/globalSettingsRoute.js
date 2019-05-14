@@ -5,7 +5,6 @@ var GlobalSetting = require('./../models/GlobalSettings')
 var States = require('./../models/States')
 var constants = require('./../config/constants')
 var jwt = require('express-jwt')
-var States =  require('./../models/States')
 const { isEmpty } = require('lodash')
 const resFormat = require('./../helpers/responseFormat')
 
@@ -89,8 +88,8 @@ function details(req, res) {
 }
 
 //function to return list of cities and states
-function cityStateList(req, res) {
-  States.find({ status: "Active"}, function(err, states){
+function stateList(req, res) {	
+  States.find({}, function(err, states){
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
@@ -104,6 +103,6 @@ router.post("/create", create)
 router.post("/update", update)
 router.post("/list", list)
 router.post("/view", view)
-router.get("/cityStateList", cityStateList)
+router.post("/statelist", stateList)
 
 module.exports = router

@@ -77,12 +77,6 @@ function create(req, res) {
     res.status(500).send(resFormat.rError("Please fill all required details."))
   }
   User.find({ username: req.body.username }, { userType: getuserType}, function(err, result) {
-    if (err) {
-      res.status(500).send(resFormat.rError(err))
-    } else if (result && result.length == 0) {
-      //let userSecurityDetails = user.setPassword(req.body.password)
-      //user.salt = userSecurityDetails.salt;
-      //user.hash = userSecurityDetails.hash;
       user.businessPhoneNumber = req.body.businessPhoneNumber;
       user.dateOfBirth = req.body.dateOfBirth;
       user.state = req.body.state;
@@ -90,21 +84,34 @@ function create(req, res) {
       user.zipcode = req.body.zipcode;
       user.emailVerified = true;
       user.status = 'Active';
-      user.createdOn = new Date()
+      user.createdOn = new Date();
+    if(err){
+      res.status(500).send(resFormat.rError(err))
+    } else if (result && result.length == 0) {
       user.save(function(err, newUser) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          var token = user.generateJwt()
-          const { _id, userType, username } = user
-          let result = { token, userId: _id, userType, "message": "Successfully logged in!" }
+          const { _id, userType, username, firstName, lastName } = user
+          let result = { userId: _id, userType,username, firstName, lastName, "message": "Successfully logged in!" }
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
     } else {
-      res.send(resFormat.rError(`You are already registered as ${result[0].userType}` ))
+        //var params = {lastLoggedInOn: new Date(), loginCount: user.loginCount == undefined ? 1 : user.loginCount + 1}
+        //,{ $set: params}
+        user.updateOne({ _id: result._id } , function(err, updatedUser) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          console.log("updatedUser "+updatedUser);
+          const { _id, userType, username, firstName, lastName } = user
+          let result = { userId: _id, userType,username, firstName, lastName, "message": "User details have been saved and successfully logged in!" }
+          res.send(resFormat.rSuccess(result))
+        }
+      }); //res.send(resFormat.rError(`You are already registered as ${result[0].userType}` ))
     }
-  })
+  });
 }
 
 router.post('/updateProfilePic', function(req, res){
@@ -282,7 +289,6 @@ const resetPassword = function(req,res) {
   else {
     res.send(resFormat.rError("Invalid Link"))
   }
-    
 }
 
 //function to generate reset password link for user
@@ -439,6 +445,8 @@ async function checkUserOtp(req, res){
           res.send(resFormat.rSuccess({ code: "error", message: "Wrong OTP! Please try again later." }))    
       } else {   
         if(otpdata){
+
+
           res.send(resFormat.rSuccess({ code: "success", message: "You have signup. Please login with your account." }))     
         }else{
           res.send(resFormat.rSuccess({ code: "error", message: "Wrong OTP! Please try again later." }))    
@@ -450,24 +458,22 @@ async function checkUserOtp(req, res){
   }
 }
 
-
 function sendOtpMail(emailId,otpN) {
   emailTemplatesRoute.getEmailTemplateByCode("SignupOTP").then((template) => {
   if(template) {
     template = JSON.parse(JSON.stringify(template));
     let body = template.mailBody.replace({"{OTP}":otpN},{"{emailId}": emailId});
     const mailOptions = {
-      to : 'pankajk@arkenea.com',//emailId
+      to : emailId,//'pankajk@arkenea.com',
       subject : template.mailSubject,
       html: body
     }
-   // sendEmail(mailOptions)    
+    sendEmail(mailOptions)    
   } else {
     res.status(401).send(resFormat.rError('Some error Occured'));
     return false;
   }
   })
-
 }
 
 function generateToken(n) {
@@ -501,5 +507,6 @@ router.post("/changeEmail", changeEmail)
 router.post("/common", common)
 router.post("/checkEmail", checkEmail)
 router.post("/checkOtp", checkUserOtp)
+
 
 module.exports = router
