@@ -1,54 +1,36 @@
-
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MatSnackBar, MatSidenav } from '@angular/material';
-import { Product } from '../../../shared/models/product.model';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms'
-import { Subscription, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
+import { APIService } from './../../../api.service';
+import { MatDialog,MatSnackBar, MatSidenav } from '@angular/material';
+import { FormBuilder, FormGroup, FormControl,Validators } from '@angular/forms'
 import { egretAnimations } from '../../../shared/animations/egret-animations';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
-import { MatProgressBar, MatButton } from '@angular/material';
-import { Validators} from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { ChangePassComponent } from './change-pass/change-pass.component';
-import { APIService } from './../../../api.service';
+import { map } from 'rxjs/operators';
+import { Subscription, Observable, of  } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-customer-account-setting',
   templateUrl: './customer-account-setting.component.html',
   styleUrls: ['./customer-account-setting.component.scss'],
-  animations: [egretAnimations]
+  animations: egretAnimations
 })
 export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
-  public isSideNavOpen: boolean;
-  public viewMode: string = 'grid-view';
-  public currentPage: any;
-  dayFirst = true;
-  daySeco = false;
   date: any;
   ProfileForm: FormGroup;
   AddressForm: FormGroup;
-  chosenYearHandler: any;
-
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-
-  public products: any[];
-  public categories: any[];
-  public activeCategory: string = 'all';
-  public cart: any[];
-  public cartData: any;
+  
   userId:string;
   stateList:any;
   state_name:string;
   short_code:string;
   maxDate = new Date(new Date());
-  rows:any;
-  constructor(
-    // private shopService: ShopService,
-    private fb: FormBuilder,
-    private snack: MatSnackBar,public dialog: MatDialog, private api: APIService,private loader: AppLoaderService
-  ) { }
+  profile:any;
+  
+  constructor(private router: Router, private route: ActivatedRoute,private fb: FormBuilder, private snack: MatSnackBar,public dialog: MatDialog, private api: APIService,private loader: AppLoaderService) { }
 
   ngOnInit() {
     // this.categories$ = this.shopService.getCategories();
@@ -65,30 +47,52 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       lastName: new FormControl('', Validators.required),
       businessPhoneNumber: new FormControl('', Validators.required),
       phoneNumber: new FormControl('', Validators.required),
-      dateOfBirth: new FormControl('', )
+      dateOfBirth: new FormControl('',)
     });
 
     this.AddressForm = new FormGroup({
-      addressLine1: new FormControl('', Validators.required),
-      addressLine2: new FormControl('', ),
+      addressLine1: new FormControl('',Validators.required),
+      addressLine2: new FormControl(''),
       city: new FormControl('', Validators.required),
       state: new FormControl('', Validators.required),
       zipcode: new FormControl('', Validators.required)
     });
-
-    this.categories = ["My essentials", "Pets"]
    
-    this.products = []
-    this.cartData = []
-   // this.filterForm = this.fb.group({      search: ['']    })
+    //this.profile = [];
+    //setTimeout(function () {
+      this.getProfile();
+  // }, 5000);
+   
   }
   showSecoDay() {
-    this.dayFirst = false;
-    this.daySeco = true;
+    //this.dayFirst = false; this.daySeco = true;
   }
+  
   ngOnDestroy() {
 
   }
+
+  //function to get all events
+  getProfile = (query = {}, search = false) => {
+    this.userId = '5cc9cb9f1955852c18c5b738';
+    const req_vars = {
+      query: Object.assign({ _id: this.userId, userType: "customer" }, query)
+    }
+    this.loader.open();
+    this.api.apiRequest('post', 'userlist/getprofile', req_vars).subscribe(result => {
+     if (result.status == "error") {
+        this.profile = [];
+        this.loader.close();
+      } else {
+        this.profile = result.data.userProfile;
+        this.loader.close();
+      }
+    }, (err) => {
+      console.error(err);
+      this.loader.close();
+    })
+  }
+
   
   ProfileSubmit() {  
     this.userId = '5cc9cb9f1955852c18c5b738';
@@ -112,9 +116,9 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       if (result.status == "error") {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
-        this.rows = result.data.userProfile;
-        localStorage.setItem("firstName", this.rows.firstName)
-        localStorage.setItem("lastName", this.rows.lastName)       		
+        //this.rows = result.data.userProfile;
+       // localStorage.setItem("firstName", this.rows.firstName)
+       // localStorage.setItem("lastName", this.rows.lastName)       		
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
@@ -144,7 +148,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       if (result.status == "error") {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
-        this.rows = result.data.userProfile;
+       // this.rows = result.data.userProfile;
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
@@ -152,16 +156,15 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     })
   }
 
-
-
   setActiveCategory(category) {
-    this.activeCategory = category;
+    //this.activeCategory = category;
     //this.filterForm.controls['category'].setValue(category)
   }
 
   toggleSideNav() {
     this.sideNav.opened = !this.sideNav.opened;
   }
+
   changePasspordModal(): void {
     const dialogRef = this.dialog.open(ChangePassComponent, {
       width: '555px',

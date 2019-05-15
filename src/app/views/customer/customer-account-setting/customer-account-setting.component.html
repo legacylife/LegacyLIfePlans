@@ -1,11 +1,7 @@
 <div class="container llp--left--panel--view cust--acc--sett--wrapper">
   <mat-sidenav-container>
-
     <mat-sidenav EgretSideNavToggle class="shop-sidebar llp--menu--list">
       <div class="shop-filters-wrap llp--left--panel">
-
-
-
         <mat-card class="account--profile">
           <div class="account--pic--wrapper">
             <div class="account--pic">
@@ -17,15 +13,15 @@
           </div>
 
           <div class="acc--user--details text-center">
-            <h2>Jone Smith</h2>
-            <p>Cleveland, Ohio - 15017</p>
+            <h2>{{profile.firstName}} {{profile.lastName}}</h2>
+            <p>{{profile.city}}, {{profile.state}} - {{profile.zipcode}}</p>
             <div class="sta--m">
-              <mat-icon>star</mat-icon> Standard member</div>
+              <mat-icon>star</mat-icon> {{profile.userType}}</div>
           </div>
 
           <div class="email--phone">
             <mat-icon>markunread</mat-icon>
-            <span>john.smith@gmail.com</span>
+            <span>{{profile.username}}</span>
           </div>
           <div class="email--phone mb-0">
             <mat-icon>phone</mat-icon>
@@ -47,18 +43,17 @@
         <!-- Account details -->
         <mat-tab-group class="acc--sett--tab">
           <mat-tab label="Account Details">
-            <!-- account details -->
-            
+            <!-- account details -->          
             <form class="llp-form-wrapper" [formGroup]="ProfileForm" (ngSubmit)="ProfileSubmit()">
               <div class="account--details">
               <div fxLayout="row wrap">
                 <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
-                  
+               
                     <mat-form-field class="full-width">
-                      <input matInput name="username" placeholder="First Name*" value=""  [formControl]="ProfileForm.controls['firstName']">
+                      <input matInput name="username" placeholder="First Name*" value="{{profile.firstName}}"  [formControl]="ProfileForm.controls['firstName']">
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input matInput name="lname" placeholder="Last Name*" value="" [formControl]="ProfileForm.controls['lastName']">
+                      <input matInput name="lname" placeholder="Last Name*" value="{{profile.firstName}}" [formControl]="ProfileForm.controls['lastName']">
                     </mat-form-field>
 
                     <mat-form-field class="full-width">
@@ -71,14 +66,14 @@
                     </mat-form-field>
 
                     <mat-form-field class="full-width llp-datepicker">
-                      <input matInput [matDatepicker]="dp" placeholder="Date of Birth" [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
+                      <input matInput [matDatepicker]="dp" placeholder="Date of Birth" value="{{profile.dateOfBirth}}" [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
                       <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                       <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
                       </mat-datepicker>
                     </mat-form-field>
 
                     <mat-form-field class="full-width no-mar">
-                      <input matInput name="email" placeholder="Email Address" value="john.smith@gmail.com" aria-readonly="true" readonly>
+                      <input matInput name="email" placeholder="Email Address" value="{{profile.username}}" aria-readonly="true" readonly>
                     </mat-form-field>
 
                     <div class="full-width text-right">
@@ -126,19 +121,19 @@
                 <div fxLayout="row wrap" fxLayoutGap-sm="5px" fxLayoutGap="30px">
                   <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
                     <mat-form-field class="full-width">
-                      <input matInput name="addressLine1" placeholder="Address line 1*" value="" [formControl]="AddressForm.controls['addressLine1']">
+                      <input matInput name="addressLine1" placeholder="Address line 1*" value="{{profile.addressLine1}}" [formControl]="AddressForm.controls['addressLine1']">
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
                     <mat-form-field class="full-width">
-                      <input matInput name="addressLine2" placeholder="Address line 2 (optional)" value="" [formControl]="AddressForm.controls['addressLine2']">
+                      <input matInput name="addressLine2" placeholder="Address line 2 (optional)" value="{{profile.addressLine2}}" [formControl]="AddressForm.controls['addressLine2']">
                     </mat-form-field>
                   </div>
                 </div>
                 <div fxLayout="row wrap" fxLayoutGap-sm="5px" fxLayoutGap="30px">
                   <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
                     <mat-form-field class="full-width">
-                      <input matInput name="City" placeholder="City*" value="" [formControl]="AddressForm.controls['city']">
+                      <input matInput name="City" placeholder="City*" value="{{profile.city}}" [formControl]="AddressForm.controls['city']">
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
@@ -154,7 +149,7 @@
                 <div fxLayout="row wrap" fxLayoutGap-sm="5px" fxLayoutGap="30px">
                   <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
                     <mat-form-field class="full-width">
-                      <input matInput name="ZipCode" placeholder="Zip Code*" value="" [formControl]="AddressForm.controls['zipcode']">
+                      <input matInput name="ZipCode" placeholder="Zip Code*" value="{{profile.zipcode}}" [formControl]="AddressForm.controls['zipcode']">
                     </mat-form-field>
                   </div>
                 </div>

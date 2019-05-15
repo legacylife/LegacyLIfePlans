@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 const passwordRegex: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!#%*?&])[A-Za-z\d$@$!#%*?&]{6,16}/
 const password = new FormControl('', [Validators.required, Validators.pattern(passwordRegex)]);
 const NewPassword = new FormControl('', [Validators.required, Validators.pattern(passwordRegex), Validators.minLength(6)]);
-const confirmPassword = new FormControl('', CustomValidators.equalTo(NewPassword));
+const confirmPassword = new FormControl('', [Validators.required, CustomValidators.equalTo(NewPassword)]);
 
 @Component({
   selector: 'app-change-pass',
