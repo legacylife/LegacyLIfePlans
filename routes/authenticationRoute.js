@@ -148,7 +148,7 @@ router.post('/updateProfilePic', function (req, res) {
 
 })
 
-//function to update user details
+//function to update user details // NOT in use
 function update(req, res) {
   if (req.body.username) {
     User.find({ _id: { $ne: req.body._id }, username: req.body.username }, function (err, exUsers) {
@@ -174,6 +174,34 @@ function update(req, res) {
       }
     })
   }
+}
+
+
+//function to update customer details 
+function custProfileUpdate(req, res) {
+  let {query} = req.body;
+  if (query._id) {    
+    User.findOne(query, function(err, updatedUser) {
+      if (err) {
+         let result = { "message": "Something Wrong! Please signin again." }
+         res.send(resFormat.rError(result));
+       } else {
+     let {proquery} = req.body;
+     let {from} = req.body;
+     User.updateOne({_id: updatedUser._id}, { $set: proquery }, function (err, updatedDetails) {
+       if (err) {
+         res.send(resFormat.rError(err))
+       } else {
+         let result = { "message": "User "+from.fromname+"  have been updated successfully!" }
+         res.status(200).send(resFormat.rSuccess(result))        
+       }
+     })
+     }
+    })
+  }else{
+    let result = { "message": "You have logout! Please signin again." }
+    res.send(resFormat.rError(result));
+  } 
 }
 
 //function to get list of user as per given criteria
@@ -218,7 +246,6 @@ function details(req, res) {
 
 //function to change users password
 const changePassword = function (req, res) {
-  console.log("Change password :-     ");
   User.findOne({ _id: req.body.userId }, function (err, userDetails) {
     if (err) {
       res.send(resFormat.rError(err))
@@ -534,7 +561,7 @@ function generateOtp(n) {
 
 router.post(["/signup", "/register"], create)
 router.post("/signin", signin)
-router.post("/update", update)
+router.post("/cust-profile-update", custProfileUpdate)
 router.post("/list", list)
 router.get(["/view/:id", "/:id"], details)
 router.post(["/view"], details)

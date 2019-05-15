@@ -1,7 +1,7 @@
 var constants = {
   secret: "LLP",
   database: {
-    url: process.env.dbURI || 'mongodb://localhost:27017/llp'
+    url: process.env.dbURI || 'mongodb://llp:llp#123@ds213896.mlab.com:13896/llp-pankaj'
   },
   google: {
   },
