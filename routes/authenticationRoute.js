@@ -339,9 +339,15 @@ function forgotPassword(req, res) {
           res.status(500).send(resFormat.rError(err))
         }
         let clientUrl = constants.clientUrl;
-        var link = clientUrl + '/reset-password/' + tokens;
+        var link = "";
         if (req.body.userType == 'sysadmin') {
           var link = clientUrl + '/llp-admin/reset-password/' + tokens;
+        }
+        if (req.body.userType == 'customer') {
+          var link = clientUrl + '/customer/reset-password/' + tokens;
+        }
+        if (req.body.userType == 'advisor') {
+          var link = clientUrl + '/advisor/reset-password/' + tokens;
         }
 
         //forgot password email template
