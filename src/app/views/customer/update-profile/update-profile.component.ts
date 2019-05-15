@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatProgressBar, MatButton,MatSnackBar } from '@angular/material';
-import { Validators, FormGroup, FormControl,FormBuilder } from '@angular/forms';
+import { MatProgressBar, MatButton, MatSnackBar } from '@angular/material';
+import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { APIService } from './../../../api.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -14,29 +14,35 @@ import { AppLoaderService } from '../../../shared/services/app-loader/app-loader
 })
 export class UpdateProfileComponent implements OnInit {
 
-  userId : string
+  userId: string;
+  userType: string;
+  username:string;
   date: any;
   chosenYearHandler: any;
   llpCustsignupProfileForm: FormGroup;
-  stateList:any;
-  state_name:string;
-  short_code:string;
+  stateList: any;
+  state_name: string;
+  short_code: string;
   uploadedFile: File
   maxDate = new Date(new Date())
   profilePicture: string = "assets/images/arkenea/uri.jpg"
 
-  constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) {}
+  constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
   ngOnInit() {
-    let UserEmail = localStorage.getItem("UserEmail");
-    if(UserEmail){
-      this.api.apiRequest('post', 'globalsetting/statelist', {email : UserEmail}).subscribe(result => {    
-          if(result.status == "success"){
-              this.stateList = result.data;
-          } 
-        }, (err) => {
-          console.error(err)
-        })
-      
+    this.userId = localStorage.getItem("userId");
+    this.username = localStorage.getItem("username");
+    this.userType = localStorage.getItem("userType");
+
+
+    if (this.userId) {
+      this.api.apiRequest('post', 'globalsetting/statelist', { email: this.username }).subscribe(result => {
+        if (result.status == "success") {
+          this.stateList = result.data;
+        }
+      }, (err) => {
+        console.error(err)
+      })
+
       this.llpCustsignupProfileForm = new FormGroup({
         firstName: new FormControl('', Validators.required),
         lastName: new FormControl('', Validators.required),
@@ -45,40 +51,38 @@ export class UpdateProfileComponent implements OnInit {
         city: new FormControl('', Validators.required),
         state: new FormControl('', Validators.required),
         zipcode: new FormControl('', Validators.required)
-      });    
+      });
 
-    }else{
-      this.router.navigate(['/', 'customer', 'signup']);      
+    } else {
+      this.router.navigate(['/', 'customer', 'signup']);
     }
   }
 
-  skipSignup() {  
+  skipSignup() {
     this.router.navigate(['/', 'customer', 'dashboard']);
   }
 
-  llpCustSignup() {  
+  llpCustSignup() {
     this.loader.open();
-    let UserEmail = localStorage.getItem("UserEmail")
     let img = document.getElementById('profilePicture') as HTMLInputElement
-    let req_vars = { username:UserEmail,
-                     firstName: this.llpCustsignupProfileForm.controls['firstName'].value,
-                     lastName: this.llpCustsignupProfileForm.controls['lastName'].value,
-                     businessPhoneNumber: this.llpCustsignupProfileForm.controls['businessPhoneNumber'].value,
-                     dateOfBirth: this.llpCustsignupProfileForm.controls['dateOfBirth'].value,
-                     state: this.llpCustsignupProfileForm.controls['state'].value,
-                     city: this.llpCustsignupProfileForm.controls['city'].value,
-                     zipcode: this.llpCustsignupProfileForm.controls['zipcode'].value,                     
-                     userType: "customer" }
-   //console.log(req_vars.firstName,req_vars.lastName,req_vars.businessPhoneNumber,req_vars.dateOfBirth,req_vars.state,req_vars.city,req_vars.zipcode);
-    this.api.apiRequest('post', 'auth/signup', req_vars).subscribe(result => {        
-	    if(img.files && img.files.length > 0) {
-	        this.userId = result.data.userId
-	        this.saveProfilePicture()
-	    }
-	    if(result.status == "success"){
+    console.log(this.llpCustsignupProfileForm.value)
+    let profileInData = this.llpCustsignupProfileForm.value
+
+    var query = {};
+    var proquery = {};
+    let req_vars = {
+      query: Object.assign({ _id: this.userId, userType: this.userType }),
+      proquery: Object.assign(profileInData)
+    }
+    
+    this.api.apiRequest('post', 'userlist/updateprofile', req_vars).subscribe(result => {
+      if (img.files && img.files.length > 0) {
+        this.saveProfilePicture()
+      }
+      if (result.status == "success") {
         this.loader.close();
-          this.snack.open('We have sent you reset instructions. Please check your email.', 'OK', { duration: 4000 })
-          this.router.navigate(['/', 'customer', 'dashboard']);
+        this.snack.open('We have sent you reset instructions. Please check your email.', 'OK', { duration: 4000 })
+        this.router.navigate(['/', 'customer', 'dashboard']);
       } else {
         this.loader.close();
         console.log(result.data);
@@ -94,14 +98,14 @@ export class UpdateProfileComponent implements OnInit {
     alert(this.userId)
     fd.append('userId', this.userId)
     fd.append('profilePicture', this.uploadedFile, this.uploadedFile.name);
-    this.api.apiRequest('post','auth/updateProfilePic', fd).subscribe((result:any) => {
-      if(result.status == "success") {
+    this.api.apiRequest('post', 'auth/updateProfilePic', fd).subscribe((result: any) => {
+      if (result.status == "success") {
         this.loader.close();
         let userHeaderDetails = sessionStorage.getItem("userHeaderDetails")
         let userDetails = JSON.parse(userHeaderDetails)
         userDetails.profilePicture = result.data.profilePicture
         userHeaderDetails = JSON.stringify(userDetails)
-        if(localStorage.getItem("userHeaderDetails")) {
+        if (localStorage.getItem("userHeaderDetails")) {
           localStorage.setItem("userHeaderDetails", userHeaderDetails)
         } else {
           sessionStorage.setItem("userHeaderDetails", userHeaderDetails)
@@ -125,15 +129,18 @@ export class UpdateProfileComponent implements OnInit {
     const ext = filenameArray[filenameArray.length - 1].toLowerCase()
     const validExt = ['jpg', 'jpeg', 'png', 'gif']
     //console.log(this.uploadedFile)
-    if(this.uploadedFile.size > 5242880) {
+    if (this.uploadedFile.size > 5242880) {
       //this.errorMessage = "Profile picture must be less than 5 MB."
       this.hideAlerts()
-    } else if(validExt.indexOf(ext) > -1){
+    } else if (validExt.indexOf(ext) > -1) {
       let reader = new FileReader()
       reader.onloadend = () => {
-        console.log("result array >>>>>"+reader.result)
-        img.src = reader.result;
-        this.profilePicture = reader.result;
+        console.log("result array >>>>>" + reader.result)
+        if (reader.result) {
+          //img.src = reader.result;
+          //this.profilePicture = reader.result;
+        }
+
       }
       reader.readAsDataURL(this.uploadedFile)
     } else {
@@ -144,7 +151,7 @@ export class UpdateProfileComponent implements OnInit {
 
   //function to hide alerts
   hideAlerts = () => {
-    setTimeout(()=> {
+    setTimeout(() => {
       //this.successMessage = ""
       //this.errorMessage = ""
       alert("HI")

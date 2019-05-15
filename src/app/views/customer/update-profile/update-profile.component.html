@@ -10,8 +10,7 @@
           <div class="con--image" style="background-image: url('assets/images/arkenea/congratulations.png')">
             <span>Congratulations!</span>
           </div>
-          <p>30 days free access to all features has been unlocked 
-              for your account!
+          <p>30 days free access to all features has been unlocked for your account!
           </p>
         </div>
         <div class="text-center pb-1">
@@ -20,14 +19,15 @@
         <div class="profile--pic">
           <div class="pic--box" [ngStyle]="{'background-image': 'url(' + profilePicture + ')' }"></div>
           <mat-icon class="edit--pic" title="edit user image" (click)="profilePic.click()">edit</mat-icon>
-          <input type="file" name="profilePicture" #profilePic id="profilePicture" class="profile-pic-input" (change)="showSelectedProfilePicture()" accept="image/*" />
+          <input type="file" name="profilePicture" #profilePic id="profilePicture" class="profile-pic-input" (change)="showSelectedProfilePicture()"
+            accept="image/*" />
         </div>
         <form class="llp-form-wrapper" [formGroup]="llpCustsignupProfileForm" (ngSubmit)="llpCustSignup()">
           <div class="row wrap">
             <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
               <div class="pb-1">
                 <mat-form-field class="full-width">
-                  <input matInput name="firstName" placeholder="First Name*" value="" [formControl]="llpCustsignupProfileForm.controls['firstName']" >
+                  <input matInput name="firstName" placeholder="First Name*" value="" [formControl]="llpCustsignupProfileForm.controls['firstName']">
                 </mat-form-field>
               </div>
             </div>
@@ -42,20 +42,20 @@
           </div>
 
           <mat-form-field class="full-width">
-            <input matInput placeholder="Business phone*" type="tel" value="" name="businessPhoneNumber" class="example-right-align" [formControl]="llpCustsignupProfileForm.controls['businessPhoneNumber']">
+            <input matInput placeholder="Business phone*" type="tel" value="" name="businessPhoneNumber" class="example-right-align"
+              [formControl]="llpCustsignupProfileForm.controls['businessPhoneNumber']">
             <span matPrefix>+1</span>
             <span matSuffix>.00</span>
           </mat-form-field>
 
           <div>
-              <mat-form-field  class="full-width llp-datepicker"> <!-- [formControl]="date" -->
-                  <input matInput [matDatepicker]="dp" placeholder="Date of Birth*" [max]="maxDate" [formControl]="llpCustsignupProfileForm.controls['dateOfBirth']"> 
-                  <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-                  <mat-datepicker #dp
-                                  startView="multi-year"
-                                  panelClass="example-month-picker">
-                  </mat-datepicker>
-                </mat-form-field>
+            <mat-form-field class="full-width llp-datepicker">
+              <!-- [formControl]="date" -->
+              <input matInput [matDatepicker]="dp" placeholder="Date of Birth*" [max]="maxDate" [formControl]="llpCustsignupProfileForm.controls['dateOfBirth']">
+              <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+              <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
+              </mat-datepicker>
+            </mat-form-field>
           </div>
           <mat-form-field class="full-width">
             <input matInput name="city" placeholder="City*" value="" [formControl]="llpCustsignupProfileForm.controls['city']">
@@ -65,8 +65,7 @@
           <mat-form-field class="full-width">
             <mat-select placeholder="State*" [formControl]="llpCustsignupProfileForm.controls['state']">
               <mat-option value="">Select a state</mat-option>
-              <mat-option *ngFor="let option of stateList"
-              [value]="option.state_name">{{option.state_name}}</mat-option>
+              <mat-option *ngFor="let option of stateList" [value]="option.state_name">{{option.state_name}}</mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -77,7 +76,9 @@
           <button mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" [disabled]="llpCustsignupProfileForm.invalid">Update and Proceed</button>
 
           <div class="text-center bot-txt">
-            <p><a (click)="skipSignup()"> Skip</a></p>
+            <p>
+              <a (click)="skipSignup()"> Skip</a>
+            </p>
           </div>
         </form>
       </mat-card-content>

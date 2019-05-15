@@ -55,7 +55,8 @@ export class CustomerSignupComponent implements OnInit {
   custProceed() {
     let req_vars = {
       username: this.llpCustsignupForm.controls['username'].value,
-      password: this.llpCustsignupForm.controls['password'].value
+      password: this.llpCustsignupForm.controls['password'].value,
+      userType: 'customer'
     }
     this.loader.open();
     this.api.apiRequest('post', 'auth/checkEmail', req_vars).subscribe(result => {
@@ -86,18 +87,19 @@ export class CustomerSignupComponent implements OnInit {
   }
 
   OtpProceed() {
-    let req_vars = { 
+    let req_vars = {
       username: this.llpCustsignupForm.controls['username'].value,
-      password: this.llpCustsignupForm.controls['password'].value, 
-      otpCode: this.llpCustotpForm.controls['otp'].value, 
-      status: 'Active' 
+      otpCode: this.llpCustotpForm.controls['otp'].value
     }
     this.loader.open();
     this.api.apiRequest('post', 'auth/checkOtp', { query: req_vars }).subscribe(result => {
       if (result.status == "success") {
         this.loader.close();
         if (result.data.code == "success") {
-          localStorage.setItem("UserEmail", this.llpCustsignupForm.controls['username'].value);
+          localStorage.setItem("username", result.data.username);
+          localStorage.setItem("userId", result.data.userId);
+          localStorage.setItem("userType", result.data.userType);
+
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
           this.router.navigate(['/', 'customer', 'update-profile']);
         } else {
