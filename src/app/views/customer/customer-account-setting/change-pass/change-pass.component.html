@@ -1,28 +1,42 @@
 <div class="ll--modal--header">
   Change Password
-  <!-- <button [mat-dialog-close]="">I would like to participate!</button> -->
- 
-  <button mat-raised-button class="" [mat-dialog-close]=""> <mat-icon class="icon--cross" >cancel</mat-icon></button>
-
+  <button [mat-dialog-close]="" style="display: none;" #modalClose></button>
+  <mat-icon class="icon--cross" (click)="modalClose.click()">cancel</mat-icon>
 </div>
+<form class="llp-form-wrapper" [formGroup]="resetForm" (ngSubmit)="PassSubmit()">
 <div class="ll--modal--body">
   <div fxLayout="row wrap">
     <div fxFlex.xs="100">
-      <form class="llp-form-wrapper">
+     
         <mat-form-field class="full-width">
-          <input matInput name="pp" type="password" placeholder="Old Password" value="123456">
+          <input matInput name="password" type="password" placeholder="Current Password" value="" [formControl]="resetForm.controls['password']">
+          
+          <mat-icon matTooltip="Please enter the correct current password" matTooltipClass="llp--tooltip error" *ngIf="resetForm.controls['password'].hasError('invalid') && resetForm.controls['password'].touched"
+          class="red--alert">help_outline</mat-icon>
         </mat-form-field>
         <mat-form-field class="full-width">
-          <input matInput name="np" type="password" placeholder="New Password" value="123456">
+          <input matInput name="NewPassword" type="password" placeholder="New Password" value="" [formControl]="resetForm.controls['NewPassword']">
+
+          <mat-icon matTooltip="Please enter password." matTooltipClass="llp--tooltip error" *ngIf="resetForm.controls['password'].hasError('required') && resetForm.controls['password'].touched"
+          class="red--alert">help_outline</mat-icon>
+
+        <mat-icon matTooltip="Password must be at least 6 characters long, alpha numeric with at least one-special character." matTooltipClass="llp--tooltip error"
+          *ngIf="resetForm.controls['password'].hasError('pattern') && resetForm.controls['password'].touched" class="red--alert">help_outline</mat-icon>
         </mat-form-field>
         <mat-form-field class="full-width">
-          <input matInput name="rp" type="password" placeholder="Re-Enter Password" value="123456">
+          <input matInput name="confirmPassword" type="password" placeholder="Re-Enter Password" value="" [formControl]="resetForm.controls['confirmPassword']">
+          <mat-icon matTooltip="Please enter confirm password" matTooltipClass="llp--tooltip error" *ngIf="resetForm.controls['confirmPassword'].hasError('required') && resetForm.controls['confirmPassword'].touched"
+          class="red--alert">help_outline</mat-icon>
+
+        <mat-icon matTooltip="Password should match." matTooltipClass="llp--tooltip error" *ngIf="resetForm.controls['confirmPassword'].hasError('equalTo') && resetForm.controls['confirmPassword'].touched"
+          class="red--alert">help_outline</mat-icon>
         </mat-form-field>
-      </form>
+      
     </div>
   </div>
 </div>
 <div class="ll--modal--footer text-center">
-  <button mat-raised-button class="llp--primary--btn" [mat-dialog-close]="">Save</button>
-
+ <!-- <button mat-raised-button class="llp--primary--btn" [disabled]="resetForm.invalid" [mat-dialog-close]="">Save</button>-->
+ <button mat-raised-button color="llp--primary--btn" [disabled]="resetForm.invalid">Save</button>
 </div>
+</form>

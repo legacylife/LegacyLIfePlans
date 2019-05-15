@@ -25,31 +25,31 @@ export class ChangePassComponent implements OnInit {
   ngOnInit() {
     this.resetForm = this.fb.group({
       password: password,
+      NewPassword: NewPassword,
       confirmPassword: confirmPassword
     });
 
   }
 
-
   PassSubmit(){
-    const req_vars = { password: this.resetForm.controls['password'].value, token: this.userId, userType: "sysadmin" }
-
-    this.api.apiRequest('post', 'auth/resetPassword', req_vars).subscribe(result => {
+    let passwordData = {
+      userId: this.userId,
+      password: this.resetForm.controls['password'].value,
+      newPassword: this.resetForm.controls['NewPassword'].value,
+      confirmPassword: this.resetForm.controls['confirmPassword'].value,
+      userType: "customer"
+    }
+    this.loader.open();
+    this.api.apiRequest('post', 'auth/changePassword', passwordData).subscribe(result => {
       this.loader.close();
-      if (result.status == "success") {
-        this.snack.open(result.data, 'OK', { duration: 4000 })
-
-        setTimeout(() => {
-          //this.router.navigate(['password-reset-success']);
-        }, 2000);
+      if (result.status == "error") {
+        this.resetForm.controls['password'].setErrors({ 'invalid': true });
       } else {
-        this.snack.open(result.data, 'OK', { duration: 4000 })
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
-      // console.error(err)
-      this.snack.open(err, 'OK', { duration: 4000 })
+      console.error(err)
     })
-
   }
 
 }

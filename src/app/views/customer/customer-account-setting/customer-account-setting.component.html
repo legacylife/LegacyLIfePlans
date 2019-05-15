@@ -48,10 +48,12 @@
         <mat-tab-group class="acc--sett--tab">
           <mat-tab label="Account Details">
             <!-- account details -->
-            <div class="account--details">
+            
+            <form class="llp-form-wrapper" [formGroup]="ProfileForm" (ngSubmit)="ProfileSubmit()">
+              <div class="account--details">
               <div fxLayout="row wrap">
                 <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
-                  <form class="llp-form-wrapper" [formGroup]="ProfileForm" (ngSubmit)="ProfileSubmit()">
+                  
                     <mat-form-field class="full-width">
                       <input matInput name="username" placeholder="First Name*" value=""  [formControl]="ProfileForm.controls['firstName']">
                     </mat-form-field>
@@ -81,9 +83,7 @@
 
                     <div class="full-width text-right">
                       <a class="clr--red fnt--16" (click)="changePasspordModal()">Change password</a>
-                    </div>
-
-                  </form>
+                    </div>               
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="60" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60">
                   <div class="manage--sub--section">
@@ -111,11 +111,12 @@
                 </div>
               </div>
               <div fx.Flex="100" class="text-center mt--30">
-                <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
+               <!-- <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>-->
                 <button mat-raised-button class="llp--primary--btn" [disabled]="ProfileForm.invalid">Save</button>
               </div>
             </div>
-
+          </form>
+        
           </mat-tab>
           <mat-tab label="Address">
 
@@ -158,7 +159,7 @@
                   </div>
                 </div>
                 <div fx.Flex="100" class="text-center mt--30">
-                  <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
+                 <!-- <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>-->
                   <button mat-raised-button class="llp--primary--btn" [disabled]="AddressForm.invalid">Save</button>
                 </div>
               </form>
