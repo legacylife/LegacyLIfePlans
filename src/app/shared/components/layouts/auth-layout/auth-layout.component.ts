@@ -9,19 +9,19 @@ export class AuthLayoutComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    const locationArray = location.href.split("/");
     
-    const locationArray = location.href.split("/")
-    //if(locationArray.indexOf("ausigninth") > -1) {
+    if(locationArray.indexOf("signin") > -1 || locationArray.indexOf("forgot-password") > -1) {
       const htmlTag = document.getElementsByTagName("html")[0]
       const bodyTag = document.getElementsByTagName("body")[0]
       htmlTag.className += " llp--auth--wrapper"
       bodyTag.className += " llp--auth--wrapper"
-    //}
+    }
   }
 
   ngOnDestroy() {
     const locationArray = location.href.split("/")
-    //if(locationArray.indexOf("signin") > -1) {
+   // if(locationArray.indexOf("signin") > -1 || locationArray.indexOf("forgot-password")> -1) {
       //html
       const htmlTag = document.getElementsByTagName("html")[0]
       let htmlClasses = htmlTag.className && htmlTag.className.length > 0 ? htmlTag.className.split(" ") : []
@@ -39,7 +39,7 @@ export class AuthLayoutComponent implements OnInit {
         bodyClasses.splice(myclassBodyIndex, 1)
         bodyTag.className = bodyClasses.join(" ")
       }
-    //}
+   // }
   }
 
 }

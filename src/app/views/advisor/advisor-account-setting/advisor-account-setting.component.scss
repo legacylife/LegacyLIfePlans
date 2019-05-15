@@ -1,0 +1,231 @@
+@import 'llp-global-styles.scss';
+@import '../../customer/customer-account-setting/customer-account-setting.component.scss';
+
+.ad--acc--sett--wrapper{
+    .feature--profile{
+        border-top: 1px solid #ddd;
+        padding-top: 25px;
+        margin-top: 25px;
+        .sett--fp{
+            color: #222324;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-family: $font--lato--bold;
+            .mat-icon{
+                font-size: 20px;
+                height: 20px;
+                margin-right: 5px;
+            }
+        }
+        .pro--info{
+            font-size: 16px;
+            line-height: 25px;
+        }
+        .validate{
+            margin: 0;
+            font-size: 16px;
+            span{
+                font-family: $font--lato--bold
+            }
+        }
+    }
+    .business--information{
+        padding: 22px 25px;
+        border: solid 1px #e1e5c7;
+        background-color: #fff;
+        border-top: none;
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+        .header--text{
+            font-size: 18px;
+            color: #222324;
+            margin: 0 0 30px 0;
+        }
+        .header--desc{
+            margin-bottom: 24px;
+            font-size: 16px;
+            line-height: 12px;
+            &.upload--doc{
+                line-height: 23px;
+            }
+        }
+        .add--new{
+            display: flex;
+            align-items: center;
+            color: #c72128;
+            font-size: 16px;
+            font-family: $font--lato--regular;
+            .mat-icon{
+                margin-right: 10px;
+                height: 27px;
+                width: 27px;
+                font-size: 27px;
+            }
+        }
+        .about--txtarea{
+            textarea{
+                height: 124px;
+            }            
+        }
+        .char--limit{
+                color: #828385;
+                font-size: 15px;
+                position: absolute;
+                right: 0;
+                top: -15px;
+                font-family: $font--lato--regular;
+        }
+        .upload--buss--docs--sec{
+            label{
+                font-size: 16px;
+                margin: 0;
+                color: #222324;
+                font-family: 'latobold';
+            }
+            .upload--box{
+                margin: 15px 0;
+                border: 1px dashed #c72128;
+                padding: 25px;
+                width: 100%;
+                height: 175px;
+                text-align: center;
+                position: relative;
+                border-radius: 4px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+    
+                input{
+                    opacity: 0;
+                    height: inherit;
+                    width: inherit;
+                    cursor: pointer;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                }
+                .select--file{
+                    color: #c72128;
+                    font-size: 16px;
+                }
+                .cloud-icon{
+                    color: #c72128;
+                    font-size: 50px;
+                    margin-bottom: 10px;
+                    width: 50px;
+                    height: 50px;
+                }
+            }
+            .file--details{
+                font-size: 14px;
+                color: #666;
+                font-family: $font--lato--regular;
+            }
+        }
+        .doc--list{
+            .mat-chip{
+                height: 33px;
+                border-radius: 4px;
+                font-size: 16px;
+                color: #000000;
+                font-family: $font--lato--regular;
+                border: solid 1px #ebebeb;
+                background-color: #f6f7f7;
+                display: flex;
+                width: 100%;
+                margin: 0 0 10px 0;
+                justify-content: space-between;
+                
+                .mat-icon{
+                    color: #c72128;
+                    opacity: 9;
+                }
+                &:focus{
+                    box-shadow: none;
+                }
+            }
+           
+        }
+    }
+}
+.llp--left--panel--view.cust--acc--sett--wrapper .manage--sub--section header .ur--sub{
+    width: 100%;
+}
+.llp--left--panel--view.cust--acc--sett--wrapper .manage--sub--section header .ur--sub span{
+    display: block
+}
+.invite--body--section {
+    border: none;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.invite--body--section .count {
+    font-family: $font--lato--bold;
+    font-size: 45px;
+    margin: 20px 0 5px;
+}
+.invite--body--section .daysgo {
+    margin: 0;
+    font-family: $font--lato--italic !important;
+    font-size: 22px;
+}
+.invite--body--section .invites {
+    font-size: 16px;
+    color: #222324;
+    margin-bottom: 15px;
+    margin-top: 32px;
+}
+.invite--body--section .llp--primary--btn {
+    width: 168px;
+}
+.invite--body--section .count span {
+    font-size: 26px;
+    font-family: $font--lato--regular;
+}
+.black--header{
+    margin-bottom: 20px;
+}
+.pad--r--lg{
+    padding-right: 30px;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Media query (start here)*/
+
+@media only screen and (max-width: 599px) {
+    .ad--acc--sett--wrapper .business--information .add--new{
+        margin-bottom: 20px;
+    }
+    .pad--r--lg {
+        padding-right: 0;
+    }
+    .ad--acc--sett--wrapper .business--information .header--desc {
+        line-height: 22px;
+    }
+    .ad--acc--sett--wrapper .business--information .header--text {
+        margin: 0 0 15px 0;
+    }
+}
+@media only screen and (min-width: 600px) and (max-width: 959px){}
+@media only screen and (min-width: 960px) and (max-width: 979px){}
+@media only screen and (min-width: 980px) and (max-width: 1279px){}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){}
+@media only screen and (min-width: 1441px) and (max-width: 1550px){}
+
+/* Media query (end here)*/

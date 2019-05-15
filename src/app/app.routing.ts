@@ -33,8 +33,9 @@ export const rootRouterConfig: Routes = [
   }, 
   {
     path: 'advisor',
+    pathMatch: 'prefix' ,
     children: [{
-      path: 'signup',
+      path: '',
       component: AuthLayoutComponent,
       loadChildren: './views/advisor/advisor.module#AdvisorModule',
       data: { title: 'Advisor Signup' }
