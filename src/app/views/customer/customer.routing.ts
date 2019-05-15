@@ -6,7 +6,7 @@ import { CustomerHomeComponent } from './customer-home/customer-home.component';
 import { CustomerAccountSettingComponent } from './customer-account-setting/customer-account-setting.component';
 import { CustomerLayoutComponent } from '../../shared/components/layouts/customer-layout/customer-layout.component';
 import { AuthLayoutComponent } from '../../shared/components/layouts/auth-layout/auth-layout.component';
-
+console.log('customer---routing');
 export const CustomerRoutes: Routes = [
   {
     path: 'signup',
@@ -18,6 +18,11 @@ export const CustomerRoutes: Routes = [
         component: CustomerSignupComponent, 
       }
     ],
+  },{
+    path: '',
+    component: AuthLayoutComponent,
+    loadChildren: './auth/auth.module#AuthModule',
+    data: { title: 'Blank', breadcrumb: 'BLANK' },    
   },{
     path: 'dashboard',
     component: CustomerLayoutComponent,

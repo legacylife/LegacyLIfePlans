@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
 import { AdvAboutUsComponent } from './adv-about-us/adv-about-us.component';
-console.log('advisor---routing');
+console.log('advisor-landing---routing');
 export const AdvisorLandingRoutes: Routes = [
   {
     path: '',

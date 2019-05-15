@@ -4,7 +4,7 @@ import { BusinessInfoComponent } from './business-info/business-info.component';
 import { SetPasswordComponent } from './set-password/set-password.component';
 import { AdvisorSigninComponent } from './signin/signin.component';
 import { ThankYouComponent } from './thank-you/thank-you.component';
-
+console.log('advisor---routing');
 export const AdvisorRoutes: Routes = [
   {
     path: 'signin',
