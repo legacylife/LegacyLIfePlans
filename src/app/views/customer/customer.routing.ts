@@ -4,23 +4,49 @@ import { CustomerSignupComponent } from './signup/signup.component';
 import { UpdateProfileComponent } from './update-profile/update-profile.component';
 import { CustomerHomeComponent } from './customer-home/customer-home.component';
 import { CustomerAccountSettingComponent } from './customer-account-setting/customer-account-setting.component';
+import { CustomerLayoutComponent } from '../../shared/components/layouts/customer-layout/customer-layout.component';
+import { AuthLayoutComponent } from '../../shared/components/layouts/auth-layout/auth-layout.component';
 
 export const CustomerRoutes: Routes = [
   {
-    path: 'dashboard',
-    component: CustomerHomeComponent,
-    data: { title: 'Blank', breadcrumb: 'BLANK' }
-  },{
     path: 'signup',
-    component: CustomerSignupComponent,
-    data: { title: 'Blank', breadcrumb: 'BLANK' }
+    component: AuthLayoutComponent,
+    data: { title: 'Blank', breadcrumb: 'BLANK' },
+    children : [
+      { 
+        path: '',
+        component: CustomerSignupComponent, 
+      }
+    ],
+  },{
+    path: 'dashboard',
+    component: CustomerLayoutComponent,
+    data: { title: 'Customer Dashboard', breadcrumb: 'DASHBOARD' },
+    children : [
+      { 
+        path: '',
+        component: CustomerHomeComponent,
+      }
+    ],    
   },{
     path: 'update-profile',
-    component: UpdateProfileComponent,
-    data: { title: 'Blank', breadcrumb: 'BLANK' }
+    component: AuthLayoutComponent,
+    data: { title: 'Blank', breadcrumb: 'BLANK' },
+    children : [
+      { 
+        path: '',
+        component: UpdateProfileComponent, 
+      }
+    ],
   },{
     path: 'account-setting',
-    component: CustomerAccountSettingComponent,
-    data: { title: 'Account Setting', breadcrumb: 'Customer' }
+    component: CustomerLayoutComponent,
+    data: { title: 'Account Setting', breadcrumb: 'Customer' },
+    children : [
+      { 
+        path: '',
+        component: CustomerAccountSettingComponent, 
+      }
+    ],
   }
 ];

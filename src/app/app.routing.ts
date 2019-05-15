@@ -9,30 +9,23 @@ import { AuthGuard } from './shared/services/auth/auth.guard';
 export const rootRouterConfig: Routes = [
   {
     path: '',
+    pathMatch: 'full', 
     component: AdvisorLandingLayoutComponent,
     loadChildren: './views/advisor-landing/advisor-landing.module#AdvisorLandingModule',
     data: { title: 'LLP', breadcrumb: 'Home'}
   },
   {
     path: '',
+    pathMatch: 'prefix' ,
     component: AuthLayoutComponent,
     loadChildren: './views/auth/auth.module#AuthModule',
     data: { title: 'LLP', breadcrumb: 'Signin'}
   },
  {
     path: 'customer',
+    pathMatch: 'prefix' ,
     children: [{
       path: '',
-      component: AuthLayoutComponent,
-      loadChildren: './views/customer/customer.module#CustomerModule',
-      data: { title: 'Customer Signup' }
-    },
-  ]
-  },{
-    path: 'customer',
-    children: [{
-      path: 'customer',
-      component: CustomerLayoutComponent,
       loadChildren: './views/customer/customer.module#CustomerModule',
       data: { title: 'Customer Signup' }
     },
