@@ -209,7 +209,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
       from: Object.assign({ fromname: "Business information" })
     }
     this.loader.open();
-    this.api.apiRequest('post', 'auth/cust-profile-update', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'auth/cust-profile-update', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
@@ -240,7 +240,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
       from: Object.assign({ fromname: "License & documents" })
     }
     this.loader.open();
-    this.api.apiRequest('post', 'auth/cust-profile-update', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'auth/cust-profile-update', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
