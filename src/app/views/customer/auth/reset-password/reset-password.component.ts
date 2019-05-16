@@ -6,6 +6,7 @@ import { AppConfirmService } from '../../../../shared/services/app-confirm/app-c
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 import { CustomValidators } from 'ng2-validation';
 import { APIService } from './../../../../api.service';
+import { UserAPIService } from './../../../../userapi.service';
 
 const passwordRegex: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!#%*?&])[A-Za-z\d$@$!#%*?&]{6,16}/
 const password = new FormControl('', [Validators.required, Validators.pattern(passwordRegex)]);
@@ -22,7 +23,7 @@ export class ResetPasswordComponent implements OnInit {
 
   @ViewChild(MatProgressBar) progressBar: MatProgressBar;
   @ViewChild(MatButton) submitButton: MatButton;
-  constructor(private api: APIService, private fb: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
+  constructor(private userapi: UserAPIService, private fb: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
 
   ngOnInit() {
     this.resetForm = this.fb.group({
@@ -39,7 +40,7 @@ export class ResetPasswordComponent implements OnInit {
     this.loader.open();
     const req_vars = { password: this.resetForm.controls['password'].value, token: this.userId, userType: "sysadmin" }
 
-    this.api.apiRequest('post', 'auth/resetPassword', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'auth/resetPassword', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "success") {
         this.snack.open(result.data, 'OK', { duration: 4000 })
@@ -63,7 +64,7 @@ export class ResetPasswordComponent implements OnInit {
       userType: "sysadmin"
     }
 
-    this.api.apiRequest('post', 'auth/reset-password-token', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'auth/reset-password-token', req_vars).subscribe(result => {
       if (result.status == "error") {
         this.router.navigate(['llp-admin', 'error']);
         this.snack.open(result.data, 'OK', { duration: 6000 })

@@ -63,8 +63,8 @@ export class APIService {
     localStorage.setItem('endUserId', userId)
     localStorage.setItem('endUserType', userType)
     localStorage.setItem('endUsername', username)
-    localStorage.setItem('authCode', authCode)
-    localStorage.setItem('emailApiType', emailApiType)
+    localStorage.setItem('userauthCode', authCode)
+    localStorage.setItem('useremailApiType', emailApiType)
     localStorage.setItem('token', token)
     localStorage.setItem('userexpiryDate', expiryDate)
     localStorage.setItem('enduserHeaderDetails', userHeaderDetails)
@@ -73,7 +73,6 @@ export class APIService {
     }
     let expirySession = new Date()
     expirySession.setDate(expirySession.getDate() + 2)
-    localStorage.setItem('expirySession', expirySession.toString())
     localStorage.setItem('enduserexpirySession', expirySession.toString())
   }
 

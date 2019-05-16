@@ -5,6 +5,7 @@ import { CustomerHomeComponent } from './customer-home/customer-home.component';
 import { CustomerAccountSettingComponent } from './customer-account-setting/customer-account-setting.component';
 import { CustomerLayoutComponent } from '../../shared/components/layouts/customer-layout/customer-layout.component';
 import { AuthLayoutComponent } from '../../shared/components/layouts/auth-layout/auth-layout.component';
+import { UserAuthGuard } from '../../shared/services/auth/userauth.guard';
 console.log('customer---routing');
 export const CustomerRoutes: Routes = [
   {
@@ -27,25 +28,30 @@ export const CustomerRoutes: Routes = [
       { 
         path: '',
         component: CustomerHomeComponent,
+        canActivate: [ UserAuthGuard ]
+        
       }
-    ],    
+    ] 
+       
   },{
     path: 'update-profile',
     component: AuthLayoutComponent,
     children : [
       { 
         path: '',
-        component: UpdateProfileComponent, 
+        component: UpdateProfileComponent,
+        canActivate: [ UserAuthGuard ] 
       }
-    ],
+    ]
   },{
     path: 'account-setting',
     component: CustomerLayoutComponent,
     children : [
       { 
         path: '',
-        component: CustomerAccountSettingComponent, 
+        component: CustomerAccountSettingComponent,
+        canActivate: [ UserAuthGuard ]  
       }
-    ],
+    ]
   }
 ];

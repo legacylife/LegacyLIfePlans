@@ -3,6 +3,7 @@ import { ThemeService } from '../../services/theme.service';
 import { LayoutService } from '../../services/layout.service';
 import { TranslateService } from '@ngx-translate/core';
 import { APIService } from './../../../api.service';
+import { UserAPIService } from './../../../userapi.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -29,6 +30,7 @@ export class HeaderSideComponent implements OnInit {
     public translate: TranslateService,
     private renderer: Renderer2,
     private api: APIService,
+    private userapi: UserAPIService,
     private route: ActivatedRoute,
     private router:Router
   ) {}

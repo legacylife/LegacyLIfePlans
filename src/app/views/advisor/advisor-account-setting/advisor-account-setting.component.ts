@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
+import { UserAPIService } from './../../../userapi.service';
 import { MatDialog,MatSnackBar, MatSidenav } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl,Validators,FormArray } from '@angular/forms'
 import { egretAnimations } from '../../../shared/animations/egret-animations';
@@ -33,10 +34,10 @@ export class AdvisorAccountSettingComponent implements OnInit {
   prodata:any;
   profile:any;
   //websites: FormArray;
-  constructor(private router: Router, private route: ActivatedRoute,private fb: FormBuilder, private snack: MatSnackBar,public dialog: MatDialog, private api: APIService,private loader: AppLoaderService) { }
+  constructor(private router: Router, private route: ActivatedRoute,private fb: FormBuilder, private snack: MatSnackBar,public dialog: MatDialog, private userapi: UserAPIService,private loader: AppLoaderService) { }
 
   ngOnInit() {
-          this.api.apiRequest('post', 'globalsetting/statelist', {}).subscribe(result => {    
+          this.userapi.apiRequest('post', 'globalsetting/statelist', {}).subscribe(result => {    
             if(result.status == "success"){
                 this.stateList = result.data;
             } 
@@ -99,7 +100,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
       query: Object.assign({ _id: this.userId, userType: "advisor" }, query)
     }
     this.loader.open();
-    this.api.apiRequest('post', 'userlist/getprofile', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe(result => {
      if (result.status == "error") {
         this.profile = [];
         this.loader.close();
@@ -160,7 +161,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
       from: Object.assign({ fromname: "account details" })
     }
     this.loader.open();
-    this.api.apiRequest('post', 'auth/cust-profile-update', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'auth/cust-profile-update', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })

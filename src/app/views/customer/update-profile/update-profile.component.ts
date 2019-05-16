@@ -3,6 +3,7 @@ import { MatProgressBar, MatButton, MatSnackBar } from '@angular/material';
 import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { APIService } from './../../../api.service';
+import { UserAPIService } from './../../../userapi.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RoutePartsService } from "../../../shared/services/route-parts.service";
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
@@ -27,7 +28,7 @@ export class UpdateProfileComponent implements OnInit {
   maxDate = new Date(new Date())
   profilePicture: string = "assets/images/arkenea/uri.jpg"
 
-  constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
+  constructor(private router: Router, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.username = localStorage.getItem("endUsername");
@@ -35,7 +36,7 @@ export class UpdateProfileComponent implements OnInit {
 
 
     if (this.userId) {
-      this.api.apiRequest('post', 'globalsetting/statelist', { email: this.username }).subscribe(result => {
+      this.userapi.apiRequest('post', 'globalsetting/statelist', { email: this.username }).subscribe(result => {
         if (result.status == "success") {
           this.stateList = result.data;
         }
@@ -75,7 +76,7 @@ export class UpdateProfileComponent implements OnInit {
       proquery: Object.assign(profileInData)
     }
     
-    this.api.apiRequest('post', 'userlist/updateprofile', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'userlist/updateprofile', req_vars).subscribe(result => {
       if (img.files && img.files.length > 0) {
         this.saveProfilePicture()
       }
@@ -98,17 +99,17 @@ export class UpdateProfileComponent implements OnInit {
     alert(this.userId)
     fd.append('userId', this.userId)
     fd.append('profilePicture', this.uploadedFile, this.uploadedFile.name);
-    this.api.apiRequest('post', 'auth/updateProfilePic', fd).subscribe((result: any) => {
+    this.userapi.apiRequest('post', 'auth/updateProfilePic', fd).subscribe((result: any) => {
       if (result.status == "success") {
         this.loader.close();
-        let userHeaderDetails = sessionStorage.getItem("userHeaderDetails")
+        let userHeaderDetails = sessionStorage.getItem("enduserHeaderDetails")
         let userDetails = JSON.parse(userHeaderDetails)
         userDetails.profilePicture = result.data.profilePicture
         userHeaderDetails = JSON.stringify(userDetails)
-        if (localStorage.getItem("userHeaderDetails")) {
-          localStorage.setItem("userHeaderDetails", userHeaderDetails)
+        if (localStorage.getItem("enduserHeaderDetails")) {
+          localStorage.setItem("enduserHeaderDetails", userHeaderDetails)
         } else {
-          sessionStorage.setItem("userHeaderDetails", userHeaderDetails)
+          sessionStorage.setItem("enduserHeaderDetails", userHeaderDetails)
         }
       } else {
         //this.errorMessage = result.data

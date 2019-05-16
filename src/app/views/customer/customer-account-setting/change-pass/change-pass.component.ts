@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { APIService } from './../../../../api.service';
+import { UserAPIService } from './../../../../userapi.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
@@ -20,7 +21,7 @@ const confirmPassword = new FormControl('', [Validators.required, CustomValidato
 export class ChangePassComponent implements OnInit {
   userId:string;
   resetForm: FormGroup;
-  constructor( private fb: FormBuilder, private api: APIService,private router: Router,private snack: MatSnackBar,private confirmService: AppConfirmService, private loader: AppLoaderService) { }
+  constructor( private fb: FormBuilder, private userapi: UserAPIService,private router: Router,private snack: MatSnackBar,private confirmService: AppConfirmService, private loader: AppLoaderService) { }
 
   ngOnInit() {
     this.resetForm = this.fb.group({
@@ -40,7 +41,7 @@ export class ChangePassComponent implements OnInit {
       userType: "customer"
     }
     this.loader.open();
-    this.api.apiRequest('post', 'auth/changePassword', passwordData).subscribe(result => {
+    this.userapi.apiRequest('post', 'auth/changePassword', passwordData).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
         this.resetForm.controls['password'].setErrors({ 'invalid': true });

@@ -20,6 +20,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { APIService } from './api.service';
+import { UserAPIService } from './userapi.service';
 //import { CustomerSignupComponent } from './views/customer/signup/signup.component';
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -49,7 +50,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   ],
   declarations: [AppComponent],
   providers: [
-    APIService,
+    APIService, UserAPIService,
     { provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig },
     { provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG }
   ],

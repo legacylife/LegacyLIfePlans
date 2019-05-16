@@ -20,7 +20,7 @@ interface TokenResponse {
 }
 
 @Injectable()
-export class APIService {
+export class UserAPIService {
   private token: string
   private userId: string
   private userType: string
@@ -118,8 +118,8 @@ export class APIService {
     this.userId = this.getKeyFromStorage('endUserId')
     this.userType = this.getKeyFromStorage('endUserType')
     this.userInfo = {
-      "userId" : this.userId,
-      "userType" : this.userType
+      "endUserId" : this.userId,
+      "endUserType" : this.userType
     }    
     return this.userInfo
   }  
@@ -137,8 +137,8 @@ export class APIService {
       map((response: TokenResponse) => {
         if (response.data && response.data.token) {
           //check if user type is same
-          if (data.userType === response.data.userType || (data.userType == "sysadmin" && response.data.userType == "TeamMember")) {
-            alert("hi")
+          if (data.userType === response.data.userType || (data.userType == "sysadmin")) {
+            alert("hi123")
             const { token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId } = response.data
             if(userType == 'customer' || userType == 'advisor'){
               this.endUsersaveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data)
@@ -169,7 +169,7 @@ export class APIService {
   }
 
   //function to make request to server to logout user
-  public uselLogout(): void {
+  public userLogout(): void {
     this.token = ''
     this.removeKeyFromStorage('endUserId')
     this.removeKeyFromStorage('endUserType')
@@ -183,7 +183,7 @@ export class APIService {
     window.localStorage.clear();
     window.sessionStorage.clear();
 
-    this.router.navigate(["llp-admin", "signin"])
+    this.router.navigate(["customer", "signin"])
   }
 
   //function to make request to server

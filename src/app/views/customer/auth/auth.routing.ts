@@ -7,31 +7,38 @@ import { SigninComponent } from './signin/signin.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { PasswordResetSuccessfulComponent } from './password-reset-successful/password-reset-successful.component';
 import { ForgotPasswordSuccessfulComponent } from './password-reset-successful/forgot-password-successful.component';
+import { UserPreAuthGuard } from '../../../shared/services/auth/userpreauth.guard';
+
 console.log('Auth---routing');
 export const AuthRoutes: Routes = [
   {
     path: 'forgot-password',
       component: ForgotPasswordComponent,
-      data: { title: 'Forgot password' }
+      data: { title: 'Forgot password' },
+      canActivate: [ UserPreAuthGuard ]
   },
   {
     path: 'signin',
       component: SigninComponent,
-      data: { title: 'SignIn' }
+      data: { title: 'SignIn' },
+      canActivate: [ UserPreAuthGuard ]
   },
   {
       path: 'reset-password/:id',
       component: ResetPasswordComponent,
-      data: { title: 'reset password' }
+      data: { title: 'reset password' },
+      canActivate: [ UserPreAuthGuard ]
   },
   {
     path: 'password-reset-success',
       component: PasswordResetSuccessfulComponent,
-      data: { title: 'reset password' }
+      data: { title: 'reset password' },
+      canActivate: [ UserPreAuthGuard ]
   }, {
     path: 'forgot-password-success',
     component: ForgotPasswordSuccessfulComponent,
-    data: { title: 'Forgot password thank you' }
+    data: { title: 'Forgot password thank you' },
+    canActivate: [ UserPreAuthGuard ]
   }
 
 ];

@@ -1,6 +1,7 @@
 import { NgModule, Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../../api.service';
+import { UserAPIService } from './../../../../userapi.service';
 import { MatProgressBar, MatButton, MatSnackBar } from '@angular/material';
 import { RoutePartsService } from "../../../../shared/services/route-parts.service";
 import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
@@ -22,7 +23,7 @@ export class SigninComponent implements OnInit {
   username: FormControl 
   password: FormControl;
 
-  constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
+  constructor(private router: Router, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
 
   ngOnInit() {
     this.llpCustsigninForm = new FormGroup({
@@ -44,7 +45,7 @@ export class SigninComponent implements OnInit {
       userType: "customer"
     }
     this.loader.open();
-    this.api.apiRequest('post', 'auth/signin', signInData).subscribe(result => {
+    this.userapi.apiRequest('post', 'auth/signin', signInData).subscribe(result => {
       this.loader.close();
       if (result.status == "success") {
         userData = result.data;

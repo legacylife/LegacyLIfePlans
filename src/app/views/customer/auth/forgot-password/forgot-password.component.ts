@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 import { APIService } from './../../../../api.service';
+import { UserAPIService } from './../../../../userapi.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -18,7 +19,7 @@ export class ForgotPasswordComponent implements OnInit {
   
   @ViewChild(MatProgressBar) progressBar: MatProgressBar;
   @ViewChild(MatButton) submitButton: MatButton;
-  constructor(private api:APIService, private fb: FormBuilder, private router: Router,private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
+  constructor(private userapi:UserAPIService, private fb: FormBuilder, private router: Router,private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
 
   ngOnInit() {
     this.forgotForm = this.fb.group ( {
@@ -28,7 +29,7 @@ export class ForgotPasswordComponent implements OnInit {
   submitEmail() {
    this.loader.open();
     let req_vars = { username:  this.forgotForm.controls['email'].value, userType: "customer" }
-    this.api.apiRequest('post', 'auth/forgotPassword', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'auth/forgotPassword', req_vars).subscribe(result => {
 		this.loader.close();
       if(result.status == "success"){
           this.snack.open('We have sent you reset instructions. Please check your email.', 'OK', { duration: 4000 })

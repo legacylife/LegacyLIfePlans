@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { NavigationService } from "../../../shared/services/navigation.service";
 import { APIService } from './../../../api.service';
+import { UserAPIService } from './../../../userapi.service';
 import { ThemeService } from '../../services/theme.service';
 import { Subscription } from "rxjs";
 // import PerfectScrollbar from 'perfect-scrollbar';

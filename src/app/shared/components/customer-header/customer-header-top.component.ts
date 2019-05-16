@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LayoutService } from '../../services/layout.service';
-
+import { UserAPIService } from './../../../userapi.service';
 @Component({
   selector: 'app-customer-header-top',
   templateUrl: './customer-header-top.component.html'
@@ -28,7 +28,8 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
     private navService: CustNavService,
     public themeService: ThemeService,
     public translate: TranslateService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private userapi: UserAPIService
   ) { }
 
   ngOnInit() {
@@ -74,5 +75,9 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
     this.layout.publishLayoutChange({
       sidebarStyle: 'closed'
     })
+  }
+
+  logout = () => {
+    this.userapi.userLogout();
   }
 }

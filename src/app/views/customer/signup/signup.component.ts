@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, Pipe, PipeTransform } from '@angular/core';
 import { MatProgressBar, MatButton, MatSnackBar } from '@angular/material';
 import { APIService } from './../../../api.service';
+import { UserAPIService } from './../../../userapi.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RoutePartsService } from "../../../shared/services/route-parts.service";
 import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
@@ -38,7 +39,7 @@ export class CustomerSignupComponent implements OnInit {
   counter = 0;
   tick = 0;
 
-  constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
+  constructor(private router: Router, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
   ngOnInit() {
     this.llpCustsignupForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.pattern(/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i)]),
@@ -59,7 +60,7 @@ export class CustomerSignupComponent implements OnInit {
       userType: 'customer'
     }
     this.loader.open();
-    this.api.apiRequest('post', 'auth/checkEmail', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'auth/checkEmail', req_vars).subscribe(result => {
       if (result.status == "success") {
         this.loader.close();
         if (result.data.code == "Exist") {
@@ -92,7 +93,7 @@ export class CustomerSignupComponent implements OnInit {
       otpCode: this.llpCustotpForm.controls['otp'].value
     }
     this.loader.open();
-    this.api.apiRequest('post', 'auth/checkOtp', { query: req_vars }).subscribe(result => {
+    this.userapi.apiRequest('post', 'auth/checkOtp', { query: req_vars }).subscribe(result => {
       if (result.status == "success") {
         this.loader.close();
         if (result.data.code == "success") {
