@@ -43,51 +43,46 @@
     </mat-sidenav>
     <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
       <!-- Filters -->
-
       <!-- Right side -->
       <div class="full-width">
-
         <!-- toggleSideNav -->
         <div class="shop-top-toolbar p-0 llp--toggle-btn">
           <button mat-icon-button class="p-0" (click)="toggleSideNav()">
             <mat-icon>short_text</mat-icon>
           </button>
         </div>
-
         <!-- Account details -->
-
         <mat-tab-group class="acc--sett--tab">
           <mat-tab label="Account Details">
             <form class="llp-form-wrapper" [formGroup]="ProfileForm" (ngSubmit)="ProfileSubmit()">
               <div class="account--details">
               <div fxLayout="row wrap">
-                <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
-               
+                <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">               
                     <mat-form-field class="full-width">
-                      <input matInput name="firstName" placeholder="First Name*" value="{{profile.firstName}}"  [formControl]="ProfileForm.controls['firstName']">
+                      <input matInput name="firstName" placeholder="First Name*" value=""  [formControl]="ProfileForm.controls['firstName']">
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input matInput name="lastName" placeholder="Last Name*" value="{{profile.firstName}}" [formControl]="ProfileForm.controls['lastName']">
+                      <input matInput name="lastName" placeholder="Last Name*" value="" [formControl]="ProfileForm.controls['lastName']">
                     </mat-form-field>
 
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Primary phone*" type="tel" value="" class="" [formControl]="ProfileForm.controls['businessPhoneNumber']">
+                      <input matInput placeholder="Primary phone*" type="tel" value="" class="">
                       <span matPrefix>+1</span>
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Secondary phone" type="tel" value="" class="" [formControl]="ProfileForm.controls['phoneNumber']">
+                      <input matInput placeholder="Secondary phone" type="tel" value="" class="" >
                       <span matPrefix>+1</span>
                     </mat-form-field>
 
                     <mat-form-field class="full-width llp-datepicker">
-                      <input matInput [matDatepicker]="dp" placeholder="Date of Birth" value="{{profile.dateOfBirth}}" [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
+                      <input matInput [matDatepicker]="dp" placeholder="Date of Birth" value="" [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
                       <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                       <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
                       </mat-datepicker>
                     </mat-form-field>
 
                     <mat-form-field class="full-width no-mar">
-                      <input matInput name="email" placeholder="Email Address" value="{{profile.username}}" aria-readonly="true" readonly>
+                      <input matInput name="username" placeholder="Email Address" value="" aria-readonly="true" readonly [formControl]="ProfileForm.controls['username']">
                     </mat-form-field>
 
                     <div class="full-width text-right">
@@ -125,29 +120,26 @@
               </div>
             </div>
           </form>
-
           </mat-tab>
           <mat-tab label="Business information">
-
             <!-- Business Information  -->
             <div class="business--information">
               <form class="llp-form-wrapper" [formGroup]="AddressForm" (ngSubmit)="AddressSubmit()">
                 <h3 class="header--text">Business Information</h3>
-
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input matInput name="City" placeholder="Business name" value="Arkenea">
+                      <input matInput name="businessName" placeholder="Business name" value="" [formControl]="AddressForm.controls['businessName']">
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
                       <mat-label>Years of service</mat-label>
-                      <mat-select [(value)]="selected">
+                      <mat-select  name="yearsOfService" [formControl]="AddressForm.controls['yearsOfService']">
                         <mat-option>None</mat-option>
                         <mat-option value="option1">Select number of years</mat-option>
-                        <mat-option value="option2">Option 2</mat-option>
-                        <mat-option value="option3">Option 3</mat-option>
+                        <mat-option value="option32">Option 32</mat-option>
+                        <mat-option value="option33">Option 33</mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
@@ -156,7 +148,7 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
                       <mat-label>Business type</mat-label>
-                      <mat-select [(value)]="selected">
+                      <mat-select name="businessType" [formControl]="AddressForm.controls['businessType']">
                         <mat-option>None</mat-option>
                         <mat-option value="option1">Select business type</mat-option>
                         <mat-option value="option2">Option 2</mat-option>
@@ -166,40 +158,39 @@
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
-                      <mat-label>Industry/Domain</mat-label>
-                      <mat-select [(value)]="selected">
+                      <mat-label>Industry/Domain</mat-label>                      
+                      <mat-select name="industryDomain" [formControl]="AddressForm.controls['industryDomain']">
                         <mat-option>None</mat-option>
                         <mat-option value="option1">Select industry/domain type</mat-option>
-                        <mat-option value="option2">Option 2</mat-option>
-                        <mat-option value="option3">Option 3</mat-option>
+                        <mat-option value="option22">Option 22</mat-option>
+                        <mat-option value="option33">Option 33</mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
                 </div>
-
                 <h3 class="header--text">Business Address</h3>
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input matInput name="addressLine1" placeholder="Address line 1*" value="{{profile.addressLine1}}" [formControl]="AddressForm.controls['addressLine1']">
+                      <input matInput name="addressLine1" placeholder="Address line 1*" value="" [formControl]="AddressForm.controls['addressLine1']">
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
-                      <input matInput name="addressLine2" placeholder="Address line 2 (optional)" value="{{profile.addressLine2}}" [formControl]="AddressForm.controls['addressLine2']">
+                      <input matInput name="addressLine2" placeholder="Address line 2 (optional)" value="" [formControl]="AddressForm.controls['addressLine2']">
                     </mat-form-field>
                   </div>
                 </div>
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input matInput name="City" placeholder="City*" value="{{profile.city}}" [formControl]="AddressForm.controls['city']">
+                      <input matInput name="City" placeholder="City*" value="" [formControl]="AddressForm.controls['city']">
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
                       <mat-label>State</mat-label>
-                      <mat-select placeholder="State*" [formControl]="AddressForm.controls['state']" [(value)]="selected">
+                      <mat-select placeholder="State*" name="state" [formControl]="AddressForm.controls['state']" [(value)]="selected">
                         <mat-option value="">Select a state</mat-option>
                         <mat-option *ngFor="let option of stateList"  [value]="option.state_name">{{option.state_name}}</mat-option>
                       </mat-select>
@@ -209,25 +200,23 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input matInput name="ZipCode" placeholder="Zip Code*" value="{{profile.zipcode}}" [formControl]="AddressForm.controls['zipcode']">
+                      <input matInput name="zipcode" placeholder="Zip Code*" value="" [formControl]="AddressForm.controls['zipcode']">
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
 
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Business Phone" type="tel" value="9876543210" class="">
+                      <input matInput placeholder="Business Phone" type="tel" value="" class="" name="businessPhoneNumber" [formControl]="AddressForm.controls['businessPhoneNumber']">
                       <span matPrefix>+1</span>
                     </mat-form-field>
                   </div>
                 </div>
-
-
                 <h3 class="header--text">Featured Information</h3>
                 <p class="header--desc">The following information appears on your featured profile.</p>
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width about--txtarea">
-                      <textarea matInput placeholder="About you" value="Your professional summary, achievements, client experience"></textarea>
+                      <textarea matInput placeholder="About you" value="Your professional summary, achievements, client experience" name="bioText" [formControl]="AddressForm.controls['bioText']"></textarea>
                       <div class="char--limit">0 / 500 chars</div>
                     </mat-form-field>
                   </div>
@@ -274,44 +263,33 @@
                     </div>
                   </div>
                 </div>
-
                 <h3 class="header--text fnt--16 mb-1">Social Media</h3>
-                <div fxLayout="row wrap">
+                <div fxLayout="row wrap" formGroupName="socialMediaLinks">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input matInput name="City" placeholder="Facebook" value="">
+                      <input matInput formControlName="facebook" placeholder="Facebook" value="" >
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input matInput name="City" placeholder="Twitter" value="">
+                      <input matInput formControlName="twitter" placeholder="Twitter" value="" >
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input matInput name="City" placeholder="LinkedIn" value="">
+                      <input matInput formControlName="linkedIn" placeholder="LinkedIn" value="" >
                     </mat-form-field>
                   </div>
+                  
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <h3 class="header--text fnt--16 mb-1">Websites</h3>
-
                     <div fxLayout="row wrap">
                       <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
                         <mat-form-field class="full-width">
-                          <input matInput name="City" placeholder="URL" value="www.loremipsum.com">
+                          <input matInput name="websites" placeholder="URL" value="" [formControl]="AddressForm.controls['websites']">
                         </mat-form-field>
                       </div>
                       <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
                         <mat-icon class="mt-1 clr--red">delete</mat-icon>
                       </div>
                     </div>
-                    <div fxLayout="row wrap">
-                      <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
-                        <mat-form-field class="full-width">
-                          <input matInput name="City" placeholder="URL" value="www.loremipsum.com">
-                        </mat-form-field>
-                      </div>
-                      <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
-                        <mat-icon class="mt-1 clr--red">delete</mat-icon>
-                      </div>
-                    </div>
-
+                  
                     <div fxLayout="row wrap">
                       <div fxFlex.xs="100">
                         <div class="add--new">
@@ -330,48 +308,47 @@
               </form>
             </div>
           </mat-tab>
-
           <mat-tab label="License & documents">
             <!-- License & documents -->
             <div class="business--information">
-              <form class="llp-form-wrapper">
+              <form class="llp-form-wrapper"  [formGroup]="LicenseForm" (ngSubmit)="LicenseSubmit()">
                 <h3 class="header--text">License Information</h3>
 
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
                       <mat-label>Active license held</mat-label>
-                      <mat-select [(value)]="selected">
+                      <mat-select [formControl]="LicenseForm.controls['activeLicenceHeld']">
                         <mat-option>None</mat-option>
-                        <mat-option value="option1">Click checkbox all that apply</mat-option>
-                        <mat-option value="option2">Option 2</mat-option>
-                        <mat-option value="option3">Option 3</mat-option>
+                        <mat-option value="option231">Click checkbox all that apply</mat-option>
+                        <mat-option value="option2option2">Option 2</mat-option>
+                        <mat-option value="option123">Option 3</mat-option>
                       </mat-select>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
-                    <mat-radio-group aria-label="Select an option" class="llp-radio">
+                    <mat-radio-group aria-label="Select an option" class="llp-radio" [formControl]="LicenseForm.controls['agencyOversees']">
                       <div class="checkbox-label">What agency oversees your business?</div>
-                      <mat-radio-button value="1" class="">FINRA</mat-radio-button>
-                      <mat-radio-button value="2" class="">SEC</mat-radio-button>
-                      <mat-radio-button value="3" class="">Both</mat-radio-button>
+                      <mat-radio-button value="FINRA" class="" [checked]="profile.agencyOversees === 'FINRA'">FINRA</mat-radio-button>
+                      <mat-radio-button value="SEC" class="" [checked]="profile.agencyOversees === 'SEC'">SEC</mat-radio-button>
+                      <mat-radio-button value="Both" class="" [checked]="profile.agencyOversees === 'Both'">Both</mat-radio-button>
                     </mat-radio-group>
                   </div>
                 </div>
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input matInput name="City" placeholder="Who is your managing principle?" value="">
+                      <input matInput name="managingPrincipleName" placeholder="Who is your managing principle?" [formControl]="LicenseForm.controls['managingPrincipleName']">
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
-                    <mat-radio-group aria-label="Select an option" class="llp-radio">
+                    <mat-radio-group aria-label="Select an option" class="llp-radio" name="Producers">
                       <div class="checkbox-label">Do you manage other producers?</div>
-                      <mat-radio-button value="1" class="">Yes</mat-radio-button>
-                      <mat-radio-button value="2" class="">No</mat-radio-button>
+                      <mat-radio-button value="1" class="" [checked]="profile.howManyProducers !== ''">Yes</mat-radio-button>
+                      <mat-radio-button value="2" class="" [checked]="profile.howManyProducers === ''">No</mat-radio-button>
                     </mat-radio-group>
-                    <mat-form-field class="full-width">
-                      <input matInput name="City" placeholder="If yes, how many?" value="">
+                    <mat-form-field class="full-width"  *ngIf="profile.howManyProducers!==''">
+                      <input matInput name="howManyProducers" placeholder="If yes, how many?" [formControl]="LicenseForm.controls['howManyProducers']">
                     </mat-form-field>
                   </div>
                 </div>
@@ -379,9 +356,7 @@
                 <h3 class="header--text">Business Documents</h3>
                 <div fxLayout="row">
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
-                    <p class="header--desc upload--doc">Upload your business documents for verification for e.g. business license</p>                  
-                    
-
+                    <p class="header--desc upload--doc">Upload your business documents for verification for e.g. business license</p>                                   
                   </div>
                 </div>
                 <div fxLayout="row wrap">
@@ -407,35 +382,15 @@
                         </mat-chip-list>
                   </div>
                 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 <div fx.Flex="100" class="text-center mt--30">
                   <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
-                  <button mat-raised-button class="llp--primary--btn" [disabled]="AddressForm.invalid">Save</button>
+                  <button mat-raised-button class="llp--primary--btn" [disabled]="LicenseForm.invalid">Save</button>
                 </div>
               </form>
             </div>
           </mat-tab>
-
-
         </mat-tab-group>
-
-
       </div>
-
     </div>
   </mat-sidenav-container>
 </div>

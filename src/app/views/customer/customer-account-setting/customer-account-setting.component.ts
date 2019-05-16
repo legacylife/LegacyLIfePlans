@@ -108,7 +108,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: "customer" }),
       proquery: Object.assign(profileInData),
-      from: Object.assign({ from: "account details" })
+      from: Object.assign({ fromname: "account details" })
     }
     this.loader.open();
     this.api.apiRequest('post', 'auth/cust-profile-update', req_vars).subscribe(result => {

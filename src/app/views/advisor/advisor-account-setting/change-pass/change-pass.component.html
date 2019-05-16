@@ -20,7 +20,7 @@
         <mat-form-field class="full-width">
           <input matInput name="NewPassword" type="password" placeholder="New Password" value="" [formControl]="resetForm.controls['NewPassword']">
 
-          <mat-icon matTooltip="Please enter new password." matTooltipClass="llp--tooltip error" *ngIf="resetForm.controls['NewPassword'].hasError('required') && resetForm.controls['NewPassword'].touched"
+          <mat-icon matTooltip="Please enter new password." matTooltipClass="llp--tooltip error" *ngIf="resetForm.controls['password'].hasError('required') && resetForm.controls['NewPassword'].touched"
           class="red--alert">help_outline</mat-icon>
 
         <mat-icon matTooltip="Password must be at least 6 characters long, alpha numeric with at least one-special character." matTooltipClass="llp--tooltip error"

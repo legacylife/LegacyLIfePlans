@@ -41,7 +41,7 @@ import { SetPasswordComponent } from './set-password/set-password.component';
 import { AdvisorSigninComponent } from './signin/signin.component';
 import { ThankYouComponent } from './thank-you/thank-you.component';
 
-import { AdvisorChangePassComponent } from './advisor-account-setting/advisor-change-pass/advisor-change-pass.component';
+import { ChangePassComponent } from './advisor-account-setting/change-pass/change-pass.component';
 import { AdvisorDashboardComponent } from './advisor-dashboard/advisor-dashboard.component';
 import { LegaciesComponent } from './legacies/legacies.component';
 import { AdvisorDashboardUpdateComponent } from './advisor-dashboard-update/advisor-dashboard-update.component';
@@ -89,9 +89,9 @@ import { AdvisorLayoutComponent } from './../../shared/components/layouts/adviso
     RouterModule.forChild(AdvisorRoutes)
   ],
   declarations: [
-    AdvisorSignupComponent,BusinessInfoComponent,SetPasswordComponent,AdvisorSigninComponent,ThankYouComponent,AdvisorDashboardComponent,LegaciesComponent,AdvisorDashboardUpdateComponent,AdvisorAccountSettingComponent,AdvisorSubscriptionComponent,AdvisorChangePassComponent
+    AdvisorSignupComponent,BusinessInfoComponent,SetPasswordComponent,AdvisorSigninComponent,ThankYouComponent,AdvisorDashboardComponent,LegaciesComponent,AdvisorDashboardUpdateComponent,AdvisorAccountSettingComponent,AdvisorSubscriptionComponent,ChangePassComponent
   ],providers: [
     MatDatepickerModule,
-  ],entryComponents: [AdvisorChangePassComponent],
+  ],entryComponents: [ChangePassComponent],
 })
 export class AdvisorModule { }

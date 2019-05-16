@@ -50,10 +50,10 @@
                 <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
                
                     <mat-form-field class="full-width">
-                      <input matInput name="username" placeholder="First Name*" value="{{profile.firstName}}"  [formControl]="ProfileForm.controls['firstName']">
+                      <input matInput name="firstName" placeholder="First Name*" value=""  [formControl]="ProfileForm.controls['firstName']">
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input matInput name="lname" placeholder="Last Name*" value="{{profile.firstName}}" [formControl]="ProfileForm.controls['lastName']">
+                      <input matInput name="lastName" placeholder="Last Name*" value="" [formControl]="ProfileForm.controls['lastName']">
                     </mat-form-field>
 
                     <mat-form-field class="full-width">
@@ -66,14 +66,14 @@
                     </mat-form-field>
 
                     <mat-form-field class="full-width llp-datepicker">
-                      <input matInput [matDatepicker]="dp" placeholder="Date of Birth" value="{{profile.dateOfBirth}}" [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
+                      <input matInput [matDatepicker]="dp" placeholder="Date of Birth" value="" [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
                       <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                       <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
                       </mat-datepicker>
                     </mat-form-field>
 
                     <mat-form-field class="full-width no-mar">
-                      <input matInput name="email" placeholder="Email Address" value="{{profile.username}}" aria-readonly="true" readonly>
+                      <input matInput name="username" placeholder="Email Address" value="" aria-readonly="true" readonly [formControl]="ProfileForm.controls['username']">
                     </mat-form-field>
 
                     <div class="full-width text-right">
