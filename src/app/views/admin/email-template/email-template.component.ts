@@ -27,10 +27,6 @@ export class EmailTemplateComponent implements OnInit {
     this.userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
     this.userType = localStorage.getItem("userType") || sessionStorage.getItem("userType")
 
-    if(!this.api.isLoggedIn()){
-      this.router.navigate(['/', 'llp-admin', 'signin'])
-    }
-
     this.getLists()
   }
 

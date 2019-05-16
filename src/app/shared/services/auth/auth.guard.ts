@@ -1,17 +1,23 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { APIService } from './../../../api.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   public authToken;
-  private isAuthenticated = true; // Set this value dynamically
+  private isAuthenticated = false; // Set this value dynamically
+  private userInfo: any
   
-  constructor(private router: Router) {}
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (this.isAuthenticated) {
-      return true
-    }
-    this.router.navigate(['/auth/signin']);
-    return false;
+  constructor(private router: Router, private api: APIService) {}
+
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): boolean {
+      this.userInfo = this.api.getUserInfo()
+      if (!this.userInfo && this.userInfo.userType == '') {
+        this.router.navigateByUrl('/llp-admin/signin');
+        return false;
+      }
+    return true;
   }
 }

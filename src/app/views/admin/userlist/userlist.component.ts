@@ -34,9 +34,6 @@ export class userlistComponent implements OnInit {
 
   constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private dialog: MatDialog, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
   ngOnInit() {
-    if (!this.api.isLoggedIn()) {
-      this.router.navigate(['/', 'llp-admin', 'signin'])
-    }
     this.aceessSection = this.api.getUserAccess('adminmanagement')
     this.userId = this.api.getUser()
     this.getLists()

@@ -35,23 +35,19 @@ export class ProfileComponent implements OnInit {
     this.userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
     this.userType = localStorage.getItem("userType") || sessionStorage.getItem("userType")
 
-    if (!this.api.isLoggedIn()) {
-      this.router.navigate(['/', 'llp-admin', 'signin'])
-    } else {
-      this.llpProfileForm = new FormGroup({
-        firstName: new FormControl('', Validators.required),
-        lastName: new FormControl('', Validators.required),
-        //phoneNumber: new FormControl('', Validators.required)		  
-      })
+    this.llpProfileForm = new FormGroup({
+      firstName: new FormControl('', Validators.required),
+      lastName: new FormControl('', Validators.required),
+      //phoneNumber: new FormControl('', Validators.required)		  
+    })
 
-      this.llpPasswordForm = this.fb.group({
-        password: password,
-        NewPassword: NewPassword,
-        confirmPassword: confirmPassword
-      });
+    this.llpPasswordForm = this.fb.group({
+      password: password,
+      NewPassword: NewPassword,
+      confirmPassword: confirmPassword
+    });
 
-      this.getProfile()
-    }
+    this.getProfile()
   }
 
   //function to get all events

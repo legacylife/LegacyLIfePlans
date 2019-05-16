@@ -42,22 +42,21 @@ export const rootRouterConfig: Routes = [
     },
   ]
   },{
-    path: '',
+    path: 'llp-admin',
+    pathMatch: 'prefix' ,
     component: AuthLayoutComponent,
-    canActivate: [AuthGuard],
     children: [
       {
-        path: 'llp-admin',
+        path: '',
         loadChildren: './views/admin/auth.module#AuthModule',
       }
     ]
   },{
-    path: '',
+    path: 'admin',
     component: AdminLayoutComponent,
-    canActivate: [AuthGuard],
     children: [
       {
-        path: 'admin',
+        path: '',
         loadChildren: './views/admin/admin.module#AdminModule',
         data: { title: 'Dashboard', breadcrumb: 'Dashboard'}
       }

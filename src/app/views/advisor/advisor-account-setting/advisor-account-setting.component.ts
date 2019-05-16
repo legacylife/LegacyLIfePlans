@@ -125,5 +125,9 @@ export class AdvisorAccountSettingComponent implements OnInit {
     toggleSideNav() {
       //this.sideNav.opened = !this.sideNav.opened;
     }
+
+    AddressSubmit() {
+      
+    }
   }
 

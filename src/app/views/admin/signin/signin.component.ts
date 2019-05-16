@@ -18,15 +18,13 @@ export class signinComponent implements OnInit {
   llpsigninForm: FormGroup;
   invalidEmail: boolean;
   invalidMessage: string;
-  username: FormControl 
+  username: FormControl
   password: FormControl;
-   
+  userInfo: any;
+
   constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
 
   ngOnInit() {
-    localStorage.clear();
-    sessionStorage.clear();
-
     this.llpsigninForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.pattern(/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i)]),
       password: new FormControl('', Validators.required)
@@ -37,50 +35,10 @@ export class signinComponent implements OnInit {
     this.otpsec = true;
   }
 
-  llpsignin12(userData = null) {
-    let signInData = {
-      username: this.llpsigninForm.controls['username'].value,
-      password: this.llpsigninForm.controls['password'].value,
-      //stayLoggedIn:  this.llpsigninForm.controls['rememberMe'].value,
-      userType: "sysadmin"
-    }
-    this.loader.open();
-    this.api.apiRequest('post', 'auth/signin', signInData).subscribe(result => {
-      this.loader.close();
-      if (result.status == "success") {
-        userData = result.data;
-        console.log("user data after signup",userData.sectionAccess.activitylog)
-        localStorage.setItem("userId", userData.userId)
-        localStorage.setItem("userType", userData.userType)
-        localStorage.setItem("firstName", userData.firstName)
-        localStorage.setItem("lastName", userData.lastName)
-        localStorage.setItem("sectionAccess", JSON.stringify(userData.sectionAccess))
-        
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
-        this.router.navigate(['/', 'admin', 'userlist'])
-
-      } else {
-        this.llpsigninForm.controls['username'].enable();
-        var emails = this.llpsigninForm.controls['username'].value
-
-        this.llpsigninForm.controls['password'].markAsUntouched();
-        this.llpsigninForm = new FormGroup({
-          username: new FormControl('', Validators.required),
-          password: new FormControl('', Validators.required)
-        })
-        this.llpsigninForm.controls['username'].setValue(emails);
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
-      }
-    }, (err) => {
-
-    })
-  }
-
   llpsignin(userData = null) {
     let signInData = {
       username: this.llpsigninForm.controls['username'].value,
       password: this.llpsigninForm.controls['password'].value,
-      //stayLoggedIn:  this.llpsigninForm.controls['rememberMe'].value,
       userType: "sysadmin"
     }
     this.loader.open();
@@ -93,7 +51,7 @@ export class signinComponent implements OnInit {
         localStorage.setItem("firstName", userData.firstName)
         localStorage.setItem("lastName", userData.lastName)
         localStorage.setItem("sectionAccess", JSON.stringify(userData.sectionAccess))
-        
+
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
         this.router.navigate(['/', 'admin', 'userlist'])
 
@@ -101,21 +59,21 @@ export class signinComponent implements OnInit {
         this.llpsigninForm.controls['username'].enable();
         var emails = this.llpsigninForm.controls['username'].value
         //this.llpsigninForm.controls['username'].markAsUntouched();//this.llpsigninForm.controls['password'].markAsUntouched();
-        if(result.data.invalidEmail){
+        if (result.data.invalidEmail) {
           this.invalidEmail = true;
           this.invalidMessage = result.data.message
-          this.llpsigninForm.controls['username'].setErrors({'invalidEmail' : true});
-        }else{
-          this.llpsigninForm.controls['username'].setErrors({'invalidEmail' : false});
+          this.llpsigninForm.controls['username'].setErrors({ 'invalidEmail': true });
+        } else {
+          this.llpsigninForm.controls['username'].setErrors({ 'invalidEmail': false });
         }
 
-        if(result.data.invalidPassword){
-          this.llpsigninForm.controls['password'].setErrors({'invalid' : true});
+        if (result.data.invalidPassword) {
+          this.llpsigninForm.controls['password'].setErrors({ 'invalid': true });
         }
-        
+
       }
     }, (err) => {
- 
+
     })
   }
 

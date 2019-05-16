@@ -21,9 +21,6 @@ export class cmseditComponent implements OnInit {
 
   ngOnInit() {
 
-    if(!this.api.isLoggedIn()){
-      this.router.navigate(['/', 'llp-admin', 'signin'])
-    } 
     this.aceessSection = this.api.getUserAccess('cms')
 
     this.cmsForm = new FormGroup({

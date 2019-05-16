@@ -29,9 +29,9 @@ export class UpdateProfileComponent implements OnInit {
 
   constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
   ngOnInit() {
-    this.userId = localStorage.getItem("userId");
-    this.username = localStorage.getItem("username");
-    this.userType = localStorage.getItem("userType");
+    this.userId = localStorage.getItem("endUserId");
+    this.username = localStorage.getItem("endUsername");
+    this.userType = localStorage.getItem("endUserType");
 
 
     if (this.userId) {

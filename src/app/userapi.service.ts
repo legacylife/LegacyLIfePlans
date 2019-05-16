@@ -63,8 +63,8 @@ export class APIService {
     localStorage.setItem('endUserId', userId)
     localStorage.setItem('endUserType', userType)
     localStorage.setItem('endUsername', username)
-    localStorage.setItem('authCode', authCode)
-    localStorage.setItem('emailApiType', emailApiType)
+    localStorage.setItem('userauthCode', authCode)
+    localStorage.setItem('useremailApiType', emailApiType)
     localStorage.setItem('token', token)
     localStorage.setItem('userexpiryDate', expiryDate)
     localStorage.setItem('enduserHeaderDetails', userHeaderDetails)
@@ -73,7 +73,6 @@ export class APIService {
     }
     let expirySession = new Date()
     expirySession.setDate(expirySession.getDate() + 2)
-    localStorage.setItem('expirySession', expirySession.toString())
     localStorage.setItem('enduserexpirySession', expirySession.toString())
   }
 
@@ -106,65 +105,24 @@ export class APIService {
   }
 
   //function to get user id from localStorage
-  public getUser(): string {
+  public getEndUser(): string {
     if (!this.userId) {
-      this.userId = this.getKeyFromStorage('userId')
-      this.userType = this.getKeyFromStorage('userType')
-      this.sectionAccess = this.getKeyFromStorage('sectionAccess')
+      this.userId = this.getKeyFromStorage('endUserId')
+      this.userType = this.getKeyFromStorage('endUserType')
     }
     return this.userId
   }
 
-  // Function to check access to section in admin panel
-  public getUserAccess(key): any {
-    let accessFlag = false;
-    this.sectionAccess = this.getKeyFromStorage('sectionAccess')
-    if (this.sectionAccess) {
-      this.accessSection = JSON.parse(this.sectionAccess)
-      if (this.accessSection.usermanagement == 'fullaccess')
-        accessFlag = true;
-      else
-        accessFlag = false;
-    }
-    return accessFlag
-  }
-
   //function to get user id from localStorage
   public getUserInfo(): string {    
-    this.userId = this.getKeyFromStorage('userId')
-    this.userType = this.getKeyFromStorage('userType')
-    this.sectionAccess = this.getKeyFromStorage('sectionAccess')
+    this.userId = this.getKeyFromStorage('endUserId')
+    this.userType = this.getKeyFromStorage('endUserType')
     this.userInfo = {
       "userId" : this.userId,
       "userType" : this.userType
-    }
-    
+    }    
     return this.userInfo
   }  
-
-  //function to get token & userId  from token payload
-  public getUserDetails(): any {
-    const token = this.getToken()
-    const userId = this.getUser()
-    let payload
-    if (token && userId) {
-      payload = token.split('.')[1]
-      payload = window.atob(payload)
-      return JSON.parse(payload)
-    } else {
-      return null
-    }
-  }
-
-  //function to check if user is logged in
-  public isLoggedIn(): boolean {
-    const user = this.getUserDetails()
-    if (user) {
-      return user.exp > Date.now() / 1000
-    } else {
-      return false
-    }
-  }
 
   //function to make request from frontend
   private request(method: 'post' | 'get', type: string, data?: any): Observable<any> {
@@ -211,17 +169,16 @@ export class APIService {
   }
 
   //function to make request to server to logout user
-  public logout(): void {
+  public uselLogout(): void {
     this.token = ''
-    this.removeKeyFromStorage('userId')
-    this.removeKeyFromStorage('userType')
-    this.removeKeyFromStorage('username')
+    this.removeKeyFromStorage('endUserId')
+    this.removeKeyFromStorage('endUserType')
+    this.removeKeyFromStorage('endUsername')
     this.removeKeyFromStorage('authCode')
     this.removeKeyFromStorage('emailApiType')
     this.removeKeyFromStorage('token')
-    this.removeKeyFromStorage('expiryDate')
+    this.removeKeyFromStorage('userexpiryDate')
     this.removeKeyFromStorage('userHeaderDetails')
-    this.removeKeyFromStorage('sectionAccess')
 
     window.localStorage.clear();
     window.sessionStorage.clear();

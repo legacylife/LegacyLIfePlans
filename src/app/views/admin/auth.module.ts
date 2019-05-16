@@ -27,6 +27,7 @@ import { ForgotPasswordSuccessfulComponent } from './password-reset-successful/f
 import { AuthRoutes } from './auth.routing';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ErrorComponent } from './error/error.component';
+import { PreAuthGuard } from '../../shared/services/auth/preauth.guard';
 
 @NgModule({
   imports: [
@@ -53,7 +54,7 @@ import { ErrorComponent } from './error/error.component';
     ResetPasswordComponent, NotFoundComponent, ErrorComponent, PasswordResetSuccessfulComponent,
     ForgotPasswordSuccessfulComponent],
   providers: [
-    MatDatepickerModule,
+    MatDatepickerModule,PreAuthGuard
   ]
 })
 export class AuthModule { }

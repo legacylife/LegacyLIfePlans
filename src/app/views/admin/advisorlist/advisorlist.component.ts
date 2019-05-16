@@ -24,9 +24,6 @@ export class advisorlistComponent implements OnInit {
 
   constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
   ngOnInit() {
-    if (!this.api.isLoggedIn()) {
-      this.router.navigate(['/', 'llp-admin', 'signin'])
-    }
     this.aceessSection = this.api.getUserAccess('advisormanagement')
     this.getLists()
   }

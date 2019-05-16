@@ -13,9 +13,6 @@ export class ActivityLogComponent implements OnInit {
   constructor(private api: APIService, private route: ActivatedRoute, private router:Router) { }
 
   ngOnInit() {
-    if(!this.api.isLoggedIn()){
-      this.router.navigate(['/', 'llp-admin', 'signin'])
-    } 
     this.aceessSection = this.api.getUserAccess('activitylog')
   }
 

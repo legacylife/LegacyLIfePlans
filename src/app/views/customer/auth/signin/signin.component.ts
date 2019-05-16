@@ -25,9 +25,6 @@ export class SigninComponent implements OnInit {
   constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
 
   ngOnInit() {
-    localStorage.clear();
-    sessionStorage.clear();
-
     this.llpCustsigninForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.pattern(/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i)]),
       password: new FormControl('', Validators.required)
@@ -51,11 +48,10 @@ export class SigninComponent implements OnInit {
       this.loader.close();
       if (result.status == "success") {
         userData = result.data;
-        localStorage.setItem("userId", userData.userId)
-        localStorage.setItem("userType", userData.userType)
-        localStorage.setItem("firstName", userData.firstName)
-        localStorage.setItem("lastName", userData.lastName)
-        localStorage.setItem("sectionAccess", JSON.stringify(userData.sectionAccess))
+        localStorage.setItem("endUserId", userData.userId)
+        localStorage.setItem("endUserType", userData.userType)
+        localStorage.setItem("endUserFirstName", userData.firstName)
+        localStorage.setItem("endUserLastName", userData.lastName)
         
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
         this.router.navigate(['/', 'customer', 'dashboard'])
