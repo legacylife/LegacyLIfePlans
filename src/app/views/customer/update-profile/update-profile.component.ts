@@ -154,8 +154,7 @@ export class UpdateProfileComponent implements OnInit {
   hideAlerts = () => {
     setTimeout(() => {
       //this.successMessage = ""
-      //this.errorMessage = ""
-      alert("HI")
+      //this.errorMessage = ""      
     }, 4000)
   }
 
