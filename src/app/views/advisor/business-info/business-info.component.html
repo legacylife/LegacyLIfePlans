@@ -10,11 +10,11 @@
 
         <mat-horizontal-stepper [linear]="!isLinear" #stepper>
           <!-- step 1 -->
-          <mat-step [formGroup]="firstFormGroup">
-            <form [formGroup]="firstFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit('first')">
+          <mat-step [stepControl]="firstFormGroup">
+            <form [formGroup]="firstFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit('first',firstFormGroup.value)">
               <div class="info--content">
                 <div class="text-center pb-1">
-                  <h2 class="login-header-text m-0">Business Information {{step}}</h2>
+                  <h2 class="login-header-text m-0">Business Information</h2>
                   <p class="login-header-desc">Please use the same full legal name and address as specified in the business license.</p>
                 </div>
                 <mat-form-field class="full-width">
@@ -28,7 +28,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <mat-select placeholder="Years of service*" name="yearsOfService" [formControl]="firstFormGroup.controls['yearsOfService']">
+                    <mat-select placeholder="Years of service*" name="yearsOfService" [formControl]="firstFormGroup.controls['yearsOfService']" [(value)]="selected">
                         <mat-option>Select number of years</mat-option>
                         <mat-option *ngFor="let option of yearsOfServiceLists" [value]="option.opt_name">{{option.opt_name}}</mat-option>       
                     </mat-select>
@@ -59,7 +59,7 @@
 
           <!-- step 2 -->
           <mat-step [stepControl]="secondFormGroup">
-            <form [formGroup]="secondFormGroup" class="llp-form-wrapper">
+            <form [formGroup]="secondFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit('second',secondFormGroup.value)">
 
               <div class="info--content">
                 <div class="text-center pb-1">
@@ -67,50 +67,54 @@
                   <p class="login-header-desc">Enter the same address as shown on your business certificate</p>
                 </div>
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="Address line 1" formControlName="secondCtrl">
+                    <input matInput name="addressLine1" placeholder="Address line 1*" value="" [formControl]="secondFormGroup.controls['addressLine1']">
+                    <mat-icon matTooltip="Please enter your address" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['addressLine1'].hasError('required') && secondFormGroup.controls['addressLine1'].touched" class="red--alert">help_outline</mat-icon>                    
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="Address line 2 (optional)">
+                    <input matInput name="addressLine2" placeholder="Address line 2 (optional)" value="" [formControl]="secondFormGroup.controls['addressLine2']">
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput type="number" placeholder="Zip code" >
+                    <input matInput name="zipcode" placeholder="Zip Code*" value="" [formControl]="secondFormGroup.controls['zipcode']">
+                    <mat-icon matTooltip="Please enter zipcode" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['zipcode'].hasError('required') && secondFormGroup.controls['zipcode'].touched" class="red--alert">help_outline</mat-icon>                                        
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="City">
+                    <input matInput name="City" placeholder="City*" value="" [formControl]="secondFormGroup.controls['city']">
+                    <mat-icon matTooltip="Please enter city" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['city'].hasError('required') && secondFormGroup.controls['city'].touched" class="red--alert">help_outline</mat-icon>                                                            
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <mat-select placeholder="State">
-                    <mat-option value="option">Select a state</mat-option>
-                    <mat-option value="option">Maharashtra</mat-option>
-                    <mat-option value="option">Goa</mat-option>
-                  </mat-select>
-                </mat-form-field>
+                    <mat-label>State</mat-label>
+                    <mat-select placeholder="State*" name="state" [formControl]="secondFormGroup.controls['state']">
+                      <mat-option value="">Select a state</mat-option>
+                      <mat-option *ngFor="let option of stateList"  [value]="option.state_name">{{option.state_name}}</mat-option>
+                    </mat-select>
+                    <mat-icon matTooltip="Please enter state" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['state'].hasError('required') && secondFormGroup.controls['state'].touched" class="red--alert">help_outline</mat-icon>                                                                                
+                </mat-form-field>                  
 
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="Business phone" type="tel" class="example-right-align">
+                  <input matInput placeholder="Business Phone" type="tel" value="" class="example-right-align" name="businessPhoneNumber" [formControl]="secondFormGroup.controls['businessPhoneNumber']">
                   <span matPrefix>+1</span>
                   <span matSuffix>.00</span>
+                  <mat-icon matTooltip="Please enter business Phone" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['businessPhoneNumber'].hasError('required') && secondFormGroup.controls['businessPhoneNumber'].touched" class="red--alert">help_outline</mat-icon>                                                                                
                 </mat-form-field>
 
                 <div class="text-center">
-                  <button mat-raised-button matStepperNext class="llp--primary--btn full-width mb-1">Next</button>
+                  <button mat-raised-button matStepperNext class="llp--primary--btn full-width mb-1" [disabled]="secondFormGroup.invalid">Next</button>
                   <button mat-raised-button matStepperPrevious class="llp--back--btn">
                     <mat-icon>arrow_back</mat-icon> Back</button>
                 </div>
               </div>
-              <div>
-
-              </div>
-            </form>
-          </mat-step>
+            <div>
+           </div>
+          </form>
+         </mat-step>
 
           <!-- step 3 -->
           <mat-step [stepControl]="thirdFormGroup">
-            <form [formGroup]="thirdFormGroup" class="llp-form-wrapper">
+            <form [formGroup]="thirdFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit('third',thirdFormGroup.value)">
               <div class="info--content">
                 <div class="text-center pb-1">
                   <h2 class="login-header-text m-0">License Information</h2>
@@ -118,38 +122,38 @@
                 </div>
 
                 <mat-form-field class="full-width">
-                  <mat-select placeholder="Active license held">
-                    <mat-option value="option">Click checkbox all that apply</mat-option>
-                    <mat-option value="option">Not all</mat-option>
-                    <mat-option value="option">Only One</mat-option>
-                  </mat-select>
-                </mat-form-field>
+                    <mat-select placeholder="Active license held*" name="activeLicenceHeld" [formControl]="thirdFormGroup.controls['activeLicenceHeld']">
+                      <mat-option *ngFor="let option of licenceHeldLists" [value]="option.opt_name">{{option.opt_name}}</mat-option>                           
+                    </mat-select>
+                    <mat-icon matTooltip="Please select license held" matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['activeLicenceHeld'].hasError('required') && thirdFormGroup.controls['activeLicenceHeld'].touched" class="red--alert">help_outline</mat-icon>                                      
+                  </mat-form-field>
 
-                <mat-radio-group aria-label="Select an option" class="llp-radio">
-                  <div class="checkbox-label">What agency oversees your business?</div>
-                  <mat-radio-button value="1" class="">FINRA</mat-radio-button>
-                  <mat-radio-button value="2" class="">SEC</mat-radio-button>
-                  <mat-radio-button value="3" class="">Both</mat-radio-button>
+                <mat-radio-group aria-label="Select an option" class="llp-radio" name="agencyOversees" [formControl]="thirdFormGroup.controls['agencyOversees']">
+                  <div class="checkbox-label">What agency oversees your business?*</div>
+                  <mat-radio-button value="FINRA" [checked]="profile && profile.agencyOversees === 'FINRA'">FINRA</mat-radio-button>
+                  <mat-radio-button value="SEC" [checked]="profile && profile.agencyOversees === 'SEC'">SEC</mat-radio-button>
+                  <mat-radio-button value="Both" [checked]="profile && profile.agencyOversees === 'Both'">Both</mat-radio-button>
+                  <mat-icon matTooltip="Please select license held" matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['agencyOversees'].hasError('required') && thirdFormGroup.controls['agencyOversees'].touched" class="red--alert">help_outline</mat-icon>                                                        
                 </mat-radio-group>
 
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="Who is your managing principle?" formControlName="thirdCtrl">
+                  <input matInput name="managingPrincipleName" placeholder="Who is your managing principle?*" [formControl]="thirdFormGroup.controls['managingPrincipleName']">                  
+                  <mat-icon matTooltip="Please enter managing principle" matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['managingPrincipleName'].hasError('required') && thirdFormGroup.controls['managingPrincipleName'].touched" class="red--alert">help_outline</mat-icon>                                                          
                 </mat-form-field>
 
                 <mat-radio-group aria-label="Select an option" class="llp-radio">
                   <div class="checkbox-label">Do you manage other producers?</div>
-                  <mat-radio-button value="1" class="ml-0">Yes </mat-radio-button>
-                  <mat-radio-button value="2" class="">No</mat-radio-button>
+                  <mat-radio-button value="1" class="ml-0"[checked]="profile && profile.howManyProducers !== ''">Yes</mat-radio-button>
+                  <mat-radio-button value="2" class="" [checked]="profile && profile.howManyProducers === ''">No</mat-radio-button>
                 </mat-radio-group>
 
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="If yes, how many?">
+                  <input matInput placeholder="If yes, how many?" [formControl]="thirdFormGroup.controls['howManyProducers']">
                 </mat-form-field>
 
                 <div class="text-center">
-                  <button mat-raised-button matStepperNext class="llp--primary--btn full-width mb-1">Next</button>
-                  <button mat-raised-button matStepperPrevious class="llp--back--btn">
-                    <mat-icon>arrow_back</mat-icon> Back</button>
+                  <button mat-raised-button matStepperNext class="llp--primary--btn full-width mb-1" [disabled]="thirdFormGroup.invalid">Next</button>
+                  <button mat-raised-button matStepperPrevious class="llp--back--btn"><mat-icon>arrow_back</mat-icon> Back</button>
                 </div>
               </div>
               <div>
@@ -159,6 +163,7 @@
 
           <!-- step 4 -->
           <mat-step>
+            <form [formGroup]="forthFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit('forth',forthFormGroup.value)">
             <div class="info--content">
               <div class="text-center pb-0">
                 <h2 class="login-header-text m-0">Business Documents</h2>
@@ -178,33 +183,25 @@
               </div>
 
               <div class="text-center">
-                <button [routerLink]="'/auth/advisor/set-password'" mat-raised-button matStepperNext class="llp--primary--btn full-width mb-1">Complete</button>
+                <button  mat-raised-button class="llp--primary--btn full-width mb-1">Complete</button>
                 <button mat-raised-button matStepperPrevious class="llp--back--btn">
                   <mat-icon>arrow_back</mat-icon> Back</button>
               </div>
             </div>
-
-            <div>
-              <!-- <button mat-raised-button mat-button (click)="stepper.reset()">Reset</button> -->
+            <div><!-- <button mat-raised-button mat-button (click)="stepper.reset()">Reset</button> -->
             </div>
+          </form>
           </mat-step>
         </mat-horizontal-stepper>
-
       </div>
     </div>
-
-
     <div class="login-footer">
       <p>Already a member?
         <a [routerLink]="'/auth/signin'">Login</a>
       </p>
     </div>
-
-
   </div>
-
 </div>
-
 <footer class="auth-footer">
   <p>© 2019 Legacy Life Plans</p>
 </footer>

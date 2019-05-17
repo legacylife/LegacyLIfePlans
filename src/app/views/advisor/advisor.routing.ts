@@ -24,14 +24,15 @@ export const AdvisorRoutes: Routes = [
     path: 'business-info',
     component: BusinessInfoComponent,
   },{
+    path: 'thank-you',
+    component: ThankYouComponent,
+  },{
     path: '',
     component: AdvisorDashboardComponent
-  },
-  {
+  },{
     path: 'dashboard-updates',
     component: AdvisorDashboardUpdateComponent
-  },
-  {
+  },{
     path: 'account-setting',
     component: AdvisorLayoutComponent,
     children : [
@@ -40,12 +41,10 @@ export const AdvisorRoutes: Routes = [
         component: AdvisorAccountSettingComponent,
       }
     ],    
-  },
-  {
+  },{
     path: 'legacies',
     component: LegaciesComponent
-  },
-  {
+  },{
     path: 'subscription',
     component: AdvisorSubscriptionComponent
   }

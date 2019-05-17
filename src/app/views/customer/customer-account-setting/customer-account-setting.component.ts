@@ -11,7 +11,7 @@ import { ChangePassComponent } from './change-pass/change-pass.component';
 import { map } from 'rxjs/operators';
 import { Subscription, Observable, of  } from 'rxjs';
 import { delay } from 'rxjs/operators';
-
+import { states } from '../../../state';
 @Component({
   selector: 'app-customer-account-setting',
   templateUrl: './customer-account-setting.component.html',
@@ -34,15 +34,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute,private fb: FormBuilder, private snack: MatSnackBar,public dialog: MatDialog, private userapi: UserAPIService,private loader: AppLoaderService) { }
 
   ngOnInit() {
-    // this.categories$ = this.shopService.getCategories();
-    this.userId = localStorage.getItem("endUserId");
-     this.userapi.apiRequest('post', 'globalsetting/statelist', {}).subscribe(result => {    
-          if(result.status == "success"){
-              this.stateList = result.data;
-          } 
-        }, (err) => {
-          console.error(err)
-        })
+    this.stateList = states;
 
     this.ProfileForm = new FormGroup({
       firstName: new FormControl('', Validators.required),

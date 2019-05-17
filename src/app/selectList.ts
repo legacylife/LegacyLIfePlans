@@ -29,8 +29,8 @@ export const businessTypeList = [{
 }
 ]
 export const industryDomainList = [{ 
-  "opt_name" : "Computer industry.", 
-  "opt_code" : "Computer industry.", 
+  "opt_name" : "Computer industry", 
+  "opt_code" : "Computer industry", 
 },
 { 
   "opt_name" : "Construction industry", 
@@ -39,5 +39,14 @@ export const industryDomainList = [{
 { 
   "opt_name" : "Education industry", 
   "opt_code" : "Education industry"
+}
+]
+export const licenceHeldList = [{ 
+  "opt_name" : "Not all", 
+  "opt_code" : "Not all", 
+},
+{ 
+  "opt_name" : "Only One", 
+  "opt_code" : "Only One", 
 }
 ]
