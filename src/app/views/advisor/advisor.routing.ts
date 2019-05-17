@@ -16,16 +16,13 @@ export const AdvisorRoutes: Routes = [
   {
     path: 'signin',
     component: AdvisorSignupComponent,
-    data: { title: 'Blank', breadcrumb: 'BLANK' }
   },{
     path: 'signup',
     component: AdvisorSignupComponent,
-    data: { title: 'Blank', breadcrumb: 'BLANK' }
   }
   ,{
     path: 'business-info',
     component: BusinessInfoComponent,
-    data: { title: 'Blank', breadcrumb: 'BLANK' }
   },{
     path: '',
     component: AdvisorDashboardComponent

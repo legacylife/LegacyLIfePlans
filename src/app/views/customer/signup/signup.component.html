@@ -1,13 +1,7 @@
 <header class="auth-header">
   <img src="assets/images/arkenea/small-logo.png" alt="">
 </header>
-
 <div class="page-wrap mat-bg-primary">
-  <!-- <mat-progress-spinner [color]="'primary'" [mode]="'determinate'" [value]="40"> </mat-progress-spinner>
-      <h4 class="primary-btn">{{countDown | async | formatTime}}</h4>-->
-
-
-
   <div class="session-form-hold">
     <div class="login-sub-wrapper">
       <!-- <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar>  (ngSubmit)="llpCustSignup()"-->
@@ -26,7 +20,6 @@
 
               <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupForm.controls['username'].hasError('pattern') && llpCustsignupForm.controls['username'].touched"
                 class="red--alert">help_outline</mat-icon>
-
               <mat-icon matTooltip="{{invalidMessage}}" matTooltipClass="llp--tooltip error" *ngIf="EmailExist" class="red--alert">help_outline</mat-icon>
 
             </mat-form-field>

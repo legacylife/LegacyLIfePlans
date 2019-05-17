@@ -11,7 +11,7 @@ export class AuthLayoutComponent implements OnInit {
   ngOnInit() {
     const locationArray = location.href.split("/");
     
-    if(locationArray.indexOf("signin") > -1 || locationArray.indexOf("signup") > -1 || locationArray.indexOf("forgot-password") > -1 || locationArray.indexOf("reset-password") > -1 || locationArray.indexOf("password-reset-successful") > -1 || locationArray.indexOf("forgot-password-successful") > -1 || locationArray.indexOf("update-profile") > -1) {
+    if(locationArray.indexOf("signin") > -1 || locationArray.indexOf("signup") > -1 || locationArray.indexOf("forgot-password") > -1 || locationArray.indexOf("reset-password") > -1 || locationArray.indexOf("password-reset-successful") > -1 || locationArray.indexOf("forgot-password-successful") > -1 || locationArray.indexOf("update-profile") > -1 || locationArray.indexOf("business-info") > -1) {
       const htmlTag = document.getElementsByTagName("html")[0]
       const bodyTag = document.getElementsByTagName("body")[0]
       htmlTag.className += " llp--auth--wrapper"

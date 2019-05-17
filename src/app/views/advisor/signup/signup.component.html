@@ -12,40 +12,45 @@
             <h2 class="login-header-text m-0">Sign Up </h2>
             <p class="login-header-desc">Start building your legacy</p>
           </div>
-          <form class="llp-form-wrapper">
-            <div class="const--height">
+          <form class="llp-form-wrapper" [formGroup]="llpAdvsignupForm">
+          <div class="const--height">
+          
               <mat-form-field class="full-width">
-                <input matInput name="username" placeholder="Email*" value="">
+              <input matInput name="username" placeholder="Email*" [formControl]="llpAdvsignupForm.controls['username']" value="">
+
+                <mat-icon matTooltip="Please enter email id" matTooltipClass="llp--tooltip error" *ngIf="llpAdvsignupForm.controls['username'].hasError('required') && llpAdvsignupForm.controls['username'].touched"
+                class="red--alert">help_outline</mat-icon>
+
+              <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" *ngIf="llpAdvsignupForm.controls['username'].hasError('pattern') && llpAdvsignupForm.controls['username'].touched"
+                class="red--alert">help_outline</mat-icon>
+              <mat-icon matTooltip="{{invalidMessage}}" matTooltipClass="llp--tooltip error" *ngIf="EmailExist" class="red--alert">help_outline</mat-icon>
+
               </mat-form-field>
+            </div>
+            <button mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" (click)="advProceed();" *ngIf="proceedBtn" [disabled]="llpAdvsignupForm.invalid">Proceed</button>
+           </form>
+            <form class="llp-form-wrapper" [formGroup]="llpAdvotpForm">
               <div class="otp-sec" *ngIf="advisorOtp">
                 <label class="otp-note">A One Time Passcode has been sent your email. Please enter the 
                   OTP below to verify your Email Address.</label>
                   <mat-form-field class="full-width">
-                    <input type="text" matInput name="otp" placeholder="Enter OTP" value="">
-                    <div class="resend-otp">
+                    <input type="text" matInput name="otp" placeholder="Enter OTP" value="" [formControl]="llpAdvotpForm.controls['otp']">
+                    <div *ngIf="counter !== 0" class="resend-otp">{{countDown | async | formatTime}}</div>
+                    <div *ngIf="counter == 0" class="resend-otp" (click)="ResendOtpProceed()">
                       <a>Resend OTP</a>
                     </div>
                   </mat-form-field>  
               </div>
-            </div>
-   
-            
-  
-            <button mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" (click)="toproceed();" *ngIf="proceedBtn">Proceed</button>
-
-            <button *ngIf="freeTrailBtn" [routerLink]="'/auth/advisor/businessinfo'" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1">Start your 90 days free trial</button>
-
+            <button *ngIf="freeTrailBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1"  [disabled]="llpAdvsignupForm.invalid"
+            (click)="OtpProceed()">Start your 90 days free trial</button>
             <div class="text-center bot-txt">
-              <p>Already a member?  <a [routerLink]="'/auth/signin'"> Login</a></p>
+              <p>Already a member?  <a [routerLink]="'/advisor/signin'"> Login</a></p>
             </div>
-
-          </form>
+      </form>
         </mat-card-content>
     </div>
-
-    
     <div class="login-footer">
-      <p>Are you a Customer? <a [routerLink]="'/auth/customer/signup'">Register here</a></p>
+      <p>Are you a Customer? <a [routerLink]="'/customer/signup'">Register here</a></p>
     </div>
 
   </div>

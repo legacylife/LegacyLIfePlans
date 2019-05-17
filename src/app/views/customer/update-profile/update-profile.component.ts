@@ -7,6 +7,7 @@ import { UserAPIService } from './../../../userapi.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RoutePartsService } from "../../../shared/services/route-parts.service";
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
+import { states } from '../../../state';
 
 @Component({
   selector: 'app-update-profile',
@@ -34,15 +35,8 @@ export class UpdateProfileComponent implements OnInit {
     this.username = localStorage.getItem("endUsername");
     this.userType = localStorage.getItem("endUserType");
 
-
-    if (this.userId) {
-      this.userapi.apiRequest('post', 'globalsetting/statelist', { email: this.username }).subscribe(result => {
-        if (result.status == "success") {
-          this.stateList = result.data;
-        }
-      }, (err) => {
-        console.error(err)
-      })
+    if(this.userId){
+      this.stateList = states;
 
       this.llpCustsignupProfileForm = new FormGroup({
         firstName: new FormControl('', Validators.required),

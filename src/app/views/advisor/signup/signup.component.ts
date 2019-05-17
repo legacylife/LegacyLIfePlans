@@ -1,7 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatProgressBar, MatButton } from '@angular/material';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
+import { Component, OnInit, ViewChild, Pipe, PipeTransform } from '@angular/core';
+import { MatProgressBar, MatButton, MatSnackBar } from '@angular/material';
+import { APIService } from './../../../api.service';
+import { UserAPIService } from './../../../userapi.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { RoutePartsService } from "../../../shared/services/route-parts.service";
+import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
+import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
+import { Observable, of } from 'rxjs';
+import 'rxjs/add/observable/timer'
+import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/take'
 
 @Component({
   selector: 'app-signup',
@@ -11,36 +20,127 @@ import { CustomValidators } from 'ng2-validation';
 export class AdvisorSignupComponent implements OnInit {
   @ViewChild(MatProgressBar) progressBar: MatProgressBar;
   @ViewChild(MatButton) submitButton: MatButton;
-
-  signupForm: FormGroup
-
-  advisorOtp = false;
+  transform(value: number): string {
+    const minutes: number = Math.floor(value / 60);
+    return ('00' + minutes).slice(-2) + ':' + ('00' + Math.floor(value - minutes * 60)).slice(-2);
+  }
+  llpAdvsignupForm: FormGroup;
+  llpAdvotpForm: FormGroup;
   freeTrailBtn = false;
   proceedBtn = true;
-  constructor() {}
+  advisorOtp = false;
+  invalidMessage: string;
+  invalidOtpMessage: string;
+  EmailExist: boolean;
+  invalidOTP: boolean;
+  countDown;
+  counter= 0;
+  tick = 0;
 
+  constructor(private router: Router, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
+  
   ngOnInit() {
-    const password = new FormControl('', Validators.required);
-    const confirmPassword = new FormControl('', CustomValidators.equalTo(password));
+    this.llpAdvsignupForm = new FormGroup({
+      username: new FormControl('', [Validators.required, Validators.pattern(/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i)])    
+    });
 
-    this.signupForm = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: password,
-      confirmPassword: confirmPassword,
-      agreed: new FormControl('', (control: FormControl) => {
-        const agreed = control.value;
-        if(!agreed) {
-          return { agreed: true }
+    this.llpAdvotpForm = new FormGroup({
+      otp: new FormControl('', Validators.required)
+    });
+  }
+
+  advProceed(){
+    let req_vars = {
+      username: this.llpAdvsignupForm.controls['username'].value,
+      userType: 'advisor'
+    }
+    this.loader.open();
+    this.userapi.apiRequest('post', 'auth/checkEmail', req_vars).subscribe(result => {
+      if (result.status == "success") {
+        this.loader.close();
+        if (result.data.code == "Exist") {
+          this.llpAdvsignupForm.controls['username'].enable();
+          this.invalidMessage = result.data.message;
+          this.EmailExist = true;
+          this.llpAdvsignupForm.controls['username'].setErrors({ 'EmailExist': true })
+        } else {
+          this.llpAdvsignupForm.controls['username'].disable();
+          this.freeTrailBtn = true;
+          this.proceedBtn = false;
+          this.advisorOtp = true;
+          this.llpAdvsignupForm.controls['username'].setErrors({ 'EmailExist': false })
+          this.clockCall();
         }
-        return null;
-      })
+      } else {
+        this.loader.close();
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      }
+    }, (err) => {
+      this.loader.close();
+      console.error(err)
     })
+
+  }
+
+  
+  OtpProceed() {
+    let req_vars = {
+      username: this.llpAdvsignupForm.controls['username'].value,
+      otpCode: this.llpAdvotpForm.controls['otp'].value
+    }
+    this.loader.open();
+    this.userapi.apiRequest('post', 'auth/checkOtp', { query: req_vars }).subscribe(result => {
+      if (result.status == "success") {
+        this.loader.close();
+        if (result.data.code == "success") {
+          localStorage.setItem("endUsername", result.data.username)
+          localStorage.setItem("endUserId", result.data.userId)
+          localStorage.setItem("endUserType", result.data.userType)
+
+          this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          this.router.navigate(['/', 'advisor', 'businessinfo']);
+        } else {
+          this.invalidOTP = true;
+          this.llpAdvotpForm.controls['otp'].setErrors({ 'invalidOTP': true })
+          this.invalidOtpMessage = result.data.message;
+        }
+      } else {
+        this.loader.close();
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      }
+    }, (err) => {
+      console.error(err);
+      this.loader.close();
+      this.snack.open(err.message, 'OK', { duration: 4000 })
+    })
+
+  }
+
+  ResendOtpProceed() {
+    this.advProceed();
   }
 
   toproceed() {
     this.advisorOtp = true;
     this.freeTrailBtn =true;
     this.proceedBtn = false;
+  }
+
+  clockCall() {
+    this.counter = 30;
+    this.tick = 1000;
+    this.countDown = Observable.timer(0, this.tick)
+      .take(this.counter)
+      .map(() => --this.counter);
+  }
+}
+@Pipe({
+  name: 'formatTime'
+})
+export class FormatTimePipe implements PipeTransform {
+  transform(value: number): string {
+    const minutes: number = Math.floor(value / 60);
+    return ('00' + minutes).slice(-2) + ':' + ('00' + Math.floor(value - minutes * 60)).slice(-2);
   }
 
 }

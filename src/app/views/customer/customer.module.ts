@@ -45,6 +45,7 @@ import { CustomerAccountSettingComponent } from './customer-account-setting/cust
 import { ChangePassComponent } from './customer-account-setting/change-pass/change-pass.component';
 import { UserAuthGuard } from '../../shared/services/auth/userauth.guard';
 import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
+import { states } from '../../state';
 @NgModule({
   imports: [
     CommonModule,

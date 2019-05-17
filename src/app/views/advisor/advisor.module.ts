@@ -35,7 +35,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
 import { AdvisorRoutes } from './advisor.routing';
-import { AdvisorSignupComponent } from './signup/signup.component';
+import { AdvisorSignupComponent,FormatTimePipe } from './signup/signup.component';
 import { BusinessInfoComponent } from './business-info/business-info.component';
 import { SetPasswordComponent } from './set-password/set-password.component';
 import { AdvisorSigninComponent } from './signin/signin.component';
@@ -48,6 +48,8 @@ import { AdvisorDashboardUpdateComponent } from './advisor-dashboard-update/advi
 import { AdvisorAccountSettingComponent } from './advisor-account-setting/advisor-account-setting.component';
 import { AdvisorSubscriptionComponent } from './advisor-subscription/advisor-subscription.component';
 import { AdvisorLayoutComponent } from './../../shared/components/layouts/advisor-layout/advisor-layout.component';
+import { states } from '../../state';
+import { yearsOfServiceList, businessTypeList , industryDomainList } from '../../selectList';
 
 @NgModule({
   imports: [
@@ -89,7 +91,7 @@ import { AdvisorLayoutComponent } from './../../shared/components/layouts/adviso
     RouterModule.forChild(AdvisorRoutes)
   ],
   declarations: [
-    AdvisorSignupComponent,BusinessInfoComponent,SetPasswordComponent,AdvisorSigninComponent,ThankYouComponent,AdvisorDashboardComponent,LegaciesComponent,AdvisorDashboardUpdateComponent,AdvisorAccountSettingComponent,AdvisorSubscriptionComponent,ChangePassComponent
+    AdvisorSignupComponent,BusinessInfoComponent,SetPasswordComponent,AdvisorSigninComponent,FormatTimePipe,ThankYouComponent,AdvisorDashboardComponent,LegaciesComponent,AdvisorDashboardUpdateComponent,AdvisorAccountSettingComponent,AdvisorSubscriptionComponent,ChangePassComponent
   ],providers: [
     MatDatepickerModule,
   ],entryComponents: [ChangePassComponent],

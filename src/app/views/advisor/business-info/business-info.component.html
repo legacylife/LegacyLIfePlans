@@ -9,48 +9,49 @@
       <div class="stepper--wrapper">
 
         <mat-horizontal-stepper [linear]="!isLinear" #stepper>
-
           <!-- step 1 -->
-          <mat-step [stepControl]="firstFormGroup">
-            <form [formGroup]="firstFormGroup" class="llp-form-wrapper">
+          <mat-step [formGroup]="firstFormGroup">
+            <form [formGroup]="firstFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit('first')">
               <div class="info--content">
                 <div class="text-center pb-1">
-                  <h2 class="login-header-text m-0">Business Information </h2>
+                  <h2 class="login-header-text m-0">Business Information {{step}}</h2>
                   <p class="login-header-desc">Please use the same full legal name and address as specified in the business license.</p>
                 </div>
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="First Name" formControlName="firstCtrl" required>
+                  <input matInput placeholder="First Name" name="firstName" [formControl]="firstFormGroup.controls['firstName']">
+                  <mat-icon matTooltip="Please enter first name" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['firstName'].hasError('required') && firstFormGroup.controls['firstName'].touched" class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="Last Name">
+                  <input matInput placeholder="Last Name*" name="lastName" [formControl]="firstFormGroup.controls['lastName']">
+                  <mat-icon matTooltip="Please enter last name" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['lastName'].hasError('required') && firstFormGroup.controls['lastName'].touched" class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <mat-select placeholder="Years of service">
-                    <mat-option value="option">Select number of years</mat-option>
-                    <mat-option value="option">2001</mat-option>
-                    <mat-option value="option">2002</mat-option>
+                    <mat-select placeholder="Years of service*" name="yearsOfService" [formControl]="firstFormGroup.controls['yearsOfService']" [(value)]="selected">
+                        <mat-option>Select number of years</mat-option>
+                        <mat-option *ngFor="let option of yearsOfServiceLists" [value]="option.opt_name">{{option.opt_name}}</mat-option>       
+                    </mat-select>
+                  <mat-icon matTooltip="Please select number of years" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['yearsOfService'].hasError('required') && firstFormGroup.controls['yearsOfService'].touched" class="red--alert">help_outline</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                  <mat-select placeholder="Business type*" name="businessType" [formControl]="firstFormGroup.controls['businessType']">
+                    <mat-option>Select business type</mat-option>
+                    <mat-option *ngFor="let option of businessTypeLists" [value]="option.opt_name">{{option.opt_name}}</mat-option>       
                   </mat-select>
+                  <mat-icon matTooltip="Please select business type" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['businessType'].hasError('required') && firstFormGroup.controls['businessType'].touched" class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <mat-select placeholder="Business type">
-                    <mat-option value="option">Select business type</mat-option>
-                    <mat-option value="option">ABC</mat-option>
-                    <mat-option value="option">lorem </mat-option>
+                  <mat-select placeholder="Industry/Domain*" name="industryDomain" [formControl]="firstFormGroup.controls['industryDomain']">
+                    <mat-option>Select industry/domain type</mat-option>
+                    <mat-option *ngFor="let option of industryDomainLists" [value]="option.opt_name">{{option.opt_name}}</mat-option>                           
                   </mat-select>
-                </mat-form-field>
-
-                <mat-form-field class="full-width">
-                  <mat-select placeholder="Industry/Domain">
-                    <mat-option value="option">Select industry/domain type</mat-option>
-                    <mat-option value="option">2001</mat-option>
-                    <mat-option value="option">2002</mat-option>
-                  </mat-select>
+                  <mat-icon matTooltip="Please select industry/domain type" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['industryDomain'].hasError('required') && firstFormGroup.controls['industryDomain'].touched" class="red--alert">help_outline</mat-icon>                                      
                 </mat-form-field>
                 <div>
-                  <button mat-raised-button matStepperNext class="llp--primary--btn full-width mb-0">Next</button>
+                  <button mat-raised-button matStepperNext class="llp--primary--btn full-width mb-0" [disabled]="firstFormGroup.invalid">Next</button>
                 </div>
               </div>
             </form>
