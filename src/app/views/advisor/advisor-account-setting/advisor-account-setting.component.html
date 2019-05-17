@@ -190,7 +190,7 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
                       <mat-label>State</mat-label>
-                      <mat-select placeholder="State*" name="state" [formControl]="AddressForm.controls['state']" [(value)]="selected">
+                      <mat-select placeholder="State*" name="state" [formControl]="AddressForm.controls['state']">
                         <mat-option value="">Select a state</mat-option>
                         <mat-option *ngFor="let option of stateList"  [value]="option.state_name">{{option.state_name}}</mat-option>
                       </mat-select>

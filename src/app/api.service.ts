@@ -179,7 +179,6 @@ export class APIService {
         if (response.data && response.data.token) {
           //check if user type is same
           if (data.userType === response.data.userType || (data.userType == "sysadmin" && response.data.userType == "TeamMember")) {
-            alert("hi")
             const { token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId } = response.data
             if(userType == 'customer' || userType == 'advisor'){
               this.endUsersaveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data)

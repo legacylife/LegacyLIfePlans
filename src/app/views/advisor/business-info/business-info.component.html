@@ -28,7 +28,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <mat-select placeholder="Years of service*" name="yearsOfService" [formControl]="firstFormGroup.controls['yearsOfService']" [(value)]="selected">
+                    <mat-select placeholder="Years of service*" name="yearsOfService" [formControl]="firstFormGroup.controls['yearsOfService']">
                         <mat-option>Select number of years</mat-option>
                         <mat-option *ngFor="let option of yearsOfServiceLists" [value]="option.opt_name">{{option.opt_name}}</mat-option>       
                     </mat-select>

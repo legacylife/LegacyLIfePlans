@@ -68,6 +68,7 @@ export class CustomerSignupComponent implements OnInit {
           this.invalidMessage = result.data.message;
           this.EmailExist = true;
           this.llpCustsignupForm.controls['username'].setErrors({ 'EmailExist': true })
+          this.snack.open(result.data.message, 'OK', { duration: 4000 })
         } else {
           this.llpCustsignupForm.controls['username'].disable();
           this.llpCustsignupForm.controls['password'].disable();
@@ -107,6 +108,7 @@ export class CustomerSignupComponent implements OnInit {
           this.invalidOTP = true;
           this.llpCustotpForm.controls['otp'].setErrors({ 'invalidOTP': true })
           this.invalidOtpMessage = result.data.message;
+          this.snack.open(result.data.message, 'OK', { duration: 4000 })
         }
       } else {
         this.loader.close();
@@ -136,7 +138,7 @@ export class CustomerSignupComponent implements OnInit {
   }
 
   clockCall() {
-    this.counter = 30;
+    this.counter = 60;
     this.tick = 1000;
     this.countDown = Observable.timer(0, this.tick)
       .take(this.counter)

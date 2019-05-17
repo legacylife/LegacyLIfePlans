@@ -18,7 +18,7 @@
         </ngx-datatable-column>
         <ngx-datatable-column name="Name" prop="firstName" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.firstName +' '+ row?.lastName}}
+            {{ row?.firstName ? row?.firstName : row?.lastName ? +' ' +row?.lastName : "N/A"}}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column name="State" [flexGrow]="1">
@@ -38,12 +38,12 @@
         </ngx-datatable-column>
         <ngx-datatable-column name="Subscription Status" prop="end_date" [flexGrow]="1.1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.subscription_detail.end_date}}
+            
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column name="Expiry Date" prop="end_date" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.subscription_detail.end_date}}
+            {{ row?.subscription_detail ? row?.subscription_detail.end_date : ""}}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column name="Own legacy count" [flexGrow]="1.1">

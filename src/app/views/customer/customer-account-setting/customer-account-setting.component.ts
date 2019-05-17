@@ -11,7 +11,7 @@ import { ChangePassComponent } from './change-pass/change-pass.component';
 import { map } from 'rxjs/operators';
 import { Subscription, Observable, of  } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { states } from '../../../state';
+
 @Component({
   selector: 'app-customer-account-setting',
   templateUrl: './customer-account-setting.component.html',
@@ -34,14 +34,23 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute,private fb: FormBuilder, private snack: MatSnackBar,public dialog: MatDialog, private userapi: UserAPIService,private loader: AppLoaderService) { }
 
   ngOnInit() {
-    this.stateList = states;
+    // this.categories$ = this.shopService.getCategories();
+    this.userId = localStorage.getItem("endUserId");
+     this.userapi.apiRequest('post', 'globalsetting/statelist', {}).subscribe(result => {    
+          if(result.status == "success"){
+              this.stateList = result.data;
+          } 
+        }, (err) => {
+          console.error(err)
+        })
 
     this.ProfileForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
       businessPhoneNumber: new FormControl('', Validators.required),
       phoneNumber: new FormControl('', Validators.required),
-      dateOfBirth: new FormControl('',)
+      dateOfBirth: new FormControl('',),
+      username: new FormControl('',)
     });
 
     this.AddressForm = new FormGroup({
@@ -52,7 +61,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       zipcode: new FormControl('', Validators.required)
     });
    
-    //this.profile = [];
+    this.profile = [];
     //setTimeout(function () {
       this.getProfile();
   // }, 5000);
@@ -68,7 +77,6 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
 
   //function to get all events
   getProfile = (query = {}, search = false) => {
-    this.userId = '5cc9cb9f1955852c18c5b738';
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: "customer" }, query)
     }
@@ -78,7 +86,20 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
         this.profile = [];
         this.loader.close();
       } else {
+        
         this.profile = result.data.userProfile;
+        console.log(this.profile.username)
+        this.ProfileForm.controls['firstName'].setValue(this.profile.firstName);
+        this.ProfileForm.controls['lastName'].setValue(this.profile.lastName);
+        this.ProfileForm.controls['dateOfBirth'].setValue(this.profile.dateOfBirth);
+        this.ProfileForm.controls['username'].setValue(this.profile.username);
+
+        this.AddressForm.controls['addressLine2'].setValue(this.profile.addressLine2);
+        this.AddressForm.controls['addressLine2'].setValue(this.profile.addressLine2);
+        this.AddressForm.controls['city'].setValue(this.profile.city);
+        this.AddressForm.controls['state'].setValue(this.profile.state);
+        this.AddressForm.controls['zipcode'].setValue(this.profile.zipcode);
+
         this.loader.close();
       }
     }, (err) => {
@@ -89,7 +110,6 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
 
   
   ProfileSubmit() {  
-    this.userId = '5cc9cb9f1955852c18c5b738';
     let profileInData = {
       firstName: this.ProfileForm.controls['firstName'].value,
       lastName: this.ProfileForm.controls['lastName'].value,
@@ -121,7 +141,6 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   }
   
   AddressSubmit() {  
-    this.userId = '5cc9cb9f1955852c18c5b738';
     let AddressInData = {
       addressLine1: this.AddressForm.controls['addressLine1'].value,
       addressLine2: this.AddressForm.controls['addressLine2'].value,

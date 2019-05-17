@@ -51,21 +51,13 @@
       </div>
 
       <mat-menu #accountMenu="matMenu">
-        <button mat-menu-item [routerLink]="['/profile/overview']">
-          <mat-icon>account_box</mat-icon>
-          <span>Customer Profile</span>
-        </button>
-        <button mat-menu-item [routerLink]="['/profile/settings']">
+        <button mat-menu-item [routerLink]="['/customer/account-setting']">
           <mat-icon>settings</mat-icon>
-          <span>Customer Account Settings</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>notifications_off</mat-icon>
-          <span>Customer Disable alerts</span>
+          <span>Account Settings</span>
         </button>
         <button mat-menu-item (click)="logout()">
           <mat-icon>exit_to_app</mat-icon>
-          <span>Customer Sign out</span>
+          <span>Sign out</span>
         </button>
       </mat-menu>
       <!-- Mobile screen menu toggle -->

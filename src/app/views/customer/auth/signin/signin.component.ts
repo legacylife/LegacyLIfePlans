@@ -60,7 +60,6 @@ export class SigninComponent implements OnInit {
       } else {
         this.llpCustsigninForm.controls['username'].enable();
         var emails = this.llpCustsigninForm.controls['username'].value
-        //this.llpCustsigninForm.controls['username'].markAsUntouched();//this.llpCustsigninForm.controls['password'].markAsUntouched();
         if(result.data.invalidEmail){
           this.invalidEmail = true;
           this.invalidMessage = result.data.message

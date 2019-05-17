@@ -27,7 +27,7 @@ export class UpdateProfileComponent implements OnInit {
   short_code: string;
   uploadedFile: File
   maxDate = new Date(new Date())
-  profilePicture: string = "assets/images/arkenea/uri.jpg"
+  profilePicture: any = "assets/images/arkenea/uri.jpg"
 
   constructor(private router: Router, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
   ngOnInit() {
@@ -76,7 +76,7 @@ export class UpdateProfileComponent implements OnInit {
       }
       if (result.status == "success") {
         this.loader.close();
-        this.snack.open('We have sent you reset instructions. Please check your email.', 'OK', { duration: 4000 })
+        this.snack.open('Your profile information has been updated successfully.', 'OK', { duration: 4000 })
         this.router.navigate(['/', 'customer', 'dashboard']);
       } else {
         this.loader.close();
@@ -106,13 +106,10 @@ export class UpdateProfileComponent implements OnInit {
           sessionStorage.setItem("enduserHeaderDetails", userHeaderDetails)
         }
       } else {
-        //this.errorMessage = result.data
+        this.snack.open(result.data, 'OK', { duration: 4000 }) 
       }
-      //this.getUserDetails();
-      //this.redirect()
-      this.hideAlerts()
     }, (err) => {
-      //this.errorMessage = err.error.data
+      this.snack.open(err.error.data, 'OK', { duration: 4000 })
     })
   }
 
@@ -125,31 +122,19 @@ export class UpdateProfileComponent implements OnInit {
     const validExt = ['jpg', 'jpeg', 'png', 'gif']
     //console.log(this.uploadedFile)
     if (this.uploadedFile.size > 5242880) {
-      //this.errorMessage = "Profile picture must be less than 5 MB."
-      this.hideAlerts()
+      this.snack.open("Profile picture must be less than 5 MB.", 'OK', { duration: 4000 })      
     } else if (validExt.indexOf(ext) > -1) {
       let reader = new FileReader()
       reader.onloadend = () => {
-        console.log("result array >>>>>" + reader.result)
         if (reader.result) {
-          //img.src = reader.result;
-          //this.profilePicture = reader.result;
+          this.profilePicture = reader.result;
         }
 
       }
       reader.readAsDataURL(this.uploadedFile)
     } else {
-      //this.errorMessage = "Please select valid image. Valid extentions are jpg, jpeg, png, gif"
-      this.hideAlerts()
+      this.snack.open("Please select valid image. Valid extentions are jpg, jpeg, png, gif.", 'OK', { duration: 4000 })      
     }
-  }
-
-  //function to hide alerts
-  hideAlerts = () => {
-    setTimeout(() => {
-      //this.successMessage = ""
-      //this.errorMessage = ""      
-    }, 4000)
   }
 
 }
