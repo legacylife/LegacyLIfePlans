@@ -126,7 +126,6 @@ function updateProfile(req, res) {
     } else {      
       let {proquery} = req.body;
       User.update({ _id:updatedUser._id},{$set:proquery},function(err,updated){
-        console.log("after update error",err)
         if (err) {
           res.send(resFormat.rError(err))
         } else {

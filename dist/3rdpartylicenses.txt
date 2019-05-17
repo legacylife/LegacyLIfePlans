@@ -712,6 +712,8 @@ SOFTWARE.
 
 @angular/material/card
 
+@angular/material/slide-toggle
+
 tslib
 Apache-2.0
 Apache License
@@ -783,10 +785,10 @@ MIT
 @angular/animations
 MIT
 
+@angular/material/button
+
 @angular/core
 MIT
-
-@angular/material/button
 
 @angular/flex-layout
 MIT
@@ -1025,6 +1027,8 @@ MIT
 
 @angular/material/divider
 
+@angular/material/menu
+
 @angular/material/list
 
 @angular/forms
@@ -1044,10 +1048,6 @@ MIT
 
 @ngx-translate/http-loader
 MIT
-
-@angular/material/toolbar
-
-@angular/material/menu
 
 @angular/material/grid-list
 
@@ -1153,6 +1153,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+
+@angular/material/toolbar
 
 classlist.js
 Dedicated to the public domain
@@ -1452,9 +1454,9 @@ THE SOFTWARE.
 ngx-slick-carousel
 MIT
 
-@angular/material/slide-toggle
-
 @angular/material/stepper
+
+@angular/material/chips
 
 @angular/material/progress-bar
 

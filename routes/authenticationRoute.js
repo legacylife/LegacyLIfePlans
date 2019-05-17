@@ -422,12 +422,15 @@ router.post('/reset-password-token', function (req, res) {
 async function checkEmail(req, res) {
   try {
     const { username } = req.body;
-    User.findOne({ username: username }, { username: 1 }, function (err, user) {
+    User.findOne({ username: username }, { username: 1, status:1 }, function (err, user) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-        if (user) {
-          res.send(resFormat.rSuccess({ code: "Exist", message: "You have already signup. Please login with your account." }))
+        if (user && user.status == 'In-Active') {
+          res.send(resFormat.rSuccess({ code: "Exist", message: "Looks like your account is inactive." }))
+        }
+        else if (user && user.status == 'Active') {
+          res.send(resFormat.rSuccess({ code: "Exist", message: "Looks like you already have an account registered with this email. Log in to access." }))
         } else {
           OtpCheck.findOne({ username: username }, { username: 1 }, function (err, found) {
             if (err) {
@@ -440,11 +443,7 @@ async function checkEmail(req, res) {
                     res.send(resFormat.rError(err))
                   } else {
                     stat = sendOtpMail(req.body.username, otp);
-                    //if(stat){
-                    res.send(resFormat.rSuccess({ code: "success", message: 'We have sent you reset instructions. Please check your email.' }))
-                    /*}else{
-                      res.send(resFormat.rSuccess({code: "error", message: 'Somnething Wrong! Please try again.'}))
-                    }*/
+                    res.send(resFormat.rSuccess({ code: "success", message: 'We have sent you OTP. Please check your email.' }))                    
                   }
                 })
               } else {
@@ -454,7 +453,6 @@ async function checkEmail(req, res) {
                 OtpC.otpCode = otp;
                 OtpC.status = 'Active';
                 OtpC.userType = req.body.userType;
-                console.log("user type>>>>>>>>>>>", req.body);
                 OtpC.save(function (err, newUser) {
                   if (err) {
                     res.status(500).send(resFormat.rError(err));
@@ -480,7 +478,7 @@ async function checkUserOtp(req, res) {
     OtpCheck.findOne(query, function (err, otpdata) {
       console.log(err)
       if (err) {
-        res.send(resFormat.rSuccess({ code: "error", message: "Wrong OTP! Please try again later." }))
+        res.send(resFormat.rSuccess({ code: "error", message: "Invalid OTP" }))
       } else {
         if (otpdata) {
 
@@ -509,9 +507,9 @@ async function checkUserOtp(req, res) {
               OtpCheck.deleteOne({ "_id": otpdata._id }, function (err, otpdata) {
                 console.log(err)
                 if (err) {
-                  res.send(resFormat.rSuccess({ code: "error", message: "Wrong OTP! Please try again later." }))
+                  res.send(resFormat.rSuccess({ code: "error", message: "Invalid OTP" }))
                 } else {
-                  res.send(resFormat.rSuccess({ "userId": newUser._id, "username": newUser.username, "userType": newUser.userType, code: "success", message: "You have signup. Please login with your account." }))
+                  res.send(resFormat.rSuccess({ "userId": newUser._id, "username": newUser.username, "userType": newUser.userType, code: "success", message: "You have successfully signup. Please update your profile or click on Skip button to go on dashboard." }))
                 }
               })
 
@@ -519,7 +517,7 @@ async function checkUserOtp(req, res) {
           })
 
         } else {
-          res.send(resFormat.rSuccess({ code: "error", message: "Wrong OTP! Please try again later." }))
+          res.send(resFormat.rSuccess({ code: "error", message: "Invalid OTP" }))
         }
       }
     })
