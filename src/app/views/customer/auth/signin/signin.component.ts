@@ -27,7 +27,7 @@ export class SigninComponent implements OnInit {
 
   ngOnInit() {
     this.llpCustsigninForm = new FormGroup({
-      username: new FormControl('', [Validators.required, Validators.pattern(/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i)]),
+      username: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
       password: new FormControl('', Validators.required)
     })
   }
@@ -65,10 +65,13 @@ export class SigninComponent implements OnInit {
           this.invalidMessage = result.data.message
           this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : true})
         }else{ 
+          this.invalidEmail = false;
           this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false})} 
       }
       if(result.data.invalidPassword){
+        this.invalidEmail = false;
         this.llpCustsigninForm.controls['password'].setErrors({'invalid' : true});
+        this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false});
       }
     }, (err) => {
 

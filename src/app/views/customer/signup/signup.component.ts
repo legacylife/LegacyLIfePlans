@@ -42,7 +42,7 @@ export class CustomerSignupComponent implements OnInit {
   constructor(private router: Router, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
   ngOnInit() {
     this.llpCustsignupForm = new FormGroup({
-      username: new FormControl('', [Validators.required, Validators.pattern(/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i)]),
+      username: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
       password: new FormControl('', [Validators.required, Validators.pattern(this.passwordRegex)])
     });
 
@@ -108,7 +108,7 @@ export class CustomerSignupComponent implements OnInit {
           this.invalidOTP = true;
           this.llpCustotpForm.controls['otp'].setErrors({ 'invalidOTP': true })
           this.invalidOtpMessage = result.data.message;
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          this.snack.open(result.data.message, 'OK', { duration: 10000 })
         }
       } else {
         this.loader.close();

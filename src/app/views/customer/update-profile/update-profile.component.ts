@@ -36,17 +36,26 @@ export class UpdateProfileComponent implements OnInit {
     this.userType = localStorage.getItem("endUserType");
 
     if(this.userId){
-      this.stateList = states;
-
-      this.llpCustsignupProfileForm = new FormGroup({
-        firstName: new FormControl('', Validators.required),
-        lastName: new FormControl('', Validators.required),
-        businessPhoneNumber: new FormControl('', Validators.required),
-        dateOfBirth: new FormControl('', Validators.required),
-        city: new FormControl('', Validators.required),
-        state: new FormControl('', Validators.required),
-        zipcode: new FormControl('', Validators.required)
-      });
+      const req_vars = { userId: this.userId }
+      this.userapi.apiRequest('post', 'auth/view', req_vars).subscribe(result => {    
+        if(result.data.profileSetup &&  result.data.profileSetup == "yes"){
+          this.router.navigate(['/', 'customer', 'account-setting']);
+        } 
+        else {
+          this.stateList = states;
+          this.llpCustsignupProfileForm = new FormGroup({
+            firstName: new FormControl('', Validators.required),
+            lastName: new FormControl('', Validators.required),
+            businessPhoneNumber: new FormControl('', Validators.required),
+            dateOfBirth: new FormControl('', Validators.required),
+            city: new FormControl('', Validators.required),
+            state: new FormControl('', Validators.required),
+            zipcode: new FormControl('', Validators.required)
+          });
+        }
+      }, (err) => {
+        console.error(err)
+      })
 
     } else {
       this.router.navigate(['/', 'customer', 'signup']);
@@ -62,6 +71,7 @@ export class UpdateProfileComponent implements OnInit {
     let img = document.getElementById('profilePicture') as HTMLInputElement
     console.log(this.llpCustsignupProfileForm.value)
     let profileInData = this.llpCustsignupProfileForm.value
+    profileInData.profileSetup = 'yes';
 
     var query = {};
     var proquery = {};

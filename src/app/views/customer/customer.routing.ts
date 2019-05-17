@@ -6,7 +6,8 @@ import { CustomerAccountSettingComponent } from './customer-account-setting/cust
 import { CustomerLayoutComponent } from '../../shared/components/layouts/customer-layout/customer-layout.component';
 import { AuthLayoutComponent } from '../../shared/components/layouts/auth-layout/auth-layout.component';
 import { UserAuthGuard } from '../../shared/services/auth/userauth.guard';
-console.log('customer---routing');
+import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
+
 export const CustomerRoutes: Routes = [
   {
     path: 'signup',
@@ -15,6 +16,7 @@ export const CustomerRoutes: Routes = [
       { 
         path: '',
         component: CustomerSignupComponent, 
+        canActivate: [ UserPreAuthGuard ]
       }
     ],
   },{

@@ -41,7 +41,7 @@ export class AdvisorSignupComponent implements OnInit {
   
   ngOnInit() {
     this.llpAdvsignupForm = new FormGroup({
-      username: new FormControl('', [Validators.required, Validators.pattern(/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i)])    
+      username: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)])    
     });
 
     this.llpAdvotpForm = new FormGroup({

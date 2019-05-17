@@ -3,7 +3,7 @@
     <div class="topnav">
       <!-- App Logo -->
       <div class="topbar-branding">
-        <img routerLink="/pre-advisor" src="assets/images/arkenea/small-logo.png" alt="" class="app-logo">
+        <img [routerLink]="['/customer/dashboard']" src="assets/images/arkenea/small-logo.png" alt="" class="app-logo">
       </div>
 
       <ul class="menu header--ul" *ngIf="!layoutConf.isMobile">
@@ -17,7 +17,7 @@
         </li> -->
 
         <li>
-          <a matRipple routerLink="/customer">
+          <a matRipple [routerLink]="['/customer/dashboard']">
             <mat-icon class="home">home</mat-icon> Home</a>
         </li>
         <li>

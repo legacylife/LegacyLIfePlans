@@ -18,7 +18,7 @@
               <mat-icon matTooltip="Please enter email id" matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupForm.controls['username'].hasError('required') && llpCustsignupForm.controls['username'].touched"
                 class="red--alert">help_outline</mat-icon>
 
-              <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupForm.controls['username'].hasError('pattern') && llpCustsignupForm.controls['username'].touched"
+              <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupForm.controls['username'].hasError('pattern')"
                 class="red--alert">help_outline</mat-icon>
               <mat-icon matTooltip="{{invalidMessage}}" matTooltipClass="llp--tooltip error" *ngIf="EmailExist" class="red--alert">help_outline</mat-icon>
 
