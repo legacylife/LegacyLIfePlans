@@ -92,6 +92,7 @@ var userSchema = new mongoose.Schema({
   modifiedBy: String,
   token: String,  
   status: String,
+  profileSetup: String
 })
 
 //function to set password

@@ -231,7 +231,7 @@ function list(req, res) {
 
 //function get details of user from url param
 function details(req, res) {
-  let fields = { id: 1, username: 1, socialMediaToken: 1, salt: 1, fullName: 1 }
+  let fields = { id: 1, username: 1, socialMediaToken: 1, salt: 1, fullName: 1, profileSetup:1 }
   if (req.body.fields) {
     fields = req.body.fields
   }
@@ -239,7 +239,7 @@ function details(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      res.send(resFormat.rSuccess(newUser))
+      res.send(resFormat.rSuccess(user))
     }
   })
 }
