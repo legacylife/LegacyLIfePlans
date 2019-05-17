@@ -89,8 +89,7 @@ export class UpdateProfileComponent implements OnInit {
   }
 
   saveProfilePicture() {
-    const fd = new FormData()
-    alert(this.userId)
+    const fd = new FormData()    
     fd.append('userId', this.userId)
     fd.append('profilePicture', this.uploadedFile, this.uploadedFile.name);
     this.userapi.apiRequest('post', 'auth/updateProfilePic', fd).subscribe((result: any) => {
