@@ -46,7 +46,7 @@ export class UpdateProfileComponent implements OnInit {
           this.llpCustsignupProfileForm = new FormGroup({
             firstName: new FormControl('', Validators.required),
             lastName: new FormControl('', Validators.required),
-            businessPhoneNumber: new FormControl('', Validators.required),
+            phoneNumber: new FormControl('', Validators.required),
             dateOfBirth: new FormControl('', Validators.required),
             city: new FormControl('', Validators.required),
             state: new FormControl('', Validators.required),

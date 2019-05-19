@@ -98,7 +98,7 @@ export class AdvisorSignupComponent implements OnInit {
           localStorage.setItem("endUserType", result.data.userType)
 
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
-          this.router.navigate(['/', 'advisor', 'businessinfo']);
+          this.router.navigate(['/', 'advisor', 'business-info']);
         } else {
           this.invalidOTP = true;
           this.llpAdvotpForm.controls['otp'].setErrors({ 'invalidOTP': true })

@@ -17,11 +17,10 @@ export const serverUrl = serverUrlEnv
 export const emailLimit = 20
 export const adminWebTitle = "LLP"
 export const s3Details = {
-  url : "",
-  bucketName: "",
-  awsKey: "",
-  awsSecret: "",
-  dealFilesPath: "dealFiles/",
+  url : "https://s3.amazonaws.com/llp-dev",
+  bucketName: "llp-dev",
+  awsKey: "AKIAUPQ3GZ6WDCCRWVY5",
+  awsSecret: "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",
   profilePicturesPath: "profilePictures/",
   apiGatewayUrl: ""
 }
