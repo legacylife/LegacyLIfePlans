@@ -22,10 +22,8 @@ var userSchema = new mongoose.Schema({
   middleName: String,
   lastName: String,
   dateOfBirth: String,
-  phoneNumber: [{
-    prefix: String,
-    phonenumber: String
-  }],  
+  phoneNumber: String,
+  landlineNumber: String,  
   addressLine1: String,
   addressLine2: String,  
   zipcode: String,

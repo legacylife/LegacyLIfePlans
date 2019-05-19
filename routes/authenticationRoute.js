@@ -488,12 +488,15 @@ async function checkUserOtp(req, res) {
           user.lastLoggedInOn = new Date();
 
           user.emailVerified = true;
-          user.status = 'Active';
+          //user.status = 'Active';
           user.createdOn = new Date();
 
-          let userSecurityDetails = user.setPassword(otpdata.password)
-          user.salt = userSecurityDetails.salt;
-          user.hash = userSecurityDetails.hash;
+          if(user.userType != 'advisor'){
+            let userSecurityDetails = user.setPassword(otpdata.password)
+            user.salt = userSecurityDetails.salt;
+            user.hash = userSecurityDetails.hash;
+          }
+          
 
           user.save(function (err, newUser) {
             if (err) {
