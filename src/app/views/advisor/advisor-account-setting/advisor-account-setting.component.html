@@ -255,39 +255,25 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <h3 class="header--text fnt--16 mb-1">Awards and Organizations</h3>
 
-                    <div fxLayout="row wrap">
+                    <div fxLayout="row wrap" *ngFor="let award of awards; let i = index">
                       <div fxFlex.xs="100" fxFlex.sm="65" fxFlex.md="65" fxFlex.lg="65" fxFlex.xl="65" class="pad--r--lg">
                         <mat-form-field class="full-width">
-                          <input matInput name="City" placeholder="Title" value="Design Awards">
+                          <input matInput name="City" placeholder="Title" value="{{award.title}}">
                         </mat-form-field>
                       </div>
                       <div fxFlex.xs="95" fxFlex.sm="30" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pr-2">
                         <mat-form-field class="full-width">
-                          <input matInput name="City" placeholder="Year" value="2014">
+                          <input matInput name="City" placeholder="Year" value="{{award.year}}">
                         </mat-form-field>
                       </div>
-                      <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
+                      <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" (click)="delete(i);" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
                         <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
                       </div>
                     </div>
-                    <div fxLayout="row wrap">
-                      <div fxFlex.xs="100" fxFlex.sm="65" fxFlex.md="65" fxFlex.lg="65" fxFlex.xl="65" class="pad--r--lg">
-                        <mat-form-field class="full-width">
-                          <input matInput name="City" placeholder="Title" value="Drawing Awards">
-                        </mat-form-field>
-                      </div>
-                      <div fxFlex.xs="95" fxFlex.sm="30" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pr-2">
-                        <mat-form-field class="full-width">
-                          <input matInput name="City" placeholder="Year" value="2019">
-                        </mat-form-field>
-                      </div>
-                      <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
-                        <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
-                      </div>
-                    </div>
+                  
                     <div fxLayout="row wrap">
                       <div fxFlex.xs="100">
-                        <div class="add--new">
+                        <div class="add--new" (click)="addNewAo();">
                           <mat-icon>add_circle</mat-icon>
                           Add New
                         </div>
@@ -312,30 +298,19 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <h3 class="header--text fnt--16 mb-1">Websites</h3>
 
-                    <div fxLayout="row wrap">
+                    <div fxLayout="row wrap"  *ngFor="let website of websites; let i = index ">
                       <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
                         <mat-form-field class="full-width">
-                          <input matInput name="City" placeholder="URL" value="www.loremipsum.com">
+                          <input matInput name="City" placeholder="URL" value="{{website.webName}}">
                         </mat-form-field>
                       </div>
                       <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
-                        <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
+                        <mat-icon class="mt-1 clr--red cursor-pointer" (click)="deleteWebsite(i);">delete</mat-icon>
                       </div>
-                    </div>
-                    <div fxLayout="row wrap">
-                      <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
-                        <mat-form-field class="full-width">
-                          <input matInput name="City" placeholder="URL" value="www.loremipsum.com">
-                        </mat-form-field>
-                      </div>
-                      <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
-                        <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
-                      </div>
-                    </div>
-
+                    </div>                    
                     <div fxLayout="row wrap">
                       <div fxFlex.xs="100">
-                        <div class="add--new">
+                        <div class="add--new" (click)="addWebsites();">
                           <mat-icon>add_circle</mat-icon>
                           Add New
                         </div>

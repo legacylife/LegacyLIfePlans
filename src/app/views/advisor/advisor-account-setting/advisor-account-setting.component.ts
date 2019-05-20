@@ -28,13 +28,28 @@ export class AdvisorAccountSettingComponent implements OnInit {
   daySeco = false;
   date: any;
   chosenYearHandler: any;
-
+  awards: any;
+  websites: any;
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
   constructor( public dialog: MatDialog) { }
 
   ngOnInit() {
-    }
+  
+    this.awards = [{
+      title: "Design Awards",
+      year: "2014"
+    },
+    {
+      title: "Drawing Awards",
+      year: "2019"
+    }];
+
+    this.websites = [{
+      webName: 'www.loremipsum.com',
+    }];
+
+  }
 
     changePasspordModal(): void {
       const dialogRef = this.dialog.open(AdvisorChangePassComponent, {
@@ -44,6 +59,26 @@ export class AdvisorAccountSettingComponent implements OnInit {
     }
     toggleSideNav() {
       this.sideNav.opened = !this.sideNav.opened;
+    }
+
+    addNewAo() {
+      this.awards.push({
+        title: 'Drawing Awards',
+        year: 2019
+      })
+    }
+
+    delete(i){
+      this.awards.splice(i,1);
+    }
+
+    addWebsites() {
+      this.websites.push({
+        webName:'www.loremipsum.com'
+      })
+    }
+    deleteWebsite(i){
+      this.websites.splice(i,1);
     }
   }
 
