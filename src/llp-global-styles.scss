@@ -381,6 +381,25 @@ body{
             
         }
     }
+    .mat-datepicker-content{
+        .mat-calendar-table{
+            .mat-calendar-body{
+                .mat-calendar-body-cell-content{
+                    font-family: $font--lato--regular;
+                    font-size: 16px;
+                }
+                tr{
+                    td{
+                        display: table-cell !important;
+                        padding: 0;
+                    }
+                }
+            }
+            .mat-calendar-body-selected{
+                background-color: #c72128;
+            }
+        }
+    }
 }
 
 /* Tooltip  */
