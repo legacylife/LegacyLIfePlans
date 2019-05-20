@@ -542,6 +542,19 @@
     color: $clr--1 !important;
 }
 
+.what--do--sec{
+    .slick-active{
+        &.slick-center{
+            border: 1px solid red;
+        }
+    }
+    .slick-active{
+        border: 1px solid black;
+    }
+}
+
+ 
+
 
 /* Media query (start here)*/
 

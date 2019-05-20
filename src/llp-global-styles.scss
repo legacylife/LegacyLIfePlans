@@ -450,8 +450,13 @@ body{
     &.prev,
     &.next{
         position: absolute;
-        top: 35%
-    }
+        top: 35%;
+        border-radius: 50%;
+    }   
+}
+.slick-next,
+.slick-prev{
+    display: none !important;
 }
 
 // Modal
