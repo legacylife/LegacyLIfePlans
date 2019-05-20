@@ -66,11 +66,11 @@
                     </mat-form-field>
 
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Primary phone*" type="tel" value="" class="">
+                      <input matInput placeholder="Primary phone*" name="phoneNumber"  type="tel"  [formControl]="ProfileForm.controls['phoneNumber']">
                       <span matPrefix>+1</span>
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Secondary phone" type="tel" value="" class="" >
+                      <input matInput placeholder="Secondary phone" name="landlineNumber" type="tel"  [formControl]="ProfileForm.controls['landlineNumber']">
                       <span matPrefix>+1</span>
                     </mat-form-field>
 
@@ -359,34 +359,97 @@
                     <p class="header--desc upload--doc">Upload your business documents for verification for e.g. business license</p>                                   
                   </div>
                 </div>
+ 
+        <!--    <div class="mb-1">
+                    <div ng2FileDrop
+                    [ngClass]="{'dz-file-over': hasBaseDropZoneOver}"
+                    (fileOver)="fileOverBase($event)"
+                    [uploader]="uploader"
+                    class="fileupload-drop-zone">
+                    Drop file here
+                    </div>
+                  </div>
+                -->
+               
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                       <div class="upload--buss--docs--sec">
                           <label>Upload your business documents</label>
-                          <div class="upload--box">
-                            <input type="file" />
-          
+                         <div class="upload--box fileupload-drop-zone"
+                         ng2FileDrop
+                         [ngClass]="{'dz-file-over': hasBaseDropZoneOver}"
+                         (fileOver)="fileOverBase($event)"
+                         [uploader]="uploader">
+                            <input type="file" name="advisorDocuments" accept="image/*" />     
                             <mat-icon class="cloud-icon">cloud_upload</mat-icon>
                             <div class="select--file">Select file from your computer</div>
-          
                           </div>
                           <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
                         </div>
                   </div>
+
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50">
-                      <h3 class="header--text fnt--16">Uploaded documents</h3>
-                      <mat-chip-list class="doc--list">
-                          <mat-chip>Business card.jpg <mat-icon matChipRemove>close</mat-icon></mat-chip>
-                          <mat-chip>proof of credentials.pdf <mat-icon matChipRemove>close</mat-icon></mat-chip>
-                          <mat-chip>License_8-Apr.pdf <mat-icon matChipRemove>close</mat-icon></mat-chip>
-                        </mat-chip-list>
-                  </div>
+                    <h3 class="header--text fnt--16">Uploaded documents</h3>
+                    <mat-chip-list class="doc--list">
+                        <mat-chip>Business card.jpg <mat-icon matChipRemove>close</mat-icon></mat-chip>
+                        <mat-chip>proof of credentials.pdf <mat-icon matChipRemove>close</mat-icon></mat-chip>
+                        <mat-chip>License_8-Apr.pdf <mat-icon matChipRemove>close</mat-icon></mat-chip>
+                      </mat-chip-list>
                 </div>
-                <div fx.Flex="100" class="text-center mt--30">
+                 
+                <table class="default-table mat-box-shadow" style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th width="30%">Name</th>
+                        <!-- <th>Size</th> -->
+                        <th>Progress</th>
+                        <!--<th>Status</th> -->
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody *ngIf="uploader.queue.length; else tableNoData">
+                    <tr *ngFor="let item of uploader.queue">
+                        <td>{{ item?.file?.name }}</td>
+                        <!--<td nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>-->
+                        <td>
+                            <div class="progress" style="margin-bottom: 0;">
+                                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+                                <mat-progress-bar
+                                  class=""
+                                  color="primary"
+                                  mode="determinate"
+                                  [value]="item.progress">
+                                </mat-progress-bar>
+                            </div>
+                        </td>
+                       <!-- <td class="">
+                            <mat-icon *ngIf="item.isSuccess" color="primary">check</mat-icon>
+                            <mat-icon *ngIf="item.isCancel" color="accent">cancel</mat-icon>
+                            <mat-icon *ngIf="item.isError" color="warn">error</mat-icon>
+                        </td>-->
+                        <td nowrap>
+                            <!-- <button mat-raised-button class="mat-primary" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">Upload</button>
+                            <button mat-raised-button class="mat-accent" (click)="item.cancel()" [disabled]="!item.isUploading">Cancel</button>-->            
+                           <button mat-raised-button class="mat-warn" (click)="item.remove()">Remove</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <ng-template #tableNoData>
+                      <p [ngStyle]="{padding: '0 1.2rem'}">Document queue is empty</p>
+                    </ng-template>
+                </table>
+
+                <div class="progress mb-1" >
+                      <p>&nbsp;</p>
+                <mat-progress-bar color="primary" mode="determinate" [value]="uploader.progress"></mat-progress-bar>
+                </div>
+                  <button mat-raised-button class="mat-primary" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length" style="display: none;">Upload all</button>
+            </div>
+            <div fx.Flex="100" class="text-center mt--30">
                   <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
                   <button mat-raised-button class="llp--primary--btn" [disabled]="LicenseForm.invalid">Save</button>
-                </div>
-              </form>
+            </div>
+            </form>
             </div>
           </mat-tab>
         </mat-tab-group>

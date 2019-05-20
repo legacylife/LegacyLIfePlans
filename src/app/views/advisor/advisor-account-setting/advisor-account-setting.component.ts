@@ -12,6 +12,7 @@ import { map } from 'rxjs/operators';
 import { Subscription, Observable, of  } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { states } from '../../../state';
+import { FileUploader } from 'ng2-file-upload';
 
 @Component({
   selector: 'app-advisor-account-setting',
@@ -22,6 +23,8 @@ import { states } from '../../../state';
 export class AdvisorAccountSettingComponent implements OnInit {
 
  // industryDomain = 'option22';
+ public uploader: FileUploader = new FileUploader({ url: 'https://evening-anchorage-315.herokuapp.com/api/' });
+ public hasBaseDropZoneOver: boolean = false;
   date: any;
   ProfileForm: FormGroup;
   AddressForm: FormGroup;
@@ -87,6 +90,10 @@ export class AdvisorAccountSettingComponent implements OnInit {
             websites: this.fb.array([ this.createItem() ])
           });*/
  }
+
+ public fileOverBase(e: any): void {
+  this.hasBaseDropZoneOver = e;
+}
 
   //function to get all events
   getProfile = (query = {}, search = false) => {   

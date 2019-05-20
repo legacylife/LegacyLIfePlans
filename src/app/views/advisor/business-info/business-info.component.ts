@@ -17,6 +17,7 @@ import { states } from '../../../state';
 })
 export class BusinessInfoComponent implements OnInit {
   @ViewChild('stepper')
+  
   isLinear = false;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
@@ -31,6 +32,8 @@ export class BusinessInfoComponent implements OnInit {
   step:any;
   profile:any;
   stateList:any;
+  stepControl: any;
+
   state_name:string;  short_code:string;
 
   constructor(private router: Router, private activeRoute: ActivatedRoute, private stepper: MatStepperModule, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
@@ -38,7 +41,8 @@ export class BusinessInfoComponent implements OnInit {
   ngOnInit() {
     this.stateList = states;
     this.step = localStorage.getItem("step");
-   
+    this.stepControl  = 'thirdFormGroup';
+    // this.currentStep = this.thirdFormGroup;
     this.yearsOfServiceLists = yearsOfServiceList;
     this.businessTypeLists = businessTypeList;
     this.industryDomainLists = industryDomainList;

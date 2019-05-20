@@ -19,7 +19,6 @@ export const AdvisorRoutes: Routes = [
   {
     //path: 'signin',
     //component: AdvisorSignupComponent,
-
     path: 'signin',
     component: AuthLayoutComponent,
     children : [
@@ -49,7 +48,7 @@ export const AdvisorRoutes: Routes = [
     //component: BusinessInfoComponent,
 
     path: 'business-info',
-    component: AdvisorDashboardComponent,
+    component: AuthLayoutComponent,
     children : [
       { 
         path: '',
@@ -79,7 +78,7 @@ export const AdvisorRoutes: Routes = [
     //component: AdvisorDashboardComponent
 
     path: 'dashboard',
-    component: AuthLayoutComponent,
+    component: AdvisorLayoutComponent,
     children : [
       { 
         path: '',
