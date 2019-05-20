@@ -53,7 +53,7 @@ export const AdvisorRoutes: Routes = [
       { 
         path: '',
         component: BusinessInfoComponent,
-        canActivate: [ UserAuthGuard ] 
+        canActivate: [ UserPreAuthGuard ] 
       }
     ]
 
@@ -68,7 +68,7 @@ export const AdvisorRoutes: Routes = [
       { 
         path: '',
         component: ThankYouComponent,
-        canActivate: [ UserAuthGuard ] 
+        canActivate: [ UserPreAuthGuard ] 
       }
     ]
 

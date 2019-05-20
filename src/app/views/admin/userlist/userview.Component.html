@@ -16,11 +16,16 @@
           <mat-list-item>
             <mat-icon class="mr-1">email</mat-icon> {{row?.username}}</mat-list-item>
           <mat-list-item *ngIf="row?.userType != 'sysadmin'">
-            <mat-icon class="mr-1">phone</mat-icon> {{row?.phoneNumber[0].prefix +''+ row?.phoneNumber[0].phonenumber}}</mat-list-item>          
+            <mat-icon class="mr-1">phone</mat-icon> {{row?.phoneNumber}}</mat-list-item>          
         </mat-list>
       </mat-card-content>
 
     </mat-card>
+
+    <div class="m-333" *ngIf="row?.userType == 'advisor' && row?.status == 'Pending'">
+      <button mat-raised-button class="mb-05 mt-1" color="primary" (click)="statusChange(row)">Accept</button>&nbsp;&nbsp;&nbsp;
+      <button mat-raised-button class="mat-warn">Reject</button>
+    </div>    
   </div>
 
   <!-- Profile Views -->
@@ -132,7 +137,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Plan Expire Date</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.subscription_detail.end_date}}</div>
+                  <div fxFlex="40">{{row?.subscription_detail ? row?.subscription_detail.end_date : ""}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="">

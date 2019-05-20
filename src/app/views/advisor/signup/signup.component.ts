@@ -93,9 +93,9 @@ export class AdvisorSignupComponent implements OnInit {
       if (result.status == "success") {
         this.loader.close();
         if (result.data.code == "success") {
-          localStorage.setItem("endUsername", result.data.username)
+          /*localStorage.setItem("endUsername", result.data.username)
           localStorage.setItem("endUserId", result.data.userId)
-          localStorage.setItem("endUserType", result.data.userType)
+          localStorage.setItem("endUserType", result.data.userType)*/
 
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
           this.router.navigate(['/', 'advisor', 'business-info']);

@@ -17,7 +17,7 @@
       </ngx-datatable-column>
       <ngx-datatable-column name="Name" prop="firstName" [flexGrow]="1">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          {{ row?.firstName +' '+ row?.lastName}}
+          {{ row?.firstName ? row?.firstName : row?.lastName ? +' ' +row?.lastName : "N/A"}}
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Business Name" prop="businessName" [flexGrow]="1">
@@ -42,28 +42,29 @@
       </ngx-datatable-column>
       <ngx-datatable-column name="Subscription Status" prop="end_date" [flexGrow]="1.1">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          {{ row?.subscription_detail.end_date}}
+          {{ row?.subscription_detail ? row?.subscription_detail.end_date : ""}}
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Expiry Date" prop="end_date" [flexGrow]="1">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          {{ row?.subscription_detail.end_date}}
+          {{ row?.subscription_detail ? row?.subscription_detail.end_date : ""}}
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Sign up Request" prop="createdOn" [flexGrow]="1.1">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          {{ row?.subscription_detail.createdOn}}
+          {{  row?.createdOn }}
         </ng-template>
       </ngx-datatable-column>
 
       <ngx-datatable-column name="Sign up approval" prop="signupApprovalDate" [flexGrow]="1.1">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          {{ row?.subscription_detail.signupApprovalDate}}
+          {{ row?.signupApprovalDate}}
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Status" [flexGrow]="1">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <mat-chip mat-sm-chip [color]="'primary'" [selected]="row.status" (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
+          <mat-chip mat-sm-chip *ngIf="row.status != 'Pending'" [color]="'primary'" [selected]="row.status" (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
+          <mat-chip mat-sm-chip *ngIf="row.status == 'Pending'" [color]="'primary'" title="Status">{{row.status}}</mat-chip>
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column name="Actions" [sortable]="false" [draggable]="false" [flexGrow]="1">
