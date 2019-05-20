@@ -3,7 +3,7 @@
     <div class="topnav">
       <!-- App Logo -->
       <div class="topbar-branding">
-        <img routerLink="/pre-advisor" src="assets/images/arkenea/small-logo.png" alt="" class="app-logo">
+        <img [routerLink]="['/advisor/dashboard']" src="assets/images/arkenea/small-logo.png" alt="" class="app-logo">
       </div>
 
       <ul class="menu header--ul" *ngIf="!layoutConf.isMobile">
@@ -17,7 +17,7 @@
           </li> -->
 
         <li>
-          <a matRipple routerLink="/advisor">
+          <a matRipple [routerLink]="['/advisor/dashboard']">
             <mat-icon class="home">home</mat-icon> Home</a>
         </li>
         <li>
@@ -78,7 +78,7 @@
           <mat-icon>monetization_on</mat-icon>
           <span>Payment</span>
         </button>
-        <button mat-menu-item [routerLink]="['/sessions/signin']">
+        <button mat-menu-item (click)="logout()">
           <mat-icon>exit_to_app</mat-icon>
           <span>Log out</span>
         </button>

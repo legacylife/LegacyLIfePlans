@@ -169,6 +169,7 @@ export class UserAPIService {
 
   //function to make request to server to logout user
   public userLogout(): void {
+    let userType = localStorage.getItem("endUserType");
     this.token = ''
     this.removeKeyFromStorage('endUserId')
     this.removeKeyFromStorage('endUserType')
@@ -181,8 +182,10 @@ export class UserAPIService {
 
     window.localStorage.clear();
     window.sessionStorage.clear();
-
-    this.router.navigate(["customer", "signin"])
+    if(userType == 'customer')
+      this.router.navigate(["customer", "signin"])
+    if(userType == 'advisor')
+    this.router.navigate(["advisor", "signin"])
   }
 
   //function to make request to server

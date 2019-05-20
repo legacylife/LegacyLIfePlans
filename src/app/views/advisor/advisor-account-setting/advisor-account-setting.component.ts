@@ -39,6 +39,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
 
   ngOnInit() {
            this.stateList = states;
+           this.userId = localStorage.getItem("endUserId");
            this.ProfileForm = this.fb.group({
             firstName: new FormControl('', Validators.required),
             lastName: new FormControl('', Validators.required),
@@ -89,7 +90,6 @@ export class AdvisorAccountSettingComponent implements OnInit {
 
   //function to get all events
   getProfile = (query = {}, search = false) => {   
-    this.userId = '5cc9cc301955852c18c5b73a';
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: "advisor" }, query)
     }
@@ -139,7 +139,6 @@ export class AdvisorAccountSettingComponent implements OnInit {
 
   
   ProfileSubmit() {  
-    this.userId = '5cc9cc301955852c18c5b73a';
     let profileInData = {
       firstName: this.ProfileForm.controls['firstName'].value,
       lastName: this.ProfileForm.controls['lastName'].value,
@@ -173,7 +172,6 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   AddressSubmit() {  
-    this.userId = '5cc9cc301955852c18c5b73a';
     const { socialMediaLinks : {linkedIn='' , facebook = '' , twitter =''}} = this.AddressForm.value
     console.log(this.AddressForm.value)
     let AddressInData = {
@@ -218,7 +216,6 @@ export class AdvisorAccountSettingComponent implements OnInit {
 
 
   LicenseSubmit(){
-    this.userId = '5cc9cc301955852c18c5b73a';
     console.log(this.LicenseForm.value)
     let LicensInData = {
       activeLicenceHeld: this.LicenseForm.controls['activeLicenceHeld'].value,
