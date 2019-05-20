@@ -446,10 +446,12 @@ async function checkEmail(req, res) {
                     res.send(resFormat.rSuccess({ code: "success", message: 'We have sent you OTP. Please check your email.' }))                    
                   }
                 })
-              } else {
+              } else if(req.body.username){
                 let OtpC = new OtpCheck();
                 OtpC.username = req.body.username;
+                if(req.body.password!=''){
                 OtpC.password = req.body.password;
+                }
                 OtpC.otpCode = otp;
                 OtpC.status = 'Active';
                 OtpC.userType = req.body.userType;
