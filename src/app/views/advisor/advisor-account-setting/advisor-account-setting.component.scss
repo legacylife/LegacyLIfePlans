@@ -11,7 +11,7 @@
             font-size: 16px;
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             font-family: $font--lato--bold;
             .mat-icon{
                 font-size: 20px;
@@ -22,6 +22,7 @@
         .pro--info{
             font-size: 16px;
             line-height: 25px;
+            margin-bottom: 7px;
         }
         .validate{
             margin: 0;
@@ -57,6 +58,8 @@
             color: #c72128;
             font-size: 16px;
             font-family: $font--lato--regular;
+            cursor: pointer;
+            float: left;
             .mat-icon{
                 margin-right: 10px;
                 height: 27px;
@@ -149,6 +152,11 @@
             }
            
         }
+    }
+}
+.manage--cancel{
+    .llp--primary--green--btn{
+        width: 266px;
     }
 }
 .llp--left--panel--view.cust--acc--sett--wrapper .manage--sub--section header .ur--sub{
