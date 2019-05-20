@@ -6,7 +6,7 @@ import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms'
 import { CustomValidators } from 'ng2-validation';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 //import { Observable, of } from 'rxjs';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepperModule , MatStepper} from '@angular/material/stepper';
 //import { states } from '../../../state';
 import { yearsOfServiceList, businessTypeList , industryDomainList, licenceHeldList } from '../../../selectList';
 import { states } from '../../../state';
@@ -16,14 +16,14 @@ import { states } from '../../../state';
   styleUrls: ['./business-info.component.scss']
 })
 export class BusinessInfoComponent implements OnInit {
-  @ViewChild('stepper')
+  @ViewChild('stepper') private myStepper: MatStepper;
   
   isLinear = false;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
   forthFormGroup: FormGroup;
-  isEditable = false;
+  //isEditable = true;
   yearsOfServiceLists:any;
   businessTypeLists:any;
   industryDomainLists:any;
@@ -32,22 +32,22 @@ export class BusinessInfoComponent implements OnInit {
   step:any;
   profile:any;
   stateList:any;
-  stepControl: any;
-
-  state_name:string;  short_code:string;
-
+  state_name:string;
+  short_code:string;
+  
   constructor(private router: Router, private activeRoute: ActivatedRoute, private stepper: MatStepperModule, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
   
   ngOnInit() {
+    //localStorage.setItem("step",'');
     this.stateList = states;
     this.step = localStorage.getItem("step");
-    this.stepControl  = 'thirdFormGroup';
-    // this.currentStep = this.thirdFormGroup;
+    this.myStepper.selectedIndex = Number(this.step);
+    console.log("Step :- ",this.step,this.myStepper.selectedIndex); 
     this.yearsOfServiceLists = yearsOfServiceList;
     this.businessTypeLists = businessTypeList;
     this.industryDomainLists = industryDomainList;
     this.licenceHeldLists = licenceHeldList;
-
+  
     this.firstFormGroup = new FormGroup({
       firstName: new FormControl('',Validators.required),
       lastName: new FormControl('',Validators.required),
@@ -55,7 +55,7 @@ export class BusinessInfoComponent implements OnInit {
       businessType: new FormControl('',Validators.required),
       industryDomain: new FormControl('',Validators.required)
     });
-
+  
     this.secondFormGroup = this.fb.group({
       addressLine1: new FormControl('', Validators.required),
       addressLine2: new FormControl(''),
@@ -84,12 +84,13 @@ export class BusinessInfoComponent implements OnInit {
   }*/
 
   signupSubmit(steps=null,profileInData=null) {  
+    console.log("Steps :- ",steps); 
    this.userId = '5cc9cc301955852c18c5b73a';
 
    let msgName = '';
-   if(steps=='first') msgName = "business information";
-   else if(steps=='second') msgName ="business address";
-   else if(steps=='third') msgName ="license information";
+   if(steps==1) msgName = "business information";
+   else if(steps==2) msgName ="business address";
+   else if(steps==3) msgName ="license information";
 
     var query = {};
     var proquery = {};
@@ -107,7 +108,7 @@ export class BusinessInfoComponent implements OnInit {
         //this.prodata = result.data.userProfile;
         localStorage.setItem("step",steps);
         console.log(steps)
-        if(steps=='forth'){console.log("here we are",steps);
+        if(steps==4){console.log("here we are",steps);
           this.router.navigate(['/', 'advisor', 'thank-you']);
         }
         this.snack.open(result.data.message, 'OK', { duration: 4000 })

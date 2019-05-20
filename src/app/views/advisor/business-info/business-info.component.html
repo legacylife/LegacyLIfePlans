@@ -8,10 +8,10 @@
     <div class="login-sub-wrapper">
       <div class="stepper--wrapper">
 
-        <mat-horizontal-stepper [linear]="!isLinear" #stepper>
-          <!-- step 1 -->
+        <mat-horizontal-stepper  linear #stepper>
+          <!-- step 1   (click)="isLinear=isLinear" id="toggle-linear"-->
           <mat-step [stepControl]="firstFormGroup">
-            <form [formGroup]="firstFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit('first',firstFormGroup.value)">
+            <form [formGroup]="firstFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit(1,firstFormGroup.value)">
               <div class="info--content">
                 <div class="text-center pb-1">
                   <h2 class="login-header-text m-0">Business Information</h2>
@@ -59,7 +59,7 @@
 
           <!-- step 2 -->
           <mat-step [stepControl]="secondFormGroup">
-            <form [formGroup]="secondFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit('second',secondFormGroup.value)">
+            <form [formGroup]="secondFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit(2,secondFormGroup.value)">
 
               <div class="info--content">
                 <div class="text-center pb-1">
@@ -114,7 +114,7 @@
 
           <!-- step 3 -->
           <mat-step [stepControl]="thirdFormGroup">
-            <form [formGroup]="thirdFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit('third',thirdFormGroup.value)">
+            <form [formGroup]="thirdFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit(3,thirdFormGroup.value)">
               <div class="info--content">
                 <div class="text-center pb-1">
                   <h2 class="login-header-text m-0">License Information</h2>
@@ -163,7 +163,7 @@
 
           <!-- step 4 -->
           <mat-step>
-            <form [formGroup]="forthFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit('forth',forthFormGroup.value)">
+            <form [formGroup]="forthFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit(4,forthFormGroup.value)">
             <div class="info--content">
               <div class="text-center pb-0">
                 <h2 class="login-header-text m-0">Business Documents</h2>
