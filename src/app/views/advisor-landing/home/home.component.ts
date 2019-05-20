@@ -145,7 +145,7 @@ export class HomeComponent implements OnInit {
   // autoplaySpeed: 10000,autoplay : true,
   // pauseOnHover:false,  autoplaySpeed: 1000 , speed: 200,
   slideConfigTwo = { 'slidesToShow': 3, 'centerMode': true, infinite: true,
-   autoplay: false,  'slidesToScroll': 1 , responsive : [
+   autoplay: true,  autoplaySpeed: 2000 , 'slidesToScroll': 1 , responsive : [
     {
       breakpoint: 1212,
       settings: {

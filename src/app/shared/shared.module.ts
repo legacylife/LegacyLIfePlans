@@ -71,11 +71,6 @@ import { GetValueByKeyPipe } from './pipes/get-value-by-key.pipe';
 import { ThemeService } from './services/theme.service';
 import { LayoutService } from './services/layout.service';
 import { NavigationService } from './services/navigation.service';
-import { AdvisorNavigationService } from './services/pre-login-advisor.service';
-import { CustNavService } from './services/customer-nav-links.service';
-import { AdvisorNavService } from './services/advisor-nav-links.service';
-import { LandingAdvisorNavService } from './services/pre-login-advisor-landing-nav-links.service';
-import { LandingCustomerNavService } from './services/pre-login-cust-landing-nav-links.service';
 import { RoutePartsService } from './services/route-parts.service';
 import { AuthGuard } from './services/auth/auth.guard';
 import { AppConfirmService } from './services/app-confirm/app-confirm.service';
@@ -152,11 +147,6 @@ const classesToInclude = [
     ThemeService,
     LayoutService,
     NavigationService,
-    AdvisorNavigationService,
-    CustNavService,
-    AdvisorNavService,
-    LandingAdvisorNavService,
-    LandingCustomerNavService,
     RoutePartsService,
     AuthGuard,
     AppConfirmService,

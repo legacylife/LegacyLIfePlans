@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { NavigationService } from "../../../shared/services/navigation.service";
 import { Subscription } from "rxjs";
 
+
 @Component({
   selector: 'app-sidebar-top',
   templateUrl: './sidebar-top.component.html'

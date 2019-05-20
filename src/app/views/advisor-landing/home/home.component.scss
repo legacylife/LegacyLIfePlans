@@ -545,11 +545,12 @@
 .what--do--sec{
     .slick-active{
         &.slick-center{
-            border: 1px solid red;
+            opacity: 1;
         }
     }
     .slick-active{
-        border: 1px solid black;
+        opacity: 0.2;
+        outline: none;
     }
 }
 
