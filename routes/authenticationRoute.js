@@ -453,7 +453,11 @@ async function checkEmail(req, res) {
                 OtpC.password = req.body.password;
                 }
                 OtpC.otpCode = otp;
-                OtpC.status = 'Active';
+                if(req.body.userType != 'advisor')
+                  OtpC.status = 'Active';
+                else 
+                  OtpC.status = 'Pending';
+
                 OtpC.userType = req.body.userType;
                 OtpC.save(function (err, newUser) {
                   if (err) {
@@ -490,7 +494,6 @@ async function checkUserOtp(req, res) {
           user.lastLoggedInOn = new Date();
 
           user.emailVerified = true;
-          //user.status = 'Active';
           user.createdOn = new Date();
 
           if(user.userType != 'advisor'){
@@ -514,7 +517,12 @@ async function checkUserOtp(req, res) {
                 if (err) {
                   res.send(resFormat.rSuccess({ code: "error", message: "Invalid OTP" }))
                 } else {
-                  res.send(resFormat.rSuccess({ "userId": newUser._id, "username": newUser.username, "userType": newUser.userType, code: "success", message: "You have successfully signup. Please update your profile or click on Skip button to go on dashboard." }))
+                  let message = "";
+                  if(newUser.userType == 'customer')
+                    message = "You have successfully signup. Please update your profile or click on Skip button to go on dashboard.";
+                  else
+                    message = "You have successfully signup. Please update your profile."; 
+                  res.send(resFormat.rSuccess({ "userId": newUser._id, "username": newUser.username, "userType": newUser.userType, code: "success", message: message }))
                 }
               })
 
