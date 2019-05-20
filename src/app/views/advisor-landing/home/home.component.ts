@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit {
 
     },
     {
-      clientSays: 'Lorem Ipsum is simply dummy text ofs simply dummy text of the printing.',
+      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
       clientPic: "assets/images/arkenea/john.png",
       clientName: 'John Smith',
       clientDesc: 'CFC, CIF'
@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit {
 
     },
     {
-      clientSays: 'Lorem Ipsum is simply dummy text ofs simply dummy text of the printing.',
+      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
       clientPic: "assets/images/arkenea/john.png",
       clientName: 'John Smith',
       clientDesc: 'CFC, CIF'
@@ -95,7 +95,7 @@ export class HomeComponent implements OnInit {
 
     },
     {
-      clientSays: 'Lorem Ipsum is simply dummy text ofs simply dummy text of the printing.',
+      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
       clientPic: "assets/images/arkenea/john.png",
       clientName: 'John Smith',
       clientDesc: 'CFC, CIF'
@@ -115,7 +115,7 @@ export class HomeComponent implements OnInit {
 
     },
     {
-      clientSays: 'Lorem Ipsum is simply dummy text ofs simply dummy text of the printing.',
+      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
       clientPic: "assets/images/arkenea/john.png",
       clientName: 'John Smith',
       clientDesc: 'CFC, CIF'
