@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatProgressBar, MatButton, MatSnackBar } from '@angular/material';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
-import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
+import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
+import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { CustomValidators } from 'ng2-validation';
-import { APIService } from './../../../../api.service';
-import { UserAPIService } from './../../../../userapi.service';
+import { APIService } from './../../../api.service';
+import { UserAPIService } from './../../../userapi.service';
 
 const passwordRegex: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!#%*?&])[A-Za-z\d$@$!#%*?&]{6,16}/
 const password = new FormControl('', [Validators.required, Validators.pattern(passwordRegex)]);

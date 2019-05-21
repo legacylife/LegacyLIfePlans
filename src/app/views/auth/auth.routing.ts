@@ -7,7 +7,7 @@ import { SigninComponent } from './signin/signin.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { PasswordResetSuccessfulComponent } from './password-reset-successful/password-reset-successful.component';
 import { ForgotPasswordSuccessfulComponent } from './password-reset-successful/forgot-password-successful.component';
-import { UserPreAuthGuard } from '../../../shared/services/auth/userpreauth.guard';
+import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
 
 console.log('Auth---routing');
 export const AuthRoutes: Routes = [

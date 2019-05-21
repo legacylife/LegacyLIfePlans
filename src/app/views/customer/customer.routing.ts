@@ -19,11 +19,12 @@ export const CustomerRoutes: Routes = [
         canActivate: [ UserPreAuthGuard ]
       }
     ],
-  },{
+  },/*{
     path: '',
     component: AuthLayoutComponent,
     loadChildren: './auth/auth.module#AuthModule',
-  },{
+  },*/
+  {
     path: 'dashboard',
     component: CustomerLayoutComponent,
     children : [

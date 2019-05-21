@@ -27,14 +27,12 @@
 
           <div class="">
             <mat-form-field class="full-width">
-              <input type="password" name="password" matInput placeholder="Password*" [formControl]="llpCustsignupForm.controls['password']"
-                value="">
+              <input type="password" name="password" matInput placeholder="Password*" [formControl]="llpCustsignupForm.controls['password']" value="">
 
               <mat-icon matTooltip="Please enter password" matTooltipClass="llp--tooltip error" class="red--alert" *ngIf="llpCustsignupForm.controls['password'].hasError('required') && llpCustsignupForm.controls['password'].touched">help_outline</mat-icon>
 
               <mat-icon matTooltip="Password must be at least 6 characters long and maximum of 16 characters, alpha numeric with at least one-special character."
                 matTooltipClass="llp--tooltip error" class="red--alert" *ngIf="llpCustsignupForm.controls['password'].hasError('pattern')">help_outline</mat-icon>
-
             </mat-form-field>
           </div>
           <button *ngIf="custProceedBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" [disabled]="llpCustsignupForm.invalid"
@@ -53,43 +51,28 @@
               <mat-icon matTooltip="Please enter OTP" matTooltipClass="llp--tooltip error" class="red--alert" *ngIf="llpCustotpForm.controls['otp'].hasError('required') && llpCustotpForm.controls['otp'].touched">help_outline</mat-icon>
 
               <mat-icon matTooltip="{{invalidOtpMessage}}" matTooltipClass="llp--tooltip error" *ngIf="invalidOTP" class="red--alert">help_outline</mat-icon>
-
             </mat-form-field>
-
             <p class="terms--policy">By signing up, you agree to our
               <a>Terms of Use </a> and
               <a>Privacy Policy</a>
             </p>
           </div>
-          <button *ngIf="custFreeTrailBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" [disabled]="llpCustotpForm.invalid"
-            (click)="OtpProceed()">Sign up</button>
-
-             <!--[routerLink]="'/customer/update-profile'"-->
-        <div class="text-center bot-txt">
+          <button *ngIf="custFreeTrailBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" [disabled]="llpCustotpForm.invalid"  (click)="OtpProceed()">Sign up</button>
+            <div class="text-center bot-txt">
             <p>Already a member?
-              <a [routerLink]="'/customer/signin'"> Login</a>
+              <a [routerLink]="'/signin'"> Login</a>
             </p>
-          </div>
+            </div>
         </form>
-
-
-       
-
-
       </mat-card-content>
     </div>
-
-
     <div class="login-footer">
       <p>Are you a Advisor?
-        <a [routerLink]="'/auth/advisor/signup'">Register here</a>
+        <a [routerLink]="'/advisor/signup'">Register here</a>
       </p>
     </div>
-
   </div>
-
 </div>
-
 <footer class="auth-footer">
   <p>© 2019 Legacy Life Plans</p>
 </footer>

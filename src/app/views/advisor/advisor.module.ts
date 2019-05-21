@@ -38,7 +38,7 @@ import { AdvisorRoutes } from './advisor.routing';
 import { AdvisorSignupComponent,FormatTimePipe } from './signup/signup.component';
 import { BusinessInfoComponent } from './business-info/business-info.component';
 import { SetPasswordComponent } from './set-password/set-password.component';
-import { AdvisorSigninComponent } from './signin/signin.component';
+//import { AdvisorSigninComponent } from './signin/signin.component';
 import { ThankYouComponent } from './thank-you/thank-you.component';
 
 import { ChangePassComponent } from './advisor-account-setting/change-pass/change-pass.component';
@@ -93,7 +93,7 @@ import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
     RouterModule.forChild(AdvisorRoutes)
   ],
   declarations: [
-    AdvisorSignupComponent,BusinessInfoComponent,SetPasswordComponent,AdvisorSigninComponent,FormatTimePipe,ThankYouComponent,AdvisorDashboardComponent,LegaciesComponent,AdvisorDashboardUpdateComponent,AdvisorAccountSettingComponent,AdvisorSubscriptionComponent,ChangePassComponent
+    AdvisorSignupComponent,BusinessInfoComponent,SetPasswordComponent,FormatTimePipe,ThankYouComponent,AdvisorDashboardComponent,LegaciesComponent,AdvisorDashboardUpdateComponent,AdvisorAccountSettingComponent,AdvisorSubscriptionComponent,ChangePassComponent
   ],providers: [
     MatDatepickerModule,UserAuthGuard,UserPreAuthGuard,
   ],entryComponents: [ChangePassComponent],

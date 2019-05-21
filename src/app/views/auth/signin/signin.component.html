@@ -40,7 +40,7 @@
 
           <div class="remember-wrap">
             <!-- <mat-checkbox name="rememberMe">Remember me</mat-checkbox> -->
-            <a [routerLink]="'/customer/forgot-password'">Forgot Password?</a>
+            <a [routerLink]="'/forgot-password'">Forgot Password?</a>
           </div>
           <!-- <button mat-raised-button class="llp--primary--btn full-width form--action--btn" (click)="loginClick();">Login</button> -->
           <button mat-raised-button class="llp--primary--btn full-width form--action--btn"  [disabled]="llpCustsigninForm.invalid">Login</button>
@@ -53,17 +53,8 @@
         </form>
       </mat-card-content>
     </div>
-
-    <!-- <div class="login-footer">
-      <p>Are you a Customer? <a [routerLink]="'/auth/admin/signup'">Register here</a></p>
-    </div> -->
-
-
-
   </div>
-
 </div>
-
 <footer class="auth-footer">
   <p>© 2019 Legacy Life Plans</p>
 </footer>

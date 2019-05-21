@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatStepperModule } from '@angular/material/stepper';
 import {MatRadioModule} from '@angular/material/radio';
-import { UserPreAuthGuard } from '../../../shared/services/auth/userpreauth.guard';
+import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
 import {
   MatProgressBarModule,
   MatButtonModule,

@@ -1,13 +1,13 @@
 import { NgModule, Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { APIService } from './../../../../api.service';
-import { UserAPIService } from './../../../../userapi.service';
+import { APIService } from './../../../api.service';
+import { UserAPIService } from './../../../userapi.service';
 import { MatProgressBar, MatButton, MatSnackBar } from '@angular/material';
-import { RoutePartsService } from "../../../../shared/services/route-parts.service";
+import { RoutePartsService } from "../../../shared/services/route-parts.service";
 import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
-import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
+import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 //import { delay } from 'rxjs/operators';
-
+console.log('signin');
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -42,21 +42,23 @@ export class SigninComponent implements OnInit {
       username: this.llpCustsigninForm.controls['username'].value,
       password: this.llpCustsigninForm.controls['password'].value,
       //stayLoggedIn:  this.llpCustsigninForm.controls['rememberMe'].value,
-      userType: "customer"
+      userType: ""
     }
     this.loader.open();
     this.userapi.apiRequest('post', 'auth/signin', signInData).subscribe(result => {
       this.loader.close();
       if (result.status == "success") {
         userData = result.data;
-        localStorage.setItem("endUserId", userData.userId)
-        localStorage.setItem("endUserType", userData.userType)
-        localStorage.setItem("endUserFirstName", userData.firstName)
-        localStorage.setItem("endUserLastName", userData.lastName)
-        
+        localStorage.setItem("endUserId", userData.userId);
+        localStorage.setItem("endUserType", userData.userType);
+        localStorage.setItem("endUserFirstName", userData.firstName);
+        localStorage.setItem("endUserLastName", userData.lastName);        
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
-        this.router.navigate(['/', 'customer', 'dashboard'])
-
+        if(userData.userType=='customer'){
+          this.router.navigate(['/', 'customer', 'dashboard']);
+        }else{
+          this.router.navigate(['/', 'advisor', 'dashboard'])
+        }  
       } else {
         this.llpCustsigninForm.controls['username'].enable();
         var emails = this.llpCustsigninForm.controls['username'].value

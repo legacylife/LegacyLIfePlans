@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatProgressBar, MatButton, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
-import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
-import { APIService } from './../../../../api.service';
-import { UserAPIService } from './../../../../userapi.service';
+import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
+import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
+import { APIService } from './../../../api.service';
+import { UserAPIService } from './../../../userapi.service';
 
 @Component({
   selector: 'app-forgot-password',
