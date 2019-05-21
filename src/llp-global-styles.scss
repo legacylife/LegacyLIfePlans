@@ -477,19 +477,25 @@ body{
             font-family: $font--lato--bold;
             justify-content: center;
 
-            .icon--cross{
+            .modal--close{
                 position: absolute;
-                right: -9px;
-                top: -11px;
-                z-index: 11111111;
-                color: red;
-                background: #fff;
-                border-radius: 50%;
-                height: auto;
-                width: auto;
-                font-size: 30px;
-                cursor: pointer;
+                right: 0;
+                top: 0;
+                .icon--cross{
+                    position: absolute;
+                    right: -9px;
+                    top: -11px;
+                    z-index: 11111111;
+                    color: red;
+                    background: #fff;
+                    border-radius: 50%;
+                    height: auto;
+                    width: auto;
+                    font-size: 30px;
+                    cursor: pointer;
+                }
             }
+            
         }
         .ll--modal--body{
             padding: 0 25px;
