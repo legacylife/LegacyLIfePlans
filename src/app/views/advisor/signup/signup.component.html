@@ -34,11 +34,14 @@
                 <label class="otp-note">A One Time Passcode has been sent your email. Please enter the 
                   OTP below to verify your Email Address.</label>
                   <mat-form-field class="full-width">
-                    <input type="text" matInput name="otp" placeholder="Enter OTP" value="" [formControl]="llpAdvotpForm.controls['otp']">
+                    <input type="text" matInput name="otp" placeholder="Enter OTP" value="" maxlength="6" min="6" [formControl]="llpAdvotpForm.controls['otp']">
                     <div *ngIf="counter !== 0" class="resend-otp">{{countDown | async | formatTime}}</div>
                     <div *ngIf="counter == 0" class="resend-otp" (click)="ResendOtpProceed()">
                       <a>Resend OTP</a>
                     </div>
+                    <mat-icon matTooltip="Please enter OTP" matTooltipClass="llp--tooltip error" class="red--alert" *ngIf="llpAdvotpForm.controls['otp'].hasError('required') && llpAdvotpForm.controls['otp'].touched">help_outline</mat-icon>
+
+                    <mat-icon matTooltip="{{invalidOtpMessage}}" matTooltipClass="llp--tooltip error" *ngIf="invalidOTP" class="red--alert">help_outline</mat-icon>
                   </mat-form-field>  
               </div>
             <button *ngIf="freeTrailBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1"  [disabled]="llpAdvsignupForm.invalid"

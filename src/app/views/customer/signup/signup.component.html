@@ -44,7 +44,7 @@
           <div class="otp-sec" *ngIf="custOtpSec">
             <label class="otp-note">A One Time Passcode has been sent your email. Please enter the OTP below to verify your Email Address.</label>
             <mat-form-field class="full-width">
-              <input type="text" matInput name="otp" placeholder="Enter OTP" [formControl]="llpCustotpForm.controls['otp']" value="">
+              <input type="text" matInput name="otp" placeholder="Enter OTP" [formControl]="llpCustotpForm.controls['otp']" max="6" min="6" value="">
 
               <div *ngIf="counter !== 0" class="resend-otp">{{countDown | async | formatTime}}</div>
               <div *ngIf="counter == 0" class="resend-otp" (click)="ResendOtpProceed()">
