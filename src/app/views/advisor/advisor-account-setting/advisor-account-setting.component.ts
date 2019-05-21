@@ -39,7 +39,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
   awards: any;
   websitess: any;
   socialMediaLinkss: any;
-
+  websites: [{ 'id': "",'links': "" }]
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
   constructor(private router: Router, private route: ActivatedRoute,private fb: FormBuilder, private snack: MatSnackBar,public dialog: MatDialog, private userapi: UserAPIService,private loader: AppLoaderService) { }
@@ -68,7 +68,15 @@ export class AdvisorAccountSettingComponent implements OnInit {
             businessPhoneNumber: new FormControl(''),
             bioText: new FormControl(''),          
             websites: new FormControl(''),          
-            socialMediaLinks: new FormGroup({
+            //websites: this.fb.array([ this.addWebsitesForm() ]),
+        //    websites: this.fb.array( this.websites.map(this.addWebsitesForm)),
+            
+          /* 
+          websites: new FormGroup({
+            id: new FormControl(''),
+            links:  new FormControl('')            
+          }),  */
+           socialMediaLinks: new FormGroup({
               facebook: new FormControl(''),
               twitter:  new FormControl(''),
               linkedIn:  new FormControl('')
@@ -127,24 +135,25 @@ export class AdvisorAccountSettingComponent implements OnInit {
         this.AddressForm.controls['city'].setValue(this.profile.city);
         this.AddressForm.controls['state'].setValue(this.profile.state);
         this.AddressForm.controls['zipcode'].setValue(this.profile.zipcode);
-        this.AddressForm.controls['businessPhoneNumber'].setValue(this.profile.businessPhoneNumber);
-        this.AddressForm.controls['websites'].setValue(this.profile.websites);
+        this.AddressForm.controls['businessPhoneNumber'].setValue(this.profile.businessPhoneNumber);      
         this.AddressForm.controls['bioText'].setValue(this.profile.bioText);
+      //  this.AddressForm.controls['websites'].setValue(this.profile.websites);
+
+
         this.awards = this.profile.awardsYears;
         this.websitess = this.profile.websites;
         
-        /*this.socialMediaLinkss ={
-          facebook: this.websitess.facebook,
-          twitter:  this.websitess.twitter,
-          linkedIn:  this.websitess.linkedIn,
-        },*/ 
-        // this.socialMediaLinkss = this.profile.socialMediaLinks;
-        // this.AddressForm.controls['socialMediaLinks'].controls['facebook'].setValue(this.profile.socialMediaLinks.facebook)
-        // this.AddressForm.controls['socialMediaLinks'].setValue(this.profile.socialMediaLinks.twitter)
-        // this.AddressForm.controls['socialMediaLinks'].setValue(this.profile.socialMediaLinks.linkedIn)
-       
+
+      //  const webctrl = this.getFormGroup('websites')
+       //console.log("Website ",webctrl, this.profile)
+       // let webs:any = [];
+        //this.AddressForm.websitess.map(p=> {
+        //})
+      //  webctrl.controls['id'].setValue(this.profile.websites.id)               
+
+
         const ctrl = this.getFormGroup('socialMediaLinks')
-        console.log(ctrl, this.profile)
+        //console.log(ctrl, this.profile)
         ctrl.controls['facebook'].setValue(this.profile.socialMediaLinks.facebook)
         ctrl.controls['twitter'].setValue(this.profile.socialMediaLinks.twitter)
         ctrl.controls['linkedIn'].setValue(this.profile.socialMediaLinks.linkedIn)
@@ -287,8 +296,14 @@ export class AdvisorAccountSettingComponent implements OnInit {
     this.awards.splice(i,1);
   }
 
+  addWebsitesForm() {
+    return this.fb.group({
+      id: '',
+      links: ''
+    });   
+  }
+
   addWebsites() {
-   
     this.websitess.push({      
       id:'this.websitess.length+1',
       links:''
