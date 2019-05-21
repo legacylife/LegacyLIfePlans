@@ -29,7 +29,6 @@ export class AdvisorAccountSettingComponent implements OnInit {
   ProfileForm: FormGroup;
   AddressForm: FormGroup;
   LicenseForm: FormGroup;
-  @ViewChild(MatSidenav) private sideNav: MatSidenav;
   userId:string;
   state_name:string;
   short_code:string;
@@ -37,17 +36,22 @@ export class AdvisorAccountSettingComponent implements OnInit {
   prodata:any;
   profile:any;
   stateList:any;
-  //websites: FormArray;
+  awards: any;
+  websitess: any;
+  socialMediaLinkss: any;
+
+  @ViewChild(MatSidenav) private sideNav: MatSidenav;
+
   constructor(private router: Router, private route: ActivatedRoute,private fb: FormBuilder, private snack: MatSnackBar,public dialog: MatDialog, private userapi: UserAPIService,private loader: AppLoaderService) { }
 
   ngOnInit() {
            this.stateList = states;
-           this.userId = localStorage.getItem("endUserId");
            this.ProfileForm = this.fb.group({
             firstName: new FormControl('', Validators.required),
             lastName: new FormControl('', Validators.required),
             username: new FormControl('', Validators.required),
-            //phoneNumber: new FormControl('', Validators.required),
+            phoneNumber: new FormControl('', Validators.required),
+            landlineNumber: new FormControl('',),
             dateOfBirth: new FormControl('',)
           });
 
@@ -67,12 +71,13 @@ export class AdvisorAccountSettingComponent implements OnInit {
             socialMediaLinks: new FormGroup({
               facebook: new FormControl(''),
               twitter:  new FormControl(''),
-              linkedIn:  new FormControl(''),
-            }),
-            //websites: new FormControl('')   
-           // websites: this.fb.array([ this.createItem() ])         
+              linkedIn:  new FormControl('')
+            }), 
+            awardsYears: new FormGroup({
+              title: new FormControl(''),
+              year:  new FormControl('')
+            }),            
           });
-
           
           this.LicenseForm = this.fb.group({
             activeLicenceHeld: new FormControl('', Validators.required),
@@ -81,14 +86,12 @@ export class AdvisorAccountSettingComponent implements OnInit {
             howManyProducers: new FormControl('',)
           });
 
-
           this.profile = [];
+          this.awards = [];
+          this.websitess = [];
+          this.socialMediaLinkss = []
           this.getProfile();
-
-
-          /*this.AddressForm = this.fb.group({            
-            websites: this.fb.array([ this.createItem() ])
-          });*/
+          //this.awards = [{title: "",year: ""}];      
  }
 
  public fileOverBase(e: any): void {
@@ -97,6 +100,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
 
   //function to get all events
   getProfile = (query = {}, search = false) => {   
+    this.userId = '5cc9cc301955852c18c5b73a';
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: "advisor" }, query)
     }
@@ -109,6 +113,8 @@ export class AdvisorAccountSettingComponent implements OnInit {
         this.profile = result.data.userProfile;
         this.ProfileForm.controls['firstName'].setValue(this.profile.firstName);
         this.ProfileForm.controls['lastName'].setValue(this.profile.lastName);
+        this.ProfileForm.controls['phoneNumber'].setValue(this.profile.phoneNumber);
+        this.ProfileForm.controls['landlineNumber'].setValue(this.profile.landlineNumber);
         this.ProfileForm.controls['dateOfBirth'].setValue(this.profile.dateOfBirth);
         this.ProfileForm.controls['username'].setValue(this.profile.username);
 
@@ -124,18 +130,29 @@ export class AdvisorAccountSettingComponent implements OnInit {
         this.AddressForm.controls['businessPhoneNumber'].setValue(this.profile.businessPhoneNumber);
         this.AddressForm.controls['websites'].setValue(this.profile.websites);
         this.AddressForm.controls['bioText'].setValue(this.profile.bioText);
+        this.awards = this.profile.awardsYears;
+        this.websitess = this.profile.websites;
         
+        /*this.socialMediaLinkss ={
+          facebook: this.websitess.facebook,
+          twitter:  this.websitess.twitter,
+          linkedIn:  this.websitess.linkedIn,
+        },*/ 
+        // this.socialMediaLinkss = this.profile.socialMediaLinks;
+        // this.AddressForm.controls['socialMediaLinks'].controls['facebook'].setValue(this.profile.socialMediaLinks.facebook)
+        // this.AddressForm.controls['socialMediaLinks'].setValue(this.profile.socialMediaLinks.twitter)
+        // this.AddressForm.controls['socialMediaLinks'].setValue(this.profile.socialMediaLinks.linkedIn)
+       
+        const ctrl = this.getFormGroup('socialMediaLinks')
+        console.log(ctrl, this.profile)
+        ctrl.controls['facebook'].setValue(this.profile.socialMediaLinks.facebook)
+        ctrl.controls['twitter'].setValue(this.profile.socialMediaLinks.twitter)
+        ctrl.controls['linkedIn'].setValue(this.profile.socialMediaLinks.linkedIn)
         this.LicenseForm.controls['activeLicenceHeld'].setValue(this.profile.activeLicenceHeld);
         this.LicenseForm.controls['agencyOversees'].setValue(this.profile.agencyOversees);
         this.LicenseForm.controls['managingPrincipleName'].setValue(this.profile.managingPrincipleName);
         this.LicenseForm.controls['howManyProducers'].setValue(this.profile.howManyProducers);
 
-//console.log(this.profile.socialMediaLinks.facebook)
-        //this.AddressForm.controls['socialMediaLinks.facebook'].setValue(this.profile.socialMediaLinks.facebook);
-        //this.AddressForm.controls['socialMediaLinks.twitter'].setValue(this.profile.socialMediaLinks.twitter ? this.profile.socialMediaLinks.twitter : "");
-        //this.AddressForm.controls['socialMediaLinks.linkedIn'].setValue(this.profile.socialMediaLinks.linkedIn ? this.profile.socialMediaLinks.linkedIn : "");
-      //  this.AddressForm.websites: this.formBuilder.array([ this.createItem() ])
-       // this.AddressForm.controls['websites'].setValue(this.profile.websites[0]);
         this.loader.close();
       }
     }, (err) => {
@@ -144,13 +161,17 @@ export class AdvisorAccountSettingComponent implements OnInit {
     })
   }
 
-  
+  getFormGroup(controlName) {
+     return <FormGroup>this.AddressForm.get(controlName); 
+  }
+ 
   ProfileSubmit() {  
+    this.userId = '5cc9cc301955852c18c5b73a';
     let profileInData = {
       firstName: this.ProfileForm.controls['firstName'].value,
       lastName: this.ProfileForm.controls['lastName'].value,
-     // businessPhoneNumber: this.ProfileForm.controls['businessPhoneNumber'].value,
-     // phoneNumber: this.ProfileForm.controls['phoneNumber'].value,
+      businessPhoneNumber: this.ProfileForm.controls['businessPhoneNumber'].value,
+      phoneNumber: this.ProfileForm.controls['phoneNumber'].value,
       dateOfBirth: this.ProfileForm.controls['dateOfBirth'].value      
     }
     var query = {};
@@ -168,9 +189,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
       } else {
         //this.prodata = result.data.userProfile;
        // localStorage.setItem("firstName", this.rows.firstName)
-       // localStorage.setItem("lastName", this.rows.lastName)       		
-
-        
+       // localStorage.setItem("lastName", this.rows.lastName)       		     
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
@@ -179,8 +198,10 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   AddressSubmit() {  
-    const { socialMediaLinks : {linkedIn='' , facebook = '' , twitter =''}} = this.AddressForm.value
-    console.log(this.AddressForm.value)
+    this.userId = '5cc9cc301955852c18c5b73a';
+    console.log("1 :- ",this.AddressForm.value)
+    const { socialMediaLinks : {facebook = '' , twitter ='' , linkedIn ='' }} = this.AddressForm.value
+    console.log("2 :- ",this.AddressForm.value)
     let AddressInData = {
       addressLine1: this.AddressForm.controls['addressLine1'].value,
       addressLine2: this.AddressForm.controls['addressLine2'].value,
@@ -221,8 +242,8 @@ export class AdvisorAccountSettingComponent implements OnInit {
     })
   }
 
-
   LicenseSubmit(){
+    this.userId = '5cc9cc301955852c18c5b73a';
     console.log(this.LicenseForm.value)
     let LicensInData = {
       activeLicenceHeld: this.LicenseForm.controls['activeLicenceHeld'].value,
@@ -252,25 +273,40 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
 
-  /*
-  addItem(): void {
-    this.websites = this.AddressForm.get('websites') as FormArray;
-    this.websites.push(this.createItem());
+  addNewAo() {
+    this.awards.push({
+      id:'this.awards.length+1',
+      title: '',
+      year: ''
+    })
+ //   console.log('awards---',this.awards)
   }
 
-  createItem(): FormGroup {
-    return this.fb.group({
-      link: ''
-    });
-  }*/
+  delete(i){
+    console.log("award",i)
+    this.awards.splice(i,1);
+  }
 
- changePasspordModal(): void {
+  addWebsites() {
+   
+    this.websitess.push({      
+      id:'this.websitess.length+1',
+      links:''
+    })
+   // console.log('websitess---',this.websitess)
+  }
+  deleteWebsite(i){
+   // console.log("web",i)
+    this.websitess.splice(i,1);
+  }
+
+  changePasspordModal(): void {
       const dialogRef = this.dialog.open(ChangePassComponent, {
         width: '555px',
       });
       dialogRef.afterClosed().subscribe(result => {});
- }
- toggleSideNav() {
+  }
+  toggleSideNav() {
       //this.sideNav.opened = !this.sideNav.opened;
-    }
+  }
  }

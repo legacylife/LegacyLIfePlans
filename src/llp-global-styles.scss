@@ -381,6 +381,25 @@ body{
             
         }
     }
+    .mat-datepicker-content{
+        .mat-calendar-table{
+            .mat-calendar-body{
+                .mat-calendar-body-cell-content{
+                    font-family: $font--lato--regular;
+                    font-size: 16px;
+                }
+                tr{
+                    td{
+                        display: table-cell !important;
+                        padding: 0;
+                    }
+                }
+            }
+            .mat-calendar-body-selected{
+                background-color: #c72128;
+            }
+        }
+    }
 }
 
 /* Tooltip  */
@@ -431,8 +450,13 @@ body{
     &.prev,
     &.next{
         position: absolute;
-        top: 35%
-    }
+        top: 35%;
+        border-radius: 50%;
+    }   
+}
+.slick-next,
+.slick-prev{
+    display: none !important;
 }
 
 // Modal
@@ -579,7 +603,12 @@ body{
     }
 }
 
-
+// disable button 
+body{
+    .mat-raised-button[disabled]{
+        opacity: 0.7;
+    }
+}
 
 // 
 .egret-indigo .mat-slide-toggle-bar{
@@ -602,6 +631,7 @@ body{
 .mx-15{margin: 0 15px !important;}
 .my-15{margin: 15px 0 !important;}
 .mt--30{margin-top: 30px !important;}
+.mb--30{margin-bottom: 30px !important;}
 .px-40{padding: 0 40px !important;}
 .pr-2 {padding-right: 2rem !important;}
 .mr-20{margin-right: 20px !important}
@@ -615,8 +645,8 @@ body{
 .fnt--16{font-size: 16px !important;}
 .fnt--14{font-size: 14px !important;}
 .tran--bg{background-color: transparent !important}
-
-
+.pad--r--lg{padding-right: 30px;}
+.cursor-pointer {cursor: pointer !important;}
 
 /* Media query (start here)*/
 
@@ -631,10 +661,25 @@ body{
     body .mat-dialog-container .ll--modal--footer .llp--primary--btn{
         order: -1;
     }
+    .pad--r--lg{padding-right: 0;}
+    .llp--landing--wrapper .topnav {
+        height: 62px !important;
+    }
 }
-@media only screen and (min-width: 600px) and (max-width: 959px){}
+@media only screen and (min-width: 600px) and (max-width: 959px){
+    .llp--landing--wrapper .topnav {
+        height: 62px !important;
+    }
+}
 @media only screen and (min-width: 960px) and (max-width: 979px){}
-@media only screen and (min-width: 980px) and (max-width: 1279px){}
+@media only screen and (min-width: 980px) and (max-width: 1279px){
+    .llp--slide--toggle .mat-slide-toggle-content {
+        font-size: 14px !important;
+    }
+    .llp--left--panel--view.cust--acc--sett--wrapper .acc--sett--tab .account--details .llp--slide--wrapper .set-auto {
+        font-size: 15px !important;
+    }
+}
 @media only screen and (min-width: 1280px) and (max-width: 1440px){}
 @media only screen and (min-width: 1441px) and (max-width: 1550px){}
 

@@ -1,72 +1,79 @@
-<h2 matDialogTitle>{{data.title}}</h2>
-<form [formGroup]="itemForm" (ngSubmit)="submit()">
-  <div fxLayout="row wrap" fxLayout.lt-sm="column">
-    <div fxFlex="50"  class="pr-1">
-      <mat-form-field class="full-width">
-        <input
-        matInput
-        name="firstName"
-        [formControl]="itemForm.controls['firstName']"
-        placeholder="First Name">
-      </mat-form-field>
-    </div>
+<div class="ll--modal--header">
+  {{data.title}}
+  <mat-icon class="icon--cross" (click)="modalClose.click()">cancel</mat-icon>
+</div>
 
-    <div fxFlex="50"  class="pr-1">
+<!-- <h2 matDialogTitle>{{data.title}}</h2> -->
+
+<form [formGroup]="itemForm" (ngSubmit)="submit()">
+  <div class="ll--modal--body">
+    <div fxLayout="row wrap">
+      <div fxFlex="50"  class="pr-1">
         <mat-form-field class="full-width">
           <input
           matInput
-          name="lastName"
-          [formControl]="itemForm.controls['lastName']"
-          placeholder="Last Name">
+          name="firstName"
+          [formControl]="itemForm.controls['firstName']"
+          placeholder="First Name">
         </mat-form-field>
       </div>
 
-    <div fxFlex="100"  class="pr-1">
-      <mat-form-field class="full-width">
-        <input
-        matInput
-        type="email"
-        name="username"
-        [formControl]="itemForm.controls['username']"
-        placeholder="Email">
-      </mat-form-field>
-    </div>
-
-	
-    
-   <mat-card class="default" *ngFor="let t of adminSections"> 
-    <mat-card-content class="pt-0">
-        <mat-list >
-          <Label>{{t.name}}</Label>
-            <mat-radio-group  class="full-width" name="{{t.code}}" [formControl]="itemForm.controls[t.code]">
-              <mat-list-item>
-                <mat-radio-button value="fullaccess">Full Access </mat-radio-button>   <mat-radio-button value="denyall"> Deny All</mat-radio-button>
-              </mat-list-item>
-        	</mat-radio-group>
-      
-        </mat-list>
-    </mat-card-content>
-   </mat-card>  
-
-    <!--<div fxFlex="100">
-        <Label>Access Sections</Label>
-        <div class="pb-1" *ngFor="let t of adminSections">
-            <Label>{{t.name}}    </Label>
-            <mat-radio-group  class="full-width"
-            name="{{t.code}}" 
-            [formControl]="itemForm.controls[t.code]">
-                <mat-radio-button value="fullaccess">Full Access  </mat-radio-button>
-                <mat-radio-button value="denyall">Deny All</mat-radio-button>
+      <div fxFlex="50"  class="pr-1">
+          <mat-form-field class="full-width">
+            <input
+            matInput
+            name="lastName"
+            [formControl]="itemForm.controls['lastName']"
+            placeholder="Last Name">
+          </mat-form-field>
+        </div>
+      <div fxFlex="100"  class="pr-1">
+        <mat-form-field class="full-width">
+          <input
+          matInput
+          type="email"
+          name="username"
+          [formControl]="itemForm.controls['username']"
+          placeholder="Email">
+        </mat-form-field>
+      </div>
+    <mat-card fxFlex="50" class="pr-1 default" *ngFor="let t of adminSections"> 
+      <mat-card-content class="pt-0">
+          <mat-list >
+            <Label>{{t.name}}</Label>
+              <mat-radio-group  class="llp-radio full-width m-0" name="{{t.code}}" [formControl]="itemForm.controls[t.code]">
+                <mat-list-item>
+                  <mat-radio-button value="fullaccess">Full Access </mat-radio-button>   <mat-radio-button value="denyall"> Deny All</mat-radio-button>
+                </mat-list-item>
             </mat-radio-group>
-        </div>        
-    </div>
-    <div fxFlex="50"  class="pt-1 pr-1">
-      <mat-slide-toggle [formControl]="itemForm.controls['status']">Active Customer</mat-slide-toggle>
-    </div> -->
-    <div fxFlex="100" class="mt-1">
-      <button mat-raised-button color="primary" [disabled]="itemForm.invalid">Save</button>
-      <span fxFlex></span>
-      <button mat-button color="warn" type="button" (click)="dialogRef.close(false)">Cancel</button>
-    </div>
+        
+          </mat-list>
+      </mat-card-content>
+    </mat-card>  
+      <!--<div fxFlex="100">
+          <Label>Access Sections</Label>
+          <div class="pb-1" *ngFor="let t of adminSections">
+              <Label>{{t.name}}    </Label>
+              <mat-radio-group  class="full-width"
+              name="{{t.code}}" 
+              [formControl]="itemForm.controls[t.code]">
+                  <mat-radio-button value="fullaccess">Full Access  </mat-radio-button>
+                  <mat-radio-button value="denyall">Deny All</mat-radio-button>
+              </mat-radio-group>
+          </div>        
+      </div>
+      <div fxFlex="50"  class="pt-1 pr-1">
+        <mat-slide-toggle [formControl]="itemForm.controls['status']">Active Customer</mat-slide-toggle>
+      </div> -->
+      <!-- <div fxFlex="100" class="mt-1">
+        <button mat-raised-button color="primary" [disabled]="itemForm.invalid">Save</button>
+        <span fxFlex></span>
+        <button mat-button color="warn" type="button" (click)="dialogRef.close(false)">Cancel</button>
+      </div> -->
+      </div>
   </div>
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button color="primary" [disabled]="itemForm.invalid">Save</button>
+    <button mat-button color="warn" type="button" (click)="dialogRef.close(false)">Cancel</button>
+   </div>
 </form>

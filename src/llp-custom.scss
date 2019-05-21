@@ -347,6 +347,7 @@ body{
     }
     body .llp--left--panel--view .llp--menu--list{
         padding: 0;
+        box-shadow: none !important;
     }
     .llp--content--wrapper{
         padding: 0 15px;
@@ -371,13 +372,18 @@ body{
     }
     body .llp--left--panel--view .llp--menu--list{
         padding: 0;
+        box-shadow: none !important;
     }
     .llp--content--wrapper{
         padding: 0 15px;
     }
 }
 @media only screen and (min-width: 960px) and (max-width: 979px){}
-@media only screen and (min-width: 980px) and (max-width: 1279px){}
+@media only screen and (min-width: 980px) and (max-width: 1279px){
+    body .llp--topnavbar.header-topnav .topnav ul.header--ul li a {
+        padding: 13px 18px;
+    }
+}
 @media only screen and (min-width: 1280px) and (max-width: 1440px){}
 @media only screen and (min-width: 1441px) and (max-width: 1550px){}
 

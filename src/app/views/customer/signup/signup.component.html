@@ -63,15 +63,17 @@
           </div>
           <button *ngIf="custFreeTrailBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" [disabled]="llpCustotpForm.invalid"
             (click)="OtpProceed()">Sign up</button>
+
+             <!--[routerLink]="'/customer/update-profile'"-->
+        <div class="text-center bot-txt">
+            <p>Already a member?
+              <a [routerLink]="'/customer/signin'"> Login</a>
+            </p>
+          </div>
         </form>
 
 
-        <!--[routerLink]="'/customer/update-profile'"-->
-        <div class="text-center bot-txt">
-          <p>Already a member?
-            <a [routerLink]="'/customer/signin'"> Login</a>
-          </p>
-        </div>
+       
 
 
       </mat-card-content>
