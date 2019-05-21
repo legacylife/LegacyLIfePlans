@@ -80,7 +80,7 @@ var userSchema = new mongoose.Schema({
   ipAddress : String, 
   latitude : String, 
   longitude : String,     
-  signupApprovalDate : String, 
+  signupApprovalDate : Date, 
   signupArrovalStatus : String, 
   approveRejectReason : String,      
   accessToken : String,

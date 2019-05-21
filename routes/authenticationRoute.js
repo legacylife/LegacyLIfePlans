@@ -410,7 +410,10 @@ function common(req, res) {
 router.post('/reset-password-token', function (req, res) {
   User.findOne({ token: req.body.userId }, function (err, userDetails) {
     if (userDetails) {
-      res.send(resFormat.rSuccess('Success'))
+      if(userDetails.userType == 'advisor')
+        res.send(resFormat.rSuccess({ code: "success", userId: userDetails, username : userDetails.username }))
+      else
+        res.send(resFormat.rSuccess('Success')) 
     } else {
       var errMsg = 'Invalid link, Please try again.'
       res.send(resFormat.rError(errMsg))
@@ -491,6 +494,7 @@ async function checkUserOtp(req, res) {
           var user = new User()
           user.username = otpdata.username
           user.userType = otpdata.userType
+          user.status = otpdata.status
           user.lastLoggedInOn = new Date();
 
           user.emailVerified = true;
