@@ -39,6 +39,7 @@ import { cmseditComponent } from './cms/cmsedit.component';
 import { EmailTemplateComponent } from './email-template/email-template.component';
 import { EmailTemplateEditComponent } from './email-template/email-template-edit.component';
 import { NgxTablePopupComponent } from './userlist/ngx-table-popup/ngx-table-popup.component';
+import { AdvisorRejectPopupComponent } from './userlist/ngx-table-popup/advisor-reject-popup.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AgmCoreModule } from '@agm/core';
 import { MapComponent } from './map/map.component';
@@ -77,10 +78,10 @@ import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests
   ],
   declarations: [
     AppBlankComponent, userlistComponent, userviewComponent, customerlistComponent, advisorlistComponent,
-    NgxTablePopupComponent, cmslistComponent, cmseditComponent, ProfileComponent, EmailTemplateComponent,
+    NgxTablePopupComponent, AdvisorRejectPopupComponent, cmslistComponent, cmseditComponent, ProfileComponent, EmailTemplateComponent,
     EmailTemplateEditComponent, MapComponent, ReferralProgramComponent, ActivityLogComponent, AddManagementComponent,
     DeceasedRequestsComponent
   ],
-  entryComponents: [NgxTablePopupComponent]
+  entryComponents: [NgxTablePopupComponent,AdvisorRejectPopupComponent]
 })
 export class AdminModule { }

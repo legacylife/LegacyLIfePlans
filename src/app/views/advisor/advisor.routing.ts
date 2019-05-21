@@ -24,7 +24,18 @@ export const AdvisorRoutes: Routes = [
     children : [
       { 
         path: '',
-        component: AdvisorSigninComponent, 
+        component: AdvisorSignupComponent, 
+        canActivate: [ UserPreAuthGuard ]
+      }
+    ],
+
+  },{
+    path: 'set-password/:id',
+    component: AuthLayoutComponent,
+    children : [
+      { 
+        path: '',
+        component: SetPasswordComponent, 
         canActivate: [ UserPreAuthGuard ]
       }
     ],

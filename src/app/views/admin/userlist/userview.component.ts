@@ -5,6 +5,9 @@ import { APIService } from './../../../api.service';
 import { adminSections } from '../../../config';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
+import { AdvisorRejectPopupComponent } from './ngx-table-popup/advisor-reject-popup.component';
+import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'userview',
@@ -21,7 +24,10 @@ export class userviewComponent implements OnInit {
   loggedInUserDetails: any;
   statMsg = "";
 
-  constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
+  constructor(
+    private api: APIService, private route: ActivatedRoute, 
+    private router: Router, private snack: MatSnackBar, private dialog: MatDialog,
+    private confirmService: AppConfirmService, private loader: AppLoaderService) { }
   ngOnInit() {
     const locationArray = location.href.split('/')
     this.selectedUserId = locationArray[locationArray.length - 1]
@@ -35,6 +41,7 @@ export class userviewComponent implements OnInit {
 
     const req_vars = {
       query: Object.assign({ _id: this.selectedUserId }, query),
+      userType : 'advisor'
     }
 
     this.api.apiRequest('post', 'userlist/viewall', req_vars).subscribe(result => {
@@ -60,9 +67,10 @@ export class userviewComponent implements OnInit {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: row._id }, query)
+            query: Object.assign({ _id: row._id }, query),
+            userType : 'advisor'
           }
-          this.api.apiRequest('post', 'userlist/updatestatus', req_vars).subscribe(result => {
+          this.api.apiRequest('post', 'advisor/activateadvisor', req_vars).subscribe(result => {
             if (result.status == "error") {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
@@ -79,5 +87,24 @@ export class userviewComponent implements OnInit {
       })
   }
 
+  rejectPopUp(data: any = {}, isNew?) {
+    let title = 'Advisor Rejection';
+    let dialogRef: MatDialogRef<any> = this.dialog.open(AdvisorRejectPopupComponent, {
+      width: '720px',
+      disableClose: true,
+      data: { title: title, payload: data }
+    })
+    dialogRef.afterClosed()
+      .subscribe(res => {
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+        this.loader.open();
+        this.getUser()
+        this.loader.close();
+        this.snack.open('Advisor has been rejected successfully!', 'OK', { duration: 4000 })
+      })
+  }
 
 }

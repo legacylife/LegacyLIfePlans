@@ -24,7 +24,7 @@
 
     <div class="m-333" *ngIf="row?.userType == 'advisor' && row?.status == 'Pending'">
       <button mat-raised-button class="mb-05 mt-1" color="primary" (click)="statusChange(row)">Accept</button>&nbsp;&nbsp;&nbsp;
-      <button mat-raised-button class="mat-warn">Reject</button>
+      <button mat-raised-button class="mat-warn" (click)="rejectPopUp({}, true)">Reject</button>
     </div>    
   </div>
 

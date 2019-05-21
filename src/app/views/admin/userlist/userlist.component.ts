@@ -32,7 +32,11 @@ export class userlistComponent implements OnInit {
 
   //public getItemSub: Subscription;
 
-  constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private dialog: MatDialog, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
+  constructor(
+    private api: APIService, private route: ActivatedRoute, 
+    private router: Router, private dialog: MatDialog, 
+    private snack: MatSnackBar, private confirmService: AppConfirmService, 
+    private loader: AppLoaderService) { }
   ngOnInit() {
     this.aceessSection = this.api.getUserAccess('adminmanagement')
     this.userId = this.api.getUser()

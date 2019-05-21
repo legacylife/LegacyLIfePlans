@@ -178,6 +178,7 @@ export class APIService {
       map((response: TokenResponse) => {
         if (response.data && response.data.token) {
           //check if user type is same
+          console.log("data user type >> "+JSON.stringify(data)+" --------- response usertype >>> "+response.data.userType)
           if (data.userType === response.data.userType || (data.userType == "sysadmin" && response.data.userType == "TeamMember")) {
             const { token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId } = response.data
             if(userType == 'customer' || userType == 'advisor'){
