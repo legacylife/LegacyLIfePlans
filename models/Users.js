@@ -33,7 +33,11 @@ var userSchema = new mongoose.Schema({
   socialMediaToken: String,
   socialPlatform: { type: String, default:'Email' },   
   profilePicture: String,
-
+  awardsYears:[{
+	id: String,  
+    title: String,
+    year: String
+  }],
   sectionAccess:Object,
   // Advisor fields
   businessName : String, 
@@ -42,9 +46,13 @@ var userSchema = new mongoose.Schema({
   bioText : String, 
   socialMediaLinks : {
       facebook : String, 
-      twitter : String
+      twitter : String,
+	  linkedIn : String
   }, 
-  websites : Array, 
+  websites:[{
+	id: String,  
+    links: String
+  }],  
   businessPhonePrefix : String, 
   businessPhoneNumber : String, 
   activeLicenceHeld : String, 
