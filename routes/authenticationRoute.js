@@ -28,9 +28,7 @@ const profilePicturesPath = constants.s3Details.profilePicturesPath
 
 //function to check and signin user details
 function signin(req, res) {
-
-  console.log("body=>", req.body);
-  // console.log("User details =>",user)
+  
   passport.authenticate('local', function (err, user, info) {
     if (err) {
       let result = { "message": err };
@@ -42,23 +40,18 @@ function signin(req, res) {
     else if (info && info.message == "User not found") {
       let result = { "message": "Email with \"" + req.body.username + "\" doesn't exist in system.", "invalidEmail": true, "invalidPassword": false }
       res.status(200).send(resFormat.rError(result))
-    }
-    else if (user) {
-      if (user.userType == req.body.userType) {
+    }else if (user) {     
         var token = user.generateJwt()
         var params = { lastLoggedInOn: new Date(), loginCount: user.loginCount == undefined ? 1 : user.loginCount + 1 }
         User.updateOne({ _id: user._id }, { $set: params }, function (err, updatedUser) {
           if (err) {
             res.send(resFormat.rError(err))
           } else {
+            console.log("type ",user.userType);
             let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false }
             res.status(200).send(resFormat.rSuccess(result))
           }
         })
-      } else {
-        let result = { "message": `"Email with ${req.body.username} doesn't exist in admin system."`, "invalidEmail": true, "invalidPassword": false }
-        res.status(200).send(resFormat.rError(result))
-      }
     } else {
       let result = { "message": "Invalid login credentials.", "invalidEmail": false, "invalidPassword": true }
       res.status(200).send(resFormat.rError(result))
