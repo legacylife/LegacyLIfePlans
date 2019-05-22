@@ -48,7 +48,6 @@ export class cmslistComponent implements OnInit {
   
 //table
   updateFilter(event) {
-    console.log("sdfkjlhsdkjfhkjh"+this.temp[0])
     const val = event.target.value.toLowerCase();
     var columns = Object.keys(this.temp[0]);
     columns.splice(columns.length - 1);

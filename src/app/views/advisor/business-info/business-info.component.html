@@ -4,10 +4,8 @@
 
 <div class="page-wrap mat-bg-primary busi--info--wrapper">
   <div class="session-form-hold">
-
-    <div class="login-sub-wrapper">
-      <div class="stepper--wrapper">
-
+      <div class="login-sub-wrapper">
+          <div class="stepper--wrapper">   
         <mat-horizontal-stepper  linear #stepper>
           <!-- step 1   (click)="isLinear=isLinear" id="toggle-linear"-->
           <mat-step [stepControl]="firstFormGroup">
@@ -197,7 +195,7 @@
     </div>
     <div class="login-footer">
       <p>Already a member?
-        <a [routerLink]="'/auth/signin'">Login</a>
+        <a [routerLink]="'/signin'">Login</a>
       </p>
     </div>
   </div>

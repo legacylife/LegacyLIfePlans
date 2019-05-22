@@ -42,7 +42,7 @@ export class BusinessInfoComponent implements OnInit {
     this.stateList = states;
     this.step = localStorage.getItem("step");
     this.myStepper.selectedIndex = Number(this.step);
-    console.log("Step :- ",this.step,this.myStepper.selectedIndex); 
+    //console.log("Step :- ",this.step,this.myStepper.selectedIndex); 
     this.yearsOfServiceLists = yearsOfServiceList;
     this.businessTypeLists = businessTypeList;
     this.industryDomainLists = industryDomainList;

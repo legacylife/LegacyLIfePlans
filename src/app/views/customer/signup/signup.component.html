@@ -53,8 +53,8 @@
               <mat-icon matTooltip="{{invalidOtpMessage}}" matTooltipClass="llp--tooltip error" *ngIf="invalidOTP" class="red--alert">help_outline</mat-icon>
             </mat-form-field>
             <p class="terms--policy">By signing up, you agree to our
-              <a>Terms of Use </a> and
-              <a>Privacy Policy</a>
+              <a target="blank" [routerLink]="'/terms-of-use'">Terms of Use </a> and
+              <a target="blank" [routerLink]="'/privacy-policy'">Privacy Policy</a>
             </p>
           </div>
           <button *ngIf="custFreeTrailBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" [disabled]="llpCustotpForm.invalid"  (click)="OtpProceed()">Sign up</button>

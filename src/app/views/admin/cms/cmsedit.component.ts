@@ -35,12 +35,10 @@ export class cmseditComponent implements OnInit {
     });
   }
 
-  getPageDetails = (query = {}, search = false) => {
-
+  getPageDetails = (query = {}, search = false) => {  
     const req_vars = {
-      query: Object.assign({ _id: this.cmsPageId }, query),
+      _id:this.cmsPageId
     }
-
     this.api.apiRequest('post', 'cms/view', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)

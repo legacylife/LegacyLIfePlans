@@ -26,7 +26,8 @@ import { SharedModule } from './../../shared/shared.module';
 import { LandingRoutes } from './landing.routing';
 import { HomeComponent } from './home/home.component';
 import { CustAboutUsComponent } from './about-us/about-us.component';
-import { AdvisorHomeComponent } from './advisor-home/advisor-home.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
 
 @NgModule({
   imports: [
@@ -55,7 +56,8 @@ import { AdvisorHomeComponent } from './advisor-home/advisor-home.component';
   declarations: [
     HomeComponent,
     CustAboutUsComponent,
-    AdvisorHomeComponent
+    PrivacyPolicyComponent,
+    TermsOfUseComponent
   ]
 })
 export class LandingModule { }

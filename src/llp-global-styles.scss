@@ -320,6 +320,9 @@ body{
         font-family: $font--lato--regular;
         font-size: 16px;
     }
+	.mat-select{
+		width: calc(100% - 18px);
+	}
 }
 
 
@@ -361,9 +364,9 @@ body{
         .mat-stepper-horizontal-line{
             border-top: 2px solid $clr--7;            
         }
-        .mat-horizontal-stepper-header-container{
+       /* .mat-horizontal-stepper-header-container{
             pointer-events: none;
-        }
+        }*/
     }
 }
 

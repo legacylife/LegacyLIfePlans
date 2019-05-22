@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, Pipe, PipeTransform } from '@angular/core';
 import { MatProgressBar, MatButton, MatSnackBar } from '@angular/material';
-import { APIService } from './../../../api.service';
 import { UserAPIService } from './../../../userapi.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RoutePartsService } from "../../../shared/services/route-parts.service";

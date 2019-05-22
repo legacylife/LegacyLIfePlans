@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, OnDestroy, Renderer2 } from '@angular/core';
-import { LandingCustomerNavService } from '../../../shared/services/pre-login-cust-landing-nav-links.service';
+//import { LandingCustomerNavService } from '../../../shared/services/pre-login-cust-landing-nav-links.service';
 import { Subscription } from 'rxjs';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LayoutService } from '../../services/layout.service';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-landing-customer-header-top',
@@ -26,7 +27,7 @@ export class LandingCustomerHeaderTopComponent implements OnInit, OnDestroy {
   @Input() notificPanel;
   constructor(
     private layout: LayoutService,
-    private navService: LandingCustomerNavService,
+    private navService: NavigationService,//LandingCustomerNavService,
     public themeService: ThemeService,
     public translate: TranslateService,
     private renderer: Renderer2
