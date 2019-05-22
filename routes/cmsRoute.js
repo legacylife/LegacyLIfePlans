@@ -50,8 +50,9 @@ function list(req, res) {
 
 //function get details of page
 function view (req, res) {
-  const { query, fields } = req.body
-  Cms.findOne(query, fields , function(err, cmsDetails) {
+  console.log(req.body)
+  const  query  = req.body
+  Cms.findOne(query , function(err, cmsDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
