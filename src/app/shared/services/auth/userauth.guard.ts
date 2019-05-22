@@ -16,7 +16,7 @@ export class UserAuthGuard implements CanActivate {
       this.userInfo = this.userapi.getUserInfo()
       console.log(this.userInfo)
       if (this.userInfo && this.userInfo.endUserType == '') {
-        this.router.navigateByUrl('/customer/signin');
+        this.router.navigateByUrl('/signin');
         return false;
       }
     return true;

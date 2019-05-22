@@ -47,7 +47,7 @@ export class SetPasswordComponent implements OnInit {
         this.snack.open(result.data, 'OK', { duration: 4000 })
 
         setTimeout(() => {
-          this.router.navigate(['/customer/signin']);
+          this.router.navigate(['/signin']);
         }, 2000);
       } else {
         this.snack.open(result.data, 'OK', { duration: 4000 })
