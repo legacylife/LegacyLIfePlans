@@ -42,13 +42,15 @@ export class SigninComponent implements OnInit {
       username: this.llpCustsigninForm.controls['username'].value,
       password: this.llpCustsigninForm.controls['password'].value,
       //stayLoggedIn:  this.llpCustsigninForm.controls['rememberMe'].value,
-      userType: ""
+      userType: {$ne : "sysadmin"}
+      //userType: "advisor"
     }
     this.loader.open();
     this.userapi.apiRequest('post', 'auth/signin', signInData).subscribe(result => {
       this.loader.close();
-      if (result.status == "success") {
+      if (result.status=="success") {      
         userData = result.data;
+        console.log(userData.userType);
         localStorage.setItem("endUserId", userData.userId);
         localStorage.setItem("endUserType", userData.userType);
         localStorage.setItem("endUserFirstName", userData.firstName);
@@ -68,13 +70,15 @@ export class SigninComponent implements OnInit {
           this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : true})
         }else{ 
           this.invalidEmail = false;
-          this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false})} 
-      }
-      if(result.data.invalidPassword){
-        this.invalidEmail = false;
-        this.llpCustsigninForm.controls['password'].setErrors({'invalid' : true});
-        this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false});
-      }
+          this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false})
+        } 
+
+        if(result.data.invalidPassword){
+          this.invalidEmail = false;
+          this.llpCustsigninForm.controls['password'].setErrors({'invalid' : true});
+          this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false});
+        }
+      }      
     }, (err) => {
 
     })

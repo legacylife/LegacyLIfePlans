@@ -137,7 +137,7 @@ export class UserAPIService {
       map((response: TokenResponse) => {
         if (response.data && response.data.token) {
           //check if user type is same
-          if (data.userType === response.data.userType || (data.userType == "sysadmin")) {
+          if (data.userType != "sysadmin") {
             const { token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId } = response.data
             if(userType == 'customer' || userType == 'advisor'){
               this.endUsersaveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data)
@@ -182,10 +182,7 @@ export class UserAPIService {
 
     window.localStorage.clear();
     window.sessionStorage.clear();
-    if(userType == 'customer')
-      this.router.navigate(["customer", "signin"])
-    if(userType == 'advisor')
-    this.router.navigate(["advisor", "signin"])
+    this.router.navigate(["signin"]);
   }
 
   //function to make request to server
