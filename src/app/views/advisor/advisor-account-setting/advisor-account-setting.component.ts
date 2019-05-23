@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild  } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { UserAPIService } from './../../../userapi.service';
@@ -8,11 +8,13 @@ import { egretAnimations } from '../../../shared/animations/egret-animations';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { CustomValidators } from 'ng2-validation';
 import { ChangePassComponent } from './change-pass/change-pass.component';
+import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { map } from 'rxjs/operators';
 import { Subscription, Observable, of  } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { states } from '../../../state';
 import { FileUploader } from 'ng2-file-upload';
+const URL = 'http://localhost:8080/api/documents/advisorDocument';
 
 @Component({
   selector: 'app-advisor-account-setting',
@@ -21,10 +23,9 @@ import { FileUploader } from 'ng2-file-upload';
   animations: [egretAnimations]
 })
 export class AdvisorAccountSettingComponent implements OnInit {
-
- // industryDomain = 'option22';
- public uploader: FileUploader = new FileUploader({ url: 'https://evening-anchorage-315.herokuapp.com/api/' });
+ public uploader: FileUploader = new FileUploader({url:URL});
  public hasBaseDropZoneOver: boolean = false;
+ public hasAnotherDropZoneOver:boolean = false;
   date: any;
   ProfileForm: FormGroup;
   AddressForm: FormGroup;
@@ -40,11 +41,13 @@ export class AdvisorAccountSettingComponent implements OnInit {
   websitess: any;
   socialMediaLinkss: any;
   websites: [{ 'id': "",'links': "" }]
+  advisorDocumentsList: any;
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
-  constructor(private router: Router, private route: ActivatedRoute,private fb: FormBuilder, private snack: MatSnackBar,public dialog: MatDialog, private userapi: UserAPIService,private loader: AppLoaderService) { }
+  constructor(private router: Router, private route: ActivatedRoute,private fb: FormBuilder, private snack: MatSnackBar,public dialog: MatDialog, private userapi: UserAPIService,private loader: AppLoaderService, private confirmService: AppConfirmService) { }
 
   ngOnInit() {
+          
            this.stateList = states;
            this.ProfileForm = this.fb.group({
             firstName: new FormControl('', Validators.required),
@@ -69,13 +72,12 @@ export class AdvisorAccountSettingComponent implements OnInit {
             bioText: new FormControl(''),          
             websites: new FormControl(''),          
             //websites: this.fb.array([ this.addWebsitesForm() ]),
-        //    websites: this.fb.array( this.websites.map(this.addWebsitesForm)),
+            //websites: this.fb.array( this.websites.map(this.addWebsitesForm)),
             
-          /* 
-          websites: new FormGroup({
-            id: new FormControl(''),
-            links:  new FormControl('')            
-          }),  */
+            /*websites: new FormGroup({
+              id: new FormControl(''),
+              links:  new FormControl('')            
+            }),*/
            socialMediaLinks: new FormGroup({
               facebook: new FormControl(''),
               twitter:  new FormControl(''),
@@ -97,15 +99,13 @@ export class AdvisorAccountSettingComponent implements OnInit {
           this.profile = [];
           this.awards = [];
           this.websitess = [];
-          this.socialMediaLinkss = []
+          this.socialMediaLinkss = [];
+          this.advisorDocumentsList = [];
           this.getProfile();
-          //this.awards = [{title: "",year: ""}];      
+          //this.awards = [{title: "",year: ""}];    
+          
+          console.log("HERE ",this.uploader)
  }
-
- public fileOverBase(e: any): void {
-  this.hasBaseDropZoneOver = e;
-}
-
   //function to get all events
   getProfile = (query = {}, search = false) => {   
     this.userId = '5cc9cc301955852c18c5b73a';
@@ -142,16 +142,14 @@ export class AdvisorAccountSettingComponent implements OnInit {
 
         this.awards = this.profile.awardsYears;
         this.websitess = this.profile.websites;
-        
-
+        this.advisorDocumentsList = this.profile.advisorDocuments.split(',');
+      
       //  const webctrl = this.getFormGroup('websites')
        //console.log("Website ",webctrl, this.profile)
        // let webs:any = [];
         //this.AddressForm.websitess.map(p=> {
         //})
       //  webctrl.controls['id'].setValue(this.profile.websites.id)               
-
-
         const ctrl = this.getFormGroup('socialMediaLinks')
         //console.log(ctrl, this.profile)
         ctrl.controls['facebook'].setValue(this.profile.socialMediaLinks.facebook)
@@ -169,7 +167,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
       this.loader.close();
     })
   }
-
+  
   getFormGroup(controlName) {
      return <FormGroup>this.AddressForm.get(controlName); 
   }
@@ -251,6 +249,10 @@ export class AdvisorAccountSettingComponent implements OnInit {
     })
   }
 
+  public fileOverBase(e:any):void {
+    this.hasBaseDropZoneOver = e;
+  }
+   
   LicenseSubmit(){
     this.userId = '5cc9cc301955852c18c5b73a';
     console.log(this.LicenseForm.value)
@@ -281,6 +283,35 @@ export class AdvisorAccountSettingComponent implements OnInit {
     })
   }
 
+
+  docDelete(doc) {
+    this.userId = '5cc9cc301955852c18c5b73a';
+    var statMsg = "Are you sure you want to delete "+doc+" file name?"
+     this.confirmService.confirm({message: statMsg})
+      .subscribe(res => {
+        if (res) {
+          this.loader.open();
+          var query = {};
+          const req_vars = {
+            query: Object.assign({ _id: this.userId }, query),
+            proquery: Object.assign({ advisorDocuments: doc }, query)
+          }
+          this.userapi.apiRequest('post', 'documents/deleteAdvDoc', req_vars).subscribe(result => {
+            if (result.status == "error") {
+              this.loader.close();
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            } else {
+             // this.getLists()
+              this.loader.close();
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            }
+          }, (err) => {
+            console.error(err)
+            this.loader.close();
+          })
+        }
+      })
+  }
 
   addNewAo() {
     this.awards.push({
@@ -323,5 +354,5 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
   toggleSideNav() {
       //this.sideNav.opened = !this.sideNav.opened;
-  }
+  }  
  }

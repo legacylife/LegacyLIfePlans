@@ -27,7 +27,7 @@ export class UpdateProfileComponent implements OnInit {
   short_code: string;
   uploadedFile: File
   maxDate = new Date(new Date())
-  profilePicture: any = "assets/images/arkenea/uri.jpg"
+  profilePicture: any = "assets/images/arkenea/default.jpg"
 
   constructor(private router: Router, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
   ngOnInit() {

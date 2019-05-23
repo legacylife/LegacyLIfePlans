@@ -314,9 +314,11 @@
             </div>
           </mat-tab>
           <mat-tab label="License & documents">
-            <!-- License & documents -->
+            <!-- License & documents 
+             <form class="llp-form-wrapper"  [formGroup]="LicenseForm" (ngSubmit)="LicenseSubmit()" enctype="multipart/form-data">          
+            -->
             <div class="business--information">
-              <form class="llp-form-wrapper"  [formGroup]="LicenseForm" (ngSubmit)="LicenseSubmit()">
+              <form class="llp-form-wrapper"  [formGroup]="LicenseForm" enctype="multipart/form-data">
                 <h3 class="header--text">License Information</h3>
 
                 <div fxLayout="row wrap">
@@ -364,25 +366,14 @@
                     <p class="header--desc upload--doc">Upload your business documents for verification for e.g. business license</p>                                   
                   </div>
                 </div>
- 
-        <!--    <div class="mb-1">
-                    <div ng2FileDrop
-                    [ngClass]="{'dz-file-over': hasBaseDropZoneOver}"
-                    (fileOver)="fileOverBase($event)"
-                    [uploader]="uploader"
-                    class="fileupload-drop-zone">
-                    Drop file here
-                    </div>
-                  </div>
-                -->
-               
+                
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                       <div class="upload--buss--docs--sec">
                           <label>Upload your business documents</label>
                          <div class="upload--box fileupload-drop-zone"
                          ng2FileDrop
-                         [ngClass]="{'dz-file-over': hasBaseDropZoneOver}"
+                         [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
                          (fileOver)="fileOverBase($event)"
                          [uploader]="uploader">
                             <input type="file" name="advisorDocuments" accept="image/*" />     
@@ -393,22 +384,18 @@
                         </div>
                   </div>
 
-                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50" *ngIf="advisorDocumentsList" >
                     <h3 class="header--text fnt--16">Uploaded documents</h3>
-                    <mat-chip-list class="doc--list">
-                        <mat-chip>Business card.jpg <mat-icon matChipRemove>close</mat-icon></mat-chip>
-                        <mat-chip>proof of credentials.pdf <mat-icon matChipRemove>close</mat-icon></mat-chip>
-                        <mat-chip>License_8-Apr.pdf <mat-icon matChipRemove>close</mat-icon></mat-chip>
-                      </mat-chip-list>
-                </div>
+                    <mat-chip-list class="doc--list" *ngFor="let doc of advisorDocumentsList | slice">
+                        <mat-chip><a href="{{doc}}" target="_blanck">{{doc}}</a><mat-icon matChipRemove  (click)="docDelete(doc)">close</mat-icon></mat-chip>
+                    </mat-chip-list>
+                  </div>
                  
-                <table class="default-table mat-box-shadow" style="width: 100%">
+                  <table class="default-table mat-box-shadow" style="width: 100%">
                     <thead>
                     <tr>
                         <th width="30%">Name</th>
-                        <!-- <th>Size</th> -->
                         <th>Progress</th>
-                        <!--<th>Status</th> -->
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -442,13 +429,13 @@
                     <ng-template #tableNoData>
                       <p [ngStyle]="{padding: '0 1.2rem'}">Document queue is empty</p>
                     </ng-template>
-                </table>
+                  </table>
 
-                <div class="progress mb-1" >
+                  <div class="progress mb-1" >
                       <p>&nbsp;</p>
-                <mat-progress-bar color="primary" mode="determinate" [value]="uploader.progress"></mat-progress-bar>
-                </div>
-                  <button mat-raised-button class="mat-primary" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length" style="display: none;">Upload all</button>
+                  <mat-progress-bar color="primary" mode="determinate" [value]="uploader.progress"></mat-progress-bar>
+                  </div>
+                  <button mat-raised-button class="mat-primary" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">Upload all</button>
             </div>
             <div fx.Flex="100" class="text-center mt--30">
                   <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
