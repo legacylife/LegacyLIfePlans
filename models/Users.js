@@ -58,7 +58,7 @@ var userSchema = new mongoose.Schema({
   activeLicenceHeld : String, 
   agencyOversees : String, 
   managingPrincipleName : String, 
-  advisorDocuments : Array,
+  advisorDocuments : String,
   folders:Array,
   // Subscription fields
   manageOtherProceducers : String, 

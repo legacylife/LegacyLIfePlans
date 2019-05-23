@@ -573,6 +573,16 @@ function generateOtp(n) {
   return token;
 }
 
+async function advdocuments(req, res) {
+  console.log("Auth",req);
+  try {
+    let { query } = req.body;
+   
+  } catch (e) {
+    res.status(401).send(resFormat.rError(e.message))
+  }
+}
+
 router.post(["/signup", "/register"], create)
 router.post("/signin", signin)
 router.post("/cust-profile-update", custProfileUpdate)
@@ -586,6 +596,6 @@ router.post("/changeEmail", changeEmail)
 router.post("/common", common)
 router.post("/checkEmail", checkEmail)
 router.post("/checkOtp", checkUserOtp)
-
+router.post("/advdocuments", advdocuments)
 
 module.exports = router

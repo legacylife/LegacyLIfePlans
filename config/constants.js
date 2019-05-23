@@ -1,8 +1,8 @@
 var constants = {
   secret: "LLP",
-  database: { // mongodb://localhost:27017/llp
-    url: process.env.dbURI || 'mongodb://localhost:27017/llp'
-  }, // mongodb://llp:llp#123@ds129454.mlab.com:29454/llp
+  database: {
+    url: process.env.dbURI || 'mongodb://llp:llp#123@ds213896.mlab.com:13896/llp-pankaj'
+  },
   google: {
   },
   nylas:{
@@ -15,6 +15,7 @@ var constants = {
     awsKey: "AKIAUPQ3GZ6WDCCRWVY5",
     awsSecret: "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",
     profilePicturesPath: "profilePictures/",
+    advisorsDocumentsPath: "advisorDocs/",
     serveUrl: "https://llp-dev.s3.amazonaws.com"
   },
   ses: {
