@@ -52,7 +52,8 @@ var userSchema = new mongoose.Schema({
   websites:[{
 	id: String,  
     links: String
-  }],  
+  }], 
+  websiteLinks:Array,
   businessPhonePrefix : String, 
   businessPhoneNumber : String, 
   activeLicenceHeld : String, 

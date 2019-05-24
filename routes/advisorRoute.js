@@ -117,6 +117,10 @@ function rejectAdvisor (req, res) {
   })
 }
 
+function fileupload(req, res){
+  console.log(req);
+}
+
 function generateToken(n) {
   var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   var token = '';
@@ -129,5 +133,6 @@ function generateToken(n) {
 
 router.post("/activateadvisor", activateAdvisor)
 router.post("/rejectadvisor", rejectAdvisor)
+router.post("/fileupload", fileupload)
 
 module.exports = router
