@@ -287,22 +287,44 @@
                 
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <h3 class="header--text fnt--16 mb-1">Websites</h3>
-                  <!--  <div  formArrayName="websites">  --> 
-                   <div fxLayout="row wrap"  *ngFor="let web of websitess;  "> 
+                    <!--  <div  formArrayName="websites">  -->
+                    <!-- <div formArrayName="websites" fxLayout="row wrap" *ngFor="let web of websitess; let i = index;"> 
                  
-                      <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
+                      <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2" [formGroupName]="i">
                         <mat-form-field class="full-width">
-                          <input matInput  placeholder="URL" value="{{web.links}}">
+                          <input matInput  placeholder="URL" value="{{web.links}}" formControlName="links">
                         </mat-form-field>
                       </div>
                       <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
                         <mat-icon class="mt-1 clr--red cursor-pointer" (click)="deleteWebsite(web.id);">delete</mat-icon>
                       </div>
-                    </div>
-                  <!--</div>        -->    
-                    <div fxLayout="row wrap">
+                    </div> -->
+                    <!--</div>        -->
+                    <!-- <div fxLayout="row wrap">
                       <div fxFlex.xs="100">
                         <div class="add--new" (click)="addWebsites();">
+                          <mat-icon>add_circle</mat-icon>
+                          Add New
+                        </div>
+                      </div>
+                    </div> -->
+
+
+                    <div formArrayName="websiteLinks" fxLayout="row wrap" *ngFor="let web of AddressForm.get('websiteLinks').controls; index as i">
+
+                      <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2" [formGroupName]="i">
+                        <mat-form-field class="full-width">
+                          <input matInput placeholder="URL" value="{{web.links}}" formControlName="links">
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
+                        <mat-icon class="mt-1 clr--red cursor-pointer" (click)="deleteWebsiteLinks(i);">delete</mat-icon>
+                      </div>
+                    </div>
+                    <!--</div>        -->
+                    <div fxLayout="row wrap">
+                      <div fxFlex.xs="100">
+                        <div class="add--new" (click)="addWebsiteLinks();">
                           <mat-icon>add_circle</mat-icon>
                           Add New
                         </div>

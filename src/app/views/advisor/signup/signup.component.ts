@@ -34,14 +34,14 @@ export class AdvisorSignupComponent implements OnInit {
   EmailExist: boolean;
   invalidOTP: boolean;
   countDown;
-  counter= 0;
+  counter = 0;
   tick = 0;
 
   constructor(private router: Router, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
-  
+
   ngOnInit() {
     this.llpAdvsignupForm = new FormGroup({
-      username: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)])    
+      username: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)])
     });
 
     this.llpAdvotpForm = new FormGroup({
@@ -49,7 +49,7 @@ export class AdvisorSignupComponent implements OnInit {
     });
   }
 
-  advProceed(){
+  advProceed() {
     let req_vars = {
       username: this.llpAdvsignupForm.controls['username'].value,
       userType: 'advisor'
@@ -82,7 +82,7 @@ export class AdvisorSignupComponent implements OnInit {
 
   }
 
-  
+
   OtpProceed() {
     let req_vars = {
       username: this.llpAdvsignupForm.controls['username'].value,
@@ -122,12 +122,12 @@ export class AdvisorSignupComponent implements OnInit {
 
   toproceed() {
     this.advisorOtp = true;
-    this.freeTrailBtn =true;
+    this.freeTrailBtn = true;
     this.proceedBtn = false;
   }
 
   clockCall() {
-    this.counter = 30;
+    this.counter = 60;
     this.tick = 1000;
     this.countDown = Observable.timer(0, this.tick)
       .take(this.counter)

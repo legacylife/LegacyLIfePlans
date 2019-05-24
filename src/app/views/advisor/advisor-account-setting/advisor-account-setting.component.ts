@@ -16,6 +16,9 @@ import { states } from '../../../state';
 import { FileUploader } from 'ng2-file-upload';
 const URL = 'http://localhost:8080/api/documents/advisorDocument';
 
+interface websiteLink {
+  links: string;
+}
 @Component({
   selector: 'app-advisor-account-setting',
   templateUrl: './advisor-account-setting.component.html',
@@ -42,6 +45,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
   socialMediaLinkss: any;
   websites: [{ 'id': "",'links': "" }]
   advisorDocumentsList: any;
+  websiteLinks: websiteLink[] = [{ 'links': "" }]
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
   constructor(private router: Router, private route: ActivatedRoute,private fb: FormBuilder, private snack: MatSnackBar,public dialog: MatDialog, private userapi: UserAPIService,private loader: AppLoaderService, private confirmService: AppConfirmService) { }
@@ -49,6 +53,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
   ngOnInit() {
           
            this.stateList = states;
+    this.userId = localStorage.getItem("endUserId");
            this.ProfileForm = this.fb.group({
             firstName: new FormControl('', Validators.required),
             lastName: new FormControl('', Validators.required),
@@ -71,6 +76,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
             businessPhoneNumber: new FormControl(''),
             bioText: new FormControl(''),          
             websites: new FormControl(''),          
+      	    websiteLinks: this.fb.array(this.websiteLinks.map(elem => this.createWebsiteGroup(elem))),
             //websites: this.fb.array([ this.addWebsitesForm() ]),
             //websites: this.fb.array( this.websites.map(this.addWebsitesForm)),
             
@@ -108,7 +114,6 @@ export class AdvisorAccountSettingComponent implements OnInit {
  }
   //function to get all events
   getProfile = (query = {}, search = false) => {   
-    this.userId = '5cc9cc301955852c18c5b73a';
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: "advisor" }, query)
     }
@@ -119,30 +124,29 @@ export class AdvisorAccountSettingComponent implements OnInit {
         this.loader.close();
       } else {
         this.profile = result.data.userProfile;
-        this.ProfileForm.controls['firstName'].setValue(this.profile.firstName);
-        this.ProfileForm.controls['lastName'].setValue(this.profile.lastName);
-        this.ProfileForm.controls['phoneNumber'].setValue(this.profile.phoneNumber);
-        this.ProfileForm.controls['landlineNumber'].setValue(this.profile.landlineNumber);
-        this.ProfileForm.controls['dateOfBirth'].setValue(this.profile.dateOfBirth);
-        this.ProfileForm.controls['username'].setValue(this.profile.username);
+        this.ProfileForm.controls['firstName'].setValue(this.profile.firstName ? this.profile.firstName : "");
+        this.ProfileForm.controls['lastName'].setValue(this.profile.lastName ? this.profile.lastName : "");
+        this.ProfileForm.controls['phoneNumber'].setValue(this.profile.phoneNumber ? this.profile.phoneNumber : "");
+        this.ProfileForm.controls['landlineNumber'].setValue(this.profile.landlineNumber ? this.profile.landlineNumber : "");
+        this.ProfileForm.controls['dateOfBirth'].setValue(this.profile.dateOfBirth ? this.profile.dateOfBirth : "");
+        this.ProfileForm.controls['username'].setValue(this.profile.username ? this.profile.username : "");
 
-        this.AddressForm.controls['businessName'].setValue(this.profile.businessName);
-        this.AddressForm.controls['yearsOfService'].setValue(this.profile.yearsOfService);
-        this.AddressForm.controls['businessType'].setValue(this.profile.businessType);
-        this.AddressForm.controls['industryDomain'].setValue(this.profile.industryDomain);
-        this.AddressForm.controls['addressLine1'].setValue(this.profile.addressLine1);
-        this.AddressForm.controls['addressLine2'].setValue(this.profile.addressLine2);
-        this.AddressForm.controls['city'].setValue(this.profile.city);
-        this.AddressForm.controls['state'].setValue(this.profile.state);
-        this.AddressForm.controls['zipcode'].setValue(this.profile.zipcode);
-        this.AddressForm.controls['businessPhoneNumber'].setValue(this.profile.businessPhoneNumber);      
-        this.AddressForm.controls['bioText'].setValue(this.profile.bioText);
-      //  this.AddressForm.controls['websites'].setValue(this.profile.websites);
+        this.AddressForm.controls['businessName'].setValue(this.profile.businessName ? this.profile.businessName : "");
+        this.AddressForm.controls['yearsOfService'].setValue(this.profile.yearsOfService ? this.profile.yearsOfService : "");
+        this.AddressForm.controls['businessType'].setValue(this.profile.businessType ? this.profile.businessType : "");
+        this.AddressForm.controls['industryDomain'].setValue(this.profile.industryDomain ? this.profile.industryDomain : "");
+        this.AddressForm.controls['addressLine1'].setValue(this.profile.addressLine1 ? this.profile.addressLine1 : "");
+        this.AddressForm.controls['addressLine2'].setValue(this.profile.addressLine2 ? this.profile.addressLine2 : "");
+        this.AddressForm.controls['city'].setValue(this.profile.city ? this.profile.city : "");
+        this.AddressForm.controls['state'].setValue(this.profile.state ? this.profile.state : "");
+        this.AddressForm.controls['zipcode'].setValue(this.profile.zipcode ? this.profile.zipcode : "");
+        this.AddressForm.controls['bioText'].setValue(this.profile.bioText ? this.profile.bioText : "");
 
-
+        //this.AddressForm.controls['websites'].setValue(this.profile.websites);
         this.awards = this.profile.awardsYears;
         this.websitess = this.profile.websites;
-        this.advisorDocumentsList = this.profile.advisorDocuments;
+	      this.websiteLinks = this.profile.websiteLinks
+        this.advisorDocumentsList = this.profile.advisorDocuments ? this.profile.advisorDocuments.split(',') : "";
       
       //  const webctrl = this.getFormGroup('websites')
        //console.log("Website ",webctrl, this.profile)
@@ -152,13 +156,13 @@ export class AdvisorAccountSettingComponent implements OnInit {
       //  webctrl.controls['id'].setValue(this.profile.websites.id)               
         const ctrl = this.getFormGroup('socialMediaLinks')
         //console.log(ctrl, this.profile)
-        ctrl.controls['facebook'].setValue(this.profile.socialMediaLinks.facebook)
-        ctrl.controls['twitter'].setValue(this.profile.socialMediaLinks.twitter)
-        ctrl.controls['linkedIn'].setValue(this.profile.socialMediaLinks.linkedIn)
-        this.LicenseForm.controls['activeLicenceHeld'].setValue(this.profile.activeLicenceHeld);
-        this.LicenseForm.controls['agencyOversees'].setValue(this.profile.agencyOversees);
-        this.LicenseForm.controls['managingPrincipleName'].setValue(this.profile.managingPrincipleName);
-        this.LicenseForm.controls['howManyProducers'].setValue(this.profile.howManyProducers);
+        ctrl.controls['facebook'].setValue(this.profile.socialMediaLinks ? this.profile.socialMediaLinks.facebook : "")
+        ctrl.controls['twitter'].setValue(this.profile.socialMediaLinks ? this.profile.socialMediaLinks.twitter : "")
+        ctrl.controls['linkedIn'].setValue(this.profile.socialMediaLinks ? this.profile.socialMediaLinks.linkedIn : "")
+        this.LicenseForm.controls['activeLicenceHeld'].setValue(this.profile.activeLicenceHeld ? this.profile.activeLicenceHeld : "");
+        this.LicenseForm.controls['agencyOversees'].setValue(this.profile.agencyOversees ? this.profile.agencyOversees : "");
+        this.LicenseForm.controls['managingPrincipleName'].setValue(this.profile.managingPrincipleName ? this.profile.managingPrincipleName : "");
+        this.LicenseForm.controls['howManyProducers'].setValue(this.profile.howManyProducers ? this.profile.howManyProducers : "");
 
         this.loader.close();
       }
@@ -167,13 +171,22 @@ export class AdvisorAccountSettingComponent implements OnInit {
       this.loader.close();
     })
   }
-  
+
+  //function to create phone group for contact
+  createWebsiteGroup(websitelink: websiteLink): FormGroup {
+    return this.fb.group({
+      ...websitelink,
+      ...{
+        links: [websitelink.links]
+      }
+    });
+  }
+
   getFormGroup(controlName) {
      return <FormGroup>this.AddressForm.get(controlName); 
   }
  
   ProfileSubmit() {  
-    this.userId = '5cc9cc301955852c18c5b73a';
     let profileInData = {
       firstName: this.ProfileForm.controls['firstName'].value,
       lastName: this.ProfileForm.controls['lastName'].value,
@@ -205,10 +218,13 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   AddressSubmit() {  
-    this.userId = '5cc9cc301955852c18c5b73a';
     console.log("1 :- ",this.AddressForm.value)
     const { socialMediaLinks : {facebook = '' , twitter ='' , linkedIn ='' }} = this.AddressForm.value
     console.log("2 :- ",this.AddressForm.value)
+    const formNumbers = <FormArray>this.AddressForm.get('websiteLinks')
+    this.websiteLinks = formNumbers.controls.map(o => { return o.value })
+
+    console.log(this.websiteLinks)
     let AddressInData = {
       addressLine1: this.AddressForm.controls['addressLine1'].value,
       addressLine2: this.AddressForm.controls['addressLine2'].value,
@@ -222,6 +238,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
       businessPhoneNumber: this.AddressForm.controls['businessPhoneNumber'].value,
       bioText: this.AddressForm.controls['bioText'].value,
       websites: this.AddressForm.controls['websites'].value,
+      websiteLinks: this.websiteLinks,
       socialMediaLinks:({
         "facebook":facebook,
         "twitter": twitter,
@@ -254,7 +271,6 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
    
   LicenseSubmit(){
-    this.userId = '5cc9cc301955852c18c5b73a';
     console.log(this.LicenseForm.value)
     let LicensInData = {
       activeLicenceHeld: this.LicenseForm.controls['activeLicenceHeld'].value,
@@ -342,9 +358,26 @@ export class AdvisorAccountSettingComponent implements OnInit {
     })
    // console.log('websitess---',this.websitess)
   }
-  deleteWebsite(i){
-   // console.log("web",i)
-    this.websitess.splice(i,1);
+
+  addWebsiteLinks() {
+    const web = this.AddressForm.controls.websiteLinks as FormArray;
+    web.push(this.fb.group({
+      links: ''
+    }));
+  }
+
+  deleteWebsiteLinks(i) {
+    // console.log("web",i)
+
+    console.log("before delete >>>>", this.websiteLinks);
+    this.websiteLinks.splice(i, 1);
+    console.log("after delete >>>>", this.websiteLinks);
+  }
+
+
+  deleteWebsite(i) {
+    // console.log("web",i)
+    this.websitess.splice(i, 1);
   }
 
   changePasspordModal(): void {
