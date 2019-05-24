@@ -43,7 +43,7 @@ export class BusinessInfoComponent implements OnInit {
   
   ngOnInit() {
  
-    localStorage.setItem("step",'3'); 
+    //localStorage.setItem("step",'3'); 
     this.stateList = states;
     this.step = localStorage.getItem("step");
     this.myStepper.selectedIndex = Number(this.step);

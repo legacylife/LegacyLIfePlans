@@ -41,7 +41,6 @@ export class AdvisorAccountSettingComponent implements OnInit {
   profile:any;
   stateList:any;
   awards: any;
-  websitess: any;
   socialMediaLinkss: any;
   websites: [{ 'id': "",'links': "" }]
   advisorDocumentsList: any;
@@ -75,24 +74,14 @@ export class AdvisorAccountSettingComponent implements OnInit {
             zipcode: new FormControl('', Validators.required),
             businessPhoneNumber: new FormControl(''),
             bioText: new FormControl(''),          
-            websites: new FormControl(''),          
-      	    websiteLinks: this.fb.array(this.websiteLinks.map(elem => this.createWebsiteGroup(elem))),
-            //websites: this.fb.array([ this.addWebsitesForm() ]),
-            //websites: this.fb.array( this.websites.map(this.addWebsitesForm)),
+            websiteLinks: this.fb.array(this.websiteLinks.map(elem => this.createWebsiteGroup(elem))),
+            awardsYears: this.fb.array([this.fb.group({title:['', Validators.required],year:['', Validators.required]})]),     
             
-            /*websites: new FormGroup({
-              id: new FormControl(''),
-              links:  new FormControl('')            
-            }),*/
-           socialMediaLinks: new FormGroup({
+            socialMediaLinks: new FormGroup({
               facebook: new FormControl(''),
               twitter:  new FormControl(''),
               linkedIn:  new FormControl('')
             }), 
-            awardsYears: new FormGroup({
-              title: new FormControl(''),
-              year:  new FormControl('')
-            }),            
           });
           
           this.LicenseForm = this.fb.group({
@@ -103,17 +92,14 @@ export class AdvisorAccountSettingComponent implements OnInit {
           });
 
           this.profile = [];
-          this.awards = [];
-          this.websitess = [];
           this.socialMediaLinkss = [];
           this.advisorDocumentsList = [];
           this.getProfile();
-          //this.awards = [{title: "",year: ""}];    
           
-          console.log("HERE ",this.uploader)
  }
   //function to get all events
   getProfile = (query = {}, search = false) => {   
+    console.log(this.userId)
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: "advisor" }, query)
     }
@@ -141,21 +127,23 @@ export class AdvisorAccountSettingComponent implements OnInit {
         this.AddressForm.controls['state'].setValue(this.profile.state ? this.profile.state : "");
         this.AddressForm.controls['zipcode'].setValue(this.profile.zipcode ? this.profile.zipcode : "");
         this.AddressForm.controls['bioText'].setValue(this.profile.bioText ? this.profile.bioText : "");
-
-        //this.AddressForm.controls['websites'].setValue(this.profile.websites);
         this.awards = this.profile.awardsYears;
-        this.websitess = this.profile.websites;
-	      this.websiteLinks = this.profile.websiteLinks
-        this.advisorDocumentsList = this.profile.advisorDocuments ? this.profile.advisorDocuments.split(',') : "";
-      
-      //  const webctrl = this.getFormGroup('websites')
-       //console.log("Website ",webctrl, this.profile)
-       // let webs:any = [];
-        //this.AddressForm.websitess.map(p=> {
-        //})
-      //  webctrl.controls['id'].setValue(this.profile.websites.id)               
+        this.websiteLinks = this.profile.websiteLinks
+        this.advisorDocumentsList = this.profile.advisorDocuments;
+    
+        const ctrls = this.AddressForm.get('awardsYears') as FormArray;
+        ctrls.removeAt(0)
+        this.awards.forEach((element: any,index)=>{
+            ctrls.push(this.editGroup(element.title, element.year))
+        })
+
+        const webctrls = this.AddressForm.get('websiteLinks') as FormArray;
+        webctrls.removeAt(0)
+        this.websiteLinks.forEach((element: any,index)=>{
+          webctrls.push(this.editGroupweb(element.links))
+        })
+            
         const ctrl = this.getFormGroup('socialMediaLinks')
-        //console.log(ctrl, this.profile)
         ctrl.controls['facebook'].setValue(this.profile.socialMediaLinks ? this.profile.socialMediaLinks.facebook : "")
         ctrl.controls['twitter'].setValue(this.profile.socialMediaLinks ? this.profile.socialMediaLinks.twitter : "")
         ctrl.controls['linkedIn'].setValue(this.profile.socialMediaLinks ? this.profile.socialMediaLinks.linkedIn : "")
@@ -171,6 +159,23 @@ export class AdvisorAccountSettingComponent implements OnInit {
       this.loader.close();
     })
   }
+
+  editGroup(title, year) {
+    return this.fb.group({
+      title: [title, Validators.required],
+      year: [year, Validators.required]
+    });
+  }
+  
+  editGroupweb(links) {
+    return this.fb.group({
+      links: [links, Validators.required]
+    });
+  }
+  
+  get awardsPoints() {
+  return this.AddressForm.get('awardsYears') as FormArray;
+    }
 
   //function to create phone group for contact
   createWebsiteGroup(websitelink: websiteLink): FormGroup {
@@ -331,17 +336,16 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   addNewAo() {
-    this.awards.push({
-      id:'this.awards.length+1',
-      title: '',
-      year: ''
-    })
- //   console.log('awards---',this.awards)
+    this.awardsPoints.push(this.fb.group({
+      title: ['', Validators.required],
+      year: ['', Validators.required]
+    }));
   }
 
   delete(i){
-    console.log("award",i)
-    this.awards.splice(i,1);
+    const control = <FormArray>this.AddressForm.controls['awardsYears'];
+    control.removeAt(i);
+ //   this.awards.splice(i,1);
   }
 
   addWebsitesForm() {
@@ -351,14 +355,6 @@ export class AdvisorAccountSettingComponent implements OnInit {
     });   
   }
 
-  addWebsites() {
-    this.websitess.push({      
-      id:'this.websitess.length+1',
-      links:''
-    })
-   // console.log('websitess---',this.websitess)
-  }
-
   addWebsiteLinks() {
     const web = this.AddressForm.controls.websiteLinks as FormArray;
     web.push(this.fb.group({
@@ -366,18 +362,10 @@ export class AdvisorAccountSettingComponent implements OnInit {
     }));
   }
 
-  deleteWebsiteLinks(i) {
-    // console.log("web",i)
-
-    console.log("before delete >>>>", this.websiteLinks);
-    this.websiteLinks.splice(i, 1);
-    console.log("after delete >>>>", this.websiteLinks);
-  }
-
-
-  deleteWebsite(i) {
-    // console.log("web",i)
-    this.websitess.splice(i, 1);
+  deleteWebsiteLinks(i) {   
+   // this.websiteLinks.splice(i, 1);
+    const control = <FormArray>this.AddressForm.controls['websiteLinks'];
+    control.removeAt(i);
   }
 
   changePasspordModal(): void {
