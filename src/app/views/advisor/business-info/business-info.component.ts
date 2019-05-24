@@ -10,6 +10,8 @@ import { MatStepperModule , MatStepper} from '@angular/material/stepper';
 //import { states } from '../../../state';
 import { yearsOfServiceList, businessTypeList , industryDomainList, licenceHeldList } from '../../../selectList';
 import { states } from '../../../state';
+import { FileUploader } from 'ng2-file-upload';
+const URL = 'http://localhost:8080/api/documents/advisorDocument';
 @Component({
   selector: 'app-business-info',
   templateUrl: './business-info.component.html',
@@ -17,7 +19,9 @@ import { states } from '../../../state';
 })
 export class BusinessInfoComponent implements OnInit {
   @ViewChild('stepper') private myStepper: MatStepper;
-  
+  public uploader: FileUploader = new FileUploader({url:URL});
+  public hasBaseDropZoneOver: boolean = false;
+
   isLinear = false;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
@@ -38,11 +42,16 @@ export class BusinessInfoComponent implements OnInit {
   constructor(private router: Router, private activeRoute: ActivatedRoute, private stepper: MatStepperModule, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
   
   ngOnInit() {
-    //localStorage.setItem("step",'');
+ 
+    localStorage.setItem("step",'3'); 
     this.stateList = states;
     this.step = localStorage.getItem("step");
     this.myStepper.selectedIndex = Number(this.step);
-    //console.log("Step :- ",this.step,this.myStepper.selectedIndex); 
+    console.log("Step :- ",this.step); 
+    if(this.step && this.step==4){
+      this.router.navigate(['/', 'advisor', 'signup']);
+    }
+
     this.yearsOfServiceLists = yearsOfServiceList;
     this.businessTypeLists = businessTypeList;
     this.industryDomainLists = industryDomainList;
@@ -77,11 +86,6 @@ export class BusinessInfoComponent implements OnInit {
       this.getAdvDetails(this.step);
     }
   }
-
-  /*nextStep(index: number, stepper) {  
-    console.log(index)
-    stepper.selectedIndex = index-1;
-  }*/
 
   signupSubmit(steps=null,profileInData=null) {  
     console.log("Steps :- ",steps); 
@@ -155,5 +159,9 @@ export class BusinessInfoComponent implements OnInit {
         console.error(err);
         this.loader.close();
       }) 
+  }
+
+  public fileOverBase(e:any):void {
+    this.hasBaseDropZoneOver = e;
   }
 }
