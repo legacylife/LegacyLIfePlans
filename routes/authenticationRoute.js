@@ -224,7 +224,7 @@ function list(req, res) {
 
 //function get details of user from url param
 function details(req, res) {
-  let fields = { id: 1, username: 1, socialMediaToken: 1, salt: 1, fullName: 1, profileSetup:1 }
+  let fields = { id: 1, username: 1, socialMediaToken: 1, salt: 1, fullName: 1, profileSetup:1, status :1, userType :1 }
   if (req.body.fields) {
     fields = req.body.fields
   }
@@ -334,13 +334,10 @@ function forgotPassword(req, res) {
         let clientUrl = constants.clientUrl;
         var link = "";
         if (req.body.userType == 'sysadmin') {
-          var link = clientUrl + '/llp-admin/reset-password/' + tokens;
+          link = clientUrl + '/llp-admin/reset-password/' + tokens;
         }
-        if (req.body.userType == 'customer') {
-          var link = clientUrl + '/customer/reset-password/' + tokens;
-        }
-        if (req.body.userType == 'advisor') {
-          var link = clientUrl + '/advisor/reset-password/' + tokens;
+        else {
+          link = clientUrl + '/reset-password/' + tokens;
         }
 
         //forgot password email template
@@ -418,7 +415,7 @@ router.post('/reset-password-token', function (req, res) {
 async function checkEmail(req, res) {
   try {
     const { username } = req.body;
-    User.findOne({ username: username }, { username: 1, status:1 }, function (err, user) {
+    User.findOne({ username: username }, { _id :1, username: 1, status:1, userType : 1,profileSetup:1 }, function (err, user) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
@@ -427,7 +424,11 @@ async function checkEmail(req, res) {
         }
         else if (user && user.status == 'Active') {
           res.send(resFormat.rSuccess({ code: "Exist", message: "Looks like you already have an account registered with this email. Log in to access." }))
-        } else {
+        }
+        else if (user && user.status == 'Pending') {
+          res.send(resFormat.rSuccess({ username : user.username, userType : user.userType, userId : user._id ,code: "ExistAdvisor", message: "Looks like you already have an account registered with this email. Log in to access." }))
+        }
+        else {
           OtpCheck.findOne({ username: username }, { username: 1 }, function (err, found) {
             if (err) {
               res.status(401).send(resFormat.rError(err))
