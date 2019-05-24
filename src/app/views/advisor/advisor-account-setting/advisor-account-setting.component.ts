@@ -17,6 +17,8 @@ import { FileUploader } from 'ng2-file-upload';
 import { serverUrl } from '../../../config';
 const URL = serverUrl+'/api/documents/advisorDocument';
 
+console.log(URL)
+
 interface websiteLink {
   links: string;
 }
@@ -243,7 +245,6 @@ export class AdvisorAccountSettingComponent implements OnInit {
       industryDomain: this.AddressForm.controls['industryDomain'].value,
       businessPhoneNumber: this.AddressForm.controls['businessPhoneNumber'].value,
       bioText: this.AddressForm.controls['bioText'].value,
-      websites: this.AddressForm.controls['websites'].value,
       websiteLinks: this.websiteLinks,
       socialMediaLinks:({
         "facebook":facebook,
