@@ -11,7 +11,8 @@ import { MatStepperModule , MatStepper} from '@angular/material/stepper';
 import { yearsOfServiceList, businessTypeList , industryDomainList, licenceHeldList } from '../../../selectList';
 import { states } from '../../../state';
 import { FileUploader } from 'ng2-file-upload';
-const URL = 'http://localhost:8080/api/documents/advisorDocument';
+import { serverUrl } from '../../../config';
+const URL = serverUrl+'/api/documents/advisorDocument';
 @Component({
   selector: 'app-business-info',
   templateUrl: './business-info.component.html',
@@ -43,7 +44,8 @@ export class BusinessInfoComponent implements OnInit {
   
   ngOnInit() {
  
-    //localStorage.setItem("step",'3'); 
+    //localStorage.setItem("step",'0');
+    this.userId = localStorage.getItem("endUserId");
     this.stateList = states;
     this.step = localStorage.getItem("step");
     this.myStepper.selectedIndex = Number(this.step);
@@ -82,14 +84,13 @@ export class BusinessInfoComponent implements OnInit {
     });
     this.forthFormGroup = this.fb.group({
     });
-    if(this.step){
+    if(this.step || this.userId){
       this.getAdvDetails(this.step);
     }
   }
 
   signupSubmit(steps=null,profileInData=null) {  
-    console.log("Steps :- ",steps); 
-   this.userId = '5cc9cc301955852c18c5b73a';
+    console.log("Steps :- ",steps);
 
    let msgName = '';
    if(steps==1) msgName = "business information";
@@ -98,6 +99,11 @@ export class BusinessInfoComponent implements OnInit {
 
     var query = {};
     var proquery = {};
+    console.log(">>>>>>",steps)
+    if(steps == 4)
+
+      profileInData.profileSetup = 'yes';
+
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: "advisor" }),
       proquery: Object.assign(profileInData),
@@ -124,7 +130,6 @@ export class BusinessInfoComponent implements OnInit {
 
   getAdvDetails(step,query = {}){
       //console.log('here',step);
-    this.userId = '5cc9cc301955852c18c5b73a';
       const req_vars = {
         query: Object.assign({ _id: this.userId, userType: "advisor" }, query)
       }

@@ -34,7 +34,7 @@ export class ForgotPasswordComponent implements OnInit {
       if(result.status == "success"){
           this.snack.open('We have sent you reset instructions. Please check your email.', 'OK', { duration: 4000 })
 		  setTimeout(() => {
-			  this.router.navigate ( [ '/customer/forgot-password-success' ] );
+			  this.router.navigate ( [ '/forgot-password-success' ] );
 		  }, 2000);
       } else {
        // this.errorMessage = result.data.message || result.data;

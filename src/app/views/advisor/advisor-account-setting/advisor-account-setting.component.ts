@@ -14,7 +14,8 @@ import { Subscription, Observable, of  } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { states } from '../../../state';
 import { FileUploader } from 'ng2-file-upload';
-const URL = 'http://localhost:8080/api/documents/advisorDocument';
+import { serverUrl } from '../../../config';
+const URL = serverUrl+'/api/documents/advisorDocument';
 
 interface websiteLink {
   links: string;

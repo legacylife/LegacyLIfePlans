@@ -46,7 +46,7 @@ export class ResetPasswordComponent implements OnInit {
         this.snack.open(result.data, 'OK', { duration: 4000 })
 
         setTimeout(() => {
-          this.router.navigate(['/customer/password-reset-success']);
+          this.router.navigate(['/password-reset-success']);
         }, 2000);
       } else {
         this.snack.open(result.data, 'OK', { duration: 4000 })

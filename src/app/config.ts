@@ -9,7 +9,7 @@ let mailchimpLinkEnv = ""
 if(window.location.hostname.indexOf("localhost") > -1){
   serverUrlEnv = "http://localhost:8080"  
 } else {  //dev server
-  serverUrlEnv = "" 
+  serverUrlEnv = "http://ec2-3-212-172-15.compute-1.amazonaws.com:8080" 
 }
 
 export const serverUrl = serverUrlEnv

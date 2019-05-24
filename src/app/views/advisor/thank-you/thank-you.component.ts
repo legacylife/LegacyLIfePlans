@@ -10,6 +10,18 @@ export class ThankYouComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
+    localStorage.removeItem('endUserId')
+    localStorage.removeItem('endUserType')
+    localStorage.removeItem('endUsername')
+    localStorage.removeItem('authCode')
+    localStorage.removeItem('emailApiType')
+    localStorage.removeItem('token')
+    localStorage.removeItem('userexpiryDate')
+    localStorage.removeItem('userHeaderDetails')
+
+    window.localStorage.clear();
+    window.sessionStorage.clear();
   }
   submitEmail() {
   }
