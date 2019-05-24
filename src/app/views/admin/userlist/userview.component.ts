@@ -23,7 +23,7 @@ export class userviewComponent implements OnInit {
   adminSections = [];
   loggedInUserDetails: any;
   statMsg = "";
-
+ // websites:any;
   constructor(
     private api: APIService, private route: ActivatedRoute, 
     private router: Router, private snack: MatSnackBar, private dialog: MatDialog,
@@ -32,7 +32,8 @@ export class userviewComponent implements OnInit {
     const locationArray = location.href.split('/')
     this.selectedUserId = locationArray[locationArray.length - 1]
     this.loggedInUserDetails = this.api.getUser()
-    this.adminSections = adminSections
+    this.adminSections = adminSections;
+    //this.websites = '';
     this.getUser()
   }
 
@@ -49,7 +50,7 @@ export class userviewComponent implements OnInit {
         console.log(result.data)
       } else {
         this.row = result.data
-        console.log(this.row)
+       // this.websites = this.row.websites;
       }
     }, (err) => {
       console.error(err)

@@ -4,9 +4,9 @@
       <div class="shop-filters-wrap llp--left--panel">
         <mat-card class="account--profile">
           <div class="account--pic--wrapper">
-            <div class="account--pic">
-              <img src="assets/images/arkenea/james.png" />
-            </div>
+            <div class="account--pic" >               
+              <img src="https://s3.amazonaws.com/llp-dev/profilePictures/default.jpg" />
+            </div>            
             <div class="edit--pic">
               <mat-icon>edit</mat-icon>
             </div>
@@ -92,21 +92,28 @@
                 <div fxFlex.xs="100" fxFlex.sm="60" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60">
                   <div class="manage--sub--section">
                     <header>
-                      <div class="stan--plan"> Standard plan</div>
-                      <div class="ur--sub">Your subscription will automatically renew on
+                      <div class="stan--plan"> Free Access</div>
+                      <div class="ur--sub">Valid till
                         <span>06/07/2019</span>
                       </div>
                     </header>
-                    <div class="llp--slide--wrapper">
-                      <div class="set-auto">Set auto-payment option</div>
-                      <mat-slide-toggle class="llp--slide--toggle">OFF</mat-slide-toggle>
-                    </div>
-                    <p class="turning">Turning the auto-payment option ON will automatically deduct the subscription amount from your associated
-                      card
-                    </p>
+
+                    <mat-card class="p-0 black--header">
+                      <mat-card-title class="">
+                        <div class="card-title-text">Invitation Status</div>
+                        <mat-divider></mat-divider>
+                      </mat-card-title>
+                      <mat-card-content class="invite--body--section">
+                        <h4 class="count">12<span>/45</span>
+                        </h4>
+                        <p class="daysgo">9 days to go</p>
+                        <p class="invites">Invites sent in this month</p>
+                        <button mat-raised-button class="llp--primary--btn">Invite Now</button>
+                      </mat-card-content>
+                    </mat-card>
+
                     <div class="manage--cancel">
-                      <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/customer/customer-subscription'">Manage subscription</button>
-                      <a class="clr--red">Cancel subscription</a>
+                      <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/advisor/subscription'">Manage subscription</button>
                     </div>
                   </div>
                   <div class="deactivate--acc">
@@ -115,7 +122,7 @@
                 </div>
               </div>
               <div fx.Flex="100" class="text-center mt--30">
-               <!-- <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>-->
+                <button mat-raised-button class="llp--secondary--btn mr-1" [routerLink]="'/advisor/dashboard'">Cancel</button>
                 <button mat-raised-button class="llp--primary--btn" [disabled]="ProfileForm.invalid">Save</button>
               </div>
             </div>
@@ -302,12 +309,9 @@
                       </div>
                     </div>
                   </div>
-
-
                 </div>
-
                 <div fx.Flex="100" class="text-center mt--30">
-                  <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
+                  <button mat-raised-button class="llp--secondary--btn mr-1" [routerLink]="'/advisor/dashboard'">Cancel</button>
                   <button mat-raised-button class="llp--primary--btn" [disabled]="AddressForm.invalid">Save</button>
                 </div>
               </form>
@@ -386,12 +390,12 @@
 
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50" *ngIf="advisorDocumentsList" >
                     <h3 class="header--text fnt--16">Uploaded documents</h3>
-                    <mat-chip-list class="doc--list" *ngFor="let doc of advisorDocumentsList | slice">
-                        <mat-chip><a href="{{doc}}" target="_blanck">{{doc}}</a><mat-icon matChipRemove  (click)="docDelete(doc)">close</mat-icon></mat-chip>
+                    <mat-chip-list class="doc--list" *ngFor="let doc of advisorDocumentsList; index as i">
+                        <mat-chip><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck">{{doc.title}}</a><mat-icon matChipRemove  (click)="docDelete(i,doc.title)">close</mat-icon></mat-chip>
                     </mat-chip-list>
                   </div>
                  
-                  <table class="default-table mat-box-shadow" style="width: 100%">
+                  <table class="default-table mat-box-shadow" style="width: 100%" *ngIf="uploader.getNotUploadedItems().length">
                     <thead>
                     <tr>
                         <th width="30%">Name</th>
@@ -421,8 +425,8 @@
                         </td>-->
                         <td nowrap>
                             <!-- <button mat-raised-button class="mat-primary" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">Upload</button>
-                            <button mat-raised-button class="mat-accent" (click)="item.cancel()" [disabled]="!item.isUploading">Cancel</button>-->            
-                           <button mat-raised-button class="mat-warn" (click)="item.remove()">Remove</button>
+                            <button mat-raised-button class="mat-accent" (click)="item.cancel()" [disabled]="!item.isUploading">Cancel</button>-->                                       
+                            <button  mat-icon-button class="mat-accent" (click)="item.remove()" [disabled]="item.isUploading"><mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon></button>
                         </td>
                     </tr>
                     </tbody>
@@ -438,7 +442,7 @@
                   <button mat-raised-button class="mat-primary" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">Upload all</button>
             </div>
             <div fx.Flex="100" class="text-center mt--30">
-                  <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
+                  <button mat-raised-button class="llp--secondary--btn mr-1"  [routerLink]="'/advisor/dashboard'">Cancel</button>
                   <button mat-raised-button class="llp--primary--btn" [disabled]="LicenseForm.invalid">Save</button>
             </div>
             </form>

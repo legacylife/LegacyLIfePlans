@@ -42,7 +42,6 @@ export const AdvisorRoutes: Routes = [
   },{
     //path: 'signup',
     //component: AdvisorSignupComponent,
-
     path: 'signup',
     component: AuthLayoutComponent,
     children : [
@@ -56,7 +55,6 @@ export const AdvisorRoutes: Routes = [
   },{
     //path: 'business-info',
     //component: BusinessInfoComponent,
-
     path: 'business-info',
     component: AuthLayoutComponent,
     children : [
@@ -71,7 +69,6 @@ export const AdvisorRoutes: Routes = [
   },{
     //path: 'thank-you',
     //component: ThankYouComponent,
-
     path: 'thank-you',
     component: AuthLayoutComponent,
     children : [
@@ -81,12 +78,9 @@ export const AdvisorRoutes: Routes = [
         canActivate: [ UserPreAuthGuard ] 
       }
     ]
-
-
   },{
     //path: '',
     //component: AdvisorDashboardComponent
-
     path: 'dashboard',
     component: AdvisorLayoutComponent,
     children : [
@@ -101,7 +95,6 @@ export const AdvisorRoutes: Routes = [
   },{
     //path: 'dashboard-updates',
     //component: AdvisorDashboardUpdateComponent
-
     path: 'dashboard-updates',
     component: AdvisorLayoutComponent,
     children : [
@@ -111,7 +104,6 @@ export const AdvisorRoutes: Routes = [
         canActivate: [ UserAuthGuard ] 
       }
     ]
-
   },{
     path: 'account-setting',
     component: AdvisorLayoutComponent,
@@ -121,11 +113,22 @@ export const AdvisorRoutes: Routes = [
         component: AdvisorAccountSettingComponent,
       }
     ],    
-  },{
+  },
+  {
     path: 'legacies',
-    component: LegaciesComponent
+    component: AdvisorLayoutComponent,
+    children : [
+      { 
+        path: '',
+        component: LegaciesComponent,
+        canActivate: [ UserAuthGuard ] 
+      }
+    ]
   },{
     path: 'subscription',
     component: AdvisorSubscriptionComponent
+  },{
+    path: '**',
+    redirectTo: 'dashboard'
   }
 ];

@@ -142,7 +142,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
 
         this.awards = this.profile.awardsYears;
         this.websitess = this.profile.websites;
-        this.advisorDocumentsList = this.profile.advisorDocuments.split(',');
+        this.advisorDocumentsList = this.profile.advisorDocuments;
       
       //  const webctrl = this.getFormGroup('websites')
        //console.log("Website ",webctrl, this.profile)
@@ -284,24 +284,25 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
 
-  docDelete(doc) {
+  docDelete(doc,name) {
     this.userId = '5cc9cc301955852c18c5b73a';
-    var statMsg = "Are you sure you want to delete "+doc+" file name?"
+    var statMsg = "Are you sure you want to delete '"+name+"' file name?"
+
      this.confirmService.confirm({message: statMsg})
       .subscribe(res => {
         if (res) {
           this.loader.open();
+          this.advisorDocumentsList.splice(doc,1)
           var query = {};
           const req_vars = {
             query: Object.assign({ _id: this.userId }, query),
-            proquery: Object.assign({ advisorDocuments: doc }, query)
+            proquery: Object.assign({ advisorDocuments: this.advisorDocumentsList }, query)
           }
           this.userapi.apiRequest('post', 'documents/deleteAdvDoc', req_vars).subscribe(result => {
             if (result.status == "error") {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
-             // this.getLists()
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
