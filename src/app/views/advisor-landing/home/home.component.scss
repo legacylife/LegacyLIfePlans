@@ -264,6 +264,7 @@
                 margin: 0;
                 font-size: 18px;
                 color: $clr--13;
+                font-family: $font--lato--regular;
             }
         }
     }
@@ -583,6 +584,7 @@
     }
     .advisor--landing--wrapper .get--hired--wrapper .banner--content h6.info {
         margin-bottom: 20px;
+        padding: 0 15px;
     }
     .advisor--landing--wrapper .hired--steps .steps--section {
         border-bottom: 1px solid #e0e0e0;
