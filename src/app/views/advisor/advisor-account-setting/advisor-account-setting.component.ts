@@ -47,7 +47,8 @@ export class AdvisorAccountSettingComponent implements OnInit {
   socialMediaLinkss: any;
   websites: [{ 'id': "",'links': "" }]
   advisorDocumentsList: any;
-  websiteLinks: websiteLink[] = [{ 'links': "" }]
+  awardsYears:any;
+  websiteLinks:any;// websiteLink[] = [{ 'links': "" }]
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
   constructor(private router: Router, private route: ActivatedRoute,private fb: FormBuilder, private snack: MatSnackBar,public dialog: MatDialog, private userapi: UserAPIService,private loader: AppLoaderService, private confirmService: AppConfirmService) { }
@@ -77,7 +78,8 @@ export class AdvisorAccountSettingComponent implements OnInit {
             zipcode: new FormControl('', Validators.required),
             businessPhoneNumber: new FormControl(''),
             bioText: new FormControl(''),          
-            websiteLinks: this.fb.array(this.websiteLinks.map(elem => this.createWebsiteGroup(elem))),
+            //websiteLinks: this.fb.array(this.websiteLinks.map(elem => this.createWebsiteGroup(elem))),
+            websiteLinks: this.fb.array([this.fb.group({links:['', Validators.required]})]),     
             awardsYears: this.fb.array([this.fb.group({title:['', Validators.required],year:['', Validators.required]})]),     
             
             socialMediaLinks: new FormGroup({
@@ -131,7 +133,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
         this.AddressForm.controls['zipcode'].setValue(this.profile.zipcode ? this.profile.zipcode : "");
         this.AddressForm.controls['bioText'].setValue(this.profile.bioText ? this.profile.bioText : "");
         this.awards = this.profile.awardsYears;
-        this.websiteLinks = this.profile.websiteLinks
+        this.websiteLinks = this.profile.websiteLinks;
         this.advisorDocumentsList = this.profile.advisorDocuments;
     
         const ctrls = this.AddressForm.get('awardsYears') as FormArray;
@@ -179,6 +181,11 @@ export class AdvisorAccountSettingComponent implements OnInit {
   get awardsPoints() {
   return this.AddressForm.get('awardsYears') as FormArray;
     }
+
+ get weblinksPoints() {
+      return this.AddressForm.get('websiteLinks') as FormArray;
+  }
+
 
   //function to create phone group for contact
   createWebsiteGroup(websitelink: websiteLink): FormGroup {
@@ -232,6 +239,9 @@ export class AdvisorAccountSettingComponent implements OnInit {
     const formNumbers = <FormArray>this.AddressForm.get('websiteLinks')
     this.websiteLinks = formNumbers.controls.map(o => { return o.value })
 
+    const awardsYearsArr = <FormArray>this.AddressForm.get('awardsYears')
+    this.awardsYears = awardsYearsArr.controls.map(o => { return o.value })
+
     console.log(this.websiteLinks)
     let AddressInData = {
       addressLine1: this.AddressForm.controls['addressLine1'].value,
@@ -246,6 +256,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
       businessPhoneNumber: this.AddressForm.controls['businessPhoneNumber'].value,
       bioText: this.AddressForm.controls['bioText'].value,
       websiteLinks: this.websiteLinks,
+      awardsYears: this.awardsYears,
       socialMediaLinks:({
         "facebook":facebook,
         "twitter": twitter,
@@ -358,9 +369,12 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   addWebsiteLinks() {
-    const web = this.AddressForm.controls.websiteLinks as FormArray;
+   /* const web = this.AddressForm.controls.websiteLinks as FormArray;
     web.push(this.fb.group({
       links: ''
+    }));*/
+    this.weblinksPoints.push(this.fb.group({
+      links: ['', Validators.required]
     }));
   }
 

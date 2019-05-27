@@ -275,9 +275,9 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" formArrayName="websiteLinks">
                     <h3 class="header--text fnt--16 mb-1">Websites</h3>
        
-                    <div fxLayout="row wrap" *ngFor="let web of AddressForm.get('websiteLinks').controls; index as i">
-
-                      <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2" [formGroupName]="i">
+                  <!--  <div fxLayout="row wrap" *ngFor="let web of AddressForm.get('websiteLinks').controls; index as i">-->
+                      <div fxLayout="row wrap" *ngFor="let web of weblinksPoints.controls; let i = index"  [formGroupName]="i">
+                      <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
                         <mat-form-field class="full-width">
                           <input matInput placeholder="URL"  formControlName="links">
                         </mat-form-field>
@@ -367,7 +367,7 @@
                          [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
                          (fileOver)="fileOverBase($event)"
                          [uploader]="uploader">
-                            <input type="file" name="advisorDocuments" accept="image/*" />     
+                            <input type="file" name="advisorDocuments" ng2FileSelect [uploader]="uploader" multiple  accept="image/*" />     
                             <mat-icon class="cloud-icon">cloud_upload</mat-icon>
                             <div class="select--file">Select file from your computer</div>
                           </div>
