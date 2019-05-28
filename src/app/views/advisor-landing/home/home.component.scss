@@ -469,6 +469,18 @@
             .mat-form-field{
                 width: 100%;                
             }
+            // Placeholder
+            ::placeholder { /* Firefox, Chrome, Opera */ 
+                color: #ccc; 
+            } 
+            
+            :-ms-input-placeholder { /* Internet Explorer 10-11 */ 
+                color: #ccc; 
+            } 
+            
+            ::-ms-input-placeholder { /* Microsoft Edge */ 
+                color: #ccc; 
+            } 
            
         }
         .copyright--footer{

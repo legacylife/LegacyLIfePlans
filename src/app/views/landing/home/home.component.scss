@@ -245,6 +245,12 @@
         .mat-card-title{
             .card-title-text{
                 background-color: #ecca40;
+                position: relative;
+                .cornar--stars{
+                    position: absolute;
+                    right: 12px;
+                    top: 11px;
+                }
             }
             
         }
