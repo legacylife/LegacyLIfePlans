@@ -48,7 +48,7 @@ function signin(req, res) {
             res.send(resFormat.rError(err))
           } else {
             console.log("type ",user.userType);
-            let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false }
+            let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, profilePicture : user.profilePicture, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false }
             res.status(200).send(resFormat.rSuccess(result))
           }
         })
@@ -111,33 +111,41 @@ function create(req, res) {
 router.post('/updateProfilePic', function (req, res) {
   var fstream;
   let authTokens = { userId: "", authCode: "" }
+  
+    
   if (req.busboy) {
     req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
       authTokens[fieldname] = val
     })
 
+    
     req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
       if (authTokens.userId) {
-        let ext = filename.split('.')
-        ext = ext[ext.length - 1]
-        const newFilename = authTokens.userId + '-' + new Date().getTime() + `.${ext}`
-        fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
-        file.pipe(fstream);
-        fstream.on('close', async function () {
-          await s3.uploadFile(newFilename, profilePicturesPath)
-          User.updateOne({ _id: authTokens.userId }, { $set: { profilePicture: newFilename } }, function (err, updatedUser) {
-            if (err) {
-              res.send(resFormat.rError(err))
-            } else {
-              res.send(resFormat.rSuccess({ message: 'User details have been updated', profilePicture: newFilename }))
-            }
+        User.findOne({  _id: authTokens.userId }, { profilePicture : 1 }, function (err, result) {
+          let ext = filename.split('.')
+          ext = ext[ext.length - 1]
+          const newFilename = authTokens.userId + '-' + new Date().getTime() + `.${ext}`
+          fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+          file.pipe(fstream);
+          fstream.on('close', async function () {
+            await s3.uploadFile(newFilename, profilePicturesPath)
+            User.updateOne({ _id: authTokens.userId }, { $set: { profilePicture: newFilename } }, function (err, updatedUser) {
+              if (err) {
+                res.send(resFormat.rError(err))
+              } else {             
+                
+                res.send(resFormat.rSuccess({ message: 'User details have been updated', profilePicture: newFilename }))
+              }
+            })
           })
-        })
+        });
       } else {
         res.status(401).send(resFormat.rError("User token mismatch."))
       }
     })
+    
   }
+  
 
 })
 
