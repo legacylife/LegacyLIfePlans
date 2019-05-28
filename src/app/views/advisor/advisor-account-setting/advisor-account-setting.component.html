@@ -43,6 +43,15 @@
               <span>Valid till:</span> 29 Apr</p>
           </div>
 
+          <div class="feature--profile">
+
+            <p class="pro--info">Get featured to display your profile to end users</p>
+
+            <div class="text-center mt--25">
+              <button mat-raised-button class="llp--primary--btn w168">Get Featured</button>
+            </div>
+          </div>
+
 
         </mat-card>
 
@@ -122,7 +131,8 @@
                         <mat-divider></mat-divider>
                       </mat-card-title>
                       <mat-card-content class="invite--body--section">
-                        <h4 class="count">12<span>/45</span>
+                        <h4 class="count">12
+                          <span>/45</span>
                         </h4>
                         <p class="daysgo">9 days to go</p>
                         <p class="invites">Invites sent in this month</p>
@@ -244,7 +254,11 @@
 
 
                 <h3 class="header--text">Featured Information</h3>
-                <p class="header--desc">The following information appears on your featured profile.</p>
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                    <p class="header--desc">The following information appears on your featured profile.</p>
+                  </div>
+                </div>
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width about--txtarea">
@@ -270,7 +284,7 @@
                         <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
                       </div>
                     </div>
-                  
+
                     <div fxLayout="row wrap">
                       <div fxFlex.xs="100">
                         <div class="add--new" (click)="addNewAo();">
@@ -298,7 +312,7 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <h3 class="header--text fnt--16 mb-1">Websites</h3>
 
-                    <div fxLayout="row wrap"  *ngFor="let website of websites; let i = index ">
+                    <div fxLayout="row wrap" *ngFor="let website of websites; let i = index ">
                       <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
                         <mat-form-field class="full-width">
                           <input matInput name="City" placeholder="URL" value="{{website.webName}}">
@@ -307,7 +321,7 @@
                       <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
                         <mat-icon class="mt-1 clr--red cursor-pointer" (click)="deleteWebsite(i);">delete</mat-icon>
                       </div>
-                    </div>                    
+                    </div>
                     <div fxLayout="row wrap">
                       <div fxFlex.xs="100">
                         <div class="add--new" (click)="addWebsites();">
@@ -374,33 +388,37 @@
 
                 <h3 class="header--text">Business Documents</h3>
                 <div fxLayout="row">
-                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
-                    <p class="header--desc upload--doc">Upload your business documents for verification for e.g. business license</p>                  
-                    
-
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                    <p class="header--desc upload--doc">Upload your business documents for verification for e.g. business license</p>
                   </div>
                 </div>
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
-                      <div class="upload--buss--docs--sec">
-                          <label>Upload your business documents</label>
-                          <div class="upload--box">
-                            <input type="file" />
-          
-                            <mat-icon class="cloud-icon">cloud_upload</mat-icon>
-                            <div class="select--file">Select file from your computer</div>
-          
-                          </div>
-                          <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
-                        </div>
+                    <div class="upload--buss--docs--sec">
+                      <label>Upload your business documents</label>
+                      <div class="upload--box">
+                        <input type="file" />
+
+                        <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                        <div class="select--file">Select file from your computer</div>
+
+                      </div>
+                      <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+                    </div>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50">
-                      <h3 class="header--text fnt--16">Uploaded documents</h3>
-                      <mat-chip-list class="doc--list">
-                          <mat-chip>Business card.jpg <mat-icon matChipRemove>close</mat-icon></mat-chip>
-                          <mat-chip>proof of credentials.pdf <mat-icon matChipRemove>close</mat-icon></mat-chip>
-                          <mat-chip>License_8-Apr.pdf <mat-icon matChipRemove>close</mat-icon></mat-chip>
-                        </mat-chip-list>
+                    <h3 class="header--text fnt--16">Uploaded documents</h3>
+                    <mat-chip-list class="doc--list">
+                      <mat-chip>Business card.jpg
+                        <mat-icon matChipRemove>close</mat-icon>
+                      </mat-chip>
+                      <mat-chip>proof of credentials.pdf
+                        <mat-icon matChipRemove>close</mat-icon>
+                      </mat-chip>
+                      <mat-chip>License_8-Apr.pdf
+                        <mat-icon matChipRemove>close</mat-icon>
+                      </mat-chip>
+                    </mat-chip-list>
                   </div>
                 </div>
 
