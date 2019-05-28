@@ -181,7 +181,7 @@
   <div fxFlex="100">
 
     <section>
-      <div class="get--hired--wrapper bottom-space" style="background-image: url('assets/images/arkenea/eu-banner.png')">
+      <div class="get--hired--wrapper bottom-space safe--place--wrapper" style="background-image: url('assets/images/arkenea/eu-banner.png')">
         <div class="banner--content">
           <h3>SAFE PLACE FOR
             <br> LIFE’S PLANS</h3>
@@ -325,29 +325,148 @@
       </div>
 
 
-      <div class="white--bg">
+      <div class="standard-bg white--bg">
         <div class="llp--container">
           <div class="featured--advisors text-center ">
             <h1 class="landing-main-header bottom-space">Quick Overview</h1>
             <div class="llp--container">
-              <div fxLayout="row wrap" class="justify--content--space--around">
-                <div fxFlex.xs="100" fxFlex.sm="45" fxFlex.md="45" fxFlex.lg="48" fxFlex.xl="45">
-                  <div class="overview--wrapper">
-                    d
+              <div fxLayout="row wrap" class="justify--content--space--between">
+                <div fxFlex.xs="100" fxFlex.sm="49" fxFlex.md="49" fxFlex.lg="49" fxFlex.xl="49">
+                  <div class="overview--wrapper" style="background-image: url('assets/images/arkenea/quickoverview-1-without-overlay.png')">
+
+                    <mat-icon class="play--video--icon">play_circle_outline</mat-icon>
+                    <div class="video--details">
+                      <h5>Login & Overview Process </h5>
+                      <p>Lorem Ipusm is dummy text</p>
+                    </div>
+
                   </div>
                 </div>
-                <div fxFlex.xs="100" fxFlex.sm="45" fxFlex.md="45" fxFlex.lg="48" fxFlex.xl="45">
-                    <div class="overview--wrapper">
-                        d1
-                      </div>
+                <div fxFlex.xs="100" fxFlex.sm="49" fxFlex.md="49" fxFlex.lg="49" fxFlex.xl="49">
+                  <div class="overview--wrapper" style="background-image: url('assets/images/arkenea/quickoverview-2-without-overlay.png')">
+                    <mat-icon class="play--video--icon">play_circle_outline</mat-icon>
+                    <div class="video--details">
+                      <h5>Access and Dashboard Preview</h5>
+                      <p> Simply dummy text of the printing</p>
+                    </div>
+                  </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="standard-bg">
+        <div class="llp--container">
+          <div class="featured--advisors text-center">
+            <h1 class="landing-main-header">Choose a Plan</h1>
+            <p>Simply dummy text of the printing and typesetting industry. </p>
+
+            <div class="pricing--section">
+              <mat-card class="plan-pricing text-center standard p-0 ">
+                <mat-card-title>
+                  <div class="card-title-text">
+                    <div class="plan--type">Standard</div>
+                    <div class="relative">
+                      <span class="doller">$</span>
+                      <span class="amt">0</span>
+                      <span class="duration">Yearly</span>
+                    </div>
+                  </div>
+                </mat-card-title>
+                <mat-card-content>
+                    <mat-list>
+                        <mat-list-item>LLP Plans feature one  <div class="limited">Limited</div> </mat-list-item>
+                        <mat-list-item>LLP Plans feature second<div class="limited"> Limited </div></mat-list-item>
+                        <mat-list-item>LLP Plans feature third<div class="limited"> <mat-icon class="clear">clear</mat-icon> </div></mat-list-item>
+                        <mat-list-item>LLP Plans feature fourth<div class="limited"> <mat-icon class="clear">clear</mat-icon> </div></mat-list-item>
+                        <mat-list-item>LLP Plans feature fifth<div class="limited"> <mat-icon class="clear">clear</mat-icon> </div></mat-list-item>
+                        <mat-list-item>LLP Plans feature sixth<div class="limited"> <mat-icon class="clear">clear</mat-icon> </div></mat-list-item>                       
+                      </mat-list>
+                  <button mat-raised-button class="llp--primary--btn get--started--btn">Get Started</button>
+                </mat-card-content>
+              </mat-card>
+
+
+              <mat-card class="plan-pricing text-center p-0 premium">
+                <mat-card-title>
+                    <div class="card-title-text">
+                        <div class="plan--type">Premium</div>
+                        <div class="relative">
+                          <span class="doller">$</span>
+                          <span class="amt">75</span>
+                          <span class="duration">Yearly</span>
+                        </div>
+                      </div>
+                </mat-card-title>
+                <mat-card-content>
+                  <mat-list>
+                      <mat-list-item>LLP Plans feature one  <div class="limited">Unlimited</div> </mat-list-item>
+                      <mat-list-item>LLP Plans feature second<div class="limited"> Unlimited </div></mat-list-item>
+                      <mat-list-item>LLP Plans feature third<div class="limited"> <mat-icon class="check">check</mat-icon> </div></mat-list-item>
+                      <mat-list-item>LLP Plans feature fourth<div class="limited"> <mat-icon class="check">check</mat-icon> </div></mat-list-item>
+                      <mat-list-item>LLP Plans feature fifth<div class="limited"> <mat-icon class="check">check</mat-icon> </div></mat-list-item>
+                      <mat-list-item>LLP Plans feature sixth<div class="limited"> <mat-icon class="clear">clear</mat-icon> </div></mat-list-item>
+                     
+                  </mat-list>
+                  <button mat-raised-button class="llp--primary--btn get--started--btn">Buy Now</button>
+                </mat-card-content>
+              </mat-card>
 
             </div>
+
 
           </div>
         </div>
       </div>
+
+      <div class="white--bg">
+          <div class="container--full--width">
+            <div class="featured--advisors text-center">
+              <h1 class="landing-main-header">What People Say?</h1>
+              <p>Testimonials from our peoples</p>
+      
+              <div class="fa--slider relative what--do--sec">
+                <ngx-slick-carousel class="carousel" [config]="slideConfigTwo" (init)="slickInit2($event)" (breakpoint)="breakpoint($event)"
+                  (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
+                  <div ngxSlickItem *ngFor="let testomonial of testomonials" class="slide">
+      
+                    <div class="testimonial--wrapper">
+                      <div class="testimonial--header">
+                        <i class="icon-quote"></i>
+                        <p>{{testomonial.clientSays}}</p>
+                      </div>
+                      <div class="testimonial--body">
+                        <div class="testmnl--user--pic">
+                          <img src="{{testomonial.clientPic}}">
+                        </div>
+                        <h5> {{testomonial.clientName}}</h5>
+                        <h6> {{testomonial.clientDesc}}</h6>
+                      </div>
+                    </div>
+      
+                  </div>
+                </ngx-slick-carousel>
+              </div>
+      
+            </div>
+          </div>
+          </div>
+      
+          <div class="get--a--free-section">
+            <div class="llp--container">
+              <div fxLayout="row wrap" class="align--items--center">
+                <div fxFlex.xs="100" fxFlex.sm="70" fxFlex.md="80" fxFlex.lg="80" fxFlex.xl="80">
+                  <h5>Get a Free Trial Account on Legacy Life Plans!</h5>
+                  <!-- <p>Lorem Ipsum is dummy Text lorem Ipsum is dummy text</p> -->
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="30" fxFlex.md="20" fxFlex.lg="20" fxFlex.xl="20" class="start--free">
+                  <button mat-raised-button class="landing--primary--btn">Start a Free Trial</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
     </section>
 

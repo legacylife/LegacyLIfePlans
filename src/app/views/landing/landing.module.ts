@@ -28,11 +28,13 @@ import { HomeComponent } from './home/home.component';
 import { CustAboutUsComponent } from './about-us/about-us.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { TearnsOfUseComponent } from './tearns-of-use/tearns-of-use.component';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    SlickCarouselModule,
     MatListModule,
     MatIconModule,
     MatButtonModule,

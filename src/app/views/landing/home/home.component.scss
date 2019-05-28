@@ -3,9 +3,12 @@
 
 .llp--unexp-turn{
     height: 550px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 .llp--unexp--box{
-    width: 652px;
+    max-width: 652px;
     padding: 50px;
     background-color: #222324;
     margin-left: auto;
@@ -14,13 +17,13 @@
 
     h5{
         font-size: 40px;
-        color: #fff;
+        color: $clr--1;
         font-family: $font--lato--bold;
         margin: 0 0 28px 0;
     }
     p{
         font-size: 16px;
-        color: #fff;
+        color: $clr--1;
         margin: 0;
     }
 }
@@ -40,7 +43,7 @@
 
 
     .plan--content{
-        color: #fff;
+        color: $clr--1;
         z-index: 2;
         width: 57%;
         h3 {
@@ -51,14 +54,14 @@
         p {
             font-size: 28px;
             margin: 25px 0 0 0;
-            color: #fff;
+            color: $clr--1;
             font-family: $font--lato--light !important;
         }
     }
 }
 .plan--process--steps{
     padding:12px 10px;
-    background-color: #fff;
+    background-color: $clr--1;
     box-shadow: -2.6px 1.5px 7px 0 rgba(0, 0, 0, 0.1);
     height: auto;
     position: relative;
@@ -86,6 +89,268 @@
 }
 .overview--wrapper{
     height: 446px;
-    border: 1px solid #000;
     border-radius: 2px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+
+    &::after{
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #3835359c;
+        z-index: 1;
+    }
+    // &:hover{
+    //     .play--video--icon{
+    //         display: block
+    //     }
+    // }
+    .play--video--icon{
+        color: $clr--1;
+        height: 75px;
+        width: 75px;
+        z-index: 33;
+        font-size: 78px;
+        cursor: pointer;
+        &:hover{
+            color: $clr--2;
+        }       
+    }
+    .video--details{
+        color: $clr--1;
+        z-index: 33;
+        text-align: left;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        h5{
+            margin: 0 0 2px 0;
+            font-size: 28px;   
+            padding-left: 30px;   
+            padding-right: 10px;   
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;   
+        }
+        p{
+            margin:0 0 22px 0;
+            font-size: 22px;
+            color: $clr--1;
+            padding-left: 30px;
+            padding-right: 10px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+    }
 }   
+
+.pricing--section{
+    width: 67%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    .plan-pricing{
+        flex-grow: 1;
+        box-shadow: -2.6px 1.5px 7px 0 rgba(0, 0, 0, 0.1) !important;
+        border-radius: 4px;
+    }
+    .card-title-text{
+        height: 155px;
+        background-color: #d0d5ac;
+        padding: 25px;
+
+        .plan--type{
+            color: #222324;
+            font-size: 22px;
+            text-transform: uppercase;
+        }
+        .doller{
+            color: #222324;
+            font-size: 40px;
+            font-family: $font--lato--regular;
+        }
+        .amt{
+            color: #222324;
+            font-size: 72px;
+            font-family: $font--lato--bold;
+            line-height: 84px;
+        }
+        .duration{
+            color: #222324;
+            font-size: 20px;
+            font-family: $font--lato--regular;
+            margin-left: 10px;
+        }
+    }
+    .mat-card-content{
+        border: none;
+        padding: 60px 30px;
+        .mat-list{
+            padding: 0;
+            .mat-list-item{
+                text-align: left;
+                height: auto;
+                padding: 9px 0;
+                ::ng-deep .mat-list-item-content{
+                    padding: 0;
+                    display: flex !important;
+                    justify-content: space-between;
+                    text-align: left;
+                    font-size: 18px !important;
+                    font-family: $font--lato--regular;
+                }
+                .limited{
+                    display: flex;
+                    margin-left: 15px;
+                    font-size: 14px;
+                    .clear{
+                        color: #c72128;
+                        height: 20px;
+                        width: 20px;
+                        font-size: 20px;
+                    }
+                    .check{
+                        color: #727a33;
+                        height: 20px;
+                        width: 20px;
+                        font-size: 20px;
+                    }
+                }
+            }
+            
+        }
+    }
+    .get--started--btn{
+        margin-top: 55px;
+        width: 163px;
+        height: 60px;
+    }
+
+    .standard{
+        margin-right:15px; 
+    }
+    .premium{
+        margin-left: 15px;
+        .mat-card-title{
+            .card-title-text{
+                background-color: #ecca40;
+            }
+            
+        }
+    }
+}
+
+
+
+
+
+
+
+
+/* Media query (start here)*/
+
+@media only screen and (max-width: 599px) {
+    .pricing--section{
+        width: 100%;
+        flex-direction: column
+    }
+    .pricing--section .mat-card-content {
+        padding: 20px;
+    }
+    .pricing--section .get--started--btn {
+        margin-top: 30px;
+        width: 100%;
+        height: 50px;
+    }
+    .pricing--section .standard {
+        margin: 0;
+    }
+    .pricing--section .premium {
+        margin:0 0 15px 0;
+        order: -1;
+    }
+    .overview--wrapper{
+        height: 287px;
+        margin-bottom: 15px;
+    }
+    .plan--process--wrapper .plan--content {
+        width: 90%;
+    }
+    .plan--process--wrapper .plan--content h3 {
+        font-size: 35px;
+    }
+    .plan--process--wrapper .plan--content p {
+        font-size: 17px;
+    }
+    .llp--unexp--box{
+        width: 290px;
+        padding: 25px;
+    }
+    .llp--unexp--box h5 {
+        font-size: 22px;
+    }
+    .llp--unexp--box p {
+        font-size: 13px;
+    }
+    .llp--unexp-turn {
+        height: 233px;
+    }
+    .overview--wrapper .video--details h5 {
+        font-size: 22px;
+        padding-left: 15px;
+    }
+    .overview--wrapper .video--details p {
+        font-size: 16px;
+        padding-left: 15px;
+    }
+    .pricing--section .mat-card-content .mat-list .mat-list-item ::ng-deep .mat-list-item-content{
+        font-size: 13px !important;
+    }
+    .pricing--section .card-title-text .amt {
+        font-size: 50px;
+        line-height: 70px;
+    }
+    .pricing--section .card-title-text .doller {
+        font-size: 26px;
+    }
+    .pricing--section .card-title-text .duration {
+        font-size: 17px;
+    }
+    .pricing--section .card-title-text .plan--type {
+        font-size: 20px;
+    }
+    .pricing--section .card-title-text {
+        height: 125px;
+        padding: 15px;
+    }
+    .advisor--landing--wrapper .get--hired--wrapper.safe--place--wrapper{
+        height: 291px;
+    }
+    
+}
+@media only screen and (min-width: 600px) and (max-width: 959px){
+    .pricing--section{
+        width: 98%;
+    }
+}
+@media only screen and (min-width: 960px) and (max-width: 979px){}
+@media only screen and (min-width: 980px) and (max-width: 1279px){
+    .pricing--section {
+        width: 83%;
+    }
+}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){}
+@media only screen and (min-width: 1441px) and (max-width: 1550px){}
+
+/* Media query (end here)*/
