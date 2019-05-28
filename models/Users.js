@@ -40,9 +40,10 @@ var userSchema = new mongoose.Schema({
   }],
   sectionAccess:Object,
   // Advisor fields
-  businessName : String, 
+  businessName : String,
+  businessType : Array, 
   yearsOfService : String, 
-  industryDomain : String, 
+  industryDomain : Array, 
   bioText : String, 
   socialMediaLinks : {
       facebook : String, 
@@ -56,7 +57,7 @@ var userSchema = new mongoose.Schema({
   websiteLinks:Array,
   businessPhonePrefix : String, 
   businessPhoneNumber : String, 
-  activeLicenceHeld : String, 
+  activeLicenceHeld : Array, 
   agencyOversees : String, 
   managingPrincipleName : String, 
   advisorDocuments : Array,
