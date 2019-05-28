@@ -5,10 +5,12 @@
         <mat-card class="account--profile">
           <div class="account--pic--wrapper">
             <div class="account--pic" >               
-              <img src="https://s3.amazonaws.com/llp-dev/profilePictures/default.jpg" />
+              <img src="{{profilePicture}}" />
             </div>            
             <div class="edit--pic">
-              <mat-icon>edit</mat-icon>
+              <mat-icon title="edit advisor image" (click)="profilePic.click()">edit</mat-icon>
+              <input type="file" name="profilePicture" #profilePic id="profilePicture" class="profile-pic-input" (change)="showSelectedProfilePicture()"
+                accept="image/*" />
             </div>
           </div>
 

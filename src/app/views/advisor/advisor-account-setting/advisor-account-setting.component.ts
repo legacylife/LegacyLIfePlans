@@ -1,21 +1,22 @@
-import { Component, OnInit, OnDestroy, ViewChild  } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { UserAPIService } from './../../../userapi.service';
-import { MatDialog,MatSnackBar, MatSidenav } from '@angular/material';
-import { FormBuilder, FormGroup, FormControl,Validators,FormArray } from '@angular/forms'
+import { MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
+import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms'
 import { egretAnimations } from '../../../shared/animations/egret-animations';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { CustomValidators } from 'ng2-validation';
 import { ChangePassComponent } from './change-pass/change-pass.component';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { map } from 'rxjs/operators';
-import { Subscription, Observable, of  } from 'rxjs';
+import { Subscription, Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { states } from '../../../state';
 import { FileUploader } from 'ng2-file-upload';
-import { serverUrl } from '../../../config';
-const URL = serverUrl+'/api/documents/advisorDocument';
+import { serverUrl, s3Details } from '../../../config';
+import { ProfilePicService } from 'app/shared/services/profile-pic.service';
+const URL = serverUrl + '/api/documents/advisorDocument';
 
 console.log(URL)
 
@@ -29,88 +30,93 @@ interface websiteLink {
   animations: [egretAnimations]
 })
 export class AdvisorAccountSettingComponent implements OnInit {
- public uploader: FileUploader = new FileUploader({url:URL});
- public hasBaseDropZoneOver: boolean = false;
- public hasAnotherDropZoneOver:boolean = false;
+  public uploader: FileUploader = new FileUploader({ url: URL });
+  public hasBaseDropZoneOver: boolean = false;
+  public hasAnotherDropZoneOver: boolean = false;
   date: any;
   ProfileForm: FormGroup;
   AddressForm: FormGroup;
   LicenseForm: FormGroup;
-  userId:string;
-  state_name:string;
-  short_code:string;
+  userId: string;
+  state_name: string;
+  short_code: string;
   maxDate = new Date(new Date());
-  prodata:any;
-  profile:any;
-  stateList:any;
+  prodata: any;
+  profile: any;
+  stateList: any;
   awards: any;
   socialMediaLinkss: any;
-  websites: [{ 'id': "",'links': "" }]
+  websites: [{ 'id': "", 'links': "" }]
   advisorDocumentsList: any;
-  awardsYears:any;
-  websiteLinks:any;// websiteLink[] = [{ 'links': "" }]
+  awardsYears: any;
+  websiteLinks: any;// websiteLink[] = [{ 'links': "" }]
+
+  uploadedFile: File
+  profilePicture: any = "assets/images/arkenea/default.jpg"
+
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
-  constructor(private router: Router, private route: ActivatedRoute,private fb: FormBuilder, private snack: MatSnackBar,public dialog: MatDialog, private userapi: UserAPIService,private loader: AppLoaderService, private confirmService: AppConfirmService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService, 
+    private loader: AppLoaderService, private confirmService: AppConfirmService, private picService:ProfilePicService) { }
 
   ngOnInit() {
-          
-           this.stateList = states;
+
+    this.stateList = states;
     this.userId = localStorage.getItem("endUserId");
-           this.ProfileForm = this.fb.group({
-            firstName: new FormControl('', Validators.required),
-            lastName: new FormControl('', Validators.required),
-            username: new FormControl('', Validators.required),
-            phoneNumber: new FormControl('', Validators.required),
-            landlineNumber: new FormControl('',),
-            dateOfBirth: new FormControl('',)
-          });
+    this.ProfileForm = this.fb.group({
+      firstName: new FormControl('', Validators.required),
+      lastName: new FormControl('', Validators.required),
+      username: new FormControl('', Validators.required),
+      phoneNumber: new FormControl('', Validators.required),
+      landlineNumber: new FormControl('', ),
+      dateOfBirth: new FormControl('', )
+    });
 
-          this.AddressForm = this.fb.group({
-            businessName: new FormControl('',Validators.required),
-            yearsOfService: new FormControl(''),
-            businessType: new FormControl(''),
-            industryDomain: new FormControl(''),
-            addressLine1: new FormControl(''),
-            addressLine2: new FormControl(''),
-            city: new FormControl('', Validators.required),
-            state: new FormControl('', Validators.required),
-            zipcode: new FormControl('', Validators.required),
-            businessPhoneNumber: new FormControl(''),
-            bioText: new FormControl(''),          
-            //websiteLinks: this.fb.array(this.websiteLinks.map(elem => this.createWebsiteGroup(elem))),
-            websiteLinks: this.fb.array([this.fb.group({links:['', Validators.required]})]),     
-            awardsYears: this.fb.array([this.fb.group({title:['', Validators.required],year:['', Validators.required]})]),     
-            
-            socialMediaLinks: new FormGroup({
-              facebook: new FormControl(''),
-              twitter:  new FormControl(''),
-              linkedIn:  new FormControl('')
-            }), 
-          });
-          
-          this.LicenseForm = this.fb.group({
-            activeLicenceHeld: new FormControl('', Validators.required),
-            agencyOversees: new FormControl('', Validators.required),
-            managingPrincipleName: new FormControl('',),
-            howManyProducers: new FormControl('',)
-          });
+    this.AddressForm = this.fb.group({
+      businessName: new FormControl('', Validators.required),
+      yearsOfService: new FormControl(''),
+      businessType: new FormControl(''),
+      industryDomain: new FormControl(''),
+      addressLine1: new FormControl(''),
+      addressLine2: new FormControl(''),
+      city: new FormControl('', Validators.required),
+      state: new FormControl('', Validators.required),
+      zipcode: new FormControl('', Validators.required),
+      businessPhoneNumber: new FormControl(''),
+      bioText: new FormControl(''),
+      //websiteLinks: this.fb.array(this.websiteLinks.map(elem => this.createWebsiteGroup(elem))),
+      websiteLinks: this.fb.array([this.fb.group({ links: ['', Validators.required] })]),
+      awardsYears: this.fb.array([this.fb.group({ title: ['', Validators.required], year: ['', Validators.required] })]),
 
-          this.profile = [];
-          this.socialMediaLinkss = [];
-          this.advisorDocumentsList = [];
-          this.getProfile();
-          
- }
+      socialMediaLinks: new FormGroup({
+        facebook: new FormControl(''),
+        twitter: new FormControl(''),
+        linkedIn: new FormControl('')
+      }),
+    });
+
+    this.LicenseForm = this.fb.group({
+      activeLicenceHeld: new FormControl('', Validators.required),
+      agencyOversees: new FormControl('', Validators.required),
+      managingPrincipleName: new FormControl('', ),
+      howManyProducers: new FormControl('', )
+    });
+
+    this.profile = [];
+    this.socialMediaLinkss = [];
+    this.advisorDocumentsList = [];
+    this.getProfile();
+
+  }
   //function to get all events
-  getProfile = (query = {}, search = false) => {   
+  getProfile = (query = {}, search = false) => {
     console.log(this.userId)
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: "advisor" }, query)
     }
     this.loader.open();
     this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe(result => {
-     if (result.status == "error") {
+      if (result.status == "error") {
         this.profile = [];
         this.loader.close();
       } else {
@@ -135,19 +141,25 @@ export class AdvisorAccountSettingComponent implements OnInit {
         this.awards = this.profile.awardsYears;
         this.websiteLinks = this.profile.websiteLinks;
         this.advisorDocumentsList = this.profile.advisorDocuments;
-    
+
+        if (this.profile.profilePicture){
+          this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + this.profile.profilePicture;
+          localStorage.setItem('endUserProfilePicture', this.profilePicture)
+          this.picService.setProfilePic = this.profilePicture;
+        }
+
         const ctrls = this.AddressForm.get('awardsYears') as FormArray;
         ctrls.removeAt(0)
-        this.awards.forEach((element: any,index)=>{
-            ctrls.push(this.editGroup(element.title, element.year))
+        this.awards.forEach((element: any, index) => {
+          ctrls.push(this.editGroup(element.title, element.year))
         })
 
         const webctrls = this.AddressForm.get('websiteLinks') as FormArray;
         webctrls.removeAt(0)
-        this.websiteLinks.forEach((element: any,index)=>{
+        this.websiteLinks.forEach((element: any, index) => {
           webctrls.push(this.editGroupweb(element.links))
         })
-            
+
         const ctrl = this.getFormGroup('socialMediaLinks')
         ctrl.controls['facebook'].setValue(this.profile.socialMediaLinks ? this.profile.socialMediaLinks.facebook : "")
         ctrl.controls['twitter'].setValue(this.profile.socialMediaLinks ? this.profile.socialMediaLinks.twitter : "")
@@ -171,19 +183,19 @@ export class AdvisorAccountSettingComponent implements OnInit {
       year: [year, Validators.required]
     });
   }
-  
+
   editGroupweb(links) {
     return this.fb.group({
       links: [links, Validators.required]
     });
   }
-  
-  get awardsPoints() {
-  return this.AddressForm.get('awardsYears') as FormArray;
-    }
 
- get weblinksPoints() {
-      return this.AddressForm.get('websiteLinks') as FormArray;
+  get awardsPoints() {
+    return this.AddressForm.get('awardsYears') as FormArray;
+  }
+
+  get weblinksPoints() {
+    return this.AddressForm.get('websiteLinks') as FormArray;
   }
 
 
@@ -198,16 +210,16 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   getFormGroup(controlName) {
-     return <FormGroup>this.AddressForm.get(controlName); 
+    return <FormGroup>this.AddressForm.get(controlName);
   }
- 
-  ProfileSubmit() {  
+
+  ProfileSubmit() {
     let profileInData = {
       firstName: this.ProfileForm.controls['firstName'].value,
       lastName: this.ProfileForm.controls['lastName'].value,
       businessPhoneNumber: this.ProfileForm.controls['businessPhoneNumber'].value,
       phoneNumber: this.ProfileForm.controls['phoneNumber'].value,
-      dateOfBirth: this.ProfileForm.controls['dateOfBirth'].value      
+      dateOfBirth: this.ProfileForm.controls['dateOfBirth'].value
     }
     var query = {};
     var proquery = {};
@@ -223,8 +235,8 @@ export class AdvisorAccountSettingComponent implements OnInit {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
         //this.prodata = result.data.userProfile;
-       // localStorage.setItem("firstName", this.rows.firstName)
-       // localStorage.setItem("lastName", this.rows.lastName)       		     
+        // localStorage.setItem("firstName", this.rows.firstName)
+        // localStorage.setItem("lastName", this.rows.lastName)       		     
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
@@ -232,10 +244,10 @@ export class AdvisorAccountSettingComponent implements OnInit {
     })
   }
 
-  AddressSubmit() {  
-    console.log("1 :- ",this.AddressForm.value)
-    const { socialMediaLinks : {facebook = '' , twitter ='' , linkedIn ='' }} = this.AddressForm.value
-    console.log("2 :- ",this.AddressForm.value)
+  AddressSubmit() {
+    console.log("1 :- ", this.AddressForm.value)
+    const { socialMediaLinks: { facebook = '', twitter = '', linkedIn = '' } } = this.AddressForm.value
+    console.log("2 :- ", this.AddressForm.value)
     const formNumbers = <FormArray>this.AddressForm.get('websiteLinks')
     this.websiteLinks = formNumbers.controls.map(o => { return o.value })
 
@@ -257,8 +269,8 @@ export class AdvisorAccountSettingComponent implements OnInit {
       bioText: this.AddressForm.controls['bioText'].value,
       websiteLinks: this.websiteLinks,
       awardsYears: this.awardsYears,
-      socialMediaLinks:({
-        "facebook":facebook,
+      socialMediaLinks: ({
+        "facebook": facebook,
         "twitter": twitter,
         "linkedIn": linkedIn
       })
@@ -276,7 +288,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
       if (result.status == "error") {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
-       // this.rows = result.data.userProfile;
+        // this.rows = result.data.userProfile;
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
@@ -284,11 +296,11 @@ export class AdvisorAccountSettingComponent implements OnInit {
     })
   }
 
-  public fileOverBase(e:any):void {
+  public fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
   }
-   
-  LicenseSubmit(){
+
+  LicenseSubmit() {
     console.log(this.LicenseForm.value)
     let LicensInData = {
       activeLicenceHeld: this.LicenseForm.controls['activeLicenceHeld'].value,
@@ -309,7 +321,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
       if (result.status == "error") {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
-       // this.rows = result.data.userProfile;
+        // this.rows = result.data.userProfile;
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
@@ -318,15 +330,15 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
 
-  docDelete(doc,name) {
+  docDelete(doc, name) {
     this.userId = '5cc9cc301955852c18c5b73a';
-    var statMsg = "Are you sure you want to delete '"+name+"' file name?"
+    var statMsg = "Are you sure you want to delete '" + name + "' file name?"
 
-     this.confirmService.confirm({message: statMsg})
+    this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
         if (res) {
           this.loader.open();
-          this.advisorDocumentsList.splice(doc,1)
+          this.advisorDocumentsList.splice(doc, 1)
           var query = {};
           const req_vars = {
             query: Object.assign({ _id: this.userId }, query),
@@ -355,42 +367,93 @@ export class AdvisorAccountSettingComponent implements OnInit {
     }));
   }
 
-  delete(i){
+  delete(i) {
     const control = <FormArray>this.AddressForm.controls['awardsYears'];
     control.removeAt(i);
- //   this.awards.splice(i,1);
+    //   this.awards.splice(i,1);
   }
 
   addWebsitesForm() {
     return this.fb.group({
       id: '',
       links: ''
-    });   
+    });
   }
 
   addWebsiteLinks() {
-   /* const web = this.AddressForm.controls.websiteLinks as FormArray;
-    web.push(this.fb.group({
-      links: ''
-    }));*/
+    /* const web = this.AddressForm.controls.websiteLinks as FormArray;
+     web.push(this.fb.group({
+       links: ''
+     }));*/
     this.weblinksPoints.push(this.fb.group({
       links: ['', Validators.required]
     }));
   }
 
-  deleteWebsiteLinks(i) {   
-   // this.websiteLinks.splice(i, 1);
+  deleteWebsiteLinks(i) {
+    // this.websiteLinks.splice(i, 1);
     const control = <FormArray>this.AddressForm.controls['websiteLinks'];
     control.removeAt(i);
   }
 
   changePasspordModal(): void {
-      const dialogRef = this.dialog.open(ChangePassComponent, {
-        width: '555px',
-      });
-      dialogRef.afterClosed().subscribe(result => {});
+    const dialogRef = this.dialog.open(ChangePassComponent, {
+      width: '555px',
+    });
+    dialogRef.afterClosed().subscribe(result => { });
   }
   toggleSideNav() {
-      //this.sideNav.opened = !this.sideNav.opened;
-  }  
- }
+    //this.sideNav.opened = !this.sideNav.opened;
+  }
+
+  /**
+   * Profile upload
+   */
+  saveProfilePicture() {
+    const fd = new FormData()
+    fd.append('userId', this.userId)
+    fd.append('profilePicture', this.uploadedFile, this.uploadedFile.name);
+    this.userapi.apiRequest('post', 'auth/updateProfilePic', fd).subscribe((result: any) => {
+      if (result.status == "success") {
+        this.loader.close();
+        let userHeaderDetails = sessionStorage.getItem("enduserHeaderDetails")
+        let userDetails = JSON.parse(userHeaderDetails)
+        userHeaderDetails = JSON.stringify(userDetails)
+        if (localStorage.getItem("enduserHeaderDetails")) {
+          localStorage.setItem("enduserHeaderDetails", userHeaderDetails)
+        } else {
+          sessionStorage.setItem("enduserHeaderDetails", userHeaderDetails)
+        }
+      } else {
+        this.snack.open(result.data, 'OK', { duration: 4000 })
+      }
+    }, (err) => {
+      this.snack.open(err.error.data, 'OK', { duration: 4000 })
+    })
+  }
+
+  //function to show profile
+  showSelectedProfilePicture() {
+    let img = document.getElementById('profilePicture') as HTMLInputElement
+    this.uploadedFile = img.files[0]
+    const filenameArray = this.uploadedFile.name.split('.')
+    const ext = filenameArray[filenameArray.length - 1].toLowerCase()
+    const validExt = ['jpg', 'jpeg', 'png', 'gif']
+    if (this.uploadedFile.size > 5242880) {
+      this.snack.open("Profile picture must be less than 5 MB.", 'OK', { duration: 4000 })
+    } else if (validExt.indexOf(ext) > -1) {
+      let reader = new FileReader()
+      reader.onloadend = () => {
+        if (reader.result) {
+          this.profilePicture = reader.result;
+          localStorage.setItem('endUserProfilePicture', this.profilePicture)
+          this.picService.setProfilePic = this.profilePicture;
+          this.saveProfilePicture()
+        }
+      }
+      reader.readAsDataURL(this.uploadedFile)
+    } else {
+      this.snack.open("Please select valid image. Valid extentions are jpg, jpeg, png, gif.", 'OK', { duration: 4000 })
+    }
+  }
+}

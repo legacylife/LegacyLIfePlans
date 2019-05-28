@@ -5,10 +5,13 @@
         <mat-card class="account--profile">
           <div class="account--pic--wrapper">
             <div class="account--pic">
-              <img src="assets/images/arkenea/default.jpg" />
+              <img src="{{profilePicture}}" />
             </div>
             <div class="edit--pic">
-              <mat-icon>edit</mat-icon>
+              <!-- <mat-icon>edit</mat-icon> -->
+              <mat-icon title="edit user image" (click)="profilePic.click()">edit</mat-icon>
+              <input type="file" name="profilePicture" #profilePic id="profilePicture" class="profile-pic-input" (change)="showSelectedProfilePicture()"
+                accept="image/*" />
             </div>
           </div>
 

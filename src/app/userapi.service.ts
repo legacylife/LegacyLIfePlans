@@ -15,7 +15,8 @@ interface TokenResponse {
     username: string
     expiryDate: string
     userHeaderDetails: any
-    mainUserId: any
+    mainUserId: any,
+    userProfilePicture :string
   }
 }
 
@@ -54,7 +55,7 @@ export class UserAPIService {
   }
 
   //function to save token and user id
-  private endUsersaveToken(token: string, userId: string, userType: string, username: string, authCode: string, expiryDate: string, emailApiType: string = '', userHeaderDetails: any, mainUserId: any = "", req: any): void {
+  private endUsersaveToken(token: string, userId: string, userType: string, username: string, authCode: string, expiryDate: string, emailApiType: string = '', userHeaderDetails: any, mainUserId: any = "", req: any, userProfilePicture : string = ''): void {
     this.token = token
     this.userId = userId
     if (typeof (userHeaderDetails) != 'string') {
@@ -68,6 +69,7 @@ export class UserAPIService {
     localStorage.setItem('token', token)
     localStorage.setItem('userexpiryDate', expiryDate)
     localStorage.setItem('enduserHeaderDetails', userHeaderDetails)
+    localStorage.setItem('endUserProfilePicture', userProfilePicture)
     if (mainUserId) {
       localStorage.setItem('mainUserId', mainUserId)
     }
@@ -138,9 +140,9 @@ export class UserAPIService {
         if (response.data && response.data.token) {
           //check if user type is same
           if (data.userType != "sysadmin") {
-            const { token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId } = response.data
+            const { token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, userProfilePicture } = response.data
             if(userType == 'customer' || userType == 'advisor'){
-              this.endUsersaveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data)
+              this.endUsersaveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data, userProfilePicture)
             } else {
               this.saveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data)
             }
@@ -179,6 +181,7 @@ export class UserAPIService {
     this.removeKeyFromStorage('token')
     this.removeKeyFromStorage('userexpiryDate')
     this.removeKeyFromStorage('userHeaderDetails')
+    this.removeKeyFromStorage('endUserProfilePicture')
 
     window.localStorage.clear();
     window.sessionStorage.clear();

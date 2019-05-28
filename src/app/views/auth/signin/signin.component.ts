@@ -54,7 +54,8 @@ export class SigninComponent implements OnInit {
         localStorage.setItem("endUserId", userData.userId);
         localStorage.setItem("endUserType", userData.userType);
         localStorage.setItem("endUserFirstName", userData.firstName);
-        localStorage.setItem("endUserLastName", userData.lastName);        
+        localStorage.setItem("endUserLastName", userData.lastName); 
+        localStorage.setItem("endUserProfilePicture", userData.profilePicture);       
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
         if(userData.userType=='customer'){
           this.router.navigate(['/', 'customer', 'dashboard']);

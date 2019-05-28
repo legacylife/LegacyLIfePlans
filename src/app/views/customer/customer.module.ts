@@ -43,6 +43,7 @@ import { UpdateProfileComponent } from './update-profile/update-profile.componen
 import { CustomerHomeComponent } from './customer-home/customer-home.component';
 import { CustomerAccountSettingComponent } from './customer-account-setting/customer-account-setting.component';
 import { ChangePassComponent } from './customer-account-setting/change-pass/change-pass.component';
+
 import { UserAuthGuard } from '../../shared/services/auth/userauth.guard';
 import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
 import { states } from '../../state';
@@ -84,7 +85,7 @@ import { states } from '../../state';
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [
-    CustomerSignupComponent,UpdateProfileComponent,CustomerHomeComponent,FormatTimePipe,CustomerAccountSettingComponent,ChangePassComponent,
+    CustomerSignupComponent,UpdateProfileComponent,CustomerHomeComponent,FormatTimePipe,CustomerAccountSettingComponent,ChangePassComponent
   ],providers: [
     MatDatepickerModule,UserAuthGuard,UserPreAuthGuard
   ],bootstrap: [CustomerSignupComponent], entryComponents: [ChangePassComponent],

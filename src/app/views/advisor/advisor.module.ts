@@ -50,6 +50,7 @@ import { states } from '../../state';
 import { yearsOfServiceList, businessTypeList , industryDomainList } from '../../selectList';
 import { UserAuthGuard } from '../../shared/services/auth/userauth.guard';
 import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
+import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 
 @NgModule({
   imports: [
@@ -93,7 +94,7 @@ import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
   declarations: [
     AdvisorSignupComponent,BusinessInfoComponent,SetPasswordComponent,FormatTimePipe,ThankYouComponent,AdvisorDashboardComponent,LegaciesComponent,AdvisorDashboardUpdateComponent,AdvisorAccountSettingComponent,AdvisorSubscriptionComponent,ChangePassComponent
   ],providers: [
-    MatDatepickerModule,UserAuthGuard,UserPreAuthGuard,
+    MatDatepickerModule,UserAuthGuard,UserPreAuthGuard,ProfilePicService
   ],entryComponents: [ChangePassComponent],
 })
 export class AdvisorModule { }

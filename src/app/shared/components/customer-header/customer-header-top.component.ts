@@ -5,12 +5,15 @@ import { ThemeService } from '../../../shared/services/theme.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LayoutService } from '../../services/layout.service';
 import { UserAPIService } from './../../../userapi.service';
+import { ProfilePicService } from 'app/shared/services/profile-pic.service';
+import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 @Component({
   selector: 'app-customer-header-top',
   templateUrl: './customer-header-top.component.html'
 })
 export class customerHeaderTopComponent implements OnInit, OnDestroy {
   layoutConf: any;
+  profilePicture: any = "assets/images/arkenea/default.jpg"
   menuItems:any;
   menuItemSub: Subscription;
   egretThemes: any[] = [];
@@ -29,10 +32,14 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
     public themeService: ThemeService,
     public translate: TranslateService,
     private renderer: Renderer2,
-    private userapi: UserAPIService
+    private userapi: UserAPIService,
+    private picService : ProfilePicService
   ) { }
 
   ngOnInit() {
+    this.picService.itemValue.subscribe((nextValue) => {
+      this.profilePicture =  nextValue
+    })
     this.layoutConf = this.layout.layoutConf;
     this.egretThemes = this.themeService.egretThemes;
     this.menuItemSub = this.navService.menuItems$

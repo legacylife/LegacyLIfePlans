@@ -5,6 +5,8 @@ import { ThemeService } from '../../../shared/services/theme.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LayoutService } from '../../services/layout.service';
 import { UserAPIService } from './../../../userapi.service';
+import { ProfilePicService } from 'app/shared/services/profile-pic.service';
+import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
   selector: 'app-advisor-header-top',
@@ -16,6 +18,7 @@ export class AdvisorHeaderTopComponent implements OnInit, OnDestroy {
   menuItemSub: Subscription;
   egretThemes: any[] = [];
   currentLang = 'en';
+  profilePicture: any = "assets/images/arkenea/default.jpg"
   availableLangs = [{
     name: 'English',
     code: 'en',
@@ -30,10 +33,16 @@ export class AdvisorHeaderTopComponent implements OnInit, OnDestroy {
     public themeService: ThemeService,
     public translate: TranslateService,
     private renderer: Renderer2,
-    private userapi: UserAPIService
+    private userapi: UserAPIService,
+    private picService : ProfilePicService
   ) { }
 
   ngOnInit() {
+    this.picService.itemValue.subscribe((nextValue) => {
+      this.profilePicture =  nextValue
+    })
+    
+    // console.log()
     this.layoutConf = this.layout.layoutConf;
     this.egretThemes = this.themeService.egretThemes;
     this.menuItemSub = this.navService.menuItems$
@@ -55,6 +64,8 @@ export class AdvisorHeaderTopComponent implements OnInit, OnDestroy {
       this.menuItems = mainItems
     })
   }
+
+  
   ngOnDestroy() {
     this.menuItemSub.unsubscribe()
   }
