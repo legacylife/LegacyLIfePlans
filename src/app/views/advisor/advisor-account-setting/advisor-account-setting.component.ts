@@ -14,11 +14,10 @@ import { Subscription, Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { states } from '../../../state';
 import { FileUploader } from 'ng2-file-upload';
+import { yearsOfServiceList, businessTypeList , industryDomainList, licenceHeldList, activeLicense, industryDomain, businessType, yearsOfService } from '../../../selectList';
 import { serverUrl, s3Details } from '../../../config';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 const URL = serverUrl + '/api/documents/advisorDocument';
-
-console.log(URL)
 
 interface websiteLink {
   links: string;
@@ -50,18 +49,23 @@ export class AdvisorAccountSettingComponent implements OnInit {
   advisorDocumentsList: any;
   awardsYears: any;
   websiteLinks: any;// websiteLink[] = [{ 'links': "" }]
+  showHowManyProducer: boolean
 
   uploadedFile: File
   profilePicture: any = "assets/images/arkenea/default.jpg"
+  activeLicenseList: string[] = activeLicense.sort()
+  industryDomainList: string[] = industryDomain.sort()
+  businessTypeList: string[] = businessType.sort()
+  yearsOfServiceList: string[] = yearsOfService.sort()
+
 
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
-  constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService, 
-    private loader: AppLoaderService, private confirmService: AppConfirmService, private picService:ProfilePicService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
+    private loader: AppLoaderService, private confirmService: AppConfirmService, private picService: ProfilePicService) { }
 
   ngOnInit() {
-
-    this.stateList = states;
+    this.stateList = states.sort();
     this.userId = localStorage.getItem("endUserId");
     this.ProfileForm = this.fb.group({
       firstName: new FormControl('', Validators.required),
@@ -75,8 +79,8 @@ export class AdvisorAccountSettingComponent implements OnInit {
     this.AddressForm = this.fb.group({
       businessName: new FormControl('', Validators.required),
       yearsOfService: new FormControl(''),
-      businessType: new FormControl(''),
-      industryDomain: new FormControl(''),
+      businessType: new FormControl([]),
+      industryDomain: new FormControl([]),
       addressLine1: new FormControl(''),
       addressLine2: new FormControl(''),
       city: new FormControl('', Validators.required),
@@ -96,9 +100,10 @@ export class AdvisorAccountSettingComponent implements OnInit {
     });
 
     this.LicenseForm = this.fb.group({
-      activeLicenceHeld: new FormControl('', Validators.required),
+      activeLicenceHeld: new FormControl([], Validators.required),
       agencyOversees: new FormControl('', Validators.required),
       managingPrincipleName: new FormControl('', ),
+      manageOtherProceducers: new FormControl('', ),
       howManyProducers: new FormControl('', )
     });
 
@@ -130,8 +135,8 @@ export class AdvisorAccountSettingComponent implements OnInit {
 
         this.AddressForm.controls['businessName'].setValue(this.profile.businessName ? this.profile.businessName : "");
         this.AddressForm.controls['yearsOfService'].setValue(this.profile.yearsOfService ? this.profile.yearsOfService : "");
-        this.AddressForm.controls['businessType'].setValue(this.profile.businessType ? this.profile.businessType : "");
-        this.AddressForm.controls['industryDomain'].setValue(this.profile.industryDomain ? this.profile.industryDomain : "");
+        this.AddressForm.controls['businessType'].setValue(this.profile.businessType ? this.profile.businessType : []);
+        this.AddressForm.controls['industryDomain'].setValue(this.profile.industryDomain ? this.profile.industryDomain : []);
         this.AddressForm.controls['addressLine1'].setValue(this.profile.addressLine1 ? this.profile.addressLine1 : "");
         this.AddressForm.controls['addressLine2'].setValue(this.profile.addressLine2 ? this.profile.addressLine2 : "");
         this.AddressForm.controls['city'].setValue(this.profile.city ? this.profile.city : "");
@@ -142,7 +147,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
         this.websiteLinks = this.profile.websiteLinks;
         this.advisorDocumentsList = this.profile.advisorDocuments;
 
-        if (this.profile.profilePicture){
+        if (this.profile.profilePicture) {
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + this.profile.profilePicture;
           localStorage.setItem('endUserProfilePicture', this.profilePicture)
           this.picService.setProfilePic = this.profilePicture;
@@ -164,11 +169,12 @@ export class AdvisorAccountSettingComponent implements OnInit {
         ctrl.controls['facebook'].setValue(this.profile.socialMediaLinks ? this.profile.socialMediaLinks.facebook : "")
         ctrl.controls['twitter'].setValue(this.profile.socialMediaLinks ? this.profile.socialMediaLinks.twitter : "")
         ctrl.controls['linkedIn'].setValue(this.profile.socialMediaLinks ? this.profile.socialMediaLinks.linkedIn : "")
-        this.LicenseForm.controls['activeLicenceHeld'].setValue(this.profile.activeLicenceHeld ? this.profile.activeLicenceHeld : "");
+        this.LicenseForm.controls['activeLicenceHeld'].setValue(this.profile.activeLicenceHeld ? this.profile.activeLicenceHeld : []);
         this.LicenseForm.controls['agencyOversees'].setValue(this.profile.agencyOversees ? this.profile.agencyOversees : "");
         this.LicenseForm.controls['managingPrincipleName'].setValue(this.profile.managingPrincipleName ? this.profile.managingPrincipleName : "");
+        this.LicenseForm.controls['manageOtherProceducers'].setValue(this.profile.manageOtherProceducers ? this.profile.manageOtherProceducers : "");
         this.LicenseForm.controls['howManyProducers'].setValue(this.profile.howManyProducers ? this.profile.howManyProducers : "");
-
+        this.profile.manageOtherProceducers == 1 ? this.showHowManyProducer = true : this.showHowManyProducer = false
         this.loader.close();
       }
     }, (err) => {
@@ -306,6 +312,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
       activeLicenceHeld: this.LicenseForm.controls['activeLicenceHeld'].value,
       agencyOversees: this.LicenseForm.controls['agencyOversees'].value,
       managingPrincipleName: this.LicenseForm.controls['managingPrincipleName'].value,
+      manageOtherProceducers: this.LicenseForm.controls['manageOtherProceducers'].value,
       howManyProducers: this.LicenseForm.controls['howManyProducers'].value,
     }
     var query = {};
@@ -455,5 +462,9 @@ export class AdvisorAccountSettingComponent implements OnInit {
     } else {
       this.snack.open("Please select valid image. Valid extentions are jpg, jpeg, png, gif.", 'OK', { duration: 4000 })
     }
+  }
+
+  showHowManyProducts(showVal) {
+    this.LicenseForm.controls['manageOtherProceducers'].value == 2 ? this.showHowManyProducer = true : this.showHowManyProducer = false
   }
 }

@@ -50,3 +50,14 @@ export const licenceHeldList = [{
   "opt_code" : "Only One", 
 }
 ]
+
+
+
+
+export const activeLicense = ['Life', 'Health', 'Property & Casualty', 'Series 6', 'Series 26', 'Series 7', 'Series 24','Series 3', 'Series 63', 'Series 65', 'Series 66']
+
+export const industryDomain = ['Life', 'Health', 'Property & Casualty']
+
+export const businessType = ['Accountant', 'Attorney', 'Tax Specialist', 'Insurance Agent', 'Financial Planner', 'Life', 'Health', 'Property & Casualty']
+
+export const yearsOfService = ['0 - 5 years', '5 - 10 years', '10 - 15 years', '15 - 20 years', '20 - 25 years', 'more than 25 years']

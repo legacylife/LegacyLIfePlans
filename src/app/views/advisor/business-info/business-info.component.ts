@@ -8,10 +8,10 @@ import { AppLoaderService } from '../../../shared/services/app-loader/app-loader
 //import { Observable, of } from 'rxjs';
 import { MatStepperModule , MatStepper} from '@angular/material/stepper';
 //import { states } from '../../../state';
-import { yearsOfServiceList, businessTypeList , industryDomainList, licenceHeldList } from '../../../selectList';
+import { yearsOfServiceList, businessTypeList , industryDomainList, licenceHeldList, activeLicense, industryDomain, businessType, yearsOfService } from '../../../selectList';
 import { states } from '../../../state';
 import { FileUploader } from 'ng2-file-upload';
-import { serverUrl } from '../../../config';
+import { serverUrl, s3Details } from '../../../config';
 const URL = serverUrl+'/api/documents/advisorDocument';
 @Component({
   selector: 'app-business-info',
@@ -39,6 +39,11 @@ export class BusinessInfoComponent implements OnInit {
   stateList:any;
   state_name:string;
   short_code:string;
+
+  activeLicenseList: string[] = activeLicense.sort()
+  industryDomainList: string[] = industryDomain.sort()
+  businessTypeList: string[] = businessType.sort()
+  yearsOfServiceList: string[] = yearsOfService.sort()
   
   constructor(private router: Router, private activeRoute: ActivatedRoute, private stepper: MatStepperModule, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
   
@@ -49,22 +54,21 @@ export class BusinessInfoComponent implements OnInit {
     this.stateList = states;
     this.step = localStorage.getItem("step");
     this.myStepper.selectedIndex = Number(this.step);
-    console.log("Step :- ",this.step); 
     if(this.step && this.step==4){
       this.router.navigate(['/', 'advisor', 'signup']);
     }
 
-    this.yearsOfServiceLists = yearsOfServiceList;
+    /*this.yearsOfServiceLists = yearsOfServiceList;
     this.businessTypeLists = businessTypeList;
     this.industryDomainLists = industryDomainList;
-    this.licenceHeldLists = licenceHeldList;
+    this.licenceHeldLists = licenceHeldList;*/
   
     this.firstFormGroup = new FormGroup({
       firstName: new FormControl('',Validators.required),
       lastName: new FormControl('',Validators.required),
       yearsOfService: new FormControl('',Validators.required),
-      businessType: new FormControl('',Validators.required),
-      industryDomain: new FormControl('',Validators.required)
+      businessType: new FormControl([],Validators.required),
+      industryDomain: new FormControl([],Validators.required)
     });
   
     this.secondFormGroup = this.fb.group({
@@ -77,7 +81,7 @@ export class BusinessInfoComponent implements OnInit {
     });
     
     this.thirdFormGroup = this.fb.group({
-      activeLicenceHeld: new FormControl('', Validators.required),
+      activeLicenceHeld: new FormControl([], Validators.required),
       agencyOversees: new FormControl(''),
       managingPrincipleName: new FormControl('', Validators.required),
       howManyProducers: new FormControl('', Validators.required)
@@ -143,9 +147,9 @@ export class BusinessInfoComponent implements OnInit {
 
           this.firstFormGroup.controls['firstName'].setValue(this.profile.firstName);
           this.firstFormGroup.controls['lastName'].setValue(this.profile.lastName);
-          this.firstFormGroup.controls['yearsOfService'].setValue(this.profile.yearsOfService);
-          this.firstFormGroup.controls['businessType'].setValue(this.profile.businessType);
-          this.firstFormGroup.controls['industryDomain'].setValue(this.profile.industryDomain);
+          this.firstFormGroup.controls['yearsOfService'].setValue(this.profile.yearsOfService ? this.profile.yearsOfService : "");
+          this.firstFormGroup.controls['businessType'].setValue(this.profile.businessType ? this.profile.businessType : []);
+          this.firstFormGroup.controls['industryDomain'].setValue(this.profile.industryDomain ? this.profile.industryDomain : []);
 
           this.secondFormGroup.controls['addressLine1'].setValue(this.profile.addressLine1);
           this.secondFormGroup.controls['addressLine2'].setValue(this.profile.addressLine2);
@@ -154,7 +158,7 @@ export class BusinessInfoComponent implements OnInit {
           this.secondFormGroup.controls['state'].setValue(this.profile.state);
           this.secondFormGroup.controls['businessPhoneNumber'].setValue(this.profile.businessPhoneNumber);
 
-          this.thirdFormGroup.controls['activeLicenceHeld'].setValue(this.profile.activeLicenceHeld);
+          this.thirdFormGroup.controls['activeLicenceHeld'].setValue(this.profile.activeLicenceHeld ? this.profile.activeLicenceHeld : []);
           this.thirdFormGroup.controls['agencyOversees'].setValue(this.profile.agencyOversees);
           this.thirdFormGroup.controls['managingPrincipleName'].setValue(this.profile.managingPrincipleName);
           this.thirdFormGroup.controls['howManyProducers'].setValue(this.profile.howManyProducers);

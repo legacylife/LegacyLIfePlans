@@ -55,8 +55,3 @@ export const adminSections = [{
   name: 'Admin Management',
   code: "adminmanagement"
 }]
-
-export const activeLicense = [
-  "Life", "Health", "Property & Casualty", "Series 6", "Series 26", "Series 7", "Series 24",
-  "Series 3", "Series 63", "Series 65", "Series 66"
-]

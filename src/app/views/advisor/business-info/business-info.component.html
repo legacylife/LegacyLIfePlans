@@ -27,24 +27,24 @@
 
                 <mat-form-field class="full-width">
                     <mat-select placeholder="Years of service*" name="yearsOfService" [formControl]="firstFormGroup.controls['yearsOfService']">
-                        <mat-option>Select number of years</mat-option>
-                        <mat-option *ngFor="let option of yearsOfServiceLists" [value]="option.opt_name">{{option.opt_name}}</mat-option>       
+                      <mat-option>Select number of years</mat-option>
+                      <mat-option *ngFor="let yos of yearsOfServiceList" [value]="yos">{{yos}}</mat-option>       
                     </mat-select>
                   <mat-icon matTooltip="Please select number of years" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['yearsOfService'].hasError('required') && firstFormGroup.controls['yearsOfService'].touched" class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <mat-select placeholder="Business type*" name="businessType" [formControl]="firstFormGroup.controls['businessType']">
+                  <mat-select placeholder="Business type*" name="businessType" [formControl]="firstFormGroup.controls['businessType']" multiple>
                     <mat-option>Select business type</mat-option>
-                    <mat-option *ngFor="let option of businessTypeLists" [value]="option.opt_name">{{option.opt_name}}</mat-option>       
+                    <mat-option *ngFor="let btl of businessTypeList" [value]="btl">{{btl}}</mat-option>       
                   </mat-select>
                   <mat-icon matTooltip="Please select business type" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['businessType'].hasError('required') && firstFormGroup.controls['businessType'].touched" class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <mat-select placeholder="Industry/Domain*" name="industryDomain" [formControl]="firstFormGroup.controls['industryDomain']">
+                  <mat-select placeholder="Industry/Domain*" name="industryDomain" [formControl]="firstFormGroup.controls['industryDomain']" multiple>
                     <mat-option>Select industry/domain type</mat-option>
-                    <mat-option *ngFor="let option of industryDomainLists" [value]="option.opt_name">{{option.opt_name}}</mat-option>                           
+                    <mat-option *ngFor="let idl of industryDomainList" [value]="idl">{{idl}}</mat-option>                           
                   </mat-select>
                   <mat-icon matTooltip="Please select industry/domain type" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['industryDomain'].hasError('required') && firstFormGroup.controls['industryDomain'].touched" class="red--alert">help_outline</mat-icon>                                      
                 </mat-form-field>
@@ -120,8 +120,9 @@
                 </div>
 
                 <mat-form-field class="full-width">
-                    <mat-select placeholder="Active license held*" name="activeLicenceHeld" [formControl]="thirdFormGroup.controls['activeLicenceHeld']">
-                      <mat-option *ngFor="let option of licenceHeldLists" [value]="option.opt_name">{{option.opt_name}}</mat-option>                           
+                    <mat-select placeholder="Active license held*" name="activeLicenceHeld" [formControl]="thirdFormGroup.controls['activeLicenceHeld']" multiple>
+                      <mat-option>None</mat-option>
+                      <mat-option *ngFor="let topping of activeLicenseList" [value]="topping">{{topping}}</mat-option>                           
                     </mat-select>
                     <mat-icon matTooltip="Please select license held" matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['activeLicenceHeld'].hasError('required') && thirdFormGroup.controls['activeLicenceHeld'].touched" class="red--alert">help_outline</mat-icon>                                      
                   </mat-form-field>
