@@ -163,20 +163,58 @@ export class NavigationService {
       icon: 'library_books',
       state: '/home '
     }
-  ]
+  ];
 
   preCustomerMenu: IMenuItem[] = [
     {
-      name: 'pre-cust-1',
+      name: 'Home',
       type: 'extLink',
-      tooltip: 'Documentation',
       icon: 'library_books',
       state: '/home'
     },
     {
-      name: 'pre-cust-2',
+      name: 'About Us',
       type: 'extLink',
-      tooltip: 'Documentation',
+      icon: 'library_books',
+      state: '/home '
+    },{
+      name: 'How LLP Hired',
+      icon: 'library_books',
+      type: 'extLink',
+      state: '/home'
+    },
+    {
+      name: 'Testimonials',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home '
+    },
+    {
+      name: 'Pricing Plans',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home '
+    },
+    {
+      name: 'Contact Us',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home'
+    },
+    {
+      name: 'For Advisor',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/pre-advisor '
+    }, {
+      name: 'Sign Up',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/ '
+    },
+    {
+      name: 'Login',
+      type: 'extLink',
       icon: 'library_books',
       state: '/home '
     }
