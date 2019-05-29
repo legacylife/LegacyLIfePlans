@@ -9,7 +9,7 @@
         <div class="text-muted">{{row?.bioText}}</div>
       </div>
       <div class="profile-actions mb-1" fxLayoutAlign="center center" *ngIf="row?.userType == 'advisor' && row?.status == 'Pending'">
-        <button mat-raised-button class="mb-05 mt-1" color="primary" (click)="statusChange(row)">Accept</button>
+        <button mat-raised-button class="" color="primary" (click)="statusChange(row)">Accept</button>
         <span fxFlex="8px"></span>
         <button mat-raised-button class="mat-warn" (click)="rejectPopUp({}, true)">Reject</button>
       </div>
