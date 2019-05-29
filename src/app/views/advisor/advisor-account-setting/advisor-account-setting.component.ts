@@ -32,6 +32,9 @@ export class AdvisorAccountSettingComponent implements OnInit {
   public uploader: FileUploader = new FileUploader({ url: URL });
   public hasBaseDropZoneOver: boolean = false;
   public hasAnotherDropZoneOver: boolean = false;
+  advisorDocumentsHide = false;
+  invalidMessage: string;
+  advisorDocumentsMissing: boolean;
   date: any;
   ProfileForm: FormGroup;
   AddressForm: FormGroup;
@@ -104,7 +107,8 @@ export class AdvisorAccountSettingComponent implements OnInit {
       agencyOversees: new FormControl('', Validators.required),
       managingPrincipleName: new FormControl('', ),
       manageOtherProceducers: new FormControl('', ),
-      howManyProducers: new FormControl('', )
+      howManyProducers: new FormControl('', ),
+      advisorDocuments: new FormControl('',),
     });
 
     this.profile = [];
@@ -146,6 +150,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
         this.awards = this.profile.awardsYears;
         this.websiteLinks = this.profile.websiteLinks;
         this.advisorDocumentsList = this.profile.advisorDocuments;
+        
 
         if (this.profile.profilePicture) {
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + this.profile.profilePicture;
@@ -174,6 +179,8 @@ export class AdvisorAccountSettingComponent implements OnInit {
         this.LicenseForm.controls['managingPrincipleName'].setValue(this.profile.managingPrincipleName ? this.profile.managingPrincipleName : "");
         this.LicenseForm.controls['manageOtherProceducers'].setValue(this.profile.manageOtherProceducers ? this.profile.manageOtherProceducers : "");
         this.LicenseForm.controls['howManyProducers'].setValue(this.profile.howManyProducers ? this.profile.howManyProducers : "");
+
+        this.LicenseForm.controls['advisorDocuments'].setValue(this.profile.advisorDocuments ? "" : "11");
         this.profile.manageOtherProceducers == 1 ? this.showHowManyProducer = true : this.showHowManyProducer = false
         this.loader.close();
       }
@@ -307,7 +314,18 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   LicenseSubmit() {
-    console.log(this.LicenseForm.value)
+   // console.log(this.LicenseForm.value)
+   this.invalidMessage = '';
+  if(this.profile.advisorDocuments || this.profile.advisorDocuments==''){ 
+      this.invalidMessage = "Please upload your document";
+  }
+    
+if(this.invalidMessage){ 
+  this.advisorDocumentsMissing = true;
+  this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': true })
+}else{
+  this.advisorDocumentsMissing = false;
+  this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': false })
     let LicensInData = {
       activeLicenceHeld: this.LicenseForm.controls['activeLicenceHeld'].value,
       agencyOversees: this.LicenseForm.controls['agencyOversees'].value,
@@ -334,13 +352,15 @@ export class AdvisorAccountSettingComponent implements OnInit {
     }, (err) => {
       console.error(err)
     })
+
   }
 
 
-  docDelete(doc, name) {
-    this.userId = '5cc9cc301955852c18c5b73a';
-    var statMsg = "Are you sure you want to delete '" + name + "' file name?"
+  }
 
+
+  docDelete(doc, name,tmName) {
+    var statMsg = "Are you sure you want to delete '" + name + "' file name?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
         if (res) {
@@ -349,7 +369,8 @@ export class AdvisorAccountSettingComponent implements OnInit {
           var query = {};
           const req_vars = {
             query: Object.assign({ _id: this.userId }, query),
-            proquery: Object.assign({ advisorDocuments: this.advisorDocumentsList }, query)
+            proquery: Object.assign({ advisorDocuments: this.advisorDocumentsList }, query),
+            fileName: Object.assign({ docName: tmName }, query)
           }
           this.userapi.apiRequest('post', 'documents/deleteAdvDoc', req_vars).subscribe(result => {
             if (result.status == "error") {
@@ -410,7 +431,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => { });
   }
   toggleSideNav() {
-    //this.sideNav.opened = !this.sideNav.opened;
+    this.sideNav.opened = !this.sideNav.opened;
   }
 
   /**

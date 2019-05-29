@@ -28,6 +28,21 @@
           <a matRipple routerLink="/customer/professionals">
             <mat-icon class="icon-professionals">perm_identity</mat-icon> Professionals</a>
         </li>
+        <li class="more--link">
+          <a mat-button [matMenuTriggerFor]="afterMenu1">
+            <mat-icon>more_horiz</mat-icon> More </a>
+          <mat-menu #afterMenu1="matMenu" class="more--options">
+            <button mat-menu-item>
+              <mat-icon>list
+              </mat-icon>
+              <span>To dos </span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>book</mat-icon>
+              <span>Coach’s Corner</span>
+            </button>
+          </mat-menu>
+        </li>
 
       </ul>
       <span fxFlex></span>
@@ -36,7 +51,7 @@
 
       <!-- invite -->
 
-      <button mat-button>
+      <button mat-button class="top--search--btn">
         <mat-icon>search</mat-icon>
       </button>
 
@@ -50,18 +65,26 @@
         </div>
       </div>
 
-      <mat-menu #accountMenu="matMenu">
+      <mat-menu #accountMenu="matMenu" class="llp--menu--droupdown" xPosition="before">
+        <button class="get--feature" mat-menu-item [routerLink]="['/profile/overview']">
+          <mat-icon>settings</mat-icon>
+          <span>Get Featured</span>
+        </button>
         <button mat-menu-item [routerLink]="['/customer/account-setting']">
           <mat-icon>settings</mat-icon>
           <span>Account Settings</span>
         </button>
-        <button mat-menu-item (click)="logout()">
+        <button mat-menu-item>
+          <mat-icon>monetization_on</mat-icon>
+          <span>Payment</span>
+        </button>
+        <button mat-menu-item [routerLink]="['/sessions/signin']">
           <mat-icon>exit_to_app</mat-icon>
           <span>Sign out</span>
         </button>
       </mat-menu>
       <!-- Mobile screen menu toggle -->
-      <button mat-icon-button class="mr-1" (click)="toggleSidenav()" *ngIf="layoutConf.isMobile">
+      <button mat-icon-button class="llp--menu--btn" (click)="toggleSidenav()" *ngIf="layoutConf.isMobile">
         <mat-icon>menu</mat-icon>
       </button>
 

@@ -137,7 +137,7 @@ $clr--15: #e4e1e1;
     font-size: 16px  ;
     font-family: $font--lato--regular;
     border-radius: 2px;
-    padding: 3px 20px  ;
+    padding: 3px 38px  ;
     height: 42px; 
 }
 
@@ -289,6 +289,9 @@ body{
             .form--action--btn{
                 margin: 30px 0 25px 0;
             }
+            .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label{
+                font-size: 21px;
+            }
             .remember-wrap{
                 display: flex;
                 justify-content: space-between;
@@ -320,9 +323,6 @@ body{
         font-family: $font--lato--regular;
         font-size: 16px;
     }
-	.mat-select{
-		width: calc(100% - 18px);
-	}
 }
 
 
@@ -364,11 +364,12 @@ body{
         .mat-stepper-horizontal-line{
             border-top: 2px solid $clr--7;            
         }
-       /* .mat-horizontal-stepper-header-container{
+        .mat-horizontal-stepper-header-container{
             pointer-events: none;
-        }*/
+        }
     }
 }
+
 
 // Datepicker
 
@@ -480,19 +481,25 @@ body{
             font-family: $font--lato--bold;
             justify-content: center;
 
-            .icon--cross{
+            .modal--close{
                 position: absolute;
-                right: -9px;
-                top: -11px;
-                z-index: 11111111;
-                color: red;
-                background: #fff;
-                border-radius: 50%;
-                height: auto;
-                width: auto;
-                font-size: 30px;
-                cursor: pointer;
+                right: 0;
+                top: 0;
+                .icon--cross{
+                    position: absolute;
+                    right: -9px;
+                    top: -11px;
+                    z-index: 11111111;
+                    color: red;
+                    background: #fff;
+                    border-radius: 50%;
+                    height: auto;
+                    width: auto;
+                    font-size: 30px;
+                    cursor: pointer;
+                }
             }
+            
         }
         .ll--modal--body{
             padding: 0 25px;
@@ -634,6 +641,7 @@ body{
 .mx-15{margin: 0 15px !important;}
 .my-15{margin: 15px 0 !important;}
 .mt--30{margin-top: 30px !important;}
+.mt--25{margin-top: 25px !important;}
 .mb--30{margin-bottom: 30px !important;}
 .px-40{padding: 0 40px !important;}
 .pr-2 {padding-right: 2rem !important;}
@@ -642,6 +650,7 @@ body{
 .align--items--center{align-items: center;}
 .border-0{border: none !important}
 .justify--content--space--around{justify-content: space-around}
+.justify--content--space--between{justify-content: space-between}
 .relative{position: relative !important;}
 .clr--red{color:$clr--2 !important}
 .fnt--18{font-size: 18px !important;}
@@ -668,10 +677,48 @@ body{
     .llp--landing--wrapper .topnav {
         height: 62px !important;
     }
+    body .mat-dialog-container .ll--modal--body {
+        padding: 0 15px;
+    }
+    
+    body .mat-dialog-container .ll--modal--header{
+        margin-bottom: 15px;
+    }
+    body .mat-dialog-container .ll--modal--footer, 
+    body .mat-dialog-container .ll--modal--header{
+        height: auto;
+        font-size: 22px;
+    }   
+    body .mat-dialog-container .ll--modal--footer .llp--secondary--btn{
+        margin-right: 10px;
+    }
+    body .mat-dialog-container .ll--modal--footer .llp--primary--btn,
+    body .mat-dialog-container .ll--modal--footer .llp--secondary--btn{
+       padding: 3px 20px;
+    }
 }
 @media only screen and (min-width: 600px) and (max-width: 959px){
     .llp--landing--wrapper .topnav {
         height: 62px !important;
+    }
+    body .mat-dialog-container .ll--modal--body {
+        padding: 0 15px;
+    }
+    
+    body .mat-dialog-container .ll--modal--header{
+        margin-bottom: 15px;
+    }
+    body .mat-dialog-container .ll--modal--footer, 
+    body .mat-dialog-container .ll--modal--header{
+        height: auto;
+        font-size: 22px;
+    }   
+    body .mat-dialog-container .ll--modal--footer .llp--secondary--btn{
+        margin-right: 10px;
+    }
+    body .mat-dialog-container .ll--modal--footer .llp--primary--btn,
+    body .mat-dialog-container .ll--modal--footer .llp--secondary--btn{
+       padding: 3px 20px;
     }
 }
 @media only screen and (min-width: 960px) and (max-width: 979px){}

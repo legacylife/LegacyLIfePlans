@@ -1,6 +1,6 @@
 <div fxLayout="row wrap">
   <div fxFlex="100" fxFlex.gt-md="300px" fxFlex.gt-sm="50">
-   <!-- <mat-card class="profile-sidebar mb-1 pb-0">
+    <!-- <mat-card class="profile-sidebar mb-1 pb-0">
       <div class="propic text-center">
         <img src="assets/images/sq-face-220.jpg" alt="">
       </div>
@@ -14,7 +14,7 @@
     <mat-card class="default">
       <mat-card-title>Contact Information</mat-card-title>
       <mat-card-content class="pt-0">
-        <mat-list>
+      <!--  <mat-list>
           <mat-list-item>
             <mat-icon class="mr-1">public</mat-icon> www.mhrafi.com</mat-list-item>
           <mat-list-item>
@@ -26,7 +26,7 @@
           </mat-list-item>
           <mat-list-item>
             <mat-icon class="mr-1">add_location</mat-icon> {{ rows?.city }} {{ rows?.zipcode }},{{ rows?.state }},{{ rows?.country }} </mat-list-item>
-        </mat-list>
+        </mat-list>-->
       </mat-card-content>
     </mat-card>
   </div>
@@ -86,12 +86,12 @@
               name="country"
               placeholder="Country"
               value="">
-            </mat-form-field>      -->                 
-            <button mat-raised-button color="primary">Save</button>
-          </form>
-      </mat-card-content>
-    </mat-tab>
-   <!-- <mat-tab label="Profile Picture">
+            </mat-form-field>      -->
+              <button mat-raised-button class="llp--primary--btn">Save</button>
+            </form>
+          </mat-card-content>
+        </mat-tab>
+        <!-- <mat-tab label="Profile Picture">
       <mat-card-content>
         <div class="mb-1 mt-1">
           <p>Upload a profile picture</p>
@@ -191,7 +191,7 @@
                   class="form-error-msg"> Password mismatch </small>
               </div>
 
-              <button mat-raised-button color="primary" [disabled]="llpPasswordForm.invalid">Save</button>
+              <button mat-raised-button class="llp--primary--btn" [disabled]="llpPasswordForm.invalid">Save</button>
             </form>
           </mat-card-content>
         </mat-tab>
@@ -218,7 +218,7 @@
         <button mat-raised-button color="primary">Save</button>
       </mat-card-content>
     </mat-tab>-->
-  </mat-tab-group>
-</mat-card>
-</div>
+      </mat-tab-group>
+    </mat-card>
+  </div>
 </div>

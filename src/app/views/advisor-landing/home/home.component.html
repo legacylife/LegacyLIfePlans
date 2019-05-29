@@ -162,6 +162,7 @@
 
     </div>
 
+    <div class="white--bg">
     <div class="llp--container">
       <div class="featured--advisors text-center">
         <h1 class="landing-main-header">Featured Advisors</h1>
@@ -192,6 +193,7 @@
           </button>
         </div>
       </div>
+    </div>
     </div>
 
     <div class="standard-bg">
@@ -226,15 +228,16 @@
       </div>
     </div>
 
+    <div class="white--bg">
     <div class="container--full--width">
       <div class="featured--advisors text-center">
-        <h1 class="landing-main-header">What do people think?</h1>
-        <p>Testimonials</p>
+        <h1 class="landing-main-header">What People Say?</h1>
+        <p>Testimonials from our peoples</p>
 
-        <div class="fa--slider relative">
-          <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfigTwo" (init)="slickInit2($event)" (breakpoint)="breakpoint($event)"
+        <div class="fa--slider relative what--do--sec">
+          <ngx-slick-carousel class="carousel" [config]="slideConfigTwo" (init)="slickInit2($event)" (breakpoint)="breakpoint($event)"
             (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
-            <div ngxSlickItem *ngFor="let testomonial of testomonial" class="slide">
+            <div ngxSlickItem *ngFor="let testomonial of testomonials" class="slide">
 
               <div class="testimonial--wrapper">
                 <div class="testimonial--header">
@@ -255,6 +258,7 @@
         </div>
 
       </div>
+    </div>
     </div>
 
     <div class="get--a--free-section">
@@ -311,10 +315,10 @@
                     <a>Secure Data</a>
                   </li>
                   <li>
-                    <a [routerLink]="'/terms-of-use'">Terms of Usage</a>
+                    <a>Terms of Usage</a>
                   </li>
                   <li>
-                    <a [routerLink]="'/privacy-policy'">Privacy Policy</a>
+                    <a>Privacy Policy</a>
                   </li>
                   <li>
                     <a>FAQ</a>

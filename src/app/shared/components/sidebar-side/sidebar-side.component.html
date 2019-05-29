@@ -1,8 +1,10 @@
 <div class="sidebar-panel">
   <div id="scroll-area" [perfectScrollbar] class="navigation-hold" fxLayout="column">
     <!-- App Logo -->
-    <div class="branding default-bg" style="margin-top:20px">      
-        <a href="/admin/"> <img src="assets/images/small-logo.png" alt="" height="41px;" class="app-logoTEST"></a>      
+    <div class="branding default-bg">      
+        <a href="/admin/"> <img src="assets/images/arkenea/small-logo.png" alt=""  class="app-logoTEST large--logo"></a>  
+        <a href="/admin/"> <img src="assets/images/arkenea/small-small-logo.png" alt=""  class="app-logoTEST small--logo"></a>     
+
     </div>
     
     <!-- Sidebar user 
@@ -45,6 +47,6 @@
       <mat-divider class="mat-divider mat-divider-horizontal" role="separator" aria-orientation="horizontal" style="margin-top:100px"></mat-divider>
     </div>-->
     <!-- Navigation -->
-    <app-sidenav [items]="menuItems" [hasIconMenu]="hasIconTypeMenuItem" [iconMenuTitle]="iconTypeMenuTitle" style="margin-top:20px"></app-sidenav>
+    <app-sidenav [items]="menuItems" [hasIconMenu]="hasIconTypeMenuItem" [iconMenuTitle]="iconTypeMenuTitle"></app-sidenav>
   </div>
 </div>

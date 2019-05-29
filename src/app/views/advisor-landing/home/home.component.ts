@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-landing-home-page',
@@ -40,7 +39,7 @@ export class HomeComponent implements OnInit {
       title : 'CFC, CIF'
     },
   ];
-  testomonial = [
+  testomonials = [
     {
       clientSays: 'Lorem Ipsum is simply dummy e industrys Lorem Ipsum is simply dummy text of the printing.',
       clientPic: "assets/images/arkenea/james.png",
@@ -56,7 +55,67 @@ export class HomeComponent implements OnInit {
 
     },
     {
-      clientSays: 'Lorem Ipsum is simply dummy text ofs simply dummy text of the printing.',
+      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
+      clientPic: "assets/images/arkenea/john.png",
+      clientName: 'John Smith',
+      clientDesc: 'CFC, CIF'
+
+    }, {
+      clientSays: 'Lorem Ipsum is simply dummy e industrys Lorem Ipsum is simply dummy text of the printing.',
+      clientPic: "assets/images/arkenea/james.png",
+      clientName: 'John Smith',
+      clientDesc: 'CFC, CIF'
+
+    },
+    {
+      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
+      clientPic: "assets/images/arkenea/user-male.png",
+      clientName: 'John Smith',
+      clientDesc: 'CFC, CIF'
+
+    },
+    {
+      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
+      clientPic: "assets/images/arkenea/john.png",
+      clientName: 'John Smith',
+      clientDesc: 'CFC, CIF'
+
+    }, {
+      clientSays: 'Lorem Ipsum is simply dummy e industrys Lorem Ipsum is simply dummy text of the printing.',
+      clientPic: "assets/images/arkenea/james.png",
+      clientName: 'John Smith',
+      clientDesc: 'CFC, CIF'
+
+    },
+    {
+      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
+      clientPic: "assets/images/arkenea/user-male.png",
+      clientName: 'John Smith',
+      clientDesc: 'CFC, CIF'
+
+    },
+    {
+      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
+      clientPic: "assets/images/arkenea/john.png",
+      clientName: 'John Smith',
+      clientDesc: 'CFC, CIF'
+
+    }, {
+      clientSays: 'Lorem Ipsum is simply dummy e industrys Lorem Ipsum is simply dummy text of the printing.',
+      clientPic: "assets/images/arkenea/james.png",
+      clientName: 'John Smith',
+      clientDesc: 'CFC, CIF'
+
+    },
+    {
+      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
+      clientPic: "assets/images/arkenea/user-male.png",
+      clientName: 'John Smith',
+      clientDesc: 'CFC, CIF'
+
+    },
+    {
+      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
       clientPic: "assets/images/arkenea/john.png",
       clientName: 'John Smith',
       clientDesc: 'CFC, CIF'
@@ -64,7 +123,7 @@ export class HomeComponent implements OnInit {
     }
 ];
 
-  slideConfig = { 'slidesToShow': 3, 'slidesToScroll': 1 , responsive : [
+  slideConfig = { 'slidesToShow': 3, 'slidesToScroll': 1 ,  responsive : [
     {
       breakpoint: 1212,
       settings: {
@@ -84,7 +143,9 @@ export class HomeComponent implements OnInit {
     }
   ]};
   // autoplaySpeed: 10000,autoplay : true,
-  slideConfigTwo = { 'slidesToShow': 3, 'centerMode': true,   'slidesToScroll': 1 , responsive : [
+  // pauseOnHover:false,  autoplaySpeed: 1000 , speed: 200,
+  slideConfigTwo = { 'slidesToShow': 3, 'centerMode': true, infinite: true,
+   autoplay: true,  autoplaySpeed: 2000 , 'slidesToScroll': 1 , responsive : [
     {
       breakpoint: 1212,
       settings: {
@@ -107,7 +168,7 @@ export class HomeComponent implements OnInit {
 
   // autoplay : true, autoplaySpeed: 1000 
 
-  constructor(private activeRoute: ActivatedRoute) { }
+  constructor() { }
 
   ngOnInit() {
   }
@@ -119,11 +180,11 @@ export class HomeComponent implements OnInit {
   }
 
   slickInit(e) {
-    //console.log('slick initialized');
+    console.log('slick initialized');
   }
   
   slickInit2(e) {
-    //console.log('slick initialized');
+    console.log('slick initialized');
   }
   
 

@@ -13,6 +13,9 @@
           
           <mat-icon matTooltip="Please enter current password" matTooltipClass="llp--tooltip error" *ngIf="resetForm.controls['password'].hasError('required') && resetForm.controls['password'].touched"
           class="red--alert">help_outline</mat-icon>
+          <mat-icon matTooltip="Current password must be at least 6 characters long, alpha numeric with at least one-special character." matTooltipClass="llp--tooltip error"
+          *ngIf="resetForm.controls['password'].hasError('pattern') && resetForm.controls['password'].touched" class="red--alert">help_outline</mat-icon>
+       
 
           <mat-icon matTooltip="Please enter the correct current password" matTooltipClass="llp--tooltip error" *ngIf="resetForm.controls['password'].hasError('invalid') && resetForm.controls['password'].touched"
           class="red--alert">help_outline</mat-icon>
@@ -24,7 +27,8 @@
           class="red--alert">help_outline</mat-icon>
 
         <mat-icon matTooltip="Password must be at least 6 characters long, alpha numeric with at least one-special character." matTooltipClass="llp--tooltip error"
-          *ngIf="resetForm.controls['password'].hasError('pattern') && resetForm.controls['password'].touched" class="red--alert">help_outline</mat-icon>
+          *ngIf="resetForm.controls['NewPassword'].hasError('pattern') && resetForm.controls['NewPassword'].touched" class="red--alert">help_outline</mat-icon>
+
         </mat-form-field>
         <mat-form-field class="full-width">
           <input matInput name="confirmPassword" type="password" placeholder="Re-Enter Password" value="" [formControl]="resetForm.controls['confirmPassword']">
@@ -41,6 +45,6 @@
 </div>
 <div class="ll--modal--footer text-center">
  <!-- <button mat-raised-button class="llp--primary--btn" [disabled]="resetForm.invalid" [mat-dialog-close]="">Save</button>-->
- <button mat-raised-button color="llp--primary--btn" [disabled]="resetForm.invalid">Save</button>
+ <button mat-raised-button  class="llp--primary--btn" [disabled]="resetForm.invalid">Save</button>
 </div>
 </form>

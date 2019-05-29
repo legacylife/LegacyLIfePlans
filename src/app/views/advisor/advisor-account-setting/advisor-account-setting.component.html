@@ -10,7 +10,7 @@
             <div class="edit--pic">
               <mat-icon title="edit advisor image" (click)="profilePic.click()">edit</mat-icon>
               <input type="file" name="profilePicture" #profilePic id="profilePicture" class="profile-pic-input" (change)="showSelectedProfilePicture()"
-                accept="image/*" />
+                accept="image/*" style="display:none;" />
             </div>
           </div>
 
@@ -40,6 +40,17 @@
             <p class="validate">
               <span>Valid till:</span> 29 Apr</p>
           </div>
+
+          <div class="feature--profile">
+
+            <p class="pro--info">Get featured to display your profile to end users</p>
+
+            <div class="text-center mt--25">
+              <button mat-raised-button class="llp--primary--btn w168">Get Featured</button>
+            </div>
+          </div>
+
+
         </mat-card>
       </div>
     </mat-sidenav>
@@ -215,7 +226,11 @@
                   </div>
                 </div>
                 <h3 class="header--text">Featured Information</h3>
-                <p class="header--desc">The following information appears on your featured profile.</p>
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                    <p class="header--desc">The following information appears on your featured profile.</p>
+                  </div>
+                </div>
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width about--txtarea">
@@ -374,9 +389,14 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50" *ngIf="advisorDocumentsList" >
                     <h3 class="header--text fnt--16">Uploaded documents</h3>
                     <mat-chip-list class="doc--list" *ngFor="let doc of advisorDocumentsList; index as i">
-                        <mat-chip><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck">{{doc.title}}</a><mat-icon matChipRemove  (click)="docDelete(i,doc.title)">close</mat-icon></mat-chip>
+                        <mat-chip><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck">{{doc.title}}</a><mat-icon matChipRemove  (click)="docDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
                     </mat-chip-list>
                   </div>
+
+                  <mat-form-field class="full-width" *ngIf="advisorDocumentsHide">
+                    <input matInput name="advisorDocuments" [formControl]="LicenseForm.controls['advisorDocuments']" >
+                  </mat-form-field>
+                  <small *ngIf="advisorDocumentsMissing" class="form-error-msg">{{invalidMessage}}</small>
                  
                   <table class="default-table mat-box-shadow" style="width: 100%" *ngIf="uploader.getNotUploadedItems().length">
                     <thead>

@@ -8,10 +8,10 @@
               <img src="{{profilePicture}}" />
             </div>
             <div class="edit--pic">
-              <!-- <mat-icon>edit</mat-icon> -->
-              <mat-icon title="edit user image" (click)="profilePic.click()">edit</mat-icon>
-              <input type="file" name="profilePicture" #profilePic id="profilePicture" class="profile-pic-input" (change)="showSelectedProfilePicture()"
-                accept="image/*" />
+			<mat-icon title="edit user image" (click)="profilePic.click()">edit</mat-icon>
+			  
+              <input type="file" name="profilePicture" #profilePic id="profilePicture" class=" profile-pic-input" (change)="showSelectedProfilePicture()"
+                accept="image/*" style="display:none;" />
             </div>
           </div>
 
@@ -109,8 +109,8 @@
                 </div>
               </div>
               <div fx.Flex="100" class="text-center mt--30">
-               <!-- <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>-->
-                <button mat-raised-button class="llp--primary--btn" [disabled]="ProfileForm.invalid">Save</button>
+                <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
+                <button mat-raised-button class="llp--primary--btn">Save</button>
               </div>
             </div>
           </form>
@@ -121,25 +121,25 @@
             <!-- Address details -->
             <div class="account--details">
               <form class="llp-form-wrapper" [formGroup]="AddressForm" (ngSubmit)="AddressSubmit()">
-                <div fxLayout="row wrap" fxLayoutGap-sm="5px" fxLayoutGap="30px">
-                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                <div fxLayout="row wrap" fxLayoutGap-sm="5px">
+                  <div fxFlex.xs="100" fxFlex.sm="46" fxFlex.md="46" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
                     <mat-form-field class="full-width">
                       <input matInput name="addressLine1" placeholder="Address line 1*" value="" [formControl]="AddressForm.controls['addressLine1']">
                     </mat-form-field>
                   </div>
-                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                  <div fxFlex.xs="100" fxFlex.sm="46" fxFlex.md="46" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
                     <mat-form-field class="full-width">
                       <input matInput name="addressLine2" placeholder="Address line 2 (optional)" value="" [formControl]="AddressForm.controls['addressLine2']">
                     </mat-form-field>
                   </div>
                 </div>
-                <div fxLayout="row wrap" fxLayoutGap-sm="5px" fxLayoutGap="30px">
-                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                <div fxLayout="row wrap" fxLayoutGap-sm="5px">
+                  <div fxFlex.xs="100" fxFlex.sm="46" fxFlex.md="46" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
                     <mat-form-field class="full-width">
                       <input matInput name="City" placeholder="City*" value="" [formControl]="AddressForm.controls['city']">
                     </mat-form-field>
                   </div>
-                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                  <div fxFlex.xs="100" fxFlex.sm="46" fxFlex.md="46" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
                     <mat-form-field class="full-width">
                       <mat-select placeholder="State*" [formControl]="AddressForm.controls['state']">
                         <mat-option value="">Select a state</mat-option>
@@ -149,15 +149,15 @@
                     </mat-form-field>
                   </div>
                 </div>
-                <div fxLayout="row wrap" fxLayoutGap-sm="5px" fxLayoutGap="30px">
-                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+                <div fxLayout="row wrap" fxLayoutGap-sm="5px" >
+                  <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
                     <mat-form-field class="full-width">
                       <input matInput name="ZipCode" placeholder="Zip Code*" value="" [formControl]="AddressForm.controls['zipcode']">
                     </mat-form-field>
                   </div>
                 </div>
                 <div fx.Flex="100" class="text-center mt--30">
-                 <!-- <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>-->
+                  <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
                   <button mat-raised-button class="llp--primary--btn" [disabled]="AddressForm.invalid">Save</button>
                 </div>
               </form>

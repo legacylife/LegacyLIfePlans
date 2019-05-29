@@ -75,6 +75,7 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
   }
   toggleSidenav() {
     if(this.layoutConf.sidebarStyle === 'closed') {
+      this.navService.publishNavigationChange('customer');
       return this.layout.publishLayoutChange({
         sidebarStyle: 'full'
       })
