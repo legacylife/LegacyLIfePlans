@@ -1,5 +1,9 @@
-<h2 matDialogTitle>{{data.title}}</h2>
+<div class="ll--modal--header">
+    {{data.title}}  
+    <mat-icon class="icon--cross" (click)="dialogRef.close()">cancel</mat-icon>
+  </div>
 <form class="llp-form-wrapper " [formGroup]="itemForm" (ngSubmit)="submit()">
+    <div class="ll--modal--body">
   <div fxLayout="row wrap" fxLayout.lt-sm="column">
     <div fxFlex="100"  class="pr-1">
       <mat-form-field class="full-width">
@@ -17,10 +21,13 @@
       </mat-form-field>
     </div>
 
-    <div fxFlex="100" class="mt-1">
-      <button mat-raised-button class="llp--primary--btn" [disabled]="itemForm.invalid">Submit</button>
-      <span fxFlex></span>
+
+    <div class="ll--modal--footer text-center">
+        <button mat-raised-button class="llp--primary--btn" [disabled]="itemForm.invalid">Submit</button>
+      
       <button mat-button color="warn" type="button" (click)="dialogRef.close(false)">Cancel</button>
     </div>
+  </div>
+
   </div>
 </form>
