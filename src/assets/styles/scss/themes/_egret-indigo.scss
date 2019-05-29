@@ -94,7 +94,7 @@ $primary-dark: darken( map-get($mat-primary, 500), 8% );
     .sidenav-hold .sidenav li.open a .mat-icon:not(.menu-caret),
     .sidenav-hold .sidenav li.open > div > a > span:not(.menuitem-badge),
     .sidenav-hold .sidenav li.open > a > span {
-        color: map-get($mat-primary, 500) !important;
+        color: #c72128 !important;
     }
     .sidebar-panel .mat-nav-list .mat-list-item {
         color: rgba(0, 0, 0, 0.94)
@@ -104,7 +104,7 @@ $primary-dark: darken( map-get($mat-primary, 500), 8% );
     .sidebar-panel .sidebar-list-item.open > .mat-list-item-content > .sub-menu,
     .sidenav-hold .sidenav li.open a .mat-icon:not(.menu-caret),
     .list-item-active {
-        border-color: map-get($mat-primary, 500) !important;
+        border-color: #c72128 !important;
     }
     .sidebar-panel {
         background: url('../../assets/images/sidebar-bg.jpg') no-repeat;

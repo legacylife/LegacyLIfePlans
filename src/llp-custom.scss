@@ -100,8 +100,7 @@ body{
         &.header-topnav{
             .topbar-branding{
                 height: 60px;
-                margin-left: 0;
-                margin-right: 35px;
+                margin: 0;
                 padding: 0;
                 display: flex;
                 align-items: center;
@@ -125,6 +124,8 @@ body{
                         }
                     }
                     &.header--ul{
+                        margin-left: 35px;
+                        padding: 0;
                         li{
                             a{
                                 font-size: 16px;
@@ -172,16 +173,31 @@ body{
                         max-width: 100%;
                         max-height: 100%;
                         height: auto;
+                        cursor: pointer;
                     }
                 }
+            }
+            .llp--menu--btn{
+                padding: 0;
+                margin-left: 15px;
+            }
+        }
+        .top--search--btn{
+            padding: 0px 20px;
+            height: 34px;
+            .mat-icon{
+                height: 30px;
+                width: 30px;
+                font-size: 30px;
             }
         }
         .invite--btn{
             background-color: $clr--2;
             color: $clr--1;
             height: 32px;
-            margin: 0 28px 0 4px;
+            margin: 0 30px 0 5px;
             line-height: 26px;
+            padding: 3px 20px;
 
             .mat-button-wrapper{
                 line-height: 26px;
@@ -355,6 +371,10 @@ body{
     body .llp--left--panel--view .shop-filters-wrap.llp--left--panel .shadow--sec{
         margin: 0;
     }
+    body .llp--topnavbar .invite--btn{
+        display: none
+    }
+   
 }
 @media only screen and (min-width: 600px) and (max-width: 959px){
     body .llp--toggle-btn{
@@ -376,6 +396,9 @@ body{
     }
     .llp--content--wrapper{
         padding: 0 15px;
+    }
+    body .llp--topnavbar .invite--btn{
+        display: none
     }
 }
 @media only screen and (min-width: 960px) and (max-width: 979px){}

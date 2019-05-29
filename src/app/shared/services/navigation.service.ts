@@ -30,20 +30,42 @@ export class NavigationService {
 
   advisorMenu: IMenuItem[] = [
     {
-      name: 'ad 1',
+      name: 'Home',
       type: 'link',
-      tooltip: 'Home',
       icon: 'home',
       state: 'home'
     },
     {
-      name: 'ad 2',
+      name: 'Legacies',
       type: 'link',
-      tooltip: 'Profile',
+      icon: 'people',
+      state: 'home'
+    },
+    {
+      name: 'Leads',
+      type: 'link',
       icon: 'person',
-      state: 'profile/overview'
+      state: 'home'
+    },
+    {
+      name: 'To dos',
+      type: 'link',
+      icon: 'list',
+      state: 'home'
+    },
+    {
+      name: 'Coachs Corner',
+      type: 'link',
+      icon: 'book',
+      state: 'home'
+    },
+    {
+      name: 'Invite',
+      type: 'link',
+      icon: 'markunread',
+      state: 'home'
     }
-  ]
+  ];
 
   customerMenu: IMenuItem[] = [
     {
@@ -74,6 +96,12 @@ export class NavigationService {
       name: 'Coach’s Corner',
       type: 'link',
       icon: 'book',
+      state: 'home'
+    },
+    {
+      name: 'Invite',
+      type: 'link',
+      icon: 'markunread',
       state: 'home'
     }
   ]
