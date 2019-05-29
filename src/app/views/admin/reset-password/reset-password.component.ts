@@ -7,7 +7,8 @@ import { AppLoaderService } from '../../../shared/services/app-loader/app-loader
 import { CustomValidators } from 'ng2-validation';
 import { APIService } from './../../../api.service';
 
-const passwordRegex: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!#%*?&])[A-Za-z\d$@$!#%*?&]{6,16}/
+//const passwordRegex: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!#%*?&])[A-Za-z\d$@$!#%*?&]{6,16}/
+const passwordRegex: any = /^.{6,}$/
 const password = new FormControl('', [Validators.required, Validators.pattern(passwordRegex)]);
 const confirmPassword = new FormControl('', CustomValidators.equalTo(password));
 

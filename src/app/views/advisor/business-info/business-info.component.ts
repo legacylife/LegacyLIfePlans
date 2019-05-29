@@ -39,6 +39,7 @@ export class BusinessInfoComponent implements OnInit {
   stateList:any;
   state_name:string;
   short_code:string;
+  showHowManyProducer:boolean;
 
   activeLicenseList: string[] = activeLicense.sort()
   industryDomainList: string[] = industryDomain.sort()
@@ -58,15 +59,11 @@ export class BusinessInfoComponent implements OnInit {
       this.router.navigate(['/', 'advisor', 'signup']);
     }
 
-    /*this.yearsOfServiceLists = yearsOfServiceList;
-    this.businessTypeLists = businessTypeList;
-    this.industryDomainLists = industryDomainList;
-    this.licenceHeldLists = licenceHeldList;*/
-  
     this.firstFormGroup = new FormGroup({
       firstName: new FormControl('',Validators.required),
       lastName: new FormControl('',Validators.required),
       yearsOfService: new FormControl('',Validators.required),
+      businessName: new FormControl('',Validators.required),
       businessType: new FormControl([],Validators.required),
       industryDomain: new FormControl([],Validators.required)
     });
@@ -76,15 +73,16 @@ export class BusinessInfoComponent implements OnInit {
       addressLine2: new FormControl(''),
       city: new FormControl('', Validators.required),
       state: new FormControl('', Validators.required),
-      zipcode: new FormControl('', Validators.required),
-      businessPhoneNumber: new FormControl('', Validators.required)
+      zipcode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
+      businessPhoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)])
     });
     
     this.thirdFormGroup = this.fb.group({
       activeLicenceHeld: new FormControl([], Validators.required),
       agencyOversees: new FormControl(''),
       managingPrincipleName: new FormControl('', Validators.required),
-      howManyProducers: new FormControl('', Validators.required)
+      manageOtherProceducers: new FormControl(''),
+      howManyProducers: new FormControl('')
     });
     this.forthFormGroup = this.fb.group({
     });
@@ -104,10 +102,10 @@ export class BusinessInfoComponent implements OnInit {
     var query = {};
     var proquery = {};
     console.log(">>>>>>",steps)
-    if(steps == 4)
-
+    if(steps == 4){
       profileInData.profileSetup = 'yes';
-
+    }
+    
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: "advisor" }),
       proquery: Object.assign(profileInData),
@@ -148,6 +146,7 @@ export class BusinessInfoComponent implements OnInit {
           this.firstFormGroup.controls['firstName'].setValue(this.profile.firstName);
           this.firstFormGroup.controls['lastName'].setValue(this.profile.lastName);
           this.firstFormGroup.controls['yearsOfService'].setValue(this.profile.yearsOfService ? this.profile.yearsOfService : "");
+          this.firstFormGroup.controls['businessName'].setValue(this.profile.businessName ? this.profile.businessName : "");
           this.firstFormGroup.controls['businessType'].setValue(this.profile.businessType ? this.profile.businessType : []);
           this.firstFormGroup.controls['industryDomain'].setValue(this.profile.industryDomain ? this.profile.industryDomain : []);
 
@@ -162,6 +161,7 @@ export class BusinessInfoComponent implements OnInit {
           this.thirdFormGroup.controls['agencyOversees'].setValue(this.profile.agencyOversees);
           this.thirdFormGroup.controls['managingPrincipleName'].setValue(this.profile.managingPrincipleName);
           this.thirdFormGroup.controls['howManyProducers'].setValue(this.profile.howManyProducers);
+          this.profile.manageOtherProceducers == 1 ? this.showHowManyProducer = true : this.showHowManyProducer = false
           this.loader.close();
         }
       }, (err) => {
@@ -172,5 +172,9 @@ export class BusinessInfoComponent implements OnInit {
 
   public fileOverBase(e:any):void {
     this.hasBaseDropZoneOver = e;
+  }
+
+  showHowManyProducts(showVal) {
+    this.thirdFormGroup.controls['manageOtherProceducers'].value == 2 ? this.showHowManyProducer = true : this.showHowManyProducer = false
   }
 }

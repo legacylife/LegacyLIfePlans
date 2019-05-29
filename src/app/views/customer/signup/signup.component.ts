@@ -33,7 +33,8 @@ export class CustomerSignupComponent implements OnInit {
   invalidOtpMessage: string;
   EmailExist: boolean;
   invalidOTP: boolean;
-  passwordRegex: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!#%*?&])[A-Za-z\d$@$!#%*?&]{6,16}/
+  //passwordRegex: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!#%*?&])[A-Za-z\d$@$!#%*?&]{6,16}/
+  passwordRegex: any = /^.{6,}$/
   countDown;
   counter = 0;
   tick = 0;

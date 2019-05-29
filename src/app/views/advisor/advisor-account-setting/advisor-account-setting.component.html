@@ -72,26 +72,40 @@
               <div fxLayout="row wrap">
                 <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">               
                     <mat-form-field class="full-width">
-                      <input matInput name="firstName" placeholder="First Name*" value=""  [formControl]="ProfileForm.controls['firstName']">
+                      <input matInput name="firstName" maxlength="20" placeholder="First Name*" value=""  [formControl]="ProfileForm.controls['firstName']">
+                      <mat-icon matTooltip="Please enter first name" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['firstName'].hasError('required') && ProfileForm.controls['firstName'].touched"
+                      class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input matInput name="lastName" placeholder="Last Name*" value="" [formControl]="ProfileForm.controls['lastName']">
+                      <input matInput name="lastName" maxlength="20" placeholder="Last Name*" value="" [formControl]="ProfileForm.controls['lastName']">
+                      <mat-icon matTooltip="Please enter last name" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['lastName'].hasError('required') && ProfileForm.controls['lastName'].touched"
+                      class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
 
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Primary phone*" name="phoneNumber"  type="tel"  [formControl]="ProfileForm.controls['phoneNumber']">
+                      <input matInput placeholder="Mobile Number*" name="phoneNumber"  type="tel"  [formControl]="ProfileForm.controls['phoneNumber']">
                       <span matPrefix>+1</span>
+                      <mat-icon matTooltip="Please enter mobile number" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['phoneNumber'].hasError('required') && ProfileForm.controls['phoneNumber'].touched"
+                      class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please enter valid mobile number." matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['phoneNumber'].hasError('pattern') && ProfileForm.controls['phoneNumber'].touched"
+                      class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Secondary phone" name="landlineNumber" type="tel"  [formControl]="ProfileForm.controls['landlineNumber']">
+                      <input matInput placeholder="Landline Number*" name="landlineNumber" type="tel"  [formControl]="ProfileForm.controls['landlineNumber']">
                       <span matPrefix>+1</span>
+                      <mat-icon matTooltip="Please enter landline number" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['phoneNumber'].hasError('required') && ProfileForm.controls['phoneNumber'].touched"
+                      class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please enter valid landline number." matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['landlineNumber'].hasError('pattern') && ProfileForm.controls['landlineNumber'].touched"
+                      class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
 
                     <mat-form-field class="full-width llp-datepicker">
-                      <input matInput [matDatepicker]="dp" placeholder="Date of Birth" value="" [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
+                      <input matInput [matDatepicker]="dp" placeholder="Date of Birth*" value="" [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
                       <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                       <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
                       </mat-datepicker>
+                      <mat-icon matTooltip="Please select date of birth" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['dateOfBirth'].hasError('required') && ProfileForm.controls['dateOfBirth'].touched"
+                      class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
 
                     <mat-form-field class="full-width no-mar">
@@ -149,36 +163,44 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input matInput name="businessName" placeholder="Business name" value="" [formControl]="AddressForm.controls['businessName']">
+                      <input matInput name="businessName" placeholder="Business name*" value="" [formControl]="AddressForm.controls['businessName']">
+                      <mat-icon matTooltip="Please enter business name" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessName'].hasError('required') && AddressForm.controls['businessName'].touched"
+                      class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
-                      <mat-label>Years of service</mat-label>
+                      <mat-label>Years of service*</mat-label>
                       <mat-select  name="yearsOfService" [formControl]="AddressForm.controls['yearsOfService']">
                         <mat-option>Select number of years</mat-option>
                         <mat-option *ngFor="let yos of yearsOfServiceList" [value]="yos">{{yos}}</mat-option>
                       </mat-select>
+                      <mat-icon matTooltip="Please select years of service" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessName'].hasError('required') && AddressForm.controls['businessName'].touched"
+                      class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                 </div>
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <mat-label>Business type</mat-label>
+                      <mat-label>Business type*</mat-label>
                       <mat-select name="businessType" [formControl]="AddressForm.controls['businessType']" multiple>
                         <mat-option>Select business type</mat-option>
                         <mat-option *ngFor="let btl of businessTypeList" [value]="btl">{{btl}}</mat-option>
                       </mat-select>
+                      <mat-icon matTooltip="Please select business type" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessType'].hasError('required') && AddressForm.controls['businessType'].touched"
+                      class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
-                      <mat-label>Industry/Domain</mat-label>                      
+                      <mat-label>Industry/Domain*</mat-label>                      
                       <mat-select name="industryDomain" [formControl]="AddressForm.controls['industryDomain']" multiple>
                         <mat-option>Select industry/domain type</mat-option>
                         <mat-option *ngFor="let idl of industryDomainList" [value]="idl">{{idl}}</mat-option>
                       </mat-select>
+                      <mat-icon matTooltip="Please select industry/domain" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['industryDomain'].hasError('required') && AddressForm.controls['industryDomain'].touched"
+                      class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                 </div>
@@ -187,6 +209,8 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
                       <input matInput name="addressLine1" placeholder="Address line 1*" value="" [formControl]="AddressForm.controls['addressLine1']">
+                      <mat-icon matTooltip="Please enter address line 1" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['addressLine1'].hasError('required') && AddressForm.controls['addressLine1'].touched"
+                      class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
@@ -199,29 +223,41 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
                       <input matInput name="City" placeholder="City*" value="" [formControl]="AddressForm.controls['city']">
+                      <mat-icon matTooltip="Please enter city" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['city'].hasError('required') && AddressForm.controls['city'].touched"
+                      class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
                       <mat-label>State</mat-label>
-                      <mat-select placeholder="State*" name="state" [formControl]="AddressForm.controls['state']">
+                      <mat-select placeholder="State*" name="state*" [formControl]="AddressForm.controls['state']">
                         <mat-option value="">Select a state</mat-option>
                         <mat-option *ngFor="let option of stateList"  [value]="option.state_name">{{option.state_name}}</mat-option>
                       </mat-select>
+                      <mat-icon matTooltip="Please select state" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['state'].hasError('required') && AddressForm.controls['state'].touched"
+                      class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                 </div>
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input matInput name="zipcode" placeholder="Zip Code*" value="" [formControl]="AddressForm.controls['zipcode']">
+                      <input matInput name="zipcode" maxlength="10" placeholder="Zip Code*" value="" [formControl]="AddressForm.controls['zipcode']">
+                      <mat-icon matTooltip="Please enter zipcode" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['zipcode'].hasError('required') && AddressForm.controls['zipcode'].touched"
+                      class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please enter valid zipcode." matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['zipcode'].hasError('pattern') && AddressForm.controls['zipcode'].touched"
+                      class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
 
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Business Phone" type="tel" value="" class="" name="businessPhoneNumber" [formControl]="AddressForm.controls['businessPhoneNumber']">
+                      <input matInput placeholder="Business Phone*" type="tel" value="" class="" name="businessPhoneNumber" [formControl]="AddressForm.controls['businessPhoneNumber']">
                       <span matPrefix>+1</span>
+                      <mat-icon matTooltip="Please enter business phone" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessPhoneNumber'].hasError('required') && AddressForm.controls['businessPhoneNumber'].touched"
+                        class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please enter valid business phone number." matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessPhoneNumber'].hasError('pattern') && AddressForm.controls['businessPhoneNumber'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                 </div>
@@ -234,8 +270,10 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width about--txtarea">
-                      <textarea matInput placeholder="About you" value="Your professional summary, achievements, client experience" name="bioText" [formControl]="AddressForm.controls['bioText']"></textarea>
+                      <textarea matInput placeholder="About you*" value="Your professional summary, achievements, client experience" name="bioText" [formControl]="AddressForm.controls['bioText']"></textarea>
                       <div class="char--limit">0 / 500 chars</div>
+                      <mat-icon matTooltip="Please enter bio text" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['bioText'].hasError('required') && AddressForm.controls['bioText'].touched"
+                      class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" formArrayName="awardsYears">
@@ -326,13 +364,14 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <mat-label>Active license held</mat-label>
+                      <mat-label>Active license held*</mat-label>
 
                       <mat-select [formControl]="LicenseForm.controls['activeLicenceHeld']" multiple>
                         <mat-option>None</mat-option>
                         <mat-option *ngFor="let topping of activeLicenseList" [value]="topping">{{topping}}</mat-option>
                       </mat-select>
-
+                      <mat-icon matTooltip="Please select active licence" matTooltipClass="llp--tooltip error" *ngIf="LicenseForm.controls['activeLicenceHeld'].hasError('required') && LicenseForm.controls['activeLicenceHeld'].touched"
+                      class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
@@ -355,6 +394,8 @@
                       <div class="checkbox-label">Do you manage other products?</div>
                       <mat-radio-button (change)="showHowManyProducts(this)" value="1" class="" [checked]="profile.howManyProducers !== ''">Yes</mat-radio-button>
                       <mat-radio-button (change)="showHowManyProducts(this)" value="2" class="" [checked]="profile.howManyProducers === ''">No</mat-radio-button>
+                      <mat-icon matTooltip="Please select option yes or no to manage products" matTooltipClass="llp--tooltip error" *ngIf="LicenseForm.controls['manageOtherProceducers'].hasError('required') && LicenseForm.controls['manageOtherProceducers'].touched"
+                      class="red--alert">help_outline</mat-icon>
                     </mat-radio-group>
                     <mat-form-field class="full-width"  *ngIf="showHowManyProducer">
                       <input matInput name="howManyProducers" placeholder="If yes, how many?" [formControl]="LicenseForm.controls['howManyProducers']">

@@ -179,7 +179,7 @@
                     value="">
                 </mat-form-field>
                 <small *ngIf="llpPasswordForm.controls['NewPassword'].hasError('pattern') && llpPasswordForm.controls['NewPassword'].touched"
-                  class="form-error-msg"> New Password must be at least 6 characters long, alpha numeric with at least one-special character </small>
+                  class="form-error-msg"> Your password should be minimum 6 characters in length </small>
                 <small *ngIf="llpPasswordForm.controls['NewPassword'].hasError('minlength') && llpPasswordForm.controls['NewPassword'].touched"
                   class="form-error-msg"> New Password require at least {{llpPasswordForm.controls['NewPassword'].errors.minlength.requiredLength}}
                   characters </small>

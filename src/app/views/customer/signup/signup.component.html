@@ -31,7 +31,7 @@
 
               <mat-icon matTooltip="Please enter password" matTooltipClass="llp--tooltip error" class="red--alert" *ngIf="llpCustsignupForm.controls['password'].hasError('required') && llpCustsignupForm.controls['password'].touched">help_outline</mat-icon>
 
-              <mat-icon matTooltip="Password must be at least 6 characters long and maximum of 16 characters, alpha numeric with at least one-special character."
+              <mat-icon matTooltip="Your password should be minimum 6 characters in length."
                 matTooltipClass="llp--tooltip error" class="red--alert" *ngIf="llpCustsignupForm.controls['password'].hasError('pattern')">help_outline</mat-icon>
             </mat-form-field>
           </div>

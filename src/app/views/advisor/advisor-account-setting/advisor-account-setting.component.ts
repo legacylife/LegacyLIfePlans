@@ -74,23 +74,23 @@ export class AdvisorAccountSettingComponent implements OnInit {
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
       username: new FormControl('', Validators.required),
-      phoneNumber: new FormControl('', Validators.required),
-      landlineNumber: new FormControl('', ),
-      dateOfBirth: new FormControl('', )
+      phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
+      landlineNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
+      dateOfBirth: new FormControl('', Validators.required)
     });
 
     this.AddressForm = this.fb.group({
       businessName: new FormControl('', Validators.required),
-      yearsOfService: new FormControl(''),
-      businessType: new FormControl([]),
-      industryDomain: new FormControl([]),
-      addressLine1: new FormControl(''),
+      yearsOfService: new FormControl('', Validators.required),
+      businessType: new FormControl([], Validators.required),
+      industryDomain: new FormControl([], Validators.required),
+      addressLine1: new FormControl('', Validators.required),
       addressLine2: new FormControl(''),
       city: new FormControl('', Validators.required),
       state: new FormControl('', Validators.required),
-      zipcode: new FormControl('', Validators.required),
-      businessPhoneNumber: new FormControl(''),
-      bioText: new FormControl(''),
+      zipcode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
+      businessPhoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
+      bioText: new FormControl('', Validators.required),
       //websiteLinks: this.fb.array(this.websiteLinks.map(elem => this.createWebsiteGroup(elem))),
       websiteLinks: this.fb.array([this.fb.group({ links: ['', Validators.required] })]),
       awardsYears: this.fb.array([this.fb.group({ title: ['', Validators.required], year: ['', Validators.required] })]),
@@ -105,10 +105,10 @@ export class AdvisorAccountSettingComponent implements OnInit {
     this.LicenseForm = this.fb.group({
       activeLicenceHeld: new FormControl([], Validators.required),
       agencyOversees: new FormControl('', Validators.required),
-      managingPrincipleName: new FormControl('', ),
-      manageOtherProceducers: new FormControl('', ),
+      managingPrincipleName: new FormControl('', Validators.required),
+      manageOtherProceducers: new FormControl('', Validators.required),
       howManyProducers: new FormControl('', ),
-      advisorDocuments: new FormControl('',),
+      advisorDocuments: new FormControl('',)
     });
 
     this.profile = [];
@@ -230,7 +230,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
     let profileInData = {
       firstName: this.ProfileForm.controls['firstName'].value,
       lastName: this.ProfileForm.controls['lastName'].value,
-      businessPhoneNumber: this.ProfileForm.controls['businessPhoneNumber'].value,
+      landlineNumber: this.ProfileForm.controls['landlineNumber'].value,
       phoneNumber: this.ProfileForm.controls['phoneNumber'].value,
       dateOfBirth: this.ProfileForm.controls['dateOfBirth'].value
     }
