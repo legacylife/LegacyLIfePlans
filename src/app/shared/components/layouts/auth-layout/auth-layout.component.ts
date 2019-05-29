@@ -20,7 +20,7 @@ export class AuthLayoutComponent implements OnInit {
 
   ngOnDestroy() {
     const locationArray = location.href.split("/")
-    if(locationArray.indexOf("auth") > -1) {
+    if(locationArray.indexOf("auth") == -1) {
       //html
       const htmlTag = document.getElementsByTagName("html")[0]
       let htmlClasses = htmlTag.className && htmlTag.className.length > 0 ? htmlTag.className.split(" ") : []

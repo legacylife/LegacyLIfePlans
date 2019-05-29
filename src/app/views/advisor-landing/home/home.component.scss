@@ -547,10 +547,10 @@
     padding-bottom: 100px;
 }
 
-::ng-deep .egret-indigo .mat-form-field-appearance-outline .mat-form-field-outline-thick,
-::ng-deep .egret-indigo .mat-form-field-appearance-outline .mat-form-field-outline,
-::ng-deep .egret-indigo .mat-input-element,
-::ng-deep .egret-indigo .mat-form-field-label,
+.contact--us--form ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-thick,
+.contact--us--form ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline,
+.contact--us--form ::ng-deep .mat-input-element,
+.contact--us--form ::ng-deep .mat-form-field-label,
 {
     color: $clr--1 !important;
 }
