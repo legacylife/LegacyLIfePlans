@@ -1,5 +1,5 @@
 .ll--modal--body{
-    height: 300px;
+    height: calc(100vh - 400px);
     overflow-y: scroll;
     .rules{
         font-size: 20px;
@@ -11,6 +11,22 @@
         font-size: 14px;
         color: #222324;
         line-height: 1.79;
+    }
+}
+
+@media only screen and (max-width: 599px) {
+    .ll--modal--body .rules {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+}
+@media only screen and (min-width: 600px) and (max-width: 959px){
+    .ll--modal--body .rules {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+    .ll--modal--body {
+        height: calc(100vh - 277px);
     }
 }
 

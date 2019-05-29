@@ -85,6 +85,12 @@ html.llp--auth--wrapper{
     position: relative !important;
     overflow: auto !important;
     background: #f6f7f7 !important;
+
+    &.cdk-global-scrollblock{
+        body{
+            overflow:  hidden !important;
+        }
+    }
 } 
 
 body.llp--auth--wrapper{
