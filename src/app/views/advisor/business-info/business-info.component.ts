@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild,ElementRef, Input  } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { UserAPIService } from './../../../userapi.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -11,6 +11,10 @@ import { MatStepperModule , MatStepper} from '@angular/material/stepper';
 import { yearsOfServiceList, businessTypeList , industryDomainList, licenceHeldList, activeLicense, industryDomain, businessType, yearsOfService } from '../../../selectList';
 import { states } from '../../../state';
 import { FileUploader } from 'ng2-file-upload';
+import { Http, Response } from '@angular/http';
+import "rxjs/add/operator/do";
+//import the map function to be used with the http library
+import "rxjs/add/operator/map";
 import { serverUrl, s3Details } from '../../../config';
 const URL = serverUrl+'/api/documents/advisorDocument';
 @Component({
@@ -20,9 +24,9 @@ const URL = serverUrl+'/api/documents/advisorDocument';
 })
 export class BusinessInfoComponent implements OnInit {
   @ViewChild('stepper') private myStepper: MatStepper;
-  public uploader: FileUploader = new FileUploader({url:URL});
+  public uploader: FileUploader 
+  
   public hasBaseDropZoneOver: boolean = false;
-
   isLinear = false;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
@@ -46,18 +50,18 @@ export class BusinessInfoComponent implements OnInit {
   businessTypeList: string[] = businessType.sort()
   yearsOfServiceList: string[] = yearsOfService.sort()
   
-  constructor(private router: Router, private activeRoute: ActivatedRoute, private stepper: MatStepperModule, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
+  constructor(private router: Router, private activeRoute: ActivatedRoute, private stepper: MatStepperModule, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, 
+    private loader: AppLoaderService,private http: Http, private el: ElementRef) { }
   
   ngOnInit() {
- 
-    //localStorage.setItem("step",'0');
+   // localStorage.setItem("step",'3');
     this.userId = localStorage.getItem("endUserId");
     this.stateList = states;
-    this.step = localStorage.getItem("step");
+    this.step = localStorage.getItem("step"); console.log("asdasd",this.step)
     this.myStepper.selectedIndex = Number(this.step);
     this.profile = [];
     if(this.step && this.step==4){
-      this.router.navigate(['/', 'advisor', 'signup']);
+     this.router.navigate(['/', 'advisor', 'signup']);
     }
 
     this.firstFormGroup = new FormGroup({
@@ -91,20 +95,44 @@ export class BusinessInfoComponent implements OnInit {
       this.getAdvDetails(this.step);
     }
   }
+/*
+  uploadAll() {
+    let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#advisorDocs');
+    console.log("iam+ "+inputEl);
+    let fileCount: number = inputEl.files.length;
+    let formData = new FormData();
+
+    console.log(fileCount,formData)
+    if (fileCount > 0) { // a file was selected
+      formData.append('userId', this.userId);
+        for (let i = 0; i < fileCount; i++) {
+            formData.append('advisorDocuments', inputEl.files.item(i));
+        }
+        this.userapi.apiRequest('post', 'documents/advisorDocument', formData).map((res:any) => res).subscribe(//this.http.post(URL, formData).map((res:any) => res).subscribe(
+                (success) => {
+                 alert(success._body);
+              },
+                (error) => alert(error)
+            );
+
+    }
+   }
+*/
 
   signupSubmit(steps=null,profileInData=null) {  
-    console.log("Steps :- ",steps);
-
    let msgName = '';
    if(steps==1) msgName = "business information";
    else if(steps==2) msgName ="business address";
    else if(steps==3) msgName ="license information";
-
-    var query = {};
-    var proquery = {};
+  var query = {};
+  var proquery = {};
     console.log(">>>>>>",steps)
-    if(steps == 4){
+    if(steps==4){
       profileInData.profileSetup = 'yes';
+      //if(this.uploader.getNotUploadedItems().length){
+        console.log("image",this.uploader.getNotUploadedItems().length)
+        this.uploader =  new FileUploader({url:`${URL}?userId=${this.userId}`,itemAlias: 'advisorDocs'});
+     // }
     }
     
     const req_vars = {
@@ -113,6 +141,7 @@ export class BusinessInfoComponent implements OnInit {
       from: Object.assign({ fromname: msgName })
     }
     this.loader.open();
+    
     this.userapi.apiRequest('post', 'auth/cust-profile-update', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
@@ -120,9 +149,22 @@ export class BusinessInfoComponent implements OnInit {
       } else {
         //this.prodata = result.data.userProfile;
         localStorage.setItem("step",steps);
-        console.log(steps)
-        if(steps==4){console.log("here we are",steps);
-          this.router.navigate(['/', 'advisor', 'thank-you']);
+        //console.log(steps)
+        if(steps==4){
+          console.log("here we are",steps);
+         // if(this.uploader.getNotUploadedItems().length){
+            this.uploader.uploadAll();
+           // this.uploadAll();
+            this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+              console.log(item,status);
+              //let pushArry = {"tmpName":"asdasd","title":item.file.name}
+              //this.advisorDocumentsList.push(pushArry);
+              //  if(status==0){
+                  this.router.navigate(['/', 'advisor', 'thank-you']);
+               // }
+            };
+         // }
+          
         }
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
@@ -132,17 +174,16 @@ export class BusinessInfoComponent implements OnInit {
   }
 
   getAdvDetails(step,query = {}){
-      //console.log('here',step);
       const req_vars = {
         query: Object.assign({ _id: this.userId, userType: "advisor" }, query)
       }
-      this.loader.open();
+     // this.loader.open();
       this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe(result => {
        if (result.status == "error") {
           this.profile = [];
           this.loader.close();
         } else {
-          this.profile = result.data.userProfile;//console.log('here',this.profile);
+          this.profile = result.data.userProfile;
 
           this.firstFormGroup.controls['firstName'].setValue(this.profile.firstName);
           this.firstFormGroup.controls['lastName'].setValue(this.profile.lastName);
