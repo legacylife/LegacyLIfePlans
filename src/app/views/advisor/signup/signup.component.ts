@@ -63,12 +63,12 @@ export class AdvisorSignupComponent implements OnInit {
           this.invalidMessage = result.data.message;
           this.EmailExist = true;
           this.llpAdvsignupForm.controls['username'].setErrors({ 'EmailExist': true })
-        } else if (result.data.code == "ExistAdvisor") {
+        } /*else if (result.data.code == "ExistAdvisor") {
           localStorage.setItem("endUsername", result.data.username)
           localStorage.setItem("endUserId", result.data.userId)
           localStorage.setItem("endUserType", result.data.userType)
           this.router.navigate(['/', 'advisor', 'business-info']);
-        } else {
+        }*/ else {
           this.llpAdvsignupForm.controls['username'].disable();
           this.freeTrailBtn = true;
           this.proceedBtn = false;

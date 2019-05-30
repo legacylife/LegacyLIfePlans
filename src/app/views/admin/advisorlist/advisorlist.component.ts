@@ -35,7 +35,7 @@ export class advisorlistComponent implements OnInit {
       fields: {},
       offset: '',
       limit: '',
-      order: {},
+      order: {"createdOn": -1},
     }
     this.api.apiRequest('post', 'userlist/list', req_vars).subscribe(result => {
       if (result.status == "error") {

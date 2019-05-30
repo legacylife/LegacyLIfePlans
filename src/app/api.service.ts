@@ -222,9 +222,6 @@ export class APIService {
     this.removeKeyFromStorage('userHeaderDetails')
     this.removeKeyFromStorage('sectionAccess')
 
-    window.localStorage.clear();
-    window.sessionStorage.clear();
-
     this.router.navigate(["llp-admin", "signin"])
   }
 

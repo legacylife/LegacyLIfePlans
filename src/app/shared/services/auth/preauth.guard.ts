@@ -13,8 +13,6 @@ export class PreAuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
-      this.userInfo = this.api.getUserInfo()
-
       this.userInfo = this.api.getUserInfo();
       if (this.userInfo && this.userInfo.userType == 'sysadmin') {
         this.router.navigateByUrl('/admin/dashboard'); 

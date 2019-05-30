@@ -183,8 +183,6 @@ export class UserAPIService {
     this.removeKeyFromStorage('userHeaderDetails')
     this.removeKeyFromStorage('endUserProfilePicture')
 
-    window.localStorage.clear();
-    window.sessionStorage.clear();
     this.router.navigate(["signin"]);
   }
 

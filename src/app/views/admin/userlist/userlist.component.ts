@@ -50,7 +50,7 @@ export class userlistComponent implements OnInit {
       fields: {},
       offset: '',
       limit: '',
-      order: {},
+      order: {"createdOn": -1},
     }
     this.api.apiRequest('post', 'userlist/list', req_vars).subscribe(result => {
       this.loader.close();
