@@ -316,6 +316,36 @@ body{
 ------------------------------------------*/
 
 /* -- 
+   back to top css (start here)
+------------------------------------------*/
+.back--to--top{ 
+    width: 67px;
+    height: 67px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background-color: #c72128;
+    color: #fff;
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 99999;
+    
+    .mat-icon{
+        height: 40px;
+        width: 40px;
+        font-size: 40px;
+    }
+}
+
+/* -- 
+   back to top css (end here)
+------------------------------------------*/
+
+/* -- 
     Media Query (start here)
 ------------------------------------------*/
 @media (max-width: 374px){

@@ -1,30 +1,3 @@
-// import { Component, OnInit } from '@angular/core';
-// import {MatGridListModule} from '@angular/material/grid-list';
-
-// @Component({
-//   selector: 'app-landing-home-page',
-//   templateUrl: './home.component.html',
-//   styleUrls: ['./home.component.scss']
-// })
-// export class HomeComponent implements OnInit {
-
-//   breakpoint: number;
-//   constructor() { }
-
-//   ngOnInit() {
-//     this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
-//     this.breakpoint = (window.innerWidth <= 600) ? 3 : 6;
-//   }
-//   onResize(event) {
-//     this.breakpoint = (event.target.innerWidth <= 400) ? 1 : 6;
-//     this.breakpoint = (event.target.innerWidth <= 600) ? 3 : 6;
-//   }
-// }
-
-
-
-
-
 import { Component, OnInit } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 
@@ -138,8 +111,6 @@ export class HomeComponent implements OnInit {
       }
     }
   ]};
-  // autoplaySpeed: 10000,autoplay : true,
-  // pauseOnHover:false,  autoplaySpeed: 1000 , speed: 200,
   slideConfigTwo = { 'slidesToShow': 3, 'centerMode': true, infinite: true,
    autoplay: true,  autoplaySpeed: 2000 , 'slidesToScroll': 1 , responsive : [
     {
@@ -161,35 +132,35 @@ export class HomeComponent implements OnInit {
     }
   ]};
 
-
-  // autoplay : true, autoplaySpeed: 1000 
-
   constructor() { }
 
   ngOnInit() {
   }
-
-
-
-
   slickInit(e) {
-    console.log('slick initialized');
   }
   
   slickInit2(e) {
-    console.log('slick initialized');
   }
   
 
   breakpoint(e) {
-    console.log('breakpoint');
   }
 
   afterChange(e) {
-    console.log('afterChange');
   }
 
   beforeChange(e) {
-    console.log('beforeChange');
+  }
+
+
+  
+  gotoTop() {
+    const content = document.getElementsByClassName('rightside-content-hold')[0]
+    
+    content.scroll({ 
+      top: 0, 
+      left: 0, 
+      behavior: 'smooth' 
+    });
   }
 }
