@@ -54,7 +54,7 @@ export const licenceHeldList = [{
 
 
 
-export const activeLicense = ['Life', 'Health', 'Property & Casualty', 'Series 6', 'Series 26', 'Series 7', 'Series 24','Series 3', 'Series 63', 'Series 65', 'Series 66']
+export const activeLicense = ['Health', 'Life',  'Property & Casualty', 'Series 3','Series 6', 'Series 7', 'Series 24','Series 26', 'Series 63', 'Series 65', 'Series 66']
 
 export const industryDomain = ['Life', 'Health', 'Property & Casualty']
 

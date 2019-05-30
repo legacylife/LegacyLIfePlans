@@ -41,7 +41,7 @@ export class BusinessInfoComponent implements OnInit {
   short_code:string;
   showHowManyProducer:boolean;
 
-  activeLicenseList: string[] = activeLicense.sort()
+  activeLicenseList: string[] = activeLicense
   industryDomainList: string[] = industryDomain.sort()
   businessTypeList: string[] = businessType.sort()
   yearsOfServiceList: string[] = yearsOfService.sort()

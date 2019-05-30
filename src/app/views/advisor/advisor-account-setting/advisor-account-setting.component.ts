@@ -34,7 +34,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
   public hasAnotherDropZoneOver: boolean = false;
   advisorDocumentsHide = false;
   invalidMessage: string;
-  advisorDocumentsMissing: boolean;
+  advisorDocumentsMissing: boolean = false;
   date: any;
   ProfileForm: FormGroup;
   AddressForm: FormGroup;
@@ -56,7 +56,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
 
   uploadedFile: File
   profilePicture: any = "assets/images/arkenea/default.jpg"
-  activeLicenseList: string[] = activeLicense.sort()
+  activeLicenseList: string[] = activeLicense
   industryDomainList: string[] = industryDomain.sort()
   businessTypeList: string[] = businessType.sort()
   yearsOfServiceList: string[] = yearsOfService.sort()
@@ -316,9 +316,9 @@ export class AdvisorAccountSettingComponent implements OnInit {
   LicenseSubmit() {
    // console.log(this.LicenseForm.value)
    this.invalidMessage = '';
-  if(this.profile.advisorDocuments || this.profile.advisorDocuments==''){ 
+  /*if(this.profile.advisorDocuments || this.profile.advisorDocuments==''){ 
       this.invalidMessage = "Please upload your document";
-  }
+  }*/
     
 if(this.invalidMessage){ 
   this.advisorDocumentsMissing = true;

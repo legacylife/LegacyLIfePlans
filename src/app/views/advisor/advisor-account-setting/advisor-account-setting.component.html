@@ -172,7 +172,6 @@
                     <mat-form-field class="full-width">
                       <mat-label>Years of service*</mat-label>
                       <mat-select  name="yearsOfService" [formControl]="AddressForm.controls['yearsOfService']">
-                        <mat-option>Select number of years</mat-option>
                         <mat-option *ngFor="let yos of yearsOfServiceList" [value]="yos">{{yos}}</mat-option>
                       </mat-select>
                       <mat-icon matTooltip="Please select years of service" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessName'].hasError('required') && AddressForm.controls['businessName'].touched"
@@ -185,7 +184,6 @@
                     <mat-form-field class="full-width">
                       <mat-label>Business type*</mat-label>
                       <mat-select name="businessType" [formControl]="AddressForm.controls['businessType']" multiple>
-                        <mat-option>Select business type</mat-option>
                         <mat-option *ngFor="let btl of businessTypeList" [value]="btl">{{btl}}</mat-option>
                       </mat-select>
                       <mat-icon matTooltip="Please select business type" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessType'].hasError('required') && AddressForm.controls['businessType'].touched"
@@ -196,7 +194,6 @@
                     <mat-form-field class="full-width">
                       <mat-label>Industry/Domain*</mat-label>                      
                       <mat-select name="industryDomain" [formControl]="AddressForm.controls['industryDomain']" multiple>
-                        <mat-option>Select industry/domain type</mat-option>
                         <mat-option *ngFor="let idl of industryDomainList" [value]="idl">{{idl}}</mat-option>
                       </mat-select>
                       <mat-icon matTooltip="Please select industry/domain" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['industryDomain'].hasError('required') && AddressForm.controls['industryDomain'].touched"
@@ -367,7 +364,6 @@
                       <mat-label>Active license held*</mat-label>
 
                       <mat-select [formControl]="LicenseForm.controls['activeLicenceHeld']" multiple>
-                        <mat-option>None</mat-option>
                         <mat-option *ngFor="let topping of activeLicenseList" [value]="topping">{{topping}}</mat-option>
                       </mat-select>
                       <mat-icon matTooltip="Please select active licence" matTooltipClass="llp--tooltip error" *ngIf="LicenseForm.controls['activeLicenceHeld'].hasError('required') && LicenseForm.controls['activeLicenceHeld'].touched"
