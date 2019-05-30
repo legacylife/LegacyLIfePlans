@@ -147,6 +147,8 @@ export class AdvisorAccountSettingComponent implements OnInit {
         this.AddressForm.controls['state'].setValue(this.profile.state ? this.profile.state : "");
         this.AddressForm.controls['zipcode'].setValue(this.profile.zipcode ? this.profile.zipcode : "");
         this.AddressForm.controls['bioText'].setValue(this.profile.bioText ? this.profile.bioText : "");
+        this.AddressForm.controls['businessPhoneNumber'].setValue(this.profile.businessPhoneNumber ? this.profile.businessPhoneNumber : "");
+        
         this.awards = this.profile.awardsYears;
         this.websiteLinks = this.profile.websiteLinks;
         this.advisorDocumentsList = this.profile.advisorDocuments;
@@ -267,7 +269,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
     const awardsYearsArr = <FormArray>this.AddressForm.get('awardsYears')
     this.awardsYears = awardsYearsArr.controls.map(o => { return o.value })
 
-    console.log(this.websiteLinks)
+    console.log(this.AddressForm.value)
     let AddressInData = {
       addressLine1: this.AddressForm.controls['addressLine1'].value,
       addressLine2: this.AddressForm.controls['addressLine2'].value,

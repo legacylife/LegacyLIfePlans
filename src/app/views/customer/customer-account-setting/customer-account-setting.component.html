@@ -8,8 +8,8 @@
               <img src="{{profilePicture}}" />
             </div>
             <div class="edit--pic">
-			<mat-icon title="edit user image" (click)="profilePic.click()">edit</mat-icon>
-			  
+              <mat-icon title="edit user image" (click)="profilePic.click()">edit</mat-icon>
+
               <input type="file" name="profilePicture" #profilePic id="profilePicture" class=" profile-pic-input" (change)="showSelectedProfilePicture()"
                 accept="image/*" style="display:none;" />
             </div>
@@ -46,26 +46,38 @@
         <!-- Account details -->
         <mat-tab-group class="acc--sett--tab">
           <mat-tab label="Account Details">
-            <!-- account details -->          
+            <!-- account details -->
             <form class="llp-form-wrapper" [formGroup]="ProfileForm" (ngSubmit)="ProfileSubmit()">
               <div class="account--details">
-              <div fxLayout="row wrap">
-                <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
-               
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
+
                     <mat-form-field class="full-width">
-                      <input matInput name="firstName" placeholder="First Name*" value=""  [formControl]="ProfileForm.controls['firstName']">
+                      <input matInput name="firstName" placeholder="First Name*" value="" [formControl]="ProfileForm.controls['firstName']">
+                      <mat-icon matTooltip="Please enter first name." matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['firstName'].hasError('required') && ProfileForm.controls['firstName'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                     <mat-form-field class="full-width">
                       <input matInput name="lastName" placeholder="Last Name*" value="" [formControl]="ProfileForm.controls['lastName']">
+                      <mat-icon matTooltip="Please enter last name." matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['lastName'].hasError('required') && ProfileForm.controls['lastName'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
 
                     <mat-form-field class="full-width">
                       <input matInput placeholder="Mobile Number*" type="tel" value="" class="" [formControl]="ProfileForm.controls['phoneNumber']">
                       <span matPrefix>+1</span>
+                      <mat-icon matTooltip="Please enter mobile number." matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['phoneNumber'].hasError('required') && ProfileForm.controls['phoneNumber'].touched"
+                        class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please enter valid mobile number." matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['phoneNumber'].hasError('pattern') && ProfileForm.controls['phoneNumber'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                     <mat-form-field class="full-width">
                       <input matInput placeholder="Landline Number" type="tel" value="" class="" [formControl]="ProfileForm.controls['landlineNumber']">
                       <span matPrefix>+1</span>
+                      <mat-icon matTooltip="Please enter landline number." matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['landlineNumber'].hasError('required') && ProfileForm.controls['landlineNumber'].touched"
+                        class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please enter valid landline number." matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['landlineNumber'].hasError('pattern') && ProfileForm.controls['landlineNumber'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
 
                     <mat-form-field class="full-width llp-datepicker">
@@ -81,40 +93,40 @@
 
                     <div class="full-width text-right">
                       <a class="clr--red fnt--16" (click)="changePasspordModal()">Change password</a>
-                    </div>               
-                </div>
-                <div fxFlex.xs="100" fxFlex.sm="60" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60">
-                  <div class="manage--sub--section">
-                    <header>
-                      <div class="stan--plan"> Standard plan</div>
-                      <div class="ur--sub">Your subscription will automatically renew on
-                        <span>06/07/2019</span>
+                    </div>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="60" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60">
+                    <div class="manage--sub--section">
+                      <header>
+                        <div class="stan--plan"> Standard plan</div>
+                        <div class="ur--sub">Your subscription will automatically renew on
+                          <span>06/07/2019</span>
+                        </div>
+                      </header>
+                      <div class="llp--slide--wrapper">
+                        <div class="set-auto">Set auto-payment option</div>
+                        <mat-slide-toggle class="llp--slide--toggle">OFF</mat-slide-toggle>
                       </div>
-                    </header>
-                    <div class="llp--slide--wrapper">
-                      <div class="set-auto">Set auto-payment option</div>
-                      <mat-slide-toggle class="llp--slide--toggle">OFF</mat-slide-toggle>
+                      <p class="turning">Turning the auto-payment option ON will automatically deduct the subscription amount from your associated
+                        card
+                      </p>
+                      <div class="manage--cancel">
+                        <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/customer/customer-subscription'">Manage subscription</button>
+                        <a class="clr--red">Cancel subscription</a>
+                      </div>
                     </div>
-                    <p class="turning">Turning the auto-payment option ON will automatically deduct the subscription amount from your associated
-                      card
-                    </p>
-                    <div class="manage--cancel">
-                      <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/customer/customer-subscription'">Manage subscription</button>
-                      <a class="clr--red">Cancel subscription</a>
+                    <div class="deactivate--acc">
+                      <a class="clr--red fnt--16">Deactivate account</a>
                     </div>
-                  </div>
-                  <div class="deactivate--acc">
-                    <a class="clr--red fnt--16">Deactivate account</a>
                   </div>
                 </div>
+                <div fx.Flex="100" class="text-center mt--30">
+                  <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
+                  <button mat-raised-button class="llp--primary--btn">Save</button>
+                </div>
               </div>
-              <div fx.Flex="100" class="text-center mt--30">
-                <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
-                <button mat-raised-button class="llp--primary--btn">Save</button>
-              </div>
-            </div>
-          </form>
-        
+            </form>
+
           </mat-tab>
           <mat-tab label="Address">
 
@@ -125,6 +137,8 @@
                   <div fxFlex.xs="100" fxFlex.sm="46" fxFlex.md="46" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
                     <mat-form-field class="full-width">
                       <input matInput name="addressLine1" placeholder="Address line 1*" value="" [formControl]="AddressForm.controls['addressLine1']">
+                      <mat-icon matTooltip="Please enter address in line 1." matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['addressLine1'].hasError('required') && AddressForm.controls['addressLine1'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="46" fxFlex.md="46" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
@@ -137,22 +151,29 @@
                   <div fxFlex.xs="100" fxFlex.sm="46" fxFlex.md="46" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
                     <mat-form-field class="full-width">
                       <input matInput name="City" placeholder="City*" value="" [formControl]="AddressForm.controls['city']">
+                      <mat-icon matTooltip="Please enter city." matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['city'].hasError('required') && AddressForm.controls['city'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="46" fxFlex.md="46" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
                     <mat-form-field class="full-width">
                       <mat-select placeholder="State*" [formControl]="AddressForm.controls['state']">
                         <mat-option value="">Select a state</mat-option>
-                        <mat-option *ngFor="let option of stateList"
-                        [value]="option.state_name">{{option.state_name}}</mat-option>
+                        <mat-option *ngFor="let option of stateList" [value]="option.state_name">{{option.state_name}}</mat-option>
                       </mat-select>
+                      <mat-icon matTooltip="Please select state." matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['state'].hasError('required') && AddressForm.controls['state'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                 </div>
-                <div fxLayout="row wrap" fxLayoutGap-sm="5px" >
+                <div fxLayout="row wrap" fxLayoutGap-sm="5px">
                   <div fxFlex.xs="100" fxFlex.sm="48" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
                     <mat-form-field class="full-width">
                       <input matInput name="ZipCode" placeholder="Zip Code*" value="" [formControl]="AddressForm.controls['zipcode']">
+                      <mat-icon matTooltip="Please enter zipcode." matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['zipcode'].hasError('required') && AddressForm.controls['zipcode'].touched"
+                        class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please enter valid zipcode." matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['zipcode'].hasError('pattern') && AddressForm.controls['zipcode'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                 </div>

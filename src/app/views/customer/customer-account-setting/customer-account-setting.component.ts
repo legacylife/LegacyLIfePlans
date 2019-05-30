@@ -48,7 +48,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder,
     private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
-    private loader: AppLoaderService, private picService:ProfilePicService) {
+    private loader: AppLoaderService, private picService: ProfilePicService) {
 
     this.cropperSettings = new CropperSettings()
     this.cropperSettings.rounded = true
@@ -68,8 +68,8 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     this.ProfileForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
-      phoneNumber: new FormControl('', Validators.required),
-      landlineNumber: new FormControl('', Validators.required),
+      phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
+      landlineNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
       dateOfBirth: new FormControl('', ),
       username: new FormControl('', )
     });
@@ -79,7 +79,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       addressLine2: new FormControl(''),
       city: new FormControl('', Validators.required),
       state: new FormControl('', Validators.required),
-      zipcode: new FormControl('', Validators.required)
+      zipcode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)])
     });
 
     this.profile = [];
@@ -115,18 +115,18 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
         this.ProfileForm.controls['phoneNumber'].setValue(this.profile.phoneNumber);
         this.ProfileForm.controls['landlineNumber'].setValue(this.profile.landlineNumber);
 
-        this.AddressForm.controls['addressLine2'].setValue(this.profile.addressLine2);
+        this.AddressForm.controls['addressLine1'].setValue(this.profile.addressLine1);
         this.AddressForm.controls['addressLine2'].setValue(this.profile.addressLine2);
         this.AddressForm.controls['city'].setValue(this.profile.city);
         this.AddressForm.controls['state'].setValue(this.profile.state);
         this.AddressForm.controls['zipcode'].setValue(this.profile.zipcode);
 
-        if (this.profile.profilePicture){
+        if (this.profile.profilePicture) {
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + this.profile.profilePicture;
-          localStorage.setItem('endUserProfilePicture', this.profilePicture) 
-          this.picService.setProfilePic = this.profilePicture;         
+          localStorage.setItem('endUserProfilePicture', this.profilePicture)
+          this.picService.setProfilePic = this.profilePicture;
         }
-          
+
 
         this.loader.close();
       }
