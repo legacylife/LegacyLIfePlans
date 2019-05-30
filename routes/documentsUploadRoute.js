@@ -12,24 +12,24 @@ var DIR = './uploads/';
 
 router.post('/advisorDocument', cors(), function(req,res){
   var fstream;
-  let authTokens = { userId: "5cc9cc301955852c18c5b73a", authCode: "" }
+  let authTokens = { authCode: "" }
   if (req.busboy) {
     req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
       authTokens[fieldname] = val
     })
-  
+    const {query:{userId}} = req;
     req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
       let tmpallfiles = {};
       let oldTmpFiles = [];
-      if(authTokens.userId){
-        User.findOne({ _id: authTokens.userId,userType: 'advisor' },{advisorDocuments:1,_id:1}, function (err, result) {
+      if(userId){
+        User.findOne({ _id: userId,userType: 'advisor' },{advisorDocuments:1,_id:1}, function (err, result) {
           if (err) {
             res.status(500).send(resFormat.rError(err))
           } else if (result) {           
            
           let ext = filename.split('.')
           ext = ext[ext.length - 1]
-          const newFilename = authTokens.userId + '-' + new Date().getTime() + `.${ext}`
+          const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
           fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
           file.pipe(fstream);
           fstream.on('close', async function () {
@@ -44,11 +44,11 @@ router.post('/advisorDocument', cors(), function(req,res){
               "tmpName" : newFilename
             }
             oldTmpFiles.push(tmpallfiles);           
-            User.updateOne({ _id: authTokens.userId }, { $set: { advisorDocuments: oldTmpFiles } }, function (err, updatedUser) {
+            User.updateOne({ _id: userId }, { $set: { advisorDocuments: oldTmpFiles } }, function (err, updatedUser) {
               if (err) {
                 res.send(resFormat.rError(err))
               } else {
-                let result = { userId:authTokens.userId, allDocs:tmpallfiles, "message": "User details have been updated" }
+                let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
                 res.send(resFormat.rSuccess(result))
               }
             })
@@ -66,6 +66,7 @@ router.post('/advisorDocument', cors(), function(req,res){
 function deleteDoc(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+  let { fileName } = req.body;
   let fields = {};
   User.findOne(query, fields, function (err, fileDetails) {
     if (err) {
@@ -76,6 +77,20 @@ function deleteDoc(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+  console.log("HERE ",docFilePath+fileName.docName);
+        /*  var deleteParam = {
+            Bucket: 'advisorsDocs',
+            Delete: {
+                Objects: [
+                    {Key: docFilePath+fileName.docName},
+                ]
+            }
+        };    
+        s3.deleteObjects(deleteParam, function(err, data) {
+            if (err) console.log(err, err.stack);
+            else console.log('delete', data);
+        });
+      */
           let result = { userId:fileDetails._id, "message": "File deleted successfully" }
           res.send(resFormat.rSuccess(result))
         }
