@@ -30,9 +30,15 @@ const profilePicturesPath = constants.s3Details.profilePicturesPath
 function signin(req, res) {
   
   passport.authenticate('local', function (err, user, info) {
+    console.log("user",user)
+    console.log("info",info)
+
     if (err) {
       let result = { "message": err };
       res.status(404).send(resFormat.rError(result));
+    } else if (user && user.message == "WrongMethod") {
+      let result = { "message": "Your account is activated by admin & set account password link is already sent.", "invalidEmail": true, "invalidPassword": false }
+      res.status(200).send(resFormat.rError(result))
     } else if (info && info.message == "User is not Active") {
       let result = { "message": "Your account is in an inactive state. Please contact to system admin.", "invalidEmail": true, "invalidPassword": false }
       res.status(200).send(resFormat.rError(result))
@@ -325,10 +331,17 @@ function forgotPassword(req, res) {
   //find user based on email id
 
   User.findOne({ "username": req.body.username }, {}, function (err, user) {
+    console.log("asdadsd",user)
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else if (!user) {
-      res.send(resFormat.rError("Looks like your account does not exist. Sign up to create an account."))
+      res.send(resFormat.rError({message: "Looks like your account does not exist. Sign up to create an account."}))
+    } else if (user && user.status == 'Active' && !user.salt) {
+      res.send(resFormat.rError({message: "Your account is activated by admin & set account password link is already sent."}))
+    } else if (user && user.status == 'In-Active') {
+      res.send(resFormat.rError({message: "Your account is inactive."}))
+    } else if (user && user.status == 'Pending') {
+      res.send(resFormat.rError({message:"You can not use this service as your account is under review."}))
     } else {
       var tokens = generateToken(85);
       var date = new Date()
@@ -434,7 +447,7 @@ async function checkEmail(req, res) {
           res.send(resFormat.rSuccess({ code: "Exist", message: "Looks like you already have an account registered with this email. Log in to access." }))
         }
         else if (user && user.status == 'Pending') {
-          res.send(resFormat.rSuccess({ username : user.username, userType : user.userType, userId : user._id ,code: "ExistAdvisor", message: "Looks like you already have an account registered with this email. Log in to access." }))
+          res.send(resFormat.rSuccess({ code: "Exist", message: "Your account is under review. We will get back to you shortly." }))
         }
         else {
           OtpCheck.findOne({ username: username }, { username: 1 }, function (err, found) {
