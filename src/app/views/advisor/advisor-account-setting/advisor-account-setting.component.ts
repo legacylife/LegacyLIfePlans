@@ -9,9 +9,8 @@ import { AppLoaderService } from '../../../shared/services/app-loader/app-loader
 import { CustomValidators } from 'ng2-validation';
 import { ChangePassComponent } from './change-pass/change-pass.component';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
-import { map } from 'rxjs/operators';
+import { map,delay } from 'rxjs/operators';
 import { Subscription, Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
 import { states } from '../../../state';
 import { FileUploader } from 'ng2-file-upload';
 import { yearsOfServiceList, businessTypeList , industryDomainList, licenceHeldList, activeLicense, industryDomain, businessType, yearsOfService } from '../../../selectList';
@@ -29,7 +28,7 @@ interface websiteLink {
   animations: [egretAnimations]
 })
 export class AdvisorAccountSettingComponent implements OnInit {
-  public uploader: FileUploader = new FileUploader({ url: URL });
+  public uploader: FileUploader 
   public hasBaseDropZoneOver: boolean = false;
   public hasAnotherDropZoneOver: boolean = false;
   advisorDocumentsHide = false;
@@ -115,7 +114,6 @@ export class AdvisorAccountSettingComponent implements OnInit {
     this.socialMediaLinkss = [];
     this.advisorDocumentsList = [];
     this.getProfile();
-
   }
   //function to get all events
   getProfile = (query = {}, search = false) => {
@@ -212,7 +210,6 @@ export class AdvisorAccountSettingComponent implements OnInit {
   get weblinksPoints() {
     return this.AddressForm.get('websiteLinks') as FormArray;
   }
-
 
   //function to create phone group for contact
   createWebsiteGroup(websitelink: websiteLink): FormGroup {
@@ -316,8 +313,17 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   LicenseSubmit() {
-   // console.log(this.LicenseForm.value)
-   this.invalidMessage = '';
+   if(this.uploader.getNotUploadedItems().length){
+       this.uploader =  new FileUploader({url:`${URL}?userId=${this.userId}`,itemAlias: 'advisorDocs'});
+       this.uploader.uploadAll();
+    //this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
+    this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+      console.log("ImageUpload:uploaded:", item.file);
+      let pushArry = {"tmpName":"asdasd","title":item.file.name}
+      this.advisorDocumentsList.push(pushArry);
+      };
+   }
+  this.invalidMessage = '';
   /*if(this.profile.advisorDocuments || this.profile.advisorDocuments==''){ 
       this.invalidMessage = "Please upload your document";
   }*/
@@ -354,14 +360,10 @@ if(this.invalidMessage){
     }, (err) => {
       console.error(err)
     })
-
   }
+}
 
-
-  }
-
-
-  docDelete(doc, name,tmName) {
+docDelete(doc, name,tmName) {
     var statMsg = "Are you sure you want to delete '" + name + "' file name?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {

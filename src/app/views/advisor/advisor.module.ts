@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatStepperModule } from '@angular/material/stepper';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 import { 
   MatListModule,
   MatIconModule,
@@ -89,6 +90,7 @@ import { ProfilePicService } from 'app/shared/services/profile-pic.service';
     MatTooltipModule,
     MatSelectModule,
     MatStepperModule,
+    HttpModule,
     RouterModule.forChild(AdvisorRoutes)
   ],
   declarations: [

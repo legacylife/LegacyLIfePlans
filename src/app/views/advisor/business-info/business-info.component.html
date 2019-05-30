@@ -6,7 +6,7 @@
   <div class="session-form-hold">
     <div class="login-sub-wrapper">
       <div class="stepper--wrapper">
-        <mat-horizontal-stepper (click)="isLinear=isLinear" #stepper>
+        <mat-horizontal-stepper linear #stepper>
           <!-- step 1   (click)="isLinear=isLinear" id="toggle-linear"-->
           <mat-step [stepControl]="firstFormGroup">
             <form [formGroup]="firstFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit(1,firstFormGroup.value)">
@@ -192,54 +192,21 @@
                   <label>Upload your business documents</label>
                   <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
                     [uploader]="uploader">
-                    <input type="file" name="advisorDocuments" multiple accept="image/*" />
+                    <input type="file" name="advisorDocuments" id="advisorDocs" multiple accept="image/*" />
                     <mat-icon class="cloud-icon">cloud_upload</mat-icon>
                     <div class="select--file">Select/drag file from your computer</div>
                   </div>
                   <div class="file--details">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
-
-                  <table class="default-table mat-box-shadow" style="width: 100%" *ngIf="uploader.getNotUploadedItems().length">
-                    <thead>
-                      <tr>
-                        <th width="30%">Name</th>
-                        <th>Progress</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody *ngIf="uploader.queue.length; else tableNoData">
-                      <tr *ngFor="let item of uploader.queue">
-                        <td>{{ item?.file?.name }}</td>
-                        <td>
-                          <div class="progress" style="margin-bottom: 0;">
-                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
-                            <mat-progress-bar class="" color="primary" mode="determinate" [value]="item.progress">
-                            </mat-progress-bar>
-                          </div>
-                        </td>
-
-                        <td nowrap>
-                          <button mat-icon-button class="mat-accent" (click)="item.remove()" [disabled]="item.isUploading">
-                            <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                    <ng-template #tableNoData>
-                      <p [ngStyle]="{padding: '0 1.2rem'}">Document queue is empty</p>
-                    </ng-template>
-                  </table>
-                  <div class="progress mb-1">
-                    <p>&nbsp;</p>
-                    <mat-progress-bar color="primary" mode="determinate" [value]="uploader.progress"></mat-progress-bar>
-                  </div>
-                  <button mat-raised-button class="mat-primary" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">Upload all</button>
                 </div>
 
+                <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
+                  <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">{{uploader.progress}}%</div>
+                  <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="uploader.progress"></mat-progress-bar>
+                  <p>&nbsp;</p>
+               </div>
                 <div class="text-center">
                   <button mat-raised-button class="llp--primary--btn full-width mb-1">Complete</button>
-                  <button mat-raised-button matStepperPrevious class="llp--back--btn">
-                    <mat-icon>arrow_back</mat-icon> Back</button>
-                </div>
+                  <button mat-raised-button matStepperPrevious class="llp--back--btn"><mat-icon>arrow_back</mat-icon> Back</button></div>
               </div>
               <div>
                 <!-- <button mat-raised-button mat-button (click)="stepper.reset()">Reset</button> -->
