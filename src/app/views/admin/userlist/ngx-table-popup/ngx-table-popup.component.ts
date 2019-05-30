@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MatDialog,MAT_DIALOG_DATA } from '@angular/material';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { APIService } from './../../../../api.service';
 import { adminSections } from '../../../../config';
@@ -17,7 +17,7 @@ export class NgxTablePopupComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NgxTablePopupComponent>,
-    private fb: FormBuilder, private api: APIService
+    private fb: FormBuilder, private api: APIService,public dialog: MatDialog
   ) { }
 
   ngOnInit() {

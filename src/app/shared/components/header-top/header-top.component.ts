@@ -66,7 +66,7 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
     this.notificPanel.toggle();
   }
   toggleSidenav() {
-    if(this.layoutConf.sidebarStyle === 'closed') {
+    if(this.layoutConf.sidebarStyle === 'closed') {      
       return this.layout.publishLayoutChange({
         sidebarStyle: 'full'
       })

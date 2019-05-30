@@ -55,6 +55,7 @@ export class BusinessInfoComponent implements OnInit {
     this.stateList = states;
     this.step = localStorage.getItem("step");
     this.myStepper.selectedIndex = Number(this.step);
+    this.profile = [];
     if(this.step && this.step==4){
       this.router.navigate(['/', 'advisor', 'signup']);
     }

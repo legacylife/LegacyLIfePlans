@@ -28,6 +28,9 @@ export class SidebarSideComponent implements OnInit, OnDestroy, AfterViewInit {
     this.lastName = localStorage.getItem("lastName") || sessionStorage.getItem("lastName")
 	
     this.iconTypeMenuTitle = this.navService.iconTypeMenuTitle;
+    
+    this.navService.publishNavigationChange('admin')
+
     this.menuItemsSub = this.navService.menuItems$.subscribe(menuItem => {
       this.menuItems = menuItem;
       //Checks item list has any icon type.

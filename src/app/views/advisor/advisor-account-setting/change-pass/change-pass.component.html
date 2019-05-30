@@ -1,7 +1,6 @@
 <div class="ll--modal--header">
   Change Password
-  <button [mat-dialog-close]="" style="display: none;" #modalClose></button>
-  <mat-icon class="icon--cross" (click)="modalClose.click()">cancel</mat-icon>
+  <button class="modal--close"[mat-dialog-close]=""><mat-icon class="icon--cross">cancel</mat-icon></button>  
 </div>
 <form class="llp-form-wrapper" [formGroup]="resetForm" (ngSubmit)="PassSubmit()">
 <div class="ll--modal--body">

@@ -264,6 +264,7 @@
                 margin: 0;
                 font-size: 18px;
                 color: $clr--13;
+                font-family: $font--lato--regular;
             }
         }
     }
@@ -431,6 +432,8 @@
                     font-size: 18px;
                     margin-right: 1px;
                     height: 19px;
+                    align-self: flex-start;
+                    margin-top: 4px;
                 }
                 .tag{
                     font-family: $font--lato--bold;
@@ -466,6 +469,18 @@
             .mat-form-field{
                 width: 100%;                
             }
+            // Placeholder
+            ::placeholder { /* Firefox, Chrome, Opera */ 
+                color: #ccc; 
+            } 
+            
+            :-ms-input-placeholder { /* Internet Explorer 10-11 */ 
+                color: #ccc; 
+            } 
+            
+            ::-ms-input-placeholder { /* Microsoft Edge */ 
+                color: #ccc; 
+            } 
            
         }
         .copyright--footer{
@@ -532,11 +547,10 @@
     padding-bottom: 100px;
 }
 
-::ng-deep .egret-indigo .mat-form-field-appearance-outline .mat-form-field-outline-thick,
-::ng-deep .egret-indigo .mat-form-field-appearance-outline .mat-form-field-outline,
-::ng-deep .egret-indigo .mat-input-element,
-::ng-deep .egret-indigo .mat-form-field-label,
-{
+.contact--us--form ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-thick,
+.contact--us--form ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline,
+.contact--us--form ::ng-deep .mat-input-element,
+.contact--us--form ::ng-deep .mat-form-field-label{
     color: $clr--1 !important;
 }
 
@@ -583,6 +597,7 @@
     }
     .advisor--landing--wrapper .get--hired--wrapper .banner--content h6.info {
         margin-bottom: 20px;
+        padding: 0 15px;
     }
     .advisor--landing--wrapper .hired--steps .steps--section {
         border-bottom: 1px solid #e0e0e0;

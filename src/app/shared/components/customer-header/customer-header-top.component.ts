@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy, Renderer2 } from '@angular/core';
-import { CustNavService } from '../../../shared/services/customer-nav-links.service';
+import { NavigationService } from '../../services/navigation.service';
 import { Subscription } from 'rxjs';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -28,7 +28,7 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
   @Input() notificPanel;
   constructor(
     private layout: LayoutService,
-    private navService: CustNavService,
+    private navService: NavigationService,
     public themeService: ThemeService,
     public translate: TranslateService,
     private renderer: Renderer2,

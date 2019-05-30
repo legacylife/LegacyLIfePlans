@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy, Renderer2 } from '@angular/core';
-import { AdvisorNavService } from '../../../shared/services/advisor-nav-links.service';
+
 import { Subscription } from 'rxjs';
 import { ThemeService } from '../../../shared/services/theme.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -7,6 +7,7 @@ import { LayoutService } from '../../services/layout.service';
 import { UserAPIService } from './../../../userapi.service';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-advisor-header-top',
@@ -29,7 +30,7 @@ export class AdvisorHeaderTopComponent implements OnInit, OnDestroy {
   @Input() notificPanel;
   constructor(
     private layout: LayoutService,
-    private navService: AdvisorNavService,
+    private navService: NavigationService,
     public themeService: ThemeService,
     public translate: TranslateService,
     private renderer: Renderer2,
@@ -80,6 +81,7 @@ export class AdvisorHeaderTopComponent implements OnInit, OnDestroy {
   }
   toggleSidenav() {
     if(this.layoutConf.sidebarStyle === 'closed') {
+      this.navService.publishNavigationChange('advisor')
       return this.layout.publishLayoutChange({
         sidebarStyle: 'full'
       })

@@ -26,9 +26,9 @@ interface IBadge {
 
 @Injectable()
 export class NavigationService {
-  constructor() { }
+  //constructor() { }
 
-  iconMenu: IMenuItem[] = [
+  adminMenu: IMenuItem[] = [
     /*{
       name: 'HOME',
       type: 'icon',
@@ -118,28 +118,226 @@ export class NavigationService {
     }	
   ]
 
+  advisorMenu: IMenuItem[] = [
+    {
+      name: 'Home',
+      type: 'link',
+      icon: 'home',
+      state: 'home'
+    },
+    {
+      name: 'Legacies',
+      type: 'link',
+      icon: 'people',
+      state: 'home'
+    },
+    {
+      name: 'Leads',
+      type: 'link',
+      icon: 'person',
+      state: 'home'
+    },
+    {
+      name: 'To dos',
+      type: 'link',
+      icon: 'list',
+      state: 'home'
+    },
+    {
+      name: 'Coachs Corner',
+      type: 'link',
+      icon: 'book',
+      state: 'home'
+    },
+    {
+      name: 'Invite',
+      type: 'link',
+      icon: 'markunread',
+      state: 'home'
+    }
+  ];
+
+  customerMenu: IMenuItem[] = [
+    {
+      name: 'Home',
+      type: 'link',
+      icon: 'home',
+      state: 'home'
+    },
+    {
+      name: 'Trustees',
+      type: 'link',
+      icon: 'people',
+      state: 'home'
+    },
+    {
+      name: 'Professionals',
+      type: 'link',
+      icon: 'perm_identity',
+      state: 'home'
+    },
+    {
+      name: 'To dos ',
+      type: 'link',
+      icon: 'list ',
+      state: 'home'
+    },
+    {
+      name: 'Coach�s Corner',
+      type: 'link',
+      icon: 'book',
+      state: 'home'
+    },
+    {
+      name: 'Invite',
+      type: 'link',
+      icon: 'markunread',
+      state: 'home'
+    }
+  ]
+
+  preAdvisorMenu: IMenuItem[] = [
+    {
+      name: 'Home',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home'
+    },
+    {
+      name: 'About Us',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home '
+    },{
+      name: 'How LLP Hired',
+      icon: 'library_books',
+      type: 'extLink',
+      state: '/home'
+    },
+    {
+      name: 'Leads',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home '
+    }, {
+      name: 'Profile',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home'
+    },
+    {
+      name: 'Testimonials',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home '
+    }, {
+      name: 'Contact Us',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home'
+    },
+    {
+      name: 'For Customers',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home '
+    }, {
+      name: 'Sign Up',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home'
+    },
+    {
+      name: 'Login',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home '
+    }
+  ];
+
+  preCustomerMenu: IMenuItem[] = [
+    {
+      name: 'Home',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home'
+    },
+    {
+      name: 'About Us',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home '
+    },{
+      name: 'How LLP Hired',
+      icon: 'library_books',
+      type: 'extLink',
+      state: '/home'
+    },
+    {
+      name: 'Testimonials',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home '
+    },
+    {
+      name: 'Pricing Plans',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home '
+    },
+    {
+      name: 'Contact Us',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home'
+    },
+    {
+      name: 'For Advisor',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/pre-advisor '
+    }, {
+      name: 'Sign Up',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/ '
+    },
+    {
+      name: 'Login',
+      type: 'extLink',
+      icon: 'library_books',
+      state: '/home '
+    }
+  ]
+
   // Icon menu TITLE at the very top of navigation.
   // This title will appear if any icon type item is present in menu.
   iconTypeMenuTitle: string = 'Frequently Accessed';
   // sets iconMenu as default;
-  menuItems = new BehaviorSubject<IMenuItem[]>(this.iconMenu);
+  menuItems = new BehaviorSubject<IMenuItem[]>(this.preCustomerMenu);
   // navigation component has subscribed to this Observable
   menuItems$ = this.menuItems.asObservable();
-
+  constructor() { }
   // Customizer component uses this method to change menu.
   // You can remove this method and customizer component.
   // Or you can customize this method to supply different menu for
   // different user type.
   publishNavigationChange(menuType: string) {
     switch (menuType) {
-      // case 'separator-menu':
-      //   this.menuItems.next(this.separatorMenu);
-      //   break;
-      // case 'icon-menu':
-      //   this.menuItems.next(this.iconMenu);
-      //   break;
+      case 'admin':
+        this.menuItems.next(this.adminMenu);
+        break;      
+      case 'customer':
+        this.menuItems.next(this.customerMenu);
+        break;
+      case 'advisor':
+        this.menuItems.next(this.advisorMenu);
+        break;
+        case 'pre-advisor':
+        this.menuItems.next(this.preAdvisorMenu);
+        break;
       default:
-        this.menuItems.next(this.iconMenu);
+        this.menuItems.next(this.preCustomerMenu);
     }
   }
 }
