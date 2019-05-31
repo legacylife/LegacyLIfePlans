@@ -383,6 +383,11 @@ body{
                 color: $clr--8;
             }
             
+        }        
+    }
+    .error--happen{
+        .mat-form-field-wrapper{
+            padding-right: 25px !important;
         }
     }
     .mat-datepicker-content{
