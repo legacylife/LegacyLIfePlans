@@ -18,6 +18,11 @@ export const LandingRoutes: Routes = [
     ]        
   },*/
   {
+    path: '',
+    component: HomeComponent,
+    data: { title: 'Home' }
+  },
+  {
     path: 'privacy-policy',
     component: PrivacyPolicyComponent,
     data: { title: 'PrivacyPolicy' }

@@ -4,16 +4,17 @@ import { AuthLayoutComponent } from './shared/components/layouts/auth-layout/aut
 import { AdvisorLandingLayoutComponent } from './shared/components/layouts/advisor-landing-layout/advisor-landing-layout.component';
 //import { CustomerLayoutComponent } from './shared/components/layouts/customer-layout/customer-layout.component';
 import { LandingLayoutComponent } from './shared/components/layouts/landing-layout/landing-layout.component';
+
 import { AuthGuard } from './shared/services/auth/auth.guard';
 console.log('App---routing');
 export const rootRouterConfig: Routes = [
-  {
+  /*{
     path: '',
     pathMatch: 'full', 
     component: AdvisorLandingLayoutComponent,
     loadChildren: './views/advisor-landing/advisor-landing.module#AdvisorLandingModule',
-    data: { title: 'LLP', breadcrumb: 'Home'}
-  },
+    data: { title: 'LLP'}
+  },*/
   {
     path: '',
     component: LandingLayoutComponent,
@@ -21,7 +22,7 @@ export const rootRouterConfig: Routes = [
       {
         path: '',
         loadChildren: './views/landing/landing.module#LandingModule',
-        data: { title: 'Landing'}
+        data: { title: 'LLP'}
       }
     ]
   },
@@ -30,7 +31,7 @@ export const rootRouterConfig: Routes = [
     pathMatch: 'prefix' ,
     component: AuthLayoutComponent,
     loadChildren: './views/auth/auth.module#AuthModule',
-    data: { title: 'LLP', breadcrumb: 'Signin'}
+    data: { title: 'Signin'}
   },
  {
     path: 'customer',
@@ -68,7 +69,7 @@ export const rootRouterConfig: Routes = [
       {
         path: '',
         loadChildren: './views/admin/admin.module#AdminModule',
-        data: { title: 'Dashboard', breadcrumb: 'Dashboard'}
+        data: { title: 'Dashboard'}
       }
     ]
   },{

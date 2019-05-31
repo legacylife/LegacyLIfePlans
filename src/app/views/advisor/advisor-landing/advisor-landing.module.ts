@@ -21,7 +21,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
-import { SharedModule } from './../../shared/shared.module';
+import { SharedModule } from './../../../shared/shared.module';
 
 import { AdvisorLandingRoutes } from './advisor-landing.routing';
 import { HomeComponent } from './home/home.component';

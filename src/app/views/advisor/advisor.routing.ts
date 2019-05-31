@@ -12,9 +12,38 @@ import { AdvisorLayoutComponent } from './../../shared/components/layouts/adviso
 import { UserAuthGuard } from '../../shared/services/auth/userauth.guard';
 import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
 import { AuthLayoutComponent } from '../../shared/components/layouts/auth-layout/auth-layout.component';
-
+import { AdvisorLandingLayoutComponent } from '../../shared/components/layouts/advisor-landing-layout/advisor-landing-layout.component';
+import { HomeComponent } from './advisor-landing/home/home.component';
 console.log('advisor---routing');
 export const AdvisorRoutes: Routes = [
+  /*{
+    path: '',
+    pathMatch: 'prefix', 
+    component: AdvisorLandingLayoutComponent,
+    loadChildren: './views/advisor/advisor-landing/advisor-landing.module#AdvisorLandingModule',
+    data: { title: 'LLP'}
+  },
+  {
+    path: '',
+    //pathMatch: 'prefix' ,
+    children: [{
+      path: '',
+      loadChildren: './views/advisor/advisor-landing/advisor-landing.module#AdvisorLandingModule',
+      data: { title: 'Advisor Signup' }
+    },
+  ]
+  },*/
+  {
+    path: '',
+    component: AdvisorLandingLayoutComponent,
+    children : [
+      { 
+        path: '',
+        component: HomeComponent
+      }
+    ],
+
+  }
   {
     //path: 'signin',
     //component: AdvisorSignupComponent,
@@ -27,7 +56,6 @@ export const AdvisorRoutes: Routes = [
         canActivate: [ UserPreAuthGuard ]
       }
     ],
-
   },{
     path: 'set-password/:id',
     component: AuthLayoutComponent,

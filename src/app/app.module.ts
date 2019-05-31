@@ -11,6 +11,7 @@ import {
 
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './shared/inmemory-db/inmemory-db.service';
+import { AdvisorLandingLayoutComponent } from './shared/components/layouts/advisor-landing-layout/advisor-landing-layout.component';
 
 import { rootRouterConfig } from './app.routing';
 import { SharedModule } from './shared/shared.module';
