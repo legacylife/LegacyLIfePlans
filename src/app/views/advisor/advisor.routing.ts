@@ -42,8 +42,7 @@ export const AdvisorRoutes: Routes = [
         component: HomeComponent
       }
     ],
-
-  }
+  },
   {
     //path: 'signin',
     //component: AdvisorSignupComponent,
