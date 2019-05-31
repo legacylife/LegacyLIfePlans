@@ -313,7 +313,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   LicenseSubmit() {
-   if(this.uploader.getNotUploadedItems().length){
+   if(this.uploader && this.uploader.getNotUploadedItems().length){
        this.uploader =  new FileUploader({url:`${URL}?userId=${this.userId}`,itemAlias: 'advisorDocs'});
        this.uploader.uploadAll();
     //this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };

@@ -199,7 +199,7 @@
                   <div class="file--details">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
                 </div>
 
-                <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
+                <div class="progress" style="margin-bottom: 0;" *ngIf="uploader && uploader.getNotUploadedItems().length">
                   <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">{{uploader.progress}}%</div>
                   <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="uploader.progress"></mat-progress-bar>
                   <p>&nbsp;</p>

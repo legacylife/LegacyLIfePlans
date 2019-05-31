@@ -130,7 +130,7 @@ export class BusinessInfoComponent implements OnInit {
     if(steps==4){
       profileInData.profileSetup = 'yes';
       //if(this.uploader.getNotUploadedItems().length){
-        console.log("image",this.uploader.getNotUploadedItems().length)
+        //console.log("image",this.uploader.getNotUploadedItems().length)
         this.uploader =  new FileUploader({url:`${URL}?userId=${this.userId}`,itemAlias: 'advisorDocs'});
      // }
     }
@@ -159,9 +159,9 @@ export class BusinessInfoComponent implements OnInit {
               console.log(item,status);
               //let pushArry = {"tmpName":"asdasd","title":item.file.name}
               //this.advisorDocumentsList.push(pushArry);
-              //  if(status==0){
+                if(status==0){
                   this.router.navigate(['/', 'advisor', 'thank-you']);
-               // }
+                }
             };
          // }
           
