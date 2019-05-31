@@ -43,7 +43,7 @@ export class UserPreAuthGuard implements CanActivate {
         }
         
       }, (err) => {
-        console.error(err)
+        //console.error(err)
       })
      
     return true;

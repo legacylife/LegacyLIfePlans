@@ -419,7 +419,7 @@ docDelete(doc, name,tmName) {
        links: ''
      }));*/
     this.weblinksPoints.push(this.fb.group({
-      links: ['', Validators.required]
+      links: ['', [Validators.required,Validators.compose([CustomValidators.url])]]
     }));
   }
 

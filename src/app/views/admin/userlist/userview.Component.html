@@ -89,14 +89,14 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Verified Status</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.addressLine2}}</div>
+                  <div fxFlex="40">{{row?.email_verified ? 'Yes' : 'No'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="">
                   <div fxLayout="row" fxFlex="100">
                     <h6 class="m-0 mr-1">Last log in date and time</h6>
                     <span fxFlex></span>
-                    <div fxFlex="40">{{row?.lastLoggedInOn}}</div>
+                    <div fxFlex="40">{{row?.lastLoggedInOn  | date: 'yyyy/MM/dd HH:mm:ss'}}</div>
                   </div>
                 </mat-list-item>
                 
@@ -154,7 +154,7 @@
 
       <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
           <!-- List of trustees starts -->
-          <mat-card class="default" *ngIf="row?.userType == 'customer'">
+          <!-- <mat-card class="default" *ngIf="row?.userType == 'customer'">
             <mat-card-title class=" p-1">List of trustees</mat-card-title>
             <mat-card-content class="p-0">
               <mat-list class="compact-list mb-1">
@@ -178,11 +178,11 @@
                 </mat-list-item>
               </mat-list>
             </mat-card-content>
-          </mat-card>
+          </mat-card> -->
           <!-- List of trustees ends -->
 
           <!-- List of advisors starts -->
-          <mat-card class="default" *ngIf="row?.userType == 'customer'">
+          <!-- <mat-card class="default" *ngIf="row?.userType == 'customer'">
             <mat-card-title>List of Advisors</mat-card-title>
             <mat-card-content class="p-0">
               <mat-list class="compact-list mb-1">
@@ -206,11 +206,11 @@
                 </mat-list-item>                
               </mat-list>
             </mat-card-content>
-          </mat-card>
+          </mat-card> -->
           <!-- List of advisors ends -->
 
           <!-- List of customer starts -->
-          <mat-card class="default" *ngIf="row?.userType == 'advisor'">
+          <!-- <mat-card class="default" *ngIf="row?.userType == 'advisor'">
             <mat-card-title class="p-1">List of customer</mat-card-title>
             <mat-card-content class="p-0">
               <mat-list class="compact-list mb-1">
@@ -234,11 +234,11 @@
                 </mat-list-item>
               </mat-list>
             </mat-card-content>
-          </mat-card>
+          </mat-card> -->
           <!-- List of customer ends -->
 
           <!-- List of advisors starts -->
-          <mat-card class="default" *ngIf="row?.userType != 'sysadmin'">
+          <!-- <mat-card class="default" *ngIf="row?.userType != 'sysadmin'">
             <mat-card-title class="p-1">Others</mat-card-title>
             <mat-card-content class="p-0">
               <mat-list class="compact-list mb-1">
@@ -279,7 +279,7 @@
               </mat-list-item>                                
               </mat-list>
             </mat-card-content>
-          </mat-card>
+          </mat-card> -->
           <!-- List of advisors ends -->
 
         </div>

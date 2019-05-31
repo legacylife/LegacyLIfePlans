@@ -37,14 +37,13 @@ export class BusinessInfoComponent implements OnInit {
   yearsOfServiceLists:any;
   businessTypeLists:any;
   industryDomainLists:any;
-  licenceHeldLists:any;
-  userId:any;
+  licenceHeldLists:any;  
   step:any;
   profile:any;
   stateList:any;
   state_name:string;
   short_code:string;
-  showHowManyProducer:boolean;
+  showHowManyProducer:boolean = true;
 
   activeLicenseList: string[] = activeLicense
   industryDomainList: string[] = industryDomain.sort()
@@ -202,6 +201,7 @@ export class BusinessInfoComponent implements OnInit {
           this.thirdFormGroup.controls['activeLicenceHeld'].setValue(this.profile.activeLicenceHeld ? this.profile.activeLicenceHeld : []);
           this.thirdFormGroup.controls['agencyOversees'].setValue(this.profile.agencyOversees);
           this.thirdFormGroup.controls['managingPrincipleName'].setValue(this.profile.managingPrincipleName);
+          this.thirdFormGroup.controls['manageOtherProceducers'].setValue(this.profile.manageOtherProceducers);
           this.thirdFormGroup.controls['howManyProducers'].setValue(this.profile.howManyProducers);
           this.profile.manageOtherProceducers == 1 ? this.showHowManyProducer = true : this.showHowManyProducer = false
           this.loader.close();
@@ -217,6 +217,6 @@ export class BusinessInfoComponent implements OnInit {
   }
 
   showHowManyProducts(showVal) {
-    this.thirdFormGroup.controls['manageOtherProceducers'].value == 2 ? this.showHowManyProducer = true : this.showHowManyProducer = false
+    !this.thirdFormGroup.controls['manageOtherProceducers'].value || this.thirdFormGroup.controls['manageOtherProceducers'].value == 2 ? this.showHowManyProducer = true : this.showHowManyProducer = false
   }
 }

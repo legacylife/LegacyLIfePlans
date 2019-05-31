@@ -293,7 +293,7 @@
                       </div>
   
                      
-                      <div fxLayout="row wrap">
+                      <div fxLayout="row wrap" *ngIf="awardsPoints.length < 5">
                         <div fxFlex.xs="100">
                             <div class="add--new" (click)="addNewAo();">
                             <mat-icon>add_circle</mat-icon>
@@ -333,7 +333,7 @@
                       </div>
                     </div>
                     <!--</div>        -->
-                    <div fxLayout="row wrap">
+                    <div fxLayout="row wrap" *ngIf="weblinksPoints.length < 5">
                       <div fxFlex.xs="100">
                         <div class="add--new" (click)="addWebsiteLinks();">
                           <mat-icon>add_circle</mat-icon>

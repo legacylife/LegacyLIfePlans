@@ -10,11 +10,6 @@
           {{ row?.username }}
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Verified Status" prop="status" [flexGrow]="1">
-        <ng-template let-row="row" ngx-datatable-cell-template>
-          {{ row?.status }}
-        </ng-template>
-      </ngx-datatable-column>
       <ngx-datatable-column name="Name" prop="firstName" [flexGrow]="1">
         <ng-template let-row="row" ngx-datatable-cell-template>
           {{ row?.firstName ? row?.firstName : row?.lastName ? +' ' +row?.lastName : "N/A"}}
@@ -52,15 +47,21 @@
       </ngx-datatable-column>
       <ngx-datatable-column name="Sign up Request" prop="createdOn" [flexGrow]="1.1">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          {{  row?.createdOn }}
+          {{  row?.createdOn | date: 'yyyy/MM/dd HH:mm:ss'}}
         </ng-template>
       </ngx-datatable-column>
 
       <ngx-datatable-column name="Sign up approval" prop="signupApprovalDate" [flexGrow]="1.1">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          {{ row?.signupApprovalDate}}
+          {{ row?.signupApprovalDate | date: 'yyyy/MM/dd HH:mm:ss'}}
         </ng-template>
       </ngx-datatable-column>
+      <ngx-datatable-column name="Verified Status" prop="status" [flexGrow]="1">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{ row?.email_verified ? 'Yes' : 'No' }}
+        </ng-template>
+      </ngx-datatable-column>
+      
       <ngx-datatable-column name="Status" [flexGrow]="1">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <mat-chip mat-sm-chip *ngIf="row.status != 'Pending'" [color]="'primary'" [selected]="row.status" (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
