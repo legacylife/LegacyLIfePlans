@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild,ElementRef, Input  } from '@angular/core';
+import { Component, OnInit, ViewChild  } from '@angular/core';//ElementRef, Input
 import { MatSnackBar } from '@angular/material';
 import { UserAPIService } from './../../../userapi.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -11,7 +11,7 @@ import { MatStepperModule , MatStepper} from '@angular/material/stepper';
 import { yearsOfServiceList, businessTypeList , industryDomainList, licenceHeldList, activeLicense, industryDomain, businessType, yearsOfService } from '../../../selectList';
 import { states } from '../../../state';
 import { FileUploader } from 'ng2-file-upload';
-import { Http, Response } from '@angular/http';
+//import { Http, Response } from '@angular/http';
 import "rxjs/add/operator/do";
 //import the map function to be used with the http library
 import "rxjs/add/operator/map";
@@ -24,8 +24,9 @@ const URL = serverUrl+'/api/documents/advisorDocument';
 })
 export class BusinessInfoComponent implements OnInit {
   @ViewChild('stepper') private myStepper: MatStepper;
-  public uploader: FileUploader 
-  
+  userId = localStorage.getItem("endUserId");
+  public uploader: FileUploader  =  new FileUploader({url:`${URL}?userId=${this.userId}`});
+
   public hasBaseDropZoneOver: boolean = false;
   isLinear = false;
   firstFormGroup: FormGroup;
@@ -51,7 +52,7 @@ export class BusinessInfoComponent implements OnInit {
   yearsOfServiceList: string[] = yearsOfService.sort()
   
   constructor(private router: Router, private activeRoute: ActivatedRoute, private stepper: MatStepperModule, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, 
-    private loader: AppLoaderService,private http: Http, private el: ElementRef) { }
+    private loader: AppLoaderService) { }//,private http: Http, private el: ElementRef
   
   ngOnInit() {
    // localStorage.setItem("step",'3');
@@ -131,7 +132,7 @@ export class BusinessInfoComponent implements OnInit {
       profileInData.profileSetup = 'yes';
       //if(this.uploader.getNotUploadedItems().length){
         //console.log("image",this.uploader.getNotUploadedItems().length)
-        this.uploader =  new FileUploader({url:`${URL}?userId=${this.userId}`,itemAlias: 'advisorDocs'});
+        //this.uploader =  new FileUploader({url:`${URL}?userId=${this.userId}`,itemAlias: 'advisorDocs'});
      // }
     }
     
@@ -141,7 +142,7 @@ export class BusinessInfoComponent implements OnInit {
       from: Object.assign({ fromname: msgName })
     }
     this.loader.open();
-    
+
     this.userapi.apiRequest('post', 'auth/cust-profile-update', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
@@ -149,21 +150,20 @@ export class BusinessInfoComponent implements OnInit {
       } else {
         //this.prodata = result.data.userProfile;
         localStorage.setItem("step",steps);
-        //console.log(steps)
+
         if(steps==4){
-          console.log("here we are",steps);
-         // if(this.uploader.getNotUploadedItems().length){
+          if(this.uploader.getNotUploadedItems().length){
             this.uploader.uploadAll();
-           // this.uploadAll();
+
             this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-              console.log(item,status);
-              //let pushArry = {"tmpName":"asdasd","title":item.file.name}
-              //this.advisorDocumentsList.push(pushArry);
+              
                 if(status==0){
                   this.router.navigate(['/', 'advisor', 'thank-you']);
                 }
             };
-         // }
+          }else{//no need this else
+            this.router.navigate(['/', 'advisor', 'thank-you']);
+          }
           
         }
         this.snack.open(result.data.message, 'OK', { duration: 4000 })

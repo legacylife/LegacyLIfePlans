@@ -28,7 +28,9 @@ interface websiteLink {
   animations: [egretAnimations]
 })
 export class AdvisorAccountSettingComponent implements OnInit {
-  public uploader: FileUploader 
+  userId = localStorage.getItem("endUserId");
+  public uploader: FileUploader  =  new FileUploader({url:`${URL}?userId=${this.userId}`});//,itemAlias: 'advisorDocs'
+  //   this.uploader =  new FileUploader({url:`${URL}?userId=${this.userId}`,itemAlias: 'advisorDocs'});
   public hasBaseDropZoneOver: boolean = false;
   public hasAnotherDropZoneOver: boolean = false;
   advisorDocumentsHide = false;
@@ -38,7 +40,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
   ProfileForm: FormGroup;
   AddressForm: FormGroup;
   LicenseForm: FormGroup;
-  userId: string;
+  //userId: string;
   state_name: string;
   short_code: string;
   maxDate = new Date(new Date());
@@ -313,13 +315,12 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   LicenseSubmit() {
-   if(this.uploader && this.uploader.getNotUploadedItems().length){
-       this.uploader =  new FileUploader({url:`${URL}?userId=${this.userId}`,itemAlias: 'advisorDocs'});
+  if(this.uploader.getNotUploadedItems().length){
        this.uploader.uploadAll();
-    //this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
+   //this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
     this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
       console.log("ImageUpload:uploaded:", item.file);
-      let pushArry = {"tmpName":"asdasd","title":item.file.name}
+      let pushArry = {"tmpName":"","title":item.file.name}
       this.advisorDocumentsList.push(pushArry);
       };
    }
