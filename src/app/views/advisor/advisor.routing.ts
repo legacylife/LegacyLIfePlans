@@ -39,7 +39,8 @@ export const AdvisorRoutes: Routes = [
     children : [
       { 
         path: '',
-        component: HomeComponent
+        component: HomeComponent,
+        canActivate: [ UserPreAuthGuard ]
       }
     ],
   },

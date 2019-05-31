@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-landing-home-page',
@@ -7,6 +8,21 @@ import {MatGridListModule} from '@angular/material/grid-list';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+
+  userId = localStorage.getItem("endUserId");
+  userType = localStorage.getItem("endUserType");
+
+  constructor(private router: Router) { 
+    /*if(this.userType && this.userType == 'customer'){
+      this.router.navigate(['/', 'customer', 'dashboard']);
+    }
+    if(this.userType && this.userType == 'advisor'){
+      this.router.navigate(['/', 'advisor', 'dashboard']);
+    }*/
+  }
+
+  ngOnInit() {
+  }
 
   testomonials = [
     {
@@ -132,10 +148,7 @@ export class HomeComponent implements OnInit {
     }
   ]};
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+  
   slickInit(e) {
   }
   
