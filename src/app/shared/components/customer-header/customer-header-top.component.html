@@ -17,22 +17,22 @@
         </li> -->
 
         <li>
-          <a matRipple routerLink="/customer">
+          <a matRipple routerLink="/customer/" routerLinkActive="active--link">
             <mat-icon class="home">home</mat-icon> Home</a>
         </li>
         <li>
-          <a matRipple routerLink="/customer/trustees">
+          <a matRipple routerLink="/customer/trustees" routerLinkActive="active--link">
             <mat-icon class="icon-trustees">people</mat-icon> Trustees</a>
         </li>
         <li>
-          <a matRipple routerLink="/customer/professionals">
+          <a matRipple routerLink="/customer/professionals" routerLinkActive="active--link">
             <mat-icon class="icon-professionals">perm_identity</mat-icon> Professionals</a>
         </li>
         <li class="more--link">
           <a mat-button [matMenuTriggerFor]="afterMenu1">
             <mat-icon>more_horiz</mat-icon> More </a>
           <mat-menu #afterMenu1="matMenu" class="more--options">
-            <button mat-menu-item>
+            <!-- <button mat-menu-item>
               <mat-icon>list
               </mat-icon>
               <span>To dos </span>
@@ -40,7 +40,18 @@
             <button mat-menu-item>
               <mat-icon>book</mat-icon>
               <span>Coach’s Corner</span>
-            </button>
+            </button> -->
+
+            <ul class="menu header--ul m-0 p-0">
+              <li class="mat-menu-item">
+                <a matRipple routerLink="/customer" routerLinkActive="active--link">
+                  <mat-icon>list</mat-icon> To dos</a>                  
+              </li>
+              <li class="mat-menu-item">
+                <a matRipple routerLink="/customer" routerLinkActive="active--link">
+                  <mat-icon>book</mat-icon> Coach’s Corner</a>
+              </li>
+            </ul>
           </mat-menu>
         </li>
 

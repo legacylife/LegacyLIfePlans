@@ -600,18 +600,22 @@ body{
                 line-height: 43px;
                 height: 43px;
                 padding: 0 10px;
-                span{
+                a{
                     font-size: 16px;
                     color: #222324;
                     font-family: $font--lato--regular;
+                    .mat-icon{
+                        color: inherit;
+                        height: 20px;
+                        width: 20px;
+                        font-size: 20px;
+                        margin-right: 10px;
+                    }
+                    &.active--link{
+                        color: #c72128;
+                    }
                 }
-                .mat-icon{
-                    color: #222324;
-                    height: 20px;
-                    width: 20px;
-                    font-size: 20px;
-                    margin-right: 10px;
-                }
+               
                 &.get--feature{
                     border-radius: 2px;
                     background-color: #f9e17f;

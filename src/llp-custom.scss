@@ -137,6 +137,9 @@ body{
                                 font-size: 16px;
                                 color: $clr--3;
                                 padding: 13px 27px;
+                                &.active--link{
+                                    color: #c72128;
+                                }
 
                                 .home{
                                     font-size: 20px;
