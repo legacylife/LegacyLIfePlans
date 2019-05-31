@@ -119,7 +119,7 @@ export class NavigationService {
       icon: 'library_books',
       state: '/home '
     },{
-      name: 'How LLP Hired',
+      name: 'How LLP Works',
       icon: 'library_books',
       type: 'extLink',
       state: '/home'
