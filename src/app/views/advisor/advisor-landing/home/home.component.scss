@@ -49,7 +49,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #0000009c;
+            background-color: rgba(20,20,20, 0.60);
             z-index: 1;
         }
 
@@ -153,7 +153,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #0000009c;
+            background-color: rgba(20,20,20, 0.60);
             z-index: 1;
         }
         .hire--content{
@@ -502,16 +502,19 @@
     background: url('assets/images/arkenea/create-profile.png');
     width: 21px;
     height: 25px;
+    background-repeat: no-repeat;
 }
 .icon--contact-lead{
     background: url('assets/images/arkenea/contact-leads.png');
     width: 25px;
     height: 25px;
+    background-repeat: no-repeat;
 }
 .icon--get--hired{
     background: url('assets/images/arkenea/get-hired.png');
     width: 20px;
     height: 22px;
+    background-repeat: no-repeat;
 }
 .icon--clients{
     background: url('assets/images/arkenea/clients.png');
@@ -523,11 +526,13 @@
     background: url('assets/images/arkenea/leads.png');
     width: 50px;
     height: 47px;
+    background-repeat: no-repeat;
 }
 .icon--prospects{
     background: url('assets/images/arkenea/prospects.png');
     width: 50px;
     height: 50px;
+    background-repeat: no-repeat;
 }
 .landing-main-header{
     color: $clr--3;
@@ -550,7 +555,8 @@
 .contact--us--form ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-thick,
 .contact--us--form ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline,
 .contact--us--form ::ng-deep .mat-input-element,
-.contact--us--form ::ng-deep .mat-form-field-label{
+.contact--us--form ::ng-deep .mat-form-field-label,
+{
     color: $clr--1 !important;
 }
 
@@ -669,7 +675,7 @@
         margin-top: 0;
     }
     .advisor--landing--wrapper .llp--hired .history h5 {
-        font-size: 35px;
+        font-size: 32px;
         margin: 0 0 7px 0;
     }
     .advisor--landing--wrapper .llp--hired .history .sm--mt{
@@ -765,6 +771,18 @@
     .advisor--landing--wrapper .featured--advisors .fa--slider .advisor--details{
         padding-bottom: 50px;
     }
+    .advisor--landing--wrapper .main--footer--wrapper{
+        padding-bottom: 10px !important;
+    }
+    .back--to--top {
+        width: 40px;
+        height: 40px;
+       .mat-icon {
+            height: 25px;
+            width: 25px;
+            font-size: 25px;
+        }
+    }
     
 }
 @media only screen and (min-width: 600px) and (max-width: 959px){
@@ -789,6 +807,7 @@
     .landing--secondary--btn,
     .landing--primary--btn{
         height: 45px;
+        width: auto;
     }
     .advisor--landing--wrapper .hired--steps{
         padding: 20px 0;
@@ -800,7 +819,7 @@
         line-height: 24px;
     }
     .advisor--landing--wrapper .signature--wrapper h4{
-        font-size: 32px;
+        font-size: 26px;
         margin: 0 0 20px 0;
     }
     .advisor--landing--wrapper .signature--wrapper p{
@@ -824,6 +843,16 @@
     .advisor--landing--wrapper .hired--process--steps .steps--section{
         height: 497px;
         padding: 0 10px;
+    }
+    .advisor--landing--wrapper .hired--process--steps .steps--section .step--body p {
+        font-size: 14px;
+        line-height: 24px;
+    }
+    .icon--get--hired{
+        width: 28px;
+    }
+    .advisor--landing--wrapper .hired--steps .steps--section .step--header h5 {
+        font-size: 18px;
     }
     .advisor--landing--wrapper .hired--process--steps .steps--section .step--header h5{
         margin: 20px 0;
@@ -850,6 +879,60 @@
     .llp--slider--button.prev{
         left: 40px;
     }
+    .landing-main-header{
+        font-size: 25px;
+        padding: 65px 0 0 0;
+    } 
+    .advisor--landing--wrapper .llp--hired h4 {
+        font-size: 30px;
+    }
+    .advisor--landing--wrapper .profile--highlights .profile-content h5 {
+        font-size: 25px;
+    }
+    .advisor--landing--wrapper .featured--advisors p {
+        font-size: 21px;
+        margin: 27px 0 50px 0;
+    }
+    .plan--process--wrapper .plan--content h3{
+        font-size: 43px !important;
+    }
+    .plan--process--wrapper .plan--content p{
+        font-size: 22px !important;
+    }
+    .plan--process--wrapper .plan--content {
+        width: 83% !important;
+    }
+    .llp--unexp--box h5{
+        font-size: 31px !important;
+    }
+    .advisor--landing--wrapper .llp--hired .history h5 {
+        font-size: 35px !important;
+    }
+    .advisor--landing--wrapper .main--footer--wrapper{
+        padding-bottom: 10px !important;
+    }
+    .advisor--landing--wrapper .main--footer--wrapper .footer--header {
+        font-size: 17px;
+    }
+    .advisor--landing--wrapper .main--footer--wrapper .company--address p {
+        font-size: 13px;
+    }
+    .advisor--landing--wrapper .main--footer--wrapper .company--address .cont--wrap .tag--info,      
+    .advisor--landing--wrapper .main--footer--wrapper .footer--services li a {
+        font-size: 12px;
+    }
+    .advisor--landing--wrapper .get--a--free-section h5 {
+        font-size: 24px;
+    }
+    .back--to--top {
+        width: 42px;
+        height: 42px;
+       .mat-icon {
+            height: 27px;
+            width: 27px;
+            font-size: 27px;
+        }
+    }
 }
 @media only screen and (min-width: 960px) and (max-width: 979px){
     .llp--slider--button.next{
@@ -857,6 +940,9 @@
     }
     .llp--slider--button.prev{
         left: 40px;
+    }
+    .advisor--landing--wrapper .main--footer--wrapper{
+        padding-bottom: 10px !important;
     }
 }
 @media only screen and (min-width: 980px) and (max-width: 1279px){
@@ -866,6 +952,10 @@
     .llp--slider--button.prev{
         left: 40px;
     }
+    .advisor--landing--wrapper .main--footer--wrapper{
+        padding-bottom: 10px !important;
+    }
+ 
 }
 @media only screen and (min-width: 1280px) and (max-width: 1440px){}
 @media only screen and (min-width: 1441px) and (max-width: 1550px){}

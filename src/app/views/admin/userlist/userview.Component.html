@@ -150,10 +150,22 @@
           </mat-card-content>
         </mat-card>
         <!-- Subscription ends -->
-      </div>
-
-      <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
-          <!-- List of trustees starts -->
+     </div>
+     <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
+          <mat-card class="default" *ngIf="row?.userType == 'advisor'">
+              <mat-card-title class="p-1">Uploaded documents</mat-card-title>
+              <mat-card-content class="p-0">
+                <mat-list class="compact-list mb-1" *ngFor="let doc of row.advisorDocuments">
+                  <mat-list-item class="">
+                    <div fxLayout="row" fxFlex="100">
+                      <h6 class="m-0 mr-1"><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck">{{doc.title}}</a></h6>
+                      <span fxFlex></span>                      
+                    </div>
+                  </mat-list-item>
+                </mat-list>
+              </mat-card-content>
+          </mat-card>
+       <!--    List of trustees starts -->
           <!-- <mat-card class="default" *ngIf="row?.userType == 'customer'">
             <mat-card-title class=" p-1">List of trustees</mat-card-title>
             <mat-card-content class="p-0">

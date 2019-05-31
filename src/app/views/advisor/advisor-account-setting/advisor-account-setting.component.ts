@@ -319,7 +319,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
        this.uploader.uploadAll();
    //this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
     this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-      console.log("ImageUpload:uploaded:", item.file);
+      //console.log("ImageUpload:uploaded:", item.file);
       let pushArry = {"tmpName":"","title":item.file.name}
       this.advisorDocumentsList.push(pushArry);
       };

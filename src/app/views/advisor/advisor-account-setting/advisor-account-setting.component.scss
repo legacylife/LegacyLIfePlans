@@ -141,6 +141,12 @@
                 width: 100%;
                 margin: 0 0 10px 0;
                 justify-content: space-between;
+
+                a{
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
                 
                 .mat-icon{
                     color: #c72128;
@@ -203,7 +209,6 @@
 .pad--r--lg{
     padding-right: 30px;
 }
-
 
 
 

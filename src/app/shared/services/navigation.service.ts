@@ -183,7 +183,7 @@ export class NavigationService {
       state: 'home'
     },
     {
-      name: 'Coach�s Corner',
+      name: 'Coach’s Corner',
       type: 'link',
       icon: 'book',
       state: 'home'
@@ -209,7 +209,7 @@ export class NavigationService {
       icon: 'library_books',
       state: '/home '
     },{
-      name: 'How LLP Hired',
+      name: 'How LLP Works',
       icon: 'library_books',
       type: 'extLink',
       state: '/home'

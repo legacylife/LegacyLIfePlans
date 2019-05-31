@@ -114,7 +114,7 @@ export class BusinessInfoComponent implements OnInit {
               },
                 (error) => alert(error)
             );
-
+          
     }
    }
 */
@@ -152,20 +152,21 @@ export class BusinessInfoComponent implements OnInit {
 
         if(steps==4){
           if(this.uploader.getNotUploadedItems().length){
+            this.loader.open();
             this.uploader.uploadAll();
 
             this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-              
+              console.log("status here ",status);
                 if(status==0){
+                  this.loader.close();
+                  this.snack.open(result.data.message, 'OK', { duration: 4000 })
                   this.router.navigate(['/', 'advisor', 'thank-you']);
                 }
             };
           }else{//no need this else
             this.router.navigate(['/', 'advisor', 'thank-you']);
-          }
-          
-        }
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          }          
+        }       
       }
     }, (err) => {
       console.error(err)

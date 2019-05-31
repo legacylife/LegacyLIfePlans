@@ -1,5 +1,5 @@
 @import '~llp-global-styles.scss';
-@import '../../advisor/advisor-landing/home/home.component.scss';
+@import '../../advisor-landing/home/home.component.scss';
 
 .llp--unexp-turn{
     height: 550px;
@@ -106,7 +106,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: #3835359c;
+        background-color: rgba(20,20,20, 0.60);
         z-index: 1;
     }
     // &:hover{
