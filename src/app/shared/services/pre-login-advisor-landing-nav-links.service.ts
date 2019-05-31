@@ -34,7 +34,7 @@ export class LandingAdvisorNavService {
       name: 'Home',
       type: 'link',
       tooltip: '',
-      state: '/pre-advisor'
+      state: '/advisor'
     },
     {
       name: 'About Us',

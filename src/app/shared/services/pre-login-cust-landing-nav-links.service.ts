@@ -52,7 +52,7 @@ export class LandingCustomerNavService {
       name: 'For Advisor',
       type: 'link',
       tooltip: '',
-      state: '/pre-advisor'
+      state: '/advisor'
     },
     {
       type: 'separator',

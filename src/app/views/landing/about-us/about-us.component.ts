@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-landing-home-page',
   templateUrl: './about-us.component.html',
-  styleUrls: ['./about-us.component.css']
+  styleUrls: ['./about-us.component.scss']
 })
 export class CustAboutUsComponent implements OnInit {
 

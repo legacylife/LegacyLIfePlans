@@ -199,4 +199,14 @@ export class HomeComponent implements OnInit {
   beforeChange(e) {
    // console.log('beforeChange');
   }
+  
+  gotoTop() {
+    const content = document.getElementsByClassName('rightside-content-hold')[0]
+    
+    content.scroll({ 
+      top: 0, 
+      left: 0, 
+      behavior: 'smooth' 
+    });
+  }
 }

@@ -7,26 +7,3 @@ Note: Please do not add important anywhere. If any concern feel free to ask.
 
 --- */
 
-.icon--edit--sm{
-    height: 20px;
-    width: 20px;
-    font-size: 20px;
-}
-.small--logo,
-.large--logo{
-    display: flex;
-}
-.small--logo,
-.app-admin-container.sidebar-compact .sidebar-panel .branding .large--logo{
-    display: none
-}
-.app-admin-container.sidebar-compact .sidebar-panel .branding .small--logo{
-    display: block;
-}
-
-// datatable
-.ngx-datatable .datatable-body-row, 
-.ngx-datatable .datatable-row-center, 
-.ngx-datatable .datatable-header-inner{
-    align-items: center;
-}

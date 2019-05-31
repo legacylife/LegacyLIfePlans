@@ -401,6 +401,14 @@ body{
             }
             .mat-calendar-body-selected{
                 background-color: #c72128;
+            }            
+            
+        }
+        .mat-calendar-controls{
+            .mat-calendar-previous-button,
+            .mat-calendar-next-button{
+                height: 39px;
+                padding: 0;
             }
         }
     }
