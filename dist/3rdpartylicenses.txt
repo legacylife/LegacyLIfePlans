@@ -1454,6 +1454,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
+@angular/material/expansion
+
 @angular/material/slide-toggle
 
 ngx-img-cropper
