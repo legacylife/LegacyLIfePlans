@@ -40,13 +40,17 @@ function signin(req, res) {
       let result = { "message": "Your account is activated by admin & set account password link is already sent.", "invalidEmail": true, "invalidPassword": false }
       res.status(200).send(resFormat.rError(result))
     } else if (info && info.message == "User is not Active") {
-      let result = { "message": "Your account is in an inactive state. Please contact to system admin.", "invalidEmail": true, "invalidPassword": false }
+      let result = { "message": "Your account has been deactivated. Please connect with the admin at support@legacylifeplans.com for any queries.", "invalidEmail": true, "invalidPassword": false }
+      res.status(200).send(resFormat.rError(result))
+    }
+    else if (info && info.message == "Password is wrong") {
+      let result = { "message": "Incorrect password. Please try again.", "invalidEmail": false, "invalidPassword": true }
       res.status(200).send(resFormat.rError(result))
     }
     else if (info && info.message == "User not found") {
-      let result = { "message": "Email with \"" + req.body.username + "\" doesn't exist in system.", "invalidEmail": true, "invalidPassword": false }
+      let result = { "message": "Incorrect email or password. Please try again.", "invalidEmail": true, "invalidPassword": false }
       res.status(200).send(resFormat.rError(result))
-    }else if (user) {     
+    } else if (user) {     
         var token = user.generateJwt()
         var params = { lastLoggedInOn: new Date(), loginCount: user.loginCount == undefined ? 1 : user.loginCount + 1 }
         User.updateOne({ _id: user._id }, { $set: params }, function (err, updatedUser) {
