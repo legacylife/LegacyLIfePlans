@@ -28,6 +28,8 @@
               <div class="pb-1">
                 <mat-form-field class="full-width">
                   <input matInput name="firstName" placeholder="First Name*" value="" [formControl]="llpCustsignupProfileForm.controls['firstName']">
+                  <mat-icon matTooltip="Please enter first name" matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['firstName'].hasError('required') && llpCustsignupProfileForm.controls['firstName'].touched"
+                  class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
               </div>
             </div>
@@ -36,29 +38,39 @@
               <div class="pb-1">
                 <mat-form-field class="full-width">
                   <input matInput name="lastName" placeholder="Last Name*" value="" [formControl]="llpCustsignupProfileForm.controls['lastName']">
+                  <mat-icon matTooltip="Please enter last name" matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['lastName'].hasError('required') && llpCustsignupProfileForm.controls['lastName'].touched"
+                  class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
               </div>
             </div>
           </div>
 
           <mat-form-field class="full-width">
-            <input matInput placeholder="Monile Number*" type="tel" value="" name="phoneNumber" class="example-right-align"
+            <input matInput placeholder="Mobile Number*" type="tel" value="" name="phoneNumber" class="example-right-align"
               [formControl]="llpCustsignupProfileForm.controls['phoneNumber']">
             <span matPrefix>+1</span>
             <span matSuffix>.00</span>
+            <mat-icon matTooltip="Please enter mobile number" matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['phoneNumber'].hasError('required') && llpCustsignupProfileForm.controls['phoneNumber'].touched"
+            class="red--alert">help_outline</mat-icon>
+            <mat-icon matTooltip="Please enter valid mobile number." matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['phoneNumber'].hasError('pattern') && llpCustsignupProfileForm.controls['phoneNumber'].touched"
+            class="red--alert">help_outline</mat-icon>
           </mat-form-field>
 
           <div>
             <mat-form-field class="full-width llp-datepicker">
               <!-- [formControl]="date" -->
-              <input matInput [matDatepicker]="dp" placeholder="Date of Birth*" [max]="maxDate" [formControl]="llpCustsignupProfileForm.controls['dateOfBirth']">
+              <input matInput [matDatepicker]="dp" placeholder="Date of Birth*" aria-readonly="true" readonly [max]="maxDate" [formControl]="llpCustsignupProfileForm.controls['dateOfBirth']">
               <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
               <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
               </mat-datepicker>
+              <mat-icon matTooltip="Please select date of birth" matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['dateOfBirth'].hasError('required') && llpCustsignupProfileForm.controls['dateOfBirth'].touched"
+              class="red--alert">help_outline</mat-icon>
             </mat-form-field>
           </div>
           <mat-form-field class="full-width">
             <input matInput name="city" placeholder="City*" value="" [formControl]="llpCustsignupProfileForm.controls['city']">
+            <mat-icon matTooltip="Please enter city" matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['city'].hasError('required') && llpCustsignupProfileForm.controls['city'].touched"
+            class="red--alert">help_outline</mat-icon>
           </mat-form-field>
 
 
@@ -67,10 +79,16 @@
               <mat-option value="">Select a state</mat-option>
               <mat-option *ngFor="let option of stateList" [value]="option.state_name">{{option.state_name}}</mat-option>
             </mat-select>
+            <mat-icon matTooltip="Please select state" matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['state'].hasError('required') && llpCustsignupProfileForm.controls['state'].touched"
+            class="red--alert">help_outline</mat-icon>
           </mat-form-field>
 
           <mat-form-field class="full-width">
             <input matInput name="zipcode" placeholder="Zip code*" value="" [formControl]="llpCustsignupProfileForm.controls['zipcode']">
+            <mat-icon matTooltip="Please enter zipcode" matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['zipcode'].hasError('required') && llpCustsignupProfileForm.controls['zipcode'].touched"
+            class="red--alert">help_outline</mat-icon>
+            <mat-icon matTooltip="Please enter valid zipcode." matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['zipcode'].hasError('pattern') && llpCustsignupProfileForm.controls['zipcode'].touched"
+            class="red--alert">help_outline</mat-icon>
           </mat-form-field>
 
           <button mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" [disabled]="llpCustsignupProfileForm.invalid">Update and Proceed</button>

@@ -250,7 +250,8 @@ export class AdvisorAccountSettingComponent implements OnInit {
       } else {
         //this.prodata = result.data.userProfile;
         // localStorage.setItem("firstName", this.rows.firstName)
-        // localStorage.setItem("lastName", this.rows.lastName)       		     
+        // localStorage.setItem("lastName", this.rows.lastName) 
+        this.getProfile();      		     
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
@@ -303,6 +304,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
         // this.rows = result.data.userProfile;
+        this.getProfile();
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
@@ -356,6 +358,7 @@ if(this.invalidMessage){
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
         // this.rows = result.data.userProfile;
+        this.getProfile();
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {

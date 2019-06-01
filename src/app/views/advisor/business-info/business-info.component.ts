@@ -54,7 +54,7 @@ export class BusinessInfoComponent implements OnInit {
     private loader: AppLoaderService) { }//,private http: Http, private el: ElementRef
   
   ngOnInit() {
-   // localStorage.setItem("step",'3');
+    localStorage.setItem("step",'0');
     this.userId = localStorage.getItem("endUserId");
     this.stateList = states;
     this.step = localStorage.getItem("step"); console.log("asdasd",this.step)

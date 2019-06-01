@@ -46,11 +46,11 @@ export class UpdateProfileComponent implements OnInit {
           this.llpCustsignupProfileForm = new FormGroup({
             firstName: new FormControl('', Validators.required),
             lastName: new FormControl('', Validators.required),
-            phoneNumber: new FormControl('', Validators.required),
+            phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
             dateOfBirth: new FormControl('', Validators.required),
             city: new FormControl('', Validators.required),
             state: new FormControl('', Validators.required),
-            zipcode: new FormControl('', Validators.required)
+            zipcode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
           });
         }
       }, (err) => {

@@ -8,18 +8,21 @@
             <div fxLayout="row wrap">
                 <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0">
                     <div class="pb-0">
+                        <mat-label>Page Title</mat-label>
                         <mat-form-field class="full-width">
-                            <input matInput name="pagetitle" [formControl]="cmsForm.controls['pageTitle']" placeholder="Page Title" value="">
+                            <input matInput name="pagetitle" [formControl]="cmsForm.controls['pageTitle']" value="">
                         </mat-form-field>
                     </div>
                 </div>
 
                 <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0">
                     <div class="pb-0">
-                        <mat-form-field class="full-width">
-                            <input matInput name="pageFor" [formControl]="cmsForm.controls['pageFor']" placeholder="Page For all, customers or advisors"
-                                value="">
-                        </mat-form-field>
+                        <mat-label></mat-label>Page For Customer or Advisor? </mat-label>
+                        <mat-radio-group aria-label="Select an option" class="llp-radio" [formControl]="cmsForm.controls['pageFor']">
+                           <mat-radio-button value="all" class="" >All</mat-radio-button>
+                            <mat-radio-button value="customer" class="" >Customer</mat-radio-button>
+                            <mat-radio-button value="advisor" class="" >Advisor</mat-radio-button>
+                        </mat-radio-group>
                     </div>
                 </div>
                 <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0">
@@ -28,6 +31,7 @@
                 </div>
                 <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0">
                     <div class="pb-0">
+                            <mat-label>Page Body</mat-label>
                         <mat-card class="p-0">
                             <mat-card-content class="p-0">
                                 <quill-editor theme="snow" name="bodytext" [formControl]="cmsForm.controls['pageBody']"></quill-editor>

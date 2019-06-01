@@ -15,6 +15,7 @@ import { UserAPIService } from './../../../userapi.service';
 export class ForgotPasswordComponent implements OnInit {
   userEmail;
   invalidMessage: string;
+  EmailError: boolean;
 
   public forgotForm: FormGroup;
 
@@ -24,7 +25,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   ngOnInit() {
     this.forgotForm = this.fb.group({
-      email: [null, Validators.compose([Validators.required, Validators.pattern(/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i)])]
+      email: [null, Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)])]
     });
   }
   submitEmail() {
@@ -33,20 +34,24 @@ export class ForgotPasswordComponent implements OnInit {
     this.userapi.apiRequest('post', 'auth/forgotPassword', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "success") {
+        this.EmailError = false
+        this.forgotForm.controls['email'].setErrors({ 'EmailError': true })
         this.snack.open('We have sent you reset instructions. Please check your email.', 'OK', { duration: 4000 })
         setTimeout(() => {
           this.router.navigate(['/forgot-password-success']);
-        }, 2000);
+        }, 1000);
       } else {
         // this.errorMessage = result.data.message || result.data;
+        this.EmailError = true
         this.invalidMessage = result.data.message
-        this.forgotForm.controls['email'].enable();
+        this.forgotForm.controls['email'].setErrors({ 'EmailError': true })
+        /*this.forgotForm.controls['email'].enable();
         var emails = this.forgotForm.controls['email'].value
         //this.forgotForm.controls['email'].markAsUntouched();
         this.forgotForm = new FormGroup({
           email: new FormControl('', [this.customValidator])
         })
-        this.forgotForm.controls['email'].setValue(emails);
+        this.forgotForm.controls['email'].setValue(emails);*/
       }
     }, (err) => {
       console.error(err)

@@ -112,6 +112,8 @@
                   <span matSuffix>.00</span>
                   <mat-icon matTooltip="Please enter business Phone" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['businessPhoneNumber'].hasError('required') && secondFormGroup.controls['businessPhoneNumber'].touched"
                     class="red--alert">help_outline</mat-icon>
+                  <mat-icon matTooltip="Please enter valid business Phone." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['businessPhoneNumber'].hasError('pattern') && secondFormGroup.controls['businessPhoneNumber'].touched"
+                  class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
 
                 <div class="text-center">

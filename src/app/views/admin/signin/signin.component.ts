@@ -63,12 +63,17 @@ export class signinComponent implements OnInit {
           this.invalidEmail = true;
           this.invalidMessage = result.data.message
           this.llpsigninForm.controls['username'].setErrors({ 'invalidEmail': true });
+          this.llpsigninForm.controls['password'].setErrors({'invalid' : true});
         } else {
+          this.llpsigninForm.controls['username'].markAsUntouched();
+          this.invalidEmail = false;
           this.llpsigninForm.controls['username'].setErrors({ 'invalidEmail': false });
         }
 
         if (result.data.invalidPassword) {
+          this.invalidEmail = false;
           this.llpsigninForm.controls['password'].setErrors({ 'invalid': true });
+          this.llpsigninForm.controls['username'].setErrors({'invalidEmail' : false});
         }
 
       }

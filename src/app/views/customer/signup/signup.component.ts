@@ -102,7 +102,7 @@ export class CustomerSignupComponent implements OnInit {
           localStorage.setItem("endUserId", result.data.userId)
           localStorage.setItem("endUserType", result.data.userType)
 
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          this.snack.open(result.data.message, 'OK', { duration: 8000 })
           this.router.navigate(['/', 'customer', 'update-profile']);
         } else {
           this.invalidOTP = true;

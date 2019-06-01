@@ -3,6 +3,7 @@ import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms'
 import { CustomValidators } from 'ng2-validation';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
+import { MatSnackBar } from '@angular/material';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 
 @Component({
@@ -17,7 +18,7 @@ export class cmseditComponent implements OnInit {
   PageBody: string
   row : any
   aceessSection : any;
-  constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private loader: AppLoaderService) { }
+  constructor(private router: Router, private activeRoute: ActivatedRoute, private snack: MatSnackBar, private api: APIService, private fb: FormBuilder, private loader: AppLoaderService) { }
 
   ngOnInit() {
 
@@ -71,6 +72,7 @@ export class cmseditComponent implements OnInit {
       if(result.status == "error"){
         //this.errorMessage = result.data
       } else {
+        this.snack.open("Data has been updated successfully", 'OK', { duration: 4000 })
         //this.successMessage = result.data
         console.log(result.data)
       }
