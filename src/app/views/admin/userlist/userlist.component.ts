@@ -4,13 +4,13 @@ import { APIService } from './../../../api.service';
 import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
-import { egretAnimations } from "../../../shared/animations/egret-animations";
+import { egretAnimations } from '../../../shared/animations/egret-animations';
 import { NgxTablePopupComponent } from './ngx-table-popup/ngx-table-popup.component';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 @Component({
-  selector: 'userlist',
+  selector: 'app-userlist',
   templateUrl: './userlist.component.html',
   styleUrls: ['./userlist.component.scss'],
   animations: egretAnimations
