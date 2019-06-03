@@ -13,6 +13,7 @@
             background-color: #e7ebcd;
             display: flex;
             align-items: center;
+            justify-content: space-between;
 
             ::ng-deep .mat-card-header-text{
                 margin: 0;
@@ -67,6 +68,11 @@
                     font-size: 16px;
                 }
             }
+        }
+        .myadd--search{
+            height: 23px;
+            width: 23px;
+            font-size: 23px;
         }
     }
 
@@ -129,6 +135,7 @@
                 .mat-card-title{
                     display: flex;
                     align-items: center;
+                    background-color: transparent;
                 }
 
                 .appointees--pic{
@@ -214,6 +221,13 @@
         margin: 36px 0;
         height: 38px;
         width: 44px;
+    }
+    .llp--primary--btn{
+        padding: 0px 10px;
+        height: 38px;
+    }
+    .llp--content--wrapper .empty--section .mat-card-header {
+        padding: 0 15px;
     }
 }
 @media only screen and (min-width: 600px) and (max-width: 959px){
