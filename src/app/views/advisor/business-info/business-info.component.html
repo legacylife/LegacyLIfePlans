@@ -36,7 +36,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput name="businessName" placeholder="Business name" value="" [formControl]="firstFormGroup.controls['businessName']">
+                  <input matInput name="businessName" placeholder="Business Name" value="" [formControl]="firstFormGroup.controls['businessName']">
                   <mat-icon matTooltip="Please enter business name" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['businessName'].hasError('required') && firstFormGroup.controls['businessName'].touched"
                     class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
@@ -74,13 +74,13 @@
                   <p class="login-header-desc">Enter the same address as shown on your business certificate</p>
                 </div>
                 <mat-form-field class="full-width">
-                  <input matInput name="addressLine1" placeholder="Address line 1*" value="" [formControl]="secondFormGroup.controls['addressLine1']">
+                  <input matInput name="addressLine1" placeholder="Address Line 1*" value="" [formControl]="secondFormGroup.controls['addressLine1']">
                   <mat-icon matTooltip="Please enter your address" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['addressLine1'].hasError('required') && secondFormGroup.controls['addressLine1'].touched"
                     class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput name="addressLine2" placeholder="Address line 2 (optional)" value="" [formControl]="secondFormGroup.controls['addressLine2']">
+                  <input matInput name="addressLine2" placeholder="Address Line 2 (optional)" value="" [formControl]="secondFormGroup.controls['addressLine2']">
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
@@ -137,7 +137,7 @@
                 </div>
 
                 <mat-form-field class="full-width">
-                  <mat-select placeholder="Active license held*" name="activeLicenceHeld" [formControl]="thirdFormGroup.controls['activeLicenceHeld']"
+                  <mat-select placeholder="Active License Held*" name="activeLicenceHeld" [formControl]="thirdFormGroup.controls['activeLicenceHeld']"
                     multiple>
                    <mat-option *ngFor="let topping of activeLicenseList" [value]="topping">{{topping}}</mat-option>
                   </mat-select>
@@ -145,7 +145,7 @@
                     class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
 
-                <mat-radio-group aria-label="Select an option" class="llp-radio" name="agencyOversees" [formControl]="thirdFormGroup.controls['agencyOversees']">
+                <mat-radio-group aria-label="Select An Option" class="llp-radio" name="agencyOversees" [formControl]="thirdFormGroup.controls['agencyOversees']">
                   <div class="checkbox-label">What agency oversees your business?*</div>
                   <mat-radio-button value="FINRA" [checked]="profile && profile.agencyOversees === 'FINRA'">FINRA</mat-radio-button>
                   <mat-radio-button value="SEC" [checked]="profile && profile.agencyOversees === 'SEC'">SEC</mat-radio-button>
@@ -160,7 +160,7 @@
                     class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
 
-                <mat-radio-group aria-label="Select an option" class="llp-radio" [formControl]="thirdFormGroup.controls['manageOtherProceducers']">
+                <mat-radio-group aria-label="Select An Option" class="llp-radio" [formControl]="thirdFormGroup.controls['manageOtherProceducers']">
                   <div class="checkbox-label">Do you manage other producers?</div>
                   <mat-radio-button (change)="showHowManyProducts(thirdFormGroup.value)" value="1" class="ml-0" [checked]="profile && profile.manageOtherProceducers && profile.manageOtherProceducers == '1'">Yes</mat-radio-button>
                   <mat-radio-button (change)="showHowManyProducts(thirdFormGroup.value)" value="2" class="" [checked]="profile && !profile.manageOtherProceducers">No</mat-radio-button>
