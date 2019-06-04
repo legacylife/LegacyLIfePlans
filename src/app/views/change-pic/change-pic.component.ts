@@ -7,7 +7,7 @@ import { AppConfirmService } from './../../shared/services/app-confirm/app-confi
 import { AppLoaderService } from './../../shared/services/app-loader/app-loader.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
-import { ImageCropperComponent, CropperSettings } from "ngx-img-cropper";
+import { ImageCropperComponent,CropperSettings } from "ngx-img-cropper";
 import { serverUrl, s3Details } from './../../config'
 import {Buffer} from 'buffer';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
@@ -55,7 +55,7 @@ export class ChangePicComponent implements OnInit {
         image.src = loadEvent.target.result;
         //console.log(loadEvent.target.result)
         //that.data.image = loadEvent.target.result;       
-        that.cropper.setImage(image);
+      //  that.cropper.setImage(image);
     };
  
     myReader.readAsDataURL(file);
