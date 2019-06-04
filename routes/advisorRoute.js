@@ -73,7 +73,7 @@ function activateAdvisor (req, res) {
 
 // Function to update reject reason for advisor
 function rejectAdvisor (req, res) {
-  console.log("request body >>>>>>", req.body)
+ 
   let  query  = {"_id" : req.body._id};
   let fields = { id: 1, username: 1, status: 1 }
   User.findOne(query, fields, function (err, userList) {
@@ -81,7 +81,7 @@ function rejectAdvisor (req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {
       var date = new Date() 
-      upStatus = 'Reject';
+      upStatus = 'Rejected';
       approveRejectReason =  req.body.approveRejectReason;   
 
       var params = { status: upStatus, signupApprovalDate : date, approveRejectReason : approveRejectReason }
