@@ -419,7 +419,7 @@ body{
 .cdk-global-overlay-wrapper{
     app-app-loader{
         .mat-dialog-content{
-            min-height: 101px;
+            min-height: 97px;
         }        
     }
     // .mat-dialog-container{
@@ -508,6 +508,9 @@ body{
     }
     body .llp--topnavbar .invite--btn{
         display: none
+    }
+    body .llp--topnavbar.header-topnav .topbar-branding img{
+        max-width: inherit;
     }
    
 }
