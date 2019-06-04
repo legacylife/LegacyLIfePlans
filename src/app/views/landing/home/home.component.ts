@@ -9,8 +9,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
-  userId = localStorage.getItem("endUserId");
-  userType = localStorage.getItem("endUserType");
+  userId = localStorage.getItem('endUserId');
+  userType = localStorage.getItem('endUserType');
 
   constructor(private router: Router) { 
     /*if(this.userType && this.userType == 'customer'){
@@ -108,7 +108,7 @@ export class HomeComponent implements OnInit {
     }
 ];
 
-  slideConfig = { 'slidesToShow': 3, 'slidesToScroll': 1 ,  responsive : [
+  slideConfig = { 'slidesToShow': 3, pauseOnHover:false, 'slidesToScroll': 1 ,  responsive : [
     {
       breakpoint: 1212,
       settings: {
@@ -127,7 +127,7 @@ export class HomeComponent implements OnInit {
       }
     }
   ]};
-  slideConfigTwo = { 'slidesToShow': 3, 'centerMode': true, infinite: true,
+  slideConfigTwo = { 'slidesToShow': 3, pauseOnHover:false, 'centerMode': true, infinite: true,
    autoplay: true,  autoplaySpeed: 2000 , 'slidesToScroll': 1 , responsive : [
     {
       breakpoint: 1212,

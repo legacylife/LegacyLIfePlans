@@ -422,10 +422,10 @@ body{
             min-height: 101px;
         }        
     }
-    .mat-dialog-container{
-        box-shadow: none !important;
-        background: transparent !important;
-    }
+    // .mat-dialog-container{
+    //     box-shadow: none !important;
+    //     background: transparent !important;
+    // }
 }
 .egret-indigo .mat-progress-spinner circle, .egret-indigo .mat-spinner circle{
     stroke: $clr--2 !important;

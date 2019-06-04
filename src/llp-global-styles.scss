@@ -216,6 +216,14 @@ body .mat-mini-fab{
     }
 }
 
+.egret-indigo .mat-primary .mat-pseudo-checkbox-checked, 
+.egret-indigo .mat-primary .mat-pseudo-checkbox-indeterminate{
+    background-color: $clr--2 !important;
+}
+.egret-indigo .mat-primary .mat-option.mat-selected:not(.mat-option-disabled){
+    color: $clr--2 !important;;
+}
+
 // radio 
 .mat-radio-group{
     .checkbox-label{
@@ -257,6 +265,7 @@ body .mat-mini-fab{
         }
     }
 }
+
 
 
 // Form Element
@@ -381,6 +390,9 @@ body{
                 padding: 0px 5px 5px 4px; 
                 font-size: 16px;
                 color: $clr--8;
+            }
+            .mat-datepicker-toggle-default-icon{
+                width: 20px;
             }
             
         }        
