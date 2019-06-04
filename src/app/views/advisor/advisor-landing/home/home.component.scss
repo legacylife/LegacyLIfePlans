@@ -957,7 +957,24 @@
     }
  
 }
-@media only screen and (min-width: 1280px) and (max-width: 1440px){}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){
+    .advisor--landing--wrapper .get--hired--wrapper{
+        height: 633px;
+    }
+    .advisor--landing--wrapper .get--hired--wrapper .banner--content h3 {
+        font-size: 60px;
+        margin: 25px 0;
+    }
+    .back--to--top {
+        width: 47px;
+        height: 47px;
+    }
+    .back--to--top .mat-icon {
+        height: 30px;
+        width: 30px;
+        font-size: 30px;
+    }
+}
 @media only screen and (min-width: 1441px) and (max-width: 1550px){}
 @media (device-height: 768px) and (device-width: 1024px){
     .advisor--landing--wrapper .get--hired--wrapper .banner--content h3{

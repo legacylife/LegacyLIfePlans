@@ -266,30 +266,30 @@ export class NavigationService {
       name: 'About Us',
       type: 'extLink',
       icon: 'library_books',
-      state: '/aboutus '
+      state: '#about-us'
     },{
-      name: 'How LLP Hired',
+      name: 'How LLP Works',
       icon: 'library_books',
       type: 'extLink',
-      state: '/'
+      state: '#how-llp-works'
     },
     {
       name: 'Testimonials',
       type: 'extLink',
       icon: 'library_books',
-      state: '/ '
+      state: '#testimonialss'
     },
     {
       name: 'Pricing Plans',
       type: 'extLink',
       icon: 'library_books',
-      state: '/ '
+      state: '#pricing-plan '
     },
     {
       name: 'Contact Us',
       type: 'extLink',
       icon: 'library_books',
-      state: '/'
+      state: 'contact-us'
     },
     {
       name: 'For Advisor',

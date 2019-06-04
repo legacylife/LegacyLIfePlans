@@ -1,4 +1,4 @@
-<div class="header-topnav mat-elevation-z2">
+<div class="header-topnav mat-elevation-z2 llp--top--fixed--header">
   <div class="llp--landing--wrapper">
     <div class="topnav">
       <!-- App Logo -->
@@ -18,19 +18,19 @@
           <a matRipple routerLink="">Home</a>
         </li>-->
         <li>
-          <a matRipple routerLink="/aboutus">About Us</a>
+          <a matRipple (click)="contentScroll('about-us')">About Us</a>
         </li>
         <li>
-          <a matRipple routerLink="">How LLP Hired</a>
+          <a matRipple (click)="contentScroll('how-llp-works')" >How LLP Works</a>
         </li>
         <li>
-          <a matRipple routerLink="">Pricing Plans</a>
+          <a matRipple (click)="contentScroll('pricing-plan')">Pricing Plans</a>
         </li>
         <li>
-          <a matRipple routerLink="">Testimonials</a>
+          <a matRipple (click)="contentScroll('testimonialss')">Testimonials</a>
         </li>
         <li>
-          <a matRipple routerLink="">Contact Us</a>
+          <a matRipple (click)="contentScroll('contact-us')">Contact Us</a>
         </li>
         
         <li class="for-customer">

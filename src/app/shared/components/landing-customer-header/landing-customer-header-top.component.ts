@@ -54,6 +54,9 @@ export class LandingCustomerHeaderTopComponent implements OnInit, OnDestroy {
       })
       this.menuItems = mainItems
     })
+
+    const locArray = location.href.split("#")
+    this.contentScroll(locArray[1])
   }
   ngOnDestroy() {
     this.menuItemSub.unsubscribe()
@@ -76,5 +79,16 @@ export class LandingCustomerHeaderTopComponent implements OnInit, OnDestroy {
     this.layout.publishLayoutChange({
       sidebarStyle: 'closed'
     })
+  }
+
+  contentScroll(scrolldivid) {
+    var content = document.getElementById("customer-home-content")
+    console.log(content)
+    var scrolldiv = document.getElementById(scrolldivid)
+    var topPos = scrolldiv.offsetTop;
+    content.scrollTop = topPos;
+    
+    // var scrolldiv = document.getElementById(scrolldivid)
+    // scrolldiv.scrollIntoView()
   }
 }

@@ -376,11 +376,11 @@ body{
         .mat-horizontal-stepper-header-container{
             pointer-events: none;
         }
-        mat-step-header[ng-reflect-state="edit"] {
-            &+.mat-stepper-horizontal-line {
-                border-top: 2px solid firebrick !important;
-            }
-        }
+        // mat-step-header[ng-reflect-state="edit"] {
+        //     &+.mat-stepper-horizontal-line {
+        //         border-top: 2px solid firebrick !important;
+        //     }
+        // }
     }
     
 }
@@ -654,6 +654,10 @@ body{
         opacity: 0.7;
     }
 }
+.rightside-content-hold {
+    scroll-behavior: smooth;
+}
+
 
 // 
 .egret-indigo .mat-slide-toggle-bar{

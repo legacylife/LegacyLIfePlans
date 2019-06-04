@@ -59,7 +59,7 @@
           <div>
             <mat-form-field class="full-width llp-datepicker">
               <!-- [formControl]="date" -->
-              <input matInput [matDatepicker]="dp" placeholder="Date of Birth*" aria-readonly="true" readonly [max]="maxDate" [formControl]="llpCustsignupProfileForm.controls['dateOfBirth']">
+              <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Date of Birth*" aria-readonly="true" readonly [max]="maxDate" [formControl]="llpCustsignupProfileForm.controls['dateOfBirth']">
               <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
               <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
               </mat-datepicker>
