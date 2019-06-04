@@ -148,6 +148,7 @@
                   </div>
                 </div>
               </div>
+
               <div fx.Flex="100" class="text-center mt--30">
                 <button mat-raised-button class="llp--secondary--btn mr-1" [routerLink]="'/advisor/dashboard'">Cancel</button>
                 <button mat-raised-button class="llp--primary--btn" [disabled]="ProfileForm.invalid">Save</button>
@@ -187,7 +188,7 @@
                         <mat-option *ngFor="let btl of businessTypeList" [value]="btl">{{btl}}</mat-option>
                       </mat-select>
                       <mat-icon matTooltip="Please select business type" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessType'].hasError('required') && AddressForm.controls['businessType'].touched"
-                      class="red--alert error--happen">help_outline</mat-icon>
+                      class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">

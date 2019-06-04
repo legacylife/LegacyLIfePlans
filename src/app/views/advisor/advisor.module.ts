@@ -55,8 +55,7 @@ import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 //import { AdvisorLandingLayoutComponent } from '../../shared/components/layouts/advisor-landing-layout/advisor-landing-layout.component';
 import { HomeComponent } from './advisor-landing/home/home.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
-import { ImageCropperComponent } from "ngx-img-cropper";
-import { ChangePicComponent } from './../change-pic/change-pic.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -99,9 +98,10 @@ import { ChangePicComponent } from './../change-pic/change-pic.component';
     RouterModule.forChild(AdvisorRoutes)
   ],
   declarations: [
-    AdvisorSignupComponent,BusinessInfoComponent,SetPasswordComponent,FormatTimePipe,ThankYouComponent,AdvisorDashboardComponent,LegaciesComponent,AdvisorDashboardUpdateComponent,AdvisorAccountSettingComponent,AdvisorSubscriptionComponent,ChangePassComponent,HomeComponent,ImageCropperComponent,ChangePicComponent
+    AdvisorSignupComponent,BusinessInfoComponent,SetPasswordComponent,FormatTimePipe,ThankYouComponent,AdvisorDashboardComponent,LegaciesComponent,
+    AdvisorDashboardUpdateComponent,AdvisorAccountSettingComponent,AdvisorSubscriptionComponent,ChangePassComponent,HomeComponent
   ],providers: [
     MatDatepickerModule,UserAuthGuard,UserPreAuthGuard,ProfilePicService
-  ],entryComponents: [ChangePassComponent,ChangePicComponent],
+  ],entryComponents: [ChangePassComponent],
 })
 export class AdvisorModule { }
