@@ -8,6 +8,7 @@ import { egretAnimations } from '../../../shared/animations/egret-animations';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { CustomValidators } from 'ng2-validation';
 import { ChangePassComponent } from './change-pass/change-pass.component';
+import { ChangePicComponent } from './change-pic/change-pic.component';
 
 import { map } from 'rxjs/operators';
 import { Subscription, Observable, of } from 'rxjs';
@@ -15,13 +16,14 @@ import { delay } from 'rxjs/operators';
 import { states } from '../../../state';
 import { serverUrl, s3Details } from '../../../config'
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
+//import { ImageCropperComponent, CropperSettings } from "ngx-img-cropper";
 
-import { ImageCropperComponent, CropperSettings } from "ngx-img-cropper";
 @Component({
   selector: 'app-customer-account-setting',
   templateUrl: './customer-account-setting.component.html',
   styleUrls: ['./customer-account-setting.component.scss'],
-  animations: egretAnimations
+  animations: egretAnimations,
+  //declarations:ImageCropperComponent
 })
 export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   date: any;
@@ -40,29 +42,32 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   profilePicture: any = "assets/images/arkenea/default.jpg"
 
   data: any;
-  cropperSettings: CropperSettings
+  //cropperSettings: CropperSettings
   pdisplay: boolean = false
   pcropperDisplay: boolean = false
   profileImage = null
-  cropper: ImageCropperComponent;
+  //cropper: ImageCropperComponent;
 
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder,
     private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
     private loader: AppLoaderService, private picService: ProfilePicService) {
 
-    this.cropperSettings = new CropperSettings()
-    this.cropperSettings.rounded = true
-    this.cropperSettings.width = 105
-    this.cropperSettings.height = 105
-    this.cropperSettings.croppedWidth = 105
-    this.cropperSettings.croppedHeight = 105
-    this.cropperSettings.canvasWidth = 400
-    this.cropperSettings.canvasHeight = 400
-    this.cropperSettings.cropperDrawSettings.strokeColor = '#b147b1'
-    this.data = {}
+    // this.cropperSettings = new CropperSettings()
+    // this.cropperSettings.rounded = true
+    // this.cropperSettings.width = 105
+    // this.cropperSettings.height = 105
+    // this.cropperSettings.croppedWidth = 105
+    // this.cropperSettings.croppedHeight = 105
+    // this.cropperSettings.canvasWidth = 400
+    // this.cropperSettings.canvasHeight = 400
+    // this.cropperSettings.cropperDrawSettings.strokeColor = '#b147b1'
+    // this.data = {}
   }
 
   ngOnInit() {
+    this.picService.itemValue.subscribe((nextValue) => {
+      this.profilePicture =  nextValue
+    })
     this.stateList = states;
     this.userId = localStorage.getItem("endUserId");
     this.ProfileForm = new FormGroup({
@@ -126,7 +131,6 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
           localStorage.setItem('endUserProfilePicture', this.profilePicture)
           this.picService.setProfilePic = this.profilePicture;
         }
-
 
         this.loader.close();
       }
@@ -214,11 +218,18 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => { });
   }
+  
+  changePicModal(): void {
+    const dialogRef = this.dialog.open(ChangePicComponent, {
+      width: '555px',
+    });
+    dialogRef.afterClosed().subscribe(result => { });
+  }
 
   /**
    * Profile upload
    */
-  saveProfilePicture() {
+  saveProfilePictureNOTINUSE() {
     const fd = new FormData()
     fd.append('userId', this.userId)
     fd.append('profilePicture', this.uploadedFile, this.uploadedFile.name);
@@ -257,7 +268,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
           this.profilePicture = reader.result;
           localStorage.setItem('endUserProfilePicture', this.profilePicture)
           this.picService.setProfilePic = this.profilePicture;
-          this.saveProfilePicture()
+         // this.saveProfilePicture()
         }
       }
       reader.readAsDataURL(this.uploadedFile)
