@@ -221,7 +221,7 @@ body .mat-mini-fab{
     background-color: $clr--2 !important;
 }
 .egret-indigo .mat-primary .mat-option.mat-selected:not(.mat-option-disabled){
-    color: $clr--2 !important;;
+    color: $clr--3 !important;;
 }
 
 // radio 
@@ -376,7 +376,13 @@ body{
         .mat-horizontal-stepper-header-container{
             pointer-events: none;
         }
+        mat-step-header[ng-reflect-state="edit"] {
+            &+.mat-stepper-horizontal-line {
+                border-top: 2px solid firebrick !important;
+            }
+        }
     }
+    
 }
 
 
