@@ -45,12 +45,18 @@
             <ul class="menu header--ul m-0 p-0">
               <li class="mat-menu-item">
                 <a matRipple routerLink="/customer" routerLinkActive="active--link">
-                  <mat-icon>list</mat-icon> To dos</a>                  
+                  <mat-icon>group_add</mat-icon> Add Trustees
+                </a>
+              </li>
+              <li class="mat-menu-item">
+                <a matRipple routerLink="/customer" routerLinkActive="active--link">
+                  <mat-icon>list</mat-icon> To dos</a>
               </li>
               <li class="mat-menu-item">
                 <a matRipple routerLink="/customer" routerLinkActive="active--link">
                   <mat-icon>book</mat-icon> Coach's Corner</a>
               </li>
+
             </ul>
           </mat-menu>
         </li>
@@ -77,18 +83,18 @@
       </div>
 
       <mat-menu #accountMenu="matMenu" class="llp--menu--droupdown" xPosition="before">
-         <button class="get--feature" mat-menu-item [routerLink]="['/profile/overview']">
+        <button class="get--feature" mat-menu-item [routerLink]="['/profile/overview']">
           <mat-icon>settings</mat-icon>
           <span>Get Featured</span>
-        </button> 
+        </button>
         <button mat-menu-item [routerLink]="['/customer/account-setting']">
           <mat-icon>settings</mat-icon>
           <span>Account Settings</span>
         </button>
-         <button mat-menu-item>
+        <button mat-menu-item>
           <mat-icon>monetization_on</mat-icon>
           <span>Payment</span>
-        </button> 
+        </button>
         <button mat-menu-item (click)="logout()">
           <mat-icon>exit_to_app</mat-icon>
           <span>Sign out</span>

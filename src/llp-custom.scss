@@ -408,6 +408,42 @@ body{
    back to top css (end here)
 ------------------------------------------*/
 
+
+/* -- 
+   Loading css (Start here)
+------------------------------------------*/
+
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing{
+    background: rgba(222, 215, 215, 0.3);
+}
+.cdk-global-overlay-wrapper{
+    app-app-loader{
+        .mat-dialog-content{
+            min-height: 101px;
+        }        
+    }
+    .mat-dialog-container{
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+}
+.egret-indigo .mat-progress-spinner circle, .egret-indigo .mat-spinner circle{
+    stroke: $clr--2 !important;
+    stroke-width: 5% !important;
+}
+.mat-progress-spinner{
+    width: 80px !important;
+    height: 80px !important;
+    svg{
+        width: 80px !important;
+        height: 80px !important;
+    }
+}
+
+/* -- 
+   Loading css (end here)
+------------------------------------------*/
+
 /* -- 
     Media Query (start here)
 ------------------------------------------*/
