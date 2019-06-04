@@ -511,7 +511,7 @@ SOFTWARE.
 ngx-slick-carousel
 MIT
 
-@angular/platform-browser
+@angular/animations
 MIT
 
 tslib
@@ -785,7 +785,7 @@ MIT
 @angular/router
 MIT
 
-@angular/animations
+@angular/platform-browser
 MIT
 
 @angular/material/button
@@ -1043,6 +1043,8 @@ MIT
 
 @angular/material/select
 
+ngx-img-cropper
+
 @angular/http
 MIT
 
@@ -1081,8 +1083,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-
-@angular/material/progress-spinner
 
 ngx-perfect-scrollbar
 MIT
@@ -1156,6 +1156,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+
+@angular/material/progress-spinner
 
 @angular/material/toolbar
 
@@ -1457,8 +1459,6 @@ THE SOFTWARE.
 @angular/material/expansion
 
 @angular/material/slide-toggle
-
-ngx-img-cropper
 
 @angular/material/stepper
 
