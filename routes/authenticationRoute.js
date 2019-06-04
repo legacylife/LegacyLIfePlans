@@ -19,7 +19,9 @@ var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
+const AWS = require('aws-sdk');
 const s3 = require('./../helpers/s3Upload')
+
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -119,45 +121,42 @@ function create(req, res) {
 }
 
 router.post('/updateProfilePic', function (req, res) {
-  var fstream;
-  let authTokens = { userId: "", authCode: "" }
-  
-    
-  if (req.busboy) {
-    req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
-      authTokens[fieldname] = val
-    })
+  AWS.config.update({ accessKeyId: constants.s3Details.awsKey, secretAccessKey: constants.s3Details.awsSecret });
+  const ss3 = new AWS.S3();
+  let {proquery} = req.body;
+  let {query} = req.body;
+  const options = { "partSize": 10 * 1024 * 1024, "queueSize": 1 };
+  var ext = proquery.profilePicture.split(';')[0].split('/')[1];
+  var filename = query._id + '-' + new Date().getTime() + `.${ext}`;
 
-    
-    req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
-      if (authTokens.userId) {
-        User.findOne({  _id: authTokens.userId }, { profilePicture : 1 }, function (err, result) {
-          let ext = filename.split('.')
-          ext = ext[ext.length - 1]
-          const newFilename = authTokens.userId + '-' + new Date().getTime() + `.${ext}`
-          fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
-          file.pipe(fstream);
-          fstream.on('close', async function () {
-            await s3.uploadFile(newFilename, profilePicturesPath)
-            User.updateOne({ _id: authTokens.userId }, { $set: { profilePicture: newFilename } }, function (err, updatedUser) {
-              if (err) {
-                res.send(resFormat.rError(err))
-              } else {             
-                
-                res.send(resFormat.rSuccess({ message: 'User details have been updated', profilePicture: newFilename }))
-              }
-            })
-          })
-        });
-      } else {
-        res.status(401).send(resFormat.rError("User token mismatch."))
+  var fileBuffer = new Buffer(proquery.profilePicture.replace(/^data:image\/\w+;base64,/, ""), 'base64');
+  var abc = fileBuffer.toString('base64');
+  const val = Buffer.from(abc, 'base64');
+/******************************upload cropped image*********************************************************************** */
+const params = {
+  Bucket: constants.s3Details.bucketName,
+  "Key": `${profilePicturesPath}${filename}`,
+  "ContentEncoding": 'base64',
+  "Body": fileBuffer,
+  "ACL": "public-read-write",
+  "ContentType": `image/${ext}`
+};
+ss3.upload(params, options, (err, data) => {
+  if(err){
+    res.send(resFormat.rError("Something went wrong "))
+  }else{
+    console.log(query._id, filename)
+      User.updateOne({ _id: query._id }, { $set: { profilePicture: filename } }, function (err, updatedUser) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {                     
+        res.send(resFormat.rSuccess({ message: 'Profile Image uploaded successfully', profilePicture: profilePicturesPath+filename}))
       }
     })
-    
   }
-  
-
+ })
 })
+
 
 //function to update user details // NOT in use
 function update(req, res) {
