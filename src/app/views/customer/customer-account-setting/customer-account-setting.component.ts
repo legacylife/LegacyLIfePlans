@@ -8,7 +8,7 @@ import { egretAnimations } from '../../../shared/animations/egret-animations';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { CustomValidators } from 'ng2-validation';
 import { ChangePassComponent } from './change-pass/change-pass.component';
-import { ChangePicComponent } from './change-pic/change-pic.component';
+import { ChangePicComponent } from './../../change-pic/change-pic.component';
 
 import { map } from 'rxjs/operators';
 import { Subscription, Observable, of } from 'rxjs';
@@ -16,14 +16,12 @@ import { delay } from 'rxjs/operators';
 import { states } from '../../../state';
 import { serverUrl, s3Details } from '../../../config'
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
-//import { ImageCropperComponent, CropperSettings } from "ngx-img-cropper";
 
 @Component({
   selector: 'app-customer-account-setting',
   templateUrl: './customer-account-setting.component.html',
   styleUrls: ['./customer-account-setting.component.scss'],
   animations: egretAnimations,
-  //declarations:ImageCropperComponent
 })
 export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   date: any;
@@ -40,28 +38,13 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
 
   uploadedFile: File
   profilePicture: any = "assets/images/arkenea/default.jpg"
-
-  data: any;
-  //cropperSettings: CropperSettings
-  pdisplay: boolean = false
+pdisplay: boolean = false
   pcropperDisplay: boolean = false
   profileImage = null
-  //cropper: ImageCropperComponent;
-
+  
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder,
     private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
     private loader: AppLoaderService, private picService: ProfilePicService) {
-
-    // this.cropperSettings = new CropperSettings()
-    // this.cropperSettings.rounded = true
-    // this.cropperSettings.width = 105
-    // this.cropperSettings.height = 105
-    // this.cropperSettings.croppedWidth = 105
-    // this.cropperSettings.croppedHeight = 105
-    // this.cropperSettings.canvasWidth = 400
-    // this.cropperSettings.canvasHeight = 400
-    // this.cropperSettings.cropperDrawSettings.strokeColor = '#b147b1'
-    // this.data = {}
   }
 
   ngOnInit() {

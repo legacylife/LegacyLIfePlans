@@ -1,14 +1,14 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
-import { APIService } from './../../../../api.service';
-import { UserAPIService } from './../../../../userapi.service';
+import { APIService } from './../../api.service';
+import { UserAPIService } from './../../userapi.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
-import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
-import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
+import { AppConfirmService } from './../../shared/services/app-confirm/app-confirm.service';
+import { AppLoaderService } from './../../shared/services/app-loader/app-loader.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { ImageCropperComponent, CropperSettings } from "ngx-img-cropper";
-import { serverUrl, s3Details } from '../../../../config'
+import { serverUrl, s3Details } from './../../config'
 import {Buffer} from 'buffer';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 @Component({
@@ -18,7 +18,7 @@ import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 })
 export class ChangePicComponent implements OnInit {
   userId:string;
-//  resetForm: FormGroup;
+//hasBaseDropZoneOver: any;
   data: any;  
 @ViewChild('cropper', undefined)
   profilePicture: any = "assets/images/arkenea/default.jpg"
@@ -29,22 +29,20 @@ export class ChangePicComponent implements OnInit {
 
     this.cropperSettings = new CropperSettings()
     this.cropperSettings.rounded = true
-    //this.cropperSettings.noFileInput = true;
-    this.cropperSettings.width = 105
-    this.cropperSettings.height = 105
-    this.cropperSettings.croppedWidth = 105
-    this.cropperSettings.croppedHeight = 105
+    this.cropperSettings.noFileInput = false;
+    this.cropperSettings.width = 125
+    this.cropperSettings.height = 125
+    this.cropperSettings.croppedWidth = 125
+    this.cropperSettings.croppedHeight = 125
     this.cropperSettings.canvasWidth = 400
-    this.cropperSettings.canvasHeight = 400
-    this.cropperSettings.cropperDrawSettings.strokeColor = '#b147b1'
+    this.cropperSettings.canvasHeight = 350
+    this.cropperSettings.cropperDrawSettings.strokeColor = '#000'
+    //this.cropperSettings.preserveSize = false;
     this.data = {}
-
   }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
-
-
   }
 
   fileChangeListener($event) {
@@ -52,19 +50,37 @@ export class ChangePicComponent implements OnInit {
     var file:File = $event.target.files[0];
     var myReader:FileReader = new FileReader();
     var that = this;
+    
     myReader.onloadend = function (loadEvent:any) {
         image.src = loadEvent.target.result;
-        
-        setTimeout(function(){
-          that.cropper.setImage(image)
-        
-         },500)
- 
+        //console.log(loadEvent.target.result)
+        //that.data.image = loadEvent.target.result;       
+        that.cropper.setImage(image);
     };
  
     myReader.readAsDataURL(file);
 }
+/*
+private dragFileAccepted(acceptedFile) {
+ 
+  // Load the image in
+  let fileReader = new FileReader();
+  fileReader.onload = () => {
 
+      // Set and show the image
+      this.data = fileReader.result;
+      // this.imageShown = true;
+  };
+
+  // Read in the file
+  fileReader.readAsDataURL(acceptedFile.file);
+}
+
+
+public fileOverBase(e: any): void {
+  this.hasBaseDropZoneOver = e;
+}
+*/
  saveProfilePicture() {
   this.loader.open(); 
     let profileInData = {

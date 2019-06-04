@@ -1,0 +1,53 @@
+<div class="ll--modal--header">
+  Change Profile Image
+  <button class="modal--close" [mat-dialog-close]=""><mat-icon class="icon--cross">cancel</mat-icon></button>  
+</div>
+<form class="llp-form-wrapper">
+<div class="ll--modal--body">
+  <div fxLayout="row wrap">
+<!--
+      <div fxLayout="row">
+          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
+            <p class="header--desc upload--doc">Upload your profile image</p>                                   
+          </div>
+        </div>
+
+          <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
+              <div class="upload--buss--docs--sec">
+                  <label>Upload your business documents</label>
+
+                 
+                      <div class="upload--box fileupload-drop-zone"
+                      ng2FileDrop
+                      [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                      (onFileDrop)="dragFileAccepted($event)"
+                      [uploader]="uploader">
+                        
+                          <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                          <div class="select--file">Select file from your computer</div>
+                        </div>
+             
+
+
+                  <div class="file--details mb-1">JPEG, JPG, PNG</div>
+                </div>
+          </div>
+-->
+ <div fxFlex.xs="100">
+          <div class="file-upload">
+              <p class="header--desc upload--doc">Upload your profile image</p>                    
+            <input style="display:none" id="custom-input" type="file" (change)="fileChangeListener($event)" />
+          </div>
+          <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+          <div class="file--details mb-1">JPEG, JPG, PNG</div>
+          <!--<br />
+          <span class="result rounded" *ngIf="data.image">
+            <img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight" />
+          </span>-->
+    </div>    
+  </div>
+</div>
+<div class="ll--modal--footer text-center">
+ <button mat-raised-button  class="llp--primary--btn"  (click)="saveProfilePicture();" [disabled]="!data.image">Save</button>
+</div>
+</form>

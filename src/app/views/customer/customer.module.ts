@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ImageCropperComponent, CropperSettings } from "ngx-img-cropper";
+import { ImageCropperComponent } from "ngx-img-cropper";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { 
   MatListModule,
@@ -17,14 +17,12 @@ import {
   MatTabsModule,
   MatInputModule,
   MatSelectModule,
-  
   MatDatepickerModule,
   MatNativeDateModule,
   MatFormFieldModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
   MatTooltipModule,
-
   MatExpansionModule,
   MatSliderModule,
   MatSnackBarModule,
@@ -36,14 +34,13 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
-
 import { CustomerRoutes } from './customer.routing';
 import { CustomerSignupComponent,FormatTimePipe } from './signup/signup.component';
 import { UpdateProfileComponent } from './update-profile/update-profile.component';
 import { CustomerHomeComponent } from './customer-home/customer-home.component';
 import { CustomerAccountSettingComponent } from './customer-account-setting/customer-account-setting.component';
 import { ChangePassComponent } from './customer-account-setting/change-pass/change-pass.component';
-import { ChangePicComponent } from './customer-account-setting/change-pic/change-pic.component';
+import { ChangePicComponent } from './../change-pic/change-pic.component';
 import { UserAuthGuard } from '../../shared/services/auth/userauth.guard';
 import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
 import { states } from '../../state';
@@ -76,7 +73,6 @@ import { states } from '../../state';
     MatNativeDateModule,
     MatTooltipModule,
     MatSelectModule,
-
     MatExpansionModule,
     MatSliderModule,
     MatSnackBarModule,
