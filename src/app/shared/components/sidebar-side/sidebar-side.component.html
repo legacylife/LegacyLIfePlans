@@ -1,12 +1,26 @@
 <div class="sidebar-panel">
   <div id="scroll-area" [perfectScrollbar] class="navigation-hold" fxLayout="column">
-    <!-- App Logo -->
+    <!-- App Logo
     <div class="branding default-bg">      
         <a href="/admin/"> <img src="assets/images/arkenea/small-logo.png" alt=""  class="app-logoTEST large--logo"></a>  
         <a href="/admin/"> <img src="assets/images/arkenea/small-small-logo.png" alt=""  class="app-logoTEST small--logo"></a>     
-
     </div>
-    
+ -->
+    <div class="branding default-bg">
+        <img src="assets/images/arkenea/admin-small-small-logo.png" alt="" class="app-logo">
+        <!-- Two different logos for dark and light themes -->
+        <img 
+        src="assets/images/logo-text-white.png" 
+        alt="" 
+        class="app-logo-text"
+        *ngIf="themeService.activatedTheme?.name?.indexOf('dark') !== -1">
+        <img 
+        src="assets/images/arkenea/admin-small-logo.png" 
+        alt="" 
+        class="app-logo-text"
+        *ngIf="themeService.activatedTheme?.name?.indexOf('dark') === -1">
+      </div>
+
     <!-- Sidebar user 
     <div class="app-user">
       <div class="app-user-photo">

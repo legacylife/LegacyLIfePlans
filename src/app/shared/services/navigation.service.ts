@@ -197,116 +197,116 @@ export class NavigationService {
   ]
 
   preAdvisorMenu: IMenuItem[] = [
-    {
-      name: 'Home',
-      type: 'extLink',
-      icon: 'library_books',
-      state: '/home'
-    },
+    // {
+    //   name: 'Home',
+    //   type: 'extLink',
+    //   icon: 'library_books',
+    //   state: '/home'
+    // },
     {
       name: 'About Us',
       type: 'extLink',
       icon: 'library_books',
-      state: '/home '
+      state: '/aboutus '
     },{
       name: 'How LLP Works',
       icon: 'library_books',
       type: 'extLink',
-      state: '/home'
+      state: '/advisor'
     },
     {
       name: 'Leads',
       type: 'extLink',
       icon: 'library_books',
-      state: '/home '
+      state: '/advisor'
     }, {
       name: 'Profile',
       type: 'extLink',
       icon: 'library_books',
-      state: '/home'
+      state: '/advisor'
     },
     {
       name: 'Testimonials',
       type: 'extLink',
       icon: 'library_books',
-      state: '/home '
+      state: '/advisor'
     }, {
       name: 'Contact Us',
       type: 'extLink',
       icon: 'library_books',
-      state: '/home'
+      state: '/advisor'
     },
     {
       name: 'For Customers',
       type: 'extLink',
       icon: 'library_books',
-      state: '/home '
+      state: '/'
     }, {
       name: 'Sign Up',
       type: 'extLink',
       icon: 'library_books',
-      state: '/home'
+      state: '/customer/signup'
     },
     {
       name: 'Login',
       type: 'extLink',
       icon: 'library_books',
-      state: '/home '
+      state: '/signin '
     }
   ];
 
   preCustomerMenu: IMenuItem[] = [
-    {
-      name: 'Home',
-      type: 'extLink',
-      icon: 'library_books',
-      state: '/home'
-    },
+    // {
+    //   name: 'Home',
+    //   type: 'extLink',
+    //   icon: 'library_books',
+    //   state: '/home'
+    // },
     {
       name: 'About Us',
       type: 'extLink',
       icon: 'library_books',
-      state: '/home '
+      state: '/aboutus '
     },{
       name: 'How LLP Hired',
       icon: 'library_books',
       type: 'extLink',
-      state: '/home'
+      state: '/'
     },
     {
       name: 'Testimonials',
       type: 'extLink',
       icon: 'library_books',
-      state: '/home '
+      state: '/ '
     },
     {
       name: 'Pricing Plans',
       type: 'extLink',
       icon: 'library_books',
-      state: '/home '
+      state: '/ '
     },
     {
       name: 'Contact Us',
       type: 'extLink',
       icon: 'library_books',
-      state: '/home'
+      state: '/'
     },
     {
       name: 'For Advisor',
       type: 'extLink',
       icon: 'library_books',
-      state: '/pre-advisor '
+      state: '/advisor'
     }, {
       name: 'Sign Up',
       type: 'extLink',
       icon: 'library_books',
-      state: '/ '
+      state: '/advisor/signup'
     },
     {
       name: 'Login',
       type: 'extLink',
       icon: 'library_books',
-      state: '/home '
+      state: '/signin '
     }
   ]
 

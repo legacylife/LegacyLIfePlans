@@ -8,7 +8,7 @@
               <img src="{{profilePicture}}" />
             </div>            
             <div class="edit--pic">
-              <mat-icon title="edit advisor image" (click)="profilePic.click()">edit</mat-icon>
+              <mat-icon title="edit advisor image" (click)="changePicModal()">edit</mat-icon>
               <input type="file" name="profilePicture" #profilePic id="profilePicture" class="profile-pic-input" (change)="showSelectedProfilePicture()"
                 accept="image/*" style="display:none;" />
             </div>
@@ -187,7 +187,7 @@
                         <mat-option *ngFor="let btl of businessTypeList" [value]="btl">{{btl}}</mat-option>
                       </mat-select>
                       <mat-icon matTooltip="Please select business type" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessType'].hasError('required') && AddressForm.controls['businessType'].touched"
-                      class="red--alert">help_outline</mat-icon>
+                      class="red--alert error--happen">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
@@ -426,7 +426,7 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50" *ngIf="advisorDocumentsList" >
                     <h3 class="header--text fnt--16">Uploaded documents</h3>
                     <mat-chip-list class="doc--list" *ngFor="let doc of advisorDocumentsList; index as i">
-                        <mat-chip><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck" >advisorDocumentsListadvisorDocume ntsListadvisor DocumentsListadvisorD ocumentsLis tadvisorDocumentsListadvisorDocumentsList</a><mat-icon matChipRemove  (click)="docDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+                        <mat-chip><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck" >{{doc.title}}</a><mat-icon matChipRemove  (click)="docDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
                     </mat-chip-list>
                   </div>
 

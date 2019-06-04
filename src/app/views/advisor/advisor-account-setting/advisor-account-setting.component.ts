@@ -16,8 +16,9 @@ import { FileUploader } from 'ng2-file-upload';
 import { yearsOfServiceList, businessTypeList , industryDomainList, licenceHeldList, activeLicense, industryDomain, businessType, yearsOfService } from '../../../selectList';
 import { serverUrl, s3Details } from '../../../config';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
-const URL = serverUrl + '/api/documents/advisorDocument';
+import { ChangePicComponent } from './../../change-pic/change-pic.component';
 
+const URL = serverUrl + '/api/documents/advisorDocument';
 interface websiteLink {
   links: string;
 }
@@ -69,6 +70,9 @@ export class AdvisorAccountSettingComponent implements OnInit {
     private loader: AppLoaderService, private confirmService: AppConfirmService, private picService: ProfilePicService) { }
 
   ngOnInit() {
+    this.picService.itemValue.subscribe((nextValue) => {
+      this.profilePicture =  nextValue
+    })
     this.stateList = states.sort();
     this.userId = localStorage.getItem("endUserId");
     this.ProfileForm = this.fb.group({
@@ -119,7 +123,6 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
   //function to get all events
   getProfile = (query = {}, search = false) => {
-    console.log(this.userId)
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: "advisor" }, query)
     }
@@ -206,6 +209,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   get awardsPoints() {
+    console.log('awardsPoints')
     return this.AddressForm.get('awardsYears') as FormArray;
   }
 
@@ -260,9 +264,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   AddressSubmit() {
-    console.log("1 :- ", this.AddressForm.value)
     const { socialMediaLinks: { facebook = '', twitter = '', linkedIn = '' } } = this.AddressForm.value
-    console.log("2 :- ", this.AddressForm.value)
     const formNumbers = <FormArray>this.AddressForm.get('websiteLinks')
     this.websiteLinks = formNumbers.controls.map(o => { return o.value })
 
@@ -322,8 +324,9 @@ export class AdvisorAccountSettingComponent implements OnInit {
    //this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
     this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
       //console.log("ImageUpload:uploaded:", item.file);
-      let pushArry = {"tmpName":"","title":item.file.name}
-      this.advisorDocumentsList.push(pushArry);
+        //let pushArry = {"tmpName":"","title":item.file.name}
+        //this.advisorDocumentsList.push(pushArry);
+        this.getProfile();
       };
    }
   this.invalidMessage = '';
@@ -491,6 +494,13 @@ docDelete(doc, name,tmName) {
     } else {
       this.snack.open("Please select valid image. Valid extentions are jpg, jpeg, png, gif.", 'OK', { duration: 4000 })
     }
+  }
+
+  changePicModal(): void {
+    const dialogRef = this.dialog.open(ChangePicComponent, {
+      width: '555px',
+    });
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
   showHowManyProducts(showVal) {

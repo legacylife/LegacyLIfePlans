@@ -52,7 +52,7 @@ export class signinComponent implements OnInit {
         localStorage.setItem("lastName", userData.lastName)
         localStorage.setItem("sectionAccess", JSON.stringify(userData.sectionAccess))
 
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        //this.snack.open(result.data.message, 'OK', { duration: 4000 })
         this.router.navigate(['/', 'admin', 'userlist'])
 
       } else {
