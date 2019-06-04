@@ -123,7 +123,6 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
   //function to get all events
   getProfile = (query = {}, search = false) => {
-    console.log(this.userId)
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: "advisor" }, query)
     }
@@ -210,6 +209,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   get awardsPoints() {
+    console.log('awardsPoints')
     return this.AddressForm.get('awardsYears') as FormArray;
   }
 
@@ -264,9 +264,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   AddressSubmit() {
-    console.log("1 :- ", this.AddressForm.value)
     const { socialMediaLinks: { facebook = '', twitter = '', linkedIn = '' } } = this.AddressForm.value
-    console.log("2 :- ", this.AddressForm.value)
     const formNumbers = <FormArray>this.AddressForm.get('websiteLinks')
     this.websiteLinks = formNumbers.controls.map(o => { return o.value })
 
@@ -326,8 +324,9 @@ export class AdvisorAccountSettingComponent implements OnInit {
    //this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
     this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
       //console.log("ImageUpload:uploaded:", item.file);
-      let pushArry = {"tmpName":"","title":item.file.name}
-      this.advisorDocumentsList.push(pushArry);
+        //let pushArry = {"tmpName":"","title":item.file.name}
+        //this.advisorDocumentsList.push(pushArry);
+        this.getProfile();
       };
    }
   this.invalidMessage = '';
