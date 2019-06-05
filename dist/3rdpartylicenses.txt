@@ -511,7 +511,7 @@ SOFTWARE.
 ngx-slick-carousel
 MIT
 
-@angular/platform-browser
+@angular/animations
 MIT
 
 tslib
@@ -785,7 +785,7 @@ MIT
 @angular/router
 MIT
 
-@angular/animations
+@angular/platform-browser
 MIT
 
 @angular/material/button
@@ -1042,6 +1042,8 @@ MIT
 @angular/material/sidenav
 
 @angular/material/select
+
+ngx-img-cropper
 
 @angular/http
 MIT
@@ -1457,8 +1459,6 @@ THE SOFTWARE.
 @angular/material/expansion
 
 @angular/material/slide-toggle
-
-ngx-img-cropper
 
 @angular/material/stepper
 

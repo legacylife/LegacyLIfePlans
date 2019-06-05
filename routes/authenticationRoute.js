@@ -32,9 +32,6 @@ const profilePicturesPath = constants.s3Details.profilePicturesPath
 function signin(req, res) {
   
   passport.authenticate('local', function (err, user, info) {
-    console.log("user",user)
-    console.log("info",info)
-
     if (err) {
       let result = { "message": err };
       res.status(404).send(resFormat.rError(result));
@@ -269,7 +266,7 @@ const changePassword = function (req, res) {
           if (err) {
             res.send({ "message": resFormat.rError(err) })
           } else {
-            let result = { "message": "Password has been changed successfully status successfully!" }
+            let result = { "message": "Password has been changed successfully!" }
             res.status(200).send(resFormat.rSuccess(result))
           }
         })

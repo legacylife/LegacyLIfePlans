@@ -27,6 +27,7 @@ var auth = jwt({
 
 //function to get list of user as per given criteria
 function list(req, res) {
+
   let { fields, offset, query, order, limit, search } = req.body
   let totalUsers = 0
   if (search && !isEmpty(query)) {
@@ -109,7 +110,7 @@ function updateStatus(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          let result = { userId: updatedUser._id, userType: updatedUser.userType, "message": "Update status successfully!" }
+          let result = { userId: updatedUser._id, userType: updatedUser.userType, "message": "Status Updated successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
@@ -178,8 +179,6 @@ function profile(req, res) {
 
 function addNewMember(req, res) {
   let newMem = new User()
-
-  //newMem.userId = req.body.userId
   newMem.fullName = req.body.fullName
   newMem.firstName = req.body.firstName
   newMem.lastName = req.body.lastName
@@ -196,40 +195,43 @@ function addNewMember(req, res) {
   var tokens = generateToken(85);
   newMem.token = tokens
 
-  newMem.save(function (err, newMemRecord) {
-    if (err) {
-      console.log(err)
-      res.status(500).send(resFormat.rError(err))
-    } else {
-      let mem = req.body      
+  const { username } = req.body;
+  User.findOne({ username: username }, { _id :1, username: 1, status:1, userType : 1,profileSetup:1 }, function (err, user) {
+    if(user){
+      res.send(resFormat.rSuccess({ code: "Exist", message: "Looks like email id already have an account registered with this email as '"+user.userType+"'" }))
+    }else{
+          newMem.save(function (err, newMemRecord) {
+            if (err) {
+              console.log(err)
+              res.status(500).send(resFormat.rError(err))
+            } else {
+              let mem = req.body      
 
-      let clientUrl = constants.clientUrl
-      var link =  clientUrl + '/llp-admin/reset-password/' + tokens;
+              let clientUrl = constants.clientUrl
+              var link =  clientUrl + '/llp-admin/reset-password/' + tokens;
 
-      //set new password email template
-      emailTemplatesRoute.getEmailTemplateByCode("setNewPassword").then((template) => {
-        if(template) {
-          template = JSON.parse(JSON.stringify(template));
-          let body = template.mailBody.replace("{link}", link);
-          body = body.replace("{email_id}",newMem.username);
-          const mailOptions = {
-            to : req.body.username,
-            subject : template.mailSubject,
-            html: body
-          }
-          sendEmail(mailOptions)
-          res.send(resFormat.rSuccess('We have sent you set new password instructions. Please check your email.'))
-        } else {
-          res.status(401).send(resFormat.rError('Some error Occured'))
-        }
-      }) // set new password email template ends*/
-
-
-
-
-      res.send(resFormat.rSuccess('Member has been addedd'))
-    }
-  })
+              //set new password email template
+              emailTemplatesRoute.getEmailTemplateByCode("setNewPassword").then((template) => {
+                if(template) {
+                  template = JSON.parse(JSON.stringify(template));
+                  let body = template.mailBody.replace("{link}", link);
+                  body = body.replace("{email_id}",newMem.username);
+                  const mailOptions = {
+                    to : req.body.username,
+                    subject : template.mailSubject,
+                    html: body
+                  }
+                  sendEmail(mailOptions)
+                  res.send(resFormat.rSuccess({ code: "Exist", message: 'We have sent you set new password instructions. Please check your email.'}))
+                } else {
+                  res.status(401).send(resFormat.rError('Some error Occured'))
+                }
+              }) // set new password email template ends*/
+              res.send(resFormat.rSuccess('Member has been addedd'));
+            }
+          })
+      }
+    }) //end of user find
 }
 
 
