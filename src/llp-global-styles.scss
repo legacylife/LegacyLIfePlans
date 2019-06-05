@@ -332,6 +332,10 @@ body{
         font-family: $font--lato--regular;
         font-size: 16px;
     }
+/*added by PK*/
+	.mat-select{
+		width: calc(100% - 18px);
+	}
 }
 
 
