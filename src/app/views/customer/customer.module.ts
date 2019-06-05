@@ -43,7 +43,12 @@ import { ChangePassComponent } from './customer-account-setting/change-pass/chan
 import { UserAuthGuard } from '../../shared/services/auth/userauth.guard';
 import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
 import { states } from '../../state';
+import { CustomerSubscriptionComponent } from './customer-subscription/customer-subscription.component';
+import { CustomerTrusteesComponent } from './customer-trustees/customer-trustees.component';
+import { CustomerProfessionalComponent } from './customer-professionals/customer-professionals.component';
 
+import { CanDeactivateGuard } from '../../shared/services/can-deactivate-guard.service';
+import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -81,9 +86,9 @@ import { states } from '../../state';
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [
-    CustomerSignupComponent,UpdateProfileComponent,CustomerHomeComponent,FormatTimePipe,CustomerAccountSettingComponent,ChangePassComponent
+    CustomerSignupComponent,UpdateProfileComponent,CustomerHomeComponent,FormatTimePipe,CustomerAccountSettingComponent,ChangePassComponent,CustomerSubscriptionComponent,CustomerTrusteesComponent,CustomerProfessionalComponent
   ],providers: [
-    MatDatepickerModule,UserAuthGuard,UserPreAuthGuard
+    MatDatepickerModule,UserAuthGuard,UserPreAuthGuard,CanDeactivateGuard,CountryEditCanDeactivateGuard
   ],bootstrap: [CustomerSignupComponent], entryComponents: [ChangePassComponent],
 })
 export class CustomerModule { }

@@ -70,6 +70,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
     private loader: AppLoaderService, private confirmService: AppConfirmService, private picService: ProfilePicService) { }
 
   ngOnInit() {
+ 
     this.picService.itemValue.subscribe((nextValue) => {
       this.profilePicture =  nextValue
     })
@@ -209,7 +210,6 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   get awardsPoints() {
-    console.log('awardsPoints')
     return this.AddressForm.get('awardsYears') as FormArray;
   }
 
@@ -314,39 +314,36 @@ export class AdvisorAccountSettingComponent implements OnInit {
     })
   }
 
-  public fileOverBase(e: any): void {
+  public fileOverBase(e: any): void {    
     this.hasBaseDropZoneOver = e;
+    if(this.uploader.getNotUploadedItems().length){
+          this.uploader.uploadAll();
+      //this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
+      this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+          //let pushArry = {"tmpName":"","title":item.file.name}  //this.advisorDocumentsList.push(pushArry);
+          this.getProfileField();
+        };
+    }
   }
 
   LicenseSubmit() {
-  if(this.uploader.getNotUploadedItems().length){
-       this.uploader.uploadAll();
-   //this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
-    this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-      //console.log("ImageUpload:uploaded:", item.file);
-        //let pushArry = {"tmpName":"","title":item.file.name}
-        //this.advisorDocumentsList.push(pushArry);
-        this.getProfile();
-      };
-   }
   this.invalidMessage = '';
   /*if(this.profile.advisorDocuments || this.profile.advisorDocuments==''){ 
       this.invalidMessage = "Please upload your document";
   }*/
-    
-if(this.invalidMessage){ 
-  this.advisorDocumentsMissing = true;
-  this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': true })
-}else{
-  this.advisorDocumentsMissing = false;
-  this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': false })
-    let LicensInData = {
-      activeLicenceHeld: this.LicenseForm.controls['activeLicenceHeld'].value,
-      agencyOversees: this.LicenseForm.controls['agencyOversees'].value,
-      managingPrincipleName: this.LicenseForm.controls['managingPrincipleName'].value,
-      manageOtherProceducers: this.LicenseForm.controls['manageOtherProceducers'].value,
-      howManyProducers: this.LicenseForm.controls['howManyProducers'].value,
-    }
+  if(this.invalidMessage){ 
+    this.advisorDocumentsMissing = true;
+    this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': true })
+  }else{
+    this.advisorDocumentsMissing = false;
+    this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': false })
+      let LicensInData = {
+        activeLicenceHeld: this.LicenseForm.controls['activeLicenceHeld'].value,
+        agencyOversees: this.LicenseForm.controls['agencyOversees'].value,
+        managingPrincipleName: this.LicenseForm.controls['managingPrincipleName'].value,
+        manageOtherProceducers: this.LicenseForm.controls['manageOtherProceducers'].value,
+        howManyProducers: this.LicenseForm.controls['howManyProducers'].value,
+      }
     var query = {};
     var proquery = {};
     const req_vars = {
@@ -494,6 +491,21 @@ docDelete(doc, name,tmName) {
     } else {
       this.snack.open("Please select valid image. Valid extentions are jpg, jpeg, png, gif.", 'OK', { duration: 4000 })
     }
+  }
+
+  getProfileField = (query = {}, search = false) => {
+    const req_vars = {
+      query: Object.assign({ _id: this.userId, userType: "advisor" }, query)
+    }
+    this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe(result => {
+      if (result.status == "error") {
+      } else {
+        this.profile = result.data.userProfile;
+        this.advisorDocumentsList = this.profile.advisorDocuments;
+      }
+    }, (err) => {
+      console.error(err);
+    })
   }
 
   changePicModal(): void {

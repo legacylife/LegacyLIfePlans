@@ -34,6 +34,7 @@ export class BusinessInfoComponent implements OnInit {
   thirdFormGroup: FormGroup;
   forthFormGroup: FormGroup;
   //isEditable = true;
+  advisorDocumentsList: any;
   yearsOfServiceLists:any;
   businessTypeLists:any;
   industryDomainLists:any;
@@ -54,14 +55,18 @@ export class BusinessInfoComponent implements OnInit {
     private loader: AppLoaderService) { }//,private http: Http, private el: ElementRef
   
   ngOnInit() {
-    localStorage.setItem("step",'0');
+   // localStorage.setItem("step",'0');
     this.userId = localStorage.getItem("endUserId");
     this.stateList = states;
-    this.step = localStorage.getItem("step"); console.log("asdasd",this.step)
+    this.step = localStorage.getItem("step");
     this.myStepper.selectedIndex = Number(this.step);
     this.profile = [];
     if(this.step && this.step==4){
      this.router.navigate(['/', 'advisor', 'signup']);
+    }
+    
+    if(this.step>=3){
+      this.getProfileField();
     }
 
     this.firstFormGroup = new FormGroup({
@@ -126,7 +131,6 @@ export class BusinessInfoComponent implements OnInit {
    else if(steps==3) msgName ="license information";
   var query = {};
   var proquery = {};
-    console.log(">>>>>>",steps)
     if(steps==4){
       profileInData.profileSetup = 'yes';
       //if(this.uploader.getNotUploadedItems().length){
@@ -148,24 +152,24 @@ export class BusinessInfoComponent implements OnInit {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
         //this.prodata = result.data.userProfile;
-        localStorage.setItem("step",steps);
-
+        localStorage.setItem("step",steps);       
         if(steps==4){
-          if(this.uploader.getNotUploadedItems().length){
-            this.loader.open();
-            this.uploader.uploadAll();
+          // if(this.uploader.getNotUploadedItems().length){
+          //   this.loader.open();
+          //   this.uploader.uploadAll();
 
-            this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-              console.log("status here ",status);
-                if(status==0){
-                  this.loader.close();
-                  this.snack.open(result.data.message, 'OK', { duration: 4000 })
-                  this.router.navigate(['/', 'advisor', 'thank-you']);
-                }
-            };
-          }else{//no need this else
-            this.router.navigate(['/', 'advisor', 'thank-you']);
-          }          
+          //   this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+              
+          //       if(status==0){
+          //         this.loader.close();
+          //         this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          //         this.router.navigate(['/', 'advisor', 'thank-you']);
+          //       }
+          //   };
+          // }else{//no need this else
+          //   this.router.navigate(['/', 'advisor', 'thank-you']);
+          // }   
+          this.router.navigate(['/', 'advisor', 'thank-you']);
         }       
       }
     }, (err) => {
@@ -215,6 +219,27 @@ export class BusinessInfoComponent implements OnInit {
 
   public fileOverBase(e:any):void {
     this.hasBaseDropZoneOver = e;
+    if(this.uploader.getNotUploadedItems().length){
+        this.uploader.uploadAll(); 
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => { 
+        this.getProfileField();
+        };
+    }
+  }
+
+  getProfileField = (query = {}, search = false) => {
+    const req_vars = {
+      query: Object.assign({ _id: this.userId, userType: "advisor" }, query)
+    }
+    this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe(result => {
+      if (result.status == "error") {
+      } else {
+        this.profile = result.data.userProfile;
+        this.advisorDocumentsList = this.profile.advisorDocuments;
+      }
+    }, (err) => {
+      console.error(err);
+    })
   }
 
   showHowManyProducts(showVal) {
