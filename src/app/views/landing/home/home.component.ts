@@ -165,15 +165,12 @@ export class HomeComponent implements OnInit {
   beforeChange(e) {
   }
 
-
-  
   gotoTop() {
     const content = document.getElementsByClassName('rightside-content-hold')[0]
-    
-    content.scroll({ 
-      top: 0, 
-      left: 0, 
-      behavior: 'smooth' 
+    content.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
     });
   }
 }

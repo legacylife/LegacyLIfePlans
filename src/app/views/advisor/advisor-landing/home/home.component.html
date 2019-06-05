@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <div class="standard-bg" >
+    <div class="standard-bg">
       <div class="llp--container">
         <div class="hired--steps bottom-space">
           <div fxLayout="row wrap">
@@ -88,7 +88,7 @@
       </div>
     </div>
 
-    <div class="standard-bg" >
+    <div class="standard-bg">
       <div class="llp--container">
         <div class="hired--process--steps">
           <div fxLayout="row wrap" class="justify--content--space--around">
@@ -163,40 +163,40 @@
     </div>
 
     <div class="white--bg">
-    <div class="llp--container" id="ad-profile">
-      <div class="featured--advisors text-center">
-        <h1 class="landing-main-header">Featured Advisors</h1>
-        <p>Leads and Strong Management with LLP</p>
-        <div class="fa--slider relative">
-          <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" (init)="slickInit($event)" (breakpoint)="breakpoint($event)"
-            (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
-            <div ngxSlickItem *ngFor="let slide of slides" class="slide">
+      <div class="llp--container" id="ad-profile">
+        <div class="featured--advisors text-center">
+          <h1 class="landing-main-header">Featured Advisors</h1>
+          <p>Leads and Strong Management with LLP</p>
+          <div class="fa--slider relative">
+            <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" (init)="slickInit($event)" (breakpoint)="breakpoint($event)"
+              (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
+              <div ngxSlickItem *ngFor="let slide of slides" class="slide">
 
-              <div class="advisor--details">
-                <div class="advisor--photo">
-                  <img src="{{slide.photo}}" />
-                </div>
-                <div class="advisor--name">
-                  {{slide.name}}
-                </div>
-                <div class="advisor--title">
-                  {{slide.title}}
+                <div class="advisor--details">
+                  <div class="advisor--photo">
+                    <img src="{{slide.photo}}" />
+                  </div>
+                  <div class="advisor--name">
+                    {{slide.name}}
+                  </div>
+                  <div class="advisor--title">
+                    {{slide.title}}
+                  </div>
                 </div>
               </div>
-            </div>
-          </ngx-slick-carousel>
-          <button mat-raised-button class="llp--slider--button prev" (click)="slickModal.slickPrev()">
-            <mat-icon>keyboard_arrow_left</mat-icon>
-          </button>
-          <button mat-raised-button class="llp--slider--button next" (click)="slickModal.slickNext()">
-            <mat-icon>keyboard_arrow_right</mat-icon>
-          </button>
+            </ngx-slick-carousel>
+            <button mat-raised-button class="llp--slider--button prev" (click)="slickModal.slickPrev()">
+              <mat-icon>keyboard_arrow_left</mat-icon>
+            </button>
+            <button mat-raised-button class="llp--slider--button next" (click)="slickModal.slickNext()">
+              <mat-icon>keyboard_arrow_right</mat-icon>
+            </button>
+          </div>
         </div>
       </div>
     </div>
-    </div>
 
-    <div class="standard-bg" >
+    <div class="standard-bg">
       <div class="llp--container">
         <div class="profile--highlights">
           <h1 class="landing-main-header text-center">Legacy Life Plans Highlights</h1>
@@ -209,8 +209,13 @@
               </div>
               <div fxFlex.xs="100" fxFlex.sm="41" fxFlex.md="41" fxFlex.lg="41" fxFlex.xl="41">
                 <!-- <div class="easy-way">Easy Way to highlight your profile</div> -->
-                <p class="info">Holistic advice is comprehensive and takes every aspect of your client’s financial situation and aspirations into consideration.  Holistic advice includes strategies to build wealth, to manage expenses, to protect your client’s family, lifestyle, and assets.  Holistic advice plans for income in the working years and in retirement, and shows your clients how to pass their wealth onto the next generation, all in a tax effective manner.</p>
-                <p class="info">Invite your way to success. Build value as a trusted advisor providing a resource for your clients to secure their legacy and pass on to their families… a peace of mind.  </p>
+                <p class="info">Holistic advice is comprehensive and takes every aspect of your client’s financial situation and aspirations
+                  into consideration. Holistic advice includes strategies to build wealth, to manage expenses, to protect
+                  your client’s family, lifestyle, and assets. Holistic advice plans for income in the working years and
+                  in retirement, and shows your clients how to pass their wealth onto the next generation, all in a tax effective
+                  manner.</p>
+                <p class="info">Invite your way to success. Build value as a trusted advisor providing a resource for your clients to secure
+                  their legacy and pass on to their families… a peace of mind. </p>
                 <h5>Easy Steps</h5>
                 <ul class="profile-steps">
                   <li>1) Branding opportunity to be a featured advisor</li>
@@ -229,36 +234,36 @@
     </div>
 
     <div class="white--bg" id="ad-testimonials">
-    <div class="container--full--width">
-      <div class="featured--advisors text-center">
-        <h1 class="landing-main-header">What People Say?</h1>
-        <p>Testimonials from our peoples</p>
+      <div class="container--full--width">
+        <div class="featured--advisors text-center">
+          <h1 class="landing-main-header">What People Say?</h1>
+          <p>Testimonials from our peoples</p>
 
-        <div class="fa--slider relative what--do--sec">
-          <ngx-slick-carousel class="carousel" [config]="slideConfigTwo" (init)="slickInit2($event)" (breakpoint)="breakpoint($event)"
-            (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
-            <div ngxSlickItem *ngFor="let testomonial of testomonials" class="slide">
+          <div class="fa--slider relative what--do--sec">
+            <ngx-slick-carousel class="carousel" [config]="slideConfigTwo" (init)="slickInit2($event)" (breakpoint)="breakpoint($event)"
+              (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
+              <div ngxSlickItem *ngFor="let testomonial of testomonials" class="slide">
 
-              <div class="testimonial--wrapper">
-                <div class="testimonial--header">
-                  <i class="icon-quote"></i>
-                  <p>{{testomonial.clientSays}}</p>
-                </div>
-                <div class="testimonial--body">
-                  <div class="testmnl--user--pic">
-                    <img src="{{testomonial.clientPic}}">
+                <div class="testimonial--wrapper">
+                  <div class="testimonial--header">
+                    <i class="icon-quote"></i>
+                    <p>{{testomonial.clientSays}}</p>
                   </div>
-                  <h5> {{testomonial.clientName}}</h5>
-                  <h6> {{testomonial.clientDesc}}</h6>
+                  <div class="testimonial--body">
+                    <div class="testmnl--user--pic">
+                      <img src="{{testomonial.clientPic}}">
+                    </div>
+                    <h5> {{testomonial.clientName}}</h5>
+                    <h6> {{testomonial.clientDesc}}</h6>
+                  </div>
                 </div>
+
               </div>
+            </ngx-slick-carousel>
+          </div>
 
-            </div>
-          </ngx-slick-carousel>
         </div>
-
       </div>
-    </div>
     </div>
 
     <div class="get--a--free-section">
@@ -354,17 +359,24 @@
               <p>We’d love to hear from you! </p>
             </div>
             <div class="contact--us--form">
-              <mat-form-field appearance="outline">
-                <mat-label>Full Name*</mat-label>
-                <input matInput placeholder="John Smith ">
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Email Address *</mat-label>
-                <input matInput placeholder="john@abc">
-              </mat-form-field>
-              <div>
-                <button mat-raised-button class="landing--primary--btn mt-1 w161">Contact Us</button>
-              </div>
+              <form>
+                <mat-form-field appearance="outline">
+                  <mat-label>Full Name*</mat-label>
+                  <input matInput placeholder="John Smith ">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Email Address *</mat-label>
+                  <input matInput placeholder="abc@gmail.com ">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Your Message*</mat-label>
+                  <textarea matInput placeholder="Droup your message or query"></textarea>
+                </mat-form-field>
+                <div>
+                  <button mat-raised-button class="landing--primary--btn mt-1 w161">Contact Us</button>
+                </div>
+              </form>
             </div>
           </div>
 
