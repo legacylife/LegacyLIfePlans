@@ -50,7 +50,6 @@ export class userviewComponent implements OnInit {
         console.log(result.data)
       } else {
         this.row = result.data
-       // this.websites = this.row.websites;
       }
     }, (err) => {
       console.error(err)
