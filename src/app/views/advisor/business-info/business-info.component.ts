@@ -124,7 +124,7 @@ export class BusinessInfoComponent implements OnInit {
    }
 */
 
-  signupSubmit(steps=null,profileInData=null) {  
+  signupSubmit(steps=null,profileInData=null) {  console.log(steps);
    let msgName = '';
    if(steps==1) msgName = "business information";
    else if(steps==2) msgName ="business address";

@@ -6,8 +6,8 @@
   <div class="session-form-hold">
     <div class="login-sub-wrapper">
       <div class="stepper--wrapper">
-        <mat-horizontal-stepper (click)="isLinear=isLinear" linear #stepper>
-          <!-- step 1   (click)="isLinear=isLinear" id="toggle-linear"-->
+        <mat-horizontal-stepper linear  #stepper>
+          <!-- step 1   (click)="isLinear=isLinear"   id="toggle-linear"-->
           <mat-step [stepControl]="firstFormGroup">
             <form [formGroup]="firstFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit(1,firstFormGroup.value)">
               <div class="info--content">
