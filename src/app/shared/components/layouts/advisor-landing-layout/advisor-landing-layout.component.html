@@ -38,7 +38,7 @@
           [notificPanel]="notificationPanel">
         </app-header-side>
   
-        <div class="rightside-content-hold" [perfectScrollbar]="scrollConfig" [disabled]="!layoutConf.topbarFixed">
+        <div class="rightside-content-hold" id="advisor-home-content" [perfectScrollbar]="scrollConfig" [disabled]="!layoutConf.topbarFixed">
           <!-- View Loader -->
           <div class="view-loader" *ngIf="isModuleLoading">
             <div class="spinner">

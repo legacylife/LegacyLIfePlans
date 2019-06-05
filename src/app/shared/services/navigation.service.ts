@@ -207,29 +207,29 @@ export class NavigationService {
       name: 'About Us',
       type: 'extLink',
       icon: 'library_books',
-      state: '/aboutus '
+      state: '#ad-about-us '
     },{
       name: 'How LLP Works',
       icon: 'library_books',
       type: 'extLink',
-      state: '/advisor'
+      state: '#ad-how-help'
     },
     {
       name: 'Leads',
       type: 'extLink',
       icon: 'library_books',
-      state: '/advisor'
+      state: '#ad-leads'
     }, {
       name: 'Profile',
       type: 'extLink',
       icon: 'library_books',
-      state: '/advisor'
+      state: '#ad-profile'
     },
     {
       name: 'Testimonials',
       type: 'extLink',
       icon: 'library_books',
-      state: '/advisor'
+      state: '#ad-testimonials'
     }, {
       name: 'Contact Us',
       type: 'extLink',
