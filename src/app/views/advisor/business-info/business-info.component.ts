@@ -48,7 +48,7 @@ export class BusinessInfoComponent implements OnInit {
   activeLicenseList: string[] = activeLicense
   industryDomainList: string[] = industryDomain.sort()
   businessTypeList: string[] = businessType.sort()
-  yearsOfServiceList: string[] = yearsOfService.sort()
+  yearsOfServiceList: string[] = yearsOfService
   
   constructor(private router: Router, private activeRoute: ActivatedRoute, private stepper: MatStepperModule, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, 
     private loader: AppLoaderService) {}//,private http: Http, private el: ElementRef

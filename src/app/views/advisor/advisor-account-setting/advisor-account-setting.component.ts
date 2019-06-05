@@ -61,7 +61,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
   activeLicenseList: string[] = activeLicense
   industryDomainList: string[] = industryDomain.sort()
   businessTypeList: string[] = businessType.sort()
-  yearsOfServiceList: string[] = yearsOfService.sort()
+  yearsOfServiceList: string[] = yearsOfService
 
 
   @ViewChild(MatSidenav) private sideNav: MatSidenav;

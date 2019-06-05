@@ -74,6 +74,7 @@ export class AdvisorSignupComponent implements OnInit {
           this.proceedBtn = false;
           this.advisorOtp = true;
           this.llpAdvsignupForm.controls['username'].setErrors({ 'EmailExist': false })
+          this.EmailExist = false;
           this.clockCall();
         }
       } else {
