@@ -7,34 +7,6 @@
 <form class="llp-form-wrapper">
   <div class="ll--modal--body">
     <div fxLayout="row wrap">
-      <!--
-      <div fxLayout="row">
-          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
-            <p class="header--desc upload--doc">Upload your profile image</p>                                   
-          </div>
-        </div>
-
-          <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
-              <div class="upload--buss--docs--sec">
-                  <label>Upload your business documents</label>
-
-                 
-                      <div class="upload--box fileupload-drop-zone"
-                      ng2FileDrop
-                      [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-                      (onFileDrop)="dragFileAccepted($event)"
-                      [uploader]="uploader">
-                        
-                          <mat-icon class="cloud-icon">cloud_upload</mat-icon>
-                          <div class="select--file">Select file from your computer</div>
-                        </div>
-             
-
-
-                  <div class="file--details mb-1">JPEG, JPG, PNG</div>
-                </div>
-          </div>
--->
       <div fxFlex.xs="100 " class="pic--upload">
         <div class="file-upload ">
           <p class="header--desc upload--doc">Upload your profile image</p>
@@ -50,6 +22,6 @@
     </div>
   </div>
   <div class="ll--modal--footer profile--footer">
-    <button mat-raised-button class="llp--primary--btn save--profile--btn" (click)="saveProfilePicture();" [disabled]="!data.image">Save</button>
+    <button mat-raised-button class="llp--primary--btn save--profile--btn" type="button" (click)="saveProfilePicture();" [disabled]="!data.image">Save</button>
   </div>
 </form>

@@ -20,26 +20,19 @@
   <mat-icon>chevron_left</mat-icon>
   </button>
   <span fxFlex ></span>
-  <!--<span [matMenuTriggerFor]="accountMenu"> {{this.firstName}} {{this.lastName}} </span>-->
-  <!-- <button mat-icon-button [matMenuTriggerFor]="accountMenu" class="topbar-button-right img-button" style="margin-right:150px;">
-      {{this.firstName}} {{this.lastName}}  <mat-icon>arrow_drop_down</mat-icon>
-  </button> -->
-
-
   <button mat-icon-button [matMenuTriggerFor]="accountMenu" class="topbar-button-right img-button admin--user--letter">
-    SD
+      {{this.shortname}}
   </button>
-
   <mat-menu #accountMenu="matMenu">
-      <button mat-menu-item [routerLink]="['/admin/']">
+      <button mat-menu-item [routerLink]="'/admin/profile'">
         <mat-icon>perm_identity</mat-icon>
-        <span>Subhodh Deshpande</span>
+        <span>{{this.firstName}} {{this.lastName}}</span>
       </button>
-    <button mat-menu-item [routerLink]="['/admin/']">
+    <!-- <button mat-menu-item [routerLink]="'/admin/profile'">
       <mat-icon>dashboard</mat-icon>
       <span>Dashboard</span>
-    </button>
-    <button mat-menu-item [routerLink]="['/admin/profile']">
+    </button> -->
+    <button mat-menu-item [routerLink]="'/admin/profile'">
       <mat-icon>account_box</mat-icon>
       <span>Profile</span>
     </button>
