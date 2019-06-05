@@ -92,6 +92,7 @@ export class BusinessInfoComponent implements OnInit {
       managingPrincipleName: new FormControl('', Validators.required),
       manageOtherProceducers: new FormControl(''),
       howManyProducers: new FormControl('',[Validators.pattern(/^[0-9]*$/)]),
+      
     });
     this.forthFormGroup = this.fb.group({
     });

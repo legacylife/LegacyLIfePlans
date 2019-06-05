@@ -170,6 +170,7 @@
                   <input matInput placeholder="If yes, how many?" [formControl]="thirdFormGroup.controls['howManyProducers']">
                   <mat-icon matTooltip="Please enter numeric value." matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['howManyProducers'].hasError('pattern') && thirdFormGroup.controls['howManyProducers'].touched"
                   class="red--alert">help_outline</mat-icon>
+                  
                   <mat-icon matTooltip="Please enter value" matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['howManyProducers'].hasError('required') && thirdFormGroup.controls['howManyProducers'].touched"
                     class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
