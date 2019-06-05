@@ -1,7 +1,7 @@
 
 <div class="m-333" *ngIf="aceessSection">
   <!-- <span fxFlex></span> -->
-  <button mat-raised-button class="llp--primary--btn" (click)="openPopUp({}, true)">Add Member</button>
+  <button mat-raised-button class="llp--primary--btn" (click)="openPopUp({}, true)">+ Add Member</button>
 </div>
 <div class="row" *ngIf="aceessSection">    
 <mat-form-field class="margin-333" style="width: 100%">
@@ -49,9 +49,9 @@
           </ngx-datatable-column>
           <ngx-datatable-column name="Actions" [sortable]="false" [draggable]="false" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-             <button mat-icon-button mat-sm-button color="primary" class="mr-1" (click)="openPopUp(row)" title="Edit"><mat-icon>edit</mat-icon></button>
+             <button mat-icon-button mat-sm-button color="primary" class="mr-1 p-0" (click)="openPopUp(row)" title="Edit"><mat-icon>edit</mat-icon></button>
 			 <!-- <button mat-icon-button mat-sm-button color="primary" class="mb-1"  [routerLink]="['/', 'userlist', 'userview',{{row._id}}]"  title="View"><mat-icon style="font-size: 32px;">pageview</mat-icon></button>-->
-             <a mat-icon-button mat-sm-button color="primary" class="mb-1" [routerLink]="['/admin/userview', row._id]" title="View"><mat-icon style="font-size: 32px;">pageview</mat-icon></a>
+             <a mat-icon-button mat-sm-button color="primary" class="mb-1 p-0" [routerLink]="['/admin/userview', row._id]" title="View"><mat-icon style="font-size: 32px;">pageview</mat-icon></a>
              <!--<button mat-icon-button mat-sm-button color="warn" (click)="deleteItem(row)"><mat-icon>delete</mat-icon></button>-->
             </ng-template>
           </ngx-datatable-column>
