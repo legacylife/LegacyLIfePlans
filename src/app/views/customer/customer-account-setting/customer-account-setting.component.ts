@@ -9,7 +9,7 @@ import { AppLoaderService } from '../../../shared/services/app-loader/app-loader
 import { CustomValidators } from 'ng2-validation';
 import { ChangePassComponent } from './change-pass/change-pass.component';
 import { ChangePicComponent } from './../../change-pic/change-pic.component';
-
+import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { map } from 'rxjs/operators';
 import { Subscription, Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -35,7 +35,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   short_code: string;
   maxDate = new Date(new Date());
   profile: any;
-
+  isUpdating = false;
   uploadedFile: File
   profilePicture: any = "assets/images/arkenea/default.jpg"
 pdisplay: boolean = false
@@ -44,7 +44,7 @@ pdisplay: boolean = false
   
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder,
     private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
-    private loader: AppLoaderService, private picService: ProfilePicService) {
+    private loader: AppLoaderService, private picService: ProfilePicService, private confirmService: AppConfirmService, ) {
   }
 
   ngOnInit() {
@@ -125,6 +125,8 @@ pdisplay: boolean = false
 
 
   ProfileSubmit() {
+    this.isUpdating = true;  
+    if(this.ProfileForm.dirty){        }
     let profileInData = {
       firstName: this.ProfileForm.controls['firstName'].value,
       lastName: this.ProfileForm.controls['lastName'].value,
@@ -259,5 +261,23 @@ pdisplay: boolean = false
       this.snack.open("Please select valid image. Valid extentions are jpg, jpeg, png, gif.", 'OK', { duration: 4000 })
     }
   }
+
+
+//   canDeactivate(): Observable<boolean> | boolean {
+
+//     if (!this.isUpdating && this.ProfileForm.dirty) {
+
+//         //return this.dialogService.confirm('Discard changes for Person?');
+// console.log('asdasdasd');
+//         this.confirmService.confirm({ message: "Discard changes for Person?" }).subscribe(res => {
+//           if (res) {
+//             this.loader.open();
+       
+//           }
+//         })
+//     }
+//     return true;
+// }	
+
 
 }

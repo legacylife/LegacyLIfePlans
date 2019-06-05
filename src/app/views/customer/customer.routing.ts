@@ -7,7 +7,11 @@ import { CustomerLayoutComponent } from '../../shared/components/layouts/custome
 import { AuthLayoutComponent } from '../../shared/components/layouts/auth-layout/auth-layout.component';
 import { UserAuthGuard } from '../../shared/services/auth/userauth.guard';
 import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
-
+import { CanDeactivateGuard } from '../../shared/services/can-deactivate-guard.service';
+import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
+import { CustomerSubscriptionComponent } from './customer-subscription/customer-subscription.component';
+import { CustomerTrusteesComponent } from './customer-trustees/customer-trustees.component';
+import { CustomerProfessionalComponent } from './customer-professionals/customer-professionals.component';
 export const CustomerRoutes: Routes = [
   {
     path: 'signup',
@@ -43,7 +47,7 @@ export const CustomerRoutes: Routes = [
       { 
         path: '',
         component: UpdateProfileComponent,
-        canActivate: [ UserAuthGuard ] 
+        canActivate: [ UserAuthGuard ]
       }
     ]
   },{
@@ -53,8 +57,40 @@ export const CustomerRoutes: Routes = [
       { 
         path: '',
         component: CustomerAccountSettingComponent,
-        canActivate: [ UserAuthGuard ]  
+        canActivate: [ UserAuthGuard ],
+        canDeactivate: [CountryEditCanDeactivateGuard]    
+      }
+    ]
+  },{
+    path: 'customer-subscription',
+    component: CustomerLayoutComponent,
+    children : [
+      { 
+        path: '',
+        component: CustomerSubscriptionComponent,
+        canActivate: [ UserAuthGuard ]
+      }
+    ]
+  },{
+    path: 'professionals',
+    component: CustomerLayoutComponent,
+    children : [
+      { 
+        path: '',
+        component: CustomerProfessionalComponent,
+        canActivate: [ UserAuthGuard ]
+      }
+    ]
+  },{
+    path: 'trustees',
+    component: CustomerLayoutComponent,
+    children : [
+      { 
+        path: '',
+        component: CustomerTrusteesComponent,
+        canActivate: [ UserAuthGuard ]
       }
     ]
   }
+
 ];

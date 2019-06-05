@@ -6,7 +6,7 @@
   <div class="session-form-hold">
     <div class="login-sub-wrapper">
       <div class="stepper--wrapper">
-        <mat-horizontal-stepper linear #stepper>
+        <mat-horizontal-stepper (click)="isLinear=isLinear" linear #stepper>
           <!-- step 1   (click)="isLinear=isLinear" id="toggle-linear"-->
           <mat-step [stepControl]="firstFormGroup">
             <form [formGroup]="firstFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit(1,firstFormGroup.value)">
@@ -199,6 +199,13 @@
                     <div class="select--file">Select/drag file from your computer</div>
                   </div>
                   <div class="file--details">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+                </div>
+                
+                <div *ngIf="advisorDocumentsList" >
+                  <h3 class="header--text fnt--16">Uploaded documents</h3>
+                  <mat-chip-list class="doc--list" *ngFor="let doc of advisorDocumentsList; index as i">
+                      <mat-chip><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck" >{{doc.title}}</a><mat-icon matChipRemove  (click)="docDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+                  </mat-chip-list>
                 </div>
 
                 <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
