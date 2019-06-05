@@ -4,7 +4,7 @@
 <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}" *ngIf="aceessSection">
   <mat-card-content class="p-0">
     <ngx-datatable class="material ml-0 mr-0" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [limit]="10"
-      [rowHeight]="'auto'">
+    [messages]="my_messages"  [rowHeight]="'auto'">
       <ngx-datatable-column name="Email" prop="username" [flexGrow]="1">
         <ng-template let-row="row" ngx-datatable-cell-template>
           {{ row?.username }}

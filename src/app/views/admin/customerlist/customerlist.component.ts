@@ -20,12 +20,15 @@ export class customerlistComponent implements OnInit {
   showOrgSugg: boolean = true
   public rows: any[];
   temp = [];
-  aceessSection: any
-
+  aceessSection: any;
+  my_messages:any;
   constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
   ngOnInit() {
     this.aceessSection = this.api.getUserAccess('cms')
-
+    this.my_messages = {
+      'emptyMessage': 'No records Found'
+    };
+  
     this.getLists();
     //this.loader.open();
   }

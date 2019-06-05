@@ -21,10 +21,13 @@ export class advisorlistComponent implements OnInit {
   temp = [];
   advisorlistdata = [];
   aceessSection: any
-
+  my_messages:any;
   constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
   ngOnInit() {
-    this.aceessSection = this.api.getUserAccess('advisormanagement')
+    this.aceessSection = this.api.getUserAccess('advisormanagement');
+    this.my_messages = {
+      'emptyMessage': 'No records Found'
+    };
     this.getLists()
   }
 

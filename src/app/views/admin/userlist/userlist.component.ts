@@ -29,7 +29,7 @@ export class userlistComponent implements OnInit {
   loggedInUserDetails: any;
   aceessSection: any;
   public items: any[];
-
+  my_messages:any;
   //public getItemSub: Subscription;
 
   constructor(
@@ -38,8 +38,11 @@ export class userlistComponent implements OnInit {
     private snack: MatSnackBar, private confirmService: AppConfirmService, 
     private loader: AppLoaderService) { }
   ngOnInit() {
-    this.aceessSection = this.api.getUserAccess('adminmanagement')
-    this.userId = this.api.getUser()
+    this.aceessSection = this.api.getUserAccess('adminmanagement');
+    this.userId = this.api.getUser();
+    this.my_messages = {
+      'emptyMessage': 'No records Found'
+    };
     this.getLists()
   }
 

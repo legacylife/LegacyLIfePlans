@@ -13,7 +13,8 @@ export class NgxTablePopupComponent implements OnInit {
   adminSections = [];
   url: string;
   RequestData: any;
-
+  invalidMessage: string;
+  EmailExist: boolean;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NgxTablePopupComponent>,
@@ -72,10 +73,19 @@ export class NgxTablePopupComponent implements OnInit {
     }
 
     this.api.apiRequest('post', this.url, this.RequestData).subscribe(result => {
-      if (result.status == "error") {
-        this.dialogRef.close(this.itemForm.value)
+      if(result.status == "success") {
+        if(result.data.code == "Exist") {
+         
+           this.itemForm.controls['username'].enable();
+           this.invalidMessage = result.data.message;
+           this.EmailExist = true;
+        } else {
+          this.EmailExist = false;
+          this.dialogRef.close(this.itemForm.value)
+        }
       } else {
-        this.dialogRef.close(this.itemForm.value)
+        
+        //this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
       console.error(err)

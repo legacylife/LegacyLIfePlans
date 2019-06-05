@@ -56,26 +56,22 @@ export class signinComponent implements OnInit {
         this.router.navigate(['/', 'admin', 'userlist'])
 
       } else {
-        this.llpsigninForm.controls['username'].enable();
-        var emails = this.llpsigninForm.controls['username'].value
-        //this.llpsigninForm.controls['username'].markAsUntouched();//this.llpsigninForm.controls['password'].markAsUntouched();
-        if (result.data.invalidEmail) {
+      //  this.llpsigninForm.controls['username'].enable();
+        var emails = this.llpsigninForm.controls['username'].value;      
+        if(result.data.invalidEmail){
           this.invalidEmail = true;
           this.invalidMessage = result.data.message
-          this.llpsigninForm.controls['username'].setErrors({ 'invalidEmail': true });
+          this.llpsigninForm.controls['username'].setErrors({'invalidEmail' : true})
           this.llpsigninForm.controls['password'].setErrors({'invalid' : true});
-        } else {
+        }else if(result.data.invalidPassword){
+          this.llpsigninForm.controls['password'].setErrors({'invalid' : true});
+          this.llpsigninForm.controls['password'].markAsUntouched();
+          this.invalidEmail = false;
+        }else{
           this.llpsigninForm.controls['username'].markAsUntouched();
           this.invalidEmail = false;
-          this.llpsigninForm.controls['username'].setErrors({ 'invalidEmail': false });
-        }
-
-        if (result.data.invalidPassword) {
-          this.invalidEmail = false;
-          this.llpsigninForm.controls['password'].setErrors({ 'invalid': true });
-          this.llpsigninForm.controls['username'].setErrors({'invalidEmail' : false});
-        }
-
+          this.llpsigninForm.controls['username'].setErrors({'invalidEmail' : false})
+        }  
       }
     }, (err) => {
 

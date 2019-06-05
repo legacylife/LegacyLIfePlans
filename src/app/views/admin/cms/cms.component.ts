@@ -20,19 +20,25 @@ export class cmslistComponent implements OnInit {
   columns = [];
   temp = [];
   advisorlistdata = [];
-  aceessSection : any
-    
+  aceessSection : any;
+  my_messages:any;
  constructor(private api: APIService, private route: ActivatedRoute, private router:Router) { }   
   ngOnInit() {
     this.aceessSection = this.api.getUserAccess('cms')
+    this.my_messages = {
+      'emptyMessage': 'No records Found'
+    };
+
     this.getLists()
   }
 
   //function to get all cms pages
   getLists = (query = {}, search = false) => {
     const req_vars = {
-      query: Object.assign({ }, query)	  
+      query: Object.assign({ }, query),
+      order: {"createdOn": -1},
     }
+    
     this.api.apiRequest('post', 'cms/list', req_vars).subscribe(result => {
       if(result.status == "error"){
 		  console.log(result.data)        

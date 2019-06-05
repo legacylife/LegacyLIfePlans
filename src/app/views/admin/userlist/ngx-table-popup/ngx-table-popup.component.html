@@ -11,7 +11,7 @@
           matInput
           name="firstName"
           [formControl]="itemForm.controls['firstName']"
-          placeholder="First Name">
+          placeholder="First Name *">
         </mat-form-field>
       </div>
 
@@ -21,23 +21,19 @@
             matInput
             name="lastName"
             [formControl]="itemForm.controls['lastName']"
-            placeholder="Last Name">
+            placeholder="Last Name *">
           </mat-form-field>
         </div>
       <div fxFlex="100"  class="pr-1">
         <mat-form-field class="full-width">
-          <input
-          matInput
-          type="email"
-          name="username"
-          [formControl]="itemForm.controls['username']"
-          placeholder="Email">
-        </mat-form-field>
+          <input matInput type="email" name="username" [formControl]="itemForm.controls['username']" placeholder="Email *">
+          <mat-icon matTooltip="{{invalidMessage}}" matTooltipClass="llp--tooltip error" *ngIf="EmailExist" class="red--alert">help_outline</mat-icon>
+      </mat-form-field>
       </div>
     <mat-card fxFlex="50" class="pr-1 default" *ngFor="let t of adminSections"> 
       <mat-card-content class="pt-0">
           <mat-list >
-            <Label>{{t.name}}</Label>
+            <Label>{{t.name}} *</Label>
               <mat-radio-group  class="llp-radio full-width m-0" name="{{t.code}}" [formControl]="itemForm.controls[t.code]">
                 <mat-list-item>
                   <mat-radio-button value="fullaccess">Full Access </mat-radio-button>   <mat-radio-button value="denyall"> Deny All</mat-radio-button>
@@ -71,6 +67,6 @@
   </div>
   <div class="ll--modal--footer text-center">
     <button mat-raised-button class="llp--primary--btn" [disabled]="itemForm.invalid">Save</button>
-    <button mat-button color="warn" type="button" (click)="dialogRef.close(false)">Cancel</button>
+    <!-- <button mat-button color="warn" type="button" (click)="dialogRef.close(false)">Cancel</button> -->
    </div>
 </form>

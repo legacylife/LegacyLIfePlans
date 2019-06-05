@@ -21,19 +21,22 @@ export class EmailTemplateComponent implements OnInit {
   rows = [];
   columns = [];
   temp = [];
-    
+  my_messages:any;
  constructor(private api: APIService, private route: ActivatedRoute, private router:Router) { }   
   ngOnInit() {
     this.userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
     this.userType = localStorage.getItem("userType") || sessionStorage.getItem("userType")
-
+    this.my_messages = {
+      'emptyMessage': 'No records Found'
+    };
     this.getLists()
   }
 
   //function to get all email template List pages
   getLists = (query = {}, search = false) => {
     const req_vars = {
-      query: Object.assign({ }, query)	  
+      query: Object.assign({ }, query),
+      order: {"createdOn": -1}	  
     }
     this.api.apiRequest('post', 'emailtemp/list', req_vars).subscribe(result => {
       if(result.status == "error"){

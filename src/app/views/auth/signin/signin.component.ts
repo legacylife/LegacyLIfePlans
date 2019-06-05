@@ -63,26 +63,25 @@ export class SigninComponent implements OnInit {
           this.router.navigate(['/', 'advisor', 'dashboard'])
         }  
       } else {
-        this.llpCustsigninForm.controls['username'].enable();
+       // this.llpCustsigninForm.controls['username'].enable();
         var emails = this.llpCustsigninForm.controls['username'].value
         if(result.data.invalidEmail){
-          console.log("invalid email")
+          console.log('890890890890')
           this.invalidEmail = true;
           this.invalidMessage = result.data.message
           this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : true})
           this.llpCustsigninForm.controls['password'].setErrors({'invalid' : true});
-        }else{ 
-          console.log("valid email")
+        }else if(result.data.invalidPassword){
+       
+          //this.llpCustsigninForm.controls['username'].markAsTouched();
+          this.llpCustsigninForm.controls['password'].setErrors({'invalid' : true});
+         // this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false});
+          this.llpCustsigninForm.controls['password'].markAsUntouched();
+          this.invalidEmail = false;
+        }else{
           this.llpCustsigninForm.controls['username'].markAsUntouched();
           this.invalidEmail = false;
           this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false})
-        } 
-
-        if(result.data.invalidPassword){
-          console.log("invalid password")
-          this.invalidEmail = false;
-          this.llpCustsigninForm.controls['password'].setErrors({'invalid' : true});
-          this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false});
         }
       }      
     }, (err) => {

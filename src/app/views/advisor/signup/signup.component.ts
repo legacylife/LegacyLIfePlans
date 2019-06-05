@@ -108,6 +108,7 @@ export class AdvisorSignupComponent implements OnInit {
           this.invalidOTP = true;
           this.llpAdvotpForm.controls['otp'].setErrors({ 'invalidOTP': true })
           this.invalidOtpMessage = result.data.message;
+          this.snack.open(result.data.message, 'OK', { duration: 10000 })
         }
       } else {
         this.loader.close();
