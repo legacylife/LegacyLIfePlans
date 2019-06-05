@@ -80,7 +80,7 @@
                     </mat-form-field>
 
                     <mat-form-field class="full-width llp-datepicker">
-                      <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Date of Birth" value="" [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
+                      <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Date of Birth" value="" readonly [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
                       <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                       <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
                       </mat-datepicker>
@@ -120,7 +120,7 @@
                   </div>
                 </div>
                 <div fx.Flex="100" class="text-center mt--30">
-                  <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
+                  <button mat-raised-button class="llp--secondary--btn mr-1" [routerLink]="'/customer/dashboard'">Cancel</button>
                   <button mat-raised-button class="llp--primary--btn" [disabled]="ProfileForm.invalid">Save</button>
                 </div>
               </div>
@@ -177,7 +177,7 @@
                   </div>
                 </div>
                 <div fx.Flex="100" class="text-center mt--30">
-                  <button mat-raised-button class="llp--secondary--btn mr-1">Cancel</button>
+                  <button mat-raised-button class="llp--secondary--btn mr-1" [routerLink]="'/customer/dashboard'">Cancel</button>
                   <button mat-raised-button class="llp--primary--btn" [disabled]="AddressForm.invalid">Save</button>
                 </div>
               </form>

@@ -66,16 +66,14 @@ export class SigninComponent implements OnInit {
        // this.llpCustsigninForm.controls['username'].enable();
         var emails = this.llpCustsigninForm.controls['username'].value
         if(result.data.invalidEmail){
-          console.log('890890890890')
           this.invalidEmail = true;
           this.invalidMessage = result.data.message
           this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : true})
           this.llpCustsigninForm.controls['password'].setErrors({'invalid' : true});
         }else if(result.data.invalidPassword){
-       
           //this.llpCustsigninForm.controls['username'].markAsTouched();
           this.llpCustsigninForm.controls['password'].setErrors({'invalid' : true});
-         // this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false});
+          //this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false});
           this.llpCustsigninForm.controls['password'].markAsUntouched();
           this.invalidEmail = false;
         }else{
