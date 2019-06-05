@@ -45,17 +45,16 @@ export class BusinessInfoComponent implements OnInit {
   state_name:string;
   short_code:string;
   showHowManyProducer:boolean = false;
-
   activeLicenseList: string[] = activeLicense
   industryDomainList: string[] = industryDomain.sort()
   businessTypeList: string[] = businessType.sort()
   yearsOfServiceList: string[] = yearsOfService.sort()
   
   constructor(private router: Router, private activeRoute: ActivatedRoute, private stepper: MatStepperModule, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, 
-    private loader: AppLoaderService) { }//,private http: Http, private el: ElementRef
+    private loader: AppLoaderService) {}//,private http: Http, private el: ElementRef
   
   ngOnInit() {
-   // localStorage.setItem("step",'0');
+    //localStorage.setItem("step",'0');
     this.userId = localStorage.getItem("endUserId");
     this.stateList = states;
     this.step = localStorage.getItem("step");
@@ -92,12 +91,23 @@ export class BusinessInfoComponent implements OnInit {
       agencyOversees: new FormControl(''),
       managingPrincipleName: new FormControl('', Validators.required),
       manageOtherProceducers: new FormControl(''),
-      howManyProducers: new FormControl('')
+      howManyProducers: new FormControl('',[Validators.pattern(/^[0-9]*$/)]),
     });
     this.forthFormGroup = this.fb.group({
     });
     if(this.step || this.userId){
       this.getAdvDetails(this.step);
+    }
+  }
+
+   conditionalRequired() {
+    //console.log("asdasdasd",this.thirdFormGroup.controls['manageOtherProceducers'].value);
+    return (control: FormControl): { [s: string]: boolean } => {
+      let required: boolean = false;
+     console.log("asdasdasd",this.thirdFormGroup.controls['manageOtherProceducers'].value)
+      if (this.thirdFormGroup.controls['manageOtherProceducers'].value=='1') {
+        return { required: true };
+      }
     }
   }
 /*
@@ -244,5 +254,21 @@ export class BusinessInfoComponent implements OnInit {
 
   showHowManyProducts(showVal) {
     !this.thirdFormGroup.controls['manageOtherProceducers'].value || this.thirdFormGroup.controls['manageOtherProceducers'].value == 2 ? this.showHowManyProducer = true : this.showHowManyProducer = false
+    // console.log("Asdasd",this.thirdFormGroup.controls['manageOtherProceducers'].value);
+    // if(this.thirdFormGroup.controls['manageOtherProceducers'].value=='' || this.thirdFormGroup.controls['manageOtherProceducers'].value=='1'){
+    //     this.thirdFormGroup = this.fb.group({
+    //       activeLicenceHeld: new FormControl([], Validators.required),
+    //       agencyOversees: new FormControl(''),
+    //       managingPrincipleName: new FormControl('', Validators.required),
+    //       manageOtherProceducers: new FormControl(''),
+    //       howManyProducers: new FormControl('',[Validators.required,Validators.pattern(/^[0-9]$/)]),
+    //     });
+
+    //     this.thirdFormGroup.controls['activeLicenceHeld'].setValue(this.profile.activeLicenceHeld ? this.profile.activeLicenceHeld : []);
+    //     this.thirdFormGroup.controls['agencyOversees'].setValue(this.profile.agencyOversees);
+    //     this.thirdFormGroup.controls['managingPrincipleName'].setValue(this.profile.managingPrincipleName);
+    //     this.thirdFormGroup.controls['manageOtherProceducers'].setValue(this.profile.manageOtherProceducers);
+    //     this.thirdFormGroup.controls['howManyProducers'].setValue(this.profile.howManyProducers);
+    //   }
   }
 }
