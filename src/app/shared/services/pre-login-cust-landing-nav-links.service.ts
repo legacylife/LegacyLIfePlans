@@ -43,7 +43,7 @@ export class LandingCustomerNavService {
       state: '/aboutus'
     },
     {
-      name: 'How LLP Hired',
+      name: 'How LLP Works',
       type: 'link',
       tooltip: '',
       state: ''

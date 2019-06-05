@@ -1,4 +1,21 @@
 .busi--info--wrapper{
+    
+    .doc--uploaded{
+        margin-bottom: 20px;
+        .header--text{
+            margin: 0 0 15px 0;
+            color: #222324;
+            font-size: 28px;
+        }
+        .mat-standard-chip{
+            display: flex;
+            font-size: 15px;
+            word-wrap: break-word;
+            word-break: break-all;
+            height: auto;
+        }
+    }
+    
     .login-header-desc{
         text-align: left;
         font-size: 16px;
