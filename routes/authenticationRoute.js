@@ -238,7 +238,7 @@ function list(req, res) {
 
 //function get details of user from url param
 function details(req, res) {
-  let fields = { id: 1, username: 1, socialMediaToken: 1, salt: 1, fullName: 1, profileSetup:1, status :1, userType :1 }
+  let fields = { id: 1, username: 1, socialMediaToken: 1, salt: 1, fullName: 1, profileSetup:1, status :1, userType :1, sectionAccess :1 }
   if (req.body.fields) {
     fields = req.body.fields
   }
@@ -461,7 +461,7 @@ async function checkEmail(req, res) {
                     res.send(resFormat.rError(err))
                   } else {
                     stat = sendOtpMail(req.body.username, otp);
-                    res.send(resFormat.rSuccess({ code: "success", message: 'We have sent you OTP. Please check your email.' }))                    
+                    res.send(resFormat.rSuccess({ code: "success", message: 'A new OTP is sent on your email.' }))                    
                   }
                 })
               } else if(req.body.username){
