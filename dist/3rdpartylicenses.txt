@@ -1460,9 +1460,9 @@ THE SOFTWARE.
 
 @angular/material/slide-toggle
 
-@angular/material/stepper
-
 @angular/material/chips
+
+@angular/material/stepper
 
 @angular/material/checkbox
 
