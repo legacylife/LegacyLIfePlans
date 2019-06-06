@@ -14,7 +14,8 @@ export class HeaderSideComponent implements OnInit {
   @Input() notificPanel;
   currentLang = 'en';
   firstName: string
-  lastName: string = ""
+  lastName: string = "";
+  shortname:any;
   public availableLangs = [{
     name: 'English',
     code: 'en',
@@ -35,8 +36,11 @@ export class HeaderSideComponent implements OnInit {
     private router:Router
   ) {}
   ngOnInit() {
-    this.firstName = localStorage.getItem("firstName") || sessionStorage.getItem("firstName")
-    this.lastName = localStorage.getItem("lastName") || sessionStorage.getItem("lastName")
+    this.firstName = localStorage.getItem("firstName") || sessionStorage.getItem("firstName");
+    this.lastName = localStorage.getItem("lastName") || sessionStorage.getItem("lastName");
+
+    this.shortname = this.firstName.charAt(0)+this.lastName.charAt(0);
+
     this.egretThemes = this.themeService.egretThemes;
     
     if(!this.api.isLoggedIn()){

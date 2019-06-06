@@ -2,7 +2,7 @@
   {{data.title}}  
   <button class="modal--close" ><mat-icon (click)="dialogRef.close()" class="icon--cross">cancel</mat-icon></button>  
 </div>
-<form [formGroup]="itemForm" (ngSubmit)="submit()">
+<form [formGroup]="itemForm" class="llp-form-wrapper" (ngSubmit)="submit()">
   <div class="ll--modal--body">
     <div fxLayout="row wrap">
       <div fxFlex="50"  class="pr-1">

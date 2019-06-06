@@ -60,27 +60,7 @@ export class ChangePicComponent implements OnInit {
  
     myReader.readAsDataURL(file);
 }
-/*
-private dragFileAccepted(acceptedFile) {
- 
-  // Load the image in
-  let fileReader = new FileReader();
-  fileReader.onload = () => {
 
-      // Set and show the image
-      this.data = fileReader.result;
-      // this.imageShown = true;
-  };
-
-  // Read in the file
-  fileReader.readAsDataURL(acceptedFile.file);
-}
-
-
-public fileOverBase(e: any): void {
-  this.hasBaseDropZoneOver = e;
-}
-*/
  saveProfilePicture() {
   this.loader.open(); 
     let profileInData = {
@@ -96,7 +76,6 @@ public fileOverBase(e: any): void {
       if(result.status == "error"){
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
-        this.loader.close();
         let userHeaderDetails = sessionStorage.getItem("enduserHeaderDetails")
         let userDetails = JSON.parse(userHeaderDetails)
         userHeaderDetails = JSON.stringify(userDetails)

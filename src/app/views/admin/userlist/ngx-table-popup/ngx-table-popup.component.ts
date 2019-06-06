@@ -75,11 +75,12 @@ export class NgxTablePopupComponent implements OnInit {
     this.api.apiRequest('post', this.url, this.RequestData).subscribe(result => {
       if(result.status == "success") {
         if(result.data.code == "Exist") {
-         
-           this.itemForm.controls['username'].enable();
+           this.itemForm.controls['username'].markAsUntouched();
+        //   this.itemForm.controls['username'].enable();
+        this.itemForm.controls['username'].setErrors({'EmailExist' : true})
            this.invalidMessage = result.data.message;
            this.EmailExist = true;
-        } else {
+        } else {     
           this.EmailExist = false;
           this.dialogRef.close(this.itemForm.value)
         }

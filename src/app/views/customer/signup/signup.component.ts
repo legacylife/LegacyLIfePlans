@@ -76,6 +76,8 @@ export class CustomerSignupComponent implements OnInit {
           this.custProceedBtn = false;
           this.custOtpSec = true;
           this.llpCustsignupForm.controls['username'].setErrors({ 'EmailExist': false })
+          this.EmailExist = false;
+          this.snack.open(result.data.message, 'OK', { duration: 4000 })
           this.clockCall();
         }
       } else {
@@ -98,6 +100,7 @@ export class CustomerSignupComponent implements OnInit {
       if (result.status == "success") {
         this.loader.close();
         if (result.data.code == "success") {
+          this.llpCustsignupForm.controls['username'].setErrors({ 'EmailExist': false })
           localStorage.setItem("endUsername", result.data.username)
           localStorage.setItem("endUserId", result.data.userId)
           localStorage.setItem("endUserType", result.data.userType)

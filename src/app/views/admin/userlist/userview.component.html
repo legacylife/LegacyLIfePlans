@@ -112,11 +112,43 @@
           <mat-card-title>Access To Sections</mat-card-title>
           <mat-card-content class="p-0">
             <div class="list-tasktype">
-              <div class="tasktype-item" *ngFor="let t of adminSections">
-                <mat-checkbox class="mr-1" disabled></mat-checkbox>
-                <span>{{t.name}}</span>
+              <div class="tasktype-item">
+                <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess.usermanagement === 'fullaccess'"></mat-checkbox>
+                <span>User Management</span>
               </div>
-            </div>            
+              <div class="tasktype-item">
+                <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess.advisormanagement === 'fullaccess'"></mat-checkbox>
+                <span>Advisor Management</span>
+              </div>
+              <div class="tasktype-item">
+                <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess.activitylog === 'fullaccess'"></mat-checkbox>
+                <span>Activity Log</span>
+              </div>
+              <div class="tasktype-item">
+                <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess.zipcodemap === 'fullaccess'"></mat-checkbox>
+                <span>Zip Code Map</span>
+              </div>
+              <div class="tasktype-item">
+                <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess.cms === 'fullaccess'"></mat-checkbox>
+                <span>CMS Pages</span>
+              </div>
+              <div class="tasktype-item">
+                <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess.referral === 'fullaccess'"></mat-checkbox>
+                <span>Referral Program</span>
+              </div>
+              <div class="tasktype-item">
+                <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess.addmanagement === 'fullaccess'"></mat-checkbox>
+                <span>Advertisement Management</span>
+              </div>
+              <div class="tasktype-item">
+                <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess.deceasedrequest === 'fullaccess'"></mat-checkbox>
+                <span>Deceased Requests</span>
+              </div>
+              <div class="tasktype-item">
+                <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess.adminmanagement === 'fullaccess'"></mat-checkbox>
+                <span>Admin Management</span>
+              </div>
+            </div>           
           </mat-card-content>
         </mat-card>
         <!-- Admin panel section list ends -->
