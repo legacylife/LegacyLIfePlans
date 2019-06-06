@@ -17,6 +17,7 @@ import "rxjs/add/operator/do";
 import "rxjs/add/operator/map";
 import { serverUrl, s3Details } from '../../../config';
 const URL = serverUrl+'/api/documents/advisorDocument';
+import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 @Component({
   selector: 'app-business-info',
   templateUrl: './business-info.component.html',
@@ -34,6 +35,7 @@ export class BusinessInfoComponent implements OnInit {
   thirdFormGroup: FormGroup;
   forthFormGroup: FormGroup;
   //isEditable = true;
+  advisorDocuments_temps = false;
   advisorDocumentsList: any;
   yearsOfServiceLists:any;
   businessTypeLists:any;
@@ -51,10 +53,10 @@ export class BusinessInfoComponent implements OnInit {
   yearsOfServiceList: string[] = yearsOfService
   
   constructor(private router: Router, private activeRoute: ActivatedRoute, private stepper: MatStepperModule, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, 
-    private loader: AppLoaderService) {}//,private http: Http, private el: ElementRef
+    private loader: AppLoaderService,private confirmService: AppConfirmService) {}//,private http: Http, private el: ElementRef
   
   ngOnInit() {
-    //localStorage.setItem("step",'0');
+    localStorage.setItem("step",'0');
     this.userId = localStorage.getItem("endUserId");
     this.stateList = states;
     this.step = localStorage.getItem("step");
@@ -95,13 +97,14 @@ export class BusinessInfoComponent implements OnInit {
       
     });
     this.forthFormGroup = this.fb.group({
+      advisorDocuments_temp: new FormControl([],Validators.required)
     });
     if(this.step || this.userId){
       this.getAdvDetails(this.step);
     }
   }
 
-   conditionalRequired() {
+ /*  conditionalRequired() {
     //console.log("asdasdasd",this.thirdFormGroup.controls['manageOtherProceducers'].value);
     return (control: FormControl): { [s: string]: boolean } => {
       let required: boolean = false;
@@ -134,6 +137,39 @@ export class BusinessInfoComponent implements OnInit {
     }
    }
 */
+
+
+docDelete(doc, name,tmName) {
+  var statMsg = "Are you sure you want to delete '" + name + "' file name?"
+  this.confirmService.confirm({ message: statMsg })
+    .subscribe(res => {
+      if (res) {
+        this.loader.open();
+        this.advisorDocumentsList.splice(doc, 1)
+        var query = {};
+        const req_vars = {
+          query: Object.assign({ _id: this.userId }, query),
+          proquery: Object.assign({ advisorDocuments: this.advisorDocumentsList }, query),
+          fileName: Object.assign({ docName: tmName }, query)
+        }
+        this.userapi.apiRequest('post', 'documents/deleteAdvDoc', req_vars).subscribe(result => {
+          if (result.status == "error") {
+            this.loader.close();
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          } else {    
+            if(this.advisorDocumentsList.length<1){
+              this.forthFormGroup.controls['advisorDocuments_temp'].setValue('');
+            }            
+            this.loader.close();
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          }
+        }, (err) => {
+          console.error(err)
+          this.loader.close();
+        })
+      }
+    })
+}
 
   signupSubmit(steps=null,profileInData=null) {  console.log(steps);
    let msgName = '';
@@ -219,7 +255,14 @@ export class BusinessInfoComponent implements OnInit {
           this.thirdFormGroup.controls['managingPrincipleName'].setValue(this.profile.managingPrincipleName);
           this.thirdFormGroup.controls['manageOtherProceducers'].setValue(this.profile.manageOtherProceducers);
           this.thirdFormGroup.controls['howManyProducers'].setValue(this.profile.howManyProducers);
-          this.profile.manageOtherProceducers == 1 ? this.showHowManyProducer = true : this.showHowManyProducer = false
+          this.profile.manageOtherProceducers == 1 ? this.showHowManyProducer = true : this.showHowManyProducer = false;
+          this.forthFormGroup.controls['advisorDocuments_temp'].setValue('');
+          console.log("-----",this.profile.advisorDocuments)
+          if(this.profile.advisorDocuments.length>0){
+            console.log("*****",this.profile.advisorDocuments)
+            this.forthFormGroup.controls['advisorDocuments_temp'].setValue('1');
+          }
+          
           this.loader.close();
         }
       }, (err) => {
@@ -247,6 +290,12 @@ export class BusinessInfoComponent implements OnInit {
       } else {
         this.profile = result.data.userProfile;
         this.advisorDocumentsList = this.profile.advisorDocuments;
+        console.log("-----",this.advisorDocumentsList.length);
+        if(this.profile.advisorDocuments.length>0){
+          console.log("*****",this.profile.advisorDocuments)
+          this.forthFormGroup.controls['advisorDocuments_temp'].setValue('1');
+        }
+       
       }
     }, (err) => {
       console.error(err);
@@ -254,8 +303,9 @@ export class BusinessInfoComponent implements OnInit {
   }
 
   showHowManyProducts(showVal) {
-    !this.thirdFormGroup.controls['manageOtherProceducers'].value || this.thirdFormGroup.controls['manageOtherProceducers'].value == 2 ? this.showHowManyProducer = true : this.showHowManyProducer = false
-    // console.log("Asdasd",this.thirdFormGroup.controls['manageOtherProceducers'].value);
+    console.log("Asdasd",showVal, '-----',this.thirdFormGroup.controls['manageOtherProceducers'].value);
+    !showVal || showVal == 1 ? this.showHowManyProducer = true : this.showHowManyProducer = false
+  }
     // if(this.thirdFormGroup.controls['manageOtherProceducers'].value=='' || this.thirdFormGroup.controls['manageOtherProceducers'].value=='1'){
     //     this.thirdFormGroup = this.fb.group({
     //       activeLicenceHeld: new FormControl([], Validators.required),
@@ -271,5 +321,4 @@ export class BusinessInfoComponent implements OnInit {
     //     this.thirdFormGroup.controls['manageOtherProceducers'].setValue(this.profile.manageOtherProceducers);
     //     this.thirdFormGroup.controls['howManyProducers'].setValue(this.profile.howManyProducers);
     //   }
-  }
 }

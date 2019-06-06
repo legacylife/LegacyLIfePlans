@@ -162,8 +162,8 @@
 
                 <mat-radio-group aria-label="Select An Option" class="llp-radio" [formControl]="thirdFormGroup.controls['manageOtherProceducers']">
                   <div class="checkbox-label">Do you manage other products?</div>
-                  <mat-radio-button (change)="showHowManyProducts(thirdFormGroup.value)" value="1" class="ml-0" [checked]="profile.manageOtherProceducers && profile.manageOtherProceducers == '1'">Yes</mat-radio-button>
-                  <mat-radio-button (change)="showHowManyProducts(thirdFormGroup.value)" value="2" class="" [checked]="profile && !profile.manageOtherProceducers">No</mat-radio-button>
+                  <mat-radio-button (change)="showHowManyProducts('1')" value="1" class="ml-0" [checked]="profile.manageOtherProceducers && profile.manageOtherProceducers == '1'">Yes</mat-radio-button>
+                  <mat-radio-button (change)="showHowManyProducts('2')" value="2" class="" [checked]="profile && !profile.manageOtherProceducers">No</mat-radio-button>
                 </mat-radio-group>
 
                 <mat-form-field class="full-width" *ngIf="showHowManyProducer">
@@ -196,7 +196,7 @@
                 </div>
 
                 <div class="upload--buss--docs--sec">
-                  <label>Upload your business documents</label>
+                  <label>Upload your business documents *</label>
                   <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
                     [uploader]="uploader">
                     <input type="file" name="advisorDocuments" id="advisorDocs" multiple accept="image/*" />
@@ -205,7 +205,13 @@
                   </div>
                   <div class="file--details">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
                 </div>
-                
+                <mat-form-field class="full-width" *ngIf="advisorDocuments_temps">
+                    <input matInput name="advisorDocuments_temp" [formControl]="forthFormGroup.controls['advisorDocuments_temp']">
+                  </mat-form-field>
+
+                <small *ngIf="forthFormGroup.controls['advisorDocuments_temp'].hasError('required') && forthFormGroup.controls['advisorDocuments_temp'].touched" class="form-error-msg">
+                    Please drag your document. </small>
+                    
                 <div *ngIf="advisorDocumentsList" class="doc--uploaded">
                   <h3 class="header--text fnt--16">Uploaded documents</h3>
                   <mat-chip-list class="doc--list" *ngFor="let doc of advisorDocumentsList; index as i">
@@ -219,7 +225,7 @@
                   <p>&nbsp;</p>
                </div>
                 <div class="text-center">
-                  <button mat-raised-button class="llp--primary--btn full-width mb-1">Complete</button>
+                  <button mat-raised-button class="llp--primary--btn full-width mb-1" [disabled]="forthFormGroup.invalid">Complete</button>
                   <button mat-raised-button matStepperPrevious class="llp--back--btn"><mat-icon>arrow_back</mat-icon> Back</button></div>
               </div>
               <div>
