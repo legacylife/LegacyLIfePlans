@@ -36,6 +36,7 @@ export class HeaderSideComponent implements OnInit {
     private router:Router
   ) {}
   ngOnInit() {
+    this.layoutConf = this.layout.layoutConf;
     this.firstName = localStorage.getItem("firstName") || sessionStorage.getItem("firstName");
     this.lastName = localStorage.getItem("lastName") || sessionStorage.getItem("lastName");
 
@@ -47,7 +48,6 @@ export class HeaderSideComponent implements OnInit {
       this.router.navigate(['/', 'llp-admin', 'signin'])
     }
     else {
-      this.layoutConf = this.layout.layoutConf; 
       this.translate.use(this.currentLang);
     }
   }

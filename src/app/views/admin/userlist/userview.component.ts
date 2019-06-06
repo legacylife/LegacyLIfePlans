@@ -8,7 +8,7 @@ import { AppLoaderService } from '../../../shared/services/app-loader/app-loader
 import { AdvisorRejectPopupComponent } from './ngx-table-popup/advisor-reject-popup.component';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-
+import { serverUrl, s3Details } from '../../../config';
 @Component({
   selector: 'userview',
   templateUrl: './userview.component.html'
@@ -22,6 +22,7 @@ export class userviewComponent implements OnInit {
   selectedUserId: string = "";
   adminSections = [];
   loggedInUserDetails: any;
+  profilePicture: any = "assets/images/arkenea/default.jpg"
   statMsg = "";
  // websites:any;
   constructor(
@@ -50,6 +51,7 @@ export class userviewComponent implements OnInit {
         console.log(result.data)
       } else {
         this.row = result.data
+        this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + result.data.profilePicture;
       }
     }, (err) => {
       console.error(err)

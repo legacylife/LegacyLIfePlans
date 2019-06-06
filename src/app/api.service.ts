@@ -116,15 +116,16 @@ export class APIService {
 
   // Function to check access to section in admin panel
   public getUserAccess(key): any {
-    let accessFlag = false;
-    this.sectionAccess = this.getKeyFromStorage('sectionAccess')
-    if (this.sectionAccess) {
-      this.accessSection = JSON.parse(this.sectionAccess)
-      if (this.accessSection.usermanagement == 'fullaccess')
-        accessFlag = true;
-      else
-        accessFlag = false;
-    }
+  
+    let accessFlag = true;
+    // this.sectionAccess = this.getKeyFromStorage('sectionAccess')
+    // if (this.sectionAccess) {
+    //   this.accessSection = JSON.parse(this.sectionAccess)
+    //   if (this.accessSection.usermanagement == 'fullaccess')
+    //     accessFlag = true;
+    //   else
+    //     accessFlag = false;
+    // }
     return accessFlag
   }
 
