@@ -116,15 +116,16 @@ export class APIService {
 
   // Function to check access to section in admin panel
   public getUserAccess(key): any {
-    let accessFlag = false;
-    this.sectionAccess = this.getKeyFromStorage('sectionAccess')
-    if (this.sectionAccess) {
-      this.accessSection = JSON.parse(this.sectionAccess)
-      if (this.accessSection.usermanagement == 'fullaccess')
-        accessFlag = true;
-      else
-        accessFlag = false;
-    }
+  
+    let accessFlag = true;
+    // this.sectionAccess = this.getKeyFromStorage('sectionAccess')
+    // if (this.sectionAccess) {
+    //   this.accessSection = JSON.parse(this.sectionAccess)
+    //   if (this.accessSection.usermanagement == 'fullaccess')
+    //     accessFlag = true;
+    //   else
+    //     accessFlag = false;
+    // }
     return accessFlag
   }
 
@@ -132,7 +133,7 @@ export class APIService {
   public getUserInfo(): string {    
     this.userId = this.getKeyFromStorage('userId')
     this.userType = this.getKeyFromStorage('userType')
-    this.sectionAccess = this.getKeyFromStorage('sectionAccess')
+   // this.sectionAccess = this.getKeyFromStorage('sectionAccess')
     this.userInfo = {
       "userId" : this.userId,
       "userType" : this.userType
@@ -179,7 +180,8 @@ export class APIService {
         if (response.data && response.data.token) {
           //check if user type is same
           console.log("data user type >> "+JSON.stringify(data)+" --------- response usertype >>> "+response.data.userType)
-          if (data.userType === response.data.userType || (data.userType == "sysadmin" && response.data.userType == "TeamMember")) {
+         // if (data.userType === response.data.userType || (data.userType == "sysadmin" && response.data.userType == "TeamMember")) {
+         // if (this.getKeyFromStorage('userType') == "sysadmin") {
             const { token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId } = response.data
             if(userType == 'customer' || userType == 'advisor'){
               this.endUsersaveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data)
@@ -188,9 +190,9 @@ export class APIService {
             }
             
             return response
-          } else {
-            return { status: "error", data: { message: "Please check your credentials" } }
-          }
+          // } else {
+          //   return { status: "error", data: { message: "Please check your credentials" } }
+          // }
         } else {
           return response
         }

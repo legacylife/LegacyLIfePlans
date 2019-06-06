@@ -2,7 +2,7 @@
   <div fxFlex="100" fxFlex.gt-md="300px" fxFlex.gt-sm="50">
     <mat-card class="profile-sidebar admn--user--details--wrapper">
       <div class="propic text-center" *ngIf="row?.userType != 'sysadmin'">
-        <img src="assets/images/default.jpg" alt="">
+        <img src="{{profilePicture}}" alt="">
       </div>
       <div class="profile-title text-center mb-1">         
         <div class="main-title">{{row?.firstName +' ' + row?.lastName}}</div>
