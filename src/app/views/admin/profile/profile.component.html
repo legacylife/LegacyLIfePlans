@@ -7,10 +7,10 @@
           <mat-card-content class="mt-1">
             <form class="llp-form-wrapper" [formGroup]="llpProfileForm" (ngSubmit)="llpprofile()">
               <mat-form-field class="full-width">
-                <input matInput name="firstName" [formControl]="llpProfileForm.controls['firstName']" placeholder="First name" value="">
+                <input class="capitalize" matInput name="firstName" [formControl]="llpProfileForm.controls['firstName']" placeholder="First name" value="">
               </mat-form-field>
               <mat-form-field class="full-width">
-                <input matInput name="lastName" [formControl]="llpProfileForm.controls['lastName']" placeholder="Last name" value="">
+                <input class="capitalize" matInput name="lastName" [formControl]="llpProfileForm.controls['lastName']" placeholder="Last name" value="">
               </mat-form-field>
               <!--<mat-form-field class="full-width">
                 <input matInput name="phoneNumber" [formControl]="llpProfileForm.controls['phoneNumber']" placeholder="Phone" value="">

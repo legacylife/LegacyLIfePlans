@@ -72,12 +72,12 @@
               <div fxLayout="row wrap">
                 <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">               
                     <mat-form-field class="full-width">
-                      <input matInput name="firstName" maxlength="20" placeholder="First Name*" value=""  [formControl]="ProfileForm.controls['firstName']">
+                      <input class="capitalize" matInput name="firstName" maxlength="20" placeholder="First Name*" value=""  [formControl]="ProfileForm.controls['firstName']">
                       <mat-icon matTooltip="Please enter first name" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['firstName'].hasError('required') && ProfileForm.controls['firstName'].touched"
                       class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input matInput name="lastName" maxlength="20" placeholder="Last Name*" value="" [formControl]="ProfileForm.controls['lastName']">
+                      <input class="capitalize" matInput name="lastName" maxlength="20" placeholder="Last Name*" value="" [formControl]="ProfileForm.controls['lastName']">
                       <mat-icon matTooltip="Please enter last name" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['lastName'].hasError('required') && ProfileForm.controls['lastName'].touched"
                       class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
@@ -164,7 +164,7 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input matInput name="businessName" placeholder="Business name*" value="" [formControl]="AddressForm.controls['businessName']">
+                      <input class="capitalize" matInput name="businessName" placeholder="Business name*" value="" [formControl]="AddressForm.controls['businessName']">
                       <mat-icon matTooltip="Please enter business name" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessName'].hasError('required') && AddressForm.controls['businessName'].touched"
                       class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
@@ -206,21 +206,21 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input matInput name="addressLine1" placeholder="Address line 1*" value="" [formControl]="AddressForm.controls['addressLine1']">
+                      <input class="capitalize" matInput name="addressLine1" placeholder="Address line 1*" value="" [formControl]="AddressForm.controls['addressLine1']">
                       <mat-icon matTooltip="Please enter address line 1" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['addressLine1'].hasError('required') && AddressForm.controls['addressLine1'].touched"
                       class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
-                      <input matInput name="addressLine2" placeholder="Address line 2 (optional)" value="" [formControl]="AddressForm.controls['addressLine2']">
+                      <input class="capitalize" matInput name="addressLine2" placeholder="Address line 2 (optional)" value="" [formControl]="AddressForm.controls['addressLine2']">
                     </mat-form-field>
                   </div>
                 </div>
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input matInput name="City" placeholder="City*" value="" [formControl]="AddressForm.controls['city']">
+                      <input class="capitalize" matInput name="City" placeholder="City*" value="" [formControl]="AddressForm.controls['city']">
                       <mat-icon matTooltip="Please enter city" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['city'].hasError('required') && AddressForm.controls['city'].touched"
                       class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
@@ -280,7 +280,7 @@
                       <div fxLayout="row wrap" *ngFor="let award of awardsPoints.controls; let pointIndex = index"  [formGroupName]="pointIndex">
                         <div fxFlex.xs="100" fxFlex.sm="65" fxFlex.md="65" fxFlex.lg="65" fxFlex.xl="65" class="pad--r--lg">
                           <mat-form-field class="full-width">
-                            <input matInput name="title" placeholder="Title" formControlName="title">
+                            <input class="capitalize" matInput name="title" placeholder="Title" formControlName="title">
                           </mat-form-field>
                         </div>
                         <div fxFlex.xs="95" fxFlex.sm="30" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pr-2">
@@ -383,7 +383,7 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input matInput name="managingPrincipleName" placeholder="Who is your managing principle?" [formControl]="LicenseForm.controls['managingPrincipleName']">
+                      <input class="capitalize" matInput name="managingPrincipleName" placeholder="Who is your managing principle?" [formControl]="LicenseForm.controls['managingPrincipleName']">
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">

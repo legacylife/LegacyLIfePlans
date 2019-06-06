@@ -16,13 +16,13 @@
                   <p class="login-header-desc">Please use the same full legal name and address as specified in the business license.</p>
                 </div>
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="First Name*" maxlength="20" name="firstName" [formControl]="firstFormGroup.controls['firstName']">
+                  <input class="capitalize" matInput placeholder="First Name*" maxlength="20" name="firstName" [formControl]="firstFormGroup.controls['firstName']">
                   <mat-icon matTooltip="Please enter first name" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['firstName'].hasError('required') && firstFormGroup.controls['firstName'].touched"
                     class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="Last Name*" maxlength="20" name="lastName" [formControl]="firstFormGroup.controls['lastName']">
+                  <input class="capitalize" matInput placeholder="Last Name*" maxlength="20" name="lastName" [formControl]="firstFormGroup.controls['lastName']">
                   <mat-icon matTooltip="Please enter last name" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['lastName'].hasError('required') && firstFormGroup.controls['lastName'].touched"
                     class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
@@ -36,7 +36,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput name="businessName" placeholder="Business Name*" value="" [formControl]="firstFormGroup.controls['businessName']">
+                  <input class="capitalize" matInput name="businessName" placeholder="Business Name*" value="" [formControl]="firstFormGroup.controls['businessName']">
                   <mat-icon matTooltip="Please enter business name" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['businessName'].hasError('required') && firstFormGroup.controls['businessName'].touched"
                     class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
@@ -74,13 +74,13 @@
                   <p class="login-header-desc">Enter the same address as shown on your business certificate</p>
                 </div>
                 <mat-form-field class="full-width">
-                  <input matInput name="addressLine1" placeholder="Address Line 1*" value="" [formControl]="secondFormGroup.controls['addressLine1']">
+                  <input class="capitalize" matInput name="addressLine1" placeholder="Address Line 1*" value="" [formControl]="secondFormGroup.controls['addressLine1']">
                   <mat-icon matTooltip="Please enter your address" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['addressLine1'].hasError('required') && secondFormGroup.controls['addressLine1'].touched"
                     class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput name="addressLine2" placeholder="Address Line 2 (optional)" value="" [formControl]="secondFormGroup.controls['addressLine2']">
+                  <input class="capitalize" matInput name="addressLine2" placeholder="Address Line 2 (optional)" value="" [formControl]="secondFormGroup.controls['addressLine2']">
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
@@ -92,7 +92,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput name="City" placeholder="City*" value="" [formControl]="secondFormGroup.controls['city']">
+                  <input class="capitalize" matInput name="City" placeholder="City*" value="" [formControl]="secondFormGroup.controls['city']">
                   <mat-icon matTooltip="Please enter city" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['city'].hasError('required') && secondFormGroup.controls['city'].touched"
                     class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
@@ -155,7 +155,7 @@
                 </mat-radio-group>
 
                 <mat-form-field class="full-width">
-                  <input matInput name="managingPrincipleName" placeholder="Who is your managing principle?*" [formControl]="thirdFormGroup.controls['managingPrincipleName']">
+                  <input class="capitalize" matInput name="managingPrincipleName" placeholder="Who is your managing principle?*" [formControl]="thirdFormGroup.controls['managingPrincipleName']">
                   <mat-icon matTooltip="Please enter managing principle" matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['managingPrincipleName'].hasError('required') && thirdFormGroup.controls['managingPrincipleName'].touched"
                     class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
@@ -167,7 +167,7 @@
                 </mat-radio-group>
 
                 <mat-form-field class="full-width" *ngIf="showHowManyProducer">
-                  <input matInput placeholder="If yes, how many?" [formControl]="thirdFormGroup.controls['howManyProducers']">
+                  <input class="capitalize" matInput placeholder="If yes, how many?" [formControl]="thirdFormGroup.controls['howManyProducers']">
                   <mat-icon matTooltip="Please enter numeric value." matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['howManyProducers'].hasError('pattern') && thirdFormGroup.controls['howManyProducers'].touched"
                   class="red--alert">help_outline</mat-icon>
                   
