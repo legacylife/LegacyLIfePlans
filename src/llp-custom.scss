@@ -511,7 +511,30 @@ body{
     font-family: $font--lato--regular;
     color: $clr--3;
 }
+.no--of--trustee{
+    color: #c72128;
+    font-size: 16px;
+    margin-right: 25px;
+}
+.last--modified--by{
+    font-size: 13px;
+    color: #222324;
+    span{
+        color: #828385;
+    } 
+}
 
+.right--actions{
+    .mat-icon{
+        height: 20px;
+        width: 20px;
+        font-size: 20px;
+        margin-right: 3px;
+    }
+    .llp--primary--btn{
+        margin-left: 15px;
+    }
+}
 
 /* -- 
    Top header css (start here)

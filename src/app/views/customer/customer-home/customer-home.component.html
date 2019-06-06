@@ -114,7 +114,7 @@
         </div>
 
         <!-- Day first -->
-        <div class="day--first">
+        <div class="day--first" *ngIf="">
 
           <mat-card class="empty--section p-0">
             <mat-card-header class="m-0">
@@ -493,21 +493,23 @@
         </div>
 
         <!-- My Essentials 3rd (details view) -->
-        <div class="" *ngIf="">
+        <div class="">
           <mat-card class="empty--section p-0">
             <mat-card-header class="m-0">
               <mat-card-title class="m-0">My Essentials</mat-card-title>
-              <div>
+              <div class="right--actions">
                 <span class="last--modified--by">Last modified:
                   <span>Dec 31, 2018</span>
                 </span>
                 <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">
-                  <mat-icon>edit</mat-icon>Edit</button>
-                <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn ml-1">
                   <mat-icon>file_download</mat-icon>
                   <span class="hide--sm--txt">Download</span>
                 </button>
-                <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn ml-1">
+                <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">
+                  <mat-icon>edit</mat-icon>
+                  <span class="hide--sm--txt">Edit</span>
+                </button>                
+                <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">
                   <mat-icon>delete</mat-icon>
                   <span class="hide--sm--txt">Delete</span>
                 </button>
@@ -711,7 +713,7 @@
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
                       <label class="normal--label">411001</label>
                     </div>
-                  </div>                  
+                  </div>
                   <div fxLayout="row wrap" class="mb--10">
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                       <label class="strong--label">Contact person name:</label>
