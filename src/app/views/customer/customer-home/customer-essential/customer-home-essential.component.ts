@@ -27,7 +27,9 @@ export class CustomerHomeEssentialComponent implements OnInit {
   ngOnInit() {
   }
 
-
+  toggleSideNav() {
+    this.sideNav.opened = !this.sideNav.opened;
+  }
   openAddIdBoxModal(data: any = {}, isNew?) {
     let title = isNew ? 'Add new member' : 'Update member';
     let dialogRef: MatDialogRef<any> = this.dialog.open(EssenioalIdBoxComponent, {
