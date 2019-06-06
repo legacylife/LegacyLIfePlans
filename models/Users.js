@@ -101,6 +101,7 @@ var userSchema = new mongoose.Schema({
   token: String,  
   status: String,
   profileSetup: String,
+  allowNotifications:String,
   allowNotifications:String
 })
 

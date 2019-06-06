@@ -48,7 +48,6 @@ function list(req, res) {
       let contacts = []
       async.each(userList, function (contact, callback) {
         let newContact = JSON.parse(JSON.stringify(contact))
-
       }, function (exc) {
         contacts.sort((a, b) => (a.createdOn > b.createdOn) ? -1 : ((b.createdOn > a.createdOn) ? 1 : 0));
         res.send(resFormat.rSuccess({ userList: contacts, totalUsers }))
@@ -178,13 +177,14 @@ function profile(req, res) {
 
 function addNewMember(req, res) {
   let newMem = new User()
-  newMem.fullName = req.body.fullName
-  newMem.firstName = req.body.firstName
-  newMem.lastName = req.body.lastName
-  newMem.sectionAccess = req.body.sectionAccess
-  newMem.userType = 'sysadmin'
-  newMem.username = req.body.username
-  newMem.status = req.body.status
+  newMem.fullName = req.body.fullName;
+  newMem.firstName = req.body.firstName;
+  newMem.lastName = req.body.lastName;
+  newMem.sectionAccess = req.body.sectionAccess;
+  newMem.userType = 'sysadmin';
+  newMem.username = req.body.username;
+  newMem.status = req.body.status;
+  newMem.allowNotifications = req.body.allowNotifications;
   if (newMem.status) {
     newMem.status = "Active"
   } else {
@@ -226,12 +226,58 @@ function addNewMember(req, res) {
                   res.status(401).send(resFormat.rError('Some error Occured'))
                 }
               }) // set new password email template ends*/
+
+             
+              setTimeout(function(){ 
+                var sendMails = sendMailsAdmin(newMemRecord);
+              }, 3000);
+
               res.send(resFormat.rSuccess('Member has been addedd'));
             }
           })
       }
     }) //end of user find
 }
+
+
+function sendMailsAdmin(newMemRecord){
+  let fullName = newMemRecord.firstName+' '+newMemRecord.lastName;
+  
+    let  query  = {"allowNotifications" : "yes"};
+    User.find(query, function (err, userList) {
+    
+      let contacts = []
+      async.each(userList, function (contact, callback) {
+        let newContact = JSON.parse(JSON.stringify(contact))
+          //sent new member notifications to other admin / email template
+          emailTemplatesRoute.getEmailTemplateByCode("NewMemberNotification").then((template) => {
+            if(template) {
+              template = JSON.parse(JSON.stringify(template));
+              let body = template.mailBody.replace("{name}", newContact.firstName);
+              body = body.replace("{memname}", fullName);
+              const mailOptions = {
+                to : newContact.username,
+                subject : template.mailSubject,
+                html: body
+              }
+              sendEmail(mailOptions)
+            } else {     
+
+            }
+          }) // set new password email template ends*/
+
+
+      }, function (exc) {
+      }) //end of async
+
+      if (err) {
+        //error
+      } else {
+       //'All new member emails sent!'
+      }
+    })
+}
+
 
 
 function common(req, res) {
