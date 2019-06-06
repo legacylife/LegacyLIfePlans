@@ -182,7 +182,7 @@ export class APIService {
         if (response.data) {// && response.data.token
           //check if user type is same
           console.log("data user type >> "+JSON.stringify(data)+" --------- response usertype >>> "+this.userType)
-          if (this.userType == "sysadmin") {
+        //  if (this.userType == "sysadmin") {
             // if (this.getKeyFromStorage('userType') == "sysadmin") {
             const { token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId } = response.data
             // if(userType == 'customer' || userType == 'advisor'){
@@ -192,9 +192,9 @@ export class APIService {
             // }
             
             return response
-           } else {
-             return { status: "error", data: { message: "Please check your credentials" } }
-           }
+          //  } else {
+          //    return { status: "error", data: { message: "Please check your credentials" } }
+          //  }
         } else {
           return response
         }

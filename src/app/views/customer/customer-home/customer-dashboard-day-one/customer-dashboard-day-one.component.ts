@@ -23,9 +23,14 @@ export class CustomerDashboardDayOneComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { }
 
+
   ngOnInit() {
 
   }
 
+
+  toggleSideNav() {
+    this.sideNav.opened = !this.sideNav.opened;
+  }
 }
 
