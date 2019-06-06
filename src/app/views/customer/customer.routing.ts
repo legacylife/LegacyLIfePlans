@@ -12,83 +12,111 @@ import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edi
 import { CustomerSubscriptionComponent } from './customer-subscription/customer-subscription.component';
 import { CustomerTrusteesComponent } from './customer-trustees/customer-trustees.component';
 import { CustomerProfessionalComponent } from './customer-professionals/customer-professionals.component';
+
+import { CustomerHomeEssentialComponent } from './customer-home/customer-essential/customer-home-essential.component';
+import { CustomerDashboardComponent } from './customer-home/customer-dashboard/customer-dashboard.component';
+import { CustomerDashboardDayOneComponent } from './customer-home/customer-dashboard-day-one/customer-dashboard-day-one.component';
+import { CustomerEssentialDayOneComponent } from './customer-home/customer-essential-day-one/customer-essential-day-one.component';
+import { CustomerEssentialDetailsComponent } from './customer-home/customer-essential-details/customer-essential-details.component';
+import { CustomerEssentialDetailsIdboxComponent } from './customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
+
 export const CustomerRoutes: Routes = [
   {
     path: 'signup',
     component: AuthLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
-        component: CustomerSignupComponent, 
-        canActivate: [ UserPreAuthGuard ]
+        component: CustomerSignupComponent,
+        canActivate: [UserPreAuthGuard]
       }
     ],
-  },/*{
-    path: '',
-    component: AuthLayoutComponent,
-    loadChildren: './auth/auth.module#AuthModule',
-  },*/
+  },
   {
     path: 'dashboard',
     component: CustomerLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
         component: CustomerHomeComponent,
-        canActivate: [ UserAuthGuard ]
-        
-      }
-    ] 
-       
-  },{
+        canActivate: [UserAuthGuard],
+        children: [
+          {
+            path: '',
+            component: CustomerDashboardComponent
+          },
+          {
+            path: 'customer-day-one',
+            component: CustomerDashboardDayOneComponent
+          },
+          {
+            path: 'customer-essential',
+            component: CustomerHomeEssentialComponent
+          },
+          {
+            path: 'essential-day-one',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'essential-detail-view',
+            component: CustomerEssentialDetailsComponent
+          },
+          {
+            path: 'essential-detail-idbox',
+            component: CustomerEssentialDetailsIdboxComponent
+          }
+        ]
+      },
+    ]
+  }, {
     path: 'update-profile',
     component: AuthLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
         component: UpdateProfileComponent,
-        canActivate: [ UserAuthGuard ]
+        canActivate: [UserAuthGuard]
       }
     ]
-  },{
+  }, {
     path: 'account-setting',
     component: CustomerLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
         component: CustomerAccountSettingComponent,
-        canActivate: [ UserAuthGuard ],
-        canDeactivate: [CountryEditCanDeactivateGuard]    
+        canActivate: [UserAuthGuard],
+        canDeactivate: [CountryEditCanDeactivateGuard]
       }
     ]
-  },{
+  }, {
     path: 'customer-subscription',
     component: CustomerLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
         component: CustomerSubscriptionComponent,
-        canActivate: [ UserAuthGuard ]
+        canActivate: [UserAuthGuard]
       }
     ]
-  },{
+  }, {
     path: 'professionals',
     component: CustomerLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
         component: CustomerProfessionalComponent,
-        canActivate: [ UserAuthGuard ]
+        canActivate: [UserAuthGuard]
       }
     ]
-  },{
+  }, {
     path: 'trustees',
     component: CustomerLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
         component: CustomerTrusteesComponent,
-        canActivate: [ UserAuthGuard ]
+        canActivate: [UserAuthGuard]
       }
     ]
   }

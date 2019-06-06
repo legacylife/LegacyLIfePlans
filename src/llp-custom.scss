@@ -458,6 +458,11 @@ body{
     padding: 0 20px;
     height: 65px;
     width: 100%;
+    &:hover{
+        cursor: pointer;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.04);
+        background: rgba(0, 0, 0, 0.04);
+    }
     .name--letters{
         width: 48px;
         height: 48px;

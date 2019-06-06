@@ -1,0 +1,72 @@
+<div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
+  <!-- Filters -->
+
+  <!-- Right side -->
+  <div class="full-width">
+
+    <!-- toggleSideNav -->
+    <div class="shop-top-toolbar p-0 llp--toggle-btn">
+      <button mat-icon-button class="p-0" (click)="toggleSideNav()">
+        <mat-icon>short_text</mat-icon>
+      </button>
+    </div>
+
+    <!-- My Essentials 1st (empty)-->
+    <div class="">
+      <mat-card class="empty--section p-0">
+        <mat-card-header class="m-0">
+          <mat-card-title class="m-0" [routerLink]="['/customer/dashboard/customer-essential']">My Essentials </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="info m-0">The section where you can manage your personal, professional and religious information.
+            <a>www.legalnature.com</a>
+            <br> You can also manage your License, Non-Driver State ID, Department of Defense (DOD), Birth Certificate, Social
+            Security Number (SSN), Passport, Visa in the ID Box section.</p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="empty--section p-0">
+        <mat-card-header class="m-0">
+          <mat-card-title class="m-0">My Trustees </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="build--ur--legacy">
+            <mat-icon>person_pin</mat-icon>
+            <p>
+              <a>Add Personal Profile</a>
+            </p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="empty--section p-0">
+        <mat-card-header class="m-0">
+          <mat-card-title class="m-0">ID Box </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="build--ur--legacy">
+            <mat-icon>library_add</mat-icon>
+            <p>
+              <a>Add ID Box</a>
+            </p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="empty--section p-0">
+        <mat-card-header class="m-0">
+          <mat-card-title class="m-0">My Professionals</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="build--ur--legacy">
+            <mat-icon>people</mat-icon>
+            <p>
+              <a>Add Professionals</a>
+            </p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+   
+
+  </div>
+
+</div>

@@ -1,0 +1,71 @@
+<div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
+  <!-- Filters -->
+
+  <!-- Right side -->
+  <div class="full-width">
+
+    <!-- toggleSideNav -->
+    <div class="shop-top-toolbar p-0 llp--toggle-btn">
+      <button mat-icon-button class="p-0" (click)="toggleSideNav()">
+        <mat-icon>short_text</mat-icon>
+      </button>
+    </div>
+
+    <!-- Day first -->
+    <div class="day--first" >
+
+      <mat-card class="empty--section p-0">
+        <mat-card-header class="m-0">
+          <mat-card-title class="m-0">Recently Accessed Files </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <p class="info">See your recently accessed files here. Currently you have no files available.</p>
+          <div class="build--ur--legacy dashed">
+            <mat-icon>insert_drive_file</mat-icon>
+            <p>Start building your legacy!
+              <a [routerLink]="['/customer/dashboard']">Click here</a>
+            </p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+
+      <mat-card class="empty--section p-0">
+        <mat-card-header class="m-0">
+          <mat-card-title class="m-0">My Trustees </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="info">Share your documents with your trusted ones. View your appointees in this section.</p>
+          <div class="build--ur--legacy">
+            <mat-icon>group_add</mat-icon>
+            <p>
+              <a>Add Appointees</a>
+            </p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="empty--section p-0">
+        <mat-card-header class="m-0">
+          <mat-card-title class="m-0">My Advisors </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="info">See your professional advisors here.</p>
+          <div class="build--ur--legacy">
+            <mat-icon>search</mat-icon>
+            <p>
+              <a>Search Advisors</a>
+            </p>
+          </div>
+          <p class="search-ad">Seeking professional help in managing your legacy?
+            <a> Find right professionals now </a>
+          </p>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+
+  </div>
+
+</div>

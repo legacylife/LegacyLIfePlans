@@ -236,6 +236,17 @@
     }
 }
 
+.uploaded--files{
+    display: flex;
+    .mat-icon{
+        color: #727a33;
+        margin-right: 10px;
+        height: 30px;
+        width: 30px;
+        font-size: 30px;
+    }
+}
+
 /* Media query (start here)*/
 
 @media only screen and (max-width: 599px) {
