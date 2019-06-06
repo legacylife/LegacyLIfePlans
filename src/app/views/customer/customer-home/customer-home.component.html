@@ -17,47 +17,59 @@
               <ul class="legacy--list m-0 p-0">
                 <li>
                   <a>
-                    <mat-icon class="icon-file">insert_drive_file</mat-icon> My Essentials <mat-icon class="active--right">keyboard_arrow_right</mat-icon> </a>
+                    <mat-icon class="icon-file">insert_drive_file</mat-icon> My Essentials
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
+                  </a>
                 </li>
                 <li>
                   <a>
-                    <mat-icon class="icon-file">monetization_on</mat-icon><mat-icon class="active--right">keyboard_arrow_right</mat-icon> Insurance Finance & Debt</a>
+                    <mat-icon class="icon-file">monetization_on</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Insurance Finance & Debt</a>
                 </li>
                 <li>
                   <a>
-                    <mat-icon class="icon-file">pets</mat-icon> <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Pets</a>
+                    <mat-icon class="icon-file">pets</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Pets</a>
                 </li>
                 <li>
                   <a>
-                    <mat-icon class="icon-file">help</mat-icon> <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Special Needs</a>
+                    <mat-icon class="icon-file">help</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Special Needs</a>
                 </li>
                 <li>
                   <a>
-                    <mat-icon class="icon-file">gavel</mat-icon><mat-icon class="active--right">keyboard_arrow_right</mat-icon> Legal Stuff</a>
+                    <mat-icon class="icon-file">gavel</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Legal Stuff</a>
                 </li>
                 <li>
                   <a>
-                    <mat-icon class="icon-file">lock</mat-icon> <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Passwords & Digital Assests</a>
+                    <mat-icon class="icon-file">lock</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Passwords & Digital Assests</a>
                 </li>
                 <li>
                   <a>
-                    <mat-icon class="icon-file">contact_phone</mat-icon><mat-icon class="active--right">keyboard_arrow_right</mat-icon> Emergency Contacts</a>
+                    <mat-icon class="icon-file">contact_phone</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Emergency Contacts</a>
                 </li>
                 <li>
                   <a>
-                    <mat-icon class="icon-file">business</mat-icon><mat-icon class="active--right">keyboard_arrow_right</mat-icon>Real Estates & Assets</a>
+                    <mat-icon class="icon-file">business</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Real Estates & Assets</a>
                 </li>
                 <li>
                   <a>
-                    <mat-icon class="icon-file">access_time</mat-icon> <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Time Capsule</a>
+                    <mat-icon class="icon-file">access_time</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Time Capsule</a>
                 </li>
                 <li>
                   <a>
-                    <mat-icon class="icon-file">markunread</mat-icon><mat-icon class="active--right">keyboard_arrow_right</mat-icon>Legacy Life Letters & Messages</a>
+                    <mat-icon class="icon-file">markunread</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Legacy Life Letters & Messages</a>
                 </li>
                 <li>
                   <a>
-                    <mat-icon class="icon-file">date_range</mat-icon><mat-icon class="active--right">keyboard_arrow_right</mat-icon> Final Wishes</a>
+                    <mat-icon class="icon-file">date_range</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Final Wishes</a>
                 </li>
               </ul>
 
@@ -69,15 +81,17 @@
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <ul class="legacy--list m-0 p-0">
-                  <li>
-                    <a>
-                      <mat-icon class="icon-file">insert_drive_file</mat-icon> <mat-icon class="active--right">keyboard_arrow_right</mat-icon> My Essentials</a>
-                  </li>
-                  <li>
-                    <a>
-                      <mat-icon class="icon-file">hotel</mat-icon> <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Insurance Finance & Debt</a>
-                  </li>               
-                </ul>
+                <li>
+                  <a>
+                    <mat-icon class="icon-file">insert_drive_file</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> My Essentials</a>
+                </li>
+                <li>
+                  <a>
+                    <mat-icon class="icon-file">hotel</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Insurance Finance & Debt</a>
+                </li>
+              </ul>
             </mat-expansion-panel>
           </mat-accordion>
 
@@ -100,7 +114,7 @@
         </div>
 
         <!-- Day first -->
-        <div class="day--first" *ngIf="dayFirst">
+        <div class="day--first">
 
           <mat-card class="empty--section p-0">
             <mat-card-header class="m-0">
@@ -109,7 +123,7 @@
 
             <mat-card-content>
               <p class="info">See your recently accessed files here. Currently you have no files available.</p>
-              <div class="build--ur--legacy">
+              <div class="build--ur--legacy dashed">
                 <mat-icon>insert_drive_file</mat-icon>
                 <p>Start building your legacy!
                   <a (click)="showSecoDay()">Click here</a>
@@ -155,7 +169,7 @@
         </div>
 
         <!-- Day 2nd -->
-        <div class="day--second" *ngIf="daySeco">
+        <div class="day--second" *ngIf="">
 
           <!-- Recently Accessed Files  -->
           <mat-card class="empty--section p-0">
@@ -363,6 +377,369 @@
           </mat-card>
 
         </div>
+
+        <!-- My Essentials 1st (empty)-->
+        <div class="" *ngIf="">
+          <mat-card class="empty--section p-0">
+            <mat-card-header class="m-0">
+              <mat-card-title class="m-0">My Essentials </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p class="info m-0">The section where you can manage your personal, professional and religious information.
+                <a>www.legalnature.com</a>
+                <br> You can also manage your License, Non-Driver State ID, Department of Defense (DOD), Birth Certificate, Social
+                Security Number (SSN), Passport, Visa in the ID Box section.</p>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="empty--section p-0">
+            <mat-card-header class="m-0">
+              <mat-card-title class="m-0">My Trustees </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="build--ur--legacy">
+                <mat-icon>person_pin</mat-icon>
+                <p>
+                  <a>Add Personal Profile</a>
+                </p>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="empty--section p-0">
+            <mat-card-header class="m-0">
+              <mat-card-title class="m-0">ID Box </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="build--ur--legacy">
+                <mat-icon>library_add</mat-icon>
+                <p>
+                  <a>Add ID Box</a>
+                </p>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- My Essentials 2nd (dashboard) -->
+        <div class="" *ngIf="">
+          <mat-card class="empty--section p-0">
+            <mat-card-header class="m-0">
+              <mat-card-title class="m-0">My Essentials </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p class="info m-0">The section where you can manage your personal, professional and religious information.
+                <a>www.legalnature.com</a>
+                <br> You can also manage your License, Non-Driver State ID, Department of Defense (DOD), Birth Certificate, Social
+                Security Number (SSN), Passport, Visa in the ID Box section.</p>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="empty--section p-0">
+            <mat-card-header class="m-0">
+              <mat-card-title class="m-0">Personal Profile</mat-card-title>
+              <div>
+                <span class="no--of--trustee">4 Trustees</span>
+                <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">+ Add</button>
+              </div>
+            </mat-card-header>
+            <mat-card-content class="appointees--wrapper">
+              <div class="cust--user--details mt-1">
+                <div class="name--letters">ab</div>
+                <div class="user--name">
+                  <h5>Allen Barry</h5>
+                  <p class="mb-0">Last modified:
+                    <span>4/02/2019</span>
+                  </p>
+                </div>
+              </div>
+              <div class="cust--user--details mt-1">
+                <div class="name--letters">js</div>
+                <div class="user--name">
+                  <h5>Johnson Smith</h5>
+                  <p class="mb-0">Last modified:
+                    <span>10/02/2019</span>
+                  </p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="empty--section p-0">
+            <mat-card-header class="m-0">
+              <mat-card-title class="m-0">ID Box</mat-card-title>
+              <div>
+                <span class="no--of--trustee">10 Trustees</span>
+                <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">+ Add</button>
+              </div>
+            </mat-card-header>
+            <mat-card-content class="appointees--wrapper">
+              <div class="cust--user--details mt-1">
+                <div class="name--letters">dl</div>
+                <div class="user--name">
+                  <h5>Driving License ID</h5>
+                  <p class="mb-0">Last modified:
+                    <span>4/02/2019</span>
+                  </p>
+                </div>
+              </div>
+              <div class="cust--user--details mt-1">
+                <div class="name--letters">ss</div>
+                <div class="user--name">
+                  <h5>Social Security Number</h5>
+                  <p class="mb-0">Last modified:
+                    <span>10/02/2019</span>
+                  </p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- My Essentials 3rd (details view) -->
+        <div class="" *ngIf="">
+          <mat-card class="empty--section p-0">
+            <mat-card-header class="m-0">
+              <mat-card-title class="m-0">My Essentials</mat-card-title>
+              <div>
+                <span class="last--modified--by">Last modified:
+                  <span>Dec 31, 2018</span>
+                </span>
+                <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">
+                  <mat-icon>edit</mat-icon>Edit</button>
+                <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn ml-1">
+                  <mat-icon>file_download</mat-icon>
+                  <span class="hide--sm--txt">Download</span>
+                </button>
+                <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn ml-1">
+                  <mat-icon>delete</mat-icon>
+                  <span class="hide--sm--txt">Delete</span>
+                </button>
+              </div>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="details--wrapper mb-1">
+                <div class="details--header">
+                  <mat-icon>person</mat-icon>Personal Profile</div>
+                <div class="details--body">
+                  <h3>Tom Cruise</h3>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Date of Birth:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">04/10/2019</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Email Address:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">tom@gmail.com</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Phone:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">+123456789</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Address:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">88 Schrimeshire lane, Newbury Berkshire, OX18 0DJ</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="details--wrapper mb-1">
+                <div class="details--header">
+                  <mat-icon>description</mat-icon>Work Profile</div>
+                <div class="details--body">
+                  <h3>Legacy Life Plans</h3>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Work/Business:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">Legacy Life Plans</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Company Name:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">Legacy Life Plans Pvt ltd.</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Title/Position:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">Chief Executive Officer</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Work Number:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">+1234567890</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Department:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">Administration</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Contact Persons Name:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">Gregory Thompson</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Address:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">88 Schrimeshire lane, Newbury Berkshire, OX18 0DJ</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="details--wrapper">
+                <div class="details--header">
+                  <mat-icon>content_paste</mat-icon>Civic/Club, Religious Info </div>
+                <div class="details--body">
+                  <h3>Civic Group/Club</h3>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Name:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">Altrusa Club of Door County</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Address 1:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">PO Box 523</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Address 2:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">Sturgeon Bay</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Zip code:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">WI 54235</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Phone:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">+9876543210</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Contact person name:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">John Paul</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Contact person phone:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">+1234567890</label>
+                    </div>
+                  </div>
+                  <h3 class="mt--30">Church/Synagogue/Religious Connection</h3>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Name:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">Ohel David Synagogue</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Address 1:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">Baba Saheb Ambedkar Rd, Opp. Nehru Memorial Hall,</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Address 2:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">Gawaliwada, Camp, Pune, Maharashtra</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Zip code:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">411001</label>
+                    </div>
+                  </div>                  
+                  <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Contact person name:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">Albus Williams.</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Phone:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">++9191919191</label>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+
+            </mat-card-content>
+          </mat-card>
+
+        </div>
+
+
+
       </div>
 
     </div>

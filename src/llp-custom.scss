@@ -344,7 +344,8 @@ body{
                             .icon-file{
                                 font-size: 21px;
                                 width: 34px;
-                                height: 16px;                                                
+                                height: 16px;
+                                flex-shrink: 0;                                                
                             }
 
                             .active--right{
@@ -444,6 +445,72 @@ body{
    Loading css (end here)
 ------------------------------------------*/
 
+
+/* -- 
+   user name and details css (start here)
+------------------------------------------*/
+
+.cust--user--details{
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #dadce0;
+    padding: 0 20px;
+    height: 65px;
+    width: 100%;
+    .name--letters{
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        line-height: 50px;
+        overflow: hidden;
+        background-color: #757575;
+        color: #fff;
+        text-transform: uppercase;
+        font-size: 18px;
+        font-family: $font--lato--regular;
+        text-align: center;
+        flex-shrink: 0;
+    }
+    .user--name{
+        margin-left: 15px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        h5{
+            font-size: 16px;
+            font-family: $font--lato--bold;
+            margin: 0 0 5px 0;
+            color: $clr--3;
+            overflow: hidden;
+        }
+        p{
+            font-size: 13px;
+            font-family: $font--lato--bold;
+            color: $clr--3;
+            span{
+                font-family: $font--lato--regular;
+                color: $clr--6;
+            }
+        }
+    }
+}
+
+/* -- 
+   user name and details css (end here)
+------------------------------------------*/
+
+
+.strong--label{
+    font-size: 16px;
+    font-family: $font--lato--bold;
+    color: $clr--3;
+}
+.normal--label{
+    font-size: 16px;
+    font-family: $font--lato--regular;
+    color: $clr--3;
+}
 
 
 /* -- 

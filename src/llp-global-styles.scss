@@ -157,6 +157,9 @@ body .mat-mini-fab{
     background-color: $clr--2 !important;
     border: 1px solid $clr--2 !important;
 }
+.llp--primary--sm--btn{
+    padding: 3px 27px !important;
+}
 .llp--secondary--btn{
     color: $clr--2 !important;
     background-color: #fff !important;
@@ -686,6 +689,8 @@ body{
 .mt--30{margin-top: 30px !important;}
 .mt--25{margin-top: 25px !important;}
 .mb--30{margin-bottom: 30px !important;}
+.mb--10{margin-bottom: 10px !important;}
+.mb--15{margin-bottom: 15px !important;}
 .px-40{padding: 0 40px !important;}
 .pr-2 {padding-right: 2rem !important;}
 .mr-20{margin-right: 20px !important}
@@ -702,6 +707,7 @@ body{
 .tran--bg{background-color: transparent !important}
 .pad--r--lg{padding-right: 30px;}
 .cursor-pointer {cursor: pointer !important;}
+.w100 {width: 100px;}
 
 /* Media query (start here)*/
 

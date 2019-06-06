@@ -1,3 +1,5 @@
+@import 'llp-global-styles.scss';
+
 .llp--content--wrapper{
 
     //  1st
@@ -30,10 +32,14 @@
                 font-size: 14px;
                 color: #666;
                 margin-bottom: 20px;
+                a{
+                    color: #c72128;
+                    font-size: 15px;
+                }
             }
             .build--ur--legacy{
                 border-radius: 2px;
-                border: dashed 1px #c72128;
+                border: solid 1px #c72128;
                 max-width:345px;
                 height: 136px;
                 display: flex;
@@ -42,6 +48,9 @@
                 align-items: center;
                 padding: 0 10px;
                 text-align: center;
+                &.dashed{
+                    border: 1px dashed #c72128;
+                }
 
                 .mat-icon{
                     color: #c72128;
@@ -199,6 +208,43 @@
                     }
                 }
             }
+        }
+    }
+}
+.no--of--trustee{
+    color: #c72128;
+    font-size: 16px;
+    margin-right: 25px;
+}
+.last--modified--by{
+    font-size: 13px;
+    color: #222324;
+    margin-right:15px;
+    span{
+        color: #828385;
+    } 
+}
+
+.details--wrapper{
+    border-radius: 2px;
+    border: solid 1px #dadce0;
+    padding: 20px 25px;
+    .details--header{
+        border-bottom: solid 1px #f5f5f5;
+        font-size: 18px;
+        font-family: $font--lato--bold;
+        display: flex;
+        align-items: center;
+        padding-bottom: 18px;
+        .mat-icon{
+            color: #727a33;
+            margin-right: 10px;
+        }
+    }
+    .details--body{
+        h3{
+            font-size: 18px;
+            margin: 18px 0;
         }
     }
 }
