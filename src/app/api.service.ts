@@ -118,20 +118,22 @@ export class APIService {
   public getUserAccess(key): any {
   
     let accessFlag = true;
-    // this.sectionAccess = this.getKeyFromStorage('sectionAccess')
-    // if (this.sectionAccess) {
-    //   this.accessSection = JSON.parse(this.sectionAccess)
-    //   if (this.accessSection.usermanagement == 'fullaccess')
-    //     accessFlag = true;
-    //   else
-    //     accessFlag = false;
-    // }
+    this.sectionAccess = this.getKeyFromStorage('sectionAccess');
+    console.log("sectionAccess >> ",this.sectionAccess)
+    if (this.sectionAccess) {
+      this.accessSection = JSON.parse(this.sectionAccess)
+      if (this.accessSection.usermanagement == 'fullaccess')
+        accessFlag = true;
+      else
+        accessFlag = false;
+    }
     return accessFlag
   }
 
   //function to get user id from localStorage
   public getUserInfo(): string {    
     this.userId = this.getKeyFromStorage('userId')
+    console.log("AFter Login",this.userId)
     this.userType = this.getKeyFromStorage('userType')
    // this.sectionAccess = this.getKeyFromStorage('sectionAccess')
     this.userInfo = {
@@ -177,22 +179,22 @@ export class APIService {
 
     const request = base.pipe(
       map((response: TokenResponse) => {
-        if (response.data && response.data.token) {
+        if (response.data) {// && response.data.token
           //check if user type is same
-          console.log("data user type >> "+JSON.stringify(data)+" --------- response usertype >>> "+response.data.userType)
-         // if (data.userType === response.data.userType || (data.userType == "sysadmin" && response.data.userType == "TeamMember")) {
-         // if (this.getKeyFromStorage('userType') == "sysadmin") {
+          console.log("data user type >> "+JSON.stringify(data)+" --------- response usertype >>> "+this.userType)
+          if (this.userType == "sysadmin") {
+            // if (this.getKeyFromStorage('userType') == "sysadmin") {
             const { token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId } = response.data
-            if(userType == 'customer' || userType == 'advisor'){
-              this.endUsersaveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data)
-            } else {
-              this.saveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data)
-            }
+            // if(userType == 'customer' || userType == 'advisor'){
+            //   this.endUsersaveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data)
+            // } else {
+            //   this.saveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data)
+            // }
             
             return response
-          // } else {
-          //   return { status: "error", data: { message: "Please check your credentials" } }
-          // }
+           } else {
+             return { status: "error", data: { message: "Please check your credentials" } }
+           }
         } else {
           return response
         }

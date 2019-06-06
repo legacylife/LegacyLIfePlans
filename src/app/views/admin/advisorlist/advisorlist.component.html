@@ -20,17 +20,17 @@
           {{ row?.businessName }}
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="State" [flexGrow]="1">
+      <ngx-datatable-column name="State" prop="state" [flexGrow]="1">
         <ng-template let-row="row" ngx-datatable-cell-template>
           {{ row?.state }}
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="City" [flexGrow]="1">
+      <ngx-datatable-column name="City" prop="city"  [flexGrow]="1">
         <ng-template let-row="row" ngx-datatable-cell-template>
           {{ row?.city }}
         </ng-template>
       </ngx-datatable-column>
-      <ngx-datatable-column name="Zipcode" [flexGrow]="1">
+      <ngx-datatable-column name="Zipcode" prop="zipcode" [flexGrow]="1">
         <ng-template let-row="row" ngx-datatable-cell-template>
           {{ row?.zipcode }}
         </ng-template>

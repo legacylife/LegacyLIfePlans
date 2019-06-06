@@ -7,7 +7,7 @@
     <div fxLayout="row wrap">
       <div fxFlex="50"  class="pr-1">
         <mat-form-field class="full-width">
-          <input
+          <input  class="capitalize"
           matInput
           name="firstName"
           [formControl]="itemForm.controls['firstName']"
@@ -17,7 +17,7 @@
 
       <div fxFlex="50"  class="pr-1">
           <mat-form-field class="full-width">
-            <input
+            <input  class="capitalize"
             matInput
             name="lastName"
             [formControl]="itemForm.controls['lastName']"
@@ -30,13 +30,26 @@
           <mat-icon matTooltip="{{invalidMessage}}" matTooltipClass="llp--tooltip error" *ngIf="EmailExist" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
       </div>
+
+      <div fxFlex="100"  class="pr-1">
+        <mat-radio-group class="llp-radio" name="allowNotifications" [formControl]="itemForm.controls['allowNotifications']">
+          <div class="checkbox-label">Allow To Recieve Notification*</div>
+          <mat-radio-button value="yes" >Yes</mat-radio-button>
+          <mat-radio-button value="no" >No</mat-radio-button>          
+        </mat-radio-group>
+     </div>
+
+
+
+
     <mat-card fxFlex="50" class="pr-1 default" *ngFor="let t of adminSections"> 
       <mat-card-content class="pt-0">
           <mat-list >
             <Label>{{t.name}} *</Label>
               <mat-radio-group  class="llp-radio full-width m-0" name="{{t.code}}" [formControl]="itemForm.controls[t.code]">
                 <mat-list-item>
-                  <mat-radio-button value="fullaccess">Full Access </mat-radio-button>   <mat-radio-button value="denyall"> Deny All</mat-radio-button>
+                  <mat-radio-button value="fullaccess" [checked]="true">Full Access </mat-radio-button>   
+                  <mat-radio-button value="denyall"> Deny All</mat-radio-button>
                 </mat-list-item>
             </mat-radio-group>
         
