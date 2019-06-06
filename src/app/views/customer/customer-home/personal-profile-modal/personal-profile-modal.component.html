@@ -1,0 +1,41 @@
+<div class="ll--modal--header">
+  Personal Profile
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+
+<form class="llp-form-wrapper">
+  <div class="ll--modal--body">
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100">
+        <mat-form-field class="full-width">
+          <mat-label>ID/Document</mat-label>
+          <mat-select [(value)]="selected">
+            <mat-option>None</mat-option>
+            <mat-option value="option1">Select Document Type</mat-option>
+            <mat-option value="option2">Option 2</mat-option>
+            <mat-option value="option3">Option 3</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Social Security Number">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Location of Social Security Card">
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <textarea matInput placeholder="Comments"></textarea>
+        </mat-form-field>
+
+
+      </div>
+
+    </div>
+  </div>
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn">Proceed</button>
+  </div>
+</form>
