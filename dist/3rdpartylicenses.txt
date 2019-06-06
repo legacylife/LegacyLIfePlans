@@ -508,6 +508,8 @@ SOFTWARE.
 
 @angular/material/tabs
 
+@angular/material/stepper
+
 ngx-slick-carousel
 MIT
 
@@ -1461,8 +1463,6 @@ THE SOFTWARE.
 @angular/material/slide-toggle
 
 @angular/material/chips
-
-@angular/material/stepper
 
 @angular/material/checkbox
 

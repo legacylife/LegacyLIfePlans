@@ -335,7 +335,7 @@ function forgotPassword(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else if (!user) {
-      res.send(resFormat.rError({message: "Looks like your account does not exist. Sign up to create an account."}))
+      res.send(resFormat.rError({message: "Looks like you are not a registered user yet. Please sign up to create an account."}))
     } else if (user && user.status == 'Active' && !user.salt) {
       res.send(resFormat.rError({message: "Your account is activated by admin & set account password link is already sent."}))
     } else if (user && user.status == 'In-Active') {
@@ -456,7 +456,12 @@ async function checkEmail(req, res) {
             } else {
               var otp = generateOtp(6);
               if (found) {
-                OtpCheck.updateOne({ _id: found._id }, { $set: { otpCode: otp, status: 'Active' } }, function (err, updatedUser) {
+                let ustatus = 'Active'
+                if(req.body.userType == 'advisor'){
+                  ustatus = 'pending'
+                }
+                
+                OtpCheck.updateOne({ _id: found._id }, { $set: { otpCode: otp, status: ustatus } }, function (err, updatedUser) {
                   if (err) {
                     res.send(resFormat.rError(err))
                   } else {
