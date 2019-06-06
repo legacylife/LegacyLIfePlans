@@ -15,20 +15,27 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
 
-      this.userInfo = this.api.getUserInfo();console.log("Adsasdasd",this.userInfo);
+      this.userInfo = this.api.getUserInfo();
       if (!this.userInfo && this.userInfo.userType == '') {
-        this.router.navigateByUrl('/llp-admin/signin');
+        //this.router.navigateByUrl('/llp-admin/signin');
+        console.log("Logout >> ",this.userInfo)
+        this.api.logout();
         return false;
       }
       
       const req_vars = { userId: this.userInfo.userId }
       this.api.apiRequest('post', 'auth/view', req_vars).subscribe(result => { 
         let userData = result.data;   
+        console.log("userData >> ",userData)
         localStorage.setItem('sectionAccess', JSON.stringify(userData.sectionAccess))
         if(userData && (userData.status == 'Inactive' || userData.status == 'In-Active')){
+          console.log("Your account has been inactivated >> ",userData)
           this.snack.open("Your account has been inactivated.", 'OK', { duration: 4000 })
           this.router.navigateByUrl('/llp-admin/signin'); 
           return false;
+        }else{
+          console.log("Current admin logined >> ",userData)
+          return true;
         }
         
       }, (err) => {

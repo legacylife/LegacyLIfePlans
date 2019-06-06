@@ -68,8 +68,7 @@ export class userviewComponent implements OnInit {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: row._id }, query),
-            userType : 'advisor'
+            query: Object.assign({ _id: row._id }, query)
           }
           this.api.apiRequest('post', 'advisor/activateadvisor', req_vars).subscribe(result => {
             if (result.status == "error") {
