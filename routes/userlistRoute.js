@@ -51,7 +51,7 @@ function list(req, res) {
 
       }, function (exc) {
         contacts.sort((a, b) => (a.createdOn > b.createdOn) ? -1 : ((b.createdOn > a.createdOn) ? 1 : 0));
-        res.send(resFormat.rSuccess({ userList: contacts, totalRecords }))
+        res.send(resFormat.rSuccess({ userList: contacts, totalUsers }))
       }) //end of async
 
       if (err) {
@@ -59,7 +59,6 @@ function list(req, res) {
       } else {
         res.send(resFormat.rSuccess({ userList, totalUsers }))
       }
-
     }).sort(order).skip(offset).limit(limit)
   })
 }
