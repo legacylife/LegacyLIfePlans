@@ -7,7 +7,7 @@ import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
 import { EssenioalIdBoxComponent } from '../essenioal-id-box/essenioal-id-box.component';
-
+import { PersonalProfileModalComponent } from '../personal-profile-modal/personal-profile-modal.component';
 
 
 @Component({
@@ -31,6 +31,12 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   openAddIdBoxModal(data: any = {}, isNew?) {
     let title = isNew ? 'Add new member' : 'Update member';
     let dialogRef: MatDialogRef<any> = this.dialog.open(EssenioalIdBoxComponent, {
+      width: '720px',
+      disableClose: true,
+    })
+  }
+  openProfileModal(data: any = {}, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(PersonalProfileModalComponent, {
       width: '720px',
       disableClose: true,
     })

@@ -32,7 +32,7 @@
           <div class="build--ur--legacy">
             <mat-icon>person_pin</mat-icon>
             <p>
-              <a>Add Personal Profile</a>
+              <a (click)="openProfileModal({}, true)">Add Personal Profile</a>
             </p>
           </div>
         </mat-card-content>
@@ -45,7 +45,7 @@
           <div class="build--ur--legacy">
             <mat-icon>library_add</mat-icon>
             <p>
-              <a  (click)="openAddIdBoxModal({}, true)">Add ID Box</a>
+              <a (click)="openAddIdBoxModal({}, true)">Add ID Box</a>
             </p>
           </div>
         </mat-card-content>
