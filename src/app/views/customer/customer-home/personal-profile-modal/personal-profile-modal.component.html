@@ -1,41 +1,163 @@
-<div class="ll--modal--header">
-  Personal Profile
+<div class="ll--modal--header llp--close--modal">
   <button class="modal--close" [mat-dialog-close]="">
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
 </div>
+<div class="ll--modal--body per--profile--wrapper">
+  <div class="stepper--wrapper">
+    <mat-horizontal-stepper [linear]="isLinear" #stepper>
 
-<form class="llp-form-wrapper">
-  <div class="ll--modal--body">
-    <div fxLayout="row wrap">
-      <div fxFlex.xs="100">
-        <mat-form-field class="full-width">
-          <mat-label>ID/Document</mat-label>
-          <mat-select [(value)]="selected">
-            <mat-option>None</mat-option>
-            <mat-option value="option1">Select Document Type</mat-option>
-            <mat-option value="option2">Option 2</mat-option>
-            <mat-option value="option3">Option 3</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <input matInput placeholder="Social Security Number">
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <input matInput placeholder="Location of Social Security Card">
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <textarea matInput placeholder="Comments"></textarea>
-        </mat-form-field>
+      <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup" class="llp-form-wrapper">
+          <h3 class="main--head text-center">Personal Profile</h3>
+          <p class="sub--head text-center">Add Personal Details</p>
 
 
-      </div>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="First Name">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Middle Name">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Last Name">
+          </mat-form-field>
 
-    </div>
+          <mat-form-field class="full-width llp-datepicker">
+            <input matInput [matDatepicker]="dp" placeholder="Date of Birth" (focus)="dp.open()" value="" readonly>
+            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+            <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
+            </mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field class="full-width no-mar ">
+            <input matInput placeholder="Email" class="">
+            <mat-icon class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+          </mat-form-field>
+          <div class="add--new mb--15">
+            <mat-icon>add_circle</mat-icon>
+            Add New
+          </div>
+
+          <mat-form-field class="full-width no-mar">
+            <input matInput placeholder="Phone*" name="landlineNumber" type="tel">
+            <mat-icon class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+            <span matPrefix>+1</span>
+          </mat-form-field>
+          <div class="add--new mb--15">
+            <mat-icon>add_circle</mat-icon>
+            Add New
+          </div>
+
+          <mat-form-field class="full-width">
+            <mat-label>Select Country</mat-label>
+            <mat-select [(value)]="selected">
+              <mat-option>None</mat-option>
+              <mat-option value="option1">Select Document Type</mat-option>
+              <mat-option value="option2">Option 2</mat-option>
+              <mat-option value="option3">Option 3</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- <mat-form-field class="full-width">
+            <input matInput placeholder="Address Line 1">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Address Line 2">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="City">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="State/Province/Region">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="ZIP/Postal Code">
+          </mat-form-field> -->
+
+          <div class="mt-1 text-center">
+            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1">Proceed</button>
+          </div>
+        </form>
+      </mat-step>
+
+
+      <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup" class="llp-form-wrapper">
+
+          <h3 class="main--head text-center">Work Profile</h3>
+          <p class="sub--head text-center">Add Work Details</p>
+
+
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Work/Business">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Company Name">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Title/Position">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Department">
+          </mat-form-field>
+          <mat-form-field class="full-width no-mar">
+            <input matInput placeholder="Work Phone" name="landlineNumber" type="tel">
+            <mat-icon class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+            <span matPrefix>+1</span>
+          </mat-form-field>
+          <div class="add--new mb--15">
+            <mat-icon>add_circle</mat-icon>
+            Add New
+          </div>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Contact Person Name">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>Select Country</mat-label>
+            <mat-select [(value)]="selected">
+              <mat-option>None</mat-option>
+              <mat-option value="option1">Select Document Type</mat-option>
+              <mat-option value="option2">Option 2</mat-option>
+              <mat-option value="option3">Option 3</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <!-- <mat-form-field class="full-width">
+            <input matInput placeholder="Address Line 1">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Address Line 2">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="City">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="State/Province/Region">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="ZIP/Postal Code">
+          </mat-form-field> -->
+
+
+          <div class="mt-1 text-center">
+            <button mat-raised-button matStepperPrevious class="llp--back--btn">
+              <mat-icon>arrow_back</mat-icon> Back</button>
+            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1">Proceed</button>
+
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        You are now done.
+        <div class="mt-1 text-center">
+          <button mat-raised-button matStepperPrevious class="llp--back--btn">
+            <mat-icon>arrow_back</mat-icon> Back</button>
+          <button mat-raised-button matStepperNext class="llp--primary--btn mb-1">Submit</button>
+        </div>
+      </mat-step>
+
+    </mat-horizontal-stepper>
   </div>
-  <div class="ll--modal--footer text-center">
-    <button mat-raised-button class="llp--primary--btn">Proceed</button>
-  </div>
-</form>
+</div>

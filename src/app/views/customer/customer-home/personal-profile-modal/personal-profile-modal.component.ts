@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { APIService } from './../../../../api.service';
-import { UserAPIService } from './../../../../userapi.service';
+
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
-import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
-import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
-import { Router } from '@angular/router';
+import { MatStepperModule , MatStepper} from '@angular/material/stepper';
+import { Router, ActivatedRoute } from '@angular/router';
+
+
+
 
 @Component({
   selector: 'app-personal-profile-modal',
@@ -14,12 +15,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./personal-profile-modal.component.scss']
 })
 export class PersonalProfileModalComponent implements OnInit {
-  selected = 'option1';
-  constructor( ) { }
+  isLinear = false;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+
+  constructor(private _formBuilder: FormBuilder) {}
 
   ngOnInit() {
-
-    }
-
+    this.firstFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required]
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required]
+    });
   }
+}
+
 

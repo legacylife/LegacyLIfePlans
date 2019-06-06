@@ -593,6 +593,23 @@ body{
     }
 }
 
+
+.add--new{
+    display: flex;
+    align-items: center;
+    color: #c72128;
+    font-size: 16px;
+    font-family: $font--lato--regular;
+    cursor: pointer;
+    float: left;
+    .mat-icon{
+        margin-right: 10px;
+        height: 27px;
+        width: 27px;
+        font-size: 27px;
+    }
+}
+
 /* -- 
    Top header css (start here)
 ------------------------------------------*/

@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatStepperModule} from '@angular/material/stepper';
 import {
   MatListModule,
   MatIconModule,
@@ -91,6 +92,7 @@ import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edi
     MatSnackBarModule,
     MatSidenavModule,
     MatDialogModule,
+    MatStepperModule,
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [
