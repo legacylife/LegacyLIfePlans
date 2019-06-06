@@ -31,7 +31,8 @@ export class AuthGuard implements CanActivate {
         if(userData && (userData.status == 'Inactive' || userData.status == 'In-Active')){
           console.log("Your account has been inactivated >> ",userData)
           this.snack.open("Your account has been inactivated.", 'OK', { duration: 4000 })
-          this.router.navigateByUrl('/llp-admin/signin'); 
+          //this.router.navigateByUrl('/llp-admin/signin');
+          this.api.logout(); 
           return false;
         }else{
           console.log("Current admin logined >> ",userData)

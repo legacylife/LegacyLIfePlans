@@ -148,6 +148,11 @@
                 <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess.adminmanagement === 'fullaccess'"></mat-checkbox>
                 <span>Admin Management</span>
               </div>
+
+              <div class="tasktype-item">
+                  <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess.allowNotifications === 'yes'"></mat-checkbox>
+                  <span>Allow To Receive Notification* (New admin member notification)</span>
+                </div>
             </div>           
           </mat-card-content>
         </mat-card>
