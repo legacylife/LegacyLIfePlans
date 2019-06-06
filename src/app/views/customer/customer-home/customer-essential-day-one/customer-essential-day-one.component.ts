@@ -1,10 +1,14 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MatSnackBar, MatSidenav } from '@angular/material';
+import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Product } from '../../../../shared/models/product.model';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms'
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
+import { EssenioalIdBoxComponent } from '../essenioal-id-box/essenioal-id-box.component';
+
+
 
 @Component({
   selector: 'app-customer-home',
@@ -12,52 +16,23 @@ import { egretAnimations } from '../../../../shared/animations/egret-animations'
   styleUrls: ['./customer-essential-day-one.component.scss'],
   animations: [egretAnimations]
 })
-export class CustomerEssentialDayOneComponent implements OnInit, OnDestroy {
-  public isSideNavOpen: boolean;
-  public viewMode: string = 'grid-view';
-  public currentPage: any;
-  dayFirst = true;
-  daySeco = false;
+export class CustomerEssentialDayOneComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
-  public products: any[];
-  public categories: any[];
-  public activeCategory: string = 'all';
-  public filterForm: FormGroup;
-  public cart: any[];
-  public cartData: any;
-
   constructor(
-    // private shopService: ShopService,
-    private fb: FormBuilder,
-    private snackBar: MatSnackBar
+    private route: ActivatedRoute, 
+    private router: Router, private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
-    // this.categories$ = this.shopService.getCategories();
-    this.categories = ["My essentials", "Pets"]
+  }
 
-   
-    this.products = []
-    this.cartData = []
-    this.filterForm = this.fb.group({
-      search: ['']
+
+  openAddIdBoxModal(data: any = {}, isNew?) {
+    let title = isNew ? 'Add new member' : 'Update member';
+    let dialogRef: MatDialogRef<any> = this.dialog.open(EssenioalIdBoxComponent, {
+      width: '720px',
+      disableClose: true,
     })
-  }
-  showSecoDay() {
-    this.dayFirst = false;
-    this.daySeco = true;
-  }
-  ngOnDestroy() {
-
-  }
-
-  setActiveCategory(category) {
-    this.activeCategory = category;
-    this.filterForm.controls['category'].setValue(category)
-  }
-
-  toggleSideNav() {
-    this.sideNav.opened = !this.sideNav.opened;
   }
 }

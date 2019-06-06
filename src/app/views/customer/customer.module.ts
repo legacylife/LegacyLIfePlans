@@ -52,6 +52,7 @@ import { CustomerDashboardDayOneComponent } from './customer-home/customer-dashb
 import { CustomerEssentialDayOneComponent } from './customer-home/customer-essential-day-one/customer-essential-day-one.component';
 import { CustomerEssentialDetailsComponent } from './customer-home/customer-essential-details/customer-essential-details.component';
 import { CustomerEssentialDetailsIdboxComponent } from './customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
+import { EssenioalIdBoxComponent } from './customer-home/essenioal-id-box/essenioal-id-box.component';
 
 import { CanDeactivateGuard } from '../../shared/services/can-deactivate-guard.service';
 import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
@@ -96,9 +97,9 @@ import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edi
     CustomerHomeComponent, FormatTimePipe, CustomerAccountSettingComponent, ChangePassComponent,
     CustomerSubscriptionComponent, CustomerTrusteesComponent, CustomerProfessionalComponent,
     CustomerHomeEssentialComponent, CustomerDashboardComponent, CustomerDashboardDayOneComponent, CustomerEssentialDayOneComponent,
-    CustomerEssentialDetailsComponent, CustomerEssentialDetailsIdboxComponent
+    CustomerEssentialDetailsComponent, CustomerEssentialDetailsIdboxComponent, EssenioalIdBoxComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard
-  ], bootstrap: [CustomerSignupComponent], entryComponents: [ChangePassComponent],
+  ], bootstrap: [CustomerSignupComponent], entryComponents: [ChangePassComponent, EssenioalIdBoxComponent],
 })
 export class CustomerModule { }
