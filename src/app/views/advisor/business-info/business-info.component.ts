@@ -35,7 +35,6 @@ export class BusinessInfoComponent implements OnInit {
   thirdFormGroup: FormGroup;
   forthFormGroup: FormGroup;
   //isEditable = true;
-  manageOtherProceducersCheck = false;
   advisorDocuments_temps = false;
   advisorDocumentsList: any;
   yearsOfServiceLists:any;
@@ -57,7 +56,7 @@ export class BusinessInfoComponent implements OnInit {
     private loader: AppLoaderService,private confirmService: AppConfirmService) {}//,private http: Http, private el: ElementRef
   
   ngOnInit() {
-    localStorage.setItem("step",'2');
+   // localStorage.setItem("step",'2');
     this.userId = localStorage.getItem("endUserId");
     this.stateList = states;
     this.step = localStorage.getItem("step");
@@ -104,16 +103,10 @@ export class BusinessInfoComponent implements OnInit {
       this.getAdvDetails(this.step);
     }
   }
-
- /*  conditionalRequired() {
-    //console.log("asdasdasd",this.thirdFormGroup.controls['manageOtherProceducers'].value);
-    return (control: FormControl): { [s: string]: boolean } => {
-      let required: boolean = false;
-     console.log("asdasdasd",this.thirdFormGroup.controls['manageOtherProceducers'].value)
-      if (this.thirdFormGroup.controls['manageOtherProceducers'].value=='1') {
-        return { required: true };
-      }
-    }
+  
+ /*  goBack(myStepper: MatStepper){
+    console.log('asdasd')
+     myStepper.previous();
   }
 /*
   uploadAll() {
