@@ -527,9 +527,8 @@ body{
             justify-content: center;
 
             .modal--close{
-                position: absolute;
-                right: 0;
-                top: 0;
+                border: none;
+                background: transparent;
                 .icon--cross{
                     position: absolute;
                     right: -9px;
