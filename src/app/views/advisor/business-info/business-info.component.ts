@@ -51,16 +51,12 @@ export class BusinessInfoComponent implements OnInit {
   industryDomainList: string[] = industryDomain.sort()
   businessTypeList: string[] = businessType.sort()
   yearsOfServiceList: string[] = yearsOfService
-  
+  fileErrors:any;
   constructor(private router: Router, private activeRoute: ActivatedRoute, private stepper: MatStepperModule, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, 
     private loader: AppLoaderService,private confirmService: AppConfirmService) {}//,private http: Http, private el: ElementRef
   
   ngOnInit() {
-   // localStorage.setItem("step",'2');
-   console.log("uploader",this.uploader);
-   if(this.uploader.getNotUploadedItems().length){
-     console.log('here');
-   }
+    localStorage.setItem("step",'0');
     this.userId = localStorage.getItem("endUserId");
     this.stateList = states;
     this.step = localStorage.getItem("step");
@@ -238,6 +234,8 @@ docDelete(doc, name,tmName) {
           this.thirdFormGroup.controls['howManyProducers'].setValue(this.profile.howManyProducers);
           this.profile.manageOtherProceducers == 1 ? this.showHowManyProducer = true : this.showHowManyProducer = false;
           this.forthFormGroup.controls['advisorDocuments_temp'].setValue('');
+
+          this.advisorDocumentsList = this.profile.advisorDocuments;
           if(this.profile.advisorDocuments.length>0){
             this.forthFormGroup.controls['advisorDocuments_temp'].setValue('1');
           }
@@ -250,8 +248,29 @@ docDelete(doc, name,tmName) {
       }) 
   }
 
-  public fileOverBase(e:any):void {console.log('fileOverBase')
+  public fileOverBase(e:any):void {    
     this.hasBaseDropZoneOver = e;
+    var cnt = 0;
+    this.fileErrors = [];
+    this.uploader.queue.forEach((fileoOb) => {
+      console.log("fileoOb",fileoOb)
+     
+      let filename = fileoOb.file.name;
+      var extension = filename.substring(filename.lastIndexOf('.') + 1);
+      var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
+      let resp = this.isExtension(extension,fileExts);
+      if(!resp){
+        var FileMsg = "This file '" + filename + "' is not supported";
+        this.uploader.removeFromQueue(fileoOb);
+        let pushArry = {"error":FileMsg} 
+        this.fileErrors.push(pushArry); 
+        setTimeout(()=>{    
+          this.fileErrors = []
+        }, 5000);
+        cnt++;
+      }
+    });
+
     if(this.uploader.getNotUploadedItems().length){
         this.uploader.uploadAll(); 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => { 
@@ -259,8 +278,23 @@ docDelete(doc, name,tmName) {
         };
     }
   }
-    
-  getProfileField = (query = {}, search = false) => {
+
+   isExtension(ext, extnArray) {
+    var result = false;
+    var i;
+    if (ext) {
+        ext = ext.toLowerCase();
+        for (i = 0; i < extnArray.length; i++) {
+            if (extnArray[i].toLowerCase() === ext) {
+                result = true;
+                break;
+            }
+        }
+    }
+    return result;
+}
+
+getProfileField = (query = {}, search = false) => {
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: "advisor" }, query)
     }
