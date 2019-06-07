@@ -28,7 +28,11 @@ router.post('/advisorDocument', cors(), function(req,res){
           } else if (result) {           
            
           let ext = filename.split('.')
-          ext = ext[ext.length - 1]
+          ext = ext[ext.length - 1];
+          var fileExts = ["jpg", "jpeg", "png", "gif", "pdf", "docs"];
+          let resp = isExtension(ext,fileExts);
+
+          if(resp){  //////          
           const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
           fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
           file.pipe(fstream);
@@ -53,6 +57,14 @@ router.post('/advisorDocument', cors(), function(req,res){
               }
             })
           })
+         }else{
+          if(result.advisorDocuments){
+            oldTmpFiles = result.advisorDocuments;
+          }
+          let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid extension file!" }
+          res.send(resFormat.rSuccess(results))
+         }
+
         }
       })
       } else {
@@ -61,6 +73,23 @@ router.post('/advisorDocument', cors(), function(req,res){
     })
   }
 })
+
+
+function isExtension(ext, extnArray) {
+  var result = false;
+  var i;
+  if (ext) {
+      ext = ext.toLowerCase();
+      for (i = 0; i < extnArray.length; i++) {
+          if (extnArray[i].toLowerCase() === ext) {
+              result = true;
+              break;
+          }
+      }
+  }
+  return result;
+}
+
 
 //function get details of user from url param
 function deleteDoc(req, res) {
