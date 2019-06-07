@@ -15,8 +15,8 @@
           </div>
 
           <div class="acc--user--details text-center">
-            <h2>{{profile.firstName}} {{profile.lastName}}</h2>
-            <p>{{profile.city}}, {{profile.state}} - {{profile.zipcode}}</p>
+            <h2 *ngIf="profile.city">{{profile.firstName}} {{profile.lastName}}</h2>
+            <p *ngIf="profile.city">{{profile.city}}, {{profile.state}} - {{profile.zipcode}}</p>
             <div class="sta--m">
               <mat-icon>star</mat-icon> {{profile.userType}}</div>
           </div>

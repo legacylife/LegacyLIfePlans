@@ -119,7 +119,7 @@ export class APIService {
   
     let accessFlag = true;
     this.sectionAccess = this.getKeyFromStorage('sectionAccess');
-    console.log("sectionAccess >> ",this.sectionAccess)
+    //console.log("sectionAccess >> ",this.sectionAccess)
     if (this.sectionAccess) {
       this.accessSection = JSON.parse(this.sectionAccess)
       if (this.accessSection.usermanagement == 'fullaccess')
@@ -133,7 +133,7 @@ export class APIService {
   //function to get user id from localStorage
   public getUserInfo(): string {    
     this.userId = this.getKeyFromStorage('userId')
-    console.log("AFter Login",this.userId)
+    //console.log("AFter Login",this.userId)
     this.userType = this.getKeyFromStorage('userType')
    // this.sectionAccess = this.getKeyFromStorage('sectionAccess')
     this.userInfo = {
@@ -181,7 +181,7 @@ export class APIService {
       map((response: TokenResponse) => {
         if (response.data) {// && response.data.token
           //check if user type is same
-          console.log("data user type >> "+JSON.stringify(data)+" --------- response usertype >>> "+this.userType)
+          //console.log("data user type >> "+JSON.stringify(data)+" --------- response usertype >>> "+this.userType)
         //  if (this.userType == "sysadmin") {
             // if (this.getKeyFromStorage('userType') == "sysadmin") {
             const { token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId } = response.data
