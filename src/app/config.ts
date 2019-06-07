@@ -28,7 +28,7 @@ export const s3Details = {
 export const stripePublishableKey = ""
 
 export const adminSections = [{
-  name: 'User Management',
+  name: 'Customer Management',
   code: "usermanagement"
 }, {
   name: 'Advisor Management',
