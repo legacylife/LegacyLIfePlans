@@ -51,6 +51,7 @@ import { states } from '../../state';
 import { yearsOfServiceList, businessTypeList , industryDomainList } from '../../selectList';
 import { UserAuthGuard } from '../../shared/services/auth/userauth.guard';
 import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
+import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 //import { AdvisorLandingLayoutComponent } from '../../shared/components/layouts/advisor-landing-layout/advisor-landing-layout.component';
 import { HomeComponent } from './advisor-landing/home/home.component';
@@ -101,7 +102,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     AdvisorSignupComponent,BusinessInfoComponent,SetPasswordComponent,FormatTimePipe,ThankYouComponent,AdvisorDashboardComponent,LegaciesComponent,
     AdvisorDashboardUpdateComponent,AdvisorAccountSettingComponent,AdvisorSubscriptionComponent,ChangePassComponent,HomeComponent
   ],providers: [
-    MatDatepickerModule,UserAuthGuard,UserPreAuthGuard,ProfilePicService
+    MatDatepickerModule,UserAuthGuard,UserPreAuthGuard,ProfilePicService,CanDeactivateGuard
   ],entryComponents: [ChangePassComponent],
 })
 export class AdvisorModule { }

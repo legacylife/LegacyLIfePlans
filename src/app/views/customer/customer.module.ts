@@ -56,7 +56,7 @@ import { CustomerEssentialDetailsIdboxComponent } from './customer-home/customer
 import { EssenioalIdBoxComponent } from './customer-home/essenioal-id-box/essenioal-id-box.component';
 import { PersonalProfileModalComponent } from './customer-home/personal-profile-modal/personal-profile-modal.component';
 
-import { CanDeactivateGuard } from '../../shared/services/can-deactivate-guard.service';
+import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
 import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
 @NgModule({
   imports: [

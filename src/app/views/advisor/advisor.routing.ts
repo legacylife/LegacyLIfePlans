@@ -11,6 +11,7 @@ import { AdvisorSubscriptionComponent } from './advisor-subscription/advisor-sub
 import { AdvisorLayoutComponent } from './../../shared/components/layouts/advisor-layout/advisor-layout.component';
 import { UserAuthGuard } from '../../shared/services/auth/userauth.guard';
 import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
+import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
 import { AuthLayoutComponent } from '../../shared/components/layouts/auth-layout/auth-layout.component';
 import { AdvisorLandingLayoutComponent } from '../../shared/components/layouts/advisor-landing-layout/advisor-landing-layout.component';
 import { HomeComponent } from './advisor-landing/home/home.component';
@@ -139,6 +140,8 @@ export const AdvisorRoutes: Routes = [
       { 
         path: '',
         component: AdvisorAccountSettingComponent,
+        canActivate: [ UserAuthGuard ],
+        canDeactivate: [ CanDeactivateGuard ] 
       }
     ],    
   },
