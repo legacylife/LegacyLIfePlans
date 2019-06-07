@@ -56,7 +56,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   awardsYears: any;
   websiteLinks: any;// websiteLink[] = [{ 'links': "" }]
   showHowManyProducer: boolean
-
+  advisorDocuments_temps = false;
   uploadedFile: File
   profilePicture: any = "assets/images/arkenea/default.jpg"
   activeLicenseList: string[] = activeLicense
@@ -210,7 +210,14 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.LicenseForm.controls['manageOtherProceducers'].setValue(this.profile.manageOtherProceducers ? this.profile.manageOtherProceducers : "");
         this.LicenseForm.controls['howManyProducers'].setValue(this.profile.howManyProducers ? this.profile.howManyProducers : "");
 
-        this.LicenseForm.controls['advisorDocuments'].setValue(this.profile.advisorDocuments ? "" : "11");
+        //this.LicenseForm.controls['advisorDocuments'].setValue(this.profile.advisorDocuments ? "" : "11");
+
+        this.LicenseForm.controls['advisorDocuments_temp'].setValue('');
+        if(this.profile.advisorDocuments.length>0){
+          this.LicenseForm.controls['advisorDocuments_temp'].setValue('1');
+        }
+
+
         this.profile.manageOtherProceducers == 1 ? this.showHowManyProducer = true : this.showHowManyProducer = false
         this.loader.close();
         this.modified = false
@@ -413,6 +420,9 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
+              if(this.advisorDocumentsList.length<1){
+                this.LicenseForm.controls['advisorDocuments_temp'].setValue('');
+              }  
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
@@ -530,6 +540,10 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       } else {
         this.profile = result.data.userProfile;
         this.advisorDocumentsList = this.profile.advisorDocuments;
+        if(this.profile.advisorDocuments.length>0){
+          this.LicenseForm.controls['advisorDocuments_temp'].setValue('1');
+        }
+       
       }
     }, (err) => {
       console.error(err);
