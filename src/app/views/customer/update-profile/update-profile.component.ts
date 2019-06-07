@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatProgressBar, MatButton, MatSnackBar } from '@angular/material';
+import { MatDialog, MatProgressBar, MatButton, MatSnackBar } from '@angular/material';
 import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { APIService } from './../../../api.service';
@@ -8,6 +8,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { RoutePartsService } from "../../../shared/services/route-parts.service";
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { states } from '../../../state';
+import { ChangePicComponent } from './../../change-pic/change-pic.component';
+import { serverUrl, s3Details } from '../../../config'
+import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 
 @Component({
   selector: 'app-update-profile',
@@ -29,34 +32,39 @@ export class UpdateProfileComponent implements OnInit {
   maxDate = new Date(new Date())
   profilePicture: any = "assets/images/arkenea/default.jpg"
 
-  constructor(private router: Router, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
+  constructor(private router: Router, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService, public dialog: MatDialog,private picService: ProfilePicService) { }
   ngOnInit() {
+    this.picService.itemValue.subscribe((nextValue) => {
+      this.profilePicture =  nextValue
+    })
     this.userId = localStorage.getItem("endUserId");
     this.username = localStorage.getItem("endUsername");
     this.userType = localStorage.getItem("endUserType");
+    this.stateList = states;
+    this.llpCustsignupProfileForm = new FormGroup({
+      firstName: new FormControl('', Validators.required),
+      lastName: new FormControl('', Validators.required),
+      phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
+      dateOfBirth: new FormControl('', Validators.required),
+      city: new FormControl('', Validators.required),
+      state: new FormControl('', Validators.required),
+      zipcode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
+    });
 
     if(this.userId){
       const req_vars = { userId: this.userId }
-      this.userapi.apiRequest('post', 'auth/view', req_vars).subscribe(result => {    
-        if(result.data.profileSetup &&  result.data.profileSetup == "yes"){
+      this.userapi.apiRequest('post', 'auth/view', req_vars).subscribe(result => {  
+        if (result.data.profilePicture) {
+          this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + result.data.profilePicture;
+          localStorage.setItem('endUserProfilePicture', this.profilePicture)
+          this.picService.setProfilePic = this.profilePicture;
+        }
+        if(result.data.profileSetup &&  result.data.profileSetup == "yes"){          
           this.router.navigate(['/', 'customer', 'account-setting']);
         } 
-        else {
-          this.stateList = states;
-          this.llpCustsignupProfileForm = new FormGroup({
-            firstName: new FormControl('', Validators.required),
-            lastName: new FormControl('', Validators.required),
-            phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
-            dateOfBirth: new FormControl('', Validators.required),
-            city: new FormControl('', Validators.required),
-            state: new FormControl('', Validators.required),
-            zipcode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
-          });
-        }
       }, (err) => {
         console.error(err)
       })
-
     } else {
       this.router.navigate(['/', 'customer', 'signup']);
     }
@@ -144,6 +152,13 @@ export class UpdateProfileComponent implements OnInit {
     } else {
       this.snack.open("Please select valid image. Valid extentions are jpg, jpeg, png, gif.", 'OK', { duration: 4000 })      
     }
+  }
+
+  changePicModal(): void {
+    const dialogRef = this.dialog.open(ChangePicComponent, {
+      width: '555px',
+    });
+    dialogRef.afterClosed().subscribe(result => { });
   }
 
 }

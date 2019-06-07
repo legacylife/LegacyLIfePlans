@@ -62,6 +62,7 @@ export class ChangePicComponent implements OnInit {
 }
 
  saveProfilePicture() {
+ 
   this.loader.open(); 
     let profileInData = {
       profilePicture: this.data.image
@@ -79,19 +80,17 @@ export class ChangePicComponent implements OnInit {
         let userHeaderDetails = sessionStorage.getItem("enduserHeaderDetails")
         let userDetails = JSON.parse(userHeaderDetails)
         userHeaderDetails = JSON.stringify(userDetails)
+        this.profilePicture = s3Details.url + "/" + result.data.profilePicture;
         if (localStorage.getItem("enduserHeaderDetails")) {
           localStorage.setItem("enduserHeaderDetails", userHeaderDetails)
-          
-          this.profilePicture = s3Details.url + "/" + result.data.profilePicture;
-          
-          console.log(this.profilePicture);
-
           localStorage.setItem('endUserProfilePicture', this.profilePicture)
-          this.picService.setProfilePic = this.profilePicture;
-          this.dialog.closeAll();
+          this.picService.setProfilePic = this.profilePicture;         
         } else {
-          sessionStorage.setItem("enduserHeaderDetails", userHeaderDetails)
+          sessionStorage.setItem("enduserHeaderDetails", userHeaderDetails);
+          localStorage.setItem('endUserProfilePicture', this.profilePicture)
+          this.picService.setProfilePic = this.profilePicture;         
         }
+        this.dialog.closeAll();
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
