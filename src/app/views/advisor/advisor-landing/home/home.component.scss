@@ -934,6 +934,10 @@
         }
     }
 }
+.f--link{
+    color: #fff !important;
+    font-family: $font--lato--light !important;
+}
 @media only screen and (min-width: 960px) and (max-width: 979px){
     .llp--slider--button.next{
         right: 40px;

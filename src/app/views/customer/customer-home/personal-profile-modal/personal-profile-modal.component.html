@@ -148,14 +148,87 @@
         </form>
       </mat-step>
 
-      <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        You are now done.
-        <div class="mt-1 text-center">
-          <button mat-raised-button matStepperPrevious class="llp--back--btn">
-            <mat-icon>arrow_back</mat-icon> Back</button>
-          <button mat-raised-button matStepperNext class="llp--primary--btn mb-1">Submit</button>
-        </div>
+      <mat-step [stepControl]="thirdFormGroup">
+
+        <form [formGroup]="thirdFormGroup" class="llp-form-wrapper">
+
+          <h3 class="main--head text-center">Civic/Club, Religious Info
+          </h3>
+          <p class="sub--head text-center">Add Details</p>
+
+
+          <h3 class="sec--header">Civic Group/Club</h3>
+
+
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Name" value="Cantthinkofaname Motorsports">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Address Line 1">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Address Line 2">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="ZIP/Postal Code">
+          </mat-form-field>
+
+          <mat-form-field class="full-width no-mar">
+            <input matInput placeholder="Work Phone" name="landlineNumber" type="tel" value="9876543210">
+            <mat-icon class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+            <span matPrefix>+1</span>
+          </mat-form-field>
+          <div class="add--new mb--15">
+            <mat-icon>add_circle</mat-icon>
+            Add New
+          </div>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Contact Person Name">
+          </mat-form-field>
+          <mat-form-field class="full-width no-mar">
+            <input matInput placeholder="Contact Person Phone" name="landlineNumber" type="tel" value="9876543210">
+            <mat-icon class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+            <span matPrefix>+1</span>
+          </mat-form-field>
+          <div class="add--new mb--15">
+            <mat-icon>add_circle</mat-icon>
+            Add New
+          </div>
+
+          <h3 class="sec--header">Church/Synagogue/Religious Connection</h3>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Name" value="Shiloh Church of God">
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Address Line 1">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Address Line 2">
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input matInput placeholder="ZIP/Postal Code">
+          </mat-form-field>
+          <mat-form-field class="full-width no-mar">
+            <input matInput placeholder="Phone" name="landlineNumber" type="tel" value="9876543210">
+            <mat-icon class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+            <span matPrefix>+1</span>
+          </mat-form-field>
+          <div class="add--new mb--15">
+            <mat-icon>add_circle</mat-icon>
+            Add New
+          </div>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Contact Person Name">
+          </mat-form-field>
+
+          <div class="mt-1 text-center">
+            <button mat-raised-button matStepperPrevious class="llp--back--btn">
+              <mat-icon>arrow_back</mat-icon> Back</button>
+            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1">Submit</button>
+          </div>
+        </form>
       </mat-step>
 
     </mat-horizontal-stepper>
