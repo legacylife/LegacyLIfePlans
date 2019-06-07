@@ -20,8 +20,10 @@
           </mat-list-item>-->
           <mat-list-item>
             <mat-icon class="mr-1">email</mat-icon> {{row?.username}}</mat-list-item>
-          <mat-list-item *ngIf="row?.userType != 'sysadmin' && row?.phoneNumber!=''">
-            <mat-icon class="mr-1">phone</mat-icon> {{row?.phoneNumber}}</mat-list-item>          
+          <mat-list-item *ngIf="row?.userType == 'customer' && row?.phoneNumber!=''">
+            <mat-icon class="mr-1">phone</mat-icon> {{row?.phoneNumber}}</mat-list-item>
+          <mat-list-item *ngIf="row?.userType == 'advisor' && row?.businessPhoneNumber!=''">
+            <mat-icon class="mr-1">phone</mat-icon> {{row?.businessPhoneNumber + row?.phoneNumber + row?.landlineNumber}}</mat-list-item>          
         </mat-list>
       </mat-card-content>
     </mat-card> 
@@ -89,11 +91,19 @@
               </mat-list-item>
               <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
                 <div fxLayout="row" fxFlex="100">
-                  <h6 class="m-0 mr-1">Verified Status</h6>
+                  <h6 class="m-0 mr-1">Rejected Reason</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.email_verified ? 'Yes' : 'No'}}</div>
+                  <div fxFlex="40">{{row?.approveRejectReason}}</div>
                 </div>
               </mat-list-item>
+              <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Verified Status</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">Yes</div>
+                </div>
+              </mat-list-item>
+
               <mat-list-item class="">
                   <div fxLayout="row" fxFlex="100">
                     <h6 class="m-0 mr-1">Last log in date and time</h6>

@@ -80,7 +80,7 @@
                     </mat-form-field>
 
                     <mat-form-field class="full-width llp-datepicker">
-                      <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Date of Birth" value="" readonly [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
+                      <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Date Of Birth" value="" readonly [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
                       <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                       <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
                       </mat-datepicker>
@@ -135,14 +135,14 @@
                 <div fxLayout="row wrap" fxLayoutGap-sm="5px">
                   <div fxFlex.xs="100" fxFlex.sm="46" fxFlex.md="46" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="addressLine1" placeholder="Address line 1*" value="" [formControl]="AddressForm.controls['addressLine1']">
+                      <input class="capitalize" matInput name="addressLine1" placeholder="Address Line 1*" value="" [formControl]="AddressForm.controls['addressLine1']">
                       <mat-icon matTooltip="Please enter address in line 1." matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['addressLine1'].hasError('required') && AddressForm.controls['addressLine1'].touched"
                         class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="46" fxFlex.md="46" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="addressLine2" placeholder="Address line 2 (optional)" value="" [formControl]="AddressForm.controls['addressLine2']">
+                      <input class="capitalize" matInput name="addressLine2" placeholder="Address Line 2 (optional)" value="" [formControl]="AddressForm.controls['addressLine2']">
                     </mat-form-field>
                   </div>
                 </div>

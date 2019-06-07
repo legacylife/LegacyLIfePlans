@@ -164,14 +164,14 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="businessName" placeholder="Business name*" value="" [formControl]="AddressForm.controls['businessName']">
+                      <input class="capitalize" matInput name="businessName" placeholder="Business Name*" value="" [formControl]="AddressForm.controls['businessName']">
                       <mat-icon matTooltip="Please enter business name" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessName'].hasError('required') && AddressForm.controls['businessName'].touched"
                       class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
-                      <mat-label>Years of service*</mat-label>
+                      <mat-label>Years Of Service*</mat-label>
                       <mat-select  name="yearsOfService" [formControl]="AddressForm.controls['yearsOfService']">
                         <mat-option *ngFor="let yos of yearsOfServiceList" [value]="yos">{{yos}}</mat-option>
                       </mat-select>
@@ -183,7 +183,7 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <mat-label>Business type*</mat-label>
+                      <mat-label>Business Type*</mat-label>
                       <mat-select name="businessType" [formControl]="AddressForm.controls['businessType']" multiple>
                         <mat-option *ngFor="let btl of businessTypeList" [value]="btl">{{btl}}</mat-option>
                       </mat-select>
@@ -206,14 +206,14 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="addressLine1" placeholder="Address line 1*" value="" [formControl]="AddressForm.controls['addressLine1']">
+                      <input class="capitalize" matInput name="addressLine1" placeholder="Address Line 1*" value="" [formControl]="AddressForm.controls['addressLine1']">
                       <mat-icon matTooltip="Please enter address line 1" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['addressLine1'].hasError('required') && AddressForm.controls['addressLine1'].touched"
                       class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="addressLine2" placeholder="Address line 2 (optional)" value="" [formControl]="AddressForm.controls['addressLine2']">
+                      <input class="capitalize" matInput name="addressLine2" placeholder="Address Line 2 (optional)" value="" [formControl]="AddressForm.controls['addressLine2']">
                     </mat-form-field>
                   </div>
                 </div>
@@ -268,7 +268,7 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width about--txtarea">
-                      <textarea matInput placeholder="About you*" value="Your professional summary, achievements, client experience" name="bioText" [formControl]="AddressForm.controls['bioText']"></textarea>
+                      <textarea matInput placeholder="About You*" value="Your professional summary, achievements, client experience" name="bioText" [formControl]="AddressForm.controls['bioText']"></textarea>
                       <div class="char--limit">0 / 500 chars</div>
                       <mat-icon matTooltip="Please enter bio text" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['bioText'].hasError('required') && AddressForm.controls['bioText'].touched"
                       class="red--alert">help_outline</mat-icon>
@@ -362,7 +362,7 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <mat-label>Active license held*</mat-label>
+                      <mat-label>Active License Held*</mat-label>
 
                       <mat-select [formControl]="LicenseForm.controls['activeLicenceHeld']" multiple>
                         <mat-option *ngFor="let topping of activeLicenseList" [value]="topping">{{topping}}</mat-option>
