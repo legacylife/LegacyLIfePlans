@@ -75,7 +75,7 @@ export class NavigationService {
       state: 'admin/cms'
     },
     {
-      name: 'REFERRAL PROGRAME',
+      name: 'REFERRAL PROGRAM',
       type: 'link',
       tooltip: 'Referral program',
       icon: 'card_giftcard',

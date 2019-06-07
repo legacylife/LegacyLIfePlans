@@ -24,7 +24,7 @@ export class customerlistComponent implements OnInit {
   my_messages:any;
   constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
   ngOnInit() {
-    this.aceessSection = this.api.getUserAccess('cms')
+    this.aceessSection = this.api.getUserAccess('usermanagement')
     this.my_messages = {
       'emptyMessage': 'No records Found'
     };

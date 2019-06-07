@@ -210,7 +210,15 @@
     padding-right: 30px;
 }
 
-
+.error--chip{
+    ::ng-deep .mat-chip-list-wrapper{
+        mat-chip{
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    }
+}
 
 
 
