@@ -581,12 +581,14 @@ body{
 .last--modified--by{
     font-size: 13px;
     color: #222324;
+    font-family: $font--lato--regular;
     span{
         color: #828385;
     } 
 }
-
 .right--actions{
+    display: flex;
+    align-items: center;
     .mat-icon{
         height: 20px;
         width: 20px;

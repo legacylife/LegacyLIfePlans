@@ -35,7 +35,6 @@ export class PersonalProfileModalComponent implements OnInit {
   }
 
   onChangeFormIndex(event){
-    console.log(event)
     const {selectedIndex} = event;
     let stepHeader = document.getElementsByClassName('mat-horizontal-stepper-header')
     forEach(stepHeader, (element, index) => {
