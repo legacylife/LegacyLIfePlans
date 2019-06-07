@@ -17,10 +17,10 @@
           <h2 class="login-header-text m-0">Update Your Profile Details </h2>
         </div>
         <div class="profile--pic">
-          <div class="pic--box" [ngStyle]="{'background-image': 'url(' + profilePicture + ')' }"></div>
-          <mat-icon class="edit--pic" title="edit user image" (click)="profilePic.click()">edit</mat-icon>
-          <input type="file" name="profilePicture" #profilePic id="profilePicture" class="profile-pic-input" (change)="showSelectedProfilePicture()"
-            accept="image/*" />
+             <div class="pic--box" [ngStyle]="{'background-image': 'url(' + profilePicture + ')' }"></div>
+          <mat-icon  class="edit--pic" title="Upload customer image" (click)="changePicModal()">edit</mat-icon>
+          <!-- <mat-icon class="edit--pic" title="edit user image" (click)="profilePic.click()">edit</mat-icon> -->
+          <input type="file" name="profilePicture" #profilePic id="profilePicture" class="profile-pic-input" accept="image/*" />
         </div>
         <form class="llp-form-wrapper" [formGroup]="llpCustsignupProfileForm" (ngSubmit)="llpCustSignup()">
           <div class="row wrap">

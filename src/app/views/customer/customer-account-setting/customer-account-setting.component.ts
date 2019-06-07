@@ -38,7 +38,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   isUpdating = false;
   uploadedFile: File
   profilePicture: any = "assets/images/arkenea/default.jpg"
-pdisplay: boolean = false
+  pdisplay: boolean = false
   pcropperDisplay: boolean = false
   profileImage = null
   
