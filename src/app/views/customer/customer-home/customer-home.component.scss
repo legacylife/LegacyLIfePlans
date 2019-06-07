@@ -230,6 +230,7 @@
         display: flex;
         align-items: center;
         padding-bottom: 18px;
+        justify-content: space-between;
         .mat-icon{
             color: #727a33;
             margin-right: 10px;
@@ -284,11 +285,35 @@
         width: 44px;
     }
     .llp--primary--btn{
-        padding: 0px 10px;
+        padding: 0px 10px !important;
         height: 38px;
     }
     .llp--content--wrapper .empty--section .mat-card-header {
         padding: 0 15px;
+    }
+    .right--actions .llp--primary--btn {
+        margin-left: 5px !important;
+        padding: 0 !important;
+        min-width: 27px;
+        height: 27px;
+        .mat-icon{
+            height: 15px;
+            width: 15px;
+            font-size: 15px;
+            margin-right: 0;
+            line-height: 8px;
+        }
+    }
+    .details--wrapper .details--header{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .last--modified--by{
+        margin-top: 5px;
+    }
+    .no--of--trustee {
+        font-size: 13px;
+        margin-right: 6px;
     }
 }
 @media only screen and (min-width: 600px) and (max-width: 959px){

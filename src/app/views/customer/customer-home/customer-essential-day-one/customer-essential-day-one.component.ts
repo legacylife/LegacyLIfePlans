@@ -20,7 +20,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
   ) { }
 
@@ -30,7 +30,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   toggleSideNav() {
     this.sideNav.opened = !this.sideNav.opened;
   }
-  
+
   openAddIdBoxModal(data: any = {}, isNew?) {
     let title = isNew ? 'Add new member' : 'Update member';
     let dialogRef: MatDialogRef<any> = this.dialog.open(EssenioalIdBoxComponent, {
@@ -44,4 +44,5 @@ export class CustomerEssentialDayOneComponent implements OnInit {
       disableClose: true,
     })
   }
+
 }
