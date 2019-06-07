@@ -123,9 +123,9 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       activeLicenceHeld: new FormControl([], Validators.required),
       agencyOversees: new FormControl('', Validators.required),
       managingPrincipleName: new FormControl('', Validators.required),
-      manageOtherProceducers: new FormControl('', Validators.required),
-      howManyProducers: new FormControl('', ),
-      advisorDocuments: new FormControl('', )
+      manageOtherProceducers: new FormControl('',Validators.required),
+      howManyProducers: new FormControl('',[Validators.pattern(/^[0-9]*$/)]),
+      advisorDocuments: new FormControl('',)
     });
 
     this.LicenseForm.valueChanges.subscribe(val => {
@@ -543,7 +543,17 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     dialogRef.afterClosed().subscribe(result => { });
   }
 
-  showHowManyProducts(showVal) {
+  showHowManyProductsold(showVal) {
     this.LicenseForm.controls['manageOtherProceducers'].value == 2 ? this.showHowManyProducer = true : this.showHowManyProducer = false
+  }
+
+  showHowManyProducts(showVal) {
+    this.showHowManyProducer = showVal === '1';
+   if(!this.showHowManyProducer){
+      this.LicenseForm.controls['howManyProducers'].setValue(0);
+    }else{
+       this.LicenseForm.controls['howManyProducers'].setValue('');
+    }
+    return this.showHowManyProducer    
   }
 }
