@@ -119,10 +119,11 @@ export class APIService {
   
     let accessFlag = true;
     this.sectionAccess = this.getKeyFromStorage('sectionAccess');
-    //console.log("sectionAccess >> ",this.sectionAccess)
-    if (this.sectionAccess) {
+    
+    if (this.sectionAccess) {      
       this.accessSection = JSON.parse(this.sectionAccess)
-      if (this.accessSection.usermanagement == 'fullaccess')
+      //console.log("sfsdfsdfsdfsdf>>>>>>>>>>",this.accessSection[key])
+      if (this.accessSection[key] == 'fullaccess')
         accessFlag = true;
       else
         accessFlag = false;

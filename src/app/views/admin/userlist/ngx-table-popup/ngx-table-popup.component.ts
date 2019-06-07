@@ -138,10 +138,10 @@ export class NgxTablePopupComponent implements OnInit {
            this.EmailExist = true;
         } else {     
           this.EmailExist = false;
-          setTimeout(function(){ 
+          //setTimeout(function(){ 
             this.loader.close();
            this.dialogRef.close(this.itemForm.value)
-         }, 2000);
+         //}, 2000);
         }
       } else {
         this.loader.close();

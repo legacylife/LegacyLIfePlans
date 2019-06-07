@@ -34,10 +34,10 @@ export class AuthGuard implements CanActivate {
           //this.router.navigateByUrl('/llp-admin/signin');
           this.api.logout(); 
           return false;
-        }else{
-          console.log("Current admin logined >> ",userData)
-          return true;
-        }
+         }//else{
+        //   console.log("Current admin logined >> ",userData)
+        //   return true;
+        // }
         
       }, (err) => {
         //console.error(err)
