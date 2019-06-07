@@ -6,13 +6,13 @@
   <div class="session-form-hold">
     <div class="login-sub-wrapper">
       <div class="stepper--wrapper">
-        <mat-horizontal-stepper linear #stepper>
+        <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="onChangeFormIndex($event)">
           <!-- step 1   (click)="isLinear=isLinear"   id="toggle-linear"-->
           <mat-step [stepControl]="firstFormGroup">
             <form [formGroup]="firstFormGroup" class="llp-form-wrapper" (ngSubmit)="signupSubmit(1,firstFormGroup.value)">
               <div class="info--content">
                 <div class="text-center pb-1">
-                  <h2 class="login-header-text m-0">Business Information</h2>
+                  <h2 class="login-header-text m-0">Business Information 0101</h2>
                   <p class="login-header-desc">Please use the same full legal name and address as specified in the business license.</p>
                 </div>
                 <mat-form-field class="full-width">
@@ -232,6 +232,7 @@
               </div>
             </form>
           </mat-step>
+
         </mat-horizontal-stepper>
       </div>
     </div>
