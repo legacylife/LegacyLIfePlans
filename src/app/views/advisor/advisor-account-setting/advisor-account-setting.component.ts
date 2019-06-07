@@ -51,6 +51,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   stateList: any;
   awards: any;
   socialMediaLinkss: any;
+  fileErrors: any;
   websites: [{ 'id': "", 'links': "" }]
   advisorDocumentsList: any;
   awardsYears: any;
@@ -125,7 +126,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       managingPrincipleName: new FormControl('', Validators.required),
       manageOtherProceducers: new FormControl('',Validators.required),
       howManyProducers: new FormControl('',[Validators.pattern(/^[0-9]*$/)]),
-      advisorDocuments: new FormControl('',)
+      advisorDocuments: new FormControl('',),
+      advisorDocuments_temp: new FormControl([],Validators.required)
     });
 
     this.LicenseForm.valueChanges.subscribe(val => {
@@ -350,15 +352,49 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
 
   public fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
-    if (this.uploader.getNotUploadedItems().length) {
+    this.fileErrors = [];
+    this.uploader.queue.forEach((fileoOb) => {
+      let filename = fileoOb.file.name;
+      var extension = filename.substring(filename.lastIndexOf('.') + 1);
+      var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
+      let resp = this.isExtension(extension,fileExts);
+      if(!resp){
+        var FileMsg = "This file '" + filename + "' is not supported";
+        this.uploader.removeFromQueue(fileoOb);
+        let pushArry = {"error":FileMsg} 
+        this.fileErrors.push(pushArry); 
+        setTimeout(()=>{    
+          this.fileErrors = []
+        }, 5000);
+    
+      }
+    });
+
+    if(this.uploader.getNotUploadedItems().length){
       this.uploader.uploadAll();
       //this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
       this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-        //let pushArry = {"tmpName":"","title":item.file.name}  //this.advisorDocumentsList.push(pushArry);
         this.getProfileField();
       };
     }
   }
+
+  
+  isExtension(ext, extnArray) {
+    var result = false;
+    var i;
+    if (ext) {
+        ext = ext.toLowerCase();
+        for (i = 0; i < extnArray.length; i++) {
+            if (extnArray[i].toLowerCase() === ext) {
+                result = true;
+                break;
+            }
+        }
+    }
+    return result;
+}
+
 
   LicenseSubmit() {
     this.modified = false

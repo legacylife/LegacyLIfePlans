@@ -416,7 +416,7 @@
                          [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
                          (fileOver)="fileOverBase($event)"
                          [uploader]="uploader">
-                            <input type="file" name="advisorDocuments" id="advisorDocs" ng2FileSelect [uploader]="uploader" multiple  (change)="fileOverBase()" />  
+                            <input type="file" name="advisorDocuments" id="advisorDocs" ng2FileSelect [uploader]="uploader" multiple  (change)="fileOverBase('')" />  
                             <mat-icon class="cloud-icon">cloud_upload</mat-icon>
                             <div class="select--file">Select file from your computer</div>
                           </div>
@@ -433,6 +433,10 @@
                         <mat-chip><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck" >{{doc.title}}</a><mat-icon matChipRemove  (click)="docDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
                     </mat-chip-list>
                   </div>
+
+                  <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
+                      <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
+                  </mat-chip-list>    
 
                   <mat-form-field class="full-width" *ngIf="advisorDocumentsHide">
                     <input matInput name="advisorDocuments" [formControl]="LicenseForm.controls['advisorDocuments']" >
