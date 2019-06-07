@@ -238,10 +238,12 @@ body{
         margin-bottom: 0 !important;
     }
 } 
-// .mat-form-field.mat-focused .mat-form-field-label{
-//     color: #707834 !important
-// }
-
+body.egret-indigo .mat-form-field.mat-focused .mat-form-field-label{
+    color: #222324 
+}
+body.egret-indigo .mat-form-field.mat-focused .mat-form-field-ripple {
+    background-color: #222324 
+}
 
 /* -- 
     left--panel view css (start here)

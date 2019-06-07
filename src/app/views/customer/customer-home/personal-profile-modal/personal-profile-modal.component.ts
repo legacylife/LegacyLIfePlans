@@ -5,7 +5,7 @@ import { CustomValidators } from 'ng2-validation';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { MatStepperModule , MatStepper} from '@angular/material/stepper';
 import { Router, ActivatedRoute } from '@angular/router';
-
+import { forEach } from "lodash";
 
 
 
@@ -32,6 +32,23 @@ export class PersonalProfileModalComponent implements OnInit {
     this.thirdFormGroup = this._formBuilder.group({
       secondCtrl: ['', Validators.required]
     });
+  }
+
+  onChangeFormIndex(event){
+    console.log(event)
+    const {selectedIndex} = event;
+    let stepHeader = document.getElementsByClassName('mat-horizontal-stepper-header')
+    forEach(stepHeader, (element, index) => {
+      element.classList = String(element.classList).replace('proActive', '')
+      element.classList = String(element.classList).replace('proDone', '')
+       if(index === selectedIndex){
+         element.classList += ' proActive';
+       }
+       if(index < selectedIndex){
+        element.classList += ' proDone';
+       }
+    });
+
   }
 }
 

@@ -357,6 +357,16 @@ body{
                 background-color: transparent;
             }
 
+            &.proDone{
+                .mat-step-icon{
+                    background-color: $clr--2;
+                    color: $clr--1;
+                }
+                &+.mat-stepper-horizontal-line {
+                    border-top: 2px solid firebrick !important;
+                }
+            }
+
             .mat-step-label{
                 display: none;
             }
@@ -384,11 +394,7 @@ body{
         .mat-horizontal-stepper-header-container{
             pointer-events: none;
         }
-        // mat-step-header[ng-reflect-state="edit"] {
-        //     &+.mat-stepper-horizontal-line {
-        //         border-top: 2px solid firebrick !important;
-        //     }
-        // }
+       
     }
     
 }

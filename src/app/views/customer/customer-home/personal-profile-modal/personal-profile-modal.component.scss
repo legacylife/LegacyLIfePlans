@@ -5,7 +5,7 @@
     padding: 0 !important;
 }
 .per--profile--wrapper{
-    margin-top: 40px;
+    padding-top: 40px !important;
     ::ng-deep .mat-horizontal-stepper-header-container{
         width: 350px;
         margin: 0 auto;
@@ -16,7 +16,7 @@
     .main--head{
         font-size: 28px;
         color: $clr--3;
-        margin: 40px 0 0 0;
+        margin: 35px 0 0 0;
     }
     .sub--head{
         font-size: 20px;
@@ -41,5 +41,35 @@
         overflow: auto;
         padding: 0 25px;
         margin-bottom: 30px;
+        padding-top: 2px;
     }
 }
+
+/* Media query (start here)*/
+
+@media only screen and (max-width: 599px) {
+    .per--profile--wrapper .main--head {
+        font-size: 22px;
+        margin: 21px 0 0 0;
+    }
+    .per--profile--wrapper .sub--head {
+        font-size: 16px;        
+        margin: 17px 0 13px 0;
+    }
+    .per--profile--wrapper .sec--header {
+        font-size: 16px;
+        margin: 21px 0 20px 0;
+    }
+    .per--profile--wrapper ::ng-deep .mat-horizontal-stepper-header-container {
+        width: 250px;
+    }
+    .llp--back--btn,
+    .llp--primary--btn{
+        padding: 3px 25px;
+    }
+}
+@media only screen and (min-width: 600px) and (max-width: 959px){}
+@media only screen and (min-width: 960px) and (max-width: 979px){}
+@media only screen and (min-width: 980px) and (max-width: 1279px){}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){}
+@media only screen and (min-width: 1441px) and (max-width: 1550px){}
