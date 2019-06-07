@@ -15,6 +15,8 @@ export class NgxTablePopupComponent implements OnInit {
   RequestData: any;
   invalidMessage: string;
   EmailExist: boolean;
+  radioCheck: boolean;
+  radioCheckNoti: boolean;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<NgxTablePopupComponent>,
@@ -22,27 +24,79 @@ export class NgxTablePopupComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.radioCheck= true;
+    this.radioCheckNoti= false;
+   if(this.data.title=='Update member'){
+      this.radioCheck= false;
+   }
+    
     this.buildItemForm(this.data.payload)
     this.adminSections = adminSections;// console.log("Item info", adminSections)
   }
+
   buildItemForm(item) {
+   
+    if(this.data.title=='Update member'){
+      this.itemForm = this.fb.group({
+        firstName: ['',Validators.required],
+        lastName: ['', Validators.required],
+        username: ['', Validators.required],
+        allowNotifications: [ '',Validators.required],
+        status: [false],
+        usermanagement: ['', Validators.required],
+        advisormanagement: ['', Validators.required],
+        activitylog: ['', Validators.required],
+        zipcodemap: ['', Validators.required],
+        cms: ['', Validators.required],
+        referral: ['', Validators.required],
+        addmanagement: ['', Validators.required],
+        deceasedrequest: [ '', Validators.required],
+        adminmanagement: ['', Validators.required]
+      })
+  
+      this.itemForm.controls['firstName'].setValue(item.firstName);
+      this.itemForm.controls['lastName'].setValue(item.lastName);
+      this.itemForm.controls['username'].setValue(item.username);
+      this.itemForm.controls['allowNotifications'].setValue(item.allowNotifications);          
+      this.itemForm.controls['usermanagement'].setValue(item.sectionAccess.usermanagement);
+      this.itemForm.controls['advisormanagement'].setValue(item.sectionAccess.advisormanagement);
+      this.itemForm.controls['activitylog'].setValue(item.sectionAccess.activitylog);
+      this.itemForm.controls['zipcodemap'].setValue(item.sectionAccess.zipcodemap);
+      this.itemForm.controls['cms'].setValue(item.sectionAccess.cms);
+      this.itemForm.controls['referral'].setValue(item.sectionAccess.referral);
+      this.itemForm.controls['addmanagement'].setValue(item.sectionAccess.addmanagement);
+      this.itemForm.controls['deceasedrequest'].setValue(item.sectionAccess.deceasedrequest);
+      this.itemForm.controls['adminmanagement'].setValue(item.sectionAccess.adminmanagement);
+    }else{   
     this.itemForm = this.fb.group({
       firstName: [item.firstName || '', Validators.required],
       lastName: [item.lastName || '', Validators.required],
       username: [item.username || '', Validators.required],
-      allowNotifications: [item.allowNotifications || 'no', Validators.required],
+      allowNotifications: [Validators.required],
       status: [item.status || false],
-      usermanagement: [(item.sectionAccess && item.sectionAccess.usermanagement) || 'fullaccess', Validators.required],
-      advisormanagement: [(item.sectionAccess && item.sectionAccess.advisormanagement) || 'fullaccess', Validators.required],
-      activitylog: [(item.sectionAccess && item.sectionAccess.activitylog) || 'fullaccess', Validators.required],
-      zipcodemap: [(item.sectionAccess && item.sectionAccess.zipcodemap) || 'fullaccess', Validators.required],
-      cms: [(item.sectionAccess && item.sectionAccess.cms) || 'fullaccess', Validators.required],
-      referral: [(item.sectionAccess && item.sectionAccess.referral) || 'fullaccess', Validators.required],
-      addmanagement: [(item.sectionAccess && item.sectionAccess.addmanagement) || 'fullaccess', Validators.required],
-      deceasedrequest: [(item.sectionAccess && item.sectionAccess.deceasedrequest) || 'fullaccess', Validators.required],
-      adminmanagement: [(item.sectionAccess && item.sectionAccess.adminmanagement) || 'fullaccess', Validators.required]
+      usermanagement: [(item.sectionAccess && item.sectionAccess.usermanagement) || '', Validators.required],
+      advisormanagement: [(item.sectionAccess && item.sectionAccess.advisormanagement) || '', Validators.required],
+      activitylog: [(item.sectionAccess && item.sectionAccess.activitylog) || '', Validators.required],
+      zipcodemap: [(item.sectionAccess && item.sectionAccess.zipcodemap) || '', Validators.required],
+      cms: [(item.sectionAccess && item.sectionAccess.cms) || '', Validators.required],
+      referral: [(item.sectionAccess && item.sectionAccess.referral) || '', Validators.required],
+      addmanagement: [(item.sectionAccess && item.sectionAccess.addmanagement) || '', Validators.required],
+      deceasedrequest: [(item.sectionAccess && item.sectionAccess.deceasedrequest) || '', Validators.required],
+      adminmanagement: [(item.sectionAccess && item.sectionAccess.adminmanagement) || '', Validators.required]
     })
+    
+    this.itemForm.controls['allowNotifications'].setValue('no');          
+    this.itemForm.controls['usermanagement'].setValue('fullaccess');
+    this.itemForm.controls['advisormanagement'].setValue('fullaccess');
+    this.itemForm.controls['activitylog'].setValue('fullaccess');
+    this.itemForm.controls['zipcodemap'].setValue('fullaccess');
+    this.itemForm.controls['cms'].setValue('fullaccess');
+    this.itemForm.controls['referral'].setValue('fullaccess');
+    this.itemForm.controls['addmanagement'].setValue('fullaccess');
+    this.itemForm.controls['deceasedrequest'].setValue('fullaccess');
+    this.itemForm.controls['adminmanagement'].setValue('fullaccess');
   }
+}
 
   submit() {
     let userData = this.data.payload;
@@ -64,7 +118,6 @@ export class NgxTablePopupComponent implements OnInit {
         "deceasedrequest": this.itemForm.controls['deceasedrequest'].value,
         "adminmanagement": this.itemForm.controls['adminmanagement'].value
       }
-
     }
     if (userData._id) {
       this.RequestData._id = userData._id;
@@ -74,21 +127,24 @@ export class NgxTablePopupComponent implements OnInit {
       this.url = 'userlist/addmember';
     }
     this.loader.open();
-    this.api.apiRequest('post', this.url, this.RequestData).subscribe(result => {
-      this.loader.close();
+    this.api.apiRequest('post', this.url, this.RequestData).subscribe(result => {    
       if(result.status == "success") {
         if(result.data.code == "Exist") {
+           this.loader.close();
            this.itemForm.controls['username'].markAsUntouched();
-        //   this.itemForm.controls['username'].enable();
-        this.itemForm.controls['username'].setErrors({'EmailExist' : true})
+           //this.itemForm.controls['username'].enable();
+           this.itemForm.controls['username'].setErrors({'EmailExist' : true})
            this.invalidMessage = result.data.message;
            this.EmailExist = true;
         } else {     
           this.EmailExist = false;
-          this.dialogRef.close(this.itemForm.value)
+          setTimeout(function(){ 
+            this.loader.close();
+           this.dialogRef.close(this.itemForm.value)
+         }, 2000);
         }
       } else {
-        
+        this.loader.close();
         //this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {

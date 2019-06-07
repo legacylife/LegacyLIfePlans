@@ -16,6 +16,7 @@ import { delay } from 'rxjs/operators';
 import { states } from '../../../state';
 import { serverUrl, s3Details } from '../../../config'
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
+import { CanComponentDeactivate } from '../../../shared/services/auth/can-deactivate.guard';
 
 @Component({
   selector: 'app-customer-account-setting',
@@ -41,6 +42,8 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   pdisplay: boolean = false
   pcropperDisplay: boolean = false
   profileImage = null
+
+  modified = false // display confirmation popup if user click on other link
   
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder,
     private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
@@ -62,6 +65,10 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       username: new FormControl('', )
     });
 
+    this.ProfileForm.valueChanges.subscribe(val => {
+      this.modified = true
+    })
+
     this.AddressForm = new FormGroup({
       addressLine1: new FormControl('', Validators.required),
       addressLine2: new FormControl(''),
@@ -70,10 +77,20 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       zipcode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)])
     });
 
+    this.AddressForm.valueChanges.subscribe(val => {
+      this.modified = true
+    })
+
     this.profile = [];
     this.getProfile();
 
   }
+
+  canDeactivate(): any {
+    //return !this.ProfileForm.dirty;
+    return !this.modified;
+  }
+
   showSecoDay() {
     //this.dayFirst = false; this.daySeco = true;
   }
@@ -114,7 +131,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
           localStorage.setItem('endUserProfilePicture', this.profilePicture)
           this.picService.setProfilePic = this.profilePicture;
         }
-
+        this.modified = false;
         this.loader.close();
       }
     }, (err) => {
@@ -125,6 +142,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
 
 
   ProfileSubmit() {
+    this.modified = false;
     this.isUpdating = true;  
     if(this.ProfileForm.dirty){        }
     let profileInData = {
@@ -159,6 +177,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   }
 
   AddressSubmit() {
+    this.modified = false;
     let AddressInData = {
       addressLine1: this.AddressForm.controls['addressLine1'].value,
       addressLine2: this.AddressForm.controls['addressLine2'].value,
@@ -261,23 +280,5 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       this.snack.open("Please select valid image. Valid extentions are jpg, jpeg, png, gif.", 'OK', { duration: 4000 })
     }
   }
-
-
-//   canDeactivate(): Observable<boolean> | boolean {
-
-//     if (!this.isUpdating && this.ProfileForm.dirty) {
-
-//         //return this.dialogService.confirm('Discard changes for Person?');
-// console.log('asdasdasd');
-//         this.confirmService.confirm({ message: "Discard changes for Person?" }).subscribe(res => {
-//           if (res) {
-//             this.loader.open();
-       
-//           }
-//         })
-//     }
-//     return true;
-// }	
-
 
 }

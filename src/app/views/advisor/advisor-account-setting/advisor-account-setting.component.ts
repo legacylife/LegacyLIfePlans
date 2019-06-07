@@ -9,14 +9,15 @@ import { AppLoaderService } from '../../../shared/services/app-loader/app-loader
 import { CustomValidators } from 'ng2-validation';
 import { ChangePassComponent } from './change-pass/change-pass.component';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
-import { map,delay } from 'rxjs/operators';
+import { map, delay } from 'rxjs/operators';
 import { Subscription, Observable, of } from 'rxjs';
 import { states } from '../../../state';
 import { FileUploader } from 'ng2-file-upload';
-import { yearsOfServiceList, businessTypeList , industryDomainList, licenceHeldList, activeLicense, industryDomain, businessType, yearsOfService } from '../../../selectList';
+import { yearsOfServiceList, businessTypeList, industryDomainList, licenceHeldList, activeLicense, industryDomain, businessType, yearsOfService } from '../../../selectList';
 import { serverUrl, s3Details } from '../../../config';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { ChangePicComponent } from './../../change-pic/change-pic.component';
+import { CanComponentDeactivate } from '../../../shared/services/auth/can-deactivate.guard';
 
 const URL = serverUrl + '/api/documents/advisorDocument';
 interface websiteLink {
@@ -28,9 +29,9 @@ interface websiteLink {
   styleUrls: ['./advisor-account-setting.component.scss'],
   animations: [egretAnimations]
 })
-export class AdvisorAccountSettingComponent implements OnInit {
+export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeactivate {
   userId = localStorage.getItem("endUserId");
-  public uploader: FileUploader  =  new FileUploader({url:`${URL}?userId=${this.userId}`});//,itemAlias: 'advisorDocs'
+  public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });//,itemAlias: 'advisorDocs'
   //   this.uploader =  new FileUploader({url:`${URL}?userId=${this.userId}`,itemAlias: 'advisorDocs'});
   public hasBaseDropZoneOver: boolean = false;
   public hasAnotherDropZoneOver: boolean = false;
@@ -63,6 +64,8 @@ export class AdvisorAccountSettingComponent implements OnInit {
   businessTypeList: string[] = businessType.sort()
   yearsOfServiceList: string[] = yearsOfService
 
+  modified = false // display confirmation popup if user click on other link
+
 
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
@@ -70,9 +73,9 @@ export class AdvisorAccountSettingComponent implements OnInit {
     private loader: AppLoaderService, private confirmService: AppConfirmService, private picService: ProfilePicService) { }
 
   ngOnInit() {
- 
+
     this.picService.itemValue.subscribe((nextValue) => {
-      this.profilePicture =  nextValue
+      this.profilePicture = nextValue
     })
     this.stateList = states.sort();
     this.userId = localStorage.getItem("endUserId");
@@ -84,6 +87,10 @@ export class AdvisorAccountSettingComponent implements OnInit {
       landlineNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
       dateOfBirth: new FormControl('', Validators.required)
     });
+
+    this.ProfileForm.valueChanges.subscribe(val => {
+      this.modified = true
+    })
 
     this.AddressForm = this.fb.group({
       businessName: new FormControl('', Validators.required),
@@ -108,20 +115,36 @@ export class AdvisorAccountSettingComponent implements OnInit {
       }),
     });
 
+    this.AddressForm.valueChanges.subscribe(val => {
+      this.modified = true
+    })
+
     this.LicenseForm = this.fb.group({
       activeLicenceHeld: new FormControl([], Validators.required),
       agencyOversees: new FormControl('', Validators.required),
       managingPrincipleName: new FormControl('', Validators.required),
-      manageOtherProceducers: new FormControl('', Validators.required),
-      howManyProducers: new FormControl('', ),
+      manageOtherProceducers: new FormControl('',Validators.required),
+      howManyProducers: new FormControl('',[Validators.pattern(/^[0-9]*$/)]),
       advisorDocuments: new FormControl('',)
     });
+
+    this.LicenseForm.valueChanges.subscribe(val => {
+      this.modified = true
+    })
 
     this.profile = [];
     this.socialMediaLinkss = [];
     this.advisorDocumentsList = [];
     this.getProfile();
   }
+
+  canDeactivate(): any {
+    //return !this.ProfileForm.dirty;
+    return !this.modified;
+  }
+
+  
+
   //function to get all events
   getProfile = (query = {}, search = false) => {
     const req_vars = {
@@ -133,6 +156,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
         this.profile = [];
         this.loader.close();
       } else {
+        
         this.profile = result.data.userProfile;
         this.ProfileForm.controls['firstName'].setValue(this.profile.firstName ? this.profile.firstName : "");
         this.ProfileForm.controls['lastName'].setValue(this.profile.lastName ? this.profile.lastName : "");
@@ -152,11 +176,11 @@ export class AdvisorAccountSettingComponent implements OnInit {
         this.AddressForm.controls['zipcode'].setValue(this.profile.zipcode ? this.profile.zipcode : "");
         this.AddressForm.controls['bioText'].setValue(this.profile.bioText ? this.profile.bioText : "");
         this.AddressForm.controls['businessPhoneNumber'].setValue(this.profile.businessPhoneNumber ? this.profile.businessPhoneNumber : "");
-        
+
         this.awards = this.profile.awardsYears;
         this.websiteLinks = this.profile.websiteLinks;
         this.advisorDocumentsList = this.profile.advisorDocuments;
-        
+
 
         if (this.profile.profilePicture) {
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + this.profile.profilePicture;
@@ -189,6 +213,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
         this.LicenseForm.controls['advisorDocuments'].setValue(this.profile.advisorDocuments ? "" : "11");
         this.profile.manageOtherProceducers == 1 ? this.showHowManyProducer = true : this.showHowManyProducer = false
         this.loader.close();
+        this.modified = false
       }
     }, (err) => {
       console.error(err);
@@ -232,6 +257,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   ProfileSubmit() {
+    this.modified = false
     let profileInData = {
       firstName: this.ProfileForm.controls['firstName'].value,
       lastName: this.ProfileForm.controls['lastName'].value,
@@ -255,7 +281,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
         //this.prodata = result.data.userProfile;
         // localStorage.setItem("firstName", this.rows.firstName)
         // localStorage.setItem("lastName", this.rows.lastName) 
-        this.getProfile();      		     
+        this.getProfile();
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
@@ -264,6 +290,7 @@ export class AdvisorAccountSettingComponent implements OnInit {
   }
 
   AddressSubmit() {
+    this.modified = false
     const { socialMediaLinks: { facebook = '', twitter = '', linkedIn = '' } } = this.AddressForm.value
     const formNumbers = <FormArray>this.AddressForm.get('websiteLinks')
     this.websiteLinks = formNumbers.controls.map(o => { return o.value })
@@ -314,29 +341,30 @@ export class AdvisorAccountSettingComponent implements OnInit {
     })
   }
 
-  public fileOverBase(e: any): void {    
+  public fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
-    if(this.uploader.getNotUploadedItems().length){
-          this.uploader.uploadAll();
+    if (this.uploader.getNotUploadedItems().length) {
+      this.uploader.uploadAll();
       //this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
-      this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-          //let pushArry = {"tmpName":"","title":item.file.name}  //this.advisorDocumentsList.push(pushArry);
-          this.getProfileField();
-        };
+      this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+        //let pushArry = {"tmpName":"","title":item.file.name}  //this.advisorDocumentsList.push(pushArry);
+        this.getProfileField();
+      };
     }
   }
 
   LicenseSubmit() {
-  this.invalidMessage = '';
-  /*if(this.profile.advisorDocuments || this.profile.advisorDocuments==''){ 
-      this.invalidMessage = "Please upload your document";
-  }*/
-  if(this.invalidMessage){ 
-    this.advisorDocumentsMissing = true;
-    this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': true })
-  }else{
-    this.advisorDocumentsMissing = false;
-    this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': false })
+    this.modified = false
+    this.invalidMessage = '';
+    /*if(this.profile.advisorDocuments || this.profile.advisorDocuments==''){ 
+        this.invalidMessage = "Please upload your document";
+    }*/
+    if (this.invalidMessage) {
+      this.advisorDocumentsMissing = true;
+      this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': true })
+    } else {
+      this.advisorDocumentsMissing = false;
+      this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': false })
       let LicensInData = {
         activeLicenceHeld: this.LicenseForm.controls['activeLicenceHeld'].value,
         agencyOversees: this.LicenseForm.controls['agencyOversees'].value,
@@ -344,30 +372,30 @@ export class AdvisorAccountSettingComponent implements OnInit {
         manageOtherProceducers: this.LicenseForm.controls['manageOtherProceducers'].value,
         howManyProducers: this.LicenseForm.controls['howManyProducers'].value,
       }
-    var query = {};
-    var proquery = {};
-    const req_vars = {
-      query: Object.assign({ _id: this.userId, userType: "advisor" }),
-      proquery: Object.assign(LicensInData),
-      from: Object.assign({ fromname: "License & documents" })
-    }
-    this.loader.open();
-    this.userapi.apiRequest('post', 'auth/cust-profile-update', req_vars).subscribe(result => {
-      this.loader.close();
-      if (result.status == "error") {
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
-      } else {
-        // this.rows = result.data.userProfile;
-        this.getProfile();
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      var query = {};
+      var proquery = {};
+      const req_vars = {
+        query: Object.assign({ _id: this.userId, userType: "advisor" }),
+        proquery: Object.assign(LicensInData),
+        from: Object.assign({ fromname: "License & documents" })
       }
-    }, (err) => {
-      console.error(err)
-    })
+      this.loader.open();
+      this.userapi.apiRequest('post', 'auth/cust-profile-update', req_vars).subscribe(result => {
+        this.loader.close();
+        if (result.status == "error") {
+          this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        } else {
+          // this.rows = result.data.userProfile;
+          this.getProfile();
+          this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        }
+      }, (err) => {
+        console.error(err)
+      })
+    }
   }
-}
 
-docDelete(doc, name,tmName) {
+  docDelete(doc, name, tmName) {
     var statMsg = "Are you sure you want to delete '" + name + "' file name?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
@@ -422,7 +450,7 @@ docDelete(doc, name,tmName) {
        links: ''
      }));*/
     this.weblinksPoints.push(this.fb.group({
-      links: ['', [Validators.required,Validators.compose([CustomValidators.url])]]
+      links: ['', [Validators.required, Validators.compose([CustomValidators.url])]]
     }));
   }
 
@@ -515,7 +543,17 @@ docDelete(doc, name,tmName) {
     dialogRef.afterClosed().subscribe(result => { });
   }
 
-  showHowManyProducts(showVal) {
+  showHowManyProductsold(showVal) {
     this.LicenseForm.controls['manageOtherProceducers'].value == 2 ? this.showHowManyProducer = true : this.showHowManyProducer = false
+  }
+
+  showHowManyProducts(showVal) {
+    this.showHowManyProducer = showVal === '1';
+   if(!this.showHowManyProducer){
+      this.LicenseForm.controls['howManyProducers'].setValue(0);
+    }else{
+       this.LicenseForm.controls['howManyProducers'].setValue('');
+    }
+    return this.showHowManyProducer    
   }
 }

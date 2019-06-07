@@ -7,7 +7,7 @@ import { CustomerLayoutComponent } from '../../shared/components/layouts/custome
 import { AuthLayoutComponent } from '../../shared/components/layouts/auth-layout/auth-layout.component';
 import { UserAuthGuard } from '../../shared/services/auth/userauth.guard';
 import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
-import { CanDeactivateGuard } from '../../shared/services/can-deactivate-guard.service';
+import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
 import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
 import { CustomerSubscriptionComponent } from './customer-subscription/customer-subscription.component';
 import { CustomerTrusteesComponent } from './customer-trustees/customer-trustees.component';
@@ -86,7 +86,7 @@ export const CustomerRoutes: Routes = [
         path: '',
         component: CustomerAccountSettingComponent,
         canActivate: [UserAuthGuard],
-        canDeactivate: [CountryEditCanDeactivateGuard]
+        canDeactivate: [ CanDeactivateGuard ]
       }
     ]
   }, {

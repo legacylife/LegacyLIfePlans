@@ -56,7 +56,7 @@ export class BusinessInfoComponent implements OnInit {
     private loader: AppLoaderService,private confirmService: AppConfirmService) {}//,private http: Http, private el: ElementRef
   
   ngOnInit() {
-    localStorage.setItem("step",'0');
+   // localStorage.setItem("step",'2');
     this.userId = localStorage.getItem("endUserId");
     this.stateList = states;
     this.step = localStorage.getItem("step");
@@ -92,7 +92,7 @@ export class BusinessInfoComponent implements OnInit {
       activeLicenceHeld: new FormControl([], Validators.required),
       agencyOversees: new FormControl(''),
       managingPrincipleName: new FormControl('', Validators.required),
-      manageOtherProceducers: new FormControl(''),
+      manageOtherProceducers: new FormControl('',Validators.required),
       howManyProducers: new FormControl('',[Validators.pattern(/^[0-9]*$/)]),
       
     });
@@ -103,16 +103,10 @@ export class BusinessInfoComponent implements OnInit {
       this.getAdvDetails(this.step);
     }
   }
-
- /*  conditionalRequired() {
-    //console.log("asdasdasd",this.thirdFormGroup.controls['manageOtherProceducers'].value);
-    return (control: FormControl): { [s: string]: boolean } => {
-      let required: boolean = false;
-     console.log("asdasdasd",this.thirdFormGroup.controls['manageOtherProceducers'].value)
-      if (this.thirdFormGroup.controls['manageOtherProceducers'].value=='1') {
-        return { required: true };
-      }
-    }
+  
+ /*  goBack(myStepper: MatStepper){
+    console.log('asdasd')
+     myStepper.previous();
   }
 /*
   uploadAll() {
@@ -257,9 +251,7 @@ docDelete(doc, name,tmName) {
           this.thirdFormGroup.controls['howManyProducers'].setValue(this.profile.howManyProducers);
           this.profile.manageOtherProceducers == 1 ? this.showHowManyProducer = true : this.showHowManyProducer = false;
           this.forthFormGroup.controls['advisorDocuments_temp'].setValue('');
-          console.log("-----",this.profile.advisorDocuments)
           if(this.profile.advisorDocuments.length>0){
-            console.log("*****",this.profile.advisorDocuments)
             this.forthFormGroup.controls['advisorDocuments_temp'].setValue('1');
           }
           
@@ -290,9 +282,7 @@ docDelete(doc, name,tmName) {
       } else {
         this.profile = result.data.userProfile;
         this.advisorDocumentsList = this.profile.advisorDocuments;
-        console.log("-----",this.advisorDocumentsList.length);
         if(this.profile.advisorDocuments.length>0){
-          console.log("*****",this.profile.advisorDocuments)
           this.forthFormGroup.controls['advisorDocuments_temp'].setValue('1');
         }
        
@@ -303,22 +293,12 @@ docDelete(doc, name,tmName) {
   }
 
   showHowManyProducts(showVal) {
-    console.log("Asdasd",showVal, '-----',this.thirdFormGroup.controls['manageOtherProceducers'].value);
-    !showVal || showVal == 1 ? this.showHowManyProducer = true : this.showHowManyProducer = false
+    this.showHowManyProducer = showVal === '1';
+   if(!this.showHowManyProducer){
+      this.thirdFormGroup.controls['howManyProducers'].setValue(0);
+    }else{
+       this.thirdFormGroup.controls['howManyProducers'].setValue('');
+    }
+    return this.showHowManyProducer    
   }
-    // if(this.thirdFormGroup.controls['manageOtherProceducers'].value=='' || this.thirdFormGroup.controls['manageOtherProceducers'].value=='1'){
-    //     this.thirdFormGroup = this.fb.group({
-    //       activeLicenceHeld: new FormControl([], Validators.required),
-    //       agencyOversees: new FormControl(''),
-    //       managingPrincipleName: new FormControl('', Validators.required),
-    //       manageOtherProceducers: new FormControl(''),
-    //       howManyProducers: new FormControl('',[Validators.required,Validators.pattern(/^[0-9]$/)]),
-    //     });
-
-    //     this.thirdFormGroup.controls['activeLicenceHeld'].setValue(this.profile.activeLicenceHeld ? this.profile.activeLicenceHeld : []);
-    //     this.thirdFormGroup.controls['agencyOversees'].setValue(this.profile.agencyOversees);
-    //     this.thirdFormGroup.controls['managingPrincipleName'].setValue(this.profile.managingPrincipleName);
-    //     this.thirdFormGroup.controls['manageOtherProceducers'].setValue(this.profile.manageOtherProceducers);
-    //     this.thirdFormGroup.controls['howManyProducers'].setValue(this.profile.howManyProducers);
-    //   }
 }

@@ -167,7 +167,7 @@
                 </mat-radio-group>
 
                 <mat-form-field class="full-width" *ngIf="showHowManyProducer">
-                  <input class="capitalize" matInput placeholder="If yes, how many?" [formControl]="thirdFormGroup.controls['howManyProducers']">
+                  <input class="capitalize" matInput placeholder="If yes, how many?" [required]="showHowManyProducer" [formControl]="thirdFormGroup.controls['howManyProducers']">
                   <mat-icon matTooltip="Please enter numeric value." matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['howManyProducers'].hasError('pattern') && thirdFormGroup.controls['howManyProducers'].touched"
                   class="red--alert">help_outline</mat-icon>
                   
