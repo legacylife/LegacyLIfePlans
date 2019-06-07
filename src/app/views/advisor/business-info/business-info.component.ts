@@ -57,6 +57,10 @@ export class BusinessInfoComponent implements OnInit {
   
   ngOnInit() {
    // localStorage.setItem("step",'2');
+   console.log("uploader",this.uploader);
+   if(this.uploader.getNotUploadedItems().length){
+     console.log('here');
+   }
     this.userId = localStorage.getItem("endUserId");
     this.stateList = states;
     this.step = localStorage.getItem("step");
@@ -174,10 +178,7 @@ docDelete(doc, name,tmName) {
   var proquery = {};
     if(steps==4){
       profileInData.profileSetup = 'yes';
-      //if(this.uploader.getNotUploadedItems().length){
-        //console.log("image",this.uploader.getNotUploadedItems().length)
-        //this.uploader =  new FileUploader({url:`${URL}?userId=${this.userId}`,itemAlias: 'advisorDocs'});
-     // }
+
     }
     
     const req_vars = {
@@ -195,21 +196,7 @@ docDelete(doc, name,tmName) {
         //this.prodata = result.data.userProfile;
         localStorage.setItem("step",steps);       
         if(steps==4){
-          // if(this.uploader.getNotUploadedItems().length){
-          //   this.loader.open();
-          //   this.uploader.uploadAll();
-
-          //   this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-              
-          //       if(status==0){
-          //         this.loader.close();
-          //         this.snack.open(result.data.message, 'OK', { duration: 4000 })
-          //         this.router.navigate(['/', 'advisor', 'thank-you']);
-          //       }
-          //   };
-          // }else{//no need this else
-          //   this.router.navigate(['/', 'advisor', 'thank-you']);
-          // }   
+         
           this.router.navigate(['/', 'advisor', 'thank-you']);
         }       
       }
@@ -263,7 +250,7 @@ docDelete(doc, name,tmName) {
       }) 
   }
 
-  public fileOverBase(e:any):void {
+  public fileOverBase(e:any):void {console.log('fileOverBase')
     this.hasBaseDropZoneOver = e;
     if(this.uploader.getNotUploadedItems().length){
         this.uploader.uploadAll(); 
@@ -272,7 +259,7 @@ docDelete(doc, name,tmName) {
         };
     }
   }
-
+    
   getProfileField = (query = {}, search = false) => {
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: "advisor" }, query)

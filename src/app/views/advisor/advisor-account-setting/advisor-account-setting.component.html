@@ -416,12 +416,15 @@
                          [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
                          (fileOver)="fileOverBase($event)"
                          [uploader]="uploader">
-                            <input type="file" name="advisorDocuments" ng2FileSelect [uploader]="uploader" multiple  accept="image/*" />     
+                            <input type="file" name="advisorDocuments" id="advisorDocs" ng2FileSelect [uploader]="uploader" multiple  (change)="fileOverBase()" />  
                             <mat-icon class="cloud-icon">cloud_upload</mat-icon>
                             <div class="select--file">Select file from your computer</div>
                           </div>
                           <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
                         </div>
+                        <mat-form-field class="full-width" *ngIf="advisorDocuments_temps">
+                            <input matInput name="advisorDocuments_temp" [formControl]="LicenseForm.controls['advisorDocuments_temp']">
+                          </mat-form-field>
                   </div>
 
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50" *ngIf="advisorDocumentsList" >
