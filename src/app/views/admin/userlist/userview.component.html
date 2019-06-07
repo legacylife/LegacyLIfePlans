@@ -23,7 +23,7 @@
           <mat-list-item *ngIf="row?.userType == 'customer' && row?.phoneNumber!=''">
             <mat-icon class="mr-1">phone</mat-icon> {{row?.phoneNumber}}</mat-list-item>
           <mat-list-item *ngIf="row?.userType == 'advisor' && row?.businessPhoneNumber!=''">
-            <mat-icon class="mr-1">phone</mat-icon> {{row?.businessPhoneNumber + row?.phoneNumber + row?.landlineNumber}}</mat-list-item>          
+            <mat-icon class="mr-1">phone</mat-icon> {{row?.businessPhoneNumber}}</mat-list-item>          
         </mat-list>
       </mat-card-content>
     </mat-card> 

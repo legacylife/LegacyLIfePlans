@@ -23,7 +23,7 @@ export class UserPreAuthGuard implements CanActivate {
           this.router.navigateByUrl('/customer/dashboard'); 
           return false;
         } 
-        if(userData && (userData.userType == 'customer' || userData.userType == 'advisor') && userData.status == 'In-Active'){
+        if(userData && (userData.userType == 'customer' || userData.userType == 'advisor') && userData.status == 'Inactive'){
           this.snack.open("Your account has been inactivated by admin.", 'OK', { duration: 4000 })
           //this.router.navigateByUrl('/signin'); 
           this.userapi.userLogout();
