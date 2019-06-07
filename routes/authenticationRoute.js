@@ -338,7 +338,7 @@ function forgotPassword(req, res) {
       res.send(resFormat.rError({message: "Looks like you are not a registered user yet. Please sign up to create an account."}))
     } else if (user && user.status == 'Active' && !user.salt) {
       res.send(resFormat.rError({message: "Your account is activated by admin & set account password link is already sent."}))
-    } else if (user && user.status == 'In-Active') {
+    } else if (user && user.status == 'Inactive') {
       res.send(resFormat.rError({message: "Your account is inactive."}))
     } else if (user && user.status == 'Pending') {
       res.send(resFormat.rError({message:"You can not use this service as your account is under review."}))
@@ -440,7 +440,7 @@ async function checkEmail(req, res) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-        if (user && user.status == 'In-Active') {
+        if (user && user.status == 'Inactive') {
           res.send(resFormat.rSuccess({ code: "Exist", message: "Looks like your account is inactive." }))
         }
         else if (user && user.status == 'Active') {

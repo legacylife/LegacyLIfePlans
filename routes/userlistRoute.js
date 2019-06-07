@@ -102,7 +102,7 @@ function updateStatus(req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {
       var upStatus = 'Active';
-      if (userList.status == 'Active') { upStatus = 'In-Active'; }
+      if (userList.status == 'Active') { upStatus = 'Inactive'; }
       var params = { status: upStatus }
       User.update({ _id: userList._id }, { $set: params }, function (err, updatedUser) {
         if (err) {
