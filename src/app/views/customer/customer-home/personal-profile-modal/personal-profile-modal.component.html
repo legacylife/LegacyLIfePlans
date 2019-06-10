@@ -15,65 +15,99 @@
           <div class="profile--body--scroll">
 
           <mat-form-field class="full-width">
-            <input matInput placeholder="First Name">
+            <input class="capitalize" matInput name="ppFirstName" placeholder="First Name*" value="" [formControl]="firstFormGroup.controls['ppFirstName']">
+            <mat-icon matTooltip="Please enter first name." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['ppFirstName'].hasError('required') && firstFormGroup.controls['ppFirstName'].touched"
+              class="red--alert">help_outline</mat-icon>
           </mat-form-field>
+          
           <mat-form-field class="full-width">
-            <input matInput placeholder="Middle Name">
+            <input class="capitalize" matInput name="ppMiddleName" placeholder="Middle Name*" value="" [formControl]="firstFormGroup.controls['ppMiddleName']">
+            <mat-icon matTooltip="Please enter middle name." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['ppMiddleName'].hasError('required') && firstFormGroup.controls['ppMiddleName'].touched"
+              class="red--alert">help_outline</mat-icon>
           </mat-form-field>
+
           <mat-form-field class="full-width">
-            <input matInput placeholder="Last Name">
+            <input class="capitalize" matInput name="ppLastName" placeholder="Last Name*" value="" [formControl]="firstFormGroup.controls['ppLastName']">
+            <mat-icon matTooltip="Please enter last name." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['ppLastName'].hasError('required') && firstFormGroup.controls['ppLastName'].touched"
+              class="red--alert">help_outline</mat-icon>
           </mat-form-field>
+
           <mat-form-field class="full-width llp-datepicker">
-            <input matInput [matDatepicker]="dp" placeholder="Date of Birth" (focus)="dp.open()" value="" readonly>
+            <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Date Of Birth" value="" readonly [max]="maxDate" [formControl]="firstFormGroup.controls['ppDateOfBirth']">
             <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
             <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
             </mat-datepicker>
           </mat-form-field>
-          <mat-form-field class="full-width no-mar ">
-            <input matInput placeholder="Email" class="">
-            <mat-icon class="clr--red cursor-pointer delete--emails">delete</mat-icon>
-          </mat-form-field>
-          <div class="add--new mb--15">
-            <mat-icon>add_circle</mat-icon>
-            Add New
-          </div>
-          <mat-form-field class="full-width no-mar">
-            <input matInput placeholder="Phone*" name="landlineNumber" type="tel">
-            <mat-icon class="clr--red cursor-pointer delete--emails">delete</mat-icon>
-            <span matPrefix>+1</span>
-          </mat-form-field>
-          <div class="add--new mb--15">
-            <mat-icon>add_circle</mat-icon>
-            Add New
-          </div>
-          <p class="address--line mt-1">Address</p>
-          <mat-form-field class="full-width">
-            <mat-label>Select Country</mat-label>
-            <mat-select>
-              <mat-option>None</mat-option>
-              <mat-option value="option1">Select Document Type</mat-option>
-              <mat-option value="option2">Option 2</mat-option>
-              <mat-option value="option3">Option 3</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Address Line 1">
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Address Line 2">
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="City">
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="State/Province/Region">
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="ZIP/Postal Code">
-          </mat-form-field>
 
+          <div formArrayName="ppEmails">
+              <div fxLayout="row wrap" *ngFor="let a of emailList.controls; let pointIndex = index"  [formGroupName]="pointIndex">
+                <mat-form-field class="full-width no-mar">
+                <input class="capitalize" matInput name="email" placeholder="Email*" formControlName="email">
+                <mat-icon (click)="delete(pointIndex,'ppEmails');" class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+              </mat-form-field>
+              </div>
+              <div class="add--new mb--15"  *ngIf="emailList.length < 3" (click)="addNewEmail();">
+                <mat-icon>add_circle</mat-icon>
+                Add New
+              </div>
           </div>
 
+
+          <div formArrayName="ppLandlineNumbers">
+            <div fxLayout="row wrap" *ngFor="let a of landlineNumbersList.controls; let pointIndex = index"  [formGroupName]="pointIndex">
+              <mat-form-field class="full-width no-mar">
+              <input class="capitalize" matInput name="phone" placeholder="Phone*" formControlName="phone" type="tel">
+              <mat-icon (click)="delete(pointIndex,'ppLandlineNumbers');" class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+              <span matPrefix>+1</span>
+            </mat-form-field>
+            </div>
+            <div class="add--new mb--15"  *ngIf="landlineNumbersList.length < 3" (click)="addNewLandlineNum();">
+              <mat-icon>add_circle</mat-icon>
+              Add New
+            </div>
+        </div>
+
+        <p class="address--line mt-1">Address</p>         
+          <mat-form-field class="full-width">
+              <mat-label>Country</mat-label>
+              <mat-select placeholder="Country*" name="ppCountry" [formControl]="firstFormGroup.controls['ppCountry']">
+                <mat-option value="">Select a country</mat-option>
+                <mat-option *ngFor="let option of countryList"  [value]="option.country_name">{{option.country_name}}</mat-option>
+              </mat-select>
+              <mat-icon matTooltip="Please select country" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['ppCountry'].hasError('required') && firstFormGroup.controls['ppCountry'].touched" class="red--alert">help_outline</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input class="capitalize" matInput name="ppAddressLine1" placeholder="Address Line 1*" value="" [formControl]="firstFormGroup.controls['ppAddressLine1']">
+            <mat-icon matTooltip="Please enter address in line 1." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['ppAddressLine1'].hasError('required') && firstFormGroup.controls['ppAddressLine1'].touched"
+              class="red--alert">help_outline</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input class="capitalize" matInput name="ppAddressLine2" placeholder="Address Line 2 (optional)" value="" [formControl]="firstFormGroup.controls['ppAddressLine2']">
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input class="capitalize" matInput name="ppCity" placeholder="City*" value="" [formControl]="firstFormGroup.controls['ppCity']">
+            <mat-icon matTooltip="Please enter city." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['ppCity'].hasError('required') && firstFormGroup.controls['ppCity'].touched"
+              class="red--alert">help_outline</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input class="capitalize" matInput name="ppState" placeholder="State/Province/Region*" value="" [formControl]="firstFormGroup.controls['ppState']">
+            <mat-icon matTooltip="Please enter State/Province/Region" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['ppState'].hasError('required') && firstFormGroup.controls['ppState'].touched"
+              class="red--alert">help_outline</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input matInput name="ppZipCode" placeholder="ZIP/Postal Code*" value="" [formControl]="firstFormGroup.controls['ppZipCode']">
+            <mat-icon matTooltip="Please enter ZIP/Postal Code." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['ppZipCode'].hasError('required') && firstFormGroup.controls['ppZipCode'].touched"
+              class="red--alert">help_outline</mat-icon>
+            <mat-icon matTooltip="Please enter valid ZIP/Postal Code." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['ppZipCode'].hasError('pattern') && firstFormGroup.controls['ppZipCode'].touched"
+              class="red--alert">help_outline</mat-icon>
+          </mat-form-field>
+
+        </div>
           <div class="mt-1 text-center">
             <button mat-raised-button matStepperNext class="llp--primary--btn mb-1">Proceed</button>
           </div>
@@ -82,79 +116,102 @@
 
       <mat-step [stepControl]="secondFormGroup">
         <form [formGroup]="secondFormGroup" class="llp-form-wrapper">
-
           <h3 class="main--head text-center">Work Profile</h3>
           <p class="sub--head text-center">Add Work Details</p>
-
           <div class="profile--body--scroll">
-          
           <mat-form-field class="full-width">
-            <input matInput placeholder="Work/Business">
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Company Name">
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Title/Position">
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Department">
-          </mat-form-field>
-          <mat-form-field class="full-width no-mar">
-            <input matInput placeholder="Work Phone" name="landlineNumber" type="tel">
-            <mat-icon class="clr--red cursor-pointer delete--emails">delete</mat-icon>
-            <span matPrefix>+1</span>
-          </mat-form-field>
-          <div class="add--new mb--15">
-            <mat-icon>add_circle</mat-icon>
-            Add New
-          </div>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Contact Person Name">
+              <input class="capitalize" matInput name="wpWorkBusiness" placeholder="Work/Business*" value="" [formControl]="secondFormGroup.controls['wpWorkBusiness']">
+              <mat-icon matTooltip="Please enter Work/Business." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['wpWorkBusiness'].hasError('required') && secondFormGroup.controls['wpWorkBusiness'].touched"
+                class="red--alert">help_outline</mat-icon>
           </mat-form-field>
 
-          <p class="address--line">Address</p>
-
           <mat-form-field class="full-width">
-            <mat-label>Select Country</mat-label>
-            <mat-select>
-              <mat-option>None</mat-option>
-              <mat-option value="option1">Select Document Type</mat-option>
-              <mat-option value="option2">Option 2</mat-option>
-              <mat-option value="option3">Option 3</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Address Line 1">
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Address Line 2">
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="City">
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="State/Province/Region">
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="ZIP/Postal Code">
+              <input class="capitalize" matInput name="wpCompanyName" placeholder="Company Name*" value="" [formControl]="secondFormGroup.controls['wpCompanyName']">
+              <mat-icon matTooltip="Please enter Company Name." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['wpCompanyName'].hasError('required') && secondFormGroup.controls['wpCompanyName'].touched"
+                class="red--alert">help_outline</mat-icon>
           </mat-form-field>
 
+          <mat-form-field class="full-width">
+              <input class="capitalize" matInput name="wpTitlePosition" placeholder="Title/Position*" value="" [formControl]="secondFormGroup.controls['wpTitlePosition']">
+              <mat-icon matTooltip="Please enter Title/Position." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['wpTitlePosition'].hasError('required') && secondFormGroup.controls['wpTitlePosition'].touched"
+                class="red--alert">help_outline</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+              <input class="capitalize" matInput name="wpDepartment" placeholder="Department*" value="" [formControl]="secondFormGroup.controls['wpDepartment']">
+              <mat-icon matTooltip="Please enter Department." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['wpDepartment'].hasError('required') && secondFormGroup.controls['wpDepartment'].touched"
+                class="red--alert">help_outline</mat-icon>
+          </mat-form-field>
+
+          <div formArrayName="wpLandlineNumbers">
+            <div fxLayout="row wrap" *ngFor="let a of wpLandlineNumberList.controls; let pointIndex = index"  [formGroupName]="pointIndex">
+              <mat-form-field class="full-width no-mar">
+                <input class="capitalize" matInput name="phone" placeholder="Work Phone*" formControlName="phone" type="tel">
+                <mat-icon (click)="deletewp(pointIndex,'wpLandlineNumbers');" class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+                <span matPrefix>+1</span>
+              </mat-form-field>
+            </div>
+            <div class="add--new mb--15"  *ngIf="wpLandlineNumberList.length < 3" (click)="addNewWorkLandLineNum();"><mat-icon>add_circle</mat-icon> Add New </div>
+        </div>
+
+        <mat-form-field class="full-width">
+              <input class="capitalize" matInput name="wpContactPersonName" placeholder="Contact Person Name*" value="" [formControl]="secondFormGroup.controls['wpContactPersonName']">
+              <mat-icon matTooltip="Please enter Contact Person Name." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['wpContactPersonName'].hasError('required') && secondFormGroup.controls['wpContactPersonName'].touched"
+                class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <p class="address--line">Address</p>
+            <mat-form-field class="full-width">
+              <mat-label>Country</mat-label>
+              <mat-select placeholder="Country*" name="wpCountry" [formControl]="secondFormGroup.controls['wpCountry']">
+                <mat-option value="">Select a country</mat-option>
+                <mat-option *ngFor="let option of countryList"  [value]="option.country_name">{{option.country_name}}</mat-option>
+              </mat-select>
+              <mat-icon matTooltip="Please select country" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['wpCountry'].hasError('required') && secondFormGroup.controls['wpCountry'].touched" class="red--alert">help_outline</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input class="capitalize" matInput name="wpAddressLine1" placeholder="Address Line 1*" value="" [formControl]="secondFormGroup.controls['wpAddressLine1']">
+              <mat-icon matTooltip="Please enter address in line 1." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['wpAddressLine1'].hasError('required') && secondFormGroup.controls['wpAddressLine1'].touched"
+                class="red--alert">help_outline</mat-icon>
+            </mat-form-field>
+  
+            <mat-form-field class="full-width">
+              <input class="capitalize" matInput name="wpAddressLine2" placeholder="Address Line 2 (optional)" value="" [formControl]="secondFormGroup.controls['wpAddressLine2']">
+            </mat-form-field>
+  
+            <mat-form-field class="full-width">
+              <input class="capitalize" matInput name="wpCity" placeholder="City*" value="" [formControl]="secondFormGroup.controls['wpCity']">
+              <mat-icon matTooltip="Please enter city." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['wpCity'].hasError('required') && secondFormGroup.controls['wpCity'].touched"
+                class="red--alert">help_outline</mat-icon>
+            </mat-form-field>
+  
+            <mat-form-field class="full-width">
+              <input class="capitalize" matInput name="wpState" placeholder="State/Province/Region*" value="" [formControl]="secondFormGroup.controls['wpState']">
+              <mat-icon matTooltip="Please enter State/Province/Region" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['wpState'].hasError('required') && secondFormGroup.controls['wpState'].touched"
+                class="red--alert">help_outline</mat-icon>
+            </mat-form-field>
+  
+            <mat-form-field class="full-width">
+              <input matInput name="wpZipCode" placeholder="ZIP/Postal Code*" value="" [formControl]="secondFormGroup.controls['wpZipCode']">
+              <mat-icon matTooltip="Please enter ZIP/Postal Code." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['wpZipCode'].hasError('required') && secondFormGroup.controls['wpZipCode'].touched"
+                class="red--alert">help_outline</mat-icon>
+              <mat-icon matTooltip="Please enter valid ZIP/Postal Code." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['wpZipCode'].hasError('pattern') && secondFormGroup.controls['wpZipCode'].touched"
+                class="red--alert">help_outline</mat-icon>
+            </mat-form-field>
           </div>
 
           <div class="mt-1 text-center">
             <button mat-raised-button matStepperPrevious class="llp--back--btn">
               <mat-icon>arrow_back</mat-icon> Back</button>
             <button mat-raised-button matStepperNext class="llp--primary--btn mb-1">Proceed</button>
-
           </div>
+
         </form>
       </mat-step>
 
       <mat-step [stepControl]="thirdFormGroup">
-
         <form [formGroup]="thirdFormGroup" class="llp-form-wrapper">
-
           <h3 class="main--head text-center">Civic/Club, Religious Info
           </h3>
           <p class="sub--head text-center">Add Details</p>
@@ -162,72 +219,114 @@
           <div class="profile--body--scroll">
 
           <h3 class="sec--header">Civic Group/Club</h3>
+
           <mat-form-field class="full-width">
-            <input matInput placeholder="Name" value="Cantthinkofaname Motorsports">
-          </mat-form-field>
+              <input class="capitalize" matInput name="ccName" placeholder="Address Line 1*" value="" [formControl]="thirdFormGroup.controls['ccName']">
+              <mat-icon matTooltip="Please enter name." matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['ccName'].hasError('required') && thirdFormGroup.controls['ccName'].touched"
+                class="red--alert">help_outline</mat-icon>
+            </mat-form-field>
 
           <p class="address--line">Address</p>
+            <mat-form-field class="full-width">
+              <input class="capitalize" matInput name="ccAddressLine1" placeholder="Address Line 1*" value="" [formControl]="thirdFormGroup.controls['ccAddressLine1']">
+              <mat-icon matTooltip="Please enter address in line 1." matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['ccAddressLine1'].hasError('required') && thirdFormGroup.controls['ccAddressLine1'].touched"
+                class="red--alert">help_outline</mat-icon>
+            </mat-form-field>
+  
+            <mat-form-field class="full-width">
+              <input class="capitalize" matInput name="ccAddressLine2" placeholder="Address Line 2 (optional)" value="" [formControl]="thirdFormGroup.controls['ccAddressLine2']">
+            </mat-form-field>  
+  
+            <mat-form-field class="full-width">
+              <input matInput name="ccZipCode" placeholder="ZIP/Postal Code*" value="" [formControl]="thirdFormGroup.controls['ccZipCode']">
+              <mat-icon matTooltip="Please enter ZIP/Postal Code." matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['ccZipCode'].hasError('required') && thirdFormGroup.controls['ccZipCode'].touched"
+                class="red--alert">help_outline</mat-icon>
+              <mat-icon matTooltip="Please enter valid ZIP/Postal Code." matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['ccZipCode'].hasError('pattern') && thirdFormGroup.controls['ccZipCode'].touched"
+                class="red--alert">help_outline</mat-icon>
+            </mat-form-field>
+
+
+          <div formArrayName="ccWorkLandlineNumbers">
+            <div fxLayout="row wrap" *ngFor="let a of ccWorkLandlineNumberList.controls; let pointIndex = index"  [formGroupName]="pointIndex">
+              <mat-form-field class="full-width no-mar">
+              <input class="capitalize" matInput name="phone" placeholder="Work Phone*" formControlName="phone"  type="tel">
+              <mat-icon (click)="deletecc(pointIndex,'ccWorkLandlineNumbers');" class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+              <span matPrefix>+1</span>
+            </mat-form-field>
+            </div>
+            <div class="add--new mb--15"  *ngIf="ccWorkLandlineNumberList.length < 3" (click)="addNewWorkLandlineNum();">
+              <mat-icon>add_circle</mat-icon>
+              Add New
+            </div>
+        </div>
+
 
           <mat-form-field class="full-width">
-            <input matInput placeholder="Address Line 1">
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Address Line 2">
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="ZIP/Postal Code">
-          </mat-form-field>
+              <input class="capitalize" matInput name="ccContactPersonName" placeholder="Contact Person Name*" value="" [formControl]="thirdFormGroup.controls['ccContactPersonName']">
+              <mat-icon matTooltip="Please enter contact person name." matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['ccContactPersonName'].hasError('required') && thirdFormGroup.controls['ccContactPersonName'].touched"
+                class="red--alert">help_outline</mat-icon>
+            </mat-form-field>
 
-          <mat-form-field class="full-width no-mar">
-            <input matInput placeholder="Work Phone" name="landlineNumber" type="tel" value="9876543210">
-            <mat-icon class="clr--red cursor-pointer delete--emails">delete</mat-icon>
-            <span matPrefix>+1</span>
-          </mat-form-field>
-          <div class="add--new mb--15">
-            <mat-icon>add_circle</mat-icon>
-            Add New
+            <div formArrayName="cclandlineNumbers">
+              <div fxLayout="row wrap" *ngFor="let a of cclandlineNumbersList.controls; let pointIndex = index"  [formGroupName]="pointIndex">
+                <mat-form-field class="full-width no-mar">
+                <input class="capitalize" matInput name="phone" placeholder="Contact Person Phone*" formControlName="phone">
+                <mat-icon (click)="deletecc(pointIndex,'cclandlineNumbers');" class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+                <span matPrefix>+1</span>
+              </mat-form-field>
+              </div>
+              <div class="add--new mb--15"  *ngIf="cclandlineNumbersList.length < 3" (click)="addNewCCLandlineNum();">
+                <mat-icon>add_circle</mat-icon>
+                Add New
+              </div>
           </div>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Contact Person Name">
-          </mat-form-field>
-          <mat-form-field class="full-width no-mar">
-            <input matInput placeholder="Contact Person Phone" name="landlineNumber" type="tel" value="9876543210">
-            <mat-icon class="clr--red cursor-pointer delete--emails">delete</mat-icon>
-            <span matPrefix>+1</span>
-          </mat-form-field>
-          <div class="add--new mb--15">
-            <mat-icon>add_circle</mat-icon>
-            Add New
-          </div>
+
 
           <h3 class="sec--header">Church/Synagogue/Religious Connection</h3>
           <mat-form-field class="full-width">
-            <input matInput placeholder="Name" value="Shiloh Church of God">
+              <input class="capitalize" matInput name="ccChurchName" placeholder="Church/Synagogue/Religious*" value="" [formControl]="thirdFormGroup.controls['ccChurchName']">
+              <mat-icon matTooltip="Please enter church name." matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['ccChurchName'].hasError('required') && thirdFormGroup.controls['ccChurchName'].touched"
+                class="red--alert">help_outline</mat-icon>
           </mat-form-field>
 
           <p class="address--line">Address</p>
-
           <mat-form-field class="full-width">
-            <input matInput placeholder="Address Line 1">
-          </mat-form-field>
-          <mat-form-field class="full-width">
-            <input matInput placeholder="Address Line 2">
-          </mat-form-field>
-
-          <mat-form-field class="full-width">
-            <input matInput placeholder="ZIP/Postal Code">
-          </mat-form-field>
-          <mat-form-field class="full-width no-mar">
-            <input matInput placeholder="Phone" name="landlineNumber" type="tel" value="9876543210">
-            <mat-icon class="clr--red cursor-pointer delete--emails">delete</mat-icon>
-            <span matPrefix>+1</span>
-          </mat-form-field>
-          <div class="add--new mb--15">
-            <mat-icon>add_circle</mat-icon>
-            Add New
+              <input class="capitalize" matInput name="ccChurchAddressLine1" placeholder="Address Line 1*" value="" [formControl]="thirdFormGroup.controls['ccChurchAddressLine1']">
+              <mat-icon matTooltip="Please enter address in line 1." matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['ccChurchAddressLine1'].hasError('required') && thirdFormGroup.controls['ccChurchAddressLine1'].touched"
+                class="red--alert">help_outline</mat-icon>
+            </mat-form-field>
+  
+            <mat-form-field class="full-width">
+              <input class="capitalize" matInput name="ccChurchAddressLine2" placeholder="Address Line 2 (optional)" value="" [formControl]="thirdFormGroup.controls['ccChurchAddressLine2']">
+            </mat-form-field>  
+  
+            <mat-form-field class="full-width">
+              <input matInput name="ccChurchZipCode" placeholder="ZIP/Postal Code*" value="" [formControl]="thirdFormGroup.controls['ccChurchZipCode']">
+              <mat-icon matTooltip="Please enter ZIP/Postal Code." matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['ccChurchZipCode'].hasError('required') && thirdFormGroup.controls['ccChurchZipCode'].touched"
+                class="red--alert">help_outline</mat-icon>
+              <mat-icon matTooltip="Please enter valid ZIP/Postal Code." matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['ccChurchZipCode'].hasError('pattern') && thirdFormGroup.controls['ccChurchZipCode'].touched"
+                class="red--alert">help_outline</mat-icon>
+            </mat-form-field>
+      
+            <div formArrayName="ccChurchLandlineNumbers">
+              <div fxLayout="row wrap" *ngFor="let a of ChurchlandlineNumbersList.controls; let pointIndex = index"  [formGroupName]="pointIndex">
+                <mat-form-field class="full-width no-mar">
+                <input class="capitalize" matInput name="phone" placeholder="Phone*" formControlName="phone">
+                <mat-icon (click)="deletecc(pointIndex,'ccChurchLandlineNumbers');" class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+                <span matPrefix>+1</span>
+              </mat-form-field>
+              </div>
+              <div class="add--new mb--15"  *ngIf="ChurchlandlineNumbersList.length < 3" (click)="addNewChurchLandlineNum();">
+                <mat-icon>add_circle</mat-icon>
+                Add New
+              </div>
           </div>
+
+
           <mat-form-field class="full-width">
-            <input matInput placeholder="Contact Person Name">
+              <input class="capitalize" matInput name="ccChurchContactPersonName" placeholder="Contact Person Name*" value="" [formControl]="thirdFormGroup.controls['ccChurchContactPersonName']">
+              <mat-icon matTooltip="Please enter contact person name." matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['ccChurchContactPersonName'].hasError('required') && thirdFormGroup.controls['ccChurchContactPersonName'].touched"
+                class="red--alert">help_outline</mat-icon>
           </mat-form-field>
 
           </div>
