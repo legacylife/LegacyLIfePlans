@@ -89,9 +89,9 @@ export class PersonalProfileModalComponent implements OnInit {
     ccChurchLandlineNumbers: this.fb.array([this.fb.group({phone: ['']})]),        
     ccChurchContactPersonName: new FormControl('', Validators.required),
   });
- // if(this.step){
+ 
     this.getDetails();    
- // }
+ 
 }
 
 getDetails = (query = {}, search = false) => {
