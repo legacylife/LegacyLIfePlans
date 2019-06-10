@@ -23,7 +23,7 @@ export class PersonalProfileModalComponent implements OnInit {
   country_name: string;
   short_code: string;
   ppemails: any;
-  landlineNumbers: any;
+  ppLandlineNumbers: any;
   wpLandlineNumbers: any;
   ccWorkLandlineNumbers:any; 
   ccChurchLandlineNumbers:any; 
@@ -40,7 +40,7 @@ export class PersonalProfileModalComponent implements OnInit {
       ppMiddleName: new FormControl('', Validators.required),
       ppLastName: new FormControl('', Validators.required),
       ppEmails: this.fb.array([this.fb.group({email: ['', Validators.required]})]),
-      landlineNumbers: this.fb.array([this.fb.group({phone: ['', Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]})]),
+      ppLandlineNumbers: this.fb.array([this.fb.group({phone: ['', Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]})]),
       //phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
      // landlineNumbers: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
       ppDateOfBirth: new FormControl('', ),      
@@ -121,7 +121,7 @@ export class PersonalProfileModalComponent implements OnInit {
   }
 
   get landlineNumbersList() {  
-    return this.firstFormGroup.get('landlineNumbers') as FormArray;
+    return this.firstFormGroup.get('ppLandlineNumbers') as FormArray;
   }
 
 /////

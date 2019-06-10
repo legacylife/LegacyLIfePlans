@@ -53,11 +53,11 @@
           </div>
 
 
-          <div formArrayName="landlineNumbers">
+          <div formArrayName="ppLandlineNumbers">
             <div fxLayout="row wrap" *ngFor="let a of landlineNumbersList.controls; let pointIndex = index"  [formGroupName]="pointIndex">
               <mat-form-field class="full-width no-mar">
               <input class="capitalize" matInput name="phone" placeholder="Phone*" formControlName="phone" type="tel">
-              <mat-icon (click)="delete(pointIndex,'landlineNumbers');" class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+              <mat-icon (click)="delete(pointIndex,'ppLandlineNumbers');" class="clr--red cursor-pointer delete--emails">delete</mat-icon>
               <span matPrefix>+1</span>
             </mat-form-field>
             </div>
