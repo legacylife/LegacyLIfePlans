@@ -2,7 +2,7 @@ var mongoose = require( 'mongoose' )
 var constants = require("./../config/constants")
 
 var myessentialsSchema = new mongoose.Schema({
-  
+  customerId: String,
   ppFirstName: String,
   ppMiddleName: String,
   ppLastName: String,
@@ -16,7 +16,6 @@ var myessentialsSchema = new mongoose.Schema({
   ppState: String,
   ppState: String,
   ppZipCode: String,  
-  
   wpWorkBusiness: String,
   wpCompanyName: String,
   wpTitlePosition: String,
@@ -29,7 +28,6 @@ var myessentialsSchema = new mongoose.Schema({
   wpCity: String,
   wpState: String,
   wpZipCode: String,  
-  
   ccName: String,
   ccAddressLine1: String,
   ccAddressLine2: String,
@@ -40,9 +38,8 @@ var myessentialsSchema = new mongoose.Schema({
   ccChurchAddressLine1: String,
   ccChurchAddressLine2: String,
   ccChurchZipCode: String,
-  ccChurchLandlineNumbers: String,
+  ccChurchLandlineNumbers: Array,
   ccChurchContactPersonName: String,
-
   status: String,
   createdOn: Date,
   modifiedOn: Date
