@@ -29,7 +29,7 @@ router.post('/advisorDocument', cors(), function(req,res){
            
           let ext = filename.split('.')
           ext = ext[ext.length - 1];
-          var fileExts = ["jpg", "jpeg", "png", "gif", "pdf", "docs"];
+          var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
           let resp = isExtension(ext,fileExts);
 
           if(resp){  //////          
