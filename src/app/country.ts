@@ -1,251 +1,242 @@
 export const countries = [{ 
-  "country_name" : "Alabama", 
-  "short_code" : "AL"
+  "country_name" : "Afghanistan", 
+  "short_code" : "Afghanistan"
 },
 { 
-  "country_name" : "Alaska", 
-  "short_code" : "AK"
+  "country_name" : "Albania", 
+  "short_code" : "Albania"
 },
 { 
-  "country_name" : "American Samoa", 
-  "short_code" : "AS"
+  "country_name" : "Algeria", 
+  "short_code" : "Algeria"
 },
 { 
-  "country_name" : "Arizona", 
-  "short_code" : "AZ"
+  "country_name" : "Andorra", 
+  "short_code" : "Andorra"
 },
 { 
-  "country_name" : "Arkansas", 
-  "short_code" : "AR"
+  "country_name" : "Angola", 
+  "short_code" : "Angola"
 },
 { 
-  "country_name" : "Armed Forces (the) Americas", 
-  "short_code" : "AA"
+  "country_name" : "Antigua and Barbuda", 
+  "short_code" : "Antigua and Barbuda"
 },
 { 
-  "country_name" : "Armed Forces Europe", 
-  "short_code" : "AE"
+  "country_name" : "Argentina", 
+  "short_code" : "Argentina"
 },
 { 
-  "country_name" : "Armed Forces Pacific", 
-  "short_code" : "AP"
+  "country_name" : "Armenia", 
+  "short_code" : "Armenia"
 },
 { 
-  "country_name" : "California", 
-  "short_code" : "CA"
+  "country_name" : "Australia", 
+  "short_code" : "Australia"
 },
 { 
-  "country_name" : "Colorado", 
-  "short_code" : "CO"
+  "country_name" : "Austria", 
+  "short_code" : "Austria"
 },
 { 
-  "country_name" : "Connecticut", 
-  "short_code" : "CT"
+  "country_name" : "Azerbaijan", 
+  "short_code" : "Azerbaijan"
 },
 { 
-  "country_name" : "Delaware", 
-  "short_code" : "DE"
+  "country_name" : "Bahamas", 
+  "short_code" : "Bahamas"
 },
 { 
-  "country_name" : "District of Columbia (DC)", 
-  "short_code" : "DC"
+  "country_name" : "Bahrain", 
+  "short_code" : "Bahrain"
 },
 { 
-  "country_name" : "Federated States of Micronesia", 
-  "short_code" : "FM"
+  "country_name" : "Bangladesh", 
+  "short_code" : "Bangladesh"
 },
 { 
-  "country_name" : "Florida", 
-  "short_code" : "FL"
+  "country_name" : "Barbados", 
+  "short_code" : "Barbados"
 },
 { 
-  "country_name" : "Georgia", 
-  "short_code" : "GA"
+  "country_name" : "Belarus", 
+  "short_code" : "Belarus"
 },
 { 
-  "country_name" : "Guam", 
-  "short_code" : "GU"
+  "country_name" : "Belgium", 
+  "short_code" : "Belgium"
 },
 { 
-  "country_name" : "Hawaii", 
-  "short_code" : "HI"
+  "country_name" : "Belize", 
+  "short_code" : "Belize"
 },
 { 
-  "country_name" : "Idaho", 
-  "short_code" : "ID"
+  "country_name" : "Benin", 
+  "short_code" : "Benin"
 },
 { 
-  "country_name" : "Illinois", 
-  "short_code" : "IL"
+  "country_name" : "Bhutan", 
+  "short_code" : "Bhutan"
 },
 { 
-  "country_name" : "Indiana", 
-  "short_code" : "IN"
+  "country_name" : "Bolivia", 
+  "short_code" : "Bolivia"
 },
 { 
-  "country_name" : "Iowa", 
-  "short_code" : "IA"
+  "country_name" : "Bosnia and Herzegovina", 
+  "short_code" : "Bosnia and Herzegovina"
 },
 { 
-  "country_name" : "Kansas", 
-  "short_code" : "KS"
+  "country_name" : "Botswana", 
+  "short_code" : "Botswana"
 },
 { 
-  "country_name" : "Kentucky", 
-  "short_code" : "KY"
+  "country_name" : "Brazil", 
+  "short_code" : "Brazil"
 },
 { 
-  "country_name" : "Louisiana", 
-  "short_code" : "LA"
+  "country_name" : "Brunei", 
+  "short_code" : "Brunei"
 },
 { 
-  "country_name" : "Maine", 
-  "short_code" : "ME"
+  "country_name" : "Bulgaria", 
+  "short_code" : "Bulgaria"
 },
 { 
-  "country_name" : "Marshall Islands", 
-  "short_code" : "MH"
+  "country_name" : "Burkina Faso", 
+  "short_code" : "Burkina Faso"
 },
 { 
-  "country_name" : "Maryland", 
-  "short_code" : "MD"
+  "country_name" : "Burundi", 
+  "short_code" : "Burundi"
 },
 { 
-  "country_name" : "Massachusetts", 
-  "short_code" : "MA"
+  "country_name" : "Cabo Verde", 
+  "short_code" : "Cabo Verde"
 },
 { 
-  "country_name" : "Michigan", 
-  "short_code" : "MI"
+  "country_name" : "Cambodia", 
+  "short_code" : "MCambodiaI"
 },
 { 
-  "country_name" : "Minnesota", 
-  "short_code" : "MN"
+  "country_name" : "Cameroon", 
+  "short_code" : "Cameroon"
 },
 { 
-  "country_name" : "Mississippi", 
-  "short_code" : "MS"
+  "country_name" : "Canada", 
+  "short_code" : "Canada"
 },
 { 
-  "country_name" : "Missouri", 
-  "short_code" : "MO"
+  "country_name" : "Central African Republic", 
+  "short_code" : "Central African Republic"
 },
 { 
-  "country_name" : "Montana", 
-  "short_code" : "MT"
+  "country_name" : "Chad", 
+  "short_code" : "Chad"
 },
 { 
-  "country_name" : "Nebraska", 
-  "short_code" : "NE"
+  "country_name" : "Chile", 
+  "short_code" : "Chile"
 },
 { 
-  "country_name" : "Nevada", 
-  "short_code" : "NV"
+  "country_name" : "China", 
+  "short_code" : "China"
 },
 { 
-  "country_name" : "New Hampshire", 
-  "short_code" : "NH"
+  "country_name" : "Colombia", 
+  "short_code" : "Colombia"
 },
 { 
-  "country_name" : "New Jersey", 
-  "short_code" : "NJ"
+  "country_name" : "Comoros", 
+  "short_code" : "Comoros"
 },
 { 
-  "country_name" : "New Mexico", 
-  "short_code" : "NM"
+  "country_name" : "Costa Rica", 
+  "short_code" : "Costa Rica"
 },
 { 
-  "country_name" : "New York", 
-  "short_code" : "NY"
+  "country_name" : "Côte d’Ivoire", 
+  "short_code" : "Côte d’Ivoire"
 },
 { 
-  "country_name" : "North Carolina", 
-  "short_code" : "NC"
+  "country_name" : "Croatia", 
+  "short_code" : "Croatia"
 },
 { 
-  "country_name" : "North Dakota", 
-  "short_code" : "ND"
+  "country_name" : "Cuba", 
+  "short_code" : "Cuba"
 },
 { 
-  "country_name" : "Northern Mariana Islands", 
-  "short_code" : "MP"
+  "country_name" : "Cyprus", 
+  "short_code" : "Cyprus"
 },
 { 
-  "country_name" : "Ohio", 
-  "short_code" : "OH"
+  "country_name" : "Czech Republic", 
+  "short_code" : "Czech Republic"
 },
 { 
-  "country_name" : "Oklahoma", 
-  "short_code" : "OK"
+  "country_name" : "Denmark", 
+  "short_code" : "Denmark"
 },
 { 
-  "country_name" : "Oregon", 
-  "short_code" : "OR"
+  "country_name" : "Djibouti", 
+  "short_code" : "Djibouti"
 },
 { 
-  "country_name" : "Palau", 
-  "short_code" : "PW"
+  "country_name" : "Dominica", 
+  "short_code" : "Dominica"
 },
 { 
-  "country_name" : "Pennsylvania", 
-  "short_code" : "PA"
+  "country_name" : "Dominican Republic", 
+  "short_code" : "Dominican Republic"
 },
 { 
-  "country_name" : "Puerto Rico", 
-  "short_code" : "PR"
+  "country_name" : "East Timor", 
+  "short_code" : "East Timor"
 },
 { 
-  "country_name" : "Rhode Island", 
-  "short_code" : "RI"
+  "country_name" : "Ecuador", 
+  "short_code" : "Ecuador"
 },
 { 
-  "country_name" : "South Carolina", 
-  "short_code" : "SC"
+  "country_name" : "Egypt", 
+  "short_code" : "Egypt"
 },
 { 
-  "country_name" : "South Dakota", 
-  "short_code" : "SD"
+  "country_name" : "El Salvador", 
+  "short_code" : "El Salvador"
 },
 { 
-  "country_name" : "Tennessee", 
-  "short_code" : "TN"
+  "country_name" : "Equatorial Guinea", 
+  "short_code" : "Equatorial Guinea"
 },
 { 
-  "country_name" : "Texas", 
-  "short_code" : "TX"
+  "country_name" : "Eritrea", 
+  "short_code" : "Eritrea"
 },
 { 
-  "country_name" : "Utah", 
-  "short_code" : "UT"
+  "country_name" : "Estonia", 
+  "short_code" : "Estonia"
 },
 { 
-  "country_name" : "Vermont", 
-  "short_code" : "VT"
+  "country_name" : "Eswatini", 
+  "short_code" : "Eswatini"
 },
 { 
-  "country_name" : "Virgin Islands", 
-  "short_code" : "VI"
-},
-
-{ 
-  "country_name" : "Virginia", 
-  "short_code" : "VA"
+  "country_name" : "Ethiopia", 
+  "short_code" : "Ethiopia"
 },
 { 
-  "country_name" : "Washington", 
-  "short_code" : "WA"
+  "country_name" : "Fiji", 
+  "short_code" : "Fiji"
 },
 { 
-  "country_name" : "West Virginia", 
-  "short_code" : "WV"
+  "country_name" : "Finland", 
+  "short_code" : "Finland"
 },
 { 
-  "country_name" : "Wisconsin", 
-  "short_code" : "WI"
-},
-{ 
-  "country_name" : "Wyoming", 
-  "short_code" : "WY"
+  "country_name" : "France", 
+  "short_code" : "France"
 }
 
 ]
