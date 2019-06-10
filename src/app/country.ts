@@ -237,6 +237,174 @@ export const countries = [{
 { 
   "country_name" : "France", 
   "short_code" : "France"
+},
+{ 
+  "country_name" : "Gabon", 
+  "short_code" : "Gabon"
+},
+{ 
+  "country_name" : "Gambia", 
+  "short_code" : "Gambia"
+},
+{ 
+  "country_name" : "Georgia", 
+  "short_code" : "Georgia"
+},
+{ 
+  "country_name" : "Germany", 
+  "short_code" : "Germany"
+},
+{ 
+  "country_name" : "Ghana", 
+  "short_code" : "Ghana"
+},
+{ 
+  "country_name" : "Greece", 
+  "short_code" : "Greece"
+},
+{ 
+  "country_name" : "Grenada", 
+  "short_code" : "Grenada"
+},
+{ 
+  "country_name" : "Guatemala", 
+  "short_code" : "Guatemala"
+},
+{ 
+  "country_name" : "Guinea", 
+  "short_code" : "Guinea"
+},
+{ 
+  "country_name" : "Guinea-Bissau", 
+  "short_code" : "Guinea-Bissau"
+},
+{ 
+  "country_name" : "Guyana", 
+  "short_code" : "Guyana"
+},
+{ 
+  "country_name" : "Haiti", 
+  "short_code" : "Haiti"
+},
+{ 
+  "country_name" : "Honduras", 
+  "short_code" : "Honduras"
+},
+{ 
+  "country_name" : "Hungary", 
+  "short_code" : "Hungary"
+},
+{ 
+  "country_name" : "Iceland", 
+  "short_code" : "Iceland"
+},
+{ 
+  "country_name" : "India", 
+  "short_code" : "India"
+},
+{ 
+  "country_name" : "Indonesia", 
+  "short_code" : "Indonesia"
+},
+{ 
+  "country_name" : "Iran", 
+  "short_code" : "Iran"
+},
+{ 
+  "country_name" : "Iraq", 
+  "short_code" : "Iraq"
+},
+{ 
+  "country_name" : "Ireland", 
+  "short_code" : "Ireland"
+},
+{ 
+  "country_name" : "Israel", 
+  "short_code" : "Israel"
+},
+{ 
+  "country_name" : "Italy", 
+  "short_code" : "Italy"
+},
+{ 
+  "country_name" : "Jamaica", 
+  "short_code" : "Jamaica"
+},
+{ 
+  "country_name" : "Japan", 
+  "short_code" : "Japan"
+},
+{ 
+  "country_name" : "Jordan", 
+  "short_code" : "Jordan"
+},
+{ 
+  "country_name" : "Kazakhstan", 
+  "short_code" : "Kazakhstan"
+},
+{ 
+  "country_name" : "Kenya", 
+  "short_code" : "Kenya"
+},
+{ 
+  "country_name" : "Kiribati", 
+  "short_code" : "Kiribati"
+},
+{ 
+  "country_name" : "Korea, North", 
+  "short_code" : "Korea, North"
+},
+{ 
+  "country_name" : "Korea, South", 
+  "short_code" : "Korea, South"
+},
+{ 
+  "country_name" : "Kosovo", 
+  "short_code" : "Kosovo"
+},
+{ 
+  "country_name" : "Kuwait", 
+  "short_code" : "Kuwait"
+},
+{ 
+  "country_name" : "Kyrgyzstan", 
+  "short_code" : "Kyrgyzstan"
+},
+{ 
+  "country_name" : "Laos", 
+  "short_code" : "Laos"
+},
+{ 
+  "country_name" : "Latvia", 
+  "short_code" : "Latvia"
+},
+{ 
+  "country_name" : "Lebanon", 
+  "short_code" : "Lebanon"
+},
+{ 
+  "country_name" : "Lesotho", 
+  "short_code" : "Lesotho"
+},
+{ 
+  "country_name" : "Liberia", 
+  "short_code" : "Liberia"
+},
+{ 
+  "country_name" : "Libya", 
+  "short_code" : "Libya"
+},
+{ 
+  "country_name" : "Liechtenstein", 
+  "short_code" : "Liechtenstein"
+},
+{ 
+  "country_name" : "Lithuania", 
+  "short_code" : "Lithuania"
+},
+{ 
+  "country_name" : "Luxembourg", 
+  "short_code" : "Luxembourg"
 }
 
 ]
