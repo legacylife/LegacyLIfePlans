@@ -8,12 +8,11 @@
     <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="onChangeFormIndex($event)">
 
       <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup" class="llp-form-wrapper">
+        <form [formGroup]="firstFormGroup" class="llp-form-wrapper" (ngSubmit)="FormSubmit(1,firstFormGroup.value)">
           <h3 class="main--head text-center">Personal Profile</h3>
           <p class="sub--head text-center">Add Personal Details</p>
 
           <div class="profile--body--scroll">
-
           <mat-form-field class="full-width">
             <input class="capitalize" matInput name="ppFirstName" placeholder="First Name*" value="" [formControl]="firstFormGroup.controls['ppFirstName']">
             <mat-icon matTooltip="Please enter first name." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['ppFirstName'].hasError('required') && firstFormGroup.controls['ppFirstName'].touched"
@@ -33,7 +32,7 @@
           </mat-form-field>
 
           <mat-form-field class="full-width llp-datepicker">
-            <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Date Of Birth" value="" readonly [formControl]="firstFormGroup.controls['ppDateOfBirth']">
+            <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Date Of Birth" value="" readonly [max]="maxDate" [formControl]="firstFormGroup.controls['ppDateOfBirth']">
             <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
             <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
             </mat-datepicker>
@@ -109,13 +108,13 @@
 
         </div>
           <div class="mt-1 text-center">
-            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1">Proceed</button>
+            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" [disabled]="firstFormGroup.invalid">Proceed</button> 
           </div>
         </form>
       </mat-step>
 
       <mat-step [stepControl]="secondFormGroup">
-        <form [formGroup]="secondFormGroup" class="llp-form-wrapper">
+        <form [formGroup]="secondFormGroup" class="llp-form-wrapper" (ngSubmit)="FormSubmit(2,secondFormGroup.value)">
           <h3 class="main--head text-center">Work Profile</h3>
           <p class="sub--head text-center">Add Work Details</p>
           <div class="profile--body--scroll">
@@ -204,14 +203,14 @@
           <div class="mt-1 text-center">
             <button mat-raised-button matStepperPrevious class="llp--back--btn">
               <mat-icon>arrow_back</mat-icon> Back</button>
-            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1">Proceed</button>
+            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" [disabled]="secondFormGroup.invalid">Proceed</button>
           </div>
 
         </form>
       </mat-step>
 
       <mat-step [stepControl]="thirdFormGroup">
-        <form [formGroup]="thirdFormGroup" class="llp-form-wrapper">
+        <form [formGroup]="thirdFormGroup" class="llp-form-wrapper" (ngSubmit)="FormSubmit(3,thirdFormGroup.value)">
           <h3 class="main--head text-center">Civic/Club, Religious Info
           </h3>
           <p class="sub--head text-center">Add Details</p>
@@ -333,7 +332,7 @@
           <div class="mt-1 text-center">
             <button mat-raised-button matStepperPrevious class="llp--back--btn">
               <mat-icon>arrow_back</mat-icon> Back</button>
-            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1">Submit</button>
+            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" [disabled]="thirdFormGroup.invalid">Submit</button>
           </div>
         </form>
       </mat-step>

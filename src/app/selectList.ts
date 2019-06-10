@@ -51,9 +51,7 @@ export const licenceHeldList = [{
 }
 ]
 
-
-
-
+export const documentTypes = ['Option 1', 'Option 2',  'Option 3', 'Option 4', 'Option 5']
 export const activeLicense = ['Health', 'Life',  'Property & Casualty', 'Series 3','Series 6', 'Series 7', 'Series 24','Series 26', 'Series 63', 'Series 65', 'Series 66']
 
 export const industryDomain = ['Life', 'Health', 'Property & Casualty']
