@@ -33,7 +33,7 @@
           </mat-form-field>
 
           <mat-form-field class="full-width llp-datepicker">
-            <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Date Of Birth" value="" readonly [max]="maxDate" [formControl]="firstFormGroup.controls['ppDateOfBirth']">
+            <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Date Of Birth" value="" readonly [formControl]="firstFormGroup.controls['ppDateOfBirth']">
             <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
             <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
             </mat-datepicker>
