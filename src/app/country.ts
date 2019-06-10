@@ -405,6 +405,89 @@ export const countries = [{
 { 
   "country_name" : "Luxembourg", 
   "short_code" : "Luxembourg"
+},
+{ 
+  "country_name" : "Madagascar", 
+  "short_code" : "Madagascar"
+},
+{ 
+  "country_name" : "Malawi", 
+  "short_code" : "Malawi"
+},
+{ 
+  "country_name" : "Malaysia", 
+  "short_code" : "Malaysia"
+},
+{ 
+  "country_name" : "Maldives", 
+  "short_code" : "Maldives"
+},
+{ 
+  "country_name" : "Mali", 
+  "short_code" : "Mali"
+},
+{ 
+  "country_name" : "Malta", 
+  "short_code" : "Malta"
+},
+{ 
+  "country_name" : "Marshall Islands", 
+  "short_code" : "Marshall Islands"
+},
+{ 
+  "country_name" : "Mauritania", 
+  "short_code" : "Mauritania"
+},
+{ 
+  "country_name" : "Mauritius", 
+  "short_code" : "Mauritius"
+},
+{ 
+  "country_name" : "Mexico", 
+  "short_code" : "Mexico"
+},
+{ 
+  "country_name" : "Micronesia", 
+  "short_code" : "Micronesia"
+},
+{ 
+  "country_name" : "Moldova", 
+  "short_code" : "Moldova"
+},
+{ 
+  "country_name" : "Monaco", 
+  "short_code" : "Monaco"
+},
+{ 
+  "country_name" : "Mongolia", 
+  "short_code" : "Mongolia"
+},
+{ 
+  "country_name" : "Montenegro", 
+  "short_code" : "Montenegro"
+},
+{ 
+  "country_name" : "Morocco", 
+  "short_code" : "Morocco"
+},
+{ 
+  "country_name" : "Mozambique", 
+  "short_code" : "Mozambique"
+},
+{ 
+  "country_name" : "Myanmar", 
+  "short_code" : "Myanmar"
+},
+
+
+
+{ 
+  "country_name" : "Lithuania", 
+  "short_code" : "Lithuania"
+},
+{ 
+  "country_name" : "Luxembourg", 
+  "short_code" : "Luxembourg"
 }
 
 ]

@@ -8,6 +8,8 @@ import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
 import { EssenioalIdBoxComponent } from '../essenioal-id-box/essenioal-id-box.component';
 import { PersonalProfileModalComponent } from '../personal-profile-modal/personal-profile-modal.component';
+import { UserAPIService } from './../../../../userapi.service';
+import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 
 
 @Component({
@@ -18,13 +20,38 @@ import { PersonalProfileModalComponent } from '../personal-profile-modal/persona
 })
 export class CustomerEssentialDayOneComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
+  showProfileListing = false;
+  showIdProofListing = true;
+  userId: string;
+  essentialProfileList:any = [];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
+    private userapi: UserAPIService, private loader: AppLoaderService
   ) { }
 
   ngOnInit() {
+    this.userId = localStorage.getItem("endUserId");
+    this.getEssentialProfileList();
+  }
+
+  getEssentialProfileList = (query = {}, search = false) => {
+    const req_vars = {
+      query: Object.assign({ customerId: this.userId }, query)
+    }
+    this.userapi.apiRequest('post', 'customer/essential-profile-list', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        this.essentialProfileList = result.data.essentialList
+        if(this.essentialProfileList.length > 0){
+          this.showProfileListing = true;
+        }
+      }
+    }, (err) => {
+      console.error(err);
+    })
   }
 
   toggleSideNav() {
