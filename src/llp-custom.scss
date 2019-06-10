@@ -462,7 +462,7 @@ body{
     background-color: #fff;
     border: 1px solid #dadce0;
     padding: 0 20px;
-    height: 65px;
+    height: 65px !important;
     width: 100%;
     &:hover{
         cursor: pointer;
@@ -470,10 +470,9 @@ body{
         background: rgba(0, 0, 0, 0.04);
     }
     .name--letters{
-        width: 48px;
-        height: 48px;
+        width: 48px !important;
+        height: 48px !important;
         border-radius: 50%;
-        line-height: 50px;
         overflow: hidden;
         background-color: #757575;
         color: #fff;
@@ -482,6 +481,9 @@ body{
         font-family: $font--lato--regular;
         text-align: center;
         flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .user--name{
         margin-left: 15px;
@@ -494,6 +496,7 @@ body{
             margin: 0 0 5px 0;
             color: $clr--3;
             overflow: hidden;
+            text-overflow: ellipsis;
         }
         p{
             font-size: 13px;

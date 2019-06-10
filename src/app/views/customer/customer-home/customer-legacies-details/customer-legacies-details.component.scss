@@ -1,18 +1,103 @@
 @import 'llp-global-styles.scss';
-@import '../customer-home.component.scss';
 
 
+.cust--user--details{     
+    .mat-icon-button{
+        padding: 0;
+        height: 21px;
+        line-height: 0;
+        width: 21px;
+        border-radius: 50%;
+        align-self: flex-start;
+        margin-top: 9px;
+        .mat-icon{
+            font-size: 22px;
+            color: $clr--3;
+        }
+    }
+    .mat-list-text{
+        padding-right: 10px;
+    }
+}    
+.right--panel--wrapper{
+    margin-left: 15px
+}
+.invite--body--section{
+    border: none;
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    .count{
+        font-family: $font--lato--bold;
+        font-size: 45px;
+        margin: 20px 0 5px 0;
+        span{
+            font-size: 26px;
+            font-family: $font--lato--regular;
+        }
+    }
+    .daysgo{
+        margin: 0;
+        font-family: $font--lato--italic !important;
+        font-size: 22px;
+    }
+    .invites{
+        font-size: 16px;
+        color: #222324;
+        margin-bottom: 15px;
+        margin-top: 32px;
+    }
+    .llp--primary--btn{
+        width: 168px;
+    }
+    .adjust{
+        margin-bottom: -30px;
+    }
+}
 
 
-/* Media query (start here)*/
+// Menu droupdown
 
-@media only screen and (max-width: 599px) {
-
+::ng-deep .mat-menu-panel{
+   min-width: 183px !important;
+   .mat-menu-content{
+       .mat-menu-item{
+           height: 40px !important;
+           line-height: 40px !important;
+           color: $clr--3 !important;
+           font-size: 16px !important;
+           font-family: $font--lato--regular !important;
+           .mat-icon{
+               height: 20px;
+               width: 20px;
+               font-size: 20px;
+               margin-right: 5px;
+               color: $clr--3;
+           }
+           &:hover{
+               color: $clr--2 !important;
+               .mat-icon{
+                   color: $clr--2 !important;
+               }
+           }
+       }
+   }
 }
 @media only screen and (min-width: 600px) and (max-width: 959px){
-
+    .reverse--order--sm{
+        order: -1;
+    }
+   
 }
-@media only screen and (min-width: 960px) and (max-width: 979px){}
+@media only screen and (min-width: 960px) and (max-width: 979px){
+    
+}
 @media only screen and (min-width: 980px) and (max-width: 1279px){}
 @media only screen and (min-width: 1280px) and (max-width: 1440px){}
 @media only screen and (min-width: 1441px) and (max-width: 1550px){}
+
+/* Media query (end here)*/
