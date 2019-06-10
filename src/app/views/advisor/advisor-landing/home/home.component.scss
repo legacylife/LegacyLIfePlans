@@ -961,7 +961,7 @@
     }
  
 }
-@media only screen and (min-width: 1280px) and (max-width: 1440px){
+@media only screen and (min-width: 1280px) and (max-width: 1366px){
     .advisor--landing--wrapper .get--hired--wrapper{
         height: 577px;
     }
@@ -970,13 +970,13 @@
         margin: 25px 0;
     }
     .back--to--top {
-        width: 47px;
-        height: 47px;
+        width: 35px;
+        height: 35px;
     }
     .back--to--top .mat-icon {
-        height: 30px;
-        width: 30px;
-        font-size: 30px;
+        height: 20px;
+        width: 20px;
+        font-size: 20px;
     }
     .llp--unexp-turn {
         height: 505px !important;
@@ -1091,7 +1091,137 @@
         height: 372px;
     }
 }
-@media only screen and (min-width: 1441px) and (max-width: 1550px){}
+@media only screen and (min-width: 1367px) and (max-width: 1550px){
+    .advisor--landing--wrapper .get--hired--wrapper{
+        height: 699px;
+    }
+    .advisor--landing--wrapper .get--hired--wrapper .banner--content h3 {
+        font-size: 60px;
+        margin: 25px 0;
+    }
+    .back--to--top {
+        width: 47px;
+        height: 47px;
+    }
+    .back--to--top .mat-icon {
+        height: 30px;
+        width: 30px;
+        font-size: 30px;
+    }
+    .llp--unexp-turn {
+        height: 619px !important;
+    }
+    .llp--unexp--box{
+        padding: 30px !important;
+    }
+    .llp--unexp--box h5 {
+        font-size: 30px !important;
+    }
+    .plan--process--wrapper .plan--content h3 {
+        font-size: 45px !important;
+    }
+    .plan--process--wrapper .plan--content p {
+        font-size: 22px !important;
+    }
+    .plan--process--steps{
+        margin-top: -200px !important;
+    }
+    .landing-main-header{
+        font-size: 45px !important;
+        padding: 40px 0 0 0 !important;
+    }
+    .advisor--landing--wrapper .featured--advisors p {
+        font-size: 20px !important;
+        margin: 25px 0 40px 0 !important;
+    }
+    .pricing--section .mat-card-content {
+        padding: 15px 22px !important;
+    }
+   .pricing--section .mat-card-content .mat-list .mat-list-item {
+        padding: 5px 0 !important;
+    }
+    .llp--container .pricing--section .mat-card-content .mat-list ::ng-deep .mat-list-item .mat-list-item-content{
+        font-size: 16px !important
+    }
+    .llp--container .pricing--section .get--started--btn {
+        margin-top: 20px;
+        width: 163px;
+        height: 48px;
+    }
+    .advisor--landing--wrapper .llp--hired h4 {
+        font-size: 35px;
+        margin: 0 0 20px;
+    }
+    .advisor--landing--wrapper .llp--hired p {
+        font-size: 22px;
+    }
+    .advisor--landing--wrapper .green-divider {
+        margin: 50px auto;
+    }
+    .advisor--landing--wrapper .llp--hired .history h5 {
+        font-size: 40px;
+    }
+    .advisor--landing--wrapper .llp--hired .history h5{
+        margin: 0 0 10px 0;
+    }
+    .advisor--landing--wrapper .get--a--free-section h5 {
+        font-size: 30px;
+        margin: 0 0 9px 0;
+    }
+    .advisor--landing--wrapper .llp--hired .history{
+        margin-top: 50px !important;
+    }
+   .bottom-space{
+        margin-bottom: 50px !important;
+    }
+    .standard-bg{
+        padding-bottom: 50px !important;
+    }
+
+    // Adviasor
+    .advisor--landing--wrapper .get--hired--wrapper.ad--first--banner{
+        height: 573px;
+        justify-content: flex-start;
+        padding-top: 66px;
+    }
+    .advisor--landing--wrapper .get--hired--wrapper.ad--first--banner .banner--content h6.info{
+        margin-bottom: 25px;
+    }
+    .advisor--landing--wrapper .get--hired--wrapper.ad--first--banner .banner--content {
+        width: 80%;
+    }
+    .advisor--landing--wrapper .hired--steps{
+        padding: 15px 0 !important;
+    }
+    .advisor--landing--wrapper .hired--steps .steps--section .step--header{
+        margin-bottom: 8px !important
+    }
+    .advisor--landing--wrapper .hire--process--wrapper{
+        justify-content: flex-start !important;
+        padding-top: 30px;
+        height: 480px;
+    }
+    .advisor--landing--wrapper .hire--process--wrapper .hire--content{
+        width: 36%;
+    }
+    .advisor--landing--wrapper .hire--process--wrapper .hire--content h3{
+        font-size: 40px;
+    }
+    .advisor--landing--wrapper .hired--process--steps{
+        margin-top: -22%;
+    }
+    .advisor--landing--wrapper .hired--process--steps .steps--section .step--header h5 {
+        margin: 15px 0;
+    }
+    .advisor--landing--wrapper .hired--process--steps .steps--section .step--body p {
+        font-size: 15px;
+        line-height: 25px;
+    }
+    .advisor--landing--wrapper .hired--process--steps .steps--section {
+        height: 372px;
+    }
+}
+
 @media (device-height: 768px) and (device-width: 1024px){
     .advisor--landing--wrapper .get--hired--wrapper .banner--content h3{
         font-size: 63px;

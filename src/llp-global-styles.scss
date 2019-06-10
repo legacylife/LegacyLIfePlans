@@ -669,6 +669,7 @@ body{
 }
 .rightside-content-hold {
     scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
 }
 
 
