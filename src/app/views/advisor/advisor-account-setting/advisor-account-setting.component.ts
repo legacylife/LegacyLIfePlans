@@ -65,6 +65,13 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   businessTypeList: string[] = businessType.sort()
   yearsOfServiceList: string[] = yearsOfService
 
+
+  cityval:string
+  stateval:string
+  zipcodeval:string
+  firstNameval:string
+  lastNameval:string
+
   modified = false // display confirmation popup if user click on other link
 
 
@@ -129,7 +136,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       advisorDocuments: new FormControl('',),
       advisorDocuments_temp: new FormControl([],Validators.required)
     });
-
+  //  this.LicenseForm.controls['advisorDocuments_temp'].setValue('1');
     this.LicenseForm.valueChanges.subscribe(val => {
       this.modified = true
     })
@@ -158,7 +165,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.profile = [];
         this.loader.close();
       } else {
-        
+
         this.profile = result.data.userProfile;
         this.ProfileForm.controls['firstName'].setValue(this.profile.firstName ? this.profile.firstName : "");
         this.ProfileForm.controls['lastName'].setValue(this.profile.lastName ? this.profile.lastName : "");
@@ -182,6 +189,23 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.awards = this.profile.awardsYears;
         this.websiteLinks = this.profile.websiteLinks;
         this.advisorDocumentsList = this.profile.advisorDocuments;
+
+        this.cityval = this.profile.city ? this.profile.city : ""
+        this.stateval = this.profile.state ? this.profile.state : ""
+        this.zipcodeval = this.profile.zipcode ? this.profile.zipcode : ""
+        this.firstNameval = this.profile.firstName ? this.profile.firstName : ""
+        this.lastNameval = this.profile.lastName ? this.profile.lastName : ""
+
+        // if(this.profile.advisorDocuments && this.profile.advisorDocuments.length == 0){
+        //   alert(this.profile.advisorDocuments.length)
+        //   this.advisorDocumentsMissing = false;
+        //   this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': false })
+        // }
+        // else {
+        //   alert("sdfsdfsdf"+this.profile.advisorDocuments.length)
+        //   this.advisorDocumentsMissing = true;
+        //   this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': true })
+        // }
 
 
         if (this.profile.profilePicture) {
@@ -274,6 +298,10 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       phoneNumber: this.ProfileForm.controls['phoneNumber'].value,
       dateOfBirth: this.ProfileForm.controls['dateOfBirth'].value
     }
+
+    this.firstNameval = this.ProfileForm.controls['firstName'].value
+    this.lastNameval = this.ProfileForm.controls['lastName'].value
+
     var query = {};
     var proquery = {};
     const req_vars = {
@@ -290,7 +318,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         //this.prodata = result.data.userProfile;
         // localStorage.setItem("firstName", this.rows.firstName)
         // localStorage.setItem("lastName", this.rows.lastName) 
-        this.getProfile();
+        //this.getProfile();
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
@@ -328,6 +356,11 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         "linkedIn": linkedIn
       })
     }
+
+    this.cityval = this.AddressForm.controls['city'].value
+    this.stateval = this.AddressForm.controls['state'].value
+    this.zipcodeval = this.AddressForm.controls['zipcode'].value
+
     var query = {};
     var proquery = {};
     const req_vars = {
@@ -342,7 +375,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
         // this.rows = result.data.userProfile;
-        this.getProfile();
+        //this.getProfile();
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
@@ -429,7 +462,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
         } else {
           // this.rows = result.data.userProfile;
-          this.getProfile();
+          //this.getProfile();
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
         }
       }, (err) => {
