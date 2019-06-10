@@ -19,6 +19,8 @@ import { CustomerDashboardDayOneComponent } from './customer-home/customer-dashb
 import { CustomerEssentialDayOneComponent } from './customer-home/customer-essential-day-one/customer-essential-day-one.component';
 import { CustomerEssentialDetailsComponent } from './customer-home/customer-essential-details/customer-essential-details.component';
 import { CustomerEssentialDetailsIdboxComponent } from './customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
+import { CustomerSharedLegaciesComponent } from './customer-home/customer-shared-legacies/customer-shared-legacies.component';
+import { CustomerLegaciesDetailsComponent } from './customer-home/customer-legacies-details/customer-legacies-details.component';
 
 export const CustomerRoutes: Routes = [
   {
@@ -64,6 +66,14 @@ export const CustomerRoutes: Routes = [
           {
             path: 'essential-detail-idbox',
             component: CustomerEssentialDetailsIdboxComponent
+          },
+          {
+            path: 'shared-lagacies',
+            component: CustomerSharedLegaciesComponent
+          },
+          {
+            path: 'lagacies-details',
+            component: CustomerLegaciesDetailsComponent
           }
         ]
       },
