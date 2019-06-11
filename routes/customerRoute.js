@@ -133,8 +133,24 @@ function essentialProfileList(req, res) {
   })
 }
 
+function viewEssentialProfile(req, res) {
+  let { query } = req.body
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  myessentials.findOne(query, fields, function (err, profileData) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(profileData))
+    }
+  })
+}
+
 router.post("/my_essentials_req", myEssentialsUpdate)
 router.post("/get_details", myEssentialsDetails)
 router.post("/essential-profile-list", essentialProfileList)
+router.post("/view-essential-profile", viewEssentialProfile)
 
 module.exports = router
