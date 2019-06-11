@@ -22,6 +22,9 @@ import { CustomerEssentialDetailsIdboxComponent } from './customer-home/customer
 import { CustomerSharedLegaciesComponent } from './customer-home/customer-shared-legacies/customer-shared-legacies.component';
 import { CustomerLegaciesDetailsComponent } from './customer-home/customer-legacies-details/customer-legacies-details.component';
 
+// trustees
+import { CustomerMyPeopleComponent } from './customer-trustees/customer-my-people/customer-my-people.component';
+
 export const CustomerRoutes: Routes = [
   {
     path: 'signup',
@@ -78,7 +81,25 @@ export const CustomerRoutes: Routes = [
         ]
       },
     ]
-  }, {
+  },
+  {
+    path: 'trustees',
+    component: CustomerLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: CustomerTrusteesComponent,
+        canActivate: [UserAuthGuard],
+        children: [
+          {
+            path: 'my-people',
+            component: CustomerMyPeopleComponent
+          }
+        ]
+      },
+    ]
+  },
+  {
     path: 'update-profile',
     component: AuthLayoutComponent,
     children: [
@@ -116,16 +137,6 @@ export const CustomerRoutes: Routes = [
       {
         path: '',
         component: CustomerProfessionalComponent,
-        canActivate: [UserAuthGuard]
-      }
-    ]
-  }, {
-    path: 'trustees',
-    component: CustomerLayoutComponent,
-    children: [
-      {
-        path: '',
-        component: CustomerTrusteesComponent,
         canActivate: [UserAuthGuard]
       }
     ]
