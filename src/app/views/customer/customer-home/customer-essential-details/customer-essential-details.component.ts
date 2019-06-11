@@ -88,8 +88,8 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
 
   }
 
-  deleteProfile(row) {
-    var statMsg = "Are you sure you want to delete profile?, " + row.username + " Access to the website account for the advisor, trustees and advisors will be re-opened as per the subscription status of this customer."
+  deleteProfile() {
+    var statMsg = "Are you sure you want to delete profile?"
     
 
     this.confirmService.confirm({ message: statMsg })
@@ -98,15 +98,15 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: row._id }, query)
+            query: Object.assign({ _id: this.selectedProfileId }, query)
           }
-          this.userapi.apiRequest('post', 'customer/updatestatus', req_vars).subscribe(result => {
+          this.userapi.apiRequest('post', 'customer/deleteprofile', req_vars).subscribe(result => {
             if (result.status == "error") {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard/essential-day-one'])
+              this.router.navigate(['/', 'customer', 'dashboard', 'essential-day-one'])
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {

@@ -43,7 +43,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
 
   getEssentialProfileList = (query = {}, search = false) => {
     const req_vars = {
-      query: Object.assign({ customerId: this.userId }, query)
+      query: Object.assign({ customerId: this.userId, status:"Active" }, query)
     }
     this.userapi.apiRequest('post', 'customer/essential-profile-list', req_vars).subscribe(result => {
       if (result.status == "error") {
