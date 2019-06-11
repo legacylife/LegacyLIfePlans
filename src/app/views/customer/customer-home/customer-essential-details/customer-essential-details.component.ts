@@ -39,6 +39,7 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
   wpLandlineNumbersList: string = "";
   ccWorkLandlineNumbersList: string = "";
   ccChurchLandlineNumbersList: string = "";
+  ccContactLandlineNumbersList:string = "";
 
   constructor(
     // private shopService: ShopService,
@@ -74,11 +75,12 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
         console.log(result.data)
       } else {
         this.row = result.data
-        this.pplandLineNumberList = Array.prototype.map.call(this.row.ppLandlineNumbers, function (item) { return item.phone; }).join(",");
-        this.ppEmailsList = Array.prototype.map.call(this.row.ppEmails, function (item) { return item.email; }).join(",");
-        this.wpLandlineNumbersList = Array.prototype.map.call(this.row.wpLandlineNumbers, function (item) { return item.phone; }).join(",");
-        this.ccWorkLandlineNumbersList = Array.prototype.map.call(this.row.ccWorkLandlineNumbers, function (item) { return item.phone; }).join(",");
-        this.ccChurchLandlineNumbersList = Array.prototype.map.call(this.row.ccChurchLandlineNumbers, function (item) { return item.phone; }).join(",");
+        this.pplandLineNumberList = this.row.ppLandlineNumbers && this.row.ppLandlineNumbers.map(function (item) { return item.phone; }).join(",");
+        this.ppEmailsList = this.row.ppEmails.map(function (item) { return item.email; }).join(",");
+        this.wpLandlineNumbersList = this.row.wpLandlineNumbers && this.row.wpLandlineNumbers.map(function (item) { return item.phone; }).join(",");
+        this.ccWorkLandlineNumbersList = this.row.ccWorkLandlineNumbers && this.row.ccWorkLandlineNumbers.map(function (item) { return item.phone; }).join(",");
+        this.ccContactLandlineNumbersList = this.row.cclandlineNumbers && this.row.cclandlineNumbers.map(function (item) { return item.phone; }).join(",");
+        this.ccChurchLandlineNumbersList = this.row.ccChurchLandlineNumbers && this.row.ccChurchLandlineNumbers.map(function (item) { return item.phone; }).join(",");
       }
     }, (err) => {
       console.error(err)

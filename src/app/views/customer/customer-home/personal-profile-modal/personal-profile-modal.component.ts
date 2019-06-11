@@ -28,6 +28,7 @@ export class PersonalProfileModalComponent implements OnInit {
   ppLandlineNumbers: any;
   wpLandlineNumbers: any;
   ccWorkLandlineNumbers: any;
+  cclandlineNumbers:any;
   ccChurchLandlineNumbers: any;
   essentials: any;
   selectedProfileId: string;
@@ -36,7 +37,8 @@ export class PersonalProfileModalComponent implements OnInit {
   emails:any;
   landlineNumbers:any;
   wplandlineNumbers:any;
-  cclandlineNumbers:any;
+  ccwklandlineNumbers:any;
+  cccontactlandline:any;
   ccChurchlandlineNumbers:any;
   constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService, private userapi: UserAPIService, ) { }
 
@@ -136,21 +138,23 @@ export class PersonalProfileModalComponent implements OnInit {
           this.firstFormGroup.controls['ppZipCode'].setValue(this.essentials.ppZipCode ? this.essentials.ppZipCode : "");          
           this.firstFormGroup.controls['profileId'].setValue(this.essentials._id ? this.essentials._id : "");
 
-          this.emails = this.essentials.ppEmails;
-          const ctrls = this.firstFormGroup.get('ppEmails') as FormArray;
-          ctrls.removeAt(0)
-          this.emails.forEach((element: any, index) => {
-            ctrls.push(this.editGroup(element.email))
-          })
-
-          this.landlineNumbers = this.essentials.ppLandlineNumbers;
-          const ppctrls = this.firstFormGroup.get('ppLandlineNumbers') as FormArray;
-          ppctrls.removeAt(0)
-          this.landlineNumbers.forEach((element: any, index) => {
-            ppctrls.push(this.editPpLandlineGroup(element.phone))
-          })
-
-          
+          if(this.essentials.ppEmails){
+            this.emails = this.essentials.ppEmails;
+            const ctrls = this.firstFormGroup.get('ppEmails') as FormArray;
+            ctrls.removeAt(0)
+            this.emails.forEach((element: any, index) => {
+              ctrls.push(this.editGroup(element.email))
+            })
+          }
+            
+          if(this.essentials.ppLandlineNumbers){
+            this.landlineNumbers = this.essentials.ppLandlineNumbers;
+            const ppctrls = this.firstFormGroup.get('ppLandlineNumbers') as FormArray;
+            ppctrls.removeAt(0)
+            this.landlineNumbers.forEach((element: any, index) => {
+              ppctrls.push(this.editPpLandlineGroup(element.phone))
+            })
+          }
 
 
           this.secondFormGroup.controls['wpWorkBusiness'].setValue(this.essentials.wpWorkBusiness ? this.essentials.wpWorkBusiness : "");
@@ -167,15 +171,20 @@ export class PersonalProfileModalComponent implements OnInit {
           this.secondFormGroup.controls['wpZipCode'].setValue(this.essentials.wpZipCode ? this.essentials.wpZipCode : "");
           this.secondFormGroup.controls['profileId'].setValue(this.essentials._id ? this.essentials._id : "");
 
-          this.wplandlineNumbers = this.essentials.wpLandlineNumbers;
-          const wpctrls = this.secondFormGroup.get('wpLandlineNumbers') as FormArray;
-          wpctrls.removeAt(0)
-          this.wplandlineNumbers.forEach((element: any, index) => {
-            wpctrls.push(this.editWpLandlineGroup(element.phone))
-          })
+          if(this.essentials.wpLandlineNumbers){
+            this.wplandlineNumbers = this.essentials.wpLandlineNumbers;
+            const wpctrls = this.secondFormGroup.get('wpLandlineNumbers') as FormArray;
+            wpctrls.removeAt(0)
+            this.wplandlineNumbers.forEach((element: any, index) => {
+              wpctrls.push(this.editWpLandlineGroup(element.phone))
+            })
+          }
+            
 
           this.thirdFormGroup.controls['ccName'].setValue(this.essentials.ccName ? this.essentials.ccName : "");
           this.thirdFormGroup.controls['ccAddressLine1'].setValue(this.essentials.ccAddressLine1 ? this.essentials.ccAddressLine1 : "");
+          this.thirdFormGroup.controls['ccAddressLine2'].setValue(this.essentials.ccAddressLine2 ? this.essentials.ccAddressLine2 : "");
+          this.thirdFormGroup.controls['ccZipCode'].setValue(this.essentials.ccZipCode ? this.essentials.ccZipCode : "");
           this.thirdFormGroup.controls['ccContactPersonName'].setValue(this.essentials.ccContactPersonName ? this.essentials.ccContactPersonName : "");
           this.thirdFormGroup.controls['ccChurchName'].setValue(this.essentials.ccChurchName ? this.essentials.ccChurchName : "");
           this.thirdFormGroup.controls['ccChurchAddressLine1'].setValue(this.essentials.ccChurchAddressLine1 ? this.essentials.ccChurchAddressLine1 : "");
@@ -183,20 +192,35 @@ export class PersonalProfileModalComponent implements OnInit {
           this.thirdFormGroup.controls['ccChurchZipCode'].setValue(this.essentials.ccChurchZipCode ? this.essentials.ccChurchZipCode : "");
           this.thirdFormGroup.controls['ccChurchContactPersonName'].setValue(this.essentials.ccChurchContactPersonName ? this.essentials.ccChurchContactPersonName : "");
 
-          this.cclandlineNumbers = this.essentials.ccWorkLandlineNumbers;
-          const ccctrls = this.thirdFormGroup.get('ccWorkLandlineNumbers') as FormArray;
-          ccctrls.removeAt(0)
-          this.cclandlineNumbers.forEach((element: any, index) => {
-            ccctrls.push(this.editCcLandlineGroup(element.phone))
-          })
+          if(this.essentials.ccWorkLandlineNumbers){
+            this.ccwklandlineNumbers = this.essentials.ccWorkLandlineNumbers;
+            const ccctrls = this.thirdFormGroup.get('ccWorkLandlineNumbers') as FormArray;
+            ccctrls.removeAt(0)
+            this.ccwklandlineNumbers.forEach((element: any, index) => {
+              ccctrls.push(this.editCcLandlineGroup(element.phone))
+            })
+          }
+            
 
-          this.ccChurchlandlineNumbers = this.essentials.ccChurchLandlineNumbers;
-          const churchtrls = this.thirdFormGroup.get('ccChurchLandlineNumbers') as FormArray;
-          churchtrls.removeAt(0)
-          this.ccChurchlandlineNumbers.forEach((element: any, index) => {
-            churchtrls.push(this.editCcChurchLandlineGroup(element.phone))
-          })
+          if(this.essentials.cclandlineNumbers) {
+            this.cccontactlandline = this.essentials.cclandlineNumbers;
+            const cccontactctrls = this.thirdFormGroup.get('cclandlineNumbers') as FormArray;
+            cccontactctrls.removeAt(0)
+            this.cccontactlandline.forEach((element: any, index) => {
+              cccontactctrls.push(this.editCccontactLandlineGroup(element.phone))
+            })
+          }
           
+          if(this.essentials.ccChurchLandlineNumbers){
+            this.ccChurchlandlineNumbers = this.essentials.ccChurchLandlineNumbers;
+            const churchtrls = this.thirdFormGroup.get('ccChurchLandlineNumbers') as FormArray;
+            churchtrls.removeAt(0)
+            this.ccChurchlandlineNumbers.forEach((element: any, index) => {
+              churchtrls.push(this.editCcChurchLandlineGroup(element.phone))
+            })
+          }
+            
+
           this.thirdFormGroup.controls['profileId'].setValue(this.essentials._id ? this.essentials._id : "");
         }
         this.loader.close();
@@ -236,6 +260,10 @@ export class PersonalProfileModalComponent implements OnInit {
     const ccWorkLandlineNumbersArr = <FormArray>this.thirdFormGroup.get('ccWorkLandlineNumbers')
     this.ccWorkLandlineNumbers = ccWorkLandlineNumbersArr.controls.map(o => { return o.value })
     profileInData.ccWorkLandlineNumbers = this.ccWorkLandlineNumbers
+
+    const cclandlineNumbersArr = <FormArray>this.thirdFormGroup.get('cclandlineNumbers')
+    this.cclandlineNumbers = cclandlineNumbersArr.controls.map(o => { return o.value })
+    profileInData.cclandlineNumbers = this.cclandlineNumbers
 
     const ccChurchLandlineNumbersArr = <FormArray>this.thirdFormGroup.get('ccChurchLandlineNumbers')
     this.ccChurchLandlineNumbers = ccChurchLandlineNumbersArr.controls.map(o => { return o.value })
@@ -295,6 +323,12 @@ export class PersonalProfileModalComponent implements OnInit {
   }
 
   editCcLandlineGroup(phone) {
+    return this.fb.group({
+      phone: [phone]
+    });
+  }
+
+  editCccontactLandlineGroup(phone) {
     return this.fb.group({
       phone: [phone]
     });
