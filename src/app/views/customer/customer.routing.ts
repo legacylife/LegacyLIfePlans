@@ -52,7 +52,8 @@ export const CustomerRoutes: Routes = [
         children: [
           {
             path: '',
-            component: CustomerDashboardComponent
+            //component: CustomerDashboardComponent
+            component: CustomerDashboardDayOneComponent
           },
           {
             path: 'customer-day-one',

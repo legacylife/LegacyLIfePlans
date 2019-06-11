@@ -44,7 +44,7 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
     // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
-    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar,  private router: Router
+    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router
   ) { }
 
   ngOnInit() {
@@ -90,7 +90,7 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
 
   deleteProfile() {
     var statMsg = "Are you sure you want to delete profile?"
-    
+
 
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
