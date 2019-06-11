@@ -1,26 +1,13 @@
-// import { Component, OnInit } from '@angular/core';
-
-// @Component({
-//   selector: 'app-customer-home',
-//   templateUrl: './customer-home.component.html',
-//   styleUrls: ['./customer-home.component.scss']
-// })
-// export class CustomerHomeComponent implements OnInit {
-
-//   constructor() { }
-
-//   ngOnInit() {
-//   }
-
-// }
-
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MatSnackBar, MatSidenav } from '@angular/material';
+import { MatSnackBar, MatSidenav, MatDialogRef, MatDialog, } from '@angular/material';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Product } from '../../../../shared/models/product.model';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms'
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
+import { addTrusteeModalComponent } from '../add-trustee-modal/add-trustee-modal.component';
+
 
 @Component({
   selector: 'app-customer-home',
@@ -43,8 +30,10 @@ export class CustomerDashboardComponent implements OnInit, OnDestroy {
   public cart: any[];
   public cartData: any;
 
+
   constructor(
-    // private shopService: ShopService,
+    private route: ActivatedRoute, 
+    private router: Router, private dialog: MatDialog,
     private fb: FormBuilder,
     private snackBar: MatSnackBar
   ) { }
@@ -75,5 +64,12 @@ export class CustomerDashboardComponent implements OnInit, OnDestroy {
 
   toggleSideNav() {
     this.sideNav.opened = !this.sideNav.opened;
+  }
+
+  openAddTrusteeModal(data: any = {}, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(addTrusteeModalComponent, {
+      width: '720px',
+      disableClose: true,
+    })
   }
 }
