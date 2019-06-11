@@ -32,6 +32,12 @@ export class PersonalProfileModalComponent implements OnInit {
   essentials: any;
   selectedProfileId: string;
   profileIdHiddenVal: boolean = false;
+  ppEmails:any;
+  emails:any;
+  landlineNumbers:any;
+  wplandlineNumbers:any;
+  cclandlineNumbers:any;
+  ccChurchlandlineNumbers:any;
   constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService, private userapi: UserAPIService, ) { }
 
   ngOnInit() {
@@ -130,8 +136,21 @@ export class PersonalProfileModalComponent implements OnInit {
           this.firstFormGroup.controls['ppZipCode'].setValue(this.essentials.ppZipCode ? this.essentials.ppZipCode : "");          
           this.firstFormGroup.controls['profileId'].setValue(this.essentials._id ? this.essentials._id : "");
 
-          //this.firstFormGroup.controls['ppEmails'].setValue(this.essentials.ppEmails ? this.essentials.ppEmails : []);
-          //this.firstFormGroup.controls['ppLandlineNumbers'].setValue(this.essentials.ppLandlineNumbers ? this.essentials.ppLandlineNumbers : []);
+          this.emails = this.essentials.ppEmails;
+          const ctrls = this.firstFormGroup.get('ppEmails') as FormArray;
+          ctrls.removeAt(0)
+          this.emails.forEach((element: any, index) => {
+            ctrls.push(this.editGroup(element.email))
+          })
+
+          this.landlineNumbers = this.essentials.ppLandlineNumbers;
+          const ppctrls = this.firstFormGroup.get('ppLandlineNumbers') as FormArray;
+          ppctrls.removeAt(0)
+          this.landlineNumbers.forEach((element: any, index) => {
+            ppctrls.push(this.editPpLandlineGroup(element.phone))
+          })
+
+          
 
 
           this.secondFormGroup.controls['wpWorkBusiness'].setValue(this.essentials.wpWorkBusiness ? this.essentials.wpWorkBusiness : "");
@@ -148,6 +167,13 @@ export class PersonalProfileModalComponent implements OnInit {
           this.secondFormGroup.controls['wpZipCode'].setValue(this.essentials.wpZipCode ? this.essentials.wpZipCode : "");
           this.secondFormGroup.controls['profileId'].setValue(this.essentials._id ? this.essentials._id : "");
 
+          this.wplandlineNumbers = this.essentials.wpLandlineNumbers;
+          const wpctrls = this.secondFormGroup.get('wpLandlineNumbers') as FormArray;
+          wpctrls.removeAt(0)
+          this.wplandlineNumbers.forEach((element: any, index) => {
+            wpctrls.push(this.editWpLandlineGroup(element.phone))
+          })
+
           this.thirdFormGroup.controls['ccName'].setValue(this.essentials.ccName ? this.essentials.ccName : "");
           this.thirdFormGroup.controls['ccAddressLine1'].setValue(this.essentials.ccAddressLine1 ? this.essentials.ccAddressLine1 : "");
           this.thirdFormGroup.controls['ccContactPersonName'].setValue(this.essentials.ccContactPersonName ? this.essentials.ccContactPersonName : "");
@@ -156,8 +182,21 @@ export class PersonalProfileModalComponent implements OnInit {
           this.thirdFormGroup.controls['ccChurchAddressLine2'].setValue(this.essentials.ccChurchAddressLine2 ? this.essentials.ccChurchAddressLine2 : "");
           this.thirdFormGroup.controls['ccChurchZipCode'].setValue(this.essentials.ccChurchZipCode ? this.essentials.ccChurchZipCode : "");
           this.thirdFormGroup.controls['ccChurchContactPersonName'].setValue(this.essentials.ccChurchContactPersonName ? this.essentials.ccChurchContactPersonName : "");
-          //this.thirdFormGroup.controls['ccWorkLandlineNumbers'].setValue(this.essentials.ccWorkLandlineNumbers ? this.essentials.ccWorkLandlineNumbers : []);
-          //this.thirdFormGroup.controls['ccChurchLandlineNumbers'].setValue(this.essentials.ccChurchLandlineNumbers ? this.essentials.ccChurchLandlineNumbers : "");
+
+          this.cclandlineNumbers = this.essentials.ccWorkLandlineNumbers;
+          const ccctrls = this.thirdFormGroup.get('ccWorkLandlineNumbers') as FormArray;
+          ccctrls.removeAt(0)
+          this.cclandlineNumbers.forEach((element: any, index) => {
+            ccctrls.push(this.editCcLandlineGroup(element.phone))
+          })
+
+          this.ccChurchlandlineNumbers = this.essentials.ccChurchLandlineNumbers;
+          const churchtrls = this.thirdFormGroup.get('ccChurchLandlineNumbers') as FormArray;
+          churchtrls.removeAt(0)
+          this.ccChurchlandlineNumbers.forEach((element: any, index) => {
+            churchtrls.push(this.editCcChurchLandlineGroup(element.phone))
+          })
+          
           this.thirdFormGroup.controls['profileId'].setValue(this.essentials._id ? this.essentials._id : "");
         }
         this.loader.close();
@@ -180,6 +219,27 @@ export class PersonalProfileModalComponent implements OnInit {
       msgName = 'Civic/Club, Religious Info';
     }
     console.log("profile id >>>>>>" + this.selectedProfileId)
+
+
+    const ppEmailsArr = <FormArray>this.firstFormGroup.get('ppEmails')
+    this.ppEmails = ppEmailsArr.controls.map(o => { return o.value })
+    profileInData.ppEmails = this.ppEmails
+
+    const ppLandlineNumbersArr = <FormArray>this.firstFormGroup.get('ppLandlineNumbers')
+    this.ppLandlineNumbers = ppLandlineNumbersArr.controls.map(o => { return o.value })
+    profileInData.ppLandlineNumbers = this.ppLandlineNumbers
+
+    const wpLandlineNumbersArr = <FormArray>this.secondFormGroup.get('wpLandlineNumbers')
+    this.wpLandlineNumbers = wpLandlineNumbersArr.controls.map(o => { return o.value })
+    profileInData.wpLandlineNumbers = this.wpLandlineNumbers
+
+    const ccWorkLandlineNumbersArr = <FormArray>this.thirdFormGroup.get('ccWorkLandlineNumbers')
+    this.ccWorkLandlineNumbers = ccWorkLandlineNumbersArr.controls.map(o => { return o.value })
+    profileInData.ccWorkLandlineNumbers = this.ccWorkLandlineNumbers
+
+    const ccChurchLandlineNumbersArr = <FormArray>this.thirdFormGroup.get('ccChurchLandlineNumbers')
+    this.ccChurchLandlineNumbers = ccChurchLandlineNumbersArr.controls.map(o => { return o.value })
+    profileInData.ccChurchLandlineNumbers = this.ccChurchLandlineNumbers    
 
 
     if (profileInData.profileId) {
@@ -215,6 +275,36 @@ export class PersonalProfileModalComponent implements OnInit {
       console.error(err)
     })
   }
+
+  editGroup(email) {
+    return this.fb.group({
+      email: [email]
+    });
+  } 
+
+  editPpLandlineGroup(phone) {
+    return this.fb.group({
+      phone: [phone]
+    });
+  }
+
+  editWpLandlineGroup(phone) {
+    return this.fb.group({
+      phone: [phone]
+    });
+  }
+
+  editCcLandlineGroup(phone) {
+    return this.fb.group({
+      phone: [phone]
+    });
+  }
+
+  editCcChurchLandlineGroup(phone) {
+    return this.fb.group({
+      phone: [phone]
+    });
+  }  
 
   addNewEmail() {
     this.emailList.push(this.fb.group({

@@ -65,7 +65,6 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
 
   //function to get all events
   getEssentialProfileDetails = (query = {}, search = false) => {
-
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }, query)
     }
@@ -118,10 +117,24 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
   }
 
   openProfileModal(data: any = {}, isNew?) {
+   
     let dialogRef: MatDialogRef<any> = this.dialog.open(PersonalProfileModalComponent, {
       width: '720px',
       disableClose: true,
     })
+
+    dialogRef.afterClosed()
+    .subscribe(res => {
+      
+      this.getEssentialProfileDetails();
+      if (!res) {
+        // If user press cancel
+        return;
+      }
+      
+     
+    })
+
   }
 
   showSecoDay() {
