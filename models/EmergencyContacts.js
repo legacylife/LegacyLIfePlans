@@ -7,7 +7,7 @@ var emergencyContactsSchema = new mongoose.Schema({
   relationship: String,
   address: String,
   phone:String,
-  mobile:Array,
+  mobile:String,
   emailAddress:String,
   status: String,
   createdOn: Date,

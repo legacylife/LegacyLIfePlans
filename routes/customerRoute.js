@@ -18,7 +18,9 @@ var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const myessentials = require('./../models/myessentials.js')
+const emergencyContactsModel = require('./../models/EmergencyContacts.js')
 const s3 = require('./../helpers/s3Upload')
+
 
 var auth = jwt({
   secret: constants.secret,
@@ -147,10 +149,30 @@ function viewEssentialProfile(req, res) {
     }
   })
 }
+// save emergency Contacts of customer
+function emergencyContacts(req, res) {
+  var emergencyContactsObj = new emergencyContactsModel()
+  let emergencyContactsData = req.body
+  emergencyContactsObj.address = emergencyContactsData.ecAddress
+  emergencyContactsObj.emailAddress = emergencyContactsData.ecEmail
+  emergencyContactsObj.mobile = emergencyContactsData.ecMobile
+  emergencyContactsObj.name = emergencyContactsData.ecName
+  emergencyContactsObj.phone = emergencyContactsData.ecPhone
+  emergencyContactsObj.relationship = emergencyContactsData.ecRelationship
+  emergencyContactsObj.createdOn = new Date();
+  emergencyContactsObj.save({ $set: emergencyContactsData }, function (err, newEntry) {
+    if (err) {
+      res.send(resFormat.rError(err))
+    } else {
+      let result = { "message": "Details saved successfully!" }
+      res.status(200).send(resFormat.rSuccess(result))
+    }
+  })
+}
 
 router.post("/my_essentials_req", myEssentialsUpdate)
 router.post("/get_details", myEssentialsDetails)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/view-essential-profile", viewEssentialProfile)
-
+router.post("/emergency_contacts", emergencyContacts)
 module.exports = router
