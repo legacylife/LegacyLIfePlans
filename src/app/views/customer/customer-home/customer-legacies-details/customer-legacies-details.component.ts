@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
-import { EssenioalIdBoxComponent } from '../essenioal-id-box/essenioal-id-box.component';
+import { MarkAsDeceasedComponent } from '../mark-as-deceased-modal/mark-as-deceased-modal.component';
 
 
 @Component({
@@ -61,9 +61,9 @@ export class CustomerLegaciesDetailsComponent implements OnInit {
   }
 
 
-  openAddIdBoxModal(data: any = {}, isNew?) {
+  markAsDeceasedModal(data: any = {}, isNew?) {
     let title = isNew ? 'Add new member' : 'Update member';
-    let dialogRef: MatDialogRef<any> = this.dialog.open(EssenioalIdBoxComponent, {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(MarkAsDeceasedComponent, {
       width: '720px',
       disableClose: true,
     })

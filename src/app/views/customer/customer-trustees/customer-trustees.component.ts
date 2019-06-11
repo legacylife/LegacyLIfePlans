@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomerTrusteesComponent implements OnInit {
   isAnnualSelected: boolean = false;
-  
+
   constructor() { }
 
   ngOnInit() {
