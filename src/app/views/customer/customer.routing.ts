@@ -21,6 +21,7 @@ import { CustomerEssentialDetailsComponent } from './customer-home/customer-esse
 import { CustomerEssentialDetailsIdboxComponent } from './customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
 import { CustomerSharedLegaciesComponent } from './customer-home/customer-shared-legacies/customer-shared-legacies.component';
 import { CustomerLegaciesDetailsComponent } from './customer-home/customer-legacies-details/customer-legacies-details.component';
+import { CustomerLegalStuffComponent } from './customer-home/customer-legal-stuff/customer-legal-stuff.component';
 
 // trustees
 import { CustomerMyPeopleComponent } from './customer-trustees/customer-my-people/customer-my-people.component';
@@ -77,6 +78,10 @@ export const CustomerRoutes: Routes = [
           {
             path: 'lagacies-details',
             component: CustomerLegaciesDetailsComponent
+          },
+          {
+            path: 'legal-stuff',
+            component: CustomerLegalStuffComponent
           }
         ]
       },

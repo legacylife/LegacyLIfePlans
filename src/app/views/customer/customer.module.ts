@@ -59,6 +59,8 @@ import { PersonalProfileModalComponent } from './customer-home/personal-profile-
 import { CustomerLegaciesDetailsComponent } from './customer-home/customer-legacies-details/customer-legacies-details.component';
 import { MarkAsDeceasedComponent } from './customer-home/mark-as-deceased-modal/mark-as-deceased-modal.component';
 import { CustomerMyPeopleComponent } from './customer-trustees/customer-my-people/customer-my-people.component';
+import { CustomerLegalStuffComponent } from './customer-home/customer-legal-stuff/customer-legal-stuff.component';
+import { legalStuffModalComponent } from './customer-home/legal-stuff-modal/legal-stuff-modal.component';
 
 import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
 import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
@@ -106,10 +108,10 @@ import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edi
     CustomerHomeEssentialComponent, CustomerDashboardComponent, CustomerDashboardDayOneComponent, CustomerEssentialDayOneComponent,
     CustomerEssentialDetailsComponent, CustomerEssentialDetailsIdboxComponent, EssenioalIdBoxComponent,
     PersonalProfileModalComponent, CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent,
-    CustomerMyPeopleComponent
+    CustomerMyPeopleComponent, CustomerLegalStuffComponent, legalStuffModalComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard
-  ], bootstrap: [CustomerSignupComponent], entryComponents: [ChangePassComponent, EssenioalIdBoxComponent, 
-    PersonalProfileModalComponent, MarkAsDeceasedComponent],
+  ], bootstrap: [CustomerSignupComponent], entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,
+    PersonalProfileModalComponent, MarkAsDeceasedComponent, legalStuffModalComponent],
 })
 export class CustomerModule { }

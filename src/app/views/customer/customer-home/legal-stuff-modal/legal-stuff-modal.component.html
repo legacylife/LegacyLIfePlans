@@ -1,0 +1,63 @@
+<div class="ll--modal--header">
+    Estate
+    <button class="modal--close" [mat-dialog-close]="">
+      <mat-icon class="icon--cross">cancel</mat-icon>
+    </button>
+  </div>
+  
+  <form class="llp-form-wrapper">
+    <div class="ll--modal--body">
+      <div fxLayout="row wrap">
+        <div fxFlex.xs="100">
+          <mat-form-field class="full-width">
+            <mat-label>Estate Document</mat-label>
+            <mat-select [(value)]="selected">
+              <mat-option>None</mat-option>
+              <mat-option value="option1">Last Will & Testament
+                </mat-option>
+              <mat-option value="option2">Last Will & Testament-with Trust</mat-option>
+              <mat-option value="option3">Affidavit of Domicile
+                </mat-option>
+              <mat-option value="option3">Affidavit of Heirship
+                </mat-option>
+              <mat-option value="option3">Codicil
+                </mat-option>
+              <mat-option value="option3">Joint Revocable Living Trust
+                </mat-option>
+              <mat-option value="option3">Revocable Living Trust
+                </mat-option>
+              <mat-option value="option3">Irrevocable Trust
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <!-- <mat-form-field class="full-width">
+            <input matInput placeholder="Social Security Number">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Location of Social Security Card">
+          </mat-form-field> -->
+  
+          <div class="upload--buss--docs--sec">
+            <label>Upload a scan or photo of document or ID</label>
+            <div class="upload--box fileupload-drop-zone">
+              <input type="file" name="advisorDocuments">
+              <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+              <div class="select--file">Select file from your computer</div>
+            </div>
+            <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+          </div>
+  
+          <mat-form-field class="full-width">
+            <textarea matInput placeholder="Comments"></textarea>
+          </mat-form-field>
+  
+  
+        </div>
+  
+      </div>
+    </div>
+    <div class="ll--modal--footer text-center">
+      <button mat-raised-button class="llp--primary--btn">Save</button>
+    </div>
+  </form>
