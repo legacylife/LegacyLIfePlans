@@ -27,55 +27,6 @@ var auth = jwt({
   userProperty: 'payload'
 })
 
-/*function myEssentialsUpdate(req, res) {
-  let { query } = req.body;
-  if (query.customerId) {
-    myessentials.findOne(query, function (err, custData) {
-      if (err) {
-        let result = { "message": "Something Wrong! Please signin again." }
-        res.send(resFormat.rError(result));
-      } else {
-        if (custData && custData.customerId) {
-          let { proquery } = req.body;
-          let { from } = req.body;
-          myessentials.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
-            if (err) {
-              res.send(resFormat.rError(err))
-            } else {
-              let result = { "message": "User " + from.fromname + "  have been updated successfully!" }
-              res.status(200).send(resFormat.rSuccess(result))
-            }
-          })
-        } else {
-          let { proquery } = req.body;
-          let { from } = req.body;
-          var myessential = new myessentials();
-          myessential.customerId = query.customerId;
-          myessential.ppFirstName = proquery.ppFirstName;
-          myessential.ppMiddleName = proquery.ppMiddleName;
-          myessential.ppLastName = proquery.ppLastName;
-          myessential.ppDateOfBirth = proquery.ppDateOfBirth;
-          myessential.ppEmails = proquery.ppEmails;
-          myessential.status = 'Active';
-          myessential.createdOn = new Date();
-          myessential.save({ $set: proquery }, function (err, newEntry) {
-            if (err) {
-              res.send(resFormat.rError(err))
-            } else {
-              let result = { "message": "User " + from.fromname + "  have been updated successfully!" }
-              res.status(200).send(resFormat.rSuccess(result))
-            }
-          })
-        }
-      }
-    })
-  } else {
-    let result = { "message": "You have logout! Please signin again." }
-    res.send(resFormat.rError(result));
-  }
-}*/
-
-
 function myEssentialsUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
@@ -312,7 +263,7 @@ function myProfessionalsUpdate(req, res) {
 }
 
 
-router.post("/my_essentials_req", myEssentialsUpdate)
+router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
 router.post("/view-essential-profile", viewEssentialProfile)
