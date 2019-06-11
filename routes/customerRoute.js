@@ -143,7 +143,6 @@ function myEssentialsDetails(req, res) {
 
 //function to get list of essential profile details as per given criteria
 function essentialProfileList(req, res) {
-
   let { fields, offset, query, order, limit, search } = req.body
   let totalRecords = 0
   if (search && !isEmpty(query)) {
@@ -153,6 +152,7 @@ function essentialProfileList(req, res) {
       }
     })
   }
+
   myessentials.count(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
@@ -165,6 +165,19 @@ function essentialProfileList(req, res) {
       }
     }).sort(order).skip(offset).limit(limit)
   })
+
+}
+
+function essentialIdList(req, res) {
+  let { fields, offset, query, order, limit, search } = req.body  
+  personalIdProof.find(query, fields, function (err, essentialIDList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      totalIDRecords = essentialIDList.length; 
+      res.send(resFormat.rSuccess({ essentialIDList, totalIDRecords }))
+    }
+  }).sort(order).skip(offset).limit(limit)
 }
 
 function viewEssentialProfile(req, res) {
@@ -231,6 +244,7 @@ function personalIdUpdate(req, res) {
 router.post("/my_essentials_req", myEssentialsUpdate)
 router.post("/get_details", myEssentialsDetails)
 router.post("/essential-profile-list", essentialProfileList)
+router.post("/essential-id-list", essentialIdList)
 router.post("/view-essential-profile", viewEssentialProfile)
 router.post("/my_essentials_id_form_submit", personalIdUpdate)
 
