@@ -26,7 +26,7 @@ var auth = jwt({
   userProperty: 'payload'
 })
 
-function myEssentialsUpdate(req, res) {
+/*function myEssentialsUpdate(req, res) {
   let { query } = req.body;
   if (query.customerId) {
     myessentials.findOne(query, function (err, custData) {
@@ -72,6 +72,60 @@ function myEssentialsUpdate(req, res) {
     let result = { "message": "You have logout! Please signin again." }
     res.send(resFormat.rError(result));
   }
+}*/
+
+
+function myEssentialsUpdate(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let { from } = req.body;
+
+  if(query._id ){
+    myessentials.findOne(query, function (err, custData) {
+      
+      if (err) {
+        let result = { "message": "Something Wrong!" }
+        res.send(resFormat.rError(result));
+      } else {
+        if (custData && custData._id) {
+          let { proquery } = req.body;
+          let { from } = req.body;
+          myessentials.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              let result = { "message": "User " + from.fromname + "  have been updated successfully!","ppID" : custData._id }
+              res.status(200).send(resFormat.rSuccess(result))
+            }
+          })
+        } else {
+          let result = { "message": "No record found." }
+          res.send(resFormat.rError(result));
+        }
+      }
+    })
+  } else {
+    let { proquery } = req.body;
+    let { from } = req.body;
+    var myessential = new myessentials();
+    myessential.customerId = from.customerId;
+    myessential.ppFirstName = proquery.ppFirstName;
+    myessential.ppMiddleName = proquery.ppMiddleName;
+    myessential.ppLastName = proquery.ppLastName;
+    myessential.ppDateOfBirth = proquery.ppDateOfBirth;
+    myessential.ppEmails = proquery.ppEmails;
+    myessential.status = 'Active';
+    myessential.createdOn = new Date();
+    myessential.save({ $set: proquery }, function (err, newEntry) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        let result = { "message": "User " + from.fromname + "  have been updated successfully!","ppID" : newEntry._id }
+        res.status(200).send(resFormat.rSuccess(result))
+      }
+    })
+  }
+ 
 }
 
 function myEssentialsDetails(req, res) {
