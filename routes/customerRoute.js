@@ -128,20 +128,6 @@ function myEssentialsUpdate(req, res) {
   }
  
 }
-
-function myEssentialsDetails(req, res) {
-  let { query } = req.body; console.log("query", query)
-  let fields = {}
-  myessentials.findOne(query, fields, function (err, custData) {
-    if (err) {
-      res.status(401).send(resFormat.rError(err))
-    } else {
-      let result = { custData, "message": "Get MyEssentials details successfully!" }
-      res.status(200).send(resFormat.rSuccess(result))
-    }
-  })
-}
-
 //function to get list of essential profile details as per given criteria
 function essentialProfileList(req, res) {
 
@@ -272,11 +258,11 @@ function deleteProfile(req, res) {
       })
     }
   })
+}
 
 function myProfessionalsUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
-  console.log("_ID",query._id)
   if(query._id ){
     MyProfessional.findOne(query, function (err, custData) {      
       if (err) {
@@ -300,9 +286,7 @@ function myProfessionalsUpdate(req, res) {
       }
     })
   } else {
-    let { proquery } = req.body;
-    
-    
+    let { proquery } = req.body;    
     var profesion = new MyProfessional();
     profesion.customerId = query.customerId;
     profesion.namedProfessionals = proquery.namedProfessionals;
@@ -323,27 +307,12 @@ function myProfessionalsUpdate(req, res) {
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
-    //   let { proquery } = req.body;console.log("proquery ",proquery);
-    //   var myprofess = new MyProfessional();
-    //   myprofess.customerId = query.customerId;
-    //   myprofess.status = 'Active';
-    //   myprofess.createdOn = new Date();
-    //   myprofess.save({ $set: proquery }, function (err, newEntry) {
-    //   if (err) {
-    //     res.send(resFormat.rError(err))
-    //   } else {
-    //     let result = { "message": "User have been updated successfully!","ppID" : newEntry._id }
-    //     res.status(200).send(resFormat.rSuccess(result))
-    //   }
-    // })
   }
  
 }
 
-}
 
 router.post("/my_essentials_req", myEssentialsUpdate)
-router.post("/get_details", myEssentialsDetails)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
 router.post("/view-essential-profile", viewEssentialProfile)
