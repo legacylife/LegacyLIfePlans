@@ -143,6 +143,7 @@ function myEssentialsDetails(req, res) {
 
 //function to get list of essential profile details as per given criteria
 function essentialProfileList(req, res) {
+
   let { fields, offset, query, order, limit, search } = req.body
   let totalRecords = 0
   if (search && !isEmpty(query)) {
@@ -152,7 +153,6 @@ function essentialProfileList(req, res) {
       }
     })
   }
-
   myessentials.count(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
@@ -165,7 +165,6 @@ function essentialProfileList(req, res) {
       }
     }).sort(order).skip(offset).limit(limit)
   })
-
 }
 
 function essentialIdList(req, res) {
@@ -241,11 +240,33 @@ function personalIdUpdate(req, res) {
   }
 }
 
+function deleteProfile(req, res) {
+  let { query } = req.body;
+  let fields = { }
+  myessentials.findOne(query, fields, function (err, profileInfo) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      var upStatus = 'Delete';
+      var params = { status: upStatus }
+      myessentials.update({ _id: profileInfo._id }, { $set: params }, function (err, updatedinfo) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          let result = { "message": "Record deleted successfully!" }
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
 router.post("/my_essentials_req", myEssentialsUpdate)
 router.post("/get_details", myEssentialsDetails)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
 router.post("/view-essential-profile", viewEssentialProfile)
 router.post("/my_essentials_id_form_submit", personalIdUpdate)
+router.post("/deleteprofile", deleteProfile)
 
 module.exports = router
