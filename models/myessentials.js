@@ -33,6 +33,7 @@ var myessentialsSchema = new mongoose.Schema({
   ccAddressLine2: String,
   ccZipCode: String,
   ccWorkLandlineNumbers: Array,
+  cclandlineNumbers: Array,
   ccContactPersonName: String,
   ccChurchName: String,
   ccChurchAddressLine1: String,
