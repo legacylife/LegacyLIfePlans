@@ -165,6 +165,20 @@ function emergencyContacts(req, res) {
   })
 }
 
+function viewEssentialProfessionals(req, res) {
+  let { query } = req.body;console.log("query",query);
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  MyProfessional.findOne(query, fields, function (err, profileData) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(profileData))
+    }
+  })
+}
 
 function personalIdUpdate(req, res) {
   let { query } = req.body;
@@ -279,10 +293,30 @@ function myProfessionalsUpdate(req, res) {
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
-  }
- 
+  } 
 }
 
+
+function deleteProfessionals(req, res) {
+  let { query } = req.body;
+  let fields = { }
+  MyProfessional.findOne(query, fields, function (err, profileInfo) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      var upStatus = 'Delete';
+      var params = { status: upStatus }
+      MyProfessional.update({ _id: profileInfo._id }, { $set: params }, function (err, updatedinfo) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          let result = { "message": "Record deleted successfully!" }
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
 
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
@@ -291,6 +325,8 @@ router.post("/view-essential-profile", viewEssentialProfile)
 router.post("/emergency_contacts", emergencyContacts)
 router.post("/my_essentials_id_form_submit", personalIdUpdate)
 router.post("/deleteprofile", deleteProfile)
+router.post("/delete-professionals", deleteProfessionals)
 router.post("/my-essentials-profile-submit", myProfessionalsUpdate)
 router.post("/essential-professional-list", essentialProfessionalsList)
+router.post("/view-professional-details", viewEssentialProfessionals)
 module.exports = router
