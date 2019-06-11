@@ -19,6 +19,7 @@ const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const myessentials = require('./../models/myessentials.js')
 const personalIdProof = require('./../models/personalIdProof.js')
+const MyProfessional = require('./../models/MyProfessionals.js')
 const s3 = require('./../helpers/s3Upload')
 
 var auth = jwt({
@@ -179,6 +180,18 @@ function essentialIdList(req, res) {
   }).sort(order).skip(offset).limit(limit)
 }
 
+function essentialProfessionalsList(req, res) {
+  let { fields, offset, query, order, limit, search } = req.body  
+  MyProfessional.find(query, fields, function (err, essentialProfessionalList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      totalProfessionalRecords = essentialProfessionalList.length; 
+      res.send(resFormat.rSuccess({ essentialProfessionalList, totalProfessionalRecords }))
+    }
+  }).sort(order).skip(offset).limit(limit)
+}
+
 function viewEssentialProfile(req, res) {
   let { query } = req.body
   let fields = {}
@@ -259,6 +272,74 @@ function deleteProfile(req, res) {
       })
     }
   })
+
+function myProfessionalsUpdate(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  console.log("_ID",query._id)
+  if(query._id ){
+    MyProfessional.findOne(query, function (err, custData) {      
+      if (err) {
+        let result = { "message": "Something Wrong!" }
+        res.send(resFormat.rError(result));
+      } else {
+        if (custData && custData._id) {
+          let { proquery } = req.body;
+          MyProfessional.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              let result = { "message": "User  have been updated successfully!","ppID" : custData._id }
+              res.status(200).send(resFormat.rSuccess(result))
+            }
+          })
+        } else {
+          let result = { "message": "No record found." }
+          res.send(resFormat.rError(result));
+        }
+      }
+    })
+  } else {
+    let { proquery } = req.body;
+    
+    
+    var profesion = new MyProfessional();
+    profesion.customerId = query.customerId;
+    profesion.namedProfessionals = proquery.namedProfessionals;
+    profesion.businessName = proquery.businessName;
+    profesion.name = proquery.name;
+    profesion.address = proquery.address;
+    profesion.mpPhoneNumbers = proquery.mpPhoneNumbers;
+    profesion.mpEmailAddress = proquery.mpEmailAddress;
+    profesion.status = 'Active';
+    profesion.createdOn = new Date();
+
+    profesion.save({ $set: proquery }, function (err, newEntry) {
+    if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          console.log("newEntry :-",newEntry);
+          let result = { "message": "ID box details have been added successfully!" }
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
+    //   let { proquery } = req.body;console.log("proquery ",proquery);
+    //   var myprofess = new MyProfessional();
+    //   myprofess.customerId = query.customerId;
+    //   myprofess.status = 'Active';
+    //   myprofess.createdOn = new Date();
+    //   myprofess.save({ $set: proquery }, function (err, newEntry) {
+    //   if (err) {
+    //     res.send(resFormat.rError(err))
+    //   } else {
+    //     let result = { "message": "User have been updated successfully!","ppID" : newEntry._id }
+    //     res.status(200).send(resFormat.rSuccess(result))
+    //   }
+    // })
+  }
+ 
+}
+
 }
 
 router.post("/my_essentials_req", myEssentialsUpdate)
@@ -268,5 +349,6 @@ router.post("/essential-id-list", essentialIdList)
 router.post("/view-essential-profile", viewEssentialProfile)
 router.post("/my_essentials_id_form_submit", personalIdUpdate)
 router.post("/deleteprofile", deleteProfile)
-
+router.post("/my-essentials-profile-submit", myProfessionalsUpdate)
+router.post("/essential-professional-list", essentialProfessionalsList)
 module.exports = router
