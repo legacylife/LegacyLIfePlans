@@ -63,6 +63,8 @@ import { CustomerLegalStuffComponent } from './customer-home/customer-legal-stuf
 import { legalStuffModalComponent } from './customer-home/legal-stuff-modal/legal-stuff-modal.component';
 import { addTrusteeModalComponent } from './customer-home/add-trustee-modal/add-trustee-modal.component';
 
+import { essentialsMyProfessionalsComponent } from './customer-home/essentials-my-professionals/essentials-my-professionals.component';
+import { EssentialsMyProfessionalsDetailsComponent } from './customer-home/essentials-my-professionals-details/essentials-my-professionals-details.component';
 import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
 import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
 @NgModule({
@@ -109,10 +111,10 @@ import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edi
     CustomerHomeEssentialComponent, CustomerDashboardComponent, CustomerDashboardDayOneComponent, CustomerEssentialDayOneComponent,
     CustomerEssentialDetailsComponent, CustomerEssentialDetailsIdboxComponent, EssenioalIdBoxComponent,
     PersonalProfileModalComponent, CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent,
-    CustomerMyPeopleComponent, CustomerLegalStuffComponent, legalStuffModalComponent, addTrusteeModalComponent
+    CustomerMyPeopleComponent, CustomerLegalStuffComponent, legalStuffModalComponent, addTrusteeModalComponent,essentialsMyProfessionalsComponent,EssentialsMyProfessionalsDetailsComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard
   ], bootstrap: [CustomerSignupComponent], entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,
-    PersonalProfileModalComponent, MarkAsDeceasedComponent, legalStuffModalComponent, addTrusteeModalComponent],
+    PersonalProfileModalComponent, MarkAsDeceasedComponent, legalStuffModalComponent, addTrusteeModalComponent,PersonalProfileModalComponent, MarkAsDeceasedComponent,legalStuffModalComponent,essentialsMyProfessionalsComponent],],
 })
 export class CustomerModule { }

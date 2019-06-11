@@ -45,8 +45,8 @@
             </div>
           </div>
         </mat-card-content>
-
       </mat-card>
+
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">ID Box </mat-card-title>
@@ -84,23 +84,71 @@
             </div>
           </div>
         </mat-card-content>
-
-
-
       </mat-card>
-      <mat-card class="empty--section p-0">
+
+      <!-- <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">My Professionals</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div class="build--ur--legacy">
+            <div class="build--ur--legacy" (click)="openProfessionalBoxModal({}, true)">
             <mat-icon>people</mat-icon>
             <p>
               <a>Add Professionals</a>
             </p>
           </div>
         </mat-card-content>
-      </mat-card>
+      </mat-card> -->
+
+      <mat-card class="empty--section p-0">
+          <mat-card-header class="m-0">
+            <mat-card-title class="m-0">My Professionals </mat-card-title>
+            <div *ngIf="showProfessionalsListing">
+              <span class="no--of--trustee">{{showProfessionalCnt}} My Professionals</span>
+              <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openProfessionalBoxModal({}, true)">+ Add</button>
+            </div>
+          </mat-card-header>
+          <mat-card-content *ngIf="!showProfessionalsListing">
+            <div class="build--ur--legacy" (click)="openProfessionalBoxModal({}, true)">
+              <mat-icon>people</mat-icon>
+              <p>
+                <a>Add Professionals</a>
+              </p>
+            </div>
+          </mat-card-content>
+  
+          <mat-card-content class="appointees--wrapper" *ngIf="showProfessionalsListing"> 
+              <div class="cust--user--details mt-1" *ngFor="let profileData of essentialProfessionalList; let i = index" [routerLink]="['/customer/dashboard/essential-professionals-detail']">
+                <div class="name--letters">{{profileData.namedProfessionals}}</div>
+                <div class="user--name">
+                  <h5>{{profileData.businessName}}</h5>
+                  <p class="mb-0">Last modified:
+                    <span>{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+                  </p>
+                </div>
+              </div>
+            <!-- <div class="cust--user--details mt-1">
+              <div class="name--letters">ss</div>
+              <div class="user--name">
+                <h5>Professionals 222</h5>
+                <p class="mb-0">Last modified:
+                  <span>10/02/2019</span>
+                </p>
+              </div>
+            </div> -->
+          </mat-card-content>
+        </mat-card>
+
+
+
+
+
+
+
+
+
+
+
     </div>
 
    

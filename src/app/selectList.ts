@@ -85,3 +85,5 @@ export const industryDomain = ['Life', 'Health', 'Property & Casualty']
 export const businessType = ['Accountant', 'Attorney', 'Tax Specialist', 'Insurance Agent', 'Financial Planner', 'Life', 'Health', 'Property & Casualty']
 
 export const yearsOfService = ['0 - 5 years', '5 - 10 years', '10 - 15 years', '15 - 20 years', '20 - 25 years', 'more than 25 years']
+
+export const myProfessionals  = ['Medical Doctor', 'Therapist', 'Insurance Agent', 'Accountant', 'Attorney', 'Tax Specialist','Financial Planner','Business Partner']

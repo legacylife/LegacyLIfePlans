@@ -10,7 +10,7 @@ import { EssenioalIdBoxComponent } from '../essenioal-id-box/essenioal-id-box.co
 import { PersonalProfileModalComponent } from '../personal-profile-modal/personal-profile-modal.component';
 import { UserAPIService } from './../../../../userapi.service';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
-
+import { essentialsMyProfessionalsComponent } from './../../customer-home/essentials-my-professionals/essentials-my-professionals.component';
 
 @Component({
   selector: 'app-customer-home',
@@ -22,9 +22,12 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   showProfileListing = false;
   showIdProofListing = false;
+  showProfessionalsListing = false;
   userId: string;
   essentialProfileList:any = [];
   essentialIDList:any = [];
+  essentialProfessionalList:any = [];
+  showProfessionalCnt:any;
   showProfileListingCnt:any;
   showIDListingCnt:any;
   constructor(
@@ -39,6 +42,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
     this.showIDListingCnt = 0;
     this.getEssentialProfileList();
     this.getEssentialIdList();
+    this.getEssentialProfessionalList();
   }
 
   getEssentialProfileList = (query = {}, search = false) => {
@@ -80,6 +84,29 @@ export class CustomerEssentialDayOneComponent implements OnInit {
     })
   }
 
+  getEssentialProfessionalList = (query = {}, search = false) => { 
+    console.log("userId",this.userId);
+  const req_vars = {
+    query: Object.assign({ customerId: this.userId }, query)
+  }
+    console.log("query",req_vars);
+  this.userapi.apiRequest('post', 'customer/essential-professional-list', req_vars).subscribe(result => {
+    if (result.status == "error") {
+      console.log(result.data)
+    } else {
+      console.log("--->",result.data)
+      this.essentialProfessionalList = result.data.essentialProfessionalList;
+      console.log("====>",this.essentialProfessionalList)
+      if(result.data.totalProfessionalRecords > 0){         
+        this.showProfessionalCnt = result.data.totalProfessionalRecords;
+        this.showProfessionalsListing = true;
+      }       
+    }
+  }, (err) => {
+    console.error(err);
+  })
+}
+
   toggleSideNav() {
     this.sideNav.opened = !this.sideNav.opened;
   }
@@ -93,6 +120,13 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   }
   openProfileModal(data: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(PersonalProfileModalComponent, {
+      width: '720px',
+      disableClose: true,
+    })
+  }
+  openProfessionalBoxModal(data: any = {}, isNew?) {
+    let title = isNew ? 'Add professionals' : 'Update professionals';
+    let dialogRef: MatDialogRef<any> = this.dialog.open(essentialsMyProfessionalsComponent, {
       width: '720px',
       disableClose: true,
     })

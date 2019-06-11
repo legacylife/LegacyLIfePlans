@@ -19,6 +19,9 @@ import { CustomerDashboardDayOneComponent } from './customer-home/customer-dashb
 import { CustomerEssentialDayOneComponent } from './customer-home/customer-essential-day-one/customer-essential-day-one.component';
 import { CustomerEssentialDetailsComponent } from './customer-home/customer-essential-details/customer-essential-details.component';
 import { CustomerEssentialDetailsIdboxComponent } from './customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
+
+import { EssentialsMyProfessionalsDetailsComponent } from './customer-home/essentials-my-professionals-details/essentials-my-professionals-details.component';
+
 import { CustomerSharedLegaciesComponent } from './customer-home/customer-shared-legacies/customer-shared-legacies.component';
 import { CustomerLegaciesDetailsComponent } from './customer-home/customer-legacies-details/customer-legacies-details.component';
 import { CustomerLegalStuffComponent } from './customer-home/customer-legal-stuff/customer-legal-stuff.component';
@@ -70,6 +73,10 @@ export const CustomerRoutes: Routes = [
           {
             path: 'essential-detail-idbox',
             component: CustomerEssentialDetailsIdboxComponent
+          },
+          {
+            path: 'essential-professionals-detail',
+            component: EssentialsMyProfessionalsDetailsComponent
           },
           {
             path: 'shared-lagacies',

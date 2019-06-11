@@ -6,8 +6,7 @@ import { AppConfirmService } from '../../../../shared/services/app-confirm/app-c
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
-import { documentTypes } from '../../../../selectList';
-import { states } from '../../../../state';
+import { myProfessionals } from '../../../../selectList';
 
 @Component({
   selector: 'app-essentials-id-box',
@@ -16,27 +15,36 @@ import { states } from '../../../../state';
 })
 export class essentialsMyProfessionalsComponent implements OnInit {
   userId = localStorage.getItem("endUserId");
-  IDForm: FormGroup;
- 
+  professionalForm: FormGroup;
+  myProfessionalsList: string[] = myProfessionals;
+  profileIdHiddenVal:boolean = false;
+  
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService  ) { }
 
   ngOnInit() {
-    this.userId = localStorage.getItem("endUserId");
-  
+    this.userId = localStorage.getItem("endUserId");    
+      this.professionalForm = this.fb.group({
+        namedProfessionals: new FormControl('', Validators.required),
+        businessName: new FormControl('', Validators.required),
+        name: new FormControl('', Validators.required),
+        address: new FormControl('', Validators.required),
+        mpPhoneNumbers: new FormControl(''),//'', Validators.required
+        mpEmailAddress: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
+        profileId: new FormControl('')
+      });
     }
    
-    IdFormSubmit(profileInData = null) {
-      console.log("data :- ",profileInData);
+    ProfessFormSubmit(profileInData = null) {
       var query = {};
       var proquery = {};
       const req_vars = {
-        query: Object.assign({ customerId: this.userId }),
+        query: Object.assign({ _id: profileInData.profileId, customerId: this.userId }, query),
         proquery: Object.assign(profileInData)
       }
-      //8this.loader.open();
+      this.loader.open();
       console.log("req_vars", req_vars);
-      this.userapi.apiRequest('post', 'customer/my_essentials_id_form_submit', req_vars).subscribe(result => {
-     //8   this.loader.close();
+      this.userapi.apiRequest('post', 'customer/my-essentials-profile-submit', req_vars).subscribe(result => {
+        this.loader.close();
         if (result.status == "error") {
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
         } else {
