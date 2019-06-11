@@ -66,7 +66,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   
   getEssentialIdList = (query = {}, search = false) => { console.log("userId",this.userId);
     const req_vars = {
-      query: Object.assign({ customerId: this.userId }, query)
+      query: Object.assign({ customerId: this.userId, status:"Active" }, query)
     }
     console.log("query",req_vars);
     this.userapi.apiRequest('post', 'customer/essential-id-list', req_vars).subscribe(result => {
@@ -87,7 +87,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   getEssentialProfessionalList = (query = {}, search = false) => { 
     console.log("userId",this.userId);
   const req_vars = {
-    query: Object.assign({ customerId: this.userId }, query)
+    query: Object.assign({ customerId: this.userId, status:"Active" }, query)
   }
     console.log("query",req_vars);
   this.userapi.apiRequest('post', 'customer/essential-professional-list', req_vars).subscribe(result => {

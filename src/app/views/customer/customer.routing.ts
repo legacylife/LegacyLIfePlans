@@ -76,7 +76,7 @@ export const CustomerRoutes: Routes = [
             component: CustomerEssentialDetailsIdboxComponent
           },
           {
-            path: 'essential-professionals-detail',
+            path: 'essential-professionals-detail/:id',
             component: EssentialsMyProfessionalsDetailsComponent
           },
           {
