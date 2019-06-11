@@ -60,7 +60,7 @@ export const CustomerRoutes: Routes = [
             component: CustomerEssentialDayOneComponent
           },
           {
-            path: 'essential-detail-view',
+            path: 'essential-detail-view/:id',
             component: CustomerEssentialDetailsComponent
           },
           {

@@ -21,7 +21,7 @@ import { AppLoaderService } from '../../../../shared/services/app-loader/app-loa
 export class CustomerEssentialDayOneComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   showProfileListing = false;
-  showIdProofListing = true;
+  showIdProofListing = false;
   userId: string;
   essentialProfileList:any = [];
 
