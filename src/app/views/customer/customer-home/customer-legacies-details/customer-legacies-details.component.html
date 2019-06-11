@@ -3,23 +3,26 @@
   <div class="full-width">
 
     <div fxLayout="row wrap">
-      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="75" fxFlex.lg="80" fxFlex.xl="80">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="70" fxFlex.lg="80" fxFlex.xl="80">
         <mat-card class="p-0 mb-1">
           <mat-card-title class="">
             <div class="card-title-text">Legacy Details</div>
             <mat-divider></mat-divider>
           </mat-card-title>
 
-          <mat-card-content class="recent--update--section">
-            <mat-nav-list class="pt-1">
-              <mat-list-item class="cust--user--details">
-                <div mat-list-avatar class="name--letters">
-                  ab
+          <mat-card-content class="recent--update--section p-20">
+            <mat-nav-list class="pt-0">
+              <mat-list-item class="cust--user--details large--view">
+                <div mat-list-avatar class="user--pic">
+                  <img alt="" src="assets/images/arkenea/john.png">
                 </div>
                 <div mat-line class="user--name">
-                  <h5>Allen Barry</h5>
-                  <p class="mb-0">Last modified:
-                    <span>4/02/2019</span>
+                  <h5>James Anderson</h5>
+                  <div class="sta--m">
+                    <mat-icon class="mat-icon material-icons" role="img">star</mat-icon> Standard member
+                  </div>
+                  <p class="mb-0">Last Login:
+                    <span>March 31, 2019</span>
                   </p>
                 </div>
                 <button mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu1">
@@ -76,7 +79,7 @@
           </mat-card-content>
         </mat-card>
 
-        <mat-card class="p-0 mb-1">
+        <mat-card class="p-0 mb--20">
           <mat-card-title class="">
             <div class="card-title-text">ID Box</div>
             <mat-divider></mat-divider>
@@ -115,15 +118,21 @@
           </mat-card-content>
         </mat-card>
 
+        <div class="locked--sec">
+          <mat-icon>lock</mat-icon>
+          <p>Allen has locked certain parts of his Legacy until after his passing. When the time comes, submit a notice of Tom Anderson's 
+              death, and we'll start the unlocking process based on the settings he has in place.</p>
+        </div>
+
 
       </div>
 
       <!-- right section start here -->
 
-      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="25" fxFlex.lg="20" fxFlex.xl="20" class="reverse--order--sm">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="20" fxFlex.xl="20" class="reverse--order--sm">
         <div class="right--panel--wrapper">
           <div fxLayout="row wrap">
-            <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+            <div fxFlex.xs="100">
               <div class="right--boxes mr-0">
                 <mat-card class="p-0 black--header">
                   <mat-card-title class="">

@@ -508,6 +508,50 @@ body{
             }
         }
     }
+
+    // large--view
+    &.large--view{
+        height: auto !important;
+        border: none;
+        .mat-list-item-content{
+            padding: 0 !important;
+            .user--pic{
+                width: 100px !important;
+                height: 100px !important;
+                background-color: #e6e7ec;
+                line-height: 48px;
+                text-align: center;
+                position: relative;
+                border-radius: 50%;
+                overflow: hidden;
+                img{
+                    max-width: 100%;
+                    max-height: 100%;
+                    height: auto;
+                }
+            }
+            .user--name{
+                h5{
+                    font-size: 24px;
+                }
+                .sta--m{
+                    font-size: 14px;
+                    display: flex;
+                    align-items: center;
+                    margin:9px 0 6px 0;
+                    color: #222324;
+                    .mat-icon{
+                        font-size: 18px;
+                        height: 19px;
+                        color: #ecca40;
+                        width: 15px;
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+       
+    }
 }
 
 /* -- 
