@@ -12,7 +12,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../config';
 import { states } from '../../../../state';
 
-const URL = serverUrl + '/api/documents/myEssentials';
+const URL = serverUrl + '/api/documents/myEssentialsID';
 @Component({
   selector: 'app-essenioal-id-box',
   templateUrl: './essenioal-id-box.component.html',
@@ -47,8 +47,7 @@ export class EssenioalIdBoxComponent implements OnInit {
   typeSeven: boolean = false;
   typeSixSeven: boolean = false;
 
-  constructor(private snack: MatSnackBar, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService  ) { }
-
+  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService  ) { }
 
   onChangeDocumentType(key) {
       //console.log("--- >>  ",key);
@@ -65,28 +64,29 @@ export class EssenioalIdBoxComponent implements OnInit {
 
       if(key==1){  
         this.typeOne = true;      
+        this.typeOneTwo = true;      
         this.typeOneTwoSixSeven = true;        
       }else if(key==2){  
         this.typeTwo = true;      
+        this.typeOneTwo = true;      
         this.typeOneTwoSixSeven = true;
       }else if(key==3){  
         this.typeThree = true;              
       }else if(key==4){  
         this.typeFour = true;              
       }else if(key==5){  
-        this.typeThree = true;       
+       // this.typeThree = true;       
         this.typeFive = true;             
       }else if(key==6){  
-        this.typeSix = true;      
+        this.typeSix = true;  
+        this.typeOneTwoSixSeven = true;         
         this.typeSixSeven = true;        
       }else if(key==7){  
         this.typeSeven = true;     
+        this.typeOneTwoSixSeven = true;     
         this.typeSixSeven = true;         
       }
-      
   }
-
-
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -109,10 +109,34 @@ export class EssenioalIdBoxComponent implements OnInit {
       expirationDate: new FormControl(''),
       locationPassport: new FormControl(''),
       LocationWorkPermitVisa: new FormControl(''),  
-      idProofDocuments_temp: new FormControl([],Validators.required),
+      idProofDocuments_temp: new FormControl(),//[],Validators.required
       comments: new FormControl('', Validators.required)    
-    });
-   }
+     });
+    }
+   
+    IdFormSubmit(profileInData = null) {
+      console.log("data :- ",profileInData);
+      var query = {};
+      var proquery = {};
+      const req_vars = {
+        query: Object.assign({ customerId: this.userId }),
+        proquery: Object.assign(profileInData)
+      }
+      //8this.loader.open();
+      console.log("req_vars", req_vars);
+      this.userapi.apiRequest('post', 'customer/my_essentials_id_form_submit', req_vars).subscribe(result => {
+     //8   this.loader.close();
+        if (result.status == "error") {
+          this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        } else {
+          this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          this.dialog.closeAll(); 
+        }
+      }, (err) => {
+        console.error(err)
+      })
+    }
+
 
     IDDelete(doc, name, tmName) {
       var statMsg = "Are you sure you want to delete '" + name + "' file name?"

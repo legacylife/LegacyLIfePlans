@@ -5,31 +5,19 @@
   </button>
 </div>
 
-<form class="llp-form-wrapper" (ngSubmit)="FormSubmit(IDForm.value)">
+<form class="llp-form-wrapper" (ngSubmit)="IdFormSubmit(IDForm.value)">
   <div class="ll--modal--body id--box--body">
     <div fxLayout="row wrap">
       <div fxFlex.xs="100">
+
         <mat-form-field class="full-width">
           <mat-label>ID/Document</mat-label>
-          <!-- <mat-select [formControl]="IDForm.controls['documentType']" multiple>
-            <mat-option *ngFor="let topping of documentTypeList" [value]="topping">{{topping}}</mat-option>
-          </mat-select> -->
           <mat-select placeholder="ID/Document*" name="documentType" [formControl]="IDForm.controls['documentType']" (selectionChange)="onChangeDocumentType($event.value)">
             <mat-option value="">Select a ID/Document</mat-option>
             <mat-option *ngFor="let option of documentTypeList"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
           </mat-select>
-          <mat-icon matTooltip="Please select ID/Document type" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['documentType'].hasError('required') && IDForm.controls['documentType'].touched"
-          class="red--alert">help_outline</mat-icon>
+            <mat-icon matTooltip="Please select ID/Document type" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['documentType'].hasError('required') && IDForm.controls['documentType'].touched" class="red--alert">help_outline</mat-icon>
         </mat-form-field>
-
-        <!-- 1st field
-        License Number
-        Non-Driver ID Number
-        DoD ID Number
-        Place of Birth
-        Social Security Number
-        Country of issue (manual input) -->
-
         
         <mat-form-field class="full-width" *ngIf="typeOne">
           <input class="capitalize" matInput name="licenseNumber" maxlength="20" placeholder="License Number*" [formControl]="IDForm.controls['licenseNumber']">
@@ -66,25 +54,6 @@
           <mat-icon matTooltip="Please enter Country of issue" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['countryOfIssue'].hasError('required') && IDForm.controls['countryOfIssue'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
-        <!-- 2nd field
-        File Number
-        DoD Benefits Number (DBN)
-        state
-        Location of Social Security Card
-        Passport Number -->
-
-        <mat-form-field class="full-width" *ngIf="typeThree">
-          <input class="capitalize" matInput name="DBN" maxlength="20" placeholder="DoD Benefits Number (DBN)*" [formControl]="IDForm.controls['DBN']">
-          <mat-icon matTooltip="Please enter DoD Benefits Number (DBN)" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['DBN'].hasError('required') && IDForm.controls['DBN'].touched"
-          class="red--alert">help_outline</mat-icon>
-        </mat-form-field>
-
-
-        <mat-form-field class="full-width" *ngIf="typeFour">
-          <input class="capitalize" matInput name="fileNumber" maxlength="20" placeholder="File Number*" [formControl]="IDForm.controls['fileNumber']">
-          <mat-icon matTooltip="Please enter file number" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['fileNumber'].hasError('required') && IDForm.controls['fileNumber'].touched"
-          class="red--alert">help_outline</mat-icon>
-        </mat-form-field>
 
         <mat-form-field class="full-width" *ngIf="typeOneTwo">
           <mat-label>State</mat-label>
@@ -92,71 +61,56 @@
             <mat-option value="">Select a state</mat-option>
             <mat-option *ngFor="let option of stateList"  [value]="option.state_name">{{option.state_name}}</mat-option>
           </mat-select>
-          <mat-icon matTooltip="Please select state" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['state'].hasError('required') && IDForm.controls['state'].touched"
-          class="red--alert">help_outline</mat-icon>
-        </mat-form-field>
-
-
-        <mat-form-field class="full-width" *ngIf="typeFive">
-          <input class="capitalize" matInput name="locationSocialSecurityCard" maxlength="20" placeholder="Location of Social Security Card*" [formControl]="IDForm.controls['locationSocialSecurityCard']">
-          <mat-icon matTooltip="Please enter Location of Social Security Card" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['locationSocialSecurityCard'].hasError('required') && IDForm.controls['locationSocialSecurityCard'].touched"
-          class="red--alert">help_outline</mat-icon>
+          <mat-icon matTooltip="Please select state" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['state'].hasError('required') && IDForm.controls['state'].touched" class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
         <mat-form-field class="full-width" *ngIf="typeSix">
           <input class="capitalize" matInput name="passportNumber" maxlength="20" placeholder="Passport Number*" [formControl]="IDForm.controls['passportNumber']">
-          <mat-icon matTooltip="Please enter passport number" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['passportNumber'].hasError('required') && IDForm.controls['passportNumber'].touched"
-          class="red--alert">help_outline</mat-icon>
+          <mat-icon matTooltip="Please enter passport number" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['passportNumber'].hasError('required') && IDForm.controls['passportNumber'].touched" class="red--alert">help_outline</mat-icon>
         </mat-form-field>
-
-        <!-- 3rd field 
-        Location of Work Permit or Visa
-        Expiration Date
-        Location of DoD ID 
-
-        Location of Driver's License -->
-
-
-        <mat-form-field class="full-width" *ngIf="typeOneTwo">
-          <input class="capitalize" matInput name="locationDriverLicense" maxlength="20" placeholder="Location of Driver's License*" [formControl]="IDForm.controls['locationDriverLicense']">
-          <mat-icon matTooltip="Please enter location of driver's license" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['locationDriverLicense'].hasError('required') && IDForm.controls['locationDriverLicense'].touched"
-          class="red--alert">help_outline</mat-icon>
-        </mat-form-field>
-
-        <mat-form-field class="full-width" *ngIf="typeThree">
-          <input class="capitalize" matInput name="locationDoDID" maxlength="20" placeholder="Location of DoD ID*" [formControl]="IDForm.controls['locationDoDID']">
-          <mat-icon matTooltip="Please enter location of DoD ID" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['locationDoDID'].hasError('required') && IDForm.controls['locationDoDID'].touched"
-          class="red--alert">help_outline</mat-icon>
-        </mat-form-field>
-
-        <!-- <mat-form-field class="full-width">
-          <input class="capitalize" matInput name="locationSocialSecurityCard" maxlength="20" placeholder="Location of Social Security Card*" [formControl]="IDForm.controls['locationSocialSecurityCard']">
-          <mat-icon matTooltip="Please enter location of social security card" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['locationSocialSecurityCard'].hasError('required') && IDForm.controls['locationSocialSecurityCard'].touched"
-          class="red--alert">help_outline</mat-icon>
-        </mat-form-field> -->
-
-
+        
         <mat-form-field class="full-width llp-datepicker" *ngIf="typeOneTwoSixSeven">
           <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Expiration Date*" readonly [max]="maxDate" [formControl]="IDForm.controls['expirationDate']">
           <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
           <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
           </mat-datepicker>
-          <mat-icon matTooltip="Please select expiration date" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['expirationDate'].hasError('required') && IDForm.controls['expirationDate'].touched"
-          class="red--alert">help_outline</mat-icon>
+          <mat-icon matTooltip="Please select expiration date" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['expirationDate'].hasError('required') && IDForm.controls['expirationDate'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeOneTwo">
+          <input class="capitalize" matInput name="locationDriverLicense" maxlength="20" placeholder="Location of Driver's License*" [formControl]="IDForm.controls['locationDriverLicense']">
+          <mat-icon matTooltip="Please enter location of driver's license" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['locationDriverLicense'].hasError('required') && IDForm.controls['locationDriverLicense'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeThree">
+          <input class="capitalize" matInput name="DBN" maxlength="20" placeholder="DoD Benefits Number (DBN)*" [formControl]="IDForm.controls['DBN']">
+          <mat-icon matTooltip="Please enter DoD Benefits Number (DBN)" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['DBN'].hasError('required') && IDForm.controls['DBN'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeFour">
+          <input class="capitalize" matInput name="fileNumber" maxlength="20" placeholder="File Number*" [formControl]="IDForm.controls['fileNumber']">
+          <mat-icon matTooltip="Please enter file number" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['fileNumber'].hasError('required') && IDForm.controls['fileNumber'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeFive">
+          <input class="capitalize" matInput name="locationSocialSecurityCard" maxlength="20" placeholder="Location of Social Security Card*" [formControl]="IDForm.controls['locationSocialSecurityCard']">
+          <mat-icon matTooltip="Please enter Location of Social Security Card" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['locationSocialSecurityCard'].hasError('required') && IDForm.controls['locationSocialSecurityCard'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeThree">
+          <input class="capitalize" matInput name="locationDoDID" maxlength="20" placeholder="Location of DoD ID*" [formControl]="IDForm.controls['locationDoDID']">
+          <mat-icon matTooltip="Please enter location of DoD ID" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['locationDoDID'].hasError('required') && IDForm.controls['locationDoDID'].touched" class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
         <mat-form-field class="full-width" *ngIf="typeSix">
           <input class="capitalize" matInput name="locationPassport" maxlength="20" placeholder="Location of Passport*" [formControl]="IDForm.controls['locationPassport']">
-          <mat-icon matTooltip="Please enter Location of Passport" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['locationPassport'].hasError('required') && IDForm.controls['locationPassport'].touched"
-          class="red--alert">help_outline</mat-icon>
+          <mat-icon matTooltip="Please enter Location of Passport" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['locationPassport'].hasError('required') && IDForm.controls['locationPassport'].touched" class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
         <mat-form-field class="full-width" *ngIf="typeSeven">
           <input class="capitalize" matInput name="LocationWorkPermitVisa" maxlength="20" placeholder="Location of Work Permit or Visa*" [formControl]="IDForm.controls['LocationWorkPermitVisa']">
-          <mat-icon matTooltip="Please enter Location of Work Permit or Visa" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['LocationWorkPermitVisa'].hasError('required') && IDForm.controls['LocationWorkPermitVisa'].touched"
-          class="red--alert">help_outline</mat-icon>
+          <mat-icon matTooltip="Please enter Location of Work Permit or Visa" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['LocationWorkPermitVisa'].hasError('required') && IDForm.controls['LocationWorkPermitVisa'].touched" class="red--alert">help_outline</mat-icon>
         </mat-form-field>
-
 
          <div class="upload--buss--docs--sec">
              <label>Upload your business documents</label>
