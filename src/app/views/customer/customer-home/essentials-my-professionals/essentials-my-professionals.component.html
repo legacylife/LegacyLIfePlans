@@ -1,0 +1,42 @@
+<div class="ll--modal--header">
+  ID BOX
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+
+<form class="llp-form-wrapper" (ngSubmit)="IdFormSubmit(IDForm.value)">
+  <div class="ll--modal--body id--box--body">
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100">
+
+        <mat-form-field class="full-width">
+          <mat-label>ID/Document</mat-label>
+          <mat-select placeholder="ID/Document*" name="documentType" [formControl]="IDForm.controls['documentType']" (selectionChange)="onChangeDocumentType($event.value)">
+            <mat-option value="">Select a ID/Document</mat-option>
+            <mat-option *ngFor="let option of documentTypeList"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
+          </mat-select>
+            <mat-icon matTooltip="Please select ID/Document type" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['documentType'].hasError('required') && IDForm.controls['documentType'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+        
+        <mat-form-field class="full-width">
+          <input class="capitalize" matInput name="LocationWorkPermitVisa" maxlength="20" placeholder="Location of Work Permit or Visa*" [formControl]="IDForm.controls['LocationWorkPermitVisa']">
+          <mat-icon matTooltip="Please enter Location of Work Permit or Visa" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['LocationWorkPermitVisa'].hasError('required') && IDForm.controls['LocationWorkPermitVisa'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+      
+        <mat-form-field class="full-width">
+          <textarea matInput placeholder="Comments*" name="comments" [formControl]="IDForm.controls['comments']"></textarea>
+          <div class="char--limit">0 / 500 chars</div>
+          <mat-icon matTooltip="Please enter your comment" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['comments'].hasError('required') && IDForm.controls['comments'].touched"
+          class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+
+      </div>
+    </div>
+  </div>
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn" [disabled]="IDForm.invalid">Save</button>
+  </div>
+</form>
