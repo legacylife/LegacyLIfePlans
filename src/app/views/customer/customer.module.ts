@@ -61,6 +61,7 @@ import { MarkAsDeceasedComponent } from './customer-home/mark-as-deceased-modal/
 
 import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
 import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
+import { EmergencyContactsComponent } from './customer-home/emergency-contacts/emergency-contacts.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -104,7 +105,7 @@ import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edi
     CustomerSubscriptionComponent, CustomerTrusteesComponent, CustomerProfessionalComponent,
     CustomerHomeEssentialComponent, CustomerDashboardComponent, CustomerDashboardDayOneComponent, CustomerEssentialDayOneComponent,
     CustomerEssentialDetailsComponent, CustomerEssentialDetailsIdboxComponent, EssenioalIdBoxComponent,
-    PersonalProfileModalComponent, CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent
+    PersonalProfileModalComponent, CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent, EmergencyContactsComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard
   ], bootstrap: [CustomerSignupComponent], entryComponents: [ChangePassComponent, EssenioalIdBoxComponent, PersonalProfileModalComponent, MarkAsDeceasedComponent],

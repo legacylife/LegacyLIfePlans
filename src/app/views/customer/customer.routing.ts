@@ -21,6 +21,7 @@ import { CustomerEssentialDetailsComponent } from './customer-home/customer-esse
 import { CustomerEssentialDetailsIdboxComponent } from './customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
 import { CustomerSharedLegaciesComponent } from './customer-home/customer-shared-legacies/customer-shared-legacies.component';
 import { CustomerLegaciesDetailsComponent } from './customer-home/customer-legacies-details/customer-legacies-details.component';
+import { EmergencyContactsComponent } from './customer-home/emergency-contacts/emergency-contacts.component';
 
 export const CustomerRoutes: Routes = [
   {
@@ -74,7 +75,11 @@ export const CustomerRoutes: Routes = [
           {
             path: 'lagacies-details',
             component: CustomerLegaciesDetailsComponent
-          }
+          },
+          {
+            path: 'emergency-contacts',
+            component: EmergencyContactsComponent
+          }          
         ]
       },
     ]
@@ -130,5 +135,4 @@ export const CustomerRoutes: Routes = [
       }
     ]
   }
-
 ];

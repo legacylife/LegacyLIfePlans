@@ -1,0 +1,66 @@
+<div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
+  <div class="full-width">
+    <div class="">
+      <mat-card class="empty--section p-0">
+        <mat-card-header class="m-0">
+          <mat-card-title class="m-0" [routerLink]="['/customer/dashboard/emergency-contacts']">Emergency Contacts
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="info m-0">The section where you can manage your Emergency Contacts</p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="empty--section p-0">
+        <mat-card-header class="m-0">
+          <mat-card-title class="m-0">Contacts</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="build--ur--legacy" (click)="openModal(contactForm)">
+            <mat-icon>person_pin</mat-icon>
+            <p>
+              <a>Add Emergency Contacts</a>
+            </p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #contactForm let-c="close" let-d="dismiss">
+  <div class="ll--modal--header llp--close--modal">
+    <h3 class="main--head text-center">Emergency Contact Details</h3>
+    <button class="modal--close" [mat-dialog-close]="">
+      <mat-icon class="icon--cross">cancel</mat-icon>
+    </button>
+  </div>
+  <div class="ll--modal--body per--profile--wrapper p-10">
+    <form [formGroup]="eContactFormGroup" class="llp-form-wrapper" (ngSubmit)="eContactFormSubmit()">
+      <div class="profile--body--scroll">
+        <mat-form-field class="full-width">
+          <input class="capitalize" matInput name="ecName" placeholder="Name*" value="" [formControl]="eContactFormGroup.controls['ecName']">
+          <mat-icon matTooltip="Please enter name." matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['ecName'].hasError('required')" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input class="capitalize" matInput name="ecRelationship" placeholder="Relationship" value="" [formControl]="eContactFormGroup.controls['ecRelationship']">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input class="capitalize" matInput name="ecAddress" placeholder="Address" value=""  [formControl]="eContactFormGroup.controls['ecAddress']">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input class="capitalize" matInput name="ecPhone" placeholder="Phone" value=""  [formControl]="eContactFormGroup.controls['ecPhone']">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input class="capitalize" matInput name="ecMobile" placeholder="Mobile" value=""  [formControl]="eContactFormGroup.controls['ecMobile']">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input class="capitalize" matInput name="ecEmail" placeholder="Email address" value=""  [formControl]="eContactFormGroup.controls['ecEmail']">
+        </mat-form-field>
+      </div>
+      <div class="mt-1 text-center">
+        <button mat-raised-button class="llp--primary--btn mb-1" [disabled]="eContactFormGroup.invalid">Save</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
