@@ -1,12 +1,15 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MatSnackBar, MatSidenav } from '@angular/material';
+import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Product } from '../../../../shared/models/product.model';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms'
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
 import { UserAPIService } from './../../../../userapi.service';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
+import { PersonalProfileModalComponent } from '../personal-profile-modal/personal-profile-modal.component';
+import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
 
 @Component({
   selector: 'app-customer-home',
@@ -30,18 +33,18 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
   public cartData: any;
   userId: string;
   selectedProfileId: string = "";
-  row:any;
-  pplandLineNumberList:string = "";
-  ppEmailsList:string = "";
+  row: any;
+  pplandLineNumberList: string = "";
+  ppEmailsList: string = "";
   wpLandlineNumbersList: string = "";
-  ccWorkLandlineNumbersList:string = "";
-  ccChurchLandlineNumbersList:string = ""; 
+  ccWorkLandlineNumbersList: string = "";
+  ccChurchLandlineNumbersList: string = "";
 
   constructor(
     // private shopService: ShopService,
     private fb: FormBuilder,
-    private snackBar: MatSnackBar,
-    private userapi: UserAPIService, private loader: AppLoaderService
+    private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
+    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar,  private router: Router
   ) { }
 
   ngOnInit() {
@@ -50,7 +53,6 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
 
     this.userId = localStorage.getItem("endUserId");
     this.getEssentialProfileDetails();
-    // this.categories$ = this.shopService.getCategories();
     this.categories = ["My essentials", "Pets"]
 
 
@@ -73,18 +75,53 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
         console.log(result.data)
       } else {
         this.row = result.data
-        this.pplandLineNumberList  = Array.prototype.map.call(this.row.ppLandlineNumbers, function(item) { return item.phone; }).join(","); 
-        this.ppEmailsList  = Array.prototype.map.call(this.row.ppEmails, function(item) { return item.email; }).join(",");
-        this.wpLandlineNumbersList  = Array.prototype.map.call(this.row.wpLandlineNumbers, function(item) { return item.phone; }).join(",");
-        this.ccWorkLandlineNumbersList  = Array.prototype.map.call(this.row.ccWorkLandlineNumbers, function(item) { return item.phone; }).join(",");
-        this.ccChurchLandlineNumbersList  = Array.prototype.map.call(this.row.ccChurchLandlineNumbers, function(item) { return item.phone; }).join(",");
+        this.pplandLineNumberList = Array.prototype.map.call(this.row.ppLandlineNumbers, function (item) { return item.phone; }).join(",");
+        this.ppEmailsList = Array.prototype.map.call(this.row.ppEmails, function (item) { return item.email; }).join(",");
+        this.wpLandlineNumbersList = Array.prototype.map.call(this.row.wpLandlineNumbers, function (item) { return item.phone; }).join(",");
+        this.ccWorkLandlineNumbersList = Array.prototype.map.call(this.row.ccWorkLandlineNumbers, function (item) { return item.phone; }).join(",");
+        this.ccChurchLandlineNumbersList = Array.prototype.map.call(this.row.ccChurchLandlineNumbers, function (item) { return item.phone; }).join(",");
       }
     }, (err) => {
       console.error(err)
       //this.showLoading = false
     })
 
+  }
 
+  deleteProfile(row) {
+    var statMsg = "Are you sure you want to delete profile?, " + row.username + " Access to the website account for the advisor, trustees and advisors will be re-opened as per the subscription status of this customer."
+    
+
+    this.confirmService.confirm({ message: statMsg })
+      .subscribe(res => {
+        if (res) {
+          this.loader.open();
+          var query = {};
+          const req_vars = {
+            query: Object.assign({ _id: row._id }, query)
+          }
+          this.userapi.apiRequest('post', 'customer/updatestatus', req_vars).subscribe(result => {
+            if (result.status == "error") {
+              this.loader.close();
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            } else {
+              this.loader.close();
+              this.router.navigate(['/', 'customer', 'dashboard/essential-day-one'])
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            }
+          }, (err) => {
+            console.error(err)
+            this.loader.close();
+          })
+        }
+      })
+  }
+
+  openProfileModal(data: any = {}, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(PersonalProfileModalComponent, {
+      width: '720px',
+      disableClose: true,
+    })
   }
 
   showSecoDay() {

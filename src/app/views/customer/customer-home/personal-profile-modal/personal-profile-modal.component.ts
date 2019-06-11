@@ -30,11 +30,18 @@ export class PersonalProfileModalComponent implements OnInit {
   ccWorkLandlineNumbers:any; 
   ccChurchLandlineNumbers:any; 
   essentials: any;
+  selectedProfileId:string;
+  profileIdHiddenVal:boolean = false;
   constructor(private router: Router,private snack: MatSnackBar, public dialog: MatDialog,private fb: FormBuilder,private loader: AppLoaderService,private userapi: UserAPIService,  ) {}
 
   ngOnInit() {
     this.countryList = countries;
     this.userId = localStorage.getItem("endUserId");
+    const locationArray = location.href.split('/')
+    this.selectedProfileId = locationArray[locationArray.length - 1];
+    if(this.selectedProfileId && this.selectedProfileId == 'essential-day-one'){
+      this.selectedProfileId = "";
+    }
  
       this.step = localStorage.getItem("ID_step");
       console.log('>>>',this.step);
@@ -51,7 +58,8 @@ export class PersonalProfileModalComponent implements OnInit {
       ppCountry: new FormControl('', Validators.required),
       ppCity: new FormControl('', Validators.required),
       ppState: new FormControl('', Validators.required),
-      ppZipCode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)])
+      ppZipCode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
+      profileId: new FormControl('')
     });
  
   this.secondFormGroup = this.fb.group({
@@ -67,7 +75,8 @@ export class PersonalProfileModalComponent implements OnInit {
     wpCountry: new FormControl('', Validators.required),
     wpCity: new FormControl('', Validators.required),
     wpState: new FormControl('', Validators.required),
-    wpZipCode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)])
+    wpZipCode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
+    profileId: new FormControl('')
   });
 
 
@@ -88,15 +97,19 @@ export class PersonalProfileModalComponent implements OnInit {
     //ccChurchLandlineNumbers: this.fb.array([this.fb.group({phone: ['', Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]})]),    
     ccChurchLandlineNumbers: this.fb.array([this.fb.group({phone: ['']})]),        
     ccChurchContactPersonName: new FormControl('', Validators.required),
+    profileId: new FormControl('')
   });
  
-    this.getDetails();    
+  if(this.selectedProfileId && this.selectedProfileId != ''){
+    this.getDetails();
+  }
+        
  
 }
 
 getDetails = (query = {}, search = false) => {
   const req_vars = {
-    query: Object.assign({ customerId: this.userId }, query)
+    query: Object.assign({ _id: this.selectedProfileId }, query)
   }
   this.loader.open();
   this.userapi.apiRequest('post', 'customer/get_details', req_vars).subscribe(result => {
@@ -151,18 +164,27 @@ getDetails = (query = {}, search = false) => {
 FormSubmit(steps = null, profileInData = null) {
     //console.log("as dasd asd asd asd",steps);
     let msgName = '';
-    if (steps == 1) msgName = "personal profile";
-    else if (steps == 2) msgName = "work profile";
+    if (steps == 1){
+      msgName = "personal profile";
+    } 
+    else if (steps == 2){
+      msgName = "work profile";
+    } 
     else if (steps == 3) {
       msgName = 'Civic/Club, Religious Info';
-     }
+    }
+
+    console.log("profile id >>>>>>"+this.selectedProfileId)
+
     var query = {};
-    var proquery = {};
+    var proquery = {};   
     
+      
+    console.log(this.selectedProfileId)
     const req_vars = {
-      query: Object.assign({ customerId: this.userId }),
+      query: Object.assign({ _id :this.selectedProfileId }),
       proquery: Object.assign(profileInData),
-      from: Object.assign({ fromname: msgName })
+      from: Object.assign({ fromname: msgName, customerId: this.userId })
     }
     this.loader.open();
     console.log("req_vars", req_vars);
@@ -171,7 +193,25 @@ FormSubmit(steps = null, profileInData = null) {
       if (result.status == "error") {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
-        localStorage.setItem("ID_step", steps);
+        localStorage.setItem("ID_step", steps); 
+
+
+        if (steps == 1){
+          this.firstFormGroup.controls['profileId'].setValue(result.data.ppID);
+          this.secondFormGroup.controls['profileId'].setValue(result.data.ppID);
+          this.thirdFormGroup.controls['profileId'].setValue(result.data.ppID);
+        } 
+        else if (steps == 2){
+          this.firstFormGroup.controls['profileId'].setValue(result.data.ppID);
+          this.secondFormGroup.controls['profileId'].setValue(result.data.ppID);
+          this.thirdFormGroup.controls['profileId'].setValue(result.data.ppID);
+        } 
+        else if (steps == 3) {
+          this.firstFormGroup.controls['profileId'].setValue(result.data.ppID);
+          this.secondFormGroup.controls['profileId'].setValue(result.data.ppID);
+          this.thirdFormGroup.controls['profileId'].setValue(result.data.ppID);
+        }
+
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
         if (steps == 3) {  this.dialog.closeAll(); }
       }
