@@ -7,7 +7,9 @@ const Busboy = require('busboy')
 var constants = require('./../config/constants')
 const s3 = require('./../helpers/s3Upload')
 const User = require('./../models/Users')
-const docFilePath = constants.s3Details.advisorsDocumentsPath
+const personalIdProof = require('./../models/personalIdProof.js')
+const docFilePath = constants.s3Details.advisorsDocumentsPath;
+const IDdocFilePath = constants.s3Details.myEssentialsDocumentsPath;
 var DIR = './uploads/';
 
 router.post('/advisorDocument', cors(), function(req,res){
@@ -32,7 +34,7 @@ router.post('/advisorDocument', cors(), function(req,res){
           var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
           let resp = isExtension(ext,fileExts);
 
-          if(resp){  //////          
+          if(resp){          
           const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
           fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
           file.pipe(fstream);
@@ -61,7 +63,7 @@ router.post('/advisorDocument', cors(), function(req,res){
           if(result.advisorDocuments){
             oldTmpFiles = result.advisorDocuments;
           }
-          let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid extension file!" }
+          let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid file extension!" }
           res.send(resFormat.rSuccess(results))
          }
 
@@ -74,6 +76,67 @@ router.post('/advisorDocument', cors(), function(req,res){
   }
 })
 
+router.post('/myEssentialsID', cors(), function(req,res){
+  var fstream;
+  let authTokens = { authCode: "" }
+  if (req.busboy) {
+    req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
+      authTokens[fieldname] = val
+    })
+    const {query:{userId}} = req;
+    req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+      let tmpallfiles = {};
+      let oldTmpFiles = [];
+      if(userId){
+        personalIdProof.findOne({ customerId: userId },{idProofDocuments:1,_id:1}, function (err, result) {
+          if (err) {
+            res.status(500).send(resFormat.rError(err))
+          } else if (result) {           
+           
+          let ext = filename.split('.')
+          ext = ext[ext.length - 1];
+          var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
+          let resp = isExtension(ext,fileExts);
+          if(resp){        
+          const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+          fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+          file.pipe(fstream);
+          fstream.on('close', async function () {
+            await s3.uploadFile(newFilename,IDdocFilePath);  
+            if(result.idProofDocuments){
+              oldTmpFiles = result.idProofDocuments;
+            }
+            tmpallfiles = {
+              "title" : filename,
+              "size" : encoding,
+              "extention" : mimetype,
+              "tmpName" : newFilename
+            }
+            oldTmpFiles.push(tmpallfiles);           
+            personalIdProof.updateOne({ customerId: userId }, { $set: { idProofDocuments: oldTmpFiles } }, function (err, updatedUser) {
+              if (err) {
+                res.send(resFormat.rError(err))
+              } else {
+                let result = { userId:userId, allDocs:tmpallfiles, "message": "ID proof uploaded successfully!" }
+                res.send(resFormat.rSuccess(result))
+              }
+            })
+          })
+         }else{
+          if(result.personalIdProof){
+            oldTmpFiles = result.personalIdProof;
+          }
+          let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid file extension!" }
+          res.send(resFormat.rSuccess(results))
+         }
+        }
+      })
+      } else {
+        res.status(401).send(resFormat.rError("User token mismatch."))
+      }
+    })
+  }
+})
 
 function isExtension(ext, extnArray) {
   var result = false;
@@ -90,7 +153,6 @@ function isExtension(ext, extnArray) {
   return result;
 }
 
-
 //function get details of user from url param
 function deleteDoc(req, res) {
   let { query } = req.body;
@@ -106,7 +168,7 @@ function deleteDoc(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-  console.log("HERE ",docFilePath+fileName.docName);
+        // console.log("HERE ",docFilePath+fileName.docName);
         /*  var deleteParam = {
             Bucket: 'advisorsDocs',
             Delete: {
