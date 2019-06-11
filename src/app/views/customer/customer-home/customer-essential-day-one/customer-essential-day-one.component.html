@@ -21,7 +21,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Personal Profile</mat-card-title>
           <div *ngIf="showProfileListing">
-            <span class="no--of--trustee">4 Trustees</span>
+            <span class="no--of--trustee">{{showProfileListingCnt}} Trustees</span>
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"  (click)="openProfileModal({}, true)">+ Add</button>            
           </div>
         </mat-card-header>
@@ -46,14 +46,12 @@
           </div>
         </mat-card-content>
 
-
-
       </mat-card>
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">ID Box </mat-card-title>
           <div *ngIf="showIdProofListing">
-            <span class="no--of--trustee">10 Trustees</span>
+            <span class="no--of--trustee">{{showIDListingCnt}} Trustees</span>
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openAddIdBoxModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
