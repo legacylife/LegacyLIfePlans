@@ -18,6 +18,7 @@ var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const myessentials = require('./../models/myessentials.js')
+const emergencyContactsModel = require('./../models/EmergencyContacts.js')
 const personalIdProof = require('./../models/personalIdProof.js')
 const MyProfessional = require('./../models/MyProfessionals.js')
 const s3 = require('./../helpers/s3Upload')
@@ -140,6 +141,26 @@ function viewEssentialProfile(req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {
       res.send(resFormat.rSuccess(profileData))
+    }
+  })
+}
+// save emergency Contacts of customer
+function emergencyContacts(req, res) {
+  var emergencyContactsObj = new emergencyContactsModel()
+  let emergencyContactsData = req.body
+  emergencyContactsObj.address = emergencyContactsData.ecAddress
+  emergencyContactsObj.emailAddress = emergencyContactsData.ecEmail
+  emergencyContactsObj.mobile = emergencyContactsData.ecMobile
+  emergencyContactsObj.name = emergencyContactsData.ecName
+  emergencyContactsObj.phone = emergencyContactsData.ecPhone
+  emergencyContactsObj.relationship = emergencyContactsData.ecRelationship
+  emergencyContactsObj.createdOn = new Date();
+  emergencyContactsObj.save({ $set: emergencyContactsData }, function (err, newEntry) {
+    if (err) {
+      res.send(resFormat.rError(err))
+    } else {
+      let result = { "message": "Details saved successfully!" }
+      res.status(200).send(resFormat.rSuccess(result))
     }
   })
 }
@@ -267,6 +288,7 @@ router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
 router.post("/view-essential-profile", viewEssentialProfile)
+router.post("/emergency_contacts", emergencyContacts)
 router.post("/my_essentials_id_form_submit", personalIdUpdate)
 router.post("/deleteprofile", deleteProfile)
 router.post("/my-essentials-profile-submit", myProfessionalsUpdate)
