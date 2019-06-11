@@ -12,9 +12,12 @@ import { forEach } from "lodash";
   styleUrls: ['./add-trustee-modal.component.scss']
 })
 export class addTrusteeModalComponent implements OnInit {
-
+  isLinear = false;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  thirdFormGroup: FormGroup;
   constructor( ) {}
-
+  
   ngOnInit() {
     }
 

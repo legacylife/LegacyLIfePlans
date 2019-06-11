@@ -115,6 +115,6 @@ import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edi
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard
   ], bootstrap: [CustomerSignupComponent], entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,
-    PersonalProfileModalComponent, MarkAsDeceasedComponent, legalStuffModalComponent, addTrusteeModalComponent,PersonalProfileModalComponent, MarkAsDeceasedComponent,legalStuffModalComponent,essentialsMyProfessionalsComponent],],
-})
+    PersonalProfileModalComponent, MarkAsDeceasedComponent, legalStuffModalComponent, addTrusteeModalComponent,PersonalProfileModalComponent, MarkAsDeceasedComponent,legalStuffModalComponent,essentialsMyProfessionalsComponent],
+  })
 export class CustomerModule { }
