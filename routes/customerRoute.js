@@ -163,10 +163,10 @@ function viewEssentialProfile(req, res) {
 
 // save emergency Contacts of customer
 function emergencyContacts(req, res) {
-    
     //console.log("req ....>>>>>>>> ",req.body.ID);  
     //var emergencyContactsObj = {}
-    let emergencyContactsData = req.body.econtactData
+    let emergencyContactsData = req.body.econtactData;
+    console.log("------>>>>-------",emergencyContactsData); 
     var emergencyContactsObj = new emergencyContactsModel();
     emergencyContactsObj.customerId = emergencyContactsData.customerId;
     emergencyContactsObj.address = emergencyContactsData.ecAddress;
@@ -176,20 +176,24 @@ function emergencyContacts(req, res) {
     emergencyContactsObj.phone = emergencyContactsData.ecPhone;
     emergencyContactsObj.relationship = emergencyContactsData.ecRelationship;
     emergencyContactsObj.createdOn = new Date();
-
-    console.log("req .hereeeeee... ",req.body);  
+    emergencyContactsObj.modifiedOn = new Date();
+    
     if (req.body.ID) {// == "save"
-      console.log("req .111111111... ",req.body);  
-      emergencyContactsObj.modifiedOn = new Date();
-      emergencyContactsObj.updateOne({ "_id": mongoose.Types.ObjectId(req.body.ID)}, {$set: emergencyContactsObj}, function(err, updatedUser){
+      emergencyContactsObj.updateOne({ "_id": req.body.ID}, {$set: emergencyContactsObj}, function(err, updatedUser){
         if(err) {
-          console.log(err)
+          res.send(resFormat.rError(err))
         }else{
-          console.log(updatedUser)
+          let result = { "message": "Details updated successfully!" }
+          res.status(200).send(resFormat.rSuccess(result))
         }
       }) 
     } else {      
-      console.log("req .222222222222222... ",req.body);  
+
+
+     
+
+      
+
       emergencyContactsObj.save({ $set: emergencyContactsData }, function (err, newEntry) {
         if (err) {
           res.send(resFormat.rError(err))
@@ -474,7 +478,6 @@ router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
 router.post("/view-essential-profile", viewEssentialProfile)
-router.post("/emergency_contacts", emergencyContacts)
 router.post("/essentials-id-form-submit", personalIdUpdate)
 router.post("/deleteprofile", deleteProfile)
 router.post("/delete-professionals", deleteProfessionals)
@@ -485,5 +488,6 @@ router.post("/view-professional-details", viewEssentialProfessionals)
 router.post("/view-id-details", viewEssentialID)
 router.post("/essentials-legal-form-submit", legalStuffUpdate)
 router.post("/view-legalStuff-details", viewLegalStuffDetails)
-router.post("/get_emergency_contacts", getEmergencyContacts)
+router.post("/emergency-contacts", emergencyContacts)
+router.post("/get-emergency-contacts", getEmergencyContacts)
 module.exports = router
