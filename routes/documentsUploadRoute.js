@@ -77,7 +77,7 @@ router.post('/advisorDocument', cors(), function(req,res){
 })
 
 router.post('/myEssentialsID', cors(), function(req,res){
-  var fstream;
+  var fstream;//console.log("query 1234 >>");
   let authTokens = { authCode: "" }
   if (req.busboy) {
     req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
@@ -86,13 +86,13 @@ router.post('/myEssentialsID', cors(), function(req,res){
     const {query:{userId}} = req;
     req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
       let tmpallfiles = {};
-      let oldTmpFiles = [];
+      let oldTmpFiles = [];console.log("userId >>",userId);
       if(userId){
         personalIdProof.findOne({ customerId: userId },{idProofDocuments:1,_id:1}, function (err, result) {
-          if (err) {
+        if (err) {
             res.status(500).send(resFormat.rError(err))
-          } else if (result) {           
-           
+        } else {  
+
           let ext = filename.split('.')
           ext = ext[ext.length - 1];
           var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
@@ -102,8 +102,9 @@ router.post('/myEssentialsID', cors(), function(req,res){
           fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
           file.pipe(fstream);
           fstream.on('close', async function () {
+     console.log("name >>",newFilename);
             await s3.uploadFile(newFilename,IDdocFilePath);  
-            if(result.idProofDocuments){
+            if(result && result.idProofDocuments){
               oldTmpFiles = result.idProofDocuments;
             }
             tmpallfiles = {
@@ -113,14 +114,33 @@ router.post('/myEssentialsID', cors(), function(req,res){
               "tmpName" : newFilename
             }
             oldTmpFiles.push(tmpallfiles);           
-            personalIdProof.updateOne({ customerId: userId }, { $set: { idProofDocuments: oldTmpFiles } }, function (err, updatedUser) {
-              if (err) {
-                res.send(resFormat.rError(err))
-              } else {
-                let result = { userId:userId, allDocs:tmpallfiles, "message": "ID proof uploaded successfully!" }
-                res.send(resFormat.rSuccess(result))
-              }
-            })
+         
+            if (result) {     
+                  personalIdProof.updateOne({ customerId: userId }, { $set: { idProofDocuments: oldTmpFiles } }, function (err, updatedUser) {
+                    if (err) {
+                      res.send(resFormat.rError(err))
+                    } else {
+                      let result = { userId:userId, allDocs:tmpallfiles, "message": "ID proof uploaded successfully!" }
+                      res.send(resFormat.rSuccess(result))
+                    }
+                  })
+            }else{
+                 
+                  console.log("proquery :-",userId);
+                  var personal = new personalIdProof();
+                  personal.customerId = userId;
+                  personal.idProofDocuments = oldTmpFiles;
+                  personal.status = 'Pending';
+                  personal.createdOn = new Date();
+                  personal.save({}, function (err, newEntry) {
+                  if (err) {
+                    res.send(resFormat.rError(err))
+                  } else {
+                    let result = { "message": "ID proof uploaded successfully!" }
+                    res.status(200).send(resFormat.rSuccess(result))
+                  }
+                })
+           }
           })
          }else{
           if(result.personalIdProof){
@@ -129,7 +149,7 @@ router.post('/myEssentialsID', cors(), function(req,res){
           let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid file extension!" }
           res.send(resFormat.rSuccess(results))
          }
-        }
+       }
       })
       } else {
         res.status(401).send(resFormat.rError("User token mismatch."))
@@ -195,6 +215,28 @@ function deleteDoc(req, res) {
   })
 }
 
+function deleteIdDocument(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let { fileName } = req.body;
+  let fields = {};
+  personalIdProof.findOne(query, fields, function (err, fileDetails) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      personalIdProof.updateOne({ _id: fileDetails._id }, proquery, function (err, updatedUser) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          let result = { userId:fileDetails._id, "message": "File deleted successfully" }
+          res.send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
 
-router.post("/deleteAdvDoc", deleteDoc)
+
+router.post("/deleteAdvDoc", deleteDoc);
+router.post("/deleteIdDoc", deleteIdDocument);
 module.exports = router

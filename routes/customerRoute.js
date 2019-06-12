@@ -118,6 +118,21 @@ function essentialIdList(req, res) {
   }).sort(order).skip(offset).limit(limit)
 }
 
+function viewEssentialID(req, res) {
+  let { query } = req.body;
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  personalIdProof.findOne(query, fields, function (err, essentialIDList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(essentialIDList))
+    }
+  })
+}
+
 function essentialProfessionalsList(req, res) {
   let { fields, offset, query, order, limit, search } = req.body  
   MyProfessional.find(query, fields, function (err, essentialProfessionalList) {
@@ -188,21 +203,19 @@ function personalIdUpdate(req, res) {
         let result = { "message": "Something Wrong! Please signin again." }
         res.send(resFormat.rError(result));
       } else {
-        console.log("custData :- ",custData);
         if (custData && custData.customerId) {
-          let { proquery } = req.body;      
+          let { proquery } = req.body;   
+          proquery.status = 'Active';   
           personalIdProof.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              console.log("updatedDetails :-",updatedDetails);
               let result = { "message": "ID box details have been updated successfully!" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
         } else {
             let { proquery } = req.body;
-            console.log("proquery :-",proquery);
             var personal = new personalIdProof();
             personal.customerId = query.customerId;
             personal.status = 'Active';
@@ -211,7 +224,6 @@ function personalIdUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              console.log("newEntry :-",newEntry);
               let result = { "message": "ID box details have been added successfully!" }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -323,10 +335,11 @@ router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
 router.post("/view-essential-profile", viewEssentialProfile)
 router.post("/emergency_contacts", emergencyContacts)
-router.post("/my_essentials_id_form_submit", personalIdUpdate)
+router.post("/essentials-id-form-submit", personalIdUpdate)
 router.post("/deleteprofile", deleteProfile)
 router.post("/delete-professionals", deleteProfessionals)
 router.post("/my-essentials-profile-submit", myProfessionalsUpdate)
 router.post("/essential-professional-list", essentialProfessionalsList)
 router.post("/view-professional-details", viewEssentialProfessionals)
+router.post("/view-id-details", viewEssentialID)
 module.exports = router
