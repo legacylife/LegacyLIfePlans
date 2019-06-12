@@ -45,7 +45,6 @@ export class legalStuffModalComponent implements OnInit {
     }else if(this.folderName=='Personal Affairs'){
       this.typeOfDocumentList = PersonalAffairsTypeOfDocument;      
     }
-
     this.LegalForm = this.fb.group({
       typeOfDocument: new FormControl('', Validators.required),
       subFolderDocuments_temp: new FormControl([], Validators.required),
@@ -55,7 +54,6 @@ export class legalStuffModalComponent implements OnInit {
      this.subFolderDocumentsList = [];
      this.getEssentialLegalView();
    }
-
 
    LegalFormSubmit(profileInData = null) {
     var query = {};
