@@ -1,28 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { Router, ActivatedRoute } from '@angular/router';
+import { CountUp, CountUpOptions } from 'countup.js';
+import * as $ from 'jquery';
+import { debounce } from 'lodash';
 
 @Component({
   selector: 'app-landing-home-page',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
+
+  resetCounter = debounce(() => {
+    this.opts = {
+      duration: 1
+    }
+    setTimeout(() => {
+      this.endVal1 = 987852;
+      this.endVal2 = 6715;
+      this.endVal3 = 78145;
+      this.endVal4 = 207816;
+    }, 200);
+  }, 100);
 
   userId = localStorage.getItem('endUserId');
   userType = localStorage.getItem('endUserType');
 
-  constructor(private router: Router) { 
-    /*if(this.userType && this.userType == 'customer'){
-      this.router.navigate(['/', 'customer', 'dashboard']);
-    }
-    if(this.userType && this.userType == 'advisor'){
-      this.router.navigate(['/', 'advisor', 'dashboard']);
-    }*/
-  }
 
-  ngOnInit() {
-  }
 
   testomonials = [
     {
@@ -147,24 +152,16 @@ export class HomeComponent implements OnInit {
       }
     }
   ]};
-
-  
   slickInit(e) {
   }
-  
   slickInit2(e) {
   }
-  
-
   breakpoint(e) {
   }
-
   afterChange(e) {
   }
-
   beforeChange(e) {
   }
-
   gotoTop() {
     const content = document.getElementsByClassName('rightside-content-hold')[0]
     content.scroll({
@@ -172,5 +169,42 @@ export class HomeComponent implements OnInit {
       left: 0,
       behavior: 'smooth'
     });
+  }
+
+  endVal1: number = 12
+  endVal2: number = 1208
+  endVal3: number = 405
+  endVal4: number = 320
+  opts: CountUpOptions;
+
+  constructor(private router: Router) { }
+
+  ngOnInit() {
+    this.opts = {
+      duration: 2
+    };
+    window.addEventListener('scroll', this.isScrolledIntoViewOne, true);
+  }
+  ngOnDestroy() {
+    window.removeEventListener('scroll', this.isScrolledIntoViewOne, true);
+  }
+
+  isScrolledIntoViewOne = () => {
+    const docViewTop = $(window).scrollTop();
+    const docViewBottom = docViewTop + $(window).height();
+
+    const elemTop = $('#leadsNumbersAd').offset().top;
+    const elemBottom = elemTop + $('#leadsNumbersAd').height();
+
+    if ((elemBottom <= docViewBottom) && (elemTop >= docViewTop)) {
+      this.opts = {
+        duration: 0.1
+      }
+      this.endVal1 = 0;
+      this.endVal2 = 0;
+      this.endVal3 = 0;
+      this.endVal4 = 0;
+      this.resetCounter();
+    }
   }
 }

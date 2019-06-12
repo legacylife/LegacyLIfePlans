@@ -1,42 +1,59 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
-
+import { CountUp, CountUpOptions } from 'countup.js';
+import * as $ from 'jquery'
+import { debounce } from 'lodash'
 @Component({
   selector: 'app-landing-home-page',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
+
+  resetCounter = debounce(() => {
+    this.opts = {
+      duration: 1
+    }
+    setTimeout(() => {
+      this.endVal1 = 12;
+      this.endVal2 = 1208;
+      this.endVal3 = 405;
+      this.endVal4 = 320;
+    console.log('call extended');
+    }, 200);
+  }, 100);
+
+
   slides = [
     {
-      name : 'John Smith',
-      photo : "assets/images/arkenea/john.png",
-      title : 'CFC, CIF'
+      name: 'John Smith',
+      photo: "assets/images/arkenea/john.png",
+      title: 'CFC, CIF'
     },
     {
-      name : 'Emily Doe',
-      photo : "assets/images/arkenea/emily.png",
-      title : 'CFC, CIF'
+      name: 'Emily Doe',
+      photo: "assets/images/arkenea/emily.png",
+      title: 'CFC, CIF'
     },
     {
-      name : 'James Anderson',
-      photo : "assets/images/arkenea/james.png",
-      title : 'CFC, CIF'
+      name: 'James Anderson',
+      photo: "assets/images/arkenea/james.png",
+      title: 'CFC, CIF'
     },
     {
-      name : '4 John Smith',
-      photo : "assets/images/arkenea/john.png",
-      title : 'CFC, CIF'
+      name: '4 John Smith',
+      photo: "assets/images/arkenea/john.png",
+      title: 'CFC, CIF'
     },
     {
-      name : '5 Emily Doe',
-      photo : "assets/images/arkenea/emily.png",
-      title : 'CFC, CIF'
+      name: '5 Emily Doe',
+      photo: "assets/images/arkenea/emily.png",
+      title: 'CFC, CIF'
     },
     {
-      name : '6 James Anderson',
-      photo : "assets/images/arkenea/james.png",
-      title : 'CFC, CIF'
+      name: '6 James Anderson',
+      photo: "assets/images/arkenea/james.png",
+      title: 'CFC, CIF'
     },
   ];
   testomonials = [
@@ -121,58 +138,92 @@ export class HomeComponent implements OnInit {
       clientDesc: 'CFC, CIF'
 
     }
-];
+  ];
 
-  slideConfig = { 'slidesToShow': 3, 'slidesToScroll': 1 ,  responsive : [
-    {
-      breakpoint: 1212,
-      settings: {
-        centerMode: true,
-        centerPadding: '40px',
-        slidesToShow: 2
+  slideConfig = {
+    'slidesToShow': 3, 'slidesToScroll': 1, responsive: [
+      {
+        breakpoint: 1212,
+        settings: {
+          centerMode: true,
+          centerPadding: '40px',
+          slidesToShow: 2
+        }
+      },
+      {
+        breakpoint: 820,
+        settings: {
+          arrows: false,
+          centerMode: true,
+          centerPadding: '40px',
+          slidesToShow: 1
+        }
       }
-    },
-    {
-      breakpoint: 820,
-      settings: {
-        arrows: false,
-        centerMode: true,
-        centerPadding: '40px',
-        slidesToShow: 1
-      }
-    }
-  ]};
+    ]
+  };
   // autoplaySpeed: 10000,autoplay : true,
   // pauseOnHover:false,  autoplaySpeed: 1000 , speed: 200,
-  slideConfigTwo = { 'slidesToShow': 3, pauseOnHover:false, 'centerMode': true, infinite: true,
-   autoplay: true,  autoplaySpeed: 2000 , 'slidesToScroll': 1 , responsive : [
-    {
-      breakpoint: 1212,
-      settings: {
-        centerMode: true,
-        centerPadding: '40px',
-        slidesToShow: 2
+  slideConfigTwo = {
+    'slidesToShow': 3, pauseOnHover: false, 'centerMode': true, infinite: true,
+    autoplay: true, autoplaySpeed: 2000, 'slidesToScroll': 1, responsive: [
+      {
+        breakpoint: 1212,
+        settings: {
+          centerMode: true,
+          centerPadding: '40px',
+          slidesToShow: 2
+        }
+      },
+      {
+        breakpoint: 820,
+        settings: {
+          arrows: false,
+          centerMode: true,
+          centerPadding: '40px',
+          slidesToShow: 1
+        }
       }
-    },
-    {
-      breakpoint: 820,
-      settings: {
-        arrows: false,
-        centerMode: true,
-        centerPadding: '40px',
-        slidesToShow: 1
-      }
-    }
-  ]};
+    ]
+  };
 
+  endVal1: number = 12
+  endVal2: number = 1208
+  endVal3: number = 405
+  endVal4: number = 320
+  opts: CountUpOptions;
 
   // autoplay : true, autoplaySpeed: 1000 
 
   constructor() { }
 
   ngOnInit() {
+    this.opts = {
+      duration: 2
+    };
+    window.addEventListener('scroll', this.isScrolledIntoView, true);
+  }
+  ngOnDestroy() {
+    window.removeEventListener('scroll', this.isScrolledIntoView, true);
   }
 
+  isScrolledIntoView = () => {
+    const docViewTop = $(window).scrollTop();
+    const docViewBottom = docViewTop + $(window).height();
+
+    const elemTop = $('#leadsNumbers').offset().top;
+    const elemBottom = elemTop + $('#leadsNumbers').height();
+
+    if ((elemBottom <= docViewBottom) && (elemTop >= docViewTop)) {
+      this.opts = {
+        duration: 0.1
+      }
+      this.endVal1 = 0;
+      this.endVal2 = 0;
+      this.endVal3 = 0;
+      this.endVal4 = 0;
+      this.resetCounter();
+    }
+  }
 
 
   removeSlide() {
@@ -180,16 +231,16 @@ export class HomeComponent implements OnInit {
   }
 
   slickInit(e) {
-   // console.log('slick initialized');
+    // console.log('slick initialized');
   }
-  
+
   slickInit2(e) {
-  //  console.log('slick initialized');
+    //  console.log('slick initialized');
   }
-  
+
 
   breakpoint(e) {
-   // console.log('breakpoint');
+    // console.log('breakpoint');
   }
 
   afterChange(e) {
@@ -197,16 +248,17 @@ export class HomeComponent implements OnInit {
   }
 
   beforeChange(e) {
-   // console.log('beforeChange');
+    // console.log('beforeChange');
   }
-  
+
   gotoTop() {
     const content = document.getElementsByClassName('rightside-content-hold')[0]
-    
-    content.scroll({ 
-      top: 0, 
-      left: 0, 
-      behavior: 'smooth' 
+
+    content.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
     });
   }
+
 }

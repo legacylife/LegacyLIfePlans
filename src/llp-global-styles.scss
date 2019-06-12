@@ -776,7 +776,7 @@ body{
     }
     body .mat-dialog-container .ll--modal--footer, 
     body .mat-dialog-container .ll--modal--header{
-        height: auto;
+        height: auto !important;
         font-size: 22px;
     }   
     body .mat-dialog-container .ll--modal--footer .llp--secondary--btn{
