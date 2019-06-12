@@ -1,19 +1,19 @@
 <div class="ll--modal--header llp--close--modal">
-    <button class="modal--close" [mat-dialog-close]="">
-      <mat-icon class="icon--cross">cancel</mat-icon>
-    </button>
-  </div>
-  <div class="ll--modal--body per--profile--wrapper p-0">
-    <div class="stepper--wrapper">
-      <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="onChangeFormIndex($event)">
-  
-        <mat-step [stepControl]="firstFormGroup">
-          <form [formGroup]="firstFormGroup" class="llp-form-wrapper">
-            <h3 class="main--head text-center">Add a Trustee to your Legacy!</h3>
-            <p class="sub--head text-center">Add Trustee Details</p>
-  
-            <div class="profile--body--scroll">
-  
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+<div class="ll--modal--body per--profile--wrapper p-0">
+  <div class="stepper--wrapper">
+    <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="onChangeFormIndex($event)">
+
+      <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup" class="llp-form-wrapper">
+          <h3 class="main--head text-center">Add a Trustee to your Legacy!</h3>
+          <p class="sub--head text-center">Add Trustee Details</p>
+
+          <div class="profile--body--scroll">
+
             <mat-form-field class="full-width">
               <input matInput placeholder="First Name">
             </mat-form-field>
@@ -22,8 +22,8 @@
             </mat-form-field>
             <mat-form-field class="full-width">
               <input matInput placeholder="Email">
-            </mat-form-field>          
-            
+            </mat-form-field>
+
             <mat-form-field class="full-width">
               <mat-label>Relationship</mat-label>
               <mat-select>
@@ -32,68 +32,157 @@
                 <mat-option value="option2">Option 2</mat-option>
                 <mat-option value="option3">Option 3</mat-option>
               </mat-select>
-            </mat-form-field>          
-  
-            </div>  
-            <div class="mt-1 text-center">
-              <button type="button" mat-raised-button matStepperNext class="llp--primary--btn mb-1">Assign Permissions</button>
-            </div>
-          </form>
-        </mat-step>
-  
-  
-        <mat-step [stepControl]="secondFormGroup">
-          <form [formGroup]="secondFormGroup" class="llp-form-wrapper">
-  
-            <h3 class="main--head text-center">Add a Trustee to your Legacy!</h3>
-            <p class="sub--head text-center">Which sections would the trustee be able to access, and when?</p>
-  
-            <div class="profile--body--scroll">
-            
+            </mat-form-field>
+
+          </div>
+          <div class="mt-1 text-center">
+            <button type="button" mat-raised-button matStepperNext class="llp--primary--btn mb-1">Assign Permissions</button>
+          </div>
+        </form>
+      </mat-step>
+
+
+      <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup" class="llp-form-wrapper">
+
+          <h3 class="main--head text-center">Add a Trustee to your Legacy!</h3>
+          <p class="sub--head text-center">Which sections would the trustee be able to access, and when?</p>
+
+          <div class="profile--body--scroll">
+
+            <div class="trust--legacy--wrapper">
+
+              <div class="cover mt-1">
                 <div fxLayout="row wrap">
-                    <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="20" fxFlex.lg="49" fxFlex.xl="33.33">
-                      <label>Select All</label>
-                    </div>
-                    <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="20" fxFlex.lg="49" fxFlex.xl="33.33">02</div>
-                    <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="20" fxFlex.lg="49" fxFlex.xl="33.33">03</div>
-                    <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="20" fxFlex.lg="49" fxFlex.xl="33.33">04</div>
+                  <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
+                    <label class="header bold">Select All</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                    <label class="header">Now</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                    <label class="header">After Death</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                    <label class="header">Never</label>
+                  </div>
                 </div>
-  
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
+                    <label class="left--header">All 30 sections</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                    <mat-radio-group class="llp-radio">
+                      <mat-radio-button value="abc" class="">Now</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                    <mat-radio-group class="llp-radio">
+                      <mat-radio-button value="abc" class="">After Death</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                    <mat-radio-group class="llp-radio">
+                      <mat-radio-button value="abc" class="">Never</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cover mt-1">
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
+                    <label class="header bold">My Essentials</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                    <label class="header">Now</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                    <label class="header">After Death</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                    <label class="header">Never</label>
+                  </div>
+                </div>
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
+                    <label class="left--header">Personal Profile</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                    <mat-radio-group class="llp-radio">
+                      <mat-radio-button value="abc" class="">Now</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                    <mat-radio-group class="llp-radio">
+                      <mat-radio-button value="abc" class="">After Death</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                    <mat-radio-group class="llp-radio">
+                      <mat-radio-button value="abc" class="">Never</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
+                    <label class="left--header">Work Profile</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                    <mat-radio-group class="llp-radio">
+                      <mat-radio-button value="abc" class="">Now</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                    <mat-radio-group class="llp-radio">
+                      <mat-radio-button value="abc" class="">After Death</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                    <mat-radio-group class="llp-radio">
+                      <mat-radio-button value="abc" class="">Never</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                </div>
+              </div>
+
+
             </div>
-  
-            <div class="mt-1 text-center">
-              <button mat-raised-button matStepperPrevious class="llp--back--btn">
-                <mat-icon>arrow_back</mat-icon> Back</button>
-              <button type="button" mat-raised-button matStepperNext class="llp--primary--btn mb-1">Continue</button>
-  
-            </div>
-          </form>
-        </mat-step>
-  
-        <mat-step [stepControl]="thirdFormGroup">
-  
-          <form [formGroup]="thirdFormGroup" class="llp-form-wrapper">
-  
-            <h3 class="main--head text-center">Add a Trustee to your Legacy!
-            </h3>
-            <p class="sub--head text-center">We're ready to email Ajinkya an invitation asking to be a Trustee 
-                to your Legacy.</p>
-  
-            <div class="profile--body--scroll"> 
-           
+
+          </div>
+
+          <div class="mt-1 text-center">
+            <button mat-raised-button matStepperPrevious class="llp--back--btn">
+              <mat-icon>arrow_back</mat-icon> Back</button>
+            <button type="button" mat-raised-button matStepperNext class="llp--primary--btn mb-1">Continue</button>
+
+          </div>
+        </form>
+      </mat-step>
+
+      <mat-step [stepControl]="thirdFormGroup">
+
+        <form [formGroup]="thirdFormGroup" class="llp-form-wrapper">
+
+          <h3 class="main--head text-center">Add a Trustee to your Legacy!
+          </h3>
+          <p class="sub--head text-center">We're ready to email Ajinkya an invitation asking to be a Trustee to your Legacy.</p>
+
+          <div class="profile--body--scroll">
+
             <mat-form-field class="full-width mt-1">
-                <textarea matInput placeholder="Add a personal message" value="Message"></textarea>
-              </mat-form-field>
-  
-            </div>
-            <div class="mt-1 text-center">
-              <button mat-raised-button matStepperPrevious class="llp--back--btn">
-                <mat-icon>arrow_back</mat-icon> Back</button>
-              <button mat-raised-button matStepperNext class="llp--primary--btn mb-1">Send an Invite</button>
-            </div>
-          </form>
-        </mat-step>
-  
-      </mat-horizontal-stepper>
-    </div>
+              <textarea matInput placeholder="Add a personal message" rows="7" value="Message"></textarea>
+            </mat-form-field>
+
+          </div>
+          <div class="mt-1 text-center">
+            <button mat-raised-button matStepperPrevious class="llp--back--btn">
+              <mat-icon>arrow_back</mat-icon> Back</button>
+            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1">Send an Invite</button>
+          </div>
+        </form>
+      </mat-step>
+
+    </mat-horizontal-stepper>
   </div>
+</div>

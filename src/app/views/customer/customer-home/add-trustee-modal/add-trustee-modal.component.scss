@@ -1,2 +1,107 @@
 @import 'llp-global-styles.scss';
 @import '../personal-profile-modal/personal-profile-modal.component.scss';
+
+.trust--legacy--wrapper{
+    .cover{
+        border-bottom: 1px solid #d1dbde;
+        margin-bottom: 20px;
+        .header{
+            font-size: 16px;
+            color: #222324;
+            margin-bottom: 20px;
+            display: block;
+            font-family: $font--lato--regular;
+            &.bold{
+                font-family: $font--lato--bold;
+            }
+        }
+        .left--header{
+            font-size: 16px;
+            color: #222324;
+            margin-bottom: 10px;
+            display: block;
+            font-family: $font--lato--regular;
+        }
+        .center--txt{
+            text-align: center;
+        }
+        ::ng-deep {
+            .llp-radio{
+                .mat-radio-label-content{
+                    display: none;
+                }
+                .mat-radio-button{
+                    margin: 0;
+                }
+            }
+        }
+    }
+    
+}
+
+@media only screen and (max-width: 599px) {
+  
+    .trust--legacy--wrapper{
+        .cover{
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            .header{
+                display: none;
+                &.bold{
+                    display: block;
+                    margin-bottom: 10px;
+                }
+            }
+            .left--header{
+                margin-bottom: 10px;
+            }
+            .center--txt{
+                text-align: left;
+            }
+            ::ng-deep {
+                .llp-radio{
+                    margin-bottom: 10px;
+                    .mat-radio-label-content{
+                        display: inline-block;
+                        font-size: 14px;
+                    }
+                    .mat-radio-button{
+                        margin: 0;
+                    }
+                }
+            }
+        }
+        
+    }
+}
+@media only screen and (max-width: 600px) {
+    .trust--legacy--wrapper{
+        .cover{
+            margin-bottom: 20px;
+            .header{
+                display: none;
+                &.bold{
+                    display: block;
+                    margin-bottom: 15px;
+                }
+            }
+            .left--header{
+                margin-bottom: 10px;
+            }
+            .center--txt{
+                text-align: left;
+            }
+            ::ng-deep {
+                .llp-radio{
+                    .mat-radio-label-content{
+                        display: inline-block;
+                    }
+                    .mat-radio-button{
+                        margin: 0;
+                    }
+                }
+            }
+        }
+        
+    }
+}
