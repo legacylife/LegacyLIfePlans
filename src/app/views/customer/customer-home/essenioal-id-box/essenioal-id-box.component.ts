@@ -46,11 +46,44 @@ export class EssenioalIdBoxComponent implements OnInit {
   typeSix: boolean = false;
   typeSeven: boolean = false;
   typeSixSeven: boolean = false;
+  essentialIDList:any = [];
+  showIDListingCnt:any;
+  profileIdHiddenVal:boolean = true;
 
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService  ) { }
 
-  onChangeDocumentType(key) {
-      //console.log("--- >>  ",key);
+
+
+  ngOnInit() {
+    this.userId = localStorage.getItem("endUserId");
+    this.stateList = states.sort();
+    this.IDForm = this.fb.group({
+      documentType: new FormControl('', Validators.required),
+      socialSecurityNumber: new FormControl(''),
+      locationSocialSecurityCard: new FormControl(''),
+      licenseNumber: new FormControl(''),
+      nonDriverIDNumber: new FormControl(''),
+      DoDIDNumber: new FormControl(''),
+      placeOfBirth: new FormControl(''),
+      countryOfIssue: new FormControl(''),
+      DBN: new FormControl(''),
+      fileNumber: new FormControl(''),
+      state: new FormControl(''),
+      passportNumber: new FormControl(''),
+      locationDriverLicense: new FormControl(''),
+      locationDoDID: new FormControl(''),
+      expirationDate: new FormControl(''),
+      locationPassport: new FormControl(''),
+      LocationWorkPermitVisa: new FormControl(''),  
+      idProofDocuments_temp: new FormControl([], Validators.required),
+      comments: new FormControl('', Validators.required), 
+      profileId: new FormControl('')
+     });
+     this.idProofDocumentsList = [];
+     this.getEssentialIdView();
+    }
+   
+    onChangeDocumentType(key) {
       this.typeOne = false;
       this.typeOneTwo = false;
       this.typeOneTwoSixSeven = false;
@@ -88,44 +121,24 @@ export class EssenioalIdBoxComponent implements OnInit {
       }
   }
 
-  ngOnInit() {
-    this.userId = localStorage.getItem("endUserId");
-    this.stateList = states.sort();
-    this.IDForm = this.fb.group({
-      documentType: new FormControl('', Validators.required),
-      socialSecurityNumber: new FormControl(''),
-      locationSocialSecurityCard: new FormControl(''),
-      licenseNumber: new FormControl(''),
-      nonDriverIDNumber: new FormControl(''),
-      DoDIDNumber: new FormControl(''),
-      placeOfBirth: new FormControl(''),
-      countryOfIssue: new FormControl(''),
-      DBN: new FormControl(''),
-      fileNumber: new FormControl(''),
-      state: new FormControl(''),
-      passportNumber: new FormControl(''),
-      locationDriverLicense: new FormControl(''),
-      locationDoDID: new FormControl(''),
-      expirationDate: new FormControl(''),
-      locationPassport: new FormControl(''),
-      LocationWorkPermitVisa: new FormControl(''),  
-      idProofDocuments_temp: new FormControl(),//[],Validators.required
-      comments: new FormControl('', Validators.required)    
-     });
-    }
-   
     IdFormSubmit(profileInData = null) {
-      console.log("data :- ",profileInData);
       var query = {};
-      var proquery = {};
+      var proquery = {};     
       const req_vars = {
-        query: Object.assign({ customerId: this.userId }),
+        query: Object.assign({customerId: this.userId }),
         proquery: Object.assign(profileInData)
       }
-      //8this.loader.open();
-      console.log("req_vars", req_vars);
-      this.userapi.apiRequest('post', 'customer/my_essentials_id_form_submit', req_vars).subscribe(result => {
-     //8   this.loader.close();
+      let profileIds = this.IDForm.controls['profileId'].value;
+      if(profileIds){
+        const req_vars = {
+          query: Object.assign({ _id:profileIds, customerId: this.userId }),
+          proquery: Object.assign(profileInData)
+        }
+      }
+
+      this.loader.open();     
+      this.userapi.apiRequest('post', 'customer/essentials-id-form-submit', req_vars).subscribe(result => {
+        this.loader.close();
         if (result.status == "error") {
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
         } else {
@@ -136,10 +149,55 @@ export class EssenioalIdBoxComponent implements OnInit {
         console.error(err)
       })
     }
+  
+    getEssentialIdView = (query = {}, search = false) => { 
+      const req_vars = {
+        query: Object.assign({ customerId: this.userId, status:"Pending" }, query)
+      }
+      this.loader.open(); 
+      this.userapi.apiRequest('post', 'customer/view-id-details', req_vars).subscribe(result => {
+        this.loader.close();
+        if (result.status == "error") {
+          console.log(result.data)
+        } else {
+          if(result.data){    
+            this.essentialIDList = result.data;                    
+            this.IDForm.controls['profileId'].setValue(this.essentialIDList._id);
+            this.idProofDocumentsList = result.data.idProofDocuments;
+            if(this.essentialIDList.idProofDocuments.length>0){
+              this.IDForm.controls['idProofDocuments_temp'].setValue('1');
+            }
+            this.IDForm.controls['documentType'].setValue(this.essentialIDList.documentType);
+            if(this.essentialIDList.documentType){
+              this.onChangeDocumentType(this.essentialIDList.documentType);
+            }
+            
+            this.IDForm.controls['socialSecurityNumber'].setValue(this.essentialIDList.socialSecurityNumber);
+            this.IDForm.controls['locationSocialSecurityCard'].setValue(this.essentialIDList.locationSocialSecurityCard);
+            this.IDForm.controls['state'].setValue(this.essentialIDList.state);
+            this.IDForm.controls['licenseNumber'].setValue(this.essentialIDList.licenseNumber);
+            this.IDForm.controls['nonDriverIDNumber'].setValue(this.essentialIDList.nonDriverIDNumber);
+            this.IDForm.controls['DoDIDNumber'].setValue(this.essentialIDList.DoDIDNumber);
+            this.IDForm.controls['placeOfBirth'].setValue(this.essentialIDList.placeOfBirth);
+            this.IDForm.controls['countryOfIssue'].setValue(this.essentialIDList.countryOfIssue);
+            this.IDForm.controls['DBN'].setValue(this.essentialIDList.DBN);
+            this.IDForm.controls['fileNumber'].setValue(this.essentialIDList.fileNumber);
+            this.IDForm.controls['passportNumber'].setValue(this.essentialIDList.passportNumber);
+            this.IDForm.controls['locationDriverLicense'].setValue(this.essentialIDList.locationDriverLicense);
+            this.IDForm.controls['locationDoDID'].setValue(this.essentialIDList.locationDoDID); 
+            this.IDForm.controls['expirationDate'].setValue(this.essentialIDList.expirationDate);
+            this.IDForm.controls['locationPassport'].setValue(this.essentialIDList.locationPassport);
+            this.IDForm.controls['LocationWorkPermitVisa'].setValue(this.essentialIDList.LocationWorkPermitVisa); 
+            this.IDForm.controls['comments'].setValue(this.essentialIDList.comments);
+          }       
+        }
+      }, (err) => {
+        console.error(err);
+      })
+  }
 
-
-    IDDelete(doc, name, tmName) {
-      var statMsg = "Are you sure you want to delete '" + name + "' file name?"
+  IDDelete(doc, name, tmName,ids) {
+      var statMsg = "Are you sure you want to delete '" + name + "' file?"
       this.confirmService.confirm({ message: statMsg })
         .subscribe(res => {
           if (res) {
@@ -147,11 +205,11 @@ export class EssenioalIdBoxComponent implements OnInit {
             this.idProofDocumentsList.splice(doc, 1)
             var query = {};
             const req_vars = {
-              query: Object.assign({ _id: this.userId }, query),
-              proquery: Object.assign({ advisorDocuments: this.idProofDocumentsList }, query),
+              query: Object.assign({ _id: ids }, query),
+              proquery: Object.assign({ idProofDocuments: this.idProofDocumentsList }, query),
               fileName: Object.assign({ docName: tmName }, query)
             }
-            this.userapi.apiRequest('post', 'documents/deleteAdvDoc', req_vars).subscribe(result => {
+            this.userapi.apiRequest('post', 'documents/deleteIdDoc', req_vars).subscribe(result => {
               if (result.status == "error") {
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
@@ -168,10 +226,9 @@ export class EssenioalIdBoxComponent implements OnInit {
             })
           }
         })
-    }
+  }
 
-
-    public fileOverBase(e: any): void {
+  public fileOverBase(e: any): void {
       this.hasBaseDropZoneOver = e;
       this.fileErrors = [];
       this.uploader.queue.forEach((fileoOb) => {
@@ -189,29 +246,38 @@ export class EssenioalIdBoxComponent implements OnInit {
           }, 5000);
       
         }
-      });
+   });
   
       if(this.uploader.getNotUploadedItems().length){
         this.uploader.uploadAll();
         this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-          this.getProfileField();
+          this.getIdDocuments();
         };
       }
     }
 
-    getProfileField = (query = {}, search = false) => {
+    getIdDocuments = (query = {}, search = false) => {     
+      let profileIds = this.IDForm.controls['profileId'].value;
       const req_vars = {
-        query: Object.assign({ _id: this.userId, userType: "advisor" }, query)
+        query: Object.assign({customerId: this.userId }),
+        fields:{idProofDocuments:1}
       }
-      this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe(result => {
+      if(profileIds){
+        const req_vars = {
+          query: Object.assign({ _id:profileIds, customerId: this.userId }),
+          fields:{_id:1,idProofDocuments:1}
+        }
+      }    
+      this.userapi.apiRequest('post', 'customer/view-id-details', req_vars).subscribe(result => {
         if (result.status == "error") {
         } else {
-         // this.profile = result.data.userProfile;
-         // this.idProofDocumentsList = this.profile.idProofDocuments;
-          //if(this.profile.idProofDocuments.length>0){
+          //this.profile = result.data.userProfile;
+          console.log(result.data._id);
+          this.idProofDocumentsList = result.data.idProofDocuments;
+          this.IDForm.controls['profileId'].setValue(result.data._id);
+          if(result.data.idProofDocuments.length>0){
             this.IDForm.controls['idProofDocuments_temp'].setValue('1');
-         // }
-         
+          }         
         }
       }, (err) => {
         console.error(err);

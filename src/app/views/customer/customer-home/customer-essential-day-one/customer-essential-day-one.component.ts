@@ -64,11 +64,10 @@ export class CustomerEssentialDayOneComponent implements OnInit {
     })
   }
   
-  getEssentialIdList = (query = {}, search = false) => { console.log("userId",this.userId);
+  getEssentialIdList = (query = {}, search = false) => { 
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status:"Active" }, query)
     }
-    console.log("query",req_vars);
     this.userapi.apiRequest('post', 'customer/essential-id-list', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
@@ -85,18 +84,16 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   }
 
   getEssentialProfessionalList = (query = {}, search = false) => { 
-    console.log("userId",this.userId);
-  const req_vars = {
-    query: Object.assign({ customerId: this.userId, status:"Active" }, query)
-  }
-    console.log("query",req_vars);
+
+    const req_vars = {
+      query: Object.assign({ customerId: this.userId, status:"Active" }, query)
+    }
+
   this.userapi.apiRequest('post', 'customer/essential-professional-list', req_vars).subscribe(result => {
     if (result.status == "error") {
       console.log(result.data)
     } else {
-      console.log("--->",result.data)
       this.essentialProfessionalList = result.data.essentialProfessionalList;
-      console.log("====>",this.essentialProfessionalList)
       if(result.data.totalProfessionalRecords > 0){         
         this.showProfessionalCnt = result.data.totalProfessionalRecords;
         this.showProfessionalsListing = true;
