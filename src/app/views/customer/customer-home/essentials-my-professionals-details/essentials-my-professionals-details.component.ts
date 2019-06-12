@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MatDialogRef,MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
+import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms'
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
@@ -23,7 +23,7 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
-    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar,  private router: Router
+    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router
   ) { }
 
   ngOnInit() {
@@ -43,7 +43,7 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.row = result.data;console.log(result.data)
+        this.row = result.data; console.log(result.data)
         // this.pplandLineNumberList = Array.prototype.map.call(this.row.ppLandlineNumbers, function (item) { return item.phone; }).join(",");
         // this.ppEmailsList = Array.prototype.map.call(this.row.ppEmails, function (item) { return item.email; }).join(",");
         // this.wpLandlineNumbersList = Array.prototype.map.call(this.row.wpLandlineNumbers, function (item) { return item.phone; }).join(",");
@@ -52,18 +52,27 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
       }
     }, (err) => {
       console.error(err)
-    })  
+    })
   }
 
-  openProfessionalsModal(data: any = {}, isNew?) {console.log('asd')
+  openProfessionalsModal(data: any = {}, isNew?) {
+    console.log('asd')
     let dialogRef: MatDialogRef<any> = this.dialog.open(essentialsMyProfessionalsComponent, {
       width: '720px',
       disableClose: true,
     })
+
+    dialogRef.afterClosed()
+      .subscribe(res => {
+        this.getEssentialProfileDetails();
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
   }
-  
+
   deleteProfessionals() {
-    console.log('asdasd')
     var statMsg = "Are you sure you want to delete professionals?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {

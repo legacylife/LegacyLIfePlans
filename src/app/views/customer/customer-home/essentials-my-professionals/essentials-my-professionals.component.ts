@@ -17,7 +17,7 @@ export class essentialsMyProfessionalsComponent implements OnInit {
   userId = localStorage.getItem("endUserId");
   professionalForm: FormGroup;
   myProfessionalsList: string[] = myProfessionals;
-  profileIdHiddenVal:boolean = true;
+  profileIdHiddenVal:boolean = false;
   selectedProfileId:string;
   profesional:any;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService  ) { }
