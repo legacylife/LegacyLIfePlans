@@ -21,6 +21,7 @@ const myessentials = require('./../models/myessentials.js')
 const emergencyContactsModel = require('./../models/EmergencyContacts.js')
 const personalIdProof = require('./../models/personalIdProof.js')
 const MyProfessional = require('./../models/MyProfessionals.js')
+const LegalStuff = require('./../models/LegalStuff.js')
 const s3 = require('./../helpers/s3Upload')
 
 var auth = jwt({
@@ -330,6 +331,67 @@ function deleteProfessionals(req, res) {
   })
 }
 
+function legalStuffUpdate(req, res) {
+  let { query } = req.body;
+  let {message} = req.body;
+  if (query.customerId) {
+    LegalStuff.findOne(query, function (err, custData) {
+      if (err) {
+        let result = { "message": "Something Wrong! Please signin again." }
+        res.send(resFormat.rError(result));
+      } else {
+        if (custData && custData.customerId) {
+          let { proquery } = req.body;   
+          proquery.status = 'Active';   
+          LegalStuff.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              let result = { "message": message.messageText+" updated successfully!" }
+              res.status(200).send(resFormat.rSuccess(result))
+            }
+          })
+        } else {
+            let { proquery } = req.body;
+            var legals = new LegalStuff();
+            legals.customerId = query.customerId;
+            legals.subFolderName = proquery.subFolderName;
+            legals.typeOfDocument = proquery.typeOfDocument;
+            legals.comments = proquery.comments;            
+            legals.status = 'Active';
+            legals.createdOn = new Date();
+            legals.save({$set:proquery}, function (err, newEntry) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              let result = { "message": message.messageText+" have been added successfully!" }
+              res.status(200).send(resFormat.rSuccess(result))
+            }
+          })
+        }
+      }
+    })
+  } else {
+    let result = { "message": "You have logout! Please signin again." }
+    res.send(resFormat.rError(result));
+  }
+}
+
+function viewLegalStuffDetails(req, res) {
+  let { query } = req.body;
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  LegalStuff.findOne(query, fields, function (err, LegalStuffList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(LegalStuffList))
+    }
+  })
+}
+
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
@@ -342,4 +404,7 @@ router.post("/my-essentials-profile-submit", myProfessionalsUpdate)
 router.post("/essential-professional-list", essentialProfessionalsList)
 router.post("/view-professional-details", viewEssentialProfessionals)
 router.post("/view-id-details", viewEssentialID)
+router.post("/essentials-legal-form-submit", legalStuffUpdate)
+router.post("/view-legalStuff-details", viewLegalStuffDetails)
+
 module.exports = router
