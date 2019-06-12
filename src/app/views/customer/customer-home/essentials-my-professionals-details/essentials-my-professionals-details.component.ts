@@ -43,12 +43,7 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.row = result.data; console.log(result.data)
-        // this.pplandLineNumberList = Array.prototype.map.call(this.row.ppLandlineNumbers, function (item) { return item.phone; }).join(",");
-        // this.ppEmailsList = Array.prototype.map.call(this.row.ppEmails, function (item) { return item.email; }).join(",");
-        // this.wpLandlineNumbersList = Array.prototype.map.call(this.row.wpLandlineNumbers, function (item) { return item.phone; }).join(",");
-        // this.ccWorkLandlineNumbersList = Array.prototype.map.call(this.row.ccWorkLandlineNumbers, function (item) { return item.phone; }).join(",");
-        // this.ccChurchLandlineNumbersList = Array.prototype.map.call(this.row.ccChurchLandlineNumbers, function (item) { return item.phone; }).join(",");
+        this.row = result.data;
       }
     }, (err) => {
       console.error(err)
@@ -98,19 +93,4 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
         }
       })
   }
-  // ngOnDestroy() {
-
-  // }
-
-  // showSecoDay() {
-  //   this.dayFirst = false;this.daySeco = true;
-  // }
-  // setActiveCategory(category) {
-  //   this.activeCategory = category;
-  //   this.filterForm.controls['category'].setValue(category)
-  // }
-
-  // toggleSideNav() {
-  //   this.sideNav.opened = !this.sideNav.opened;
-  // }
 }

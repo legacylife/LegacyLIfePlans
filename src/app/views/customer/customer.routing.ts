@@ -72,7 +72,7 @@ export const CustomerRoutes: Routes = [
             component: CustomerEssentialDetailsComponent
           },
           {
-            path: 'essential-detail-idbox',
+            path: 'essential-detail-idbox/:id',
             component: CustomerEssentialDetailsIdboxComponent
           },
           {
