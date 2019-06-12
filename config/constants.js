@@ -17,6 +17,7 @@ var constants = {
     profilePicturesPath:"profilePictures/",
     advisorsDocumentsPath:"advisorDocs/",
     myEssentialsDocumentsPath:"myEssentials/",
+    legalStuffDocumentsPath:"legalStuff/",
     serveUrl: "https://llp-dev.s3.amazonaws.com"
   },
   ses: {

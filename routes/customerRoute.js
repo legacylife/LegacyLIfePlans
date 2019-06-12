@@ -330,6 +330,27 @@ function deleteProfessionals(req, res) {
   })
 }
 
+function deleteIdBox(req, res) {
+  let { query } = req.body;
+  let fields = { }
+  personalIdProof.findOne(query, fields, function (err, profileInfo) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      var upStatus = 'Delete';
+      var params = { status: upStatus }
+      personalIdProof.update({ _id: profileInfo._id }, { $set: params }, function (err, updatedinfo) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          let result = { "message": "Record deleted successfully!" }
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
@@ -338,6 +359,7 @@ router.post("/emergency_contacts", emergencyContacts)
 router.post("/essentials-id-form-submit", personalIdUpdate)
 router.post("/deleteprofile", deleteProfile)
 router.post("/delete-professionals", deleteProfessionals)
+router.post("/delete-id-box", deleteIdBox)
 router.post("/my-essentials-profile-submit", myProfessionalsUpdate)
 router.post("/essential-professional-list", essentialProfessionalsList)
 router.post("/view-professional-details", viewEssentialProfessionals)
