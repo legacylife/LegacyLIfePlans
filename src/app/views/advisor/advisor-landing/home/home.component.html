@@ -135,25 +135,25 @@
 
       <div class="green-divider" id="ad-leads"></div>
 
-      <div class="llp--container">
+      <div class="llp--container" id="leadsNumbers" (document:scroll)="isScrolledIntoView()">
         <div class="llp--hired">
           <h4>Legacy Life Plans Facts</h4>
           <p>How we build </p>
           <div class="history">
             <div class="sm--mt">
-              <h5>12</h5>
+              <h5 [countUp]="endVal1" [options]="opts"></h5>
               <h6>Years</h6>
             </div>
             <div class="sm--mt">
-              <h5>1208</h5>
+              <h5 [countUp]="endVal2" [options]="opts"></h5>
               <h6>Life Plans</h6>
             </div>
             <div class="sm--mt">
-              <h5>405</h5>
+              <h5 [countUp]="endVal3" [options]="opts"></h5>
               <h6>Advisors</h6>
             </div>
             <div class="sm--mt">
-              <h5>320</h5>
+              <h5 [countUp]="endVal4" [options]="opts"></h5>
               <h6>Referral Connections</h6>
             </div>
           </div>

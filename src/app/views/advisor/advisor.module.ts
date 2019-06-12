@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatStepperModule } from '@angular/material/stepper';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { 
+import {
   MatListModule,
   MatIconModule,
   MatButtonModule,
@@ -29,14 +29,14 @@ import {
   MatDatepickerModule,
   MatNativeDateModule,
   MatTooltipModule
- } from '@angular/material';
+} from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
 import { AdvisorRoutes } from './advisor.routing';
-import { AdvisorSignupComponent,FormatTimePipe } from './signup/signup.component';
+import { AdvisorSignupComponent, FormatTimePipe } from './signup/signup.component';
 import { BusinessInfoComponent } from './business-info/business-info.component';
 import { SetPasswordComponent } from './set-password/set-password.component';
 import { ThankYouComponent } from './thank-you/thank-you.component';
@@ -48,7 +48,7 @@ import { AdvisorAccountSettingComponent } from './advisor-account-setting/adviso
 import { AdvisorSubscriptionComponent } from './advisor-subscription/advisor-subscription.component';
 import { AdvisorLayoutComponent } from './../../shared/components/layouts/advisor-layout/advisor-layout.component';
 import { states } from '../../state';
-import { yearsOfServiceList, businessTypeList , industryDomainList } from '../../selectList';
+import { yearsOfServiceList, businessTypeList, industryDomainList } from '../../selectList';
 import { UserAuthGuard } from '../../shared/services/auth/userauth.guard';
 import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
 import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
@@ -56,6 +56,7 @@ import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 //import { AdvisorLandingLayoutComponent } from '../../shared/components/layouts/advisor-landing-layout/advisor-landing-layout.component';
 import { HomeComponent } from './advisor-landing/home/home.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { CountUpModule } from 'countup.js-angular2';
 
 @NgModule({
   imports: [
@@ -96,13 +97,15 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     MatStepperModule,
     HttpModule,
     SlickCarouselModule,
-    RouterModule.forChild(AdvisorRoutes)
+    RouterModule.forChild(AdvisorRoutes),
+    CountUpModule
   ],
   declarations: [
-    AdvisorSignupComponent,BusinessInfoComponent,SetPasswordComponent,FormatTimePipe,ThankYouComponent,AdvisorDashboardComponent,LegaciesComponent,
-    AdvisorDashboardUpdateComponent,AdvisorAccountSettingComponent,AdvisorSubscriptionComponent,ChangePassComponent,HomeComponent
-  ],providers: [
-    MatDatepickerModule,UserAuthGuard,UserPreAuthGuard,ProfilePicService,CanDeactivateGuard
-  ],entryComponents: [ChangePassComponent],
+    AdvisorSignupComponent, BusinessInfoComponent, SetPasswordComponent,
+    FormatTimePipe, ThankYouComponent, AdvisorDashboardComponent, LegaciesComponent,
+    AdvisorDashboardUpdateComponent, AdvisorAccountSettingComponent, AdvisorSubscriptionComponent, ChangePassComponent, HomeComponent
+  ], providers: [
+    MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, ProfilePicService, CanDeactivateGuard
+  ], entryComponents: [ChangePassComponent],
 })
 export class AdvisorModule { }

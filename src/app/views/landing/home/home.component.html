@@ -294,25 +294,25 @@
 
         <div class="green-divider"></div>
 
-        <div class="llp--container">
+        <div class="llp--container" id="leadsNumbersAd" (document:scroll)="isScrolledIntoViewOne()">
           <div class="llp--hired">
             <h4>Legacy Life Plans</h4>
             <p>Making a difference, One life, One legacy, One plan at a time</p>
             <div class="history">
               <div class="sm--mt">
-                <h5>987852</h5>
+                <h5 [countUp]="endVal1" [options]="opts"></h5>
                 <h6>Saved Files</h6>
               </div>
               <div class="sm--mt">
-                <h5>6715</h5>
+                <h5 [countUp]="endVal2" [options]="opts"></h5>
                 <h6>Trusted Advisors</h6>
               </div>
               <div class="sm--mt">
-                <h5>78145</h5>
+                <h5 [countUp]="endVal3" [options]="opts"></h5>
                 <h6>Success Login</h6>
               </div>
               <div class="sm--mt">
-                <h5>207816</h5>
+                <h5 [countUp]="endVal4" [options]="opts"></h5>
                 <h6>LLP Members</h6>
               </div>
             </div>

@@ -2005,6 +2005,19 @@ cosmiconfig@^4.0.0:
     parse-json "^4.0.0"
     require-from-string "^2.0.1"
 
+countup.js-angular2@^7.3.0:
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/countup.js-angular2/-/countup.js-angular2-7.3.0.tgz#2b99ce2534d1058b49ce38342543566040b2a9a5"
+  integrity sha512-5yklVviRnKGOhuqoCv0ICJa0mPaA+/M+r0iGSsAsCncEr+1hem+in562qUPMiG4ZV2LifydahpXOUKcc909zeA==
+  dependencies:
+    countup.js "^2.0.1"
+    tslib "^1.9.0"
+
+countup.js@^2.0.1:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/countup.js/-/countup.js-2.0.4.tgz#8c845452e499b16187c0d1beb1e5d717bda90005"
+  integrity sha512-fb691q1Zo0UqVCsBJU1Q38hGkTHEz3GibaugY5mi67ATYdPQymMmeq9XM0HIT4ow0hLSvUNh6xEEwauLxJ85Aw==
+
 create-ecdh@^4.0.0:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/create-ecdh/-/create-ecdh-4.0.3.tgz#c9111b6f33045c4697f144787f9254cdc77c45ff"
