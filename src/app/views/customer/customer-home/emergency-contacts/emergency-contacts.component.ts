@@ -45,19 +45,21 @@ export class EmergencyContactsComponent implements OnInit {
   }
 
   eContactFormSubmit() {
-    //this.loader.open()
-    console.log("234234",this.updateContact);
-    let emergencyContactsData = this.eContactFormGroup.value
-    emergencyContactsData.customerId = this.userId
-    let emergencyContactsDataID = this.updateContact ? this.updateContact._id : ''
-    let econtactData = Object.assign(emergencyContactsData)
-    let params = {
-      "econtactData": econtactData,
-      "ID": emergencyContactsDataID
+    this.loader.open()
+    let emergencyContactsData = this.eContactFormGroup.value;
+
+    emergencyContactsData.customerId = this.userId;
+
+    let econtactData = Object.assign(emergencyContactsData);
+    let params = {"econtactData": econtactData,"ID": ''}
+    //console.log("params ++++++++++++",this.updateContact._id);
+  
+    if(this.updateContact._id){  //console.log("--------------------->>>",this.updateContact._id);
+       params = {"econtactData": econtactData,"ID": this.updateContact._id}
     }
     console.log("params",params);
-    this.userapi.apiRequest('post', 'customer/emergency_contacts', params).subscribe(result => {
-      //this.loader.close()
+    this.userapi.apiRequest('post', 'customer/emergency-contacts', params).subscribe(result => {
+      this.loader.close()
       this.dialog.closeAll();
       this.getEmergencyContacts();
     }, (err) => {
@@ -69,7 +71,7 @@ export class EmergencyContactsComponent implements OnInit {
     const params = {
       query: Object.assign({ "customerId": this.userId })
     }
-    this.userapi.apiRequest('post', 'customer/get_emergency_contacts', params).subscribe(result => {
+    this.userapi.apiRequest('post', 'customer/get-emergency-contacts', params).subscribe(result => {
       if (result.data.length > 0) {
         this.showContactListing = true
         this.eContactList = result.data
