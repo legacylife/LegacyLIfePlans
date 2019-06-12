@@ -160,26 +160,70 @@ function viewEssentialProfile(req, res) {
     }
   })
 }
+
 // save emergency Contacts of customer
 function emergencyContacts(req, res) {
-  var emergencyContactsObj = new emergencyContactsModel()
-  let emergencyContactsData = req.body
-  emergencyContactsObj.address = emergencyContactsData.ecAddress
-  emergencyContactsObj.emailAddress = emergencyContactsData.ecEmail
-  emergencyContactsObj.mobile = emergencyContactsData.ecMobile
-  emergencyContactsObj.name = emergencyContactsData.ecName
-  emergencyContactsObj.phone = emergencyContactsData.ecPhone
-  emergencyContactsObj.relationship = emergencyContactsData.ecRelationship
-  emergencyContactsObj.createdOn = new Date();
-  emergencyContactsObj.save({ $set: emergencyContactsData }, function (err, newEntry) {
-    if (err) {
-      res.send(resFormat.rError(err))
-    } else {
-      let result = { "message": "Details saved successfully!" }
-      res.status(200).send(resFormat.rSuccess(result))
+    
+    //console.log("req ....>>>>>>>> ",req.body.ID);  
+    //var emergencyContactsObj = {}
+    let emergencyContactsData = req.body.econtactData
+    var emergencyContactsObj = new emergencyContactsModel();
+    emergencyContactsObj.customerId = emergencyContactsData.customerId;
+    emergencyContactsObj.address = emergencyContactsData.ecAddress;
+    emergencyContactsObj.emailAddress = emergencyContactsData.ecEmail;
+    emergencyContactsObj.mobile = emergencyContactsData.ecMobile;
+    emergencyContactsObj.name = emergencyContactsData.ecName;
+    emergencyContactsObj.phone = emergencyContactsData.ecPhone;
+    emergencyContactsObj.relationship = emergencyContactsData.ecRelationship;
+    emergencyContactsObj.createdOn = new Date();
+
+    console.log("req .hereeeeee... ",req.body);  
+    if (req.body.ID) {// == "save"
+      console.log("req .111111111... ",req.body);  
+      emergencyContactsObj.modifiedOn = new Date();
+      emergencyContactsObj.updateOne({ "_id": mongoose.Types.ObjectId(req.body.ID)}, {$set: emergencyContactsObj}, function(err, updatedUser){
+        if(err) {
+          console.log(err)
+        }else{
+          console.log(updatedUser)
+        }
+      }) 
+    } else {      
+      console.log("req .222222222222222... ",req.body);  
+      emergencyContactsObj.save({ $set: emergencyContactsData }, function (err, newEntry) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          let result = { "message": "Details saved successfully!" }
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
     }
-  })
-}
+  }
+  
+  
+  function emergencyContactsSaveBK(req, res) {
+    var emergencyContactsObj = new emergencyContactsModel()
+    let emergencyContactsData = req.body
+    emergencyContactsObj.customerId = emergencyContactsData.customerId
+    emergencyContactsObj.address = emergencyContactsData.ecAddress
+    emergencyContactsObj.emailAddress = emergencyContactsData.ecEmail
+    emergencyContactsObj.mobile = emergencyContactsData.ecMobile
+    emergencyContactsObj.name = emergencyContactsData.ecName
+    emergencyContactsObj.phone = emergencyContactsData.ecPhone
+    emergencyContactsObj.relationship = emergencyContactsData.ecRelationship
+    emergencyContactsObj.createdOn = new Date();
+    emergencyContactsObj.modifiedOn = new Date();
+    emergencyContactsObj.save({ $set: emergencyContactsData }, function (err, newEntry) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        let result = { "message": "Details saved successfully!" }
+        res.status(200).send(resFormat.rSuccess(result))
+      }
+    })
+  }
+  
 
 function viewEssentialProfessionals(req, res) {
   let { query } = req.body;console.log("query",query);
@@ -413,6 +457,19 @@ function deleteIdBox(req, res) {
   })
 }
 
+
+// get emergency Contacts of customer
+function getEmergencyContacts(req, res) {
+  let { query } = req.body
+  emergencyContactsModel.find(query, function (err, eContactsList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(eContactsList))
+    }
+  })
+}
+
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
@@ -428,5 +485,5 @@ router.post("/view-professional-details", viewEssentialProfessionals)
 router.post("/view-id-details", viewEssentialID)
 router.post("/essentials-legal-form-submit", legalStuffUpdate)
 router.post("/view-legalStuff-details", viewLegalStuffDetails)
-
+router.post("/get_emergency_contacts", getEmergencyContacts)
 module.exports = router
