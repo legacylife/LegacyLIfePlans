@@ -40,6 +40,8 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
   ccWorkLandlineNumbersList: string = "";
   ccChurchLandlineNumbersList: string = "";
   ccContactLandlineNumbersList:string = "";
+  createdOn:any;
+  ppaddressData:string = ""
 
   constructor(
     // private shopService: ShopService,
@@ -75,6 +77,8 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
         console.log(result.data)
       } else {
         this.row = result.data
+        this.ppaddressData = (this.row.ppAddressLine1 ? this.row.ppAddressLine1 : '') +" "+ (this.row.ppAddressLine2 ? this.row.ppAddressLine2 : '')+" "+this.row.ppCity ? this.row.ppCity : '' +" "+ this.row.ppState ?this.row.ppState : '' +" "+this.row.ppCountry ? this.row.ppCountry : '' +" "+this.row.ppZipCode ? this.row.ppZipCode :''
+        this.createdOn = this.row.createdOn ? this.row.createdOn : "";
         this.pplandLineNumberList = this.row.ppLandlineNumbers && this.row.ppLandlineNumbers.map(function (item) { return item.phone; }).join(",");
         this.ppEmailsList = this.row.ppEmails.map(function (item) { return item.email; }).join(",");
         this.wpLandlineNumbersList = this.row.wpLandlineNumbers && this.row.wpLandlineNumbers.map(function (item) { return item.phone; }).join(",");
