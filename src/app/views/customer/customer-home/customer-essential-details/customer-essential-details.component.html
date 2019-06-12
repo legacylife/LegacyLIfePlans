@@ -33,13 +33,13 @@
 
               
             <div class="details--body">
-              <h3>{{row.ppFirstName +' '+ row.ppLastName}}</h3>
+              <h3>{{row?.ppFirstName +' '+ row?.ppLastName}}</h3>
               <div fxLayout="row wrap" class="mb--10">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Date of Birth:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.ppDateOfBirth  | date: 'yyyy/MM/dd'}}</label>
+                  <label class="normal--label">{{row?.ppDateOfBirth  | date: 'yyyy/MM/dd'}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -63,7 +63,7 @@
                   <label class="strong--label">Address:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.ppAddressLine1+" "+ row.ppAddressLine2+" "+row.ppCity+" "+ row.ppState +" "+row.ppCountry+" "+row.ppZipCode}}</label>
+                  <label class="normal--label">{{row?.ppAddressLine1+" "+ row?.ppAddressLine2+" "+row?.ppCity+" "+ row?.ppState +" "+row?.ppCountry+" "+row?.ppZipCode}}</label>
                 </div>
               </div>              
             </div>
@@ -76,7 +76,7 @@
                       <mat-icon>description</mat-icon>Work Profile
                     </div>
                     <span class="last--modified--by">Last modified:
-                      <span>{{row.createdOn  | date: 'MMM dd, yyyy'}}</span>
+                      <span>{{row?.createdOn  | date: 'MMM dd, yyyy'}}</span>
                     </span>
                 </div>
 
@@ -88,7 +88,7 @@
                   <label class="strong--label">Work/Business:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.wpWorkBusiness}}</label>
+                  <label class="normal--label">{{row?.wpWorkBusiness}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -96,7 +96,7 @@
                   <label class="strong--label">Company Name:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.wpCompanyName}}</label>
+                  <label class="normal--label">{{row?.wpCompanyName}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -104,7 +104,7 @@
                   <label class="strong--label">Title/Position:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.wpTitlePosition}}</label>
+                  <label class="normal--label">{{row?.wpTitlePosition}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -120,7 +120,7 @@
                   <label class="strong--label">Department:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.wpDepartment}}</label>
+                  <label class="normal--label">{{row?.wpDepartment}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -128,7 +128,7 @@
                   <label class="strong--label">Contact Persons Name:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.wpContactPersonName}}</label>
+                  <label class="normal--label">{{row?.wpContactPersonName}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -136,7 +136,7 @@
                   <label class="strong--label">Address:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.wpAddressLine1 +" "+ row.wpAddressLine2 +" "+row.wpCity +" "+row.wpState +" "+row.wpCountry +" "+row.wpZipCode}}</label>
+                  <label class="normal--label">{{row?.wpAddressLine1 +" "+ row?.wpAddressLine2 +" "+row?.wpCity +" "+row?.wpState +" "+row?.wpCountry +" "+row?.wpZipCode}}</label>
                 </div>
               </div>
             </div>
@@ -149,7 +149,7 @@
                       <mat-icon>content_paste</mat-icon>Civic/Club, Religious Info 
                     </div>
                     <span class="last--modified--by">Last modified:
-                      <span>{{row.createdOn  | date: 'MMM dd, yyyy'}}</span>
+                      <span>{{row?.createdOn  | date: 'MMM dd, yyyy'}}</span>
                     </span>
                 </div>
 
@@ -160,7 +160,7 @@
                   <label class="strong--label">Name:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.ccName}}</label>
+                  <label class="normal--label">{{row?.ccName}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -168,7 +168,7 @@
                   <label class="strong--label">Address 1:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.ccAddressLine1}}</label>
+                  <label class="normal--label">{{row?.ccAddressLine1}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -176,7 +176,7 @@
                   <label class="strong--label">Address 2:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.ccAddressLine2}}</label>
+                  <label class="normal--label">{{row?.ccAddressLine2}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -184,7 +184,7 @@
                   <label class="strong--label">Zip code:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.ccZipCode}}</label>
+                  <label class="normal--label">{{row?.ccZipCode}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -200,7 +200,7 @@
                   <label class="strong--label">Contact person name:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.ccContactPersonName}}</label>
+                  <label class="normal--label">{{row?.ccContactPersonName}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -217,7 +217,7 @@
                   <label class="strong--label">Name:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.ccChurchName}}</label>
+                  <label class="normal--label">{{row?.ccChurchName}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -225,7 +225,7 @@
                   <label class="strong--label">Address 1:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.ccChurchAddressLine1}}</label>
+                  <label class="normal--label">{{row?.ccChurchAddressLine1}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -233,7 +233,7 @@
                   <label class="strong--label">Address 2:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.ccChurchAddressLine2}}</label>
+                  <label class="normal--label">{{row?.ccChurchAddressLine2}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -241,7 +241,7 @@
                   <label class="strong--label">Zip code:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.ccChurchZipCode}}</label>
+                  <label class="normal--label">{{row?.ccChurchZipCode}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -249,7 +249,7 @@
                   <label class="strong--label">Contact person name:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row.ccChurchContactPersonName}}</label>
+                  <label class="normal--label">{{row?.ccChurchContactPersonName}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap">

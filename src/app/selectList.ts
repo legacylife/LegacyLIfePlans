@@ -78,6 +78,37 @@ export const documentTypes = [{
 }
 ]
 
+export const estateTypeOfDocument = [{ 
+  "opt_name" : "Last Will & Testament", 
+  "opt_code" : "1", 
+},
+{ 
+  "opt_name" : "Last Will & Testament-with Trust", 
+  "opt_code" : "2", 
+},{ 
+  "opt_name" : "Affidavit of Domicile", 
+  "opt_code" : "3", 
+},
+{ 
+  "opt_name" : "Affidavit of Heirship", 
+  "opt_code" : "4", 
+},{ 
+  "opt_name" : "Codicil", 
+  "opt_code" : "5", 
+},
+{ 
+  "opt_name" : "Joint Revocable Living Trust", 
+  "opt_code" : "6", 
+},
+{ 
+  "opt_name" : "Revocable Living Trust", 
+  "opt_code" : "7", 
+},
+{ 
+  "opt_name" : "Irrevocable Trust", 
+  "opt_code" : "8", 
+}
+]
 export const activeLicense = ['Health', 'Life',  'Property & Casualty', 'Series 3','Series 6', 'Series 7', 'Series 24','Series 26', 'Series 63', 'Series 65', 'Series 66']
 
 export const industryDomain = ['Life', 'Health', 'Property & Casualty']

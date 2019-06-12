@@ -113,12 +113,12 @@
         </mat-form-field>
 
          <div class="upload--buss--docs--sec">
-             <label>Upload your business documents</label>
+             <label>Upload your ID proof documents *</label>
              <div class="upload--box fileupload-drop-zone"
-             ng2FileDrop
-             [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-             (fileOver)="fileOverBase($event)"
-             [uploader]="uploader">
+                ng2FileDrop
+                [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                (fileOver)="fileOverBase($event)"
+                [uploader]="uploader">
                 <input type="file" name="idProofDocuments"  ng2FileSelect [uploader]="uploader" multiple  (change)="fileOverBase('')" />  
                 <mat-icon class="cloud-icon">cloud_upload</mat-icon>
                 <div class="select--file">Select file from your computer</div>
@@ -127,12 +127,13 @@
             </div>
             <mat-form-field class="full-width" *ngIf="idProofDocuments_temps">
                 <input matInput name="idProofDocuments_temp" [formControl]="IDForm.controls['idProofDocuments_temp']">
+                <small *ngIf="IDForm.controls['idProofDocuments_temp'].hasError('required') && IDForm.controls['idProofDocuments_temp'].touched" class="form-error-msg"> Please drag your document. </small>
             </mat-form-field>
       
-         <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50" *ngIf="idProofDocumentsList" >
-          <h3 class="header--text fnt--16">Uploaded documents</h3>
+         <div *ngIf="idProofDocumentsList" >
+          <h3 class="header--text fnt--16">Uploaded ID proof</h3>
           <mat-chip-list class="doc--list" *ngFor="let doc of idProofDocumentsList; index as i">
-              <mat-chip><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck" >{{doc.title}}</a><mat-icon matChipRemove  (click)="IDDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+              <mat-chip><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck" >{{doc.title}}</a><mat-icon matChipRemove  (click)="IDDelete(i,doc.title,doc.tmpName,doc._id)">close</mat-icon></mat-chip>
           </mat-chip-list>
          </div>
 
@@ -157,6 +158,10 @@
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
+                   
+        <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
+          <input matInput name="profileId" [formControl]="IDForm.controls['profileId']" readonly="readonly">
+        </mat-form-field>
 
       </div>
     </div>
