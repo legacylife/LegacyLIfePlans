@@ -167,11 +167,12 @@ router.post('/legalStuff', cors(), function(req,res){
       authTokens[fieldname] = val
     })
     const {query:{userId}} = req;
+    const {query:{folderName}} = req;
     req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
       let tmpallfiles = {};
       let oldTmpFiles = [];
       if(userId){
-        LegalStuff.findOne({ customerId: userId },{subFolderDocuments:1,_id:1}, function (err, result) {
+        LegalStuff.findOne({ customerId: userId,subFolderName:this.folderName },{subFolderDocuments:1,_id:1}, function (err, result) {
         if (err) {
             res.status(500).send(resFormat.rError(err))
         } else {  
@@ -207,6 +208,7 @@ router.post('/legalStuff', cors(), function(req,res){
             }else{                  
                   var legal = new LegalStuff();
                   legal.customerId = userId;
+                  legal.subFolderName = folderName;
                   legal.subFolderDocuments = oldTmpFiles;
                   legal.status = 'Pending';
                   legal.createdOn = new Date();
