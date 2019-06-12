@@ -206,51 +206,51 @@ export class NavigationService {
     {
       name: 'About Us',
       type: 'extLink',
-      icon: 'library_books',
+      icon: 'image_aspect_ratio',
       state: '#ad-about-us '
     },{
       name: 'How LLP Works',
-      icon: 'library_books',
+      icon: 'show_chart',
       type: 'extLink',
       state: '#ad-how-help'
     },
     {
       name: 'Leads',
       type: 'extLink',
-      icon: 'library_books',
+      icon: 'nature',
       state: '#ad-leads'
     }, {
       name: 'Profile',
       type: 'extLink',
-      icon: 'library_books',
+      icon: 'person',
       state: '#ad-profile'
     },
     {
       name: 'Testimonials',
       type: 'extLink',
-      icon: 'library_books',
+      icon: 'nature_people',
       state: '#ad-testimonials'
     }, {
       name: 'Contact Us',
       type: 'extLink',
-      icon: 'library_books',
+      icon: 'phone',
       state: '/advisor'
     },
     {
       name: 'For Customers',
       type: 'extLink',
-      icon: 'library_books',
+      icon: 'person_pin',
       state: '/'
     }, {
       name: 'Sign Up',
       type: 'extLink',
-      icon: 'library_books',
+      icon: 'assignment_returned',
       state: '/customer/signup'
     },
     {
       name: 'Login',
       type: 'extLink',
-      icon: 'library_books',
+      icon: 'assignment_return',
       state: '/signin '
     }
   ];
@@ -265,47 +265,47 @@ export class NavigationService {
     {
       name: 'About Us',
       type: 'extLink',
-      icon: 'library_books',
+      icon: 'image_aspect_ratio',
       state: '#about-us'
     },{
       name: 'How LLP Works',
-      icon: 'library_books',
+      icon: 'show_chart',
       type: 'extLink',
       state: '#how-llp-works'
     },
     {
       name: 'Testimonials',
       type: 'extLink',
-      icon: 'library_books',
+      icon: 'nature_people',
       state: '#testimonialss'
     },
     {
       name: 'Pricing Plans',
       type: 'extLink',
-      icon: 'library_books',
+      icon: 'monetization_on',
       state: '#pricing-plan '
     },
     {
       name: 'Contact Us',
       type: 'extLink',
-      icon: 'library_books',
+      icon: 'phone',
       state: 'contact-us'
     },
     {
       name: 'For Advisor',
       type: 'extLink',
-      icon: 'library_books',
+      icon: 'person_pin',
       state: '/advisor'
     }, {
       name: 'Sign Up',
       type: 'extLink',
-      icon: 'library_books',
+      icon: 'assignment_returned',
       state: '/advisor/signup'
     },
     {
       name: 'Login',
       type: 'extLink',
-      icon: 'library_books',
+      icon: 'assignment_return',
       state: '/signin '
     }
   ]
