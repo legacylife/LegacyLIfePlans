@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Inject } from '@angular/core';
 import { APIService } from './../../../../api.service';
 import { UserAPIService } from './../../../../userapi.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 import { CustomValidators } from 'ng2-validation';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar,MAT_DIALOG_DATA  } from '@angular/material';
 import { Router } from '@angular/router';
-import { estateTypeOfDocument } from '../../../../selectList';
+import { EstateTypeOfDocument,HealthcareTypeOfDocument,PersonalAffairsTypeOfDocument } from '../../../../selectList';
 import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../config';
 const URL = serverUrl + '/api/documents/legalStuff';
@@ -17,24 +17,34 @@ const URL = serverUrl + '/api/documents/legalStuff';
   templateUrl: './legal-stuff-modal.component.html',
   styleUrls: ['./legal-stuff-modal.component.scss']
 })
-
 export class legalStuffModalComponent implements OnInit {
-  typeOfDocumentList: any[] = estateTypeOfDocument;
-  userId = localStorage.getItem("endUserId");
-  public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
+
+  userId = localStorage.getItem("endUserId"); 
   public hasBaseDropZoneOver: boolean = false;
   invalidMessage: string;
   LegalForm: FormGroup;
   subFolderDocumentsMissing = false;
   subFolderDocuments_temps = false;
   fileErrors: any;
-  profileIdHiddenVal:boolean = true;
+  profileIdHiddenVal:boolean = false;
   subFolderDocumentsList: any;
   LegalStuffList:any = [];
+  folderName: string;
+  typeOfDocumentList: any[]
 
-  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService  ) { }
+  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService ,@Inject(MAT_DIALOG_DATA) public data: any ) { this.folderName = data.FolderName;}
+  public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
   ngOnInit() {
+    this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}` });
+   
+    if(this.folderName=='Estate'){
+      this.typeOfDocumentList = EstateTypeOfDocument;
+    }else if(this.folderName=='Healthcare'){
+      this.typeOfDocumentList = HealthcareTypeOfDocument;
+    }else if(this.folderName=='Personal Affairs'){
+      this.typeOfDocumentList = PersonalAffairsTypeOfDocument;      
+    }
 
     this.LegalForm = this.fb.group({
       typeOfDocument: new FormControl('', Validators.required),
@@ -50,9 +60,9 @@ export class legalStuffModalComponent implements OnInit {
    LegalFormSubmit(profileInData = null) {
     var query = {};
     var proquery = {};     
-    profileInData.subFolderName = 'LegalStuffEstate';
+    profileInData.subFolderName = this.folderName;
     const req_vars = {
-      query: Object.assign({customerId: this.userId }),
+      query: Object.assign({customerId: this.userId,subFolderName:this.folderName }),
       proquery: Object.assign(profileInData),
       message: Object.assign({ messageText: "Estate" })
     }
@@ -64,7 +74,7 @@ export class legalStuffModalComponent implements OnInit {
         message: Object.assign({ messageText: "Estate" })
       }
     }
-    console.log("profileInData",profileInData)
+    //console.log("profileInData",profileInData)
     this.loader.open();     
     this.userapi.apiRequest('post', 'customer/essentials-legal-form-submit', req_vars).subscribe(result => {
       this.loader.close();
@@ -82,7 +92,7 @@ export class legalStuffModalComponent implements OnInit {
 
   getEssentialLegalView = (query = {}, search = false) => { 
     const req_vars = {
-      query: Object.assign({ customerId: this.userId }, query)//, status:"Pending"
+      query: Object.assign({ customerId: this.userId,subFolderName:this.folderName }, query)//, status:"Pending"
     }
     this.loader.open(); 
     this.userapi.apiRequest('post', 'customer/view-legalStuff-details', req_vars).subscribe(result => {
@@ -92,7 +102,6 @@ export class legalStuffModalComponent implements OnInit {
       } else {
         if(result.data){    
           this.LegalStuffList = result.data;   
-          console.log("asdasd",this.LegalStuffList)                 
           this.LegalForm.controls['profileId'].setValue(this.LegalStuffList._id);
           this.subFolderDocumentsList = result.data.subFolderDocuments;
 
@@ -140,7 +149,7 @@ export class legalStuffModalComponent implements OnInit {
   getLegalDocuments = (query = {}, search = false) => {     
     let profileIds = this.LegalForm.controls['profileId'].value;
     const req_vars = {
-      query: Object.assign({customerId: this.userId }),
+      query: Object.assign({customerId: this.userId,subFolderName:this.folderName }),
       fields:{subFolderDocuments:1}
     }
     if(profileIds){
@@ -153,7 +162,6 @@ export class legalStuffModalComponent implements OnInit {
       if (result.status == "error") {
       } else {
         //this.profile = result.data.userProfile;
-        console.log(result.data._id);
         this.subFolderDocumentsList = result.data.subFolderDocuments;
         this.LegalForm.controls['profileId'].setValue(result.data._id);
         if(result.data.subFolderDocuments.length>0){

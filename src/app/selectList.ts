@@ -78,7 +78,7 @@ export const documentTypes = [{
 }
 ]
 
-export const estateTypeOfDocument = [{ 
+export const EstateTypeOfDocument = [{ 
   "opt_name" : "Last Will & Testament", 
   "opt_code" : "1", 
 },
@@ -109,6 +109,43 @@ export const estateTypeOfDocument = [{
   "opt_code" : "8", 
 }
 ]
+
+export const HealthcareTypeOfDocument = [{ 
+  "opt_name" : "Advance Healthcare Directive", 
+  "opt_code" : "1", 
+},
+{ 
+  "opt_name" : "Healthcare Power of Attorney", 
+  "opt_code" : "2", 
+},{ 
+  "opt_name" : "Health Care Proxy", 
+  "opt_code" : "3", 
+},
+{ 
+  "opt_name" : "Living Will", 
+  "opt_code" : "4", 
+},{ 
+  "opt_name" : "Medical Power of Attorney", 
+  "opt_code" : "5", 
+}
+]
+
+export const PersonalAffairsTypeOfDocument = [{ 
+  "opt_name" : "Power of Attorney", 
+  "opt_code" : "1", 
+},
+{ 
+  "opt_name" : "Durable Power of Attorney", 
+  "opt_code" : "2", 
+},{ 
+  "opt_name" : "Revocation of Power of Attorney", 
+  "opt_code" : "3", 
+}
+]
+
+
+
+
 export const activeLicense = ['Health', 'Life',  'Property & Casualty', 'Series 3','Series 6', 'Series 7', 'Series 24','Series 26', 'Series 63', 'Series 65', 'Series 66']
 
 export const industryDomain = ['Life', 'Health', 'Property & Casualty']
@@ -118,3 +155,5 @@ export const businessType = ['Accountant', 'Attorney', 'Tax Specialist', 'Insura
 export const yearsOfService = ['0 - 5 years', '5 - 10 years', '10 - 15 years', '15 - 20 years', '20 - 25 years', 'more than 25 years']
 
 export const myProfessionals  = ['Medical Doctor', 'Therapist', 'Insurance Agent', 'Accountant', 'Attorney', 'Tax Specialist','Financial Planner','Business Partner']
+
+

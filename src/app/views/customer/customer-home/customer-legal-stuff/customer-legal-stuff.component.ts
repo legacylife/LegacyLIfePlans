@@ -23,15 +23,24 @@ export class CustomerLegalStuffComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
   }
 
+  openLegalStuffModal(FolderName, isNew?) {
 
+    // let dialogRef: MatDialogRef<any> = this.dialog.open(legalStuffModalComponent,{
+    //   width: '720px',
+    //   disableClose: true
+    // })
 
-  openLegalStuffModal(data: any = {}, isNew?) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(legalStuffModalComponent, {
+    this.dialog.open(legalStuffModalComponent, {
+      data: {
+        FolderName: FolderName,       
+      },
       width: '720px',
       disableClose: true,
-    })
+    });
+
   }
 
 }
