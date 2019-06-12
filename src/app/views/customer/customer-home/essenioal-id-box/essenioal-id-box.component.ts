@@ -87,6 +87,10 @@ export class EssenioalIdBoxComponent implements OnInit {
 
      const locationArray = location.href.split('/')
      this.selectedProfileId = locationArray[locationArray.length - 1];
+
+    if(this.selectedProfileId && this.selectedProfileId == 'essential-day-one'){
+      this.selectedProfileId = "";   
+    }
      this.getEssentialIdView();
     }
    
@@ -160,7 +164,6 @@ export class EssenioalIdBoxComponent implements OnInit {
   
     getEssentialIdView = (query = {}, search = false) => { 
       //  status:"Pending"
-      
       let req_vars = {
         query: Object.assign({ customerId: this.userId,status:"Pending" })
       }
@@ -172,7 +175,7 @@ export class EssenioalIdBoxComponent implements OnInit {
           query: Object.assign({ _id:profileIds, customerId: this.userId })
         }
       }
-      
+
       this.loader.open(); 
       this.userapi.apiRequest('post', 'customer/view-id-details', req_vars).subscribe(result => {
         this.loader.close();
