@@ -136,19 +136,6 @@ export class EssenioalIdBoxComponent implements OnInit {
       var query = {};
       var proquery = {};     
       
-      // const req_vars = {
-      //   query: Object.assign({customerId: this.userId }),
-      //   proquery: Object.assign(profileInData)
-      // }
-      // let profileIds = this.IDForm.controls['profileId'].value;
-      // if(profileIds){
-      //   const req_vars = {
-      //     query: Object.assign({ _id:profileIds, customerId: this.userId }),
-      //     proquery: Object.assign(profileInData)
-      //   }
-      // }
-
-
       let profileIds = this.IDForm.controls['profileId'].value;
       if(profileIds){
         this.selectedProfileId = profileIds;

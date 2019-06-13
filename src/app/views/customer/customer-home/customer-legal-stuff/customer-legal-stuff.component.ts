@@ -45,8 +45,11 @@ export class CustomerLegalStuffComponent implements OnInit {
 
   getEstateList = (query = {}) => {
     const req_vars = {
-      query: Object.assign({ customerId: this.userId, status: "Active" }, query)
+      query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      fields: {},
+      order: {"createdOn": -1},
     }
+
     this.userapi.apiRequest('post', 'customer/legal-estate-list', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
