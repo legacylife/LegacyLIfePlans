@@ -11,6 +11,7 @@ import { PersonalProfileModalComponent } from '../personal-profile-modal/persona
 import { UserAPIService } from './../../../../userapi.service';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 import { essentialsMyProfessionalsComponent } from './../../customer-home/essentials-my-professionals/essentials-my-professionals.component';
+import { documentTypes } from '../../../../selectList';
 
 @Component({
   selector: 'app-customer-home',
@@ -30,6 +31,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   showProfessionalCnt:any;
   showProfileListingCnt:any;
   showIDListingCnt:any;
+  documentTypeList: any[] = documentTypes;
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -127,6 +129,13 @@ export class CustomerEssentialDayOneComponent implements OnInit {
       width: '720px',
       disableClose: true,
     })
+  }
+
+  getDocType(key){
+    let filteredTyes =this.documentTypeList.filter(dtype =>{
+      return dtype.opt_code === key
+    }).map(el => el.opt_name)[0]
+    return filteredTyes
   }
 
 }

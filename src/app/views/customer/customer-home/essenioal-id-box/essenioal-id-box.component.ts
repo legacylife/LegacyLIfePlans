@@ -48,9 +48,12 @@ export class EssenioalIdBoxComponent implements OnInit {
   typeSixSeven: boolean = false;
   essentialIDList:any = [];
   showIDListingCnt:any;
-  profileIdHiddenVal:boolean = true;
-
-  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService  ) { }
+  profileIdHiddenVal:boolean = false;
+  selectedProfileId: string;
+  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
+    private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
+    private userapi: UserAPIService  ) 
+  { }
 
 
 
@@ -80,6 +83,14 @@ export class EssenioalIdBoxComponent implements OnInit {
       profileId: new FormControl('')
      });
      this.idProofDocumentsList = [];
+
+
+     const locationArray = location.href.split('/')
+     this.selectedProfileId = locationArray[locationArray.length - 1];
+
+    if(this.selectedProfileId && this.selectedProfileId == 'essential-day-one'){
+      this.selectedProfileId = "";   
+    }
      this.getEssentialIdView();
     }
    
@@ -124,6 +135,7 @@ export class EssenioalIdBoxComponent implements OnInit {
     IdFormSubmit(profileInData = null) {
       var query = {};
       var proquery = {};     
+      
       const req_vars = {
         query: Object.assign({customerId: this.userId }),
         proquery: Object.assign(profileInData)
@@ -151,9 +163,19 @@ export class EssenioalIdBoxComponent implements OnInit {
     }
   
     getEssentialIdView = (query = {}, search = false) => { 
-      const req_vars = {
-        query: Object.assign({ customerId: this.userId, status:"Pending" }, query)
+      //  status:"Pending"
+      let req_vars = {
+        query: Object.assign({ customerId: this.userId,status:"Pending" })
       }
+     
+      let profileIds = '';
+      if (this.selectedProfileId) {
+        profileIds = this.selectedProfileId;
+        req_vars = {
+          query: Object.assign({ _id:profileIds, customerId: this.userId })
+        }
+      }
+
       this.loader.open(); 
       this.userapi.apiRequest('post', 'customer/view-id-details', req_vars).subscribe(result => {
         this.loader.close();
@@ -194,7 +216,7 @@ export class EssenioalIdBoxComponent implements OnInit {
       }, (err) => {
         console.error(err);
       })
-  }
+  }  
 
   IDDelete(doc, name, tmName,ids) {
       var statMsg = "Are you sure you want to delete '" + name + "' file?"

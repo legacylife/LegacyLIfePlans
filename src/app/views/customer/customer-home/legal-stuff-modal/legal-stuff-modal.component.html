@@ -1,5 +1,5 @@
 <div class="ll--modal--header">
-    Estate
+    {{folderName}}
     <button class="modal--close" [mat-dialog-close]="">
       <mat-icon class="icon--cross">cancel</mat-icon>
     </button>
@@ -9,28 +9,6 @@
     <div class="ll--modal--body">
       <div fxLayout="row wrap">
         <div fxFlex.xs="100">
-          <!-- <mat-form-field class="full-width">
-            <mat-label>Estate Document</mat-label>
-            <mat-select>
-              <mat-option>None</mat-option>
-              <mat-option value="option1">Last Will & Testament
-                </mat-option>
-              <mat-option value="option2">Last Will & Testament-with Trust</mat-option>
-              <mat-option value="option3">Affidavit of Domicile
-                </mat-option>
-              <mat-option value="option3">Affidavit of Heirship
-                </mat-option>
-              <mat-option value="option3">Codicil
-                </mat-option>
-              <mat-option value="option3">Joint Revocable Living Trust
-                </mat-option>
-              <mat-option value="option3">Revocable Living Trust
-                </mat-option>
-              <mat-option value="option3">Irrevocable Trust
-                </mat-option>
-            </mat-select>
-          </mat-form-field> -->
-  <!-- (selectionChange)="onChangeDocumentType($event.value)" -->
             <mat-form-field class="full-width">
                 <mat-label>Estate Document*</mat-label>
               <mat-select placeholder="Estate Document*" name="typeOfDocument" [formControl]="LegalForm.controls['typeOfDocument']" >
@@ -86,17 +64,7 @@
             <input matInput name="profileId" [formControl]="LegalForm.controls['profileId']" readonly="readonly">
           </mat-form-field>
 
-
-
-
-
-
-
-
-
-
-        </div>
-  
+        </div>  
       </div>
     </div>
     <div class="ll--modal--footer text-center">
