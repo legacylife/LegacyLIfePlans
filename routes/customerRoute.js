@@ -474,6 +474,30 @@ function getEmergencyContacts(req, res) {
   })
 }
 
+function legalEstateList(req, res) {
+  let { fields, offset, query, order, limit, search } = req.body
+  let totalRecords = 0
+  if (search && !isEmpty(query)) {
+    Object.keys(query).map(function (key, index) {
+      if (key !== "status") {
+        query[key] = new RegExp(query[key], 'i')
+      }
+    })
+  }
+  LegalStuff.count(query, function (err, listCount) {
+    if (listCount) {
+      totalRecords = listCount
+    }
+    LegalStuff.find(query, fields, function (err, legalList) {
+      if (err) {
+        res.status(401).send(resFormat.rError(err))
+      } else {
+        res.send(resFormat.rSuccess({ legalList, totalRecords }))
+      }
+    }).sort(order).skip(offset).limit(limit)
+  })
+}
+
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
@@ -490,4 +514,6 @@ router.post("/essentials-legal-form-submit", legalStuffUpdate)
 router.post("/view-legalStuff-details", viewLegalStuffDetails)
 router.post("/emergency-contacts", emergencyContacts)
 router.post("/get-emergency-contacts", getEmergencyContacts)
+router.post("/legal-estate-list", legalEstateList)
+
 module.exports = router
