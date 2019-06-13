@@ -15,35 +15,18 @@
             {{ row?.firstName ? row?.firstName : row?.lastName ? +' ' +row?.lastName : "N/A"}}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Business Name" prop="businessName" [flexGrow]="1.2">
+        <ngx-datatable-column name="Business Info" prop="businessName" [flexGrow]="1.2">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.businessName }}
-          </ng-template>
-        </ngx-datatable-column>
-        
-        <ngx-datatable-column name="State" prop="state" [flexGrow]="1">
-          <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.state }}
-          </ng-template>
-        </ngx-datatable-column>
-        <ngx-datatable-column name="City" prop="city" [flexGrow]="1">
-          <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.city }}
-          </ng-template>
-        </ngx-datatable-column>
-        <ngx-datatable-column name="Zipcode" prop="zipcode" [flexGrow]="1">
-          <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.zipcode }}
+            {{ row?.businessName }} <br />
+            City : {{ row?.city }} <br />
+            State : {{ row?.state }} <br />
+            Zipcode : {{ row?.zipcode }}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column name="Subscription Status" prop="end_date" [flexGrow]="1.1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.subscription_detail ? row?.subscription_detail.end_date : ""}}
-          </ng-template>
-        </ngx-datatable-column>
-        <ngx-datatable-column name="Expiry Date" prop="end_date" [flexGrow]="1">
-          <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.subscription_detail ? row?.subscription_detail.end_date : ""}}
+            {{ row?.subscription_detail ? row?.subscription_detail.end_date : ""}} <br />
+            Expiry Date : {{ row?.subscription_detail ? row?.subscription_detail.end_date : ""}}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column name="Sign up Request" prop="createdOn" [flexGrow]="1.1">
