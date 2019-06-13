@@ -18,13 +18,8 @@ import { EssenioalIdBoxComponent } from './../essenioal-id-box/essenioal-id-box.
   styleUrls: ['./customer-essential-details-idbox.component.scss'],
   animations: [egretAnimations]
 })
-export class CustomerEssentialDetailsIdboxComponent implements OnInit, OnDestroy {
-  public isSideNavOpen: boolean;
-  public viewMode: string = 'grid-view';
-  public currentPage: any;
-  dayFirst = true;
-  daySeco = false;
-  
+export class CustomerEssentialDetailsIdboxComponent implements OnInit {
+ 
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
   userId: string;
@@ -108,23 +103,8 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit, OnDestroy
       })
   }
 
-  showSecoDay() {
-    this.dayFirst = false;
-    this.daySeco = true;
-  }
-  ngOnDestroy() {
 
-  }
-
-  setActiveCategory(category) {
-    this.activeCategory = category;
-    this.filterForm.controls['category'].setValue(category)
-  }
-
-  toggleSideNav() {
-    this.sideNav.opened = !this.sideNav.opened;
-  }
-
+ 
   getDocType(key){
     let filteredTyes =this.documentTypeList.filter(dtype =>{
       return dtype.opt_code === key

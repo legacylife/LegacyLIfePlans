@@ -103,26 +103,52 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   }, (err) => {
     console.error(err);
   })
-}
+ }
 
-  openAddIdBoxModal(data: any = {}, isNew?) {
+ openAddIdBoxModal(data: any = {}, isNew?) {
     let title = isNew ? 'Add new member' : 'Update member';
     let dialogRef: MatDialogRef<any> = this.dialog.open(EssenioalIdBoxComponent, {
       width: '720px',
       disableClose: true,
+    }) 
+    dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getEssentialIdList();
+      if (!res) {
+        // If user press cancel
+        return;
+      }
     })
-  }
+ }
+
   openProfileModal(data: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(PersonalProfileModalComponent, {
       width: '720px',
       disableClose: true,
     })
+    dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getEssentialProfileList();
+      if (!res) {
+        // If user press cancel
+        return;
+      }
+    })
   }
+
   openProfessionalBoxModal(data: any = {}, isNew?) {
     let title = isNew ? 'Add professionals' : 'Update professionals';
     let dialogRef: MatDialogRef<any> = this.dialog.open(essentialsMyProfessionalsComponent, {
       width: '720px',
       disableClose: true,
+    })
+    dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getEssentialProfessionalList();
+      if (!res) {
+        // If user press cancel
+        return;
+      }
     })
   }
 
@@ -132,5 +158,4 @@ export class CustomerEssentialDayOneComponent implements OnInit {
     }).map(el => el.opt_name)[0]
     return filteredTyes
   }
-
 }

@@ -74,7 +74,7 @@ export class CustomerLegalStuffComponent implements OnInit {
         if (this.showhealthcareListingCnt > 0) {
           this.showhealthcareListing = true;
         }
-console.log("-------",this.showhealthcareListingCnt)
+
         this.affairsList = this.legaStuffList.filter(dtype => {
           return dtype.subFolderName == 'Personal Affairs'
         }).map(el => el)

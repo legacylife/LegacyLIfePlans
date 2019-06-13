@@ -1,19 +1,14 @@
 <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
-  <!-- Filters -->
-
-  <!-- Right side -->
   <div class="full-width">
-
-    <!-- My Essentials 3rd (details view) -->
     <div class="">
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">My Essentials</mat-card-title>
           <div class="right--actions">
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">
+            <!-- <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">
               <mat-icon>file_download</mat-icon>
               <span class="hide--sm--txt">Download</span>
-            </button>
+            </button> -->
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openIdBoxModal({}, true)">
               <mat-icon>edit</mat-icon>
               <span class="hide--sm--txt">Edit</span>
@@ -37,7 +32,6 @@
             <div class="details--body">
               <h3>{{getDocType(row?.documentType)}}</h3>
 
-              <!-- Driving licience starts -->
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 1">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">License Number:</label>
@@ -80,9 +74,7 @@
                   <label class="normal--label">{{row?.locationDriverLicense}}</label>
                 </div>
               </div>
-              <!-- Driving licience ends -->
 
-              <!-- Department of Defense starts -->
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 3">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                     <label class="strong--label">DoD ID Number:</label>
@@ -109,9 +101,7 @@
                     <label class="normal--label">{{row?.locationDoDID}}</label>
                   </div>
                 </div>
-                <!-- Department of Defense ends -->
 
-                <!-- Birth Certificate ends -->
                 <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 4">
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                       <label class="strong--label">Place of Birth:</label>
@@ -129,9 +119,7 @@
                     <label class="normal--label">{{row?.fileNumber}}</label>
                   </div>
                 </div>
-                <!-- Birth Certificate ends -->
 
-                <!-- Social Security Number (SSN) ends -->
                 <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 5">
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                       <label class="strong--label">Social Security Number:</label>
@@ -149,9 +137,7 @@
                     <label class="normal--label">{{row?.locationSocialSecurityCard}}</label>
                   </div>
                 </div>
-                <!-- Social Security Number (SSN) ends -->
 
-                <!-- Passport ends -->
                 <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 6">
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                       <label class="strong--label">Country of issue (manual input):</label>
@@ -187,11 +173,7 @@
                     <label class="normal--label">{{row?.locationPassport}}</label>
                   </div>
                 </div>
-                <!-- Passport ends -->
 
-               
-
-                <!-- Visa  ends -->
                 <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 7">
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                       <label class="strong--label">Country of issue:</label>

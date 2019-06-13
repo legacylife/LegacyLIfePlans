@@ -23,7 +23,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Personal Profile</mat-card-title>
           <div *ngIf="showProfileListing">
-            <span class="no--of--trustee">{{showProfileListingCnt}} Profiles</span>
+            <span class="no--of--trustee">{{showProfileListingCnt}} Profile{{showProfileListingCnt>1 ? 's' : ''}}</span>
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openProfileModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
@@ -53,7 +53,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">ID Box </mat-card-title>
           <div *ngIf="showIdProofListing">
-            <span class="no--of--trustee">{{showIDListingCnt}} IDs</span>
+            <span class="no--of--trustee">{{showIDListingCnt}} ID{{showIDListingCnt>1 ? 's' : ''}}</span>
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openAddIdBoxModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
@@ -85,7 +85,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">My Professionals </mat-card-title>
           <div *ngIf="showProfessionalsListing">
-            <span class="no--of--trustee">{{showProfessionalCnt}} My Professionals</span>
+            <span class="no--of--trustee">{{showProfessionalCnt}} Professional{{showProfessionalCnt>1 ? 's' : ''}}</span>
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openProfessionalBoxModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>

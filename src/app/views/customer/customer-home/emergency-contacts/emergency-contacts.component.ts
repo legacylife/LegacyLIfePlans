@@ -15,6 +15,7 @@ export class EmergencyContactsComponent implements OnInit {
   modalRef: any = null
   eContactFormGroup: FormGroup;
   showContactListing = false;
+  showContactCnt: string;
   userId: string
   eContactList: any = []
   updateContact: any = []
@@ -49,13 +50,6 @@ export class EmergencyContactsComponent implements OnInit {
     this.getEmergencyContacts()
   }
 
-  // openModal12(content: any) {
-  //   let dialogRef: MatDialogRef<any> = this.dialog.open(content, {
-  //     width: '720px',
-  //     disableClose: true,
-  //   })    
-  // }
-
   openModal(content: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(content, {
       width: '720px',
@@ -70,7 +64,6 @@ export class EmergencyContactsComponent implements OnInit {
         }
     })
   }
-
 
   eContactFormSubmit(profileInData = null) {
     var query = {};
@@ -108,6 +101,7 @@ export class EmergencyContactsComponent implements OnInit {
       if (result.data.length > 0) {
         this.showContactListing = true
         this.eContactList = result.data
+        this.showContactCnt = this.eContactList.length;
       }
     })
 
