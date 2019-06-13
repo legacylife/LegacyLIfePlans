@@ -64,7 +64,7 @@ export class CustomerLegalStuffComponent implements OnInit {
         }).map(el => el)
         this.showEstateListingCnt = this.estateList.length
         if (this.showEstateListingCnt > 0) {
-          this.showEstateListing = true
+          this.showEstateListing = true;
         }
 
         this.healthcareList = this.legaStuffList.filter(dtype => {
@@ -72,15 +72,15 @@ export class CustomerLegalStuffComponent implements OnInit {
         }).map(el => el)
         this.showhealthcareListingCnt = this.healthcareList.length
         if (this.showhealthcareListingCnt > 0) {
-          this.showhealthcareListing = true
+          this.showhealthcareListing = true;
         }
-
+console.log("-------",this.showhealthcareListingCnt)
         this.affairsList = this.legaStuffList.filter(dtype => {
           return dtype.subFolderName == 'Personal Affairs'
         }).map(el => el)
         this.showaffairsListingCnt = this.affairsList.length
         if (this.showaffairsListingCnt > 0) {
-          this.showaffairsListing = true
+          this.showaffairsListing = true;
         }
 
       }

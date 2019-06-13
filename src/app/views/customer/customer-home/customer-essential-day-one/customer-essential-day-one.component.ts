@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Product } from '../../../../shared/models/product.model';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
@@ -50,8 +48,8 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   getEssentialProfileList = (query = {}, search = false) => {
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status:"Active" }, query)
-    }
-    this.userapi.apiRequest('post', 'customer/essential-profile-list', req_vars).subscribe(result => {
+    }   
+    this.userapi.apiRequest('post', 'customer/essential-profile-list', req_vars).subscribe(result => {     
       if (result.status == "error") {
         console.log(result.data)
       } else {
@@ -86,12 +84,12 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   }
 
   getEssentialProfessionalList = (query = {}, search = false) => { 
-
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status:"Active" }, query)
     }
-
-  this.userapi.apiRequest('post', 'customer/essential-professional-list', req_vars).subscribe(result => {
+    this.loader.open();
+    this.userapi.apiRequest('post', 'customer/essential-professional-list', req_vars).subscribe(result => {
+    
     if (result.status == "error") {
       console.log(result.data)
     } else {
@@ -101,14 +99,11 @@ export class CustomerEssentialDayOneComponent implements OnInit {
         this.showProfessionalsListing = true;
       }       
     }
+    this.loader.close();
   }, (err) => {
     console.error(err);
   })
 }
-
-  toggleSideNav() {
-    this.sideNav.opened = !this.sideNav.opened;
-  }
 
   openAddIdBoxModal(data: any = {}, isNew?) {
     let title = isNew ? 'Add new member' : 'Update member';

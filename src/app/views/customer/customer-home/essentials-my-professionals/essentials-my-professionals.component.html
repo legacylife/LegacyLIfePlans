@@ -9,7 +9,6 @@
   <div class="ll--modal--body id--box--body">
     <div fxLayout="row wrap">
       <div fxFlex.xs="100">
-
         <mat-form-field class="full-width">
             <mat-label>Profession*</mat-label>
             <mat-select  name="namedProfessionals" [formControl]="professionalForm.controls['namedProfessionals']">
@@ -18,10 +17,9 @@
             <mat-icon matTooltip="Please select profession" matTooltipClass="llp--tooltip error" *ngIf="professionalForm.controls['namedProfessionals'].hasError('required') && professionalForm.controls['namedProfessionals'].touched"
             class="red--alert">help_outline</mat-icon>
           </mat-form-field>
-
         
-         <mat-form-field class="full-width">
-            <input class="capitalize" matInput name="businessName" placeholder="Business Name*" [formControl]="professionalForm.controls['businessName']">
+          <mat-form-field class="full-width">
+            <input class="capitalize" matInput name="businessName" placeholder="Business Name" [formControl]="professionalForm.controls['businessName']">
             <mat-icon matTooltip="Please enter business name" matTooltipClass="llp--tooltip error" *ngIf="professionalForm.controls['businessName'].hasError('required') && professionalForm.controls['businessName'].touched" class="red--alert">help_outline</mat-icon>
           </mat-form-field>
 
@@ -32,24 +30,24 @@
           </mat-form-field>
 
            <mat-form-field class="full-width">
-              <input class="capitalize" matInput name="address" placeholder="Address*" [formControl]="professionalForm.controls['address']">
+              <input class="capitalize" matInput name="address" placeholder="Address" [formControl]="professionalForm.controls['address']">
               <mat-icon matTooltip="Please enter address" matTooltipClass="llp--tooltip error" 
               *ngIf="professionalForm.controls['address'].hasError('required') && professionalForm.controls['address'].touched" class="red--alert">help_outline</mat-icon>
            </mat-form-field>
 
            <mat-form-field class="full-width">
-                <input class="capitalize" matInput name="mpPhoneNumbers" maxlength="20" placeholder="Phone Numbers*" [formControl]="professionalForm.controls['mpPhoneNumbers']">
+                <input class="capitalize" matInput name="mpPhoneNumbers" maxlength="20" placeholder="Phone Numbers" [formControl]="professionalForm.controls['mpPhoneNumbers']">
                 <mat-icon matTooltip="Please enter phone number." matTooltipClass="llp--tooltip error" *ngIf="professionalForm.controls['mpPhoneNumbers'].hasError('required') && professionalForm.controls['mpPhoneNumbers'].touched" class="red--alert">help_outline</mat-icon>
            </mat-form-field>     
 
            <mat-form-field class="full-width">
-                 <input class="capitalize" matInput name="mpEmailAddress" placeholder="Email address*" [formControl]="professionalForm.controls['mpEmailAddress']">
+                 <input  matInput name="mpEmailAddress" placeholder="Email*" [formControl]="professionalForm.controls['mpEmailAddress']">
                  <mat-icon matTooltip="Please enter email." matTooltipClass="llp--tooltip error"  *ngIf="professionalForm.controls['mpEmailAddress'].hasError('required') && professionalForm.controls['mpEmailAddress'].touched" class="red--alert">help_outline</mat-icon>
            </mat-form-field>     
            
            <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
               <input matInput name="profileId" [formControl]="professionalForm.controls['profileId']" readonly="readonly">
-            </mat-form-field>
+           </mat-form-field>
     </div>
     </div>
   </div>

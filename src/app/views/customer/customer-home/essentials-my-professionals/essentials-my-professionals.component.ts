@@ -29,10 +29,10 @@ export class essentialsMyProfessionalsComponent implements OnInit {
    
       this.professionalForm = this.fb.group({
         namedProfessionals: new FormControl('', Validators.required),
-        businessName: new FormControl('', Validators.required),
+        businessName: new FormControl(''),
         name: new FormControl('', Validators.required),
-        address: new FormControl('', Validators.required),
-        mpPhoneNumbers: new FormControl(''),//'', Validators.required
+        address: new FormControl(''),
+        mpPhoneNumbers: new FormControl(''),
         mpEmailAddress: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
         profileId: new FormControl('')
       });

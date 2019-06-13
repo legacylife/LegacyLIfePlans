@@ -27,17 +27,10 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit, OnDestroy
   
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
-  public products: any[];
-  public categories: any[];
-  public activeCategory: string = 'all';
-  public filterForm: FormGroup;
-  public cart: any[];
-  public cartData: any;
   userId: string;
   selectedProfileId: string = "";
   row: any;
   documentTypeList: any[] = documentTypes;
-
   constructor(
     // private shopService: ShopService,
     private fb: FormBuilder,
@@ -53,13 +46,6 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit, OnDestroy
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.getEssentialIDDetails();
 
-    // this.categories$ = this.shopService.getCategories();
-    this.categories = ["My essentials", "Pets"]   
-    this.products = []
-    this.cartData = []
-    this.filterForm = this.fb.group({
-      search: ['']
-    })
   }
 
   //function to get all events

@@ -133,7 +133,7 @@
          <div *ngIf="idProofDocumentsList" >
           <h3 class="header--text fnt--16">Uploaded ID proof</h3>
           <mat-chip-list class="doc--list" *ngFor="let doc of idProofDocumentsList; index as i">
-              <mat-chip><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck" >{{doc.title}}</a><mat-icon matChipRemove  (click)="IDDelete(i,doc.title,doc.tmpName,doc._id)">close</mat-icon></mat-chip>
+              <mat-chip><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck" >{{doc.title}}</a><mat-icon matChipRemove (click)="IDDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
           </mat-chip-list>
          </div>
 
@@ -152,7 +152,7 @@
           </div>
 
         <mat-form-field class="full-width">
-          <textarea matInput placeholder="Comments*" name="comments" [formControl]="IDForm.controls['comments']"></textarea>
+          <textarea matInput placeholder="Comments" name="comments" [formControl]="IDForm.controls['comments']"></textarea>
           <div class="char--limit">0 / 500 chars</div>
           <mat-icon matTooltip="Please enter your comment" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['comments'].hasError('required') && IDForm.controls['comments'].touched"
           class="red--alert">help_outline</mat-icon>

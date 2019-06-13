@@ -58,7 +58,7 @@ export class legalStuffModalComponent implements OnInit {
     this.LegalForm = this.fb.group({
       typeOfDocument: new FormControl('', Validators.required),
       subFolderDocuments_temp: new FormControl([], Validators.required),
-      comments: new FormControl('', Validators.required), 
+      comments: new FormControl(''), 
       profileId: new FormControl('')
      });
      this.subFolderDocumentsList = [];
@@ -99,8 +99,7 @@ export class legalStuffModalComponent implements OnInit {
   }
 
 
-  getEssentialLegalView = (query = {}, search = false) => { 
-   
+  getEssentialLegalView = (query = {}, search = false) => {    
     let req_vars = {
       query: Object.assign({ customerId: this.userId,subFolderName:this.folderName,status:"Pending" }, query)//, status:"Pending"
     }
@@ -166,7 +165,6 @@ export class legalStuffModalComponent implements OnInit {
 
 
   getLegalDocuments = (query = {}, search = false) => {    
-
     let profileIds = this.LegalForm.controls['profileId'].value;
     let req_vars = {
       query: Object.assign({customerId: this.userId,subFolderName:this.folderName,status:"Pending" }),
@@ -192,19 +190,53 @@ export class legalStuffModalComponent implements OnInit {
     })
   }
 
-isExtension(ext, extnArray) {
-  var result = false;
-  var i;
-  if (ext) {
-      ext = ext.toLowerCase();
-      for (i = 0; i < extnArray.length; i++) {
-          if (extnArray[i].toLowerCase() === ext) {
-              result = true;
-              break;
+  subFolderDelete(doc, name, tmName) {
+    let ids = this.LegalForm.controls['profileId'].value;
+    var statMsg = "Are you sure you want to delete '" + name +"' file?"
+    this.confirmService.confirm({ message: statMsg })
+      .subscribe(res => {
+        if (res) {
+          this.loader.open();
+          this.subFolderDocumentsList.splice(doc, 1)
+          var query = {};
+          const req_vars = {
+            query: Object.assign({ _id: ids }, query),
+            proquery: Object.assign({ subFolderDocuments: this.subFolderDocumentsList }, query),
+            fileName: Object.assign({ docName: tmName }, query)
           }
-      }
-  }
-  return result;
+          this.userapi.apiRequest('post', 'documents/deletesubFolderDoc', req_vars).subscribe(result => {
+            if (result.status == "error") {
+              this.loader.close();
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            } else {
+              if(this.subFolderDocumentsList.length<1){
+                this.LegalForm.controls['subFolderDocuments_temp'].setValue('');
+              }  
+              this.loader.close();
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            }
+          }, (err) => {
+            console.error(err)
+            this.loader.close();
+          })
+        }
+      })
 }
+
+
+  isExtension(ext, extnArray) {
+    var result = false;
+    var i;
+    if (ext) {
+        ext = ext.toLowerCase();
+        for (i = 0; i < extnArray.length; i++) {
+            if (extnArray[i].toLowerCase() === ext) {
+                result = true;
+                break;
+            }
+        }
+    }
+    return result;
+  }
 
 }

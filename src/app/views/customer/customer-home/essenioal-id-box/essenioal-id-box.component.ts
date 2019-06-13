@@ -77,7 +77,7 @@ export class EssenioalIdBoxComponent implements OnInit {
       locationPassport: new FormControl(''),
       LocationWorkPermitVisa: new FormControl(''),  
       idProofDocuments_temp: new FormControl([], Validators.required),
-      comments: new FormControl('', Validators.required), 
+      comments: new FormControl(''), 
       profileId: new FormControl('')
      });
      this.idProofDocumentsList = [];
@@ -215,7 +215,8 @@ export class EssenioalIdBoxComponent implements OnInit {
       })
   }  
 
-  IDDelete(doc, name, tmName,ids) {
+  IDDelete(doc, name, tmName) {
+      let ids = this.IDForm.controls['profileId'].value;
       var statMsg = "Are you sure you want to delete '" + name + "' file?"
       this.confirmService.confirm({ message: statMsg })
         .subscribe(res => {
