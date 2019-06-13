@@ -18,7 +18,7 @@ var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const myessentials = require('./../models/myessentials.js')
-const emergencyContactsModel = require('./../models/EmergencyContacts.js')
+const emergencyContacts = require('./../models/EmergencyContacts.js')
 const personalIdProof = require('./../models/personalIdProof.js')
 const MyProfessional = require('./../models/MyProfessionals.js')
 const LegalStuff = require('./../models/LegalStuff.js')
@@ -161,76 +161,97 @@ function viewEssentialProfile(req, res) {
   })
 }
 
-// save emergency Contacts of customer
-function emergencyContacts(req, res) {
-    //console.log("req ....>>>>>>>> ",req.body.ID);  
-    //var emergencyContactsObj = {}
-    let emergencyContactsData = req.body.econtactData;
-    console.log("------>>>>-------",emergencyContactsData); 
-    var emergencyContactsObj = new emergencyContactsModel();
-    emergencyContactsObj.customerId = emergencyContactsData.customerId;
-    emergencyContactsObj.address = emergencyContactsData.ecAddress;
-    emergencyContactsObj.emailAddress = emergencyContactsData.ecEmail;
-    emergencyContactsObj.mobile = emergencyContactsData.ecMobile;
-    emergencyContactsObj.name = emergencyContactsData.ecName;
-    emergencyContactsObj.phone = emergencyContactsData.ecPhone;
-    emergencyContactsObj.relationship = emergencyContactsData.ecRelationship;
-    emergencyContactsObj.createdOn = new Date();
-    emergencyContactsObj.modifiedOn = new Date();
-    
-    if (req.body.ID) {// == "save"
-      emergencyContactsObj.updateOne({ "_id": req.body.ID}, {$set: emergencyContactsObj}, function(err, updatedUser){
-        if(err) {
-          res.send(resFormat.rError(err))
-        }else{
-          let result = { "message": "Details updated successfully!" }
-          res.status(200).send(resFormat.rSuccess(result))
-        }
-      }) 
-    } else {      
-
-
-     
-
-      
-
-      emergencyContactsObj.save({ $set: emergencyContactsData }, function (err, newEntry) {
-        if (err) {
-          res.send(resFormat.rError(err))
+function emergencyContactsSubmit(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let { from } = req.body;
+  console.log("query=>",query);
+  console.log("proquery=>",proquery);
+  if(query._id ){
+    emergencyContacts.findOne(query, function (err, custData) {      
+      if (err) {
+        let result = { "message": "Something Wrong!" }
+        res.send(resFormat.rError(result));
+      } else {
+        if (custData && custData._id) {
+          let { proquery } = req.body;  
+          proquery.modifiedOn = new Date();
+          emergencyContacts.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              let result = { "message": "Emergency contacts details have been updated successfully!" }
+              res.status(200).send(resFormat.rSuccess(result))
+            }
+          })
         } else {
-          let result = { "message": "Details saved successfully!" }
-          res.status(200).send(resFormat.rSuccess(result))
+          let result = { "message": "No record found." }
+          res.send(resFormat.rError(result));
         }
-      })
-    }
-  }
-  
-  
-  function emergencyContactsSaveBK(req, res) {
-    var emergencyContactsObj = new emergencyContactsModel()
-    let emergencyContactsData = req.body
-    emergencyContactsObj.customerId = emergencyContactsData.customerId
-    emergencyContactsObj.address = emergencyContactsData.ecAddress
-    emergencyContactsObj.emailAddress = emergencyContactsData.ecEmail
-    emergencyContactsObj.mobile = emergencyContactsData.ecMobile
-    emergencyContactsObj.name = emergencyContactsData.ecName
-    emergencyContactsObj.phone = emergencyContactsData.ecPhone
-    emergencyContactsObj.relationship = emergencyContactsData.ecRelationship
-    emergencyContactsObj.createdOn = new Date();
-    emergencyContactsObj.modifiedOn = new Date();
-    emergencyContactsObj.save({ $set: emergencyContactsData }, function (err, newEntry) {
+      }
+    })
+  } else { 
+    let { proquery } = req.body; 
+    var emergency = new emergencyContacts();
+    emergency.customerId = from.customerId;
+    emergency.address = proquery.address;
+    emergency.emailAddress= proquery.emailAddress;
+    emergency.mobile= proquery.mobile;
+    emergency.name= proquery.name;
+    emergency.phone= proquery.phone;
+    emergency.relationship= proquery.relationship;
+    emergency.status = 'Active';
+    emergency.createdOn = new Date();
+    emergency.modifiedOn = new Date();
+    emergency.save({ $set: proquery }, function (err, newEntry) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
-        let result = { "message": "Details saved successfully!" }
+        let result = { "message": "Emergency contacts details have been added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
   }
-  
+}
+
+function viewEmergencyContacts(req, res) {
+  let { query } = req.body
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  emergencyContacts.findOne(query, fields, function (err, profileData) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(profileData))
+    }
+  })
+}
+
+function deleteEcontact(req, res) {
+  let { query } = req.body;
+  let fields = { }
+  emergencyContacts.findOne(query, fields, function (err, profileInfo) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      var upStatus = 'Delete';
+      var params = { status: upStatus }
+      emergencyContacts.update({ _id: profileInfo._id }, { $set: params }, function (err, updatedinfo) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          let result = { "message": "Record deleted successfully!" }
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
 
 function viewEssentialProfessionals(req, res) {
-  let { query } = req.body;console.log("query",query);
+  let { query } = req.body;
   let fields = {}
   if (req.body.fields) {
     fields = req.body.fields
@@ -465,7 +486,7 @@ function deleteIdBox(req, res) {
 // get emergency Contacts of customer
 function getEmergencyContacts(req, res) {
   let { query } = req.body
-  emergencyContactsModel.find(query, function (err, eContactsList) {
+  emergencyContacts.find(query, function (err, eContactsList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
@@ -512,8 +533,10 @@ router.post("/view-professional-details", viewEssentialProfessionals)
 router.post("/view-id-details", viewEssentialID)
 router.post("/essentials-legal-form-submit", legalStuffUpdate)
 router.post("/view-legalStuff-details", viewLegalStuffDetails)
-router.post("/emergency-contacts", emergencyContacts)
+router.post("/emergency-contacts", emergencyContactsSubmit)
 router.post("/get-emergency-contacts", getEmergencyContacts)
+router.post("/view-emergency-contacts", viewEmergencyContacts)
+router.post("/deletecontact", deleteEcontact)
 router.post("/legal-estate-list", legalEstateList)
 
 module.exports = router
