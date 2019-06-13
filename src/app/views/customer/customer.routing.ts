@@ -18,6 +18,9 @@ import { CustomerDashboardComponent } from './customer-home/customer-dashboard/c
 import { CustomerDashboardDayOneComponent } from './customer-home/customer-dashboard-day-one/customer-dashboard-day-one.component';
 import { CustomerEssentialDayOneComponent } from './customer-home/customer-essential-day-one/customer-essential-day-one.component';
 import { CustomerEssentialDetailsComponent } from './customer-home/customer-essential-details/customer-essential-details.component';
+
+import { EmergencyContactsDetailsComponent } from './customer-home/emergency-contacts-details/emergency-contacts-details.component';
+
 import { CustomerEssentialDetailsIdboxComponent } from './customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
 import { EssentialsMyProfessionalsDetailsComponent } from './customer-home/essentials-my-professionals-details/essentials-my-professionals-details.component';
 
@@ -96,7 +99,11 @@ export const CustomerRoutes: Routes = [
           {
             path: 'emergency-contacts',
             component: EmergencyContactsComponent
-          }
+          },
+          {
+            path: 'emergency-contacts-details/:id',
+            component: EmergencyContactsDetailsComponent
+          },
         ]
       },
     ]

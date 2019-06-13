@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialogRef,MatDialog, MatSnackBar } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms'
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
@@ -18,7 +18,9 @@ export class EmergencyContactsComponent implements OnInit {
   userId: string
   eContactList: any = []
   updateContact: any = []
+  selectedProfileId: string;
   constructor(private route: ActivatedRoute,
+    private snack: MatSnackBar,
     private router: Router,
     private dialog: MatDialog,
     private fb: FormBuilder,
@@ -29,39 +31,54 @@ export class EmergencyContactsComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.eContactFormGroup = this.fb.group({
-      ecName: new FormControl('', Validators.required),
-      ecRelationship: new FormControl(''),
-      ecAddress: new FormControl(''),
-      ecPhone: new FormControl(''),
-      ecMobile: new FormControl(''),
-      ecEmail: new FormControl('')
+      name: new FormControl('', Validators.required),
+      relationship: new FormControl(''),
+      address: new FormControl(''),
+      phone: new FormControl(''),
+      mobile: new FormControl(''),
+      emailAddress: new FormControl(''),
+      profileId: new FormControl('')
     });
+
+    const locationArray = location.href.split('/')
+    this.selectedProfileId = locationArray[locationArray.length - 1];
+    if (this.selectedProfileId && this.selectedProfileId == 'emergency-contacts') {
+      this.selectedProfileId = "";
+    }
+
     this.getEmergencyContacts()
   }
 
-  openModal(content: any, data = []) {
-    this.updateContact = data
-    this.modalRef = this.dialog.open(content)
+  openModal(content: any) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(content, {
+      width: '720px',
+      disableClose: true,
+    })    
   }
 
-  eContactFormSubmit() {
-    this.loader.open()
-    let emergencyContactsData = this.eContactFormGroup.value;
 
-    emergencyContactsData.customerId = this.userId;
-
-    let econtactData = Object.assign(emergencyContactsData);
-    let params = {"econtactData": econtactData,"ID": ''}
-    //console.log("params ++++++++++++",this.updateContact._id);
-  
-    if(this.updateContact._id){  //console.log("--------------------->>>",this.updateContact._id);
-       params = {"econtactData": econtactData,"ID": this.updateContact._id}
+  eContactFormSubmit(profileInData = null) {
+    var query = {};
+    var proquery = {};     
+    let profileIds = this.eContactFormGroup.controls['profileId'].value;
+    if(profileIds){
+      this.selectedProfileId = profileIds;
     }
-    console.log("params",params);
-    this.userapi.apiRequest('post', 'customer/emergency-contacts', params).subscribe(result => {
-      this.loader.close()
-      this.dialog.closeAll();
-      this.getEmergencyContacts();
+      const req_vars = {
+      query: Object.assign({ _id: this.selectedProfileId  }),
+      proquery: Object.assign(profileInData),   
+      from: Object.assign({ customerId: this.userId }) 
+    }
+    
+    this.loader.open();     
+    this.userapi.apiRequest('post', 'customer/emergency-contacts', req_vars).subscribe(result => {
+     this.loader.close();
+      if (result.status == "error") {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      } else {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        this.dialog.closeAll(); 
+      }
     }, (err) => {
       console.error(err)
     })
@@ -69,7 +86,7 @@ export class EmergencyContactsComponent implements OnInit {
 
   getEmergencyContacts() {
     const params = {
-      query: Object.assign({ "customerId": this.userId })
+      query: Object.assign({ "customerId": this.userId,"status":"Active"})
     }
     this.userapi.apiRequest('post', 'customer/get-emergency-contacts', params).subscribe(result => {
       if (result.data.length > 0) {
