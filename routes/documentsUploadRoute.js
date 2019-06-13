@@ -115,7 +115,7 @@ router.post('/myEssentialsID', cors(), function(req,res){
                     "extention" : mimetype,
                     "tmpName" : newFilename
                   }
-               oldTmpFiles.push(tmpallfiles); 
+              
                   personalIdProof.findOne(q,{idProofDocuments:1,_id:1}, function (err, result) {
                     if (err) {
                         res.status(500).send(resFormat.rError(err))
@@ -124,6 +124,7 @@ router.post('/myEssentialsID', cors(), function(req,res){
                         if(result.idProofDocuments){
                           oldTmpFiles = result.idProofDocuments;
                         }
+                        oldTmpFiles.push(tmpallfiles); 
                         personalIdProof.updateOne(q, { $set: { idProofDocuments: oldTmpFiles } }, function (err, updatedUser) {
                           if (err) {
                             res.send(resFormat.rError(err))
@@ -352,6 +353,27 @@ function deleteIdDocument(req, res) {
 }
 
 
+function deletesubFolderDoc(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let fields = {};
+  LegalStuff.findOne(query, fields, function (err, fileDetails) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      LegalStuff.updateOne({ _id: fileDetails._id }, proquery, function (err, updatedUser) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          let result = { userId:fileDetails._id, "message": "File deleted successfully" }
+          res.send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
 router.post("/deleteAdvDoc", deleteDoc);
 router.post("/deleteIdDoc", deleteIdDocument);
+router.post("/deletesubFolderDoc", deletesubFolderDoc);
 module.exports = router
