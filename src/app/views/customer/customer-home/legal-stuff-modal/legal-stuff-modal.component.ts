@@ -168,23 +168,21 @@ export class legalStuffModalComponent implements OnInit {
   getLegalDocuments = (query = {}, search = false) => {    
 
     let profileIds = this.LegalForm.controls['profileId'].value;
-    const req_vars = {
+    let req_vars = {
       query: Object.assign({customerId: this.userId,subFolderName:this.folderName,status:"Pending" }),
       fields:{subFolderDocuments:1}
     }
     if(profileIds){
-      const req_vars = {
+       req_vars = {
         query: Object.assign({ _id:profileIds, customerId: this.userId }),
-        fields:{_id:1,subFolderDocuments:1}
+        fields:{subFolderDocuments:1}
       }
     }    
     this.userapi.apiRequest('post', 'customer/view-legalStuff-details', req_vars).subscribe(result => {
       if (result.status == "error") {
       } else {
         //this.profile = result.data.userProfile;
-        this.subFolderDocumentsList = result.data.subFolderDocuments;
-        console.log("Asdasd---",result.data)
-        this.LegalForm.controls['profileId'].setValue(result.data._id);
+        this.subFolderDocumentsList = result.data.subFolderDocuments;        
         if(result.data.subFolderDocuments.length>0){
           this.LegalForm.controls['subFolderDocuments_temp'].setValue('1');
         }         

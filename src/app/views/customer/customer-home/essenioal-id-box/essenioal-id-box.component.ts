@@ -161,7 +161,6 @@ export class EssenioalIdBoxComponent implements OnInit {
     }
   
     getEssentialIdView = (query = {}, search = false) => { 
-      //  status:"Pending"
       let req_vars = {
         query: Object.assign({ customerId: this.userId,status:"Pending" })
       }
@@ -278,23 +277,20 @@ export class EssenioalIdBoxComponent implements OnInit {
 
     getIdDocuments = (query = {}, search = false) => {     
       let profileIds = this.IDForm.controls['profileId'].value;
-      const req_vars = {
+      let req_vars = {
         query: Object.assign({customerId: this.userId,status:"Pending" }),
         fields:{idProofDocuments:1}
       }
       if(profileIds){
-        const req_vars = {
+         req_vars = {
           query: Object.assign({ _id:profileIds, customerId: this.userId  }),
-          fields:{_id:1,idProofDocuments:1}
+          fields:{idProofDocuments:1}
         }
       }    
       this.userapi.apiRequest('post', 'customer/view-id-details', req_vars).subscribe(result => {
         if (result.status == "error") {
         } else {
-          //this.profile = result.data.userProfile;
-          console.log(result.data._id);
           this.idProofDocumentsList = result.data.idProofDocuments;
-          this.IDForm.controls['profileId'].setValue(result.data._id);
           if(result.data.idProofDocuments.length>0){
             this.IDForm.controls['idProofDocuments_temp'].setValue('1');
           }         
