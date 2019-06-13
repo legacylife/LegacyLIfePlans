@@ -70,6 +70,8 @@ import { essentialsMyProfessionalsComponent } from './customer-home/essentials-m
 import { EssentialsMyProfessionalsDetailsComponent } from './customer-home/essentials-my-professionals-details/essentials-my-professionals-details.component';
 import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
 import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
+// Professional
+import { CustomerProfLandingComponent } from './customer-professionals/customer-professionals-landing/customer-professionals-landing.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -116,7 +118,8 @@ import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edi
     PersonalProfileModalComponent, CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent,
     CustomerMyPeopleComponent, CustomerLegalStuffComponent, legalStuffModalComponent,
     addTrusteeModalComponent, essentialsMyProfessionalsComponent,EssentialsMyProfessionalsDetailsComponent,
-    EmergencyContactsComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent, EmergencyContactsDetailsComponent
+    EmergencyContactsComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent, EmergencyContactsDetailsComponent,
+    CustomerProfLandingComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard
   ], bootstrap: [CustomerSignupComponent], entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,

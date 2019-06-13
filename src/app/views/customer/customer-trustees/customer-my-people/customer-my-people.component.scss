@@ -24,7 +24,7 @@
                 margin: 0;
                 font-size: 16px;
                 color: #222324;
-                width: 100%;
+                // width: 100%;
             }
 
             &.header--with--sort{
@@ -98,6 +98,9 @@
                 }
                 background-color: #f6f7f7;
                 
+            }
+            ::ng-deep .mat-card-header-text{
+                width: 100%;
             }
             .mat-card-header{
                 background-color: #fff;

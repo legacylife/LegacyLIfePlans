@@ -34,6 +34,9 @@ import { CustomerMyPeopleComponent } from './customer-trustees/customer-my-peopl
 import { CustomerMyTrusteeComponent } from './customer-trustees/customer-my-trustees/customer-my-trustees.component';
 import { CustomerHiredAdvisorComponent } from './customer-trustees/customer-hired-advisors/customer-hired-advisors.component';
 
+// Professional
+import { CustomerProfLandingComponent } from './customer-professionals/customer-professionals-landing/customer-professionals-landing.component';
+
 export const CustomerRoutes: Routes = [
   {
     path: 'signup',
@@ -134,6 +137,23 @@ export const CustomerRoutes: Routes = [
     ]
   },
   {
+    path: 'professionals',
+    component: CustomerLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: CustomerProfessionalComponent,
+        canActivate: [UserAuthGuard],
+        children: [
+          {
+            path: 'prof-landing',
+            component:CustomerProfLandingComponent
+          }
+        ]
+      }
+    ]
+  },
+  {
     path: 'update-profile',
     component: AuthLayoutComponent,
     children: [
@@ -164,16 +184,17 @@ export const CustomerRoutes: Routes = [
         canActivate: [UserAuthGuard]
       }
     ]
-  }, {
-    path: 'professionals',
-    component: CustomerLayoutComponent,
-    children: [
-      {
-        path: '',
-        component: CustomerProfessionalComponent,
-        canActivate: [UserAuthGuard]
-      }
-    ]
-  }
+  }, 
+  // {
+  //   path: 'professionals',
+  //   component: CustomerLayoutComponent,
+  //   children: [
+  //     {
+  //       path: '',
+  //       component: CustomerProfessionalComponent,
+  //       canActivate: [UserAuthGuard]
+  //     }
+  //   ]
+  // }
 
 ];
