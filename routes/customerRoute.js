@@ -165,8 +165,7 @@ function emergencyContactsSubmit(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let { from } = req.body;
-  console.log("query=>",query);
-  console.log("proquery=>",proquery);
+
   if(query._id ){
     emergencyContacts.findOne(query, function (err, custData) {      
       if (err) {
@@ -451,7 +450,60 @@ function deleteProfessionals(req, res) {
   })
 }
 
+
 function legalStuffUpdate(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let {message} = req.body;
+
+  if(query._id ){
+    LegalStuff.findOne(query, function (err, custData) {      
+      if (err) {
+        let result = { "message": "Something Wrong!" }
+        res.send(resFormat.rError(result));
+      } else {
+        if (custData && custData._id) {
+          let { proquery } = req.body;   
+          
+          proquery.status = 'Active';   
+          proquery.modifiedOn = new Date();
+
+          LegalStuff.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              let result = { "message": message.messageText+" updated successfully!" }
+              res.status(200).send(resFormat.rSuccess(result))
+            }
+          })
+        } else {
+          let result = { "message": "No record found." }
+          res.send(resFormat.rError(result));
+        }
+      }
+    })
+  } else { 
+            let { proquery } = req.body;
+            var legals = new LegalStuff();
+            legals.customerId = query.customerId;
+            legals.subFolderName = proquery.subFolderName;
+            legals.typeOfDocument = proquery.typeOfDocument;
+            legals.comments = proquery.comments;            
+            legals.status = 'Active';
+            legals.createdOn = new Date();
+            legals.modifiedOn = new Date();
+            legals.save({$set:proquery}, function (err, newEntry) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        let result = { "message": message.messageText+" have been added successfully!" }
+        res.status(200).send(resFormat.rSuccess(result))
+      }
+    })
+  }
+}
+
+function legalStuffUpdate1(req, res) {
   let { query } = req.body;
   let {message} = req.body;
   if (query.customerId) {
@@ -463,7 +515,7 @@ function legalStuffUpdate(req, res) {
         if (custData && custData.customerId) {
           let { proquery } = req.body;   
           proquery.status = 'Active';   
-          legals.modifiedOn = new Date();
+          proquery.modifiedOn = new Date();
           LegalStuff.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
               res.send(resFormat.rError(err))
