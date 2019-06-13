@@ -55,8 +55,6 @@ export class EssenioalIdBoxComponent implements OnInit {
     private userapi: UserAPIService  ) 
   { }
 
-
-
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.stateList = states.sort();
@@ -91,6 +89,8 @@ export class EssenioalIdBoxComponent implements OnInit {
     if(this.selectedProfileId && this.selectedProfileId == 'essential-day-one'){
       this.selectedProfileId = "";   
     }
+
+     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
      this.getEssentialIdView();
     }
    
@@ -136,16 +136,27 @@ export class EssenioalIdBoxComponent implements OnInit {
       var query = {};
       var proquery = {};     
       
-      const req_vars = {
-        query: Object.assign({customerId: this.userId }),
-        proquery: Object.assign(profileInData)
-      }
+      // const req_vars = {
+      //   query: Object.assign({customerId: this.userId }),
+      //   proquery: Object.assign(profileInData)
+      // }
+      // let profileIds = this.IDForm.controls['profileId'].value;
+      // if(profileIds){
+      //   const req_vars = {
+      //     query: Object.assign({ _id:profileIds, customerId: this.userId }),
+      //     proquery: Object.assign(profileInData)
+      //   }
+      // }
+
+
       let profileIds = this.IDForm.controls['profileId'].value;
       if(profileIds){
-        const req_vars = {
-          query: Object.assign({ _id:profileIds, customerId: this.userId }),
-          proquery: Object.assign(profileInData)
-        }
+        this.selectedProfileId = profileIds;
+      }
+      const req_vars = {
+        query: Object.assign({ _id: this.selectedProfileId  }),
+        proquery: Object.assign(profileInData),   
+        from: Object.assign({ customerId: this.userId }) 
       }
 
       this.loader.open();     
@@ -281,12 +292,12 @@ export class EssenioalIdBoxComponent implements OnInit {
     getIdDocuments = (query = {}, search = false) => {     
       let profileIds = this.IDForm.controls['profileId'].value;
       const req_vars = {
-        query: Object.assign({customerId: this.userId }),
+        query: Object.assign({customerId: this.userId,status:"Pending" }),
         fields:{idProofDocuments:1}
       }
       if(profileIds){
         const req_vars = {
-          query: Object.assign({ _id:profileIds, customerId: this.userId }),
+          query: Object.assign({ _id:profileIds, customerId: this.userId  }),
           fields:{_id:1,idProofDocuments:1}
         }
       }    
