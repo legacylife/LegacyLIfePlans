@@ -19,15 +19,17 @@ import { CustomerDashboardDayOneComponent } from './customer-home/customer-dashb
 import { CustomerEssentialDayOneComponent } from './customer-home/customer-essential-day-one/customer-essential-day-one.component';
 import { CustomerEssentialDetailsComponent } from './customer-home/customer-essential-details/customer-essential-details.component';
 import { CustomerEssentialDetailsIdboxComponent } from './customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
-
 import { EssentialsMyProfessionalsDetailsComponent } from './customer-home/essentials-my-professionals-details/essentials-my-professionals-details.component';
 
 import { CustomerSharedLegaciesComponent } from './customer-home/customer-shared-legacies/customer-shared-legacies.component';
 import { CustomerLegaciesDetailsComponent } from './customer-home/customer-legacies-details/customer-legacies-details.component';
 import { CustomerLegalStuffComponent } from './customer-home/customer-legal-stuff/customer-legal-stuff.component';
 import { EmergencyContactsComponent } from './customer-home/emergency-contacts/emergency-contacts.component';
+
 // trustees
 import { CustomerMyPeopleComponent } from './customer-trustees/customer-my-people/customer-my-people.component';
+import { CustomerMyTrusteeComponent } from './customer-trustees/customer-my-trustees/customer-my-trustees.component';
+import { CustomerHiredAdvisorComponent } from './customer-trustees/customer-hired-advisors/customer-hired-advisors.component';
 
 export const CustomerRoutes: Routes = [
   {
@@ -111,6 +113,14 @@ export const CustomerRoutes: Routes = [
           {
             path: 'my-people',
             component: CustomerMyPeopleComponent
+          },
+          {
+            path: 'my-trustee',
+            component: CustomerMyTrusteeComponent
+          },
+          {
+            path: 'hired-advisor',
+            component: CustomerHiredAdvisorComponent
           }
         ]
       },
