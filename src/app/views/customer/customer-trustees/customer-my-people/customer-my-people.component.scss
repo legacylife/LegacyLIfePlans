@@ -1,2 +1,289 @@
 @import 'llp-global-styles.scss';
-@import 'llp-custom.scss';
+
+::ng-deep .mat-option-text{
+    font-family: $font--lato--regular !important;
+    font-size: 16px;
+}
+
+.llp--content--wrapper{
+    
+    .empty--section{
+        margin: 0 0 15px 0;       
+        box-shadow: none;
+        border-radius: 2px;
+
+        .mat-card-header{
+            padding: 0 25px;
+            height: 55px;
+            background-color: #e7ebcd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            ::ng-deep .mat-card-header-text{
+                margin: 0;
+                font-size: 16px;
+                color: #222324;
+                width: 100%;
+            }
+
+            &.header--with--sort{
+                .right--filters{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                ::ng-deep .mat-select{
+                    width: 130px;
+                    background: #fff;
+                    padding: 6px 10px;
+                    border-radius: 2px;
+                    .mat-select-placeholder {
+                        color: #222324;
+                        font-size: 16px;
+                        font-family: $font--lato--regular;
+                    }                  
+                    
+                }
+               .compare--icon{
+                    width: 30px;
+                    height: 30px;
+                    font-size: 30px;
+                    transform: rotate(90deg);
+                    margin: 0 5px 0 0;
+                    cursor: pointer;
+               }
+            }
+        }
+        .mat-card-content{
+            border: 1px solid #e1e5c7;
+            border-top: none;
+            padding: 20px 25px;
+
+            .info{
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 20px;
+                a{
+                    color: #c72128;
+                    font-size: 15px;
+                }
+            }
+        
+        }
+     
+    }
+
+    
+
+    .appointees--wrapper{
+        padding-top: 0 !important;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        .appointees--section{
+            width: 30%;
+            height: auto;
+            border: solid 1px #dadce0;
+            border-radius: 2px;
+            padding: 0 10px;
+            text-align: center;
+            flex-grow: 1;
+            margin: 20px 20px 0 0 ;
+            box-shadow: none;
+            &.pending {
+                .mat-card-header{
+                    background-color: #f6f7f7;
+                }
+                background-color: #f6f7f7;
+                
+            }
+            .mat-card-header{
+                background-color: #fff;
+                border-bottom: 1px solid #dadce0;
+                padding: 0 20px;
+
+                .mat-card-title{
+                    display: flex;
+                    align-items: center;
+                    background-color: transparent;
+                }
+
+                .appointees--pic{
+                    width: 48px;
+                    height: 48px;
+                    border-radius: 50%;
+                    line-height: 50px;
+                    overflow: hidden;
+                    flex-shrink: 0;
+                    img{
+                        min-height: 100%;
+                    }
+                }
+                .appointees--desc{
+                    text-align: left;
+                    margin-left: 20px;
+                    overflow: hidden;
+                    h5{
+                        margin: 0 0 8px 0;
+                        font-size: 18px;
+                        color: #222324; 
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    p{
+                        font-size: 14px;
+                        color: #828385;
+                        line-height: 14px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+
+                        &.position{
+                            text-transform: uppercase;
+                        }
+                    }
+                }
+            }
+            .mat-card-content{
+                border: none;
+                padding: 15px 25px;
+                text-align: left;
+                height: 95px;
+                h4{
+                    font-size: 16px;
+                    color: #222324;
+                    margin: 0 0 15px 0;
+                }
+                .files--folder{
+                    font-size: 14px;
+                    color: #333;
+                    margin-bottom: 15px;
+                    display: flex;
+                    align-items: center;
+
+                    .mat-icon{
+                        width: 34px;
+                        height: 25px;
+                        color: #757575;
+                        flex-shrink: 0;
+                        align-self: flex-start;
+                    }
+
+                    &.my--ad--ff{
+                        .mat-icon{
+                            align-self: flex-start;
+                        }
+                        .sp--details{
+                            line-height: 23px;
+                            flex-basis: 278px;
+                        }
+                    }
+                }
+
+                &.status--pending{
+                    background-color: #f6f7f7;
+                    color: #c72128;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    .pending{
+                        color: #c72128;
+                        font-size: 16px;
+                        margin-top: 3px;
+                    }
+                    .mat-icon{
+                        height: 30px;
+                        width: 30px;
+                        font-size: 30px;
+                    }
+                }
+
+                &.status--advisor{
+                    .ad--strip{
+                        position: absolute;
+                        bottom: -16px;
+                        left: 0;
+                        right: 0;
+                        padding: 9px;
+                        background: #dadce0;
+                        text-align: center;
+                        font-family: $font--lato--bold;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* Media query (start here)*/
+
+@media only screen and (max-width: 599px) {
+    .llp--content--wrapper .appointees--wrapper .appointees--section{
+        width: 100%;
+        margin: 15px 0 0 0 ;
+    }
+    .llp--content--wrapper .empty--section .mat-card-content{
+        padding: 15px 10px
+    }
+    .llp--content--wrapper .files--wrapper .recent--acc--files{
+        width: 47%;
+        height: 150px;
+    }
+    .llp--content--wrapper .files--wrapper .recent--acc--files .mat-icon {
+        font-size: 34px;
+        margin: 36px 0;
+        height: 38px;
+        width: 44px;
+    }
+    .llp--primary--btn{
+        padding: 0px 10px !important;
+        height: 38px;
+    }
+    .llp--content--wrapper .empty--section .mat-card-header {
+        padding: 0 15px;
+    }
+  
+  
+    .llp--content--wrapper .empty--section .mat-card-header.header--with--sort .mat-select {
+        width: 100px;
+
+    }
+}
+@media only screen and (min-width: 600px) and (max-width: 959px){
+
+    .llp--content--wrapper .appointees--wrapper .appointees--section{
+        width: 42%;
+    }
+    .llp--content--wrapper .files--wrapper .recent--acc--files{
+        flex-grow: 1;
+        margin-right: 15px;
+    }
+}
+@media only screen and (min-width: 960px) and (max-width: 979px){    
+    .llp--content--wrapper .appointees--wrapper .appointees--section{
+        width: 42%;
+    }
+    .llp--content--wrapper .files--wrapper .recent--acc--files{
+        flex-grow: 1;
+        margin-right: 15px;
+    }
+}
+@media only screen and (min-width: 980px) and (max-width: 1279px){
+    .llp--content--wrapper .appointees--wrapper .appointees--section{
+        width: 42%;
+    }
+    .llp--content--wrapper .files--wrapper .recent--acc--files{
+        flex-grow: 1;
+        margin-right: 15px;
+    }
+}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){
+
+}
+@media only screen and (min-width: 1441px) and (max-width: 1550px){}
+
+/* Media query (end here)*/
