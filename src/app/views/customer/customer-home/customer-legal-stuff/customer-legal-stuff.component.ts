@@ -8,6 +8,7 @@ import { AppLoaderService } from '../../../../shared/services/app-loader/app-loa
 import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
 import { legalStuffModalComponent } from '../legal-stuff-modal/legal-stuff-modal.component';
+import { EstateTypeOfDocument,HealthcareTypeOfDocument,PersonalAffairsTypeOfDocument } from '../../../../selectList';
 
 @Component({
   selector: 'app-customer-legal-stuff',
@@ -27,6 +28,7 @@ export class CustomerLegalStuffComponent implements OnInit {
   affairsList: any = [];
   legaStuffList: any = [];
   selectedProfileId:string = "";
+  typeOfDocumentList: any[];
 
   userId: string;
   constructor(
@@ -104,5 +106,25 @@ export class CustomerLegalStuffComponent implements OnInit {
     });
 
   }
+
+  getType(key, folderName) {
+    
+        if (folderName) {
+    
+          if(folderName=='Estate'){
+            this.typeOfDocumentList = EstateTypeOfDocument;
+          }else if(folderName=='Healthcare'){
+            this.typeOfDocumentList = HealthcareTypeOfDocument;
+          }else if(folderName=='Personal Affairs'){
+            this.typeOfDocumentList = PersonalAffairsTypeOfDocument;      
+          }    
+    
+          let filteredTyes = this.typeOfDocumentList.filter(dtype => {
+            return dtype.opt_code === key
+          }).map(el => el.opt_name)[0]
+          return filteredTyes
+        }
+    
+      }
 
 }

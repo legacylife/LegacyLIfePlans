@@ -70,17 +70,17 @@ export class legalStuffModalComponent implements OnInit {
     var query = {};
     var proquery = {};     
     profileInData.subFolderName = this.folderName;
-    const req_vars = {
+    let req_vars = {
       query: Object.assign({customerId: this.userId,subFolderName:this.folderName }),
       proquery: Object.assign(profileInData),
-      message: Object.assign({ messageText: "Estate" })
+      message: Object.assign({ messageText: this.folderName })
     }
     let profileIds = this.LegalForm.controls['profileId'].value;
     if(profileIds){
-      const req_vars = {
+      req_vars = {
         query: Object.assign({ _id:profileIds, customerId: this.userId }),
         proquery: Object.assign(profileInData),
-        message: Object.assign({ messageText: "Estate" })
+        message: Object.assign({ messageText: this.folderName })
       }
     }
     //console.log("profileInData",profileInData)

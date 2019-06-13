@@ -56,7 +56,7 @@
             <div class="cust--user--details mt-1" *ngFor="let legal of estateList; let i = index" [routerLink]="['/customer/dashboard/legal-detail-view', legal._id]">
               <div class="name--letters">{{legal.typeOfDocument}}</div>
               <div class="user--name">
-                <h5>{{legal.typeOfDocument}}</h5>
+                <h5>{{getType(legal.typeOfDocument,legal.subFolderName)}}</h5>
                 <p class="mb-0">Last modified:
                     <span>{{legal.createdOn | date: 'yyyy/MM/dd'}}</span>
                 </p>
@@ -86,7 +86,7 @@
               <div class="cust--user--details mt-1" *ngFor="let legal of healthcareList; let i = index" [routerLink]="['/customer/dashboard/legal-detail-view', legal._id]">
                 <div class="name--letters">{{legal.typeOfDocument}}</div>
                 <div class="user--name">
-                  <h5>{{legal.typeOfDocument}}</h5>
+                  <h5>{{getType(legal.typeOfDocument,legal.subFolderName)}}</h5>
                   <p class="mb-0">Last modified:
                       <span>{{legal.createdOn | date: 'yyyy/MM/dd'}}</span>
                   </p>
@@ -116,7 +116,7 @@
           <div class="cust--user--details mt-1" *ngFor="let legal of affairsList; let i = index" [routerLink]="['/customer/dashboard/legal-detail-view', legal._id]">
             <div class="name--letters">{{legal.typeOfDocument}}</div>
             <div class="user--name">
-              <h5>{{legal.typeOfDocument}}</h5>
+              <h5>{{getType(legal.typeOfDocument,legal.subFolderName)}}</h5>
               <p class="mb-0">Last modified:
                   <span>{{legal.createdOn | date: 'yyyy/MM/dd'}}</span>
               </p>
