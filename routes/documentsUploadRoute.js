@@ -85,72 +85,86 @@ router.post('/myEssentialsID', cors(), function(req,res){
       authTokens[fieldname] = val
     })
     const {query:{userId}} = req;
+    const {query:{ProfileId}} = req;
+  
+    let q = {customerId: userId}
+    if(ProfileId && ProfileId!=''){
+      q = {_id : ProfileId}
+    }
     req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
       let tmpallfiles = {};
       let oldTmpFiles = [];
       if(userId){
-        personalIdProof.findOne({ customerId: userId },{idProofDocuments:1,_id:1}, function (err, result) {
-        if (err) {
-            res.status(500).send(resFormat.rError(err))
-        } else {  
-
           let ext = filename.split('.')
           ext = ext[ext.length - 1];
           var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
           let resp = isExtension(ext,fileExts);
-          if(resp){        
-          const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
-          fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
-          file.pipe(fstream);
-          fstream.on('close', async function () {
-            await s3.uploadFile(newFilename,IDdocFilePath);  
-            if(result && result.idProofDocuments){
-              oldTmpFiles = result.idProofDocuments;
-            }
-            tmpallfiles = {
-              "title" : filename,
-              "size" : encoding,
-              "extention" : mimetype,
-              "tmpName" : newFilename
-            }
-            oldTmpFiles.push(tmpallfiles);           
-         
-            if (result) {     
-                  personalIdProof.updateOne({ customerId: userId }, { $set: { idProofDocuments: oldTmpFiles } }, function (err, updatedUser) {
-                    if (err) {
-                      res.send(resFormat.rError(err))
-                    } else {
-                      let result = { userId:userId, allDocs:tmpallfiles, "message": "ID proof uploaded successfully!" }
-                      res.send(resFormat.rSuccess(result))
-                    }
-                  })
-            }else{
-                 
-                  console.log("proquery :-",userId);
-                  var personal = new personalIdProof();
-                  personal.customerId = userId;
-                  personal.idProofDocuments = oldTmpFiles;
-                  personal.status = 'Pending';
-                  personal.createdOn = new Date();
-                  personal.save({}, function (err, newEntry) {
-                  if (err) {
-                    res.send(resFormat.rError(err))
-                  } else {
-                    let result = { "message": "ID proof uploaded successfully!" }
-                    res.status(200).send(resFormat.rSuccess(result))
+          if(!resp){
+            let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid file extension!" }
+            res.send(resFormat.rSuccess(results))
+          } else{
+             if(ProfileId){
+              const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+                fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+                file.pipe(fstream);
+                fstream.on('close', async function () {
+                  await s3.uploadFile(newFilename,IDdocFilePath);  
+                  tmpallfiles = {
+                    "title" : filename,
+                    "size" : encoding,
+                    "extention" : mimetype,
+                    "tmpName" : newFilename
                   }
-                })
-           }
-          })
-         }else{
-          if(result.idProofDocuments){
-            oldTmpFiles = result.idProofDocuments;
+               oldTmpFiles.push(tmpallfiles); 
+                  personalIdProof.findOne(q,{idProofDocuments:1,_id:1}, function (err, result) {
+                    if (err) {
+                        res.status(500).send(resFormat.rError(err))
+                    } else {       
+                    if (result) {                              
+                        if(result.idProofDocuments){
+                          oldTmpFiles = result.idProofDocuments;
+                        }
+                        personalIdProof.updateOne(q, { $set: { idProofDocuments: oldTmpFiles } }, function (err, updatedUser) {
+                          if (err) {
+                            res.send(resFormat.rError(err))
+                          } else {
+                            let result = { userId:userId, allDocs:tmpallfiles, "message": "ID proof uploaded successfully!" }
+                            res.send(resFormat.rSuccess(result))
+                          }
+                       })
+                      }
+                    } 
+                    })
+                  })
+              }else{
+                const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+                fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+                file.pipe(fstream);
+                fstream.on('close', async function () {
+                  await s3.uploadFile(newFilename,IDdocFilePath);  
+                  tmpallfiles = {
+                    "title" : filename,
+                    "size" : encoding,
+                    "extention" : mimetype,
+                    "tmpName" : newFilename
+                  }
+                oldTmpFiles.push(tmpallfiles); 
+                var personal = new personalIdProof();
+                personal.customerId = userId;
+                personal.idProofDocuments = oldTmpFiles;
+                personal.status = 'Pending';
+                personal.createdOn = new Date();
+                personal.save({}, function (err, newEntry) {
+                if (err) {
+                  res.send(resFormat.rError(err))
+                   } else {
+                     let result = { "message": "ID proof uploaded successfully!" }
+                     res.status(200).send(resFormat.rSuccess(result))
+                   }
+                 })
+                })   
           }
-          let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid file extension!" }
-          res.send(resFormat.rSuccess(results))
-         }
-       }
-      })
+         } 
       } else {
         res.status(401).send(resFormat.rError("User token mismatch."))
       }
@@ -167,70 +181,90 @@ router.post('/legalStuff', cors(), function(req,res){
       authTokens[fieldname] = val
     })
     const {query:{userId}} = req;
+    const {query:{ProfileId}} = req;
     const {query:{folderName}} = req;
+    
+    let q = {customerId: userId}
+    if(ProfileId && ProfileId!=''){
+      q = {_id : ProfileId}
+    }
     req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
       let tmpallfiles = {};
       let oldTmpFiles = [];
       if(userId){
-        LegalStuff.findOne({ customerId: userId,subFolderName:this.folderName },{subFolderDocuments:1,_id:1}, function (err, result) {
-        if (err) {
-            res.status(500).send(resFormat.rError(err))
-        } else {  
           let ext = filename.split('.')
           ext = ext[ext.length - 1];
           var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
           let resp = isExtension(ext,fileExts);
-          if(resp){        
-          const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
-          fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
-          file.pipe(fstream);
-          fstream.on('close', async function () {
-            await s3.uploadFile(newFilename,legalStuffdocFilePath);  
-            if(result && result.subFolderDocuments){
-              oldTmpFiles = result.subFolderDocuments;
-            }
-            tmpallfiles = {
-              "title" : filename,
-              "size" : encoding,
-              "extention" : mimetype,
-              "tmpName" : newFilename
-            }
-            oldTmpFiles.push(tmpallfiles);         
-            if (result) {     
-                 LegalStuff.updateOne({ customerId: userId }, { $set: { subFolderDocuments: oldTmpFiles } }, function (err, updatedUser) {
+          if(!resp){
+            let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid file extension!" }
+            res.send(resFormat.rSuccess(results))
+          } else{
+                 
+          if(ProfileId){
+              const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+              fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+              file.pipe(fstream);
+              fstream.on('close', async function () {
+                await s3.uploadFile(newFilename,IDdocFilePath);                  
+                tmpallfiles = {
+                  "title" : filename,
+                  "size" : encoding,
+                  "extention" : mimetype,
+                  "tmpName" : newFilename
+                }
+              LegalStuff.findOne(q,{idProofDocuments:1,_id:1}, function (err, result) {
                     if (err) {
-                      res.send(resFormat.rError(err))
-                    } else {
-                      let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
-                      res.send(resFormat.rSuccess(result))
-                    }
-                  })
-            }else{                  
-                  var legal = new LegalStuff();
+                        res.status(500).send(resFormat.rError(err))
+                    } else {       
+                    if (result) {                             
+                        if(result.subFolderDocuments){
+                          oldTmpFiles = result.subFolderDocuments;
+                        }
+                        oldTmpFiles.push(tmpallfiles);  
+                        LegalStuff.updateOne(q, { $set: { idProofDocuments: oldTmpFiles } }, function (err, updatedUser) {
+                          if (err) {
+                            res.send(resFormat.rError(err))
+                          } else {
+                            let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
+                            res.send(resFormat.rSuccess(result))
+                          }
+                       })
+                      }
+                    } 
+                    })
+                 })
+              }else{
+                const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+                fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+                file.pipe(fstream);
+                fstream.on('close', async function () {
+                  await s3.uploadFile(newFilename,IDdocFilePath);  
+                  tmpallfiles = {
+                    "title" : filename,
+                    "size" : encoding,
+                    "extention" : mimetype,
+                    "tmpName" : newFilename
+                  }
+              oldTmpFiles.push(tmpallfiles);  
+               var legal = new LegalStuff();
                   legal.customerId = userId;
                   legal.subFolderName = folderName;
                   legal.subFolderDocuments = oldTmpFiles;
                   legal.status = 'Pending';
                   legal.createdOn = new Date();
                   legal.save({}, function (err, newEntry) {
-                    if (err) {
-                      res.send(resFormat.rError(err))
-                    } else {
-                      let result = { "message": "Document uploaded successfully!" }
-                      res.status(200).send(resFormat.rSuccess(result))
-                    }
-                  })
-            }
-          })
-         }else{
-          if(result.subFolderDocuments){
-            oldTmpFiles = result.subFolderDocuments;
-          }
-          let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid file extension!" }
-          res.send(resFormat.rSuccess(results))
-         }
-       }
-      })
+                  if (err) {
+                  res.send(resFormat.rError(err))
+                   } else {
+                    let result = { "message": "Document uploaded successfully!" }
+                     res.status(200).send(resFormat.rSuccess(result))
+                   }
+                 })
+
+              })
+           }
+         } 
       } else {
         res.status(401).send(resFormat.rError("User token mismatch."))
       }

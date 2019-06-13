@@ -267,6 +267,57 @@ function viewEssentialProfessionals(req, res) {
 
 function personalIdUpdate(req, res) {
   let { query } = req.body;
+  let { proquery } = req.body;
+  let { from } = req.body;
+  if(query._id ){
+    personalIdProof.findOne(query, function (err, custData) {      
+      if (err) {
+        let result = { "message": "Something Wrong!" }
+        res.send(resFormat.rError(result));
+      } else {
+        if (custData && custData._id) {
+          let { proquery } = req.body;  
+          proquery.modifiedOn = new Date();
+          proquery.status = 'Active';
+          personalIdProof.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              let result = { "message": "ID box details have been updated successfully!" }
+              res.status(200).send(resFormat.rSuccess(result))
+            }
+          })
+        } else {
+          let result = { "message": "No record found." }
+          res.send(resFormat.rError(result));
+        }
+      }
+    })
+  } else { 
+    let { proquery } = req.body; 
+    var personal = new personalIdProof();
+    proquery.customerId = from.customerId;
+    proquery.status = 'Active';
+    proquery.createdOn = new Date();
+    proquery.modifiedOn = new Date();
+    personal.save({ $set: proquery }, function (err, newEntry) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        let result = { "message": "ID box details have been added successfully!" }
+        res.status(200).send(resFormat.rSuccess(result))
+      }
+    })
+  }
+}
+
+
+
+
+
+function personalIdUpdate23(req, res) {
+  let { query } = req.body;
+  let { from } = req.body;
   if (query.customerId) {
     personalIdProof.findOne(query, function (err, custData) {
       if (err) {
@@ -287,7 +338,7 @@ function personalIdUpdate(req, res) {
         } else {
             let { proquery } = req.body;
             var personal = new personalIdProof();
-            personal.customerId = query.customerId;
+            personal.customerId = from.customerId;
             personal.status = 'Active';
             personal.createdOn = new Date();
             personal.save({ $set: proquery }, function (err, newEntry) {
@@ -412,6 +463,7 @@ function legalStuffUpdate(req, res) {
         if (custData && custData.customerId) {
           let { proquery } = req.body;   
           proquery.status = 'Active';   
+          legals.modifiedOn = new Date();
           LegalStuff.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
               res.send(resFormat.rError(err))
@@ -429,6 +481,7 @@ function legalStuffUpdate(req, res) {
             legals.comments = proquery.comments;            
             legals.status = 'Active';
             legals.createdOn = new Date();
+            legals.modifiedOn = new Date();
             legals.save({$set:proquery}, function (err, newEntry) {
             if (err) {
               res.send(resFormat.rError(err))
