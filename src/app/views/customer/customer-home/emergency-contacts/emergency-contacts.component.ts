@@ -14,7 +14,9 @@ export class EmergencyContactsComponent implements OnInit {
   closeResult: string
   modalRef: any = null
   eContactFormGroup: FormGroup;
-
+  showContactListing = true
+  userId: string
+  eContactList:any = []
   constructor(private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
@@ -24,6 +26,7 @@ export class EmergencyContactsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userId = localStorage.getItem("endUserId");
     this.eContactFormGroup = this.fb.group({
       ecName: new FormControl('', Validators.required),
       ecRelationship: new FormControl(''),
@@ -32,6 +35,7 @@ export class EmergencyContactsComponent implements OnInit {
       ecMobile: new FormControl(''),
       ecEmail: new FormControl('')
     });
+    this.getEmergencyContacts()
   }
 
   openModal(content: any) {
@@ -40,12 +44,27 @@ export class EmergencyContactsComponent implements OnInit {
 
   eContactFormSubmit() {
     this.loader.open()
-    let econtactData =  Object.assign(this.eContactFormGroup.value)
+    let emergencyContactsData = this.eContactFormGroup.value
+    emergencyContactsData.customerId = this.userId
+    let econtactData = Object.assign(emergencyContactsData)
     this.userapi.apiRequest('post', 'customer/emergency_contacts', econtactData).subscribe(result => {
       this.loader.close()
-      
-      }, (err) => {
-        console.error(err)
+      this.dialog.closeAll();
+      this.getEmergencyContacts();
+    }, (err) => {
+      console.error(err)
+    })
+  }
+
+  getEmergencyContacts() {
+    const params = {
+      query: Object.assign({ "customerId": this.userId })
+    }
+    this.userapi.apiRequest('post', 'customer/get_emergency_contacts', params).subscribe(result => {
+      if(result.data.length > 0){
+        this.showContactListing = true
+        this.eContactList = result.data
+      }
     })
 
   }
