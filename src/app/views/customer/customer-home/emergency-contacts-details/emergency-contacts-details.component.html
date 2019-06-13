@@ -1,0 +1,125 @@
+<div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">  
+  <div class="full-width">
+    <div class="">
+      <mat-card class="empty--section p-0">
+        <mat-card-header class="m-0">
+          <mat-card-title class="m-0">Emergency Contacts</mat-card-title>
+          <div class="right--actions">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">
+              <mat-icon>edit</mat-icon>
+              <span class="hide--sm--txt" (click)="openEmergencyModal(contactForm, true)">Edit</span>
+            </button>
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">
+              <mat-icon>delete</mat-icon>
+              <span class="hide--sm--txt" (click)="deleteProfile()">Delete</span>
+            </button>
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="details--wrapper mb-1">
+            <div class="details--header">
+              <div class="d-flex align--items--center">
+                  <mat-icon>contacts</mat-icon>Contacts
+                </div>
+                <span class="last--modified--by">Last modified:
+                  <span>{{ row?.modifiedOn  | date: 'MMM dd, yyyy'}}</span>
+                </span>
+            </div>              
+            <div class="details--body">
+              <h3>{{row?.name}}</h3>
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">Email Address:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{row?.emailAddress}}</label>
+                </div>
+              </div>
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">Phone:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">+1 {{row?.phone}}</label>
+                </div>
+              </div>
+              <div fxLayout="row wrap" class="mb--10">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                    <label class="strong--label">Mobile:</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                    <label class="normal--label">{{row?.mobile}}</label>
+                  </div>
+                </div>   
+                <div fxLayout="row wrap" class="mb--10">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Relationship:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <label class="normal--label">{{row?.relationship}}</label>
+                    </div>
+                  </div>              
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">Address:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{row?.address}}</label>
+                </div>
+              </div>              
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+
+
+<ng-template #contactForm let-c="close" let-d="dismiss">
+    <div class="ll--modal--header llp--close--modal">
+      <h3 class="main--head text-center">Emergency Contact Details</h3>
+      <button class="modal--close" [mat-dialog-close]="">
+        <mat-icon class="icon--cross">cancel</mat-icon>
+      </button>
+    </div>
+    <div class="ll--modal--body per--profile--wrapper p-10">
+      <form [formGroup]="eContactFormGroup" class="llp-form-wrapper" (ngSubmit)="eContactFormSubmit(eContactFormGroup.value)">
+        <div class="profile--body--scroll">
+          <mat-form-field class="full-width">
+              <input class="capitalize" matInput name="name" placeholder="Name*" [formControl]="eContactFormGroup.controls['name']">
+              <mat-icon matTooltip="Please enter your name" matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['name'].hasError('required') && eContactFormGroup.controls['name'].touched" class="red--alert">help_outline</mat-icon>
+          </mat-form-field>
+  
+          <mat-form-field class="full-width">
+              <input class="capitalize" matInput name="relationship" placeholder="Relationship" [formControl]="eContactFormGroup.controls['relationship']">
+          </mat-form-field>
+  
+          <mat-form-field class="full-width">
+              <input class="capitalize" matInput name="address" placeholder="Address" [formControl]="eContactFormGroup.controls['address']">
+          </mat-form-field>
+  
+          <mat-form-field class="full-width">
+              <input class="capitalize" matInput name="phone" placeholder="Phone" [formControl]="eContactFormGroup.controls['phone']">        
+          </mat-form-field>
+  
+          <mat-form-field class="full-width">
+              <input class="capitalize" matInput name="mobile" placeholder="Mobile" [formControl]="eContactFormGroup.controls['mobile']">     
+          </mat-form-field>
+  
+          <mat-form-field class="full-width">
+              <input matInput name="emailAddress" placeholder="Email" [formControl]="eContactFormGroup.controls['emailAddress']">     
+          </mat-form-field>
+  
+          <mat-form-field *ngIf="profileIdRead">
+          <input matInput name="profileId" [formControl]="eContactFormGroup.controls['profileId']" readonly="readonly">
+          </mat-form-field>
+        </div>
+        <!-- <div class="mt-1 text-center"> -->
+         <div class="ll--modal--footer text-center">
+             <button mat-raised-button class="llp--primary--btn" [disabled]="eContactFormGroup.invalid">Save</button>       
+        </div>
+      </form>
+    </div>
+  </ng-template>
