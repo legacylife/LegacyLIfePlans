@@ -44,6 +44,7 @@ function myEssentialsUpdate(req, res) {
         if (custData && custData._id) {
           let { proquery } = req.body;
           let { from } = req.body;
+          proquery.modifiedOn = new Date();
           myessentials.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
               res.send(resFormat.rError(err))
@@ -70,6 +71,7 @@ function myEssentialsUpdate(req, res) {
     myessential.ppEmails = proquery.ppEmails;
     myessential.status = 'Active';
     myessential.createdOn = new Date();
+    myessential.modifiedOn = new Date();
     myessential.save({ $set: proquery }, function (err, newEntry) {
       if (err) {
         res.send(resFormat.rError(err))
@@ -310,53 +312,6 @@ function personalIdUpdate(req, res) {
   }
 }
 
-
-
-
-
-function personalIdUpdate23(req, res) {
-  let { query } = req.body;
-  let { from } = req.body;
-  if (query.customerId) {
-    personalIdProof.findOne(query, function (err, custData) {
-      if (err) {
-        let result = { "message": "Something Wrong! Please signin again." }
-        res.send(resFormat.rError(result));
-      } else {
-        if (custData && custData.customerId) {
-          let { proquery } = req.body;   
-          proquery.status = 'Active';   
-          personalIdProof.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
-            if (err) {
-              res.send(resFormat.rError(err))
-            } else {
-              let result = { "message": "ID box details have been updated successfully!" }
-              res.status(200).send(resFormat.rSuccess(result))
-            }
-          })
-        } else {
-            let { proquery } = req.body;
-            var personal = new personalIdProof();
-            personal.customerId = from.customerId;
-            personal.status = 'Active';
-            personal.createdOn = new Date();
-            personal.save({ $set: proquery }, function (err, newEntry) {
-            if (err) {
-              res.send(resFormat.rError(err))
-            } else {
-              let result = { "message": "ID box details have been added successfully!" }
-              res.status(200).send(resFormat.rSuccess(result))
-            }
-          })
-        }
-      }
-    })
-  } else {
-    let result = { "message": "You have logout! Please signin again." }
-    res.send(resFormat.rError(result));
-  }
-}
-
 function deleteProfile(req, res) {
   let { query } = req.body;
   let fields = { }
@@ -389,6 +344,7 @@ function myProfessionalsUpdate(req, res) {
       } else {
         if (custData && custData._id) {
           let { proquery } = req.body;
+          proquery.modifiedOn = new Date();
           MyProfessional.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
               res.send(resFormat.rError(err))
@@ -415,7 +371,7 @@ function myProfessionalsUpdate(req, res) {
     profesion.mpEmailAddress = proquery.mpEmailAddress;
     profesion.status = 'Active';
     profesion.createdOn = new Date();
-
+    profesion.modifiedOn = new Date();
     profesion.save({ $set: proquery }, function (err, newEntry) {
     if (err) {
           res.send(resFormat.rError(err))
