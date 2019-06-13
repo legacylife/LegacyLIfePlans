@@ -32,10 +32,14 @@ export class legalStuffModalComponent implements OnInit {
   folderName: string;
   typeOfDocumentList: any[]
   selectedProfileId: string;
-  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService ,@Inject(MAT_DIALOG_DATA) public data: any ) { this.folderName = data.FolderName;}
+  newName:string = "";
+  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService ,@Inject(MAT_DIALOG_DATA) public data: any ) { this.folderName = data.FolderName;this.newName = data.newName;}
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
   ngOnInit() {
+    if(this.newName && this.newName != ''){
+      this.folderName = this.newName
+    }
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
 

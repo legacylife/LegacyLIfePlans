@@ -27,6 +27,7 @@ import { EssentialsMyProfessionalsDetailsComponent } from './customer-home/essen
 import { CustomerSharedLegaciesComponent } from './customer-home/customer-shared-legacies/customer-shared-legacies.component';
 import { CustomerLegaciesDetailsComponent } from './customer-home/customer-legacies-details/customer-legacies-details.component';
 import { CustomerLegalStuffComponent } from './customer-home/customer-legal-stuff/customer-legal-stuff.component';
+import { CustomerLegalStuffDetailsComponent } from './customer-home/customer-legal-stuff-details/customer-legal-stuff-details.component';
 import { EmergencyContactsComponent } from './customer-home/emergency-contacts/emergency-contacts.component';
 
 // trustees
@@ -102,6 +103,10 @@ export const CustomerRoutes: Routes = [
           {
             path: 'emergency-contacts',
             component: EmergencyContactsComponent
+          },
+	  {
+            path: 'legal-detail-view/:id',
+            component: CustomerLegalStuffDetailsComponent
           },
           {
             path: 'emergency-contacts-details/:id',

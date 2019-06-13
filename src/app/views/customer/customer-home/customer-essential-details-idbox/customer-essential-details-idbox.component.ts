@@ -54,9 +54,7 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit, OnDestroy
     this.getEssentialIDDetails();
 
     // this.categories$ = this.shopService.getCategories();
-    this.categories = ["My essentials", "Pets"]
-
-   
+    this.categories = ["My essentials", "Pets"]   
     this.products = []
     this.cartData = []
     this.filterForm = this.fb.group({

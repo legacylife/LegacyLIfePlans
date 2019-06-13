@@ -16,14 +16,18 @@ import { legalStuffModalComponent } from '../legal-stuff-modal/legal-stuff-modal
   animations: [egretAnimations]
 })
 export class CustomerLegalStuffComponent implements OnInit {
-  showEstateListingCnt:any;
+  showEstateListingCnt: any;
   showEstateListing = false;
-  estateList:any = [];
+  showaffairsListingCnt: any;
+  showaffairsListing = false;
+  showhealthcareListingCnt: any;
+  showhealthcareListing = false;
+  estateList: any = [];
+  healthcareList: any = [];
+  affairsList: any = [];
+  legaStuffList: any = [];
+  selectedProfileId:string = "";
 
-  showhealthcareListingCnt:any;
-  showhealthcareListing= false;
-  healthcareList:any = [];
-  
   userId: string;
   constructor(
     private route: ActivatedRoute,
@@ -33,38 +37,47 @@ export class CustomerLegalStuffComponent implements OnInit {
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
-    this.showEstateListingCnt = 0;
-    this.getEstateList('Estate');
-    this.getEstateList('Healthcare');
+    this.showEstateListingCnt = 0;    
+    this.getEstateList();
   }
 
 
 
-  getEstateList = (FolderName,query = {}) => {
+  getEstateList = (query = {}) => {
     const req_vars = {
-      query: Object.assign({ customerId: this.userId,subFolderName:FolderName, status:"Active" }, query)
+      query: Object.assign({ customerId: this.userId, status: "Active" }, query)
     }
     this.userapi.apiRequest('post', 'customer/legal-estate-list', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
 
-       if(FolderName=='Estate') {
-          this.estateList = result.data.legalList;      
-          if(result.data.totalRecords > 0){
-            this.showEstateListingCnt = result.data.totalRecords;
-            this.showEstateListing = true;
-          }     
-       } else if(FolderName=='Healthcare') {
-        this.healthcareList = result.data.legalList;      
-        if(result.data.totalRecords > 0){
-          this.showhealthcareListingCnt = result.data.totalRecords;
-          this.showhealthcareListing = true;
-        }     
-     }
-        
-        
-        
+        this.legaStuffList = result.data.legalList;
+
+        this.estateList = this.legaStuffList.filter(dtype => {
+          return dtype.subFolderName == 'Estate'
+        }).map(el => el)
+        this.showEstateListingCnt = this.estateList.length
+        if (this.showEstateListingCnt > 0) {
+          this.showEstateListing = true
+        }
+
+        this.healthcareList = this.legaStuffList.filter(dtype => {
+          return dtype.subFolderName == 'Healthcare'
+        }).map(el => el)
+        this.showhealthcareListingCnt = this.healthcareList.length
+        if (this.showhealthcareListingCnt > 0) {
+          this.showhealthcareListing = true
+        }
+
+        this.affairsList = this.legaStuffList.filter(dtype => {
+          return dtype.subFolderName == 'Personal Affairs'
+        }).map(el => el)
+        this.showaffairsListingCnt = this.affairsList.length
+        if (this.showaffairsListingCnt > 0) {
+          this.showaffairsListing = true
+        }
+
       }
     }, (err) => {
       console.error(err);
@@ -81,7 +94,7 @@ export class CustomerLegalStuffComponent implements OnInit {
 
     this.dialog.open(legalStuffModalComponent, {
       data: {
-        FolderName: FolderName,       
+        FolderName: FolderName,
       },
       width: '720px',
       disableClose: true,

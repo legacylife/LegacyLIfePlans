@@ -64,6 +64,7 @@ import { CustomerMyTrusteeComponent } from './customer-trustees/customer-my-trus
 import { CustomerHiredAdvisorComponent } from './customer-trustees/customer-hired-advisors/customer-hired-advisors.component';
 import { CustomerLegalStuffComponent } from './customer-home/customer-legal-stuff/customer-legal-stuff.component';
 import { legalStuffModalComponent } from './customer-home/legal-stuff-modal/legal-stuff-modal.component';
+import { CustomerLegalStuffDetailsComponent } from './customer-home/customer-legal-stuff-details/customer-legal-stuff-details.component';
 import { addTrusteeModalComponent } from './customer-home/add-trustee-modal/add-trustee-modal.component';
 import { EmergencyContactsComponent } from './customer-home/emergency-contacts/emergency-contacts.component';
 import { essentialsMyProfessionalsComponent } from './customer-home/essentials-my-professionals/essentials-my-professionals.component';
@@ -118,7 +119,7 @@ import { CustomerProfLandingComponent } from './customer-professionals/customer-
     PersonalProfileModalComponent, CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent,
     CustomerMyPeopleComponent, CustomerLegalStuffComponent, legalStuffModalComponent,
     addTrusteeModalComponent, essentialsMyProfessionalsComponent,EssentialsMyProfessionalsDetailsComponent,
-    EmergencyContactsComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent, EmergencyContactsDetailsComponent,
+    EmergencyContactsComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent, EmergencyContactsDetailsComponent,CustomerLegalStuffDetailsComponent,
     CustomerProfLandingComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard
