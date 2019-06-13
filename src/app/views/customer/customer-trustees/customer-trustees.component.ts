@@ -12,11 +12,14 @@ import { egretAnimations } from '../../../shared/animations/egret-animations';
   styleUrls: ['./customer-trustees.component.scss']
 })
 export class CustomerTrusteesComponent implements OnInit {
-  isAnnualSelected: boolean = false;
+  @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
   constructor() { }
 
   ngOnInit() {
+  }
+  toggleSideNav() {
+    this.sideNav.opened = !this.sideNav.opened;
   }
 
 }
