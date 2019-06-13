@@ -464,10 +464,9 @@ function legalStuffUpdate(req, res) {
       } else {
         if (custData && custData._id) {
           let { proquery } = req.body;   
-          
+
           proquery.status = 'Active';   
           proquery.modifiedOn = new Date();
-
           LegalStuff.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
               res.send(resFormat.rError(err))
@@ -590,15 +589,16 @@ function deleteIdBox(req, res) {
 
 // get emergency Contacts of customer
 function getEmergencyContacts(req, res) {
-  let { query } = req.body
+  let { fields, offset, query, order, limit, search } = req.body
   emergencyContacts.find(query, function (err, eContactsList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
       res.send(resFormat.rSuccess(eContactsList))
     }
-  })
+  }).sort(order).skip(offset).limit(limit)
 }
+
 
 function legalEstateList(req, res) {
   let { fields, offset, query, order, limit, search } = req.body
