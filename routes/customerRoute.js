@@ -624,6 +624,27 @@ function legalEstateList(req, res) {
   })
 }
 
+function deleteLegalStuff(req, res) {
+  let { query } = req.body;
+  let fields = { }
+  LegalStuff.findOne(query, fields, function (err, legalInfo) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      var upStatus = 'Delete';
+      var params = { status: upStatus }
+      LegalStuff.update({ _id: legalInfo._id }, { $set: params }, function (err, updatedinfo) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          let result = { "message": "Record deleted successfully!" }
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
@@ -632,6 +653,7 @@ router.post("/essentials-id-form-submit", personalIdUpdate)
 router.post("/deleteprofile", deleteProfile)
 router.post("/delete-professionals", deleteProfessionals)
 router.post("/delete-id-box", deleteIdBox)
+router.post("/delete-legal-stuff", deleteLegalStuff)
 router.post("/my-essentials-profile-submit", myProfessionalsUpdate)
 router.post("/essential-professional-list", essentialProfessionalsList)
 router.post("/view-professional-details", viewEssentialProfessionals)
