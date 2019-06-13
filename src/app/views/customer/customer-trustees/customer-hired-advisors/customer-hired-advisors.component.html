@@ -27,32 +27,12 @@
               </div>
               <div class="appointees--desc">
                 <h5>{{peoples.userName}}</h5>
-                <p class="position m-0" *ngIf="peoples.status === 'advisor'">{{peoples.position}}</p>
-                <p class="m-0" *ngIf="peoples.status === 'pending' || peoples.status === 'assigned'">{{peoples.emailId}}</p>
+                <p class="position m-0" >{{peoples.position}}</p>
               </div>
             </mat-card-title>
           </mat-card-header>
-          <mat-card-content *ngIf="peoples.status === 'assigned'">
-            <h4>Shared Documents</h4>
-            <div class="files--folder">
-              <mat-icon>insert_drive_file</mat-icon>
-              {{peoples.totalFiles}}
-            </div>
-            <div class="files--folder mb-0">
-              <mat-icon>folder</mat-icon>
-              {{peoples.totalFolders}}
-            </div>
-          </mat-card-content>
-
-
-          <!-- Pending -->
-          <mat-card-content class="status--pending" *ngIf="peoples.status === 'pending'">
-            <mat-icon>history</mat-icon>
-            <p class="pending">Pending...</p>
-          </mat-card-content>
-
-          <!-- all hired advisor -->
-          <mat-card-content class="status--advisor relative" *ngIf="peoples.status === 'advisor'">
+           <!-- all hired advisor -->
+           <mat-card-content class="status--advisor relative" *ngIf="peoples.status === 'advisor'">
             <div class="files--folder mt-1">
               <mat-icon>school</mat-icon>
               Insurance Agent, Attorney, Accountant, Financial Planner
@@ -62,6 +42,10 @@
               Advisor
             </div>
           </mat-card-content>
+
+
+
+         
 
         </mat-card>
       </mat-card-content>

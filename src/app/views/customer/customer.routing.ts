@@ -18,16 +18,25 @@ import { CustomerDashboardComponent } from './customer-home/customer-dashboard/c
 import { CustomerDashboardDayOneComponent } from './customer-home/customer-dashboard-day-one/customer-dashboard-day-one.component';
 import { CustomerEssentialDayOneComponent } from './customer-home/customer-essential-day-one/customer-essential-day-one.component';
 import { CustomerEssentialDetailsComponent } from './customer-home/customer-essential-details/customer-essential-details.component';
-import { CustomerEssentialDetailsIdboxComponent } from './customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
 
+import { EmergencyContactsDetailsComponent } from './customer-home/emergency-contacts-details/emergency-contacts-details.component';
+
+import { CustomerEssentialDetailsIdboxComponent } from './customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
 import { EssentialsMyProfessionalsDetailsComponent } from './customer-home/essentials-my-professionals-details/essentials-my-professionals-details.component';
 
 import { CustomerSharedLegaciesComponent } from './customer-home/customer-shared-legacies/customer-shared-legacies.component';
 import { CustomerLegaciesDetailsComponent } from './customer-home/customer-legacies-details/customer-legacies-details.component';
 import { CustomerLegalStuffComponent } from './customer-home/customer-legal-stuff/customer-legal-stuff.component';
+import { CustomerLegalStuffDetailsComponent } from './customer-home/customer-legal-stuff-details/customer-legal-stuff-details.component';
 import { EmergencyContactsComponent } from './customer-home/emergency-contacts/emergency-contacts.component';
+
 // trustees
 import { CustomerMyPeopleComponent } from './customer-trustees/customer-my-people/customer-my-people.component';
+import { CustomerMyTrusteeComponent } from './customer-trustees/customer-my-trustees/customer-my-trustees.component';
+import { CustomerHiredAdvisorComponent } from './customer-trustees/customer-hired-advisors/customer-hired-advisors.component';
+
+// Professional
+import { CustomerProfLandingComponent } from './customer-professionals/customer-professionals-landing/customer-professionals-landing.component';
 
 export const CustomerRoutes: Routes = [
   {
@@ -94,7 +103,15 @@ export const CustomerRoutes: Routes = [
           {
             path: 'emergency-contacts',
             component: EmergencyContactsComponent
-          }
+          },
+	  {
+            path: 'legal-detail-view/:id',
+            component: CustomerLegalStuffDetailsComponent
+          },
+          {
+            path: 'emergency-contacts-details/:id',
+            component: EmergencyContactsDetailsComponent
+          },
         ]
       },
     ]
@@ -111,9 +128,34 @@ export const CustomerRoutes: Routes = [
           {
             path: 'my-people',
             component: CustomerMyPeopleComponent
+          },
+          {
+            path: 'my-trustee',
+            component: CustomerMyTrusteeComponent
+          },
+          {
+            path: 'hired-advisor',
+            component: CustomerHiredAdvisorComponent
           }
         ]
       },
+    ]
+  },
+  {
+    path: 'professionals',
+    component: CustomerLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: CustomerProfessionalComponent,
+        canActivate: [UserAuthGuard],
+        children: [
+          {
+            path: 'prof-landing',
+            component:CustomerProfLandingComponent
+          }
+        ]
+      }
     ]
   },
   {
@@ -147,16 +189,17 @@ export const CustomerRoutes: Routes = [
         canActivate: [UserAuthGuard]
       }
     ]
-  }, {
-    path: 'professionals',
-    component: CustomerLayoutComponent,
-    children: [
-      {
-        path: '',
-        component: CustomerProfessionalComponent,
-        canActivate: [UserAuthGuard]
-      }
-    ]
-  }
+  }, 
+  // {
+  //   path: 'professionals',
+  //   component: CustomerLayoutComponent,
+  //   children: [
+  //     {
+  //       path: '',
+  //       component: CustomerProfessionalComponent,
+  //       canActivate: [UserAuthGuard]
+  //     }
+  //   ]
+  // }
 
 ];

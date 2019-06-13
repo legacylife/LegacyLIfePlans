@@ -239,7 +239,8 @@
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
                       <div class="uploaded--files" *ngFor="let doc of row?.idProofDocuments">
-                        <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true">picture_as_pdf</mat-icon>
+                        <!-- <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true">picture_as_pdf</mat-icon> -->
+                        <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true">image</mat-icon>
                         <label class="normal--label"><a href="https://s3.amazonaws.com/llp-dev/myEssentials/{{doc.tmpName}}" target="_blank">{{doc.title}}</a></label>&nbsp; &nbsp;                        
                       </div>
                   </div>

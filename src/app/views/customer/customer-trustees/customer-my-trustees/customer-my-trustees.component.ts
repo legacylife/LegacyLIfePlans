@@ -8,12 +8,12 @@ import { egretAnimations } from '../../../../shared/animations/egret-animations'
 
 
 @Component({
-  selector: 'app-customer-home',
-  templateUrl: './customer-my-people.component.html',
-  styleUrls: ['./customer-my-people.component.scss'],
+  selector: 'app-customer-my-trustees',
+  templateUrl: './customer-my-trustees.component.html',
+  styleUrls: ['./customer-my-trustees.component.scss'],
   animations: [egretAnimations]
 })
-export class CustomerMyPeopleComponent implements OnInit {
+export class CustomerMyTrusteeComponent implements OnInit {
   allPeoples: any[];
 
   constructor(
@@ -38,7 +38,7 @@ export class CustomerMyPeopleComponent implements OnInit {
         totalFiles: '4 Files',
         totalFolders: '1 Folders',
         position: 'CFA, CIC',
-        status: 'pending'
+        status: 'assigned'
       },
       {
         profilePic: 'assets/images/arkenea/john.png',
@@ -47,7 +47,7 @@ export class CustomerMyPeopleComponent implements OnInit {
         totalFiles: '15 Files',
         totalFolders: '6 Folders',
         position: 'CFA, CIC',
-        status: 'advisor'
+        status: 'pending'
       },
       {
         profilePic: 'assets/images/arkenea/user-male.png',
@@ -65,7 +65,7 @@ export class CustomerMyPeopleComponent implements OnInit {
         totalFiles: '24 Files',
         totalFolders: '9 Folders',
         position: 'CFA, CIC',
-        status: 'assigned'
+        status: 'pending'
       },
       {
         profilePic: 'assets/images/arkenea/emily.png',
@@ -74,7 +74,7 @@ export class CustomerMyPeopleComponent implements OnInit {
         totalFiles: '4 Files',
         totalFolders: '1 Folders',
         position: 'CFA, CIC',
-        status: 'pending'
+        status: 'assigned'
       },
       {
         profilePic: 'assets/images/arkenea/john.png',
@@ -83,17 +83,8 @@ export class CustomerMyPeopleComponent implements OnInit {
         totalFiles: '15 Files',
         totalFolders: '6 Folders',
         position: 'CFA, CIC',
-        status: 'advisor'
-      },
-      {
-        profilePic: 'assets/images/arkenea/user-male.png',
-        userName: 'James Anderson',
-        emailId: 'james.anderson@gmail.com',
-        totalFiles: '15 Files',
-        totalFolders: '6 Folders',
-        position: 'CFA, CIC',
-        status: 'assigned'
-      },
+        status: 'pending'
+      }
     ];
   }
 

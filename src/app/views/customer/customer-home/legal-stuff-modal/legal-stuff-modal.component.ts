@@ -31,12 +31,22 @@ export class legalStuffModalComponent implements OnInit {
   LegalStuffList:any = [];
   folderName: string;
   typeOfDocumentList: any[]
-
-  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService ,@Inject(MAT_DIALOG_DATA) public data: any ) { this.folderName = data.FolderName;}
+  selectedProfileId: string;
+  newName:string = "";
+  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService ,@Inject(MAT_DIALOG_DATA) public data: any ) { this.folderName = data.FolderName;this.newName = data.newName;}
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
   ngOnInit() {
-    this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}` });
+    if(this.newName && this.newName != ''){
+      this.folderName = this.newName
+    }
+    const locationArray = location.href.split('/')
+    this.selectedProfileId = locationArray[locationArray.length - 1];
+
+    if (this.selectedProfileId && this.selectedProfileId == 'legal-stuff') {
+      this.selectedProfileId = "";
+    }
+    this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
    
     if(this.folderName=='Estate'){
       this.typeOfDocumentList = EstateTypeOfDocument;
@@ -53,6 +63,7 @@ export class legalStuffModalComponent implements OnInit {
      });
      this.subFolderDocumentsList = [];
      this.getEssentialLegalView();
+
    }
 
    LegalFormSubmit(profileInData = null) {
@@ -89,9 +100,19 @@ export class legalStuffModalComponent implements OnInit {
 
 
   getEssentialLegalView = (query = {}, search = false) => { 
-    const req_vars = {
-      query: Object.assign({ customerId: this.userId,subFolderName:this.folderName }, query)//, status:"Pending"
+   
+    let req_vars = {
+      query: Object.assign({ customerId: this.userId,subFolderName:this.folderName,status:"Pending" }, query)//, status:"Pending"
     }
+
+    let profileIds = '';
+    if (this.selectedProfileId) {
+      profileIds = this.selectedProfileId;
+      req_vars = {
+        query: Object.assign({ _id: profileIds })
+      }
+    }
+
     this.loader.open(); 
     this.userapi.apiRequest('post', 'customer/view-legalStuff-details', req_vars).subscribe(result => {
       this.loader.close();
@@ -144,10 +165,11 @@ export class legalStuffModalComponent implements OnInit {
   }
 
 
-  getLegalDocuments = (query = {}, search = false) => {     
+  getLegalDocuments = (query = {}, search = false) => {    
+
     let profileIds = this.LegalForm.controls['profileId'].value;
     const req_vars = {
-      query: Object.assign({customerId: this.userId,subFolderName:this.folderName }),
+      query: Object.assign({customerId: this.userId,subFolderName:this.folderName,status:"Pending" }),
       fields:{subFolderDocuments:1}
     }
     if(profileIds){
@@ -161,6 +183,7 @@ export class legalStuffModalComponent implements OnInit {
       } else {
         //this.profile = result.data.userProfile;
         this.subFolderDocumentsList = result.data.subFolderDocuments;
+        console.log("Asdasd---",result.data)
         this.LegalForm.controls['profileId'].setValue(result.data._id);
         if(result.data.subFolderDocuments.length>0){
           this.LegalForm.controls['subFolderDocuments_temp'].setValue('1');

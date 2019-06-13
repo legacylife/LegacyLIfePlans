@@ -8,12 +8,12 @@ import { egretAnimations } from '../../../../shared/animations/egret-animations'
 
 
 @Component({
-  selector: 'app-customer-home',
-  templateUrl: './customer-my-people.component.html',
-  styleUrls: ['./customer-my-people.component.scss'],
+  selector: 'app-customer-professionals-landing',
+  templateUrl: './customer-professionals-landing.component.html',
+  styleUrls: ['./customer-professionals-landing.component.scss'],
   animations: [egretAnimations]
 })
-export class CustomerMyPeopleComponent implements OnInit {
+export class CustomerProfLandingComponent implements OnInit {
   allPeoples: any[];
 
   constructor(

@@ -5,7 +5,7 @@
 
     <mat-card class="empty--section p-0">
       <mat-card-header class="m-0 header--with--sort">
-        <mat-card-title class="m-0">My People</mat-card-title>
+        <mat-card-title class="m-0">My Trustees</mat-card-title>
         <div class="right--filters">
             <mat-icon class="compare--icon">compare_arrows</mat-icon>
             <mat-select placeholder="All">
@@ -27,8 +27,7 @@
               </div>
               <div class="appointees--desc">
                 <h5>{{peoples.userName}}</h5>
-                <p class="position m-0" *ngIf="peoples.status === 'advisor'">{{peoples.position}}</p>
-                <p class="m-0" *ngIf="peoples.status === 'pending' || peoples.status === 'assigned'">{{peoples.emailId}}</p>
+                <p class="m-0">{{peoples.emailId}}</p>
               </div>
             </mat-card-title>
           </mat-card-header>

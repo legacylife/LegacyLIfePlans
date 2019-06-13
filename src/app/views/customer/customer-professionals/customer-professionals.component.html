@@ -1,4 +1,54 @@
-<p class="m-333">
-    This is a Customer <b>professionals</b>
-  </p>
+
+<div class="container llp--left--panel--view">
+  <mat-sidenav-container>
+
+
+    <mat-sidenav EgretSideNavToggle class="shop-sidebar llp--menu--list">
+      <div class="shop-filters-wrap llp--left--panel">
+        <div class="shadow--sec">
+
+          <mat-accordion>
+            <mat-expansion-panel [expanded]="true">
+              <mat-expansion-panel-header [collapsedHeight]="'56px'" [expandedHeight]="'56px'">
+                <mat-panel-title>
+                  <header>My People</header>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <ul class="legacy--list m-0 p-0">
+                <li>
+                  <a [routerLink]="['/customer/trustees/my-trustee']">
+                    <mat-icon class="icon-file">people</mat-icon> My Trustees
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
+                  </a>
+                </li>
+                <li>
+                    <a [routerLink]="['/customer/trustees/hired-advisor']">
+                      <mat-icon class="icon-file">settings_input_svideo</mat-icon> Hired Advisor
+                      <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
+                    </a>
+                  </li>
+              
+              </ul>
+
+            </mat-expansion-panel>
+           
+          </mat-accordion>
+
+        </div>
+      </div>
+    </mat-sidenav>
+
+     <!-- toggleSideNav -->
+     <div class="shop-top-toolbar p-0 llp--toggle-btn ml-1">
+      <!-- <button mat-icon-button class="p-0" (click)="toggleSideNav()">
+        <mat-icon>short_text</mat-icon>
+      </button> -->
+    </div>
+
+    <router-outlet></router-outlet>
+
+   
+  </mat-sidenav-container>
   
+</div>

@@ -52,6 +52,7 @@ import { CustomerDashboardComponent } from './customer-home/customer-dashboard/c
 import { CustomerDashboardDayOneComponent } from './customer-home/customer-dashboard-day-one/customer-dashboard-day-one.component';
 import { CustomerEssentialDayOneComponent } from './customer-home/customer-essential-day-one/customer-essential-day-one.component';
 import { CustomerEssentialDetailsComponent } from './customer-home/customer-essential-details/customer-essential-details.component';
+import { EmergencyContactsDetailsComponent } from './customer-home/emergency-contacts-details/emergency-contacts-details.component';
 import { CustomerEssentialDetailsIdboxComponent } from './customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
 import { CustomerSharedLegaciesComponent } from './customer-home/customer-shared-legacies/customer-shared-legacies.component';
 import { EssenioalIdBoxComponent } from './customer-home/essenioal-id-box/essenioal-id-box.component';
@@ -59,14 +60,19 @@ import { PersonalProfileModalComponent } from './customer-home/personal-profile-
 import { CustomerLegaciesDetailsComponent } from './customer-home/customer-legacies-details/customer-legacies-details.component';
 import { MarkAsDeceasedComponent } from './customer-home/mark-as-deceased-modal/mark-as-deceased-modal.component';
 import { CustomerMyPeopleComponent } from './customer-trustees/customer-my-people/customer-my-people.component';
+import { CustomerMyTrusteeComponent } from './customer-trustees/customer-my-trustees/customer-my-trustees.component';
+import { CustomerHiredAdvisorComponent } from './customer-trustees/customer-hired-advisors/customer-hired-advisors.component';
 import { CustomerLegalStuffComponent } from './customer-home/customer-legal-stuff/customer-legal-stuff.component';
 import { legalStuffModalComponent } from './customer-home/legal-stuff-modal/legal-stuff-modal.component';
+import { CustomerLegalStuffDetailsComponent } from './customer-home/customer-legal-stuff-details/customer-legal-stuff-details.component';
 import { addTrusteeModalComponent } from './customer-home/add-trustee-modal/add-trustee-modal.component';
 import { EmergencyContactsComponent } from './customer-home/emergency-contacts/emergency-contacts.component';
 import { essentialsMyProfessionalsComponent } from './customer-home/essentials-my-professionals/essentials-my-professionals.component';
 import { EssentialsMyProfessionalsDetailsComponent } from './customer-home/essentials-my-professionals-details/essentials-my-professionals-details.component';
 import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
 import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
+// Professional
+import { CustomerProfLandingComponent } from './customer-professionals/customer-professionals-landing/customer-professionals-landing.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -111,10 +117,15 @@ import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edi
     CustomerHomeEssentialComponent, CustomerDashboardComponent, CustomerDashboardDayOneComponent, CustomerEssentialDayOneComponent,
     CustomerEssentialDetailsComponent, CustomerEssentialDetailsIdboxComponent, EssenioalIdBoxComponent,
     PersonalProfileModalComponent, CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent,
-    CustomerMyPeopleComponent, CustomerLegalStuffComponent, legalStuffModalComponent, addTrusteeModalComponent,essentialsMyProfessionalsComponent,EssentialsMyProfessionalsDetailsComponent,EmergencyContactsComponent
+    CustomerMyPeopleComponent, CustomerLegalStuffComponent, legalStuffModalComponent,
+    addTrusteeModalComponent, essentialsMyProfessionalsComponent,EssentialsMyProfessionalsDetailsComponent,
+    EmergencyContactsComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent, EmergencyContactsDetailsComponent,CustomerLegalStuffDetailsComponent,
+    CustomerProfLandingComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard
   ], bootstrap: [CustomerSignupComponent], entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,
-    PersonalProfileModalComponent, MarkAsDeceasedComponent, legalStuffModalComponent, addTrusteeModalComponent,PersonalProfileModalComponent, MarkAsDeceasedComponent,legalStuffModalComponent,essentialsMyProfessionalsComponent],
+    PersonalProfileModalComponent, MarkAsDeceasedComponent, legalStuffModalComponent,
+    addTrusteeModalComponent,PersonalProfileModalComponent, MarkAsDeceasedComponent,
+    legalStuffModalComponent,essentialsMyProfessionalsComponent],
   })
 export class CustomerModule { }

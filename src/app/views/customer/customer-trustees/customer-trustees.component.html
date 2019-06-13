@@ -17,13 +17,13 @@
   
                 <ul class="legacy--list m-0 p-0">
                   <li>
-                    <a [routerLink]="['/customer/dashboard/essential-day-one']">
+                    <a [routerLink]="['/customer/trustees/my-trustee']">
                       <mat-icon class="icon-file">people</mat-icon> My Trustees
                       <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
                     </a>
                   </li>
                   <li>
-                      <a [routerLink]="['/customer/dashboard/essential-day-one']">
+                      <a [routerLink]="['/customer/trustees/hired-advisor']">
                         <mat-icon class="icon-file">settings_input_svideo</mat-icon> Hired Advisor
                         <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
                       </a>
@@ -41,9 +41,9 @@
   
        <!-- toggleSideNav -->
        <div class="shop-top-toolbar p-0 llp--toggle-btn ml-1">
-        <!-- <button mat-icon-button class="p-0" (click)="toggleSideNav()">
+        <button mat-icon-button class="p-0" (click)="toggleSideNav()">
           <mat-icon>short_text</mat-icon>
-        </button> -->
+        </button>
       </div>
   
       <router-outlet></router-outlet>
