@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 import { NavigationService } from '../../services/navigation.service';
 import { Subscription } from 'rxjs';
 import { ThemeService } from '../../../shared/services/theme.service';
@@ -7,11 +7,15 @@ import { LayoutService } from '../../services/layout.service';
 import { UserAPIService } from './../../../userapi.service';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
+import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
+import { InviteComponent } from '../../../views/invite-modal/invite-modal.component';
 @Component({
   selector: 'app-customer-header-top',
   templateUrl: './customer-header-top.component.html'
 })
 export class customerHeaderTopComponent implements OnInit, OnDestroy {
+  @ViewChild(MatSidenav) private sideNav: MatSidenav;
   layoutConf: any;
   profilePicture: any = "assets/images/arkenea/default.jpg"
   menuItems:any;
@@ -33,7 +37,8 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
     public translate: TranslateService,
     private renderer: Renderer2,
     private userapi: UserAPIService,
-    private picService : ProfilePicService
+    private picService : ProfilePicService,
+    private router: Router, private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -87,5 +92,11 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
 
   logout = () => {
     this.userapi.userLogout();
+  }
+  openInviteModal(data: any = {}, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(InviteComponent, {
+      width: '720px',
+      disableClose: true,
+    })
   }
 }
