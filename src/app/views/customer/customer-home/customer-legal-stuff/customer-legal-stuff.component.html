@@ -84,7 +84,7 @@
           <mat-card-title class="m-0">Personal Affairs</mat-card-title>
           <div *ngIf="showaffairsListing">
             <span class="no--of--trustee">{{showaffairsListingCnt}} Personal Affair{{showaffairsListingCnt>1 ? 's' : ''}}</span>
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openLegalStuffModal('Healthcare', true)">+ Add</button>
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openLegalStuffModal('Personal Affairs', true)">+ Add</button>
           </div>
         </mat-card-header>
         <mat-card-content *ngIf="!showaffairsListing">

@@ -351,6 +351,12 @@ export class EssenioalIdBoxComponent implements OnInit {
         }
     }
     return result;
-   }
+  }
+
+  firstCapitalize(e) {
+    let re = /(^|[.!?]\s+)([a-z])/g;
+    var textBox: HTMLInputElement = <HTMLInputElement>e.target;
+    textBox.value = textBox.value.replace(re, (m, $1, $2) => $1 + $2.toUpperCase());
+  }
   
 }

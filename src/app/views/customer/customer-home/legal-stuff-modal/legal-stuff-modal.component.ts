@@ -27,7 +27,7 @@ export class legalStuffModalComponent implements OnInit {
   subFolderDocumentsMissing = false;
   subFolderDocuments_temps = false;
   fileErrors: any;
-  profileIdHiddenVal:boolean = true;
+  profileIdHiddenVal:boolean = false;
   subFolderDocumentsList: any;
   LegalStuffList:any = [];
   folderName: string;
@@ -268,6 +268,12 @@ export class legalStuffModalComponent implements OnInit {
         }
     }
     return result;
+  }
+
+  firstCapitalize(e) {
+    let re = /(^|[.!?]\s+)([a-z])/g;
+    var textBox: HTMLInputElement = <HTMLInputElement>e.target;
+    textBox.value = textBox.value.replace(re, (m, $1, $2) => $1 + $2.toUpperCase());
   }
 
 }
