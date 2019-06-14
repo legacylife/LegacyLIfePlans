@@ -39,7 +39,6 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
 
   //function to get all events
   getEssentialLegalView = (query = {}, search = false) => {
-    this.loader.open();
     let profileIds = '';
     let req_vars = {}
     if (this.selectedProfileId) {
@@ -55,8 +54,7 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
         if (result.data) {
           this.row = result.data;
         }
-      }
-      this.loader.close();
+      }  
     }, (err) => {
       console.error(err);
     })

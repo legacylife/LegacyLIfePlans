@@ -17,7 +17,7 @@ import { AppConfirmService } from '../../../../shared/services/app-confirm/app-c
   styleUrls: ['./customer-essential-details.component.scss'],
   animations: [egretAnimations]
 })
-export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
+export class CustomerEssentialDetailsComponent implements OnInit {
   public isSideNavOpen: boolean;
   public viewMode: string = 'grid-view';
   public currentPage: any;
@@ -25,12 +25,7 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
   daySeco = false;
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
-  public products: any[];
-  public categories: any[];
-  public activeCategory: string = 'all';
-  public filterForm: FormGroup;
-  public cart: any[];
-  public cartData: any;
+
   userId: string;
   selectedProfileId: string = "";
   row: any;
@@ -56,14 +51,6 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
 
     this.userId = localStorage.getItem("endUserId");
     this.getEssentialProfileDetails();
-    this.categories = ["My essentials", "Pets"]
-
-
-    this.products = []
-    this.cartData = []
-    this.filterForm = this.fb.group({
-      search: ['']
-    })
   }
 
   //function to get all events
@@ -95,8 +82,6 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
 
   deleteProfile() {
     var statMsg = "Are you sure you want to delete profile?"
-
-
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
         if (res) {
@@ -138,22 +123,5 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
         }
     })
 
-  }
-
-  showSecoDay() {
-    this.dayFirst = false;
-    this.daySeco = true;
-  }
-  ngOnDestroy() {
-
-  }
-
-  setActiveCategory(category) {
-    this.activeCategory = category;
-    this.filterForm.controls['category'].setValue(category)
-  }
-
-  toggleSideNav() {
-    this.sideNav.opened = !this.sideNav.opened;
   }
 }
