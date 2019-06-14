@@ -143,6 +143,7 @@ router.post('/myEssentialsID', cors(), function(req,res){
                 file.pipe(fstream);
                 fstream.on('close', async function () {
                   await s3.uploadFile(newFilename,IDdocFilePath);  
+                  
                   tmpallfiles = {
                     "title" : filename,
                     "size" : encoding,
