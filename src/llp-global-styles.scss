@@ -600,7 +600,8 @@ body{
 }
 
 ::ng-deep .mat-chip-list-wrapper{
-    margin-bottom: 20px !important;
+    display: inline-flex !important;
+    margin: -2px !important;
     mat-chip{
         display: flex !important;
     }
@@ -767,6 +768,14 @@ body{
     }
     .llp--primary--sm--btn[_ngcontent-c6] {
         padding: 3px 10px !important;
+    }
+    ::ng-deep .mat-chip-list-wrapper{
+        display: inline-flex !important;
+        margin: -2px !important;
+        mat-chip{
+            word-break: break-all !important;
+            height: auto !important; 
+        }
     }
 }
 @media only screen and (min-width: 600px) and (max-width: 959px){
