@@ -546,7 +546,7 @@ async function checkUserOtp(req, res) {
                     message = "Welcome to Legacy Life Plans. Your account credentials are successfully saved.";
                   else
                     message = "You have successfully signup. Please update your profile."; 
-                  res.send(resFormat.rSuccess({ "userId": newUser._id, "username": newUser.username, "userType": newUser.userType, code: "success", message: message }))
+                  res.send(resFormat.rSuccess({ "userId":newUser._id, "profilePicture": newUser.profilePicture, "username": newUser.username, "userType": newUser.userType, code: "success", message: message }))
                 }
               })
 
