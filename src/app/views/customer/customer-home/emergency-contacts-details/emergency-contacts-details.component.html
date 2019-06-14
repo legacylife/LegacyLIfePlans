@@ -5,13 +5,13 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Emergency Contacts</mat-card-title>
           <div class="right--actions">
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openEmergencyModal(contactForm, true)">
               <mat-icon>edit</mat-icon>
-              <span class="hide--sm--txt" (click)="openEmergencyModal(contactForm, true)">Edit</span>
+              <span class="hide--sm--txt">Edit</span>
             </button>
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="deleteProfile()">
               <mat-icon>delete</mat-icon>
-              <span class="hide--sm--txt" (click)="deleteProfile()">Delete</span>
+              <span class="hide--sm--txt">Delete</span>
             </button>
           </div>
         </mat-card-header>
@@ -56,7 +56,7 @@
                       <label class="strong--label">Relationship:</label>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                      <label class="normal--label">{{row?.relationship}}</label>
+                      <label class="normal--label">{{getType(row?.relationship)}}</label>
                     </div>
                   </div>              
               <div fxLayout="row wrap" class="mb--10">
@@ -93,9 +93,12 @@
           </mat-form-field>
   
           <mat-form-field class="full-width">
-              <input class="capitalize" matInput name="relationship" placeholder="Relationship*" [formControl]="eContactFormGroup.controls['relationship']">
-              <mat-icon matTooltip="Please enter relationship" matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['relationship'].hasError('required') && eContactFormGroup.controls['relationship'].touched"
-              class="red--alert">help_outline</mat-icon>
+            <mat-label>Relationship*</mat-label>
+          <mat-select placeholder="Relationship*" name="relationship" [formControl]="eContactFormGroup.controls['relationship']" >
+            <mat-option value="">Select Relationship Type</mat-option>
+            <mat-option *ngFor="let option of relationshipList"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
+          </mat-select>
+            <mat-icon matTooltip="Please select relationship" matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['relationship'].hasError('required') && eContactFormGroup.controls['relationship'].touched" class="red--alert">help_outline</mat-icon>
           </mat-form-field>
   
           <mat-form-field class="full-width">

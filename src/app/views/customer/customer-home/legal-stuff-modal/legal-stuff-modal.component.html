@@ -10,8 +10,8 @@
       <div fxLayout="row wrap">
         <div fxFlex.xs="100">
             <mat-form-field class="full-width">
-                <mat-label>Estate Document*</mat-label>
-              <mat-select placeholder="Estate Document*" name="typeOfDocument" [formControl]="LegalForm.controls['typeOfDocument']" >
+                <mat-label>{{folderName}} Document*</mat-label>
+              <mat-select placeholder="{{folderName}} Document*" name="typeOfDocument" [formControl]="LegalForm.controls['typeOfDocument']" >
                 <mat-option value="">Select estate document</mat-option>
                 <mat-option *ngFor="let option of typeOfDocumentList"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
               </mat-select>
@@ -39,7 +39,7 @@
         <div *ngIf="subFolderDocumentsList" >
         <h3 class="header--text fnt--16">Uploaded ID proof</h3>
         <mat-chip-list class="doc--list" *ngFor="let doc of subFolderDocumentsList; index as i">
-            <mat-chip><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck" >{{doc.title}}</a><mat-icon matChipRemove  (click)="subFolderDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+            <mat-chip><a href="https://s3.amazonaws.com/llp-dev/legalStuff/{{doc.tmpName}}" >{{doc.title}}</a><mat-icon matChipRemove  (click)="subFolderDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
         </mat-chip-list>
         </div>
 

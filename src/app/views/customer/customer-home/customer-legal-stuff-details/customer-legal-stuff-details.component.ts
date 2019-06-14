@@ -39,6 +39,7 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
 
   //function to get all events
   getEssentialLegalView = (query = {}, search = false) => {
+    this.loader.open();
     let profileIds = '';
     let req_vars = {}
     if (this.selectedProfileId) {
@@ -47,10 +48,7 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
         query: Object.assign({ _id: profileIds })
       }
     }
-
-    this.loader.open();
-    this.userapi.apiRequest('post', 'customer/view-legalStuff-details', req_vars).subscribe(result => {
-      this.loader.close();
+    this.userapi.apiRequest('post', 'customer/view-legalStuff-details', req_vars).subscribe(result => {     
       if (result.status == "error") {
         console.log(result.data)
       } else {
@@ -58,6 +56,7 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
           this.row = result.data;
         }
       }
+      this.loader.close();
     }, (err) => {
       console.error(err);
     })
