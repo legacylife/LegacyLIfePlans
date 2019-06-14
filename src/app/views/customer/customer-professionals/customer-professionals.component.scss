@@ -1,1 +1,102 @@
 @import 'llp-global-styles.scss';
+
+.llp--menu--list{
+    width: 300px !important;
+    .llp--left--panel{  
+        background-color: transparent;
+        box-shadow: none;              
+        .account--profile{
+            margin: 3px !important;
+            box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important;
+            .account--pic--wrapper{
+                width: 125px;
+                height: 125px;
+                position: relative;
+                margin: 0 auto;
+
+                .account--pic{
+                    width: 125px;
+                    height: 125px;
+                    background-color: #e6e7ec;
+                    line-height: 122px;
+                    text-align: center;
+                    margin: 0 auto;
+                    position: relative;
+                    border-radius: 50%;
+                    overflow: hidden;
+
+                    img {
+                        max-width: 100%;
+                        height: auto;
+                    }
+                }
+             
+            }                    
+         }           
+         .acc--user--details{
+             margin-bottom: 25px;
+            h2{
+                color: $clr--3;
+                font-size: 24px;
+                margin: 17px 0 7px 0;
+            }
+            p{
+                color: $clr--6;
+                font-size: 16px;
+                margin-bottom: 5px;
+            }
+            .sta--m{
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: $clr--3;
+
+                .mat-icon{
+                    font-size: 18px;
+                    height: 19px;
+                    color: #ecca40;
+                    width: 15px;
+                    margin-right: 10px;
+                }                    
+            }
+         }
+         .email--phone{
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $clr--2;
+            font-family: $font--lato--regular;
+
+            .mat-icon{
+                font-size: 22px;
+                height: 20px;
+                color: $clr--2;
+                width: 20px;
+                margin-right: 12px;
+            } 
+         }
+    }
+    .feature--profile{
+        border-top: 1px solid #ddd;
+        padding-top: 25px;
+        margin-top: 25px;   
+    }
+    .sett--fp{
+        color: #222324;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        font-family: $font--lato--regular;
+        .mat-icon{
+            font-size: 20px;
+            height: 20px;
+            margin-right: 10px;
+            flex-shrink: 0;
+            align-self: flex-start;
+            margin-top: 2px;
+        }
+    }
+}

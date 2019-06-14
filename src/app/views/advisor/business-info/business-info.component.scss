@@ -37,10 +37,12 @@
   
     .error--chip{
         ::ng-deep .mat-chip-list-wrapper{
+            margin-bottom: 20px;
             mat-chip{
                 width: 100%;
                 text-align: center;
                 margin-bottom: 20px;
+                display: flex;
             }
         }
     }

@@ -1,46 +1,47 @@
-
-<div class="container llp--left--panel--view">
+<div class="container llp--left--panel--view ">
   <mat-sidenav-container>
 
 
     <mat-sidenav EgretSideNavToggle class="shop-sidebar llp--menu--list">
       <div class="shop-filters-wrap llp--left--panel">
-        <div class="shadow--sec">
+        <mat-card class="account--profile">
+          <div class="account--pic--wrapper">
+            <div class="account--pic">
+              <img src="{{profilePicture}}" />
+            </div>
+            
+          </div>
 
-          <mat-accordion>
-            <mat-expansion-panel [expanded]="true">
-              <mat-expansion-panel-header [collapsedHeight]="'56px'" [expandedHeight]="'56px'">
-                <mat-panel-title>
-                  <header>My People</header>
-                </mat-panel-title>
-              </mat-expansion-panel-header>
+          <div class="acc--user--details text-center">
+            <h2>Jone Smith </h2>
+            <p>CFA, CIC</p>
+            <div class="sta--m">
+              <mat-icon>star</mat-icon> Premium member</div>
+          </div>
 
-              <ul class="legacy--list m-0 p-0">
-                <li>
-                  <a [routerLink]="['/customer/trustees/my-trustee']">
-                    <mat-icon class="icon-file">people</mat-icon> My Trustees
-                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
-                  </a>
-                </li>
-                <li>
-                    <a [routerLink]="['/customer/trustees/hired-advisor']">
-                      <mat-icon class="icon-file">settings_input_svideo</mat-icon> Hired Advisor
-                      <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
-                    </a>
-                  </li>
-              
-              </ul>
 
-            </mat-expansion-panel>
-           
-          </mat-accordion>
+          <div class="sett--fp">
+            <mat-icon>school</mat-icon>
+            Insurance Agent, Attorney, Accountant
+          </div> 
 
-        </div>
+          <div class="feature--profile">
+            <div class="email--phone">
+              <mat-icon>markunread</mat-icon>
+              <span>Send an Email</span>
+            </div>
+            <div class="text-center mt--25">
+              <button mat-raised-button class="llp--primary--btn w168">Hire this Advisor</button>
+            </div>
+          </div>
+
+
+        </mat-card>
       </div>
     </mat-sidenav>
 
-     <!-- toggleSideNav -->
-     <div class="shop-top-toolbar p-0 llp--toggle-btn ml-1">
+    <!-- toggleSideNav -->
+    <div class="shop-top-toolbar p-0 llp--toggle-btn ml-1">
       <!-- <button mat-icon-button class="p-0" (click)="toggleSideNav()">
         <mat-icon>short_text</mat-icon>
       </button> -->
@@ -48,7 +49,7 @@
 
     <router-outlet></router-outlet>
 
-   
+
   </mat-sidenav-container>
-  
+
 </div>
