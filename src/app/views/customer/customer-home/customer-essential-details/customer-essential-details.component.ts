@@ -77,14 +77,14 @@ export class CustomerEssentialDetailsComponent implements OnInit, OnDestroy {
         console.log(result.data)
       } else {
         this.row = result.data
-        //this.ppaddressData = (this.row.ppAddressLine1 ? this.row.ppAddressLine1 : '') +" "+ (this.row.ppAddressLine2 ? this.row.ppAddressLine2 : '')+" "+this.row.ppCity ? this.row.ppCity : '' +" "+ this.row.ppState ?this.row.ppState : '' +" "+this.row.ppCountry ? this.row.ppCountry : '' +" "+this.row.ppZipCode ? this.row.ppZipCode :''
+        this.ppaddressData = (this.row.ppAddressLine1 ? this.row.ppAddressLine1 : '') + " " + (this.row.ppAddressLine2 ? this.row.ppAddressLine2 : '') + " " + (this.row.ppCity ? this.row.ppCity : '') + " " + (this.row.ppState ?this.row.ppState : '') +" "+ (this.row.ppCountry ? this.row.ppCountry : '') +" "+ (this.row.ppZipCode ? this.row.ppZipCode :'')
         this.createdOn = this.row.createdOn ? this.row.createdOn : "";
-        this.pplandLineNumberList = this.row.ppLandlineNumbers && this.row.ppLandlineNumbers.map(function (item) { return item.phone; }).join(",");
-        this.ppEmailsList = this.row.ppEmails.map(function (item) { return item.email; }).join(",");
-        this.wpLandlineNumbersList = this.row.wpLandlineNumbers && this.row.wpLandlineNumbers.map(function (item) { return item.phone; }).join(",");
-        this.ccWorkLandlineNumbersList = this.row.ccWorkLandlineNumbers && this.row.ccWorkLandlineNumbers.map(function (item) { return item.phone; }).join(",");
-        this.ccContactLandlineNumbersList = this.row.cclandlineNumbers && this.row.cclandlineNumbers.map(function (item) { return item.phone; }).join(",");
-        this.ccChurchLandlineNumbersList = this.row.ccChurchLandlineNumbers && this.row.ccChurchLandlineNumbers.map(function (item) { return item.phone; }).join(",");
+        this.pplandLineNumberList = this.row.ppLandlineNumbers && this.row.ppLandlineNumbers.map(function (item) { return item.phone; }).join(", ");
+        this.ppEmailsList = this.row.ppEmails.map(function (item) { return item.email; }).join(", ");
+        this.wpLandlineNumbersList = this.row.wpLandlineNumbers && this.row.wpLandlineNumbers.map(function (item) { return item.phone; }).join(", ");
+        this.ccWorkLandlineNumbersList = this.row.ccWorkLandlineNumbers && this.row.ccWorkLandlineNumbers.map(function (item) { return item.phone; }).join(", ");
+        this.ccContactLandlineNumbersList = this.row.cclandlineNumbers && this.row.cclandlineNumbers.map(function (item) { return item.phone; }).join(", ");
+        this.ccChurchLandlineNumbersList = this.row.ccChurchLandlineNumbers && this.row.ccChurchLandlineNumbers.map(function (item) { return item.phone; }).join(", ");
       }
     }, (err) => {
       console.error(err)

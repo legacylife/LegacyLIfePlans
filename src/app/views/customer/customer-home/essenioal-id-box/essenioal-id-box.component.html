@@ -152,8 +152,8 @@
           </div>
 
         <mat-form-field class="full-width">
-          <textarea matInput placeholder="Comments" name="comments" [formControl]="IDForm.controls['comments']"></textarea>
-          <div class="char--limit">0 / 500 chars</div>
+          <textarea maxlength="500" matInput placeholder="Comments" name="comments" [formControl]="IDForm.controls['comments']"></textarea>
+          <div class="char--limit">{{ IDForm.controls['comments'].value?.length }}  / 500 chars</div>
           <mat-icon matTooltip="Please enter your comment" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['comments'].hasError('required') && IDForm.controls['comments'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
