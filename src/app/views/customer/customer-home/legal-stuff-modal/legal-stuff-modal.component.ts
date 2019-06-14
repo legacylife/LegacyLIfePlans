@@ -9,6 +9,7 @@ import { MatDialog, MatSnackBar,MAT_DIALOG_DATA  } from '@angular/material';
 import { Router } from '@angular/router';
 import { EstateTypeOfDocument,HealthcareTypeOfDocument,PersonalAffairsTypeOfDocument } from '../../../../selectList';
 import { FileUploader } from 'ng2-file-upload';
+import { cloneDeep } from 'lodash'
 import { serverUrl, s3Details } from '../../../../config';
 const URL = serverUrl + '/api/documents/legalStuff';
 
@@ -35,6 +36,7 @@ export class legalStuffModalComponent implements OnInit {
   newName:string = "";
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService ,@Inject(MAT_DIALOG_DATA) public data: any ) { this.folderName = data.FolderName;this.newName = data.newName;}
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
+  public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
   ngOnInit() {
     if(this.newName && this.newName != ''){
@@ -42,11 +44,10 @@ export class legalStuffModalComponent implements OnInit {
     }
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
-
     if (this.selectedProfileId && this.selectedProfileId == 'legal-stuff') {
       this.selectedProfileId = "";
     }
-    this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
+ 
    
     if(this.folderName=='Estate'){
       this.typeOfDocumentList = EstateTypeOfDocument;
@@ -61,6 +62,9 @@ export class legalStuffModalComponent implements OnInit {
       comments: new FormControl(''), 
       profileId: new FormControl('')
      });
+
+     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
+     this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
      this.subFolderDocumentsList = [];
      this.getEssentialLegalView();
 
@@ -120,9 +124,12 @@ export class legalStuffModalComponent implements OnInit {
       } else {
         if(result.data){    
           this.LegalStuffList = result.data;   
-          this.LegalForm.controls['profileId'].setValue(this.LegalStuffList._id);
+          let profileIds = this.LegalStuffList._id;
+          this.LegalForm.controls['profileId'].setValue(profileIds);
+          
+          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
+          this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
           this.subFolderDocumentsList = result.data.subFolderDocuments;
-
           if(this.LegalStuffList.subFolderDocuments.length>0){
             this.LegalForm.controls['subFolderDocuments_temp'].setValue('1');
           }
@@ -153,33 +160,57 @@ export class legalStuffModalComponent implements OnInit {
         }, 5000);
     
       }
- });
+    });
 
     if(this.uploader.getNotUploadedItems().length){
-      this.uploader.uploadAll();
+     this.uploaderCopy = cloneDeep(this.uploader)
+     this.uploader.queue.splice(1, this.uploader.queue.length - 1)
+     this.uploaderCopy.queue.splice(0, 1)
+     
+     this.uploader.queue.forEach((fileoOb, ind) => {
+           this.uploader.uploadItem(fileoOb);
+      });
+
       this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
         this.getLegalDocuments();
       };
     }
   }
 
+  uploadRemainingFiles(profileId) {
+    this.uploaderCopy.onBeforeUploadItem = (item) => {
+      item.url = `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileId}`;
+    }
+    this.uploaderCopy.queue.forEach((fileoOb, ind) => {
+        this.uploaderCopy.uploadItem(fileoOb);
+    });
 
-  getLegalDocuments = (query = {}, search = false) => {    
+    this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.getLegalDocuments({}, false, false);
+    
+    };
+  }
+
+  getLegalDocuments = (query = {}, search = false, uploadRemained = true) => {    
     let profileIds = this.LegalForm.controls['profileId'].value;
     let req_vars = {
       query: Object.assign({customerId: this.userId,subFolderName:this.folderName,status:"Pending" }),
-      fields:{subFolderDocuments:1}
+      fields:{_id:1,subFolderDocuments:1}
     }
     if(profileIds){
        req_vars = {
         query: Object.assign({ _id:profileIds, customerId: this.userId }),
-        fields:{subFolderDocuments:1}
+        fields:{_id:1,subFolderDocuments:1}
       }
     }    
     this.userapi.apiRequest('post', 'customer/view-legalStuff-details', req_vars).subscribe(result => {
       if (result.status == "error") {
       } else {
-        //this.profile = result.data.userProfile;
+        this.LegalForm.controls['profileId'].setValue(result.data._id);
+        if(uploadRemained) {
+          this.uploadRemainingFiles(result.data._id)
+        }
+
         this.subFolderDocumentsList = result.data.subFolderDocuments;        
         if(result.data.subFolderDocuments.length>0){
           this.LegalForm.controls['subFolderDocuments_temp'].setValue('1');
@@ -237,6 +268,12 @@ export class legalStuffModalComponent implements OnInit {
         }
     }
     return result;
+  }
+
+  firstCapitalize(e) {
+    let re = /(^|[.!?]\s+)([a-z])/g;
+    var textBox: HTMLInputElement = <HTMLInputElement>e.target;
+    textBox.value = textBox.value.replace(re, (m, $1, $2) => $1 + $2.toUpperCase());
   }
 
 }

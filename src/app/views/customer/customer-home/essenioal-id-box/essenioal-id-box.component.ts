@@ -11,7 +11,7 @@ import { documentTypes } from '../../../../selectList';
 import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../config';
 import { states } from '../../../../state';
-
+import { cloneDeep } from 'lodash'
 const URL = serverUrl + '/api/documents/myEssentialsID';
 @Component({
   selector: 'app-essenioal-id-box',
@@ -22,7 +22,7 @@ export class EssenioalIdBoxComponent implements OnInit {
   //selected = 'option1';
   userId = localStorage.getItem("endUserId");
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
- 
+  public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public hasBaseDropZoneOver: boolean = false;
   public hasAnotherDropZoneOver: boolean = false;
   advisorDocumentsHide = false;
@@ -82,15 +82,16 @@ export class EssenioalIdBoxComponent implements OnInit {
      });
      this.idProofDocumentsList = [];
 
-
      const locationArray = location.href.split('/')
      this.selectedProfileId = locationArray[locationArray.length - 1];
 
     if(this.selectedProfileId && this.selectedProfileId == 'essential-day-one'){
       this.selectedProfileId = "";   
     }
-
+    
      this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+     this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+
      this.getEssentialIdView();
     }
    
@@ -181,7 +182,11 @@ export class EssenioalIdBoxComponent implements OnInit {
         } else {
           if(result.data){    
             this.essentialIDList = result.data;                    
-            this.IDForm.controls['profileId'].setValue(this.essentialIDList._id);
+            let profileIds = this.essentialIDList._id;
+            this.IDForm.controls['profileId'].setValue(profileIds);
+            this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+            this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+
             this.idProofDocumentsList = result.data.idProofDocuments;
             if(this.essentialIDList.idProofDocuments.length>0){
               this.IDForm.controls['idProofDocuments_temp'].setValue('1');
@@ -266,31 +271,63 @@ export class EssenioalIdBoxComponent implements OnInit {
           }, 5000);
       
         }
-   });
+      });
   
+      // if(this.uploader.getNotUploadedItems().length){
+      //   this.uploader.uploadAll();
+      //   this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      //     this.getIdDocuments();
+      //   };
+      // }
+
       if(this.uploader.getNotUploadedItems().length){
-        this.uploader.uploadAll();
-        this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-          this.getIdDocuments();
-        };
-      }
+        this.uploaderCopy = cloneDeep(this.uploader)
+        this.uploader.queue.splice(1, this.uploader.queue.length - 1)
+        this.uploaderCopy.queue.splice(0, 1)
+        
+        this.uploader.queue.forEach((fileoOb, ind) => {
+              this.uploader.uploadItem(fileoOb);
+         });
+   
+         this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+           this.getIdDocuments();
+         };
+       }
     }
 
-    getIdDocuments = (query = {}, search = false) => {     
+    uploadRemainingFiles(profileId) {
+      this.uploaderCopy.onBeforeUploadItem = (item) => {
+        item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
+      }
+      this.uploaderCopy.queue.forEach((fileoOb, ind) => {
+          this.uploaderCopy.uploadItem(fileoOb);
+      });
+  
+      this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+        this.getIdDocuments({}, false, false);
+      
+      };
+    }
+
+    getIdDocuments = (query = {}, search = false, uploadRemained = true) => {     
       let profileIds = this.IDForm.controls['profileId'].value;
       let req_vars = {
         query: Object.assign({customerId: this.userId,status:"Pending" }),
-        fields:{idProofDocuments:1}
+        fields:{_id:1,idProofDocuments:1}
       }
       if(profileIds){
          req_vars = {
           query: Object.assign({ _id:profileIds, customerId: this.userId  }),
-          fields:{idProofDocuments:1}
+          fields:{_id:1,idProofDocuments:1}
         }
       }    
       this.userapi.apiRequest('post', 'customer/view-id-details', req_vars).subscribe(result => {
         if (result.status == "error") {
         } else {
+          this.IDForm.controls['profileId'].setValue(result.data._id);
+          if(uploadRemained) {
+            this.uploadRemainingFiles(result.data._id)
+          }
           this.idProofDocumentsList = result.data.idProofDocuments;
           if(result.data.idProofDocuments.length>0){
             this.IDForm.controls['idProofDocuments_temp'].setValue('1');
@@ -301,7 +338,7 @@ export class EssenioalIdBoxComponent implements OnInit {
       })
     }
   
-  isExtension(ext, extnArray) {
+   isExtension(ext, extnArray) {
     var result = false;
     var i;
     if (ext) {
@@ -315,9 +352,11 @@ export class EssenioalIdBoxComponent implements OnInit {
     }
     return result;
   }
-  
 
+  firstCapitalize(e) {
+    let re = /(^|[.!?]\s+)([a-z])/g;
+    var textBox: HTMLInputElement = <HTMLInputElement>e.target;
+    textBox.value = textBox.value.replace(re, (m, $1, $2) => $1 + $2.toUpperCase());
+  }
   
-
- 
 }

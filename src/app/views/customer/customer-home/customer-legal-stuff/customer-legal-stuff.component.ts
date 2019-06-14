@@ -92,18 +92,22 @@ export class CustomerLegalStuffComponent implements OnInit {
 
   openLegalStuffModal(FolderName, isNew?) {
 
-    // let dialogRef: MatDialogRef<any> = this.dialog.open(legalStuffModalComponent,{
-    //   width: '720px',
-    //   disableClose: true
-    // })
-
-    this.dialog.open(legalStuffModalComponent, {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(legalStuffModalComponent, {
       data: {
         FolderName: FolderName,
       },
       width: '720px',
       disableClose: true,
     });
+
+    dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getEstateList();
+      if (!res) {
+        // If user press cancel
+        return;
+      }
+    })
 
   }
 

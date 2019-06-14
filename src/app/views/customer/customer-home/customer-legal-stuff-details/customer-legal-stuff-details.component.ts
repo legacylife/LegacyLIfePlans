@@ -22,6 +22,7 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
   selectedProfileId: string = "";
   row: any;
   typeOfDocumentList: any[];
+  re =  "/(?:\.([^.]+))?$/" ;
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
