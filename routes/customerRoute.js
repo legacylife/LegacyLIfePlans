@@ -284,7 +284,7 @@ function personalIdUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              let result = { "message": "ID box details have been updated successfully!" }
+              let result = { "message": "ID box details updated successfully!" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -305,7 +305,7 @@ function personalIdUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
-        let result = { "message": "ID box details have been added successfully!" }
+        let result = { "message": "ID box details added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -349,7 +349,7 @@ function myProfessionalsUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              let result = { "message": "User  have been updated successfully!","ppID" : custData._id }
+              let result = { "message": "Professional details updated successfully!","ppID" : custData._id }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -377,7 +377,7 @@ function myProfessionalsUpdate(req, res) {
           res.send(resFormat.rError(err))
         } else {
           console.log("newEntry :-",newEntry);
-          let result = { "message": "ID box details have been added successfully!" }
+          let result = { "message": "Professional details added successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
