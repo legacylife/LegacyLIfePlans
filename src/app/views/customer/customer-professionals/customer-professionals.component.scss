@@ -76,6 +76,14 @@
                 width: 20px;
                 margin-right: 12px;
             } 
+            span{
+                cursor: pointer;
+            }
+            &:hover{
+                span{
+                    text-decoration: underline;
+                }
+            }
          }
     }
     .feature--profile{
