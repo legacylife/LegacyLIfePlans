@@ -207,23 +207,27 @@ router.post('/legalStuff', cors(), function(req,res){
               fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
               file.pipe(fstream);
               fstream.on('close', async function () {
-                await s3.uploadFile(newFilename,IDdocFilePath);                  
+                await s3.uploadFile(newFilename,legalStuffdocFilePath);                  
                 tmpallfiles = {
                   "title" : filename,
                   "size" : encoding,
                   "extention" : mimetype,
                   "tmpName" : newFilename
                 }
-              LegalStuff.findOne(q,{idProofDocuments:1,_id:1}, function (err, result) {
+              LegalStuff.findOne(q,{subFolderDocuments:1,_id:1}, function (err, result) {
                     if (err) {
                         res.status(500).send(resFormat.rError(err))
                     } else {       
-                    if (result) {                             
+
+                      console.log("11",result)
+                    if (result) {             
+                      console.log("22",result)                
                         if(result.subFolderDocuments){
                           oldTmpFiles = result.subFolderDocuments;
                         }
+                        console.log("22",result)                
                         oldTmpFiles.push(tmpallfiles);  
-                        LegalStuff.updateOne(q, { $set: { idProofDocuments: oldTmpFiles } }, function (err, updatedUser) {
+                        LegalStuff.updateOne(q, { $set: { subFolderDocuments: oldTmpFiles } }, function (err, updatedUser) {
                           if (err) {
                             res.send(resFormat.rError(err))
                           } else {
@@ -240,7 +244,7 @@ router.post('/legalStuff', cors(), function(req,res){
                 fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
                 file.pipe(fstream);
                 fstream.on('close', async function () {
-                  await s3.uploadFile(newFilename,IDdocFilePath);  
+                  await s3.uploadFile(newFilename,legalStuffdocFilePath);  
                   tmpallfiles = {
                     "title" : filename,
                     "size" : encoding,
