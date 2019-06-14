@@ -6,6 +6,8 @@ import { MatProgressBar, MatButton, MatSnackBar } from '@angular/material';
 import { RoutePartsService } from "../../../shared/services/route-parts.service";
 import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
+import { serverUrl, s3Details } from '../../../config';
+import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 //import { delay } from 'rxjs/operators';
 console.log('signin');
 @Component({
@@ -22,8 +24,9 @@ export class SigninComponent implements OnInit {
   invalidMessage: string;
   username: FormControl 
   password: FormControl;
+  profilePicture: any = "assets/images/arkenea/default.jpg"
 
-  constructor(private router: Router, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
+  constructor(private router: Router,private picService : ProfilePicService, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
 
   ngOnInit() {
     this.llpCustsigninForm = new FormGroup({
@@ -55,7 +58,15 @@ export class SigninComponent implements OnInit {
         localStorage.setItem("endUserType", userData.userType);
         localStorage.setItem("endUserFirstName", userData.firstName);
         localStorage.setItem("endUserLastName", userData.lastName); 
-        localStorage.setItem("endUserProfilePicture", userData.profilePicture);       
+        localStorage.setItem("endUserProfilePicture", userData.profilePicture); 
+        
+        if (userData.profilePicture) {
+          this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + userData.profilePicture;
+          localStorage.setItem('endUserProfilePicture', this.profilePicture)
+          this.picService.setProfilePic = this.profilePicture;
+        }
+
+
         //this.snack.open(result.data.message, 'OK', { duration: 4000 })
         if(userData.userType=='customer'){
           this.router.navigate(['/', 'customer', 'dashboard']);

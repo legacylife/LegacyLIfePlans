@@ -5,11 +5,13 @@ import { ThemeService } from '../../../shared/services/theme.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LayoutService } from '../../services/layout.service';
 import { UserAPIService } from './../../../userapi.service';
-import { ProfilePicService } from 'app/shared/services/profile-pic.service';
+
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { InviteComponent } from '../../../views/invite-modal/invite-modal.component';
+import { ProfilePicService } from 'app/shared/services/profile-pic.service';
+import { serverUrl, s3Details } from '../../../config';
 @Component({
   selector: 'app-customer-header-top',
   templateUrl: './customer-header-top.component.html'
@@ -45,6 +47,13 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
     this.picService.itemValue.subscribe((nextValue) => {
       this.profilePicture =  nextValue
     })
+
+    if (localStorage.getItem('endUserProfilePicture') && localStorage.getItem('endUserProfilePicture') != 'assets/images/arkenea/default.jpg') {
+      this.profilePicture = localStorage.getItem('endUserProfilePicture') 
+    }
+
+
+    
     this.layoutConf = this.layout.layoutConf;
     this.egretThemes = this.themeService.egretThemes;
     this.menuItemSub = this.navService.menuItems$

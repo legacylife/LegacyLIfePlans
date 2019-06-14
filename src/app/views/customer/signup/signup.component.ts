@@ -7,6 +7,8 @@ import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms'
 import { CustomValidators } from 'ng2-validation';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { Observable, of } from 'rxjs';
+import { ProfilePicService } from 'app/shared/services/profile-pic.service';
+import { serverUrl, s3Details } from '../../../config';
 import 'rxjs/add/observable/timer'
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/take'
@@ -33,13 +35,14 @@ export class CustomerSignupComponent implements OnInit {
   invalidOtpMessage: string;
   EmailExist: boolean;
   invalidOTP: boolean;
+  profilePicture: any = "assets/images/arkenea/default.jpg"
   //passwordRegex: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!#%*?&])[A-Za-z\d$@$!#%*?&]{6,16}/
   passwordRegex: any = /^.{6,}$/
   countDown;
   counter = 0;
   tick = 0;
 
-  constructor(private router: Router, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
+  constructor(private router: Router,private picService : ProfilePicService, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
   ngOnInit() {
     this.llpCustsignupForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
@@ -104,6 +107,12 @@ export class CustomerSignupComponent implements OnInit {
           localStorage.setItem("endUsername", result.data.username)
           localStorage.setItem("endUserId", result.data.userId)
           localStorage.setItem("endUserType", result.data.userType)
+
+          if (result.data.profilePicture) {
+            this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + result.data.profilePicture;
+            localStorage.setItem('endUserProfilePicture', this.profilePicture)
+            this.picService.setProfilePic = this.profilePicture;
+          }
 
           this.snack.open(result.data.message, 'OK', { duration: 8000 })
           this.router.navigate(['/', 'customer', 'update-profile']);

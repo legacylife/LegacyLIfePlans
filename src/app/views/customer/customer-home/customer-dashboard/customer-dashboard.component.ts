@@ -7,6 +7,7 @@ import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
 import { addTrusteeModalComponent } from '../add-trustee-modal/add-trustee-modal.component';
+import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class CustomerDashboardComponent implements OnInit, OnDestroy {
   public currentPage: any;
   dayFirst = true;
   daySeco = false;
+  profilePicture: any = "assets/images/arkenea/default.jpg"
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
   public products: any[];
@@ -31,15 +33,20 @@ export class CustomerDashboardComponent implements OnInit, OnDestroy {
   public cartData: any;
 
 
+
   constructor(
     private route: ActivatedRoute, 
     private router: Router, private dialog: MatDialog,
     private fb: FormBuilder,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private picService : ProfilePicService
   ) { }
 
   ngOnInit() {
-    // this.categories$ = this.shopService.getCategories();
+    this.picService.itemValue.subscribe((nextValue) => {
+      this.profilePicture =  nextValue
+    })
+    
     this.categories = ["My essentials", "Pets"]
 
    
