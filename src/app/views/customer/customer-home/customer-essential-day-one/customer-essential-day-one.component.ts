@@ -30,6 +30,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   showProfileListingCnt:any;
   showIDListingCnt:any;
   documentTypeList: any[] = documentTypes;
+  modifiedDate:any;
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -47,7 +48,11 @@ export class CustomerEssentialDayOneComponent implements OnInit {
 
   getEssentialProfileList = (query = {}, search = false) => {
     const req_vars = {
-      query: Object.assign({ customerId: this.userId, status:"Active" }, query)
+      query: Object.assign({ customerId: this.userId, status:"Active" }, query),
+      fields: {},
+      offset: '',
+      limit: '',
+      order: {"modifiedOn": -1},
     }   
     this.userapi.apiRequest('post', 'customer/essential-profile-list', req_vars).subscribe(result => {     
       if (result.status == "error") {
@@ -66,7 +71,11 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   
   getEssentialIdList = (query = {}, search = false) => { 
     const req_vars = {
-      query: Object.assign({ customerId: this.userId, status:"Active" }, query)
+      query: Object.assign({ customerId: this.userId, status:"Active" }, query),
+      fields: {},
+      offset: '',
+      limit: '',
+      order: {"modifiedOn": -1},
     }
     this.userapi.apiRequest('post', 'customer/essential-id-list', req_vars).subscribe(result => {
       if (result.status == "error") {
@@ -85,7 +94,11 @@ export class CustomerEssentialDayOneComponent implements OnInit {
 
   getEssentialProfessionalList = (query = {}, search = false) => { 
     const req_vars = {
-      query: Object.assign({ customerId: this.userId, status:"Active" }, query)
+      query: Object.assign({ customerId: this.userId, status:"Active" }, query),
+      fields: {},
+      offset: '',
+      limit: '',
+      order: {"modifiedOn": -1},
     }
     this.loader.open();
     this.userapi.apiRequest('post', 'customer/essential-professional-list', req_vars).subscribe(result => {

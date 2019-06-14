@@ -57,16 +57,16 @@ export class PersonalProfileModalComponent implements OnInit {
       ppFirstName: new FormControl('', Validators.required),
       ppMiddleName: new FormControl(''),
       ppLastName: new FormControl('', Validators.required),
-      ppEmails: this.fb.array([this.fb.group({ email: [''] })]),
+      ppEmails: this.fb.array([this.fb.group({ email: ['',Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)] })]),
       //ppLandlineNumbers: this.fb.array([this.fb.group({phone: ['',  , Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]})]),
-      ppLandlineNumbers: this.fb.array([this.fb.group({ phone: [''] })]),
+      ppLandlineNumbers: this.fb.array([this.fb.group({ phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)] })]),
       ppDateOfBirth: new FormControl(''),
       ppAddressLine1: new FormControl(''),
       ppAddressLine2: new FormControl(''),
       ppCountry: new FormControl(''),
       ppCity: new FormControl(''),
       ppState: new FormControl(''),
-      ppZipCode: new FormControl('', [Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
+      ppZipCode: new FormControl(''),
       profileId: new FormControl('')
     });
 
@@ -77,13 +77,13 @@ export class PersonalProfileModalComponent implements OnInit {
       wpDepartment: new FormControl(''),
       wpContactPersonName: new FormControl(''),
       // wpLandlineNumbers: this.fb.array([this.fb.group({phone: ['', Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]})]),
-      wpLandlineNumbers: this.fb.array([this.fb.group({ phone: [''] })]),
+      wpLandlineNumbers: this.fb.array([this.fb.group({ phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)] })]),
       wpAddressLine1: new FormControl(''),
       wpAddressLine2: new FormControl(''),
       wpCountry: new FormControl(''),
       wpCity: new FormControl(''),
       wpState: new FormControl(''),
-      wpZipCode: new FormControl('', [Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
+      wpZipCode: new FormControl(''),
       profileId: new FormControl('')
     });
 
@@ -92,16 +92,16 @@ export class PersonalProfileModalComponent implements OnInit {
       ccName: new FormControl(''),
       ccAddressLine1: new FormControl(''),
       ccAddressLine2: new FormControl(''),
-      ccZipCode: new FormControl('', [Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
+      ccZipCode: new FormControl(''),
       //ccWorkLandlineNumbers: this.fb.array([this.fb.group({phone: ['', Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]})]),
-      ccWorkLandlineNumbers: this.fb.array([this.fb.group({ phone: [''] })]),
+      ccWorkLandlineNumbers: this.fb.array([this.fb.group({ phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)] })]),
       ccContactPersonName: new FormControl(''),
       //cclandlineNumbers: this.fb.array([this.fb.group({phone: ['', Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]})]),
-      cclandlineNumbers: this.fb.array([this.fb.group({ phone: [''] })]),
+      cclandlineNumbers: this.fb.array([this.fb.group({ phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)] })]),
       ccChurchName: new FormControl(''),
       ccChurchAddressLine1: new FormControl(''),
       ccChurchAddressLine2: new FormControl(''),
-      ccChurchZipCode: new FormControl('', [Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
+      ccChurchZipCode: new FormControl(''),
       //ccChurchLandlineNumbers: this.fb.array([this.fb.group({phone: ['', Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]})]),    
       ccChurchLandlineNumbers: this.fb.array([this.fb.group({ phone: [''] })]),
       ccChurchContactPersonName: new FormControl(''),
@@ -291,9 +291,10 @@ export class PersonalProfileModalComponent implements OnInit {
         console.log("IDS=>", result.data.ppID)
         this.firstFormGroup.controls['profileId'].setValue(result.data.ppID);
         this.secondFormGroup.controls['profileId'].setValue(result.data.ppID);
-        this.thirdFormGroup.controls['profileId'].setValue(result.data.ppID);
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        this.thirdFormGroup.controls['profileId'].setValue(result.data.ppID);       
+        
         if (steps == 3) {
+          this.snack.open(result.data.message, 'OK', { duration: 4000 })
           this.router.navigate(['/', 'customer', 'dashboard', 'essential-detail-view', result.data.ppID])
           this.dialog.closeAll();
 
@@ -342,7 +343,7 @@ export class PersonalProfileModalComponent implements OnInit {
 
   addNewEmail() {
     this.emailList.push(this.fb.group({
-      email: ['']
+      email: ['',Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]
     }));
   }
 
@@ -353,7 +354,7 @@ export class PersonalProfileModalComponent implements OnInit {
   /////
   addNewLandlineNum() {
     this.landlineNumbersList.push(this.fb.group({
-      phone: ['']
+      phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]
     }));
     //  phone: ['', Validators.required,Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]
   }
@@ -376,7 +377,7 @@ export class PersonalProfileModalComponent implements OnInit {
   /////
   addNewWorkLandlineNum() {
     this.ccWorkLandlineNumberList.push(this.fb.group({
-      phone: ['']// phone: ['', Validators.required,Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]
+      phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]// phone: ['', Validators.required,Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]
     }));
   }
 
@@ -387,7 +388,7 @@ export class PersonalProfileModalComponent implements OnInit {
   /////
   addNewCCLandlineNum() {
     this.cclandlineNumbersList.push(this.fb.group({
-      phone: ['']//phone: ['', Validators.required,Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]
+      phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]//phone: ['', Validators.required,Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]
     }));
   }
 

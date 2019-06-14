@@ -47,7 +47,7 @@
               <div fxLayout="row wrap" *ngFor="let a of emailList.controls; let pointIndex = index" [formGroupName]="pointIndex">
                 <mat-form-field class="full-width no-mar">
                   <input matInput name="email" placeholder="Email" formControlName="email">
-                  <mat-icon (click)="delete(pointIndex,'ppEmails');" class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+                  <mat-icon (click)="delete(pointIndex,'ppEmails');" class="clr--red cursor-pointer delete--emails" *ngIf="pointIndex != 0">delete</mat-icon>
                 </mat-form-field>
               </div>
               <div class="add--new mb--15" *ngIf="emailList.length < 3" (click)="addNewEmail();">
@@ -60,8 +60,8 @@
             <div formArrayName="ppLandlineNumbers">
               <div fxLayout="row wrap" *ngFor="let a of landlineNumbersList.controls; let pointIndex = index" [formGroupName]="pointIndex">
                 <mat-form-field class="full-width no-mar">
-                  <input matInput name="phone" placeholder="Phone" formControlName="phone" type="tel">
-                  <mat-icon (click)="delete(pointIndex,'ppLandlineNumbers');" class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+                  <input matInput name="phone" placeholder="Phone" formControlName="phone" type="tel" maxlength="15">
+                  <mat-icon (click)="delete(pointIndex,'ppLandlineNumbers');" class="clr--red cursor-pointer delete--emails" *ngIf="pointIndex != 0">delete</mat-icon>
                   <span matPrefix>+1</span>
                 </mat-form-field>
               </div>
@@ -157,8 +157,8 @@
             <div formArrayName="wpLandlineNumbers">
               <div fxLayout="row wrap" *ngFor="let a of wpLandlineNumberList.controls; let pointIndex = index" [formGroupName]="pointIndex">
                 <mat-form-field class="full-width no-mar">
-                  <input  matInput name="phone" placeholder="Work Phone" formControlName="phone" type="tel">
-                  <mat-icon (click)="deletewp(pointIndex,'wpLandlineNumbers');" class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+                  <input  matInput name="phone" placeholder="Work Phone" formControlName="phone" type="tel" maxlength="15">
+                  <mat-icon (click)="deletewp(pointIndex,'wpLandlineNumbers');" class="clr--red cursor-pointer delete--emails" *ngIf="pointIndex != 0">delete</mat-icon>
                   <span matPrefix>+1</span>
                 </mat-form-field>
               </div>
@@ -266,8 +266,8 @@
             <div formArrayName="ccWorkLandlineNumbers">
               <div fxLayout="row wrap" *ngFor="let a of ccWorkLandlineNumberList.controls; let pointIndex = index" [formGroupName]="pointIndex">
                 <mat-form-field class="full-width no-mar">
-                  <input matInput name="phone" placeholder="Work Phone" formControlName="phone" type="tel">
-                  <mat-icon (click)="deletecc(pointIndex,'ccWorkLandlineNumbers');" class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+                  <input matInput name="phone" placeholder="Work Phone" formControlName="phone" type="tel" maxlength="15">
+                  <mat-icon (click)="deletecc(pointIndex,'ccWorkLandlineNumbers');" class="clr--red cursor-pointer delete--emails" *ngIf="pointIndex != 0">delete</mat-icon>
                   <span matPrefix>+1</span>
                 </mat-form-field>
               </div>
@@ -287,8 +287,8 @@
             <div formArrayName="cclandlineNumbers">
               <div fxLayout="row wrap" *ngFor="let a of cclandlineNumbersList.controls; let pointIndex = index" [formGroupName]="pointIndex">
                 <mat-form-field class="full-width no-mar">
-                  <input matInput name="phone" placeholder="Contact Person Phone" formControlName="phone">
-                  <mat-icon (click)="deletecc(pointIndex,'cclandlineNumbers');" class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+                  <input matInput name="phone" placeholder="Contact Person Phone" formControlName="phone" maxlength="15">
+                  <mat-icon (click)="deletecc(pointIndex,'cclandlineNumbers');" class="clr--red cursor-pointer delete--emails" *ngIf="pointIndex != 0">delete</mat-icon>
                   <span matPrefix>+1</span>
                 </mat-form-field>
               </div>
@@ -328,8 +328,8 @@
             <div formArrayName="ccChurchLandlineNumbers">
               <div fxLayout="row wrap" *ngFor="let a of ChurchlandlineNumbersList.controls; let pointIndex = index" [formGroupName]="pointIndex">
                 <mat-form-field class="full-width no-mar">
-                  <input  matInput name="phone" placeholder="Phone" formControlName="phone">
-                  <mat-icon (click)="deletecc(pointIndex,'ccChurchLandlineNumbers');" class="clr--red cursor-pointer delete--emails">delete</mat-icon>
+                  <input  matInput name="phone" placeholder="Phone" formControlName="phone" maxlength="15">
+                  <mat-icon (click)="deletecc(pointIndex,'ccChurchLandlineNumbers');" class="clr--red cursor-pointer delete--emails" *ngIf="pointIndex != 0">delete</mat-icon>
                   <span matPrefix>+1</span>
                 </mat-form-field>
               </div>
