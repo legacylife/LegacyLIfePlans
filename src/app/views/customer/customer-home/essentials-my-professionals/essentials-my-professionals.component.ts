@@ -32,8 +32,8 @@ export class essentialsMyProfessionalsComponent implements OnInit {
         businessName: new FormControl(''),
         name: new FormControl('', Validators.required),
         address: new FormControl(''),
-        mpPhoneNumbers: new FormControl(''),
-        mpEmailAddress: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
+        mpPhoneNumbers: new FormControl('',Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)),
+        mpEmailAddress: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]), 
         profileId: new FormControl('')
       });
 
@@ -100,7 +100,11 @@ export class essentialsMyProfessionalsComponent implements OnInit {
       })
     }
 
-
+    firstCapitalize(e) {
+      let re = /(^|[.!?]\s+)([a-z])/g;
+      var textBox: HTMLInputElement = <HTMLInputElement>e.target;
+      textBox.value = textBox.value.replace(re, (m, $1, $2) => $1 + $2.toUpperCase());
+    }
 
   
 

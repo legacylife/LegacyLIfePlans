@@ -29,7 +29,8 @@
                 <mat-icon>library_add</mat-icon>Professionals
               </div>
               <span class="last--modified--by">Last modified:
-                  <span>{{row?.createdOn | date: 'MMM dd, yyyy'}}</span>
+                  <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                  <span *ngIf="!row?.modifiedOn">{{row?.createdOn | date: 'yyyy/MM/dd'}}</span>
               </span>
             </div>
             <div class="details--body">

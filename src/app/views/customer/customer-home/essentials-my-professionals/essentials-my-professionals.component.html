@@ -19,30 +19,32 @@
           </mat-form-field>
         
           <mat-form-field class="full-width">
-            <input class="capitalize" matInput name="businessName" placeholder="Business Name" [formControl]="professionalForm.controls['businessName']">
+            <input (keyup)="firstCapitalize($event)" matInput name="businessName" placeholder="Business Name" [formControl]="professionalForm.controls['businessName']">
             <mat-icon matTooltip="Please enter business name" matTooltipClass="llp--tooltip error" *ngIf="professionalForm.controls['businessName'].hasError('required') && professionalForm.controls['businessName'].touched" class="red--alert">help_outline</mat-icon>
           </mat-form-field>
 
           <mat-form-field class="full-width">
-            <input class="capitalize" matInput name="name" placeholder="Name*" [formControl]="professionalForm.controls['name']">
+            <input (keyup)="firstCapitalize($event)" matInput name="name" placeholder="Name*" [formControl]="professionalForm.controls['name']">
             <mat-icon matTooltip="Please enter name" matTooltipClass="llp--tooltip error" 
             *ngIf="professionalForm.controls['name'].hasError('required') && professionalForm.controls['name'].touched" class="red--alert">help_outline</mat-icon>
           </mat-form-field>
 
            <mat-form-field class="full-width">
-              <input class="capitalize" matInput name="address" placeholder="Address" [formControl]="professionalForm.controls['address']">
+              <input (keyup)="firstCapitalize($event)" matInput name="address" placeholder="Address" [formControl]="professionalForm.controls['address']">
               <mat-icon matTooltip="Please enter address" matTooltipClass="llp--tooltip error" 
               *ngIf="professionalForm.controls['address'].hasError('required') && professionalForm.controls['address'].touched" class="red--alert">help_outline</mat-icon>
            </mat-form-field>
 
            <mat-form-field class="full-width">
-                <input class="capitalize" matInput name="mpPhoneNumbers" maxlength="20" placeholder="Phone Numbers" [formControl]="professionalForm.controls['mpPhoneNumbers']">
+                <input maxlength="15" matInput name="mpPhoneNumbers" maxlength="20" placeholder="Phone Numbers" [formControl]="professionalForm.controls['mpPhoneNumbers']">
                 <mat-icon matTooltip="Please enter phone number." matTooltipClass="llp--tooltip error" *ngIf="professionalForm.controls['mpPhoneNumbers'].hasError('required') && professionalForm.controls['mpPhoneNumbers'].touched" class="red--alert">help_outline</mat-icon>
+                <mat-icon matTooltip="Please enter valid phone number." matTooltipClass="llp--tooltip error" *ngIf="professionalForm.controls['mpPhoneNumbers'].hasError('pattern') && professionalForm.controls['mpPhoneNumbers'].touched" class="red--alert">help_outline</mat-icon>
            </mat-form-field>     
 
            <mat-form-field class="full-width">
-                 <input  matInput name="mpEmailAddress" placeholder="Email*" [formControl]="professionalForm.controls['mpEmailAddress']">
+                 <input matInput name="mpEmailAddress" placeholder="Email*" [formControl]="professionalForm.controls['mpEmailAddress']">
                  <mat-icon matTooltip="Please enter email." matTooltipClass="llp--tooltip error"  *ngIf="professionalForm.controls['mpEmailAddress'].hasError('required') && professionalForm.controls['mpEmailAddress'].touched" class="red--alert">help_outline</mat-icon>
+                 <mat-icon matTooltip="Please enter valid email." matTooltipClass="llp--tooltip error"  *ngIf="professionalForm.controls['mpEmailAddress'].hasError('pattern') && professionalForm.controls['mpEmailAddress'].touched" class="red--alert">help_outline</mat-icon>
            </mat-form-field>     
            
            <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">

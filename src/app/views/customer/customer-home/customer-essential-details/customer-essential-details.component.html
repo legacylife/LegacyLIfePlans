@@ -27,7 +27,8 @@
                   <mat-icon>person</mat-icon>Personal Profile
                 </div>
                 <span class="last--modified--by">Last modified:
-                  <span>{{ createdOn  | date: 'MMM dd, yyyy'}}</span>
+                  <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                  <span *ngIf="!row?.modifiedOn">{{row?.createdOn | date: 'yyyy/MM/dd'}}</span>
                 </span>
             </div>
 
@@ -76,7 +77,8 @@
                       <mat-icon>description</mat-icon>Work Profile
                     </div>
                     <span class="last--modified--by">Last modified:
-                      <span>{{row?.createdOn  | date: 'MMM dd, yyyy'}}</span>
+                        <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                        <span *ngIf="!row?.modifiedOn">{{row?.createdOn | date: 'yyyy/MM/dd'}}</span>
                     </span>
                 </div>
 
@@ -149,7 +151,8 @@
                       <mat-icon>content_paste</mat-icon>Civic/Club, Religious Info 
                     </div>
                     <span class="last--modified--by">Last modified:
-                      <span>{{row?.createdOn  | date: 'MMM dd, yyyy'}}</span>
+                        <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                        <span *ngIf="!row?.modifiedOn">{{row?.createdOn | date: 'yyyy/MM/dd'}}</span>
                     </span>
                 </div>
 
