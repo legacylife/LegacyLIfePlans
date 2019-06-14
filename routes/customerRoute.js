@@ -279,6 +279,10 @@ function personalIdUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
+          let resText = 'added';
+          if (custData.documentType){
+            resText = 'updated';
+          }
           let { proquery } = req.body;  
           proquery.modifiedOn = new Date();
           proquery.status = 'Active';
@@ -286,7 +290,7 @@ function personalIdUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              let result = { "message": "ID box details updated successfully!" }
+              let result = { "message": "ID box details "+resText+" successfully!" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -421,15 +425,18 @@ function legalStuffUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
+          let resText = 'added';
+          if (custData.typeOfDocument){
+            resText = 'updated';
+          }
           let { proquery } = req.body;   
-
           proquery.status = 'Active';   
           proquery.modifiedOn = new Date();
           LegalStuff.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              let result = { "message": message.messageText+" updated successfully!" }
+              let result = { "message": message.messageText+" "+resText+" successfully!" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -453,7 +460,7 @@ function legalStuffUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
-        let result = { "message": message.messageText+" have been added successfully!" }
+        let result = { "message": message.messageText+" added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
