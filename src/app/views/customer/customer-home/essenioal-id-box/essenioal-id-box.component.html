@@ -7,7 +7,7 @@
 
 <form class="llp-form-wrapper" (ngSubmit)="IdFormSubmit(IDForm.value)">
   <div class="ll--modal--body id--box--body">
-    <div fxLayout="row wrap">
+    <div fxLayout="row wrap" class="pt-1">
       <div fxFlex.xs="100">
 
         <mat-form-field class="full-width">
@@ -133,7 +133,7 @@
          <div *ngIf="idProofDocumentsList" >
           <h3 class="header--text fnt--16">Uploaded ID proof</h3>
           <mat-chip-list class="doc--list" *ngFor="let doc of idProofDocumentsList; index as i">
-              <mat-chip><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck" >{{doc.title}}</a><mat-icon matChipRemove (click)="IDDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+              <mat-chip><a href="https://s3.amazonaws.com/llp-dev/myEssentials/{{doc.tmpName}}">{{doc.title}}</a><mat-icon matChipRemove (click)="IDDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
           </mat-chip-list>
          </div>
 

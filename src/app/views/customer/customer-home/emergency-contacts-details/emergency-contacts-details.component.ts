@@ -10,7 +10,7 @@ import { UserAPIService } from './../../../../userapi.service';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 import { EmergencyContactsComponent } from '../emergency-contacts/emergency-contacts.component';
 import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
-
+import { RelationshipType } from '../../../../selectList';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './emergency-contacts-details.component.html',
@@ -28,6 +28,7 @@ export class EmergencyContactsDetailsComponent implements OnInit {
   selectedProfileId: string = "";
   row: any;
   modalRef: any = null;
+  relationshipList: any[]
   eContactFormGroup: FormGroup;
   constructor(
     private fb: FormBuilder,
@@ -36,7 +37,7 @@ export class EmergencyContactsDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    this.relationshipList = RelationshipType;
     this.eContactFormGroup = this.fb.group({
       name: new FormControl('', Validators.required),
       relationship: new FormControl(''),
@@ -146,6 +147,14 @@ export class EmergencyContactsDetailsComponent implements OnInit {
     })
   }
 
+
+  getType(key) {
+      this.relationshipList = RelationshipType;
+      let filteredTyes = this.relationshipList.filter(dtype => {
+        return dtype.opt_code === key
+      }).map(el => el.opt_name)[0]
+      return filteredTyes
+    }
 
 
 }

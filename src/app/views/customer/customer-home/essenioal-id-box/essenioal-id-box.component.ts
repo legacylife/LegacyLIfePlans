@@ -324,10 +324,15 @@ export class EssenioalIdBoxComponent implements OnInit {
       this.userapi.apiRequest('post', 'customer/view-id-details', req_vars).subscribe(result => {
         if (result.status == "error") {
         } else {
-          this.IDForm.controls['profileId'].setValue(result.data._id);
+          profileIds = result.data._id;
+          this.IDForm.controls['profileId'].setValue(profileIds);
           if(uploadRemained) {
-            this.uploadRemainingFiles(result.data._id)
+            this.uploadRemainingFiles(profileIds)
           }
+
+          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+          this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+
           this.idProofDocumentsList = result.data.idProofDocuments;
           if(result.data.idProofDocuments.length>0){
             this.IDForm.controls['idProofDocuments_temp'].setValue('1');

@@ -144,6 +144,18 @@ export const PersonalAffairsTypeOfDocument = [{
 ]
 
 
+export const RelationshipType = [{ 
+  "opt_name" : "Family", 
+  "opt_code" : "1", 
+},
+{ 
+  "opt_name" : "Friends", 
+  "opt_code" : "2", 
+},{ 
+  "opt_name" : "Co-worker", 
+  "opt_code" : "3", 
+}
+]
 
 
 export const activeLicense = ['Health', 'Life',  'Property & Casualty', 'Series 3','Series 6', 'Series 7', 'Series 24','Series 26', 'Series 63', 'Series 65', 'Series 66']

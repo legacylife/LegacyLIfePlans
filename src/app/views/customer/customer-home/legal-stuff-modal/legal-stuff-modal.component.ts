@@ -206,11 +206,13 @@ export class legalStuffModalComponent implements OnInit {
     this.userapi.apiRequest('post', 'customer/view-legalStuff-details', req_vars).subscribe(result => {
       if (result.status == "error") {
       } else {
-        this.LegalForm.controls['profileId'].setValue(result.data._id);
+        profileIds = result.data._id;
+        this.LegalForm.controls['profileId'].setValue(profileIds);
         if(uploadRemained) {
           this.uploadRemainingFiles(result.data._id)
         }
-
+        this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+        this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
         this.subFolderDocumentsList = result.data.subFolderDocuments;        
         if(result.data.subFolderDocuments.length>0){
           this.LegalForm.controls['subFolderDocuments_temp'].setValue('1');

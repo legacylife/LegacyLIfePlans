@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms'
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { UserAPIService } from 'app/userapi.service';
-
+import { RelationshipType } from '../../../../selectList';
 @Component({
   selector: 'app-emergency-contacts',
   templateUrl: './emergency-contacts.component.html',
@@ -17,6 +17,7 @@ export class EmergencyContactsComponent implements OnInit {
   showContactListing = false;
   showContactCnt: string;
   userId: string
+  relationshipList: any[]
   eContactList: any = []
   updateContact: any = []
   selectedProfileId: string;
@@ -31,6 +32,7 @@ export class EmergencyContactsComponent implements OnInit {
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    this.relationshipList = RelationshipType;
     this.eContactFormGroup = this.fb.group({
       name: new FormControl('', Validators.required),
       relationship: new FormControl('',Validators.required),
@@ -105,6 +107,14 @@ export class EmergencyContactsComponent implements OnInit {
       }
     })
 
+  }  
+  
+  getType(key) {
+    this.relationshipList = RelationshipType;
+    let filteredTyes = this.relationshipList.filter(dtype => {
+      return dtype.opt_code === key
+    }).map(el => el.opt_name)[0]
+    return filteredTyes
   }
 
 }

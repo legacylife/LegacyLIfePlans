@@ -62,10 +62,13 @@
         </mat-form-field>
 
         <mat-form-field class="full-width">
-            <input class="capitalize" matInput name="relationship" placeholder="Relationship*" [formControl]="eContactFormGroup.controls['relationship']">
-            <mat-icon matTooltip="Please enter relationship" matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['relationship'].hasError('required') && eContactFormGroup.controls['relationship'].touched"
-            class="red--alert">help_outline</mat-icon>
-          </mat-form-field>
+          <mat-label>Relationship*</mat-label>
+        <mat-select placeholder="Relationship*" name="relationship" [formControl]="eContactFormGroup.controls['relationship']" >
+          <mat-option value="">Select Relationship Type</mat-option>
+          <mat-option *ngFor="let option of relationshipList"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
+        </mat-select>
+          <mat-icon matTooltip="Please select relationship" matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['relationship'].hasError('required') && eContactFormGroup.controls['relationship'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
 
         <mat-form-field class="full-width">
             <input class="capitalize" matInput name="address" placeholder="address" [formControl]="eContactFormGroup.controls['address']">
