@@ -49,10 +49,10 @@
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
                   <div class="uploaded--files" *ngFor="let doc of row?.subFolderDocuments">
-                    <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true" *ngIf="doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'pdf'">picture_as_pdf</mat-icon>
-                    <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true" *ngIf="doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'docx' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'doc' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'txt' ">insert_drive_file</mat-icon>
-                    <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true" *ngIf="doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'jpg' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'jpeg' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'png'">image</mat-icon>
-                    <label class="normal--label">
+                    <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true" *ngIf="doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)).toLowerCase == 'pdf'">picture_as_pdf</mat-icon>
+                    <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true" *ngIf="doc.tmpName.substr((doc.tmpName.lastIndexOf('.').toLowerCase + 1)) == 'docx' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.').toLowerCase + 1)) == 'doc' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.').toLowerCase + 1)) == 'txt' ">insert_drive_file</mat-icon>
+                    <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true" *ngIf="doc.tmpName.substr((doc.tmpName.lastIndexOf('.').toLowerCase + 1)) == 'jpg' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)).toLowerCase == 'jpeg' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)).toLowerCase == 'png'">image</mat-icon>
+                   <label class="normal--label"> 
                       <a href="https://s3.amazonaws.com/llp-dev/legalStuff/{{doc.tmpName}}">{{doc.title}}</a>
                     </label>&nbsp; &nbsp;
                   </div>

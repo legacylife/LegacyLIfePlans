@@ -58,7 +58,7 @@
       <div class="profile--body--scroll">
         <mat-form-field class="full-width">
             <input class="capitalize" matInput name="name" placeholder="Name*" [formControl]="eContactFormGroup.controls['name']">
-            <mat-icon matTooltip="Please enter your name" matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['name'].hasError('required') && eContactFormGroup.controls['name'].touched" class="red--alert">help_outline</mat-icon>
+            <mat-icon matTooltip="Please enter name" matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['name'].hasError('required') && eContactFormGroup.controls['name'].touched" class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
         <mat-form-field class="full-width">
@@ -71,7 +71,7 @@
         </mat-form-field>
 
         <mat-form-field class="full-width">
-            <input class="capitalize" matInput name="address" placeholder="address" [formControl]="eContactFormGroup.controls['address']">
+            <input class="capitalize" matInput name="address" placeholder="Address" [formControl]="eContactFormGroup.controls['address']">
         </mat-form-field>
 
         <mat-form-field class="full-width">
