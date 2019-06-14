@@ -599,6 +599,12 @@ body{
    
 }
 
+::ng-deep .mat-chip-list-wrapper{
+    margin-bottom: 20px !important;
+    mat-chip{
+        display: flex !important;
+    }
+}
 
 body{
     .llp--menu--droupdown{
