@@ -49,7 +49,8 @@ function myEssentialsUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              let result = { "message": "User " + from.fromname + "  have been updated successfully!","ppID" : custData._id }
+              //let result = { "message": "User " + from.fromname + "  have been updated successfully!","ppID" : custData._id }
+              let result = { "message": "Personal Profile details updated successfully","ppID" : custData._id }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -76,7 +77,8 @@ function myEssentialsUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
-        let result = { "message": "User " + from.fromname + "  have been updated successfully!","ppID" : newEntry._id }
+        //let result = { "message": "User " + from.fromname + "  have been updated successfully!","ppID" : newEntry._id }
+        let result = { "message": "Personal Profile details added successfully","ppID" : newEntry._id }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
