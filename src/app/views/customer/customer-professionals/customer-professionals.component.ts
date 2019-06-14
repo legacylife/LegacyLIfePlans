@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../shared/animations/egret-animations';
 import { SendAnEmailComponent } from './send-an-email-modal/send-an-email-modal.component';
 import { HireAdvisorComponent } from './hire-advisor-modal/hire-advisor-modal.component';
+import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 
 @Component({
   selector: 'app-customer-professionals',
@@ -15,13 +16,17 @@ import { HireAdvisorComponent } from './hire-advisor-modal/hire-advisor-modal.co
 })
 export class CustomerProfessionalComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
+  profilePicture: any = "assets/images/arkenea/default.jpg"
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router, private dialog: MatDialog,
+    private router: Router, private dialog: MatDialog, private picService: ProfilePicService,
   ) { }
 
   ngOnInit() {
+    this.picService.itemValue.subscribe((nextValue) => {
+      this.profilePicture =  nextValue
+    })
   }
   openSendEmailModal(data: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(SendAnEmailComponent, {

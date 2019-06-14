@@ -39,9 +39,14 @@ export class AdvisorHeaderTopComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    
     this.picService.itemValue.subscribe((nextValue) => {
       this.profilePicture =  nextValue
     })
+
+    if (localStorage.getItem('endUserProfilePicture') && localStorage.getItem('endUserProfilePicture') != 'assets/images/arkenea/default.jpg') {
+      this.profilePicture = localStorage.getItem('endUserProfilePicture') 
+    }
     
     // console.log()
     this.layoutConf = this.layout.layoutConf;

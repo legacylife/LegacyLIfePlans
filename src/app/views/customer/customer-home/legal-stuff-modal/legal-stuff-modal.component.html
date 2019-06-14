@@ -12,7 +12,7 @@
             <mat-form-field class="full-width">
                 <mat-label>{{folderName}} Document*</mat-label>
               <mat-select placeholder="{{folderName}} Document*" name="typeOfDocument" [formControl]="LegalForm.controls['typeOfDocument']" >
-                <mat-option value="">Select estate document</mat-option>
+                <mat-option value="">Select {{folderName}} Document</mat-option>
                 <mat-option *ngFor="let option of typeOfDocumentList"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
               </mat-select>
                 <mat-icon matTooltip="Please select Estate Document" matTooltipClass="llp--tooltip error" *ngIf="LegalForm.controls['typeOfDocument'].hasError('required') && LegalForm.controls['typeOfDocument'].touched" class="red--alert">help_outline</mat-icon>

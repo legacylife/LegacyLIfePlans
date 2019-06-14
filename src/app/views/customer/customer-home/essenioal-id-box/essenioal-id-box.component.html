@@ -6,7 +6,7 @@
 </div>
 
 <form class="llp-form-wrapper" (ngSubmit)="IdFormSubmit(IDForm.value)">
-  <div class="ll--modal--body id--box--body">
+  <div class="ll--modal--body id--box--body legal--stuff--body--hgt">
     <div fxLayout="row wrap" class="pt-1">
       <div fxFlex.xs="100">
 
@@ -151,7 +151,7 @@
             <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="uploader.progress"></mat-progress-bar>
           </div>
 
-        <mat-form-field class="full-width">
+        <mat-form-field class="full-width mt-1">
           <textarea (keyup)="firstCapitalize($event)" maxlength="500" matInput placeholder="Comments" name="comments" [formControl]="IDForm.controls['comments']"></textarea>
           <div class="char--limit">{{ IDForm.controls['comments'].value?.length }}  / 500 chars</div>
           <mat-icon matTooltip="Please enter your comment" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['comments'].hasError('required') && IDForm.controls['comments'].touched"
