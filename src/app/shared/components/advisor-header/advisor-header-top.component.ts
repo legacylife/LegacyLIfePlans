@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Renderer2, ViewChild } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 import { ThemeService } from '../../../shared/services/theme.service';
@@ -8,12 +8,15 @@ import { UserAPIService } from './../../../userapi.service';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 import { NavigationService } from '../../services/navigation.service';
+import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
+import { InviteComponent } from '../../../views/invite-modal/invite-modal.component';
 
 @Component({
   selector: 'app-advisor-header-top',
   templateUrl: './advisor-header-top.component.html'
 })
 export class AdvisorHeaderTopComponent implements OnInit, OnDestroy {
+  @ViewChild(MatSidenav) private sideNav: MatSidenav;
   layoutConf: any;
   menuItems:any;
   menuItemSub: Subscription;
@@ -35,7 +38,8 @@ export class AdvisorHeaderTopComponent implements OnInit, OnDestroy {
     public translate: TranslateService,
     private renderer: Renderer2,
     private userapi: UserAPIService,
-    private picService : ProfilePicService
+    private picService : ProfilePicService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -98,5 +102,11 @@ export class AdvisorHeaderTopComponent implements OnInit, OnDestroy {
 
   logout = () => {
     this.userapi.userLogout();
+  }
+  openInviteModal(data: any = {}, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(InviteComponent, {
+      width: '720px',
+      disableClose: true,
+    })
   }
 }
