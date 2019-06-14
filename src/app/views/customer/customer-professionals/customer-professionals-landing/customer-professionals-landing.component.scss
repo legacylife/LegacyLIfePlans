@@ -21,8 +21,12 @@
                 margin: 0;
                 font-size: 16px;
                 color: #222324;
-                // width: 100%;
             }
+        }
+        .mat-card-content{
+            border: 1px solid #e1e5c7;
+            border-top: none;
+            padding: 20px 25px;
         }
        
     }    
@@ -40,14 +44,90 @@
         align-items: center;
         padding-bottom: 18px;
         justify-content: space-between;
+        margin-bottom: 15px;
         .mat-icon{
             color: #727a33;
             margin-right: 10px;
         }
     }
+    .details--body{
+        .abt--us{
+            font-size: 16px;
+            margin: 0;
+            line-height: 1.5;
+            color: #222324;
+        }
+    }
  
 }
+.specialites--wrapper{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
 
+    .box--sec{
+        border-radius: 2px;
+        border: solid 1px #dadce0;
+        padding: 50px 25px 20px 25px;
+        position: relative;
+        margin-top: 35px;
+        width: 32%;
+        margin-bottom: 13px;
+
+        .logo{
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background-color: #fff;
+            border: solid 1px #dadce0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: -32px;
+
+            .logo--inner{
+                width: 55px;
+                height: 55px;
+                text-align: center;
+                border-radius: 50%;
+                background-color: #727a33;
+                align-items: center;
+                justify-content: center;
+                display: flex;
+
+                .mat-icon{
+                    height: 35px;
+                    width: 35px;
+                    font-size: 35px;
+                    color: #fff;
+                }
+            }
+        }
+        h3{
+            font-size: 18px;
+            margin: 0 0 15px 0;
+        }
+        .desc{
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            color: #222324;
+            font-family: $font--lato--regular;
+            margin-bottom: 10px;
+            .mat-icon{
+                flex-shrink: 0;
+                color: #222324;
+                height: 20px;
+                width: 20px;
+                font-size: 20px;
+                margin-right: 10px;
+                align-self: flex-start;
+                margin-top: 3px;
+            }
+        }
+    }
+}
 
 /* Media query (start here)*/
 
@@ -98,6 +178,10 @@
     .no--of--trustee {
         font-size: 13px;
         margin-right: 6px;
+    }
+    .specialites--wrapper .box--sec{
+        width: 100%;
+        
     }
 }
 @media only screen and (min-width: 600px) and (max-width: 959px){

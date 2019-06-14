@@ -9,28 +9,161 @@
 
       </mat-card-header>
 
-      <div class="details--wrapper mb-1">
-        <div class="details--header">
-          <div class="d-flex align--items--center">
+      <mat-card-content>
+
+        <!-- Personal Profile -->
+        <div class="details--wrapper mb-1">
+          <div class="details--header">
+            <div class="d-flex align--items--center">
               <mat-icon>person</mat-icon>Personal Profile
             </div>
+          </div>
+          <div class="details--body">
+            <div fxLayout="row wrap" class="mb--10">
+              <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                <label class="strong--label">Date of Birth:</label>
+              </div>
+              <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                <label class="normal--label">{{profileData.proName}}</label>
+              </div>
+            </div>
+            <div fxLayout="row wrap" class="mb--10">
+              <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                <label class="strong--label">Domain:</label>
+              </div>
+              <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                <label class="normal--label">{{profileData.proDomain}}</label>
+              </div>
+            </div>
+            <div fxLayout="row wrap" class="mb--10">
+              <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                <label class="strong--label">Job Title:</label>
+              </div>
+              <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                <label class="normal--label">{{profileData.proJob}}</label>
+              </div>
+            </div>
+            <div fxLayout="row wrap" class="mb--10">
+              <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                <label class="strong--label">Experience:</label>
+              </div>
+              <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                <label class="normal--label">{{profileData.proExp}}</label>
+              </div>
+            </div>
+            <div fxLayout="row wrap" class="mb--10">
+              <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                <label class="strong--label">Business Phone:</label>
+              </div>
+              <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                <label class="normal--label">{{profileData.proPhone}}</label>
+              </div>
+            </div>
+            <div fxLayout="row wrap" class="mb--10">
+              <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                <label class="strong--label">Location:</label>
+              </div>
+              <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                <label class="normal--label">{{profileData.proLocation}}</label>
+              </div>
+            </div>
+
+          </div>
         </div>
 
-          
-        <div class="details--body">
-          <div fxLayout="row wrap" class="mb--10">
-            <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
-              <label class="strong--label">Date of Birth:</label>
-            </div>
-            <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-              <label class="normal--label">22 June 1989</label>
+        <!-- About -->
+        <div class="details--wrapper mb-1">
+          <div class="details--header">
+            <div class="d-flex align--items--center">
+              <mat-icon>insert_drive_file</mat-icon>About James
             </div>
           </div>
-                      
+          <div class="details--body">
+            <p class="abt--us">{{about}}</p>
+          </div>
         </div>
-      </div>
+
+        <!-- Specialites -->
+        <div class="specialites--wrapper">
+
+          <div class="box--sec">
+            <div class="logo">
+              <div class="logo--inner">
+                <mat-icon>folder_special</mat-icon>
+              </div>
+            </div>
+            <h3>Specialites</h3>
+            <div class="desc">
+              <mat-icon>arrow_forward</mat-icon>
+              Insurance disputes
+            </div>
+            <div class="desc">
+              <mat-icon>arrow_forward</mat-icon>
+              Business disputes
+            </div>
+            <div class="desc">
+              <mat-icon>arrow_forward</mat-icon>
+              Product liability
+            </div>
+            <div class="desc">
+              <mat-icon>arrow_forward</mat-icon>
+              Pharmaceutical liability and medical documents
+            </div>
+            <div class="desc">
+              <mat-icon>arrow_forward</mat-icon>
+              Workers compensation
+            </div>
+            <div class="desc">
+              <mat-icon>arrow_forward</mat-icon>
+              Premises liability
+            </div>
+          </div>
 
 
+          <div class="box--sec">
+            <div class="logo">
+              <div class="logo--inner">
+                <mat-icon>star</mat-icon>
+              </div>
+            </div>
+            <h3>Awards and Organizations</h3>
+            <div class="desc">
+              <mat-icon>arrow_forward</mat-icon>
+              Huntsville State Association for Justice, Eagle
+            </div>
+            <div class="desc">
+              <mat-icon>arrow_forward</mat-icon>
+              U.S. District Court, Western District of Huntsville
+            </div>
+
+          </div>
+          <div class="box--sec">
+            <div class="logo">
+              <div class="logo--inner">
+                <mat-icon>flag</mat-icon>
+              </div>
+            </div>
+            <h3>Hobbies</h3>
+            <div class="desc">
+              <mat-icon>arrow_forward</mat-icon>
+              Swimming
+            </div>
+            <div class="desc">
+              <mat-icon>arrow_forward</mat-icon>
+              Reading a book
+            </div>
+            <div class="desc">
+              <mat-icon>arrow_forward</mat-icon>
+              Listening to music
+            </div>
+          </div>
+
+        </div>
+
+
+
+
+      </mat-card-content>
 
     </mat-card>
   </div>

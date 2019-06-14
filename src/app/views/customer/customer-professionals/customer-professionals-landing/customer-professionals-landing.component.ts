@@ -14,88 +14,29 @@ import { egretAnimations } from '../../../../shared/animations/egret-animations'
   animations: [egretAnimations]
 })
 export class CustomerProfLandingComponent implements OnInit {
-  allPeoples: any[];
+  profileData: any;
+  about: string;
 
   constructor(
   ) { }
 
 
   ngOnInit() {
-    this.allPeoples = [
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'Allen Barry',
-        emailId: 'barryallen@gmail.com',
-        totalFiles: '24 Files',
-        totalFolders: '9 Folders',
-        position: 'CFA, CIC',
-        status: 'assigned'
-      },
-      {
-        profilePic: 'assets/images/arkenea/emily.png',
-        userName: 'Emily Doe',
-        emailId: 'emilydoe@gmail.com',
-        totalFiles: '4 Files',
-        totalFolders: '1 Folders',
-        position: 'CFA, CIC',
-        status: 'pending'
-      },
-      {
-        profilePic: 'assets/images/arkenea/john.png',
-        userName: 'Johnson Smith',
-        emailId: 'johnson.smith@gmail.com',
-        totalFiles: '15 Files',
-        totalFolders: '6 Folders',
-        position: 'CFA, CIC',
-        status: 'advisor'
-      },
-      {
-        profilePic: 'assets/images/arkenea/user-male.png',
-        userName: 'James Anderson',
-        emailId: 'james.anderson@gmail.com',
-        totalFiles: '15 Files',
-        totalFolders: '6 Folders',
-        position: 'CFA, CIC',
-        status: 'assigned'
-      },
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'Allen Barry',
-        emailId: 'barryallen@gmail.com',
-        totalFiles: '24 Files',
-        totalFolders: '9 Folders',
-        position: 'CFA, CIC',
-        status: 'assigned'
-      },
-      {
-        profilePic: 'assets/images/arkenea/emily.png',
-        userName: 'Emily Doe',
-        emailId: 'emilydoe@gmail.com',
-        totalFiles: '4 Files',
-        totalFolders: '1 Folders',
-        position: 'CFA, CIC',
-        status: 'pending'
-      },
-      {
-        profilePic: 'assets/images/arkenea/john.png',
-        userName: 'Johnson Smith',
-        emailId: 'johnson.smith@gmail.com',
-        totalFiles: '15 Files',
-        totalFolders: '6 Folders',
-        position: 'CFA, CIC',
-        status: 'advisor'
-      },
-      {
-        profilePic: 'assets/images/arkenea/user-male.png',
-        userName: 'James Anderson',
-        emailId: 'james.anderson@gmail.com',
-        totalFiles: '15 Files',
-        totalFolders: '6 Folders',
-        position: 'CFA, CIC',
-        status: 'assigned'
-      },
-    ];
-  }
+ 
+
+    this.profileData = {
+      proName: 'Mary, Jason & Hodge of Attorney',
+      proDomain: 'www.mjhattorenys.com',
+      proJob: 'Attorney, Insurance Agent',
+      proExp: '12 years',
+      proPhone: '+8654321234',
+      proLocation: '12  street, Silicon Valley,Avenue NE, Huntsville',
+    };
+
+    this.about = "Lawyer James Anderson once made his mark on the football field as a highschool All - State; and All - American football player.Today he isknown for his courtroom skills as partner with Mary, Jason & Hodge of Attorney Huntsville, Alabama.Morris is a lifelong Alabamian who has been practicing law in Huntsville since earning his law degree from the Attorneys High School."
+    };
+
+  
 
 
 
