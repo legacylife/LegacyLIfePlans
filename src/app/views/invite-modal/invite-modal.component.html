@@ -1,5 +1,5 @@
 <div class="ll--modal--header">
-    Invite to Legacy Life plans!
+  Invite to Legacy Life plans!
   <button class="modal--close" [mat-dialog-close]="">
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
@@ -9,20 +9,41 @@
   <div class="ll--modal--body ">
 
     <form class="llp-form-wrapper">
-      <!-- <mat-form-field class="full-width">
-        <input matInput value="John Smith" placeholder="Your Name">
-      </mat-form-field>
-      <mat-form-field class="full-width">
-        <input matInput value="" placeholder="Email">
-      </mat-form-field> -->
+      <h6 class="invite--sub--line">Invite your members</h6>
+      <div fxLayout="row wrap">
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
+          <mat-form-field class="full-width">
+            <input matInput value="" placeholder="Name">
+          </mat-form-field>
+        </div>
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
+          <mat-form-field class="full-width">
+            <input matInput value="" placeholder="Email">
+          </mat-form-field>
+        </div>
+        <div fxFlex.xs="90" fxFlex.sm="95" fxFlex.md="35" fxFlex.lg="36" fxFlex.xl="37" class="pad--r--lg">
 
-      
-  <div fxLayout="row wrap"  >
-      <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="20" fxFlex.lg="49" fxFlex.xl="33.33">01</div>
-      <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="20" fxFlex.lg="49" fxFlex.xl="33.33">02</div>
-      <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="20" fxFlex.lg="49" fxFlex.xl="33.33">03</div>
-  </div>
-      
+          <mat-form-field  class="full-width no-mar">
+            <mat-select placeholder="Relation">
+              <mat-option value="">Friend</mat-option>
+              <mat-option value="">Family</mat-option>
+              <mat-option value="">Colleague</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </div>
+        <div fxFlex.xs="10" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="4" fxFlex.xl="3" class="text-right">
+          <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
+        </div>
+      </div>
+      <div fxLayout="row wrap">
+        <div fxFlex.xs="100">
+          <div class="add--new">
+            <mat-icon>add_circle</mat-icon>
+            Add New
+          </div>
+        </div>
+      </div>
     </form>
 
   </div>

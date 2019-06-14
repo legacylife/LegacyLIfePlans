@@ -664,7 +664,9 @@ body{
         font-size: 27px;
     }
 }
-
+.egret-indigo .mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+    color: #c72128 !important;
+}
 /* -- 
    Top header css (start here)
 ------------------------------------------*/
