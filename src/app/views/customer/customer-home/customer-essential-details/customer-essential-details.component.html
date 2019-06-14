@@ -10,13 +10,13 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">My Essentials</mat-card-title>
           <div class="right--actions">
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openProfileModal({}, true)">
               <mat-icon>edit</mat-icon>
-              <span class="hide--sm--txt" (click)="openProfileModal({}, true)">Edit</span>
+              <span class="hide--sm--txt">Edit</span>
             </button>
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="deleteProfile()">
               <mat-icon>delete</mat-icon>
-              <span class="hide--sm--txt" (click)="deleteProfile()">Delete</span>
+              <span class="hide--sm--txt">Delete</span>
             </button>
           </div>
         </mat-card-header>
@@ -27,7 +27,8 @@
                   <mat-icon>person</mat-icon>Personal Profile
                 </div>
                 <span class="last--modified--by">Last modified:
-                  <span>{{ createdOn  | date: 'MMM dd, yyyy'}}</span>
+                  <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                  <span *ngIf="!row?.modifiedOn">{{row?.createdOn | date: 'yyyy/MM/dd'}}</span>
                 </span>
             </div>
 
@@ -76,7 +77,8 @@
                       <mat-icon>description</mat-icon>Work Profile
                     </div>
                     <span class="last--modified--by">Last modified:
-                      <span>{{row?.createdOn  | date: 'MMM dd, yyyy'}}</span>
+                        <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                        <span *ngIf="!row?.modifiedOn">{{row?.createdOn | date: 'yyyy/MM/dd'}}</span>
                     </span>
                 </div>
 
@@ -149,7 +151,8 @@
                       <mat-icon>content_paste</mat-icon>Civic/Club, Religious Info 
                     </div>
                     <span class="last--modified--by">Last modified:
-                      <span>{{row?.createdOn  | date: 'MMM dd, yyyy'}}</span>
+                        <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                        <span *ngIf="!row?.modifiedOn">{{row?.createdOn | date: 'yyyy/MM/dd'}}</span>
                     </span>
                 </div>
 

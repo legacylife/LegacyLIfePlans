@@ -23,7 +23,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Personal Profile</mat-card-title>
           <div *ngIf="showProfileListing">
-            <span class="no--of--trustee">{{showProfileListingCnt}} Profiles</span>
+            <span class="no--of--trustee">{{showProfileListingCnt}} Profile{{showProfileListingCnt>1 ? 's' : ''}}</span>
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openProfileModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
@@ -42,7 +42,8 @@
             <div class="user--name">
               <h5>{{profileData.ppFirstName +' '+ profileData.ppLastName}}</h5>
               <p class="mb-0">Last modified:
-                <span>{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+                <span *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
               </p>
             </div>
           </div>
@@ -53,7 +54,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">ID Box </mat-card-title>
           <div *ngIf="showIdProofListing">
-            <span class="no--of--trustee">{{showIDListingCnt}} IDs</span>
+            <span class="no--of--trustee">{{showIDListingCnt}} ID{{showIDListingCnt>1 ? 's' : ''}}</span>
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openAddIdBoxModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
@@ -73,7 +74,8 @@
             <div class="user--name">
               <h5>{{getDocType(idData.documentType)}}</h5>
               <p class="mb-0">Last modified:
-                <span>{{idData.createdOn | date: 'yyyy/MM/dd'}}</span>
+                <span *ngIf="idData.modifiedOn && idData.modifiedOn != ''">{{idData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                <span *ngIf="!idData.modifiedOn">{{idData.createdOn | date: 'yyyy/MM/dd'}}</span>
               </p>
             </div>
           </div>
@@ -85,7 +87,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">My Professionals </mat-card-title>
           <div *ngIf="showProfessionalsListing">
-            <span class="no--of--trustee">{{showProfessionalCnt}} My Professionals</span>
+            <span class="no--of--trustee">{{showProfessionalCnt}} Professional{{showProfessionalCnt>1 ? 's' : ''}}</span>
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openProfessionalBoxModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
@@ -104,7 +106,8 @@
             <div class="user--name">
               <h5>{{profileData.businessName}}</h5>
               <p class="mb-0">Last modified:
-                <span>{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+                <span *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
               </p>
             </div>
           </div>

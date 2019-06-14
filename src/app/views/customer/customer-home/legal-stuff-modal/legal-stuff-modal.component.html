@@ -39,7 +39,7 @@
         <div *ngIf="subFolderDocumentsList" >
         <h3 class="header--text fnt--16">Uploaded ID proof</h3>
         <mat-chip-list class="doc--list" *ngFor="let doc of subFolderDocumentsList; index as i">
-            <mat-chip><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck" >{{doc.title}}</a><mat-icon matChipRemove  (click)="subFolderDelete(i,doc.title,doc.tmpName,doc._id)">close</mat-icon></mat-chip>
+            <mat-chip><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck" >{{doc.title}}</a><mat-icon matChipRemove  (click)="subFolderDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
         </mat-chip-list>
         </div>
 
@@ -54,7 +54,7 @@
         </div>
 
         <mat-form-field class="full-width">
-        <textarea matInput placeholder="Comments*" name="comments" [formControl]="LegalForm.controls['comments']"></textarea>
+        <textarea matInput placeholder="Comments" name="comments" [formControl]="LegalForm.controls['comments']"></textarea>
         <div class="char--limit">0 / 500 chars</div>
         <mat-icon matTooltip="Please enter your comment" matTooltipClass="llp--tooltip error" *ngIf="LegalForm.controls['comments'].hasError('required') && LegalForm.controls['comments'].touched"
         class="red--alert">help_outline</mat-icon>
@@ -68,6 +68,6 @@
       </div>
     </div>
     <div class="ll--modal--footer text-center">
-      <button mat-raised-button class="llp--primary--btn">Save</button>
+        <button mat-raised-button class="llp--primary--btn" [disabled]="LegalForm.invalid">Save</button>
     </div>
   </form>

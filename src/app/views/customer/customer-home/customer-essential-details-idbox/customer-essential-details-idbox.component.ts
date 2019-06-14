@@ -18,26 +18,14 @@ import { EssenioalIdBoxComponent } from './../essenioal-id-box/essenioal-id-box.
   styleUrls: ['./customer-essential-details-idbox.component.scss'],
   animations: [egretAnimations]
 })
-export class CustomerEssentialDetailsIdboxComponent implements OnInit, OnDestroy {
-  public isSideNavOpen: boolean;
-  public viewMode: string = 'grid-view';
-  public currentPage: any;
-  dayFirst = true;
-  daySeco = false;
-  
+export class CustomerEssentialDetailsIdboxComponent implements OnInit {
+ 
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
-  public products: any[];
-  public categories: any[];
-  public activeCategory: string = 'all';
-  public filterForm: FormGroup;
-  public cart: any[];
-  public cartData: any;
   userId: string;
   selectedProfileId: string = "";
   row: any;
   documentTypeList: any[] = documentTypes;
-
   constructor(
     // private shopService: ShopService,
     private fb: FormBuilder,
@@ -53,15 +41,6 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit, OnDestroy
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.getEssentialIDDetails();
 
-    // this.categories$ = this.shopService.getCategories();
-    this.categories = ["My essentials", "Pets"]
-
-   
-    this.products = []
-    this.cartData = []
-    this.filterForm = this.fb.group({
-      search: ['']
-    })
   }
 
   //function to get all events
@@ -124,23 +103,8 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit, OnDestroy
       })
   }
 
-  showSecoDay() {
-    this.dayFirst = false;
-    this.daySeco = true;
-  }
-  ngOnDestroy() {
 
-  }
-
-  setActiveCategory(category) {
-    this.activeCategory = category;
-    this.filterForm.controls['category'].setValue(category)
-  }
-
-  toggleSideNav() {
-    this.sideNav.opened = !this.sideNav.opened;
-  }
-
+ 
   getDocType(key){
     let filteredTyes =this.documentTypeList.filter(dtype =>{
       return dtype.opt_code === key

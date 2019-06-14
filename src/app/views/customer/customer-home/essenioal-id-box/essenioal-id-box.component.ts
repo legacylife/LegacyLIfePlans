@@ -77,7 +77,7 @@ export class EssenioalIdBoxComponent implements OnInit {
       locationPassport: new FormControl(''),
       LocationWorkPermitVisa: new FormControl(''),  
       idProofDocuments_temp: new FormControl([], Validators.required),
-      comments: new FormControl('', Validators.required), 
+      comments: new FormControl(''), 
       profileId: new FormControl('')
      });
      this.idProofDocumentsList = [];
@@ -136,19 +136,6 @@ export class EssenioalIdBoxComponent implements OnInit {
       var query = {};
       var proquery = {};     
       
-      // const req_vars = {
-      //   query: Object.assign({customerId: this.userId }),
-      //   proquery: Object.assign(profileInData)
-      // }
-      // let profileIds = this.IDForm.controls['profileId'].value;
-      // if(profileIds){
-      //   const req_vars = {
-      //     query: Object.assign({ _id:profileIds, customerId: this.userId }),
-      //     proquery: Object.assign(profileInData)
-      //   }
-      // }
-
-
       let profileIds = this.IDForm.controls['profileId'].value;
       if(profileIds){
         this.selectedProfileId = profileIds;
@@ -174,7 +161,6 @@ export class EssenioalIdBoxComponent implements OnInit {
     }
   
     getEssentialIdView = (query = {}, search = false) => { 
-      //  status:"Pending"
       let req_vars = {
         query: Object.assign({ customerId: this.userId,status:"Pending" })
       }
@@ -229,7 +215,8 @@ export class EssenioalIdBoxComponent implements OnInit {
       })
   }  
 
-  IDDelete(doc, name, tmName,ids) {
+  IDDelete(doc, name, tmName) {
+      let ids = this.IDForm.controls['profileId'].value;
       var statMsg = "Are you sure you want to delete '" + name + "' file?"
       this.confirmService.confirm({ message: statMsg })
         .subscribe(res => {
@@ -291,23 +278,20 @@ export class EssenioalIdBoxComponent implements OnInit {
 
     getIdDocuments = (query = {}, search = false) => {     
       let profileIds = this.IDForm.controls['profileId'].value;
-      const req_vars = {
+      let req_vars = {
         query: Object.assign({customerId: this.userId,status:"Pending" }),
         fields:{idProofDocuments:1}
       }
       if(profileIds){
-        const req_vars = {
+         req_vars = {
           query: Object.assign({ _id:profileIds, customerId: this.userId  }),
-          fields:{_id:1,idProofDocuments:1}
+          fields:{idProofDocuments:1}
         }
       }    
       this.userapi.apiRequest('post', 'customer/view-id-details', req_vars).subscribe(result => {
         if (result.status == "error") {
         } else {
-          //this.profile = result.data.userProfile;
-          console.log(result.data._id);
           this.idProofDocumentsList = result.data.idProofDocuments;
-          this.IDForm.controls['profileId'].setValue(result.data._id);
           if(result.data.idProofDocuments.length>0){
             this.IDForm.controls['idProofDocuments_temp'].setValue('1');
           }         

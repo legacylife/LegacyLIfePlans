@@ -32,10 +32,14 @@ export class legalStuffModalComponent implements OnInit {
   folderName: string;
   typeOfDocumentList: any[]
   selectedProfileId: string;
-  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService ,@Inject(MAT_DIALOG_DATA) public data: any ) { this.folderName = data.FolderName;}
+  newName:string = "";
+  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService ,@Inject(MAT_DIALOG_DATA) public data: any ) { this.folderName = data.FolderName;this.newName = data.newName;}
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
   ngOnInit() {
+    if(this.newName && this.newName != ''){
+      this.folderName = this.newName
+    }
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
 
@@ -54,7 +58,7 @@ export class legalStuffModalComponent implements OnInit {
     this.LegalForm = this.fb.group({
       typeOfDocument: new FormControl('', Validators.required),
       subFolderDocuments_temp: new FormControl([], Validators.required),
-      comments: new FormControl('', Validators.required), 
+      comments: new FormControl(''), 
       profileId: new FormControl('')
      });
      this.subFolderDocumentsList = [];
@@ -66,17 +70,17 @@ export class legalStuffModalComponent implements OnInit {
     var query = {};
     var proquery = {};     
     profileInData.subFolderName = this.folderName;
-    const req_vars = {
+    let req_vars = {
       query: Object.assign({customerId: this.userId,subFolderName:this.folderName }),
       proquery: Object.assign(profileInData),
-      message: Object.assign({ messageText: "Estate" })
+      message: Object.assign({ messageText: this.folderName })
     }
     let profileIds = this.LegalForm.controls['profileId'].value;
     if(profileIds){
-      const req_vars = {
+      req_vars = {
         query: Object.assign({ _id:profileIds, customerId: this.userId }),
         proquery: Object.assign(profileInData),
-        message: Object.assign({ messageText: "Estate" })
+        message: Object.assign({ messageText: this.folderName })
       }
     }
     //console.log("profileInData",profileInData)
@@ -95,8 +99,7 @@ export class legalStuffModalComponent implements OnInit {
   }
 
 
-  getEssentialLegalView = (query = {}, search = false) => { 
-   
+  getEssentialLegalView = (query = {}, search = false) => {    
     let req_vars = {
       query: Object.assign({ customerId: this.userId,subFolderName:this.folderName,status:"Pending" }, query)//, status:"Pending"
     }
@@ -162,25 +165,22 @@ export class legalStuffModalComponent implements OnInit {
 
 
   getLegalDocuments = (query = {}, search = false) => {    
-
     let profileIds = this.LegalForm.controls['profileId'].value;
-    const req_vars = {
+    let req_vars = {
       query: Object.assign({customerId: this.userId,subFolderName:this.folderName,status:"Pending" }),
       fields:{subFolderDocuments:1}
     }
     if(profileIds){
-      const req_vars = {
+       req_vars = {
         query: Object.assign({ _id:profileIds, customerId: this.userId }),
-        fields:{_id:1,subFolderDocuments:1}
+        fields:{subFolderDocuments:1}
       }
     }    
     this.userapi.apiRequest('post', 'customer/view-legalStuff-details', req_vars).subscribe(result => {
       if (result.status == "error") {
       } else {
         //this.profile = result.data.userProfile;
-        this.subFolderDocumentsList = result.data.subFolderDocuments;
-        console.log("Asdasd---",result.data)
-        this.LegalForm.controls['profileId'].setValue(result.data._id);
+        this.subFolderDocumentsList = result.data.subFolderDocuments;        
         if(result.data.subFolderDocuments.length>0){
           this.LegalForm.controls['subFolderDocuments_temp'].setValue('1');
         }         
@@ -190,19 +190,53 @@ export class legalStuffModalComponent implements OnInit {
     })
   }
 
-isExtension(ext, extnArray) {
-  var result = false;
-  var i;
-  if (ext) {
-      ext = ext.toLowerCase();
-      for (i = 0; i < extnArray.length; i++) {
-          if (extnArray[i].toLowerCase() === ext) {
-              result = true;
-              break;
+  subFolderDelete(doc, name, tmName) {
+    let ids = this.LegalForm.controls['profileId'].value;
+    var statMsg = "Are you sure you want to delete '" + name +"' file?"
+    this.confirmService.confirm({ message: statMsg })
+      .subscribe(res => {
+        if (res) {
+          this.loader.open();
+          this.subFolderDocumentsList.splice(doc, 1)
+          var query = {};
+          const req_vars = {
+            query: Object.assign({ _id: ids }, query),
+            proquery: Object.assign({ subFolderDocuments: this.subFolderDocumentsList }, query),
+            fileName: Object.assign({ docName: tmName }, query)
           }
-      }
-  }
-  return result;
+          this.userapi.apiRequest('post', 'documents/deletesubFolderDoc', req_vars).subscribe(result => {
+            if (result.status == "error") {
+              this.loader.close();
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            } else {
+              if(this.subFolderDocumentsList.length<1){
+                this.LegalForm.controls['subFolderDocuments_temp'].setValue('');
+              }  
+              this.loader.close();
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            }
+          }, (err) => {
+            console.error(err)
+            this.loader.close();
+          })
+        }
+      })
 }
+
+
+  isExtension(ext, extnArray) {
+    var result = false;
+    var i;
+    if (ext) {
+        ext = ext.toLowerCase();
+        for (i = 0; i < extnArray.length; i++) {
+            if (extnArray[i].toLowerCase() === ext) {
+                result = true;
+                break;
+            }
+        }
+    }
+    return result;
+  }
 
 }

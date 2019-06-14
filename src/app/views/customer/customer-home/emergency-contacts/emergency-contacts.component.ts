@@ -14,7 +14,8 @@ export class EmergencyContactsComponent implements OnInit {
   closeResult: string
   modalRef: any = null
   eContactFormGroup: FormGroup;
-  showContactListing = true
+  showContactListing = false;
+  showContactCnt: string;
   userId: string
   eContactList: any = []
   updateContact: any = []
@@ -32,11 +33,11 @@ export class EmergencyContactsComponent implements OnInit {
     this.userId = localStorage.getItem("endUserId");
     this.eContactFormGroup = this.fb.group({
       name: new FormControl('', Validators.required),
-      relationship: new FormControl(''),
+      relationship: new FormControl('',Validators.required),
       address: new FormControl(''),
       phone: new FormControl(''),
       mobile: new FormControl(''),
-      emailAddress: new FormControl(''),
+      emailAddress: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
       profileId: new FormControl('')
     });
 
@@ -49,26 +50,33 @@ export class EmergencyContactsComponent implements OnInit {
     this.getEmergencyContacts()
   }
 
-  openModal(content: any) {
+  openModal(content: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(content, {
       width: '720px',
       disableClose: true,
-    })    
+    })
+    dialogRef.afterClosed()
+      .subscribe(res => {
+        this.getEmergencyContacts();
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+    })
   }
-
 
   eContactFormSubmit(profileInData = null) {
     var query = {};
     var proquery = {};     
     let profileIds = this.eContactFormGroup.controls['profileId'].value;
-    if(profileIds){
-      this.selectedProfileId = profileIds;
-    }
+      if(profileIds){
+        this.selectedProfileId = profileIds;
+      }
       const req_vars = {
-      query: Object.assign({ _id: this.selectedProfileId  }),
-      proquery: Object.assign(profileInData),   
-      from: Object.assign({ customerId: this.userId }) 
-    }
+        query: Object.assign({ _id: this.selectedProfileId  }),
+        proquery: Object.assign(profileInData),   
+        from: Object.assign({ customerId: this.userId }) 
+      }
     
     this.loader.open();     
     this.userapi.apiRequest('post', 'customer/emergency-contacts', req_vars).subscribe(result => {
@@ -86,12 +94,14 @@ export class EmergencyContactsComponent implements OnInit {
 
   getEmergencyContacts() {
     const params = {
-      query: Object.assign({ "customerId": this.userId,"status":"Active"})
+      query: Object.assign({ "customerId": this.userId,"status":"Active"}),
+      order: {"createdOn": -1},
     }
     this.userapi.apiRequest('post', 'customer/get-emergency-contacts', params).subscribe(result => {
       if (result.data.length > 0) {
         this.showContactListing = true
         this.eContactList = result.data
+        this.showContactCnt = this.eContactList.length;
       }
     })
 

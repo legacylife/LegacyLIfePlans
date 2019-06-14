@@ -15,7 +15,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Contacts</mat-card-title>
           <div *ngIf="showContactListing">
-            <span class="no--of--trustee">{{eContactList.length}} Contacts</span>
+            <span class="no--of--trustee">{{showContactCnt}} Contact{{showContactCnt>1 ? 's' : ''}}</span>
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openModal(contactForm)">+
               Add</button>
           </div>
@@ -31,7 +31,7 @@
 
         <mat-card-content class="appointees--wrapper" *ngIf="showContactListing">
             <div class="cust--user--details mt-1" *ngFor="let profileData of eContactList; let i = index" [routerLink]="['/customer/dashboard/emergency-contacts-details', profileData._id]">
-            <div class="name--letters">{{profileData.name}}</div>
+            <div class="name--letters">{{profileData?.name.charAt(0)}}</div>
             <div class="user--name">
               <h5>{{profileData.name}}</h5>
               <p class="mb-0">Last modified:
@@ -62,15 +62,18 @@
         </mat-form-field>
 
         <mat-form-field class="full-width">
-            <input class="capitalize" matInput name="relationship" placeholder="Relationship" [formControl]="eContactFormGroup.controls['relationship']">
-        </mat-form-field>
+            <input class="capitalize" matInput name="relationship" placeholder="Relationship*" [formControl]="eContactFormGroup.controls['relationship']">
+            <mat-icon matTooltip="Please enter relationship" matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['relationship'].hasError('required') && eContactFormGroup.controls['relationship'].touched"
+            class="red--alert">help_outline</mat-icon>
+          </mat-form-field>
 
         <mat-form-field class="full-width">
             <input class="capitalize" matInput name="address" placeholder="address" [formControl]="eContactFormGroup.controls['address']">
         </mat-form-field>
 
         <mat-form-field class="full-width">
-            <input class="capitalize" matInput name="phone" placeholder="Phone" [formControl]="eContactFormGroup.controls['phone']">        
+            <input class="capitalize" matInput name="phone" placeholder="Phone" [formControl]="eContactFormGroup.controls['phone']">    
+            <span matPrefix>+1</span>    
         </mat-form-field>
 
         <mat-form-field class="full-width">
@@ -78,7 +81,11 @@
         </mat-form-field>
 
         <mat-form-field class="full-width">
-            <input matInput name="emailAddress" placeholder="Email" [formControl]="eContactFormGroup.controls['emailAddress']">     
+            <input matInput name="emailAddress" placeholder="Email*" [formControl]="eContactFormGroup.controls['emailAddress']">     
+            <mat-icon matTooltip="Please enter email id" matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['emailAddress'].hasError('required') && eContactFormGroup.controls['emailAddress'].touched"
+            class="red--alert">help_outline</mat-icon>
+            <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['emailAddress'].hasError('pattern')"
+            class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
         <input matInput name="profileId" [formControl]="eContactFormGroup.controls['profileId']" readonly="readonly">

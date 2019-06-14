@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Product } from '../../../../shared/models/product.model';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
@@ -32,6 +30,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   showProfileListingCnt:any;
   showIDListingCnt:any;
   documentTypeList: any[] = documentTypes;
+  modifiedDate:any;
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -49,9 +48,13 @@ export class CustomerEssentialDayOneComponent implements OnInit {
 
   getEssentialProfileList = (query = {}, search = false) => {
     const req_vars = {
-      query: Object.assign({ customerId: this.userId, status:"Active" }, query)
-    }
-    this.userapi.apiRequest('post', 'customer/essential-profile-list', req_vars).subscribe(result => {
+      query: Object.assign({ customerId: this.userId, status:"Active" }, query),
+      fields: {},
+      offset: '',
+      limit: '',
+      order: {"modifiedOn": -1},
+    }   
+    this.userapi.apiRequest('post', 'customer/essential-profile-list', req_vars).subscribe(result => {     
       if (result.status == "error") {
         console.log(result.data)
       } else {
@@ -68,7 +71,11 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   
   getEssentialIdList = (query = {}, search = false) => { 
     const req_vars = {
-      query: Object.assign({ customerId: this.userId, status:"Active" }, query)
+      query: Object.assign({ customerId: this.userId, status:"Active" }, query),
+      fields: {},
+      offset: '',
+      limit: '',
+      order: {"modifiedOn": -1},
     }
     this.userapi.apiRequest('post', 'customer/essential-id-list', req_vars).subscribe(result => {
       if (result.status == "error") {
@@ -86,12 +93,16 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   }
 
   getEssentialProfessionalList = (query = {}, search = false) => { 
-
     const req_vars = {
-      query: Object.assign({ customerId: this.userId, status:"Active" }, query)
+      query: Object.assign({ customerId: this.userId, status:"Active" }, query),
+      fields: {},
+      offset: '',
+      limit: '',
+      order: {"modifiedOn": -1},
     }
-
-  this.userapi.apiRequest('post', 'customer/essential-professional-list', req_vars).subscribe(result => {
+    this.loader.open();
+    this.userapi.apiRequest('post', 'customer/essential-professional-list', req_vars).subscribe(result => {
+    
     if (result.status == "error") {
       console.log(result.data)
     } else {
@@ -101,33 +112,56 @@ export class CustomerEssentialDayOneComponent implements OnInit {
         this.showProfessionalsListing = true;
       }       
     }
+    this.loader.close();
   }, (err) => {
     console.error(err);
   })
-}
+ }
 
-  toggleSideNav() {
-    this.sideNav.opened = !this.sideNav.opened;
-  }
-
-  openAddIdBoxModal(data: any = {}, isNew?) {
+ openAddIdBoxModal(data: any = {}, isNew?) {
     let title = isNew ? 'Add new member' : 'Update member';
     let dialogRef: MatDialogRef<any> = this.dialog.open(EssenioalIdBoxComponent, {
       width: '720px',
       disableClose: true,
+    }) 
+    dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getEssentialIdList();
+      if (!res) {
+        // If user press cancel
+        return;
+      }
     })
-  }
+ }
+
   openProfileModal(data: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(PersonalProfileModalComponent, {
       width: '720px',
       disableClose: true,
     })
+    dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getEssentialProfileList();
+      if (!res) {
+        // If user press cancel
+        return;
+      }
+    })
   }
+
   openProfessionalBoxModal(data: any = {}, isNew?) {
     let title = isNew ? 'Add professionals' : 'Update professionals';
     let dialogRef: MatDialogRef<any> = this.dialog.open(essentialsMyProfessionalsComponent, {
       width: '720px',
       disableClose: true,
+    })
+    dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getEssentialProfessionalList();
+      if (!res) {
+        // If user press cancel
+        return;
+      }
     })
   }
 
@@ -137,5 +171,4 @@ export class CustomerEssentialDayOneComponent implements OnInit {
     }).map(el => el.opt_name)[0]
     return filteredTyes
   }
-
 }
