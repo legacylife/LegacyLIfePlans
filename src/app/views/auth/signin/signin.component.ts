@@ -76,18 +76,24 @@ export class SigninComponent implements OnInit {
       } else {
        // this.llpCustsigninForm.controls['username'].enable();
         var emails = this.llpCustsigninForm.controls['username'].value
+        console.log('0000000000')
         if(result.data.invalidEmail){
+          console.log('11111')
           this.invalidEmail = true;
           this.invalidMessage = result.data.message
           this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : true})
-          this.llpCustsigninForm.controls['password'].setErrors({'invalid' : true});
+        //  this.llpCustsigninForm.controls['password'].setErrors({'invalid' : false});
+          //this.llpCustsigninForm.controls['username'].markAsUntouched();
+        //  this.llpCustsigninForm.controls['username'].markAsTouched();
         }else if(result.data.invalidPassword){
+          console.log('2222222222')
           //this.llpCustsigninForm.controls['username'].markAsTouched();
           this.llpCustsigninForm.controls['password'].setErrors({'invalid' : true});
           //this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false});
           this.llpCustsigninForm.controls['password'].markAsUntouched();
           this.invalidEmail = false;
         }else{
+          console.log('3333333333')
           this.llpCustsigninForm.controls['username'].markAsUntouched();
           this.invalidEmail = false;
           this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false})

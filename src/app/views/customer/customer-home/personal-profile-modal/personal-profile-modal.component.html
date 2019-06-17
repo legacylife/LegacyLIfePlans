@@ -48,6 +48,7 @@
                 <mat-form-field class="full-width no-mar">
                   <input matInput name="email" placeholder="Email" formControlName="email">
                   <mat-icon (click)="delete(pointIndex,'ppEmails');" class="clr--red cursor-pointer delete--emails" *ngIf="pointIndex != 0">delete</mat-icon>
+                  <mat-icon matTooltip="Please enter valid email." matTooltipClass="llp--tooltip error" *ngIf="a.touched && a.invalid" class="red--alert"  style="padding-right: 25px;">help_outline</mat-icon>
                 </mat-form-field>
               </div>
               <div class="add--new mb--15" *ngIf="emailList.length < 3" (click)="addNewEmail();">
@@ -56,11 +57,11 @@
               </div>
             </div>
 
-
             <div formArrayName="ppLandlineNumbers">
               <div fxLayout="row wrap" *ngFor="let a of landlineNumbersList.controls; let pointIndex = index" [formGroupName]="pointIndex">
                 <mat-form-field class="full-width no-mar">
                   <input matInput name="phone" placeholder="Phone"  formControlName="phone" type="tel" maxlength="15">
+                  <mat-icon matTooltip="Please enter valid number only." matTooltipClass="llp--tooltip error" *ngIf="a.touched && a.invalid" class="red--alert" style="padding-right: 25px;">help_outline</mat-icon>
                   <mat-icon (click)="delete(pointIndex,'ppLandlineNumbers');" class="clr--red cursor-pointer delete--emails" *ngIf="pointIndex != 0">delete</mat-icon>
                   <span matPrefix>+1</span>
                 </mat-form-field>
