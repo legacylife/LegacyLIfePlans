@@ -1,27 +1,51 @@
 <div class="ll--modal--header">
   Change Profile Image
-  <button class="modal--close" [mat-dialog-close]="">
+  <button type="button"  class="modal--close" [mat-dialog-close]="">
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
 </div>
 <form class="llp-form-wrapper">
   <div class="ll--modal--body">
-    <div fxLayout="row wrap">
-      <div fxFlex.xs="100 " class="pic--upload">
-        <div class="file-upload ">
-          <p class="header--desc upload--doc">Upload your profile image</p>
-          <input style="display:none" id="custom-input" type="file" (change)="fileChangeListener($event)" />
-        </div>
-        <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
-        <div class="file--details mb-1">JPEG, JPG, PNG</div>
-        <!--<br />
-          <span class="result rounded" *ngIf="data.image">
-            <img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight" />
-          </span>-->
-      </div>
-    </div>
-  </div>
-  <div class="ll--modal--footer profile--footer">
-    <button mat-raised-button class="llp--primary--btn save--profile--btn" type="button" (click)="saveProfilePicture();" [disabled]="!data.image">Save</button>
-  </div>
+<div [className]="classes.actions">
+  <button ly-button color="primary" type="button" (click)="_fileInput.click()">
+    <ly-icon>image</ly-icon>
+    <span>Select File</span>
+  </button>
+  <span [className]="classes.flex"></span>
+  <!-- Hidden input -->
+  <input #_fileInput type="file" (change)="cropping.selectInputEvent($event)" accept="image/*" hidden>  
+</div>
+
+<div *ngIf="cropping.isLoaded">
+  <button (click)="cropping.zoomIn()" type="button" ly-button appearance="icon"><ly-icon>zoom_in</ly-icon></button>
+  <button (click)="cropping.zoomOut()" type="button"  ly-button appearance="icon"><ly-icon>zoom_out</ly-icon></button>
+  <button (click)="cropping.center()"  type="button" ly-button appearance="icon"><ly-icon>filter_center_focus</ly-icon></button>
+  <!-- <button (click)="cropping.rotate(-90)" type="button"  ly-button appearance="icon"><ly-icon>rotate_90_degrees_ccw</ly-icon></button>
+  <button (click)="cropping.fit()" type="button"  ly-button>Fit</button>
+  <button (click)="cropping.fitToScreen()" type="button"  ly-button>Fit to screen</button>
+  <button (click)="cropping.setScale(1)" type="button"  ly-button>1:1</button> -->
+  <button (click)="cropping.clean()" type="button"  ly-button>Clear</button>
+</div>
+
+<ly-img-cropper [withClass]="classes.cropping" #cropping
+[config]="myConfig"
+[(scale)]="scale"
+(cropped)="onCropped($event)"
+(loaded)="onloaded($event)"
+(error)="onerror($event)">
+  <span>Drag and drop image</span>
+</ly-img-cropper>
+<!-- <div *ngIf="cropping.isLoaded" [className]="classes.range">
+   <input type="range" [className]="classes.rangeInput" [attr.min]="cropping.minScale" [(ngModel)]="scale" max="1"  step="any">
+</div> -->
+<!-- <button *ngIf="cropping.isLoaded" type="button"  color="accent" (click)="cropping.crop()" ly-button>
+  <ly-icon>crop</ly-icon>crop
+</button>
+<div><img *ngIf="cropping.isCropped" [src]="croppedImage"></div> -->
+</div>
+<div class="ll--modal--footer profile--footer">
+  <!-- <button mat-raised-button class="llp--primary--btn save--profile--btn" type="button" (click)="saveProfilePicture();" [disabled]="!data.image">Save</button> -->
+  <!-- <button mat-raised-button class="llp--primary--btn save--profile--btn" type="button">Save</button> -->
+  <button type="button" raised ly-button bg="accent" class="llp--primary--btn save--profile--btn" (click)="saveProfilePicture(croppedImage);" *ngIf="cropping.isLoaded">Save</button>
+</div>
 </form>
