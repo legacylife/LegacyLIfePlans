@@ -117,6 +117,12 @@ export class EmergencyContactsComponent implements OnInit {
     return filteredTyes
   }
 
+  firstCapitalize(e) {
+    let re = /(^|[.!?]\s+)([a-z])/g;
+    var textBox: HTMLInputElement = <HTMLInputElement>e.target;
+    textBox.value = textBox.value.replace(re, (m, $1, $2) => $1 + $2.toUpperCase());
+  }  
+
   checkSpecialChar(event)
   {
     var key;  

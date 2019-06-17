@@ -15,7 +15,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Contacts</mat-card-title>
           <div *ngIf="showContactListing">
-            <span class="no--of--trustee">{{showContactCnt}} Contact{{showContactCnt>1 ? 's' : ''}}</span>
+            <!--span class="no--of--trustee">{{showContactCnt}} Contact{{showContactCnt>1 ? 's' : ''}}</span-->
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openModal(contactForm)">+
               Add</button>
           </div>
@@ -57,7 +57,7 @@
     <form [formGroup]="eContactFormGroup" class="llp-form-wrapper" (ngSubmit)="eContactFormSubmit(eContactFormGroup.value)">
       <div class="profile--body--scroll">
         <mat-form-field class="full-width">
-            <input class="capitalize" matInput name="name" placeholder="Name*" [formControl]="eContactFormGroup.controls['name']"  (keypress)="checkSpecialChar($event)">
+            <input (keyup)="firstCapitalize($event)" matInput name="name" placeholder="Name*" [formControl]="eContactFormGroup.controls['name']"  (keypress)="checkSpecialChar($event)">
             <mat-icon matTooltip="Please enter name" matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['name'].hasError('required') && eContactFormGroup.controls['name'].touched" class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
@@ -71,16 +71,16 @@
         </mat-form-field>
 
         <mat-form-field class="full-width">
-            <input class="capitalize" matInput name="address" placeholder="Address" [formControl]="eContactFormGroup.controls['address']"  (keypress)="checkSpecialChar($event)">
+            <input (keyup)="firstCapitalize($event)" matInput name="address" placeholder="Address" [formControl]="eContactFormGroup.controls['address']"  (keypress)="checkSpecialChar($event)">
         </mat-form-field>
 
         <mat-form-field class="full-width">
-            <input class="capitalize" matInput name="phone" placeholder="Phone" [formControl]="eContactFormGroup.controls['phone']">    
+            <input (keyup)="firstCapitalize($event)" matInput name="phone" placeholder="Phone" [formControl]="eContactFormGroup.controls['phone']">    
             <span matPrefix>+1</span>    
         </mat-form-field>
 
         <mat-form-field class="full-width">
-            <input class="capitalize" matInput name="mobile" placeholder="Mobile" [formControl]="eContactFormGroup.controls['mobile']">     
+            <input (keyup)="firstCapitalize($event)" matInput name="mobile" placeholder="Mobile" [formControl]="eContactFormGroup.controls['mobile']">     
         </mat-form-field>
 
         <mat-form-field class="full-width">
