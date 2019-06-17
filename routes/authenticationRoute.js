@@ -147,7 +147,7 @@ ss3.upload(params, options, (err, data) => {
       if (err) {
         res.send(resFormat.rError(err))
       } else {                     
-        res.send(resFormat.rSuccess({ message: 'Account details successfully updated', profilePicture: profilePicturesPath+filename}))
+        res.send(resFormat.rSuccess({ message: 'Profile picture updated successfully', profilePicture: profilePicturesPath+filename}))
       }
     })
   }
