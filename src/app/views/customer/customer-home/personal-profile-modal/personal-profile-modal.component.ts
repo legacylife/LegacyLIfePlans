@@ -275,11 +275,14 @@ export class PersonalProfileModalComponent implements OnInit {
     }
     var query = {};
     var proquery = {};
+
+   var personalProfileAction = localStorage.getItem("personalProfileAction") ? localStorage.getItem("personalProfileAction") : "added"
+
     console.log(this.selectedProfileId)
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }),
       proquery: Object.assign(profileInData),
-      from: Object.assign({ fromname: msgName, customerId: this.userId })
+      from: Object.assign({ fromname: msgName, customerId: this.userId, "personalProfileAction": personalProfileAction })
     }
     this.loader.open();
     this.userapi.apiRequest('post', 'customer/my-essentials-req', req_vars).subscribe(result => {

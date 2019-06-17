@@ -108,7 +108,7 @@ export class CustomerEssentialDetailsComponent implements OnInit {
   }
 
   openProfileModal(data: any = {}, isNew?) {
-
+    localStorage.setItem("personalProfileAction", "updated");
     let dialogRef: MatDialogRef<any> = this.dialog.open(PersonalProfileModalComponent, {
       width: '720px',
       disableClose: true,

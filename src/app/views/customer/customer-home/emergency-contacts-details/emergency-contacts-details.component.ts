@@ -40,7 +40,7 @@ export class EmergencyContactsDetailsComponent implements OnInit {
     this.relationshipList = RelationshipType;
     this.eContactFormGroup = this.fb.group({
       name: new FormControl('', Validators.required),
-      relationship: new FormControl(''),
+      relationship: new FormControl('', Validators.required),
       address: new FormControl(''),
       phone: new FormControl(''),
       mobile: new FormControl(''),
