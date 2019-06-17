@@ -59,7 +59,8 @@ export class PersonalProfileModalComponent implements OnInit {
       ppLastName: new FormControl('', Validators.required),
       ppEmails: this.fb.array([this.fb.group({ email: ['',Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)] })]),
       //ppLandlineNumbers: this.fb.array([this.fb.group({phone: ['',  , Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]})]),
-      ppLandlineNumbers: this.fb.array([this.fb.group({ phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)] })]),
+      ppLandlineNumbers: this.fb.array([this.fb.group({ phone: ['',Validators.pattern(/^(1\s?)?((\([0-9]{5}\))|[0-9]{5})[\s\-]?[\0-9]{5}[\s\-]?[0-9]{5}$/)] })]),
+      // Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)
       ppDateOfBirth: new FormControl(''),
       ppAddressLine1: new FormControl(''),
       ppAddressLine2: new FormControl(''),
