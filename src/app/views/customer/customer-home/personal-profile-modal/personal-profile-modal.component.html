@@ -7,7 +7,7 @@
   <div class="stepper--wrapper">
     <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="onChangeFormIndex($event)">
 
-      <mat-step [stepControl]="firstFormGroup">
+      <mat-step [stepControl]="firstFormGroup" tabindex="-1">
         <form [formGroup]="firstFormGroup" class="llp-form-wrapper" (ngSubmit)="FormSubmit(1,firstFormGroup.value)">
           <h3 class="main--head text-center">Personal Profile</h3>
           <p class="sub--head text-center">Add Personal Details</p>
@@ -120,7 +120,7 @@
         </form>
       </mat-step>
 
-      <mat-step [stepControl]="secondFormGroup">
+      <mat-step [stepControl]="secondFormGroup" tabindex="-500">
         <form [formGroup]="secondFormGroup" class="llp-form-wrapper" (ngSubmit)="FormSubmit(2,secondFormGroup.value)">
           <h3 class="main--head text-center">Work Profile</h3>
           <p class="sub--head text-center">Add Work Details</p>
@@ -216,7 +216,7 @@
           </div>
 
           <div class="mt-1 text-center">
-            <button mat-raised-button matStepperPrevious class="llp--back--btn">
+            <button mat-raised-button matStepperPrevious class="llp--back--btn" tabindex="-500">
               <mat-icon>arrow_back</mat-icon> Back</button>
             <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" [disabled]="secondFormGroup.invalid">Proceed</button>
           </div>
@@ -224,7 +224,7 @@
         </form>
       </mat-step>
 
-      <mat-step [stepControl]="thirdFormGroup">
+      <mat-step [stepControl]="thirdFormGroup" tabindex="-0">
         <form [formGroup]="thirdFormGroup" class="llp-form-wrapper" (ngSubmit)="FormSubmit(3,thirdFormGroup.value)">
           <h3 class="main--head text-center">Civic/Club, Religious Info
           </h3>
@@ -349,7 +349,7 @@
 
           </div>
           <div class="mt-1 text-center">
-            <button mat-raised-button matStepperPrevious class="llp--back--btn">
+            <button mat-raised-button matStepperPrevious class="llp--back--btn" tabindex="-0">
               <mat-icon>arrow_back</mat-icon> Back</button>
             <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" [disabled]="thirdFormGroup.invalid">Submit</button>
           </div>
