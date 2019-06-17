@@ -57,6 +57,35 @@ import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { HomeComponent } from './advisor-landing/home/home.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CountUpModule } from 'countup.js-angular2';
+/** Import Alyle UI */
+import {LyThemeModule,LY_THEME,LY_THEME_GLOBAL_VARIABLES} from '@alyle/ui';
+/** Import the component modules */
+import { LyButtonModule } from '@alyle/ui/button';
+import { LyToolbarModule } from '@alyle/ui/toolbar';
+import { LyIconModule } from '@alyle/ui/icon';
+
+import { LyResizingCroppingImageModule } from '@alyle/ui/resizing-cropping-images';
+/** Import themes */
+import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
+export class GlobalVariables {
+  testVal = '#00bcd4';
+  Quepal = {
+    default: `linear-gradient(135deg,#11998e 0%,#38ef7d 100%)`,
+    contrast: '#fff',
+    shadow: '#11998e'
+  };
+  SublimeLight = {
+    default: `linear-gradient(135deg,#FC5C7D 0%,#6A82FB 100%)`,
+    contrast: '#fff',
+    shadow: '#B36FBC'
+  };
+  Amber = {
+    default: '#ffc107',
+    contrast: 'rgba(0, 0, 0, 0.87)'
+  };
+}
+
+
 
 @NgModule({
   imports: [
@@ -98,13 +127,21 @@ import { CountUpModule } from 'countup.js-angular2';
     HttpModule,
     SlickCarouselModule,
     RouterModule.forChild(AdvisorRoutes),
-    CountUpModule
+    CountUpModule,
+    
+  LyThemeModule.setTheme('minima-light'),
+  LyButtonModule,
+  LyToolbarModule,
+  LyResizingCroppingImageModule,
+  LyIconModule
   ],
   declarations: [
     AdvisorSignupComponent, BusinessInfoComponent, SetPasswordComponent,
     FormatTimePipe, ThankYouComponent, AdvisorDashboardComponent, LegaciesComponent,
     AdvisorDashboardUpdateComponent, AdvisorAccountSettingComponent, AdvisorSubscriptionComponent, ChangePassComponent, HomeComponent
-  ], providers: [
+  ], providers: [  { provide: LY_THEME, useClass: MinimaLight, multi: true }, // name: `minima-light`
+  { provide: LY_THEME, useClass: MinimaDark, multi: true },// name: `minima-dark`
+  { provide: LY_THEME_GLOBAL_VARIABLES,useClass: GlobalVariables    } ,
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, ProfilePicService, CanDeactivateGuard
   ], entryComponents: [ChangePassComponent],
 })
