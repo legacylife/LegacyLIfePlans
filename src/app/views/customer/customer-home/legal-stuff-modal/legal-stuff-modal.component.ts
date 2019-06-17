@@ -278,4 +278,11 @@ export class legalStuffModalComponent implements OnInit {
     textBox.value = textBox.value.replace(re, (m, $1, $2) => $1 + $2.toUpperCase());
   }
 
+  checkSpecialChar(event)
+  {  
+    var key;  
+    key = event.charCode;
+    return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
+  }
+
 }

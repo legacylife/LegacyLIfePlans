@@ -446,7 +446,7 @@
                   <small *ngIf="advisorDocumentsMissing" class="form-error-msg">{{invalidMessage}}</small>
               </div>
               
-              <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
+              <div class="progress" style="margin-bottom: 0; width:50%;" *ngIf="uploader.getNotUploadedItems().length">
                  <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">{{uploader.progress}}%</div>
                  
                  <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="uploader.progress"></mat-progress-bar>

@@ -117,4 +117,10 @@ export class EmergencyContactsComponent implements OnInit {
     return filteredTyes
   }
 
+  checkSpecialChar(event)
+  {
+    var key;  
+    key = event.charCode;
+    return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
+  }
 }

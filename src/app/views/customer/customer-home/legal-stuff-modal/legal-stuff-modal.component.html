@@ -54,7 +54,7 @@
         </div>
 
         <mat-form-field class="full-width mt-1">
-        <textarea (keyup)="firstCapitalize($event)" maxlength="500" matInput placeholder="Comments" name="comments" [formControl]="LegalForm.controls['comments']"></textarea>
+        <textarea (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" maxlength="500" matInput placeholder="Comments" name="comments" [formControl]="LegalForm.controls['comments']"></textarea>
         <div class="char--limit">{{ LegalForm.controls['comments'].value?.length }}  / 500 chars</div>
         <mat-icon matTooltip="Please enter your comment" matTooltipClass="llp--tooltip error" *ngIf="LegalForm.controls['comments'].hasError('required') && LegalForm.controls['comments'].touched"
         class="red--alert">help_outline</mat-icon>

@@ -57,7 +57,7 @@
     <form [formGroup]="eContactFormGroup" class="llp-form-wrapper" (ngSubmit)="eContactFormSubmit(eContactFormGroup.value)">
       <div class="profile--body--scroll">
         <mat-form-field class="full-width">
-            <input class="capitalize" matInput name="name" placeholder="Name*" [formControl]="eContactFormGroup.controls['name']">
+            <input class="capitalize" matInput name="name" placeholder="Name*" [formControl]="eContactFormGroup.controls['name']"  (keypress)="checkSpecialChar($event)">
             <mat-icon matTooltip="Please enter name" matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['name'].hasError('required') && eContactFormGroup.controls['name'].touched" class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
@@ -71,7 +71,7 @@
         </mat-form-field>
 
         <mat-form-field class="full-width">
-            <input class="capitalize" matInput name="address" placeholder="Address" [formControl]="eContactFormGroup.controls['address']">
+            <input class="capitalize" matInput name="address" placeholder="Address" [formControl]="eContactFormGroup.controls['address']"  (keypress)="checkSpecialChar($event)">
         </mat-form-field>
 
         <mat-form-field class="full-width">

@@ -154,7 +154,13 @@ export class EmergencyContactsDetailsComponent implements OnInit {
         return dtype.opt_code === key
       }).map(el => el.opt_name)[0]
       return filteredTyes
-    }
-
+  }
+  
+  checkSpecialChar(event)
+  {
+    var key;  
+    key = event.charCode;
+    return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
+  }
 
 }

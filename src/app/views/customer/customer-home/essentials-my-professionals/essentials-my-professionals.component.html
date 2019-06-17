@@ -19,18 +19,18 @@
           </mat-form-field>
         
           <mat-form-field class="full-width">
-            <input (keyup)="firstCapitalize($event)" matInput name="businessName" placeholder="Business Name" [formControl]="professionalForm.controls['businessName']">
+            <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="businessName" placeholder="Business Name" [formControl]="professionalForm.controls['businessName']">
             <mat-icon matTooltip="Please enter business name" matTooltipClass="llp--tooltip error" *ngIf="professionalForm.controls['businessName'].hasError('required') && professionalForm.controls['businessName'].touched" class="red--alert">help_outline</mat-icon>
           </mat-form-field>
 
           <mat-form-field class="full-width">
-            <input (keyup)="firstCapitalize($event)" matInput name="name" placeholder="Name*" [formControl]="professionalForm.controls['name']">
+            <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="name" placeholder="Name*" [formControl]="professionalForm.controls['name']">
             <mat-icon matTooltip="Please enter name" matTooltipClass="llp--tooltip error" 
             *ngIf="professionalForm.controls['name'].hasError('required') && professionalForm.controls['name'].touched" class="red--alert">help_outline</mat-icon>
           </mat-form-field>
 
            <mat-form-field class="full-width">
-              <input (keyup)="firstCapitalize($event)" matInput name="address" placeholder="Address" [formControl]="professionalForm.controls['address']">
+              <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="address" placeholder="Address" [formControl]="professionalForm.controls['address']">
               <mat-icon matTooltip="Please enter address" matTooltipClass="llp--tooltip error" 
               *ngIf="professionalForm.controls['address'].hasError('required') && professionalForm.controls['address'].touched" class="red--alert">help_outline</mat-icon>
            </mat-form-field>

@@ -57,12 +57,12 @@
                   <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
 
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="firstName" placeholder="First Name*" value="" [formControl]="ProfileForm.controls['firstName']">
+                      <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="firstName" placeholder="First Name*" value="" [formControl]="ProfileForm.controls['firstName']">
                       <mat-icon matTooltip="Please enter first name." matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['firstName'].hasError('required') && ProfileForm.controls['firstName'].touched"
                         class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="lastName" placeholder="Last Name*" value="" [formControl]="ProfileForm.controls['lastName']">
+                      <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="lastName" placeholder="Last Name*" value="" [formControl]="ProfileForm.controls['lastName']">
                       <mat-icon matTooltip="Please enter last name." matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['lastName'].hasError('required') && ProfileForm.controls['lastName'].touched"
                         class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
@@ -140,21 +140,21 @@
                 <div fxLayout="row wrap" fxLayoutGap-sm="5px">
                   <div fxFlex.xs="100" fxFlex.sm="46" fxFlex.md="46" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="addressLine1" placeholder="Address Line 1*" value="" [formControl]="AddressForm.controls['addressLine1']">
+                      <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="addressLine1" placeholder="Address Line 1*" value="" [formControl]="AddressForm.controls['addressLine1']">
                       <mat-icon matTooltip="Please enter address in line 1." matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['addressLine1'].hasError('required') && AddressForm.controls['addressLine1'].touched"
                         class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="46" fxFlex.md="46" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="addressLine2" placeholder="Address Line 2 (optional)" value="" [formControl]="AddressForm.controls['addressLine2']">
+                      <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="addressLine2" placeholder="Address Line 2 (optional)" value="" [formControl]="AddressForm.controls['addressLine2']">
                     </mat-form-field>
                   </div>
                 </div>
                 <div fxLayout="row wrap" fxLayoutGap-sm="5px">
                   <div fxFlex.xs="100" fxFlex.sm="46" fxFlex.md="46" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="City" placeholder="City*" value="" [formControl]="AddressForm.controls['city']">
+                      <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="City" placeholder="City*" value="" [formControl]="AddressForm.controls['city']">
                       <mat-icon matTooltip="Please enter city." matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['city'].hasError('required') && AddressForm.controls['city'].touched"
                         class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
