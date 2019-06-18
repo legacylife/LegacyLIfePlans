@@ -81,7 +81,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     private loader: AppLoaderService, private confirmService: AppConfirmService, private picService: ProfilePicService) { }
 
   ngOnInit() {
-
+    
     this.picService.itemValue.subscribe((nextValue) => {
       this.profilePicture = nextValue
     })
@@ -140,6 +140,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     this.LicenseForm.valueChanges.subscribe(val => {
       this.modified = true
     })
+  // console.log('dirty',this.LicenseForm.dirty); console.log('value',this.LicenseForm.value)
 
     this.profile = [];
     this.socialMediaLinkss = [];
@@ -435,12 +436,12 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     /*if(this.profile.advisorDocuments || this.profile.advisorDocuments==''){ 
         this.invalidMessage = "Please upload your document";
     }*/
-    if (this.invalidMessage) {
-      this.advisorDocumentsMissing = true;
-      this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': true })
-    } else {
-      this.advisorDocumentsMissing = false;
-      this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': false })
+    // if (this.invalidMessage) {
+    //   this.advisorDocumentsMissing = true;
+    //   this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': true })
+    // } else {
+     // this.advisorDocumentsMissing = false;
+     // this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': false })
       let LicensInData = {
         activeLicenceHeld: this.LicenseForm.controls['activeLicenceHeld'].value,
         agencyOversees: this.LicenseForm.controls['agencyOversees'].value,
@@ -461,14 +462,14 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         if (result.status == "error") {
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
         } else {
-          // this.rows = result.data.userProfile;
-          //this.getProfile();
+         // this.advisorDocumentsMissing = false;
+         // this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': false })
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
         }
       }, (err) => {
         console.error(err)
       })
-    }
+  //  }
   }
 
   docDelete(doc, name, tmName) {

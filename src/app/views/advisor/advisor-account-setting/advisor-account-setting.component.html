@@ -104,7 +104,7 @@
                     </mat-form-field>
 
                     <mat-form-field class="full-width llp-datepicker">
-                      <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Date of Birth" value="" readonly [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
+                      <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Date of Birth*" value="" readonly [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
                       <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                       <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
                       </mat-datepicker>
@@ -271,7 +271,7 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width about--txtarea">
                       <textarea matInput placeholder="About You*" value="Your professional summary, achievements, client experience" name="bioText" [formControl]="AddressForm.controls['bioText']"></textarea>
-                      <div class="char--limit">{{ 500 - AddressForm.controls['bioText'].value?.length }}</div>
+                      <div class="char--limit">0 / 500 chars</div>
                       <mat-icon matTooltip="Please enter bio text" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['bioText'].hasError('required') && AddressForm.controls['bioText'].touched"
                       class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
@@ -412,7 +412,7 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                       <div class="upload--buss--docs--sec">
-                          <label>Upload your business documents</label>
+                          <label>Upload your business documents*</label>
                          <div class="upload--box fileupload-drop-zone"
                          ng2FileDrop
                          [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
@@ -454,7 +454,7 @@
        
                 <div fx.Flex="100" class="text-center mt--30">
                       <button mat-raised-button  type="button" class="llp--secondary--btn mr-1"  [routerLink]="'/advisor/dashboard'">Cancel</button>
-                      <button mat-raised-button class="llp--primary--btn" [disabled]="LicenseForm.invalid">Save</button>
+                      <button mat-raised-button class="llp--primary--btn" [disabled]="!LicenseForm.valid">Save</button>
                 </div>
              </form>
             </div>
