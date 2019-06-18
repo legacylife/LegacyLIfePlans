@@ -119,15 +119,15 @@
           </div>
         </form>
       </mat-step>
-
-      <mat-step [stepControl]="secondFormGroup" tabindex="0">
+      
+      <mat-step [stepControl]="secondFormGroup">
         <form [formGroup]="secondFormGroup" class="llp-form-wrapper" (ngSubmit)="FormSubmit(2,secondFormGroup.value)">
           <h3 class="main--head text-center">Work Profile</h3>
           <p class="sub--head text-center">Add Work Details</p>
           <div class="profile--body--scroll">
 
             <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
-              <input matInput name="profileId" [formControl]="secondFormGroup.controls['profileId']" readonly="readonly">
+              <input matInput name="profileId" id="profileId" [formControl]="secondFormGroup.controls['profileId']" readonly="readonly">
             </mat-form-field>
 
 
@@ -345,7 +345,7 @@
             </mat-form-field>
           </div>
           <div class="mt-1 text-center">
-            <button mat-raised-button matStepperPrevious class="llp--back--btn" tabindex="-1">
+            <button mat-raised-button matStepperPrevious class="llp--back--btn" (click)="scroll(profileId)">
               <mat-icon>arrow_back</mat-icon> Back </button>
             <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" [disabled]="thirdFormGroup.invalid">Submit</button>
           </div>

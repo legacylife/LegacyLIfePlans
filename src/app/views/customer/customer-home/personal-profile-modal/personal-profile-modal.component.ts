@@ -58,7 +58,7 @@ export class PersonalProfileModalComponent implements OnInit {
       ppLastName: new FormControl('', Validators.required),
       ppEmails: this.fb.array([this.fb.group({ email: ['',Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)] })]),
       //ppLandlineNumbers: this.fb.array([this.fb.group({phone: ['',  , Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]})]),
-      ppLandlineNumbers: this.fb.array([this.fb.group({ phone: ['',Validators.pattern(/^(1\s?)?((\([0-9]{5}\))|[0-9]{5})[\s\-]?[\0-9]{5}[\s\-]?[0-9]{5}$/)] })]),
+      ppLandlineNumbers: this.fb.array([this.fb.group({ phone: ['',Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/)] })]),
       // Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)
       ppDateOfBirth: new FormControl(''),
       ppAddressLine1: new FormControl(''),
@@ -77,7 +77,8 @@ export class PersonalProfileModalComponent implements OnInit {
       wpDepartment: new FormControl(''),
       wpContactPersonName: new FormControl(''),
       // wpLandlineNumbers: this.fb.array([this.fb.group({phone: ['', Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]})]),
-      wpLandlineNumbers: this.fb.array([this.fb.group({ phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)] })]),
+     // wpLandlineNumbers: this.fb.array([this.fb.group({ phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)] })]),
+     wpLandlineNumbers: this.fb.array([this.fb.group({ phone: ['', Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/)] })]),
       wpAddressLine1: new FormControl(''),
       wpAddressLine2: new FormControl(''),
       wpCountry: new FormControl(''),
@@ -94,10 +95,10 @@ export class PersonalProfileModalComponent implements OnInit {
       ccAddressLine2: new FormControl(''),
       ccZipCode: new FormControl(''),
       //ccWorkLandlineNumbers: this.fb.array([this.fb.group({phone: ['', Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]})]),
-      ccWorkLandlineNumbers: this.fb.array([this.fb.group({ phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)] })]),
+      ccWorkLandlineNumbers: this.fb.array([this.fb.group({ phone: ['', Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/)] })]),
       ccContactPersonName: new FormControl(''),
       //cclandlineNumbers: this.fb.array([this.fb.group({phone: ['', Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]})]),
-      cclandlineNumbers: this.fb.array([this.fb.group({ phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)] })]),
+      cclandlineNumbers: this.fb.array([this.fb.group({ phone: ['', Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/)] })]),
       ccChurchName: new FormControl(''),
       ccChurchAddressLine1: new FormControl(''),
       ccChurchAddressLine2: new FormControl(''),
@@ -353,7 +354,7 @@ export class PersonalProfileModalComponent implements OnInit {
   /////
   addNewLandlineNum() {
     this.landlineNumbersList.push(this.fb.group({
-      phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]
+      phone: ['', Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/)]
     }));
     //  phone: ['', Validators.required,Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]
   }
@@ -365,7 +366,7 @@ export class PersonalProfileModalComponent implements OnInit {
   /////
   addNewWorkLandLineNum() {
     this.wpLandlineNumberList.push(this.fb.group({
-      phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]
+      phone: ['', Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/)]
     }));
   }
 
@@ -376,7 +377,7 @@ export class PersonalProfileModalComponent implements OnInit {
   /////
   addNewWorkLandlineNum() {
     this.ccWorkLandlineNumberList.push(this.fb.group({
-      phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]// phone: ['', Validators.required,Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]
+      phone: ['', Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/)]// phone: ['', Validators.required,Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]
     }));
   }
 
@@ -387,7 +388,7 @@ export class PersonalProfileModalComponent implements OnInit {
   /////
   addNewCCLandlineNum() {
     this.cclandlineNumbersList.push(this.fb.group({
-      phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]//phone: ['', Validators.required,Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]
+      phone: ['', Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/)]//phone: ['', Validators.required,Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]
     }));
   }
 
@@ -398,7 +399,7 @@ export class PersonalProfileModalComponent implements OnInit {
   /////
   addNewChurchLandlineNum() {
     this.ChurchlandlineNumbersList.push(this.fb.group({
-      phone: ['', Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]
+      phone: ['', Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/)]
     }));
   }
 
@@ -424,13 +425,8 @@ export class PersonalProfileModalComponent implements OnInit {
 
   onChangeFormIndex(event) {
     const { selectedIndex } = event;
-    // console.log('selectedIndex---',selectedIndex)
-    // if(selectedIndex=='1'){
-    //   console.log('22222222---',selectedIndex)
-    //   document.getElementById('secondFormGroup').focus();
-    // }
-    let stepHeader = document.getElementsByClassName('mat-horizontal-stepper-header');
-    
+
+    let stepHeader = document.getElementsByClassName('mat-horizontal-stepper-header');    
     forEach(stepHeader, (element, index) => {
       element.classList = String(element.classList).replace('proActive', '')
       element.classList = String(element.classList).replace('proDone', '')
