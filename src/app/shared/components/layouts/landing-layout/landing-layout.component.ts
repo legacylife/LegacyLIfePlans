@@ -76,6 +76,8 @@ export class LandingLayoutComponent implements OnInit, AfterViewInit {
         this.isModuleLoading = false;
       }
     });
+
+    
   }
   @HostListener('window:resize', ['$event'])
   onResize(event) {
