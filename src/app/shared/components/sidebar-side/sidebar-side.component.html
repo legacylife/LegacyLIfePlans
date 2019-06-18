@@ -6,8 +6,8 @@
         <a href="/admin/"> <img src="assets/images/arkenea/small-small-logo.png" alt=""  class="app-logoTEST small--logo"></a>     
     </div>
  -->
-    <div class="branding default-bg">
-        <img src="assets/images/arkenea/admin-small-small-logo.png" alt="" class="app-logo">
+    <div class="branding admin--branding default-bg">
+        <!-- <img src="assets/images/arkenea/admin-small-small-logo.png" alt="" class="app-logo"> -->
         <!-- Two different logos for dark and light themes -->
         <img 
         src="assets/images/logo-text-white.png" 
@@ -15,7 +15,7 @@
         class="app-logo-text"
         *ngIf="themeService.activatedTheme?.name?.indexOf('dark') !== -1">
         <img 
-        src="assets/images/arkenea/admin-small-logo.png" 
+        src="assets/images/arkenea/small-logo.png" 
         alt="" 
         class="app-logo-text"
         *ngIf="themeService.activatedTheme?.name?.indexOf('dark') === -1">

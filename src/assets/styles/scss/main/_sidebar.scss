@@ -15,6 +15,11 @@
   transition-delay: 0s;
   transition: all $sidebarTrnTime $transitionTiming;
   -webkit-transition: all $sidebarTrnTime $transitionTiming;
+  &.admin--branding{
+    .app-logo-text {
+      height: 35px;
+    }
+  }
   .app-logo {
     width: auto;
     height: 22px;
