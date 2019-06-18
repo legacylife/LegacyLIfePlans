@@ -437,6 +437,7 @@ async function checkEmail(req, res) {
   try {
     const { username } = req.body;
     User.findOne({ username: username }, { _id :1, username: 1, status:1, userType : 1,profileSetup:1 }, function (err, user) {
+      console.log(user)
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
@@ -448,6 +449,9 @@ async function checkEmail(req, res) {
         }
         else if (user && user.status == 'Pending') {
           res.send(resFormat.rSuccess({ code: "Exist", message: "Your account is under review, you will receive the account confirmation email on your registered email id." }))
+        }
+        else if (user && user.status == 'Rejected') {
+          res.send(resFormat.rSuccess({ code: "ExistReject", message: "Your account is rejected by admin. Please connect with the admin at support@legacylifeplans.com for any queries." }))
         }
         else {
           OtpCheck.findOne({ username: username }, { username: 1 }, function (err, found) {
