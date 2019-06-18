@@ -11,7 +11,8 @@ import { delay } from 'rxjs/operators';
 import { serverUrl, s3Details } from '../../../config';
 @Component({
   selector: 'userview',
-  templateUrl: './userview.component.html'
+  templateUrl: './userview.component.html',
+  styleUrls: ['./userlist.component.scss']
 })
 export class userviewComponent implements OnInit {
   userId: string

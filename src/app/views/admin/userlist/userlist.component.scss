@@ -1,0 +1,8 @@
+.basic--info--wrapper{
+    ::ng-deep .mat-list{
+        .mat-list-item{
+            min-height: 48px;
+            height: auto;
+        }
+    }
+}
