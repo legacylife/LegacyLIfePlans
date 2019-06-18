@@ -6,7 +6,8 @@ import { adminSections } from '../../../../config';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 @Component({
   selector: 'app-ngx-table-popup',
-  templateUrl: './ngx-table-popup.component.html'
+  templateUrl: './ngx-table-popup.component.html',
+  styleUrls: ['./ngx-table-popup.component.scss']
 })
 export class NgxTablePopupComponent implements OnInit {
   public itemForm: FormGroup;
