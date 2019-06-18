@@ -127,11 +127,11 @@
           <div class="profile--body--scroll">
 
             <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
-              <input matInput name="profileId" id="profileId" [formControl]="secondFormGroup.controls['profileId']" readonly="readonly">
+              <input matInput name="profileId" [formControl]="secondFormGroup.controls['profileId']" readonly="readonly">
             </mat-form-field>
 
 
-            <mat-form-field class="full-width">
+            <mat-form-field class="full-width" id="wpWorkBusiness_1">
               <input  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="wpWorkBusiness" placeholder="Work/Business" value="" [formControl]="secondFormGroup.controls['wpWorkBusiness']">
               <mat-icon matTooltip="Please enter Work/Business." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['wpWorkBusiness'].hasError('required') && secondFormGroup.controls['wpWorkBusiness'].touched"
                 class="red--alert">help_outline</mat-icon>
@@ -345,7 +345,7 @@
             </mat-form-field>
           </div>
           <div class="mt-1 text-center">
-            <button mat-raised-button matStepperPrevious class="llp--back--btn" (click)="scroll(profileId)">
+            <button mat-raised-button matStepperPrevious class="llp--back--btn" (click)="scroll('#wpWorkBusiness_1')">
               <mat-icon>arrow_back</mat-icon> Back </button>
             <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" [disabled]="thirdFormGroup.invalid">Submit</button>
           </div>

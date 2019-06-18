@@ -446,6 +446,9 @@ export class PersonalProfileModalComponent implements OnInit {
     textBox.value = textBox.value.replace(re, (m, $1, $2) => $1 + $2.toUpperCase());
   }
 
+  scroll(event)
+  {
+  }
   checkSpecialChar(event)
   {
     var key;  
