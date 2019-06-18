@@ -36,7 +36,7 @@
            </mat-form-field>
 
            <mat-form-field class="full-width">
-                <input maxlength="15" matInput name="mpPhoneNumbers" placeholder="Phone Numbers" [formControl]="professionalForm.controls['mpPhoneNumbers']">
+                <input (keypress)="onlyNumbers($event)" maxlength="15" matInput name="mpPhoneNumbers" placeholder="Phone Numbers" [formControl]="professionalForm.controls['mpPhoneNumbers']">
                 <mat-icon matTooltip="Please enter phone number." matTooltipClass="llp--tooltip error" *ngIf="professionalForm.controls['mpPhoneNumbers'].hasError('required') && professionalForm.controls['mpPhoneNumbers'].touched" class="red--alert">help_outline</mat-icon>
                 <mat-icon matTooltip="Please enter valid phone number." matTooltipClass="llp--tooltip error" *ngIf="professionalForm.controls['mpPhoneNumbers'].hasError('pattern') && professionalForm.controls['mpPhoneNumbers'].touched" class="red--alert">help_outline</mat-icon>
            </mat-form-field>     
