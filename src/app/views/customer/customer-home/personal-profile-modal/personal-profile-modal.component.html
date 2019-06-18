@@ -7,7 +7,7 @@
   <div class="stepper--wrapper">
     <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="onChangeFormIndex($event)">
 
-      <mat-step [stepControl]="firstFormGroup" tabindex="-1">
+      <mat-step [stepControl]="firstFormGroup">
         <form [formGroup]="firstFormGroup" class="llp-form-wrapper" (ngSubmit)="FormSubmit(1,firstFormGroup.value)">
           <h3 class="main--head text-center">Personal Profile</h3>
           <p class="sub--head text-center">Add Personal Details</p>
@@ -120,7 +120,7 @@
         </form>
       </mat-step>
 
-      <mat-step [stepControl]="secondFormGroup" tabindex="-500">
+      <mat-step [stepControl]="secondFormGroup" tabindex="0">
         <form [formGroup]="secondFormGroup" class="llp-form-wrapper" (ngSubmit)="FormSubmit(2,secondFormGroup.value)">
           <h3 class="main--head text-center">Work Profile</h3>
           <p class="sub--head text-center">Add Work Details</p>
@@ -216,15 +216,15 @@
           </div>
 
           <div class="mt-1 text-center">
-            <button mat-raised-button matStepperPrevious class="llp--back--btn" tabindex="-500">
-              <mat-icon>arrow_back</mat-icon> Back</button>
+            <button mat-raised-button matStepperPrevious class="llp--back--btn" >
+              <mat-icon>arrow_back</mat-icon> Back </button>
             <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" [disabled]="secondFormGroup.invalid">Proceed</button>
           </div>
 
         </form>
       </mat-step>
 
-      <mat-step [stepControl]="thirdFormGroup" tabindex="-0">
+      <mat-step [stepControl]="thirdFormGroup">
         <form [formGroup]="thirdFormGroup" class="llp-form-wrapper" (ngSubmit)="FormSubmit(3,thirdFormGroup.value)">
           <h3 class="main--head text-center">Civic/Club, Religious Info
           </h3>
@@ -278,7 +278,6 @@
               </div>
             </div>
 
-
             <mat-form-field class="full-width">
               <input  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="ccContactPersonName" placeholder="Contact Person Name" value="" [formControl]="thirdFormGroup.controls['ccContactPersonName']">
               <mat-icon matTooltip="Please enter contact person name." matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['ccContactPersonName'].hasError('required') && thirdFormGroup.controls['ccContactPersonName'].touched"
@@ -298,7 +297,6 @@
                 Add New
               </div>
             </div>
-
 
             <h3 class="sec--header">Church/Synagogue/Religious Connection</h3>
             <mat-form-field class="full-width">
@@ -340,17 +338,15 @@
               </div>
             </div>
 
-
             <mat-form-field class="full-width">
               <input  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="ccChurchContactPersonName" placeholder="Contact Person Name" value="" [formControl]="thirdFormGroup.controls['ccChurchContactPersonName']">
               <mat-icon matTooltip="Please enter contact person name." matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['ccChurchContactPersonName'].hasError('required') && thirdFormGroup.controls['ccChurchContactPersonName'].touched"
                 class="red--alert">help_outline</mat-icon>
             </mat-form-field>
-
           </div>
           <div class="mt-1 text-center">
-            <button mat-raised-button matStepperPrevious class="llp--back--btn" tabindex="-0">
-              <mat-icon>arrow_back</mat-icon> Back</button>
+            <button mat-raised-button matStepperPrevious class="llp--back--btn" tabindex="-1">
+              <mat-icon>arrow_back</mat-icon> Back </button>
             <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" [disabled]="thirdFormGroup.invalid">Submit</button>
           </div>
         </form>

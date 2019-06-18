@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit,OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit,OnInit, Input } from '@angular/core';
 import { UserAPIService } from './../../userapi.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AppConfirmService } from './../../shared/services/app-confirm/app-confirm.service';
@@ -127,12 +127,12 @@ export class ChangePicComponent implements OnInit,AfterViewInit {
   classes = this.theme.addStyleSheet(styles);
   croppedImage?: string;
   result: string;
-  scale: number;
+  
   data: any;  
   @ViewChild(LyResizingCroppingImages) cropper: LyResizingCroppingImages;
   myConfig: ImgCropperConfig = {
     autoCrop: true,
-    width: 300, // Default `250`
+    width: 250, // Default `250`
     height: 250, // Default `200`
     fill: '#fff', // Default transparent if type = png else #000,
     type: 'image/jpeg'
@@ -144,7 +144,7 @@ export class ChangePicComponent implements OnInit,AfterViewInit {
     // this is supported only for browsers
     if (Platform.isBrowser) {
       const config = {
-        scale: 0.745864772531767,
+        scale: 1,
         position: {
           x: 882.380608078103,
           y: 489.26357452128866

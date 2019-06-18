@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { APIService } from './../../../../api.service';
 import { UserAPIService } from './../../../../userapi.service';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { CustomValidators } from 'ng2-validation';
+import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
+
 import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
@@ -12,6 +12,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../config';
 import { states } from '../../../../state';
 import { cloneDeep } from 'lodash'
+import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 const URL = serverUrl + '/api/documents/myEssentialsID';
 @Component({
   selector: 'app-essenioal-id-box',
@@ -59,7 +60,7 @@ export class EssenioalIdBoxComponent implements OnInit {
     this.userId = localStorage.getItem("endUserId");
     this.stateList = states.sort();
     this.IDForm = this.fb.group({
-      documentType: new FormControl('', Validators.required),
+      documentType: new FormControl('',Validators.required),
       socialSecurityNumber: new FormControl(''),
       locationSocialSecurityCard: new FormControl(''),
       licenseNumber: new FormControl(''),
@@ -76,7 +77,7 @@ export class EssenioalIdBoxComponent implements OnInit {
       expirationDate: new FormControl(''),
       locationPassport: new FormControl(''),
       LocationWorkPermitVisa: new FormControl(''),  
-      idProofDocuments_temp: new FormControl([], Validators.required),
+      idProofDocuments_temp: new FormControl('',Validators.required),
       comments: new FormControl(''), 
       profileId: new FormControl('')
      });
@@ -94,46 +95,252 @@ export class EssenioalIdBoxComponent implements OnInit {
 
      this.getEssentialIdView();
     }
-   
+
     onChangeDocumentType(key) {
-      this.typeOne = false;
-      this.typeOneTwo = false;
-      this.typeOneTwoSixSeven = false;
-      this.typeThree = false;
-      this.typeTwo = false;
-      this.typeFour = false;
-      this.typeFive = false;
-      this.typeSix = false;
-      this.typeSeven = false;
+      this.typeOne = false;//licenseNumber  state expirationDate  locationDriverLicense
+      this.typeOneTwo = false; // state expirationDate locationDriverLicense
+      this.typeOneTwoSixSeven = false;//expirationDate
+      this.typeThree = false;//locationDoDID DoDIDNumber  DBN
+      this.typeTwo = false; //nonDriverIDNumber state expirationDate
+      this.typeFour = false;//placeOfBirth  fileNumber
+      this.typeFive = false;//socialSecurityNumber  locationSocialSecurityCard
+      this.typeSix = false;//countryOfIssue expirationDate  locationPassport
+      this.typeSeven = false;//countryOfIssue expirationDate  LocationWorkPermitVisa
       this.typeSixSeven = false;
+    let idProofDocuments_tempss = '';
+    if(this.IDForm.controls['idProofDocuments_temp'].value=='1'){
+      idProofDocuments_tempss = '1'; 
+    }
+    if(idProofDocuments_tempss=='1'){
+      this.IDForm.controls['idProofDocuments_temp'].setValue('1');
+      }
+
+    this.IDForm = this.fb.group({
+      documentType: new FormControl(this.IDForm.controls['documentType'].value,Validators.required),
+      socialSecurityNumber: new FormControl(this.IDForm.controls['socialSecurityNumber'].value,),
+      locationSocialSecurityCard: new FormControl(this.IDForm.controls['locationSocialSecurityCard'].value,),
+      licenseNumber: new FormControl(this.IDForm.controls['licenseNumber'].value,),
+      nonDriverIDNumber: new FormControl(this.IDForm.controls['nonDriverIDNumber'].value,),
+      DoDIDNumber: new FormControl(this.IDForm.controls['DoDIDNumber'].value,),
+      placeOfBirth: new FormControl(this.IDForm.controls['placeOfBirth'].value,),
+      countryOfIssue: new FormControl(this.IDForm.controls['countryOfIssue'].value,),
+      DBN: new FormControl(this.IDForm.controls['DBN'].value,),
+      fileNumber: new FormControl(this.IDForm.controls['fileNumber'].value,),
+      state: new FormControl(this.IDForm.controls['state'].value,),
+      passportNumber: new FormControl(this.IDForm.controls['passportNumber'].value,),
+      locationDriverLicense: new FormControl(this.IDForm.controls['locationDriverLicense'].value,),
+      locationDoDID: new FormControl(this.IDForm.controls['locationDoDID'].value,),
+      expirationDate: new FormControl(this.IDForm.controls['expirationDate'].value,),
+      locationPassport: new FormControl(this.IDForm.controls['locationPassport'].value,),
+      LocationWorkPermitVisa: new FormControl(this.IDForm.controls['LocationWorkPermitVisa'].value,),  
+      comments: new FormControl(this.IDForm.controls['comments'].value), 
+      profileId: new FormControl(this.IDForm.controls['profileId'].value,),
+      idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
+     });
+
+     this.IDForm.controls['comments'].clearValidators()
+     this.IDForm.controls['comments'].updateValueAndValidity()
+
+     if(idProofDocuments_tempss=='1'){
+      this.IDForm.controls['idProofDocuments_temp'].setValue('1');
+      }
 
       if(key==1){  
         this.typeOne = true;      
         this.typeOneTwo = true;      
-        this.typeOneTwoSixSeven = true;        
+        this.typeOneTwoSixSeven = true;      
+        // this.IDForm.controls['licenseNumber'] = new FormControl(this.IDForm.controls['licenseNumber'].value,Validators.required);
+        // this.IDForm.controls['state'] = new FormControl(this.IDForm.controls['state'].value,Validators.required);
+        // this.IDForm.controls['expirationDate'] = new FormControl(this.IDForm.controls['expirationDate'].value,Validators.required);
+        // this.IDForm.controls['locationDriverLicense'] = new FormControl(this.IDForm.controls['locationDriverLicense'].value,Validators.required);
+        this.IDForm = this.fb.group({
+          documentType: new FormControl(this.IDForm.controls['documentType'].value,Validators.required),
+          socialSecurityNumber: new FormControl(this.IDForm.controls['socialSecurityNumber'].value,),
+          locationSocialSecurityCard: new FormControl(this.IDForm.controls['locationSocialSecurityCard'].value,),
+          licenseNumber: new FormControl(this.IDForm.controls['licenseNumber'].value,Validators.required),
+          nonDriverIDNumber: new FormControl(this.IDForm.controls['nonDriverIDNumber'].value,),
+          DoDIDNumber: new FormControl(this.IDForm.controls['DoDIDNumber'].value,),
+          placeOfBirth: new FormControl(this.IDForm.controls['placeOfBirth'].value,),
+          countryOfIssue: new FormControl(this.IDForm.controls['countryOfIssue'].value,),
+          DBN: new FormControl(this.IDForm.controls['DBN'].value,),
+          fileNumber: new FormControl(this.IDForm.controls['fileNumber'].value,),
+          state: new FormControl(this.IDForm.controls['state'].value,Validators.required),
+          passportNumber: new FormControl(this.IDForm.controls['passportNumber'].value,),
+          locationDriverLicense: new FormControl(this.IDForm.controls['locationDriverLicense'].value,Validators.required),
+          locationDoDID: new FormControl(this.IDForm.controls['locationDoDID'].value,),
+          expirationDate: new FormControl(this.IDForm.controls['expirationDate'].value,Validators.required),
+          locationPassport: new FormControl(this.IDForm.controls['locationPassport'].value,),
+          LocationWorkPermitVisa: new FormControl(this.IDForm.controls['LocationWorkPermitVisa'].value,),  
+          comments: new FormControl(this.IDForm.controls['comments'].value), 
+          profileId: new FormControl(this.IDForm.controls['profileId'].value,),
+          idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
+         });
+         
       }else if(key==2){  
         this.typeTwo = true;      
         this.typeOneTwo = true;      
         this.typeOneTwoSixSeven = true;
+        // this.IDForm.controls['state'] = new FormControl(this.IDForm.controls['state'].value,Validators.required);
+        // this.IDForm.controls['nonDriverIDNumber'] = new FormControl(this.IDForm.controls['nonDriverIDNumber'].value,Validators.required);
+        // this.IDForm.controls['expirationDate'] = new FormControl(this.IDForm.controls['expirationDate'].value,Validators.required);
+        // this.IDForm.controls['locationDriverLicense'] = new FormControl(this.IDForm.controls['locationDriverLicense'].value,Validators.required);
+        this.IDForm = this.fb.group({
+          documentType: new FormControl(this.IDForm.controls['documentType'].value,Validators.required),
+          socialSecurityNumber: new FormControl(this.IDForm.controls['socialSecurityNumber'].value,),
+          locationSocialSecurityCard: new FormControl(this.IDForm.controls['locationSocialSecurityCard'].value,),
+          licenseNumber: new FormControl(this.IDForm.controls['licenseNumber'].value,),
+          nonDriverIDNumber: new FormControl(this.IDForm.controls['nonDriverIDNumber'].value,Validators.required),
+          DoDIDNumber: new FormControl(this.IDForm.controls['DoDIDNumber'].value,),
+          placeOfBirth: new FormControl(this.IDForm.controls['placeOfBirth'].value,),
+          countryOfIssue: new FormControl(this.IDForm.controls['countryOfIssue'].value,),
+          DBN: new FormControl(this.IDForm.controls['DBN'].value,),
+          fileNumber: new FormControl(this.IDForm.controls['fileNumber'].value,),
+          state: new FormControl(this.IDForm.controls['state'].value,Validators.required),
+          passportNumber: new FormControl(this.IDForm.controls['passportNumber'].value,),
+          locationDriverLicense: new FormControl(this.IDForm.controls['locationDriverLicense'].value,Validators.required),
+          locationDoDID: new FormControl(this.IDForm.controls['locationDoDID'].value,),
+          expirationDate: new FormControl(this.IDForm.controls['expirationDate'].value,Validators.required),
+          locationPassport: new FormControl(this.IDForm.controls['locationPassport'].value,),
+          LocationWorkPermitVisa: new FormControl(this.IDForm.controls['LocationWorkPermitVisa'].value,),  
+          comments: new FormControl(this.IDForm.controls['comments'].value), 
+          profileId: new FormControl(this.IDForm.controls['profileId'].value,),
+          idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
+         });
       }else if(key==3){  
         this.typeThree = true;              
-      }else if(key==4){  
-        this.typeFour = true;              
-      }else if(key==5){  
-       // this.typeThree = true;       
+        // this.IDForm.controls['locationDoDID'] = new FormControl(this.IDForm.controls['locationDoDID'].value,Validators.required);
+        // this.IDForm.controls['DoDIDNumber'] = new FormControl(this.IDForm.controls['DoDIDNumber'].value,Validators.required);
+        // this.IDForm.controls['DBN'] = new FormControl(this.IDForm.controls['DBN'].value,Validators.required);
+        this.IDForm = this.fb.group({
+          documentType: new FormControl(this.IDForm.controls['documentType'].value,Validators.required),
+          socialSecurityNumber: new FormControl(this.IDForm.controls['socialSecurityNumber'].value,),
+          locationSocialSecurityCard: new FormControl(this.IDForm.controls['locationSocialSecurityCard'].value,),
+          licenseNumber: new FormControl(this.IDForm.controls['licenseNumber'].value,),
+          nonDriverIDNumber: new FormControl(this.IDForm.controls['nonDriverIDNumber'].value,),
+          DoDIDNumber: new FormControl(this.IDForm.controls['DoDIDNumber'].value,Validators.required),
+          placeOfBirth: new FormControl(this.IDForm.controls['placeOfBirth'].value,),
+          countryOfIssue: new FormControl(this.IDForm.controls['countryOfIssue'].value,),
+          DBN: new FormControl(this.IDForm.controls['DBN'].value,Validators.required),
+          fileNumber: new FormControl(this.IDForm.controls['fileNumber'].value,),
+          state: new FormControl(this.IDForm.controls['state'].value,),
+          passportNumber: new FormControl(this.IDForm.controls['passportNumber'].value,),
+          locationDriverLicense: new FormControl(this.IDForm.controls['locationDriverLicense'].value,),
+          locationDoDID: new FormControl(this.IDForm.controls['locationDoDID'].value,Validators.required),
+          expirationDate: new FormControl(this.IDForm.controls['expirationDate'].value,),
+          locationPassport: new FormControl(this.IDForm.controls['locationPassport'].value,),
+          LocationWorkPermitVisa: new FormControl(this.IDForm.controls['LocationWorkPermitVisa'].value,),  
+          comments: new FormControl(this.IDForm.controls['comments'].value), 
+          profileId: new FormControl(this.IDForm.controls['profileId'].value,),
+          idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
+         });
+      }else if(key==4){            
+        this.typeFour = true;                    
+        this.IDForm = this.fb.group({
+          documentType: new FormControl(this.IDForm.controls['documentType'].value,Validators.required),
+          socialSecurityNumber: new FormControl(this.IDForm.controls['socialSecurityNumber'].value,),
+          locationSocialSecurityCard: new FormControl(this.IDForm.controls['locationSocialSecurityCard'].value,),
+          licenseNumber: new FormControl(this.IDForm.controls['licenseNumber'].value,),
+          nonDriverIDNumber: new FormControl(this.IDForm.controls['nonDriverIDNumber'].value,),
+          DoDIDNumber: new FormControl(this.IDForm.controls['DoDIDNumber'].value,),
+          placeOfBirth: new FormControl(this.IDForm.controls['placeOfBirth'].value,Validators.required),
+          countryOfIssue: new FormControl(this.IDForm.controls['countryOfIssue'].value,),
+          DBN: new FormControl(this.IDForm.controls['DBN'].value,),
+          fileNumber: new FormControl(this.IDForm.controls['fileNumber'].value,Validators.required),
+          state: new FormControl(this.IDForm.controls['state'].value,),
+          passportNumber: new FormControl(this.IDForm.controls['passportNumber'].value,),
+          locationDriverLicense: new FormControl(this.IDForm.controls['locationDriverLicense'].value,),
+          locationDoDID: new FormControl(this.IDForm.controls['locationDoDID'].value,),
+          expirationDate: new FormControl(this.IDForm.controls['expirationDate'].value,),
+          locationPassport: new FormControl(this.IDForm.controls['locationPassport'].value,),
+          LocationWorkPermitVisa: new FormControl(this.IDForm.controls['LocationWorkPermitVisa'].value,),  
+          comments: new FormControl(this.IDForm.controls['comments'].value), 
+          profileId: new FormControl(this.IDForm.controls['profileId'].value,),
+          idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
+         });
+        }else if(key==5){     
         this.typeFive = true;             
+        this.IDForm = this.fb.group({
+          documentType: new FormControl(this.IDForm.controls['documentType'].value,Validators.required),
+          socialSecurityNumber: new FormControl(this.IDForm.controls['socialSecurityNumber'].value,Validators.required),
+          locationSocialSecurityCard: new FormControl(this.IDForm.controls['locationSocialSecurityCard'].value,Validators.required),
+          licenseNumber: new FormControl(this.IDForm.controls['licenseNumber'].value,),
+          nonDriverIDNumber: new FormControl(this.IDForm.controls['nonDriverIDNumber'].value,),
+          DoDIDNumber: new FormControl(this.IDForm.controls['DoDIDNumber'].value,),
+          placeOfBirth: new FormControl(this.IDForm.controls['placeOfBirth'].value,),
+          countryOfIssue: new FormControl(this.IDForm.controls['countryOfIssue'].value,),
+          DBN: new FormControl(this.IDForm.controls['DBN'].value,),
+          fileNumber: new FormControl(this.IDForm.controls['fileNumber'].value,),
+          state: new FormControl(this.IDForm.controls['state'].value,),
+          passportNumber: new FormControl(this.IDForm.controls['passportNumber'].value,),
+          locationDriverLicense: new FormControl(this.IDForm.controls['locationDriverLicense'].value,),
+          locationDoDID: new FormControl(this.IDForm.controls['locationDoDID'].value,),
+          expirationDate: new FormControl(this.IDForm.controls['expirationDate'].value,),
+          locationPassport: new FormControl(this.IDForm.controls['locationPassport'].value,),
+          LocationWorkPermitVisa: new FormControl(this.IDForm.controls['LocationWorkPermitVisa'].value,),  
+          comments: new FormControl(this.IDForm.controls['comments'].value), 
+          profileId: new FormControl(this.IDForm.controls['profileId'].value,),
+          idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
+         });
       }else if(key==6){  
         this.typeSix = true;  
         this.typeOneTwoSixSeven = true;         
         this.typeSixSeven = true;        
+        this.IDForm = this.fb.group({
+          documentType: new FormControl(this.IDForm.controls['documentType'].value,Validators.required),
+          socialSecurityNumber: new FormControl(this.IDForm.controls['socialSecurityNumber'].value,),
+          locationSocialSecurityCard: new FormControl(this.IDForm.controls['locationSocialSecurityCard'].value,),
+          licenseNumber: new FormControl(this.IDForm.controls['licenseNumber'].value,),
+          nonDriverIDNumber: new FormControl(this.IDForm.controls['nonDriverIDNumber'].value,),
+          DoDIDNumber: new FormControl(this.IDForm.controls['DoDIDNumber'].value,),
+          placeOfBirth: new FormControl(this.IDForm.controls['placeOfBirth'].value,),
+          countryOfIssue: new FormControl(this.IDForm.controls['countryOfIssue'].value,Validators.required),
+          DBN: new FormControl(this.IDForm.controls['DBN'].value,),
+          fileNumber: new FormControl(this.IDForm.controls['fileNumber'].value,),
+          state: new FormControl(this.IDForm.controls['state'].value,),
+          passportNumber: new FormControl(this.IDForm.controls['passportNumber'].value,),
+          locationDriverLicense: new FormControl(this.IDForm.controls['locationDriverLicense'].value,),
+          locationDoDID: new FormControl(this.IDForm.controls['locationDoDID'].value,),
+          expirationDate: new FormControl(this.IDForm.controls['expirationDate'].value,Validators.required),
+          locationPassport: new FormControl(this.IDForm.controls['locationPassport'].value,Validators.required),
+          LocationWorkPermitVisa: new FormControl(this.IDForm.controls['LocationWorkPermitVisa'].value,),  
+          comments: new FormControl(this.IDForm.controls['comments'].value), 
+          profileId: new FormControl(this.IDForm.controls['profileId'].value,),
+          idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
+         });
       }else if(key==7){  
         this.typeSeven = true;     
         this.typeOneTwoSixSeven = true;     
         this.typeSixSeven = true;         
+        this.IDForm = this.fb.group({
+          documentType: new FormControl(this.IDForm.controls['documentType'].value,Validators.required),
+          socialSecurityNumber: new FormControl(this.IDForm.controls['socialSecurityNumber'].value,),
+          locationSocialSecurityCard: new FormControl(this.IDForm.controls['locationSocialSecurityCard'].value,),
+          licenseNumber: new FormControl(this.IDForm.controls['licenseNumber'].value,),
+          nonDriverIDNumber: new FormControl(this.IDForm.controls['nonDriverIDNumber'].value,),
+          DoDIDNumber: new FormControl(this.IDForm.controls['DoDIDNumber'].value,),
+          placeOfBirth: new FormControl(this.IDForm.controls['placeOfBirth'].value,),
+          countryOfIssue: new FormControl(this.IDForm.controls['countryOfIssue'].value,Validators.required),
+          DBN: new FormControl(this.IDForm.controls['DBN'].value,),
+          fileNumber: new FormControl(this.IDForm.controls['fileNumber'].value,),
+          state: new FormControl(this.IDForm.controls['state'].value,),
+          passportNumber: new FormControl(this.IDForm.controls['passportNumber'].value,),
+          locationDriverLicense: new FormControl(this.IDForm.controls['locationDriverLicense'].value,),
+          locationDoDID: new FormControl(this.IDForm.controls['locationDoDID'].value,),
+          expirationDate: new FormControl(this.IDForm.controls['expirationDate'].value,Validators.required),
+          locationPassport: new FormControl(this.IDForm.controls['locationPassport'].value,),
+          LocationWorkPermitVisa: new FormControl(this.IDForm.controls['LocationWorkPermitVisa'].value,Validators.required),  
+          comments: new FormControl(this.IDForm.controls['comments'].value), 
+          profileId: new FormControl(this.IDForm.controls['profileId'].value,),
+          idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
+         });
       }
+      if(idProofDocuments_tempss=='1'){
+        this.IDForm.controls['idProofDocuments_temp'].setValue('1');
+      }
+//      this.IDForm.updateValueAndValidity();
   }
 
-    IdFormSubmit(profileInData = null) {
+  IdFormSubmit(profileInData = null) {
       var query = {};
       var proquery = {};     
       
@@ -365,10 +572,15 @@ export class EssenioalIdBoxComponent implements OnInit {
   }
   
   checkSpecialChar(event)
+
   {  
     var key;  
+    
     key = event.charCode;
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
   }
   
+
+ 
+
 }

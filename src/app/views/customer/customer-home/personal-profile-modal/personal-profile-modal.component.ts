@@ -52,7 +52,6 @@ export class PersonalProfileModalComponent implements OnInit {
     }
 
     this.step = localStorage.getItem("ID_step");
-    console.log('>>>', this.step);
     this.firstFormGroup = this.fb.group({
       ppFirstName: new FormControl('', Validators.required),
       ppMiddleName: new FormControl(''),
@@ -126,7 +125,7 @@ export class PersonalProfileModalComponent implements OnInit {
         this.loader.close();
       } else {
         if (result.data) {
-          this.essentials = result.data;//console.log("here data >> ",result.data.custData);
+          this.essentials = result.data;
           this.firstFormGroup.controls['ppFirstName'].setValue(this.essentials.ppFirstName ? this.essentials.ppFirstName : "");
           this.firstFormGroup.controls['ppMiddleName'].setValue(this.essentials.ppMiddleName ? this.essentials.ppMiddleName : "");
           this.firstFormGroup.controls['ppLastName'].setValue(this.essentials.ppLastName ? this.essentials.ppLastName : "");
@@ -243,8 +242,6 @@ export class PersonalProfileModalComponent implements OnInit {
     else if (steps == 3) {
       msgName = 'Civic/Club, Religious Info';
     }
-    console.log("profile id >>>>>>" + this.selectedProfileId)
-
 
     const ppEmailsArr = <FormArray>this.firstFormGroup.get('ppEmails')
     this.ppEmails = ppEmailsArr.controls.map(o => { return o.value })
@@ -279,7 +276,6 @@ export class PersonalProfileModalComponent implements OnInit {
 
    var personalProfileAction = localStorage.getItem("personalProfileAction") ? localStorage.getItem("personalProfileAction") : "added"
 
-    console.log(this.selectedProfileId)
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }),
       proquery: Object.assign(profileInData),
@@ -292,7 +288,6 @@ export class PersonalProfileModalComponent implements OnInit {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
         localStorage.setItem("ID_step", steps);
-        console.log("IDS=>", result.data.ppID)
         this.firstFormGroup.controls['profileId'].setValue(result.data.ppID);
         this.secondFormGroup.controls['profileId'].setValue(result.data.ppID);
         this.thirdFormGroup.controls['profileId'].setValue(result.data.ppID);       
@@ -411,7 +406,6 @@ export class PersonalProfileModalComponent implements OnInit {
     return this.thirdFormGroup.get('ccChurchLandlineNumbers') as FormArray;
   }
 
-
   // all add new fields function
   delete(i, arryName) {
     const control = <FormArray>this.firstFormGroup.controls[arryName];
@@ -428,15 +422,19 @@ export class PersonalProfileModalComponent implements OnInit {
     control.removeAt(i);
   }
 
-
-
-
   onChangeFormIndex(event) {
     const { selectedIndex } = event;
-    let stepHeader = document.getElementsByClassName('mat-horizontal-stepper-header')
+    // console.log('selectedIndex---',selectedIndex)
+    // if(selectedIndex=='1'){
+    //   console.log('22222222---',selectedIndex)
+    //   document.getElementById('secondFormGroup').focus();
+    // }
+    let stepHeader = document.getElementsByClassName('mat-horizontal-stepper-header');
+    
     forEach(stepHeader, (element, index) => {
       element.classList = String(element.classList).replace('proActive', '')
       element.classList = String(element.classList).replace('proDone', '')
+      element.classList.focus();
       if (index === selectedIndex) {
         element.classList += ' proActive';
       }
