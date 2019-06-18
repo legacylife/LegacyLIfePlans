@@ -67,8 +67,13 @@ export class AdvisorSignupComponent implements OnInit {
           localStorage.setItem("endUsername", result.data.username)
           localStorage.setItem("endUserId", result.data.userId)
           localStorage.setItem("endUserType", result.data.userType)
-          this.router.navigate(['/', 'advisor', 'business-info']);
-        }*/ else {
+          this.router.navigate(['/', 'advisor', 'business-info']);          
+        }*/ else if (result.data.code == "ExistReject") {
+          this.llpAdvsignupForm.controls['username'].enable();
+          this.invalidMessage = result.data.message;
+          this.EmailExist = true;
+          this.llpAdvsignupForm.controls['username'].setErrors({ 'EmailExist': true })          
+        }else {
           this.llpAdvsignupForm.controls['username'].disable();
           this.freeTrailBtn = true;
           this.proceedBtn = false;
