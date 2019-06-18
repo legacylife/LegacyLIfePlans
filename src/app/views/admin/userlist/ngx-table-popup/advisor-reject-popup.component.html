@@ -1,34 +1,31 @@
 <div class="ll--modal--header">
-  {{data.title}}  
-  <button class="modal--close" ><mat-icon (click)="dialogRef.close()" class="icon--cross">cancel</mat-icon></button>  
+  {{data.title}}
+  <button class="modal--close">
+    <mat-icon (click)="dialogRef.close()" class="icon--cross">cancel</mat-icon>
+  </button>
 </div>
 <form class="llp-form-wrapper " [formGroup]="itemForm" (ngSubmit)="submit()">
-    <div class="ll--modal--body">
-  <div fxLayout="row wrap" fxLayout.lt-sm="column">
-    <div fxFlex="100"  class="pr-1">
-      <mat-form-field class="full-width">
-        <!-- <input
+  <div class="ll--modal--body">
+    <div fxLayout="row wrap" fxLayout.lt-sm="column">
+      <div fxFlex="100" class="pr-1">
+        <mat-form-field class="full-width">
+          <!-- <input
         matInput
         name="firstName"
         [formControl]="itemForm.controls['firstName']"
         placeholder="First Name"> -->
 
-        <textarea matInput 
-          maxlength="150"
-          placeholder="Reject Reason" 
-          [formControl]="itemForm.controls['approveRejectReason']" 
-          name = "approveRejectReason">
+          <textarea matInput maxlength="150" placeholder="Reject Reason" [formControl]="itemForm.controls['approveRejectReason']" name="approveRejectReason">
      </textarea>
-      </mat-form-field>
+        </mat-form-field>
+      </div>
+
+
+
     </div>
-
-
     <div class="ll--modal--footer text-center">
-        <button mat-raised-button class="llp--primary--btn" [disabled]="itemForm.invalid">Submit</button>
-      
-      <button mat-button color="warn" type="button" (click)="dialogRef.close(false)">Cancel</button>
+      <button mat-raised-button class="llp--primary--btn" [disabled]="itemForm.invalid">Submit</button>
     </div>
-  </div>
 
   </div>
 </form>

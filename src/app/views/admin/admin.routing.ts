@@ -75,7 +75,7 @@ export const AdminRoutes: Routes = [
   }, {
     path: 'referral-program',
     component: ReferralProgramComponent,
-    data: { title: 'Referral program', breadcrumb: 'Referral program' },
+    data: { title: 'Referral Program', breadcrumb: 'Referral Program' },
     canActivate: [ AuthGuard ],
   }, {
     path: 'activity-log',
@@ -85,12 +85,12 @@ export const AdminRoutes: Routes = [
   }, {
     path: 'ad-management',
     component: AddManagementComponent,
-    data: { title: 'Advertisement management', breadcrumb: 'Advertisement management' },
+    data: { title: 'Advertisement Management', breadcrumb: 'Advertisement Management' },
     canActivate: [ AuthGuard ],
   }, {
     path: 'deceased-requests',
     component: DeceasedRequestsComponent,
-    data: { title: 'Deceased requests', breadcrumb: 'Deceased requests' },
+    data: { title: 'Deceased Requests', breadcrumb: 'Deceased Requests' },
     canActivate: [ AuthGuard ],
   },
   {

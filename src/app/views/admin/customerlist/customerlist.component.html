@@ -1,6 +1,6 @@
 <div class="row" *ngIf="aceessSection">
   <mat-form-field class="margin-333" style="width: 100%">
-    <input matInput placeholder="Type to filter all columns" value="" (keyup)='updateFilter($event)'>
+    <input matInput placeholder="Type to search" value="" (keyup)='updateFilter($event)'>
   </mat-form-field>
   <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
     <mat-card-content class="p-0">

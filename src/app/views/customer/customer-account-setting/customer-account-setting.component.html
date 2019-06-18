@@ -76,7 +76,7 @@
                         class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Landline Number" type="tel" value="" class="" [formControl]="ProfileForm.controls['landlineNumber']">
+                      <input matInput placeholder="Landline Number*" type="tel" value="" class="" [formControl]="ProfileForm.controls['landlineNumber']">
                       <span matPrefix>+1</span>
                       <mat-icon matTooltip="Please enter landline number." matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['landlineNumber'].hasError('required') && ProfileForm.controls['landlineNumber'].touched"
                         class="red--alert">help_outline</mat-icon>
