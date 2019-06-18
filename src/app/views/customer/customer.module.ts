@@ -75,6 +75,33 @@ import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edi
 import { CustomerProfDetailsComponent } from './customer-professionals/customer-professionals-details/customer-professionals-details.component';
 import { SendAnEmailComponent } from './customer-professionals/send-an-email-modal/send-an-email-modal.component';
 import { HireAdvisorComponent } from './customer-professionals/hire-advisor-modal/hire-advisor-modal.component';
+import {LyThemeModule,LY_THEME,LY_THEME_GLOBAL_VARIABLES} from '@alyle/ui';
+/** Import the component modules */
+import { LyButtonModule } from '@alyle/ui/button';
+import { LyToolbarModule } from '@alyle/ui/toolbar';
+import { LyIconModule } from '@alyle/ui/icon';
+
+import { LyResizingCroppingImageModule } from '@alyle/ui/resizing-cropping-images';
+/** Import themes */
+import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
+export class GlobalVariables {
+  testVal = '#00bcd4';
+  Quepal = {
+    default: `linear-gradient(135deg,#11998e 0%,#38ef7d 100%)`,
+    contrast: '#fff',
+    shadow: '#11998e'
+  };
+  SublimeLight = {
+    default: `linear-gradient(135deg,#FC5C7D 0%,#6A82FB 100%)`,
+    contrast: '#fff',
+    shadow: '#B36FBC'
+  };
+  Amber = {
+    default: '#ffc107',
+    contrast: 'rgba(0, 0, 0, 0.87)'
+  };
+}
+
 @NgModule({
   imports: [
     CommonModule,
@@ -110,6 +137,11 @@ import { HireAdvisorComponent } from './customer-professionals/hire-advisor-moda
     MatSidenavModule,
     MatDialogModule,
     MatStepperModule,
+    LyThemeModule.setTheme('minima-light'),
+    LyButtonModule,
+    LyToolbarModule,
+    LyResizingCroppingImageModule,
+    LyIconModule,
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [
@@ -125,7 +157,10 @@ import { HireAdvisorComponent } from './customer-professionals/hire-advisor-moda
     EmergencyContactsDetailsComponent, CustomerLegalStuffDetailsComponent,
     CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent
   ], providers: [
-    MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard
+    MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
+    { provide: LY_THEME, useClass: MinimaLight, multi: true },
+    { provide: LY_THEME, useClass: MinimaDark, multi: true },
+    { provide: LY_THEME_GLOBAL_VARIABLES,useClass: GlobalVariables    } ,
   ], bootstrap: [CustomerSignupComponent], entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,
     PersonalProfileModalComponent, MarkAsDeceasedComponent, legalStuffModalComponent,
     addTrusteeModalComponent, PersonalProfileModalComponent, MarkAsDeceasedComponent,

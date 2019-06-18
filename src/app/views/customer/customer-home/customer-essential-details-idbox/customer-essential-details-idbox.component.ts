@@ -111,4 +111,27 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
     }).map(el => el.opt_name)[0]
     return filteredTyes
   }
+
+  downloadDocs() {
+   var query = {};
+    const req_vars = {
+      query: Object.assign({ _id: this.selectedProfileId }, query)
+    }
+    console.log(" > >>> >>> >> ",req_vars);
+    this.userapi.apiRequest('post', 'documents/downloadDocs', req_vars).subscribe(result => {
+  
+      if (result.status == "error") {
+        this.loader.close();
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      } else {
+        this.loader.close();
+        this.router.navigate(['/', 'customer', 'dashboard', 'essential-day-one'])
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      }
+    }, (err) => {
+      console.error(err)
+      this.loader.close();
+    })
+  }
+
 }
