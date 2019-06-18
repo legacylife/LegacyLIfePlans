@@ -72,11 +72,11 @@
             <input (keyup)="firstCapitalize($event)" matInput name="address" placeholder="Address" [formControl]="eContactFormGroup.controls['address']"  (keypress)="checkSpecialChar($event)">
         </mat-form-field>
         <mat-form-field class="full-width">
-            <input (keyup)="firstCapitalize($event)" matInput name="phone" placeholder="Phone" [formControl]="eContactFormGroup.controls['phone']">    
+            <input maxlength="15" (keypress)="onlyNumbers($event)" (keyup)="firstCapitalize($event)" matInput name="phone" placeholder="Phone" [formControl]="eContactFormGroup.controls['phone']">    
             <span matPrefix>+1</span>    
         </mat-form-field>
         <mat-form-field class="full-width">
-            <input (keyup)="firstCapitalize($event)" matInput name="mobile" placeholder="Mobile" [formControl]="eContactFormGroup.controls['mobile']">     
+            <input maxlength="15" (keypress)="onlyNumbers($event)" (keyup)="firstCapitalize($event)" matInput name="mobile" placeholder="Mobile" [formControl]="eContactFormGroup.controls['mobile']">     
         </mat-form-field>
         <mat-form-field class="full-width">
             <input matInput name="emailAddress" placeholder="Email*" [formControl]="eContactFormGroup.controls['emailAddress']">     

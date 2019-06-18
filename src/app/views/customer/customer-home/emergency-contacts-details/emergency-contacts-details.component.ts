@@ -169,4 +169,11 @@ export class EmergencyContactsDetailsComponent implements OnInit {
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
   }
 
+  onlyNumbers(event)
+  {  
+    if ((event.which != 46 ) && (event.which < 48 || event.which > 57)) {
+      event.preventDefault();
+    }
+  }
+
 }

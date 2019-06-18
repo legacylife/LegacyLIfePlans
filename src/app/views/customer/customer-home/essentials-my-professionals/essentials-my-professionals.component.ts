@@ -32,7 +32,7 @@ export class essentialsMyProfessionalsComponent implements OnInit {
         businessName: new FormControl(''),
         name: new FormControl('', Validators.required),
         address: new FormControl(''),
-        mpPhoneNumbers: new FormControl('',Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)),
+        mpPhoneNumbers: new FormControl(''),
         mpEmailAddress: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]), 
         profileId: new FormControl('')
       });
@@ -112,4 +112,11 @@ export class essentialsMyProfessionalsComponent implements OnInit {
       key = event.charCode;
       return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
     } 
+
+    onlyNumbers(event)
+    {  
+      if ((event.which != 46 ) && (event.which < 48 || event.which > 57)) {
+        event.preventDefault();
+      }
+    }
 }
