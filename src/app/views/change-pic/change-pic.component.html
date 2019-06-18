@@ -17,8 +17,8 @@
 
 
   <div *ngIf="cropping.isLoaded">
-    <button (click)="cropping.zoomIn()" type="button" ly-button appearance="icon"><ly-icon>zoom_in</ly-icon></button>
-    <button (click)="cropping.zoomOut()" type="button"  ly-button appearance="icon"><ly-icon>zoom_out</ly-icon></button>
+    <!-- <button (click)="cropping.zoomIn()" type="button" ly-button appearance="icon"><ly-icon>zoom_in</ly-icon></button>
+    <button (click)="cropping.zoomOut()" type="button"  ly-button appearance="icon"><ly-icon>zoom_out</ly-icon></button> -->
     <button (click)="cropping.center()"  type="button" ly-button appearance="icon"><ly-icon>filter_center_focus</ly-icon></button>
   
     <!-- <button (click)="cropping.rotate(-90)" type="button"  ly-button appearance="icon"><ly-icon>rotate_90_degrees_ccw</ly-icon></button>
@@ -39,13 +39,13 @@
 (error)="onerror($event)">
   <span>Drag and drop image</span>
 </ly-img-cropper>
-<!-- <div *ngIf="cropping.isLoaded" [className]="classes.range">
-   <input type="range" [className]="classes.rangeInput" [attr.min]="cropping.minScale" [(ngModel)]="scale" max="1"  step="any">
-</div> -->
-<!-- <button *ngIf="cropping.isLoaded" type="button"  color="accent" (click)="cropping.crop()" ly-button>
+<div *ngIf="cropping.isLoaded" [className]="classes.range">
+   <input type="range" [className]="classes.rangeInput" [attr.min]="cropping.minScale" #ranger (input)="cropping.setScale(ranger.value)" max="1"  step="any">
+</div>
+<!--<button *ngIf="cropping.isLoaded" type="button"  color="accent" (click)="cropping.crop()" ly-button>
   <ly-icon>crop</ly-icon>crop
 </button>
-<div><img *ngIf="cropping.isCropped" [src]="croppedImage"></div> -->
+ <div><img *ngIf="cropping.isCropped" [src]="croppedImage"></div> -->
 </div>
 <div class="ll--modal--footer profile--footer">
   <!-- <button mat-raised-button class="llp--primary--btn save--profile--btn" type="button" (click)="saveProfilePicture();" [disabled]="!data.image">Save</button> -->
