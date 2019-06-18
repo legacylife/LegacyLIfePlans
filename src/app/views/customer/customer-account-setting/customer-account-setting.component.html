@@ -15,19 +15,19 @@
           </div>
 
           <div class="acc--user--details text-center">
-            <h2 *ngIf="profile.city">{{profile.firstName}} {{profile.lastName}}</h2>
-            <p *ngIf="profile.city">{{profile.city}}, {{profile.state}} - {{profile.zipcode}}</p>
+            <h2 *ngIf="profile.city">{{profile?.firstName}} {{profile?.lastName}}</h2>
+            <p *ngIf="profile.city">{{profile?.city}}, {{profile?.state}} - {{profile?.zipcode}}</p>
             <div class="sta--m">
-              <mat-icon>star</mat-icon> {{profile.userType}}</div>
+              <mat-icon>star</mat-icon> {{profile?.userType}}</div>
           </div>
 
           <div class="email--phone">
             <mat-icon>markunread</mat-icon>
-            <span>{{profile.username}}</span>
+            <span>{{profile?.username}}</span>
           </div>
           <div class="email--phone mb-0">
             <mat-icon>phone</mat-icon>
-            <span>+1 {{profile.phoneNumber}}</span>
+            <span>+1 {{profile?.phoneNumber}}</span>
           </div>
 
           <div class="deactivate--acc">

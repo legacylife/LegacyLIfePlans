@@ -1,2 +1,9 @@
 @import 'llp-global-styles.scss';
 @import '../customer-home.component.scss';
+.uploaded--files{
+    &:hover{
+        .normal--label{
+            text-decoration: underline;
+        }
+    }
+}
