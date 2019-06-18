@@ -72,7 +72,7 @@ import { EssentialsMyProfessionalsDetailsComponent } from './customer-home/essen
 import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
 import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
 // Professional
-import { CustomerProfLandingComponent } from './customer-professionals/customer-professionals-landing/customer-professionals-landing.component';
+import { CustomerProfDetailsComponent } from './customer-professionals/customer-professionals-details/customer-professionals-details.component';
 import { SendAnEmailComponent } from './customer-professionals/send-an-email-modal/send-an-email-modal.component';
 import { HireAdvisorComponent } from './customer-professionals/hire-advisor-modal/hire-advisor-modal.component';
 @NgModule({
@@ -123,7 +123,7 @@ import { HireAdvisorComponent } from './customer-professionals/hire-advisor-moda
     addTrusteeModalComponent, essentialsMyProfessionalsComponent, EssentialsMyProfessionalsDetailsComponent,
     EmergencyContactsComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,
     EmergencyContactsDetailsComponent, CustomerLegalStuffDetailsComponent,
-    CustomerProfLandingComponent, SendAnEmailComponent, HireAdvisorComponent
+    CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard
   ], bootstrap: [CustomerSignupComponent], entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,

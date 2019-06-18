@@ -8,12 +8,12 @@ import { egretAnimations } from '../../../../shared/animations/egret-animations'
 
 
 @Component({
-  selector: 'app-customer-professionals-landing',
-  templateUrl: './customer-professionals-landing.component.html',
-  styleUrls: ['./customer-professionals-landing.component.scss'],
+  selector: 'app-customer-professionals-details',
+  templateUrl: './customer-professionals-details.component.html',
+  styleUrls: ['./customer-professionals-details.component.scss'],
   animations: [egretAnimations]
 })
-export class CustomerProfLandingComponent implements OnInit {
+export class CustomerProfDetailsComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   profileData: any;
   about: string;
