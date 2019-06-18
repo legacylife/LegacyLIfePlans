@@ -4,28 +4,32 @@
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
 </div>
-<form class="llp-form-wrapper">
+<form class="llp-form-wrapper change--profile">
   <div class="ll--modal--body">
-<div [className]="classes.actions">
-  <button ly-button color="primary" type="button" (click)="_fileInput.click()">
+<div [className]="classes.actions"> 
+  <button ly-button color="primary" type="button" (click)="_fileInput.click()" class="select--file">
     <ly-icon>image</ly-icon>
     <span>Select File</span>
   </button>
   <span [className]="classes.flex"></span>
   <!-- Hidden input -->
   <input #_fileInput type="file" (change)="cropping.selectInputEvent($event)" accept="image/*" hidden>  
+
+
+  <div *ngIf="cropping.isLoaded">
+    <button (click)="cropping.zoomIn()" type="button" ly-button appearance="icon"><ly-icon>zoom_in</ly-icon></button>
+    <button (click)="cropping.zoomOut()" type="button"  ly-button appearance="icon"><ly-icon>zoom_out</ly-icon></button>
+    <button (click)="cropping.center()"  type="button" ly-button appearance="icon"><ly-icon>filter_center_focus</ly-icon></button>
+  
+    <!-- <button (click)="cropping.rotate(-90)" type="button"  ly-button appearance="icon"><ly-icon>rotate_90_degrees_ccw</ly-icon></button>
+    <button (click)="cropping.fit()" type="button"  ly-button>Fit</button>
+    <button (click)="cropping.fitToScreen()" type="button"  ly-button>Fit to screen</button>
+    <button (click)="cropping.setScale(1)" type="button"  ly-button>1:1</button> -->
+    <!-- <button (click)="cropping.clean()" type="button"  ly-button>Clear</button> -->
+  </div>
 </div>
 
-<div *ngIf="cropping.isLoaded">
-  <button (click)="cropping.zoomIn()" type="button" ly-button appearance="icon"><ly-icon>zoom_in</ly-icon></button>
-  <button (click)="cropping.zoomOut()" type="button"  ly-button appearance="icon"><ly-icon>zoom_out</ly-icon></button>
-  <button (click)="cropping.center()"  type="button" ly-button appearance="icon"><ly-icon>filter_center_focus</ly-icon></button>
-  <!-- <button (click)="cropping.rotate(-90)" type="button"  ly-button appearance="icon"><ly-icon>rotate_90_degrees_ccw</ly-icon></button>
-  <button (click)="cropping.fit()" type="button"  ly-button>Fit</button>
-  <button (click)="cropping.fitToScreen()" type="button"  ly-button>Fit to screen</button>
-  <button (click)="cropping.setScale(1)" type="button"  ly-button>1:1</button> -->
-  <button (click)="cropping.clean()" type="button"  ly-button>Clear</button>
-</div>
+
 
 <ly-img-cropper [withClass]="classes.cropping" #cropping
 [config]="myConfig"
