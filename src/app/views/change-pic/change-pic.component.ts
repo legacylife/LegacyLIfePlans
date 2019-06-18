@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit,OnInit, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit,OnInit } from '@angular/core';
 import { UserAPIService } from './../../userapi.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AppConfirmService } from './../../shared/services/app-confirm/app-confirm.service';
@@ -127,6 +127,8 @@ export class ChangePicComponent implements OnInit,AfterViewInit {
   classes = this.theme.addStyleSheet(styles);
   croppedImage?: string;
   result: string;
+
+  scale: number;
   
   data: any;  
   @ViewChild(LyResizingCroppingImages) cropper: LyResizingCroppingImages;

@@ -391,13 +391,13 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-radio-group aria-label="Select an option" class="llp-radio" name="Producers" [formControl]="LicenseForm.controls['manageOtherProceducers']">
                       <div class="checkbox-label">Do you manage other products?</div>
-                      <mat-radio-button (change)="showHowManyProducts(this)" value="1" class="" [checked]="profile.howManyProducers !== ''">Yes</mat-radio-button>
-                      <mat-radio-button (change)="showHowManyProducts(this)" value="2" class="" [checked]="profile.howManyProducers === ''">No</mat-radio-button>
+                      <mat-radio-button (change)="showHowManyProducts('1')" value="1" class="" [checked]="profile.howManyProducers !== ''">Yes</mat-radio-button>
+                      <mat-radio-button (change)="showHowManyProducts('2')" value="2" class="" [checked]="profile.howManyProducers === ''">No</mat-radio-button>
                       <mat-icon matTooltip="Please select option yes or no to manage products" matTooltipClass="llp--tooltip error" *ngIf="LicenseForm.controls['manageOtherProceducers'].hasError('required') && LicenseForm.controls['manageOtherProceducers'].touched"
                       class="red--alert">help_outline</mat-icon>
                     </mat-radio-group>
-                    <mat-form-field class="full-width"  *ngIf="showHowManyProducer">
-                      <input matInput name="howManyProducers" placeholder="If yes, how many?" [formControl]="LicenseForm.controls['howManyProducers']">
+                    <mat-form-field class="full-width" *ngIf="showHowManyProducer">
+                      <input matInput name="howManyProducers" placeholder="If yes, how many?" [required]="showHowManyProducer" [formControl]="LicenseForm.controls['howManyProducers']">
                     </mat-form-field>
                   </div>
                 </div>
