@@ -36,7 +36,7 @@ import { CustomerMyTrusteeComponent } from './customer-trustees/customer-my-trus
 import { CustomerHiredAdvisorComponent } from './customer-trustees/customer-hired-advisors/customer-hired-advisors.component';
 
 // Professional
-import { CustomerProfLandingComponent } from './customer-professionals/customer-professionals-landing/customer-professionals-landing.component';
+import { CustomerProfDetailsComponent } from './customer-professionals/customer-professionals-details/customer-professionals-details.component';
 
 export const CustomerRoutes: Routes = [
   {
@@ -151,8 +151,8 @@ export const CustomerRoutes: Routes = [
         canActivate: [UserAuthGuard],
         children: [
           {
-            path: 'prof-landing',
-            component:CustomerProfLandingComponent
+            path: 'prof-details',
+            component: CustomerProfDetailsComponent
           }
         ]
       }

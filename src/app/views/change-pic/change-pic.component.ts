@@ -17,7 +17,7 @@ const styles = (theme: ThemeVariables) => ({
     display: 'flex'
   },
   cropping: {
-    maxWidth: '400px',
+    maxWidth: '100%',
     height: '300px'
   },
   flex: {
@@ -25,7 +25,7 @@ const styles = (theme: ThemeVariables) => ({
   },
   range: {
     textAlign: 'center',
-    maxWidth: '400px'
+    maxWidth: '100%'
   },
   rangeInput: {
     maxWidth: '150px',
@@ -117,12 +117,12 @@ const styles = (theme: ThemeVariables) => ({
 @Component({
   //selector: 'app-change-pic',
   templateUrl: './change-pic.component.html',
-  //styleUrls: ['./change-pic.component.scss'],
+  styleUrls: ['./change-pic.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false
 })
 export class ChangePicComponent implements OnInit,AfterViewInit {
-  profilePicture: any = "assets/images/arkenea/default.jpg"
+  profilePicture: any = "assets/images/arkenea/dummyImglg.jpg"
   userId:string;
   classes = this.theme.addStyleSheet(styles);
   croppedImage?: string;
