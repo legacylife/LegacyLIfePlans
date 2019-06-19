@@ -71,6 +71,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   zipcodeval:string
   firstNameval:string
   lastNameval:string
+  phoneval:string
 
   modified = false // display confirmation popup if user click on other link
 
@@ -196,19 +197,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.zipcodeval = this.profile.zipcode ? this.profile.zipcode : ""
         this.firstNameval = this.profile.firstName ? this.profile.firstName : ""
         this.lastNameval = this.profile.lastName ? this.profile.lastName : ""
-
-        // if(this.profile.advisorDocuments && this.profile.advisorDocuments.length == 0){
-        //   alert(this.profile.advisorDocuments.length)
-        //   this.advisorDocumentsMissing = false;
-        //   this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': false })
-        // }
-        // else {
-        //   alert("sdfsdfsdf"+this.profile.advisorDocuments.length)
-        //   this.advisorDocumentsMissing = true;
-        //   this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': true })
-        // }
-
-
+        this.phoneval = this.profile.businessPhoneNumber ? this.profile.businessPhoneNumber : ""
+      
         if (this.profile.profilePicture) {
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + this.profile.profilePicture;
           localStorage.setItem('endUserProfilePicture', this.profilePicture)
@@ -361,7 +351,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     this.cityval = this.AddressForm.controls['city'].value
     this.stateval = this.AddressForm.controls['state'].value
     this.zipcodeval = this.AddressForm.controls['zipcode'].value
-
+    this.phoneval = this.AddressForm.controls['businessPhoneNumber'].value
     var query = {};
     var proquery = {};
     const req_vars = {
