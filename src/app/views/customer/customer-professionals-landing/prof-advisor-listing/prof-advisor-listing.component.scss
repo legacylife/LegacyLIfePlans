@@ -1,0 +1,260 @@
+@import 'llp-global-styles.scss';
+
+::ng-deep .mat-option-text{
+    font-family: $font--lato--regular !important;
+    font-size: 16px;
+}
+
+.llp--content--wrapper{
+    
+    .empty--section{
+        margin: 0 0 15px 0;       
+        box-shadow: none;
+        border-radius: 2px;
+
+        .mat-card-header{
+            padding: 0 25px;
+            height: 55px;
+            background-color: #e7ebcd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            ::ng-deep .mat-card-header-text{
+                margin: 0;
+                font-size: 16px;
+                color: #222324;
+            }
+
+         
+        }
+        .mat-card-content{
+            border: 1px solid #e1e5c7;
+            border-top: none;
+            padding: 20px 25px;
+
+            .info{
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 20px;
+                a{
+                    color: #c72128;
+                    font-size: 15px;
+                }
+            }
+        
+        }
+     
+    }
+
+    
+
+    .appointees--wrapper{
+        padding-top: 0 !important;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        .appointees--section{
+            width: 30%;
+            height: auto;
+            border: solid 1px #dadce0;
+            border-radius: 2px;
+            padding: 0 10px;
+            text-align: center;
+            flex-grow: 1;
+            margin: 20px 20px 0 0 ;
+            box-shadow: none;
+            &.sponsored {
+                .sponsored--patch{
+                    display: block;
+                    width: 76px;
+                    height: 25px;
+                    border-radius: 2px;
+                    background-color: #727a33;
+                    color: #fff;
+                    font-family: $font--lato--bold;
+                    font-size: 12px;
+                    align-items: center;
+                    justify-content: center;
+                    display: flex;
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                }                
+            }
+            .sponsored--patch{
+                display: none;
+            }
+            
+            ::ng-deep .mat-card-header-text{
+                width: 100%;
+            }
+            .mat-card-header{
+                background-color: #fff;
+                border-bottom: 1px solid #dadce0;
+                padding: 0 20px;
+                position: relative;
+
+                .mat-card-title{
+                    display: flex;
+                    align-items: center;
+                    background-color: transparent;
+                }
+
+                .appointees--pic{
+                    width: 48px;
+                    height: 48px;
+                    border-radius: 50%;
+                    line-height: 50px;
+                    overflow: hidden;
+                    flex-shrink: 0;
+                    img{
+                        min-height: 100%;
+                    }
+                }
+                .appointees--desc{
+                    text-align: left;
+                    margin-left: 20px;
+                    overflow: hidden;
+                    h5{
+                        margin:0 60px 8px 0;
+                        font-size: 18px;
+                        color: #222324; 
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    p{
+                        font-size: 14px;
+                        color: #828385;
+                        line-height: 14px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+
+                        &.position{
+                            text-transform: uppercase;
+                        }
+                    }
+                }
+                
+            }
+            .mat-card-content{
+                border: none;
+                padding: 15px 25px;
+                text-align: left;
+                margin: 0;
+                h4{
+                    font-size: 16px;
+                    color: #222324;
+                    margin: 0 0 15px 0;
+                }
+                .files--folder{
+                    margin-bottom: 5px;
+                    display: flex;
+                    align-items: center;
+                    p{
+                        font-size: 14px;
+                        color: #333;
+                        margin: 0;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        overflow: hidden;
+                    }
+
+                    .mat-icon{
+                        width: 34px;
+                        height: 25px;
+                        color: #757575;
+                        flex-shrink: 0;
+                        align-self: flex-start;
+                    }
+                }
+
+                .action--wrapp{
+                    display: flex;
+                    justify-content: space-around;
+                    margin: 20px 0 10px 0;
+
+                    .action{
+                        display: flex;
+                        a{
+                            color: #c72128;
+                            font-size: 16px;
+                        }                        
+                        .mat-icon{
+                            width: 23px;
+                            height: 23px;
+                            color: #c72128;
+                            flex-shrink: 0;
+                            margin-right: 10px;
+                            font-size: 23px;
+                        }
+                    }
+                }
+            }
+        }
+        .divider{
+            border-top: 1px solid #e4e1e1;
+            margin: 30px 0 0px 0;
+            padding-top: 17px;
+            display: flex;
+            width: 100%;
+            p{
+                margin: 0;
+                font-size: 16px;
+                color: #000;
+            }
+        }
+    }
+}
+
+/* Media query (start here)*/
+
+@media only screen and (max-width: 599px) {
+    .llp--content--wrapper .appointees--wrapper .appointees--section{
+        width: 100%;
+        margin: 15px 0 0 0 ;
+    }
+    .llp--content--wrapper .empty--section .mat-card-content{
+        padding: 15px 10px
+    }
+    .llp--primary--btn{
+        padding: 0px 10px !important;
+        height: 38px;
+    }
+    .llp--content--wrapper .empty--section .mat-card-header {
+        padding: 0 15px;
+    }
+  
+  
+    .llp--content--wrapper .empty--section .mat-card-header.header--with--sort .mat-select {
+        width: 100px;
+
+    }
+}
+@media only screen and (min-width: 600px) and (max-width: 959px){
+
+    .llp--content--wrapper .appointees--wrapper .appointees--section{
+        width: 42%;
+    }
+   
+}
+@media only screen and (min-width: 960px) and (max-width: 979px){    
+    .llp--content--wrapper .appointees--wrapper .appointees--section{
+        width: 42%;
+    }
+ 
+}
+@media only screen and (min-width: 980px) and (max-width: 1279px){
+    .llp--content--wrapper .appointees--wrapper .appointees--section{
+        width: 42%;
+    }
+}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){
+
+}
+@media only screen and (min-width: 1441px) and (max-width: 1550px){}
+
+/* Media query (end here)*/

@@ -36,7 +36,9 @@ import { CustomerMyTrusteeComponent } from './customer-trustees/customer-my-trus
 import { CustomerHiredAdvisorComponent } from './customer-trustees/customer-hired-advisors/customer-hired-advisors.component';
 
 // Professional
+import { CustomerProfessionalsLandingComponent } from './customer-professionals-landing/customer-professionals-landing.component';
 import { CustomerProfDetailsComponent } from './customer-professionals/customer-professionals-details/customer-professionals-details.component';
+import { ProfAdvisorListingComponent } from './customer-professionals-landing/prof-advisor-listing/prof-advisor-listing.component';
 
 export const CustomerRoutes: Routes = [
   {
@@ -153,6 +155,23 @@ export const CustomerRoutes: Routes = [
           {
             path: 'prof-details',
             component: CustomerProfDetailsComponent
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: 'professionals-landing',
+    component: CustomerLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: CustomerProfessionalsLandingComponent,
+        canActivate: [UserAuthGuard],
+        children: [
+          {
+            path: 'prof-advisor-listing',
+            component: ProfAdvisorListingComponent
           }
         ]
       }

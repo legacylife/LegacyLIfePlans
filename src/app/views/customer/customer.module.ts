@@ -46,6 +46,7 @@ import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
 import { states } from '../../state';
 import { CustomerSubscriptionComponent } from './customer-subscription/customer-subscription.component';
 import { CustomerTrusteesComponent } from './customer-trustees/customer-trustees.component';
+import { CustomerProfessionalsLandingComponent } from './customer-professionals-landing/customer-professionals-landing.component';
 import { CustomerProfessionalComponent } from './customer-professionals/customer-professionals.component';
 import { CustomerHomeEssentialComponent } from './customer-home/customer-essential/customer-home-essential.component';
 import { CustomerDashboardComponent } from './customer-home/customer-dashboard/customer-dashboard.component';
@@ -75,6 +76,9 @@ import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edi
 import { CustomerProfDetailsComponent } from './customer-professionals/customer-professionals-details/customer-professionals-details.component';
 import { SendAnEmailComponent } from './customer-professionals/send-an-email-modal/send-an-email-modal.component';
 import { HireAdvisorComponent } from './customer-professionals/hire-advisor-modal/hire-advisor-modal.component';
+import { ProfAdvisorListingComponent } from './customer-professionals-landing/prof-advisor-listing/prof-advisor-listing.component';
+
+
 import {LyThemeModule,LY_THEME,LY_THEME_GLOBAL_VARIABLES} from '@alyle/ui';
 /** Import the component modules */
 import { LyButtonModule } from '@alyle/ui/button';
@@ -155,7 +159,8 @@ export class GlobalVariables {
     addTrusteeModalComponent, essentialsMyProfessionalsComponent, EssentialsMyProfessionalsDetailsComponent,
     EmergencyContactsComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,
     EmergencyContactsDetailsComponent, CustomerLegalStuffDetailsComponent,
-    CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent
+    CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent,
+    CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
     { provide: LY_THEME, useClass: MinimaLight, multi: true },

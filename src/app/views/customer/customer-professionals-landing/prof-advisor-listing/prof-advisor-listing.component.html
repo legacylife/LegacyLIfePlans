@@ -1,0 +1,100 @@
+<div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
+
+  <div class="full-width">
+
+
+    <mat-card class="empty--section p-0">
+      <mat-card-header class="m-0 header--with--sort">
+        <mat-card-title class="m-0">Advisor Listing</mat-card-title>
+      </mat-card-header>
+
+
+      <mat-card-content class="appointees--wrapper">
+
+        <mat-card class="appointees--section p-0 sponsored" *ngFor="let peoples of adListings">
+          <mat-card-header class="m-0">
+            <mat-card-title class="m-0">
+              <div class="appointees--pic">
+                <img src="{{peoples.profilePic}}" />
+              </div>
+              <div class="appointees--desc">
+                <h5>{{peoples.userName}}</h5>
+                <p class="position m-0">{{peoples.position}}</p>
+              </div>
+              <div class="sponsored--patch">
+                Sponsored
+              </div>
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h4>Specialities</h4>
+            <div class="files--folder">
+              <mat-icon>school</mat-icon>
+              <p>{{peoples.schoolName}}</p>
+            </div>
+            <div class="files--folder mb-0">
+              <mat-icon>work</mat-icon>
+              <p>{{peoples.yearsOfServices}}</p>
+            </div>
+            <div class="action--wrapp">
+              <div class="action">
+                <mat-icon>remove_red_eye</mat-icon>
+                <a [routerLink]="'/customer/professionals/prof-details'">View</a>
+              </div>
+              <div class="action">
+                <mat-icon>local_phone</mat-icon>
+                <a>Contact</a>
+              </div>
+              <div class="action">
+                <mat-icon>assignment_turned_in</mat-icon>
+                <a>Hire</a>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <div class="divider">
+          <p>More quality professional advisors</p>
+        </div>
+        <mat-card class="appointees--section p-0 " *ngFor="let qualityAd of qualityAdvisor">
+          <mat-card-header class="m-0">
+            <mat-card-title class="m-0">
+              <div class="appointees--pic">
+                <img src="{{qualityAd.profilePic}}" />
+              </div>
+              <div class="appointees--desc">
+                <h5>{{qualityAd.userName}}</h5>
+                <p class="position m-0">{{qualityAd.position}}</p>
+              </div>
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h4>Specialities</h4>
+            <div class="files--folder">
+              <mat-icon>school</mat-icon>
+              <p>{{qualityAd.schoolName}}</p>
+            </div>
+            <div class="files--folder mb-0">
+              <mat-icon>work</mat-icon>
+              <p>{{qualityAd.yearsOfServices}}</p>
+            </div>
+            <div class="action--wrapp">              
+              <div class="action">
+                <mat-icon>local_phone</mat-icon>
+                <a>Contact</a>
+              </div>
+              <div class="action">
+                <mat-icon>assignment_turned_in</mat-icon>
+                <a>Hire</a>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+
+
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
