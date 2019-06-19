@@ -28,6 +28,9 @@ export class CustomerProfessionalComponent implements OnInit {
       this.profilePicture =  nextValue
     })
   }
+  toggleSideNav() {
+    this.sideNav.opened = !this.sideNav.opened;
+  }
   openSendEmailModal(data: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(SendAnEmailComponent, {
       width: '720px',
