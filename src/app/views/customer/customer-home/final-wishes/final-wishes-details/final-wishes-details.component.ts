@@ -6,8 +6,8 @@ import { egretAnimations } from '../../../../../shared/animations/egret-animatio
 import { UserAPIService } from './../../../../../userapi.service';
 import { AppLoaderService } from '../../../../../shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from '../../../../../shared/services/app-confirm/app-confirm.service';
-import { legalStuffModalComponent } from './../../legal-stuff-modal/legal-stuff-modal.component';
-import { EstateTypeOfDocument,HealthcareTypeOfDocument,PersonalAffairsTypeOfDocument } from '../../../../../selectList';
+import { FinalWishesFormModalComponent } from './../final-wishes-form-modal/final-wishes-form-modal.component';
+
 @Component({
   selector: 'app-customer-home',
   templateUrl: './final-wishes-details.component.html',
@@ -15,13 +15,10 @@ import { EstateTypeOfDocument,HealthcareTypeOfDocument,PersonalAffairsTypeOfDocu
   animations: [egretAnimations]
 })
 export class FinalWishesDetailsComponent implements OnInit {
-  //public isSideNavOpen: boolean; public viewMode: string = 'grid-view';  public currentPage: any;  dayFirst = true;  daySeco = false;
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  //public products: any[];  public categories: any[];  public activeCategory: string = 'all';  public filterForm: FormGroup;  public cart: any[];  public cartData: any;
   userId: string;
   selectedProfileId: string = "";
   row: any;
-  typeOfDocumentList: any[];
   re =  "/(?:\.([^.]+))?$/" ;
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
@@ -34,11 +31,11 @@ export class FinalWishesDetailsComponent implements OnInit {
     this.userId = localStorage.getItem("endUserId");
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
-    this.getEssentialLegalView();
+    this.getFinalWishView();
   }
 
   //function to get all events
-  getEssentialLegalView = (query = {}, search = false) => {
+  getFinalWishView = (query = {}, search = false) => {
     let profileIds = '';
     let req_vars = {}
     if (this.selectedProfileId) {
@@ -47,7 +44,7 @@ export class FinalWishesDetailsComponent implements OnInit {
         query: Object.assign({ _id: profileIds })
       }
     }
-    this.userapi.apiRequest('post', 'customer/view-legalStuff-details', req_vars).subscribe(result => {     
+    this.userapi.apiRequest('post', 'finalWish/view-wish-details', req_vars).subscribe(result => {     
       if (result.status == "error") {
         console.log(result.data)
       } else {
@@ -60,9 +57,8 @@ export class FinalWishesDetailsComponent implements OnInit {
     })
   }
 
-  openLegalStuffModals(FolderNames, isNew?) {
-
-    let dialogRef: MatDialogRef<any> = this.dialog.open(legalStuffModalComponent, {
+  openFinalWishModal(FolderNames, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(FinalWishesFormModalComponent, {
       data: {
         FolderName: FolderNames,
         newName: FolderNames,
@@ -70,20 +66,18 @@ export class FinalWishesDetailsComponent implements OnInit {
       width: '720px',
       disableClose: true,
     })
-
     dialogRef.afterClosed()
       .subscribe(res => {
-        this.getEssentialLegalView();
+        this.getFinalWishView();
         if (!res) {
           // If user press cancel
           return;
         }
       })
-
   }
 
-  deleteLegalStuff() {
-    var statMsg = "Are you sure you want to delete legal stuff?"
+  deleteFinalWish() {
+    var statMsg = "Are you sure you want to delete final wish?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
         if (res) {
@@ -92,13 +86,13 @@ export class FinalWishesDetailsComponent implements OnInit {
           const req_vars = {
             query: Object.assign({ _id: this.selectedProfileId }, query)
           }
-          this.userapi.apiRequest('post', 'customer/delete-legal-stuff', req_vars).subscribe(result => {
+          this.userapi.apiRequest('post', 'finalWish/delete-finalWish', req_vars).subscribe(result => {
             if (result.status == "error") {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard', 'legal-stuff'])
+              this.router.navigate(['/', 'customer', 'dashboard', 'final-wishes'])
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {
@@ -109,22 +103,4 @@ export class FinalWishesDetailsComponent implements OnInit {
       })
   }
 
-  
-
-  getType(key) {
-    if (this.row.subFolderName) {
-      if(this.row.subFolderName=='Estate'){
-        this.typeOfDocumentList = EstateTypeOfDocument;
-      }else if(this.row.subFolderName=='Healthcare'){
-        this.typeOfDocumentList = HealthcareTypeOfDocument;
-      }else if(this.row.subFolderName=='Personal Affairs'){
-        this.typeOfDocumentList = PersonalAffairsTypeOfDocument;      
-      }
-
-      let filteredTyes = this.typeOfDocumentList.filter(dtype => {
-        return dtype.opt_code === key
-      }).map(el => el.opt_name)[0]
-      return filteredTyes
-    }
-  }
 }

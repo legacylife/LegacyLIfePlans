@@ -16,7 +16,7 @@
         </mat-form-field>
 
         <div class="upload--buss--docs--sec">
-             <label>Upload your ID proof documents *</label>
+             <label>Upload your documents</label>
              <div class="upload--box fileupload-drop-zone"
                 ng2FileDrop
                 [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
@@ -28,15 +28,11 @@
               </div>
               <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
             </div>
-          <!-- <mat-form-field class="full-width" *ngIf="idProofDocuments_temps">
-                <input matInput name="idProofDocuments_temp" [formControl]="FinalForm.controls['idProofDocuments_temp']">
-                <small *ngIf="FinalForm.controls['idProofDocuments_temp'].hasError('required') && FinalForm.controls['idProofDocuments_temp'].touched" class="form-error-msg"> Please drag your document. </small>
-          </mat-form-field> -->
       
           <div *ngIf="subFolderDocumentsList" >
-            <h3 class="header--text fnt--16">Uploaded ID proof</h3>
+            <h3 class="header--text fnt--16">Uploaded document</h3>
             <mat-chip-list class="doc--list" *ngFor="let doc of subFolderDocumentsList; index as i">
-                <mat-chip><a href="https://s3.amazonaws.com/llp-dev/legalStuff/{{doc.tmpName}}" >{{doc.title}}</a><mat-icon matChipRemove  (click)="subFolderDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+                <mat-chip><a href="https://s3.amazonaws.com/llp-dev/finalWishes/{{doc.tmpName}}" >{{doc.title}}</a><mat-icon matChipRemove  (click)="subFolderDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
             </mat-chip-list>
           </div>
 
@@ -58,11 +54,9 @@
         <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
           <input matInput name="profileId" [formControl]="FinalForm.controls['profileId']" readonly="readonly">
         </mat-form-field>
-
       </div>
     </div>
   </div>
-
   <div class="ll--modal--footer text-center">
     <button mat-raised-button class="llp--primary--btn" [disabled]="!FinalForm.valid">Save</button>
   </div>

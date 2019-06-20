@@ -96,39 +96,4 @@ export class FinalWishesComponent implements OnInit {
       }
     })
   }
-
-/*
- openObituaryModal(data: any = {}, isNew?) {
-    
-    localStorage.setItem("personalProfileAction", "added");
-    let dialogRef: MatDialogRef<any> = this.dialog.open(FinalWishesFormModalComponent, {
-      width: '720px',
-      disableClose: true,
-    })
-    dialogRef.afterClosed()
-    .subscribe(res => {
-      this.getObituaryList();
-      if (!res) {
-        // If user press cancel
-        return;
-      }
-    })
-  }
-
-  openCelebrationModal(data: any = {}, isNew?) {
-    let title = isNew ? 'Add professionals' : 'Update professionals';
-    let dialogRef: MatDialogRef<any> = this.dialog.open(FinalWishesFormModalComponent, {
-      width: '720px',
-      disableClose: true,
-    })
-    dialogRef.afterClosed()
-    .subscribe(res => {
-      this.getCelebrationList();
-      if (!res) {
-        // If user press cancel
-        return;
-      }
-    })
-  } */
-
 }

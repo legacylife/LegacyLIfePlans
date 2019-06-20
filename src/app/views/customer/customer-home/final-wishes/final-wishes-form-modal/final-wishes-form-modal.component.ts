@@ -21,13 +21,15 @@ export class FinalWishesFormModalComponent implements OnInit {
   public hasBaseDropZoneOver: boolean = false;
   FinalForm: FormGroup;
   selectedProfileId: string;
-  WishesDocumentsMissing = false;
+  
   wishDocumentsList:any = [];
   profileIdHiddenVal:boolean = false;
   folderName: string;
   newName:string = "";
   fileErrors: any;
   subFolderDocumentsList: any;
+  finalWishList:any = [];
+
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService  ,@Inject(MAT_DIALOG_DATA) public data: any ) 
@@ -59,7 +61,44 @@ export class FinalWishesFormModalComponent implements OnInit {
      this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
      this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
      this.subFolderDocumentsList = [];
-     this.getWishesDocuments();
+     this.getFinalWishesView();
+    }
+
+    getFinalWishesView = (query = {}, search = false) => {    
+      let req_vars = {
+        query: Object.assign({ customerId: this.userId,subFolderName:this.folderName,status:"Pending" }, query)
+      }
+  
+      let profileIds = '';
+      if (this.selectedProfileId) {
+        profileIds = this.selectedProfileId;
+        req_vars = {
+          query: Object.assign({ _id: profileIds })
+        }
+      }
+  
+      this.loader.open(); 
+      this.userapi.apiRequest('post', 'finalwish/view-wish-details', req_vars).subscribe(result => {
+        this.loader.close();
+        if (result.status == "error") {
+          console.log(result.data)
+        } else {
+          if(result.data){    
+            this.finalWishList = result.data;   
+            let profileIds = this.finalWishList._id;
+            this.FinalForm.controls['profileId'].setValue(profileIds);
+            
+            this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
+            this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
+            this.subFolderDocumentsList = result.data.subFolderDocuments;
+            
+            this.FinalForm.controls['title'].setValue(this.finalWishList.title); 
+            this.FinalForm.controls['comments'].setValue(this.finalWishList.comments);
+          }       
+        }
+      }, (err) => {
+        console.error(err);
+      })
     }
 
     WishesFormSubmit(profileInData = null) {
@@ -141,8 +180,7 @@ export class FinalWishesFormModalComponent implements OnInit {
       };
   }
 
-
-  getWishesDocuments = (query = {}, search = false, uploadRemained = true) => {    
+   getWishesDocuments = (query = {}, search = false, uploadRemained = true) => {    
     let profileIds = this.FinalForm.controls['profileId'].value;
     let req_vars = {
       query: Object.assign({customerId: this.userId,subFolderName:this.folderName,status:"Pending" }),
