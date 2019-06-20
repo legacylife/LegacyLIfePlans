@@ -40,6 +40,10 @@ import { CustomerProfessionalsLandingComponent } from './customer-professionals-
 import { CustomerProfDetailsComponent } from './customer-professionals/customer-professionals-details/customer-professionals-details.component';
 import { ProfAdvisorListingComponent } from './customer-professionals-landing/prof-advisor-listing/prof-advisor-listing.component';
 
+//final-wishes
+import { FinalWishesComponent } from './customer-home/final-wishes/final-wishes-list/final-wishes-list.component';
+import { FinalWishesDetailsComponent } from './customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
+
 export const CustomerRoutes: Routes = [
   {
     path: 'signup',
@@ -113,6 +117,14 @@ export const CustomerRoutes: Routes = [
           {
             path: 'emergency-contacts-details/:id',
             component: EmergencyContactsDetailsComponent
+          },
+          {
+            path: 'final-wishes',
+            component: FinalWishesComponent
+          },         
+          {
+            path: 'final-wishes-view/:id',
+            component: FinalWishesDetailsComponent
           },
         ]
       },
