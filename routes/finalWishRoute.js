@@ -116,7 +116,29 @@ function viewFinalWish(req, res) {
   })
 }
 
+function deleteFinalWish(req, res) {
+  let { query } = req.body;
+  let fields = { }
+  finalWish.findOne(query, fields, function (err, wishInfo) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      var upStatus = 'Delete';
+      var params = { status: upStatus }
+      finalWish.update({ _id: wishInfo._id }, { $set: params }, function (err, updatedinfo) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          let result = { "message": "Record deleted successfully!" }
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
 router.post("/view-wish-details", viewFinalWish)
 router.post("/finalListing", finalList)
 router.post("/wishes-form-submit", wishFormUpdate)
+router.post("/delete-finalWish", deleteFinalWish)
 module.exports = router
