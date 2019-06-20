@@ -7,6 +7,7 @@ router.use("/emailtemp", require("./routes/emailTemplatesRoute"))
 router.use("/globalsetting", require("./routes/globalSettingsRoute"))
 router.use("/advisor", require("./routes/advisorRoute"))
 router.use("/customer", require("./routes/customerRoute"))
+router.use("/finalwish", require("./routes/finalWishRoute"))
 router.use("/documents", require("./routes/documentsUploadRoute"))
 
 module.exports = router
