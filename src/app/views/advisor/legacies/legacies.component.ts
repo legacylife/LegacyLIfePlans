@@ -9,6 +9,8 @@ import { ReferAndEarnModalComponent } from './refer-and-earn-modal/refer-and-ear
 })
 export class LegaciesComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
+  legacyDayTwo = false;
+  legacyDayOne = true;
 
   constructor(
     private dialog: MatDialog,
@@ -17,11 +19,20 @@ export class LegaciesComponent implements OnInit {
   ngOnInit() {
   }
 
+
   openReferAndEarnModal(data: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
       width: '720px',
       disableClose: true,
     });
+    dialogRef.afterClosed()
+    .subscribe(res => {
+    this.legacyDayTwo = true;
+    this.legacyDayOne = false;
+    });
   }
+
+
+
 
 }

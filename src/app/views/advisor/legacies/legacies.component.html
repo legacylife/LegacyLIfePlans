@@ -7,7 +7,7 @@
           <mat-divider></mat-divider>
         </mat-card-title>
 
-        <mat-card-content class="recent--update--section" *ngIf="">
+        <mat-card-content class="recent--update--section" *ngIf="legacyDayOne">
           <p>All the user legacies you have got access to, will be displayed here. Currently you have no legacy access from
             any user.</p>
           <div class="red--box">
@@ -20,9 +20,7 @@
         </mat-card-content>
 
 
-        <mat-card-content class="recent--update--section legacy--wrapper">
-
-
+        <mat-card-content class="recent--update--section legacy--wrapper pr-0 pt-0" *ngIf="legacyDayTwo">
 
           <div class="legacy--box">
             <div class="legacy--pic">
@@ -30,20 +28,19 @@
             </div>
             <h4 class="legacy--name">Allen Barry</h4>
             <div class="legacy-confirm">
-              <div class="yes no">
-                <mat-icon>close</mat-icon>Reject Hiring
-              </div>
               <div class="yes">
                 <mat-icon>check</mat-icon>Confirm Hiring
               </div>
+              <div class="yes no">
+                <mat-icon>close</mat-icon>Reject Hiring
+              </div>
             </div>
           </div>
-
           <div class="legacy--box">
             <div class="legacy--pic">
-              <img class="ng-tns-c24-20" src="assets/images/arkenea/ca.jpg">
+              <img class="ng-tns-c24-20" src="assets/images/arkenea/emily.png">
             </div>
-            <h4 class="legacy--name">Allen Barry</h4>
+            <h4 class="legacy--name">Emily Doe</h4>
             <div class="legacy-confirm view-legacy">
               <div class="yes">
                 <mat-icon>description</mat-icon>
@@ -51,81 +48,57 @@
               </div>
             </div>
           </div>
-
           <div class="legacy--box">
-              <div class="legacy--pic">
-                <img class="ng-tns-c24-20" src="assets/images/arkenea/emily.png">
-              </div>
-              <h4 class="legacy--name">Emily Doe</h4>
-              <div class="legacy-confirm view-legacy">
-                <div class="yes">
-                  <mat-icon>description</mat-icon>
-                  <a>View Legacy</a>
-                </div>
+            <div class="legacy--pic">
+              <img class="ng-tns-c24-20" src="assets/images/arkenea/james.png">
+            </div>
+            <h4 class="legacy--name">Johnson Smith</h4>
+            <div class="legacy-confirm view-legacy">
+              <div class="yes">
+                <mat-icon>description</mat-icon>
+                <a>View Legacy</a>
               </div>
             </div>
-
-            <div class="legacy--box">
-                <div class="legacy--pic">
-                  <img class="ng-tns-c24-20" src="assets/images/arkenea/james.png">
-                </div>
-                <h4 class="legacy--name">Johnson Smith</h4>
-                <div class="legacy-confirm view-legacy">
-                  <div class="yes">
-                    <mat-icon>description</mat-icon>
-                    <a>View Legacy</a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="legacy--box">
-                  <div class="legacy--pic">
-                    <img class="ng-tns-c24-20" src="assets/images/arkenea/john.png">
-                  </div>
-                  <h4 class="legacy--name">James Anderson</h4>
-                  <div class="legacy-confirm view-legacy">
-                    <div class="yes">
-                      <mat-icon>description</mat-icon>
-                      <a>View Legacy</a>
-                    </div>
-                  </div>
-                </div>
-
+          </div>
           <div class="legacy--box">
-              <div class="legacy--pic">
-                <img class="ng-tns-c24-20" src="assets/images/arkenea/ca.jpg">
-              </div>
-              <h4 class="legacy--name">Johnson Smith</h4>
-              <div class="legacy-confirm">
-                <div class="yes no">
-                  <mat-icon>close</mat-icon>Reject Hiring
-                </div>
-                <div class="yes">
-                  <mat-icon>check</mat-icon>Confirm Hiring
-                </div>
+            <div class="legacy--pic">
+              <img class="ng-tns-c24-20" src="assets/images/arkenea/john.png">
+            </div>
+            <h4 class="legacy--name">James Anderson</h4>
+            <div class="legacy-confirm view-legacy">
+              <div class="yes">
+                <mat-icon>description</mat-icon>
+                <a>View Legacy</a>
               </div>
             </div>
-
+          </div>
           <div class="legacy--box">
-              <div class="legacy--pic">
-                <img class="ng-tns-c24-20" src="assets/images/arkenea/james.png">
+            <div class="legacy--pic">
+              <img class="ng-tns-c24-20" src="assets/images/arkenea/ca.jpg">
+            </div>
+            <h4 class="legacy--name">Johnson Smith</h4>
+            <div class="legacy-confirm">
+              <div class="yes">
+                <mat-icon>check</mat-icon>Confirm Hiring
               </div>
-              <h4 class="legacy--name">John Doe</h4>
-              <div class="legacy-confirm view-legacy">
-                <div class="yes">
-                  <mat-icon>description</mat-icon>
-                  <a>View Legacy</a>
-                </div>
+              <div class="yes no">
+                <mat-icon>close</mat-icon>Reject Hiring
               </div>
             </div>
-
-
-
+          </div>
+          <div class="legacy--box">
+            <div class="legacy--pic">
+              <img class="ng-tns-c24-20" src="assets/images/arkenea/james.png">
+            </div>
+            <h4 class="legacy--name">John Doe</h4>
+            <div class="legacy-confirm view-legacy">
+              <div class="yes">
+                <mat-icon>description</mat-icon>
+                <a>View Legacy</a>
+              </div>
+            </div>
+          </div>
         </mat-card-content>
-
-
-
-
 
       </mat-card>
     </div>
