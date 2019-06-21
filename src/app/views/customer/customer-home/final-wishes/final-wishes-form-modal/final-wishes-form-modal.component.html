@@ -5,7 +5,7 @@
   </button>
 </div>
 <form class="llp-form-wrapper" (ngSubmit)="WishesFormSubmit(FinalForm.value)">
-  <div class="ll--modal--body id--box--body legal--stuff--body--hgt">
+  <div class="ll--modal--body legal--stuff--body--hgt">
     <div fxLayout="row wrap" class="pt-1">
       <div fxFlex.xs="100">
       
@@ -41,6 +41,7 @@
           </mat-chip-list>    
 
           <small *ngIf="WishesDocumentsMissing" class="form-error-msg">{{invalidMessage}}</small>
+
           <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
             <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">{{uploader.progress}}%</div>
             <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="uploader.progress"></mat-progress-bar>

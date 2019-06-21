@@ -44,6 +44,10 @@ import { ProfAdvisorListingComponent } from './customer-professionals-landing/pr
 import { FinalWishesComponent } from './customer-home/final-wishes/final-wishes-list/final-wishes-list.component';
 import { FinalWishesDetailsComponent } from './customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
 
+//Pets
+import { PetsListComponent } from './customer-home/pets/pets-list/pets-list.component';
+import { PetsDetailsComponent } from './customer-home/pets/pets-details/pets-details.component';
+
 export const CustomerRoutes: Routes = [
   {
     path: 'signup',
@@ -130,6 +134,14 @@ export const CustomerRoutes: Routes = [
             path: 'final-wishes-view/:id',
             component: FinalWishesDetailsComponent
           },
+          {
+            path: 'pets',
+            component: PetsListComponent
+          },         
+          {
+            path: 'pets-view/:id',
+            component: PetsDetailsComponent
+          },        
         ]
       },
     ]

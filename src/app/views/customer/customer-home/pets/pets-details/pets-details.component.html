@@ -1,0 +1,59 @@
+<div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
+  <div class="full-width">
+    <div class="">
+      <mat-card class="empty--section p-0">
+        <mat-card-header class="m-0">
+          <mat-card-title class="m-0">Final Wishes</mat-card-title>
+          <div class="right--actions">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openFinalWishModal(row?.subFolderName, true)">
+              <mat-icon>edit</mat-icon>
+              <span class="hide--sm--txt">Edit</span>
+            </button>
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="deleteFinalWish()">
+              <mat-icon>delete</mat-icon>
+              <span class="hide--sm--txt">Delete</span>
+            </button>
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="details--wrapper mb-1">
+            <div class="details--header">
+              <div class="d-flex align--items--center">
+                <mat-icon>library_add</mat-icon>{{row?.subFolderName}}
+              </div>
+              <span class="last--modified--by">Last modified:
+                <span>{{row?.createdOn | date: 'MMM dd, yyyy'}}</span>
+              </span>
+            </div>
+            <div class="details--body">
+              <h3>{{row?.title}}</h3>
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">Comments:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{row?.comments}}</label>
+                </div>
+              </div>
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">Uploaded files:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70" *ngIf="row?.subFolderDocuments.lenght>0">
+                  <div class="uploaded--files" *ngFor="let doc of row?.subFolderDocuments">
+                      <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true" *ngIf="doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'pdf' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'PDF' ">picture_as_pdf</mat-icon>
+                      <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true" *ngIf="doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'docx' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'doc' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'txt' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'DOCX' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'DOC' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'TXT'">insert_drive_file</mat-icon>
+                      <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true" *ngIf="doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'jpg' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'jpeg' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'png' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'JPG' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'JPEG' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'PNG'">image</mat-icon>                      
+                   <label class="normal--label"> 
+                      <a href="https://s3.amazonaws.com/llp-dev/finalWishes/{{doc.tmpName}}">{{doc.title}}</a>
+                    </label>&nbsp; &nbsp;
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
