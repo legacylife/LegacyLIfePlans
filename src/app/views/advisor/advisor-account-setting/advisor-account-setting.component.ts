@@ -18,7 +18,7 @@ import { serverUrl, s3Details } from '../../../config';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { ChangePicComponent } from './../../change-pic/change-pic.component';
 import { CanComponentDeactivate } from '../../../shared/services/auth/can-deactivate.guard';
-
+const filePath = s3Details.url+'/'+s3Details.advisorsDocumentsPath;
 const URL = serverUrl + '/api/documents/advisorDocument';
 interface websiteLink {
   links: string;
@@ -32,7 +32,6 @@ interface websiteLink {
 export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeactivate {
   userId = localStorage.getItem("endUserId");
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });//,itemAlias: 'advisorDocs'
-  //   this.uploader =  new FileUploader({url:`${URL}?userId=${this.userId}`,itemAlias: 'advisorDocs'});
   public hasBaseDropZoneOver: boolean = false;
   public hasAnotherDropZoneOver: boolean = false;
   advisorDocumentsHide = false;
@@ -64,25 +63,20 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   industryDomainList: string[] = industryDomain.sort()
   businessTypeList: string[] = businessType.sort()
   yearsOfServiceList: string[] = yearsOfService
-
-
   cityval:string
   stateval:string
   zipcodeval:string
   firstNameval:string
   lastNameval:string
   phoneval:string
-
+  docPath:string
   modified = false // display confirmation popup if user click on other link
-
-
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
     private loader: AppLoaderService, private confirmService: AppConfirmService, private picService: ProfilePicService) { }
 
   ngOnInit() {
-    
+    this.docPath = filePath;
     this.picService.itemValue.subscribe((nextValue) => {
       this.profilePicture = nextValue
     })

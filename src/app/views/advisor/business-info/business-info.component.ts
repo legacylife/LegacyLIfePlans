@@ -26,7 +26,6 @@ export class BusinessInfoComponent implements OnInit {
   @ViewChild('stepper') private myStepper: MatStepper;
   userId = localStorage.getItem("endUserId");
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
-
   public hasBaseDropZoneOver: boolean = false;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
