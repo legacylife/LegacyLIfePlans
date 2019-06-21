@@ -99,6 +99,13 @@ import { LyIconModule } from '@alyle/ui/icon';
 import { LyResizingCroppingImageModule } from '@alyle/ui/resizing-cropping-images';
 /** Import themes */
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
+import { ListingComponent } from './customer-home/real-estate-assets/listing/listing.component';
+import { DetailsComponent } from './customer-home/real-estate-assets/details/details.component';
+import { RealEstateModelComponent } from './customer-home/real-estate-assets/real-estate-model/real-estate-model.component';
+import { VehicleModelComponent } from './customer-home/real-estate-assets/vehicle-model/vehicle-model.component';
+import { AssetsModelComponent } from './customer-home/real-estate-assets/assets-model/assets-model.component';
+import { DetailsVehiclesComponent } from './customer-home/real-estate-assets/details-vehicles/details-vehicles.component';
+import { DetailsAssetsComponent } from './customer-home/real-estate-assets/details-assets/details-assets.component';
 export class GlobalVariables {
   testVal = '#00bcd4';
   Quepal = {
@@ -171,17 +178,20 @@ export class GlobalVariables {
     EmergencyContactsComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,
     EmergencyContactsDetailsComponent, CustomerLegalStuffDetailsComponent,
     CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent,
-    CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent,FinalWishesComponent,FinalWishesFormModalComponent,FinalWishesDetailsComponent,PetsListComponent,
-    PetsDetailsComponent,PetsModalComponent,TimeCapsuleListComponent,TimeCapsuleMoalComponent,TimeCapsuleDetailsComponent
+    CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent,FinalWishesComponent,FinalWishesFormModalComponent,FinalWishesDetailsComponent,
+    PetsListComponent,PetsDetailsComponent,PetsModalComponent,ListingComponent,DetailsComponent, RealEstateModelComponent, VehicleModelComponent, AssetsModelComponent,
+    DetailsVehiclesComponent, DetailsAssetsComponent,TimeCapsuleListComponent,TimeCapsuleMoalComponent,TimeCapsuleDetailsComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
     { provide: LY_THEME, useClass: MinimaLight, multi: true },
     { provide: LY_THEME, useClass: MinimaDark, multi: true },
-    { provide: LY_THEME_GLOBAL_VARIABLES,useClass: GlobalVariables    } ,
+    { provide: LY_THEME_GLOBAL_VARIABLES,useClass: GlobalVariables } ,
   ], bootstrap: [CustomerSignupComponent], 
   entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,
-    PersonalProfileModalComponent, MarkAsDeceasedComponent, legalStuffModalComponent,
     addTrusteeModalComponent, PersonalProfileModalComponent, MarkAsDeceasedComponent,
-    legalStuffModalComponent, essentialsMyProfessionalsComponent, SendAnEmailComponent, HireAdvisorComponent,FinalWishesFormModalComponent,PetsModalComponent,TimeCapsuleMoalComponent]
+    legalStuffModalComponent, essentialsMyProfessionalsComponent, SendAnEmailComponent, 
+    HireAdvisorComponent,FinalWishesFormModalComponent,PetsModalComponent,AssetsModelComponent,
+    RealEstateModelComponent,VehicleModelComponent,TimeCapsuleMoalComponent
+  ]
 })
 export class CustomerModule { }

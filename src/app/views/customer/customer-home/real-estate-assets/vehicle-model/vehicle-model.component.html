@@ -1,0 +1,80 @@
+<div class="ll--modal--header">
+  Vehicles
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+<form class="llp-form-wrapper" (ngSubmit)="vehiclesFormSubmit(vehiclesForm.value)">
+  <div class="ll--modal--body id--box--body">
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100">
+        <mat-form-field class="full-width">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="model"
+            placeholder="Model" [formControl]="vehiclesForm.controls['model']">
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100">
+        <mat-form-field class="full-width">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="year"
+            placeholder="Year" [formControl]="vehiclesForm.controls['year']">
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100">
+        <mat-form-field class="full-width">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="make"
+            placeholder="Make" [formControl]="vehiclesForm.controls['make']">
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100">
+        <mat-form-field class="full-width">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="titleLocation"
+            placeholder="Title Location" [formControl]="vehiclesForm.controls['titleLocation']">
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100">
+        <mat-form-field class="full-width">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput
+            name="financeCompanyName" placeholder="Finance Company Name"
+            [formControl]="vehiclesForm.controls['financeCompanyName']">
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100">
+        <mat-form-field class="full-width">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="accountNumber"
+            placeholder="Account Number" [formControl]="vehiclesForm.controls['accountNumber']">
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100">
+        <mat-form-field class="full-width">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="payment"
+            placeholder="Payment" [formControl]="vehiclesForm.controls['payment']">
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100">
+        <mat-form-field class="full-width">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="comments"
+            placeholder="Comment Box" [formControl]="vehiclesForm.controls['comments']">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <input *ngIf="profileIdHiddenVal" matInput name="profileId" [formControl]="vehiclesForm.controls['profileId']"
+    readonly="readonly">
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn" [disabled]="vehiclesForm.invalid">Save</button>
+  </div>
+</form>
