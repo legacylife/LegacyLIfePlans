@@ -12,7 +12,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { cloneDeep } from 'lodash'
 import { serverUrl, s3Details } from '../../../../config';
 const URL = serverUrl + '/api/documents/legalStuff';
-
+const filePath = s3Details.url+'/'+s3Details.legalStuffDocumentsPath;
 @Component({
   selector: 'app-legal-stuff-modal',
   templateUrl: './legal-stuff-modal.component.html',
@@ -34,11 +34,13 @@ export class legalStuffModalComponent implements OnInit {
   typeOfDocumentList: any[]
   selectedProfileId: string;
   newName:string = "";
+  docPath: string;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService ,@Inject(MAT_DIALOG_DATA) public data: any ) { this.folderName = data.FolderName;this.newName = data.newName;}
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
   ngOnInit() {
+    this.docPath = filePath; 
     if(this.newName && this.newName != ''){
       this.folderName = this.newName
     }

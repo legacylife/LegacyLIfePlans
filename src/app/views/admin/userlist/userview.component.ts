@@ -9,6 +9,7 @@ import { AdvisorRejectPopupComponent } from './ngx-table-popup/advisor-reject-po
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { serverUrl, s3Details } from '../../../config';
+const filePath = s3Details.url+'/'+s3Details.profilePicturesPath;
 @Component({
   selector: 'userview',
   templateUrl: './userview.component.html',
@@ -20,6 +21,7 @@ export class userviewComponent implements OnInit {
   errorMessage: string = ""
   userType: string = ""
   row: any;
+  dpPath: string = ""
   selectedUserId: string = "";
   adminSections = [];
   loggedInUserDetails: any;
@@ -31,6 +33,7 @@ export class userviewComponent implements OnInit {
     private router: Router, private snack: MatSnackBar, private dialog: MatDialog,
     private confirmService: AppConfirmService, private loader: AppLoaderService) { }
   ngOnInit() {
+    this.dpPath = filePath;
     const locationArray = location.href.split('/')
     this.selectedUserId = locationArray[locationArray.length - 1]
     this.loggedInUserDetails = this.api.getUser()

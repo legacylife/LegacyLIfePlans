@@ -5,21 +5,17 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
-//import { Observable, of } from 'rxjs';
 import { MatStepperModule, MatStepper } from '@angular/material/stepper';
-//import { states } from '../../../state';
 import { yearsOfServiceList, businessTypeList, industryDomainList, licenceHeldList, activeLicense, industryDomain, businessType, yearsOfService } from '../../../selectList';
 import { states } from '../../../state';
 import { FileUploader } from 'ng2-file-upload';
-//import { Http, Response } from '@angular/http';
 import "rxjs/add/operator/do";
-//import the map function to be used with the http library
 import "rxjs/add/operator/map";
 import { serverUrl, s3Details } from '../../../config';
 const URL = serverUrl + '/api/documents/advisorDocument';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { forEach } from "lodash";
-
+const filePath = s3Details.url+'/'+s3Details.advisorsDocumentsPath;
 @Component({
   selector: 'app-business-info',
   templateUrl: './business-info.component.html',
@@ -48,6 +44,7 @@ export class BusinessInfoComponent implements OnInit {
   stateList: any;
   state_name: string;
   short_code: string;
+  docPath: string;
   showHowManyProducer: boolean = false;
   activeLicenseList: string[] = activeLicense
   industryDomainList: string[] = industryDomain.sort()
@@ -58,6 +55,7 @@ export class BusinessInfoComponent implements OnInit {
     private loader: AppLoaderService,private confirmService: AppConfirmService) {}//,private http: Http, private el: ElementRef
   
   ngOnInit() {
+    this.docPath = filePath;   
     localStorage.setItem("step",'0');
     this.userId = localStorage.getItem("endUserId");
     this.stateList = states;
@@ -342,7 +340,5 @@ getProfileField = (query = {}, search = false) => {
         element.classList += ' proDone';
        }
     });
-
   }
-
 }

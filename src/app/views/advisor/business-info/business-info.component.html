@@ -213,7 +213,7 @@
                 <div *ngIf="advisorDocumentsList" class="doc--uploaded">
                   <h3 class="header--text fnt--16">Uploaded documents</h3>
                   <mat-chip-list class="doc--list" *ngFor="let doc of advisorDocumentsList; index as i">
-                      <mat-chip><a href="https://s3.amazonaws.com/llp-dev/advisorDocs/{{doc.tmpName}}" target="_blanck" >{{doc.title}}</a><mat-icon matChipRemove  (click)="docDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+                      <mat-chip><a href="{{docPath}}{{doc.tmpName}}" target="_blanck" >{{doc.title}}</a><mat-icon matChipRemove  (click)="docDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
                   </mat-chip-list>
                 </div>
 

@@ -54,7 +54,7 @@
                       <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true" *ngIf="doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'jpg' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'jpeg' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'png' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'JPG' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'JPEG' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'PNG'">image</mat-icon>
                       
                    <label class="normal--label"> 
-                      <a href="https://s3.amazonaws.com/llp-dev/legalStuff/{{doc.tmpName}}">{{doc.title}}</a>
+                      <a href="{{docPath}}{{doc.tmpName}}">{{doc.title}}</a>
                     </label>&nbsp; &nbsp;
                   </div>
                 </div>

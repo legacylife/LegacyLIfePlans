@@ -14,6 +14,7 @@ import { states } from '../../../../state';
 import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 const URL = serverUrl + '/api/documents/myEssentialsID';
+const filePath = s3Details.url+'/'+s3Details.myEssentialsDocumentsPath;
 @Component({
   selector: 'app-essenioal-id-box',
   templateUrl: './essenioal-id-box.component.html',
@@ -36,7 +37,7 @@ export class EssenioalIdBoxComponent implements OnInit {
   idProofDocuments_temps = false;
   fileErrors: any;
   stateList: any;
-
+  docPath: string;
   typeOne: boolean = false;
   typeOneTwo: boolean = false;
   typeOneTwoSixSeven: boolean = false;
@@ -58,6 +59,7 @@ export class EssenioalIdBoxComponent implements OnInit {
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    this.docPath = filePath; 
     this.stateList = states.sort();
     this.IDForm = this.fb.group({
       documentType: new FormControl('',Validators.required),

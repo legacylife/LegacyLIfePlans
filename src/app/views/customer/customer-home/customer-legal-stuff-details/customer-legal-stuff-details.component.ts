@@ -8,6 +8,8 @@ import { AppLoaderService } from '../../../../shared/services/app-loader/app-loa
 import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
 import { legalStuffModalComponent } from './../legal-stuff-modal/legal-stuff-modal.component';
 import { EstateTypeOfDocument,HealthcareTypeOfDocument,PersonalAffairsTypeOfDocument } from '../../../../selectList';
+import { s3Details } from '../../../../config';
+const filePath = s3Details.url+'/'+s3Details.legalStuffDocumentsPath;
 @Component({
   selector: 'app-customer-home',
   templateUrl: './customer-legal-stuff-details.component.html',
@@ -15,13 +17,12 @@ import { EstateTypeOfDocument,HealthcareTypeOfDocument,PersonalAffairsTypeOfDocu
   animations: [egretAnimations]
 })
 export class CustomerLegalStuffDetailsComponent implements OnInit {
-  //public isSideNavOpen: boolean; public viewMode: string = 'grid-view';  public currentPage: any;  dayFirst = true;  daySeco = false;
-  @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  //public products: any[];  public categories: any[];  public activeCategory: string = 'all';  public filterForm: FormGroup;  public cart: any[];  public cartData: any;
+  @ViewChild(MatSidenav) private sideNav: MatSidenav;  
   userId: string;
   selectedProfileId: string = "";
   row: any;
   typeOfDocumentList: any[];
+  docPath: string = "";
   re =  "/(?:\.([^.]+))?$/" ;
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
@@ -30,7 +31,7 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.categories$ = this.shopService.getCategories();this.categories = ["My essentials", "Pets"]this.products = [] this.cartData = []  this.filterForm = this.fb.group({     search: ['']    })
+    this.docPath = filePath;   
     this.userId = localStorage.getItem("endUserId");
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
@@ -61,7 +62,6 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
   }
 
   openLegalStuffModals(FolderNames, isNew?) {
-
     let dialogRef: MatDialogRef<any> = this.dialog.open(legalStuffModalComponent, {
       data: {
         FolderName: FolderNames,
@@ -70,7 +70,6 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
       width: '720px',
       disableClose: true,
     })
-
     dialogRef.afterClosed()
       .subscribe(res => {
         this.getEssentialLegalView();
@@ -79,7 +78,6 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
           return;
         }
       })
-
   }
 
   deleteLegalStuff() {
@@ -110,9 +108,7 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
   }
 
   getType(key) {
-
     if (this.row.subFolderName) {
-
       if(this.row.subFolderName=='Estate'){
         this.typeOfDocumentList = EstateTypeOfDocument;
       }else if(this.row.subFolderName=='Healthcare'){
@@ -120,15 +116,10 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
       }else if(this.row.subFolderName=='Personal Affairs'){
         this.typeOfDocumentList = PersonalAffairsTypeOfDocument;      
       }
-
-
       let filteredTyes = this.typeOfDocumentList.filter(dtype => {
         return dtype.opt_code === key
       }).map(el => el.opt_name)[0]
       return filteredTyes
     }
-
-
-
   }
 }
