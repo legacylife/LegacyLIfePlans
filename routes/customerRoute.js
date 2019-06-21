@@ -22,6 +22,9 @@ const emergencyContacts = require('./../models/EmergencyContacts.js')
 const personalIdProof = require('./../models/personalIdProof.js')
 const MyProfessional = require('./../models/MyProfessionals.js')
 const LegalStuff = require('./../models/LegalStuff.js')
+const RealEstate = require('./../models/RealEstate.js')
+const Vehicles = require('./../models/Vehicles.js')
+
 const s3 = require('./../helpers/s3Upload')
 
 var auth = jwt({
@@ -610,6 +613,206 @@ function deleteLegalStuff(req, res) {
   })
 }
 
+
+function realEstateSubmit(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let { from } = req.body;
+  if(query._id ){
+    RealEstate.findOne(query, function (err, custData) {      
+      if (err) {
+        let result = { "message": "Something Wrong!" }
+        res.send(resFormat.rError(result));
+      } else {
+        if (custData && custData._id) {
+          let { proquery } = req.body;  
+          proquery.modifiedOn = new Date();
+          RealEstate.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              let result = { "message": "Real Estate details have been updated successfully!" }
+              res.status(200).send(resFormat.rSuccess(result))
+            }
+          })
+        } else {
+          let result = { "message": "No record found." }
+          res.send(resFormat.rError(result));
+        }
+      }
+    })
+  } else { 
+    let { proquery } = req.body; 
+    var realEstate = new RealEstate();
+    realEstate.customerId = from.customerId;
+    realEstate.estateType = proquery.estateType;
+    realEstate.address = proquery.address;
+    realEstate.mortgageHolder = proquery.mortgageHolder;
+    realEstate.accountNumber = proquery.accountNumber;
+    realEstate.phoneContact = proquery.phoneContact;
+    realEstate.deedLocation = proquery.deedLocation;
+    realEstate.comments = proquery.comments;
+    realEstate.status = 'Active';
+    realEstate.createdOn = new Date();
+    realEstate.modifiedOn = new Date();
+    realEstate.save({ $set: proquery }, function (err, newEntry) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        let result = { "message": "Real Estate details have been added successfully!" }
+        res.status(200).send(resFormat.rSuccess(result))
+      }
+    })
+  }
+}
+
+function getRealEstateList(req, res) {
+  let { fields, offset, query, order, limit, search } = req.body
+  RealEstate.find(query, function (err, realEstateList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(realEstateList))
+    }
+  }).sort(order).skip(offset).limit(limit)
+}
+
+function viewRealEstate(req, res) {
+  let { query } = req.body
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  RealEstate.findOne(query, fields, function (err, realEstateData) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(realEstateData))
+    }
+  })
+}
+
+function deleteRealEstate(req, res) {
+  let { query } = req.body;
+  let fields = { }
+  RealEstate.findOne(query, fields, function (err, profileInfo) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      var upStatus = 'Delete';
+      var params = { status: upStatus }
+      RealEstate.update({ _id: profileInfo._id }, { $set: params }, function (err, updatedinfo) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          let result = { "message": "Record deleted successfully!" }
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
+function realEstateVehicleSubmit(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let { from } = req.body;
+  if(query._id ){
+    Vehicles.findOne(query, function (err, custData) {
+      if (err) {
+        let result = { "message": "Something Wrong!" }
+        res.send(resFormat.rError(result));
+      } else {
+        if (custData && custData._id) {
+          let { proquery } = req.body;  
+          proquery.modifiedOn = new Date();
+          Vehicles.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              let result = { "message": "Vehicle details have been updated successfully!" }
+              res.status(200).send(resFormat.rSuccess(result))
+            }
+          })
+        } else {
+          let result = { "message": "No record found." }
+          res.send(resFormat.rError(result));
+        }
+      }
+    })
+  } else { 
+    let { proquery } = req.body; 
+    var vehiclesObj = new Vehicles();
+    vehiclesObj.customerId = from.customerId;
+    vehiclesObj.model = proquery.model;
+    vehiclesObj.year = proquery.year;
+    vehiclesObj.make = proquery.make;
+    vehiclesObj.titleLocation = proquery.titleLocation;
+    vehiclesObj.financeCompanyName = proquery.financeCompanyName;
+    vehiclesObj.accountNumber = proquery.accountNumber;
+    vehiclesObj.payment = proquery.payment;
+    vehiclesObj.comments = proquery.comments;
+    vehiclesObj.status = 'Active';
+    vehiclesObj.createdOn = new Date();
+    vehiclesObj.modifiedOn = new Date();
+    vehiclesObj.save({ $set: proquery }, function (err, newEntry) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        let result = { "message": "Vehicle details have been added successfully!" }
+        res.status(200).send(resFormat.rSuccess(result))
+      }
+    })
+  }
+}
+ 
+function viewRealEstateVehicle(req, res) {
+  let { query } = req.body
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  Vehicles.findOne(query, fields, function (err, vehiclesData) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(vehiclesData))
+    }
+  })
+}
+
+function getRealEstateVehiclesList(req, res) {
+  let { fields, offset, query, order, limit, search } = req.body
+  Vehicles.find(query, function (err, realEstateVehiclesList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(realEstateVehiclesList))
+    }
+  }).sort(order).skip(offset).limit(limit)
+}
+
+function deleteRealEstateVehicle(req, res) {
+  let { query } = req.body;
+  let fields = { }
+  Vehicles.findOne(query, fields, function (err, profileInfo) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      var upStatus = 'Delete';
+      var params = { status: upStatus }
+      Vehicles.update({ _id: profileInfo._id }, { $set: params }, function (err, updatedinfo) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          let result = { "message": "Record deleted successfully!" }
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
@@ -630,5 +833,12 @@ router.post("/get-emergency-contacts", getEmergencyContacts)
 router.post("/view-emergency-contacts", viewEmergencyContacts)
 router.post("/deletecontact", deleteEcontact)
 router.post("/legal-estate-list", legalEstateList)
-
+router.post("/real-estate", realEstateSubmit)
+router.post("/real-estate-list", getRealEstateList)
+router.post("/view-real-estate", viewRealEstate)
+router.post("/delete-real-estate", deleteRealEstate)
+router.post("/real-estate-vehicle", realEstateVehicleSubmit)
+router.post("/view-real-estate-vehicle", viewRealEstateVehicle)
+router.post("/real-estate-vehicles-list", getRealEstateVehiclesList)
+router.post("/delete-real-estate-vehicle", deleteRealEstateVehicle)
 module.exports = router
