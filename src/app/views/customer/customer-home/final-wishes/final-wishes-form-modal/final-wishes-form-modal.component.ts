@@ -9,7 +9,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../../config';
 import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
-
+const filePath = s3Details.url+'/'+s3Details.finalWishesFilePath;
 const URL = serverUrl + '/api/documents/finalWishes';
 @Component({
   selector: 'app-essenioal-id-box',
@@ -29,7 +29,7 @@ export class FinalWishesFormModalComponent implements OnInit {
   fileErrors: any;
   subFolderDocumentsList: any;
   finalWishList:any = [];
-
+  docPath: string;   
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService  ,@Inject(MAT_DIALOG_DATA) public data: any ) 
@@ -39,14 +39,13 @@ export class FinalWishesFormModalComponent implements OnInit {
 
   ngOnInit() {
      this.userId = localStorage.getItem("endUserId");
+     this.docPath = filePath;
      if(this.newName && this.newName != ''){
       this.folderName = this.newName
     }
      this.FinalForm = this.fb.group({
       title: new FormControl('',Validators.required),
       comments: new FormControl(''),
-      subFolderDocuments: new FormControl(''),
-      //subFolderDocuments_temp: new FormControl(''),
       profileId: new FormControl('')
      });
      this.wishDocumentsList = [];

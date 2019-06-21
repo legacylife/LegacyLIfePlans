@@ -34,6 +34,12 @@ export const s3Details = {
   awsKey: "AKIAUPQ3GZ6WDCCRWVY5",
   awsSecret: "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",
   profilePicturesPath: "profilePictures/",
+  advisorsDocumentsPath:"advisorDocs/",
+  myEssentialsDocumentsPath:"myEssentials/",
+  legalStuffDocumentsPath:"legalStuff/",
+  finalWishesFilePath:"finalWishes/",
+  timeCapsuleFilePath:"timeCapsule/",
+  petsFilePath:"pets/",
   apiGatewayUrl: ""
 }
 
