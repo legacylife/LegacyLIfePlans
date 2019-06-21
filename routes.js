@@ -9,6 +9,7 @@ router.use("/advisor", require("./routes/advisorRoute"))
 router.use("/customer", require("./routes/customerRoute"))
 router.use("/finalwish", require("./routes/finalWishRoute"))
 router.use("/pets", require("./routes/petsRoute"))
+router.use("/timeCapsule", require("./routes/timeCapsuleRoute"))
 router.use("/documents", require("./routes/documentsUploadRoute"))
 
 
