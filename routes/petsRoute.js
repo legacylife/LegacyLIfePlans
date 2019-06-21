@@ -98,7 +98,6 @@ function petsFormUpdate(req, res) {
     })
   }
 }
-
 function viewPets(req, res) {
   let { query } = req.body;
   let fields = {}
