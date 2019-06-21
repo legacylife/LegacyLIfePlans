@@ -39,6 +39,10 @@ import { CustomerHiredAdvisorComponent } from './customer-trustees/customer-hire
 import { CustomerProfessionalsLandingComponent } from './customer-professionals-landing/customer-professionals-landing.component';
 import { CustomerProfDetailsComponent } from './customer-professionals/customer-professionals-details/customer-professionals-details.component';
 import { ProfAdvisorListingComponent } from './customer-professionals-landing/prof-advisor-listing/prof-advisor-listing.component';
+import { ListingComponent } from './customer-home/real-estate-assets/listing/listing.component';
+import { DetailsComponent } from './customer-home/real-estate-assets/details/details.component';
+import { DetailsAssetsComponent } from './customer-home/real-estate-assets/details-assets/details-assets.component';
+import { DetailsVehiclesComponent } from './customer-home/real-estate-assets/details-vehicles/details-vehicles.component';
 
 export const CustomerRoutes: Routes = [
   {
@@ -106,7 +110,7 @@ export const CustomerRoutes: Routes = [
             path: 'emergency-contacts',
             component: EmergencyContactsComponent
           },
-	  {
+	        {
             path: 'legal-detail-view/:id',
             component: CustomerLegalStuffDetailsComponent
           },
@@ -114,6 +118,22 @@ export const CustomerRoutes: Routes = [
             path: 'emergency-contacts-details/:id',
             component: EmergencyContactsDetailsComponent
           },
+          {
+            path: 'real-estate-assets',
+            component: ListingComponent
+          },
+          {
+            path: 'real-estate-detail-view/:id',
+            component: DetailsComponent
+          },
+          {
+            path: 'real-estate-vehicle-detail-view/:id',
+            component: DetailsVehiclesComponent
+          },
+          {
+            path: 'real-estate-assets-detail-view/:id',
+            component: DetailsAssetsComponent
+          }
         ]
       },
     ]

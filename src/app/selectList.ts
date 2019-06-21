@@ -168,4 +168,14 @@ export const yearsOfService = ['0 - 5 years', '5 - 10 years', '10 - 15 years', '
 
 export const myProfessionals  = ['Medical Doctor', 'Therapist', 'Insurance Agent', 'Accountant', 'Attorney', 'Tax Specialist','Financial Planner','Business Partner']
 
-
+export const RealEstateType = [{
+  "opt_name" : "Personal Home", 
+  "opt_code" : "1", 
+},
+{ 
+  "opt_name" : "Rental", 
+  "opt_code" : "2", 
+},{ 
+  "opt_name" : "Commercial", 
+  "opt_code" : "3", 
+}]
