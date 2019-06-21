@@ -83,6 +83,11 @@ import { FinalWishesComponent } from './customer-home/final-wishes/final-wishes-
 import { FinalWishesFormModalComponent } from './customer-home/final-wishes/final-wishes-form-modal/final-wishes-form-modal.component';
 import { FinalWishesDetailsComponent } from './customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
 
+//Pets
+import { PetsListComponent } from './customer-home/pets/pets-list/pets-list.component';
+import { PetsModalComponent } from './customer-home/pets/pets-modal/pets-modal.component';
+import { PetsDetailsComponent } from './customer-home/pets/pets-details/pets-details.component';
+
 import {LyThemeModule,LY_THEME,LY_THEME_GLOBAL_VARIABLES} from '@alyle/ui';
 /** Import the component modules */
 import { LyButtonModule } from '@alyle/ui/button';
@@ -164,7 +169,8 @@ export class GlobalVariables {
     EmergencyContactsComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,
     EmergencyContactsDetailsComponent, CustomerLegalStuffDetailsComponent,
     CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent,
-    CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent,FinalWishesComponent,FinalWishesFormModalComponent,FinalWishesDetailsComponent
+    CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent,FinalWishesComponent,FinalWishesFormModalComponent,FinalWishesDetailsComponent,PetsListComponent,
+    PetsDetailsComponent,PetsModalComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
     { provide: LY_THEME, useClass: MinimaLight, multi: true },
@@ -174,6 +180,6 @@ export class GlobalVariables {
   entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,
     PersonalProfileModalComponent, MarkAsDeceasedComponent, legalStuffModalComponent,
     addTrusteeModalComponent, PersonalProfileModalComponent, MarkAsDeceasedComponent,
-    legalStuffModalComponent, essentialsMyProfessionalsComponent, SendAnEmailComponent, HireAdvisorComponent,FinalWishesFormModalComponent],
+    legalStuffModalComponent, essentialsMyProfessionalsComponent, SendAnEmailComponent, HireAdvisorComponent,FinalWishesFormModalComponent,PetsModalComponent]
 })
 export class CustomerModule { }
