@@ -6,12 +6,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { egretAnimations } from '../../../../../shared/animations/egret-animations';
 import { UserAPIService } from './../../../../../userapi.service';
 import { AppLoaderService } from '../../../../../shared/services/app-loader/app-loader.service';
-import { FinalWishesFormModalComponent } from './../final-wishes-form-modal/final-wishes-form-modal.component';
+import { PetsModalComponent } from './../pets-modal/pets-modal.component';
 
 @Component({
   selector: 'app-customer-home',
-  templateUrl: './final-wishes-list.component.html',
-  styleUrls: ['./final-wishes-list.component.scss'],
+  templateUrl: './pets-list.component.html',
+  styleUrls: ['./pets-list.component.scss'],
   animations: [egretAnimations]
 })
 export class PetsListComponent implements OnInit {
@@ -80,7 +80,7 @@ export class PetsListComponent implements OnInit {
   }
 
   openFinalWishModal(FolderName, isNew?) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(FinalWishesFormModalComponent, {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(PetsModalComponent, {
       data: {
         FolderName: FolderName,
       },

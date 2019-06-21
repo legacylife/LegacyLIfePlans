@@ -14,8 +14,8 @@ import { controlNameBinding } from '@angular/forms/src/directives/reactive_direc
 const URL = serverUrl + '/api/documents/myEssentialsID';
 @Component({
   selector: 'app-essenioal-id-box',
-  templateUrl: './essenioal-id-box.component.html',
-  styleUrls: ['./essenioal-id-box.component.scss']
+  templateUrl: './pets-modal.component.html',
+  styleUrls: ['./pets-modal.component.scss']
 })
 export class PetsModalComponent implements OnInit {
   //selected = 'option1';

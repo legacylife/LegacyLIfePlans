@@ -9,8 +9,8 @@ import { AppConfirmService } from '../../../../../shared/services/app-confirm/ap
 import { PetsModalComponent } from './../pets-modal/pets-modal.component';
 @Component({
   selector: 'app-customer-home',
-  templateUrl: './final-wishes-details.component.html',
-  styleUrls: ['./final-wishes-details.component.scss'],
+  templateUrl: './pets-details.component.html',
+  styleUrls: ['./pets-details.component.scss'],
   animations: [egretAnimations]
 })
 export class PetsDetailsComponent implements OnInit {
