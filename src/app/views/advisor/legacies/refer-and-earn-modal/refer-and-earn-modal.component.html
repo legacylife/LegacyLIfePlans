@@ -1,0 +1,88 @@
+<div class="ll--modal--header">
+  Refer & Earn
+  <p class="this--month"><span class="lato--bold">12</span>/45 this month</p>
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+
+<form class="llp-form-wrapper">
+  <div class="ll--modal--body refer--earn--modal--body">
+
+    <form class="llp-form-wrapper">
+
+      <h6 class="invite--sub--line">Invite
+        <span class="lato--bold">30 people</span> in a month and get
+        <span class="lato--bold">45 days </span> extended free access to all the features.</h6>
+      <div fxLayout="row wrap">
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
+          <mat-form-field class="full-width">
+            <input matInput value="Alaska bas" placeholder="Name">
+          </mat-form-field>
+        </div>
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
+          <mat-form-field class="full-width">
+            <input matInput value="alaska@gmail.com" placeholder="Email">
+          </mat-form-field>
+        </div>
+        <div fxFlex.xs="90" fxFlex.sm="95" fxFlex.md="35" fxFlex.lg="36" fxFlex.xl="37" class="pad--r--lg">
+          <mat-form-field class="full-width no-mar">
+            <mat-select placeholder="Relation" [(value)]="selected">
+              <mat-option value="opt1">Friend</mat-option>
+              <mat-option value="opt2">Family</mat-option>
+              <mat-option value="opt3">Colleague</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex.xs="10" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="4" fxFlex.xl="3" class="text-right">
+          <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
+        </div>
+      </div>
+      <div fxLayout="row wrap">
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
+          <mat-form-field class="full-width">
+            <input matInput value="Alaska bas" placeholder="Name">
+          </mat-form-field>
+        </div>
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
+          <mat-form-field class="full-width">
+            <input matInput value="alaska@gmail.com" placeholder="Email">
+          </mat-form-field>
+        </div>
+        <div fxFlex.xs="90" fxFlex.sm="95" fxFlex.md="35" fxFlex.lg="36" fxFlex.xl="37" class="pad--r--lg">
+          <mat-form-field class="full-width no-mar">
+            <mat-select placeholder="Relation" [(value)]="selected">
+              <mat-option value="opt1">Friend</mat-option>
+              <mat-option value="opt2">Family</mat-option>
+              <mat-option value="opt3">Colleague</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex.xs="10" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="4" fxFlex.xl="3" class="text-right">
+          <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
+        </div>
+      </div>
+      <div fxLayout="row wrap">
+        <div fxFlex.xs="100">
+          <div class="add--new">
+            <mat-icon>add_circle</mat-icon>
+            Add New
+          </div>
+        </div>
+      </div>
+      <div class="upload--buss--docs--sec mt-1">
+        <label>Upload invitation image, business card</label>
+        <div class="upload--box">
+          <input type="file" name="idProofDocuments">
+          <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+          <div class="select--file">Select file from your computer</div>
+        </div>
+        <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+      </div>
+
+    </form>
+  </div>
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn">Invite</button>
+  </div>
+</form>

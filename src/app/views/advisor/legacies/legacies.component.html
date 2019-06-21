@@ -8,18 +8,28 @@
         </mat-card-title>
 
         <mat-card-content class="recent--update--section">
-          <p>All the user legacies you have got access to, will be displayed here. Currently you have no legacy access from any user.</p>
+          <p>All the user legacies you have got access to, will be displayed here. Currently you have no legacy access from
+            any user.</p>
           <div class="red--box">
 
             <img src="assets/images/arkenea/invite-now.png" />
             <p>Encourage your friends, loved ones, acquaintances to create a legacy for their loved ones!
-              <a routerLink="/advisor/dashboard-updates"> Invite Now</a>
+              <a (click)="openReferAndEarnModal();"> Invite Now</a>
             </p>
           </div>
         </mat-card-content>
+
+
+        <mat-card-content class="recent--update--section">
+        </mat-card-content>
+
+
+
+
+
       </mat-card>
     </div>
-   
+
   </div>
 
 

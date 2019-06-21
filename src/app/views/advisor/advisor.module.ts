@@ -53,12 +53,12 @@ import { UserAuthGuard } from '../../shared/services/auth/userauth.guard';
 import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
 import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
-//import { AdvisorLandingLayoutComponent } from '../../shared/components/layouts/advisor-landing-layout/advisor-landing-layout.component';
 import { HomeComponent } from './advisor-landing/home/home.component';
+import { ReferAndEarnModalComponent } from './legacies/refer-and-earn-modal/refer-and-earn-modal.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CountUpModule } from 'countup.js-angular2';
 /** Import Alyle UI */
-import {LyThemeModule,LY_THEME,LY_THEME_GLOBAL_VARIABLES} from '@alyle/ui';
+import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
 /** Import the component modules */
 import { LyButtonModule } from '@alyle/ui/button';
 import { LyToolbarModule } from '@alyle/ui/toolbar';
@@ -128,21 +128,22 @@ export class GlobalVariables {
     SlickCarouselModule,
     RouterModule.forChild(AdvisorRoutes),
     CountUpModule,
-    
-  LyThemeModule.setTheme('minima-light'),
-  LyButtonModule,
-  LyToolbarModule,
-  LyResizingCroppingImageModule,
-  LyIconModule
+
+    LyThemeModule.setTheme('minima-light'),
+    LyButtonModule,
+    LyToolbarModule,
+    LyResizingCroppingImageModule,
+    LyIconModule
   ],
   declarations: [
     AdvisorSignupComponent, BusinessInfoComponent, SetPasswordComponent,
     FormatTimePipe, ThankYouComponent, AdvisorDashboardComponent, LegaciesComponent,
-    AdvisorDashboardUpdateComponent, AdvisorAccountSettingComponent, AdvisorSubscriptionComponent, ChangePassComponent, HomeComponent
-  ], providers: [  { provide: LY_THEME, useClass: MinimaLight, multi: true }, // name: `minima-light`
-  { provide: LY_THEME, useClass: MinimaDark, multi: true },// name: `minima-dark`
-  { provide: LY_THEME_GLOBAL_VARIABLES,useClass: GlobalVariables    } ,
+    AdvisorDashboardUpdateComponent, AdvisorAccountSettingComponent, AdvisorSubscriptionComponent, 
+    ChangePassComponent, HomeComponent, ReferAndEarnModalComponent
+  ], providers: [{ provide: LY_THEME, useClass: MinimaLight, multi: true },
+  { provide: LY_THEME, useClass: MinimaDark, multi: true },
+  { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, ProfilePicService, CanDeactivateGuard
-  ], entryComponents: [ChangePassComponent],
+  ], entryComponents: [ChangePassComponent, ReferAndEarnModalComponent],
 })
 export class AdvisorModule { }
