@@ -17,148 +17,127 @@ import { AdvisorLandingLayoutComponent } from '../../shared/components/layouts/a
 import { HomeComponent } from './advisor-landing/home/home.component';
 console.log('advisor---routing');
 export const AdvisorRoutes: Routes = [
-  /*{
-    path: '',
-    pathMatch: 'prefix', 
-    component: AdvisorLandingLayoutComponent,
-    loadChildren: './views/advisor/advisor-landing/advisor-landing.module#AdvisorLandingModule',
-    data: { title: 'LLP'}
-  },
-  {
-    path: '',
-    //pathMatch: 'prefix' ,
-    children: [{
-      path: '',
-      loadChildren: './views/advisor/advisor-landing/advisor-landing.module#AdvisorLandingModule',
-      data: { title: 'Advisor Signup' }
-    },
-  ]
-  },*/
   {
     path: '',
     component: AdvisorLandingLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
         component: HomeComponent,
-        canActivate: [ UserPreAuthGuard ]
+        canActivate: [UserPreAuthGuard]
       }
     ],
   },
   {
-    //path: 'signin',
-    //component: AdvisorSignupComponent,
     path: 'signin',
     component: AuthLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
-        component: AdvisorSignupComponent, 
-        canActivate: [ UserPreAuthGuard ]
+        component: AdvisorSignupComponent,
+        canActivate: [UserPreAuthGuard]
       }
     ],
-  },{
+  },
+  {
     path: 'set-password/:id',
     component: AuthLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
-        component: SetPasswordComponent, 
-        canActivate: [ UserPreAuthGuard ]
+        component: SetPasswordComponent,
+        canActivate: [UserPreAuthGuard]
       }
     ],
 
-  },{
-    //path: 'signup',
-    //component: AdvisorSignupComponent,
+  },
+  {
     path: 'signup',
     component: AuthLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
-        component: AdvisorSignupComponent, 
-        canActivate: [ UserPreAuthGuard ]
+        component: AdvisorSignupComponent,
+        canActivate: [UserPreAuthGuard]
       }
     ],
 
-  },{
-    //path: 'business-info',
-    //component: BusinessInfoComponent,
+  },
+  {
     path: 'business-info',
     component: AuthLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
         component: BusinessInfoComponent,
-        canActivate: [ UserPreAuthGuard ] 
+        canActivate: [UserPreAuthGuard]
       }
     ]
 
 
-  },{
-    //path: 'thank-you',
-    //component: ThankYouComponent,
+  },
+  {
     path: 'thank-you',
     component: AuthLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
         component: ThankYouComponent,
-        canActivate: [ UserPreAuthGuard ] 
+        canActivate: [UserPreAuthGuard]
       }
     ]
-  },{
-    //path: '',
-    //component: AdvisorDashboardComponent
+  },
+  {
     path: 'dashboard',
     component: AdvisorLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
         component: AdvisorDashboardComponent,
-        canActivate: [ UserAuthGuard ] 
+        canActivate: [UserAuthGuard]
       }
     ]
 
 
-  },{
-    //path: 'dashboard-updates',
-    //component: AdvisorDashboardUpdateComponent
+  },
+  {
     path: 'dashboard-updates',
     component: AdvisorLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
         component: AdvisorDashboardUpdateComponent,
-        canActivate: [ UserAuthGuard ] 
+        canActivate: [UserAuthGuard]
       }
     ]
-  },{
+  }, {
     path: 'account-setting',
     component: AdvisorLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
         component: AdvisorAccountSettingComponent,
-        canActivate: [ UserAuthGuard ],
-        canDeactivate: [ CanDeactivateGuard ] 
+        canActivate: [UserAuthGuard],
+        canDeactivate: [CanDeactivateGuard]
       }
-    ],    
+    ],
   },
   {
     path: 'legacies',
     component: AdvisorLayoutComponent,
-    children : [
-      { 
+    children: [
+      {
         path: '',
         component: LegaciesComponent,
-        canActivate: [ UserAuthGuard ] 
+        canActivate: [UserAuthGuard]
       }
     ]
-  },{
+  },
+  {
     path: 'subscription',
     component: AdvisorSubscriptionComponent
-  },{
+  },
+  {
     path: '**',
     redirectTo: 'dashboard'
   }

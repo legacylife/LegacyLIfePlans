@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'legacies-blank',
+  selector: 'app-legacies-blank',
   templateUrl: './legacies.component.html',
-  styleUrls: ['./legacies.component.css']
+  styleUrls: ['./legacies.component.scss']
 })
 export class LegaciesComponent implements OnInit {
 
