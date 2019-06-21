@@ -3,93 +3,36 @@
     <div class="">
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
-          <mat-card-title class="m-0" [routerLink]="['/customer/dashboard/final-wishes']">Final Wishes</mat-card-title>
+          <mat-card-title class="m-0" [routerLink]="['/customer/dashboard/pets']">Pets</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <p class="info m-0">The section where you can manage your personal, professional and religious information.
             <a class="legal--link">
               <mat-icon>open_in_new</mat-icon> www.legalnature.com</a>
           </p>
-          <p class="info m-0"> You can also manage your License, Non-Driver State ID, Department of Defense (DOD), Birth Certificate, Social Security
-            Number (SSN), Passport, Visa in the ID Box section.</p>
+          <p class="info m-0"> You can also manage your Pets name,Pet type, Veterinarian,Dietary Concerns and Pet documents in pets section.</p>
         </mat-card-content>
       </mat-card>
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
-          <mat-card-title class="m-0">Funeral Plans</mat-card-title>
-          <div *ngIf="showFuneralPlansListing">
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openFinalWishModal('Funeral Plans', true)">+ Add</button>
+          <mat-card-title class="m-0">Pets</mat-card-title>
+          <div *ngIf="showPetsListing">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openPetsModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
-        <mat-card-content *ngIf="!showFuneralPlansListing">
-          <div class="build--ur--legacy" (click)="openFinalWishModal('Funeral Plans', true)">
-            <mat-icon>person_pin</mat-icon>
+        <mat-card-content *ngIf="!showPetsListing">
+          <div class="build--ur--legacy" (click)="openPetsModal({}, true)">
+            <mat-icon>pets</mat-icon>
             <p>
-              <a>Add Funeral Plans</a>
+              <a>Add Pets</a>
             </p>
           </div>
         </mat-card-content>
-        <mat-card-content class="appointees--wrapper" *ngIf="showFuneralPlansListing">
-          <div class="cust--user--details mt-1" *ngFor="let profileData of FuneralPlansList; let i = index" [routerLink]="['/customer/dashboard/final-wishes-view', profileData._id]">
-            <div class="name--letters">{{profileData.title.charAt(0)}}</div>
+        <mat-card-content class="appointees--wrapper" *ngIf="showPetsListing">
+          <div class="cust--user--details mt-1" *ngFor="let profileData of petsListing; let i = index" [routerLink]="['/customer/dashboard/pets-view', profileData._id]">
+            <div class="name--letters">{{profileData.name.charAt(0)}}</div>
             <div class="user--name">
-              <h5>{{profileData.title}}</h5>
-              <p class="mb-0">Last modified:
-                <span *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
-              </p>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="empty--section p-0">
-        <mat-card-header class="m-0">
-          <mat-card-title class="m-0">Obituary </mat-card-title>
-          <div *ngIf="showObituaryListing">
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openFinalWishModal('Obituary', true)">+ Add</button>
-          </div>
-        </mat-card-header>
-        <mat-card-content *ngIf="!showObituaryListing">
-          <div class="build--ur--legacy" (click)="openFinalWishModal('Obituary', true)">
-            <mat-icon>library_add</mat-icon>
-            <p>
-              <a>Add Obituary</a>
-            </p>
-          </div>
-        </mat-card-content>
-        <mat-card-content class="appointees--wrapper" *ngIf="showObituaryListing">
-          <div class="cust--user--details mt-1" *ngFor="let idData of ObituaryList; let i = index" [routerLink]="['/customer/dashboard/final-wishes-view', idData._id]">
-            <div class="name--letters">{{idData.title.charAt(0)}}</div>
-            <div class="user--name">
-              <h5>{{idData.title}}</h5>
-              <p class="mb-0">Last modified:
-                <span *ngIf="idData.modifiedOn && idData.modifiedOn != ''">{{idData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                <span *ngIf="!idData.modifiedOn">{{idData.createdOn | date: 'yyyy/MM/dd'}}</span>
-              </p>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="empty--section p-0">
-        <mat-card-header class="m-0">
-          <mat-card-title class="m-0">Celebration of Life</mat-card-title>
-          <div *ngIf="showCelebrationLifesListing">
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openFinalWishModal('Celebration of Life', true)">+ Add</button>
-          </div>
-        </mat-card-header>
-        <mat-card-content *ngIf="!showCelebrationLifesListing">
-          <div class="build--ur--legacy" (click)="openFinalWishModal('Celebration of Life', true)">
-            <mat-icon>people</mat-icon>
-            <p>
-              <a>Add Celebration of Life</a>
-            </p>
-          </div>
-        </mat-card-content>
-        <mat-card-content class="appointees--wrapper" *ngIf="showCelebrationLifesListing">
-          <div class="cust--user--details mt-1" *ngFor="let profileData of CelebrationLifesList; let i = index" [routerLink]="['/customer/dashboard/final-wishes-view', profileData._id]">
-            <div class="name--letters"></div>
-            <div class="user--name">
-              <h5>{{profileData.title}}</h5>
+              <h5>{{profileData.name}}</h5>
               <p class="mb-0">Last modified:
                 <span *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
                 <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
