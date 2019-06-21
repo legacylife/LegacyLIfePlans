@@ -40,8 +40,6 @@
               <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
           </mat-chip-list>    
 
-          <small *ngIf="WishesDocumentsMissing" class="form-error-msg">{{invalidMessage}}</small>
-
           <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
             <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">{{uploader.progress}}%</div>
             <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="uploader.progress"></mat-progress-bar>

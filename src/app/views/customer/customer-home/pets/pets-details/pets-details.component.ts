@@ -25,16 +25,15 @@ export class PetsDetailsComponent implements OnInit {
     private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router
   ) { }
 
-  ngOnInit() {
-    // this.categories$ = this.shopService.getCategories();this.categories = ["My essentials", "Pets"]this.products = [] this.cartData = []  this.filterForm = this.fb.group({     search: ['']    })
+  ngOnInit() {  
     this.userId = localStorage.getItem("endUserId");
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
-    this.getFinalWishView();
+    this.getPetsView();
   }
 
   //function to get all events
-  getFinalWishView = (query = {}, search = false) => {
+  getPetsView = (query = {}, search = false) => {
     let profileIds = '';
     let req_vars = {}
     if (this.selectedProfileId) {
@@ -43,7 +42,7 @@ export class PetsDetailsComponent implements OnInit {
         query: Object.assign({ _id: profileIds })
       }
     }
-    this.userapi.apiRequest('post', 'finalWish/view-wish-details', req_vars).subscribe(result => {     
+    this.userapi.apiRequest('post', 'pets/view-pets-details', req_vars).subscribe(result => {     
       if (result.status == "error") {
         console.log(result.data)
       } else {
@@ -56,7 +55,7 @@ export class PetsDetailsComponent implements OnInit {
     })
   }
 
-  openFinalWishModal(FolderNames, isNew?) {
+  openPetsModal(FolderNames, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(PetsModalComponent, {
       data: {
         FolderName: FolderNames,
@@ -67,7 +66,7 @@ export class PetsDetailsComponent implements OnInit {
     })
     dialogRef.afterClosed()
       .subscribe(res => {
-        this.getFinalWishView();
+        this.getPetsView();
         if (!res) {
           // If user press cancel
           return;
@@ -75,8 +74,8 @@ export class PetsDetailsComponent implements OnInit {
       })
   }
 
-  deleteFinalWish() {
-    var statMsg = "Are you sure you want to delete final wish?"
+  deletePets() {
+    var statMsg = "Are you sure you want to delete pet details?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
         if (res) {
@@ -85,13 +84,13 @@ export class PetsDetailsComponent implements OnInit {
           const req_vars = {
             query: Object.assign({ _id: this.selectedProfileId }, query)
           }
-          this.userapi.apiRequest('post', 'finalWish/delete-finalWish', req_vars).subscribe(result => {
+          this.userapi.apiRequest('post', 'pets/delete-pets', req_vars).subscribe(result => {
             if (result.status == "error") {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard', 'final-wishes'])
+              this.router.navigate(['/', 'customer', 'dashboard', 'pets'])
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {
