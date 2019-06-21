@@ -75,6 +75,10 @@ export const CustomerRoutes: Routes = [
             component: CustomerDashboardDayOneComponent
           },
           {
+            path: 'customer-day-two',
+            component: CustomerDashboardComponent
+          },
+          {
             path: 'customer-essential',
             component: CustomerHomeEssentialComponent
           },

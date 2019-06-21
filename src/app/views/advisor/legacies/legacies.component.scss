@@ -1,4 +1,4 @@
-.legacy-access--wrapper{
+.legacy--access--wrapper{
     .recent--update--section {
         padding: 20px 23px;
         height: calc(100vh - 223px);
@@ -28,10 +28,46 @@
         }
     }
 }
+.legacy--wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    .legacy--box{
+        height: 164px;
+        width: 30%;
+        border: 1px solid #dadce0;
+        border-radius: 2px;
+        text-align: center;
+        flex-grow: 1;
+        margin: 20px 20px 0 0;
+        box-shadow: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
 
+        .legacy--pic{
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            line-height: 50px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .legacy--name{
+            margin: 20px 0;
+            font-size: 18px;
+            color: #222324;
+        }
+        .legacy-confirm{
+            height: 38px;
+            background-color: #c72128;
+            color: #fff;
+        }
+    }
+}
 
 @media only screen and (max-width: 599px){
-    .legacy-access--wrapper .recent--update--section .red--box {
+    .legacy--access--wrapper .recent--update--section .red--box {
         height: auto;
         padding: 20px 15px;
     }

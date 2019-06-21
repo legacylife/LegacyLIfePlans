@@ -1,4 +1,4 @@
-<div class="container legacy-access--wrapper">
+<div class="container legacy--access--wrapper">
   <div fxLayout="row wrap">
     <div fxFlex.xs="100" fxFlex.sm="100">
       <mat-card class="p-0 mb--30">
@@ -7,7 +7,7 @@
           <mat-divider></mat-divider>
         </mat-card-title>
 
-        <mat-card-content class="recent--update--section">
+        <mat-card-content class="recent--update--section" *ngIf="">
           <p>All the user legacies you have got access to, will be displayed here. Currently you have no legacy access from
             any user.</p>
           <div class="red--box">
@@ -20,7 +20,32 @@
         </mat-card-content>
 
 
-        <mat-card-content class="recent--update--section">
+        <mat-card-content class="recent--update--section legacy--wrapper">
+
+          <div class="legacy--box">
+            <div class="legacy--pic">
+              <img class="ng-tns-c24-20" src="assets/images/arkenea/ca.jpg">
+            </div>
+            <h4 class="legacy--name">Allen Barry</h4>
+            <div class="legacy-confirm">
+              <mat-icon></mat-icon>Confirm Hiring
+            </div>
+          </div>
+
+          <div class="legacy--box">
+            <div class="legacy--pic">
+              <img class="ng-tns-c24-20" src="assets/images/arkenea/ca.jpg">
+            </div>
+            <h4 class="legacy--name">Allen Barry</h4>
+          </div>
+
+          <div class="legacy--box">
+            <div class="legacy--pic">
+              <img class="ng-tns-c24-20" src="assets/images/arkenea/ca.jpg">
+            </div>
+            <h4 class="legacy--name">Allen Barry</h4>
+          </div>
+
         </mat-card-content>
 
 
