@@ -7,7 +7,8 @@ import { UserAPIService } from './../../../../../userapi.service';
 import { AppLoaderService } from '../../../../../shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from '../../../../../shared/services/app-confirm/app-confirm.service';
 import { FinalWishesFormModalComponent } from './../final-wishes-form-modal/final-wishes-form-modal.component';
-
+import { s3Details } from '../../../../../config';
+const filePath = s3Details.url+'/'+s3Details.finalWishesFilePath;
 @Component({
   selector: 'app-customer-home',
   templateUrl: './final-wishes-details.component.html',
@@ -19,15 +20,16 @@ export class FinalWishesDetailsComponent implements OnInit {
   userId: string;
   selectedProfileId: string = "";
   row: any;
+  docPath: string;
   re =  "/(?:\.([^.]+))?$/" ;
-  constructor( // private shopService: ShopService,
+  constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
     private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router
   ) { }
 
   ngOnInit() {
-    // this.categories$ = this.shopService.getCategories();this.categories = ["My essentials", "Pets"]this.products = [] this.cartData = []  this.filterForm = this.fb.group({     search: ['']    })
+    this.docPath = filePath;
     this.userId = localStorage.getItem("endUserId");
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];

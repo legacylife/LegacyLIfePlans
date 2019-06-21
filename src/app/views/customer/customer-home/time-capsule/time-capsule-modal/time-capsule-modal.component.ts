@@ -5,70 +5,58 @@ import { AppConfirmService } from '../../../../../shared/services/app-confirm/ap
 import { AppLoaderService } from '../../../../../shared/services/app-loader/app-loader.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
-import { documentTypes } from '../../../../../selectList';
 import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../../config';
 import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
-const URL = serverUrl + '/api/documents/petsdocuments';
-const filePath = s3Details.url+'/'+s3Details.petsFilePath;
+const URL = serverUrl + '/api/documents/timeCapsuledocuments';
+const filePath = s3Details.url+'/'+s3Details.timeCapsuleFilePath;
 @Component({
   selector: 'app-essenioal-id-box',
-  templateUrl: './pets-modal.component.html',
-  styleUrls: ['./pets-modal.component.scss']
+  templateUrl: './time-capsule-modal.component.html',
+  styleUrls: ['./time-capsule-modal.component.scss']
 })
-export class PetsModalComponent implements OnInit {
-  //selected = 'option1';
+export class TimeCapsuleMoalComponent implements OnInit {
   userId = localStorage.getItem("endUserId");
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public hasBaseDropZoneOver: boolean = false;
-
   invalidMessage: string;
-  PetForm: FormGroup;
-  documentTypeList: any[] = documentTypes;
-  petDocumentsList: any;
+  TimeCapsuleForm: FormGroup;  
+  timeCapsuleDocsList: any;
   fileErrors: any;
-  petsList:any;
+  timeCapsuleList:any;
   profileIdHiddenVal:boolean = false;
-  selectedProfileId: string;
   docPath: string;
-  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
-    private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
-    private userapi: UserAPIService  ) 
-  { }
+  selectedProfileId: string;
+  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,private confirmService: AppConfirmService,private loader: AppLoaderService,
+    private router: Router,
+    private userapi: UserAPIService) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.docPath = filePath;
-    this.PetForm = this.fb.group({
-      name: new FormControl('',Validators.required),
-      petType: new FormControl(''),
-      veterinarian: new FormControl(''),
-      dietaryConcerns: new FormControl(''),
+    this.TimeCapsuleForm = this.fb.group({
+      name: new FormControl('',Validators.required),     
       profileId: new FormControl('')
      });
-     this.petDocumentsList = [];
-
+     this.timeCapsuleDocsList = [];
      const locationArray = location.href.split('/')
      this.selectedProfileId = locationArray[locationArray.length - 1];
 
-    if(this.selectedProfileId && this.selectedProfileId == 'pets'){
+    if(this.selectedProfileId && this.selectedProfileId == 'time-capsule'){
       this.selectedProfileId = "";   
-    }
-    
+    }    
      this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
      this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
-
-     this.getPetsView();
+     this.getTimeCapsuleView();
     }
 
-
-    PetFormSubmit(profileInData = null) {
+    TimeCapsuleFormSubmit(profileInData = null) {
       var query = {};
       var proquery = {};     
       
-      let profileIds = this.PetForm.controls['profileId'].value;
+      let profileIds = this.TimeCapsuleForm.controls['profileId'].value;
       if(profileIds){
         this.selectedProfileId = profileIds;
       }
@@ -77,7 +65,7 @@ export class PetsModalComponent implements OnInit {
         proquery: Object.assign(profileInData)
       }
       this.loader.open();     
-      this.userapi.apiRequest('post', 'pets/pets-form-submit', req_vars).subscribe(result => {
+      this.userapi.apiRequest('post', 'timeCapsule/timeCapsule-form-submit', req_vars).subscribe(result => {
         this.loader.close();
         if (result.status == "error") {
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
@@ -89,8 +77,8 @@ export class PetsModalComponent implements OnInit {
         console.error(err)
       })
     }
-  
-    getPetsView = (query = {}, search = false) => { 
+
+    getTimeCapsuleView = (query = {}, search = false) => { 
       let req_vars = {
         query: Object.assign({ customerId: this.userId,status:"Pending" })
       }
@@ -104,22 +92,19 @@ export class PetsModalComponent implements OnInit {
       }
 
       this.loader.open(); 
-      this.userapi.apiRequest('post', 'pets/view-pets-details', req_vars).subscribe(result => {
+      this.userapi.apiRequest('post', 'timeCapsule/view-timeCapsule-details', req_vars).subscribe(result => {
         this.loader.close();
         if (result.status == "error") {
           console.log(result.data)
         } else {
           if(result.data){    
-            this.petsList = result.data;                    
-            let profileIds = this.petsList._id;
-            this.PetForm.controls['profileId'].setValue(profileIds);
+            this.timeCapsuleList = result.data;                    
+            let profileIds = this.timeCapsuleList._id;
+            this.TimeCapsuleForm.controls['profileId'].setValue(profileIds);
             this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
             this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-            this.petDocumentsList = result.data.documents;            
-            this.PetForm.controls['name'].setValue(this.petsList.name);
-            this.PetForm.controls['petType'].setValue(this.petsList.petType);
-            this.PetForm.controls['veterinarian'].setValue(this.petsList.veterinarian);
-            this.PetForm.controls['dietaryConcerns'].setValue(this.petsList.dietaryConcerns);
+            this.timeCapsuleDocsList = result.data.documents;            
+            this.TimeCapsuleForm.controls['name'].setValue(this.timeCapsuleList.name);
           }       
         }
       }, (err) => {
@@ -127,28 +112,25 @@ export class PetsModalComponent implements OnInit {
       })
   }  
 
-  PetDelete(doc, name, tmName) {
-      let ids = this.PetForm.controls['profileId'].value;
+  timeCapsuleDelete(doc, name, tmName) {
+      let ids = this.TimeCapsuleForm.controls['profileId'].value;
       var statMsg = "Are you sure you want to delete '" + name + "' file?"
       this.confirmService.confirm({ message: statMsg })
         .subscribe(res => {
           if (res) {
             this.loader.open();
-            this.petDocumentsList.splice(doc, 1)
+            this.timeCapsuleDocsList.splice(doc, 1)
             var query = {};
             const req_vars = {
               query: Object.assign({ _id: ids }, query),
-              proquery: Object.assign({ idProofDocuments: this.petDocumentsList }, query),
+              proquery: Object.assign({ documents: this.timeCapsuleDocsList }, query),
               fileName: Object.assign({ docName: tmName }, query)
             }
-            this.userapi.apiRequest('post', 'documents/deleteIdDoc', req_vars).subscribe(result => {
+            this.userapi.apiRequest('post', 'documents/deleteTimeCapsuleDoc', req_vars).subscribe(result => {
               if (result.status == "error") {
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
               } else {
-                if(this.petDocumentsList.length<1){
-                  this.PetForm.controls['idProofDocuments_temp'].setValue('');
-                }  
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
               }
@@ -166,7 +148,7 @@ export class PetsModalComponent implements OnInit {
       this.uploader.queue.forEach((fileoOb) => {
         let filename = fileoOb.file.name;
         var extension = filename.substring(filename.lastIndexOf('.') + 1);
-        var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
+        var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc","mov"];
         let resp = this.isExtension(extension,fileExts);
         if(!resp){
           var FileMsg = "This file '" + filename + "' is not supported";
@@ -180,17 +162,15 @@ export class PetsModalComponent implements OnInit {
         }
       });
 
-      if(this.uploader.getNotUploadedItems().length){
+     if(this.uploader.getNotUploadedItems().length){
         this.uploaderCopy = cloneDeep(this.uploader)
         this.uploader.queue.splice(1, this.uploader.queue.length - 1)
         this.uploaderCopy.queue.splice(0, 1)
-        
         this.uploader.queue.forEach((fileoOb, ind) => {
-              this.uploader.uploadItem(fileoOb);
+            this.uploader.uploadItem(fileoOb);
          });
-   
          this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-           this.getPetsDocuments();
+           this.getTimeCapsuleDocuments();
          };
        }
     }
@@ -204,13 +184,13 @@ export class PetsModalComponent implements OnInit {
       });
   
       this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-        this.getPetsDocuments({}, false, false);
+        this.getTimeCapsuleDocuments({}, false, false);
       
       };
     }
 
-    getPetsDocuments = (query = {}, search = false, uploadRemained = true) => {     
-      let profileIds = this.PetForm.controls['profileId'].value;
+    getTimeCapsuleDocuments = (query = {}, search = false, uploadRemained = true) => {     
+      let profileIds = this.TimeCapsuleForm.controls['profileId'].value;
       let req_vars = {
         query: Object.assign({customerId: this.userId,status:"Pending" }),
         fields:{_id:1,documents:1}
@@ -221,17 +201,17 @@ export class PetsModalComponent implements OnInit {
           fields:{_id:1,documents:1}
         }
       }    
-      this.userapi.apiRequest('post', 'pets/view-pets-details', req_vars).subscribe(result => {
+      this.userapi.apiRequest('post', 'timeCapsule/view-timeCapsule-details', req_vars).subscribe(result => {
         if (result.status == "error") {
         } else {
           profileIds = result.data._id;
-          this.PetForm.controls['profileId'].setValue(profileIds);
+          this.TimeCapsuleForm.controls['profileId'].setValue(profileIds);
           if(uploadRemained) {
             this.uploadRemainingFiles(profileIds)
           }
           this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-          this.petDocumentsList = result.data.documents;              
+          this.timeCapsuleDocsList = result.data.documents;              
         }
       }, (err) => {
         console.error(err);
