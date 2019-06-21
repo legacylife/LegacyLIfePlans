@@ -1,0 +1,46 @@
+<div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
+  <div class="full-width">
+    <div class="">
+      <mat-card class="empty--section p-0">
+        <mat-card-header class="m-0">
+          <mat-card-title class="m-0" [routerLink]="['/customer/dashboard/pets']">Pets</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="info m-0">The section where you can manage your personal, professional and religious information.
+            <a class="legal--link">
+              <mat-icon>open_in_new</mat-icon> www.legalnature.com</a>
+          </p>
+          <p class="info m-0"> You can also manage your Pets name,Pet type, Veterinarian,Dietary Concerns and Pet documents in pets section.</p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="empty--section p-0">
+        <mat-card-header class="m-0">
+          <mat-card-title class="m-0">Pets</mat-card-title>
+          <div *ngIf="showPetsListing">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openPetsModal({}, true)">+ Add</button>
+          </div>
+        </mat-card-header>
+        <mat-card-content *ngIf="!showPetsListing">
+          <div class="build--ur--legacy" (click)="openPetsModal({}, true)">
+            <mat-icon>pets</mat-icon>
+            <p>
+              <a>Add Pets</a>
+            </p>
+          </div>
+        </mat-card-content>
+        <mat-card-content class="appointees--wrapper" *ngIf="showPetsListing">
+          <div class="cust--user--details mt-1" *ngFor="let profileData of petsListing; let i = index" [routerLink]="['/customer/dashboard/pets-view', profileData._id]">
+            <div class="name--letters">{{profileData.name.charAt(0)}}</div>
+            <div class="user--name">
+              <h5>{{profileData.name}}</h5>
+              <p class="mb-0">Last modified:
+                <span *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+              </p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

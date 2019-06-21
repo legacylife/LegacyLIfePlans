@@ -78,6 +78,15 @@ import { SendAnEmailComponent } from './customer-professionals/send-an-email-mod
 import { HireAdvisorComponent } from './customer-professionals/hire-advisor-modal/hire-advisor-modal.component';
 import { ProfAdvisorListingComponent } from './customer-professionals-landing/prof-advisor-listing/prof-advisor-listing.component';
 
+//FinalWishes
+import { FinalWishesComponent } from './customer-home/final-wishes/final-wishes-list/final-wishes-list.component';
+import { FinalWishesFormModalComponent } from './customer-home/final-wishes/final-wishes-form-modal/final-wishes-form-modal.component';
+import { FinalWishesDetailsComponent } from './customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
+
+//Pets
+import { PetsListComponent } from './customer-home/pets/pets-list/pets-list.component';
+import { PetsModalComponent } from './customer-home/pets/pets-modal/pets-modal.component';
+import { PetsDetailsComponent } from './customer-home/pets/pets-details/pets-details.component';
 
 import {LyThemeModule,LY_THEME,LY_THEME_GLOBAL_VARIABLES} from '@alyle/ui';
 /** Import the component modules */
@@ -167,17 +176,18 @@ export class GlobalVariables {
     EmergencyContactsComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,
     EmergencyContactsDetailsComponent, CustomerLegalStuffDetailsComponent,
     CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent,
-    CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent, ListingComponent, DetailsComponent, RealEstateModelComponent, VehicleModelComponent, AssetsModelComponent, DetailsVehiclesComponent, DetailsAssetsComponent
+    CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent,FinalWishesComponent,FinalWishesFormModalComponent,FinalWishesDetailsComponent,PetsListComponent,
+    PetsDetailsComponent,PetsModalComponent,ListingComponent,DetailsComponent, RealEstateModelComponent, VehicleModelComponent, AssetsModelComponent, DetailsVehiclesComponent, DetailsAssetsComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
     { provide: LY_THEME, useClass: MinimaLight, multi: true },
     { provide: LY_THEME, useClass: MinimaDark, multi: true },
-    { provide: LY_THEME_GLOBAL_VARIABLES,useClass: GlobalVariables    } ,
-  ], bootstrap: [CustomerSignupComponent], entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,
-    PersonalProfileModalComponent, MarkAsDeceasedComponent, legalStuffModalComponent,
+    { provide: LY_THEME_GLOBAL_VARIABLES,useClass: GlobalVariables } ,
+  ], bootstrap: [CustomerSignupComponent], 
+  entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,
     addTrusteeModalComponent, PersonalProfileModalComponent, MarkAsDeceasedComponent,
-    legalStuffModalComponent, essentialsMyProfessionalsComponent, SendAnEmailComponent, HireAdvisorComponent,
-    AssetsModelComponent,RealEstateModelComponent,VehicleModelComponent
+    legalStuffModalComponent, essentialsMyProfessionalsComponent, SendAnEmailComponent, HireAdvisorComponent,FinalWishesFormModalComponent,PetsModalComponent,AssetsModelComponent,RealEstateModelComponent,VehicleModelComponent
   ],
+
 })
 export class CustomerModule { }

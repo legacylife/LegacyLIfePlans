@@ -44,6 +44,14 @@ import { DetailsComponent } from './customer-home/real-estate-assets/details/det
 import { DetailsAssetsComponent } from './customer-home/real-estate-assets/details-assets/details-assets.component';
 import { DetailsVehiclesComponent } from './customer-home/real-estate-assets/details-vehicles/details-vehicles.component';
 
+//final-wishes
+import { FinalWishesComponent } from './customer-home/final-wishes/final-wishes-list/final-wishes-list.component';
+import { FinalWishesDetailsComponent } from './customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
+
+//Pets
+import { PetsListComponent } from './customer-home/pets/pets-list/pets-list.component';
+import { PetsDetailsComponent } from './customer-home/pets/pets-details/pets-details.component';
+
 export const CustomerRoutes: Routes = [
   {
     path: 'signup',
@@ -73,6 +81,10 @@ export const CustomerRoutes: Routes = [
           {
             path: 'customer-day-one',
             component: CustomerDashboardDayOneComponent
+          },
+          {
+            path: 'customer-day-two',
+            component: CustomerDashboardComponent
           },
           {
             path: 'customer-essential',
@@ -110,7 +122,7 @@ export const CustomerRoutes: Routes = [
             path: 'emergency-contacts',
             component: EmergencyContactsComponent
           },
-	        {
+          {
             path: 'legal-detail-view/:id',
             component: CustomerLegalStuffDetailsComponent
           },
@@ -133,7 +145,22 @@ export const CustomerRoutes: Routes = [
           {
             path: 'real-estate-assets-detail-view/:id',
             component: DetailsAssetsComponent
-          }
+          }, {
+            path: 'final-wishes',
+            component: FinalWishesComponent
+          },
+          {
+            path: 'final-wishes-view/:id',
+            component: FinalWishesDetailsComponent
+          },
+          {
+            path: 'pets',
+            component: PetsListComponent
+          },
+          {
+            path: 'pets-view/:id',
+            component: PetsDetailsComponent
+          },
         ]
       },
     ]
@@ -215,7 +242,7 @@ export const CustomerRoutes: Routes = [
         path: '',
         component: CustomerAccountSettingComponent,
         canActivate: [UserAuthGuard],
-        canDeactivate: [ CanDeactivateGuard ]
+        canDeactivate: [CanDeactivateGuard]
       }
     ]
   }, {
@@ -228,7 +255,7 @@ export const CustomerRoutes: Routes = [
         canActivate: [UserAuthGuard]
       }
     ]
-  }, 
+  },
   // {
   //   path: 'professionals',
   //   component: CustomerLayoutComponent,
