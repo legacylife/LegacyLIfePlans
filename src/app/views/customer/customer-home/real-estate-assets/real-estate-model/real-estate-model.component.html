@@ -13,6 +13,8 @@
             <mat-option value="">Select Type</mat-option>
             <mat-option *ngFor="let option of typeOfRealEstateType" [value]="option.opt_code">{{option.opt_name}}</mat-option>
           </mat-select>
+          <mat-icon matTooltip="Please select type" matTooltipClass="llp--tooltip error" *ngIf="realEstateForm.controls['estateType'].hasError('required') && realEstateForm.controls['estateType'].touched"
+          class="red--alert">help_outline</mat-icon>
         </mat-form-field>
       </div>
     </div>

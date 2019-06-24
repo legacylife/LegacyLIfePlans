@@ -4,6 +4,8 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { UserAPIService } from 'app/userapi.service';
+import { RealEstateAssetsType } from 'app/selectList';
+
 @Component({
   selector: 'app-assets-model',
   templateUrl: './assets-model.component.html',
@@ -15,7 +17,8 @@ export class AssetsModelComponent implements OnInit {
   assetsForm: FormGroup;
   selectedProfileId: string;
   profileIdHiddenVal: boolean = false;
-
+  typeOfRealEstateAssetsType: any[];
+  assetNewToggle: boolean = false;
   constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService, private userapi: UserAPIService, ) {
 
   }
@@ -23,18 +26,94 @@ export class AssetsModelComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.assetsForm = this.fb.group({
+      asset: new FormControl('', Validators.required),
+      assetNew: new FormControl(''),
       assetType: new FormControl(''),
       assetValue: new FormControl(''),
       location: new FormControl(''),
       comments: new FormControl(''),
       profileId: new FormControl('')
     });
-
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
     if (this.selectedProfileId && this.selectedProfileId == 'real-estate-assets') {
       this.selectedProfileId = "";
     }
+    this.typeOfRealEstateAssetsType = RealEstateAssetsType
+    this.getRealEstateAssetsDetails();
   }
 
+  assetsFormSubmit(assetsData) {
+    var query = {};
+    var proquery = {};
+    let profileIds = this.assetsForm.controls['profileId'].value;
+    if (profileIds) {
+      this.selectedProfileId = profileIds;
+    }
+    const req_vars = {
+      query: Object.assign({ _id: this.selectedProfileId }),
+      proquery: Object.assign(assetsData),
+      from: Object.assign({ customerId: this.userId })
+    }
+    this.loader.open();
+    this.userapi.apiRequest('post', 'customer/real-estate-assets', req_vars).subscribe(result => {
+      this.loader.close();
+      if (result.status == "error") {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      } else {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        this.dialog.closeAll();
+      }
+    }, (err) => {
+      console.error(err)
+    })
+  }
+
+  getRealEstateAssetsDetails(query = {}, search = false) {
+    const req_vars = {
+      query: Object.assign({ _id: this.selectedProfileId }, query)
+    }
+    this.userapi.apiRequest('post', 'customer/view-real-estate-asset', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        this.row = result.data
+        this.assetsForm.controls['profileId'].setValue(this.row._id);
+        this.assetsForm.controls['asset'].setValue(this.row.asset);
+        this.assetsForm.controls['assetNew'].setValue(this.row.assetNew);
+        this.assetsForm.controls['assetType'].setValue(this.row.assetType);
+        this.assetsForm.controls['assetValue'].setValue(this.row.assetValue);
+        this.assetsForm.controls['location'].setValue(this.row.location);
+        this.assetsForm.controls['comments'].setValue(this.row.comments);
+
+        if (this.row.asset == 6) {
+          this.assetNewToggle = true
+        } else {
+          this.assetNewToggle = false
+        }
+      }
+    }, (err) => {
+      console.error(err)
+    })
+  }
+
+  firstCapitalize(e) {
+    let re = /(^|[.!?]\s+)([a-z])/g;
+    var textBox: HTMLInputElement = <HTMLInputElement>e.target;
+    textBox.value = textBox.value.replace(re, (m, $1, $2) => $1 + $2.toUpperCase());
+  }
+
+  checkSpecialChar(event) {
+    var key;
+    key = event.charCode;
+    return ((key > 64 && key < 91) || (key > 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57));
+  }
+
+  assetChange(event) {
+    if (event.value == 6) {
+      this.assetNewToggle = true
+    } else {
+      this.assetNewToggle = false
+    }
+  }
 }

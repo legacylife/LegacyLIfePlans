@@ -66,6 +66,7 @@ export class RealEstateModelComponent implements OnInit {
       console.error(err)
     })
   }
+  
   realEstateFormSubmit(realEstateData) {
     var query = {};
     var proquery = {};

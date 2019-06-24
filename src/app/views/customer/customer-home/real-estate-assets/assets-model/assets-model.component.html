@@ -6,11 +6,40 @@
 </div>
 <form class="llp-form-wrapper" (ngSubmit)="assetsFormSubmit(assetsForm.value)">
   <div class="ll--modal--body id--box--body">
-    
     <div fxLayout="row wrap">
       <div fxFlex.xs="100">
         <mat-form-field class="full-width">
-          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="assetType" placeholder="Asset Type" [formControl]="assetsForm.controls['assetType']">           
+          <mat-select placeholder="Assets*" name="asset" (selectionChange)="assetChange($event)" [formControl]="assetsForm.controls['asset']">
+            <mat-option value="">Select Asset</mat-option>
+            <mat-option *ngFor="let option of typeOfRealEstateAssetsType" [value]="option.opt_code">{{option.opt_name}}
+            </mat-option>
+          </mat-select>
+          <mat-icon matTooltip="Please select asset" matTooltipClass="llp--tooltip error" *ngIf="assetsForm.controls['asset'].hasError('required') && assetsForm.controls['asset'].touched"
+          class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row wrap" *ngIf="assetNewToggle">
+      <div fxFlex.xs="100">
+        <mat-form-field class="full-width">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="assetNew"
+            placeholder="Asset New" [formControl]="assetsForm.controls['assetNew']">
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100">
+        <mat-form-field class="full-width">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="assetType"
+            placeholder="Asset Type" [formControl]="assetsForm.controls['assetType']">
+        </mat-form-field>
+      </div>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100">
+        <mat-form-field class="full-width">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="location"
+            placeholder="Location" [formControl]="assetsForm.controls['location']">
         </mat-form-field>
       </div>
     </div>
@@ -18,7 +47,8 @@
     <div fxLayout="row wrap">
       <div fxFlex.xs="100">
         <mat-form-field class="full-width">
-          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="location" placeholder="Location" [formControl]="assetsForm.controls['location']">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="assetValue"
+            placeholder="Value" [formControl]="assetsForm.controls['assetValue']">
         </mat-form-field>
       </div>
     </div>
@@ -26,20 +56,14 @@
     <div fxLayout="row wrap">
       <div fxFlex.xs="100">
         <mat-form-field class="full-width">
-          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="assetValue" placeholder="Value" [formControl]="assetsForm.controls['assetValue']">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="comments"
+            placeholder="Comment Box" [formControl]="assetsForm.controls['comments']">
         </mat-form-field>
       </div>
-    </div>   
-    
-    <div fxLayout="row wrap">
-      <div fxFlex.xs="100">
-        <mat-form-field class="full-width">
-          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="comments" placeholder="Comment Box" [formControl]="assetsForm.controls['comments']">
-        </mat-form-field>
-      </div>
-    </div> 
+    </div>
   </div>
-  <input *ngIf="profileIdHiddenVal" matInput name="profileId" [formControl]="assetsForm.controls['profileId']" readonly="readonly">
+  <input *ngIf="profileIdHiddenVal" matInput name="profileId" [formControl]="assetsForm.controls['profileId']"
+    readonly="readonly">
   <div class="ll--modal--footer text-center">
     <button mat-raised-button class="llp--primary--btn" [disabled]="assetsForm.invalid">Save</button>
   </div>

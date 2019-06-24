@@ -7,7 +7,7 @@ import { UserAPIService } from 'app/userapi.service';
 import { RealEstateModelComponent } from '../real-estate-model/real-estate-model.component';
 import { VehicleModelComponent } from '../vehicle-model/vehicle-model.component';
 import { AssetsModelComponent } from '../assets-model/assets-model.component';
-import { RealEstateType } from 'app/selectList';
+import { RealEstateType, RealEstateAssetsType } from 'app/selectList';
 
 @Component({
   selector: 'app-listing',
@@ -16,15 +16,14 @@ import { RealEstateType } from 'app/selectList';
 })
 export class ListingComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-
-  showProfessionalsListing = false;
   userId: string;
   typeOfLst: any = [];
-  
   realEstateList: any = [];
   showRealEstateListing = false;
   realEstateVehiclesList: any = [];
   showRealEstateVehiclesListing = false;
+  showAssetsListing = false;
+  realEstateAssetsList: any = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -37,6 +36,7 @@ export class ListingComponent implements OnInit {
   ngOnInit() {
     this.getRealEstateList();
     this.getRealEstateVehiclesList();
+    this.getRealEstateAssetsList();
     this.userId = localStorage.getItem("endUserId");
   }
 
@@ -53,7 +53,9 @@ export class ListingComponent implements OnInit {
         console.log(result.data)
       } else {
         this.realEstateList = result.data;
-        this.showRealEstateListing = true;
+        if (result.data.length > 0) {
+          this.showRealEstateListing = true;
+        }
       }
     }, (err) => {
       console.error(err);
@@ -73,7 +75,32 @@ export class ListingComponent implements OnInit {
         console.log(result.data)
       } else {
         this.realEstateVehiclesList = result.data;
-        this.showRealEstateVehiclesListing = true;
+        if (result.data.length > 0) {
+          this.showRealEstateVehiclesListing = true;
+        }
+      }
+    }, (err) => {
+      console.error(err);
+    })
+  }
+
+
+  getRealEstateAssetsList(query = {}, search = false) {
+    const req_vars = {
+      query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      fields: {},
+      offset: '',
+      limit: '',
+      order: { "modifiedOn": -1 },
+    }
+    this.userapi.apiRequest('post', 'customer/real-estate-assets-list', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        this.realEstateAssetsList = result.data;
+        if (result.data.length > 0) {
+          this.showAssetsListing = true;
+        }
       }
     }, (err) => {
       console.error(err);
@@ -95,7 +122,14 @@ export class ListingComponent implements OnInit {
     })
     dialogRef.afterClosed()
       .subscribe(res => {
-        if (!res) {
+        if (modelName == "RealEstate") {
+          this.getRealEstateList()
+        } else if (modelName == "Vehicles") {
+          this.getRealEstateVehiclesList()
+        } else {
+          this.getRealEstateAssetsList()
+        }        
+        if (!res) {                    
           return;
         }
       })
@@ -103,10 +137,10 @@ export class ListingComponent implements OnInit {
 
   getType(key, folderName) {
     if (folderName) {
-      if(folderName=='RealEstate'){
+      if (folderName == 'RealEstate') {
         this.typeOfLst = RealEstateType;
-      }else{
-        this.typeOfLst = RealEstateType;
+      } else {
+        this.typeOfLst = RealEstateAssetsType;
       }
 
       let filteredTyes = this.typeOfLst.filter(dtype => {

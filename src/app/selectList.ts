@@ -179,3 +179,24 @@ export const RealEstateType = [{
   "opt_name" : "Commercial", 
   "opt_code" : "3", 
 }]
+
+export const RealEstateAssetsType = [{
+  "opt_name" : "Safe", 
+  "opt_code" : "1", 
+},
+{ 
+  "opt_name" : "Safe Deposit Box", 
+  "opt_code" : "2", 
+},{ 
+  "opt_name" : "Box", 
+  "opt_code" : "3", 
+},{ 
+  "opt_name" : "Art", 
+  "opt_code" : "4", 
+},{ 
+  "opt_name" : "Jewelry", 
+  "opt_code" : "5", 
+},{ 
+  "opt_name" : "New", 
+  "opt_code" : "6", 
+}]
