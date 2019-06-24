@@ -48,6 +48,7 @@ import { AdvisorAccountSettingComponent } from './advisor-account-setting/adviso
 import { AdvisorSubscriptionComponent } from './advisor-subscription/advisor-subscription.component';
 import { AdvisorLegacyDetailsComponent } from './advisor-legacy-details/advisor-legacy-details.component';
 import { LegaciesDetailsLandingComponent } from './advisor-legacy-details/legacies-details-landing/legacies-details-landing.component';
+import { GetFeaturedComponent } from './get-featured/get-featured.component';
 import { MarkAsDeceasedComponent } from './advisor-legacy-details/mark-as-deceased-modal/mark-as-deceased-modal.component';
 import { AdvisorLayoutComponent } from './../../shared/components/layouts/advisor-layout/advisor-layout.component';
 import { states } from '../../state';
@@ -144,6 +145,7 @@ export class GlobalVariables {
     AdvisorDashboardUpdateComponent, AdvisorAccountSettingComponent, AdvisorSubscriptionComponent,
     ChangePassComponent, HomeComponent, ReferAndEarnModalComponent, AdvisorLegacyDetailsComponent,
     LegaciesDetailsLandingComponent, MarkAsDeceasedComponent,
+    GetFeaturedComponent,
   ], providers: [{ provide: LY_THEME, useClass: MinimaLight, multi: true },
   { provide: LY_THEME, useClass: MinimaDark, multi: true },
   { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },
