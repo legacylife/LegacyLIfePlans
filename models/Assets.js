@@ -2,8 +2,10 @@ var mongoose = require( 'mongoose' )
 var constants = require("../config/constants")
 
 var assetsSchema = new mongoose.Schema({
-  customerId: String,
-  assetType: String,  
+  customerId: String,  
+  asset: String,  
+  assetNew: String,
+  assetType: String,
   assetValue: String,
   location: String,
   comments: String,

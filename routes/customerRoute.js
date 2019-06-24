@@ -24,8 +24,8 @@ const MyProfessional = require('./../models/MyProfessionals.js')
 const LegalStuff = require('./../models/LegalStuff.js')
 const RealEstate = require('./../models/RealEstate.js')
 const Vehicles = require('./../models/Vehicles.js')
+const Assets = require('./../models/Assets.js')
 const FileActivityLog = require('./../models/FileActivityLog.js')
-
 const s3 = require('./../helpers/s3Upload')
 
 var auth = jwt({
@@ -826,6 +826,106 @@ function fileActivityLogList(req, res) {
   }).sort(order).skip(offset).limit(limit)
 }
 
+
+function realEstateAssetsSubmit(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let { from } = req.body;
+  if(query._id ){
+    Assets.findOne(query, function (err, custData) {      
+      if (err) {
+        let result = { "message": "Something Wrong!" }
+        res.send(resFormat.rError(result));
+      } else {
+        if (custData && custData._id) {
+          let { proquery } = req.body;  
+          proquery.modifiedOn = new Date();
+          Assets.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              let result = { "message": "Assets details have been updated successfully!" }
+              res.status(200).send(resFormat.rSuccess(result))
+            }
+          })
+        } else {
+          let result = { "message": "No record found." }
+          res.send(resFormat.rError(result));
+        }
+      }
+    })
+  } else { 
+    let { proquery } = req.body; 
+    var assetsObj = new Assets();
+    assetsObj.customerId = from.customerId;
+    assetsObj.asset = proquery.asset;
+    assetsObj.assetNew = proquery.assetNew;
+    assetsObj.assetType = proquery.assetType;
+    assetsObj.assetValue = proquery.assetValue;
+    assetsObj.location = proquery.location;
+    assetsObj.comments = proquery.comments;
+    assetsObj.status = 'Active';
+    assetsObj.createdOn = new Date();
+    assetsObj.modifiedOn = new Date();
+    assetsObj.save({ $set: proquery }, function (err, newEntry) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        let result = { "message": "Assets details have been added successfully!" }
+        res.status(200).send(resFormat.rSuccess(result))
+      }
+    })
+  }
+}
+
+function getRealEstateAssetsList(req, res) {
+  let { fields, offset, query, order, limit, search } = req.body
+  Assets.find(query, function (err, realEstateAssetsList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(realEstateAssetsList))
+    }
+  }).sort(order).skip(offset).limit(limit)
+}
+
+function viewRealEstateAsset(req, res) {
+  let { query } = req.body
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  Assets.findOne(query, fields, function (err, realEstateAssetsData) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(realEstateAssetsData))
+    }
+  })
+}
+
+function deleteRealEstateAsset(req, res) {
+  let { query } = req.body;
+  let fields = { }
+  Assets.findOne(query, fields, function (err, profileInfo) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      var upStatus = 'Delete';
+      var params = { status: upStatus }
+      Assets.update({ _id: profileInfo._id }, { $set: params }, function (err, updatedinfo) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          let result = { "message": "Record deleted successfully!" }
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
+
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
@@ -855,4 +955,9 @@ router.post("/view-real-estate-vehicle", viewRealEstateVehicle)
 router.post("/real-estate-vehicles-list", getRealEstateVehiclesList)
 router.post("/delete-real-estate-vehicle", deleteRealEstateVehicle)
 router.post("/file-activity-log-list", fileActivityLogList)
+router.post("/real-estate-assets", realEstateAssetsSubmit)
+router.post("/real-estate-assets-list", getRealEstateAssetsList)
+router.post("/view-real-estate-asset", viewRealEstateAsset)
+router.post("/delete-real-estate-asset", deleteRealEstateAsset)
+
 module.exports = router
