@@ -1,0 +1,86 @@
+<div class="ll--modal--header">
+    Finance
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+<form class="llp-form-wrapper" (ngSubmit)="FinanceFormSubmit(FinanceForm.value)">
+  <div class="ll--modal--body legal--stuff--body--hgt">
+    <div fxLayout="row wrap" class="pt-1">
+      <div fxFlex.xs="100">
+       <mat-form-field class="full-width">
+              <mat-label>Policy Type*</mat-label>
+            <mat-select placeholder="Policy Type*" name="financesType" [formControl]="FinanceForm.controls['financesType']" (selectionChange)="onChangeType($event.value)">
+              <mat-option value="">Select Policy Type</mat-option>
+              <mat-option *ngFor="let option of financeTypeList"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
+            </mat-select>
+              <mat-icon matTooltip="Please select policy type" matTooltipClass="llp--tooltip error" *ngIf="FinanceForm.controls['financesType'].hasError('required') && FinanceForm.controls['financesType'].touched" class="red--alert">help_outline</mat-icon>
+       </mat-form-field>
+
+       <mat-form-field class="full-width" *ngIf="newVal"> 
+          <input matInput name="financesTypeNew" placeholder="Finances Type New*"  [formControl]="FinanceForm.controls['financesTypeNew']">
+          <mat-icon matTooltip="Please enter finances type new" matTooltipClass="llp--tooltip error" *ngIf="FinanceForm.controls['financesTypeNew'].hasError('required') && FinanceForm.controls['financesTypeNew'].touched" class="red--alert">help_outline</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+          <input matInput name="administatorName" placeholder="Administator Name"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="FinanceForm.controls['administatorName']">
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+          <input matInput name="branchLocation" placeholder="Policy Number" [formControl]="FinanceForm.controls['branchLocation']">
+      </mat-form-field>
+   
+      <mat-form-field class="full-width">
+          <input matInput name="accountNumber" placeholder="Contact Person" [formControl]="FinanceForm.controls['accountNumber']">
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+          <input matInput name="contactEmail" placeholder="Contact Email" [formControl]="FinanceForm.controls['contactEmail']">
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+          <input matInput name="contactPhone" placeholder="Contact Phone" [formControl]="FinanceForm.controls['contactPhone']">
+      </mat-form-field>
+
+      <div class="upload--buss--docs--sec">
+             <label>Upload your file documents</label>
+             <div class="upload--box fileupload-drop-zone"
+                ng2FileDrop
+                [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                (fileOver)="fileOverBase($event)"
+                [uploader]="uploader">
+                <input type="file" name="documents"  ng2FileSelect [uploader]="uploader" multiple  (change)="fileOverBase('')" />  
+                <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                <div class="select--file">Select files from your computer</div>
+              </div>
+              <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+      </div>            
+      <div *ngIf="FinanceDocsList" >
+          <h3 class="header--text fnt--16">Uploaded file documents </h3>
+          <mat-chip-list class="doc--list" *ngFor="let doc of FinanceDocsList; index as i">
+              <mat-chip><a href="{{docPath}}{{doc.tmpName}}">{{doc.title}}</a><mat-icon matChipRemove (click)="FinanceDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+          </mat-chip-list>
+         </div>
+          <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
+              <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
+          </mat-chip-list>    
+          <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
+            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">{{uploader.progress}}%</div>
+            <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="uploader.progress"></mat-progress-bar>
+      </div>
+
+      <mat-form-field class="full-width mt-1">
+              <textarea (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" maxlength="500" matInput placeholder="Comments" name="comments" [formControl]="FinanceForm.controls['comments']"></textarea>
+              <div class="char--limit" style="float: right;">{{ 500 - FinanceForm.controls['comments'].value?.length }}</div>
+      </mat-form-field>
+
+      <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
+            <input matInput name="profileId" [formControl]="FinanceForm.controls['profileId']" readonly="readonly">
+      </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn" [disabled]="!FinanceForm.valid">Save</button>
+  </div>
+</form>

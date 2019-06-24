@@ -47,7 +47,11 @@ import { PetsDetailsComponent } from './customer-home/pets/pets-details/pets-det
 //Time capsule
 import { TimeCapsuleListComponent } from './customer-home/time-capsule/time-capsule-list/time-capsule-list.component';
 import { TimeCapsuleDetailsComponent } from './customer-home/time-capsule/time-capsule-details/time-capsule-details.component';
-
+//Insurance-Finance-Debt
+import { InsuranceFinanceDebtListComponent } from './customer-home/insurance-finance-debt/insurance-finance-debt-list/insurance-finance-debt-list.component';
+import { InsuranceDetailsComponent } from './customer-home/insurance-finance-debt/insurance-details/insurance-details.component';
+import { FinanceDetailsComponent } from './customer-home/insurance-finance-debt/finance-details/finance-details.component';
+import { DebtDetailsComponent } from './customer-home/insurance-finance-debt/debt-details/debt-details.component';
 export const CustomerRoutes: Routes = [
   {
     path: 'signup',
@@ -165,6 +169,22 @@ export const CustomerRoutes: Routes = [
             path: 'time-capsule-view/:id',
             component: TimeCapsuleDetailsComponent
           },   
+          {
+            path: 'insurance-finance-debt',
+            component: InsuranceFinanceDebtListComponent
+          },
+          {
+            path: 'insurance-view/:id',
+            component: InsuranceDetailsComponent
+          },
+          {
+            path: 'finance-view/:id',
+            component: FinanceDetailsComponent
+          }, 
+          {
+            path: 'debt-view/:id',
+            component: DebtDetailsComponent
+          },           
         ]
       },
     ]
