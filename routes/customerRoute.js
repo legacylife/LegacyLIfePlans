@@ -24,6 +24,7 @@ const MyProfessional = require('./../models/MyProfessionals.js')
 const LegalStuff = require('./../models/LegalStuff.js')
 const RealEstate = require('./../models/RealEstate.js')
 const Vehicles = require('./../models/Vehicles.js')
+const FileActivityLog = require('./../models/FileActivityLog.js')
 
 const s3 = require('./../helpers/s3Upload')
 
@@ -813,6 +814,18 @@ function deleteRealEstateVehicle(req, res) {
   })
 }
 
+function fileActivityLogList(req, res) {
+  let { fields, offset, query, order, limit, search } = req.body  
+  FileActivityLog.find(query, fields, function (err, activityLogList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      totalRecords = activityLogList.length; 
+      res.send(resFormat.rSuccess({ activityLogList, totalRecords }))
+    }
+  }).sort(order).skip(offset).limit(limit)
+}
+
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
@@ -841,4 +854,5 @@ router.post("/real-estate-vehicle", realEstateVehicleSubmit)
 router.post("/view-real-estate-vehicle", viewRealEstateVehicle)
 router.post("/real-estate-vehicles-list", getRealEstateVehiclesList)
 router.post("/delete-real-estate-vehicle", deleteRealEstateVehicle)
+router.post("/file-activity-log-list", fileActivityLogList)
 module.exports = router
