@@ -10,6 +10,7 @@ router.use("/customer", require("./routes/customerRoute"))
 router.use("/finalwish", require("./routes/finalWishRoute"))
 router.use("/pets", require("./routes/petsRoute"))
 router.use("/timeCapsule", require("./routes/timeCapsuleRoute"))
+router.use("/insuranceFinanceDebt", require("./routes/insuranceFinanceDebtRoute"))
 router.use("/documents", require("./routes/documentsUploadRoute"))
 
 
