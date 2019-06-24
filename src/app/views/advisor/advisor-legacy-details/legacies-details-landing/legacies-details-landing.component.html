@@ -1,0 +1,176 @@
+<div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
+
+  <div class="full-width">
+
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="70" fxFlex.lg="80" fxFlex.xl="80">
+        <mat-card class="p-0 mb-1">
+          <mat-card-title class="">
+            <div class="card-title-text">Legacy Details</div>            
+            <mat-divider></mat-divider>
+          </mat-card-title>
+
+          <mat-card-content class="recent--update--section p-20">
+            <mat-nav-list class="pt-0">
+              <mat-list-item class="cust--user--details large--view">
+                <div mat-list-avatar class="user--pic">
+                  <img alt="" src="assets/images/arkenea/john.png">
+                </div>
+                <div mat-line class="user--name">
+                  <h5>James Anderson</h5>
+                  <div class="sta--m">
+                    <mat-icon class="mat-icon material-icons" role="img">star</mat-icon> Standard member
+                  </div>
+                  <p class="mb-0">Last Login:
+                    <span>March 31, 2019</span>
+                  </p>
+                </div>
+                <button mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu1">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+              </mat-list-item>
+              <mat-menu #menu1="matMenu" xPosition="before">
+                <button mat-menu-item>
+                  <mat-icon>file_download</mat-icon> Download All</button>
+                <button mat-menu-item class="reject">
+                  <mat-icon>cancel</mat-icon> Remove Myself as a Trustee</button>
+                <button mat-menu-item>
+                  <mat-icon>monetization_on</mat-icon> Renew Subscription</button>
+                <button mat-menu-item>
+                  <mat-icon>markunread</mat-icon> Connect for Help</button>
+              </mat-menu>
+            </mat-nav-list>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="empty--section p-0 mb-1">        
+          <mat-card-header class="m-0">
+            <mat-card-title class="m-0">Personal Profile</mat-card-title>
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openProfileModal({}, true)">+ Add</button>
+          </mat-card-header>
+          <mat-card-content class="recent--update--section">
+            <mat-nav-list class="pt-1">
+              <mat-list-item class="cust--user--details">
+                <div mat-list-avatar class="name--letters">
+                  ab
+                </div>
+                <div mat-line class="user--name">
+                  <h5>Allen Barry</h5>
+                  <p class="mb-0">Last modified:
+                    <span>4/02/2019</span>
+                  </p>
+                </div>
+              </mat-list-item>
+            </mat-nav-list>
+            <mat-nav-list class="pt-1">
+              <mat-list-item class="cust--user--details">
+                <div mat-list-avatar class="name--letters">
+                  ab
+                </div>
+                <div mat-line class="user--name">
+                  <h5>Allen Barry</h5>
+                  <p class="mb-0">Last modified:
+                    <span>4/02/2019</span>
+                  </p>
+                </div>
+              </mat-list-item>
+
+            </mat-nav-list>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="empty--section p-0 mb--20">         
+          <mat-card-header class="m-0">
+            <mat-card-title class="m-0">ID Box</mat-card-title>
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openProfileModal({}, true)">+ Add</button>
+          </mat-card-header>
+
+          <mat-card-content class="recent--update--section">
+            <mat-nav-list class="pt-1">
+              <mat-list-item class="cust--user--details">
+                <div mat-list-avatar class="name--letters">
+                  dl
+                </div>
+                <div mat-line class="user--name">
+                  <h5>Driving License ID</h5>
+                  <p class="mb-0">Last modified:
+                    <span>4/02/2019</span>
+                  </p>
+                </div>
+              </mat-list-item>
+
+            </mat-nav-list>
+            <mat-nav-list class="pt-1">
+              <mat-list-item class="cust--user--details">
+                <div mat-list-avatar class="name--letters">
+                  ss
+                </div>
+                <div mat-line class="user--name">
+                  <h5>Social Security Number</h5>
+                  <p class="mb-0">Last modified:
+                    <span>4/02/2019</span>
+                  </p>
+                </div>
+
+              </mat-list-item>
+
+            </mat-nav-list>
+          </mat-card-content>
+        </mat-card>
+
+
+      </div>
+
+      <!-- right section start here -->
+
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="20" fxFlex.xl="20" class="reverse--order--sm">
+        <div class="right--panel--wrapper">
+          <div fxLayout="row wrap">
+            <div fxFlex.xs="100">
+              <div class="right--boxes mr-0 mb-1">
+                <mat-card class="p-0 black--header">
+                  <mat-card-title class="">
+                    <div class="card-title-text">Locked Items</div>
+                    <mat-divider></mat-divider>
+                  </mat-card-title>
+                  <mat-card-content class="invite--body--section">
+                    <h4 class="count">2
+                      <span></span>
+                    </h4>
+                    <div class="adjust">
+                      <p class="invites">Unlocked after death
+                      </p>
+                      <button mat-raised-button class="llp--primary--btn p-0" (click)="markAsDeceasedModal({}, true)">Mark as Deceased</button>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+
+              <div class="right--boxes mr-0">
+                <mat-card class="p-0 black--header">
+                  <mat-card-title class="">
+                    <div class="card-title-text">Prospects</div>
+                    <mat-divider></mat-divider>
+                  </mat-card-title>
+                  <mat-card-content class="invite--body--section">
+                    <h4 class="count">12
+                      <span></span>
+                    </h4>
+                    <div class="adjust">
+                      <p class="invites">Users associated with this legacy
+                      </p>
+                      <button mat-raised-button class="llp--primary--btn p-0">View</button>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

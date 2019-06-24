@@ -15,6 +15,8 @@ import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.gu
 import { AuthLayoutComponent } from '../../shared/components/layouts/auth-layout/auth-layout.component';
 import { AdvisorLandingLayoutComponent } from '../../shared/components/layouts/advisor-landing-layout/advisor-landing-layout.component';
 import { HomeComponent } from './advisor-landing/home/home.component';
+import { AdvisorLegacyDetailsComponent } from './advisor-legacy-details/advisor-legacy-details.component';
+import { LegaciesDetailsLandingComponent } from './advisor-legacy-details/legacies-details-landing/legacies-details-landing.component';
 console.log('advisor---routing');
 export const AdvisorRoutes: Routes = [
   {
@@ -133,6 +135,25 @@ export const AdvisorRoutes: Routes = [
       }
     ]
   },
+  {
+    path: 'legacies-details',
+    component: AdvisorLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: AdvisorLegacyDetailsComponent,
+        canActivate: [UserAuthGuard],
+        children: [
+          {
+            path: 'user-legacies-detail',
+            component: LegaciesDetailsLandingComponent
+          }
+        ]
+      }
+    ]
+  },
+
+
   {
     path: 'subscription',
     component: AdvisorSubscriptionComponent

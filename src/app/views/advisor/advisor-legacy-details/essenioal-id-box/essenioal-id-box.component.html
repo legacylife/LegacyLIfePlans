@@ -1,0 +1,172 @@
+<div class="ll--modal--header">
+  ID BOX
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+
+<form class="llp-form-wrapper" (ngSubmit)="IdFormSubmit(IDForm.value)">
+  <div class="ll--modal--body id--box--body legal--stuff--body--hgt">
+    <div fxLayout="row wrap" class="pt-1">
+      <div fxFlex.xs="100">
+
+        <mat-form-field class="full-width">
+          <mat-label>ID/Document *</mat-label>
+          <mat-select placeholder="ID/Document*" name="documentType" [formControl]="IDForm.controls['documentType']" (selectionChange)="onChangeDocumentType($event.value)">
+            <mat-option value="">Select a ID/Document</mat-option>
+            <mat-option *ngFor="let option of documentTypeList"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
+          </mat-select>
+            <mat-icon matTooltip="Please select ID/Document type" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['documentType'].hasError('required') && IDForm.controls['documentType'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+        
+        <mat-form-field class="full-width" *ngIf="typeOne">
+          <input matInput name="licenseNumber" maxlength="20" placeholder="License Number*" [formControl]="IDForm.controls['licenseNumber']">
+          <mat-icon matTooltip="Please enter license number" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['licenseNumber'].hasError('required') && IDForm.controls['licenseNumber'].touched"
+          class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeTwo">
+          <input matInput name="nonDriverIDNumber" maxlength="20" placeholder="Non-Driver ID Number*" [formControl]="IDForm.controls['nonDriverIDNumber']">
+          <mat-icon matTooltip="Please enter Non-Driver ID Number" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['nonDriverIDNumber'].hasError('required') && IDForm.controls['nonDriverIDNumber'].touched"
+          class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeThree">
+          <input matInput name="DoDIDNumber" maxlength="20" placeholder="DoD ID Number*" [formControl]="IDForm.controls['DoDIDNumber']">
+          <mat-icon matTooltip="Please enter DoD ID Number" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['DoDIDNumber'].hasError('required') && IDForm.controls['DoDIDNumber'].touched"
+          class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeFour">
+          <input matInput name="placeOfBirth" maxlength="20" placeholder="Place of Birth*" [formControl]="IDForm.controls['placeOfBirth']">
+          <mat-icon matTooltip="Please enter Place of Birth" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['placeOfBirth'].hasError('required') && IDForm.controls['placeOfBirth'].touched"
+          class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeFive">
+          <input matInput name="socialSecurityNumber" maxlength="20" placeholder="Social Security Number*" [formControl]="IDForm.controls['socialSecurityNumber']">
+          <mat-icon matTooltip="Please enter Social Security Number" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['socialSecurityNumber'].hasError('required') && IDForm.controls['socialSecurityNumber'].touched"
+          class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeSixSeven">
+          <input matInput name="countryOfIssue" maxlength="20" placeholder="Country of issue*" [formControl]="IDForm.controls['countryOfIssue']">
+          <mat-icon matTooltip="Please enter Country of issue" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['countryOfIssue'].hasError('required') && IDForm.controls['countryOfIssue'].touched"
+          class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeOneTwo">
+          <mat-label>State*</mat-label>
+          <mat-select placeholder="State*" name="state" [formControl]="IDForm.controls['state']">
+            <mat-option value="">Select a state</mat-option>
+            <mat-option *ngFor="let option of stateList"  [value]="option.state_name">{{option.state_name}}</mat-option>
+          </mat-select>
+          <mat-icon matTooltip="Please select state" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['state'].hasError('required') && IDForm.controls['state'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeSix">
+          <input matInput name="passportNumber" maxlength="20" placeholder="Passport Number*" [formControl]="IDForm.controls['passportNumber']">
+          <mat-icon matTooltip="Please enter passport number" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['passportNumber'].hasError('required') && IDForm.controls['passportNumber'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+        
+        <mat-form-field class="full-width llp-datepicker" *ngIf="typeOneTwoSixSeven">
+          <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Expiration Date*" readonly [max]="maxDate" [formControl]="IDForm.controls['expirationDate']">
+          <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+          <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
+          </mat-datepicker>
+          <mat-icon matTooltip="Please select expiration date" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['expirationDate'].hasError('required') && IDForm.controls['expirationDate'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeOneTwo">
+          <input (keyup)="firstCapitalize($event)" matInput name="locationDriverLicense" maxlength="20" placeholder="Location of Driver's License*" [formControl]="IDForm.controls['locationDriverLicense']">
+          <mat-icon matTooltip="Please enter location of driver's license" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['locationDriverLicense'].hasError('required') && IDForm.controls['locationDriverLicense'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeThree">
+          <input class="capitalize" matInput name="DBN" maxlength="20" placeholder="DoD Benefits Number (DBN)*" [formControl]="IDForm.controls['DBN']">
+          <mat-icon matTooltip="Please enter DoD Benefits Number (DBN)" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['DBN'].hasError('required') && IDForm.controls['DBN'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeFour">
+          <input matInput name="fileNumber" maxlength="20" placeholder="File Number*" [formControl]="IDForm.controls['fileNumber']">
+          <mat-icon matTooltip="Please enter file number" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['fileNumber'].hasError('required') && IDForm.controls['fileNumber'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeFive">
+          <input (keyup)="firstCapitalize($event)" matInput name="locationSocialSecurityCard" maxlength="20" placeholder="Location of Social Security Card*" [formControl]="IDForm.controls['locationSocialSecurityCard']">
+          <mat-icon matTooltip="Please enter Location of Social Security Card" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['locationSocialSecurityCard'].hasError('required') && IDForm.controls['locationSocialSecurityCard'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeThree">
+          <input (keyup)="firstCapitalize($event)" matInput name="locationDoDID" maxlength="20" placeholder="Location of DoD ID*" [formControl]="IDForm.controls['locationDoDID']">
+          <mat-icon matTooltip="Please enter location of DoD ID" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['locationDoDID'].hasError('required') && IDForm.controls['locationDoDID'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeSix">
+          <input (keyup)="firstCapitalize($event)" matInput name="locationPassport" maxlength="20" placeholder="Location of Passport*" [formControl]="IDForm.controls['locationPassport']">
+          <mat-icon matTooltip="Please enter Location of Passport" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['locationPassport'].hasError('required') && IDForm.controls['locationPassport'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="typeSeven">
+          <input (keyup)="firstCapitalize($event)" matInput name="LocationWorkPermitVisa" maxlength="20" placeholder="Location of Work Permit or Visa*" [formControl]="IDForm.controls['LocationWorkPermitVisa']">
+          <mat-icon matTooltip="Please enter Location of Work Permit or Visa" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['LocationWorkPermitVisa'].hasError('required') && IDForm.controls['LocationWorkPermitVisa'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+         <div class="upload--buss--docs--sec">
+             <label>Upload your ID proof documents *</label>
+             <div class="upload--box fileupload-drop-zone"
+                ng2FileDrop
+                [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                (fileOver)="fileOverBase($event)"
+                [uploader]="uploader">
+                <input type="file" name="idProofDocuments"  ng2FileSelect [uploader]="uploader" multiple  (change)="fileOverBase('')" />  
+                <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                <div class="select--file">Select file from your computer</div>
+              </div>
+              <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+            </div>
+            <mat-form-field class="full-width" *ngIf="idProofDocuments_temps">
+                <input matInput name="idProofDocuments_temp" [formControl]="IDForm.controls['idProofDocuments_temp']">
+                <small *ngIf="IDForm.controls['idProofDocuments_temp'].hasError('required') && IDForm.controls['idProofDocuments_temp'].touched" class="form-error-msg"> Please drag your document. </small>
+            </mat-form-field>
+      
+         <div *ngIf="idProofDocumentsList" >
+          <h3 class="header--text fnt--16">Uploaded ID proof</h3>
+          <mat-chip-list class="doc--list" *ngFor="let doc of idProofDocumentsList; index as i">
+              <mat-chip><a href="{{docPath}}{{doc.tmpName}}">{{doc.title}}</a><mat-icon matChipRemove (click)="IDDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+          </mat-chip-list>
+         </div>
+
+          <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
+              <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
+          </mat-chip-list>    
+
+          <!-- <mat-form-field class="full-width" *ngIf="advisorDocumentsHide">
+            <input matInput name="idProofDocuments" [formControl]="IDForm.controls['idProofDocuments']" >
+          </mat-form-field> -->
+
+          <small *ngIf="idProofDocumentsMissing" class="form-error-msg">{{invalidMessage}}</small>
+          <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
+            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">{{uploader.progress}}%</div>
+            <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="uploader.progress"></mat-progress-bar>
+          </div>
+
+        <mat-form-field class="full-width mt-1">
+          <textarea (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" maxlength="500" matInput placeholder="Comments" name="comments" [formControl]="IDForm.controls['comments']"></textarea>
+          <div class="char--limit" style="float: right;">{{ 500 - IDForm.controls['comments'].value?.length }}</div>
+          <!-- <mat-icon matTooltip="Please enter your comment" matTooltipClass="llp--tooltip error" *ngIf="IDForm.controls['comments'].hasError('required') && IDForm.controls['comments'].touched"
+          class="red--alert">help_outline</mat-icon> -->
+        </mat-form-field>
+    
+        <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
+          <input matInput name="profileId" [formControl]="IDForm.controls['profileId']" readonly="readonly">
+        </mat-form-field>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn" [disabled]="!IDForm.valid">Save</button>
+  </div>
+</form>

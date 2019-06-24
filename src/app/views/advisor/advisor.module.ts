@@ -46,6 +46,9 @@ import { LegaciesComponent } from './legacies/legacies.component';
 import { AdvisorDashboardUpdateComponent } from './advisor-dashboard-update/advisor-dashboard-update.component';
 import { AdvisorAccountSettingComponent } from './advisor-account-setting/advisor-account-setting.component';
 import { AdvisorSubscriptionComponent } from './advisor-subscription/advisor-subscription.component';
+import { AdvisorLegacyDetailsComponent } from './advisor-legacy-details/advisor-legacy-details.component';
+import { LegaciesDetailsLandingComponent } from './advisor-legacy-details/legacies-details-landing/legacies-details-landing.component';
+import { MarkAsDeceasedComponent } from './advisor-legacy-details/mark-as-deceased-modal/mark-as-deceased-modal.component';
 import { AdvisorLayoutComponent } from './../../shared/components/layouts/advisor-layout/advisor-layout.component';
 import { states } from '../../state';
 import { yearsOfServiceList, businessTypeList, industryDomainList } from '../../selectList';
@@ -138,12 +141,13 @@ export class GlobalVariables {
   declarations: [
     AdvisorSignupComponent, BusinessInfoComponent, SetPasswordComponent,
     FormatTimePipe, ThankYouComponent, AdvisorDashboardComponent, LegaciesComponent,
-    AdvisorDashboardUpdateComponent, AdvisorAccountSettingComponent, AdvisorSubscriptionComponent, 
-    ChangePassComponent, HomeComponent, ReferAndEarnModalComponent
+    AdvisorDashboardUpdateComponent, AdvisorAccountSettingComponent, AdvisorSubscriptionComponent,
+    ChangePassComponent, HomeComponent, ReferAndEarnModalComponent, AdvisorLegacyDetailsComponent,
+    LegaciesDetailsLandingComponent, MarkAsDeceasedComponent,
   ], providers: [{ provide: LY_THEME, useClass: MinimaLight, multi: true },
   { provide: LY_THEME, useClass: MinimaDark, multi: true },
   { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, ProfilePicService, CanDeactivateGuard
-  ], entryComponents: [ChangePassComponent, ReferAndEarnModalComponent],
+  ], entryComponents: [ChangePassComponent, ReferAndEarnModalComponent, MarkAsDeceasedComponent],
 })
 export class AdvisorModule { }
