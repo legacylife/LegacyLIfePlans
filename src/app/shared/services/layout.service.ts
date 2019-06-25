@@ -63,7 +63,7 @@ export class LayoutService {
 
     this.layoutConf = Object.assign(this.layoutConf, lc, { layoutInTransition: true });
     this.layoutConfSubject.next(this.layoutConf);
-    console.log(this.layoutConf, 'pronit')
+
     setTimeout(() => {
       this.layoutConf = Object.assign(this.layoutConf, { layoutInTransition: false });
       this.layoutConfSubject.next(this.layoutConf);
@@ -91,7 +91,7 @@ export class LayoutService {
         }
       })
     }
-    console.log(this.layoutConf, 'pronit')
+
     this.publishLayoutChange({
       isMobile: this.isMobile,
       sidebarStyle: sidebarStyle

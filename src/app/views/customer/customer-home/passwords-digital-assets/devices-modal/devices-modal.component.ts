@@ -6,6 +6,8 @@ import { AppLoaderService } from '../../../../../shared/services/app-loader/app-
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import * as PatternLock from 'pattern-lock-js/patternlock';
+import * as html2canvas from 'html2canvas/dist/html2canvas';
+
 import { DevicesList } from '../../../../../selectList';
 import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../../config';
@@ -67,14 +69,23 @@ export class DevicesModalComponent implements OnInit, AfterViewInit{
 
    ngAfterViewInit(){
       this.lock = new PatternLock("#patternHolder", {
-        onPattern:this.getPattern
-        
+        onPattern:this.getPattern        
       });
     }
  
     getPattern(pattern : any){
-      console.log("pattern==>>",pattern)
+      //pattern
+      console.log("pattern No ",pattern)
+     // var c = document.getElementById('patternHolder');
+     // var t = c.getContext('2d');
+     html2canvas(document.getElementById('patternHolder')).then(function(canvas) {
+      document.getElementById('patternHolder').appendChild(canvas);
+      var base64URL = canvas.toDataURL('image/jpeg').replace('image/jpeg', 'image/octet-stream');
+      console.log("HERE we Are ",base64URL)
+    });
     }
+
+  
 
     DevicesFormSubmit(profileInData = null) {
       var query = {};

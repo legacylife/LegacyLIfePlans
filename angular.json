@@ -23,10 +23,12 @@
             "styles": [
               "src/assets/styles/app.scss",
               "node_modules/slick-carousel/slick/slick.scss",
-              "node_modules/slick-carousel/slick/slick-theme.scss"
+              "node_modules/slick-carousel/slick/slick-theme.scss",
+              "node_modules/pattern-lock-js/dist/patternlock.min.css"
             ],
             "scripts": [ "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/slick-carousel/slick/slick.min.js"]
+              "node_modules/slick-carousel/slick/slick.min.js",
+              "node_modules/pattern-lock-js/dist/patternlock.min.js"]
           },
           "configurations": {
             "production": {
