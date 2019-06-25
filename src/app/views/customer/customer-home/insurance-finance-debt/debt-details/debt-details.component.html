@@ -27,8 +27,7 @@
             </div>
             <div class="details--body">
               <h3>{{getType(row?.debtsType)}}</h3>   
-                
-                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.debtsTypeNew>0">
+                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.debtsTypeNew">
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                       <label class="strong--label">Debts Type:</label>
                     </div>
@@ -45,7 +44,6 @@
                       <label class="normal--label">{{row?.bankLendarName}}</label>
                     </div>
                   </div>
-
 
                 <div fxLayout="row wrap" class="mb--10">
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
@@ -81,9 +79,7 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
                     <label class="normal--label">{{row?.comments}}</label>
                   </div>
-                </div>
-             
-          
+                </div>                    
             </div>
           </div>
         </mat-card-content>

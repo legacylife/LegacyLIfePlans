@@ -72,7 +72,7 @@
 
         <mat-card class="empty--section p-0">
             <mat-card-header class="m-0">
-              <mat-card-title class="m-0">Finance</mat-card-title>
+              <mat-card-title class="m-0">Debt</mat-card-title>
               <div *ngIf="showDebtListing">
                 <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openDebtModal({}, true)">+ Add</button>
               </div>
@@ -80,7 +80,7 @@
             <mat-card-content *ngIf="!showDebtListing">
               <div class="build--ur--legacy" (click)="openDebtModal({}, true)">
                 <mat-icon>access_time</mat-icon>
-                <p><a>Add Finance</a></p>
+                <p><a>Add Debt</a></p>
               </div>
             </mat-card-content>
             <mat-card-content class="appointees--wrapper" *ngIf="showDebtListing">

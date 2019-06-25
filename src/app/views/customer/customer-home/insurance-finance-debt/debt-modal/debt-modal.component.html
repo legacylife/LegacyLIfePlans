@@ -23,7 +23,7 @@
       </mat-form-field>
 
       <mat-form-field class="full-width">
-          <input matInput name="bankLendarName" placeholder="Bank Lendar Name"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="DebtForm.controls['bankLendarName']">
+          <input matInput name="bankLendarName" placeholder="Bank Lendar Name*"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="DebtForm.controls['bankLendarName']">
           <mat-icon matTooltip="Please enter bank lendar name" matTooltipClass="llp--tooltip error" *ngIf="DebtForm.controls['bankLendarName'].hasError('required') && DebtForm.controls['bankLendarName'].touched" class="red--alert">help_outline</mat-icon>          
       </mat-form-field>
 
