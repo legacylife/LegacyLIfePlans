@@ -89,6 +89,18 @@ import { PetsDetailsComponent } from './customer-home/pets/pets-details/pets-det
 import { TimeCapsuleListComponent } from './customer-home/time-capsule/time-capsule-list/time-capsule-list.component';
 import { TimeCapsuleMoalComponent } from './customer-home/time-capsule/time-capsule-modal/time-capsule-modal.component';
 import { TimeCapsuleDetailsComponent } from './customer-home/time-capsule/time-capsule-details/time-capsule-details.component';
+//Insurance Finance & Debt
+import { InsuranceFinanceDebtListComponent } from './customer-home/insurance-finance-debt/insurance-finance-debt-list/insurance-finance-debt-list.component';
+import { InsuranceModalComponent } from './customer-home/insurance-finance-debt/insurance-modal/insurance-modal.component';
+import { InsuranceDetailsComponent } from './customer-home/insurance-finance-debt/insurance-details/insurance-details.component';
+import { FinanceDetailsComponent } from './customer-home/insurance-finance-debt/finance-details/finance-details.component';
+import { FinanceModalComponent } from './customer-home/insurance-finance-debt/finance-modal/finance-modal.component';
+import { DebtDetailsComponent } from './customer-home/insurance-finance-debt/debt-details/debt-details.component';
+import { DebtModalComponent } from './customer-home/insurance-finance-debt/debt-modal/debt-modal.component';
+
+//passwords-digital-assets
+import { PasswordsDigitalAssetsListComponent } from './customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
+import { DevicesModalComponent } from './customer-home/passwords-digital-assets/devices-modal/devices-modal.component';
 
 import {LyThemeModule,LY_THEME,LY_THEME_GLOBAL_VARIABLES} from '@alyle/ui';
 /** Import the component modules */
@@ -183,7 +195,8 @@ export class GlobalVariables {
     CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent,
     CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent,FinalWishesComponent,FinalWishesFormModalComponent,FinalWishesDetailsComponent,
     PetsListComponent,PetsDetailsComponent,PetsModalComponent,ListingComponent,DetailsComponent, RealEstateModelComponent, VehicleModelComponent, AssetsModelComponent,
-    DetailsVehiclesComponent, DetailsAssetsComponent,TimeCapsuleListComponent,TimeCapsuleMoalComponent,TimeCapsuleDetailsComponent, SpecialNeedsListingComponent, SpecialNeedsDetailsComponent, SpecialNeedsModelComponent
+    SpecialNeedsListingComponent, SpecialNeedsDetailsComponent, SpecialNeedsModelComponent,DetailsVehiclesComponent, DetailsAssetsComponent,TimeCapsuleListComponent,TimeCapsuleMoalComponent,TimeCapsuleDetailsComponent,InsuranceFinanceDebtListComponent,
+    InsuranceModalComponent,InsuranceDetailsComponent,FinanceModalComponent,FinanceDetailsComponent,DebtDetailsComponent,DebtModalComponent,PasswordsDigitalAssetsListComponent,DevicesModalComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
     { provide: LY_THEME, useClass: MinimaLight, multi: true },
@@ -194,7 +207,8 @@ export class GlobalVariables {
     addTrusteeModalComponent, PersonalProfileModalComponent, MarkAsDeceasedComponent,
     legalStuffModalComponent, essentialsMyProfessionalsComponent, SendAnEmailComponent, 
     HireAdvisorComponent,FinalWishesFormModalComponent,PetsModalComponent,AssetsModelComponent,
-    RealEstateModelComponent,VehicleModelComponent,TimeCapsuleMoalComponent,SpecialNeedsModelComponent
+    SpecialNeedsModelComponent,RealEstateModelComponent,VehicleModelComponent,TimeCapsuleMoalComponent,
+    InsuranceModalComponent,FinanceModalComponent,DebtModalComponent,DevicesModalComponent
   ]
 })
 export class CustomerModule { }

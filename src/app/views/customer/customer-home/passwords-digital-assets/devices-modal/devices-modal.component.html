@@ -5,35 +5,47 @@
   </button>
 </div>
 
-<form class="llp-form-wrapper" (ngSubmit)="PetFormSubmit(PetForm.value)">
+<form class="llp-form-wrapper" (ngSubmit)="DevicesFormSubmit(DevicesForm.value)">
   <div class="ll--modal--body legal--stuff--body--hgt">
     <div fxLayout="row wrap" class="pt-1">
       <div fxFlex.xs="100">
         
         <mat-form-field class="full-width">
-          <input matInput name="name"  placeholder="Name*"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="PetForm.controls['name']">
-          <mat-icon matTooltip="Please enter pet name" matTooltipClass="llp--tooltip error" *ngIf="PetForm.controls['name'].hasError('required') && PetForm.controls['name'].touched"
+          <mat-label>Policy Type*</mat-label>
+        <mat-select placeholder="Device List*" name="deviceList" [formControl]="DevicesForm.controls['deviceList']" >
+          <mat-option value="">Select Policy Type</mat-option>
+          <mat-option *ngFor="let option of deviceListing"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
+        </mat-select>
+          <mat-icon matTooltip="Please select device list" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['deviceList'].hasError('required') && DevicesForm.controls['deviceList'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <input matInput name="deviceName" placeholder="Device Name*"   [formControl]="DevicesForm.controls['deviceName']">
+          <mat-icon matTooltip="Please enter device name" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['deviceName'].hasError('required') && DevicesForm.controls['deviceName'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
         <mat-form-field class="full-width">
-          <input matInput name="petType"  placeholder="Pet Type" [formControl]="PetForm.controls['petType']">
-          <mat-icon matTooltip="Please enter pet type" matTooltipClass="llp--tooltip error" *ngIf="PetForm.controls['petType'].hasError('required') && PetForm.controls['petType'].touched"
+          <input matInput name="username"  placeholder="username" [formControl]="DevicesForm.controls['username']">
+          <mat-icon matTooltip="Please enter username" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['username'].hasError('required') && DevicesForm.controls['username'].touched"
+          class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <!-- <mat-form-field class="full-width">
+          <input matInput name="veterinarian" placeholder="Veterinarian" [formControl]="DevicesForm.controls['veterinarian']">
+          <mat-icon matTooltip="Please enter veterinarian" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['veterinarian'].hasError('required') && DevicesForm.controls['veterinarian'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
         <mat-form-field class="full-width">
-          <input matInput name="veterinarian"  placeholder="Veterinarian" [formControl]="PetForm.controls['veterinarian']">
-          <mat-icon matTooltip="Please enter veterinarian" matTooltipClass="llp--tooltip error" *ngIf="PetForm.controls['veterinarian'].hasError('required') && PetForm.controls['veterinarian'].touched"
+          <input matInput name="dietaryConcerns" placeholder="Dietary Concerns" [formControl]="DevicesForm.controls['dietaryConcerns']">
+          <mat-icon matTooltip="Please enter dietary concerns" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['dietaryConcerns'].hasError('required') && DevicesForm.controls['dietaryConcerns'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
+     -->
+    
 
-        <mat-form-field class="full-width">
-          <input matInput name="dietaryConcerns" placeholder="Dietary Concerns" [formControl]="PetForm.controls['dietaryConcerns']">
-          <mat-icon matTooltip="Please enter dietary concerns" matTooltipClass="llp--tooltip error" *ngIf="PetForm.controls['dietaryConcerns'].hasError('required') && PetForm.controls['dietaryConcerns'].touched"
-          class="red--alert">help_outline</mat-icon>
-        </mat-form-field>
-       <div class="upload--buss--docs--sec">
+        <!-- <div class="upload--buss--docs--sec">
              <label>Upload your pet documents</label>
              <div class="upload--box fileupload-drop-zone"
                 ng2FileDrop
@@ -61,15 +73,16 @@
           <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
             <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">{{uploader.progress}}%</div>
             <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="uploader.progress"></mat-progress-bar>
-          </div>
+          </div> -->
+
 
           <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
-            <input matInput name="profileId" [formControl]="PetForm.controls['profileId']" readonly="readonly">
+            <input matInput name="profileId" [formControl]="DevicesForm.controls['profileId']" readonly="readonly">
           </mat-form-field>
       </div>
     </div>
   </div>
   <div class="ll--modal--footer text-center">
-    <button mat-raised-button class="llp--primary--btn" [disabled]="!PetForm.valid">Save</button>
+    <button mat-raised-button class="llp--primary--btn" [disabled]="!DevicesForm.valid">Save</button>
   </div>
 </form>

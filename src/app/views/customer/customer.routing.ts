@@ -49,6 +49,14 @@ import { TimeCapsuleListComponent } from './customer-home/time-capsule/time-caps
 import { TimeCapsuleDetailsComponent } from './customer-home/time-capsule/time-capsule-details/time-capsule-details.component';
 import { SpecialNeedsDetailsComponent } from './customer-home/special-needs/special-needs-details/special-needs-details.component';
 import { SpecialNeedsListingComponent } from './customer-home/special-needs/special-needs-listing/special-needs-listing.component';
+//Insurance-Finance-Debt
+import { InsuranceFinanceDebtListComponent } from './customer-home/insurance-finance-debt/insurance-finance-debt-list/insurance-finance-debt-list.component';
+import { InsuranceDetailsComponent } from './customer-home/insurance-finance-debt/insurance-details/insurance-details.component';
+import { FinanceDetailsComponent } from './customer-home/insurance-finance-debt/finance-details/finance-details.component';
+import { DebtDetailsComponent } from './customer-home/insurance-finance-debt/debt-details/debt-details.component';
+
+//passwords-digital-assets
+import { PasswordsDigitalAssetsListComponent } from './customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
 
 export const CustomerRoutes: Routes = [
   {
@@ -175,6 +183,26 @@ export const CustomerRoutes: Routes = [
             path: 'special-needs-view/:id',
             component: SpecialNeedsDetailsComponent
           },   
+          {
+            path: 'insurance-finance-debt',
+            component: InsuranceFinanceDebtListComponent
+          },
+          {
+            path: 'insurance-view/:id',
+            component: InsuranceDetailsComponent
+          },
+          {
+            path: 'finance-view/:id',
+            component: FinanceDetailsComponent
+          }, 
+          {
+            path: 'debt-view/:id',
+            component: DebtDetailsComponent
+          },  
+          {
+            path: 'passwords-digital-assests',
+            component: PasswordsDigitalAssetsListComponent
+          },         
         ]
       },
     ]

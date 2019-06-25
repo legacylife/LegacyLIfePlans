@@ -39,6 +39,9 @@ export const s3Details = {
   legalStuffDocumentsPath:"legalStuff/",
   finalWishesFilePath:"finalWishes/",
   timeCapsuleFilePath:"timeCapsule/",
+  insuranceFilePath:"insurance/",
+  financeFilePath:"finance/",
+  debtFilePath:"debt/",
   petsFilePath:"pets/",
   apiGatewayUrl: ""
 }

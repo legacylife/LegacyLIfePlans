@@ -158,6 +158,104 @@ export const RelationshipType = [{
 ]
 
 
+export const InsurancePolicyType = [{ 
+  "opt_name" : "Home Owners", 
+  "opt_code" : "1", 
+},{ 
+  "opt_name" : "Auto", 
+  "opt_code" : "2", 
+},{ 
+  "opt_name" : "Business", 
+  "opt_code" : "3", 
+},{ 
+  "opt_name" : "Life", 
+  "opt_code" : "4", 
+},{ 
+  "opt_name" : "Umbrella", 
+  "opt_code" : "5", 
+}
+]
+
+export const FinancePolicyType = [{ 
+  "opt_name" : "Bank Accounts", 
+  "opt_code" : "1", 
+},{ 
+  "opt_name" : "Annuity", 
+  "opt_code" : "2", 
+},{ 
+  "opt_name" : "Disability", 
+  "opt_code" : "3", 
+},{ 
+  "opt_name" : "Pension", 
+  "opt_code" : "4", 
+},{ 
+  "opt_name" : "Roth", 
+  "opt_code" : "5", 
+},{ 
+  "opt_name" : "IRA", 
+  "opt_code" : "6", 
+},{ 
+  "opt_name" : "401K", 
+  "opt_code" : "7", 
+},{ 
+  "opt_name" : "Brokerage Accounts", 
+  "opt_code" : "8", 
+},{ 
+  "opt_name" : "Social Security", 
+  "opt_code" : "9", 
+},{ 
+  "opt_name" : "New", 
+  "opt_code" : "10", 
+}
+]
+
+
+export const DebtType = [{ 
+  "opt_name" : "Credit Cards", 
+  "opt_code" : "1", 
+},{ 
+  "opt_name" : "Mortgage", 
+  "opt_code" : "2", 
+},{ 
+  "opt_name" : "Car loans", 
+  "opt_code" : "3", 
+},{ 
+  "opt_name" : "2nd Mortgage", 
+  "opt_code" : "4", 
+},{ 
+  "opt_name" : "Personal Loans", 
+  "opt_code" : "5", 
+},{ 
+  "opt_name" : "IOU’s", 
+  "opt_code" : "6", 
+},{ 
+  "opt_name" : "New", 
+  "opt_code" : "7", 
+}
+]
+
+
+export const DevicesList = [{ 
+  "opt_name" : "Computers", 
+  "opt_code" : "1", 
+},{ 
+  "opt_name" : "Laptop", 
+  "opt_code" : "2", 
+},{ 
+  "opt_name" : "i-pad", 
+  "opt_code" : "3", 
+},{ 
+  "opt_name" : "Tablet", 
+  "opt_code" : "4", 
+},{ 
+  "opt_name" : "Phone", 
+  "opt_code" : "5", 
+},{ 
+  "opt_name" : "Watch", 
+  "opt_code" : "6", 
+}
+]
+
 export const activeLicense = ['Health', 'Life',  'Property & Casualty', 'Series 3','Series 6', 'Series 7', 'Series 24','Series 26', 'Series 63', 'Series 65', 'Series 66']
 
 export const industryDomain = ['Life', 'Health', 'Property & Casualty']

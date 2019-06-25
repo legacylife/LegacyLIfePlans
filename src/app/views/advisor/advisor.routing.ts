@@ -17,6 +17,7 @@ import { AdvisorLandingLayoutComponent } from '../../shared/components/layouts/a
 import { HomeComponent } from './advisor-landing/home/home.component';
 import { AdvisorLegacyDetailsComponent } from './advisor-legacy-details/advisor-legacy-details.component';
 import { LegaciesDetailsLandingComponent } from './advisor-legacy-details/legacies-details-landing/legacies-details-landing.component';
+import { GetFeaturedComponent } from './get-featured/get-featured.component';
 console.log('advisor---routing');
 export const AdvisorRoutes: Routes = [
   {
@@ -152,8 +153,17 @@ export const AdvisorRoutes: Routes = [
       }
     ]
   },
-
-
+  {
+    path: 'get-featured',
+    component: AdvisorLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: GetFeaturedComponent,
+        canActivate: [UserAuthGuard]
+      }
+    ]
+  },
   {
     path: 'subscription',
     component: AdvisorSubscriptionComponent
