@@ -59,6 +59,7 @@ import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.gu
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { HomeComponent } from './advisor-landing/home/home.component';
 import { ReferAndEarnModalComponent } from './legacies/refer-and-earn-modal/refer-and-earn-modal.component';
+
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CountUpModule } from 'countup.js-angular2';
 /** Import Alyle UI */

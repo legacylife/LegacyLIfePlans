@@ -1,5 +1,5 @@
 <div class="ll--modal--header">
-    Time Capsule
+  Insurance
   <button class="modal--close" [mat-dialog-close]="">
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
@@ -18,23 +18,24 @@
        </mat-form-field>
 
       <mat-form-field class="full-width">
-          <input matInput name="company" maxlength="20" placeholder="Company"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="InsuranceForm.controls['company']">
+          <input matInput name="company"  placeholder="Company"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="InsuranceForm.controls['company']">
       </mat-form-field>
 
       <mat-form-field class="full-width">
-          <input matInput name="policyNumber" maxlength="20" placeholder="Policy Number" [formControl]="InsuranceForm.controls['policyNumber']">
+          <input matInput name="policyNumber" placeholder="Policy Number" [formControl]="InsuranceForm.controls['policyNumber']">
       </mat-form-field>
    
       <mat-form-field class="full-width">
-          <input matInput name="contactPerson" maxlength="20" placeholder="Contact Person" [formControl]="InsuranceForm.controls['contactPerson']">
+          <input matInput name="contactPerson" placeholder="Contact Person" [formControl]="InsuranceForm.controls['contactPerson']">
       </mat-form-field>
 
       <mat-form-field class="full-width">
-          <input matInput name="contactEmail" maxlength="20" placeholder="Contact Email" [formControl]="InsuranceForm.controls['contactEmail']">
+          <input matInput name="contactEmail" placeholder="Contact Email" [formControl]="InsuranceForm.controls['contactEmail']">
+          <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" *ngIf="InsuranceForm.controls['contactEmail'].hasError('pattern') && InsuranceForm.controls['contactEmail'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
 
       <mat-form-field class="full-width">
-          <input matInput name="contactPhone" maxlength="20" placeholder="Contact Phone" [formControl]="InsuranceForm.controls['contactPhone']">
+          <input matInput name="contactPhone" (keypress)="onlyNumbers($event)" maxlength="15"  placeholder="Contact Phone" [formControl]="InsuranceForm.controls['contactPhone']">
       </mat-form-field>
 
       <div class="upload--buss--docs--sec">

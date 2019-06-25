@@ -36,10 +36,11 @@
 
       <mat-form-field class="full-width">
           <input matInput name="contactEmail" placeholder="Contact Email" [formControl]="FinanceForm.controls['contactEmail']">
+          <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" *ngIf="FinanceForm.controls['contactEmail'].hasError('pattern') && FinanceForm.controls['contactEmail'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
 
       <mat-form-field class="full-width">
-          <input matInput name="contactPhone" placeholder="Contact Phone" [formControl]="FinanceForm.controls['contactPhone']">
+          <input matInput name="contactPhone" placeholder="Contact Phone" (keypress)="onlyNumbers($event)" maxlength="15" [formControl]="FinanceForm.controls['contactPhone']">
       </mat-form-field>
 
       <div class="upload--buss--docs--sec">

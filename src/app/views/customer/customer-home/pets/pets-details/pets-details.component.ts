@@ -59,12 +59,8 @@ export class PetsDetailsComponent implements OnInit {
     })
   }
 
-  openPetsModal(FolderNames, isNew?) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(PetsModalComponent, {
-      data: {
-        FolderName: FolderNames,
-        newName: FolderNames,
-      },
+  openPetsModal() {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(PetsModalComponent, {     
       width: '720px',
       disableClose: true,
     })

@@ -98,6 +98,10 @@ import { FinanceModalComponent } from './customer-home/insurance-finance-debt/fi
 import { DebtDetailsComponent } from './customer-home/insurance-finance-debt/debt-details/debt-details.component';
 import { DebtModalComponent } from './customer-home/insurance-finance-debt/debt-modal/debt-modal.component';
 
+//passwords-digital-assets
+import { PasswordsDigitalAssetsListComponent } from './customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
+import { DevicesModalComponent } from './customer-home/passwords-digital-assets/devices-modal/devices-modal.component';
+
 import {LyThemeModule,LY_THEME,LY_THEME_GLOBAL_VARIABLES} from '@alyle/ui';
 /** Import the component modules */
 import { LyButtonModule } from '@alyle/ui/button';
@@ -189,7 +193,8 @@ export class GlobalVariables {
     CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent,FinalWishesComponent,FinalWishesFormModalComponent,FinalWishesDetailsComponent,
     PetsListComponent,PetsDetailsComponent,PetsModalComponent,ListingComponent,DetailsComponent, RealEstateModelComponent, VehicleModelComponent, AssetsModelComponent,
     DetailsVehiclesComponent, DetailsAssetsComponent,TimeCapsuleListComponent,TimeCapsuleMoalComponent,TimeCapsuleDetailsComponent,InsuranceFinanceDebtListComponent,
-    InsuranceModalComponent,InsuranceDetailsComponent,FinanceModalComponent,FinanceDetailsComponent,DebtDetailsComponent,DebtModalComponent
+    InsuranceModalComponent,InsuranceDetailsComponent,FinanceModalComponent,FinanceDetailsComponent,DebtDetailsComponent,DebtModalComponent,PasswordsDigitalAssetsListComponent,
+    DevicesModalComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
     { provide: LY_THEME, useClass: MinimaLight, multi: true },
@@ -200,7 +205,7 @@ export class GlobalVariables {
     addTrusteeModalComponent, PersonalProfileModalComponent, MarkAsDeceasedComponent,
     legalStuffModalComponent, essentialsMyProfessionalsComponent, SendAnEmailComponent, 
     HireAdvisorComponent,FinalWishesFormModalComponent,PetsModalComponent,AssetsModelComponent,
-    RealEstateModelComponent,VehicleModelComponent,TimeCapsuleMoalComponent,InsuranceModalComponent,FinanceModalComponent,DebtModalComponent
+    RealEstateModelComponent,VehicleModelComponent,TimeCapsuleMoalComponent,InsuranceModalComponent,FinanceModalComponent,DebtModalComponent,DevicesModalComponent
   ]
 })
 export class CustomerModule { }

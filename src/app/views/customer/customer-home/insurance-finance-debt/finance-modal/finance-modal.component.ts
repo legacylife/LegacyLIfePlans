@@ -45,7 +45,7 @@ export class FinanceModalComponent implements OnInit {
           administatorName: new FormControl('',Validators.required),
           branchLocation: new FormControl(''),
           accountNumber: new FormControl(''),
-          contactEmail: new FormControl(''),
+          contactEmail: new FormControl('',Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
           contactPhone: new FormControl(''),
           comments: new FormControl(''),
           profileId: new FormControl('')
@@ -73,7 +73,7 @@ export class FinanceModalComponent implements OnInit {
           administatorName: new FormControl(this.FinanceForm.controls['administatorName'].value,Validators.required),
           branchLocation: new FormControl(this.FinanceForm.controls['branchLocation'].value,),
           accountNumber: new FormControl(this.FinanceForm.controls['accountNumber'].value,),
-          contactEmail: new FormControl(this.FinanceForm.controls['contactEmail'].value,),
+          contactEmail: new FormControl([this.FinanceForm.controls['contactEmail'].value,Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
           contactPhone: new FormControl(this.FinanceForm.controls['contactPhone'].value,),
           comments: new FormControl(this.FinanceForm.controls['comments'].value,),
           profileId: new FormControl(this.FinanceForm.controls['profileId'].value,)
@@ -284,5 +284,12 @@ export class FinanceModalComponent implements OnInit {
     
     key = event.charCode;
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
+  }
+
+  onlyNumbers(event)
+  {  
+    if ((event.which != 46 ) && (event.which < 48 || event.which > 57)) {
+      event.preventDefault();
+    }
   }
 }

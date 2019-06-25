@@ -63,7 +63,7 @@ export class FinanceDetailsComponent implements OnInit {
     })
   }
 
-  openFinanceModal(isNew?) {
+  openFinanceModal() {
     let dialogRef: MatDialogRef<any> = this.dialog.open(FinanceModalComponent, {
       width: '720px',
       disableClose: true,

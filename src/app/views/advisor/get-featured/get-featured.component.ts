@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
-import { ReferAndEarnModalComponent } from './refer-and-earn-modal/refer-and-earn-modal.component';
+import { ReferAndEarnModalComponent } from './../legacies/refer-and-earn-modal/refer-and-earn-modal.component';
 
 @Component({
   selector: 'app-get-featured',

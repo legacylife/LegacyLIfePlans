@@ -44,7 +44,7 @@ export class DebtModalComponent implements OnInit {
           debtsTypeNew: new FormControl(''),   
           bankLendarName: new FormControl('',Validators.required),
           accountNumber: new FormControl(''),
-          contactEmail: new FormControl(''),
+          contactEmail: new FormControl('',Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
           contactPhone: new FormControl(''),
           comments: new FormControl(''),
           profileId: new FormControl('')
@@ -71,7 +71,7 @@ export class DebtModalComponent implements OnInit {
           debtsTypeNew: new FormControl(this.DebtForm.controls['debtsTypeNew'].value,Validators.required), 
           bankLendarName: new FormControl(this.DebtForm.controls['bankLendarName'].value,Validators.required),
           accountNumber: new FormControl(this.DebtForm.controls['accountNumber'].value,),
-          contactEmail: new FormControl(this.DebtForm.controls['contactEmail'].value,),
+          contactEmail: new FormControl([this.DebtForm.controls['contactEmail'].value,Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
           contactPhone: new FormControl(this.DebtForm.controls['contactPhone'].value,),
           comments: new FormControl(this.DebtForm.controls['comments'].value,),
           profileId: new FormControl(this.DebtForm.controls['profileId'].value,)
@@ -190,5 +190,11 @@ export class DebtModalComponent implements OnInit {
     
     key = event.charCode;
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
+  }
+  onlyNumbers(event)
+  {  
+    if ((event.which != 46 ) && (event.which < 48 || event.which > 57)) {
+      event.preventDefault();
+    }
   }
 }

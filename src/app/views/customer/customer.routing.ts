@@ -52,6 +52,10 @@ import { InsuranceFinanceDebtListComponent } from './customer-home/insurance-fin
 import { InsuranceDetailsComponent } from './customer-home/insurance-finance-debt/insurance-details/insurance-details.component';
 import { FinanceDetailsComponent } from './customer-home/insurance-finance-debt/finance-details/finance-details.component';
 import { DebtDetailsComponent } from './customer-home/insurance-finance-debt/debt-details/debt-details.component';
+
+//passwords-digital-assets
+import { PasswordsDigitalAssetsListComponent } from './customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
+
 export const CustomerRoutes: Routes = [
   {
     path: 'signup',
@@ -184,7 +188,11 @@ export const CustomerRoutes: Routes = [
           {
             path: 'debt-view/:id',
             component: DebtDetailsComponent
-          },           
+          },  
+          {
+            path: 'passwords-digital-assests',
+            component: PasswordsDigitalAssetsListComponent
+          },         
         ]
       },
     ]
