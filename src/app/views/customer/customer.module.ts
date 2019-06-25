@@ -106,6 +106,9 @@ import { VehicleModelComponent } from './customer-home/real-estate-assets/vehicl
 import { AssetsModelComponent } from './customer-home/real-estate-assets/assets-model/assets-model.component';
 import { DetailsVehiclesComponent } from './customer-home/real-estate-assets/details-vehicles/details-vehicles.component';
 import { DetailsAssetsComponent } from './customer-home/real-estate-assets/details-assets/details-assets.component';
+import { SpecialNeedsListingComponent } from './customer-home/special-needs/special-needs-listing/special-needs-listing.component';
+import { SpecialNeedsDetailsComponent } from './customer-home/special-needs/special-needs-details/special-needs-details.component';
+import { SpecialNeedsModelComponent } from './customer-home/special-needs/special-needs-model/special-needs-model.component';
 export class GlobalVariables {
   testVal = '#00bcd4';
   Quepal = {
@@ -180,7 +183,7 @@ export class GlobalVariables {
     CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent,
     CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent,FinalWishesComponent,FinalWishesFormModalComponent,FinalWishesDetailsComponent,
     PetsListComponent,PetsDetailsComponent,PetsModalComponent,ListingComponent,DetailsComponent, RealEstateModelComponent, VehicleModelComponent, AssetsModelComponent,
-    DetailsVehiclesComponent, DetailsAssetsComponent,TimeCapsuleListComponent,TimeCapsuleMoalComponent,TimeCapsuleDetailsComponent
+    DetailsVehiclesComponent, DetailsAssetsComponent,TimeCapsuleListComponent,TimeCapsuleMoalComponent,TimeCapsuleDetailsComponent, SpecialNeedsListingComponent, SpecialNeedsDetailsComponent, SpecialNeedsModelComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
     { provide: LY_THEME, useClass: MinimaLight, multi: true },
@@ -191,7 +194,7 @@ export class GlobalVariables {
     addTrusteeModalComponent, PersonalProfileModalComponent, MarkAsDeceasedComponent,
     legalStuffModalComponent, essentialsMyProfessionalsComponent, SendAnEmailComponent, 
     HireAdvisorComponent,FinalWishesFormModalComponent,PetsModalComponent,AssetsModelComponent,
-    RealEstateModelComponent,VehicleModelComponent,TimeCapsuleMoalComponent
+    RealEstateModelComponent,VehicleModelComponent,TimeCapsuleMoalComponent,SpecialNeedsModelComponent
   ]
 })
 export class CustomerModule { }

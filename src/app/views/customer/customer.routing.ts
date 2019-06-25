@@ -47,6 +47,8 @@ import { PetsDetailsComponent } from './customer-home/pets/pets-details/pets-det
 //Time capsule
 import { TimeCapsuleListComponent } from './customer-home/time-capsule/time-capsule-list/time-capsule-list.component';
 import { TimeCapsuleDetailsComponent } from './customer-home/time-capsule/time-capsule-details/time-capsule-details.component';
+import { SpecialNeedsDetailsComponent } from './customer-home/special-needs/special-needs-details/special-needs-details.component';
+import { SpecialNeedsListingComponent } from './customer-home/special-needs/special-needs-listing/special-needs-listing.component';
 
 export const CustomerRoutes: Routes = [
   {
@@ -164,6 +166,14 @@ export const CustomerRoutes: Routes = [
           {
             path: 'time-capsule-view/:id',
             component: TimeCapsuleDetailsComponent
+          },
+          {
+            path: 'special-needs',
+            component: SpecialNeedsListingComponent
+          },
+          {
+            path: 'special-needs-view/:id',
+            component: SpecialNeedsDetailsComponent
           },   
         ]
       },

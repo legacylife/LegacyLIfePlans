@@ -1,0 +1,25 @@
+<div class="ll--modal--header">
+  {{folderName}}
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+<form class="llp-form-wrapper" (ngSubmit)="specialNeedsFormSubmit(specialNeedsForm.value)">
+  <div class="ll--modal--body id--box--body">
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100">
+        <mat-form-field class="full-width">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" (blur)="trimInput(specialNeedsForm)" matInput name="comments"
+            placeholder="Comment Box*" [formControl]="specialNeedsForm.controls['comments']">
+          <mat-icon matTooltip="Please enter comment" matTooltipClass="llp--tooltip error"
+            *ngIf="specialNeedsForm.controls['comments'].hasError('required') && specialNeedsForm.controls['comments'].touched"
+            class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <input *ngIf="profileIdHiddenVal" matInput name="profileId" [formControl]="specialNeedsForm.controls['profileId']" readonly="readonly">
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn" [disabled]="specialNeedsForm.invalid">Save</button>
+  </div>
+</form>
