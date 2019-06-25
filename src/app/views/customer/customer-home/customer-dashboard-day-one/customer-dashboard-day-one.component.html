@@ -12,13 +12,20 @@
           <mat-card-title class="m-0">Recently Accessed Files </mat-card-title>
         </mat-card-header>
 
-        <mat-card-content>
+        <mat-card-content *ngIf="!recentlyAccessedFiles">
           <p class="info">See your recently accessed files here. Currently you have no files available.</p>
           <div class="build--ur--legacy dashed">
             <mat-icon>insert_drive_file</mat-icon>
             <p>Start building your legacy!
               <a [routerLink]="['/customer/dashboard/essential-day-one']">Click here</a>
             </p>
+          </div>
+        </mat-card-content>
+
+        <mat-card-content class="files--wrapper" *ngIf="recentlyAccessedFiles">
+          <div class="recent--acc--files" *ngFor="let logData of fileActivityLogList; let i = index" [routerLink]="getIconNUrl(logData).fileUrl">
+            <mat-icon>{{getIconNUrl(logData).fileIcon}}</mat-icon>
+            <p class="m-0 file--name">{{logData.fileName}}</p>
           </div>
         </mat-card-content>
       </mat-card>
