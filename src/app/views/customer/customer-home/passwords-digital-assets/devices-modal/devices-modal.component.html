@@ -31,6 +31,25 @@
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
+
+        <svg class="patternlock" id="patternHolder" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <g class="lock-actives"></g>
+          <g class="lock-lines"></g>
+          <g class="lock-dots">
+              <circle cx="20" cy="20" r="2"/>
+              <circle cx="50" cy="20" r="2"/>
+              <circle cx="80" cy="20" r="2"/>
+       
+              <circle cx="20" cy="50" r="2"/>
+              <circle cx="50" cy="50" r="2"/>
+              <circle cx="80" cy="50" r="2"/>
+       
+              <circle cx="20" cy="80" r="2"/>
+              <circle cx="50" cy="80" r="2"/>
+              <circle cx="80" cy="80" r="2"/>
+          </g>
+        </svg>
+   
         <!-- <mat-form-field class="full-width">
           <input matInput name="veterinarian" placeholder="Veterinarian" [formControl]="DevicesForm.controls['veterinarian']">
           <mat-icon matTooltip="Please enter veterinarian" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['veterinarian'].hasError('required') && DevicesForm.controls['veterinarian'].touched"
@@ -75,7 +94,7 @@
             <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="uploader.progress"></mat-progress-bar>
           </div> -->
 
-
+          <!-- <button mat-raised-button class="llp--primary--btn" (click)="getPattern()">Check</button> -->
           <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
             <input matInput name="profileId" [formControl]="DevicesForm.controls['profileId']" readonly="readonly">
           </mat-form-field>

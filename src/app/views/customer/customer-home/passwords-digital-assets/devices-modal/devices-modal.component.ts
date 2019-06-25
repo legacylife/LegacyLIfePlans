@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { UserAPIService } from './../../../../../userapi.service';
-import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AppConfirmService } from '../../../../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../../../../shared/services/app-loader/app-loader.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
+import * as PatternLock from 'pattern-lock-js/patternlock';
 import { DevicesList } from '../../../../../selectList';
 import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../../config';
@@ -17,7 +18,7 @@ const filePath = s3Details.url+'/'+s3Details.petsFilePath;
   templateUrl: './devices-modal.component.html',
   styleUrls: ['./devices-modal.component.scss']
 })
-export class DevicesModalComponent implements OnInit {
+export class DevicesModalComponent implements OnInit, AfterViewInit{
   //selected = 'option1';
   userId = localStorage.getItem("endUserId");
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
@@ -33,6 +34,7 @@ export class DevicesModalComponent implements OnInit {
   profileIdHiddenVal:boolean = false;
   selectedProfileId: string;
   docPath: string;
+  lock: any;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService  ) 
@@ -46,24 +48,33 @@ export class DevicesModalComponent implements OnInit {
       deviceList: new FormControl('',Validators.required),
       deviceName: new FormControl(''),
       username: new FormControl(''),
-      password: new FormControl(''),
+     // password: new FormControl(''),
       profileId: new FormControl('')
      });
+
      this.petDocumentsList = [];
 
      const locationArray = location.href.split('/')
      this.selectedProfileId = locationArray[locationArray.length - 1];
 
-    if(this.selectedProfileId && this.selectedProfileId == 'passwords-digital-assests'){
-      this.selectedProfileId = "";   
-    }
-    
+      if(this.selectedProfileId && this.selectedProfileId == 'passwords-digital-assests'){
+        this.selectedProfileId = "";   
+      }
      this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
      this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
-
-     this.getPetsView();
+    // this.getPetsView();
     }
 
+   ngAfterViewInit(){
+      this.lock = new PatternLock("#patternHolder", {
+        onPattern:this.getPattern
+        
+      });
+    }
+ 
+    getPattern(pattern : any){
+      console.log("pattern==>>",pattern)
+    }
 
     DevicesFormSubmit(profileInData = null) {
       var query = {};

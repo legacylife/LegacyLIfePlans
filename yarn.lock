@@ -4264,7 +4264,7 @@ jasminewd2@^2.1.0:
   resolved "https://registry.yarnpkg.com/jasminewd2/-/jasminewd2-2.2.0.tgz#e37cf0b17f199cce23bea71b2039395246b4ec4e"
   integrity sha1-43zwsX8ZnM4jvqcbIDk5Uka07E4=
 
-jquery@^3.4.1:
+jquery@^3.2.1, jquery@^3.4.1:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
   integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
@@ -5904,6 +5904,13 @@ path-type@^3.0.0:
   integrity sha512-T2ZUsdZFHgA3u4e5PfPbjd7HDDpxPnQb5jN0SrDsjNSuVXHJqtwTnWqG0B1jZrgmJ/7lj1EmVIByWt1gxGkWvg==
   dependencies:
     pify "^3.0.0"
+
+pattern-lock-js@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/pattern-lock-js/-/pattern-lock-js-1.0.1.tgz#953927a49b9710daa84cb6bdeaa9a1c3407c3cb5"
+  integrity sha512-ePP8qxTfR14UD4ksoR+E4UmUEsSXNgv4UkS14FWZMeMQuihct5qQhIYrpAZduKWJeuhRcHnJz0eYzwaXIF/CXA==
+  dependencies:
+    jquery "^3.2.1"
 
 pbkdf2@^3.0.3:
   version "3.0.17"
