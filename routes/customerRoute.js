@@ -26,6 +26,7 @@ const RealEstate = require('./../models/RealEstate.js')
 const Vehicles = require('./../models/Vehicles.js')
 const Assets = require('./../models/Assets.js')
 const FileActivityLog = require('./../models/FileActivityLog.js')
+const SpecialNeeds = require('./../models/SpecialNeeds.js')
 const s3 = require('./../helpers/s3Upload')
 
 var auth = jwt({
@@ -926,6 +927,101 @@ function deleteRealEstateAsset(req, res) {
 }
 
 
+function specialNeedsSubmit(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let { from } = req.body;
+  if(query._id ){
+    SpecialNeeds.findOne(query, function (err, custData) {      
+      if (err) {
+        let result = { "message": "Something Wrong!" }
+        res.send(resFormat.rError(result));
+      } else {
+        if (custData && custData._id) {
+          let { proquery } = req.body;  
+          proquery.modifiedOn = new Date();
+          SpecialNeeds.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              let result = { "message": "Special Needs details have been updated successfully!" }
+              res.status(200).send(resFormat.rSuccess(result))
+            }
+          })
+        } else {
+          let result = { "message": "No record found." }
+          res.send(resFormat.rError(result));
+        }
+      }
+    })
+  } else { 
+    let { proquery } = req.body; 
+    var snObj = new SpecialNeeds();
+    snObj.customerId = from.customerId;
+    snObj.folderName = proquery.folderName;
+    snObj.comments = proquery.comments;
+    snObj.status = 'Active';
+    snObj.createdOn = new Date();
+    snObj.modifiedOn = new Date();
+    snObj.save({ $set: proquery }, function (err, newEntry) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        let result = { "message": "Special Needs details have been added successfully!" }
+        res.status(200).send(resFormat.rSuccess(result))
+      }
+    })
+  }
+}
+
+function getSpecialNeedsList(req, res) {
+  let { fields, offset, query, order, limit, search } = req.body
+  SpecialNeeds.find(query, function (err, youngChildrenList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(youngChildrenList))
+    }
+  }).sort(order).skip(offset).limit(limit)
+}
+
+function viewSpecialNeeds(req, res) {
+  let { query } = req.body
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  SpecialNeeds.findOne(query, fields, function (err, scData) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(scData))
+    }
+  })
+}
+
+function deleteSpecialNeeds(req, res) {
+  let { query } = req.body;
+  let fields = { }
+  SpecialNeeds.findOne(query, fields, function (err, profileInfo) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      var upStatus = 'Delete';
+      var params = { status: upStatus }
+      SpecialNeeds.update({ _id: profileInfo._id }, { $set: params }, function (err, updatedinfo) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          let result = { "message": "Record deleted successfully!" }
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
+
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
@@ -959,5 +1055,8 @@ router.post("/real-estate-assets", realEstateAssetsSubmit)
 router.post("/real-estate-assets-list", getRealEstateAssetsList)
 router.post("/view-real-estate-asset", viewRealEstateAsset)
 router.post("/delete-real-estate-asset", deleteRealEstateAsset)
-
+router.post("/special-needs", specialNeedsSubmit)
+router.post("/special-needs-list", getSpecialNeedsList)
+router.post("/view-special-needs", viewSpecialNeeds)
+router.post("/delete-special-needs", deleteSpecialNeeds)
 module.exports = router
