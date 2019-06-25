@@ -28,6 +28,7 @@ export class UserAPIService {
   private sectionAccess: any
   private userInfo: any
   private accessSection: any
+  private fileAccessInfo:any
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -190,4 +191,32 @@ export class UserAPIService {
   public apiRequest(method, apiUrl, req_vars: any): Observable<any> {
     return this.request(method, apiUrl, req_vars)
   }
+
+  // get file icon & url
+  public getFileIconNUrl(logData){
+    this.fileAccessInfo = {}
+    if(logData.folderName == 'myessential' && logData.subFolderName == 'personal-profile'){
+      this.fileAccessInfo.fileIcon = "insert_drive_file";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/essential-detail-view', logData.fileId];
+    }
+    if(logData.folderName == 'myessential' && logData.subFolderName == 'id-box'){
+      this.fileAccessInfo.fileIcon = "insert_drive_file";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/essential-detail-idbox', logData.fileId];
+    }
+    if(logData.folderName == 'myessential' && logData.subFolderName == 'essential-professionals'){
+      this.fileAccessInfo.fileIcon = "insert_drive_file";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/essential-professionals-detail', logData.fileId];
+    }
+    if(logData.folderName == 'legalstuff'){
+      this.fileAccessInfo.fileIcon = "gavel";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/legal-detail-view', logData.fileId];
+    }
+    if(logData.folderName == 'emergency_contacts'){
+      this.fileAccessInfo.fileIcon = "contact_phone";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/emergency-contacts-details', logData.fileId];
+    }
+    return this.fileAccessInfo;
+  }
+
+
 }
