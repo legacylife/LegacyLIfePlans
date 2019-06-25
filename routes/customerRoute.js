@@ -27,6 +27,7 @@ const Vehicles = require('./../models/Vehicles.js')
 const Assets = require('./../models/Assets.js')
 const FileActivityLog = require('./../models/FileActivityLog.js')
 const s3 = require('./../helpers/s3Upload')
+const actitivityLog = require('./../helpers/fileAccessLog')
 
 var auth = jwt({
   secret: constants.secret,
@@ -38,7 +39,12 @@ function myEssentialsUpdate(req, res) {
   let { proquery } = req.body;
   let { from } = req.body;
 
-  if(query._id ){
+  var logData = {}
+  logData.fileName = proquery.ppFirstName + ' ' + proquery.ppLastName;
+  logData.folderName = 'myessential';
+  logData.subFolderName = 'personal-profile';
+
+  if (query._id) {
     myessentials.findOne(query, function (err, custData) {
       
       if (err) {
@@ -53,8 +59,12 @@ function myEssentialsUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              //let result = { "message": "User " + from.fromname + "  have been updated successfully!","ppID" : custData._id }
-              let result = { "message": "Personal profile details "+from.personalProfileAction+" successfully","ppID" : custData._id }
+
+              logData.customerId = custData.customerId;
+              logData.fileId = custData._id;
+              actitivityLog.updateActivityLog(logData);
+
+              let result = { "message": "Personal profile details " + from.personalProfileAction + " successfully", "ppID": custData._id }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -81,8 +91,10 @@ function myEssentialsUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
-        //let result = { "message": "User " + from.fromname + "  have been updated successfully!","ppID" : newEntry._id }
-        let result = { "message": "Personal profile details added successfully","ppID" : newEntry._id }
+        logData.customerId = from.customerId;
+        logData.fileId = newEntry._id;
+        actitivityLog.updateActivityLog(logData);
+        let result = { "message": "Personal profile details added successfully", "ppID": newEntry._id }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -174,6 +186,11 @@ function emergencyContactsSubmit(req, res) {
   let { proquery } = req.body;
   let { from } = req.body;
 
+  var logData = {}
+  logData.fileName = proquery.name;
+  logData.folderName = 'emergency_contacts';
+  logData.subFolderName = 'emergency_contacts';
+
   if(query._id ){
     emergencyContacts.findOne(query, function (err, custData) {      
       if (err) {
@@ -187,6 +204,10 @@ function emergencyContactsSubmit(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
+              logData.customerId = custData.customerId;
+              logData.fileId = custData._id;
+              actitivityLog.updateActivityLog(logData);
+
               let result = { "message": "Emergency contacts details have been updated successfully!" }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -214,6 +235,10 @@ function emergencyContactsSubmit(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+        logData.customerId = from.customerId;
+        logData.fileId = newEntry._id;
+        actitivityLog.updateActivityLog(logData);
+
         let result = { "message": "Emergency contacts details have been added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
@@ -276,6 +301,12 @@ function personalIdUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let { from } = req.body;
+
+  var logData = {}
+  logData.fileName = constants.documentTypes[proquery.documentType];
+  logData.folderName = 'myessential';
+  logData.subFolderName = 'id-box';
+
   if(query._id ){
     personalIdProof.findOne(query, function (err, custData) {      
       if (err) {
@@ -294,6 +325,11 @@ function personalIdUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
+
+              logData.customerId = custData.customerId;
+              logData.fileId = custData._id;
+              actitivityLog.updateActivityLog(logData);
+
               let result = { "message": "ID box details "+resText+" successfully!" }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -315,6 +351,11 @@ function personalIdUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+
+        logData.customerId = from.customerId;
+        logData.fileId = newEntry._id;
+        actitivityLog.updateActivityLog(logData);
+
         let result = { "message": "ID box details added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
@@ -346,6 +387,12 @@ function deleteProfile(req, res) {
 function myProfessionalsUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+
+  var logData = {}
+  logData.fileName = proquery.businessName;
+  logData.folderName = 'myessential';
+  logData.subFolderName = 'essential-professionals';
+
   if(query._id ){
     MyProfessional.findOne(query, function (err, custData) {      
       if (err) {
@@ -359,6 +406,10 @@ function myProfessionalsUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
+              logData.customerId = custData.customerId;
+              logData.fileId = custData._id;
+              actitivityLog.updateActivityLog(logData);
+
               let result = { "message": "Professional details updated successfully!","ppID" : custData._id }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -387,6 +438,11 @@ function myProfessionalsUpdate(req, res) {
           res.send(resFormat.rError(err))
         } else {
           console.log("newEntry :-",newEntry);
+
+          logData.customerId = query.customerId;
+          logData.fileId = newEntry._id;
+          actitivityLog.updateActivityLog(logData);
+
           let result = { "message": "Professional details added successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }
@@ -422,6 +478,20 @@ function legalStuffUpdate(req, res) {
   let { proquery } = req.body;
   let {message} = req.body;
 
+  var logData = {}
+  if(proquery.subFolderName == 'Estate') {
+    logData.fileName = constants.EstateTypeOfDocument[proquery.typeOfDocument];
+  }
+  if(proquery.subFolderName == 'Healthcare') {
+    logData.fileName = constants.HealthcareTypeOfDocument[proquery.typeOfDocument];
+  }
+  if(proquery.subFolderName == 'Personal Affairs') {
+    logData.fileName = constants.PersonalAffairsTypeOfDocument[proquery.typeOfDocument];
+  }
+  
+  logData.folderName = 'legalstuff';
+  logData.subFolderName = proquery.subFolderName;
+
   if(query._id ){
     LegalStuff.findOne(query, function (err, custData) {      
       if (err) {
@@ -440,6 +510,11 @@ function legalStuffUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
+
+              logData.customerId = custData.customerId;
+              logData.fileId = custData._id;
+              actitivityLog.updateActivityLog(logData);
+
               let result = { "message": message.messageText+" "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -464,6 +539,11 @@ function legalStuffUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+
+        logData.customerId = query.customerId;
+        logData.fileId = newEntry._id;
+        actitivityLog.updateActivityLog(logData);
+
         let result = { "message": message.messageText+" added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
