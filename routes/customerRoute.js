@@ -61,6 +61,9 @@ function myEssentialsUpdate(req, res) {
               res.send(resFormat.rError(err))
             } else {
 
+              if(!proquery.ppFirstName){
+                logData.fileName = custData.ppFirstName + ' ' + custData.ppLastName;
+              }
               logData.customerId = custData.customerId;
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);

@@ -43,7 +43,7 @@ var constants = {
   },
   stripeSecretKey: "",
   documentTypes: {
-    1: "Driver�s License",
+    1: "Driver's License",
     2: "Non-Driver State ID",
     3: "Department of Defense (DOD)",
     4: "Birth Certificate",
@@ -73,6 +73,48 @@ var constants = {
     2: "Durable Power of Attorney",
     3: "Revocation of Power of Attorney"
   },
+
+  InsurancePolicyType : { 
+    1 : "Home Owners" ,
+    2 : "Auto",   
+    3 : "Business", 
+    4 : "Life",
+    5 : "Umbrella" 
+  },
+  
+  FinancePolicyType : { 
+    1 : "Bank Accounts", 
+    2 : "Annuity", 
+    3 : "Disability", 
+    4 : "Pension", 
+    5 : "Roth", 
+    6 : "IRA", 
+    7 : "401K", 
+    8 : "Brokerage Accounts", 
+    9 : "Social Security", 
+    10 : "New",
+  }, 
+  
+  DebtType : { 
+    1 : "Credit Cards", 
+    2 : "Mortgage", 
+    3 : "Car loans", 
+    4 : "2nd Mortgage", 
+    5 : "Personal Loans", 
+    6 : "IOU’s", 
+    7 : "New"
+  },  
+  
+  
+  DevicesList : { 
+    1 : "Computers", 
+    2 : "Laptop", 
+    3 : "i-pad", 
+    4 : "Tablet", 
+    5 : "Phone", 
+    6 : "Watch"
+  }
+
 }
 
 module.exports = constants
