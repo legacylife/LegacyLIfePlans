@@ -6,8 +6,8 @@ import { AppLoaderService } from '../../../../../shared/services/app-loader/app-
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import * as PatternLock from 'pattern-lock-js/patternlock';
-import * as html2canvas from 'html2canvas/dist/html2canvas';
-
+//import * as html2canvas from 'html2canvas/dist/html2canvas';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { DevicesList } from '../../../../../selectList';
 import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../../config';
@@ -15,6 +15,9 @@ import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 const URL = serverUrl + '/api/documents/petsdocuments';
 const filePath = s3Details.url+'/'+s3Details.petsFilePath;
+
+
+
 @Component({
   selector: 'app-essenioal-id-box',
   templateUrl: './devices-modal.component.html',
@@ -37,9 +40,12 @@ export class DevicesModalComponent implements OnInit, AfterViewInit{
   selectedProfileId: string;
   docPath: string;
   lock: any;
-  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
-    private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
-    private userapi: UserAPIService  ) 
+  locks: any;
+  imgDisply:string;
+  safeHtml: SafeHtml;
+  DisplayPatternHolder = {'visibility': 'hidden'};
+  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,private confirmService: AppConfirmService,private loader: AppLoaderService, 
+    private router: Router,private userapi: UserAPIService,private sanitizer: DomSanitizer) 
   { }
 
   ngOnInit() {
@@ -67,26 +73,79 @@ export class DevicesModalComponent implements OnInit, AfterViewInit{
     // this.getPetsView();
     }
 
-   ngAfterViewInit(){
+    ngAfterViewInit(){
       this.lock = new PatternLock("#patternHolder", {
-        onPattern:this.getPattern        
+       onPattern: function(pp) {
+        //setPattern()
+
+        var selected = document.getElementsByClassName( "lock-actives" );
+        var lines = document.getElementsByClassName( "lock-lines" );
+        let selectOut = selected[0];
+        let linesOut = lines[0];
+            //  console.log(selectOut)
+            //  console.log(linesOut)
+        },
+        beginTrack:'1234'
       });
+
+
+
+      // var selectOuts =  '<g _ngcontent-c16="" class="lock-actives"><circle cx="20" cy="20" r="6"></circle><circle cx="50" cy="50" r="6"></circle><circle cx="80" cy="80" r="6"></circle><circle cx="50" cy="80" r="6"></circle><circle cx="20" cy="80" r="6"></circle></g>';
+      // var linesOuts = '<g _ngcontent-c16="" class="lock-lines"><line x1="20" y1="20" x2="50" y2="50"></line><line x1="50" y1="50" x2="80" y2="80"></line><line x1="80" y1="80" x2="50" y2="80"></line><line x1="50" y1="80" x2="20" y2="80"></line></g>';
+    
+      // var node = document.createElement(selectOuts);   
+      // var node2 = document.createElement(linesOuts);  
+
+      // var output = document.getElementById('patternHolder2');
+      // output.appendChild(node);
+      // output.appendChild(node2);
+      // console.log("--------",node,node2);
+
+     }
+
+     setPattern(){
+      // var selected = document.getElementsByClassName( "lock-actives" );
+      // var lines = document.getElementsByClassName( "lock-lines" );
+      // let selectOut = selected[0];
+      // let linesOut = lines[0];
+      
+
+     
+     
+      // console.log(selectOut)
+      // console.log(linesOut)
+       var selectOuts1 =  '<g _ngcontent-c16="" class="lock-actives"><circle cx="20" cy="20" r="6"></circle><circle cx="50" cy="50" r="6"></circle><circle cx="80" cy="80" r="6"></circle><circle cx="50" cy="80" r="6"></circle><circle cx="20" cy="80" r="6"></circle></g>';
+       var linesOuts1 = '<g _ngcontent-c16="" class="lock-lines"><line x1="20" y1="20" x2="50" y2="50"></line><line x1="50" y1="50" x2="80" y2="80"></line><line x1="80" y1="80" x2="50" y2="80"></line><line x1="50" y1="80" x2="20" y2="80"></line></g>';
+      
+      //  let selectOuts =  JSON.parse(JSON.stringify(selectOuts1));
+      //  let linesOuts = JSON.parse(JSON.stringify(linesOuts1));
+      
+      
+      var node = document.createElement(selectOuts1);   
+      node.innerText = "";
+      var node2 = document.createElement(linesOuts1);  
+      node2.innerText = "";
+      
+       var output = document.getElementById('patternHolder2');
+
+       //var aBlock = document.createElement('block').appendChild(doc.createElement('b'));
+
+
+      output.appendChild(node);
+      output.appendChild(node2);
+
+
+
+      //console.log("----######----",node,node2);
+      this.DisplayPatternHolder = {'visibility': 'show'};
     }
- 
+
     getPattern(pattern : any){
-      //pattern
-      console.log("pattern No ",pattern)
-     // var c = document.getElementById('patternHolder');
-     // var t = c.getContext('2d');
-     html2canvas(document.getElementById('patternHolder')).then(function(canvas) {
-      document.getElementById('patternHolder').appendChild(canvas);
-      var base64URL = canvas.toDataURL('image/jpeg').replace('image/jpeg', 'image/octet-stream');
-      console.log("HERE we Are ",base64URL)
-    });
+      console.log("pattern numbering ",pattern)
+      this.locks = new PatternLock('#patternHolder2',{   
+       });
     }
-
-  
-
+    
     DevicesFormSubmit(profileInData = null) {
       var query = {};
       var proquery = {};     
@@ -290,6 +349,13 @@ export class DevicesModalComponent implements OnInit, AfterViewInit{
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
   }
   
+// get an screenshot 
+    // getPattern1(pattern : any){
+    //  html2canvas(document.getElementById('getPattern')).then(function(canvas) {
+    //   document.getElementById('diplayImg').appendChild(canvas);
+    //   var base64URL = canvas.toDataURL('image/jpeg').replace('image/jpeg', 'image/octet-stream');
+    //  });
+    // }
 
  
 
