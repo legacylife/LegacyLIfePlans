@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { APIService } from './../../../../api.service';
-import { UserAPIService } from './../../../../userapi.service';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
+
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
-import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
-import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
-import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
+import { ProfAddTrusteeModalComponent } from '../prof-add-trustee-modal/prof-add-trustee-modal.component';
 
 @Component({
   selector: 'app-hire-advisor-modal',
@@ -15,11 +13,21 @@ import { Router } from '@angular/router';
 })
 export class HireAdvisorComponent implements OnInit {
   selected = 'option1';
-  constructor( ) { }
+  constructor(
+    private router: Router, private dialog: MatDialog
+  ) {
+
+  }
 
   ngOnInit() {
 
-    }
-
   }
+
+  openProAddTrusteeModal(data: any = {}, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ProfAddTrusteeModalComponent, {
+      width: '720px',
+      disableClose: true,
+    })
+  }
+}
 
