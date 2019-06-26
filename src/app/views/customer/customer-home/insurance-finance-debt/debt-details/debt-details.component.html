@@ -3,7 +3,7 @@
     <div class="">
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
-          <mat-card-title class="m-0">Debt Details</mat-card-title>
+          <mat-card-title class="m-0">Insurance Finance & Debt</mat-card-title>
           <div class="right--actions">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openDebtModal()">
               <mat-icon>edit</mat-icon>
@@ -19,10 +19,10 @@
           <div class="details--wrapper mb-1">
             <div class="details--header">
               <div class="d-flex align--items--center">
-                <mat-icon>library_add</mat-icon>{{getType(row?.debtsType)}}
+                <mat-icon>library_add</mat-icon>Debt
               </div>
               <span class="last--modified--by">Last modified:
-                <span>{{row?.createdOn | date: 'MMM dd, yyyy'}}</span>
+                <span>{{row?.modifiedOn | date: 'MMM dd, yyyy'}}</span>
               </span>
             </div>
             <div class="details--body">

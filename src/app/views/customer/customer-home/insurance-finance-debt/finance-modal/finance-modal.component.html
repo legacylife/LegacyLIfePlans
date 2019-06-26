@@ -5,7 +5,7 @@
   </button>
 </div>
 <form class="llp-form-wrapper" (ngSubmit)="FinanceFormSubmit(FinanceForm.value)">
-  <div class="ll--modal--body legal--stuff--body--hgt">
+  <div class="ll--modal--body id--box--body legal--stuff--body--hgt">
     <div fxLayout="row wrap" class="pt-1">
       <div fxFlex.xs="100">
        <mat-form-field class="full-width">
@@ -23,7 +23,7 @@
       </mat-form-field>
 
       <mat-form-field class="full-width">
-          <input matInput name="administatorName" placeholder="Administator Name"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="FinanceForm.controls['administatorName']">
+          <input matInput name="administatorName" placeholder="Administator Name*"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="FinanceForm.controls['administatorName']">
       </mat-form-field>
 
       <mat-form-field class="full-width">
@@ -31,7 +31,7 @@
       </mat-form-field>
    
       <mat-form-field class="full-width">
-          <input matInput name="accountNumber" placeholder="Contact Person" [formControl]="FinanceForm.controls['accountNumber']">
+          <input matInput name="accountNumber" (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" placeholder="Contact Person" [formControl]="FinanceForm.controls['accountNumber']">
       </mat-form-field>
 
       <mat-form-field class="full-width">
@@ -40,7 +40,8 @@
       </mat-form-field>
 
       <mat-form-field class="full-width">
-          <input matInput name="contactPhone" placeholder="Contact Phone" (keypress)="onlyNumbers($event)" maxlength="15" [formControl]="FinanceForm.controls['contactPhone']">
+          <input matInput name="contactPhone" placeholder="Contact Phone" maxlength="15" [formControl]="FinanceForm.controls['contactPhone']">
+          <mat-icon matTooltip="Please enter minimum 7 & maximum 15 numbers only" matTooltipClass="llp--tooltip error" *ngIf="FinanceForm.controls['contactPhone'].hasError('pattern') && FinanceForm.controls['contactPhone'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
 
       <div class="upload--buss--docs--sec">

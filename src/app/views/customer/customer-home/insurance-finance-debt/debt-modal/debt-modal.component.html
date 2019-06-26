@@ -5,7 +5,7 @@
   </button>
 </div>
 <form class="llp-form-wrapper" (ngSubmit)="DebtFormSubmit(DebtForm.value)">
-  <div class="ll--modal--body legal--stuff--body--hgt">
+  <div class="ll--modal--body id--box--body legal--stuff--body--hgt">
     <div fxLayout="row wrap" class="pt-1">
       <div fxFlex.xs="100">
        <mat-form-field class="full-width">
@@ -38,6 +38,7 @@
 
       <mat-form-field class="full-width">
           <input matInput name="contactPhone" placeholder="Contact Phone"  (keypress)="onlyNumbers($event)" maxlength="15" [formControl]="DebtForm.controls['contactPhone']">
+          <mat-icon matTooltip="Please enter minimum 7 & maximum 15 numbers only" matTooltipClass="llp--tooltip error" *ngIf="DebtForm.controls['contactPhone'].hasError('pattern') && DebtForm.controls['contactPhone'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
 
       <mat-form-field class="full-width mt-1">

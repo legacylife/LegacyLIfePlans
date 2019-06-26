@@ -44,7 +44,7 @@ export class InsuranceModalComponent implements OnInit {
           policyNumber: new FormControl(''),
           contactPerson: new FormControl(''),
           contactEmail: new FormControl('',Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
-          contactPhone: new FormControl(''),
+          contactPhone: new FormControl('',Validators.pattern(/^[0-9]{7,15}$/)),
           comments: new FormControl(''),
           profileId: new FormControl('')
         });
