@@ -9,8 +9,7 @@ import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 import { NavigationService } from '../../services/navigation.service';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
-import { InviteComponent } from '../../../views/invite-modal/invite-modal.component';
-
+import { ReferAndEarnModalComponent } from '../../../views/refer-and-earn-modal/refer-and-earn-modal.component';
 @Component({
   selector: 'app-advisor-header-top',
   templateUrl: './advisor-header-top.component.html'
@@ -104,7 +103,7 @@ export class AdvisorHeaderTopComponent implements OnInit, OnDestroy {
     this.userapi.userLogout();
   }
   openInviteModal(data: any = {}, isNew?) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(InviteComponent, {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
       width: '720px',
       disableClose: true,
     })
