@@ -108,8 +108,14 @@
             border-radius: 2px;
             padding: 0 10px;
             text-align: center;
-            margin-top: 20px;
-            
+            margin: 20px 20px 0 0;
+            flex-grow: 1;
+            cursor: pointer;
+
+            &:hover{
+                box-shadow: 0 0 10px #ddd;
+            }
+
             .file--name{
                 font-size: 15px;
                 color: #333;
@@ -282,8 +288,9 @@
         padding: 15px 10px
     }
     .llp--content--wrapper .files--wrapper .recent--acc--files{
-        width: 47%;
+        width: 48%;
         height: 150px;
+        margin-right: 5px;
     }
     .llp--content--wrapper .files--wrapper .recent--acc--files .mat-icon {
         font-size: 34px;
