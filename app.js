@@ -5,8 +5,8 @@ const http = require('http')
 const https = require('https')
 var port = normalizePort(process.env.PORT || '3000')
 
- const server = http.createServer(app).listen(8080, () => {
-   console.log('http server running at ' + 8080)
+ const server = http.createServer(app).listen(80, () => {
+   console.log('http server running at ' + 80)
  })
 
 function normalizePort(val) {
