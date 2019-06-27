@@ -5,7 +5,7 @@
   </button>
 </div>
 <form class="llp-form-wrapper" (ngSubmit)="DevicesFormSubmit(DevicesForm.value)">
-  <div class="ll--modal--body legal--stuff--body--hgt">
+  <div class="ll--modal--body pattern--body--hgt">
     <div fxLayout="row wrap" class="pt-1">
       <div fxFlex.xs="100">
              
@@ -30,10 +30,10 @@
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
-        <div id="patternHolder"></div>
+        <div id="patternHolder" class="large--pattern"></div>
 
         <img src="../../../../../../assets/images/arkenea/icon-arrow.png" style="display:none"/>
-        <div id="patternHolder7" class="pattern-holder"></div>
+        <div id="patternHolder7" class="pattern-holder small--pattern"></div>
 
         <!-- <mat-form-field class="full-width">
           <input matInput name="veterinarian" placeholder="Veterinarian" [formControl]="DevicesForm.controls['veterinarian']">
@@ -57,6 +57,9 @@
     </div>
   </div>
   <div class="ll--modal--footer text-center">
-    <button mat-raised-button class="llp--primary--btn" [disabled]="!DevicesForm.valid">Save</button>
+    <!-- <button mat-raised-button class="llp--primary--btn" [disabled]="!DevicesForm.valid">Save</button> -->
+    <button mat-raised-button class="llp--secondary--btn mr-1" type="button"  (click)="resetPattern($event);">Reset</button>
+    <button mat-raised-button class="llp--primary--btn"  [disabled]="!DevicesForm.valid">Save</button>
+    
   </div>
 </form>
