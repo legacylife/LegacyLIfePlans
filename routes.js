@@ -14,6 +14,9 @@ router.use("/insuranceFinanceDebt", require("./routes/insuranceFinanceDebtRoute"
 router.use("/passwordsDigitalAssets", require("./routes/passwordsDigitalAssestsRoute"))
 router.use("/lettersMessages", require("./routes/LettersMessagesRoute"))
 router.use("/documents", require("./routes/documentsUploadRoute"))
+router.use("/specialNeeds", require("./routes/specialNeedsRoute"))
+router.use("/realEstateAssets", require("./routes/realEstateAssetsRoute"))
 router.use("/invite", require("./routes/inviteRoute"))
+
 
 module.exports = router

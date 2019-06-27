@@ -3,6 +3,7 @@ var constants = require("./../config/constants")
 
 var specialNeedsSchema = new mongoose.Schema({
   customerId: String,
+  title: String,
   folderName: String,
   comments: String,
   status: String,

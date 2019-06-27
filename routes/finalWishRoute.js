@@ -15,6 +15,7 @@ var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const finalWish = require('./../models/FinalWishes.js')
 const s3 = require('./../helpers/s3Upload')
+const actitivityLog = require('./../helpers/fileAccessLog')
 
 var auth = jwt({
   secret: constants.secret,
@@ -52,6 +53,11 @@ function wishFormUpdate(req, res) {
   let { proquery } = req.body;
   let {message} = req.body;
 
+  var logData = {}
+  logData.fileName = proquery.title;
+  logData.folderName = 'finalwishes';
+  logData.subFolderName = proquery.subFolderName;
+
   if(query._id){
     finalWish.findOne(query, function (err, custData) {      
       if (err) {
@@ -70,6 +76,11 @@ function wishFormUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
+
+              logData.customerId = custData.customerId;
+              logData.fileId = custData._id;
+              actitivityLog.updateActivityLog(logData);
+
               let result = { "message": message.messageText+" "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -94,6 +105,11 @@ function wishFormUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+
+        logData.customerId = query.customerId;
+        logData.fileId = newEntry._id;
+        actitivityLog.updateActivityLog(logData);
+
         let result = { "message": message.messageText+" added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
