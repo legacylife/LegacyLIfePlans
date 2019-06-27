@@ -4,12 +4,11 @@
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
 </div>
-
 <form class="llp-form-wrapper" (ngSubmit)="DevicesFormSubmit(DevicesForm.value)">
   <div class="ll--modal--body legal--stuff--body--hgt">
     <div fxLayout="row wrap" class="pt-1">
       <div fxFlex.xs="100">
-        
+             
         <mat-form-field class="full-width">
           <mat-label>Policy Type*</mat-label>
         <mat-select placeholder="Device List*" name="deviceList" [formControl]="DevicesForm.controls['deviceList']" >
@@ -31,45 +30,11 @@
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
- 
-        
-        <svg class="patternlock" id="patternHolder" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <g class="lock-actives"></g>
-          <g class="lock-lines"></g>
-          <g class="lock-dots">
-              <circle cx="20" cy="20" r="2"/>
-              <circle cx="50" cy="20" r="2"/>
-              <circle cx="80" cy="20" r="2"/>
-       
-              <circle cx="20" cy="50" r="2"/>
-              <circle cx="50" cy="50" r="2"/>
-              <circle cx="80" cy="50" r="2"/>
-       
-              <circle cx="20" cy="80" r="2"/>
-              <circle cx="50" cy="80" r="2"/>
-              <circle cx="80" cy="80" r="2"/>
-          </g>
-        </svg>
+        <div id="patternHolder"></div>
 
+        <img src="../../../../../../assets/images/arkenea/icon-arrow.png" style="display:none"/>
+        <div id="patternHolder7" class="pattern-holder"></div>
 
-       <div ng-style="DisplayPatternHolder">
-        <svg class="patternlock" id="patternHolder2" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <g class="lock-dots">
-              <circle cx="20" cy="20" r="2"/>
-              <circle cx="50" cy="20" r="2"/>
-              <circle cx="80" cy="20" r="2"/>
-       
-              <circle cx="20" cy="50" r="2"/>
-              <circle cx="50" cy="50" r="2"/>
-              <circle cx="80" cy="50" r="2"/>
-       
-              <circle cx="20" cy="80" r="2"/>
-              <circle cx="50" cy="80" r="2"/>
-              <circle cx="80" cy="80" r="2"/>
-          </g>
-        </svg>
-      </div>
-  
         <!-- <mat-form-field class="full-width">
           <input matInput name="veterinarian" placeholder="Veterinarian" [formControl]="DevicesForm.controls['veterinarian']">
           <mat-icon matTooltip="Please enter veterinarian" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['veterinarian'].hasError('required') && DevicesForm.controls['veterinarian'].touched"
@@ -82,39 +47,9 @@
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
      -->
-    
+       
 
-        <!-- <div class="upload--buss--docs--sec">
-             <label>Upload your pet documents</label>
-             <div class="upload--box fileupload-drop-zone"
-                ng2FileDrop
-                [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-                (fileOver)="fileOverBase($event)"
-                [uploader]="uploader">
-                <input type="file" name="documents"  ng2FileSelect [uploader]="uploader" multiple  (change)="fileOverBase('')" />  
-                <mat-icon class="cloud-icon">cloud_upload</mat-icon>
-                <div class="select--file">Select file from your computer</div>
-              </div>
-              <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
-            </div>
-            
-         <div *ngIf="petDocumentsList" >
-          <h3 class="header--text fnt--16">Uploaded pet documents </h3>
-          <mat-chip-list class="doc--list" *ngFor="let doc of petDocumentsList; index as i">
-              <mat-chip><a href="{{docPath}}{{doc.tmpName}}">{{doc.title}}</a><mat-icon matChipRemove (click)="PetDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
-          </mat-chip-list>
-         </div>
-
-          <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
-              <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
-          </mat-chip-list>    
-
-          <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
-            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">{{uploader.progress}}%</div>
-            <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="uploader.progress"></mat-progress-bar>
-          </div> -->
-
-          <button mat-raised-button class="llp--primary--btn" type="button" (click)="setPattern()">Check</button>
+          <!-- <button mat-raised-button class="llp--primary--btn" type="button" (click)="savePattren(patternNo)">Check {{patternNo}}</button> -->
           <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
             <input matInput name="profileId" [formControl]="DevicesForm.controls['profileId']" readonly="readonly">
           </mat-form-field>
