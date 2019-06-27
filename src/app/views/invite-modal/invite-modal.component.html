@@ -4,50 +4,45 @@
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
 </div>
-
-<form class="llp-form-wrapper">
-  <div class="ll--modal--body ">
-
-    <form class="llp-form-wrapper">
-      <h6 class="invite--sub--line">Invite your members</h6>
-      <div fxLayout="row wrap">
-        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
-          <mat-form-field class="full-width">
-            <input matInput value="" placeholder="Name">
-          </mat-form-field>
-        </div>
-        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
-          <mat-form-field class="full-width">
-            <input matInput value="" placeholder="Email">
-          </mat-form-field>
-        </div>
-        <div fxFlex.xs="90" fxFlex.sm="95" fxFlex.md="35" fxFlex.lg="36" fxFlex.xl="37" class="pad--r--lg">
-
-          <mat-form-field  class="full-width no-mar">
-            <mat-select placeholder="Relation">
-              <mat-option value="">Friend</mat-option>
-              <mat-option value="">Family</mat-option>
-              <mat-option value="">Colleague</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-        </div>
-        <div fxFlex.xs="10" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="4" fxFlex.xl="3" class="text-right">
-          <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
+<form class="llp-form-wrapper" [formGroup]="inviteForm" (ngSubmit)="inviteSubmit()">
+  <div class="ll--modal--body " formArrayName="inviteMembers">
+    <h6 class="invite--sub--line">Invite your members</h6>
+    <div fxLayout="row wrap" *ngFor="let ilist of inviteMembersList.controls; let pointIndex = index" [formGroupName]="pointIndex">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Name *" formControlName="name" name="name" >          
+        </mat-form-field>
+      </div>
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
+        <mat-form-field class="full-width">
+          <input matInput value="" placeholder="Email *"  formControlName="email" name="email" >
+          <mat-icon matTooltip="Please enter valid email" matTooltipClass="llp--tooltip error" *ngIf="ilist.touched && ilist.invalid" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+      </div>
+      <div fxFlex.xs="90" fxFlex.sm="95" fxFlex.md="35" fxFlex.lg="36" fxFlex.xl="37" class="pad--r--lg">
+        <mat-form-field class="full-width no-mar">
+          <mat-select placeholder="Relation *"  formControlName="relation" name="relation">
+            <mat-option value="Friend">Friend</mat-option>
+            <mat-option value="Family">Family</mat-option>
+            <mat-option value="Advisor">Advisor</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div (click)="delete(pointIndex);"  *ngIf="inviteMembersList.length > 1" fxFlex.xs="10" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="4" fxFlex.xl="3"
+        class="text-right">
+        <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
+      </div>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100">
+        <div class="add--new" (click)="addRow();">
+          <mat-icon>add_circle</mat-icon>
+          Add New
         </div>
       </div>
-      <div fxLayout="row wrap">
-        <div fxFlex.xs="100">
-          <div class="add--new">
-            <mat-icon>add_circle</mat-icon>
-            Add New
-          </div>
-        </div>
-      </div>
-    </form>
-
+    </div>
   </div>
   <div class="ll--modal--footer text-center">
-    <button mat-raised-button class="llp--primary--btn">Invite</button>
+    <button mat-raised-button class="llp--primary--btn" [disabled]="inviteForm.invalid">Invite</button>
   </div>
 </form>

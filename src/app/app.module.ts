@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 console.log("App module ...")
 import {
@@ -87,8 +88,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 };
 @NgModule({
   imports: [
-    FlexLayoutModule,
-    MatListModule,
+  FlexLayoutModule,
+  MatListModule,
+  FormsModule,
+  ReactiveFormsModule,
   MatIconModule,
   MatButtonModule,
   MatCardModule,
