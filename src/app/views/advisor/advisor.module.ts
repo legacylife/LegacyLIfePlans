@@ -44,6 +44,7 @@ import { ChangePassComponent } from './advisor-account-setting/change-pass/chang
 import { AdvisorDashboardComponent } from './advisor-dashboard/advisor-dashboard.component';
 import { LegaciesComponent } from './legacies/legacies.component';
 import { AdvisorLeadsComponent } from './advisor-leads/advisor-leads.component';
+import { AdvisorLeadsDetailsComponent } from './advisor-leads-details/advisor-leads-details.component';
 import { AdvisorDashboardUpdateComponent } from './advisor-dashboard-update/advisor-dashboard-update.component';
 import { AdvisorAccountSettingComponent } from './advisor-account-setting/advisor-account-setting.component';
 import { AdvisorSubscriptionComponent } from './advisor-subscription/advisor-subscription.component';
@@ -148,7 +149,7 @@ export class GlobalVariables {
     AdvisorDashboardUpdateComponent, AdvisorAccountSettingComponent, AdvisorSubscriptionComponent,
     ChangePassComponent, HomeComponent, ReferAndEarnModalComponent, AdvisorLegacyDetailsComponent,
     LegaciesDetailsLandingComponent, MarkAsDeceasedComponent,
-    GetFeaturedComponent, SubmitEnquiryModalComponent, AdvisorLeadsComponent,
+    GetFeaturedComponent, SubmitEnquiryModalComponent, AdvisorLeadsComponent, AdvisorLeadsDetailsComponent, 
   ], providers: [{ provide: LY_THEME, useClass: MinimaLight, multi: true },
   { provide: LY_THEME, useClass: MinimaDark, multi: true },
   { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },

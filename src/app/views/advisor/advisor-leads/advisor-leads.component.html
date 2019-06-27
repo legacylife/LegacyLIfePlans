@@ -21,20 +21,7 @@
                       <p class="m-0">{{peoples.emailId}}</p>
                     </div>
 
-                    <div class="cursor-pointer">
-                      <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
-                      <mat-menu #beforeMenu="matMenu" xPosition="before" class="llp--menu--droupdown">
-                        <button mat-menu-item>
-                          <span>Opt 1</span>
-                        </button>
-                        <button mat-menu-item>
-                          <span>Opt 2</span>
-                        </button>
-                        <button mat-menu-item>
-                          <span>Opt 3</span>
-                        </button>
-                      </mat-menu>
-                    </div>
+                    <mat-icon class="icon--peopless">people</mat-icon>
 
                   </mat-card-title>
                 </mat-card-header>
@@ -51,7 +38,7 @@
 
                   <div class="view--details">
                     <mat-icon>remove_red_eye</mat-icon>
-                    <a>View Details</a>
+                    <a [routerLink]="'/advisor/leads-details'" >View Details</a>
                   </div>
 
                 </mat-card-content>

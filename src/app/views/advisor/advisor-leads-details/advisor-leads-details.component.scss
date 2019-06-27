@@ -1,0 +1,76 @@
+@import 'llp-global-styles.scss';
+
+.leads--details{
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    
+    .leads--pic{
+        width: 100px !important;
+        height: 100px !important;
+        background-color: #e6e7ec;
+        line-height: 48px;
+        text-align: center;
+        position: relative;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: 20px;
+        img{
+            max-width: 100%;
+            max-height: 100%;
+            height: auto;
+        }
+    }
+    .leads--details{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        h5{
+            font-size: 24px;
+            font-family: $font--lato--bold;
+            margin: 0 0 5px 0;
+            color: #222324;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .icon--and--info{
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            margin: 9px 0 6px 0;
+            color: #222324;
+            .mat-icon {
+                font-size: 18px;
+                height: 19px;
+                color: #ecca40;
+                width: 15px;
+                margin-right: 10px;
+            }
+        }
+    }
+}
+
+
+
+/* Media query (start here)*/
+
+@media only screen and (max-width: 599px) {
+   
+}
+@media only screen and (min-width: 600px) and (max-width: 959px){
+
+    
+}
+@media only screen and (min-width: 960px) and (max-width: 979px){    
+    
+}
+@media only screen and (min-width: 980px) and (max-width: 1279px){
+    
+}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){
+
+}
+@media only screen and (min-width: 1441px) and (max-width: 1550px){}
+
+/* Media query (end here)*/

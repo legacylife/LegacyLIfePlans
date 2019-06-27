@@ -19,6 +19,7 @@ import { AdvisorLegacyDetailsComponent } from './advisor-legacy-details/advisor-
 import { LegaciesDetailsLandingComponent } from './advisor-legacy-details/legacies-details-landing/legacies-details-landing.component';
 import { GetFeaturedComponent } from './get-featured/get-featured.component';
 import { AdvisorLeadsComponent } from './advisor-leads/advisor-leads.component';
+import { AdvisorLeadsDetailsComponent } from './advisor-leads-details/advisor-leads-details.component';
 console.log('advisor---routing');
 export const AdvisorRoutes: Routes = [
   {
@@ -144,6 +145,17 @@ export const AdvisorRoutes: Routes = [
       {
         path: '',
         component: AdvisorLeadsComponent,
+        canActivate: [UserAuthGuard]
+      }
+    ]
+  },
+  {
+    path: 'leads-details',
+    component: AdvisorLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: AdvisorLeadsDetailsComponent,
         canActivate: [UserAuthGuard]
       }
     ]
