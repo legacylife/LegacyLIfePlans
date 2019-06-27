@@ -1,12 +1,12 @@
 <div class="ll--modal--header">
-  Pet
+  Pets
   <button class="modal--close" [mat-dialog-close]="">
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
 </div>
 
 <form class="llp-form-wrapper" (ngSubmit)="PetFormSubmit(PetForm.value)">
-  <div class="ll--modal--body legal--stuff--body--hgt">
+  <div class="ll--modal--body id--box--body legal--stuff--body--hgt">
     <div fxLayout="row wrap" class="pt-1">
       <div fxFlex.xs="100">
         
@@ -17,19 +17,19 @@
         </mat-form-field>
 
         <mat-form-field class="full-width">
-          <input matInput name="petType"  placeholder="Pet Type" [formControl]="PetForm.controls['petType']">
+          <input matInput name="petType" (keyup)="firstCapitalize($event)"  placeholder="Pet Type" [formControl]="PetForm.controls['petType']">
           <mat-icon matTooltip="Please enter pet type" matTooltipClass="llp--tooltip error" *ngIf="PetForm.controls['petType'].hasError('required') && PetForm.controls['petType'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
         <mat-form-field class="full-width">
-          <input matInput name="veterinarian"  placeholder="Veterinarian" [formControl]="PetForm.controls['veterinarian']">
+          <input matInput name="veterinarian" (keyup)="firstCapitalize($event)"  placeholder="Veterinarian" [formControl]="PetForm.controls['veterinarian']">
           <mat-icon matTooltip="Please enter veterinarian" matTooltipClass="llp--tooltip error" *ngIf="PetForm.controls['veterinarian'].hasError('required') && PetForm.controls['veterinarian'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
         <mat-form-field class="full-width">
-          <input matInput name="dietaryConcerns" placeholder="Dietary Concerns" [formControl]="PetForm.controls['dietaryConcerns']">
+          <input matInput name="dietaryConcerns" (keyup)="firstCapitalize($event)" placeholder="Dietary Concerns" [formControl]="PetForm.controls['dietaryConcerns']">
           <mat-icon matTooltip="Please enter dietary concerns" matTooltipClass="llp--tooltip error" *ngIf="PetForm.controls['dietaryConcerns'].hasError('required') && PetForm.controls['dietaryConcerns'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>

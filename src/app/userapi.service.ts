@@ -215,6 +215,26 @@ export class UserAPIService {
       this.fileAccessInfo.fileIcon = "contact_phone";
       this.fileAccessInfo.fileUrl = ['/customer/dashboard/emergency-contacts-details', logData.fileId];
     }
+    if(logData.folderName == 'insurance-finance-debt' && logData.subFolderName == 'insurance'){
+      this.fileAccessInfo.fileIcon = "monetization_on";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/insurance-view', logData.fileId];
+    }
+    if(logData.folderName == 'insurance-finance-debt' && logData.subFolderName == 'finance'){
+      this.fileAccessInfo.fileIcon = "monetization_on";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/finance-view', logData.fileId];
+    }
+    if(logData.folderName == 'insurance-finance-debt' && logData.subFolderName == 'debt'){
+      this.fileAccessInfo.fileIcon = "monetization_on";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/debt-view', logData.fileId];
+    }
+    if(logData.folderName == 'pets'){
+      this.fileAccessInfo.fileIcon = "pets";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/debt-view', logData.fileId];
+    }
+    if(logData.folderName == 'timecapsule'){
+      this.fileAccessInfo.fileIcon = "access_time";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/debt-view', logData.fileId];
+    }
     return this.fileAccessInfo;
   }
 

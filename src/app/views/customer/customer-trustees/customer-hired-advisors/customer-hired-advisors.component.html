@@ -29,18 +29,26 @@
                 <h5>{{peoples.userName}}</h5>
                 <p class="position m-0" >{{peoples.position}}</p>
               </div>
+              <div class="cursor-pointer">
+                  <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
+                  <mat-menu #beforeMenu="matMenu" xPosition="before" class="llp--menu--droupdown">
+                    <button mat-menu-item><span>Manage</span></button>
+                    <button mat-menu-item><span>View</span></button>
+                    <button mat-menu-item><span>Resend Invitation</span></button>
+                  </mat-menu>
+              </div>
             </mat-card-title>
           </mat-card-header>
            <!-- all hired advisor -->
            <mat-card-content class="status--advisor relative" *ngIf="peoples.status === 'advisor'">
-            <div class="files--folder mt-1">
+            <div class="files--folder mt-1 degree--names">
               <mat-icon>school</mat-icon>
               Insurance Agent, Attorney, Accountant, Financial Planner
             </div>
 
-            <div class="ad--strip">
+            <!-- <div class="ad--strip">
               Advisor
-            </div>
+            </div> -->
           </mat-card-content>
 
 

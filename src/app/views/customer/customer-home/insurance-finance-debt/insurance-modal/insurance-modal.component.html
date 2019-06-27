@@ -5,7 +5,7 @@
   </button>
 </div>
 <form class="llp-form-wrapper" (ngSubmit)="InsuranceFormSubmit(InsuranceForm.value)">
-  <div class="ll--modal--body legal--stuff--body--hgt">
+  <div class="ll--modal--body id--box--body legal--stuff--body--hgt">
     <div fxLayout="row wrap" class="pt-1">
       <div fxFlex.xs="100">
        <mat-form-field class="full-width">
@@ -26,7 +26,7 @@
       </mat-form-field>
    
       <mat-form-field class="full-width">
-          <input matInput name="contactPerson" placeholder="Contact Person" [formControl]="InsuranceForm.controls['contactPerson']">
+          <input matInput name="contactPerson" (keyup)="firstCapitalize($event)" placeholder="Contact Person" [formControl]="InsuranceForm.controls['contactPerson']">
       </mat-form-field>
 
       <mat-form-field class="full-width">
@@ -35,7 +35,8 @@
       </mat-form-field>
 
       <mat-form-field class="full-width">
-          <input matInput name="contactPhone" (keypress)="onlyNumbers($event)" maxlength="15"  placeholder="Contact Phone" [formControl]="InsuranceForm.controls['contactPhone']">
+          <input matInput name="contactPhone" maxlength="15"  placeholder="Contact Phone" [formControl]="InsuranceForm.controls['contactPhone']">
+          <mat-icon matTooltip="Please enter minimum 7 & maximum 15 numbers only" matTooltipClass="llp--tooltip error" *ngIf="InsuranceForm.controls['contactPhone'].hasError('pattern') && InsuranceForm.controls['contactPhone'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
 
       <div class="upload--buss--docs--sec">

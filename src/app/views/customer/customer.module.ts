@@ -76,6 +76,7 @@ import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edi
 import { CustomerProfDetailsComponent } from './customer-professionals/customer-professionals-details/customer-professionals-details.component';
 import { SendAnEmailComponent } from './customer-professionals/send-an-email-modal/send-an-email-modal.component';
 import { HireAdvisorComponent } from './customer-professionals/hire-advisor-modal/hire-advisor-modal.component';
+import { ProfAddTrusteeModalComponent } from './customer-professionals/prof-add-trustee-modal/prof-add-trustee-modal.component';
 import { ProfAdvisorListingComponent } from './customer-professionals-landing/prof-advisor-listing/prof-advisor-listing.component';
 //FinalWishes
 import { FinalWishesComponent } from './customer-home/final-wishes/final-wishes-list/final-wishes-list.component';
@@ -100,9 +101,9 @@ import { DebtModalComponent } from './customer-home/insurance-finance-debt/debt-
 
 //passwords-digital-assets
 import { PasswordsDigitalAssetsListComponent } from './customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
-import { DevicesModalComponent } from './customer-home/passwords-digital-assets/devices-modal/devices-modal.component';
+import { DevicesModalComponent } from './customer-home/passwords-digital-assets/devices/devices-modal/devices-modal.component';
 
-import {LyThemeModule,LY_THEME,LY_THEME_GLOBAL_VARIABLES} from '@alyle/ui';
+import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
 /** Import the component modules */
 import { LyButtonModule } from '@alyle/ui/button';
 import { LyToolbarModule } from '@alyle/ui/toolbar';
@@ -121,6 +122,12 @@ import { DetailsAssetsComponent } from './customer-home/real-estate-assets/detai
 import { SpecialNeedsListingComponent } from './customer-home/special-needs/special-needs-listing/special-needs-listing.component';
 import { SpecialNeedsDetailsComponent } from './customer-home/special-needs/special-needs-details/special-needs-details.component';
 import { SpecialNeedsModelComponent } from './customer-home/special-needs/special-needs-model/special-needs-model.component';
+import { DeviceDetailsComponent } from './customer-home/passwords-digital-assets/devices/device-details/device-details.component';
+//letters-messages-listing
+import { LettersMessagesListingComponent } from './customer-home/legacy-life-letters-messages/letters-messages-listing/letters-messages-listing.component';
+import { LettersMessagesDetailsComponent } from './customer-home/legacy-life-letters-messages/letters-messages-details/letters-messages-details.component';
+import { LettersMessagesModelComponent } from './customer-home/legacy-life-letters-messages/letters-messages-model/letters-messages-model.component';
+
 export class GlobalVariables {
   testVal = '#00bcd4';
   Quepal = {
@@ -192,23 +199,29 @@ export class GlobalVariables {
     addTrusteeModalComponent, essentialsMyProfessionalsComponent, EssentialsMyProfessionalsDetailsComponent,
     EmergencyContactsComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,
     EmergencyContactsDetailsComponent, CustomerLegalStuffDetailsComponent,
-    CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent,
-    CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent,FinalWishesComponent,FinalWishesFormModalComponent,FinalWishesDetailsComponent,
-    PetsListComponent,PetsDetailsComponent,PetsModalComponent,ListingComponent,DetailsComponent, RealEstateModelComponent, VehicleModelComponent, AssetsModelComponent,
-    SpecialNeedsListingComponent, SpecialNeedsDetailsComponent, SpecialNeedsModelComponent,DetailsVehiclesComponent, DetailsAssetsComponent,TimeCapsuleListComponent,TimeCapsuleMoalComponent,TimeCapsuleDetailsComponent,InsuranceFinanceDebtListComponent,
-    InsuranceModalComponent,InsuranceDetailsComponent,FinanceModalComponent,FinanceDetailsComponent,DebtDetailsComponent,DebtModalComponent,PasswordsDigitalAssetsListComponent,DevicesModalComponent
+    CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent, ProfAddTrusteeModalComponent,
+    CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent, FinalWishesComponent,
+    FinalWishesFormModalComponent, FinalWishesDetailsComponent,
+    PetsListComponent, PetsDetailsComponent, PetsModalComponent,
+    ListingComponent, DetailsComponent, RealEstateModelComponent,
+    VehicleModelComponent, AssetsModelComponent,
+    SpecialNeedsListingComponent, SpecialNeedsDetailsComponent,
+    SpecialNeedsModelComponent, DetailsVehiclesComponent, DetailsAssetsComponent,
+    TimeCapsuleListComponent, TimeCapsuleMoalComponent, TimeCapsuleDetailsComponent, InsuranceFinanceDebtListComponent,
+    InsuranceModalComponent, InsuranceDetailsComponent, FinanceModalComponent, FinanceDetailsComponent, DebtDetailsComponent,
+    DebtModalComponent, PasswordsDigitalAssetsListComponent, DevicesModalComponent,DeviceDetailsComponent,LettersMessagesListingComponent,LettersMessagesDetailsComponent,LettersMessagesModelComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
     { provide: LY_THEME, useClass: MinimaLight, multi: true },
     { provide: LY_THEME, useClass: MinimaDark, multi: true },
-    { provide: LY_THEME_GLOBAL_VARIABLES,useClass: GlobalVariables } ,
-  ], bootstrap: [CustomerSignupComponent], 
+    { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },
+  ], bootstrap: [CustomerSignupComponent],
   entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,
     addTrusteeModalComponent, PersonalProfileModalComponent, MarkAsDeceasedComponent,
-    legalStuffModalComponent, essentialsMyProfessionalsComponent, SendAnEmailComponent, 
-    HireAdvisorComponent,FinalWishesFormModalComponent,PetsModalComponent,AssetsModelComponent,
-    SpecialNeedsModelComponent,RealEstateModelComponent,VehicleModelComponent,TimeCapsuleMoalComponent,
-    InsuranceModalComponent,FinanceModalComponent,DebtModalComponent,DevicesModalComponent
+    legalStuffModalComponent, essentialsMyProfessionalsComponent, SendAnEmailComponent,
+    HireAdvisorComponent, FinalWishesFormModalComponent, PetsModalComponent, AssetsModelComponent,
+    SpecialNeedsModelComponent, RealEstateModelComponent, VehicleModelComponent, TimeCapsuleMoalComponent,
+    InsuranceModalComponent, FinanceModalComponent, DebtModalComponent, DevicesModalComponent, ProfAddTrusteeModalComponent,LettersMessagesModelComponent
   ]
 })
 export class CustomerModule { }

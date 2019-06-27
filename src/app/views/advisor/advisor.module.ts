@@ -43,12 +43,15 @@ import { ThankYouComponent } from './thank-you/thank-you.component';
 import { ChangePassComponent } from './advisor-account-setting/change-pass/change-pass.component';
 import { AdvisorDashboardComponent } from './advisor-dashboard/advisor-dashboard.component';
 import { LegaciesComponent } from './legacies/legacies.component';
+import { AdvisorLeadsComponent } from './advisor-leads/advisor-leads.component';
+import { AdvisorLeadsDetailsComponent } from './advisor-leads-details/advisor-leads-details.component';
 import { AdvisorDashboardUpdateComponent } from './advisor-dashboard-update/advisor-dashboard-update.component';
 import { AdvisorAccountSettingComponent } from './advisor-account-setting/advisor-account-setting.component';
 import { AdvisorSubscriptionComponent } from './advisor-subscription/advisor-subscription.component';
 import { AdvisorLegacyDetailsComponent } from './advisor-legacy-details/advisor-legacy-details.component';
 import { LegaciesDetailsLandingComponent } from './advisor-legacy-details/legacies-details-landing/legacies-details-landing.component';
 import { GetFeaturedComponent } from './get-featured/get-featured.component';
+import { SubmitEnquiryModalComponent } from './get-featured/submit-enquiry-modal/submit-enquiry-modal.component';
 import { MarkAsDeceasedComponent } from './advisor-legacy-details/mark-as-deceased-modal/mark-as-deceased-modal.component';
 import { AdvisorLayoutComponent } from './../../shared/components/layouts/advisor-layout/advisor-layout.component';
 import { states } from '../../state';
@@ -146,11 +149,11 @@ export class GlobalVariables {
     AdvisorDashboardUpdateComponent, AdvisorAccountSettingComponent, AdvisorSubscriptionComponent,
     ChangePassComponent, HomeComponent, ReferAndEarnModalComponent, AdvisorLegacyDetailsComponent,
     LegaciesDetailsLandingComponent, MarkAsDeceasedComponent,
-    GetFeaturedComponent,
+    GetFeaturedComponent, SubmitEnquiryModalComponent, AdvisorLeadsComponent, AdvisorLeadsDetailsComponent, 
   ], providers: [{ provide: LY_THEME, useClass: MinimaLight, multi: true },
   { provide: LY_THEME, useClass: MinimaDark, multi: true },
   { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, ProfilePicService, CanDeactivateGuard
-  ], entryComponents: [ChangePassComponent, ReferAndEarnModalComponent, MarkAsDeceasedComponent],
+  ], entryComponents: [ChangePassComponent, ReferAndEarnModalComponent, MarkAsDeceasedComponent, SubmitEnquiryModalComponent],
 })
 export class AdvisorModule { }

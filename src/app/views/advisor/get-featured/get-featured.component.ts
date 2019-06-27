@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { ReferAndEarnModalComponent } from './../legacies/refer-and-earn-modal/refer-and-earn-modal.component';
+import { SubmitEnquiryModalComponent } from './submit-enquiry-modal/submit-enquiry-modal.component';
 
 @Component({
   selector: 'app-get-featured',
@@ -20,8 +21,8 @@ export class GetFeaturedComponent implements OnInit {
   }
 
 
-  openReferAndEarnModal(data: any = {}, isNew?) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
+  openSubmitEnqModal(data: any = {}, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(SubmitEnquiryModalComponent, {
       width: '720px',
       disableClose: true,
     });

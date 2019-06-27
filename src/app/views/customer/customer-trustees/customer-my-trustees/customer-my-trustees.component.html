@@ -29,6 +29,14 @@
                 <h5>{{peoples.userName}}</h5>
                 <p class="m-0">{{peoples.emailId}}</p>
               </div>
+              <div class="cursor-pointer">
+                  <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
+                  <mat-menu #beforeMenu="matMenu" xPosition="before" class="llp--menu--droupdown">
+                    <button mat-menu-item><span>Manage</span></button>
+                    <button mat-menu-item><span>View</span></button>
+                    <button mat-menu-item><span>Resend Invitation</span></button>
+                  </mat-menu>
+              </div>
             </mat-card-title>
           </mat-card-header>
           <mat-card-content *ngIf="peoples.status === 'assigned'">
