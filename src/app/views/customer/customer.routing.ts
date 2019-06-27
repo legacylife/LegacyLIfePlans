@@ -58,6 +58,8 @@ import { DebtDetailsComponent } from './customer-home/insurance-finance-debt/deb
 //passwords-digital-assets
 import { PasswordsDigitalAssetsListComponent } from './customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
 import { DeviceDetailsComponent } from './customer-home/passwords-digital-assets/devices/device-details/device-details.component';
+import { LettersMessagesListingComponent } from './customer-home/legacy-life-letters-messages/letters-messages-listing/letters-messages-listing.component';
+import { LettersMessagesDetailsComponent } from './customer-home/legacy-life-letters-messages/letters-messages-details/letters-messages-details.component';
 export const CustomerRoutes: Routes = [
   {
     path: 'signup',
@@ -206,6 +208,14 @@ export const CustomerRoutes: Routes = [
           {
             path: 'device-view/:id',
             component: DeviceDetailsComponent
+          },
+          {
+            path: 'letters-messages',
+            component: LettersMessagesListingComponent
+          },         
+          {
+            path: 'letters-messages-view/:id',
+            component: LettersMessagesDetailsComponent
           },
         ]
       },
