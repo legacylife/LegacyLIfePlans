@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { egretAnimations } from '../../../../../shared/animations/egret-animations';
 import { UserAPIService } from './../../../../../userapi.service';
 import { AppLoaderService } from '../../../../../shared/services/app-loader/app-loader.service';
-import { DevicesModalComponent } from './../devices-modal/devices-modal.component';
+import { DevicesModalComponent } from './../devices/devices-modal/devices-modal.component';
 
 @Component({
   selector: 'app-customer-home',
@@ -32,11 +32,11 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
       fields: {},
       order: {"createdOn": -1},
     }
-    this.userapi.apiRequest('post', 'pets/petsListing', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'passwordsDigitalAssets/deviceListing', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.devicesListing = result.data.petList;
+        this.devicesListing = result.data.deviceList;
         this.showDevicesListingCnt = this.devicesListing.length;  
         if (this.showDevicesListingCnt>0) {
           this.showDevicesListing = true;

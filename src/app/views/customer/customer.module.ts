@@ -101,7 +101,7 @@ import { DebtModalComponent } from './customer-home/insurance-finance-debt/debt-
 
 //passwords-digital-assets
 import { PasswordsDigitalAssetsListComponent } from './customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
-import { DevicesModalComponent } from './customer-home/passwords-digital-assets/devices-modal/devices-modal.component';
+import { DevicesModalComponent } from './customer-home/passwords-digital-assets/devices/devices-modal/devices-modal.component';
 
 import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
 /** Import the component modules */
@@ -122,6 +122,8 @@ import { DetailsAssetsComponent } from './customer-home/real-estate-assets/detai
 import { SpecialNeedsListingComponent } from './customer-home/special-needs/special-needs-listing/special-needs-listing.component';
 import { SpecialNeedsDetailsComponent } from './customer-home/special-needs/special-needs-details/special-needs-details.component';
 import { SpecialNeedsModelComponent } from './customer-home/special-needs/special-needs-model/special-needs-model.component';
+import { DeviceDetailsComponent } from './customer-home/passwords-digital-assets/devices/device-details/device-details.component';
+
 export class GlobalVariables {
   testVal = '#00bcd4';
   Quepal = {
@@ -203,7 +205,7 @@ export class GlobalVariables {
     SpecialNeedsModelComponent, DetailsVehiclesComponent, DetailsAssetsComponent,
     TimeCapsuleListComponent, TimeCapsuleMoalComponent, TimeCapsuleDetailsComponent, InsuranceFinanceDebtListComponent,
     InsuranceModalComponent, InsuranceDetailsComponent, FinanceModalComponent, FinanceDetailsComponent, DebtDetailsComponent,
-    DebtModalComponent, PasswordsDigitalAssetsListComponent, DevicesModalComponent
+    DebtModalComponent, PasswordsDigitalAssetsListComponent, DevicesModalComponent,DeviceDetailsComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
     { provide: LY_THEME, useClass: MinimaLight, multi: true },

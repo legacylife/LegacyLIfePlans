@@ -57,7 +57,7 @@ import { DebtDetailsComponent } from './customer-home/insurance-finance-debt/deb
 
 //passwords-digital-assets
 import { PasswordsDigitalAssetsListComponent } from './customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
-
+import { DeviceDetailsComponent } from './customer-home/passwords-digital-assets/devices/device-details/device-details.component';
 export const CustomerRoutes: Routes = [
   {
     path: 'signup',
@@ -203,6 +203,10 @@ export const CustomerRoutes: Routes = [
             path: 'passwords-digital-assests',
             component: PasswordsDigitalAssetsListComponent
           },         
+          {
+            path: 'device-view/:id',
+            component: DeviceDetailsComponent
+          },
         ]
       },
     ]
