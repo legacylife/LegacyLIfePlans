@@ -1106,7 +1106,6 @@ function letterMessageDocument(req, res) {
   })
 }
 
-
 router.post("/deleteAdvDoc", deleteDoc);
 router.post("/deleteIdDoc", deleteIdDocument);
 router.post("/deletesubFolderDoc", deletesubFolderDoc);
