@@ -1,0 +1,68 @@
+<div class="container ">
+  <div fxLayout="row wrap">
+    <div fxFlex.xs="100" fxFlex.sm="100">
+      <div class="shop-wrap llp--content--wrapper m-0" fxLayout="row" fxLayoutWrap="wrap">
+        <div class="full-width">
+          <mat-card class="empty--section p-0">
+            <mat-card-title class="">
+              <div class="card-title-text">Leads</div>
+              <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content class="appointees--wrapper pr-0">
+
+              <mat-card class="appointees--section p-0" *ngFor="let peoples of allPeoples">
+                <mat-card-header class="m-0">
+                  <mat-card-title class="m-0">
+                    <div class="appointees--pic">
+                      <img src="{{peoples.profilePic}}" />
+                    </div>
+                    <div class="appointees--desc">
+                      <h5>{{peoples.userName}}</h5>
+                      <p class="m-0">{{peoples.emailId}}</p>
+                    </div>
+
+                    <div class="cursor-pointer">
+                      <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
+                      <mat-menu #beforeMenu="matMenu" xPosition="before" class="llp--menu--droupdown">
+                        <button mat-menu-item>
+                          <span>Opt 1</span>
+                        </button>
+                        <button mat-menu-item>
+                          <span>Opt 2</span>
+                        </button>
+                        <button mat-menu-item>
+                          <span>Opt 3</span>
+                        </button>
+                      </mat-menu>
+                    </div>
+
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <h4>Details</h4>
+                  <div class="files--folder">
+                    <mat-icon>location_on</mat-icon>
+                    {{peoples.totalFiles}}
+                  </div>
+                  <div class="files--folder mb-0">
+                    <mat-icon>local_phone</mat-icon>
+                    {{peoples.totalFolders}}
+                  </div>
+
+                  <div class="view--details">
+                    <mat-icon>remove_red_eye</mat-icon>
+                    <a>View Details</a>
+                  </div>
+
+                </mat-card-content>
+
+
+
+              </mat-card>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
