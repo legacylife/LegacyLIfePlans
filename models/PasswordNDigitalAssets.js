@@ -7,7 +7,7 @@ var devicePasswordsSchema = new mongoose.Schema({
   deviceName: String,
   username:String,
   password:String,
-  passwordPatternDocuments:Array,
+  passwordPattern:String,
   status: String,
   createdOn: Date,
   modifiedOn: Date

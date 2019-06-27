@@ -15,6 +15,7 @@ var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const pet = require('./../models/Pets.js')
 const s3 = require('./../helpers/s3Upload')
+const actitivityLog = require('./../helpers/fileAccessLog')
 
 var auth = jwt({
   secret: constants.secret,
@@ -49,6 +50,12 @@ function PetsList(req, res) {
 function petsFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+
+  var logData = {}
+  logData.fileName = proquery.name;
+  logData.folderName = 'pets';
+  logData.subFolderName = 'pets';
+
   if(query._id){
     pet.findOne(query, function (err, custData) {      
       if (err) {
@@ -67,6 +74,11 @@ function petsFormUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
+
+              logData.customerId = custData.customerId;
+              logData.fileId = custData._id;
+              actitivityLog.updateActivityLog(logData);
+
               let result = { "message": "Pets "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -92,6 +104,11 @@ function petsFormUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+
+        logData.customerId = query.customerId;
+        logData.fileId = newEntry._id;
+        actitivityLog.updateActivityLog(logData);
+
         let result = { "message": "Pets added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }

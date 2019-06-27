@@ -17,6 +17,7 @@ const insurance = require('../models/Insurance.js')
 const Finance = require('../models/Finances.js')
 const Debts = require('../models/Debts.js')
 const s3 = require('../helpers/s3Upload')
+const actitivityLog = require('./../helpers/fileAccessLog')
 
 var auth = jwt({
   secret: constants.secret,
@@ -50,6 +51,12 @@ function insuranceList(req, res) {
 function insuranceFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+
+  var logData = {}
+  logData.fileName = constants.InsurancePolicyType[proquery.policyType];
+  logData.folderName = 'insurance-finance-debt';
+  logData.subFolderName = 'insurance';
+
   if(query._id){
     insurance.findOne(query, function (err, custData) {      
       if (err) {
@@ -68,6 +75,10 @@ function insuranceFormUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
+              logData.customerId = custData.customerId;
+              logData.fileId = custData._id;
+              actitivityLog.updateActivityLog(logData);
+
               let result = { "message": "Insurance "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -96,6 +107,11 @@ function insuranceFormUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+
+        logData.customerId = query.customerId;
+        logData.fileId = newEntry._id;
+        actitivityLog.updateActivityLog(logData);
+
         let result = { "message": "Insurance added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
@@ -166,6 +182,13 @@ function financeList(req, res) {
 function financesFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+
+  var logData = {}
+  logData.fileName = constants.FinancePolicyType[proquery.financesType];
+  logData.folderName = 'insurance-finance-debt';
+  logData.subFolderName = 'finance';
+
+
   if(query._id){
     Finance.findOne(query, function (err, custData) {      
       if (err) {
@@ -184,6 +207,10 @@ function financesFormUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
+              logData.customerId = custData.customerId;
+              logData.fileId = custData._id;
+              actitivityLog.updateActivityLog(logData);
+
               let result = { "message": "Insurance "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -213,6 +240,10 @@ function financesFormUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+        logData.customerId = query.customerId;
+        logData.fileId = newEntry._id;
+        actitivityLog.updateActivityLog(logData);
+
         let result = { "message": "Insurance added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
@@ -263,6 +294,12 @@ function debtList(req, res) {
 function debtFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+
+  var logData = {}
+  logData.fileName = constants.DebtType[proquery.debtsType];
+  logData.folderName = 'insurance-finance-debt';
+  logData.subFolderName = 'debt';
+
   if(query._id){
     Debts.findOne(query, function (err, custData) {      
       if (err) {
@@ -281,6 +318,11 @@ function debtFormUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
+
+              logData.customerId = custData.customerId;
+              logData.fileId = custData._id;
+              actitivityLog.updateActivityLog(logData);
+
               let result = { "message": "Insurance "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -309,6 +351,11 @@ function debtFormUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+
+        logData.customerId = query.customerId;
+        logData.fileId = newEntry._id;
+        actitivityLog.updateActivityLog(logData);
+
         let result = { "message": "Insurance added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
