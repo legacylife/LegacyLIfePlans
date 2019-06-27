@@ -11,10 +11,9 @@ module.exports = (mailOptions) => {
     subject: mailOptions.subject,
     message: emailBody,
   }, function(err, data, res){
-      console.log(constants.ses)
       console.log("Email Status:");
       if(err) {
-        console.log("err --->")
+        console.log("Email Error!")
         console.log(err);
       } else {
         console.log("Email Sent!")
