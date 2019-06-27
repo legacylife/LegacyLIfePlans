@@ -12,6 +12,7 @@ router.use("/pets", require("./routes/petsRoute"))
 router.use("/timeCapsule", require("./routes/timeCapsuleRoute"))
 router.use("/insuranceFinanceDebt", require("./routes/insuranceFinanceDebtRoute"))
 router.use("/passwordsDigitalAssets", require("./routes/passwordsDigitalAssestsRoute"))
+router.use("/lettersMessages", require("./routes/LettersMessagesRoute"))
 router.use("/documents", require("./routes/documentsUploadRoute"))
 
 

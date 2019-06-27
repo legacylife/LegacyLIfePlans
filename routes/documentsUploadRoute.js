@@ -22,6 +22,8 @@ const petsFilePath = constants.s3Details.petsFilePath;
 const timeCapsuleFilePath = constants.s3Details.timeCapsuleFilePath;
 const insuranceFilePath = constants.s3Details.insuranceFilePath;
 const financeFilePath = constants.s3Details.financeFilePath;
+const letterMessageFilePath = constants.s3Details.letterMessageFilePath;
+const lettersMessage = require('./../models/LettersMessages.js')
 var DIR = './uploads/';
 
 router.post('/advisorDocument', cors(), function(req,res){
@@ -780,6 +782,107 @@ router.post('/financeDocuments', cors(), function(req,res){
   }
 })
 
+
+
+router.post('/letterMessage', cors(), function(req,res){
+  var fstream;
+  let authTokens = { authCode: "" }
+  if (req.busboy) {
+    req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
+      authTokens[fieldname] = val
+    })
+    const {query:{userId}} = req;
+    const {query:{ProfileId}} = req;
+    const {query:{folderName}} = req;
+    
+    let q = {customerId: userId}
+    if(ProfileId && ProfileId!=''){
+      q = {_id : ProfileId}
+    }
+    req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+      let tmpallfiles = {};
+      let oldTmpFiles = [];
+      if(userId){
+          let ext = filename.split('.')
+          ext = ext[ext.length - 1];
+          var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
+          let resp = isExtension(ext,fileExts);
+          if(!resp){
+            let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid file extension!" }
+            res.send(resFormat.rSuccess(results))
+          } else{
+                 
+          if(ProfileId){
+              const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+              fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+              file.pipe(fstream);
+              fstream.on('close', async function () {
+                await s3.uploadFile(newFilename,letterMessageFilePath);                  
+                tmpallfiles = {
+                  "title" : filename,
+                  "size" : encoding,
+                  "extention" : mimetype,
+                  "tmpName" : newFilename
+                }
+                lettersMessage.findOne(q,{documents:1,_id:1}, function (err, result) {
+                    if (err) {
+                        res.status(500).send(resFormat.rError(err))
+                    } else {       
+                    if (result) {                          
+                        if(result.documents){
+                          oldTmpFiles = result.documents;
+                        }             
+                        oldTmpFiles.push(tmpallfiles);  
+                        lettersMessage.updateOne(q, { $set: { documents: oldTmpFiles } }, function (err, updatedUser) {
+                          if (err) {
+                            res.send(resFormat.rError(err))
+                          } else {
+                            let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
+                            res.send(resFormat.rSuccess(result))
+                          }
+                       })
+                      }
+                    } 
+                    })
+                 })
+              }else{
+                const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+                fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+                file.pipe(fstream);
+                fstream.on('close', async function () {
+                  await s3.uploadFile(newFilename,letterMessageFilePath);  
+                  tmpallfiles = {
+                    "title" : filename,
+                    "size" : encoding,
+                    "extention" : mimetype,
+                    "tmpName" : newFilename
+                  }
+              oldTmpFiles.push(tmpallfiles);  
+                var insert = new lettersMessage();
+                insert.customerId = userId;
+                insert.documents = oldTmpFiles;
+                insert.status = 'Pending';
+                insert.createdOn = new Date();
+                insert.save({}, function (err, newEntry) {
+                  if (err) {
+                  res.send(resFormat.rError(err))
+                   } else {
+                    let result = { "message": "Document uploaded successfully!" }
+                     res.status(200).send(resFormat.rSuccess(result))
+                   }
+                 })
+
+              })
+           }
+         } 
+      } else {
+        res.status(401).send(resFormat.rError("User token mismatch."))
+      }
+    })
+  }
+})
+
+
 function isExtension(ext, extnArray) {
   var result = false;
   var i;
@@ -982,6 +1085,28 @@ function deleteFinanceDocument(req, res) {
   })
 }
 
+
+function letterMessageDocument(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let fields = {};
+  lettersMessage.findOne(query, fields, function (err, fileDetails) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      lettersMessage.updateOne({ _id: fileDetails._id }, proquery, function (err, updatedUser) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          let result = { userId:fileDetails._id, "message": "File deleted successfully" }
+          res.send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
+
 router.post("/deleteAdvDoc", deleteDoc);
 router.post("/deleteIdDoc", deleteIdDocument);
 router.post("/deletesubFolderDoc", deletesubFolderDoc);
@@ -990,4 +1115,5 @@ router.post("/deletePets", deletePetDoc);
 router.post("/deleteTimeCapsuleDoc", deleteTimeCapsuleDoc);
 router.post("/deleteInsuranceDoc", deleteInsuranceDocument);
 router.post("/deleteFinanceDoc", deleteFinanceDocument);
+router.post("/deleteletterMessageDoc", letterMessageDocument);
 module.exports = router
