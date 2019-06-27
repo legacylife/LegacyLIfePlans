@@ -24,6 +24,7 @@ var constants = {
     insuranceFilePath:"insurance/",
     financeFilePath:"finance/",
     debtFilePath:"debt/",
+    letterMessageFilePath:"letterMessage/",
     serveUrl: "https://llp-staging.s3.amazonaws.com"
   },
   ses: {
