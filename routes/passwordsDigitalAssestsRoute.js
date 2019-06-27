@@ -9,13 +9,9 @@ var crypto = require('crypto')
 var fs = require('fs')
 var nodemailer = require('nodemailer')
 const { isEmpty, cloneDeep } = require('lodash')
-const Busboy = require('busboy')
-const User = require('./../models/Users')
 var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
-const pet = require('./../models/Pets.js')
 const PDA = require('./../models/PasswordNDigitalAssets.js')
-const s3 = require('./../helpers/s3Upload')
 
 var auth = jwt({
   secret: constants.secret,
@@ -47,7 +43,7 @@ function patternUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              let result = { "message": "Password pattren "+resText+" successfully" }
+              let result = { "message": "Password pattren "+resText+" successfully","newEntry":updatedDetails }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -69,7 +65,7 @@ function patternUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
-        let result = { "message": "Password pattren added successfully!" }
+        let result = { "message": "Password pattren added successfully!","newEntry":newEntry }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -174,13 +170,13 @@ function viewDevice(req, res) {
 function deletedevice(req, res) {
   let { query } = req.body;
   let fields = { }
-  pet.findOne(query, fields, function (err, petInfo) {
+  PDA.findOne(query, fields, function (err, deviceInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
       var upStatus = 'Delete';
       var params = { status: upStatus }
-      pet.update({ _id: petInfo._id }, { $set: params }, function (err, updatedinfo) {
+      PDA.update({ _id: deviceInfo._id }, { $set: params }, function (err, updatedinfo) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
