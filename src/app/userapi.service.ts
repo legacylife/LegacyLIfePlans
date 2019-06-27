@@ -235,6 +235,27 @@ export class UserAPIService {
       this.fileAccessInfo.fileIcon = "access_time";
       this.fileAccessInfo.fileUrl = ['/customer/dashboard/debt-view', logData.fileId];
     }
+    if(logData.folderName == 'specialneeds'){
+      this.fileAccessInfo.fileIcon = "help";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/special-needs-view', logData.fileId];
+    }
+    if(logData.folderName == 'finalwishes'){
+      this.fileAccessInfo.fileIcon = "date_range";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/final-wishes-view', logData.fileId];
+    }
+
+    if(logData.folderName == 'realestateassets' && logData.subFolderName == 'real-estate'){ 
+      this.fileAccessInfo.fileIcon = "business";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/real-estate-detail-view', logData.fileId];
+    }
+    if(logData.folderName == 'realestateassets' && logData.subFolderName == 'real-estate-vehicle'){  
+      this.fileAccessInfo.fileIcon = "business";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/real-estate-vehicle-detail-view', logData.fileId];
+    }
+    if(logData.folderName == 'realestateassets' && logData.subFolderName == 'real-estate-assets'){ 
+      this.fileAccessInfo.fileIcon = "business";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/real-estate-assets-detail-view', logData.fileId];
+    }
     return this.fileAccessInfo;
   }
 

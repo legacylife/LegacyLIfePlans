@@ -33,7 +33,8 @@ export class SpecialNeedsModelComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.specialNeedsForm = this.fb.group({
-      comments: new FormControl('', Validators.required),
+      title: new FormControl('', Validators.required),
+      comments: new FormControl(''),
       folderName: new FormControl(''),
       profileId: new FormControl('')
     });
@@ -49,12 +50,13 @@ export class SpecialNeedsModelComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }, query)
     }
-    this.userapi.apiRequest('post', 'customer/view-special-needs', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'specialNeeds/view-special-needs', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
         this.row = result.data
         this.specialNeedsForm.controls['profileId'].setValue(this.row._id);
+        this.specialNeedsForm.controls['title'].setValue(this.row.title ? this.row.title : "");
         this.specialNeedsForm.controls['comments'].setValue(this.row.comments);
         this.specialNeedsForm.controls['folderName'].setValue(this.row.folderName);
       }
@@ -79,7 +81,7 @@ export class SpecialNeedsModelComponent implements OnInit {
       from: Object.assign({ customerId: this.userId })
     }    
     this.loader.open();
-    this.userapi.apiRequest('post', 'customer/special-needs', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'specialNeeds/special-needs', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })

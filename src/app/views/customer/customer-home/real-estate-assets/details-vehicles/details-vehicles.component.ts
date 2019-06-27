@@ -35,7 +35,7 @@ export class DetailsVehiclesComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }, query)
     }
-    this.userapi.apiRequest('post', 'customer/view-real-estate-vehicle', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'realEstateAssets/view-real-estate-vehicle', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
@@ -72,7 +72,7 @@ export class DetailsVehiclesComponent implements OnInit {
           const req_vars = {
             query: Object.assign({ _id: this.selectedProfileId }, query)
           }
-          this.userapi.apiRequest('post', 'customer/delete-real-estate-vehicle', req_vars).subscribe(result => {
+          this.userapi.apiRequest('post', 'realEstateAssets/delete-real-estate-vehicle', req_vars).subscribe(result => {
             if (result.status == "error") {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })

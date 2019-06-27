@@ -3,7 +3,7 @@
       <div class="">
         <mat-card class="empty--section p-0">
           <mat-card-header class="m-0">
-            <mat-card-title class="m-0">Special Needs View</mat-card-title>
+            <mat-card-title class="m-0">Special Needs</mat-card-title>
             <div class="right--actions">
               <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
                 (click)="openModal(row?.folderName, true)">
@@ -28,9 +28,10 @@
                 </span>
               </div>
               <div class="details--body">
+                  <h3>{{row?.title}}</h3>
                 <div fxLayout="row wrap" class="mb--10">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
-                    <label class="strong--label">Comment:</label>
+                    <label class="strong--label">Comment Box:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
                     <label class="normal--label">{{row?.comments}}</label>

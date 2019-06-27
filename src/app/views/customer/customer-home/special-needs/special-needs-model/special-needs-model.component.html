@@ -5,16 +5,22 @@
   </button>
 </div>
 <form class="llp-form-wrapper" (ngSubmit)="specialNeedsFormSubmit(specialNeedsForm.value)">
-  <div class="ll--modal--body id--box--body">
+  <div class="ll--modal--body id--box--body legal--stuff--body--hgt">
     <div fxLayout="row wrap">
       <div fxFlex.xs="100">
+        
         <mat-form-field class="full-width">
-          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" (blur)="trimInput(specialNeedsForm)" matInput name="comments"
-            placeholder="Comment Box*" [formControl]="specialNeedsForm.controls['comments']">
-          <mat-icon matTooltip="Please enter comment" matTooltipClass="llp--tooltip error"
-            *ngIf="specialNeedsForm.controls['comments'].hasError('required') && specialNeedsForm.controls['comments'].touched"
+          <input matInput name="title" placeholder="Title*" (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" [formControl]="specialNeedsForm.controls['title']"> 
+          <mat-icon matTooltip="Please enter title" matTooltipClass="llp--tooltip error" *ngIf="specialNeedsForm.controls['title'].hasError('required') && specialNeedsForm.controls['title'].touched"
             class="red--alert">help_outline</mat-icon>
         </mat-form-field>
+
+        <mat-form-field class="full-width mt-1">
+          <textarea (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" maxlength="500" matInput placeholder="Comment Box"
+            name="comments" [formControl]="specialNeedsForm.controls['comments']"></textarea>
+          <div class="char--limit" style="float: right;">{{ 500 - specialNeedsForm.controls['comments'].value?.length }}</div>
+        </mat-form-field>
+
       </div>
     </div>
   </div>

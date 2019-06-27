@@ -14,7 +14,7 @@
             <mat-option *ngFor="let option of typeOfRealEstateType" [value]="option.opt_code">{{option.opt_name}}</mat-option>
           </mat-select>
           <mat-icon matTooltip="Please select type" matTooltipClass="llp--tooltip error" *ngIf="realEstateForm.controls['estateType'].hasError('required') && realEstateForm.controls['estateType'].touched"
-          class="red--alert">help_outline</mat-icon>
+            class="red--alert">help_outline</mat-icon>
         </mat-form-field>
       </div>
     </div>
@@ -22,54 +22,54 @@
     <div fxLayout="row wrap">
       <div fxFlex.xs="100">
         <mat-form-field class="full-width">
-          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="address"
-            placeholder="Address" [formControl]="realEstateForm.controls['address']">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="address" placeholder="Address"
+            [formControl]="realEstateForm.controls['address']">
         </mat-form-field>
       </div>
     </div>
     <div fxLayout="row wrap">
       <div fxFlex.xs="100">
         <mat-form-field class="full-width">
-          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="mortgageHolder"
-            placeholder="Mortgage Holder" [formControl]="realEstateForm.controls['mortgageHolder']">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="mortgageHolder" placeholder="Mortgage Holder"
+            [formControl]="realEstateForm.controls['mortgageHolder']">
         </mat-form-field>
       </div>
     </div>
     <div fxLayout="row wrap">
       <div fxFlex.xs="100">
         <mat-form-field class="full-width">
-          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="accountNumber"
-            placeholder="Account Number" [formControl]="realEstateForm.controls['accountNumber']">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="accountNumber" placeholder="Account Number"
+            [formControl]="realEstateForm.controls['accountNumber']">
         </mat-form-field>
       </div>
     </div>
     <div fxLayout="row wrap">
       <div fxFlex.xs="100">
         <mat-form-field class="full-width">
-          <input maxlength="15" (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput
-            name="phoneContact" placeholder="Phone Contact" [formControl]="realEstateForm.controls['phoneContact']">
+          <input maxlength="15" (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="phoneContact"
+            placeholder="Phone Contact" [formControl]="realEstateForm.controls['phoneContact']">
         </mat-form-field>
       </div>
     </div>
     <div fxLayout="row wrap">
       <div fxFlex.xs="100">
         <mat-form-field class="full-width">
-          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="deedLocation"
-            placeholder="Deed Location" [formControl]="realEstateForm.controls['deedLocation']">
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="deedLocation" placeholder="Deed Location"
+            [formControl]="realEstateForm.controls['deedLocation']">
         </mat-form-field>
       </div>
     </div>
     <div fxLayout="row wrap">
       <div fxFlex.xs="100">
-        <mat-form-field class="full-width">
-          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="comments"
-            placeholder="Comment Box" [formControl]="realEstateForm.controls['comments']">
+        <mat-form-field class="full-width mt-1">
+          <textarea (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" maxlength="500" matInput placeholder="Comments"
+            name="comments" [formControl]="realEstateForm.controls['comments']"></textarea>
+          <div class="char--limit" style="float: right;">{{ 500 - realEstateForm.controls['comments'].value?.length }}</div>
         </mat-form-field>
       </div>
     </div>
   </div>
-  <input *ngIf="profileIdHiddenVal" matInput name="profileId" [formControl]="realEstateForm.controls['profileId']"
-    readonly="readonly">
+  <input *ngIf="profileIdHiddenVal" matInput name="profileId" [formControl]="realEstateForm.controls['profileId']" readonly="readonly">
   <div class="ll--modal--footer text-center">
     <button mat-raised-button class="llp--primary--btn" [disabled]="realEstateForm.invalid">Save</button>
   </div>

@@ -80,7 +80,7 @@ export class RealEstateModelComponent implements OnInit {
       from: Object.assign({ customerId: this.userId })
     }
     this.loader.open();
-    this.userapi.apiRequest('post', 'customer/real-estate', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'realEstateAssets/real-estate', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })

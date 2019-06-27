@@ -71,7 +71,7 @@ export class DebtModalComponent implements OnInit {
           debtsTypeNew: new FormControl(this.DebtForm.controls['debtsTypeNew'].value,Validators.required), 
           bankLendarName: new FormControl(this.DebtForm.controls['bankLendarName'].value,Validators.required),
           accountNumber: new FormControl(this.DebtForm.controls['accountNumber'].value,),
-          contactEmail: new FormControl([this.DebtForm.controls['contactEmail'].value,Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
+          contactEmail: new FormControl(this.DebtForm.controls['contactEmail'].value),
           contactPhone: new FormControl(this.DebtForm.controls['contactPhone'].value,),
           comments: new FormControl(this.DebtForm.controls['comments'].value,),
           profileId: new FormControl(this.DebtForm.controls['profileId'].value,)

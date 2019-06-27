@@ -73,7 +73,7 @@ export class FinanceModalComponent implements OnInit {
           administatorName: new FormControl(this.FinanceForm.controls['administatorName'].value,Validators.required),
           branchLocation: new FormControl(this.FinanceForm.controls['branchLocation'].value,),
           accountNumber: new FormControl(this.FinanceForm.controls['accountNumber'].value,),
-          contactEmail: new FormControl([this.FinanceForm.controls['contactEmail'].value,Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
+          contactEmail: new FormControl(this.FinanceForm.controls['contactEmail'].value),
           contactPhone: new FormControl(this.FinanceForm.controls['contactPhone'].value,),
           comments: new FormControl(this.FinanceForm.controls['comments'].value,),
           profileId: new FormControl(this.FinanceForm.controls['profileId'].value,)

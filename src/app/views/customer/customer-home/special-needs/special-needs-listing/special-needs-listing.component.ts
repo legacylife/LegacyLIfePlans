@@ -48,7 +48,7 @@ export class SpecialNeedsListingComponent implements OnInit {
       limit: '',
       order: { "modifiedOn": -1 },
     }
-    this.userapi.apiRequest('post', 'customer/special-needs-list', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'specialNeeds/special-needs-list', req_vars).subscribe(result => {
        if (result.status == "error") {
         console.log(result.data)
       } else {
@@ -70,7 +70,7 @@ export class SpecialNeedsListingComponent implements OnInit {
       limit: '',
       order: { "modifiedOn": -1 },
     }
-    this.userapi.apiRequest('post', 'customer/special-needs-list', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'specialNeeds/special-needs-list', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
@@ -93,7 +93,7 @@ export class SpecialNeedsListingComponent implements OnInit {
       limit: '',
       order: { "modifiedOn": -1 },
     }
-    this.userapi.apiRequest('post', 'customer/special-needs-list', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'specialNeeds/special-needs-list', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {

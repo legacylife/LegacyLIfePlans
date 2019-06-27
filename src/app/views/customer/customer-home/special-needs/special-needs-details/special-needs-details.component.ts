@@ -37,7 +37,7 @@ export class SpecialNeedsDetailsComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }, query)
     }
-    this.userapi.apiRequest('post', 'customer/view-special-needs', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'specialNeeds/view-special-needs', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
@@ -65,13 +65,13 @@ export class SpecialNeedsDetailsComponent implements OnInit {
           const req_vars = {
             query: Object.assign({ _id: this.selectedProfileId }, query)
           }
-          this.userapi.apiRequest('post', 'customer/delete-special-needs', req_vars).subscribe(result => {
+          this.userapi.apiRequest('post', 'specialNeeds/delete-special-needs', req_vars).subscribe(result => {
             if (result.status == "error") {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard', 'special-needs'])
+              this.router.navigate(['/', 'specialNeeds', 'dashboard', 'special-needs'])
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {

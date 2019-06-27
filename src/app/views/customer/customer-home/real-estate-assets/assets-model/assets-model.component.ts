@@ -56,7 +56,7 @@ export class AssetsModelComponent implements OnInit {
       from: Object.assign({ customerId: this.userId })
     }
     this.loader.open();
-    this.userapi.apiRequest('post', 'customer/real-estate-assets', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'realEstateAssets/real-estate-assets', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
@@ -73,7 +73,7 @@ export class AssetsModelComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }, query)
     }
-    this.userapi.apiRequest('post', 'customer/view-real-estate-asset', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'realEstateAssets/view-real-estate-asset', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {

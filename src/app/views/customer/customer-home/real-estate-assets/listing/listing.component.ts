@@ -48,7 +48,7 @@ export class ListingComponent implements OnInit {
       limit: '',
       order: { "modifiedOn": -1 },
     }
-    this.userapi.apiRequest('post', 'customer/real-estate-list', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'realEstateAssets/real-estate-list', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
@@ -70,7 +70,7 @@ export class ListingComponent implements OnInit {
       limit: '',
       order: { "modifiedOn": -1 },
     }
-    this.userapi.apiRequest('post', 'customer/real-estate-vehicles-list', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'realEstateAssets/real-estate-vehicles-list', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
@@ -93,7 +93,7 @@ export class ListingComponent implements OnInit {
       limit: '',
       order: { "modifiedOn": -1 },
     }
-    this.userapi.apiRequest('post', 'customer/real-estate-assets-list', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'realEstateAssets/real-estate-assets-list', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
