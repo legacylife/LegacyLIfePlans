@@ -53,7 +53,6 @@ export class LettersMessagesListingComponent implements OnInit {
       width: '720px',
       disableClose: true,
     });
-
     dialogRef.afterClosed()
     .subscribe(res => {
       this.getLetterMessageList();

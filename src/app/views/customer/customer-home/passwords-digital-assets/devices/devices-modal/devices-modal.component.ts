@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import PatternLock from 'patternlock';
 import 'patternlock/dist/patternlock.css';
 //import * as html2canvas from 'html2canvas/dist/html2canvas';
-import { DevicesList } from '../../../../../../selectList';
+import { DevicesList,PasswordType } from '../../../../../../selectList';
 
 //import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 @Component({
@@ -20,12 +20,20 @@ export class DevicesModalComponent implements OnInit {
   userId = localStorage.getItem("endUserId");
   DevicesForm: FormGroup;
   deviceListing: any[];
+  passwordType: any[];
   petDocumentsList: any;
   fileErrors: any;
   deviceList: any;
   profileIdHiddenVal: boolean = false;
   selectedProfileId: string;
   lock: any;
+  typeOne: boolean = false;
+  typeTwo: boolean = false;
+  typeThree: boolean = false;
+  pattrenTemp = false;
+  IsVisible: boolean = true;
+  pattrenTempMissing: boolean = false;
+  invalidMessage: string;
   DisplayPatternHolder = { 'visibility': 'hidden' };
   constructor(private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService, private loader: AppLoaderService,
     private router: Router, private userapi: UserAPIService) { }
@@ -33,11 +41,16 @@ export class DevicesModalComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.deviceListing = DevicesList;
+    this.passwordType = PasswordType;
+
     this.DevicesForm = this.fb.group({
       deviceList: new FormControl('', Validators.required),
-      deviceName: new FormControl(''),
+      deviceName: new FormControl('', Validators.required),
       username: new FormControl(''),
-      // password: new FormControl(''),
+      passwordType: new FormControl('', Validators.required),
+      password: new FormControl(''),
+      pin: new FormControl(''),
+      pattrenTemp: new FormControl(''),
       profileId: new FormControl('')
     });
 
@@ -46,7 +59,7 @@ export class DevicesModalComponent implements OnInit {
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
 
-    if (this.selectedProfileId && this.selectedProfileId == 'passwords-digital-assests') {
+    if(this.selectedProfileId && this.selectedProfileId == 'passwords-digital-assests') {
       this.selectedProfileId = "";
     }
 
@@ -55,12 +68,12 @@ export class DevicesModalComponent implements OnInit {
       radius: 30, margin: 20,
       //  onDraw:this.savePattren
       onDraw: (pattern) => {
-        document.getElementById('patternHolder').className = 'abc';
+        document.getElementById('patternHolder').className = 'hides';
         this.savePattren(pattern);
       }
     });
 
-    // this.getDeviceView();
+    this.getDeviceView();
   }
 
   //  ngAfterViewInit(){
@@ -81,7 +94,7 @@ export class DevicesModalComponent implements OnInit {
   savePattren(pattern: any) {
     var query = {};
     var proquery = {};
-    let profileIds = '';//this.DevicesForm.controls['profileId'].value;
+    let profileIds = this.DevicesForm.controls['profileId'].value;
     if (profileIds) {
       this.selectedProfileId = profileIds;
     }
@@ -97,43 +110,108 @@ export class DevicesModalComponent implements OnInit {
       } else {
         this.lock.reset();
         this.setPattern(pattern, '#patternHolder7');
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      //  this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        this.DevicesForm.controls['profileId'].setValue(result.data.newEntry._id);
       }
     }, (err) => {
       console.error(err)
     })
   }
 
-  setPattern(pattern: any, ids) {//patternHolder7
+  setPattern(pattern: any, ids) {
     this.lock = new PatternLock(ids, { enableSetPattern: true, radius: 30, margin: 20 });
     this.lock.setPattern(pattern);
+    this.DevicesForm.controls['pattrenTemp'].setValue('1');
     this.lock.disable();
+  }
+
+  onChangePasswordType(key) {
+      this.typeOne = false;
+      this.typeTwo = false; 
+      this.typeThree = false;
+      this.IsVisible= true;
+      this.lock.reset();
+      if(key==1){
+        this.typeOne = true;
+        this.DevicesForm = this.fb.group({
+          deviceList: new FormControl(this.DevicesForm.controls['deviceList'].value, Validators.required),
+          deviceName: new FormControl(this.DevicesForm.controls['deviceName'].value, Validators.required),
+          username: new FormControl(this.DevicesForm.controls['username'].value,),
+          passwordType: new FormControl(this.DevicesForm.controls['passwordType'].value, Validators.required),
+          password: new FormControl('', Validators.required),
+          pin: new FormControl('',Validators.pattern(/^[0-9]$/)),
+          pattrenTemp: new FormControl(''),
+          profileId: new FormControl(this.DevicesForm.controls['profileId'].value,)
+        });                
+      }else if(key==2){
+        this.typeTwo = true; 
+        this.DevicesForm = this.fb.group({
+          deviceList: new FormControl(this.DevicesForm.controls['deviceList'].value, Validators.required),
+          deviceName: new FormControl(this.DevicesForm.controls['deviceName'].value, Validators.required),
+          username: new FormControl(this.DevicesForm.controls['username'].value,),
+          passwordType: new FormControl(this.DevicesForm.controls['passwordType'].value, Validators.required),
+          password: new FormControl(''),
+          pin: new FormControl('',[Validators.required,Validators.pattern(/^[0-9]$/)]),
+          pattrenTemp: new FormControl(''),
+          profileId: new FormControl(this.DevicesForm.controls['profileId'].value,)
+        });        
+      }else if(key==3){
+        this.IsVisible= false;        
+        this.DevicesForm = this.fb.group({
+          deviceList: new FormControl(this.DevicesForm.controls['deviceList'].value,Validators.required),
+          deviceName: new FormControl(this.DevicesForm.controls['deviceName'].value,Validators.required),
+          username: new FormControl(this.DevicesForm.controls['username'].value,),
+          passwordType: new FormControl(this.DevicesForm.controls['passwordType'].value,Validators.required),
+          password: new FormControl(''),
+          pin: new FormControl('',Validators.pattern(/^[0-9]$/)),
+          pattrenTemp: new FormControl(''),
+          profileId: new FormControl(this.DevicesForm.controls['profileId'].value,)
+        });            
+      }
+
   }
 
   DevicesFormSubmit(profileInData = null) {
     var query = {};
     var proquery = {};
+    if(this.DevicesForm.controls['passwordType'].value=='3' && this.DevicesForm.controls['pattrenTemp'].value==''){
+        this.pattrenTempMissing = true;
+        this.invalidMessage = "Please draw your device pattern.";
+    }else{
 
-    let profileIds = this.DevicesForm.controls['profileId'].value;
-    if (profileIds) {
-      this.selectedProfileId = profileIds;
+        let profileIds = this.DevicesForm.controls['profileId'].value;
+        if (profileIds) {
+          this.selectedProfileId = profileIds;
+        }
+
+        if(this.DevicesForm.controls['passwordType'].value=='1'){
+          profileInData.pin = '';
+          profileInData.passwordPattern = '';
+        }else if(this.DevicesForm.controls['passwordType'].value=='2'){
+          profileInData.password = '';
+          profileInData.passwordPattern = '';
+        }else if(this.DevicesForm.controls['passwordType'].value=='3'){
+          profileInData.pin = '';
+          profileInData.password = '';
+        }
+
+        const req_vars = {
+          query: Object.assign({ _id: this.selectedProfileId, customerId: this.userId }),
+          proquery: Object.assign(profileInData)
+        }
+        this.loader.open();
+        this.userapi.apiRequest('post', 'passwordsDigitalAssets/device-form-submit', req_vars).subscribe(result => {
+          this.loader.close();
+          if (result.status == "error") {
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          } else {
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            this.dialog.closeAll();
+          }
+        }, (err) => {
+          console.error(err)
+        })
     }
-    const req_vars = {
-      query: Object.assign({ _id: this.selectedProfileId, customerId: this.userId }),
-      proquery: Object.assign(profileInData)
-    }
-    this.loader.open();
-    this.userapi.apiRequest('post', 'passwordsDigitalAssets/device-form-submit', req_vars).subscribe(result => {
-      this.loader.close();
-      if (result.status == "error") {
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
-      } else {
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
-        this.dialog.closeAll();
-      }
-    }, (err) => {
-      console.error(err)
-    })
   }
 
   getDeviceView = (query = {}, search = false) => {
@@ -156,14 +234,17 @@ export class DevicesModalComponent implements OnInit {
         if (result.data) {
           this.deviceList = result.data;
           let profileIds = this.deviceList._id;
-          let pattern = this.deviceList.passwordPattern;
+          this.onChangePasswordType(this.deviceList.passwordType);
           this.DevicesForm.controls['profileId'].setValue(profileIds);
-          this.setPattern(pattern, '#patternHolder');
-          this.setPattern(pattern, '#patternHolder7');
           this.DevicesForm.controls['deviceList'].setValue(this.deviceList.deviceList);
           this.DevicesForm.controls['deviceName'].setValue(this.deviceList.deviceName);
           this.DevicesForm.controls['username'].setValue(this.deviceList.username);
           this.DevicesForm.controls['password'].setValue(this.deviceList.password);
+          this.DevicesForm.controls['passwordType'].setValue(this.deviceList.passwordType);
+          this.DevicesForm.controls['pin'].setValue(this.deviceList.pin);
+          if(this.deviceList.passwordPattern!=''){
+            this.DevicesForm.controls['pattrenTemp'].setValue('1');
+          }
         }
       }
     }, (err) => {
@@ -193,7 +274,7 @@ export class DevicesModalComponent implements OnInit {
   // }
 
   resetPattern(event) {
-    // document.getElementById('patternHolder7').className = 'abc';
+    // document.getElementById('patternHolder7').className = 'hides';
     // document.getElementById('patternHolder').className = '';
     this.lock.reset()
     
