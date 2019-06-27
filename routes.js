@@ -12,6 +12,8 @@ router.use("/pets", require("./routes/petsRoute"))
 router.use("/timeCapsule", require("./routes/timeCapsuleRoute"))
 router.use("/insuranceFinanceDebt", require("./routes/insuranceFinanceDebtRoute"))
 router.use("/documents", require("./routes/documentsUploadRoute"))
+router.use("/specialNeeds", require("./routes/specialNeedsRoute"))
+router.use("/realEstateAssets", require("./routes/realEstateAssetsRoute"))
 
 
 module.exports = router

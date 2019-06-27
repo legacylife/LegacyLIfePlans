@@ -113,6 +113,21 @@ var constants = {
     4 : "Tablet", 
     5 : "Phone", 
     6 : "Watch"
+  },
+
+  RealEstateType : {
+    1 : "Personal Home", 
+    2 : "Rental", 
+    3 : "Commercial" 
+  },
+  
+  RealEstateAssetsType : {
+    1 : "Safe", 
+    2 : "Safe Deposit Box", 
+    3 : "Box", 
+    4 : "Art", 
+    5 : "Jewelry", 
+    6 : "New"
   }
 
 }
