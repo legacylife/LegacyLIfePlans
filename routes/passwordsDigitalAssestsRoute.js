@@ -17,7 +17,6 @@ var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
 })
-
 function patternUpdate(req, res) {
   console.log("Asdasdasd")
   let { query } = req.body;
