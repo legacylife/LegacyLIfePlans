@@ -153,6 +153,7 @@ export class GlobalVariables {
     ChangePassComponent, HomeComponent, ReferAndEarnModalComponent, AdvisorLegacyDetailsComponent,
     LegaciesDetailsLandingComponent, MarkAsDeceasedComponent,
     GetFeaturedComponent, SubmitEnquiryModalComponent, AdvisorLeadsComponent, AdvisorLeadsDetailsComponent, 
+    ProspectPeoplesModalComponent
   ], providers: [
     // { provide: LY_THEME, useClass: MinimaLight, multi: true },
     // { provide: LY_THEME, useClass: MinimaDark, multi: true },
