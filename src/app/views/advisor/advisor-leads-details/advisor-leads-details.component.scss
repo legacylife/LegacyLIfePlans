@@ -3,7 +3,7 @@
 .leads--details{
     display: flex;
     align-items: center;
-    margin: 20px 0;
+    padding: 20px 0;
     
     .leads--pic{
         width: 100px !important;
@@ -15,24 +15,22 @@
         border-radius: 50%;
         overflow: hidden;
         margin-right: 20px;
+        flex-shrink: 0;
+        align-self: flex-start;
+        
         img{
             max-width: 100%;
             max-height: 100%;
             height: auto;
         }
     }
-    .leads--details{
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    .leads--infos{
         display: block;
         h5{
             font-size: 24px;
             font-family: $font--lato--bold;
             margin: 0 0 5px 0;
             color: #222324;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
         .icon--and--info{
             font-size: 14px;
@@ -43,28 +41,132 @@
             .mat-icon {
                 font-size: 18px;
                 height: 19px;
-                color: #ecca40;
+                color: #757575;                
                 width: 15px;
-                margin-right: 10px;
+                margin-right: 10px;               
+            }
+            &.unique{
+                .mat-icon {
+                    color: #ecca40;
+                }
+            }
+        }
+    }
+}
+
+.counters{
+    display: flex;
+    justify-content: space-between;
+
+    .counters--box{
+        width: 32%;
+        display: flex;
+
+        .count{
+            flex-basis: 121px;
+            background-color: #dadce0;
+            border-top-left-radius: 2px;
+            border-bottom-left-radius: 2px;
+            font-family: $font--lato--bold;
+            font-size: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .count--txt{
+            background-color: #ebebeb;
+            border-top-right-radius: 2px;
+            border-bottom-right-radius: 2px;
+            color: #222324;
+            font-size: 18px;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 11px 5px;
+        }
+    }
+}
+.pros--details{
+    h5{
+        font-size: 16px;
+        margin: 18px 0;
+    }
+    .cust--user--details{
+        .pros--name{
+            margin:  0 0 5px 0;
+            span{
+                color:#c72128;
+                font-family: $font--lato--regular !important;
             }
         }
     }
 }
 
 
-
 /* Media query (start here)*/
 
 @media only screen and (max-width: 599px) {
-   
+    .leads--details{
+        flex-direction: column;
+    }
+    .leads--details .leads--pic{
+        margin: 0 auto;
+    }
+    .leads--details .leads--infos {
+        margin-top: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .leads--details .leads--infos .icon--and--info{
+        margin: 3px 0;
+    }
+    .leads--details .leads--infos h5{
+        text-align: center;
+    }
+    .counters{
+        flex-direction: column;
+    }
+    .counters .counters--box {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .counters .counters--box .count{
+        flex-basis: 74px;
+        font-size: 23px;
+    }
+    .counters .counters--box .count--txt{
+        font-size: 15px;
+    }
+    .pros--details .cust--user--details{
+        padding: 0 10px;
+    }
 }
-@media only screen and (min-width: 600px) and (max-width: 959px){
 
+/* iPad */
+@media (device-height: 1024px) and (device-width: 768px){
+    .counters .counters--box .count{
+        flex-basis: 60px;
+        font-size: 22px;
+    }
+    .counters .counters--box .count--txt{
+        font-size: 15px;
+    }
+}
+
+
+@media only screen and (min-width: 600px) and (max-width: 979px){
+    .counters .counters--box .count{
+        flex-basis: 60px;
+        font-size: 22px;
+    }
+    .counters .counters--box .count--txt{
+        font-size: 15px;
+    }
     
 }
-@media only screen and (min-width: 960px) and (max-width: 979px){    
-    
-}
+
 @media only screen and (min-width: 980px) and (max-width: 1279px){
     
 }
