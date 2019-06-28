@@ -139,7 +139,7 @@ export class DevicesModalComponent implements OnInit {
           username: new FormControl(this.DevicesForm.controls['username'].value,Validators.required),
           passwordType: new FormControl(this.DevicesForm.controls['passwordType'].value, Validators.required),
           password: new FormControl('', Validators.required),
-          pin: new FormControl('',Validators.pattern(/^[0-9]$/)),
+          pin: new FormControl('',Validators.pattern(/^[0-9]*$/)),
           pattrenTemp: new FormControl(''),
           profileId: new FormControl(this.DevicesForm.controls['profileId'].value,)
         });                
@@ -151,7 +151,7 @@ export class DevicesModalComponent implements OnInit {
           username: new FormControl(this.DevicesForm.controls['username'].value,Validators.required),
           passwordType: new FormControl(this.DevicesForm.controls['passwordType'].value, Validators.required),
           password: new FormControl(''),
-          pin: new FormControl('',[Validators.required,Validators.pattern(/^[0-9]$/)]),
+          pin: new FormControl('',[Validators.required,Validators.pattern(/^[0-9]*$/)]),
           pattrenTemp: new FormControl(''),
           profileId: new FormControl(this.DevicesForm.controls['profileId'].value,)
         });        
@@ -163,7 +163,7 @@ export class DevicesModalComponent implements OnInit {
           username: new FormControl(this.DevicesForm.controls['username'].value,Validators.required),
           passwordType: new FormControl(this.DevicesForm.controls['passwordType'].value,Validators.required),
           password: new FormControl(''),
-          pin: new FormControl('',Validators.pattern(/^[0-9]$/)),
+          pin: new FormControl('',Validators.pattern(/^[0-9]*$/)),
           pattrenTemp: new FormControl(''),
           profileId: new FormControl(this.DevicesForm.controls['profileId'].value,)
         });            
@@ -183,16 +183,19 @@ export class DevicesModalComponent implements OnInit {
         if (profileIds) {
           this.selectedProfileId = profileIds;
         }
-
+        console.log("password type>>>",this.DevicesForm.controls['passwordType'].value)
         if(this.DevicesForm.controls['passwordType'].value=='1'){
           profileInData.pin = '';
           profileInData.passwordPattern = '';
+          console.log('111')
         }else if(this.DevicesForm.controls['passwordType'].value=='2'){
           profileInData.password = '';
           profileInData.passwordPattern = '';
+          console.log('2222')
         }else if(this.DevicesForm.controls['passwordType'].value=='3'){
           profileInData.pin = '';
           profileInData.password = '';
+          console.log('3333')
         }
 
         const req_vars = {
@@ -244,6 +247,10 @@ export class DevicesModalComponent implements OnInit {
           this.DevicesForm.controls['pin'].setValue(this.deviceList.pin);
           if(this.deviceList.passwordPattern!=''){
             this.DevicesForm.controls['pattrenTemp'].setValue('1');
+            this.IsVisible= false;
+          }
+          else {
+            this.IsVisible= true;
           }
         }
       }

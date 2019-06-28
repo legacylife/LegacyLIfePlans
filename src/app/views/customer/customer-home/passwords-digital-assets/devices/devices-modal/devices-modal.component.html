@@ -19,7 +19,7 @@
         </mat-form-field>
 
         <mat-form-field class="full-width">
-          <input matInput name="deviceName" placeholder="Device Name*"   [formControl]="DevicesForm.controls['deviceName']">
+          <input matInput name="deviceName" (keyup)="firstCapitalize($event)" placeholder="Device Name*"   [formControl]="DevicesForm.controls['deviceName']">
           <mat-icon matTooltip="Please enter device name" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['deviceName'].hasError('required') && DevicesForm.controls['deviceName'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
@@ -51,7 +51,7 @@
             <mat-icon matTooltip="Please enter numbers only" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['pin'].hasError('pattern') && DevicesForm.controls['pin'].touched" class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
-        <div [hidden]=IsVisible>
+        <div class="relative" [hidden]=IsVisible>
             <div id="patternHolder" class="large--pattern"></div>
             <img src="../../../../../../assets/images/arkenea/icon-arrow.png" style="display:none"/>
             <div id="patternHolder7" class="pattern-holder small--pattern"></div>

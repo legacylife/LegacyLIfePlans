@@ -3,7 +3,7 @@
     <div class="">
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
-          <mat-card-title class="m-0">Device</mat-card-title>
+          <mat-card-title class="m-0">Passwords Digital & Assests</mat-card-title>
           <div class="right--actions">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openDevicesModal()">
               <mat-icon>edit</mat-icon>
@@ -19,13 +19,14 @@
           <div class="details--wrapper mb-1">
             <div class="details--header">
               <div class="d-flex align--items--center">
-                <mat-icon>library_add</mat-icon>{{row?.deviceName}}
+                <mat-icon>library_add</mat-icon>Devices
               </div>
               <span class="last--modified--by">Last modified:
                 <span>{{row?.createdOn | date: 'MMM dd, yyyy'}}</span>
               </span>
             </div>
             <div class="details--body">
+                <h3>{{row?.deviceName}}</h3>
               <div fxLayout="row wrap" class="mb--10">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Device Type:</label>
@@ -62,7 +63,7 @@
                   </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.pin.length>0">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.pin && row?.pin.length>0">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                     <label class="strong--label">Pin:</label>
                   </div>
@@ -72,7 +73,7 @@
               </div>
 
               <div [hidden]=IsVisible>
-                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" *ngIf="row?.passwordPattern.length>0">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                       <label class="strong--label">Pattern:</label>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">

@@ -87,3 +87,14 @@
 #patternHolder.hides{
   display: none;
 }
+.form-error-msg {
+  position: absolute !important;
+  top: -39px !important;
+  left: 16% !important;
+  font-size: 15px;
+  border: 1px solid #edb8ba;
+  padding: 5px;
+  width: 68%;
+  text-align: center;
+  box-shadow: 0 0 5px #ddd;
+}

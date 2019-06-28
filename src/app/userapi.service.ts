@@ -256,6 +256,18 @@ export class UserAPIService {
       this.fileAccessInfo.fileIcon = "business";
       this.fileAccessInfo.fileUrl = ['/customer/dashboard/real-estate-assets-detail-view', logData.fileId];
     }
+    if(logData.folderName == 'letters-messages'){ 
+      this.fileAccessInfo.fileIcon = "markunread";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/letters-messages-view', logData.fileId];
+    }
+    if(logData.folderName == 'password-assets' && logData.subFolderName == 'devices'){ 
+      this.fileAccessInfo.fileIcon = "lock";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/device-view', logData.fileId];
+    }
+    if(logData.folderName == 'password-assets' && logData.subFolderName == 'elecronic-media'){ 
+      this.fileAccessInfo.fileIcon = "lock";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/electronic-media-view', logData.fileId];
+    }
     return this.fileAccessInfo;
   }
 

@@ -3,7 +3,7 @@
     <div class="">
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
-          <mat-card-title class="m-0">Electronic Media</mat-card-title>
+          <mat-card-title class="m-0">Passwords Digital & Assests</mat-card-title>
           <div class="right--actions">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openElectronicMediaModal()">
               <mat-icon>edit</mat-icon>
@@ -19,7 +19,7 @@
           <div class="details--wrapper mb-1">
             <div class="details--header">
               <div class="d-flex align--items--center">
-                <mat-icon>library_add</mat-icon>{{getType(row?.mediaType)}}
+                <mat-icon>library_add</mat-icon>Electronic Media
               </div>
               <span class="last--modified--by">Last modified:
                   <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn | date: 'yyyy/MM/dd'}}</span>
@@ -27,8 +27,17 @@
               </span>
             </div>
             <div class="details--body">
-              <h3>{{row?.username}}</h3>
+              <h3>{{getType(row?.mediaType)}}</h3>
              
+              <div fxLayout="row wrap" class="mb--10">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                    <label class="strong--label">Username:</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                    <label class="normal--label">{{row?.username}}</label>
+                  </div>
+                </div>
+              
               <div fxLayout="row wrap" class="mb--10">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Password:</label>
