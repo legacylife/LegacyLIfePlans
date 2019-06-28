@@ -13,14 +13,16 @@ var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const PDA = require('./../models/PasswordNDigitalAssets.js')
 const EMedia = require('./../models/ElectronicMedia.js')
+const actitivityLog = require('./../helpers/fileAccessLog')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
 })
 function patternUpdate(req, res) {
-  console.log("Asdasdasd")
+  
   let { query } = req.body;
   let { proquery } = req.body;
+
   if(query._id){
     PDA.findOne(query, function (err, custData) {      
       if (err) {
@@ -98,6 +100,12 @@ function DeviceList(req, res) {
 function deviceFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+
+  var logData = {}
+  logData.fileName = proquery.deviceName;
+  logData.folderName = 'password-assets';
+  logData.subFolderName = 'devices';
+
   if(query._id){
     PDA.findOne(query, function (err, custData) {      
       if (err) {
@@ -116,6 +124,11 @@ function deviceFormUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
+
+              logData.customerId = custData.customerId;
+              logData.fileId = custData._id;
+              actitivityLog.updateActivityLog(logData);
+
               let result = { "message": "Device "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -142,6 +155,11 @@ function deviceFormUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+
+        logData.customerId = query.customerId;
+        logData.fileId = newEntry._id;
+        actitivityLog.updateActivityLog(logData);
+
         let result = { "message": "Device added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
@@ -189,6 +207,12 @@ function deletedevice(req, res) {
 function electronicMediaFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+
+  var logData = {}
+  logData.fileName = constants.ElectronicMediaLists[proquery.mediaType];
+  logData.folderName = 'password-assets';
+  logData.subFolderName = 'elecronic-media';
+
   if(query._id){
     EMedia.findOne(query, function (err, custData) {      
       if (err) {
@@ -207,6 +231,9 @@ function electronicMediaFormUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
+              logData.customerId = custData.customerId;
+              logData.fileId = custData._id;
+              actitivityLog.updateActivityLog(logData);
               let result = { "message": "Electronic media "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -232,6 +259,9 @@ function electronicMediaFormUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+        logData.customerId = query.customerId;
+        logData.fileId = newEntry._id;
+        actitivityLog.updateActivityLog(logData);
         let result = { "message": "Electronic media added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
