@@ -6,29 +6,23 @@ import { egretAnimations } from '../../../../../../shared/animations/egret-anima
 import { UserAPIService } from './../../../../../../userapi.service';
 import { AppLoaderService } from '../../../../../../shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from '../../../../../../shared/services/app-confirm/app-confirm.service';
-import { DevicesModalComponent } from './../devices-modal/devices-modal.component';
-import PatternLock from 'patternlock';
-import 'patternlock/dist/patternlock.css';
-import { DevicesList,PasswordType } from '../../../../../../selectList';
+import { ElectronicMediaModalComponent } from './../electronic-media-modal/electronic-media-modal.component';
+import { ElectronicMediaLists } from '../../../../../../selectList';
 @Component({
   selector: 'app-customer-home',
-  templateUrl: './device-details.component.html',
-  styleUrls: ['./device-details.component.scss'],
+  templateUrl: './electronic-media-details.component.html',
+  styleUrls: ['./electronic-media-details.component.scss'],
   animations: [egretAnimations]
 })
-export class DeviceDetailsComponent implements OnInit {
+export class ElectronicMediaDetailsComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   userId: string;
   selectedProfileId: string = "";
   row: any;
   re =  "/(?:\.([^.]+))?$/" ;
   docPath: string; 
-  lock: any;
-  deviceListing: any[];
-  passwordType: any[];
-  typeOfDocumentList: any[];
-  IsVisible: boolean = true;
-  constructor( 
+  typeOfList:any[];
+  constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
     private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router
@@ -38,23 +32,11 @@ export class DeviceDetailsComponent implements OnInit {
     this.userId = localStorage.getItem("endUserId");
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
-
-    this.lock = new PatternLock('#patternHolder8', {
-      allowRepeat: false,
-      radius: 30, margin: 20,      
-    });
-    this.getDeviceView();
-  }
-
-  setPattern(pattern: any) {
-    this.lock = new PatternLock("#patternHolder8", { enableSetPattern: true, radius: 30, margin: 20 });
-    this.lock.setPattern(pattern);
-    this.lock.disable();
+    this.getElectronicMediaView();
   }
 
   //function to get all events
-  getDeviceView = (query = {}, search = false) => {
-    this.IsVisible= true;
+  getElectronicMediaView = (query = {}, search = false) => {
     let profileIds = '';
     let req_vars = {}
     if (this.selectedProfileId) {
@@ -63,18 +45,12 @@ export class DeviceDetailsComponent implements OnInit {
         query: Object.assign({ _id: profileIds })
       }
     }
-    this.userapi.apiRequest('post', 'passwordsDigitalAssets/view-device-details', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'passwordsDigitalAssets/view-electronicMedia-details', req_vars).subscribe(result => {     
       if (result.status == "error") {
         console.log(result.data)
       } else {
         if (result.data) {
-          this.row = result.data;
-          if(this.row.passwordPattern!=''){
-            this.IsVisible= false;
-            this.setPattern(this.row.passwordPattern);          
-          }else{
-            this.IsVisible= true;
-          }
+          this.row = result.data;        
         }
       }  
     }, (err) => {
@@ -82,14 +58,14 @@ export class DeviceDetailsComponent implements OnInit {
     })
   }
 
-  openDevicesModal() {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(DevicesModalComponent, {     
+  openElectronicMediaModal() {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ElectronicMediaModalComponent, {     
       width: '720px',
       disableClose: true,
     })
     dialogRef.afterClosed()
       .subscribe(res => {
-        this.getDeviceView();
+        this.getElectronicMediaView();
         if (!res) {
           // If user press cancel
           return;
@@ -97,8 +73,8 @@ export class DeviceDetailsComponent implements OnInit {
       })
   }
 
-  deleteDevices() {
-    var statMsg = "Are you sure you want to delete device details?"
+  deleteElectronicMedia() {
+    var statMsg = "Are you sure you want to delete electronic media details?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
         if (res) {
@@ -107,7 +83,7 @@ export class DeviceDetailsComponent implements OnInit {
           const req_vars = {
             query: Object.assign({ _id: this.selectedProfileId }, query)
           }
-          this.userapi.apiRequest('post', 'passwordsDigitalAssets/delete-device', req_vars).subscribe(result => {
+          this.userapi.apiRequest('post', 'passwordsDigitalAssets/delete-electronicMedia', req_vars).subscribe(result => {
             if (result.status == "error") {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
@@ -124,20 +100,13 @@ export class DeviceDetailsComponent implements OnInit {
       })
   }
 
-  
-  getType(key,subFolderName) {
 
-      if(subFolderName=='deviceList'){
-        this.typeOfDocumentList = DevicesList;
-      }else if(subFolderName=='passwordType'){
-        this.typeOfDocumentList = PasswordType;
-      }
-
-      let filteredTyes = this.typeOfDocumentList.filter(dtype => {
-        return dtype.opt_code === key
-      }).map(el => el.opt_name)[0]
-      return filteredTyes
-
+  getType(key) {
+    this.typeOfList = ElectronicMediaLists;
+    let filteredTyes = this.typeOfList.filter(dtype => {
+      return dtype.opt_code === key
+    }).map(el => el.opt_name)[0]
+    return filteredTyes
   }
 
 }

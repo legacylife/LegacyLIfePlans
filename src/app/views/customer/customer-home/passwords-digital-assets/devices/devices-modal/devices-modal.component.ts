@@ -46,7 +46,7 @@ export class DevicesModalComponent implements OnInit {
     this.DevicesForm = this.fb.group({
       deviceList: new FormControl('', Validators.required),
       deviceName: new FormControl('', Validators.required),
-      username: new FormControl(''),
+      username: new FormControl('',Validators.required),
       passwordType: new FormControl('', Validators.required),
       password: new FormControl(''),
       pin: new FormControl(''),
@@ -136,7 +136,7 @@ export class DevicesModalComponent implements OnInit {
         this.DevicesForm = this.fb.group({
           deviceList: new FormControl(this.DevicesForm.controls['deviceList'].value, Validators.required),
           deviceName: new FormControl(this.DevicesForm.controls['deviceName'].value, Validators.required),
-          username: new FormControl(this.DevicesForm.controls['username'].value,),
+          username: new FormControl(this.DevicesForm.controls['username'].value,Validators.required),
           passwordType: new FormControl(this.DevicesForm.controls['passwordType'].value, Validators.required),
           password: new FormControl('', Validators.required),
           pin: new FormControl('',Validators.pattern(/^[0-9]$/)),
@@ -148,7 +148,7 @@ export class DevicesModalComponent implements OnInit {
         this.DevicesForm = this.fb.group({
           deviceList: new FormControl(this.DevicesForm.controls['deviceList'].value, Validators.required),
           deviceName: new FormControl(this.DevicesForm.controls['deviceName'].value, Validators.required),
-          username: new FormControl(this.DevicesForm.controls['username'].value,),
+          username: new FormControl(this.DevicesForm.controls['username'].value,Validators.required),
           passwordType: new FormControl(this.DevicesForm.controls['passwordType'].value, Validators.required),
           password: new FormControl(''),
           pin: new FormControl('',[Validators.required,Validators.pattern(/^[0-9]$/)]),
@@ -160,7 +160,7 @@ export class DevicesModalComponent implements OnInit {
         this.DevicesForm = this.fb.group({
           deviceList: new FormControl(this.DevicesForm.controls['deviceList'].value,Validators.required),
           deviceName: new FormControl(this.DevicesForm.controls['deviceName'].value,Validators.required),
-          username: new FormControl(this.DevicesForm.controls['username'].value,),
+          username: new FormControl(this.DevicesForm.controls['username'].value,Validators.required),
           passwordType: new FormControl(this.DevicesForm.controls['passwordType'].value,Validators.required),
           password: new FormControl(''),
           pin: new FormControl('',Validators.pattern(/^[0-9]$/)),
