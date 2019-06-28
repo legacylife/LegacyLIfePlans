@@ -103,13 +103,13 @@ import { DebtModalComponent } from './customer-home/insurance-finance-debt/debt-
 import { PasswordsDigitalAssetsListComponent } from './customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
 import { DevicesModalComponent } from './customer-home/passwords-digital-assets/devices/devices-modal/devices-modal.component';
 
-import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
+//import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
 /** Import the component modules */
-import { LyButtonModule } from '@alyle/ui/button';
-import { LyToolbarModule } from '@alyle/ui/toolbar';
-import { LyIconModule } from '@alyle/ui/icon';
+// import { LyButtonModule } from '@alyle/ui/button';
+// import { LyToolbarModule } from '@alyle/ui/toolbar';
+// import { LyIconModule } from '@alyle/ui/icon';
+//import { LyResizingCroppingImageModule } from '@alyle/ui/resizing-cropping-images';
 
-import { LyResizingCroppingImageModule } from '@alyle/ui/resizing-cropping-images';
 /** Import themes */
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
 import { ListingComponent } from './customer-home/real-estate-assets/listing/listing.component';
@@ -183,11 +183,11 @@ export class GlobalVariables {
     MatSidenavModule,
     MatDialogModule,
     MatStepperModule,
-    LyThemeModule.setTheme('minima-light'),
-    LyButtonModule,
-    LyToolbarModule,
-    LyResizingCroppingImageModule,
-    LyIconModule,
+    //LyThemeModule.setTheme('minima-light'),
+    // LyButtonModule,
+    // LyToolbarModule,
+    // LyResizingCroppingImageModule,
+    // LyIconModule,
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [
@@ -215,9 +215,9 @@ export class GlobalVariables {
     LettersMessagesModelComponent,ElectronicMediaModalComponent,ElectronicMediaDetailsComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
-    { provide: LY_THEME, useClass: MinimaLight, multi: true },
-    { provide: LY_THEME, useClass: MinimaDark, multi: true },
-    { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },
+    // { provide: LY_THEME, useClass: MinimaLight, multi: true },
+    // { provide: LY_THEME, useClass: MinimaDark, multi: true },
+    // { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },
   ], bootstrap: [CustomerSignupComponent],
   entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,
     addTrusteeModalComponent, PersonalProfileModalComponent, MarkAsDeceasedComponent,

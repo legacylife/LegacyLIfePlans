@@ -1,17 +1,14 @@
 import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit,OnInit } from '@angular/core';
 import { UserAPIService } from './../../userapi.service';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder} from '@angular/forms';
 import { AppConfirmService } from './../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from './../../shared/services/app-loader/app-loader.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { serverUrl, s3Details } from './../../config'
-import {Buffer} from 'buffer';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
-
-import { LyTheme2, ThemeVariables, Platform } from '@alyle/ui';
 import { ImgCropperConfig, ImgCropperEvent, LyResizingCroppingImages, ImgCropperErrorEvent } from '@alyle/ui/resizing-cropping-images';
-
+import { LyTheme2, ThemeVariables, Platform } from '@alyle/ui';
 const styles = (theme: ThemeVariables) => ({
   actions: {
     display: 'flex'
@@ -158,6 +155,7 @@ export class ChangePicComponent implements OnInit,AfterViewInit {
       //   y: 436.26357452128866
       // }
       //'https://firebasestorage.googleapis.com/v0/b/alyle-ui.appspot.com/o/img%2Flarm-rmah-47685-unsplash-1.png?alt=media&token=96a29be5-e3ef-4f71-8437-76ac8013372c'
+     
       this.cropper.setImageUrl(this.profilePicture, () => {
         //cropping:center,
           this.cropper.center(),
@@ -191,7 +189,6 @@ export class ChangePicComponent implements OnInit,AfterViewInit {
       let profileInData = {
         profilePicture: imageData
       }
-      console.log("profileInData ",profileInData)
       var query = {}; var proquery = {};
       const req_vars = {
         query: Object.assign({ _id: this.userId}),
