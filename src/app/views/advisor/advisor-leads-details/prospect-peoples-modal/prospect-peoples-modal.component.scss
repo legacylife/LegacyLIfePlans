@@ -1,0 +1,11 @@
+@import 'llp-global-styles.scss';
+
+::ng-deep .mat-bottom-sheet-container-large{
+    min-width: 300px;
+}
+.users--lists{
+    a{
+        display: flex;
+        margin-bottom: 5px;
+    }
+}
