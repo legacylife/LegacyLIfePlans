@@ -32,7 +32,7 @@
           <a mat-button [matMenuTriggerFor]="afterMenu1">
             <mat-icon>more_horiz</mat-icon> More </a>
           <mat-menu #afterMenu1="matMenu" class="more--options">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="openTodosModal({})">
               <mat-icon>list
               </mat-icon>
               <span>To dos </span>

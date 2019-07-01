@@ -71,6 +71,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { APIService } from './api.service';
 import { UserAPIService } from './userapi.service';
 import { InviteComponent } from './views/invite-modal/invite-modal.component';
+import { TodosComponent } from './views/todos/todos.component';
 import { ReferAndEarnModalComponent } from './views/refer-and-earn-modal/refer-and-earn-modal.component';
 import { LyIconModule } from '@alyle/ui/icon';
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
@@ -149,7 +150,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     { provide: LY_THEME, useClass: MinimaDark, multi: true },// name: `minima-dark`
     { provide: LY_THEME_GLOBAL_VARIABLES,useClass: GlobalVariables    } 
   ],
-  declarations: [AppComponent, ChangePicComponent, InviteComponent, ReferAndEarnModalComponent],
-  entryComponents: [ChangePicComponent, InviteComponent, ReferAndEarnModalComponent],
+  declarations: [AppComponent, ChangePicComponent, InviteComponent, ReferAndEarnModalComponent,
+    TodosComponent],
+  entryComponents: [ChangePicComponent, InviteComponent, ReferAndEarnModalComponent, TodosComponent],
 })
 export class AppModule { }

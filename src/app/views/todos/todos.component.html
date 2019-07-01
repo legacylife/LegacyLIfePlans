@@ -1,0 +1,74 @@
+<div class="ll--modal--header">
+  To-Do's
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+<form class="llp-form-wrapper">
+  <div class="ll--modal--body todo--modal--hgt">
+    <mat-form-field class="full-width no-mar">
+      <textarea matInput placeholder="Add Your Notes Here"></textarea>
+    </mat-form-field>
+    <div class="text-right">
+      <button mat-raised-button class="llp--primary--btn note--save--btn">Save</button>
+    </div>
+    <div class="todos--list mt-1">
+      <mat-card-content>
+        <mat-nav-list class="pt-0">
+          <mat-list-item>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporfd labore et dolore magna aliqua.
+              Ut enim ad minim veniam, quis nostrud exercitatr oris nisi ut aliquip ex ea commodo consequat.
+              <span class="when">Today</span>
+            </p>
+            <button class="more" mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu1">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </mat-list-item>
+          <mat-menu #menu1="matMenu" xPosition="before">
+            <button mat-menu-item>Edit</button>
+            <button mat-menu-item>Delete</button>
+          </mat-menu>
+        </mat-nav-list>
+      </mat-card-content>
+
+      <mat-card-content>
+        <mat-nav-list class="pt-0">
+          <mat-list-item>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporfd labore et dolore magna aliqua. Ut enim ad minim veniam, 
+              quis nostrud exercitatr oris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod 
+              temporfd labore et dolore magna aliqua.
+              <span class="when">Mar 26, 2019</span>
+            </p>
+            <button class="more" mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu1">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </mat-list-item>
+          <mat-menu #menu1="matMenu" xPosition="before">
+            <button mat-menu-item>Edit</button>
+            <button mat-menu-item>Delete</button>
+          </mat-menu>
+        </mat-nav-list>
+      </mat-card-content>
+
+      <mat-card-content>
+        <mat-nav-list class="pt-0">
+          <mat-list-item>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod temporfd labore et dolore magna aliqua. Ut enim ad minim veniam, 
+              quis nostrud exercitatr oris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod 
+              temporfd labore et dolore magna aliqua.
+              <span class="when">Mar 26, 2019</span>
+            </p>
+            <button class="more" mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu1">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </mat-list-item>
+          <mat-menu #menu1="matMenu" xPosition="before">
+            <button mat-menu-item>Edit</button>
+            <button mat-menu-item>Delete</button>
+          </mat-menu>
+        </mat-nav-list>
+      </mat-card-content>
+
+    </div>
+  </div>
+</form>
