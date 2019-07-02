@@ -53,6 +53,40 @@
 
 /* Media query (start here)*/
 
+// only landscape view (start here)
+
+@media screen and (orientation:landscape) and (max-width: 850px){
+    .ll--modal--header.stepper--modal--header{
+        margin: 0 !important;
+    }
+    .per--profile--wrapper {
+        padding-top: 0 !important;
+    }
+    .per--profile--wrapper ::ng-deep .mat-horizontal-content-container {
+        padding: 0 !important;
+    }
+    .per--profile--wrapper .main--head {
+        font-size: 16px;
+        margin: 5px;
+    }
+    .per--profile--wrapper .sub--head {
+        font-size: 12px;
+        color: #222324;
+        margin: 0 5px;
+    }   
+    
+    .per--profile--wrapper .profile--body--scroll {
+        height: calc(100vh - 212px);
+        overflow: auto;
+        padding: 0 15px;
+        margin-bottom: 0px;
+        padding-top: 0px;
+    }   
+    .mt-1.mb-1{
+        margin: 5px 0 !important;
+    }
+}
+
 @media only screen and (max-width: 599px) {
     .per--profile--wrapper .main--head {
         font-size: 22px;
