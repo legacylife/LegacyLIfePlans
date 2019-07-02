@@ -633,6 +633,14 @@ body{
                     border-radius: 2px;
                     background-color: #f9e17f;
                 }
+                &.active,
+                &:hover{
+                    .mat-icon,
+                    span{
+                        color: #c72128;
+                    }
+                    
+                }
             }
         } 
     }
@@ -654,15 +662,18 @@ body{
                         width: 20px;
                         font-size: 20px;
                         margin-right: 10px;
-                    }
-                    &.active--link{
-                        color: #c72128;
-                    }
+                    }                   
                 }
                
                 &.get--feature{
                     border-radius: 2px;
                     background-color: #f9e17f;
+                }
+                &.active,
+                &:hover{
+                    a{
+                        color: #c72128;
+                    }
                 }
             }
         }
