@@ -1,4 +1,5 @@
-<div *ngIf="routeParts && routeParts.length > 0">
+<!-- <div *ngIf="routeParts && routeParts.length > 0"> -->
+<div *ngIf="urlVal">
 <div class="breadcrumb-bar" *ngIf="layout.layoutConf.useBreadcrumb && layout.layoutConf.breadcrumb === 'simple'">
     <ul class="breadcrumb">
     <li *ngFor="let part of routeParts"><a routerLink="/{{part.url}}">{{part.breadcrumb | translate}}</a></li>

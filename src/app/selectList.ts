@@ -256,6 +256,95 @@ export const DevicesList = [{
 }
 ]
 
+export const PasswordType = [{ 
+  "opt_name" : "Password", 
+  "opt_code" : "1", 
+},{ 
+  "opt_name" : "Pin", 
+  "opt_code" : "2", 
+},{ 
+  "opt_name" : "Pattern", 
+  "opt_code" : "3", 
+}
+]
+
+
+export const ElectronicMediaLists = [{ 
+  "opt_name" : "Gmail", 
+  "opt_code" : "1", 
+},{ 
+  "opt_name" : "Yahoo", 
+  "opt_code" : "2", 
+},{ 
+  "opt_name" : "Outlook", 
+  "opt_code" : "3", 
+},{ 
+  "opt_name" : "ebay", 
+  "opt_code" : "4", 
+},{ 
+  "opt_name" : "Amazon", 
+  "opt_code" : "5", 
+},{ 
+  "opt_name" : "Facebook", 
+  "opt_code" : "6", 
+},{ 
+  "opt_name" : "Instagram", 
+  "opt_code" : "7", 
+},{ 
+  "opt_name" : "Twitter", 
+  "opt_code" : "8", 
+},{ 
+  "opt_name" : "LinkedIn", 
+  "opt_code" : "9", 
+},{ 
+  "opt_name" : "Google", 
+  "opt_code" : "10", 
+},{ 
+  "opt_name" : "Snapchat", 
+  "opt_code" : "11", 
+},{ 
+  "opt_name" : "Flickr", 
+  "opt_code" : "12", 
+},{ 
+  "opt_name" : "iTunes", 
+  "opt_code" : "13", 
+},{ 
+  "opt_name" : "Vimeo", 
+  "opt_code" : "14", 
+},{ 
+  "opt_name" : "YouTube", 
+  "opt_code" : "15", 
+},{ 
+  "opt_name" : "Pinterest", 
+  "opt_code" : "16", 
+},{ 
+  "opt_name" : "Quora", 
+  "opt_code" : "17", 
+},{ 
+  "opt_name" : "Reddit", 
+  "opt_code" : "18", 
+},{ 
+  "opt_name" : "Mix", 
+  "opt_code" : "19", 
+},{ 
+  "opt_name" : "Plazo", 
+  "opt_code" : "20", 
+},{ 
+  "opt_name" : "Ning", 
+  "opt_code" : "21", 
+},{ 
+  "opt_name" : "Mylife", 
+  "opt_code" : "22", 
+},{ 
+  "opt_name" : "Bing", 
+  "opt_code" : "23", 
+},{ 
+  "opt_name" : "Periscope", 
+  "opt_code" : "24", 
+}
+]
+
+
 export const activeLicense = ['Health', 'Life',  'Property & Casualty', 'Series 3','Series 6', 'Series 7', 'Series 24','Series 26', 'Series 63', 'Series 65', 'Series 66']
 
 export const industryDomain = ['Life', 'Health', 'Property & Casualty']

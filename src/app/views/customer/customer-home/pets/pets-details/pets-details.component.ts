@@ -51,7 +51,7 @@ export class PetsDetailsComponent implements OnInit {
         console.log(result.data)
       } else {
         if (result.data) {
-          this.row = result.data;
+          this.row = result.data;        
         }
       }  
     }, (err) => {

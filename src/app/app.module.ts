@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 //import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-console.log("App module ...")
+console.log("App module .....")
 import {
   MatListModule,
   MatIconModule,
@@ -56,11 +56,8 @@ export class GlobalVariables {
     contrast: 'rgba(0, 0, 0, 0.87)'
   };
 }
-
 import { RouterModule } from '@angular/router';
-import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import { GestureConfig, MatDialogModule, MatIconModule } from '@angular/material';
 import { PerfectScrollbarModule, PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './shared/inmemory-db/inmemory-db.service';
@@ -73,16 +70,15 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { APIService } from './api.service';
 import { UserAPIService } from './userapi.service';
-import { ChangePicComponent } from './views/change-pic/change-pic.component';
 import { InviteComponent } from './views/invite-modal/invite-modal.component';
+import { TodosComponent } from './views/todos/todos.component';
 import { ReferAndEarnModalComponent } from './views/refer-and-earn-modal/refer-and-earn-modal.component';
 import { LyIconModule } from '@alyle/ui/icon';
 import { FileUploadModule } from 'ng2-file-upload';
-
 ///import { ImageCropperComponent, ImageCropperModule } from "ngx-img-cropper";
-
-
+import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 // AoT requires an exported function for factories
+import { ChangePicComponent } from './views/change-pic/change-pic.component';
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }
@@ -146,7 +142,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     RouterModule.forRoot(rootRouterConfig, { useHash: false })
   ],
   exports: [ChangePicComponent],
-  bootstrap: [AppComponent,ChangePicComponent], 
+  bootstrap: [AppComponent], 
   providers: [
     APIService, UserAPIService,
     { provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig },
@@ -155,7 +151,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     { provide: LY_THEME, useClass: MinimaDark, multi: true },// name: `minima-dark`
     { provide: LY_THEME_GLOBAL_VARIABLES,useClass: GlobalVariables    } 
   ],
-  declarations: [AppComponent, ChangePicComponent, InviteComponent, ReferAndEarnModalComponent],
-  entryComponents: [ChangePicComponent, InviteComponent, ReferAndEarnModalComponent],
+  declarations: [AppComponent, ChangePicComponent, InviteComponent, ReferAndEarnModalComponent,
+    TodosComponent],
+  entryComponents: [ChangePicComponent, InviteComponent, ReferAndEarnModalComponent, TodosComponent],
 })
 export class AppModule { }

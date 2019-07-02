@@ -1,37 +1,70 @@
 <div class="container ">
-  <div fxLayout="row wrap">
-    <div fxFlex.xs="100" fxFlex.sm="100">
-      <div class="shop-wrap llp--content--wrapper m-0" fxLayout="row" fxLayoutWrap="wrap">
-        <div class="full-width">
-          <mat-card class="empty--section p-0">
-            <mat-card-title class="">
-              <div class="card-title-text">Legacy Details</div>
-              <mat-divider></mat-divider>
-            </mat-card-title>
-            <mat-card-content class="">
+  <div class="shop-wrap llp--content--wrapper m-0 mt-1" fxLayout="row" fxLayoutWrap="wrap">
+    <div class="full-width">
+      <mat-card class="empty--section p-0">
+        <mat-card-title class="">
+          <div class="card-title-text">Legacy Details</div>
+          <mat-divider></mat-divider>
+        </mat-card-title>
+        <mat-card-content class="">
 
-              <div class="leads--details">
-                <div class="leads--pic">
-                  <img class="" alt="" src="assets/images/arkenea/john.png">
-                </div>
-                <div class="leads--details">
-                    <h5>Mary Kom</h5>
-                    <div class="icon--and--info">
-                      <mat-icon>star</mat-icon>
-                      Free member
-                    </div>
-                    <div class="icon--and--info">
-                      <mat-icon>markunread</mat-icon>
-                      james.anderson@gmail.com
-                    </div>
-                </div>
+          <div class="leads--details">
+            <div class="leads--pic">
+              <img class="" alt="" src="assets/images/arkenea/john.png">
+            </div>
+            <div class="leads--infos">
+              <h5>Mary Kom</h5>
+              <div class="icon--and--info unique">
+                <mat-icon>star</mat-icon>
+                Free member
               </div>
-              
+              <div class="icon--and--info">
+                <mat-icon>markunread</mat-icon>
+                james.anderson@gmail.com
+              </div>
+              <div class="icon--and--info">
+                <mat-icon>location_on</mat-icon>
+                Pune, Wakad, Maharashtra
+              </div>
+              <div class="icon--and--info">
+                <mat-icon>local_phone</mat-icon>
+                +1 9876543210
+              </div>
+            </div>
+          </div>
 
-            </mat-card-content>
-          </mat-card>
-        </div>
-      </div>
+          <div class="counters">
+            <div class="counters--box">
+              <div class="count">125</div>
+              <div class="count--txt">Acting as Trustee</div>
+            </div>
+            <div class="counters--box">
+              <div class="count">17</div>
+              <div class="count--txt">Appointed Files</div>
+            </div>
+            <div class="counters--box">
+              <div class="count">0</div>
+              <div class="count--txt">Own Legacy Files</div>
+            </div>
+          </div>
+
+          <div class="pros--details">
+            <h5>Prospect Details</h5>
+
+            <div class="cust--user--details mt-1">
+              <div class="name--letters">TA</div>
+              <div class="user--name">
+                <h5 class="pros--name">Tom Anderson and  <span (click)="openMorePeople()"> 5 others</span></h5>
+                <p class="mb-0">As an Appointee
+                </p>
+              </div>
+            </div>
+
+
+            
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
 </div>

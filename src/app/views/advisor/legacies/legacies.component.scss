@@ -1,6 +1,7 @@
 @import 'llp-global-styles.scss';
 
 .legacy--access--wrapper{
+    margin-top: 15px;
     .recent--update--section {
         padding: 20px 23px;
         height: calc(100vh - 223px);
@@ -177,5 +178,9 @@
         margin-right: 5px;
     }
 }
-@media only screen and (min-width: 1280px) and (max-width: 1440px){}
-@media only screen and (min-width: 1441px) and (max-width: 1550px){}
+/* iPad */
+@media (device-height: 768px) and (device-width: 1024px){
+    .legacy--wrapper .legacy--box {
+        width: 31%;
+    }
+}

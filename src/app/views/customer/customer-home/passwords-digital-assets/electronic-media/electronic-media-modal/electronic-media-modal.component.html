@@ -1,0 +1,47 @@
+<div class="ll--modal--header">
+    Electronic Media
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+<form class="llp-form-wrapper" (ngSubmit)="ElectronicMediaFormSubmit(ElectronicMediaForm.value)">
+  <div class="ll--modal--body idbox--modal--hgt">
+    <div fxLayout="row wrap" class="pt-1">
+      <div fxFlex.xs="100">
+
+        <mat-form-field class="full-width">
+            <mat-label>Media Type*</mat-label>
+            <mat-select placeholder="Media Type*" name="mediaType" [formControl]="ElectronicMediaForm.controls['mediaType']" >
+              <mat-option value="">Select Policy Type</mat-option>
+              <mat-option *ngFor="let option of electronicMediaListing"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
+            </mat-select>
+            <mat-icon matTooltip="Please select media type" matTooltipClass="llp--tooltip error" *ngIf="ElectronicMediaForm.controls['mediaType'].hasError('required') && ElectronicMediaForm.controls['mediaType'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+        
+        <mat-form-field class="full-width">
+          <input matInput name="username"  placeholder="Username*"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="ElectronicMediaForm.controls['username']">
+          <mat-icon matTooltip="Please enter username" matTooltipClass="llp--tooltip error" *ngIf="ElectronicMediaForm.controls['username'].hasError('required') && ElectronicMediaForm.controls['username'].touched"
+          class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <input matInput type="password" name="password" (keyup)="firstCapitalize($event)"  placeholder="Password*" [formControl]="ElectronicMediaForm.controls['password']">
+          <mat-icon matTooltip="Please enter password" matTooltipClass="llp--tooltip error" *ngIf="ElectronicMediaForm.controls['password'].hasError('required') && ElectronicMediaForm.controls['password'].touched"
+          class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width mt-1">
+            <textarea (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" maxlength="500" matInput placeholder="Comments" name="comments" [formControl]="ElectronicMediaForm.controls['comments']"></textarea>
+            <div class="char--limit" style="float: right;">{{ 500 - ElectronicMediaForm.controls['comments'].value?.length }}</div>
+        </mat-form-field>
+
+          <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
+            <input matInput name="profileId" [formControl]="ElectronicMediaForm.controls['profileId']" readonly="readonly">
+          </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn" [disabled]="!ElectronicMediaForm.valid">Save</button>
+  </div>
+</form>

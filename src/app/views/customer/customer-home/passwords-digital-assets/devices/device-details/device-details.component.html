@@ -3,7 +3,7 @@
     <div class="">
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
-          <mat-card-title class="m-0">Device</mat-card-title>
+          <mat-card-title class="m-0">Passwords Digital & Assests</mat-card-title>
           <div class="right--actions">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openDevicesModal()">
               <mat-icon>edit</mat-icon>
@@ -19,21 +19,20 @@
           <div class="details--wrapper mb-1">
             <div class="details--header">
               <div class="d-flex align--items--center">
-                <mat-icon>library_add</mat-icon>{{row?.name}}
+                <mat-icon>library_add</mat-icon>Devices
               </div>
               <span class="last--modified--by">Last modified:
                 <span>{{row?.createdOn | date: 'MMM dd, yyyy'}}</span>
               </span>
             </div>
             <div class="details--body">
-              <h3>{{row?.deviceList}}</h3>
-             
+                <h3>{{row?.deviceName}}</h3>
               <div fxLayout="row wrap" class="mb--10">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Device Type:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.deviceList}}</label>
+                  <label class="normal--label">{{getType(row?.deviceList,'deviceList')}}</label>
                 </div>
               </div>
 
@@ -46,8 +45,42 @@
                 </div>
               </div>
 
-   //passwordPattern
+              <div fxLayout="row wrap" class="mb--10">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                    <label class="strong--label">Password Type:</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                    <label class="normal--label">{{getType(row?.passwordType,'passwordType')}}</label>
+                  </div>
+              </div>
 
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.password.length>0">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                    <label class="strong--label">Password:</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                    <label class="normal--label">{{row?.password}}</label>
+                  </div>
+              </div>
+
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.pin && row?.pin.length>0">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                    <label class="strong--label">Pin:</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                    <label class="normal--label">{{row?.pin}}</label>
+                  </div>
+              </div>
+
+              <div [hidden]=IsVisible>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                      <label class="strong--label">Pattern:</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                      <img src="../../../../../../assets/images/arkenea/icon-arrow.png" style="display:none"/>
+                      <div id="patternHolder8" class="pattern-holder small--pattern"></div>
+                    </div>                  
+              </div>
             </div>
           </div>
         </mat-card-content>

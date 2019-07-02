@@ -103,13 +103,13 @@ import { DebtModalComponent } from './customer-home/insurance-finance-debt/debt-
 import { PasswordsDigitalAssetsListComponent } from './customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
 import { DevicesModalComponent } from './customer-home/passwords-digital-assets/devices/devices-modal/devices-modal.component';
 
-import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
+//import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
 /** Import the component modules */
-import { LyButtonModule } from '@alyle/ui/button';
-import { LyToolbarModule } from '@alyle/ui/toolbar';
-import { LyIconModule } from '@alyle/ui/icon';
+// import { LyButtonModule } from '@alyle/ui/button';
+// import { LyToolbarModule } from '@alyle/ui/toolbar';
+// import { LyIconModule } from '@alyle/ui/icon';
+//import { LyResizingCroppingImageModule } from '@alyle/ui/resizing-cropping-images';
 
-import { LyResizingCroppingImageModule } from '@alyle/ui/resizing-cropping-images';
 /** Import themes */
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
 import { ListingComponent } from './customer-home/real-estate-assets/listing/listing.component';
@@ -127,6 +127,8 @@ import { DeviceDetailsComponent } from './customer-home/passwords-digital-assets
 import { LettersMessagesListingComponent } from './customer-home/legacy-life-letters-messages/letters-messages-listing/letters-messages-listing.component';
 import { LettersMessagesDetailsComponent } from './customer-home/legacy-life-letters-messages/letters-messages-details/letters-messages-details.component';
 import { LettersMessagesModelComponent } from './customer-home/legacy-life-letters-messages/letters-messages-model/letters-messages-model.component';
+import { ElectronicMediaModalComponent } from './customer-home/passwords-digital-assets/electronic-media/electronic-media-modal/electronic-media-modal.component';
+import { ElectronicMediaDetailsComponent } from './customer-home/passwords-digital-assets/electronic-media/electronic-media-details/electronic-media-details.component';
 
 export class GlobalVariables {
   testVal = '#00bcd4';
@@ -181,11 +183,11 @@ export class GlobalVariables {
     MatSidenavModule,
     MatDialogModule,
     MatStepperModule,
-    LyThemeModule.setTheme('minima-light'),
-    LyButtonModule,
-    LyToolbarModule,
-    LyResizingCroppingImageModule,
-    LyIconModule,
+    //LyThemeModule.setTheme('minima-light'),
+    // LyButtonModule,
+    // LyToolbarModule,
+    // LyResizingCroppingImageModule,
+    // LyIconModule,
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [
@@ -209,19 +211,20 @@ export class GlobalVariables {
     SpecialNeedsModelComponent, DetailsVehiclesComponent, DetailsAssetsComponent,
     TimeCapsuleListComponent, TimeCapsuleMoalComponent, TimeCapsuleDetailsComponent, InsuranceFinanceDebtListComponent,
     InsuranceModalComponent, InsuranceDetailsComponent, FinanceModalComponent, FinanceDetailsComponent, DebtDetailsComponent,
-    DebtModalComponent, PasswordsDigitalAssetsListComponent, DevicesModalComponent,DeviceDetailsComponent,LettersMessagesListingComponent,LettersMessagesDetailsComponent,LettersMessagesModelComponent
+    DebtModalComponent, PasswordsDigitalAssetsListComponent, DevicesModalComponent,DeviceDetailsComponent,LettersMessagesListingComponent,LettersMessagesDetailsComponent,
+    LettersMessagesModelComponent,ElectronicMediaModalComponent,ElectronicMediaDetailsComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
-    { provide: LY_THEME, useClass: MinimaLight, multi: true },
-    { provide: LY_THEME, useClass: MinimaDark, multi: true },
-    { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },
+    // { provide: LY_THEME, useClass: MinimaLight, multi: true },
+    // { provide: LY_THEME, useClass: MinimaDark, multi: true },
+    // { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },
   ], bootstrap: [CustomerSignupComponent],
   entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,
     addTrusteeModalComponent, PersonalProfileModalComponent, MarkAsDeceasedComponent,
     legalStuffModalComponent, essentialsMyProfessionalsComponent, SendAnEmailComponent,
     HireAdvisorComponent, FinalWishesFormModalComponent, PetsModalComponent, AssetsModelComponent,
     SpecialNeedsModelComponent, RealEstateModelComponent, VehicleModelComponent, TimeCapsuleMoalComponent,
-    InsuranceModalComponent, FinanceModalComponent, DebtModalComponent, DevicesModalComponent, ProfAddTrusteeModalComponent,LettersMessagesModelComponent
+    InsuranceModalComponent, FinanceModalComponent, DebtModalComponent, DevicesModalComponent, ProfAddTrusteeModalComponent,LettersMessagesModelComponent,ElectronicMediaModalComponent
   ]
 })
 export class CustomerModule { }

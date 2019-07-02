@@ -13,6 +13,8 @@ import { filter } from 'rxjs/operators';
 export class BreadcrumbComponent implements OnInit, OnDestroy {
   routeParts:any[];
   routerEventSub: Subscription;
+  UserType:string;
+  urlVal: boolean = false;
   // public isEnabled: boolean = true;
   constructor(
     private router: Router,
@@ -43,9 +45,11 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
-
-
+    this.UserType = localStorage.getItem("endUserType");
+   const locationArray = location.href.split('/')
+   if(locationArray[locationArray.length - 2]=='admin'){
+    this.urlVal = true;
+   }
   }
   ngOnDestroy() {
     if(this.routerEventSub) {

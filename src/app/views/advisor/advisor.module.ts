@@ -28,7 +28,8 @@ import {
   MatRippleModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatBottomSheetModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -48,6 +49,7 @@ import { AdvisorLeadsDetailsComponent } from './advisor-leads-details/advisor-le
 import { AdvisorDashboardUpdateComponent } from './advisor-dashboard-update/advisor-dashboard-update.component';
 import { AdvisorAccountSettingComponent } from './advisor-account-setting/advisor-account-setting.component';
 import { AdvisorSubscriptionComponent } from './advisor-subscription/advisor-subscription.component';
+import { ProspectPeoplesModalComponent } from './advisor-leads-details/prospect-peoples-modal/prospect-peoples-modal.component';
 import { AdvisorLegacyDetailsComponent } from './advisor-legacy-details/advisor-legacy-details.component';
 import { LegaciesDetailsLandingComponent } from './advisor-legacy-details/legacies-details-landing/legacies-details-landing.component';
 import { GetFeaturedComponent } from './get-featured/get-featured.component';
@@ -66,11 +68,11 @@ import { ReferAndEarnModalComponent } from './legacies/refer-and-earn-modal/refe
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CountUpModule } from 'countup.js-angular2';
 /** Import Alyle UI */
-import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
+// import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
 /** Import the component modules */
-import { LyButtonModule } from '@alyle/ui/button';
-import { LyToolbarModule } from '@alyle/ui/toolbar';
-import { LyIconModule } from '@alyle/ui/icon';
+// import { LyButtonModule } from '@alyle/ui/button';
+// import { LyToolbarModule } from '@alyle/ui/toolbar';
+// import { LyIconModule } from '@alyle/ui/icon';
 
 import { LyResizingCroppingImageModule } from '@alyle/ui/resizing-cropping-images';
 /** Import themes */
@@ -134,14 +136,15 @@ export class GlobalVariables {
     MatStepperModule,
     HttpModule,
     SlickCarouselModule,
+    MatBottomSheetModule,
     RouterModule.forChild(AdvisorRoutes),
     CountUpModule,
 
-    LyThemeModule.setTheme('minima-light'),
-    LyButtonModule,
-    LyToolbarModule,
-    LyResizingCroppingImageModule,
-    LyIconModule
+    // LyThemeModule.setTheme('minima-light'),
+    // LyButtonModule,
+    // LyToolbarModule,
+    // LyResizingCroppingImageModule,
+    // LyIconModule
   ],
   declarations: [
     AdvisorSignupComponent, BusinessInfoComponent, SetPasswordComponent,
@@ -150,10 +153,13 @@ export class GlobalVariables {
     ChangePassComponent, HomeComponent, ReferAndEarnModalComponent, AdvisorLegacyDetailsComponent,
     LegaciesDetailsLandingComponent, MarkAsDeceasedComponent,
     GetFeaturedComponent, SubmitEnquiryModalComponent, AdvisorLeadsComponent, AdvisorLeadsDetailsComponent, 
-  ], providers: [{ provide: LY_THEME, useClass: MinimaLight, multi: true },
-  { provide: LY_THEME, useClass: MinimaDark, multi: true },
-  { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },
+    ProspectPeoplesModalComponent
+  ], providers: [
+    // { provide: LY_THEME, useClass: MinimaLight, multi: true },
+    // { provide: LY_THEME, useClass: MinimaDark, multi: true },
+    // { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, ProfilePicService, CanDeactivateGuard
-  ], entryComponents: [ChangePassComponent, ReferAndEarnModalComponent, MarkAsDeceasedComponent, SubmitEnquiryModalComponent],
+  ], entryComponents: [ChangePassComponent, ReferAndEarnModalComponent, MarkAsDeceasedComponent, SubmitEnquiryModalComponent, 
+    ProspectPeoplesModalComponent],
 })
 export class AdvisorModule { }

@@ -13,8 +13,9 @@
 }
 
 .refer--earn--modal--body{
-    height: calc(100vh - 400px);
-    overflow: auto;
+   min-height: calc(100vh - 460px);
+   max-height: calc(100vh - 223px);
+   overflow: auto;
 }
 .this--month{
     color: #222324;
@@ -28,6 +29,22 @@
     }
 }
 
+
+
+
+@media screen and (orientation:landscape) and (max-width: 850px){
+    .this--month {
+        top: 0 !important;
+        font-size: 12px;
+    }
+    .this--month span {
+        font-size: 15px;
+    }
+    .invite--sub--line {
+        font-size: 14px;
+        margin: 0 0 5px 0px;
+    }
+}
 @media only screen and (max-width: 599px){
     .this--month{
         top: 44px;
@@ -36,9 +53,13 @@
             font-size: 14px;
         }
     }
+    .invite--sub--line{
+        font-size: 15px;
+    }
 }
 @media only screen and (min-width: 600px) and (max-width: 959px){
     .this--month{
         top: 15px;        
     }
 }
+

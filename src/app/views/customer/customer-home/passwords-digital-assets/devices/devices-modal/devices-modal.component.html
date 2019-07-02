@@ -10,7 +10,7 @@
       <div fxFlex.xs="100">
              
         <mat-form-field class="full-width">
-          <mat-label>Policy Type*</mat-label>
+          <mat-label>Device Type*</mat-label>
         <mat-select placeholder="Device List*" name="deviceList" [formControl]="DevicesForm.controls['deviceList']" >
           <mat-option value="">Select Policy Type</mat-option>
           <mat-option *ngFor="let option of deviceListing"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
@@ -19,35 +19,48 @@
         </mat-form-field>
 
         <mat-form-field class="full-width">
-          <input matInput name="deviceName" placeholder="Device Name*"   [formControl]="DevicesForm.controls['deviceName']">
+          <input matInput name="deviceName" (keyup)="firstCapitalize($event)" placeholder="Device Name*"   [formControl]="DevicesForm.controls['deviceName']">
           <mat-icon matTooltip="Please enter device name" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['deviceName'].hasError('required') && DevicesForm.controls['deviceName'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
         <mat-form-field class="full-width">
-          <input matInput name="username"  placeholder="username" [formControl]="DevicesForm.controls['username']">
+            <mat-label>Password Type*</mat-label>
+          <mat-select placeholder="Password Type*" name="passwordType" [formControl]="DevicesForm.controls['passwordType']" (selectionChange)="onChangePasswordType($event.value)">
+            <mat-option value="">Select Password Type</mat-option>
+            <mat-option *ngFor="let option of passwordType"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
+          </mat-select>
+            <mat-icon matTooltip="Please select password type" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['passwordType'].hasError('required') && DevicesForm.controls['passwordType'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <input matInput name="username"  placeholder="Username" [formControl]="DevicesForm.controls['username']">
           <mat-icon matTooltip="Please enter username" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['username'].hasError('required') && DevicesForm.controls['username'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
-        <div id="patternHolder" class="large--pattern"></div>
-
-        <img src="../../../../../../assets/images/arkenea/icon-arrow.png" style="display:none"/>
-        <div id="patternHolder7" class="pattern-holder small--pattern"></div>
-
-        <!-- <mat-form-field class="full-width">
-          <input matInput name="veterinarian" placeholder="Veterinarian" [formControl]="DevicesForm.controls['veterinarian']">
-          <mat-icon matTooltip="Please enter veterinarian" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['veterinarian'].hasError('required') && DevicesForm.controls['veterinarian'].touched"
-          class="red--alert">help_outline</mat-icon>
+        <mat-form-field class="full-width" *ngIf="typeOne">
+            <input  type="password" matInput name="password"  placeholder="Password*" [formControl]="DevicesForm.controls['password']" >
+            <mat-icon matTooltip="Please enter password" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['password'].hasError('required') && DevicesForm.controls['password'].touched"
+            class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
-        <mat-form-field class="full-width">
-          <input matInput name="dietaryConcerns" placeholder="Dietary Concerns" [formControl]="DevicesForm.controls['dietaryConcerns']">
-          <mat-icon matTooltip="Please enter dietary concerns" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['dietaryConcerns'].hasError('required') && DevicesForm.controls['dietaryConcerns'].touched"
-          class="red--alert">help_outline</mat-icon>
+        <mat-form-field class="full-width" *ngIf="typeTwo">
+            <input  type="password" matInput name="pin"  placeholder="Pin*" [formControl]="DevicesForm.controls['pin']" >
+            <mat-icon matTooltip="Please enter pin" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['pin'].hasError('required') && DevicesForm.controls['pin'].touched" class="red--alert">help_outline</mat-icon>
+            <mat-icon matTooltip="Please enter numbers only" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['pin'].hasError('pattern') && DevicesForm.controls['pin'].touched" class="red--alert">help_outline</mat-icon>
         </mat-form-field>
-     -->
-       
+
+        <div class="relative" [hidden]=IsVisible>
+            <div id="patternHolder" class="large--pattern"></div>
+            <img src="../../../../../../assets/images/arkenea/icon-arrow.png" style="display:none"/>
+            <div id="patternHolder7" class="pattern-holder small--pattern"></div>
+            <small *ngIf="pattrenTempMissing" class="form-error-msg">{{invalidMessage}}</small>
+        </div> 
+        <mat-form-field class="full-width" *ngIf="pattrenTemp">
+            <input matInput name="pattrenTemp" [formControl]="DevicesForm.controls['pattrenTemp']">
+            <small *ngIf="DevicesForm.controls['pattrenTemp'].hasError('required') && DevicesForm.controls['pattrenTemp'].touched" class="form-error-msg"> Please drag your pattern. </small>
+        </mat-form-field>
 
           <!-- <button mat-raised-button class="llp--primary--btn" type="button" (click)="savePattren(patternNo)">Check {{patternNo}}</button> -->
           <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
@@ -58,7 +71,7 @@
   </div>
   <div class="ll--modal--footer text-center">
     <!-- <button mat-raised-button class="llp--primary--btn" [disabled]="!DevicesForm.valid">Save</button> -->
-    <button mat-raised-button class="llp--secondary--btn mr-1" type="button"  (click)="resetPattern($event);">Reset</button>
+    <!-- <button mat-raised-button class="llp--secondary--btn mr-1" type="button"  (click)="resetPattern($event);">Reset</button> -->
     <button mat-raised-button class="llp--primary--btn"  [disabled]="!DevicesForm.valid">Save</button>
     
   </div>

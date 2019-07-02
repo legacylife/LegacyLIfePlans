@@ -364,6 +364,7 @@ body{
                                 display: none;
                             }
                         }
+                        &.active,
                         &:hover{
                             a{
                                 color: $clr--2;

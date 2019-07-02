@@ -1,9 +1,91 @@
 @import 'llp-global-styles.scss';
 @import '../../../customer-home.component.scss';
-.uploaded--files{
-    &:hover{
-        .normal--label{
-            text-decoration: underline;
-        }
+@media only screen and (max-width: 599px) {
+    .pattern--body--hgt {
+        height: calc(100vh - 380px);
+        overflow: auto;
     }
+}
+
+.pattern--body--hgt{
+    height: calc(100vh - 388px);
+    overflow: auto;
+}
+
+#patternHolder8 .patt-wrap {
+    z-index: 10;
+  }
+  #patternHolder8 ::ng-deep .patt-circ.hovered {
+    background-color: #cde2f2;
+    border: none;
+    z-index: 9;
+  }
+  #patternHolder8 ::ng-deep .patt-circ.hovered .patt-dots {
+    display: none;
+  }
+  #patternHolder8 ::ng-deep .patt-circ.dir {
+    background-image: url('../../../../../../../assets/images/arkenea/icon-arrow.png');
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  #patternHolder8 ::ng-deep .patt-circ.e {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  #patternHolder8 ::ng-deep .patt-circ.s-e {
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  #patternHolder8 ::ng-deep .patt-circ.s {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+  #patternHolder8 ::ng-deep .patt-circ.s-w {
+    -webkit-transform: rotate(135deg);
+    transform: rotate(135deg);
+  }
+  #patternHolder8 ::ng-deep .patt-circ.w {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+  #patternHolder8 ::ng-deep .patt-circ.n-w {
+    -webkit-transform: rotate(225deg);
+     transform: rotate(225deg);
+  }
+  #patternHolder8 ::ng-deep .patt-circ.n {
+    -webkit-transform: rotate(270deg);
+    transform: rotate(270deg);
+  }
+  #patternHolder8 ::ng-deep .patt-circ.n-e {
+    -webkit-transform: rotate(315deg);
+    transform: rotate(315deg);
+  }
+
+@keyframes lock-activate-dot {
+    0% {
+        transform: scale(0);
+    }
+    75% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1.0);
+    }
+}
+
+.large--pattern{
+  margin: 0 auto;
+  background: #cf5b60;
+  ::ng-deep .patt-circ.hovered{
+    border: 3px solid #e5e5d0;
+  }
+}
+
+.small--pattern{
+  margin: 0;
+  background: #cf5b60;
+}
+
+#patternHolder.hides{
+  display: none;
 }

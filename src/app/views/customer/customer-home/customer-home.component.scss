@@ -102,7 +102,7 @@
         padding-top: 0 !important;
 
         .recent--acc--files{
-            width: 165px;
+            width: 163px;
             height: 172px;
             border: solid 1px #dadce0;
             border-radius: 2px;
@@ -364,7 +364,9 @@
     }
 }
 @media only screen and (min-width: 1280px) and (max-width: 1440px){
-
+    .llp--content--wrapper .files--wrapper .recent--acc--files{
+        width: 154px;
+    }
 }
 @media only screen and (min-width: 1441px) and (max-width: 1550px){}
 

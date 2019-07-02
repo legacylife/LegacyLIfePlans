@@ -48,3 +48,23 @@
     }
 }
 
+@media screen and (orientation:landscape) and (max-width: 850px){
+    .login-sub-wrapper{
+        padding: 12px 25px;
+    }
+    .login-sub-wrapper .login-header-text {
+        font-size: 19px;
+    }
+    .busi--info--wrapper .info--content {
+        margin-top: 17px;
+    }
+    .busi--info--wrapper .login-header-desc {
+        font-size: 13px;
+        margin: 5px 0 0 0;
+        text-align: center;
+    }
+    .login-footer {
+        margin-top: 15px;
+        font-size: 13px;
+    }
+}

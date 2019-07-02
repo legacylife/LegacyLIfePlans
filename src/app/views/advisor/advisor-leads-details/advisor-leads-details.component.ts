@@ -1,7 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import {MatBottomSheet, MatBottomSheetRef} from '@angular/material/bottom-sheet';
+import { ProspectPeoplesModalComponent } from './prospect-peoples-modal/prospect-peoples-modal.component';
 
 
 @Component({
@@ -12,58 +14,23 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 export class AdvisorLeadsDetailsComponent implements OnInit {
   allPeoples: any[];
 
-  constructor(
-  ) { }
+  @ViewChild(MatBottomSheet) private sideNav: MatBottomSheet;
+  constructor(private _bottomSheet: MatBottomSheet, _elementRef: ElementRef) { }
 
 
   ngOnInit() {
-    this.allPeoples = [
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'Allen Barry',
-        emailId: 'barryallen@gmail.com',
-        totalFiles: 'Pune, Wakad, Maharashtra',
-        totalFolders: '+1 9876543210',
-      },
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'Johnson Smith',
-        emailId: 'jonathancolon@gmail.com',
-        totalFiles: 'Hadpsar, Pune Colony, Maharashtra',
-        totalFolders: '+1 9876543210',
-      },
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'John Doe',
-        emailId: 'johnson.smith@gmail.com',
-        totalFiles: 'Wakad, Maharashtra',
-        totalFolders: '+1 9876543210',
-      },
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'Allen Barry',
-        emailId: 'barryallen@gmail.com',
-        totalFiles: 'Pune, Maharashtra',
-        totalFolders: '+1 9876543210',
-      },
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'Allen Barry',
-        emailId: 'barryallen@gmail.com',
-        totalFiles: 'Pune, Wakad, Maharashtra',
-        totalFolders: '+1 9876543210',
-      },
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'Johnson Smith',
-        emailId: 'jonathancolon@gmail.com',
-        totalFiles: 'Hadpsar, Pune Colony, Maharashtra',
-        totalFolders: '+1 9876543210',
-      }
-    ];
+
   }
 
+  openMorePeople(): void {
+    this._bottomSheet.open(ProspectPeoplesModalComponent);
+  }
 
+  // openBottomSheet() {
+  //   const bottomSheet: MatBottomSheetRef<any> = this._bottomSheet.open(ProspectPeoplesModalComponent, {
+  //     width: '720px'
+  //   });
+  // }
 
 
 }

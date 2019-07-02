@@ -1,4 +1,4 @@
-<div class="ll--modal--header llp--close--modal">
+<div class="ll--modal--header llp--close--modal stepper--modal--header">
   <button class="modal--close" [mat-dialog-close]="">
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
@@ -114,8 +114,8 @@
             </mat-form-field>
 
           </div>
-          <div class="mt-1 text-center">
-            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" [disabled]="firstFormGroup.invalid">Proceed</button>
+          <div class="mt-1 mb-1 text-center">
+            <button mat-raised-button matStepperNext class="llp--primary--btn" [disabled]="firstFormGroup.invalid">Proceed</button>
           </div>
         </form>
       </mat-step>
@@ -215,10 +215,10 @@
             </mat-form-field>
           </div>
 
-          <div class="mt-1 text-center">
+          <div class="mt-1 mb-1 text-center">
             <button mat-raised-button matStepperPrevious class="llp--back--btn" >
               <mat-icon>arrow_back</mat-icon> Back </button>
-            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" [disabled]="secondFormGroup.invalid">Proceed</button>
+            <button mat-raised-button matStepperNext class="llp--primary--btn" [disabled]="secondFormGroup.invalid">Proceed</button>
           </div>
 
         </form>
@@ -344,10 +344,10 @@
                 class="red--alert">help_outline</mat-icon>
             </mat-form-field>
           </div>
-          <div class="mt-1 text-center">
+          <div class="mt-1 mb-1 text-center">
             <button mat-raised-button matStepperPrevious class="llp--back--btn" (click)="scroll('#wpWorkBusiness_1')">
               <mat-icon>arrow_back</mat-icon> Back </button>
-            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" [disabled]="thirdFormGroup.invalid">Submit</button>
+            <button mat-raised-button matStepperNext class="llp--primary--btn" [disabled]="thirdFormGroup.invalid">Submit</button>
           </div>
         </form>
       </mat-step>
