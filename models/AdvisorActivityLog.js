@@ -1,16 +1,17 @@
 var mongoose = require( 'mongoose' )
 var constants = require("./../config/constants")
 
-var fileActivityLogSchema = new mongoose.Schema({
-  customerId: String,
-  fileId: String,
-  fileName: String,
-  folderName: String,
-  subFolderName: String,
+var advisorActivityLogSchema = new mongoose.Schema({
+  customerId: mongoose.Schema.Types.ObjectId,
+  customerProfileImage: String,
+  advisorId: mongoose.Schema.Types.ObjectId,
+  activityMessage: String,
+  sectionName: String,
+  actionTaken: String,
   createdOn: Date,
   modifiedOn: Date,
-  createdBy: String,
-  modifiedBy: String
+  createdBy: mongoose.Schema.Types.ObjectId,
+  modifiedBy: mongoose.Schema.Types.ObjectId
 })
 
-module.exports = mongoose.model('file_activity_log', fileActivityLogSchema)
+module.exports = mongoose.model('advisor_activity_log', advisorActivityLogSchema)
