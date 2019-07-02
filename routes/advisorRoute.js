@@ -18,6 +18,7 @@ var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
+const AdvisorActivityLog = require('./../models/AdvisorActivityLog')
 const s3 = require('./../helpers/s3Upload')
 
 var auth = jwt({
@@ -117,6 +118,47 @@ function rejectAdvisor (req, res) {
   })
 }
 
+function contactAdvisor (req, res) {
+  
+   let  query  = {"_id" : req.body._id};
+   let advisorId = req.body.advisorId;
+   let fields = { id: 1, username: 1, firstName:1, lastName:1, status: 1, profilePhoto :1 }
+   User.findOne(query, fields, function (err, userDetails) {
+     if (err) {
+       res.status(401).send(resFormat.rError(err))
+     } else {
+       AdvisorActivityLog.findOne(query, fields, function (err, userDetails) {
+        var log = new AdvisorActivityLog();
+        log.customerId = query.customerId;
+        log.advisorId = advisorId;
+        log.activityMessage = userDetails.firstName +' ' + userDetails.lastName + ' contacted you.';
+        log.customerProfileImage = userDetails.profilePhoto;
+        log.sectionName = 'contact';
+        log.actionTaken = '';
+        log.createdOn = new Date();
+        log.modifiedOn = new Date();
+        log.createdBy = query.customerId;
+        log.modifiedOn = new Date();
+        log.save({}, function (err, newEntry) {
+          if (err) {
+            res.send(resFormat.rError(err))
+          } else {
+    
+            logData.customerId = query.customerId;
+            logData.fileId = newEntry._id;
+            actitivityLog.updateActivityLog(logData);
+    
+            let result = { "message": "You have sent an contact details!" }
+            res.status(200).send(resFormat.rSuccess(result))
+          }
+        })
+
+
+       })
+    }
+   })
+ }
+
 function fileupload(req, res){
   console.log(req);
 }
@@ -134,5 +176,6 @@ function generateToken(n) {
 router.post("/activateadvisor", activateAdvisor)
 router.post("/rejectadvisor", rejectAdvisor)
 router.post("/fileupload", fileupload)
+router.post("/contactadvisor", contactAdvisor)
 
 module.exports = router

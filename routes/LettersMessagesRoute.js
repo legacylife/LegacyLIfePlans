@@ -52,9 +52,9 @@ function LettersMessageFormUpdate(req, res) {
   let { proquery } = req.body;
 
   var logData = {}
-  logData.fileName = proquery.name;
-  logData.folderName = 'pets';
-  logData.subFolderName = 'pets';
+  logData.fileName = proquery.title;
+  logData.folderName = 'letters-messages';
+  logData.subFolderName = 'letters-messages';
 
   if(query._id){
     lettersMessage.findOne(query, function (err, custData) {      
@@ -63,7 +63,7 @@ function LettersMessageFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details  added';
+          let resText = 'details added';
           if (custData.name){
             resText = 'details updated';
           }
@@ -79,7 +79,7 @@ function LettersMessageFormUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Pets "+resText+" successfully" }
+              let result = { "message": "Letter message "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -109,7 +109,7 @@ function LettersMessageFormUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Pets added successfully!" }
+        let result = { "message": "Details added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
