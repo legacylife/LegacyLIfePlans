@@ -547,6 +547,11 @@ body{
         }
         .ll--modal--body{
             padding: 0 25px;
+            &.idbox--modal--hgt{
+                max-height: calc(100vh - 243px);
+                min-height: calc(100vh - 510px);
+                overflow: auto;
+            }
         }
         .ll--modal--footer{
             .llp--secondary--btn{
@@ -788,9 +793,7 @@ body{
     body .llp--toggle-btn{
         margin-bottom: 0 !important;
     }
-    body .llp--content--wrapper{
-        margin-top: 0 !important;
-    }
+  
  }
 
 // only landscape view (end here)
