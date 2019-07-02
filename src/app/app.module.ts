@@ -77,6 +77,7 @@ import { ChangePicComponent } from './views/change-pic/change-pic.component';
 import { InviteComponent } from './views/invite-modal/invite-modal.component';
 import { ReferAndEarnModalComponent } from './views/refer-and-earn-modal/refer-and-earn-modal.component';
 import { LyIconModule } from '@alyle/ui/icon';
+import { FileUploadModule } from 'ng2-file-upload';
 
 ///import { ImageCropperComponent, ImageCropperModule } from "ngx-img-cropper";
 
@@ -126,7 +127,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   MatIconModule,
  // ImageCropperModule,
   MatFormFieldModule,
-  
+  FileUploadModule,
 
   LyThemeModule.setTheme('minima-light'),
   LyButtonModule,

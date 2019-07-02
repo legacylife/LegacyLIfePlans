@@ -1,86 +1,103 @@
 <div class="ll--modal--header">
   Refer & Earn
-  <p class="this--month"><span class="lato--bold">12</span>/45 this month</p>
+  <p class="this--month"><span class="lato--bold">{{invitedMembersCount}}</span>/30 this month</p>
   <button class="modal--close" [mat-dialog-close]="">
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
 </div>
 
-<form class="llp-form-wrapper" (ngSubmit)="ReferSubmit()">
-  <div class="ll--modal--body refer--earn--modal--body">
+<form class="llp-form-wrapper" [formGroup]="inviteForm" (ngSubmit)="inviteSubmit()">
+  <div class="ll--modal--body refer--earn--modal--body" formArrayName="inviteMembers">
+    <h6 class="invite--sub--line">Invite
+      <span class="lato--bold">30 people</span> in a month and get
+      <span class="lato--bold">45 days </span> extended free access to all the features.</h6>
 
-      <h6 class="invite--sub--line">Invite
-        <span class="lato--bold">30 people</span> in a month and get
-        <span class="lato--bold">45 days </span> extended free access to all the features.</h6>
-      <div fxLayout="row wrap">
-        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
-          <mat-form-field class="full-width">
-            <input matInput value="Alaska bas" placeholder="Name">
-          </mat-form-field>
-        </div>
-        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
-          <mat-form-field class="full-width">
-            <input matInput value="alaska@gmail.com" placeholder="Email">
-          </mat-form-field>
-        </div>
-        <div fxFlex.xs="90" fxFlex.sm="95" fxFlex.md="35" fxFlex.lg="36" fxFlex.xl="37" class="pad--r--lg">
-          <mat-form-field class="full-width no-mar">
-            <mat-select placeholder="Relation" [(value)]="selected">
-              <mat-option value="opt1">Friend</mat-option>
-              <mat-option value="opt2">Family</mat-option>
-              <mat-option value="opt3">Colleague</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div fxFlex.xs="10" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="4" fxFlex.xl="3" class="text-right">
-          <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
-        </div>
+    <div fxLayout="row wrap" *ngFor="let ilist of inviteMembersList.controls; let pointIndex = index"
+      [formGroupName]="pointIndex">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
+        <mat-form-field class="full-width">
+          <input value="" matInput placeholder="Name*" formControlName="name" name="name">
+          <mat-icon matTooltip="Please enter name" matTooltipClass="llp--tooltip error" *ngIf="ilist.required"
+            class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
       </div>
-      <div fxLayout="row wrap">
-        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
-          <mat-form-field class="full-width">
-            <input matInput value="Alaska bas" placeholder="Name">
-          </mat-form-field>
-        </div>
-        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
-          <mat-form-field class="full-width">
-            <input matInput value="alaska@gmail.com" placeholder="Email">
-          </mat-form-field>
-        </div>
-        <div fxFlex.xs="90" fxFlex.sm="95" fxFlex.md="35" fxFlex.lg="36" fxFlex.xl="37" class="pad--r--lg">
-          <mat-form-field class="full-width no-mar">
-            <mat-select placeholder="Relation" [(value)]="selected">
-              <mat-option value="opt1">Friend</mat-option>
-              <mat-option value="opt2">Family</mat-option>
-              <mat-option value="opt3">Colleague</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div fxFlex.xs="10" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="4" fxFlex.xl="3" class="text-right">
-          <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
-        </div>
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
+        <mat-form-field class="full-width">
+          <input matInput value="" placeholder="Email*" formControlName="email" name="email"
+            (blur)="emailIdCheckInvite(pointIndex, ilist.valid)">
+          <mat-icon matTooltip="Please enter valid email" matTooltipClass="llp--tooltip error"
+            *ngIf="ilist.touched && ilist.invalid" class="red--alert">help_outline</mat-icon>
+          <mat-icon matTooltip="Already sent!" matTooltipClass="llp--tooltip error" *ngIf="emailIdCheck"
+            class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
       </div>
-      <div fxLayout="row wrap">
-        <div fxFlex.xs="100">
-          <div class="add--new">
-            <mat-icon>add_circle</mat-icon>
-            Add New
-          </div>
-        </div>
+      <div fxFlex.xs="90" fxFlex.sm="95" fxFlex.md="35" fxFlex.lg="36" fxFlex.xl="37" class="pad--r--lg">
+        <mat-form-field class="full-width no-mar">
+          <mat-select placeholder="Relation*" formControlName="relation" name="relation">
+            <mat-option value="Friend">Friend</mat-option>
+            <mat-option value="Family">Family</mat-option>
+            <mat-option value="Advisor">Advisor</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
-      <div class="upload--buss--docs--sec mt-1">
-        <label>Upload invitation image, business card</label>
-        <div class="upload--box">
-          <input type="file" name="idProofDocuments">
-          <mat-icon class="cloud-icon">cloud_upload</mat-icon>
-          <div class="select--file">Select file from your computer</div>
-        </div>
-        <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+      <div (click)="delete(pointIndex);" *ngIf="inviteMembersList.length > 1" fxFlex.xs="10" fxFlex.sm="5" fxFlex.md="5"
+        fxFlex.lg="4" fxFlex.xl="3" class="text-right">
+        <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
       </div>
+    </div>
 
-    
+    <!--div *ngIf="exitEmails.length > 0"><b>Already Sent! </b> <br />{{exitEmails}}</div-->
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100">
+        <div class="add--new" (click)="addRow();">
+          <mat-icon>add_circle</mat-icon>
+          Add New
+        </div>
+      </div>
+    </div>
+
+
+    <div class="upload--buss--docs--sec">
+      <label>Upload invitation image, business card</label>
+      <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+        (fileOver)="fileOverBase($event)" [uploader]="uploader">
+        <input type="file" name="documents" ng2FileSelect [uploader]="uploader" multiple (change)="fileOverBase('')" />
+        <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+        <div class="select--file">Select file from your computer</div>
+      </div>
+      <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
+    </div>
+    <mat-form-field class="full-width" *ngIf="documents_temps">
+      <input matInput name="documents_temp" [formControl]="inviteForm.controls['documents_temp']">
+      <small
+        *ngIf="inviteForm.controls['documents_temp'].hasError('required') && inviteForm.controls['documents_temp'].touched"
+        class="form-error-msg"> Please drag your document. </small>
+    </mat-form-field>
+
+    <div *ngIf="documentsList">
+      <mat-chip-list class="doc--list" *ngFor="let doc of documentsList; index as i">
+        <mat-chip><a href="{{docPath}}{{doc.documents[0].title}}" target="_blank">{{doc.documents[0].title}}</a>
+          <mat-icon matChipRemove (click)="deleteImage(i,doc)">close</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+
+    <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
+      <mat-chip>
+        <mat-error>{{err.error}}</mat-error>
+      </mat-chip>
+    </mat-chip-list>
+
+    <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small>
+    <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
+      <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">
+        {{uploader.progress}}%</div>
+      <mat-progress-bar class="" color="primary" mode="Indeterminate" [value]="uploader.progress"></mat-progress-bar>
+    </div>
+
   </div>
   <div class="ll--modal--footer text-center">
-    <button mat-raised-button class="llp--primary--btn">Invite</button>
+    <!-- <button mat-raised-button class="llp--primary--btn" [disabled]="inviteForm.invalid || exitEmails.length > 0">Invite</button> -->
+    <button mat-raised-button class="llp--primary--btn" [disabled]="inviteForm.invalid">Invite</button>
   </div>
 </form>

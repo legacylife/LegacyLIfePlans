@@ -43,6 +43,7 @@ export const s3Details = {
   financeFilePath:"finance/",
   debtFilePath:"debt/",
   petsFilePath:"pets/",
+  inviteDocumentsPath:"invite/",
   letterMessageDocumentsPath:"letterMessage/",
   apiGatewayUrl: ""
 }
