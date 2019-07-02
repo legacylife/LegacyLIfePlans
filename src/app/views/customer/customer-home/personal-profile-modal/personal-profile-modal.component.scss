@@ -88,13 +88,16 @@
 }
 
 @media only screen and (max-width: 599px) {
+    .per--profile--wrapper {
+        padding-top: 0 !important;
+    }
     .per--profile--wrapper .main--head {
         font-size: 22px;
         margin: 21px 0 0 0;
     }
     .per--profile--wrapper .sub--head {
-        font-size: 16px;        
-        margin: 17px 10px 13px 10px;
+        font-size: 14px;        
+        margin: 5px 10px;
     }
     .per--profile--wrapper .sec--header {
         font-size: 16px;
