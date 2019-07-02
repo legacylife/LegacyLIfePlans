@@ -29,31 +29,6 @@ export class NavigationService {
   //constructor() { }
 
   adminMenu: IMenuItem[] = [
-    /*{
-      name: 'HOME',
-      type: 'icon',
-      tooltip: 'Home',
-      icon: 'home',
-      state: 'home'
-    },
-    {
-      name: 'PROFILE',
-      type: 'icon',
-      tooltip: 'Profile',
-      icon: 'person',
-      state: 'profile/overview'
-    },
-    {
-      name: 'TOUR',
-      type: 'icon',
-      tooltip: 'Tour',
-      icon: 'flight_takeoff',
-      state: 'tour'
-    },
-    {
-      type: 'separator',
-      name: 'Main Items'
-    },*/
     {
       name: 'USER MANAGEMENT',
       type: 'dropDown',
@@ -64,7 +39,6 @@ export class NavigationService {
         { name: 'ADMIN USERS', state: 'userlist' },
         { name: 'ADVISORS', state: 'advisorlist' },
         { name: 'CUSTOMERS', state: 'customerlist' },
-        
       ]
     },
     {
@@ -87,15 +61,15 @@ export class NavigationService {
       tooltip: 'Activity Log',
       icon: 'pages',
       state: 'admin/activity-log'
-    },   
+    },
     {
       name: 'ADVERTISEMENT MANAGEMENT',
       type: 'link',
       tooltip: 'Advertisement management',
       icon: 'business',
       state: 'admin/ad-management'
-    }, 
-	  {
+    },
+    {
       name: 'ZIP CODE MAP',
       type: 'link',
       tooltip: 'Zip Code map',
@@ -109,13 +83,13 @@ export class NavigationService {
       icon: 'add_location',
       state: 'admin/deceased-requests'
     },
-	  {
+    {
       name: 'EMAIL TEMPLATES',
       type: 'link',
       tooltip: 'Email Templates Management System',
       icon: 'email',
       state: 'admin/email-template'
-    }	
+    }
   ]
 
   advisorMenu: IMenuItem[] = [
@@ -194,21 +168,16 @@ export class NavigationService {
       icon: 'markunread',
       state: 'home'
     }
-  ]
+  ];
 
   preAdvisorMenu: IMenuItem[] = [
-    // {
-    //   name: 'Home',
-    //   type: 'extLink',
-    //   icon: 'library_books',
-    //   state: '/home'
-    // },
+
     {
       name: 'About Us',
       type: 'extLink',
       icon: 'image_aspect_ratio',
       state: '#ad-about-us '
-    },{
+    }, {
       name: 'How LLP Works',
       icon: 'show_chart',
       type: 'extLink',
@@ -234,7 +203,7 @@ export class NavigationService {
       name: 'Contact Us',
       type: 'extLink',
       icon: 'phone',
-      state: '/advisor'
+      state: '#ad-contactus'
     },
     {
       name: 'For Customers',
@@ -256,18 +225,13 @@ export class NavigationService {
   ];
 
   preCustomerMenu: IMenuItem[] = [
-    // {
-    //   name: 'Home',
-    //   type: 'extLink',
-    //   icon: 'library_books',
-    //   state: '/home'
-    // },
+
     {
       name: 'About Us',
       type: 'extLink',
       icon: 'image_aspect_ratio',
       state: '#about-us'
-    },{
+    }, {
       name: 'How LLP Works',
       icon: 'show_chart',
       type: 'extLink',
@@ -308,7 +272,7 @@ export class NavigationService {
       icon: 'assignment_return',
       state: '/signin '
     }
-  ]
+  ];
 
   // Icon menu TITLE at the very top of navigation.
   // This title will appear if any icon type item is present in menu.
@@ -326,14 +290,14 @@ export class NavigationService {
     switch (menuType) {
       case 'admin':
         this.menuItems.next(this.adminMenu);
-        break;      
+        break;
       case 'customer':
         this.menuItems.next(this.customerMenu);
         break;
       case 'advisor':
         this.menuItems.next(this.advisorMenu);
         break;
-        case 'pre-advisor':
+      case 'pre-advisor':
         this.menuItems.next(this.preAdvisorMenu);
         break;
       default:
