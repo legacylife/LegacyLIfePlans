@@ -26,6 +26,7 @@ const FileActivityLog = require('./../models/FileActivityLog.js')
 const SpecialNeeds = require('./../models/SpecialNeeds.js')
 const s3 = require('./../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
+const InviteTemp = require('./../models/InviteTemp.js')
 
 var auth = jwt({
   secret: constants.secret,
@@ -708,7 +709,20 @@ function fileActivityLogList(req, res) {
   }).sort(order).skip(offset).limit(limit)
 }
 
-
+function viewInviteDetails(req, res) {
+  let { query } = req.body;
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  InviteTemp.find(query, fields, function (err, InviteList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(InviteList))
+    }
+  })
+}
 
 
 router.post("/my-essentials-req", myEssentialsUpdate)
@@ -726,11 +740,12 @@ router.post("/essential-professional-list", essentialProfessionalsList)
 router.post("/view-professional-details", viewEssentialProfessionals)
 router.post("/view-id-details", viewEssentialID)
 router.post("/essentials-legal-form-submit", legalStuffUpdate)
-router.post("/view-legalStuff-details", viewLegalStuffDetails)
+router.post("/view-legalStuff-details", viewLegalStuffDetails) //
 router.post("/emergency-contacts", emergencyContactsSubmit)
 router.post("/get-emergency-contacts", getEmergencyContacts)
 router.post("/view-emergency-contacts", viewEmergencyContacts)
 router.post("/deletecontact", deleteEcontact)
 router.post("/file-activity-log-list", fileActivityLogList)
+router.post("/view-invite-details", viewInviteDetails)
 
 module.exports = router

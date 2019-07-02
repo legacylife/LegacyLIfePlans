@@ -14,6 +14,8 @@ const pet = require('./../models/Pets.js')
 const timeCapsule = require('./../models/TimeCapsule.js')
 const insurance = require('../models/Insurance.js')
 const Finance = require('../models/Finances.js')
+const Invite = require('../models/Invite.js')
+const InviteTemp = require('../models/InviteTemp.js')
 const docFilePath = constants.s3Details.advisorsDocumentsPath;
 const IDdocFilePath = constants.s3Details.myEssentialsDocumentsPath;
 const legalStuffdocFilePath = constants.s3Details.legalStuffDocumentsPath;
@@ -23,6 +25,7 @@ const timeCapsuleFilePath = constants.s3Details.timeCapsuleFilePath;
 const insuranceFilePath = constants.s3Details.insuranceFilePath;
 const financeFilePath = constants.s3Details.financeFilePath;
 const letterMessageFilePath = constants.s3Details.letterMessageFilePath;
+const inviteDocumentsPath = constants.s3Details.inviteDocumentsPath;
 const lettersMessage = require('./../models/LettersMessages.js')
 var DIR = './uploads/';
 
@@ -1106,6 +1109,73 @@ function letterMessageDocument(req, res) {
   })
 }
 
+
+router.post('/invite', cors(), function(req,res){
+  var fstream;
+  let authTokens = { authCode: "" }
+  const {query:{userId}} = req;
+  if (req.busboy) {
+    req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
+      authTokens[fieldname] = val
+    })
+    req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+      let tmpallfiles = {};
+      let oldTmpFiles = [];      
+      if(userId){
+          let ext = filename.split('.')
+          ext = ext[ext.length - 1];
+          var fileExts = ["jpg", "jpeg", "png"];
+          let resp = isExtension(ext,fileExts);
+          if(!resp){
+            let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid file extension!" }
+            res.send(resFormat.rSuccess(results))
+          } else{
+               const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+                fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+                file.pipe(fstream);
+                fstream.on('close', async function () {
+                  await s3.uploadFile(newFilename,inviteDocumentsPath);  
+                  tmpallfiles = {
+                    "title" : filename,
+                    "size" : encoding,
+                    "extention" : mimetype,
+                    "tmpName" : newFilename
+                  }
+              oldTmpFiles.push(tmpallfiles);  
+               var invite = new InviteTemp();
+                  invite.inviteById = userId;
+                  invite.documents = oldTmpFiles;
+                  invite.status = 'Pending';
+                  invite.createdOn = new Date();
+                  invite.save({}, function (err, newEntry) {
+                  if (err) {
+                  res.send(resFormat.rError(err))
+                   } else {
+                    let result = { "message": "Document uploaded successfully!" }
+                     res.status(200).send(resFormat.rSuccess(result))
+                   }
+                 })
+              })
+         } 
+      } else {
+        res.status(401).send(resFormat.rError("User token mismatch."))
+      }
+    })
+  }
+})
+
+function deleteInviteDocument(req, res) {
+  let { query } = req.body;
+   InviteTemp.deleteOne(query, function (err, data) {   
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        let result = {"message": "File deleted successfully" }
+        res.send(resFormat.rSuccess(result))
+      }    
+  })
+}
+
 router.post("/deleteAdvDoc", deleteDoc);
 router.post("/deleteIdDoc", deleteIdDocument);
 router.post("/deletesubFolderDoc", deletesubFolderDoc);
@@ -1115,4 +1185,5 @@ router.post("/deleteTimeCapsuleDoc", deleteTimeCapsuleDoc);
 router.post("/deleteInsuranceDoc", deleteInsuranceDocument);
 router.post("/deleteFinanceDoc", deleteFinanceDocument);
 router.post("/deleteletterMessageDoc", letterMessageDocument);
+router.post("/deleteInviteDocument", deleteInviteDocument);
 module.exports = router
