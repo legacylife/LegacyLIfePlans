@@ -13,7 +13,8 @@
 }
 
 .refer--earn--modal--body{
-    height: calc(100vh - 223px);
+    min-height: calc(100vh - 400px);
+   max-height: calc(100vh - 223px);
     overflow: auto;
 }
 .this--month{
