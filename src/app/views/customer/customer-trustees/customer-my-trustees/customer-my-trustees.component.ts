@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
-
+import { UserAPIService } from './../../../../userapi.service';
 
 @Component({
   selector: 'app-customer-my-trustees',
@@ -15,80 +15,47 @@ import { egretAnimations } from '../../../../shared/animations/egret-animations'
 })
 export class CustomerMyTrusteeComponent implements OnInit {
   allPeoples: any[];
-
-  constructor(
+  userId: string;
+  trustyListing:any = [];
+  fileActivityLogList:any;
+  showTrustyListing = false;
+  showTrustyListingCnt: any;
+  constructor(private userapi: UserAPIService
   ) { }
 
 
   ngOnInit() {
-    this.allPeoples = [
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'Allen Barry',
-        emailId: 'barryallen@gmail.com',
-        totalFiles: '24 Files',
-        totalFolders: '9 Folders',
-        position: 'CFA, CIC',
-        status: 'assigned'
-      },
-      {
-        profilePic: 'assets/images/arkenea/emily.png',
-        userName: 'Emily Doe',
-        emailId: 'emilydoe@gmail.com',
-        totalFiles: '4 Files',
-        totalFolders: '1 Folders',
-        position: 'CFA, CIC',
-        status: 'assigned'
-      },
-      {
-        profilePic: 'assets/images/arkenea/john.png',
-        userName: 'Johnson Smith',
-        emailId: 'johnson.smith@gmail.com',
-        totalFiles: '15 Files',
-        totalFolders: '6 Folders',
-        position: 'CFA, CIC',
-        status: 'pending'
-      },
-      {
-        profilePic: 'assets/images/arkenea/user-male.png',
-        userName: 'James Anderson',
-        emailId: 'james.anderson@gmail.com',
-        totalFiles: '15 Files',
-        totalFolders: '6 Folders',
-        position: 'CFA, CIC',
-        status: 'assigned'
-      },
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'Allen Barry',
-        emailId: 'barryallen@gmail.com',
-        totalFiles: '24 Files',
-        totalFolders: '9 Folders',
-        position: 'CFA, CIC',
-        status: 'pending'
-      },
-      {
-        profilePic: 'assets/images/arkenea/emily.png',
-        userName: 'Emily Doe',
-        emailId: 'emilydoe@gmail.com',
-        totalFiles: '4 Files',
-        totalFolders: '1 Folders',
-        position: 'CFA, CIC',
-        status: 'assigned'
-      },
-      {
-        profilePic: 'assets/images/arkenea/john.png',
-        userName: 'Johnson Smith',
-        emailId: 'johnson.smith@gmail.com',
-        totalFiles: '15 Files',
-        totalFolders: '6 Folders',
-        position: 'CFA, CIC',
-        status: 'pending'
-      }
-    ];
+    // profilePic: 'assets/images/arkenea/ca.jpg',
+    // userName: 'Allen Barry',
+    // emailId: 'barryallen@gmail.com',
+    // totalFiles: '24 Files',
+    // totalFolders: '9 Folders',
+    // position: 'CFA, CIC',
+    // status: 'assigned'
+    this.userId = localStorage.getItem("endUserId");
+    this.getTrusteeList();
   }
 
-
+  getTrusteeList = (query = {}) => {
+    const req_vars = {
+      query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      fields: {},
+      order: {"createdOn": -1},
+    }
+    this.userapi.apiRequest('post', 'trustee/trustListing', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        this.trustyListing = result.data.trustList;
+        this.showTrustyListingCnt = this.trustyListing.length;  
+        if (this.showTrustyListingCnt>0) {
+          this.showTrustyListing = true;
+        }
+      }
+    }, (err) => {
+      console.error(err);
+    })
+  }
 
 
 }

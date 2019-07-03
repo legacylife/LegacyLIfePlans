@@ -16,24 +16,11 @@ import { ProfilePicService } from 'app/shared/services/profile-pic.service';
   styleUrls: ['./customer-dashboard.component.scss'],
   animations: [egretAnimations]
 })
-export class CustomerDashboardComponent implements OnInit, OnDestroy {
-  public isSideNavOpen: boolean;
-  public viewMode: string = 'grid-view';
-  public currentPage: any;
-  dayFirst = true;
-  daySeco = false;
+export class CustomerDashboardComponent implements OnInit {
   profilePicture: any = "assets/images/arkenea/default.jpg"
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
-  public products: any[];
-  public categories: any[];
-  public activeCategory: string = 'all';
-  public filterForm: FormGroup;
-  public cart: any[];
-  public cartData: any;
-
-
-
+  
   constructor(
     private route: ActivatedRoute, 
     private router: Router, private dialog: MatDialog,
@@ -47,36 +34,16 @@ export class CustomerDashboardComponent implements OnInit, OnDestroy {
       this.profilePicture =  nextValue
     })
     
-    this.categories = ["My essentials", "Pets"]
-
    
-    this.products = []
-    this.cartData = []
-    this.filterForm = this.fb.group({
-      search: ['']
-    })
-  }
-  showSecoDay() {
-    this.dayFirst = false;
-    this.daySeco = true;
-  }
-  ngOnDestroy() {
-
   }
 
-  setActiveCategory(category) {
-    this.activeCategory = category;
-    this.filterForm.controls['category'].setValue(category)
-  }
-
-  toggleSideNav() {
-    this.sideNav.opened = !this.sideNav.opened;
-  }
 
   openAddTrusteeModal(data: any = {}, isNew?) {
+   // let title = isNew ? 'Add new Trustees' : 'Update Trustees';
     let dialogRef: MatDialogRef<any> = this.dialog.open(addTrusteeModalComponent, {
       width: '720px',
       disableClose: true,
+     // data: { title: title,payload: data }
     })
   }
 }

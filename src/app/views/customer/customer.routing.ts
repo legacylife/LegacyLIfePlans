@@ -237,13 +237,13 @@ export const CustomerRoutes: Routes = [
         canActivate: [UserAuthGuard],
         children: [
           {
-            path: 'my-people',
-            component: CustomerMyPeopleComponent
-          },
-          {
-            path: 'my-trustee',
+            path: '',
             component: CustomerMyTrusteeComponent
           },
+          {
+            path: 'my-people',
+            component: CustomerMyPeopleComponent
+          },          
           {
             path: 'hired-advisor',
             component: CustomerHiredAdvisorComponent

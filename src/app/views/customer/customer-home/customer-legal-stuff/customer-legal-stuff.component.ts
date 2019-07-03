@@ -58,10 +58,11 @@ export class CustomerLegalStuffComponent implements OnInit {
       } else {
 
         this.legaStuffList = result.data.legalList;
-
+console.log("-1111------",this.legaStuffList)
         this.estateList = this.legaStuffList.filter(dtype => {
           return dtype.subFolderName == 'Estate'
         }).map(el => el)
+        console.log("-2222-----",this.estateList)
         this.showEstateListingCnt = this.estateList.length
         if (this.showEstateListingCnt > 0) {
           this.showEstateListing = true;

@@ -16,18 +16,16 @@
           </div>
       </mat-card-header>
 
-
       <mat-card-content class="appointees--wrapper">
-
-        <mat-card class="appointees--section p-0 {{peoples.status === 'pending' ? 'pending' : ''}}" *ngFor="let peoples of allPeoples">
+        <mat-card class="appointees--section p-0 {{row.status === 'pending' ? 'pending' : ''}}" *ngFor="let row of trustyListing">
           <mat-card-header class="m-0">
             <mat-card-title class="m-0">
               <div class="appointees--pic">
-                <img src="{{peoples.profilePic}}" />
+                <!-- <img src="{{row.profilePicture}}" /> -->
               </div>
               <div class="appointees--desc">
-                <h5>{{peoples.userName}}</h5>
-                <p class="m-0">{{peoples.emailId}}</p>
+                <h5>{{row.firstName}} {{row.lastName}}</h5>
+                <p class="m-0">{{row.email}}</p>
               </div>
               <div class="cursor-pointer">
                   <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
@@ -39,27 +37,27 @@
               </div>
             </mat-card-title>
           </mat-card-header>
-          <mat-card-content *ngIf="peoples.status === 'assigned'">
+          <mat-card-content *ngIf="row.status === 'assigned'">
             <h4>Assigned</h4>
             <div class="files--folder">
               <mat-icon>insert_drive_file</mat-icon>
-              {{peoples.totalFiles}}
+              <!-- {{row.totalFiles}} -->
             </div>
             <div class="files--folder mb-0">
               <mat-icon>folder</mat-icon>
-              {{peoples.totalFolders}}
+              <!-- {{row.totalFolders}} -->
             </div>
           </mat-card-content>
 
 
           <!-- Pending -->
-          <mat-card-content class="status--pending" *ngIf="peoples.status === 'pending'">
+          <mat-card-content class="status--pending" *ngIf="row.status === 'pending'">
             <mat-icon>history</mat-icon>
             <p class="pending">Pending...</p>
           </mat-card-content>
 
           <!-- all hired advisor -->
-          <mat-card-content class="status--advisor relative" *ngIf="peoples.status === 'advisor'">
+          <mat-card-content class="status--advisor relative" *ngIf="row.status === 'advisor'">
             <div class="files--folder mt-1">
               <mat-icon>school</mat-icon>
               Insurance Agent, Attorney, Accountant, Financial Planner

@@ -5,53 +5,49 @@
 </div>
 <div class="ll--modal--body per--profile--wrapper p-0">
   <div class="stepper--wrapper">
-    <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="onChangeFormIndex($event)">
-
-      <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup" class="llp-form-wrapper">
+   <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="onChangeFormIndex($event)">
+      <mat-step [stepControl]="trustFormGroup">     
+          <form [formGroup]="trustFormGroup" class="llp-form-wrapper" (ngSubmit)="trustFormGroupSubmit('1',trustFormGroup.value)">      
           <h3 class="main--head text-center">Add a Trustee to your Legacy!</h3>
           <p class="sub--head text-center">Add Trustee Details</p>
-
           <div class="profile--body--scroll">
-
             <mat-form-field class="full-width">
-              <input matInput placeholder="First Name">
+              <input (keyup)="firstCapitalize($event)" matInput name="firstName" maxlength="20" placeholder="First Name*" [formControl]="trustFormGroup.controls['firstName']">
+              <mat-icon matTooltip="Please enter first name" matTooltipClass="llp--tooltip error" *ngIf="trustFormGroup.controls['firstName'].hasError('required') && trustFormGroup.controls['firstName'].touched" class="red--alert">help_outline</mat-icon>
             </mat-form-field>
             <mat-form-field class="full-width">
-              <input matInput placeholder="Last Name">
+                <input (keyup)="firstCapitalize($event)" matInput name="lastName" maxlength="20" placeholder="Last Name*" [formControl]="trustFormGroup.controls['lastName']">
+                <mat-icon matTooltip="Please enter last name" matTooltipClass="llp--tooltip error" *ngIf="trustFormGroup.controls['lastName'].hasError('required') && trustFormGroup.controls['lastName'].touched" class="red--alert">help_outline</mat-icon>
             </mat-form-field>
             <mat-form-field class="full-width">
-              <input matInput placeholder="Email">
+              <input matInput name="email" placeholder="Email*" [formControl]="trustFormGroup.controls['email']" (change)="trustFormGroupSubmit('1',trustFormGroup.value)">
+              <mat-icon matTooltip="Please enter email Id" matTooltipClass="llp--tooltip error" *ngIf="trustFormGroup.controls['email'].hasError('required') && trustFormGroup.controls['email'].touched" class="red--alert">help_outline</mat-icon>                         
+              <mat-icon matTooltip="Please enter valid email Id" matTooltipClass="llp--tooltip error" *ngIf="trustFormGroup.controls['email'].hasError('pattern')" class="red--alert">help_outline</mat-icon>
+              <mat-icon matTooltip="{{invalidMessage}}" matTooltipClass="llp--tooltip error" *ngIf="EmailExist" class="red--alert">help_outline</mat-icon>
             </mat-form-field>
-
-            <mat-form-field class="full-width">
-              <mat-label>Relationship</mat-label>
-              <mat-select>
-                <mat-option>None</mat-option>
-                <mat-option value="option1">Select</mat-option>
-                <mat-option value="option2">Option 2</mat-option>
-                <mat-option value="option3">Option 3</mat-option>
-              </mat-select>
-            </mat-form-field>
-
+           <mat-form-field class="full-width">
+                <mat-label>Relationship *</mat-label>
+                <mat-select placeholder="ID/Document*" name="relation" [formControl]="trustFormGroup.controls['relation']">
+                  <mat-option value="">Select a ID/Document</mat-option>
+                  <mat-option *ngFor="let option of relationTypeList"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
+                </mat-select>
+                  <mat-icon matTooltip="Please select relationship" matTooltipClass="llp--tooltip error" *ngIf="trustFormGroup.controls['relation'].hasError('required') && trustFormGroup.controls['relation'].touched" class="red--alert">help_outline</mat-icon>
+              </mat-form-field>
+              <mat-form-field class="full-width" *ngIf="validationEmailVal">
+                  <input matInput name="emailValidation" [formControl]="trustFormGroup.controls['emailValidation']">
+              </mat-form-field>
           </div>
           <div class="mt-1 text-center">
-            <button type="button" mat-raised-button matStepperNext class="llp--primary--btn mb-1">Assign Permissions</button>
-          </div>
-        </form>
+            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" id="trustFormGroupBtn" [disabled]="trustFormGroup.invalid">Assign Permissions</button>   
+          </div>    
+        </form>      
       </mat-step>
-
-
-      <mat-step [stepControl]="secondFormGroup">
-        <form [formGroup]="secondFormGroup" class="llp-form-wrapper">
-
+      <mat-step [stepControl]="secondFormGroup">     
+        <form [formGroup]="secondFormGroup" class="llp-form-wrapper" (ngSubmit)="secondFormGroupSubmit('2',secondFormGroup.value)">        
           <h3 class="main--head text-center">Add a Trustee to your Legacy!</h3>
           <p class="sub--head text-center">Which sections would the trustee be able to access, and when?</p>
-
           <div class="profile--body--scroll">
-
             <div class="trust--legacy--wrapper">
-
               <div class="cover mt-1">
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
@@ -68,29 +64,26 @@
                   </div>
                 </div>
                 <div fxLayout="row wrap">
-                  <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
-                    <label class="left--header">All 30 sections</label>
-                  </div>
-                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
-                    <mat-radio-group class="llp-radio">
-                      <mat-radio-button value="abc" class="">Now</mat-radio-button>
-                    </mat-radio-group>
-                  </div>
-                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
-                    <mat-radio-group class="llp-radio">
-                      <mat-radio-button value="abc" class="">After Death</mat-radio-button>
-                    </mat-radio-group>
-                  </div>
-                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
-                    <mat-radio-group class="llp-radio">
-                      <mat-radio-button value="abc" class="">Never</mat-radio-button>
-                    </mat-radio-group>
-                  </div>
+                <mat-radio-group class="llp-radio" (change)="onRadioChange($event.value)" name="SelectAll" [formControl]="secondFormGroup.controls['SelectAll']">
+                  <mat-list-item>
+                      <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
+                        <label class="left--header">All 30 sections</label>
+                      </div>
+                      <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                  
+                          <mat-radio-button value="now">Now</mat-radio-button>                    
+                      </div>
+                      <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                    
+                          <mat-radio-button value="afterDeath">After Death</mat-radio-button>                    
+                      </div>
+                      <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                    
+                          <mat-radio-button value="never" [checked]="radioCheck">Never</mat-radio-button>                    
+                      </div>               
+                  </mat-list-item>
+                </mat-radio-group>
                 </div>
               </div>
-
               <div class="cover mt-1">
-                <div fxLayout="row wrap">
+                <!-- <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
                     <label class="header bold">My Essentials</label>
                   </div>
@@ -103,86 +96,57 @@
                   <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
                     <label class="header">Never</label>
                   </div>
-                </div>
-                <div fxLayout="row wrap">
-                  <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
-                    <label class="left--header">Personal Profile</label>
-                  </div>
-                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
-                    <mat-radio-group class="llp-radio">
-                      <mat-radio-button value="abc" class="">Now</mat-radio-button>
-                    </mat-radio-group>
-                  </div>
-                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
-                    <mat-radio-group class="llp-radio">
-                      <mat-radio-button value="abc" class="">After Death</mat-radio-button>
-                    </mat-radio-group>
-                  </div>
-                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
-                    <mat-radio-group class="llp-radio">
-                      <mat-radio-button value="abc" class="">Never</mat-radio-button>
-                    </mat-radio-group>
-                  </div>
-                </div>
-                <div fxLayout="row wrap">
-                  <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
-                    <label class="left--header">Work Profile</label>
-                  </div>
-                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
-                    <mat-radio-group class="llp-radio">
-                      <mat-radio-button value="abc" class="">Now</mat-radio-button>
-                    </mat-radio-group>
-                  </div>
-                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
-                    <mat-radio-group class="llp-radio">
-                      <mat-radio-button value="abc" class="">After Death</mat-radio-button>
-                    </mat-radio-group>
-                  </div>
-                  <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
-                    <mat-radio-group class="llp-radio">
-                      <mat-radio-button value="abc" class="">Never</mat-radio-button>
-                    </mat-radio-group>
+                </div> -->
+                <div fxLayout="row wrap" *ngFor="let folder of userSections">
+                    <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
+                      <label class="header bold">{{folder.folderName}}</label>
+                    </div>                 
+                     
+                    <mat-radio-group class="llp-radio" *ngFor="let t of folder.fileNames" [formControl]="secondFormGroup.controls[t.code]" (change)="onFileChange($event.value)">
+                        <mat-list-item>
+                          <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
+                            <label class="left--header">{{t.name}}*</label>
+                          </div>
+                          <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                    
+                              <mat-radio-button value="now">Now</mat-radio-button>                
+                          </div>
+                          <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                     
+                              <mat-radio-button value="afterDeath">After Death</mat-radio-button>                     
+                          </div>
+                          <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                     
+                              <mat-radio-button value="never" [checked]="radioCheck">Never</mat-radio-button>                     
+                          </div>
+                        </mat-list-item>
+                    </mat-radio-group>                             
                   </div>
                 </div>
-              </div>
-
-
             </div>
-
           </div>
-
           <div class="mt-1 text-center">
             <button mat-raised-button matStepperPrevious class="llp--back--btn">
               <mat-icon>arrow_back</mat-icon> Back</button>
             <button type="button" mat-raised-button matStepperNext class="llp--primary--btn mb-1">Continue</button>
-
           </div>
         </form>
       </mat-step>
-
       <mat-step [stepControl]="thirdFormGroup">
-
-        <form [formGroup]="thirdFormGroup" class="llp-form-wrapper">
-
+        <form [formGroup]="thirdFormGroup" class="llp-form-wrapper" (ngSubmit)="thirdFormGroupSubmit('3',thirdFormGroup.value)">     
           <h3 class="main--head text-center">Add a Trustee to your Legacy!
           </h3>
-          <p class="sub--head text-center">We're ready to email Ajinkya an invitation asking to be a Trustee to your Legacy.</p>
-
+          <p class="sub--head text-center">We're ready to email {{Email_USER}} an invitation asking to be a Trustee to your Legacy.</p>
           <div class="profile--body--scroll">
-
             <mat-form-field class="full-width mt-1">
-              <textarea matInput placeholder="Add a personal message" rows="7" value="Message"></textarea>
+              <textarea matInput placeholder="Add a personal message" rows="7" [formControl]="thirdFormGroup.controls['comments']"></textarea>
+              <mat-icon matTooltip="Please enter personal message" matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['comments'].hasError('required') && thirdFormGroup.controls['comments'].touched" class="red--alert">help_outline</mat-icon>
             </mat-form-field>
-
           </div>
           <div class="mt-1 text-center">
             <button mat-raised-button matStepperPrevious class="llp--back--btn">
               <mat-icon>arrow_back</mat-icon> Back</button>
-            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1">Send an Invite</button>
+            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" [disabled]="thirdFormGroup.invalid">Send an Invite</button>
           </div>
-        </form>
+      </form>
       </mat-step>
-
-    </mat-horizontal-stepper>
+    </mat-horizontal-stepper>    
   </div>
 </div>
