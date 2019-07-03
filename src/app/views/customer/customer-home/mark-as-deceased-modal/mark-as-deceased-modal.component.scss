@@ -1,8 +1,6 @@
-
-
-@media only screen and (max-width: 599px) {
-    .id--box--body {
-        height: calc(100vh - 380px);
-        overflow: auto;
+@media screen and (orientation:landscape) and (max-width: 850px){
+    p{
+        margin-bottom: 0;
+        font-size: 12px !important;
     }
 }

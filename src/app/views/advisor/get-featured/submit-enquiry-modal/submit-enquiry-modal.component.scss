@@ -13,3 +13,21 @@
     color: #828385;
     font-family: $font--lato--regular !important;
 }
+
+
+
+@media only screen and (max-width: 599px){
+    .invite--sub--line {
+        font-size: 14px;
+        margin: 0 0 15px 0px;
+    }
+    body .mat-dialog-container .ll--modal--header {
+        margin-bottom: 0 !important;
+    }
+}
+@media screen and (orientation:landscape) and (max-width: 850px){
+    .invite--sub--line {
+        font-size: 14px;
+        margin: 0 0 0 0px;
+    }
+}

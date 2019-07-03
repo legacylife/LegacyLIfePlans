@@ -45,7 +45,7 @@ export class LayoutService {
       "sidebarStyle": "full",     // full, compact, closed
       "dir": "ltr",               // ltr, rtl
       "useBreadcrumb": true,
-      "topbarFixed": false,
+      "topbarFixed": true,
       "breadcrumb": "title"       // simple, title
     }
 
