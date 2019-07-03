@@ -23,8 +23,8 @@ export class ReferAndEarnModalComponent implements OnInit {
   userId: string
   userFullName: string
   endUserType: string
-  emailIdCheck: boolean = false
   exitEmails: any = []
+  alreadySentEmails = ""
   invitedMembersCount = 0
   public hasBaseDropZoneOver: boolean = false;
   documents_temps = false;
@@ -78,6 +78,7 @@ export class ReferAndEarnModalComponent implements OnInit {
   delete(i) {
     const control = <FormArray>this.inviteForm.controls['inviteMembers'];
     control.removeAt(i);
+    this.checkEmails()
   }
 
   inviteSubmit() {
@@ -101,8 +102,7 @@ export class ReferAndEarnModalComponent implements OnInit {
     })
   }
 
-  emailIdCheckInvite(pointIndex, status) {
-    if (status) {
+  emailIdCheckInvite(pointIndex, status) {    
       let email = this.inviteForm.controls.inviteMembers.value[pointIndex].email
       const params = {
         email: email,
@@ -110,12 +110,23 @@ export class ReferAndEarnModalComponent implements OnInit {
         inviteType: this.endUserType
       }
       this.userapi.apiRequest('post', 'invite/invite-member-check-email', params).subscribe(result => {
-        if (result.data.status) {
+        if (result.data.status && !this.exitEmails.includes(email)) {
           this.exitEmails.push(email);
+          this.alreadySentEmails = this.exitEmails.join(",")
         }
-        this.emailIdCheck = result.data.status
-      })
-    }
+      })    
+      this.checkEmails()
+  }
+
+  checkEmails(){
+    let emailsList = []
+    let formData = this.inviteForm.controls.inviteMembers.value
+    formData.forEach((Obj) => {
+      if (this.exitEmails.includes(Obj.email)) {
+        emailsList.push(Obj.email);
+      }
+    })
+    this.alreadySentEmails = emailsList.join(",")
   }
 
   getInviteMembersCount() {

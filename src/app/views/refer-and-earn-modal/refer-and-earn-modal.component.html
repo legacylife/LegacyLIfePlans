@@ -27,8 +27,9 @@
             (blur)="emailIdCheckInvite(pointIndex, ilist.valid)">
           <mat-icon matTooltip="Please enter valid email" matTooltipClass="llp--tooltip error"
             *ngIf="ilist.touched && ilist.invalid" class="red--alert">help_outline</mat-icon>
-          <mat-icon matTooltip="Already sent!" matTooltipClass="llp--tooltip error" *ngIf="emailIdCheck"
-            class="red--alert">help_outline</mat-icon>
+         
+          <mat-icon matTooltip="Already sent!" matTooltipClass="llp--tooltip error" *ngIf="alreadySentEmails!=''" class="red--alert">help_outline</mat-icon>
+
         </mat-form-field>
       </div>
       <div fxFlex.xs="90" fxFlex.sm="95" fxFlex.md="35" fxFlex.lg="36" fxFlex.xl="37" class="pad--r--lg">
@@ -46,7 +47,8 @@
       </div>
     </div>
 
-    <!--div *ngIf="exitEmails.length > 0"><b>Already Sent! </b> <br />{{exitEmails}}</div-->
+    <div *ngIf="alreadySentEmails!=''"><b>You have already sent invitations : </b> <br />{{alreadySentEmails}} <br /> <br /></div>
+
     <div fxLayout="row wrap">
       <div fxFlex.xs="100">
         <div class="add--new" (click)="addRow();">
@@ -97,7 +99,6 @@
 
   </div>
   <div class="ll--modal--footer text-center">
-    <!-- <button mat-raised-button class="llp--primary--btn" [disabled]="inviteForm.invalid || exitEmails.length > 0">Invite</button> -->
-    <button mat-raised-button class="llp--primary--btn" [disabled]="inviteForm.invalid">Invite</button>
+    <button mat-raised-button class="llp--primary--btn" [disabled]="inviteForm.invalid || alreadySentEmails!=''">Invite</button>
   </div>
 </form>
