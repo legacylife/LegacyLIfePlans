@@ -30,7 +30,7 @@ async function inviteMembers(req, res) {
     let inviteType = req.body.inviteType;
     let inviteByName = req.body.inviteByFullName;
     let membersLength = members.length
-    let clientUrl = constants.clientUrl;
+    let clientUrl = '';
     let templateType = '';
     let inviteToUserId = '';
     let attachmentsImages = [];
@@ -51,10 +51,10 @@ async function inviteMembers(req, res) {
     for (var index = 0; index < membersLength; index++) {
         if (members[index].relation == "Advisor") {
             templateType = 'InviteAdvisor';
-            clientUrl = clientUrl + "/advisor/signup";
+            clientUrl = constants.clientUrl + "/advisor/signup";
         } else {
             templateType = 'InviteCustomer';
-            clientUrl = clientUrl + "/customer/signup";
+            clientUrl = constants.clientUrl + "/customer/signup";
         }
         let emailId = members[index].email
         let inviteToName = members[index].name
