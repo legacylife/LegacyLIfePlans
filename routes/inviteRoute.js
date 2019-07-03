@@ -7,12 +7,13 @@ const mongoose = require('mongoose')
 var async = require('async')
 var crypto = require('crypto')
 var fs = require('fs')
-var nodemailer = require('nodemailer')
 const { isEmpty, cloneDeep } = require('lodash')
 const User = require('./../models/Users')
 var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
+const sendRawEmail = require('./../helpers/sendRawEmail')
+
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 const Invite = require('./../models/Invite.js')
 const InviteTemp = require('./../models/InviteTemp.js')
@@ -30,26 +31,30 @@ async function inviteMembers(req, res) {
     let inviteByName = req.body.inviteByFullName;
     let membersLength = members.length
     let clientUrl = constants.clientUrl;
+    let templateType = '';
     let inviteToUserId = '';
-    let templateType = 'InviteCustomer';
+    let attachmentsImages = [];
+    let advisorInvite = false
     if (inviteType == "advisor") {
-        templateType = 'InviteAdvisor';
-    }
-
-    let invitesImages = await InviteTemp.find({ inviteById: inviteById }, function (err, data, index) {});
-    let invitesImagesLength = invitesImages.length
-    let images = [];
-    for (var invIndex = 0; invIndex < invitesImagesLength; invIndex++) {
-        images.push(invitesImages[invIndex].documents[0].tmpName)
+        advisorInvite = true
+        let invitesImages = await InviteTemp.find({ inviteById: inviteById }, function (err, data, index) {});
+        let invitesImagesLength = invitesImages.length           
+        let s3URL = constants.s3Details.serveUrl+'/'+constants.s3Details.inviteDocumentsPath
+        for (var invIndex = 0; invIndex < invitesImagesLength; invIndex++) {
+            attachmentsImages.push({
+                "path": s3URL+invitesImages[invIndex].documents[0].tmpName,
+                "fileName": invitesImages[invIndex].documents[0].title            
+            })
+        }
     }
 
     for (var index = 0; index < membersLength; index++) {
-        if (inviteType == "advisor") {
-            if (members[index].relation == "Advisor") {
-                clientUrl = clientUrl + "/advisor/signup";
-            } else {
-                clientUrl = clientUrl + "/customer/signup";
-            }
+        if (members[index].relation == "Advisor") {
+            templateType = 'InviteAdvisor';
+            clientUrl = clientUrl + "/advisor/signup";
+        } else {
+            templateType = 'InviteCustomer';
+            clientUrl = clientUrl + "/customer/signup";
         }
         let emailId = members[index].email
         let inviteToName = members[index].name
@@ -60,6 +65,7 @@ async function inviteMembers(req, res) {
                 inviteToUserId = data._id
             }
         })
+
         await emailTemplatesRoute.getEmailTemplateByCode(templateType).then((template) => {
             template = JSON.parse(JSON.stringify(template));
             let body = template.mailBody.replace("{LINK}", clientUrl);
@@ -68,10 +74,16 @@ async function inviteMembers(req, res) {
             const mailOptions = {
                 to: emailId,
                 subject: template.mailSubject,
-                html: body
+                html: body               
             }
-            sendEmail(mailOptions)
+            if(advisorInvite){
+                mailOptions['attachments'] = attachmentsImages               
+                sendRawEmail(mailOptions)
+            }else{
+                sendEmail(mailOptions)
+            }
         })
+
         var InviteObj = new Invite();
         InviteObj.inviteById = inviteById;
         InviteObj.inviteToId = inviteToUserId;
@@ -79,40 +91,37 @@ async function inviteMembers(req, res) {
         InviteObj.name = inviteToName;
         InviteObj.email = emailId;
         InviteObj.relation = members[index].relation;
-        InviteObj.documents = images;
+        InviteObj.documents = attachmentsImages;
         InviteObj.status = 'Active';
         InviteObj.createdOn = new Date();
         InviteObj.modifiedOn = new Date();
-        InviteObj.save({}, function (err, newEntry) {
-        })
+        InviteObj.save({}, function (err, newEntry) {})    
     }
 
-    const params = {
-        inviteById: inviteById,
-        inviteType: 'advisor'
-    }
-    let resultCount = 0
-    await Invite.find(params, function (err, data) {
-        if (data != null) {
-            resultCount = data.length
+    if(advisorInvite){
+        const params = {
+            inviteById: inviteById,
+            inviteType: 'advisor'
         }
-    })
-
-    // upgrade plan for next 45 days.
-    if (resultCount >= 30) {
-        var newDt = new Date();
-        newDt.setDate(newDt.getDate() + 45);
-        let subscriptionData = {
-            'subscription_detail.end_date': newDt
-        }
-        User.updateOne({ _id: inviteById }, { $set: subscriptionData }, function (err, updatedDetails) {
-            console.log("Update Sub Date..");
+        let resultCount = 0
+        await Invite.find(params, function (err, data) {
+            if (data != null) {
+                resultCount = data.length
+            }
         })
+        // upgrade plan for next 45 days.
+        if (resultCount >= 30) {
+            var newDt = new Date();
+            newDt.setDate(newDt.getDate() + 45);
+            let subscriptionData = {
+                'subscription_detail.end_date': newDt
+            }
+            User.updateOne({ _id: inviteById }, { $set: subscriptionData }, function (err, updatedDetails) {})
+        }
+        // delete temp invite files
+        await InviteTemp.deleteMany({ inviteById: inviteById });
     }
-
-    // delete temp invite files
-    await InviteTemp.deleteMany({ inviteById: inviteById });
-
+ 
     let result = { "message": "Invitations has been sent successfully!" }
     res.status(200).send(resFormat.rSuccess(result))
 }
