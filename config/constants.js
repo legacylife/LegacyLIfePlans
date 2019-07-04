@@ -35,6 +35,7 @@ var constants = {
   },
   clientUrl: process.env.clientUrl || 'http://localhost:4200',
   mailServerUrl : process.env.mailServerUri || 'http://localhost:8080',
+  serverUrl: "http://localhost:8080",
   socialMedia: {
     facebook: {
       clientId: ''

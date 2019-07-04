@@ -695,7 +695,6 @@ function deleteLegalStuff(req, res) {
   })
 }
 
-
 function fileActivityLogList(req, res) {
   let { fields, offset, query, order, limit, search } = req.body
   FileActivityLog.find(query, fields, function (err, activityLogList) {
@@ -707,9 +706,6 @@ function fileActivityLogList(req, res) {
     }
   }).sort(order).skip(offset).limit(limit)
 }
-
-
-
 
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
