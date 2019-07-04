@@ -6,7 +6,7 @@
 </div>
 
 <div class="ll--modal--body todo--modal--hgt">
-  <form class="llp-form-wrapper" [formGroup]="todosForm" (ngSubmit)="todosFormSubmit()">
+  <form class="llp-form-wrapper mt-1" [formGroup]="todosForm" (ngSubmit)="todosFormSubmit()">
     <mat-form-field class="full-width no-mar">
       <textarea (blur)="trimInput(todosForm.value)" matInput placeholder="Add Your To-Do's Here" name="comments"
         [formControl]="todosForm.controls['comments']"></textarea>
@@ -54,7 +54,7 @@
       </form>
     </mat-card-content>
   </div>
-    <div class="text-right mb-1">
-      <a class="view--more" href="/{{endUserType}}/to-dos">View More...</a>
-    </div> 
+  <div class="text-right mb-1" *ngIf="todoList.length>0">
+    <a class="view--more" href="/{{endUserType}}/to-dos">View More...</a>
+  </div>
 </div>

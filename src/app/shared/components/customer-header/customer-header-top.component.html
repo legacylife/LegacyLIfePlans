@@ -48,9 +48,8 @@
                   <mat-icon>group_add</mat-icon> Add Trustees
                 </a>
               </li>
-              <li class="mat-menu-item">
-                <a matRipple routerLink="/customer">
-                  <mat-icon>list</mat-icon> To dos</a>
+              <li class="mat-menu-item" (click)="openTodosModal({})">
+                <a matRipple><mat-icon>list</mat-icon> To dos</a>
               </li>
               <li class="mat-menu-item">
                 <a matRipple routerLink="/customer">

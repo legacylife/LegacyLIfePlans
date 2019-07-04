@@ -12,6 +12,8 @@ import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/mater
 import { InviteComponent } from '../../../views/invite-modal/invite-modal.component';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { serverUrl, s3Details } from '../../../config';
+import { TodosComponent } from 'app/views/todos/todos.component';
+
 @Component({
   selector: 'app-customer-header-top',
   templateUrl: './customer-header-top.component.html'
@@ -105,6 +107,13 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
   openInviteModal(data: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(InviteComponent, {
       width: '720px',
+      disableClose: true,
+    })
+  }
+
+  openTodosModal(data: any = {}, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(TodosComponent, {
+      width: '1100px',
       disableClose: true,
     })
   }
