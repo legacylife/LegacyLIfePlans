@@ -3,6 +3,8 @@ var constants = require("./../config/constants")
 
 var advisorActivityLogSchema = new mongoose.Schema({
   customerId: mongoose.Schema.Types.ObjectId,
+  customerFirstName: String,
+  customerLastName: String,
   customerProfileImage: String,
   advisorId: mongoose.Schema.Types.ObjectId,
   activityMessage: String,
