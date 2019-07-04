@@ -7,6 +7,8 @@ import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
 import { UserAPIService } from './../../../../userapi.service';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
+import { s3Details } from '../../../../config';
+const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 
 
 @Component({
@@ -19,6 +21,8 @@ export class ProfAdvisorListingComponent implements OnInit {
   adListings: any[];
   qualityAdvisor: any[];
   userId: string;
+  profileFilePath: string = profileFilePath;
+  profilePicture: any = "assets/images/arkenea/default.jpg";
 
   constructor(
     private route: ActivatedRoute,
@@ -30,121 +34,190 @@ export class ProfAdvisorListingComponent implements OnInit {
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
-    this.adListings = [
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'Allen Barry',
-        position: 'CFA, CIC',
-        emailId: 'barryallen@gmail.com',
-        schoolName: 'Insurance Agent, Attorney, Accountant.',
-        yearsOfServices: '10 years of service',
-      },
-      {
-        profilePic: 'assets/images/arkenea/emily.png',
-        userName: 'Emily Doe',
-        position: 'CFA, CIC',
-        emailId: 'emilydoe@gmail.com',
-        schoolName: 'Insurance Agent, Attorney, Accountant.',
-        yearsOfServices: '10 years of service',
-      },
-      {
-        profilePic: 'assets/images/arkenea/john.png',
-        userName: 'Johnson Smith',
-        position: 'CFA, CIC',
-        emailId: 'johnson.smith@gmail.com',
-        schoolName: 'Insurance Agent, Attorney, Accountant.',
-        yearsOfServices: '10 years of service',
-      },
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'Allen Barry',
-        position: 'CFA, CIC',
-        emailId: 'barryallen@gmail.com',
-        schoolName: 'Insurance Agent, Attorney, Accountant.',
-        yearsOfServices: '10 years of service',
-      },
-      {
-        profilePic: 'assets/images/arkenea/emily.png',
-        userName: 'Emily Doe',
-        position: 'CFA, CIC',
-        emailId: 'emilydoe@gmail.com',
-        schoolName: 'Insurance Agent, Attorney, Accountant.',
-        yearsOfServices: '10 years of service',
-      },
-      {
-        profilePic: 'assets/images/arkenea/john.png',
-        userName: 'Johnson Smith',
-        position: 'CFA, CIC',
-        emailId: 'johnson.smith@gmail.com',
-        schoolName: 'Insurance Agent, Attorney, Accountant.',
-        yearsOfServices: '10 years of service',
-      },
-    ];
+    this.getAdvisorLists();
+    // this.adListings = [
+    //   {
+    //     profilePic: 'assets/images/arkenea/ca.jpg',
+    //     userName: 'Allen Barry',
+    //     position: 'CFA, CIC', // business name
+    //     emailId: 'barryallen@gmail.com',
+    //     schoolName: 'Insurance Agent, Attorney, Accountant.', // business type
+    //     yearsOfServices: '10 years of service',
+    //   },
+    //   {
+    //     profilePic: 'assets/images/arkenea/emily.png',
+    //     userName: 'Emily Doe',
+    //     position: 'CFA, CIC',
+    //     emailId: 'emilydoe@gmail.com',
+    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
+    //     yearsOfServices: '10 years of service',
+    //   },
+    //   {
+    //     profilePic: 'assets/images/arkenea/john.png',
+    //     userName: 'Johnson Smith',
+    //     position: 'CFA, CIC',
+    //     emailId: 'johnson.smith@gmail.com',
+    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
+    //     yearsOfServices: '10 years of service',
+    //   },
+    //   {
+    //     profilePic: 'assets/images/arkenea/ca.jpg',
+    //     userName: 'Allen Barry',
+    //     position: 'CFA, CIC',
+    //     emailId: 'barryallen@gmail.com',
+    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
+    //     yearsOfServices: '10 years of service',
+    //   },
+    //   {
+    //     profilePic: 'assets/images/arkenea/emily.png',
+    //     userName: 'Emily Doe',
+    //     position: 'CFA, CIC',
+    //     emailId: 'emilydoe@gmail.com',
+    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
+    //     yearsOfServices: '10 years of service',
+    //   },
+    //   {
+    //     profilePic: 'assets/images/arkenea/john.png',
+    //     userName: 'Johnson Smith',
+    //     position: 'CFA, CIC',
+    //     emailId: 'johnson.smith@gmail.com',
+    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
+    //     yearsOfServices: '10 years of service',
+    //   },
+    // ];
 
-    this.qualityAdvisor = [
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'Allen Barry',
-        position: 'CFA, CIC',
-        emailId: 'barryallen@gmail.com',
-        schoolName: 'Insurance Agent, Attorney, Accountant.',
-        yearsOfServices: '10 years of service',
-      },
-      {
-        profilePic: 'assets/images/arkenea/emily.png',
-        userName: 'Emily Doe',
-        position: 'CFA, CIC',
-        emailId: 'emilydoe@gmail.com',
-        schoolName: 'Insurance Agent, Attorney, Accountant.',
-        yearsOfServices: '10 years of service',
-      },
-      {
-        profilePic: 'assets/images/arkenea/john.png',
-        userName: 'Johnson Smith',
-        position: 'CFA, CIC',
-        emailId: 'johnson.smith@gmail.com',
-        schoolName: 'Insurance Agent, Attorney, Accountant.',
-        yearsOfServices: '10 years of service',
-      },
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'Allen Barry',
-        position: 'CFA, CIC',
-        emailId: 'barryallen@gmail.com',
-        schoolName: 'Insurance Agent, Attorney, Accountant.',
-        yearsOfServices: '10 years of service',
-      },
-      {
-        profilePic: 'assets/images/arkenea/emily.png',
-        userName: 'Emily Doe',
-        position: 'CFA, CIC',
-        emailId: 'emilydoe@gmail.com',
-        schoolName: 'Insurance Agent, Attorney, Accountant.',
-        yearsOfServices: '10 years of service',
-      },
-      {
-        profilePic: 'assets/images/arkenea/john.png',
-        userName: 'Johnson Smith',
-        position: 'CFA, CIC',
-        emailId: 'johnson.smith@gmail.com',
-        schoolName: 'Insurance Agent, Attorney, Accountant.',
-        yearsOfServices: '10 years of service',
-      },
-    ];
+    // this.qualityAdvisor = [
+    //   {
+    //     profilePic: 'assets/images/arkenea/ca.jpg',
+    //     userName: 'Allen Barry',
+    //     position: 'CFA, CIC',
+    //     emailId: 'barryallen@gmail.com',
+    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
+    //     yearsOfServices: '10 years of service',
+    //   },
+    //   {
+    //     profilePic: 'assets/images/arkenea/emily.png',
+    //     userName: 'Emily Doe',
+    //     position: 'CFA, CIC',
+    //     emailId: 'emilydoe@gmail.com',
+    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
+    //     yearsOfServices: '10 years of service',
+    //   },
+    //   {
+    //     profilePic: 'assets/images/arkenea/john.png',
+    //     userName: 'Johnson Smith',
+    //     position: 'CFA, CIC',
+    //     emailId: 'johnson.smith@gmail.com',
+    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
+    //     yearsOfServices: '10 years of service',
+    //   },
+    //   {
+    //     profilePic: 'assets/images/arkenea/ca.jpg',
+    //     userName: 'Allen Barry',
+    //     position: 'CFA, CIC',
+    //     emailId: 'barryallen@gmail.com',
+    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
+    //     yearsOfServices: '10 years of service',
+    //   },
+    //   {
+    //     profilePic: 'assets/images/arkenea/emily.png',
+    //     userName: 'Emily Doe',
+    //     position: 'CFA, CIC',
+    //     emailId: 'emilydoe@gmail.com',
+    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
+    //     yearsOfServices: '10 years of service',
+    //   },
+    //   {
+    //     profilePic: 'assets/images/arkenea/john.png',
+    //     userName: 'Johnson Smith',
+    //     position: 'CFA, CIC',
+    //     emailId: 'johnson.smith@gmail.com',
+    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
+    //     yearsOfServices: '10 years of service',
+    //   },
+    // ];
   }
 
-  abc() {
-    alert("hi")
+  getProfileImage(fileName) {
+    if (fileName) {
+      return profileFilePath + fileName;
+    }
+    else {
+      return this.profilePicture;
+    }
   }
 
-  hireAdvisor() {
+  //function to send contact details of advisor
+  sendContactDetails = (advisorDetails, query = {}) => {
+    let search = false;
+    const req_vars = {
+      query: Object.assign({ _id: this.userId }, query),
+      advisorDetails: {
+        "advisorFullname": advisorDetails.firstName + ' ' + advisorDetails.lastName,
+        "advisorEmail": advisorDetails.username,
+        "advisorPhone": advisorDetails.businessPhoneNumber,
+        "advisorAddress": advisorDetails.addressLine1 + ' ' + advisorDetails.city + ' ' + advisorDetails.state + ' ' + advisorDetails.zipcode,
+        "advisorId": advisorDetails._id
+      }
+    }
+    this.userapi.apiRequest('post', 'advisor/contactadvisor', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        if (result.status == "error") {
+          this.loader.close();
+          this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        } else {
+          this.loader.close();
+          this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        }
+      }
+    }, (err) => {
+      console.error(err)
+    })
+  }
+
+  //function to get all events
+  getAdvisorLists = (query = {}, search = false) => {
+    const req_vars = {
+      query: Object.assign({ userType: "advisor", status: "Active" }, query),
+      fields: {},
+      offset: '',
+      limit: '',
+      order: { "createdOn": -1 },
+    }
+    this.userapi.apiRequest('post', 'userlist/list', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        let advisorData = result.data.userList;
+
+        this.adListings = advisorData.filter(dtype => {
+          return dtype.sponsoredAdvisor == 'yes'
+        }).map(el => el)
+
+        console.log(">>>>>>>>>", this.adListings)
+
+        this.qualityAdvisor = advisorData.filter(dtype => {
+          return dtype.sponsoredAdvisor == 'no'
+        }).map(el => el)
+
+        console.log(">>>>>>>>>", this.qualityAdvisor)
+
+      }
+    }, (err) => {
+      console.error(err)
+    })
+  }
+
+  hireAdvisor(advisorDetails) {
     let hirestatus = 'pending';
 
     let query = {};
-    let proquery = { status: hirestatus, customerId: this.userId, advisorId: "5cedf29691d8be19f467093a" };
+    let proquery = { status: hirestatus, customerId: this.userId, advisorId: advisorDetails._id };
 
     const req_vars = {
-      query: Object.assign({ customerId: this.userId, advisorId: "5cedf29691d8be19f467093a" }),
+      query: Object.assign({ customerId: this.userId, advisorId: advisorDetails._id }),
       proquery: Object.assign(proquery),
       from: Object.assign({ logId: "" })
     }
