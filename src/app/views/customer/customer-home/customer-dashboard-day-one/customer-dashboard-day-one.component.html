@@ -29,22 +29,53 @@
           </div>
         </mat-card-content>
       </mat-card>
-
-
+<!-- 
+1111111 -->
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
-          <mat-card-title class="m-0">My Trustees </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p class="info">Share your documents with your trusted ones. View your appointees in this section.</p>
-          <div class="build--ur--legacy">
+            <mat-card-title class="m-0">My Trustees</mat-card-title>
+            <div *ngIf="showTrustyListing">
+                <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"  (click)="openAddTrusteeModal({}, true)">+ Add New</button>              
+            </div>          
+          </mat-card-header>
+          <mat-card-content *ngIf="!showTrustyListing">
+          <p class="info">Share your documents with your trusted ones. View your trustees in this section.</p>
+          <div class="build--ur--legacy" (click)="openAddTrusteeModal({}, true)">
             <mat-icon>group_add</mat-icon>
             <p>
-              <a>Add Appointees</a>
+              <a>Add Trustees</a>
             </p>
           </div>
         </mat-card-content>
+
+        <mat-card-content class="appointees--wrapper" *ngIf="showTrustyListing">
+            <mat-card class="appointees--section p-0"  *ngFor="let profileData of trustyListing; let i = index" [routerLink]="['/customer/dashboard/trustee-view', profileData._id]">
+                <mat-card-header class="m-0">
+                  <mat-card-title class="m-0">
+                    <div class="appointees--pic">
+                      <img src="assets/images/arkenea/default.jpg" />
+                    </div>
+                    <div class="appointees--desc">
+                      <h5>{{profileData.firstName}}</h5>
+                      <p class="m-0">{{profileData.email}}</p>
+                    </div>
+                  </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <h4>Shared Documents</h4>
+                  <div class="files--folder">
+                    <mat-icon>insert_drive_file</mat-icon>
+                     {{profileData.filesCount}} Files
+                  </div>
+                  <div class="files--folder mb-0">
+                    <mat-icon>folder</mat-icon>
+                    {{profileData.folderCount}} Folders
+                  </div>
+                </mat-card-content>
+              </mat-card>
+          </mat-card-content>
       </mat-card>
+<!-- 222222222222222 -->
 
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">

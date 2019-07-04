@@ -7,7 +7,7 @@
           <mat-divider></mat-divider>
         </mat-card-title>
 
-        <mat-card-content class="recent--update--section">
+        <mat-card-content class="recent--update--section" *ngIf="!recentLogs">
           <p>View all client updates, leads, legacy updates in this section. No updates to display as of now.</p>
           <div class="red--box">
 
@@ -17,6 +17,43 @@
             </p>
           </div>
         </mat-card-content>
+
+
+        <mat-card-content class="recent--update--section" *ngIf="recentLogs">
+          <mat-nav-list class="ad--nav--list"  *ngFor="let logData of recentActivityLogList; let i = index">
+            <mat-list-item>
+              <div mat-list-avatar class="profile--pic">
+                <img alt="" src="{{profileFilePath + logData.customerProfileImage}}">
+              </div>
+              <div mat-line>
+                <p class="what--happened">
+                  <span class="who--does"> {{logData.customerFirstName +' ' + logData.customerLastName}} </span> {{logData.activityMessage}}</p>
+              </div>
+              <p mat-line class="when">
+                {{row?.modifiedOn | date: 'MMM dd, yyyy'}}
+              </p>
+              <button mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu" *ngIf="logData.sectionName == 'hired'">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </mat-list-item>
+            <mat-menu #menu="matMenu"  xPosition="before">
+              <button mat-menu-item  *ngIf="logData.actionTaken == 'pending'" (click)="hireAdvisor(logData,'confirmHire')">
+                <mat-icon>check</mat-icon> Confirm hiring</button>
+              <button mat-menu-item class="reject"  *ngIf="logData.actionTaken == 'pending'" (click)="hireAdvisor(logData,'rejectHire')">
+                <mat-icon>cancel</mat-icon> Reject hiring</button>
+              <button mat-menu-item>
+                <mat-icon>assignment</mat-icon> View profile</button>
+            </mat-menu>
+          </mat-nav-list>
+        </mat-card-content>
+
+
+
+
+
+
+
+
       </mat-card>
     </div>
     <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="25" fxFlex.lg="20" fxFlex.xl="20" class="reverse--order--sm">

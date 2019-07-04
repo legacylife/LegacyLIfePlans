@@ -229,11 +229,11 @@ export class UserAPIService {
     }
     if(logData.folderName == 'pets'){
       this.fileAccessInfo.fileIcon = "pets";
-      this.fileAccessInfo.fileUrl = ['/customer/dashboard/debt-view', logData.fileId];
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/pets-view', logData.fileId];
     }
     if(logData.folderName == 'timecapsule'){
       this.fileAccessInfo.fileIcon = "access_time";
-      this.fileAccessInfo.fileUrl = ['/customer/dashboard/debt-view', logData.fileId];
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/time-capsule-view', logData.fileId];
     }
     if(logData.folderName == 'specialneeds'){
       this.fileAccessInfo.fileIcon = "help";

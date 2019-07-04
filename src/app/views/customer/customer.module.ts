@@ -182,12 +182,7 @@ export class GlobalVariables {
     MatSnackBarModule,
     MatSidenavModule,
     MatDialogModule,
-    MatStepperModule,
-    //LyThemeModule.setTheme('minima-light'),
-    // LyButtonModule,
-    // LyToolbarModule,
-    // LyResizingCroppingImageModule,
-    // LyIconModule,
+    MatStepperModule,   
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [

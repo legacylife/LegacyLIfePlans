@@ -34,10 +34,11 @@ export class ListingComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userId = localStorage.getItem("endUserId");
     this.getRealEstateList();
     this.getRealEstateVehiclesList();
     this.getRealEstateAssetsList();
-    this.userId = localStorage.getItem("endUserId");
+    
   }
 
   getRealEstateList(query = {}, search = false) {

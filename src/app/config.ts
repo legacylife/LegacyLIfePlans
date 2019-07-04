@@ -78,3 +78,127 @@ export const adminSections = [{
   name: 'Admin Management',
   code: "adminmanagement"
 }]
+
+export const userSections = [
+  {
+    "id" : "1",
+    "folderName" : "My Essentials",
+    'fileNames': [{
+      name: 'Personal Profile',
+      code: "PersonalProfileManagement"
+    }, {
+      name: 'ID Box',
+      code: "IDBoxManagement"
+    }, {
+      name: 'My Professionals',
+      code: "MyProfessionalsManagement"
+    }],
+  }, {
+    "id" : "2",
+    "folderName" : "Insurance Finance & Debt",
+    'fileNames': [{
+      name: 'Insurance',
+      code: "InsuranceManagement"
+    }, {
+      name: 'Finances',
+      code: "FinancesManagement"
+    }, {
+      name: 'Debt',
+      code: "DebtManagement"
+    }
+    ],
+  }, {
+    "id" : "3",
+    "folderName" : "Pets",
+    'fileNames': [{
+      name: 'Pets',
+      code: "PetsManagement"
+    }],
+  }, {
+    "id" : "4",
+    "folderName" : "Special Needs",
+    'fileNames':[{
+      name: 'Young Children',
+      code: "YoungChildrenManagement"
+    }, {
+      name: 'Child/Parent with Disability',
+      code: "ChildParentDisabilityManagement"
+    }, {
+      name: 'Friend/Neighbor you provide or care for',
+      code: "FriendNeighborCareManagement"
+    }],
+  }, {
+    "id" : "5",
+    "folderName" : "Legal Stuff",
+    'fileNames':[{
+      name: 'Estate',
+      code: "EstateManagement"
+    }, {
+      name: 'Healthcare',
+      code: "HealthcareManagement"
+    }, {
+      name: 'Personal Affairs',
+      code: "PersonalAffairsManagement"
+    }],
+  }, {
+    "id" : "6", 
+    "folderName" : "Passwords Digital & Assests",
+    'fileNames': [{
+      name: 'Devices',
+      code: "DevicesManagement"
+    }, {
+      name: 'Electronic Media',
+      code: "ElectronicMediaManagement"
+    }],
+  }, {
+    "id" : "7",
+    "folderName" : "Emergency Contacts",
+    'fileNames':[{
+      name: 'Contacts',
+      code: "emergencyContactsManagement"
+    }],
+  }, {
+    "id" : "8",
+    "folderName" : "Real Estates & Assets",
+    'fileNames':[{
+      name: 'Real Estate',
+      code: "RealEstateManagement"
+    }, {
+      name: 'Vehicles',
+      code: "VehiclesManagement"
+    }, {
+      name: 'Assets',
+      code: "AssetsManagement"
+    }],
+  }, {
+    "id" : "9",
+    "folderName" : "Time Capsule",
+    'fileNames': [{
+      name: 'Time Capsule',
+      code: "TimeCapsuleManagement"
+    }],
+  }, {
+    "id" : "10",
+    "folderName" : "Legacy Life Letters & Messages",
+    'fileNames':[{
+      name: 'Legacy Life Letters & Messages',
+      code: "LegacyLifeLettersMessagesManagement"
+    }],
+  }, {
+    "id" : "11",
+    "folderName" : "Final Wishes",
+    'fileNames':[{
+      name: 'Funeral Plans',
+      code: "FuneralPlansManagement"
+    }, {
+      name: 'Obituary',
+      code: "ObituaryManagement"
+    }, {
+      name: 'Celebration of Life',
+      code: "CelebrationLifeManagement"
+    }],
+  }
+]
+//   name: 'My People',
+//   code: "MyPeopleManagement"
+
