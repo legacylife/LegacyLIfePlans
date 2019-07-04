@@ -19,6 +19,7 @@ const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 const AdvisorActivityLog = require('./../models/AdvisorActivityLog')
+const HiredAdvisors = require('./../models/HiredAdvisors')
 const s3 = require('./../helpers/s3Upload')
 
 var auth = jwt({
@@ -27,7 +28,7 @@ var auth = jwt({
 })
 
 // Function to activate advisor
-function activateAdvisor (req, res) {
+function activateAdvisor(req, res) {
   console.log("request body >>>>>>", req.body)
   let { query } = req.body;
   let fields = { id: 1, username: 1, status: 1 }
@@ -37,9 +38,9 @@ function activateAdvisor (req, res) {
     } else {
       var upStatus = 'Active';
       var tokens = generateToken(85);
-      var date = new Date()      
+      var date = new Date()
 
-      var params = { status: upStatus, token : tokens, signupApprovalDate : date }
+      var params = { status: upStatus, token: tokens, signupApprovalDate: date }
       User.update({ _id: userList._id }, { $set: params }, function (err, updatedUser) {
         if (err) {
           res.send(resFormat.rError(err))
@@ -47,7 +48,7 @@ function activateAdvisor (req, res) {
           let clientUrl = constants.clientUrl;
           var link = "";
           var link = clientUrl + '/advisor/set-password/' + tokens;
-  
+
           // Send reset password link to advisor email
           emailTemplatesRoute.getEmailTemplateByCode("ActivateUser").then((template) => {
             if (template) {
@@ -65,7 +66,7 @@ function activateAdvisor (req, res) {
             } else {
               res.status(401).send(resFormat.rError('Some error Occured'))
             }
-          })          
+          })
         }
       })
     }
@@ -73,24 +74,24 @@ function activateAdvisor (req, res) {
 }
 
 // Function to update reject reason for advisor
-function rejectAdvisor (req, res) {
- 
-  let  query  = {"_id" : req.body._id};
+function rejectAdvisor(req, res) {
+
+  let query = { "_id": req.body._id };
   let fields = { id: 1, username: 1, status: 1 }
   User.findOne(query, fields, function (err, userList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      var date = new Date() 
+      var date = new Date()
       upStatus = 'Rejected';
-      approveRejectReason =  req.body.approveRejectReason;   
+      approveRejectReason = req.body.approveRejectReason;
 
-      var params = { status: upStatus, signupApprovalDate : date, approveRejectReason : approveRejectReason }
+      var params = { status: upStatus, signupApprovalDate: date, approveRejectReason: approveRejectReason }
       User.update({ _id: userList._id }, { $set: params }, function (err, updatedUser) {
         if (err) {
           res.send(resFormat.rError(err))
-        } else {          
-  
+        } else {
+
           // Send reset password link to advisor email
           emailTemplatesRoute.getEmailTemplateByCode("RejectAdvisor").then((template) => {
             if (template) {
@@ -111,55 +112,139 @@ function rejectAdvisor (req, res) {
             }
           })
 
-          
+
         }
       })
     }
   })
 }
 
-function contactAdvisor (req, res) {
-  
-   let  query  = {"_id" : req.body._id};
-   let advisorId = req.body.advisorId;
-   let fields = { id: 1, username: 1, firstName:1, lastName:1, status: 1, profilePhoto :1 }
-   User.findOne(query, fields, function (err, userDetails) {
-     if (err) {
-       res.status(401).send(resFormat.rError(err))
-     } else {
-       AdvisorActivityLog.findOne(query, fields, function (err, userDetails) {
-        var log = new AdvisorActivityLog();
-        log.customerId = query.customerId;
-        log.advisorId = advisorId;
-        log.activityMessage = userDetails.firstName +' ' + userDetails.lastName + ' contacted you.';
-        log.customerProfileImage = userDetails.profilePhoto;
-        log.sectionName = 'contact';
-        log.actionTaken = '';
-        log.createdOn = new Date();
-        log.modifiedOn = new Date();
-        log.createdBy = query.customerId;
-        log.modifiedOn = new Date();
-        log.save({}, function (err, newEntry) {
-          if (err) {
-            res.send(resFormat.rError(err))
-          } else {
-    
-            logData.customerId = query.customerId;
-            logData.fileId = newEntry._id;
-            actitivityLog.updateActivityLog(logData);
-    
-            let result = { "message": "You have sent an contact details!" }
-            res.status(200).send(resFormat.rSuccess(result))
-          }
-        })
-
-
-       })
+/**
+ * Function to get advisor activity log on advisor dashboard 
+ */
+function recentUpdateList(req, res) {
+  let { fields, offset, query, order, limit, search } = req.body
+  let totalRecords = 0
+  if (search && !isEmpty(query)) {
+    Object.keys(query).map(function(key, index) {
+      if(key !== "status") {
+        query[key] = new RegExp(query[key], 'i')
+      }
+    })
+  }
+  AdvisorActivityLog.countDocuments(query, function(err, logcount) {
+    if(logcount) {
+      totalRecords = logcount
     }
-   })
- }
+    AdvisorActivityLog.find(query, fields, function(err, logList) {	
+      console.log(logList)
+      if (err) {
+        res.status(401).send(resFormat.rError(err))
+      } else {
+        res.send(resFormat.rSuccess({ logList, totalRecords}))
+      }
+    }).sort(order).skip(offset).limit(limit)
+  })
+}
 
-function fileupload(req, res){
+/**
+ * Function to hire advisor
+ */
+
+function hireAdvisor(req, res) {
+
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let { from } = req.body;
+
+  if (query.customerId && query.advisorId) {
+    HiredAdvisors.findOne(query, function (err, hireData) {
+      if (err) {
+        let result = { "message": "Something Wrong!" }
+        res.send(resFormat.rError(result));
+      } else {
+        if (hireData && hireData._id) {
+          proquery.modifiedOn = new Date();
+          HiredAdvisors.updateOne({ _id: hireData._id }, { $set: proquery }, function (err, updatedDetails) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              if(from.logId){
+                AdvisorActivityLog.updateOne({ _id: from.logId }, { $set: {actionTaken : proquery.status} }, function (err, logDetails) {
+                  if (err) {
+                    res.send(resFormat.rError(err))
+                  } else {
+                    let result = { "message": "Request updated successfully!" }
+                    res.status(200).send(resFormat.rSuccess(result))
+                  }
+                })
+              }
+              else {
+                let result = { "message": "Request updated successfully!" }
+                res.status(200).send(resFormat.rSuccess(result))
+              }
+            }
+          })
+        } else {
+          let { proquery } = req.body;
+          console.log(proquery)
+          var hireadvisor = new HiredAdvisors();
+          hireadvisor.status = 'pending';
+          hireadvisor.customerId = query.customerId;
+          hireadvisor.advisorId = query.advisorId;
+          hireadvisor.createdOn = new Date();
+          hireadvisor.modifiedOn = new Date();
+          hireadvisor.createdby = query.customerId;
+          hireadvisor.modifiedby = query.customerId;
+          hireadvisor.save({ $set: proquery }, function (err, newEntry) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else { 
+
+              User.findOne({_id : query.customerId}, {firstName :1, lastName :1, profilePicture : 1}, function (err, userList) {
+
+                if (err) {
+                  let result = { "message": "Something Wrong!" }
+                  res.send(resFormat.rError(result));
+                } else {
+                  var advisorLog = new AdvisorActivityLog();
+                  advisorLog.status = 'pending';
+                  advisorLog.customerId = query.customerId;
+                  advisorLog.advisorId = query.advisorId;
+                  advisorLog.createdOn = new Date();
+                  advisorLog.modifiedOn = new Date();
+                  advisorLog.createdby = query.customerId;
+                  advisorLog.modifiedby = query.customerId;
+
+                  advisorLog.sectionName = "hired";
+                  advisorLog.actionTaken = "pending";
+                  advisorLog.customerProfileImage = userList.profilePicture;
+                  advisorLog.customerFirstName = userList.firstName;
+                  advisorLog.customerLastName = userList.lastName;
+                  advisorLog.activityMessage = " has confirmed to hire you";
+
+                  advisorLog.save({}, function (err, newEntry) {
+                    if (err) {
+                      res.send(resFormat.rError(err))
+                    } else { 
+                      let result = { "message": "Request sent successfully!" }
+                      res.status(200).send(resFormat.rSuccess(result))
+                    }
+                  })
+                }                
+              })
+            }
+          })
+        }
+      }
+    })
+  } else {
+    let result = { "message": "No record found." }
+    res.send(resFormat.rError(result));    
+  }
+}
+
+function fileupload(req, res) {
   console.log(req);
 }
 
@@ -176,6 +261,8 @@ function generateToken(n) {
 router.post("/activateadvisor", activateAdvisor)
 router.post("/rejectadvisor", rejectAdvisor)
 router.post("/fileupload", fileupload)
-router.post("/contactadvisor", contactAdvisor)
+//router.post("/contactadvisor", contactAdvisor)
+router.post("/recentupdatelist", recentUpdateList)
+router.post("/hireadvisor",hireAdvisor)
 
 module.exports = router
