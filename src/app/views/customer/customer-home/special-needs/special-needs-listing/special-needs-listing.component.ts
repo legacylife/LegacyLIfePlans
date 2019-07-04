@@ -34,10 +34,11 @@ export class SpecialNeedsListingComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userId = localStorage.getItem("endUserId");
     this.getyoungChildrenList();
     this.getcPDisabilityList();
     this.getfriendNeighborList();
-    this.userId = localStorage.getItem("endUserId");
+    
   }
 
   getyoungChildrenList(query = {}, search = false) {
