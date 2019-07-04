@@ -17,6 +17,6 @@ router.use("/documents", require("./routes/documentsUploadRoute"))
 router.use("/specialNeeds", require("./routes/specialNeedsRoute"))
 router.use("/realEstateAssets", require("./routes/realEstateAssetsRoute"))
 router.use("/invite", require("./routes/inviteRoute"))
-
+router.use("/toDos", require("./routes/toDosRoute"))
 
 module.exports = router
