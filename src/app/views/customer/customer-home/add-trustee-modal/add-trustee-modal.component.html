@@ -36,6 +36,10 @@
               <mat-form-field class="full-width" *ngIf="validationEmailVal">
                   <input matInput name="emailValidation" [formControl]="trustFormGroup.controls['emailValidation']">
               </mat-form-field>
+
+              <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
+                <input matInput name="profileId" [formControl]="trustFormGroup.controls['profileId']" readonly="readonly">
+              </mat-form-field>
           </div>
           <div class="mt-1 text-center">
             <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" id="trustFormGroupBtn" [disabled]="trustFormGroup.invalid">Assign Permissions</button>   
@@ -64,7 +68,7 @@
                   </div>
                 </div>
                 <div fxLayout="row wrap">
-                <mat-radio-group class="llp-radio" (change)="onRadioChange($event.value)" name="SelectAll" [formControl]="secondFormGroup.controls['SelectAll']">
+                <mat-radio-group class="llp-radio" (change)="onRadioChange($event.value)" name="selectAll" [formControl]="secondFormGroup.controls['selectAll']">
                   <mat-list-item>
                       <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
                         <label class="left--header">All 30 sections</label>
@@ -136,8 +140,8 @@
           <p class="sub--head text-center">We're ready to email {{Email_USER}} an invitation asking to be a Trustee to your Legacy.</p>
           <div class="profile--body--scroll">
             <mat-form-field class="full-width mt-1">
-              <textarea matInput placeholder="Add a personal message" rows="7" [formControl]="thirdFormGroup.controls['comments']"></textarea>
-              <mat-icon matTooltip="Please enter personal message" matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['comments'].hasError('required') && thirdFormGroup.controls['comments'].touched" class="red--alert">help_outline</mat-icon>
+              <textarea matInput placeholder="Add a personal message" rows="7" [formControl]="thirdFormGroup.controls['messages']"></textarea>
+              <mat-icon matTooltip="Please enter personal message" matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['messages'].hasError('required') && thirdFormGroup.controls['messages'].touched" class="red--alert">help_outline</mat-icon>
             </mat-form-field>
           </div>
           <div class="mt-1 text-center">

@@ -49,30 +49,38 @@
         </mat-card-content>
 
         <mat-card-content class="appointees--wrapper" *ngIf="showTrustyListing">
-            <mat-card class="appointees--section p-0"  *ngFor="let profileData of trustyListing; let i = index" [routerLink]="['/customer/dashboard/trustee-view', profileData._id]">
+  
+            <mat-card class="appointees--section p-0 {{row?.status==='Pending' ? 'pending' : ''}}"  *ngFor="let row of trustyListing; let i = index"  [routerLink]="['/customer/dashboard/trustee-view', row?._id]">
                 <mat-card-header class="m-0">
                   <mat-card-title class="m-0">
                     <div class="appointees--pic">
-                      <img src="assets/images/arkenea/default.jpg" />
+                        <img src="{{profileUrl}}{{row.trustCustomerId.profilePicture}}" />
                     </div>
                     <div class="appointees--desc">
-                      <h5>{{profileData.firstName}}</h5>
-                      <p class="m-0">{{profileData.email}}</p>
+                      <h5>{{row?.firstName}}</h5>
+                      <p class="m-0">{{row?.email}}</p>
                     </div>
                   </mat-card-title>
                 </mat-card-header>
-                <mat-card-content>
+                <mat-card-content *ngIf="row?.status==='Active'">
                   <h4>Shared Documents</h4>
                   <div class="files--folder">
                     <mat-icon>insert_drive_file</mat-icon>
-                     {{profileData.filesCount}} Files
+                     {{row?.filesCount}} Files
                   </div>
                   <div class="files--folder mb-0">
                     <mat-icon>folder</mat-icon>
-                    {{profileData.folderCount}} Folders
+                    {{row?.folderCount}} Folders
                   </div>
                 </mat-card-content>
+
+                <mat-card-content class="status--pending" *ngIf="row?.status==='Pending'">
+                  <mat-icon>history</mat-icon>
+                  <p class="pending">Pending...</p>
+                </mat-card-content>
+
               </mat-card>
+     
           </mat-card-content>
       </mat-card>
 <!-- 222222222222222 -->

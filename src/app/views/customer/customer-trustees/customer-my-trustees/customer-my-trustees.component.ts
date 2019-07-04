@@ -1,11 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { Subscription, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
 import { UserAPIService } from './../../../../userapi.service';
+import { addTrusteeModalComponent } from './../../customer-home/add-trustee-modal/add-trustee-modal.component';
+import { serverUrl, s3Details } from '../../../../config';
 
 @Component({
   selector: 'app-customer-my-trustees',
@@ -20,7 +19,8 @@ export class CustomerMyTrusteeComponent implements OnInit {
   fileActivityLogList:any;
   showTrustyListing = false;
   showTrustyListingCnt: any;
-  constructor(private userapi: UserAPIService
+  profileUrl = s3Details.url+'/profilePictures/';
+  constructor(private userapi: UserAPIService,private dialog: MatDialog,private snack: MatSnackBar,
   ) { }
 
 
@@ -33,20 +33,36 @@ export class CustomerMyTrusteeComponent implements OnInit {
     // position: 'CFA, CIC',
     // status: 'assigned'
     this.userId = localStorage.getItem("endUserId");
-    this.getTrusteeList();
+    this.getTrusteeList('All','-1');
   }
 
-  getTrusteeList = (query = {}) => {
-    const req_vars = {
-      query: Object.assign({ customerId: this.userId, status: "Active" }, query),
-      fields: {},
-      order: {"createdOn": -1},
+  getTrusteeList = (search,sort) => {
+    if(sort){
+      localStorage.setItem("trustee_sort", sort);
     }
-    this.userapi.apiRequest('post', 'trustee/trustListing', req_vars).subscribe(result => {
+    let query = {};
+    let req_vars = {};
+    if(search=='All'){
+       req_vars = {
+        query: Object.assign({ customerId: this.userId}, query),
+        fields: {},
+        order: {"createdOn": sort},
+      }
+    }else{
+       req_vars = {
+        query: Object.assign({ customerId: this.userId, status: search }, query),
+        fields: {},
+        order: {"createdOn": sort},
+      }
+    }
+    this.userapi.apiRequest('post', 'trustee/listing', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
         this.trustyListing = result.data.trustList;
+
+        console.log("Image :- ",this.trustyListing);
+
         this.showTrustyListingCnt = this.trustyListing.length;  
         if (this.showTrustyListingCnt>0) {
           this.showTrustyListing = true;
@@ -56,6 +72,42 @@ export class CustomerMyTrusteeComponent implements OnInit {
       console.error(err);
     })
   }
+
+
+  openAddTrusteeModal(id,isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(addTrusteeModalComponent, {     
+      width: '720px',
+      data: {
+        id: id,
+      },
+      disableClose: true,
+    });
+    dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getTrusteeList('All','-1');
+      if (!res) {
+        return;
+      }
+    })
+  }
+
+ resendInvitation(id){
+   let query = {};
+    const req_vars = {
+      query: Object.assign({_id: id}, query),   
+      extrafields: Object.assign({inviteByName:localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName")})
+    }
+    this.userapi.apiRequest('post', 'trustee/resend-invitation', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      }
+    }, (err) => {
+      console.error(err);
+    })
+ }
+
 
 
 }

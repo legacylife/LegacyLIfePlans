@@ -1,73 +1,63 @@
 <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
-
   <div class="full-width">
-
-
     <mat-card class="empty--section p-0">
       <mat-card-header class="m-0 header--with--sort">
         <mat-card-title class="m-0">My Trustees</mat-card-title>
         <div class="right--filters">
-            <mat-icon class="compare--icon">compare_arrows</mat-icon>
-            <mat-select placeholder="All">
-              <mat-option value="">All</mat-option>
-              <mat-option value="">Pending</mat-option>
-              <mat-option value="">Option 3</mat-option>
+            <mat-icon class="compare--icon" (selectionChange)="getTrusteeList('','1')">compare_arrows</mat-icon>
+            <mat-select placeholder="All" (selectionChange)="getTrusteeList($event.value)">
+              <mat-option value="All">All</mat-option>
+              <mat-option value="Active">Active</mat-option>
+              <mat-option value="Pending">Pending</mat-option>
             </mat-select>
           </div>
       </mat-card-header>
-
       <mat-card-content class="appointees--wrapper">
-        <mat-card class="appointees--section p-0 {{row.status === 'pending' ? 'pending' : ''}}" *ngFor="let row of trustyListing">
+        <mat-card class="appointees--section p-0 {{row?.status==='Pending' ? 'pending' : ''}}" *ngFor="let row of trustyListing">
           <mat-card-header class="m-0">
             <mat-card-title class="m-0">
-              <div class="appointees--pic">
-                <!-- <img src="{{row.profilePicture}}" /> -->
+              <div class="appointees--pic">                  
+                <img src="{{profileUrl}}{{row.trustCustomerId.profilePicture}}" />              
               </div>
               <div class="appointees--desc">
-                <h5>{{row.firstName}} {{row.lastName}}</h5>
-                <p class="m-0">{{row.email}}</p>
+                <h5>{{row?.firstName}} {{row?.lastName}}</h5>
+                <p class="m-0">{{row?.email}}</p>
               </div>
               <div class="cursor-pointer">
                   <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
                   <mat-menu #beforeMenu="matMenu" xPosition="before" class="llp--menu--droupdown">
-                    <button mat-menu-item><span>Manage</span></button>
-                    <button mat-menu-item><span>View</span></button>
-                    <button mat-menu-item><span>Resend Invitation</span></button>
+                    <button mat-menu-item  (click)="openAddTrusteeModal(row?._id, true)"><span>Manage</span></button>
+                    <button mat-menu-item *ngIf="row?.status==='Pending'" (click)="resendInvitation(row?._id)"><span>Resend Invitation</span></button>
                   </mat-menu>
               </div>
             </mat-card-title>
           </mat-card-header>
-          <mat-card-content *ngIf="row.status === 'assigned'">
+          <mat-card-content *ngIf="row?.status==='Active'">
             <h4>Assigned</h4>
             <div class="files--folder">
               <mat-icon>insert_drive_file</mat-icon>
-              <!-- {{row.totalFiles}} -->
+              {{row?.filesCount}} Files
             </div>
             <div class="files--folder mb-0">
               <mat-icon>folder</mat-icon>
-              <!-- {{row.totalFolders}} -->
+              {{row?.folderCount}} Folders
             </div>
           </mat-card-content>
-
-
           <!-- Pending -->
-          <mat-card-content class="status--pending" *ngIf="row.status === 'pending'">
+          <mat-card-content class="status--pending" *ngIf="row?.status==='Pending'">
             <mat-icon>history</mat-icon>
             <p class="pending">Pending...</p>
           </mat-card-content>
-
           <!-- all hired advisor -->
-          <mat-card-content class="status--advisor relative" *ngIf="row.status === 'advisor'">
+          <!-- <mat-card-content class="status--advisor relative" *ngIf="row.status === 'advisor'">
             <div class="files--folder mt-1">
               <mat-icon>school</mat-icon>
               Insurance Agent, Attorney, Accountant, Financial Planner
             </div>
-
             <div class="ad--strip">
               Advisor
             </div>
-          </mat-card-content>
-
+          </mat-card-content> -->
         </mat-card>
       </mat-card-content>
     </mat-card>
