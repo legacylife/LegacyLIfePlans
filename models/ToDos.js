@@ -6,6 +6,7 @@ var toDosSchema = new mongoose.Schema({
   customerType: String,
   comments: String,
   status: String,
+  sortOrder: Number,
   createdOn: Date,
   modifiedOn: Date
 })

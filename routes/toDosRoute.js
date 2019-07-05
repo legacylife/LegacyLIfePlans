@@ -18,10 +18,17 @@ var auth = jwt({
 
 // save to-do's of customer/advisor
 async function addTodos(req, res) {
+    var sortOrderNext = 0;
     var toDosObj = new ToDos();
-    toDosObj.customerId = req.body.customerId;
+    toDosObj.customerId = req.body.customerId;    
+    await ToDos.findOne({"customerId": toDosObj.customerId}, function (err, todoList) {
+        if(todoList != null){
+            sortOrderNext = todoList.sortOrder + 1
+        }
+    }).sort({sortOrder:'-1'}).skip(0).limit(1)
     toDosObj.customerType = req.body.customerType;
     toDosObj.comments = req.body.comments;
+    toDosObj.sortOrder = sortOrderNext;
     toDosObj.status = 'Active';
     toDosObj.createdOn = new Date();
     toDosObj.modifiedOn = new Date();
@@ -32,7 +39,7 @@ async function addTodos(req, res) {
             let result = { "message": "To-Do's has been added successfully" }   
             res.status(200).send(resFormat.rSuccess(result))
         }
-    })
+    })      
 }
 
 function todosList(req, res) {
@@ -70,11 +77,22 @@ function updateTodos(req, res){
         }
     });
 }
-
  
+
+async function todosChangeOrder(req, res){
+    var params = req.body.query
+    async.each(params, element => {
+       ToDos.updateOne({ _id: element._id }, { $set: {"sortOrder":element.newOrder} }, function (err, updatedUser) { });
+    });   
+    let result = { "message": "Order changed successfully" }
+    res.status(200).send(resFormat.rSuccess(result))
+}
+
 router.post("/add-todos", addTodos)
 router.post("/todos-list", todosList)
 router.post("/delete-todos", deleteTodos)
 router.post("/update-todos", updateTodos)
+router.post("/todos-change-order", todosChangeOrder)
+
 
 module.exports = router
