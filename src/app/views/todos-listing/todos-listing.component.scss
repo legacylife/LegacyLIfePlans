@@ -1,0 +1,62 @@
+
+@import 'llp-global-styles.scss';
+
+.note--save--btn{
+    font-size: 16px;
+    padding: 0 18px;
+    height: 32px;
+    line-height: 29px;
+}
+.todos--list{
+    .mat-card-content{
+        border-radius: 2px;
+        border: solid 1px #dadce0;
+        padding-bottom: 0;
+        .mat-list-item{
+            height: auto;
+            ::ng-deep .mat-list-item-content{
+                padding: 10px 35px 10px 20px;
+                p{
+                    margin-bottom: 0;
+                    font-size: 16px;
+                    color: #222324;
+                    .when{
+                        display: block;
+                        font-size: 13px;
+                        color: #828385;
+                        margin-top: 5px;
+                    }
+                }
+                .more{
+                    padding: 0;
+                    position: absolute;
+                    right: 0;
+                    top: 4px;
+                }
+            }
+        }
+        &:hover{
+            cursor: pointer;
+        }
+    }
+}
+.mat-menu-item{
+    line-height: 34px;
+    height: 34px;
+    font-family: $font--lato--regular;
+    font-size: 16px !important;
+    &:hover{
+        color: $clr--2;
+    }
+}
+.todo--modal--hgt{
+    min-height: 300px;
+    max-height: calc(100vh - 200px);
+    overflow: auto;
+}
+.view--more{
+    font-family: $font--lato--bold !important;
+    &:hover{
+        color: $clr--2;
+    }
+}

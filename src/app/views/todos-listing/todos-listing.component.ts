@@ -12,21 +12,20 @@ import { UserAPIService } from "app/userapi.service";
 import { AppLoaderService } from "app/shared/services/app-loader/app-loader.service";
 
 @Component({
-  selector: "app-todos",
-  templateUrl: "./todos.component.html",
-  styleUrls: ["./todos.component.scss"]
+  selector: "app-todos-listing",
+  templateUrl: "./todos-listing.component.html",
+  styleUrls: ["./todos-listing.component.scss"]
 })
-export class TodosComponent implements OnInit {
-  todosForm: FormGroup;
-  todosUpdateForm: FormGroup;
-
+export class TodosListingComponent implements OnInit {
   userId: string;
   endUserType: string;
-  todoList:any;
-  viewMode:any = 10
-  updateTodosButton:boolean=true
+  todoList: any;
+  viewMode:any = 100000;
+  todosForm: FormGroup;
+  todosUpdateForm: FormGroup;
+  updateTodosButton:boolean=true;
   viewMoreStatus:boolean=false
-  
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -35,7 +34,9 @@ export class TodosComponent implements OnInit {
     private loader: AppLoaderService,
     private userapi: UserAPIService,
     private snack: MatSnackBar
-  ) {}
+  ) {
+
+  }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -51,22 +52,27 @@ export class TodosComponent implements OnInit {
     this.getTodos();
   }
 
-  todosFormSubmit() {
-    let data = {
-      comments: this.todosForm.value.comments,
-      customerId: this.userId,
-      customerType: this.endUserType
+  // get list of todo's
+  async getTodos(query = {}, search = false) {
+    const params = {
+      query: Object.assign({ customerId: this.userId }, query),
+      fields: {},
+      offset: 0,
+      limit: 0,
+      order: { modifiedOn: -1 }
     };
-    this.loader.open();
-    this.userapi.apiRequest("post", "todos/add-todos", data).subscribe(
+    await this.userapi.apiRequest("post", "todos/todos-list", params).subscribe(
       result => {
-        this.loader.close();
         if (result.status == "error") {
-          this.snack.open(result.data.message, "OK", { duration: 4000 });
+          console.log("Error while fetching list");
         } else {
-          this.snack.open(result.data.message, "OK", { duration: 4000 });
-          this.todosForm.reset();
-          this.getTodos();
+          this.viewMode = 100000
+          this.todoList = result.data.todoList
+          if(this.todoList.length > 0){
+            this.viewMoreStatus = true
+          }else{
+            this.viewMoreStatus = false
+          }
         }
       },
       err => {
@@ -75,37 +81,18 @@ export class TodosComponent implements OnInit {
     );
   }
 
-  // get list of todo's
-  async getTodos(query = {}, search = false) {
-    const params = {
-      query: Object.assign({ customerId: this.userId }, query),
-      fields: {},
-      offset: 0,
-      limit: 5,
-      order: { modifiedOn: -1 }
-    };
+  edit(rowIndex){
+    this.viewMode = rowIndex
+  } 
 
-    await this.userapi.apiRequest("post", "todos/todos-list", params).subscribe(result => {
-        if (result.status == "error") {
-          console.log("Error while fetching list")
-        } else {
-          this.viewMode = 10
-          this.todoList = result.data.todoList
-          if(this.todoList.length > 0){
-            this.viewMoreStatus = true
-          }else{
-            this.viewMoreStatus = false
-          }
-        }
-      }, (err) => {
-        console.error(err);
-      })
+  updateCommentCheck(formdata){
+    if(formdata.update_comments.trim() == ""){
+      this.updateTodosButton = false
+    }else{
+      this.updateTodosButton = true
+    }
   }
-
-  trimInput(formData) {
-    this.todosForm.controls["comments"].setValue(formData.comments.trim());
-  }
-
+  
   delete(id){
     let data = {
       "_id" : id
@@ -149,17 +136,4 @@ export class TodosComponent implements OnInit {
         console.error(err);
       });
   }
-
-  edit(rowIndex){
-    this.viewMode = rowIndex
-  }
-
-  updateCommentCheck(formdata){
-    if(formdata.update_comments.trim() == ""){
-      this.updateTodosButton = false
-    }else{
-      this.updateTodosButton = true
-    }
-  }
-  
 }

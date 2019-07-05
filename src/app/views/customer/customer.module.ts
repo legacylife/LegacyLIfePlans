@@ -129,6 +129,8 @@ import { LettersMessagesDetailsComponent } from './customer-home/legacy-life-let
 import { LettersMessagesModelComponent } from './customer-home/legacy-life-letters-messages/letters-messages-model/letters-messages-model.component';
 import { ElectronicMediaModalComponent } from './customer-home/passwords-digital-assets/electronic-media/electronic-media-modal/electronic-media-modal.component';
 import { ElectronicMediaDetailsComponent } from './customer-home/passwords-digital-assets/electronic-media/electronic-media-details/electronic-media-details.component';
+import { TodosListingComponent } from '../todos-listing/todos-listing.component';
+import { TodosComponent } from '../todos/todos.component';
 
 export class GlobalVariables {
   testVal = '#00bcd4';
@@ -207,7 +209,7 @@ export class GlobalVariables {
     TimeCapsuleListComponent, TimeCapsuleMoalComponent, TimeCapsuleDetailsComponent, InsuranceFinanceDebtListComponent,
     InsuranceModalComponent, InsuranceDetailsComponent, FinanceModalComponent, FinanceDetailsComponent, DebtDetailsComponent,
     DebtModalComponent, PasswordsDigitalAssetsListComponent, DevicesModalComponent,DeviceDetailsComponent,LettersMessagesListingComponent,LettersMessagesDetailsComponent,
-    LettersMessagesModelComponent,ElectronicMediaModalComponent,ElectronicMediaDetailsComponent
+    LettersMessagesModelComponent,ElectronicMediaModalComponent,ElectronicMediaDetailsComponent,TodosListingComponent,TodosComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
     // { provide: LY_THEME, useClass: MinimaLight, multi: true },
@@ -219,7 +221,8 @@ export class GlobalVariables {
     legalStuffModalComponent, essentialsMyProfessionalsComponent, SendAnEmailComponent,
     HireAdvisorComponent, FinalWishesFormModalComponent, PetsModalComponent, AssetsModelComponent,
     SpecialNeedsModelComponent, RealEstateModelComponent, VehicleModelComponent, TimeCapsuleMoalComponent,
-    InsuranceModalComponent, FinanceModalComponent, DebtModalComponent, DevicesModalComponent, ProfAddTrusteeModalComponent,LettersMessagesModelComponent,ElectronicMediaModalComponent
+    InsuranceModalComponent, FinanceModalComponent, DebtModalComponent, DevicesModalComponent, ProfAddTrusteeModalComponent,
+    LettersMessagesModelComponent,ElectronicMediaModalComponent,TodosComponent
   ]
 })
 export class CustomerModule { }

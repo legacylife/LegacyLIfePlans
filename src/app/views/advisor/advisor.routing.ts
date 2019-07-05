@@ -20,6 +20,7 @@ import { LegaciesDetailsLandingComponent } from './advisor-legacy-details/legaci
 import { GetFeaturedComponent } from './get-featured/get-featured.component';
 import { AdvisorLeadsComponent } from './advisor-leads/advisor-leads.component';
 import { AdvisorLeadsDetailsComponent } from './advisor-leads-details/advisor-leads-details.component';
+import { TodosListingComponent } from '../todos-listing/todos-listing.component';
 console.log('advisor---routing');
 export const AdvisorRoutes: Routes = [
   {
@@ -178,6 +179,16 @@ export const AdvisorRoutes: Routes = [
     ]
   },
   {
+    path: 'to-dos',
+    component: AdvisorLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: TodosListingComponent       
+      }
+    ]
+  },
+  {
     path: 'get-featured',
     component: AdvisorLayoutComponent,
     children: [
@@ -195,5 +206,5 @@ export const AdvisorRoutes: Routes = [
   {
     path: '**',
     redirectTo: 'dashboard'
-  }
+  },
 ];
