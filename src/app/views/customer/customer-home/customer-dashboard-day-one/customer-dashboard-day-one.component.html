@@ -48,13 +48,13 @@
           </div>
         </mat-card-content>
 
-        <mat-card-content class="appointees--wrapper" *ngIf="showTrustyListing">
-  
+        <mat-card-content class="appointees--wrapper" *ngIf="showTrustyListing">  
             <mat-card class="appointees--section p-0 {{row?.status==='Pending' ? 'pending' : ''}}"  *ngFor="let row of trustyListing; let i = index"  [routerLink]="['/customer/dashboard/trustee-view', row?._id]">
                 <mat-card-header class="m-0">
                   <mat-card-title class="m-0">
                     <div class="appointees--pic">
-                        <img src="{{profileUrl}}{{row.trustCustomerId.profilePicture}}" />
+                      <img *ngIf="row.trustCustomerId.profilePicture" src="{{profileUrl}}{{row.trustCustomerId.profilePicture}}" />
+                      <img *ngIf="!row.trustCustomerId.profilePicture" src="assets/images/arkenea/default.jpg" />
                     </div>
                     <div class="appointees--desc">
                       <h5>{{row?.firstName}}</h5>
