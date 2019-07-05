@@ -116,9 +116,9 @@ function trustFormUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              logData.customerId = custData.customerId;
+              /*logData.customerId = custData.customerId;
               logData.fileId = custData._id;
-              actitivityLog.updateActivityLog(logData);
+              actitivityLog.updateActivityLog(logData);*/
               
               stat = sendTrusteeMail(proquery.email,proquery.messages,proquery.folderCount,extrafields.inviteByName,proquery.firstName,clientUrl,"Reminder: ");
           
@@ -157,9 +157,9 @@ function trustFormUpdate(req, res) {
         res.send(resFormat.rError(err))
       } else {
 
-        logData.customerId = query.customerId;
+        /*logData.customerId = query.customerId;
         logData.fileId = newEntry._id;
-        actitivityLog.updateActivityLog(logData);
+        actitivityLog.updateActivityLog(logData);*/
         
         stat = sendTrusteeMail(proquery.email,proquery.messages,proquery.folderCount,extrafields.inviteByName,proquery.firstName,clientUrl,""); 
         let result = { "message": "Trustee added successfully!" }
