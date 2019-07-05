@@ -62,6 +62,7 @@ var userSchema = new mongoose.Schema({
   managingPrincipleName : String, 
   advisorDocuments : Array,
   folders:Array,
+  sponsoredAdvisor:String,
   // Subscription fields
   manageOtherProceducers : String, 
   howManyProducers : String, 

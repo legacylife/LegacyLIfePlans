@@ -126,22 +126,22 @@ function recentUpdateList(req, res) {
   let { fields, offset, query, order, limit, search } = req.body
   let totalRecords = 0
   if (search && !isEmpty(query)) {
-    Object.keys(query).map(function(key, index) {
-      if(key !== "status") {
+    Object.keys(query).map(function (key, index) {
+      if (key !== "status") {
         query[key] = new RegExp(query[key], 'i')
       }
     })
   }
-  AdvisorActivityLog.countDocuments(query, function(err, logcount) {
-    if(logcount) {
+  AdvisorActivityLog.countDocuments(query, function (err, logcount) {
+    if (logcount) {
       totalRecords = logcount
     }
-    AdvisorActivityLog.find(query, fields, function(err, logList) {	
+    AdvisorActivityLog.find(query, fields, function (err, logList) {
       console.log(logList)
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-        res.send(resFormat.rSuccess({ logList, totalRecords}))
+        res.send(resFormat.rSuccess({ logList, totalRecords }))
       }
     }).sort(order).skip(offset).limit(limit)
   })
@@ -169,8 +169,8 @@ function hireAdvisor(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              if(from.logId){
-                AdvisorActivityLog.updateOne({ _id: from.logId }, { $set: {actionTaken : proquery.status} }, function (err, logDetails) {
+              if (from.logId) {
+                AdvisorActivityLog.updateOne({ _id: from.logId }, { $set: { actionTaken: proquery.status } }, function (err, logDetails) {
                   if (err) {
                     res.send(resFormat.rError(err))
                   } else {
@@ -199,9 +199,9 @@ function hireAdvisor(req, res) {
           hireadvisor.save({ $set: proquery }, function (err, newEntry) {
             if (err) {
               res.send(resFormat.rError(err))
-            } else { 
+            } else {
 
-              User.findOne({_id : query.customerId}, {firstName :1, lastName :1, profilePicture : 1}, function (err, userList) {
+              User.findOne({ _id: query.customerId }, { firstName: 1, lastName: 1, profilePicture: 1 }, function (err, userList) {
 
                 if (err) {
                   let result = { "message": "Something Wrong!" }
@@ -226,12 +226,12 @@ function hireAdvisor(req, res) {
                   advisorLog.save({}, function (err, newEntry) {
                     if (err) {
                       res.send(resFormat.rError(err))
-                    } else { 
+                    } else {
                       let result = { "message": "Request sent successfully!" }
                       res.status(200).send(resFormat.rSuccess(result))
                     }
                   })
-                }                
+                }
               })
             }
           })
@@ -240,8 +240,67 @@ function hireAdvisor(req, res) {
     })
   } else {
     let result = { "message": "No record found." }
-    res.send(resFormat.rError(result));    
+    res.send(resFormat.rError(result));
   }
+}
+
+/**
+ * Function to send advisor contact details
+ */
+function contactAdvisor(req, res) {
+  let { query } = req.body
+  let { advisorDetails } = req.body;
+
+  User.findOne(query, {}, function (err, user) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      //forgot password email template
+      emailTemplatesRoute.getEmailTemplateByCode("sendAdvisorContactDetails").then((template) => {
+        if (template) {
+          template = JSON.parse(JSON.stringify(template));
+          let body = template.mailBody.replace("{advisor_name}", advisorDetails.advisorFullname);
+          body = body.replace("{advisor_email}", advisorDetails.advisorEmail);
+          body = body.replace("{advisor_phone}", advisorDetails.advisorPhone);
+          body = body.replace("{advisor_address}", advisorDetails.advisorAddress);
+
+          const mailOptions = {
+            to: user.username,
+            subject: template.mailSubject,
+            html: body
+          }
+          sendEmail(mailOptions)
+
+          // Add activity log
+          var advisorLog = new AdvisorActivityLog();
+          advisorLog.customerId = user._id;
+          advisorLog.advisorId = advisorDetails.advisorId;
+          advisorLog.createdOn = new Date();
+          advisorLog.modifiedOn = new Date();
+          advisorLog.createdby = user._id;
+          advisorLog.modifiedby = user._id;
+
+          advisorLog.sectionName = "contact";
+          advisorLog.actionTaken = "";
+          advisorLog.customerProfileImage = user.profilePicture;
+          advisorLog.customerFirstName = user.firstName;
+          advisorLog.customerLastName = user.lastName;
+          advisorLog.activityMessage = "contacted you";
+
+          advisorLog.save({}, function (err, newEntry) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              let result = { "message": "The advisor’s contact details are sent on your email." }
+              res.status(200).send(resFormat.rSuccess(result))
+            }
+          })
+        } else {
+          res.status(401).send(resFormat.rError('Some error Occured'))
+        }
+      })
+    }
+  })
 }
 
 function fileupload(req, res) {
@@ -261,8 +320,8 @@ function generateToken(n) {
 router.post("/activateadvisor", activateAdvisor)
 router.post("/rejectadvisor", rejectAdvisor)
 router.post("/fileupload", fileupload)
-//router.post("/contactadvisor", contactAdvisor)
+router.post("/contactadvisor", contactAdvisor)
 router.post("/recentupdatelist", recentUpdateList)
-router.post("/hireadvisor",hireAdvisor)
+router.post("/hireadvisor", hireAdvisor)
 
 module.exports = router
