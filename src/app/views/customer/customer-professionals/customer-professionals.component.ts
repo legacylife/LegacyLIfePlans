@@ -6,7 +6,7 @@ import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../shared/animations/egret-animations';
 import { SendAnEmailComponent } from './send-an-email-modal/send-an-email-modal.component';
-import { HireAdvisorComponent } from './hire-advisor-modal/hire-advisor-modal.component';
+import { HireAdvisorComponent } from '../hire-advisor-modal/hire-advisor-modal.component';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 
 @Component({

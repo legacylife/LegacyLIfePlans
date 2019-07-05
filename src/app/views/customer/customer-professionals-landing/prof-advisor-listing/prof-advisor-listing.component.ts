@@ -9,8 +9,6 @@ import { UserAPIService } from './../../../../userapi.service';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 import { s3Details } from '../../../../config';
 const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
-
-
 @Component({
   selector: 'app-prof-advisor-listing',
   templateUrl: './prof-advisor-listing.component.html',
@@ -31,111 +29,9 @@ export class ProfAdvisorListingComponent implements OnInit {
     private snack: MatSnackBar
   ) { }
 
-
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
-    this.getAdvisorLists();
-    // this.adListings = [
-    //   {
-    //     profilePic: 'assets/images/arkenea/ca.jpg',
-    //     userName: 'Allen Barry',
-    //     position: 'CFA, CIC', // business name
-    //     emailId: 'barryallen@gmail.com',
-    //     schoolName: 'Insurance Agent, Attorney, Accountant.', // business type
-    //     yearsOfServices: '10 years of service',
-    //   },
-    //   {
-    //     profilePic: 'assets/images/arkenea/emily.png',
-    //     userName: 'Emily Doe',
-    //     position: 'CFA, CIC',
-    //     emailId: 'emilydoe@gmail.com',
-    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
-    //     yearsOfServices: '10 years of service',
-    //   },
-    //   {
-    //     profilePic: 'assets/images/arkenea/john.png',
-    //     userName: 'Johnson Smith',
-    //     position: 'CFA, CIC',
-    //     emailId: 'johnson.smith@gmail.com',
-    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
-    //     yearsOfServices: '10 years of service',
-    //   },
-    //   {
-    //     profilePic: 'assets/images/arkenea/ca.jpg',
-    //     userName: 'Allen Barry',
-    //     position: 'CFA, CIC',
-    //     emailId: 'barryallen@gmail.com',
-    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
-    //     yearsOfServices: '10 years of service',
-    //   },
-    //   {
-    //     profilePic: 'assets/images/arkenea/emily.png',
-    //     userName: 'Emily Doe',
-    //     position: 'CFA, CIC',
-    //     emailId: 'emilydoe@gmail.com',
-    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
-    //     yearsOfServices: '10 years of service',
-    //   },
-    //   {
-    //     profilePic: 'assets/images/arkenea/john.png',
-    //     userName: 'Johnson Smith',
-    //     position: 'CFA, CIC',
-    //     emailId: 'johnson.smith@gmail.com',
-    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
-    //     yearsOfServices: '10 years of service',
-    //   },
-    // ];
-
-    // this.qualityAdvisor = [
-    //   {
-    //     profilePic: 'assets/images/arkenea/ca.jpg',
-    //     userName: 'Allen Barry',
-    //     position: 'CFA, CIC',
-    //     emailId: 'barryallen@gmail.com',
-    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
-    //     yearsOfServices: '10 years of service',
-    //   },
-    //   {
-    //     profilePic: 'assets/images/arkenea/emily.png',
-    //     userName: 'Emily Doe',
-    //     position: 'CFA, CIC',
-    //     emailId: 'emilydoe@gmail.com',
-    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
-    //     yearsOfServices: '10 years of service',
-    //   },
-    //   {
-    //     profilePic: 'assets/images/arkenea/john.png',
-    //     userName: 'Johnson Smith',
-    //     position: 'CFA, CIC',
-    //     emailId: 'johnson.smith@gmail.com',
-    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
-    //     yearsOfServices: '10 years of service',
-    //   },
-    //   {
-    //     profilePic: 'assets/images/arkenea/ca.jpg',
-    //     userName: 'Allen Barry',
-    //     position: 'CFA, CIC',
-    //     emailId: 'barryallen@gmail.com',
-    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
-    //     yearsOfServices: '10 years of service',
-    //   },
-    //   {
-    //     profilePic: 'assets/images/arkenea/emily.png',
-    //     userName: 'Emily Doe',
-    //     position: 'CFA, CIC',
-    //     emailId: 'emilydoe@gmail.com',
-    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
-    //     yearsOfServices: '10 years of service',
-    //   },
-    //   {
-    //     profilePic: 'assets/images/arkenea/john.png',
-    //     userName: 'Johnson Smith',
-    //     position: 'CFA, CIC',
-    //     emailId: 'johnson.smith@gmail.com',
-    //     schoolName: 'Insurance Agent, Attorney, Accountant.',
-    //     yearsOfServices: '10 years of service',
-    //   },
-    // ];
+    this.getAdvisorLists();    
   }
 
   getProfileImage(fileName) {

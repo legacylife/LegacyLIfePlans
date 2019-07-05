@@ -5,7 +5,7 @@
         <mat-card-title class="m-0">My Trustees</mat-card-title>
         <div class="right--filters">
             <mat-icon class="compare--icon" (selectionChange)="getTrusteeList('','1')">compare_arrows</mat-icon>
-            <mat-select placeholder="All" (selectionChange)="getTrusteeList($event.value)">
+            <mat-select placeholder="All" (selectionChange)="getTrusteeList($event.value,'')">
               <mat-option value="All">All</mat-option>
               <mat-option value="Active">Active</mat-option>
               <mat-option value="Pending">Pending</mat-option>

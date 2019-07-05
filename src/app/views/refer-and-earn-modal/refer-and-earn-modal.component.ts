@@ -27,6 +27,7 @@ export class ReferAndEarnModalComponent implements OnInit {
   alreadySentEmails = ""
   invitedMembersCount = 0
   public hasBaseDropZoneOver: boolean = false;
+  documentsMissing: boolean = false;
   documents_temps = false;
   fileErrors: any;
   docPath: string;

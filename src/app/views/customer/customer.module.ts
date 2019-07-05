@@ -75,7 +75,7 @@ import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edi
 // Professional
 import { CustomerProfDetailsComponent } from './customer-professionals/customer-professionals-details/customer-professionals-details.component';
 import { SendAnEmailComponent } from './customer-professionals/send-an-email-modal/send-an-email-modal.component';
-import { HireAdvisorComponent } from './customer-professionals/hire-advisor-modal/hire-advisor-modal.component';
+import { HireAdvisorComponent } from './hire-advisor-modal/hire-advisor-modal.component';
 import { ProfAddTrusteeModalComponent } from './customer-professionals/prof-add-trustee-modal/prof-add-trustee-modal.component';
 import { ProfAdvisorListingComponent } from './customer-professionals-landing/prof-advisor-listing/prof-advisor-listing.component';
 //FinalWishes
@@ -129,9 +129,8 @@ import { LettersMessagesDetailsComponent } from './customer-home/legacy-life-let
 import { LettersMessagesModelComponent } from './customer-home/legacy-life-letters-messages/letters-messages-model/letters-messages-model.component';
 import { ElectronicMediaModalComponent } from './customer-home/passwords-digital-assets/electronic-media/electronic-media-modal/electronic-media-modal.component';
 import { ElectronicMediaDetailsComponent } from './customer-home/passwords-digital-assets/electronic-media/electronic-media-details/electronic-media-details.component';
-import { TodosListingComponent } from '../todos-listing/todos-listing.component';
-import { TodosComponent } from '../todos/todos.component';
-
+//import { TodosComponent } from '../todos/todos.component';
+//import { TodosListingComponent } from '../todos-listing/todos-listing.component';
 export class GlobalVariables {
   testVal = '#00bcd4';
   Quepal = {
@@ -184,7 +183,7 @@ export class GlobalVariables {
     MatSnackBarModule,
     MatSidenavModule,
     MatDialogModule,
-    MatStepperModule,   
+    MatStepperModule,       
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [
@@ -209,7 +208,7 @@ export class GlobalVariables {
     TimeCapsuleListComponent, TimeCapsuleMoalComponent, TimeCapsuleDetailsComponent, InsuranceFinanceDebtListComponent,
     InsuranceModalComponent, InsuranceDetailsComponent, FinanceModalComponent, FinanceDetailsComponent, DebtDetailsComponent,
     DebtModalComponent, PasswordsDigitalAssetsListComponent, DevicesModalComponent,DeviceDetailsComponent,LettersMessagesListingComponent,LettersMessagesDetailsComponent,
-    LettersMessagesModelComponent,ElectronicMediaModalComponent,ElectronicMediaDetailsComponent,TodosListingComponent,TodosComponent
+    LettersMessagesModelComponent,ElectronicMediaModalComponent,ElectronicMediaDetailsComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
     // { provide: LY_THEME, useClass: MinimaLight, multi: true },
@@ -222,7 +221,7 @@ export class GlobalVariables {
     HireAdvisorComponent, FinalWishesFormModalComponent, PetsModalComponent, AssetsModelComponent,
     SpecialNeedsModelComponent, RealEstateModelComponent, VehicleModelComponent, TimeCapsuleMoalComponent,
     InsuranceModalComponent, FinanceModalComponent, DebtModalComponent, DevicesModalComponent, ProfAddTrusteeModalComponent,
-    LettersMessagesModelComponent,ElectronicMediaModalComponent,TodosComponent
+    LettersMessagesModelComponent,ElectronicMediaModalComponent
   ]
 })
 export class CustomerModule { }

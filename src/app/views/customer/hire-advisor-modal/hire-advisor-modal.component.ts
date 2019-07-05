@@ -4,7 +4,7 @@ import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/mater
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { Router } from '@angular/router';
-import { ProfAddTrusteeModalComponent } from '../prof-add-trustee-modal/prof-add-trustee-modal.component';
+import { ProfAddTrusteeModalComponent } from '../customer-professionals/prof-add-trustee-modal/prof-add-trustee-modal.component';
 
 @Component({
   selector: 'app-hire-advisor-modal',

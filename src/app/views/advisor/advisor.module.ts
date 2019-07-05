@@ -67,9 +67,8 @@ import { ReferAndEarnModalComponent } from './legacies/refer-and-earn-modal/refe
 
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CountUpModule } from 'countup.js-angular2';
-import { TodosListingComponent } from '../todos-listing/todos-listing.component';
-import { TodosComponent } from '../todos/todos.component';
-
+//import { TodosComponent } from '../todos/todos.component';
+//import { TodosListingComponent } from '../todos-listing/todos-listing.component';
 /** Import Alyle UI */
 // import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
 /** Import the component modules */
@@ -157,13 +156,13 @@ export class GlobalVariables {
     ChangePassComponent, HomeComponent, ReferAndEarnModalComponent, AdvisorLegacyDetailsComponent,
     LegaciesDetailsLandingComponent, MarkAsDeceasedComponent,
     GetFeaturedComponent, SubmitEnquiryModalComponent, AdvisorLeadsComponent, AdvisorLeadsDetailsComponent, 
-    ProspectPeoplesModalComponent,TodosListingComponent,TodosComponent
+    ProspectPeoplesModalComponent,//TodosComponent,TodosListingComponent
   ], providers: [
     // { provide: LY_THEME, useClass: MinimaLight, multi: true },
     // { provide: LY_THEME, useClass: MinimaDark, multi: true },
     // { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, ProfilePicService, CanDeactivateGuard
   ], entryComponents: [ChangePassComponent, ReferAndEarnModalComponent, MarkAsDeceasedComponent, SubmitEnquiryModalComponent, 
-    ProspectPeoplesModalComponent,TodosComponent],
+    ProspectPeoplesModalComponent],
 })
 export class AdvisorModule { }
