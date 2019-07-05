@@ -1,7 +1,7 @@
 var constants = {
   secret: "LLP",
   database: { // mongodb://localhost:27017/llp
-    url: process.env.dbURI || 'mongodb://llp:llp#123@ds213896.mlab.com:13896/llp-pankaj' 
+    url: process.env.dbURI || 'mongodb://localhost:27017/llp' 
   }, // mongodb://llp:llp#123@ds129454.mlab.com:29454/llp, mongodb://llp:l$l!p#123@ds341557.mlab.com:41557/llp  mongodb://llp:llp#123@ds213896.mlab.com:13896/llp-pankaj
   google: {
   },
@@ -34,8 +34,7 @@ var constants = {
     fromEmail: "subodh@arkenea.com",
   },
   clientUrl: process.env.clientUrl || 'http://localhost:4200',
-  mailServerUrl : process.env.mailServerUri || 'http://localhost:8080',
-  serverUrl: "http://localhost:8080",
+  mailServerUrl : process.env.mailServerUri || 'http://localhost:80',
   socialMedia: {
     facebook: {
       clientId: ''
