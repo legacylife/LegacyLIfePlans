@@ -85,10 +85,13 @@ export class CustomerDashboardDayOneComponent implements OnInit {
     this.sideNav.opened = !this.sideNav.opened;
   }
 
-  openAddTrusteeModal(data: any = {}, isNew?) {
+  openAddTrusteeModal(id, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(addTrusteeModalComponent, {     
       width: '720px',
       disableClose: true,
+      data: {
+        id: id,
+      }
     });
     dialogRef.afterClosed()
     .subscribe(res => {
