@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
 import { UserAPIService } from './../../../../userapi.service';
 import { addTrusteeModalComponent } from '../add-trustee-modal/add-trustee-modal.component';
+import { serverUrl, s3Details } from '../../../../config';
 
 @Component({
   selector: 'app-customer-home',
@@ -21,6 +22,7 @@ export class CustomerDashboardDayOneComponent implements OnInit {
   fileActivityLogList:any;
   showTrustyListing = false;
   showTrustyListingCnt: any;
+  profileUrl = s3Details.url+'/profilePictures/';
   constructor(private fb: FormBuilder, private dialog: MatDialog,private snackBar: MatSnackBar,private userapi: UserAPIService) { }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -31,11 +33,12 @@ export class CustomerDashboardDayOneComponent implements OnInit {
 
   getTrusteeList = (query = {}) => {
     const req_vars = {
-      query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      query: Object.assign({ customerId: this.userId }, query),//, status: "Active"
       fields: {},
+      limit: 6,
       order: {"createdOn": -1},
     }
-    this.userapi.apiRequest('post', 'trustee/trustListing', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'trustee/listing', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
@@ -83,9 +86,16 @@ export class CustomerDashboardDayOneComponent implements OnInit {
   }
 
   openAddTrusteeModal(data: any = {}, isNew?) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(addTrusteeModalComponent, {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(addTrusteeModalComponent, {     
       width: '720px',
       disableClose: true,
+    });
+    dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getTrusteeList();
+      if (!res) {
+        return;
+      }
     })
   }
 }
