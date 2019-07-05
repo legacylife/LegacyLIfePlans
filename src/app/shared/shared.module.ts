@@ -93,6 +93,7 @@ import { AppLoaderService } from './services/app-loader/app-loader.service';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { TodosListingComponent } from './../views/todos-listing/todos-listing.component';
 import { TodosComponent } from './../views/todos/todos.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 /* 
   Only Required if you want to use Angular Landing
   (https://themeforest.net/item/angular-landing-material-design-angular-app-landing-page/21198258)
@@ -168,7 +169,8 @@ const classesToInclude = [
     MatNativeDateModule,
     MatProgressBarModule,
     MatExpansionModule,
-    MatSliderModule
+    MatSliderModule,
+    DragDropModule
   ],
   entryComponents: [AppComfirmComponent, AppLoaderComponent,TodosComponent],
   providers: [

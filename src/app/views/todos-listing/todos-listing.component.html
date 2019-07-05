@@ -8,49 +8,47 @@
               <div class="card-title-text">To Do's List</div>
               <mat-divider></mat-divider>
             </mat-card-title>
-            
-           <div class="container">
-            <div class="todos--list mt-1" *ngFor="let todo of todoList; let rowIndex = index">
-              <mat-card-content>
-                <mat-nav-list class="pt-0" *ngIf="viewMode != rowIndex">
-                  <mat-list-item>
-                    <p>
-                      {{todo.comments}}
-                      <span class="when">{{todo.createdOn  | date: 'yyyy/MM/dd H:m:s'}}</span>
-                    </p>
-                    <button class="more" mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu1">
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-                  </mat-list-item>
-                  <mat-menu #menu1="matMenu" xPosition="before">
-                    <button mat-menu-item (click)="edit(rowIndex)">Edit</button>
-                    <button mat-menu-item (click)="delete(todo._id)">Delete</button>
-                  </mat-menu>
-                </mat-nav-list>
-                <form class="llp-form-wrapper" [formGroup]="todosUpdateForm" (ngSubmit)="todosFormUpdate()">
-                  <mat-nav-list class="pt-0" *ngIf="viewMode == rowIndex">
+            <div class="container todo-collection-list" cdkDropList (cdkDropListDropped)="drop($event)">
+              <div class="todos--list mt-1 todo-collection-box" *ngFor="let todo of todoList; let rowIndex = index" cdkDrag>
+                <mat-card-content>
+                  <mat-nav-list class="pt-0" *ngIf="viewMode != rowIndex">
                     <mat-list-item>
-                      <mat-form-field class="full-width no-mar">
-                        <textarea (blur)="updateCommentCheck(todosUpdateForm.value)" matInput name="update_comments"
-                          [formControl]="todosUpdateForm.controls['update_comments']"
-                          value="{{todo.comments}}">{{todo.comments}}</textarea>
-                        <mat-icon matTooltip="Please enter your to-do's" matTooltipClass="llp--tooltip error"
-                          *ngIf="!updateTodosButton" class="red--alert">help_outline</mat-icon>
-                      </mat-form-field>
+                      <p>
+                        {{todo.comments}}
+                        <span class="when">{{todo.createdOn  | date: 'yyyy/MM/dd H:m:s'}}</span>
+                      </p>
+                      <button class="more" mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu1">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
                     </mat-list-item>
-                    <div class="text-right mr-30 mb-1">
-                      <button mat-raised-button class="llp--primary--btn note--save--btn"
-                        [disabled]="!updateTodosButton">Update</button>
-                    </div>
+                    <mat-menu #menu1="matMenu" xPosition="before">
+                      <button mat-menu-item (click)="edit(rowIndex)">Edit</button>
+                      <button mat-menu-item (click)="delete(todo._id)">Delete</button>
+                    </mat-menu>
                   </mat-nav-list>
-                </form>
-              </mat-card-content>
-            </div>
-
-            <div class="mt-1" *ngIf="!viewMoreStatus">
+                  <form class="llp-form-wrapper" [formGroup]="todosUpdateForm" (ngSubmit)="todosFormUpdate()">
+                    <mat-nav-list class="pt-0" *ngIf="viewMode == rowIndex">
+                      <mat-list-item>
+                        <mat-form-field class="full-width no-mar">
+                          <textarea (blur)="updateCommentCheck(todosUpdateForm.value)" matInput name="update_comments"
+                            [formControl]="todosUpdateForm.controls['update_comments']"
+                            value="{{todo.comments}}">{{todo.comments}}</textarea>
+                          <mat-icon matTooltip="Please enter your to-do's" matTooltipClass="llp--tooltip error"
+                            *ngIf="!updateTodosButton" class="red--alert">help_outline</mat-icon>
+                        </mat-form-field>
+                      </mat-list-item>
+                      <div class="text-right mr-30 mb-1">
+                        <button mat-raised-button class="llp--primary--btn note--save--btn"
+                          [disabled]="!updateTodosButton">Update</button>
+                      </div>
+                    </mat-nav-list>
+                  </form>
+                </mat-card-content>
+              </div>
+              <div class="mt-1" *ngIf="!viewMoreStatus">
                 No To-Do's found!
+              </div>
             </div>
-           </div> 
           </mat-card>
         </div>
       </div>
