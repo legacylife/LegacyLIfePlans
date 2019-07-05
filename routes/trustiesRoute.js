@@ -49,67 +49,6 @@ function trustsList(req, res) {
   })
 }
 
-async function trustsList12(req, res) {
-  let { fields, offset, query, order, limit } = req.body
-  let totalRecords = 0
-  
-
-  // const docs = await trust.aggregate([
-  //   {
-  //     $lookup: {
-  //       from: 'addTrustee',
-  //       localField: 'trustCustomerId',
-  //       foreignField: 'trustCustomerId',
-  //       as: 'user_id'
-  //     }
-  //   },
-  //   {
-  //     $unwind: '$user_id'
-  //   },
-  //   {
-  //     $project: {
-  //       trustCustomerId: '$user_id.trustCustomerId',
-  //       _id: '$user_id._id',
-  //       status: "Active",
-
-  //     }
-  //   }
-  // ]);//.toArray();
-  const docs = await trust.find({})
-console.log("docs-- ",docs)
-    //  dbo.collection('orders').aggregate([
-    //   { $lookup:
-    //     {
-    //       from: 'products',
-    //       localField: 'product_id',
-    //       foreignField: '_id',
-    //       as: 'orderdetails'
-    //     }
-    //   }
-    // ]).toArray(function(err, res) {
-    //   if (err) throw err;
-    //   console.log(JSON.stringify(res));
-    //   db.close();
-    // });
-
-
-  // trust.count(query, function (err, listCount) {
-  //   if (listCount) {
-  //     totalRecords = listCount
-  //   }
-  //   trust.find(query, fields, function (err, trustList) {
-  //     if (err) {
-  //       res.status(401).send(resFormat.rError(err))
-  //     } else {
-  //       res.send(resFormat.rSuccess({ trustList, totalRecords }))
-  //     }
-  //   }).sort(order).skip(offset).limit(limit)
-  // })
-
-
-}
-
-
 function getUserDetails(req, res) {
   let { query } = req.body;
   trust.findOne(query, {}, function (err, trustDetails) {
@@ -250,7 +189,6 @@ function sendTrusteeMail(emailId,comment,number,inviteByName,inviteToName,client
         html: body
       }
       sendEmail(mailOptions);
-    // console.log("mailOptions",mailOptions)
       return true;
     } else {
       return false;
@@ -273,7 +211,6 @@ function trustResendInvitation(req, res) {
     }
   }) 
 }
-
 
 function getTrusteeDetails(req, res) {
   let { query } = req.body;
