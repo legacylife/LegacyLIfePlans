@@ -22,6 +22,10 @@ export class CustomerDashboardDayOneComponent implements OnInit {
   fileActivityLogList:any;
   showTrustyListing = false;
   showTrustyListingCnt: any;
+  advisorListing:any = [];
+  showAdvisorListing= false;
+  showAdvisorListingCnt: any;
+
   profileUrl = s3Details.url+'/profilePictures/';
   constructor(private fb: FormBuilder, private dialog: MatDialog,private snackBar: MatSnackBar,private userapi: UserAPIService) { }
   ngOnInit() {
@@ -29,6 +33,7 @@ export class CustomerDashboardDayOneComponent implements OnInit {
 
     this.getFileActivityLogList();
     this.getTrusteeList();
+    this.getAdvisorList();
   }
 
   getTrusteeList = (query = {}) => {
@@ -54,6 +59,28 @@ export class CustomerDashboardDayOneComponent implements OnInit {
   }
 
 
+  getAdvisorList = (query = {}) => {
+    const req_vars = {
+      query: Object.assign({ customerId: this.userId }, query),//, status: "Active"
+      fields: {},
+      limit: 6,
+      order: {"createdOn": -1},
+    }
+    this.userapi.apiRequest('post', 'advisor/hireAdvisorListing', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        this.advisorListing = result.data.advisorList;
+        console.log(this.advisorListing,"2314234234234234")
+        this.showAdvisorListingCnt = this.advisorListing.length;  
+        if (this.showAdvisorListingCnt>0) {
+          this.showAdvisorListing = true;
+        }
+      }
+    }, (err) => {
+      console.error(err);
+    })
+  }
 
   getFileActivityLogList = (query = {}, search = false) => {
     const req_vars = {
@@ -76,6 +103,7 @@ export class CustomerDashboardDayOneComponent implements OnInit {
       console.error(err);
     })
   }
+
 
   getIconNUrl(logData){
     return this.userapi.getFileIconNUrl(logData);

@@ -77,15 +77,15 @@
               <p>{{peoples.yearsOfService}}</p>
             </div>
             <div class="action--wrapp">
-              <div class="action">
+              <div class="action"  [routerLink]="['/customer/professionals/prof-details', peoples._id]">
                 <mat-icon>remove_red_eye</mat-icon>
-                <a [routerLink]="'/customer/professionals/prof-details'">View</a>
+                <a>View</a>          
               </div>
               <div class="action" (click)="sendContactDetails(peoples)">
                 <mat-icon>local_phone</mat-icon>
                 <a>Contact</a>
               </div>
-              <div class="action" (click)="hireAdvisor(peoples)">
+              <div class="action" (click)="openHireAdvisorModal(peoples._id,true)">
                 <mat-icon>assignment_turned_in</mat-icon>
                 <a>Hire</a>
               </div>
@@ -156,15 +156,15 @@
               <p>{{qualityAd.yearsOfService}}</p>
             </div>
             <div class="action--wrapp">
-              <div class="action">
+                <div class="action" [routerLink]="['/customer/professionals/prof-details', qualityAd._id]">
                 <mat-icon>remove_red_eye</mat-icon>
-                <a [routerLink]="'/customer/professionals/prof-details'">View</a>
+                <a [routerLink]="['/customer/professionals/prof-details', qualityAd._id]">View</a>
               </div>
               <div class="action" (click)="sendContactDetails(qualityAd)">
                 <mat-icon>local_phone</mat-icon>
                 <a>Contact</a>
               </div>
-              <div class="action" (click)="hireAdvisor(qualityAd)">
+              <div class="action" (click)="openHireAdvisorModal(qualityAd._id,true)">
                 <mat-icon>assignment_turned_in</mat-icon>
                 <a>Hire</a>
               </div>

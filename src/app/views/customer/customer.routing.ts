@@ -274,7 +274,7 @@ export const CustomerRoutes: Routes = [
         canActivate: [UserAuthGuard],
         children: [
           {
-            path: 'prof-details',
+            path: 'prof-details/:id',
             component: CustomerProfDetailsComponent
           }
         ]

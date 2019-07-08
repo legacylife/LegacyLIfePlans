@@ -1,21 +1,28 @@
 <div class="ll--modal--header">
-  Hire Advisor
+  <div *ngIf="headerName">Hire Advisor</div>
   <button class="modal--close" [mat-dialog-close]="">
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
 </div>
-
-<!-- 
-<div class="ll--modal--body per--profile--wrapper p-0">
+<div class="ll--modal--body per--profile--wrapper p-0 hire--ad--modal">
+    <h3 *ngIf="SubHeaderName" class="main--head text-center m-0">Assign permission</h3>
+    <p *ngIf="SubHeaderName" class="sub--head text-center mt-1">to the Advisor!</p>  
   <div class="stepper--wrapper">
    <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="onChangeFormIndex($event)">
-      <mat-step [stepControl]="trustFormGroup">    
-
+      <mat-step [stepControl]="hireFormGroup">    
+              <div class="ll--modal--body ">
+                <p class="fnt--16">The advisor will need to confirm this hiring on their part to start appearing in your 'My advisors' list. Clicking on
+                  'Proceed' button will send a confirmation message on the advisor's email.</p>
+                <p class="fnt--16">Note that you can anytime remove the advisors from your 'My advisors' list. The removed advisors will not have access
+                  to your profile.</p>
+              </div>
+                <!-- <button mat-raised-button class="llp--primary--btn" (click)="openProAddTrusteeModal()">Proceed</button> -->
+              <div class="ll--modal--footer text-center">
+                  <button mat-raised-button matStepperNext class="llp--primary--btn mb-1">Continue</button>
+               </div>
       </mat-step>
-      <mat-step [stepControl]="secondFormGroup">     
-          <form [formGroup]="secondFormGroup" class="llp-form-wrapper" (ngSubmit)="secondFormGroupSubmit('2',secondFormGroup.value)">        
-            <h3 class="main--head text-center">Add a Trustee to your Legacy!</h3>
-            <p class="sub--head text-center">Which sections would the trustee be able to access, and when?</p>
+      <mat-step [stepControl]="trusteeFormGroup">            
+          <form [formGroup]="trusteeFormGroup" class="llp-form-wrapper" (ngSubmit)="trusteeFormGroupSubmit(trusteeFormGroup.value)">                  
             <div class="profile--body--scroll">
               <div class="trust--legacy--wrapper">
                 <div class="cover mt-1">
@@ -34,7 +41,7 @@
                     </div>
                   </div>
                   <div fxLayout="row wrap">
-                  <mat-radio-group class="llp-radio" (change)="onRadioChange($event.value)" name="selectAll" [formControl]="secondFormGroup.controls['selectAll']">
+                  <mat-radio-group class="llp-radio" (change)="onRadioChange($event.value)" name="selectAll" [formControl]="trusteeFormGroup.controls['selectAll']">
                     <mat-list-item>
                         <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
                           <label class="left--header">All 30 sections</label>
@@ -46,7 +53,7 @@
                             <mat-radio-button value="afterDeath">After Death</mat-radio-button>                    
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                    
-                            <mat-radio-button value="never" [checked]="radioCheck">Never</mat-radio-button>                    
+                            <mat-radio-button value="never" [checked]="true">Never</mat-radio-button>                    
                         </div>               
                     </mat-list-item>
                   </mat-radio-group>
@@ -58,7 +65,7 @@
                         <label class="header bold">{{folder.folderName}}</label>
                       </div>                 
                        
-                      <mat-radio-group class="llp-radio" *ngFor="let t of folder.fileNames" [formControl]="secondFormGroup.controls[t.code]" (change)="onFileChange($event.value)">
+                      <mat-radio-group class="llp-radio" *ngFor="let t of folder.fileNames" [formControl]="trusteeFormGroup.controls[t.code]" (change)="onFileChange($event.value)">
                           <mat-list-item>
                             <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
                               <label class="left--header">{{t.name}}*</label>
@@ -70,7 +77,7 @@
                                 <mat-radio-button value="afterDeath">After Death</mat-radio-button>                     
                             </div>
                             <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                     
-                                <mat-radio-button value="never" [checked]="radioCheck">Never</mat-radio-button>                     
+                                <mat-radio-button value="never" [checked]="true">Never</mat-radio-button>                     
                             </div>
                           </mat-list-item>
                       </mat-radio-group>                             
@@ -78,28 +85,20 @@
                   </div>
               </div>
             </div>
+
+            <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
+                <input matInput name="profileId" [formControl]="trusteeFormGroup.controls['profileId']" readonly="readonly">
+              </mat-form-field>
+
             <div class="mt-1 text-center">
               <button mat-raised-button matStepperPrevious class="llp--back--btn">
                 <mat-icon>arrow_back</mat-icon> Back</button>
-              <button type="button" mat-raised-button matStepperNext class="llp--primary--btn mb-1">Continue</button>
+              <button mat-raised-button matStepperNext class="llp--primary--btn mb-1">Send hire request</button>
             </div>
           </form>
         </mat-step>
    </mat-horizontal-stepper>
   </div>
- </div>        -->
+ </div>       
 
 
-<form class="llp-form-wrapper">
-  <div class="ll--modal--body ">
-    <p class="fnt--16">The advisor will need to confirm this hiring on their part to start appearing in your 'My advisors' list. Clicking on
-      'Proceed' button will send a confirmation message on the advisor's email.</p>
-
-    <p class="fnt--16">Note that you can anytime remove the advisors from your 'My advisors' list. The removed advisors will not have access
-      to your profile.</p>
-
-  </div>
-  <div class="ll--modal--footer text-center">
-    <button mat-raised-button class="llp--primary--btn" (click)="openProAddTrusteeModal()">Proceed</button>
-  </div>
-</form>

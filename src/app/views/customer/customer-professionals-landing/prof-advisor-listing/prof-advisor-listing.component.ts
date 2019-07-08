@@ -8,6 +8,7 @@ import { egretAnimations } from '../../../../shared/animations/egret-animations'
 import { UserAPIService } from './../../../../userapi.service';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 import { s3Details } from '../../../../config';
+import { HireAdvisorComponent } from '../../hire-advisor-modal/hire-advisor-modal.component';
 const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 @Component({
   selector: 'app-prof-advisor-listing',
@@ -87,50 +88,53 @@ export class ProfAdvisorListingComponent implements OnInit {
         console.log(result.data)
       } else {
         let advisorData = result.data.userList;
-
         this.adListings = advisorData.filter(dtype => {
           return dtype.sponsoredAdvisor == 'yes'
         }).map(el => el)
 
-        console.log(">>>>>>>>>", this.adListings)
-
         this.qualityAdvisor = advisorData.filter(dtype => {
           return dtype.sponsoredAdvisor == 'no'
         }).map(el => el)
-
-        console.log(">>>>>>>>>", this.qualityAdvisor)
-
       }
     }, (err) => {
       console.error(err)
     })
   }
 
-  hireAdvisor(advisorDetails) {
-    let hirestatus = 'pending';
+  // hireAdvisor(ids) {
+  //   let hirestatus = 'pending';
 
-    let query = {};
-    let proquery = { status: hirestatus, customerId: this.userId, advisorId: advisorDetails._id };
+  //   let query = {};
+  //   let proquery = { status: hirestatus, customerId: this.userId, advisorId: ids };
 
-    const req_vars = {
-      query: Object.assign({ customerId: this.userId, advisorId: advisorDetails._id }),
-      proquery: Object.assign(proquery),
-      from: Object.assign({ logId: "" })
-    }
-    this.userapi.apiRequest('post', 'advisor/hireadvisor', req_vars).subscribe(result => {
-      if (result.status == "error") {
-        this.loader.close();
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
-      } else {
-        this.loader.close();
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
-      }
-    }, (err) => {
-      console.error(err)
-      this.loader.close();
+  //   const req_vars = {
+  //     query: Object.assign({ customerId: this.userId, advisorId: ids }),
+  //     proquery: Object.assign(proquery),
+  //     from: Object.assign({ logId: "" })
+  //   }
+  //   this.userapi.apiRequest('post', 'advisor/hireadvisor', req_vars).subscribe(result => {
+  //     if (result.status == "error") {
+  //       this.loader.close();
+  //       this.snack.open(result.data.message, 'OK', { duration: 4000 })
+  //     } else {
+  //       this.loader.close();
+  //       this.snack.open(result.data.message, 'OK', { duration: 4000 })
+  //     }
+  //   }, (err) => {
+  //     console.error(err)
+  //     this.loader.close();
+  //   })
+  // }
+
+  openHireAdvisorModal(id: any = {}, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(HireAdvisorComponent, {
+      width: '720px',
+      disableClose: true,
+      data: {
+        id: id,
+      },
     })
   }
-
 
 
 

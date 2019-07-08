@@ -32,7 +32,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
   selectedProfileId: string;
   validationEmailVal = false;
   profileIdHiddenVal = false;
-  trust_id: string;
+  trust_id: any;
   ids: string;
   row: any = [];
   constructor(
@@ -45,7 +45,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
     this.buildItemForm();
     this.userSections = userSections;  
 
-    if(this.ids){
+    if(this.ids && this.ids!=='undefined'){
       this.selectedProfileId = this.ids;   
       this.getTrusteeView();
     }    
@@ -138,7 +138,8 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
     var proquery = {};
     let req_vars = {};
     let profileIds = this.selectedProfileId;
-    if(profileIds){
+
+    if(profileIds && profileIds!=='undefined'){
       this.trustFormGroup.controls['emailValidation'].setValue('');
        req_vars = {
         query: Object.assign({_id:{ $ne: profileIds}, email: this.trustFormGroup.controls['email'].value,customerId: this.userId  })
@@ -161,7 +162,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
           this.invalidMessage = '';
           this.EmailExist = false;         
           this.Email_USER = this.trustFormGroup.controls['email'].value;     
-          this.trust_id = '0';
+          this.trust_id = '';
           if(result.data.userDetails){
             this.trust_id = result.data.userDetails._id;
           }
@@ -227,7 +228,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
       relation: this.trustFormGroup.controls['relation'].value,
       messages: this.thirdFormGroup.controls['messages'].value,
       selectAll: this.secondFormGroup.controls['selectAll'].value,
-      trustCustomerId: this.trust_id,
+      trustId: this.trust_id,
       userAccess: userAccessDatas,
       filesCount:  fileCnt.length,
       folderCount: userSectionsCnt.length,
@@ -242,9 +243,9 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
         proquery: Object.assign(this.RequestData),
         extrafields: Object.assign({inviteByName:localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName")})
       }
-      this.loader.open();
+     // this.loader.open();
       this.userapi.apiRequest('post', 'trustee/form-submit', req_vars).subscribe(result => {
-      this.loader.close();
+     // this.loader.close();
         if(result.status == "error"){
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
         } else {
@@ -259,11 +260,16 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
   getTrusteeView = (query = {}, search = false) => {    
     let  profileIds = this.selectedProfileId;
     let  req_vars = {
-        query: Object.assign({_id: profileIds})
+      query: Object.assign({status:"blanck"})
+    }
+    if (profileIds) {
+      let  req_vars = {
+          query: Object.assign({_id:profileIds})
       }
-    //8this.loader.open(); 
+    }
+    this.loader.open(); 
     this.userapi.apiRequest('post', 'trustee/view-details', req_vars).subscribe(result => {
-    //8  this.loader.close();
+    this.loader.close();
       if (result.status == "error") {
         console.log(result.data)
       } else {
