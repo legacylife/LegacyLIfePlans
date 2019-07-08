@@ -11,10 +11,10 @@ var TrusteeSchema = new mongoose.Schema({
     required: true
   },
   relation : String,
-  messages:Array,
+  messages:String,
   selectAll : String,  
   userAccess:Object,
-  trustCustomerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  trustId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   filesCount: String,
   folderCount: String,
   status: String,

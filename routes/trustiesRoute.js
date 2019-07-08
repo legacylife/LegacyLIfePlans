@@ -45,7 +45,7 @@ function trustsList(req, res) {
       } else {
         res.send(resFormat.rSuccess({ trustList, totalRecords }))
       }
-    }).sort(order).skip(offset).limit(limit).populate('trustCustomerId')
+    }).sort(order).skip(offset).limit(limit).populate('trustId')
   })
 }
 
@@ -94,8 +94,8 @@ function trustFormUpdate(req, res) {
   logData.fileName = proquery.firstName;
   logData.folderName = 'Trustee';
   logData.subFolderName = 'Add Trustee';
-
-  if(query._id){
+  console.log("HERE 333333333 ")
+  if(query._id){   console.log("HERE 22222222 ")
     trust.findOne(query, function (err, custData) {      
       if (err) {
         let result = { "message": "Something Wrong!" }
@@ -108,9 +108,9 @@ function trustFormUpdate(req, res) {
           }
           let { proquery } = req.body;   
           
-          if(proquery.trustCustomerId && proquery.trustCustomerId!='0')
+          if(proquery.trustId && proquery.trustId!='0')
           proquery.status = 'Active'; 
-          proquery.trustCustomerId =  ObjectId(proquery.trustCustomerId);
+          proquery.trustId =  ObjectId(proquery.trustId);
           proquery.modifiedOn = new Date();
           trust.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
@@ -133,6 +133,8 @@ function trustFormUpdate(req, res) {
       }
     })
   } else { 
+
+    console.log("HERE 1221 ")
             let { proquery } = req.body;
             var insert = new trust();
             insert.customerId = query.customerId;
@@ -145,11 +147,13 @@ function trustFormUpdate(req, res) {
             insert.userAccess = proquery.userAccess;
             insert.filesCount = proquery.filesCount;
             insert.folderCount = proquery.folderCount;
-            insert.trustCustomerId = ObjectId(proquery.trustCustomerId);
-            if(proquery.trustCustomerId)
-            insert.status = 'Active';
-            else
-            insert.status = 'Pending';
+            if(proquery.trustId!=''){
+              insert.trustId = ObjectId(proquery.trustId);
+              insert.status = 'Active';
+            }else{
+              insert.trustId = null;
+              insert.status = 'Pending';
+            }            
             insert.createdOn = new Date();
             insert.modifiedOn = new Date();           
             insert.save({$set:proquery}, function (err, newEntry) {
