@@ -71,7 +71,7 @@ export class CustomerDashboardDayOneComponent implements OnInit {
         console.log(result.data)
       } else {
         this.advisorListing = result.data.advisorList;
-        console.log(this.advisorListing,"2314234234234234")
+        
         this.showAdvisorListingCnt = this.advisorListing.length;  
         if (this.showAdvisorListingCnt>0) {
           this.showAdvisorListing = true;

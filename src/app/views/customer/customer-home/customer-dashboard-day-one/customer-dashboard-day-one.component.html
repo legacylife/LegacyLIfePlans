@@ -74,12 +74,12 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">My Advisors </mat-card-title>
           <div *ngIf="showAdvisorListing">
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"  [routerLink]="['/customer/professionals-landing/prof-advisor-listing']"><mat-icon>search</mat-icon>Search Advisors</button>              
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" [routerLink]="['/customer/professionals-landing/prof-advisor-listing']"><mat-icon>search</mat-icon>Search Advisors</button>              
         </div>       
         </mat-card-header>
         <mat-card-content *ngIf="!showAdvisorListing">
           <p class="info">See your professional advisors here.</p>
-          <div class="build--ur--legacy">
+          <div class="build--ur--legacy"[routerLink]="['/customer/professionals-landing/prof-advisor-listing']">
             <mat-icon>search</mat-icon>
             <p>
               <a>Search Advisors</a>

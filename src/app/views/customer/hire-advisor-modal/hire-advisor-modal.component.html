@@ -15,10 +15,10 @@
                   'Proceed' button will send a confirmation message on the advisor's email.</p>
                 <p class="fnt--16">Note that you can anytime remove the advisors from your 'My advisors' list. The removed advisors will not have access
                   to your profile.</p>
-              </div>
-                <!-- <button mat-raised-button class="llp--primary--btn" (click)="openProAddTrusteeModal()">Proceed</button> -->
+              </div>              
               <div class="ll--modal--footer text-center">
-                  <button mat-raised-button matStepperNext class="llp--primary--btn mb-1">Continue</button>
+                  <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" *ngIf="alreadyRequestSend">Continue</button>
+                  <button mat-menu-item  class="llp--primary--btn mb-1" *ngIf="!alreadyRequestSend"><mat-icon>check</mat-icon> Request already sent!</button>
                </div>
       </mat-step>
       <mat-step [stepControl]="trusteeFormGroup">            

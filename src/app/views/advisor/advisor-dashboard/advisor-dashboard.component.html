@@ -6,19 +6,15 @@
           <div class="card-title-text">Recent updates</div>
           <mat-divider></mat-divider>
         </mat-card-title>
-
         <mat-card-content class="recent--update--section" *ngIf="!recentLogs">
           <p>View all client updates, leads, legacy updates in this section. No updates to display as of now.</p>
           <div class="red--box">
-
             <img src="assets/images/arkenea/invite-now.png" />
             <p>Encourage your friends, loved ones, acquaintances to create a legacy for their loved ones!
               <a routerLink="/advisor/dashboard-updates"> Invite Now</a>
             </p>
           </div>
         </mat-card-content>
-
-
         <mat-card-content class="recent--update--section" *ngIf="recentLogs">
           <mat-nav-list class="ad--nav--list"  *ngFor="let logData of recentActivityLogList; let i = index">
             <mat-list-item>
@@ -37,23 +33,15 @@
               </button>
             </mat-list-item>
             <mat-menu #menu="matMenu"  xPosition="before">
-              <button mat-menu-item  *ngIf="logData.actionTaken == 'pending'" (click)="hireAdvisor(logData,'confirmHire')">
+              <button mat-menu-item  *ngIf="logData.actionTaken == 'Pending'" (click)="hireAdvisor(logData?._id,'confirmHire','Pending')">
                 <mat-icon>check</mat-icon> Confirm hiring</button>
-              <button mat-menu-item class="reject"  *ngIf="logData.actionTaken == 'pending'" (click)="hireAdvisor(logData,'rejectHire')">
+              <button mat-menu-item class="reject"  *ngIf="logData.actionTaken == 'Pending'" (click)="hireAdvisor(logData?._id,'rejectHire','Pending')">
                 <mat-icon>cancel</mat-icon> Reject hiring</button>
               <button mat-menu-item>
                 <mat-icon>assignment</mat-icon> View profile</button>
             </mat-menu>
           </mat-nav-list>
         </mat-card-content>
-
-
-
-
-
-
-
-
       </mat-card>
     </div>
     <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="25" fxFlex.lg="20" fxFlex.xl="20" class="reverse--order--sm">
@@ -97,6 +85,4 @@
       </div>
     </div>
   </div>
-
-
 </div>

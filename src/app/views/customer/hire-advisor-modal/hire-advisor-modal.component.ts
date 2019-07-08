@@ -30,6 +30,7 @@ export class HireAdvisorComponent implements OnInit, AfterViewInit  {
   trust_id: string;
   headerName = true;
   ids: string;
+  alreadyRequestSend:boolean = true;
   row: any = [];
   constructor(
     private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private stepper: MatStepperModule,
@@ -38,18 +39,17 @@ export class HireAdvisorComponent implements OnInit, AfterViewInit  {
   ) {this.ids = data.id;}
 
   ngOnInit() {
+    console.log("userId---",localStorage.getItem("endUserId"))
     this.buildItemForm();
     this.userSections = userSections;  
-    console.log("userId",this.userId,localStorage.getItem("endUserId"))
-    console.log("advisor",this.ids)
-    if(this.ids){
-      this.selectedProfileId = this.ids;   
-     // this.getTrusteeView();
+    this.selectedProfileId = '';   
+    console.log("advisor---",this.ids)
+    if(this.ids){     
+      this.checkAdvisorView();
     }   
   }
 
-  
-  ngAfterViewInit(){ 
+    ngAfterViewInit(){ 
     if(!this.selectedProfileId){
       this.trusteeFormGroup.controls['selectAll'].setValue('never');
         this.onRadioChange('never');     
@@ -87,11 +87,27 @@ export class HireAdvisorComponent implements OnInit, AfterViewInit  {
      });
 }
 
+checkAdvisorView(insert = null) {
+  const req_vars = {
+      query: Object.assign({customerId:this.userId,advisorId:this.ids}),
+    }    
+    this.loader.open();
+    this.userapi.apiRequest('post', 'advisor/checkHireAdvisor', req_vars).subscribe(result => {
+    this.loader.close();
+      if(result.status == "error"){
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      } else {
+        if(result.data.code=='Exist'){
+          this.alreadyRequestSend = false;
+        }        
+      }
+    }, (err) => {
+      console.error(err)
+    })
+
+}
 
 trusteeFormGroupSubmit(insert = null) {
-  console.log("insert",this.userId)
-  
-  console.log("insert",insert)
     var query = {};
     var proquery = {};
     let userAccessDatas = [];
@@ -122,7 +138,7 @@ trusteeFormGroupSubmit(insert = null) {
         "CelebrationLifeManagement": this.trusteeFormGroup.controls['CelebrationLifeManagement'].value,
     }];
     userAccessDatas = userAccessDatas[0];    
-    console.log("userAccessDatas",userAccessDatas)
+   // console.log("userAccessDatas",userAccessDatas)
     var fileCnt  = keysIn(userAccessDatas) .filter(key => {
       return userAccessDatas[key] == 'now'
     })
@@ -141,21 +157,22 @@ trusteeFormGroupSubmit(insert = null) {
       folderCount: userSectionsCnt.length,
       hirestatus:'Pending'
     }
-    console.log("RequestData",this.RequestData)
+   
     let profileIds = this.trusteeFormGroup.controls['profileId'].value;
+    
     if(profileIds){
         this.selectedProfileId = profileIds;
     }        
 
     const req_vars = {
-      query: Object.assign({_id: this.selectedProfileId,customerId: this.userId,advisorId: this.ids}),
+      query: Object.assign({_id:this.selectedProfileId,customerId:this.userId,advisorId:this.ids}),
       proquery: Object.assign(this.RequestData),
       from: Object.assign({ logId: "" })
     }
-
-   //8 this.loader.open();
+    
+    this.loader.open();
     this.userapi.apiRequest('post', 'advisor/hireadvisor', req_vars).subscribe(result => {
-   //8 this.loader.close();
+    this.loader.close();
       if(result.status == "error"){
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {

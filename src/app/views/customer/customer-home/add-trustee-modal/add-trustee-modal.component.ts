@@ -243,9 +243,9 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
         proquery: Object.assign(this.RequestData),
         extrafields: Object.assign({inviteByName:localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName")})
       }
-     // this.loader.open();
+      this.loader.open();
       this.userapi.apiRequest('post', 'trustee/form-submit', req_vars).subscribe(result => {
-     // this.loader.close();
+      this.loader.close();
         if(result.status == "error"){
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
         } else {
