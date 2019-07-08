@@ -151,8 +151,7 @@ function recentUpdateList(req, res) {
  * Function to hire advisor
  */
 
-function hireAdvisor(req, res) {
-
+function hireAdvisorOLD(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let { from } = req.body;
@@ -189,9 +188,10 @@ function hireAdvisor(req, res) {
           let { proquery } = req.body;
           console.log(proquery)
           var hireadvisor = new HiredAdvisors();
-          hireadvisor.status = 'pending';
+          hireadvisor.status = 'Pending';
           hireadvisor.customerId = query.customerId;
           hireadvisor.advisorId = query.advisorId;
+
           hireadvisor.createdOn = new Date();
           hireadvisor.modifiedOn = new Date();
           hireadvisor.createdby = query.customerId;
@@ -208,7 +208,7 @@ function hireAdvisor(req, res) {
                   res.send(resFormat.rError(result));
                 } else {
                   var advisorLog = new AdvisorActivityLog();
-                  advisorLog.status = 'pending';
+                  advisorLog.status = 'Pending';
                   advisorLog.customerId = query.customerId;
                   advisorLog.advisorId = query.advisorId;
                   advisorLog.createdOn = new Date();
@@ -217,7 +217,7 @@ function hireAdvisor(req, res) {
                   advisorLog.modifiedby = query.customerId;
 
                   advisorLog.sectionName = "hired";
-                  advisorLog.actionTaken = "pending";
+                  advisorLog.actionTaken = "Pending";
                   advisorLog.customerProfileImage = userList.profilePicture;
                   advisorLog.customerFirstName = userList.firstName;
                   advisorLog.customerLastName = userList.lastName;
@@ -242,6 +242,130 @@ function hireAdvisor(req, res) {
     let result = { "message": "No record found." }
     res.send(resFormat.rError(result));
   }
+}
+
+
+function hireAdvisor(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let { from } = req.body;
+  console.log("query",query,"Proquery",proquery,"from",from);
+ // let { extrafields } = req.body;
+//  clientUrl = constants.serverUrl + "/customer/signup";
+  if(query._id){
+    HiredAdvisors.findOne(query, function (err, custData) {      
+      if (err) {
+        let result = { "message": "Something Wrong!" }
+        res.send(resFormat.rError(result));
+      } else {
+        if (custData && custData._id) {
+          // proquery.status = 'Pending'; 
+          proquery.modifiedOn = new Date();
+          HiredAdvisors.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {             
+           
+              if (from.logId) {
+                AdvisorActivityLog.updateOne({ _id: from.logId }, { $set: { actionTaken: proquery.status } }, function (err, logDetails) {
+                  if (err) {
+                    res.send(resFormat.rError(err))
+                  } else {
+                    let result = { "message": "Request reminder sent successfully" }
+                    res.status(200).send(resFormat.rSuccess(result))
+                  }
+                })
+              }
+              else {
+                let result = { "message": "Request reminder sent successfully" }
+                res.status(200).send(resFormat.rSuccess(result))
+              }
+            }
+          })
+        } else {
+          let result = { "message": "No record found." }
+          res.send(resFormat.rError(result));
+        }
+      }
+    })
+  } else { 
+            let { proquery } = req.body;
+            var insert = new HiredAdvisors();
+            insert.customerId = query.customerId;
+            insert.selectAll = proquery.selectAll;
+            insert.userAccess = proquery.userAccess;
+            insert.filesCount = proquery.filesCount;
+            insert.folderCount = proquery.folderCount;
+            insert.advisorId = ObjectId(proquery.advisorId);
+            insert.status = 'Pending';
+
+            insert.createdOn = new Date();
+            insert.modifiedOn = new Date();     
+            insert.createdby = query.customerId;
+            insert.modifiedby = query.customerId;                  
+            insert.save({$set:proquery}, function (err, newEntry) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        
+        User.findOne({ _id: query.customerId }, { firstName: 1, lastName: 1, profilePicture: 1 }, function (err, userList) {
+          if (err) {
+            let result = { "message": "Something Wrong!" }
+            res.send(resFormat.rError(result));
+          } else {
+            var advisorLog = new AdvisorActivityLog();
+            advisorLog.status = 'Pending';
+            advisorLog.customerId = query.customerId;
+            advisorLog.advisorId = query.advisorId;
+            advisorLog.createdOn = new Date();
+            advisorLog.modifiedOn = new Date();
+            advisorLog.createdby = query.customerId;
+            advisorLog.modifiedby = query.customerId;
+            advisorLog.sectionName = "hired";
+            advisorLog.actionTaken = "Pending";
+            advisorLog.customerProfileImage = userList.profilePicture;
+            advisorLog.customerFirstName = userList.firstName;
+            advisorLog.customerLastName = userList.lastName;
+            advisorLog.activityMessage = " has confirmed to hire you";
+            advisorLog.save({}, function (err, newEntry) {
+              if (err) {
+                res.send(resFormat.rError(err))
+              } else {
+                let result = { "message": "Request sent successfully!" }                
+              }
+            })
+          }
+        })
+        //stat = sendTrusteeMail(proquery.email,proquery.messages,proquery.folderCount,extrafields.inviteByName,proquery.firstName,clientUrl,""); 
+        let result = { "message": "Request sent successfully!" }
+        res.status(200).send(resFormat.rSuccess(result))
+      }
+    })
+  }
+}
+
+function hireAdvisorListing(req, res) {
+  let { fields, offset, query, order, limit, search } = req.body
+  let totalRecords = 0
+  if (search && !isEmpty(query)) {
+    Object.keys(query).map(function (key, index) {
+      if (key !== "status") {
+        query[key] = new RegExp(query[key], 'i')
+      }
+    })
+  }
+  HiredAdvisors.count(query, function (err, listCount) {
+    if (listCount) {
+      totalRecords = listCount
+    }
+    HiredAdvisors.find(query, fields, function (err, advisorList) {
+      if (err) {
+        res.status(401).send(resFormat.rError(err))
+      } else {
+        res.send(resFormat.rSuccess({ advisorList, totalRecords }))
+      }
+    }).sort(order).skip(offset).limit(limit).populate('advisorId')
+  })
 }
 
 /**
@@ -303,6 +427,19 @@ function contactAdvisor(req, res) {
   })
 }
 
+function checkHireAdvisorRequest(req, res) {
+  let { fields, offset, query, order, limit } = req.body
+  let totalRecords = 0
+
+  HiredAdvisors.findOne(query, function (err, found) {
+    let result = { code : "","message": "" }
+    if (found) {
+      result = { code : "Exist","message": "Request already Sent" }     
+    }
+    res.status(200).send(resFormat.rSuccess(result))
+  })
+}
+
 function fileupload(req, res) {
   console.log(req);
 }
@@ -322,6 +459,7 @@ router.post("/rejectadvisor", rejectAdvisor)
 router.post("/fileupload", fileupload)
 router.post("/contactadvisor", contactAdvisor)
 router.post("/recentupdatelist", recentUpdateList)
+router.post("/checkHireAdvisor", checkHireAdvisorRequest)
 router.post("/hireadvisor", hireAdvisor)
-
+router.post("/hireAdvisorListing", hireAdvisorListing)
 module.exports = router

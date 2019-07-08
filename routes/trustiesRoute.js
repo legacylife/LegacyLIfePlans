@@ -94,8 +94,7 @@ function trustFormUpdate(req, res) {
   logData.fileName = proquery.firstName;
   logData.folderName = 'Trustee';
   logData.subFolderName = 'Add Trustee';
-  console.log("HERE 333333333 ")
-  if(query._id){   console.log("HERE 22222222 ")
+  if(query._id){   
     trust.findOne(query, function (err, custData) {      
       if (err) {
         let result = { "message": "Something Wrong!" }
@@ -133,8 +132,6 @@ function trustFormUpdate(req, res) {
       }
     })
   } else { 
-
-    console.log("HERE 1221 ")
             let { proquery } = req.body;
             var insert = new trust();
             insert.customerId = query.customerId;
