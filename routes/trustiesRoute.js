@@ -34,7 +34,6 @@ function trustsList(req, res) {
       }
     })
   }
-  console.log("query==> ",query)
   trust.count(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
@@ -222,9 +221,20 @@ function getTrusteeDetails(req, res) {
   }) 
 }
 
+
+// function trusteeCount(req, res){
+//   let { query } = req.body;
+//   trust.countDocuments(query, function (err, userCount){
+//     if(userCount){
+//       totalUsers = userCount
+//     }
+//   })
+// }
+
 router.post("/listing", trustsList)
 router.post("/get-user", getUserDetails)
 router.post("/view-details", getTrusteeDetails)
 router.post("/form-submit", trustFormUpdate)
 router.post("/resend-invitation", trustResendInvitation)
+//router.post("/acting-as-trustee", trusteeCount)
 module.exports = router

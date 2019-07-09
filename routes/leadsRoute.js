@@ -24,18 +24,39 @@ var auth = jwt({
   userProperty: 'payload'
 })
 
+function leadsList(req, res) {
+  console.log('asdasdasd')
+  let { fields, offset, query, order, limit, search } = req.body
+  let totalRecords = 0
+  if (search && !isEmpty(query)) {
+    Object.keys(query).map(function (key, index) {
+      if (key !== "status") {
+        query[key] = new RegExp(query[key], 'i')
+      }
+    })
+  }
+  console.log("query==> ",query)
+  lead.count(query, function (err, listCount) {
+    if (listCount) {
+      totalRecords = listCount
+    }
+    lead.find(query, fields, function (err, leadList) {
+      if (err) {
+        res.status(401).send(resFormat.rError(err))
+      } else {
+        res.send(resFormat.rSuccess({ leadList, totalRecords }))
+      }
+    }).sort(order).skip(offset).limit(limit).populate('customerId')
+  })
+}
 
 function leadUpdate(req, res) {
   let { query } = req.body;
-
-  console.log("Here ",query)
-  lead.findOne(query, function (err, leadData) {      
+   lead.findOne(query, function (err, leadData) {      
     if (err) {
       let result = { "message": "Something Wrong!" }
       res.send(resFormat.rError(result));
     } else {
-
-      console.log("Here ",leadData)
       if (!leadData) {
         var insert = new lead();
         insert.customerId = query.customerId;
@@ -47,7 +68,6 @@ function leadUpdate(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-
           let result = { "message": "Leads added successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }
@@ -57,5 +77,34 @@ function leadUpdate(req, res) {
   })
 }
 
+function userDetails(req, res) {
+  let { query } = req.body
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  User.findOne(query, fields, function (err, userList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+
+      if(userList){
+       
+        trust.countDocuments({trustId:userList._id}, fields, function (err, userCount) {
+            if (userCount) {
+             // totalUsers = userCount;
+            }
+        });
+
+
+      }
+
+      res.send(resFormat.rSuccess(userList))
+    }
+  })
+}
+
+router.post("/listing", leadsList)
 router.post("/lead-submit", leadUpdate)
+router.post("/get-user-details", userDetails)
 module.exports = router
