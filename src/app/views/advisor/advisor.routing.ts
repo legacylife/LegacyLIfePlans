@@ -201,8 +201,16 @@ export const AdvisorRoutes: Routes = [
   },
   {
     path: 'subscription',
-    component: AdvisorSubscriptionComponent
+    component: AdvisorLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: AdvisorSubscriptionComponent,
+        canActivate: [UserAuthGuard]
+      }
+    ]
   },
+
   {
     path: '**',
     redirectTo: 'dashboard'
