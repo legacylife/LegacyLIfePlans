@@ -25,7 +25,6 @@ var auth = jwt({
 })
 
 function leadsList(req, res) {
-  console.log('asdasdasd')
   let { fields, offset, query, order, limit, search } = req.body
   let totalRecords = 0
   if (search && !isEmpty(query)) {
@@ -35,7 +34,7 @@ function leadsList(req, res) {
       }
     })
   }
-  console.log("query==> ",query)
+  
   lead.count(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
@@ -57,6 +56,7 @@ function leadUpdate(req, res) {
       let result = { "message": "Something Wrong!" }
       res.send(resFormat.rError(result));
     } else {
+
       if (!leadData) {
         var insert = new lead();
         insert.customerId = query.customerId;
