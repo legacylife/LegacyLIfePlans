@@ -25,6 +25,7 @@ export class CustomerProfDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    alert("UserDetails12");
     // const locationArray = location.href.split('/')
     // this.selectedProfileId = locationArray[locationArray.length - 1];
    // this.getAdvisorView();

@@ -151,7 +151,7 @@ export const AdvisorRoutes: Routes = [
     ]
   },
   {
-    path: 'leads-details',
+    path: 'leads-details/:id',
     component: AdvisorLayoutComponent,
     children: [
       {

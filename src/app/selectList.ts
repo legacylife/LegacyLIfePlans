@@ -351,6 +351,37 @@ export const industryDomain = ['Life', 'Health', 'Property & Casualty']
 
 export const businessType = ['Accountant', 'Attorney', 'Tax Specialist', 'Insurance Agent', 'Financial Planner', 'Life', 'Health', 'Property & Casualty']
 
+
+export const businessTypeIcon = [{ 
+  "opt_name" : "Accountant", 
+  "opt_code" : "edit", 
+},{ 
+  "opt_name" : "Attorney", 
+  "opt_code" : "people", 
+},{ 
+  "opt_name" : "Tax Specialist", 
+  "opt_code" : "insert_drive_file", 
+},
+{ 
+  "opt_name" : "Insurance Agent", 
+  "opt_code" : "settings_input_svideo", 
+},{ 
+  "opt_name" : "Financial Planner", 
+  "opt_code" : "local_hospital", 
+},{ 
+  "opt_name" : "Life", 
+  "opt_code" : "local_hospital", 
+},
+{ 
+  "opt_name" : "Health", 
+  "opt_code" : "add", 
+},{ 
+  "opt_name" : "Property & Casualty", 
+  "opt_code" : "attach_money", 
+}
+]
+
+
 export const yearsOfService = ['0 - 5 years', '5 - 10 years', '10 - 15 years', '15 - 20 years', '20 - 25 years', 'more than 25 years']
 
 export const myProfessionals  = ['Medical Doctor', 'Therapist', 'Insurance Agent', 'Accountant', 'Attorney', 'Tax Specialist','Financial Planner','Business Partner']

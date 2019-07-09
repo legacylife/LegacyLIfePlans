@@ -264,20 +264,36 @@ export const CustomerRoutes: Routes = [
       },
     ]
   },
+
+  {
+    path: 'professionals2',
+    component: CustomerLayoutComponent,
+    children: [
+      {      
+        children: [
+          {
+            path: 'prof-details2/:id',
+            component: CustomerProfessionalComponent
+          }
+        ]
+      },
+    ]
+  },
+  
   {
     path: 'professionals',
     component: CustomerLayoutComponent,
     children: [
       {
-        path: '',
+        path: 'prof-details/:id',
         component: CustomerProfessionalComponent,
-        canActivate: [UserAuthGuard],
-        children: [
-          {
-            path: 'prof-details/:id',
-            component: CustomerProfDetailsComponent
-          }
-        ]
+        // canActivate: [UserAuthGuard],
+        // children: [
+        //   {
+        //     path: 'prof-details/:id',
+        //     component: CustomerProfDetailsComponent
+        //   }
+        // ]
       }
     ]
   },

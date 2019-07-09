@@ -150,12 +150,13 @@
                     <mat-icon>star</mat-icon>
                   </div>
                 </div>
-                <h3>Awards and Organizations</h3>       
-                {{row?.awardsYears}}        
-                <!-- <div class="desc" *ngFor="let items of row?.awardsYears;">
+                <h3>Awards and Organizations</h3>                 
+                <div *ngIf="row?.awardsYears" >
+                <div class="desc" *ngFor="let multi of row?.awardsYears;">
                   <mat-icon>arrow_forward</mat-icon>
-                  {{items.title}}
-                </div>                -->
+                  {{multi.title}}
+                </div>
+              </div>               
               </div>
               <div class="box--sec">
                 <div class="logo">

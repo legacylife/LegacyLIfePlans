@@ -27,17 +27,20 @@ export class CustomerProfessionalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.profileData = {
-      proName: 'Mary, Jason & Hodge of Attorney',
-      proDomain: 'www.mjhattorenys.com',
-      proJob: 'Attorney, Insurance Agent',
-      proExp: '12 years',
-      proPhone: '+8654321234',
-      proLocation: '12  street, Silicon Valley,Avenue NE, Huntsville',
-    };
     this.userId = localStorage.getItem("endUserId");
-    this.about = "Lawyer James Anderson once made his mark on the football field as a highschool All - State; and All - American football player.Today he isknown for his courtroom skills as partner with Mary, Jason & Hodge of Attorney Huntsville, Alabama.Morris is a lifelong Alabamian who has been practicing law in Huntsville since earning his law degree from the Attorneys High School."
-    console.log("userId ---- ",this.userId)
+
+    // this.profileData = {
+    //   proName: 'Mary, Jason & Hodge of Attorney',
+    //   proDomain: 'www.mjhattorenys.com',
+    //   proJob: 'Attorney, Insurance Agent',
+    //   proExp: '12 years',
+    //   proPhone: '+8654321234',
+    //   proLocation: '12  street, Silicon Valley,Avenue NE, Huntsville',
+    // };
+    
+    // this.about = "Lawyer James Anderson once made his mark on the football field as a highschool All - State; and All - American football player.Today he isknown for his courtroom skills as partner with Mary, Jason & Hodge of Attorney Huntsville, Alabama.Morris is a lifelong Alabamian who has been practicing law in Huntsville since earning his law degree from the Attorneys High School."
+    
+
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.getAdvisorView();
@@ -52,11 +55,12 @@ export class CustomerProfessionalComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.profileData = this.row = result.data;        
+        this.profileData = this.row = result.data;  
+        //console.log(this.row);      
         if(result.data.profilePicture){
           this.profilePicture = filePath + result.data.profilePicture;
         }        
-        this.leadsCount();
+      //  this.leadsCount();
       }
     }, (err) => {
       console.error(err)
@@ -65,11 +69,9 @@ export class CustomerProfessionalComponent implements OnInit {
   }
 
   leadsCount(query = {}) {
-    console.log("userId",this.userId)
     const req_vars = {
       query: Object.assign({customerId:this.userId,advisorId:this.selectedProfileId}, query)
     }
-console.log("query",query)
     this.userapi.apiRequest('post', 'lead/lead-submit', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)

@@ -16,13 +16,14 @@ const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
   styleUrls: ['./prof-advisor-listing.component.scss'],
   animations: [egretAnimations]
 })
-export class ProfAdvisorListingComponent implements OnInit {
+export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
   adListings: any[];
   qualityAdvisor: any[];
   userId: string;
   profileFilePath: string = profileFilePath;
   profilePicture: any = "assets/images/arkenea/default.jpg";
-
+  abc: string;
+  interval: any
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -33,7 +34,28 @@ export class ProfAdvisorListingComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.getAdvisorLists();    
+    var that = this;
+    this.interval =  setInterval(function(){
+      let abc = localStorage.getItem('businessTypeIcon')
+      console.log(abc, that.abc)
+      
+      if(that.abc !== abc){
+        that.getAdvisorLists({key: abc})
+        that.abc = abc
+      }
+    }, 1000)
   }
+
+  ngOnDestroy(){
+    clearInterval(this.interval);
+  }
+
+
+
+  onStorageChange(changes){
+    console.log('dsffds',changes);
+  }
+
 
   getProfileImage(fileName) {
     if (fileName) {
@@ -44,38 +66,9 @@ export class ProfAdvisorListingComponent implements OnInit {
     }
   }
 
-  //function to send contact details of advisor
-  sendContactDetails = (advisorDetails, query = {}) => {
-    let search = false;
-    const req_vars = {
-      query: Object.assign({ _id: this.userId }, query),
-      advisorDetails: {
-        "advisorFullname": advisorDetails.firstName + ' ' + advisorDetails.lastName,
-        "advisorEmail": advisorDetails.username,
-        "advisorPhone": advisorDetails.businessPhoneNumber,
-        "advisorAddress": advisorDetails.addressLine1 + ' ' + advisorDetails.city + ' ' + advisorDetails.state + ' ' + advisorDetails.zipcode,
-        "advisorId": advisorDetails._id
-      }
-    }
-    this.userapi.apiRequest('post', 'advisor/contactadvisor', req_vars).subscribe(result => {
-      if (result.status == "error") {
-        console.log(result.data)
-      } else {
-        if (result.status == "error") {
-          this.loader.close();
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
-        } else {
-          this.loader.close();
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
-        }
-      }
-    }, (err) => {
-      console.error(err)
-    })
-  }
-
   //function to get all events
-  getAdvisorLists = (query = {}, search = false) => {
+  getAdvisorLists = (query:any = {}, search = false) => {
+    console.log(query.key);
     const req_vars = {
       query: Object.assign({ userType: "advisor", status: "Active" }, query),
       fields: {},
@@ -101,30 +94,36 @@ export class ProfAdvisorListingComponent implements OnInit {
     })
   }
 
-  // hireAdvisor(ids) {
-  //   let hirestatus = 'pending';
+    //function to send contact details of advisor
+    sendContactDetails = (advisorDetails, query = {}) => {
+      let search = false;
+      const req_vars = {
+        query: Object.assign({ _id: this.userId }, query),
+        advisorDetails: {
+          "advisorFullname": advisorDetails.firstName + ' ' + advisorDetails.lastName,
+          "advisorEmail": advisorDetails.username,
+          "advisorPhone": advisorDetails.businessPhoneNumber,
+          "advisorAddress": advisorDetails.addressLine1 + ' ' + advisorDetails.city + ' ' + advisorDetails.state + ' ' + advisorDetails.zipcode,
+          "advisorId": advisorDetails._id
+        }
+      }
+      this.userapi.apiRequest('post', 'advisor/contactadvisor', req_vars).subscribe(result => {
+        if (result.status == "error") {
+          console.log(result.data)
+        } else {
+          if (result.status == "error") {
+            this.loader.close();
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          } else {
+            this.loader.close();
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          }
+        }
+      }, (err) => {
+        console.error(err)
+      })
+    }
 
-  //   let query = {};
-  //   let proquery = { status: hirestatus, customerId: this.userId, advisorId: ids };
-
-  //   const req_vars = {
-  //     query: Object.assign({ customerId: this.userId, advisorId: ids }),
-  //     proquery: Object.assign(proquery),
-  //     from: Object.assign({ logId: "" })
-  //   }
-  //   this.userapi.apiRequest('post', 'advisor/hireadvisor', req_vars).subscribe(result => {
-  //     if (result.status == "error") {
-  //       this.loader.close();
-  //       this.snack.open(result.data.message, 'OK', { duration: 4000 })
-  //     } else {
-  //       this.loader.close();
-  //       this.snack.open(result.data.message, 'OK', { duration: 4000 })
-  //     }
-  //   }, (err) => {
-  //     console.error(err)
-  //     this.loader.close();
-  //   })
-  // }
 
   openHireAdvisorModal(id: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(HireAdvisorComponent, {

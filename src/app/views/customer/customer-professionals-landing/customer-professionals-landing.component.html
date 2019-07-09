@@ -1,12 +1,8 @@
-
 <div class="container llp--left--panel--view">
-    <mat-sidenav-container>
-  
-  
+    <mat-sidenav-container>    
       <mat-sidenav EgretSideNavToggle class="shop-sidebar llp--menu--list">
         <div class="shop-filters-wrap llp--left--panel">
           <div class="shadow--sec">
-  
             <mat-accordion>
               <mat-expansion-panel [expanded]="true">
                 <mat-expansion-panel-header [collapsedHeight]="'56px'" [expandedHeight]="'56px'">
@@ -14,15 +10,14 @@
                     <header>My People</header>
                   </mat-panel-title>
                 </mat-expansion-panel-header>
-  
                 <ul class="legacy--list m-0 p-0">
-                  <li>
-                    <a>
-                      <mat-icon class="icon-file">people</mat-icon> Attorney
+                  <li *ngFor="let btl of businessTypeIcon">
+                    <a (click)="changeTrigger(btl.opt_code)">
+                      <mat-icon class="icon-file">{{btl.opt_code}}</mat-icon> {{btl.opt_name}}
                       <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
                     </a>
                   </li>
-                  <li>
+                  <!-- <li>
                       <a>
                         <mat-icon class="icon-file">edit</mat-icon> Accountant
                         <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
@@ -45,14 +40,10 @@
                         <mat-icon class="icon-file">insert_drive_file</mat-icon> Tax specialist
                         <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
                       </a>
-                    </li>
-                
-                </ul>
-  
-              </mat-expansion-panel>
-             
-            </mat-accordion>
-  
+                    </li> -->                
+                </ul>  
+              </mat-expansion-panel>             
+            </mat-accordion>  
           </div>
         </div>
       </mat-sidenav>

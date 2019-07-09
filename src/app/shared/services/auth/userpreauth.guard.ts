@@ -15,7 +15,7 @@ export class UserPreAuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
       this.userInfo = this.userapi.getUserInfo();
-
+    if(typeof this.userInfo.endUserId !== "undefined" && this.userInfo.endUserId) {
       const req_vars = { userId: this.userInfo.endUserId }
       this.userapi.apiRequest('post', 'auth/view', req_vars).subscribe(result => { 
         let userData = result.data;   
@@ -48,5 +48,8 @@ export class UserPreAuthGuard implements CanActivate {
       })
      
     return true;
+     }else{ 
+       return true;
+      }
   }
 }
