@@ -18,24 +18,25 @@
        </mat-form-field>
 
        <mat-form-field class="full-width" *ngIf="newVal"> 
-          <input matInput name="financesTypeNew" placeholder="Finances Type New*"  [formControl]="FinanceForm.controls['financesTypeNew']">
+          <input matInput (keyup)="firstCapitalize($event)" name="financesTypeNew" (blur)="onChangeType('10')" placeholder="Finances Type New*"  [formControl]="FinanceForm.controls['financesTypeNew']">
           <mat-icon matTooltip="Please enter finances type new" matTooltipClass="llp--tooltip error" *ngIf="FinanceForm.controls['financesTypeNew'].hasError('required') && FinanceForm.controls['financesTypeNew'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
 
       <mat-form-field class="full-width">
-          <input matInput name="administatorName" placeholder="Administator Name*"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="FinanceForm.controls['administatorName']">
+          <input matInput name="administatorName" placeholder="Bank/Credit Union/Plan Administrator*"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="FinanceForm.controls['administatorName']">
+          <mat-icon matTooltip="Please enter administrator name" matTooltipClass="llp--tooltip error" *ngIf="FinanceForm.controls['administatorName'].hasError('required') && FinanceForm.controls['administatorName'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
 
       <mat-form-field class="full-width">
-          <input matInput name="branchLocation" placeholder="Policy Number" [formControl]="FinanceForm.controls['branchLocation']">
+          <input matInput name="branchLocation" (keyup)="firstCapitalize($event)" placeholder="Branch Location" [formControl]="FinanceForm.controls['branchLocation']">
       </mat-form-field>
    
       <mat-form-field class="full-width">
-          <input matInput name="accountNumber" (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" placeholder="Contact Person" [formControl]="FinanceForm.controls['accountNumber']">
+          <input matInput name="accountNumber" (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" placeholder="Account/Benefits Number" [formControl]="FinanceForm.controls['accountNumber']">
       </mat-form-field>
 
       <mat-form-field class="full-width">
-          <input matInput name="contactEmail" placeholder="Contact Email" [formControl]="FinanceForm.controls['contactEmail']">
+          <input matInput name="contactEmail" placeholder="Email" [formControl]="FinanceForm.controls['contactEmail']">
           <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" *ngIf="FinanceForm.controls['contactEmail'].hasError('pattern') && FinanceForm.controls['contactEmail'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
 
@@ -45,7 +46,7 @@
       </mat-form-field>
 
       <div class="upload--buss--docs--sec">
-             <label>Upload your file documents</label>
+             <label>Upload box to upload the document</label>
              <div class="upload--box fileupload-drop-zone"
                 ng2FileDrop
                 [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"

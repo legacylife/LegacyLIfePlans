@@ -138,17 +138,17 @@ export class PetsModalComponent implements OnInit {
             var query = {};
             const req_vars = {
               query: Object.assign({ _id: ids }, query),
-              proquery: Object.assign({ idProofDocuments: this.petDocumentsList }, query),
+              proquery: Object.assign({ documents: this.petDocumentsList }, query),
               fileName: Object.assign({ docName: tmName }, query)
             }
-            this.userapi.apiRequest('post', 'documents/deleteIdDoc', req_vars).subscribe(result => {
+            this.userapi.apiRequest('post', 'documents/deletePets', req_vars).subscribe(result => {
               if (result.status == "error") {
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
               } else {
-                if(this.petDocumentsList.length<1){
-                  this.PetForm.controls['idProofDocuments_temp'].setValue('');
-                }  
+                // if(this.petDocumentsList.length<1){
+                //   this.PetForm.controls['idProofDocuments_temp'].setValue('');
+                // }  
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
               }
