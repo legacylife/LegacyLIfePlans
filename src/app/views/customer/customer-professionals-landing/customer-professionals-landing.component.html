@@ -12,7 +12,7 @@
                 </mat-expansion-panel-header>
                 <ul class="legacy--list m-0 p-0">
                   <li *ngFor="let btl of businessTypeIcon">
-                    <a (click)="changeTrigger(btl.opt_code)">
+                    <a (click)="changeTrigger(btl.opt_name)">
                       <mat-icon class="icon-file">{{btl.opt_code}}</mat-icon> {{btl.opt_name}}
                       <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
                     </a>

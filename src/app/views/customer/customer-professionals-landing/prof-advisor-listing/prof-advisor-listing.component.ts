@@ -37,45 +37,43 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
     var that = this;
     this.interval =  setInterval(function(){
       let abc = localStorage.getItem('businessTypeIcon')
-      console.log(abc, that.abc)
-      
+      console.log(abc, that.abc)      
       if(that.abc !== abc){
-        that.getAdvisorLists({key: abc})
+        that.getAdvisorLists('',abc)
         that.abc = abc
       }
     }, 1000)
   }
-
+  
   ngOnDestroy(){
     clearInterval(this.interval);
   }
 
-
-
-  onStorageChange(changes){
-    console.log('dsffds',changes);
-  }
-
-
-  getProfileImage(fileName) {
-    if (fileName) {
-      return profileFilePath + fileName;
-    }
-    else {
-      return this.profilePicture;
-    }
-  }
+  // onStorageChange(changes){
+  //   console.log('dsffds',changes);
+  // }
 
   //function to get all events
-  getAdvisorLists = (query:any = {}, search = false) => {
-    console.log(query.key);
-    const req_vars = {
+  getAdvisorLists = (query:any = {}, search:any = false) => {
+    console.log('-----',search);
+     let req_vars = {
       query: Object.assign({ userType: "advisor", status: "Active" }, query),
       fields: {},
       offset: '',
       limit: '',
       order: { "createdOn": -1 },
     }
+
+    if(search){
+       req_vars = {
+        query: Object.assign({ userType: "advisor", status: "Active", businessType:search }, query),
+        fields: {},
+        offset: '',
+        limit: '',
+        order: { "createdOn": -1 },
+      }
+    }
+console.log("req_vars",req_vars) 
     this.userapi.apiRequest('post', 'userlist/list', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
@@ -94,8 +92,8 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
     })
   }
 
-    //function to send contact details of advisor
-    sendContactDetails = (advisorDetails, query = {}) => {
+  //function to send contact details of advisor
+  sendContactDetails = (advisorDetails, query = {}) => {
       let search = false;
       const req_vars = {
         query: Object.assign({ _id: this.userId }, query),
@@ -122,8 +120,16 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
       }, (err) => {
         console.error(err)
       })
-    }
+   }
 
+   getProfileImage(fileName) {
+    if (fileName) {
+      return profileFilePath + fileName;
+    }
+    else {
+      return this.profilePicture;
+    }
+  }
 
   openHireAdvisorModal(id: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(HireAdvisorComponent, {

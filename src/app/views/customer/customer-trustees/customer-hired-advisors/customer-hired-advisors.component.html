@@ -1,8 +1,5 @@
 <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
-
   <div class="full-width">
-
-
     <mat-card class="empty--section p-0">
       <mat-card-header class="m-0 header--with--sort">
         <mat-card-title class="m-0">Hired Advisors</mat-card-title>
@@ -15,19 +12,16 @@
             </mat-select>
           </div>
       </mat-card-header>
-
-
-      <mat-card-content class="appointees--wrapper">
-
-        <mat-card class="appointees--section p-0 {{peoples.status === 'pending' ? 'pending' : ''}}" *ngFor="let peoples of allPeoples">
+      <mat-card-content class="appointees--wrapper" *ngIf="showAdvisorListing">
+        <mat-card class="appointees--section p-0 {{row.status === 'pending' ? 'pending' : ''}}" *ngFor="let row of advisorListing">      
           <mat-card-header class="m-0">
             <mat-card-title class="m-0">
               <div class="appointees--pic">
-                <img src="{{peoples.profilePic}}" />
+                  <img src="{{getProfileImage(row.advisorId?.profilePicture)}}" />
               </div>
               <div class="appointees--desc">
-                <h5>{{peoples.userName}}</h5>
-                <p class="position m-0" >{{peoples.position}}</p>
+                <h5>{{row.advisorId?.firstName}} {{row.advisorId?.lastName}}</h5>
+                <p class="position m-0" >{{row.advisorId?.userType}}</p>
               </div>
               <div class="cursor-pointer">
                   <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
@@ -40,23 +34,22 @@
             </mat-card-title>
           </mat-card-header>
            <!-- all hired advisor -->
-           <mat-card-content class="status--advisor relative" *ngIf="peoples.status === 'advisor'">
+          <mat-card-content class="status--advisor relative">
             <div class="files--folder mt-1 degree--names">
               <mat-icon>school</mat-icon>
-              Insurance Agent, Attorney, Accountant, Financial Planner
+              {{row.advisorId?.businessType}}
             </div>
-
             <!-- <div class="ad--strip">
               Advisor
             </div> -->
           </mat-card-content>
-
-
-
-         
-
         </mat-card>
       </mat-card-content>
+      <mat-card-content class="appointees--wrapper" *ngIf="!showAdvisorListing">
+          <div class="files--folder mt-1">Currently you do not have any advisor associated.</div>
+      </mat-card-content>
+
+
     </mat-card>
   </div>
 </div>

@@ -12,7 +12,7 @@
             </mat-select>
           </div>
       </mat-card-header>
-      <mat-card-content class="appointees--wrapper">
+      <mat-card-content class="appointees--wrapper" *ngIf="showTrustyListing">
         <mat-card class="appointees--section p-0 {{row?.status==='Pending' ? 'pending' : ''}}" *ngFor="let row of trustyListing">
           <mat-card-header class="m-0">
             <mat-card-title class="m-0">
@@ -61,6 +61,8 @@
           </mat-card-content> -->
         </mat-card>
       </mat-card-content>
+      <mat-card-content class="appointees--wrapper" *ngIf="!showTrustyListing">
+          <div class="files--folder mt-1">Currently you do not have any trustee associated.</div></mat-card-content>
     </mat-card>
   </div>
 </div>

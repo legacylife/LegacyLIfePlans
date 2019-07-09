@@ -61,8 +61,6 @@ export class CustomerMyTrusteeComponent implements OnInit {
       } else {
         this.trustyListing = result.data.trustList;
 
-        console.log("Image :- ",this.trustyListing);
-
         this.showTrustyListingCnt = this.trustyListing.length;  
         if (this.showTrustyListingCnt>0) {
           this.showTrustyListing = true;
