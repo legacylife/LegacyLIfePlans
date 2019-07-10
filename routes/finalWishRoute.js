@@ -65,7 +65,7 @@ function wishFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details  added';
+          let resText = 'details added';
           if (custData.title){
             resText = 'details updated';
           }
@@ -110,7 +110,7 @@ function wishFormUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": message.messageText+" added successfully!" }
+        let result = { "message": message.messageText+" details added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })

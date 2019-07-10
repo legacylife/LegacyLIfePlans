@@ -511,7 +511,8 @@ router.post('/timeCapsuledocuments', cors(), function(req,res){
       if(userId){
           let ext = filename.split('.')
           ext = ext[ext.length - 1];
-          var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc", "mov"];
+          var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc","mov","mp3", "mpeg", "wav", "ogg", "opus", "bmp", "tiff", "svg", "webm", "mpeg4", "3gpp", "avi", "mpegps", "wmv", "flv"];
+          
           let resp = isExtension(ext,fileExts);
           if(!resp){
             let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid file extension!" }

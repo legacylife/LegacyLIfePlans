@@ -196,8 +196,8 @@ function financesFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details  added';
-          if (custData.policyType){
+          let resText = 'details added';
+          if (custData.financesType){
             resText = 'details updated';
           }
           let { proquery } = req.body;   
@@ -211,7 +211,7 @@ function financesFormUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Insurance "+resText+" successfully" }
+              let result = { "message": "Finance "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -244,7 +244,7 @@ function financesFormUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Insurance added successfully!" }
+        let result = { "message": "Finance details added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -307,8 +307,8 @@ function debtFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details  added';
-          if (custData.policyType){
+          let resText = 'details added';
+          if (custData.debtsType){
             resText = 'details updated';
           }
           let { proquery } = req.body;   
@@ -323,7 +323,7 @@ function debtFormUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Insurance "+resText+" successfully" }
+              let result = { "message": "Debt "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -356,7 +356,7 @@ function debtFormUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Insurance added successfully!" }
+        let result = { "message": "Debt details added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
