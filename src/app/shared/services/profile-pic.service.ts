@@ -1,6 +1,6 @@
 import {Subject} from 'rxjs/Subject';   
 import { Injectable } from '@angular/core';
-
+import {  FormControl } from '@angular/forms';
 @Injectable()
 export class ProfilePicService {
  itemValue = new Subject();
@@ -13,4 +13,18 @@ export class ProfilePicService {
  get getProfilePic() {
    return localStorage.getItem('endUserProfilePicture');
  }
+
+ public noWhitespaceValidator(control: FormControl) {
+  if(typeof control.value == 'undefined' || control.value==null){
+      return null;
+  }
+  else if(control.value.length==0){
+      return null;
+  }
+  else{
+      let isWhitespace = (control.value || '').trim().length === 0;
+      let isValid = !isWhitespace;
+      return isValid ? null : { 'required': true }  
+  }
+}
 }

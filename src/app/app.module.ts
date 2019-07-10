@@ -79,6 +79,9 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 // AoT requires an exported function for factories
 import { ChangePicComponent } from './views/change-pic/change-pic.component';
+
+import { NgxStripeModule } from 'ngx-stripe';
+
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }
@@ -130,7 +133,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   LyToolbarModule,
   LyResizingCroppingImageModule,
   LyIconModule,
-
+  NgxStripeModule.forRoot('pk_test_mB9cnQ2EBtmIiIPUi0kQgIxC'),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

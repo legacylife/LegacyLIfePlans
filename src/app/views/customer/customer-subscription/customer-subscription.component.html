@@ -12,9 +12,9 @@
     <mat-card-content>
 
       <div class="plans--wrapper">
-        <div fxLayout="row wrap">
+        <div fxLayout="row wrap" fxLayoutAlign="center">
 
-          <div fxFlex-md="25" fxFlex-lg="25" fxFlex.xl="33.33">
+          <div fxFlex-md="70" fxFlex-lg="70" fxFlex.xl="70">
             <div class="plan--text">
               <div class="plan--header">
                 <h6>Legacy Life Plan Features</h6>
@@ -38,11 +38,18 @@
               </div>
             </div>
           </div>
+          <div fxFlex-md="70" fxFlex-lg="70" fxFlex.xl="70">
+              <div id="card-fields"></div>
+              <label class="error" *ngIf="stripePaymentError!=''">{{stripePaymentError}}</label>
 
-          <div fxFlex-md="25" fxFlex-lg="25" fxFlex.xl="33.33">
+              <div fxLayoutAlign="space-around center">
+                <button mat-raised-button class="llp--primary--btn" (click)="completePayment()">Proceed to Pay {{planAmount | currency : planCurrency : 'symbol': '.0-0'}}</button>
+              </div>
+          </div>
+          <!-- <div fxFlex-md="25" fxFlex-lg="25" fxFlex.xl="33.33">
           </div>
           <div fxFlex-md="25" fxFlex-lg="25" fxFlex.xl="33.33">
-          </div>
+          </div> -->
 
         </div>
       </div>

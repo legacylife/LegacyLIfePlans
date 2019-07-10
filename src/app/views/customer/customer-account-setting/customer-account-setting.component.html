@@ -102,21 +102,24 @@
                   <div fxFlex.xs="100" fxFlex.sm="60" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60">
                     <div class="manage--sub--section">
                       <header>
-                        <div class="stan--plan"> Standard plan</div>
-                        <div class="ur--sub">Your subscription will automatically renew on
-                          <span>06/07/2019</span>
+                        <div class="stan--plan"> {{planName}} plan</div>
+                        <div class="ur--sub" *ngIf="isSubscribePlan">Your subscription will automatically renew on
+                          <span>{{subscriptionExpireDate}}</span>
+                        </div>
+                        <div class="ur--sub" *ngIf="isAccountFree">You are currently on free plan and expired on
+                          <span>{{subscriptionExpireDate}}</span>
                         </div>
                       </header>
                       <div class="llp--slide--wrapper">
                         <div class="set-auto">Set auto-payment option</div>
-                        <mat-slide-toggle class="llp--slide--toggle">OFF</mat-slide-toggle>
+                        <mat-slide-toggle class="llp--slide--toggle" [checked]="isSubscribePlan && autoRenewalFlag" [disabled]="isAccountFree" (click)="isSubscribePlan && autoRenewal()">{{autoRenewalStatus | uppercase}}</mat-slide-toggle>
                       </div>
                       <p class="turning">Turning the auto-payment option ON will automatically deduct the subscription amount from your associated
                         card
                       </p>
                       <div class="manage--cancel">
                         <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/customer/customer-subscription'">Manage subscription</button>
-                        <a class="clr--red">Cancel subscription</a>
+                        <a class="clr--red" [class.not-allowed]="isAccountFree" [attr.disabled]="isAccountFree">Cancel subscription</a>
                       </div>
                     </div>
                     <!-- <div class="deactivate--acc">

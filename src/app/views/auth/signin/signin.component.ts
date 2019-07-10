@@ -59,6 +59,8 @@ export class SigninComponent implements OnInit {
         localStorage.setItem("endUserFirstName", userData.firstName);
         localStorage.setItem("endUserLastName", userData.lastName); 
         localStorage.setItem("endUserProfilePicture", userData.profilePicture); 
+        localStorage.setItem("endUserCreatedOn", userData.createdOn);
+        localStorage.setItem("endUserSubscriptionOn", userData.subscriptionOn);
         
         if (userData.profilePicture) {
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + userData.profilePicture;

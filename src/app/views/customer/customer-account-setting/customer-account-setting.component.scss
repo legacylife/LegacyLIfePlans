@@ -143,6 +143,22 @@
                         line-height: 1.39;
                         color: $clr--3;
                     }
+
+                   ::ng-deep .mat-disabled {
+                        .mat-slide-toggle-bar {
+                            background-color:#ddd !important;
+                            .mat-slide-toggle-thumb-container{
+                                .mat-slide-toggle-thumb{
+                                    background-color:#ddd !important;
+                                }
+                            }
+                        }
+                        .mat-slide-toggle-label{
+                            .mat-slide-toggle-content{
+                                color: #ddd;
+                            }
+                        }
+                   }
                 }
             }
         }
@@ -201,6 +217,9 @@
                 a{
                     margin-top: 18px;
                     font-size: 16px;
+                }
+                a.not-allowed{
+                    cursor: not-allowed
                 }
             }            
         }

@@ -17,6 +17,7 @@ import { states } from '../../../state';
 import { serverUrl, s3Details } from '../../../config'
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { CanComponentDeactivate } from '../../../shared/services/auth/can-deactivate.guard';
+import  * as moment  from 'moment'
 
 @Component({
   selector: 'app-customer-account-setting',
@@ -42,6 +43,23 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   pdisplay: boolean = false
   pcropperDisplay: boolean = false
   profileImage = null
+  /**
+   * Subscription variable declaration
+   */
+
+  planName: string = 'free'
+  autoRenewalStatus: string = 'off'
+  subscriptionExpireDate: string = ''
+
+  isAccountFree: boolean = true
+  isSubscribePlan: boolean = false
+  isSubscribedBefore: boolean = false
+  autoRenewalFlag: boolean = false
+  isPremiumExpired: boolean = false
+
+  userCreateOn: any
+  userSubscriptionDate: any
+  today: Date = moment().toDate()
 
   modified = false // display confirmation popup if user click on other link
   
@@ -84,6 +102,50 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     this.profile = [];
     this.getProfile();
 
+    /**
+     * Check the user subscription details
+     */
+    let diff: any
+    let expireDate: any
+    let subscriptionDate      = localStorage.getItem("endUserSubscriptionOn")
+    this.userCreateOn         = moment( localStorage.getItem("endUserCreatedOn") )
+    this.isSubscribedBefore   = ( subscriptionDate !== 'undefined' && subscriptionDate !== null) ? true : false
+    
+    if( !this.isSubscribedBefore ) {
+      this.isAccountFree    = true
+      this.isSubscribePlan  = false
+      diff                  = this.getDateDiff( this.userCreateOn.toDate(), this.today )
+
+      if( diff <= 30 ) {
+        expireDate            = this.userCreateOn.add(30,"days")
+        this.isPremiumExpired = false
+      }
+      else{
+        expireDate            = this.userCreateOn.add(60,"days")
+        this.isPremiumExpired = true
+      }
+      
+      this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
+    }
+    else if( this.isSubscribedBefore ) {
+      this.userSubscriptionDate = moment( localStorage.getItem("endUserSubscriptionOn") )
+      this.isAccountFree    = false
+      diff                  = this.getDateDiff( this.userSubscriptionDate.toDate(), this.today )
+      
+      if( diff <= 360 ) {
+        expireDate            = this.userSubscriptionDate
+        this.isPremiumExpired = false
+        this.isSubscribePlan  = true
+        this.planName         = 'Standard'
+      }
+      else{
+        expireDate            = this.userSubscriptionDate.add(30,"days")
+        this.isPremiumExpired = true
+        this.isSubscribePlan  = false
+        this.planName         = 'Free'
+      }
+      this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
+    }
   }
 
   canDeactivate(): any {
@@ -292,6 +354,23 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     var key;  
     key = event.charCode;
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
+  }
+
+  autoRenewal() {
+    if( this.autoRenewalFlag ) {
+      this.autoRenewalStatus = 'off'
+      this.autoRenewalFlag = false
+    }
+    else{
+      this.autoRenewalStatus = 'on'
+      this.autoRenewalFlag = true
+    }
+  }
+
+  getDateDiff( startDate:Date, endDate:Date) {
+    return moment.duration( 
+        moment(endDate).diff( moment(startDate) ) 
+      ).asDays()
   }
 
 }
