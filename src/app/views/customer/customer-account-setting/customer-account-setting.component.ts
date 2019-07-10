@@ -69,11 +69,15 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+  //   if(typeof this.userId !== "undefined") {
+  //     this.router.navigate(['/', 'auth','signin']);
+  // }
     this.picService.itemValue.subscribe((nextValue) => {
       this.profilePicture =  nextValue
     })
     this.stateList = states;
     this.userId = localStorage.getItem("endUserId");
+
     this.ProfileForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
@@ -172,9 +176,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
         this.profile = [];
         this.loader.close();
       } else {
-
         this.profile = result.data.userProfile;
-        console.log(this.profile.username)
         this.ProfileForm.controls['firstName'].setValue(this.profile.firstName);
         this.ProfileForm.controls['lastName'].setValue(this.profile.lastName);
         this.ProfileForm.controls['dateOfBirth'].setValue(this.profile.dateOfBirth);

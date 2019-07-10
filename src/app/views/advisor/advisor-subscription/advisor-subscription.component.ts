@@ -1,14 +1,9 @@
 
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MatSnackBar, MatSidenav } from '@angular/material';
-import { Product } from '../../../shared/models/product.model';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms'
-import { Subscription, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { egretAnimations } from '../../../shared/animations/egret-animations';
+import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
+import { CardDetailsComponent } from 'app/shared/components/card-details-modal/card-details-modal.component';
 
-import { MatProgressBar, MatButton } from '@angular/material';
-import { Validators} from '@angular/forms';
+
 
 @Component({
   selector: 'app-advisor-subscription',
@@ -17,9 +12,15 @@ import { Validators} from '@angular/forms';
 })
  export class AdvisorSubscriptionComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialog: MatDialog,) { }
 
   ngOnInit() {
   }
-
+  
+  openCardDetailsModal() {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(CardDetailsComponent, {
+      width: '500px',
+      disableClose: true,
+    })
+  }
 }

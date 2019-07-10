@@ -61,6 +61,8 @@ import { DeviceDetailsComponent } from './customer-home/passwords-digital-assets
 import { LettersMessagesListingComponent } from './customer-home/legacy-life-letters-messages/letters-messages-listing/letters-messages-listing.component';
 import { LettersMessagesDetailsComponent } from './customer-home/legacy-life-letters-messages/letters-messages-details/letters-messages-details.component';
 import { ElectronicMediaDetailsComponent } from './customer-home/passwords-digital-assets/electronic-media/electronic-media-details/electronic-media-details.component';
+import { TodosListingComponent } from '../todos-listing/todos-listing.component';
+
 
 export const CustomerRoutes: Routes = [
   {
@@ -228,6 +230,16 @@ export const CustomerRoutes: Routes = [
     ]
   },
   {
+    path: 'to-dos',
+    component: CustomerLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: TodosListingComponent       
+      }
+    ]
+  },
+  {
     path: 'trustees',
     component: CustomerLayoutComponent,
     children: [
@@ -252,20 +264,36 @@ export const CustomerRoutes: Routes = [
       },
     ]
   },
+
+  {
+    path: 'professionals2',
+    component: CustomerLayoutComponent,
+    children: [
+      {      
+        children: [
+          {
+            path: 'prof-details2/:id',
+            component: CustomerProfessionalComponent
+          }
+        ]
+      },
+    ]
+  },
+  
   {
     path: 'professionals',
     component: CustomerLayoutComponent,
     children: [
       {
-        path: '',
+        path: 'prof-details/:id',
         component: CustomerProfessionalComponent,
-        canActivate: [UserAuthGuard],
-        children: [
-          {
-            path: 'prof-details',
-            component: CustomerProfDetailsComponent
-          }
-        ]
+        // canActivate: [UserAuthGuard],
+        // children: [
+        //   {
+        //     path: 'prof-details/:id',
+        //     component: CustomerProfDetailsComponent
+        //   }
+        // ]
       }
     ]
   },

@@ -71,7 +71,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { APIService } from './api.service';
 import { UserAPIService } from './userapi.service';
 import { InviteComponent } from './views/invite-modal/invite-modal.component';
-import { TodosComponent } from './views/todos/todos.component';
 import { ReferAndEarnModalComponent } from './views/refer-and-earn-modal/refer-and-earn-modal.component';
 import { LyIconModule } from '@alyle/ui/icon';
 import { FileUploadModule } from 'ng2-file-upload';
@@ -79,9 +78,8 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 // AoT requires an exported function for factories
 import { ChangePicComponent } from './views/change-pic/change-pic.component';
-
-import { NgxStripeModule } from 'ngx-stripe';
-
+//import { TodosComponent } from './views/todos/todos.component';
+// import { TodosListingComponent } from './views/todos-listing/todos-listing.component';
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }
@@ -154,8 +152,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     { provide: LY_THEME, useClass: MinimaDark, multi: true },// name: `minima-dark`
     { provide: LY_THEME_GLOBAL_VARIABLES,useClass: GlobalVariables    } 
   ],
-  declarations: [AppComponent, ChangePicComponent, InviteComponent, ReferAndEarnModalComponent,
-    TodosComponent],
-  entryComponents: [ChangePicComponent, InviteComponent, ReferAndEarnModalComponent, TodosComponent],
+  declarations: [AppComponent, ChangePicComponent, InviteComponent, ReferAndEarnModalComponent],
+  entryComponents: [ChangePicComponent, InviteComponent, ReferAndEarnModalComponent],
 })
 export class AppModule { }

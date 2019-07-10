@@ -21,7 +21,7 @@
             <mat-icon class="home">home</mat-icon> Home</a>
         </li>
         <li>
-          <a matRipple routerLink="/customer/trustees/my-people" routerLinkActive="active--link">
+          <a matRipple routerLink="/customer/trustees" routerLinkActive="active--link">
             <mat-icon class="icon-trustees">people</mat-icon> Trustees</a>
         </li>
         <li>
@@ -48,9 +48,8 @@
                   <mat-icon>group_add</mat-icon> Add Trustees
                 </a>
               </li>
-              <li class="mat-menu-item">
-                <a matRipple routerLink="/customer">
-                  <mat-icon>list</mat-icon> To dos</a>
+              <li class="mat-menu-item" (click)="openTodosModal({})">
+                <a matRipple><mat-icon>list</mat-icon> To dos</a>
               </li>
               <li class="mat-menu-item">
                 <a matRipple routerLink="/customer">

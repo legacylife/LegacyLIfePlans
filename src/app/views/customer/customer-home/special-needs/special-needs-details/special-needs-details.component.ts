@@ -71,7 +71,7 @@ export class SpecialNeedsDetailsComponent implements OnInit {
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'specialNeeds', 'dashboard', 'special-needs'])
+              this.router.navigate(['/', 'customer', 'dashboard', 'special-needs'])
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {

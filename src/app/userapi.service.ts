@@ -57,8 +57,12 @@ export class UserAPIService {
 
   //function to save token and user id
   private endUsersaveToken(token: string, userId: string, userType: string, username: string, authCode: string, expiryDate: string, emailApiType: string = '', userHeaderDetails: any, mainUserId: any = "", req: any, userProfilePicture : string = ''): void {
-    this.token = token
-    this.userId = userId
+    
+    if(typeof userId === "undefined") {
+      userId = this.getKeyFromStorage('endUserId')
+    }
+    this.token = token;
+    this.userId = userId;
     if (typeof (userHeaderDetails) != 'string') {
       userHeaderDetails = JSON.stringify(userHeaderDetails)
     }
@@ -140,14 +144,14 @@ export class UserAPIService {
       map((response: TokenResponse) => {
         if (response.data && response.data.token) {
           //check if user type is same
-          if (data.userType != "sysadmin") {
+          let userType = localStorage.getItem("endUserType");
+          if (userType != "sysadmin") {
             const { token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, userProfilePicture } = response.data
             if(userType == 'customer' || userType == 'advisor'){
               this.endUsersaveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data, userProfilePicture)
             } else {
-              this.saveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data)
-            }
-            
+              this.endUsersaveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data, userProfilePicture)
+            }            
             return response
           } else {
             return { status: "error", data: { message: "Please check your credentials" } }

@@ -8,7 +8,7 @@ let bucketName = ""
 
 //localhost
 if(window.location.hostname.indexOf("localhost") > -1){
-  serverUrlEnv = "http://localhost:8080"  
+  serverUrlEnv = "http://localhost:3000"  
 } else if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") > -1){
   serverUrlEnv = "http://ec2-3-212-172-15.compute-1.amazonaws.com:8080"  
 } else if(window.location.hostname.indexOf("ec2-3-209-230-58.compute-1.amazonaws.com") > -1){

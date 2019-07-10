@@ -1,55 +1,187 @@
 <div class="container llp--left--panel--view ">
   <mat-sidenav-container>
-
-
     <mat-sidenav EgretSideNavToggle class="shop-sidebar llp--menu--list">
       <div class="shop-filters-wrap llp--left--panel">
         <mat-card class="account--profile">
           <div class="account--pic--wrapper">
             <div class="account--pic">
               <img src="{{profilePicture}}" />
-            </div>
-            
+            </div>            
           </div>
-
           <div class="acc--user--details text-center">
-            <h2>Jone Smith </h2>
+            <h2>{{row?.firstName}} {{row?.lastName}}</h2>
             <p>CFA, CIC</p>
             <div class="sta--m">
               <mat-icon>star</mat-icon> Premium member</div>
           </div>
-
-
           <div class="sett--fp">
             <mat-icon>school</mat-icon>
-            Insurance Agent, Attorney, Accountant
+            {{row?.businessType}}
           </div> 
-
           <div class="feature--profile">
             <div class="email--phone">
               <mat-icon>markunread</mat-icon>
               <span (click)="openSendEmailModal({}, true)">Send an Email</span>
             </div>
             <div class="text-center mt--25">
-              <button mat-raised-button (click)="openHireAdvisorModal({})" class="llp--primary--btn w168">Hire this Advisor</button>
+              <button mat-raised-button (click)="openHireAdvisorModal(selectedProfileId,true)" class="llp--primary--btn w168">Hire this Advisor</button>
             </div>
           </div>
-
-
         </mat-card>
       </div>
     </mat-sidenav>
-
     <!-- toggleSideNav -->
     <div class="shop-top-toolbar p-0 llp--toggle-btn ml-1">
       <button mat-icon-button class="p-0" (click)="toggleSideNav()">
         <mat-icon>short_text</mat-icon>
       </button>
     </div>
-
-    <router-outlet></router-outlet>
-
-
+    <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
+      <div class="full-width">  
+        <mat-card class="empty--section p-0">
+          <mat-card-header class="m-0 ">
+            <mat-card-title class="m-0">Business Details</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <!-- Personal Profile -->
+            <div class="details--wrapper mb-1">
+              <div class="details--header">
+                <div class="d-flex align--items--center">
+                  <mat-icon>person</mat-icon>Personal Profile
+                </div>
+              </div>
+              <div class="details--body">
+                <div fxLayout="row wrap" class="mb--10">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                    <label class="strong--label">Date of Birth:</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                    <label class="normal--label">{{row?.dateOfBirth}}</label>
+                  </div>
+                </div>
+                <div fxLayout="row wrap" class="mb--10" *ngFor="let items of row?.websiteLinks; let PI = index">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                    <label class="strong--label">Domain {{PI}}:</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                    <label class="normal--label">{{items?.links}}</label>
+                  </div>
+                </div>
+                <div fxLayout="row wrap" class="mb--10">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                    <label class="strong--label">Job Title:</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                    <label class="normal--label">{{row?.businessType}}</label>
+                  </div>
+                </div>
+                <div fxLayout="row wrap" class="mb--10">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                    <label class="strong--label">Experience:</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                    <label class="normal--label">{{row?.yearsOfService}}</label>
+                  </div>
+                </div>
+                <div fxLayout="row wrap" class="mb--10">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                    <label class="strong--label">Business Phone:</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                    <label class="normal--label">{{row?.businessPhoneNumber}}</label>
+                  </div>
+                </div>
+                <div fxLayout="row wrap" class="mb--10">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                    <label class="strong--label">Location:</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                    <label class="normal--label">{{row?.city}}, {{row?.state}} {{row?.zipcode}}</label>                                        
+                  </div>
+                </div>    
+              </div>
+            </div>  
+            <div class="details--wrapper mb-1">
+              <div class="details--header">
+                <div class="d-flex align--items--center">
+                  <mat-icon>insert_drive_file</mat-icon>About James
+                </div>
+              </div>
+              <div class="details--body">
+                <p class="abt--us">{{row?.bioText}}</p>
+              </div>
+            </div>    
+            <div class="specialites--wrapper">
+              <div class="box--sec">
+                <div class="logo">
+                  <div class="logo--inner">
+                    <mat-icon>folder_special</mat-icon>
+                  </div>
+                </div>
+                <h3>Specialites</h3>
+                <div class="desc">
+                  <mat-icon>arrow_forward</mat-icon>
+                  Insurance disputes
+                </div>
+                <div class="desc">
+                  <mat-icon>arrow_forward</mat-icon>
+                  Business disputes
+                </div>
+                <div class="desc">
+                  <mat-icon>arrow_forward</mat-icon>
+                  Product liability
+                </div>
+                <div class="desc">
+                  <mat-icon>arrow_forward</mat-icon>
+                  Pharmaceutical liability and medical documents
+                </div>
+                <div class="desc">
+                  <mat-icon>arrow_forward</mat-icon>
+                  Workers compensation
+                </div>
+                <div class="desc">
+                  <mat-icon>arrow_forward</mat-icon>
+                  Premises liability
+                </div>
+              </div>
+              <div class="box--sec" >
+                <div class="logo">
+                  <div class="logo--inner">
+                    <mat-icon>star</mat-icon>
+                  </div>
+                </div>
+                <h3>Awards and Organizations</h3>                 
+                <div *ngIf="row?.awardsYears" >
+                <div class="desc" *ngFor="let multi of row?.awardsYears;">
+                  <mat-icon>arrow_forward</mat-icon>
+                  {{multi.title}}
+                </div>
+              </div>               
+              </div>
+              <div class="box--sec">
+                <div class="logo">
+                  <div class="logo--inner">
+                    <mat-icon>flag</mat-icon>
+                  </div>
+                </div>
+                <h3>Hobbies</h3>
+                <div class="desc">
+                  <mat-icon>arrow_forward</mat-icon>
+                  Swimming
+                </div>
+                <div class="desc">
+                  <mat-icon>arrow_forward</mat-icon>
+                  Reading a book
+                </div>
+                <div class="desc">
+                  <mat-icon>arrow_forward</mat-icon>
+                  Listening to music
+                </div>
+              </div>   
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
   </mat-sidenav-container>
-
 </div>

@@ -71,8 +71,20 @@ export class DebtModalComponent implements OnInit {
           debtsTypeNew: new FormControl(this.DebtForm.controls['debtsTypeNew'].value,Validators.required), 
           bankLendarName: new FormControl(this.DebtForm.controls['bankLendarName'].value,Validators.required),
           accountNumber: new FormControl(this.DebtForm.controls['accountNumber'].value,),
-          contactEmail: new FormControl(this.DebtForm.controls['contactEmail'].value),
-          contactPhone: new FormControl(this.DebtForm.controls['contactPhone'].value,),
+          contactEmail: new FormControl(this.DebtForm.controls['contactEmail'].value,Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
+          contactPhone: new FormControl(this.DebtForm.controls['contactPhone'].value,Validators.pattern(/^[0-9]{7,15}$/)),
+          comments: new FormControl(this.DebtForm.controls['comments'].value,),
+          profileId: new FormControl(this.DebtForm.controls['profileId'].value,)
+        });
+      }
+      else {
+        this.DebtForm = this.fb.group({
+          debtsType: new FormControl(this.DebtForm.controls['debtsType'].value,Validators.required),
+          debtsTypeNew: new FormControl(this.DebtForm.controls['debtsTypeNew'].value), 
+          bankLendarName: new FormControl(this.DebtForm.controls['bankLendarName'].value,Validators.required),
+          accountNumber: new FormControl(this.DebtForm.controls['accountNumber'].value,),
+          contactEmail: new FormControl(this.DebtForm.controls['contactEmail'].value,Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
+          contactPhone: new FormControl(this.DebtForm.controls['contactPhone'].value,Validators.pattern(/^[0-9]{7,15}$/)),
           comments: new FormControl(this.DebtForm.controls['comments'].value,),
           profileId: new FormControl(this.DebtForm.controls['profileId'].value,)
         });
@@ -133,7 +145,7 @@ export class DebtModalComponent implements OnInit {
                 
             this.DebtForm.controls['debtsType'].setValue(this.debtList.debtsType);
             this.DebtForm.controls['debtsTypeNew'].setValue(this.debtList.debtsTypeNew);
-            if(this.debtList.debtsTypeNew!=''){
+            if(this.debtList.debtsType == '7'){
               this.newVal = true;
             }            
             this.DebtForm.controls['bankLendarName'].setValue(this.debtList.bankLendarName);

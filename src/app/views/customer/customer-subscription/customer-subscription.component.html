@@ -1,6 +1,8 @@
 <div class="container subscription--wrapper">
-  <button mat-raised-button class="llp--secondary--btn back--btn tran--bg backBtn--with--icon" [routerLink]="'/customer/account-setting'">
-    <mat-icon>arrow_back</mat-icon> Back</button>
+  <button mat-raised-button class="llp--secondary--btn back--btn tran--bg backBtn--with--icon"
+    [routerLink]="'/customer/account-setting'">
+    <mat-icon>arrow_back</mat-icon> Back
+  </button>
 
   <mat-card class="p-0">
 
@@ -14,42 +16,75 @@
       <div class="plans--wrapper">
         <div fxLayout="row wrap" fxLayoutAlign="center">
 
-          <div fxFlex-md="70" fxFlex-lg="70" fxFlex.xl="70">
+          <div fxFlex="100">
             <div class="plan--text">
               <div class="plan--header">
-                <h6>Legacy Life Plan Features</h6>
+                <img alt="" class="cornar--stars" src="assets/images/arkenea/star.png">
+                <div class="plan--type">Premium</div>
+                <div class="relative">
+                  <span class="doller">$</span>
+                  <span class="amt">85</span>
+                  <span class="duration">a year</span>
+                </div>
+                <div class="space">
+                  For 7 GB Space
+                </div>
               </div>
               <div class="plan--body">
+                <h5>Legacy Life Plan Features</h5>
                 <mat-list class="p-0">
-                  <mat-list-item>
-                    <mat-icon>arrow_forward</mat-icon> LLP Plans feature one </mat-list-item>
-                  <mat-list-item>
-                    <mat-icon>arrow_forward</mat-icon> LLP Plans feature second</mat-list-item>
-                  <mat-list-item>
-                    <mat-icon>arrow_forward</mat-icon> LLP Plans feature third</mat-list-item>
-                  <mat-list-item>
-                    <mat-icon>arrow_forward</mat-icon> LLP Plans feature four</mat-list-item>
-                  <mat-list-item>
-                    <mat-icon>arrow_forward</mat-icon> LLP Plans feature five</mat-list-item>
-                  <mat-list-item>
-                    <mat-icon>arrow_forward</mat-icon> LLP Plans feature six</mat-list-item>
+                  <div fxLayout="row wrap">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                      <mat-list-item>
+                        <mat-icon>check</mat-icon> In-Depth Estate Planning Platform
+                      </mat-list-item>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                      <mat-list-item>
+                        <mat-icon>check</mat-icon> Professional Resources and Guides
+                      </mat-list-item>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                      <mat-list-item>
+                        <mat-icon>check</mat-icon> Secure Encrypted Document Storage
+                      </mat-list-item>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                      <mat-list-item>
+                        <mat-icon>check</mat-icon> Online Help
+                      </mat-list-item>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                      <mat-list-item>
+                        <mat-icon>check</mat-icon> Unlimited Trustees
+                      </mat-list-item>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                      <mat-list-item>
+                        <mat-icon>check</mat-icon> Video & Picture Time Capsule
+                      </mat-list-item>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                      <mat-list-item>
+                        <mat-icon>check</mat-icon> Local Advisor Directory
+                      </mat-list-item>
+                    </div>
+                  </div>
                 </mat-list>
+              </div>
 
+              <div class="extra--price">
+                <mat-checkbox> Purchase extra 10GB space for $50 a year </mat-checkbox>
+              </div>
+
+              <div class="text-center">
+                <button mat-raised-button class="llp--primary--btn" (click)="openCardDetailsModal();">Proceed to Pay $100</button>
               </div>
             </div>
-          </div>
-          <div fxFlex-md="70" fxFlex-lg="70" fxFlex.xl="70">
-              <div id="card-fields"></div>
-              <label class="error" *ngIf="stripePaymentError!=''">{{stripePaymentError}}</label>
+          </div> 
 
-              <div fxLayoutAlign="space-around center">
-                <button mat-raised-button class="llp--primary--btn" (click)="completePayment()">Proceed to Pay {{planAmount | currency : planCurrency : 'symbol': '.0-0'}}</button>
-              </div>
-          </div>
-          <!-- <div fxFlex-md="25" fxFlex-lg="25" fxFlex.xl="33.33">
-          </div>
-          <div fxFlex-md="25" fxFlex-lg="25" fxFlex.xl="33.33">
-          </div> -->
+
+        
 
         </div>
       </div>

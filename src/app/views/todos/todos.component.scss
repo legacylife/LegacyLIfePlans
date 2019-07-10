@@ -50,3 +50,9 @@
     max-height: calc(100vh - 200px);
     overflow: auto;
 }
+.view--more{
+    font-family: $font--lato--bold !important;
+    &:hover{
+        color: $clr--2;
+    }
+}

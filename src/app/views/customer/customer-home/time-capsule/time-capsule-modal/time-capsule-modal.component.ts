@@ -148,7 +148,7 @@ export class TimeCapsuleMoalComponent implements OnInit {
       this.uploader.queue.forEach((fileoOb) => {
         let filename = fileoOb.file.name;
         var extension = filename.substring(filename.lastIndexOf('.') + 1);
-        var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc","mov"];
+        var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc","mov","mp3", "mpeg", "wav", "ogg", "opus", "bmp", "tiff", "svg", "webm", "mpeg4", "3gpp", "avi", "mpegps", "wmv", "flv"];
         let resp = this.isExtension(extension,fileExts);
         if(!resp){
           var FileMsg = "This file '" + filename + "' is not supported";

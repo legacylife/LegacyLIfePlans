@@ -73,12 +73,25 @@ export class FinanceModalComponent implements OnInit {
           administatorName: new FormControl(this.FinanceForm.controls['administatorName'].value,Validators.required),
           branchLocation: new FormControl(this.FinanceForm.controls['branchLocation'].value,),
           accountNumber: new FormControl(this.FinanceForm.controls['accountNumber'].value,),
-          contactEmail: new FormControl(this.FinanceForm.controls['contactEmail'].value),
-          contactPhone: new FormControl(this.FinanceForm.controls['contactPhone'].value,),
+          contactEmail: new FormControl(this.FinanceForm.controls['contactEmail'].value, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
+          contactPhone: new FormControl(this.FinanceForm.controls['contactPhone'].value,Validators.pattern(/^[0-9]{7,15}$/)),
           comments: new FormControl(this.FinanceForm.controls['comments'].value,),
           profileId: new FormControl(this.FinanceForm.controls['profileId'].value,)
         });
-      }
+      }  
+      else {
+        this.FinanceForm = this.fb.group({
+          financesType: new FormControl(this.FinanceForm.controls['financesType'].value,Validators.required),
+          financesTypeNew: new FormControl(this.FinanceForm.controls['financesTypeNew'].value), 
+          administatorName: new FormControl(this.FinanceForm.controls['administatorName'].value,Validators.required),
+          branchLocation: new FormControl(this.FinanceForm.controls['branchLocation'].value,),
+          accountNumber: new FormControl(this.FinanceForm.controls['accountNumber'].value,),
+          contactEmail: new FormControl(this.FinanceForm.controls['contactEmail'].value,Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
+          contactPhone: new FormControl(this.FinanceForm.controls['contactPhone'].value,Validators.pattern(/^[0-9]{7,15}$/)),
+          comments: new FormControl(this.FinanceForm.controls['comments'].value,),
+          profileId: new FormControl(this.FinanceForm.controls['profileId'].value,)
+        });
+      }    
     }
 
     FinanceFormSubmit(profileInData = null) {
@@ -135,7 +148,7 @@ export class FinanceModalComponent implements OnInit {
             this.FinanceDocsList = result.data.documents;            
             this.FinanceForm.controls['financesType'].setValue(this.financeList.financesType);
             this.FinanceForm.controls['financesTypeNew'].setValue(this.financeList.financesTypeNew);
-            if(this.financeList.financesTypeNew!=''){
+            if(this.financeList.financesType == 10){
               this.newVal = true;
             }            
             this.FinanceForm.controls['administatorName'].setValue(this.financeList.administatorName);

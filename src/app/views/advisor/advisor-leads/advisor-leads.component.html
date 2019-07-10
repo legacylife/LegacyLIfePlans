@@ -9,42 +9,34 @@
               <mat-divider></mat-divider>
             </mat-card-title>
             <mat-card-content class="appointees--wrapper pr-0">
-
-              <mat-card class="appointees--section p-0" *ngFor="let peoples of allPeoples">
+              <mat-card class="appointees--section p-0" *ngFor="let rows of leadsListings">
                 <mat-card-header class="m-0">
                   <mat-card-title class="m-0">
                     <div class="appointees--pic">
-                      <img src="{{peoples.profilePic}}" />
+                      <img src="{{ProfilePic}}{{rows?.customerId.profilePicture}}" />
                     </div>
                     <div class="appointees--desc">
-                      <h5>{{peoples.userName}}</h5>
-                      <p class="m-0">{{peoples.emailId}}</p>
+                      <h5>{{rows?.customerId.firstName}} {{rows?.customerId.lastName}}</h5>
+                      <p class="m-0">{{rows?.customerId.username}}</p>
                     </div>
-
-                    <mat-icon class="icon--peopless">people</mat-icon>
-
+                    <mat-icon class="icon--rowss">people</mat-icon>
                   </mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
                   <h4>Details</h4>
                   <div class="files--folder">
                     <mat-icon>location_on</mat-icon>
-                    {{peoples.totalFiles}}
+                    {{rows?.customerId.city}}, {{rows?.customerId.state}} {{rows?.customerId.zipcode}}
                   </div>
                   <div class="files--folder mb-0">
                     <mat-icon>local_phone</mat-icon>
-                    {{peoples.totalFolders}}
+                    {{rows?.customerId.phoneNumber}}
                   </div>
-
                   <div class="view--details">
                     <mat-icon>remove_red_eye</mat-icon>
-                    <a [routerLink]="'/advisor/leads-details'" >View Details</a>
+                    <a [routerLink]="['/advisor/leads-details', rows?.customerId._id]">View Details</a>
                   </div>
-
                 </mat-card-content>
-
-
-
               </mat-card>
             </mat-card-content>
           </mat-card>

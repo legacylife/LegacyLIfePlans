@@ -10,10 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { forEach, keysIn, flatMap } from "lodash";
 import { RelationshipType } from '../../../../selectList';
 import { userSections } from '../../../../config';
-// import { map } from 'rxjs/operators/map'
-// import { filter } from 'rxjs/operators/filter';
-// import { Subscription } from 'rxjs';
-// import { Observable } from 'rxjs/Observable';
+
 @Component({
   selector: 'app-add-trustee-modal',
   templateUrl: './add-trustee-modal.component.html',
@@ -34,22 +31,23 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
   RequestData: any;
   selectedProfileId: string;
   validationEmailVal = false;
-
+  profileIdHiddenVal = false;
+  trust_id: any;
+  ids: string;
+  row: any = [];
   constructor(
     private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private stepper: MatStepperModule,
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
-    private userapi: UserAPIService
-  ) { }
+    private userapi: UserAPIService,@Inject(MAT_DIALOG_DATA) public data: any
+  ) { this.ids = data.id; }
  
   ngOnInit() {
-    //this.myStepper.selectedIndex = Number('0');
     this.buildItemForm();
     this.userSections = userSections;  
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
 
-    if(this.selectedProfileId && this.selectedProfileId == 'dashboard'){
-      this.selectedProfileId = "";   
+    if(this.ids && this.ids!=='undefined'){
+      this.selectedProfileId = this.ids;   
+      this.getTrusteeView();
     }    
   }
 
@@ -60,11 +58,11 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
         email: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
         relation: new FormControl('',[Validators.required]),        
         emailValidation: new FormControl('',[Validators.required]),          
-      //  profileId: new FormControl('')
+        profileId: new FormControl('')
        });
 
       this.secondFormGroup = this.fb.group({      
-        SelectAll: new FormControl(''),      
+        selectAll: new FormControl(''),      
         PersonalProfileManagement:new FormControl(''),     
         IDBoxManagement: new FormControl(''),     
         MyProfessionalsManagement: new FormControl(''),     
@@ -89,23 +87,23 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
         FuneralPlansManagement: new FormControl(''), 
         ObituaryManagement: new FormControl(''), 
         CelebrationLifeManagement: new FormControl(''), 
-       // profileId: new FormControl('')
        });
 
+     
        this.thirdFormGroup = this.fb.group({
-        comments: new FormControl(''),           
-      //  profileId: new FormControl('')
+        messages: new FormControl(''),           
        });
   }
 
-  ngAfterViewInit(){
-   this.secondFormGroup.controls['SelectAll'].setValue('never');
-   this.onRadioChange('never');     
+  ngAfterViewInit(){ 
+    if(!this.selectedProfileId){
+      this.secondFormGroup.controls['selectAll'].setValue('never');
+      this.onRadioChange('never');     
+    }
   }
 
   onChangeFormIndex(event){
     const {selectedIndex} = event;
-    console.log("here We go => ",event,selectedIndex)
     let stepHeader = document.getElementsByClassName('mat-horizontal-stepper-header')
     forEach(stepHeader, (element, index) => {
       element.classList = String(element.classList).replace('proActive', '')
@@ -132,25 +130,28 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
   }
 
   onFileChange(values){
-    this.secondFormGroup.controls['SelectAll'].setValue('');
+    this.secondFormGroup.controls['selectAll'].setValue('');
   }
   
-  // onContinue(values){
-  //   this.Email_USER = this.trustFormGroup.controls['firstName'].value;    
-  //    //this.trustFormGroup.controls['comments'].setValue('');
-  // }
-
   trustFormGroupSubmit(step, insert = null) {
     var query = {};
     var proquery = {};
-    const req_vars = {
-      query: Object.assign({ email: this.trustFormGroup.controls['email'].value,customerId: this.userId  })
-    }  
-    //this.myStepper.reset();
-    this.loader.open();    
-    this.userapi.apiRequest('post', 'trustee/trust-get-user', req_vars).subscribe(result => {
+    let req_vars = {};
+    let profileIds = this.selectedProfileId;
+
+    if(profileIds && profileIds!=='undefined'){
+      this.trustFormGroup.controls['emailValidation'].setValue('');
+       req_vars = {
+        query: Object.assign({_id:{ $ne: profileIds}, email: this.trustFormGroup.controls['email'].value,customerId: this.userId  })
+        }
+    }else{
+      req_vars = {
+        query: Object.assign({ email: this.trustFormGroup.controls['email'].value,customerId: this.userId  })
+      } 
+    }
+
+    this.userapi.apiRequest('post', 'trustee/get-user', req_vars).subscribe(result => {
       if (result.status == "success") {
-        this.loader.close();
         if (result.data.code == "Exist") {
           this.trustFormGroup.controls['email'].enable();
           this.invalidMessage = result.data.message;
@@ -158,22 +159,24 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
           this.trustFormGroup.controls['email'].setErrors({ 'EmailExist': true })          
         } else {                       
           this.trustFormGroup.controls['emailValidation'].setValue('1');
-         // this.trustFormGroup.controls['email'].enable();
           this.invalidMessage = '';
-        //  this.trustFormGroup.controls['email'].setErrors({ 'EmailExist': false })
           this.EmailExist = false;         
-          this.Email_USER = this.trustFormGroup.controls['email'].value;              
+          this.Email_USER = this.trustFormGroup.controls['email'].value;     
+          this.trust_id = '';
+          if(result.data.userDetails){
+            this.trust_id = result.data.userDetails._id;
+          }
         }
       } else {      
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
-      this.loader.close();
       this.snack.open(err, 'OK', { duration: 4000 })         
     })
   }
 
   secondFormGroupSubmit(step, insert = null) {
+
   }
 
   thirdFormGroupSubmit(step, insert = null) {
@@ -181,63 +184,67 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
       var proquery = {};
       let userAccessDatas = [];
       userAccessDatas = [{
-          "PersonalProfileManagement": insert.PersonalProfileManagement,
-          "IDBoxManagement": insert.IDBoxManagement,
-          "MyProfessionalsManagement": insert.MyProfessionalsManagement,
-          "InsuranceManagement": insert.InsuranceManagement,
-          "FinancesManagement": insert.FinancesManagement,
-          "DebtManagement": insert.DebtManagement,
-          "PetsManagement": insert.PetsManagement,
-          "YoungChildrenManagement": insert.YoungChildrenManagement,
-          "ChildParentDisabilityManagement": insert.ChildParentDisabilityManagement,
-          "FriendNeighborCareManagement": insert.FriendNeighborCareManagement,
-          "EstateManagement": insert.EstateManagement,
-          "HealthcareManagement": insert.HealthcareManagement,
-          "PersonalAffairsManagement": insert.PersonalAffairsManagement,
-          "DevicesManagement": insert.DevicesManagement,
-          "ElectronicMediaManagement": insert.ElectronicMediaManagement,          
-          "emergencyContactsManagement": insert.emergencyContactsManagement,
-          "RealEstateManagement": insert.RealEstateManagement,
-          "VehiclesManagement": insert.VehiclesManagement,
-          "AssetsManagement": insert.AssetsManagement,
-          "TimeCapsuleManagement": insert.TimeCapsuleManagement,
-          "LegacyLifeLettersMessagesManagement": insert.LegacyLifeLettersMessagesManagement,
-          "FuneralPlansManagement": insert.FuneralPlansManagement,
-          "ObituaryManagement": insert.ObituaryManagement,
-          "CelebrationLifeManagement": insert.CelebrationLifeManagement,
+          "PersonalProfileManagement":this.secondFormGroup.controls['PersonalProfileManagement'].value,
+          "IDBoxManagement": this.secondFormGroup.controls['IDBoxManagement'].value,
+          "MyProfessionalsManagement": this.secondFormGroup.controls['MyProfessionalsManagement'].value,
+          "InsuranceManagement": this.secondFormGroup.controls['InsuranceManagement'].value,
+          "FinancesManagement": this.secondFormGroup.controls['FinancesManagement'].value,
+          "DebtManagement": this.secondFormGroup.controls['DebtManagement'].value,
+          "PetsManagement": this.secondFormGroup.controls['PetsManagement'].value,
+          "YoungChildrenManagement": this.secondFormGroup.controls['YoungChildrenManagement'].value,
+          "ChildParentDisabilityManagement": this.secondFormGroup.controls['ChildParentDisabilityManagement'].value,
+          "FriendNeighborCareManagement": this.secondFormGroup.controls['FriendNeighborCareManagement'].value,
+          "EstateManagement": this.secondFormGroup.controls['EstateManagement'].value,
+          "HealthcareManagement": this.secondFormGroup.controls['HealthcareManagement'].value,
+          "PersonalAffairsManagement": this.secondFormGroup.controls['PersonalAffairsManagement'].value,
+          "DevicesManagement": this.secondFormGroup.controls['DevicesManagement'].value,
+          "ElectronicMediaManagement": this.secondFormGroup.controls['ElectronicMediaManagement'].value,  
+          "emergencyContactsManagement": this.secondFormGroup.controls['emergencyContactsManagement'].value,
+          "RealEstateManagement": this.secondFormGroup.controls['RealEstateManagement'].value,
+          "VehiclesManagement": this.secondFormGroup.controls['VehiclesManagement'].value,
+          "AssetsManagement": this.secondFormGroup.controls['AssetsManagement'].value,
+          "TimeCapsuleManagement": this.secondFormGroup.controls['TimeCapsuleManagement'].value,
+          "LegacyLifeLettersMessagesManagement": this.secondFormGroup.controls['LegacyLifeLettersMessagesManagement'].value,
+          "FuneralPlansManagement": this.secondFormGroup.controls['FuneralPlansManagement'].value,
+          "ObituaryManagement": this.secondFormGroup.controls['ObituaryManagement'].value,
+          "CelebrationLifeManagement": this.secondFormGroup.controls['CelebrationLifeManagement'].value,
       }];
-      userAccessDatas = userAccessDatas[0];     
+      userAccessDatas = userAccessDatas[0];    
+
       var fileCnt  = keysIn(userAccessDatas) .filter(key => {
         return userAccessDatas[key] == 'now'
       })
-
-      let userSectionsCnt = flatMap(userSections).filter(userSection=>{
+      let userSectionsCnt = '';
+      if(fileCnt.length>0){
+        userSectionsCnt = flatMap(userSections).filter(userSection=>{
           return userSection.fileNames.filter(fn => fileCnt.includes(fn.code)).length > 0 ? userSection.id : null;
-      })
-      console.log(" Count => ",fileCnt,fileCnt.length,userSectionsCnt,userSectionsCnt.length)
-   
+        })
+      }
+    //console.log(" Count => ",fileCnt,fileCnt.length,userSectionsCnt,userSectionsCnt.length)       
     this.RequestData = {
       firstName: this.trustFormGroup.controls['firstName'].value,
       lastName: this.trustFormGroup.controls['lastName'].value,
       email: this.trustFormGroup.controls['email'].value,
       relation: this.trustFormGroup.controls['relation'].value,
-      comments: this.thirdFormGroup.controls['comments'].value,
+      messages: this.thirdFormGroup.controls['messages'].value,
+      selectAll: this.secondFormGroup.controls['selectAll'].value,
+      trustId: this.trust_id,
       userAccess: userAccessDatas,
       filesCount:  fileCnt.length,
       folderCount: userSectionsCnt.length,
      }
-    
-      //"MyPeopleManagement": insert.MyPeopleManagement,
+
       let profileIds = this.trustFormGroup.controls['profileId'].value;
       if(profileIds){
           this.selectedProfileId = profileIds;
       }        
       const req_vars = {
-        query: Object.assign({ _id: this.selectedProfileId,customerId: this.userId  }),
-        proquery: Object.assign(this.RequestData)
+        query: Object.assign({_id: this.selectedProfileId,customerId: this.userId}),
+        proquery: Object.assign(this.RequestData),
+        extrafields: Object.assign({inviteByName:localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName")})
       }
       this.loader.open();
-      this.userapi.apiRequest('post', 'trustee/trust-form-submit', req_vars).subscribe(result => {
+      this.userapi.apiRequest('post', 'trustee/form-submit', req_vars).subscribe(result => {
       this.loader.close();
         if(result.status == "error"){
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
@@ -250,36 +257,67 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
       })
   }
 
-  // getArrayId(userAccessDatas) {
-  //   let filesCnt =0;
-  //   var returnData = [];
-  //   let returnId = '';
-  //   var that = this;
-  //   forEach(userAccessDatas[0], function(value, searchKey) {
-  //     if(value=='now'){
-  //        returnData['returnId'] = that.getParentId(searchKey);
-  //        filesCnt ++;
-  //     }      
-  //   });
+  getTrusteeView = (query = {}, search = false) => {    
+    let  profileIds = this.selectedProfileId;
+    let  req_vars = {
+      query: Object.assign({status:"blanck"})
+    }
+    if (profileIds) {
+      let  req_vars = {
+          query: Object.assign({_id:profileIds})
+      }
+    }
+    this.loader.open(); 
+    this.userapi.apiRequest('post', 'trustee/view-details', req_vars).subscribe(result => {
+    this.loader.close();
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        if(result.data){    
+          this.row = result.data;   
+          let profileIds = this.row._id;
+      
+          this.trustFormGroup.controls['profileId'].setValue(profileIds);
+          this.trustFormGroup.controls['firstName'].setValue(this.row.firstName);
+          this.trustFormGroup.controls['lastName'].setValue(this.row.lastName); 
+          this.trustFormGroup.controls['email'].setValue(this.row.email);
+          this.trustFormGroup.controls['emailValidation'].setValue('1');
+          this.trustFormGroup.controls['relation'].setValue(this.row.relation);
 
-  //   returnData['filesCnt'] = filesCnt;
-  //   return returnData;
-  // }
-  // getParentId = (searchKey) => {
-  //   let returnId = '';
-  //   if(userSections){      
-  //     for(let row of userSections)
-  //     {
-  //       for(let rows of row.fileNames)
-  //       {       
-  //         if(rows.code==searchKey){
-  //           returnId =  row.id
-  //         }          
-  //       }
-  //     }      
-  //   }
-  //   return returnId;
-  // }
+          this.secondFormGroup.controls['selectAll'].setValue(this.row.selectAll);
+          this.secondFormGroup.controls['PersonalProfileManagement'].setValue(this.row.userAccess.PersonalProfileManagement);
+          this.secondFormGroup.controls['IDBoxManagement'].setValue(this.row.userAccess.IDBoxManagement);
+          this.secondFormGroup.controls['MyProfessionalsManagement'].setValue(this.row.userAccess.MyProfessionalsManagement);
+          this.secondFormGroup.controls['EstateManagement'].setValue(this.row.userAccess.EstateManagement);          
+          this.secondFormGroup.controls['HealthcareManagement'].setValue(this.row.userAccess.HealthcareManagement);
+          this.secondFormGroup.controls['PersonalAffairsManagement'].setValue(this.row.userAccess.PersonalAffairsManagement);
+          this.secondFormGroup.controls['DevicesManagement'].setValue(this.row.userAccess.DevicesManagement);
+          this.secondFormGroup.controls['ElectronicMediaManagement'].setValue(this.row.userAccess.ElectronicMediaManagement);
+          this.secondFormGroup.controls['RealEstateManagement'].setValue(this.row.userAccess.RealEstateManagement);
+          this.secondFormGroup.controls['emergencyContactsManagement'].setValue(this.row.userAccess.emergencyContactsManagement);
+          this.secondFormGroup.controls['VehiclesManagement'].setValue(this.row.userAccess.VehiclesManagement);
+          this.secondFormGroup.controls['AssetsManagement'].setValue(this.row.userAccess.AssetsManagement);
+          this.secondFormGroup.controls['InsuranceManagement'].setValue(this.row.userAccess.InsuranceManagement);
+          this.secondFormGroup.controls['FinancesManagement'].setValue(this.row.userAccess.FinancesManagement);
+          this.secondFormGroup.controls['DebtManagement'].setValue(this.row.userAccess.DebtManagement);
+          this.secondFormGroup.controls['PetsManagement'].setValue(this.row.userAccess.PetsManagement);
+          this.secondFormGroup.controls['YoungChildrenManagement'].setValue(this.row.userAccess.YoungChildrenManagement);
+          this.secondFormGroup.controls['ChildParentDisabilityManagement'].setValue(this.row.userAccess.ChildParentDisabilityManagement);
+          this.secondFormGroup.controls['FriendNeighborCareManagement'].setValue(this.row.userAccess.FriendNeighborCareManagement);
+          this.secondFormGroup.controls['TimeCapsuleManagement'].setValue(this.row.userAccess.TimeCapsuleManagement);
+          this.secondFormGroup.controls['LegacyLifeLettersMessagesManagement'].setValue(this.row.userAccess.LegacyLifeLettersMessagesManagement);
+          this.secondFormGroup.controls['FuneralPlansManagement'].setValue(this.row.userAccess.FuneralPlansManagement);
+          this.secondFormGroup.controls['ObituaryManagement'].setValue(this.row.userAccess.ObituaryManagement);
+          this.secondFormGroup.controls['CelebrationLifeManagement'].setValue(this.row.userAccess.CelebrationLifeManagement);
+  
+          this.thirdFormGroup.controls['messages'].setValue(this.row.messages);
+
+        }       
+      }
+    }, (err) => {
+      console.error(err);
+    })
+  }
 
   firstCapitalize(e) {
     let re = /(^|[.!?]\s+)([a-z])/g;

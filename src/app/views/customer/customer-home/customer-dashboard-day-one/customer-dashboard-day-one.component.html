@@ -1,17 +1,12 @@
 <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
   <!-- Filters -->
 
-  <!-- Right side -->
   <div class="full-width">
-
-    <!-- Day first -->
     <div class="day--first" >
-
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Recently Accessed Files </mat-card-title>
         </mat-card-header>
-
         <mat-card-content *ngIf="!recentlyAccessedFiles">
           <p class="info">See your recently accessed files here. Currently you have no files available.</p>
           <div class="build--ur--legacy dashed">
@@ -21,7 +16,6 @@
             </p>
           </div>
         </mat-card-content>
-
         <mat-card-content class="files--wrapper pr-0" *ngIf="recentlyAccessedFiles">
           <div class="recent--acc--files" *ngFor="let logData of fileActivityLogList; let i = index" [routerLink]="getIconNUrl(logData).fileUrl">
             <mat-icon>{{getIconNUrl(logData).fileIcon}}</mat-icon>
@@ -29,61 +23,63 @@
           </div>
         </mat-card-content>
       </mat-card>
-<!-- 
-1111111 -->
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
             <mat-card-title class="m-0">My Trustees</mat-card-title>
             <div *ngIf="showTrustyListing">
-                <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"  (click)="openAddTrusteeModal({}, true)">+ Add New</button>              
+                <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"  (click)="openAddTrusteeModal('', true)">+ Add New</button>              
             </div>          
           </mat-card-header>
           <mat-card-content *ngIf="!showTrustyListing">
           <p class="info">Share your documents with your trusted ones. View your trustees in this section.</p>
-          <div class="build--ur--legacy" (click)="openAddTrusteeModal({}, true)">
+          <div class="build--ur--legacy" (click)="openAddTrusteeModal('', true)">
             <mat-icon>group_add</mat-icon>
             <p>
               <a>Add Trustees</a>
             </p>
           </div>
         </mat-card-content>
-
-        <mat-card-content class="appointees--wrapper" *ngIf="showTrustyListing">
-            <mat-card class="appointees--section p-0"  *ngFor="let profileData of trustyListing; let i = index" [routerLink]="['/customer/dashboard/trustee-view', profileData._id]">
+        <mat-card-content class="appointees--wrapper" *ngIf="showTrustyListing">  
+            <mat-card class="appointees--section p-0 {{row?.status==='Pending' ? 'pending' : ''}}"  *ngFor="let row of trustyListing; let i = index"  [routerLink]="['/customer/dashboard/trustee-view', row?._id]">
                 <mat-card-header class="m-0">
                   <mat-card-title class="m-0">
                     <div class="appointees--pic">
-                      <img src="assets/images/arkenea/default.jpg" />
+                      <img src="{{profileUrl}}{{row.trustId!=null ? row?.trustId.profilePicture : 'default.jpg'}}" />
                     </div>
                     <div class="appointees--desc">
-                      <h5>{{profileData.firstName}}</h5>
-                      <p class="m-0">{{profileData.email}}</p>
+                      <h5>{{row?.firstName}} {{row?.lastName}}</h5>
+                      <p class="m-0">{{row?.email}}</p>
                     </div>
                   </mat-card-title>
                 </mat-card-header>
-                <mat-card-content>
+                <mat-card-content *ngIf="row?.status==='Active'">
                   <h4>Shared Documents</h4>
                   <div class="files--folder">
                     <mat-icon>insert_drive_file</mat-icon>
-                     {{profileData.filesCount}} Files
+                     {{row?.filesCount}} Files
                   </div>
                   <div class="files--folder mb-0">
                     <mat-icon>folder</mat-icon>
-                    {{profileData.folderCount}} Folders
+                    {{row?.folderCount}} Folders
                   </div>
                 </mat-card-content>
-              </mat-card>
+                <mat-card-content class="status--pending" *ngIf="row?.status==='Pending'">
+                  <mat-icon>history</mat-icon>
+                  <p class="pending">Pending...</p>
+                </mat-card-content>
+              </mat-card>     
           </mat-card-content>
       </mat-card>
-<!-- 222222222222222 -->
-
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">My Advisors </mat-card-title>
+          <div *ngIf="showAdvisorListing">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" [routerLink]="['/customer/professionals-landing/prof-advisor-listing']"><mat-icon>search</mat-icon>Search Advisors</button>              
+        </div>       
         </mat-card-header>
-        <mat-card-content>
+        <mat-card-content *ngIf="!showAdvisorListing">
           <p class="info">See your professional advisors here.</p>
-          <div class="build--ur--legacy">
+          <div class="build--ur--legacy"[routerLink]="['/customer/professionals-landing/prof-advisor-listing']">
             <mat-icon>search</mat-icon>
             <p>
               <a>Search Advisors</a>
@@ -93,10 +89,38 @@
             <a> Find right professionals now </a>
           </p>
         </mat-card-content>
+        <mat-card-content class="appointees--wrapper" *ngIf="showAdvisorListing">  
+          <mat-card class="appointees--section p-0 {{row?.status==='Pending' ? 'pending' : ''}}"  *ngFor="let row of advisorListing; let i = index"  [routerLink]="['/customer/professionals/prof-details',row.advisorId._id]">
+              <mat-card-header class="m-0">
+                <mat-card-title class="m-0">
+                  <div class="appointees--pic" [routerLink]="['/customer/professionals/prof-details', row.advisorId._id]">
+                    <img *ngIf="row.advisorId.profilePicture" src="{{profileUrl}}{{row.advisorId.profilePicture}}" />
+                    <img *ngIf="!row.advisorId.profilePicture" src="assets/images/arkenea/default.jpg" />
+                  </div>
+                  <div class="appointees--desc">
+                    <h5>{{row.advisorId?.firstName}} {{row.advisorId?.lastName}}</h5>
+                    <p class="m-0">{{row.advisorId?.email}}</p>
+                  </div>
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content  *ngIf="row?.status === 'Active'">
+                <h4>Specialities</h4>
+                <div class="files--folder">
+                  <mat-icon>school</mat-icon>
+                  <p>{{row.advisorId?.businessType}}</p>
+                </div>
+                <div class="files--folder mb-0">
+                  <mat-icon>work</mat-icon>
+                  <p>{{row.advisorId?.yearsOfService}}</p>
+                </div>
+              </mat-card-content>                  
+              <mat-card-content class="status--pending" *ngIf="row?.status === 'Pending'">
+                <mat-icon>history</mat-icon>
+                <p class="pending">Pending...</p>
+              </mat-card-content>
+            </mat-card>
+        </mat-card-content>
       </mat-card>
-
     </div>
-
   </div>
-
 </div>

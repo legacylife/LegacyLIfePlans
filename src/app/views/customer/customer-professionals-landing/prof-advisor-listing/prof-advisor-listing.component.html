@@ -12,7 +12,7 @@
       <mat-card-content class="appointees--wrapper">
 
         <mat-card class="appointees--section p-0 sponsored" *ngFor="let peoples of adListings">
-          <mat-card-header class="m-0">
+          <!-- <mat-card-header class="m-0">
             <mat-card-title class="m-0">
               <div class="appointees--pic">
                 <img src="{{peoples.profilePic}}" />
@@ -50,14 +50,55 @@
                 <a>Hire</a>
               </div>
             </div>
+          </mat-card-content> -->
+
+          <mat-card-header class="m-0">
+            <mat-card-title class="m-0">
+              <div class="appointees--pic">
+                <img src="{{getProfileImage(peoples.profilePicture)}}" />
+              </div>
+              <div class="appointees--desc">
+                <h5>{{peoples.firstName + ' ' + peoples.lastName}}</h5>
+                <p class="position m-0">{{peoples.businessName}}</p>
+              </div>
+              <div class="sponsored--patch">
+                Sponsored
+              </div>
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h4>Specialities</h4>
+            <div class="files--folder">
+              <mat-icon>school</mat-icon>
+              <p>{{peoples.businessType}}</p>
+            </div>
+            <div class="files--folder mb-0">
+              <mat-icon>work</mat-icon>
+              <p>{{peoples.yearsOfService}}</p>
+            </div>
+            <div class="action--wrapp">
+              <div class="action"  [routerLink]="['/customer/professionals/prof-details', peoples._id]">
+                <mat-icon>remove_red_eye</mat-icon>
+                <a>View</a>          
+              </div>
+              <div class="action" (click)="sendContactDetails(peoples)">
+                <mat-icon>local_phone</mat-icon>
+                <a>Contact</a>
+              </div>
+              <div class="action" (click)="openHireAdvisorModal(peoples._id,true)">
+                <mat-icon>assignment_turned_in</mat-icon>
+                <a>Hire</a>
+              </div>
+            </div>
           </mat-card-content>
+
         </mat-card>
 
         <div class="divider">
           <p>More quality professional advisors</p>
         </div>
         <mat-card class="appointees--section p-0 " *ngFor="let qualityAd of qualityAdvisor">
-          <mat-card-header class="m-0">
+          <!-- <mat-card-header class="m-0">
             <mat-card-title class="m-0">
               <div class="appointees--pic">
                 <img src="{{qualityAd.profilePic}}" />
@@ -88,12 +129,48 @@
                 <a>Hire</a>
               </div>
             </div>
+          </mat-card-content> -->
+
+          <mat-card-header class="m-0">
+            <mat-card-title class="m-0">
+              <div class="appointees--pic">
+                <img src="{{getProfileImage(qualityAd.profilePicture)}}" />
+              </div>
+              <div class="appointees--desc">
+                <h5>{{qualityAd.firstName + ' ' + qualityAd.lastName}}</h5>
+                <p class="position m-0">{{qualityAd.businessName}}</p>
+              </div>
+              <!-- <div class="sponsored--patch">
+                Sponsored
+              </div> -->
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <h4>Specialities</h4>
+            <div class="files--folder">
+              <mat-icon>school</mat-icon>
+              <p>{{qualityAd.businessType}}</p>
+            </div>
+            <div class="files--folder mb-0">
+              <mat-icon>work</mat-icon>
+              <p>{{qualityAd.yearsOfService}}</p>
+            </div>
+            <div class="action--wrapp">
+                <div class="action" [routerLink]="['/customer/professionals/prof-details', qualityAd._id]">
+                <mat-icon>remove_red_eye</mat-icon>
+                <a [routerLink]="['/customer/professionals/prof-details', qualityAd._id]">View</a>
+              </div>
+              <div class="action" (click)="sendContactDetails(qualityAd)">
+                <mat-icon>local_phone</mat-icon>
+                <a>Contact</a>
+              </div>
+              <div class="action" (click)="openHireAdvisorModal(qualityAd._id,true)">
+                <mat-icon>assignment_turned_in</mat-icon>
+                <a>Hire</a>
+              </div>
+            </div>
           </mat-card-content>
         </mat-card>
-
-
-
-
       </mat-card-content>
     </mat-card>
   </div>

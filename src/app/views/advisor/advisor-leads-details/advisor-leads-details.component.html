@@ -10,25 +10,25 @@
 
           <div class="leads--details">
             <div class="leads--pic">
-              <img class="" alt="" src="assets/images/arkenea/john.png">
+              <img class="" alt="" src="{{profilePicture}}">
             </div>
             <div class="leads--infos">
-              <h5>Mary Kom</h5>
+              <h5>{{row?.firstName}} {{row?.lastName}}</h5>
               <div class="icon--and--info unique">
                 <mat-icon>star</mat-icon>
                 Free member
               </div>
               <div class="icon--and--info">
                 <mat-icon>markunread</mat-icon>
-                james.anderson@gmail.com
+                {{row?.username}}
               </div>
               <div class="icon--and--info">
                 <mat-icon>location_on</mat-icon>
-                Pune, Wakad, Maharashtra
+                {{row?.city}}, {{row?.state}}, {{row?.zipcode}}
               </div>
               <div class="icon--and--info">
                 <mat-icon>local_phone</mat-icon>
-                +1 9876543210
+                +1 {{row?.phoneNumber}}
               </div>
             </div>
           </div>
@@ -50,18 +50,14 @@
 
           <div class="pros--details">
             <h5>Prospect Details</h5>
-
             <div class="cust--user--details mt-1">
               <div class="name--letters">TA</div>
               <div class="user--name">
-                <h5 class="pros--name">Tom Anderson and  <span (click)="openMorePeople()"> 5 others</span></h5>
-                <p class="mb-0">As an Appointee
-                </p>
+                <h5 class="pros--name">Tom Anderson and  <span  mat-icon-button matTooltip="{{tootltipList}}"> 5 others</span></h5>
+                <!-- <span (click)="openMorePeople()"> 5 others</span> -->
+                <p class="mb-0">As an Appointee</p>               
               </div>
             </div>
-
-
-            
           </div>
         </mat-card-content>
       </mat-card>

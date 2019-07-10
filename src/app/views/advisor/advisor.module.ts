@@ -67,6 +67,8 @@ import { ReferAndEarnModalComponent } from './legacies/refer-and-earn-modal/refe
 
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CountUpModule } from 'countup.js-angular2';
+//import { TodosComponent } from '../todos/todos.component';
+//import { TodosListingComponent } from '../todos-listing/todos-listing.component';
 /** Import Alyle UI */
 // import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
 /** Import the component modules */
@@ -77,6 +79,7 @@ import { CountUpModule } from 'countup.js-angular2';
 import { LyResizingCroppingImageModule } from '@alyle/ui/resizing-cropping-images';
 /** Import themes */
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
+
 export class GlobalVariables {
   testVal = '#00bcd4';
   Quepal = {
@@ -153,7 +156,7 @@ export class GlobalVariables {
     ChangePassComponent, HomeComponent, ReferAndEarnModalComponent, AdvisorLegacyDetailsComponent,
     LegaciesDetailsLandingComponent, MarkAsDeceasedComponent,
     GetFeaturedComponent, SubmitEnquiryModalComponent, AdvisorLeadsComponent, AdvisorLeadsDetailsComponent, 
-    ProspectPeoplesModalComponent
+    ProspectPeoplesModalComponent,//TodosComponent,TodosListingComponent
   ], providers: [
     // { provide: LY_THEME, useClass: MinimaLight, multi: true },
     // { provide: LY_THEME, useClass: MinimaDark, multi: true },

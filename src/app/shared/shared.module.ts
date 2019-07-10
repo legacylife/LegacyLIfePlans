@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+
 import { RouterModule } from "@angular/router";
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TranslateModule } from '@ngx-translate/core';
@@ -23,9 +24,18 @@ import {
   MatCardModule,
   MatProgressSpinnerModule,
   MatRippleModule,
-  MatDialogModule
+  MatDialogModule,
+  MatFormFieldModule,
+  MatSlideToggleModule,
+  MatChipsModule,
+  MatTabsModule,
+  MatInputModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatProgressBarModule,
+  MatExpansionModule,
+  MatSliderModule
 } from '@angular/material';
-
 // ONLY REQUIRED FOR **SIDE** NAVIGATION LAYOUT
 import { HeaderSideComponent } from './components/header-side/header-side.component';
 import { SidebarSideComponent } from './components/sidebar-side/sidebar-side.component';
@@ -54,6 +64,7 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
 import { AppComfirmComponent } from './services/app-confirm/app-confirm.component';
 import { AppLoaderComponent } from './services/app-loader/app-loader.component';
 
+
 // DIRECTIVES
 import { FontSizeDirective } from './directives/font-size.directive';
 import { ScrollToDirective } from './directives/scroll-to.directive';
@@ -81,7 +92,10 @@ import { AuthGuard } from './services/auth/auth.guard';
 import { AppConfirmService } from './services/app-confirm/app-confirm.service';
 import { AppLoaderService } from './services/app-loader/app-loader.service';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
-
+import { TodosListingComponent } from './../views/todos-listing/todos-listing.component';
+import { TodosComponent } from './../views/todos/todos.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { CardDetailsComponent } from './components/card-details-modal/card-details-modal.component';
 /* 
   Only Required if you want to use Angular Landing
   (https://themeforest.net/item/angular-landing-material-design-angular-app-landing-page/21198258)
@@ -117,13 +131,17 @@ const classesToInclude = [
   EgretSideNavToggleDirective,
   RelativeTimePipe,
   ExcerptPipe,
-  GetValueByKeyPipe
+  GetValueByKeyPipe,
+  TodosListingComponent,
+  TodosComponent,
+  CardDetailsComponent
 ]
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule,
     FlexLayoutModule,
     TranslateModule,
@@ -144,9 +162,20 @@ const classesToInclude = [
     MatProgressSpinnerModule,
     MatRippleModule,
     MatDialogModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    MatFormFieldModule,
+    MatSlideToggleModule,
+    MatChipsModule,
+    MatTabsModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatProgressBarModule,
+    MatExpansionModule,
+    MatSliderModule,
+    DragDropModule
   ],
-  entryComponents: [AppComfirmComponent, AppLoaderComponent],
+  entryComponents: [AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent],
   providers: [
     ThemeService,
     LayoutService,

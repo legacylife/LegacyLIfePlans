@@ -1,14 +1,8 @@
 
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MatSnackBar, MatSidenav } from '@angular/material';
-import { Product } from '../../../shared/models/product.model';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms'
-import { Subscription, Observable, from } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { egretAnimations } from '../../../shared/animations/egret-animations';
+import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
+import { CardDetailsComponent } from 'app/shared/components/card-details-modal/card-details-modal.component';
 
-import { MatProgressBar, MatButton } from '@angular/material';
-import { Validators} from '@angular/forms';
 
 import { UserAPIService } from './../../../userapi.service';
 import { StripeService, Elements, Element as StripeElement, ElementsOptions } from 'ngx-stripe';
@@ -60,12 +54,7 @@ import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 
   stripePaymentError="";
 
-
-
-  today:any = ""
-  endDate:any = ""
-  
-  constructor(private stripeService: StripeService, private userapi: UserAPIService, private loader: AppLoaderService, private fb: FormBuilder, private picService: ProfilePicService) { }
+  constructor(private dialog: MatDialog,) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -249,4 +238,12 @@ import { ProfilePicService } from 'app/shared/services/profile-pic.service';
     }.bind(this), 5000)
   }
 
+  openCardDetailsModal() {
+     let dialogRef: MatDialogRef<any> = this.dialog.open(CardDetailsComponent, {
+       width: '500px',
+       disableClose: true,
+     })
+   }
+
 }
+  

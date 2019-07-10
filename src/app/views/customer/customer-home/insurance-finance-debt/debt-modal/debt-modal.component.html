@@ -9,7 +9,7 @@
     <div fxLayout="row wrap" class="pt-1">
       <div fxFlex.xs="100">
        <mat-form-field class="full-width">
-              <mat-label>Policy Type*</mat-label>
+              
             <mat-select placeholder="Debt Type*" name="debtsType" [formControl]="DebtForm.controls['debtsType']" (selectionChange)="onChangeType($event.value)">
               <mat-option value="">Select Policy Type</mat-option>
               <mat-option *ngFor="let option of debtsTypeList"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
@@ -23,8 +23,8 @@
       </mat-form-field>
 
       <mat-form-field class="full-width">
-          <input matInput name="bankLendarName" placeholder="Bank Lendar Name*"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="DebtForm.controls['bankLendarName']">
-          <mat-icon matTooltip="Please enter bank lendar name" matTooltipClass="llp--tooltip error" *ngIf="DebtForm.controls['bankLendarName'].hasError('required') && DebtForm.controls['bankLendarName'].touched" class="red--alert">help_outline</mat-icon>          
+          <input matInput name="bankLendarName" placeholder="Bank/Lender*"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="DebtForm.controls['bankLendarName']">
+          <mat-icon matTooltip="Please enter bank lender name" matTooltipClass="llp--tooltip error" *ngIf="DebtForm.controls['bankLendarName'].hasError('required') && DebtForm.controls['bankLendarName'].touched" class="red--alert">help_outline</mat-icon>          
       </mat-form-field>
 
       <mat-form-field class="full-width">
@@ -32,12 +32,12 @@
       </mat-form-field>
    
       <mat-form-field class="full-width">
-          <input matInput name="contactEmail" placeholder="Contact Email" [formControl]="DebtForm.controls['contactEmail']">          
+          <input matInput name="contactEmail" placeholder="Personal Contact" [formControl]="DebtForm.controls['contactEmail']">          
           <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" *ngIf="DebtForm.controls['contactEmail'].hasError('pattern') && DebtForm.controls['contactEmail'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
 
       <mat-form-field class="full-width">
-          <input matInput name="contactPhone" placeholder="Contact Phone"  (keypress)="onlyNumbers($event)" maxlength="15" [formControl]="DebtForm.controls['contactPhone']">
+          <input matInput name="contactPhone" placeholder="Phone Number"  (keypress)="onlyNumbers($event)" maxlength="15" [formControl]="DebtForm.controls['contactPhone']">
           <mat-icon matTooltip="Please enter minimum 7 & maximum 15 numbers only" matTooltipClass="llp--tooltip error" *ngIf="DebtForm.controls['contactPhone'].hasError('pattern') && DebtForm.controls['contactPhone'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
 

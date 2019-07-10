@@ -58,35 +58,34 @@ export class AdvisorDashboardComponent implements OnInit {
     })
   }
 
-  hireAdvisor(row,actionName) {
+  hireAdvisor(ids,actionName,actionTaken) {
     let statMsg = 'Are you sure you want to reject hire request?'
-    let hirestatus = row.actionTaken;
+    let hirestatus = actionTaken;
     if (actionName == 'confirmHire') {
       statMsg = 'Are you sure you want to confirm hire request?';
-      hirestatus = 'confirmed';
+      hirestatus = 'Active';
     }
     if (actionName == 'rejectHire') {
-      hirestatus = 'rejected';
+      hirestatus = 'Rejected';
     }
 
     this.confirmService.confirm({ message: statMsg }).subscribe(res => {
       if (res) {
-        //this.loader.open();
+       this.loader.open();
         let query = {};
         let proquery = {status : hirestatus};
-        
+
         const req_vars = {
-          query: Object.assign({ customerId: row.customerId, advisorId: row.advisorId }),
+          query: Object.assign({ _id:ids}),
           proquery: Object.assign(proquery),
-          from: Object.assign({ logId: row._id })
+          from: Object.assign({ logId:ids})
         }
         this.userapi.apiRequest('post', 'advisor/hireadvisor', req_vars).subscribe(result => {
+          this.loader.close();
           if (result.status == "error") {
-            this.loader.close();
             this.snack.open(result.data.message, 'OK', { duration: 4000 })
           } else {
             this.getAdvisorActivityLogList();
-            this.loader.close();
             this.snack.open(result.data.message, 'OK', { duration: 4000 })
           }
         }, (err) => {

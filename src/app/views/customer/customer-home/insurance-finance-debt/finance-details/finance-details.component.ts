@@ -88,7 +88,7 @@ export class FinanceDetailsComponent implements OnInit {
           const req_vars = {
             query: Object.assign({ _id: this.selectedProfileId }, query)
           }
-          this.userapi.apiRequest('post', 'insuranceFinanceDebt/delete-finance', req_vars).subscribe(result => {
+          this.userapi.apiRequest('post', 'insuranceFinanceDebt/delete-finances', req_vars).subscribe(result => {
             if (result.status == "error") {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
