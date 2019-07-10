@@ -29,7 +29,8 @@ export class FinalWishesFormModalComponent implements OnInit {
   fileErrors: any;
   subFolderDocumentsList: any;
   finalWishList:any = [];
-  docPath: string;   
+  docPath: string;  
+  showCalendarField:boolean = false; 
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService  ,@Inject(MAT_DIALOG_DATA) public data: any ) 
@@ -46,6 +47,7 @@ export class FinalWishesFormModalComponent implements OnInit {
      this.FinalForm = this.fb.group({
       title: new FormControl('',Validators.required),
       comments: new FormControl(''),
+      calendarDate: new FormControl(''),
       profileId: new FormControl('')
      });
      this.wishDocumentsList = [];
@@ -61,6 +63,10 @@ export class FinalWishesFormModalComponent implements OnInit {
      this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
      this.subFolderDocumentsList = [];
      this.getFinalWishesView();
+
+     if(this.folderName == 'Celebration of Life'){
+       this.showCalendarField = true;
+     }
     }
 
     getFinalWishesView = (query = {}, search = false) => {    
@@ -93,6 +99,7 @@ export class FinalWishesFormModalComponent implements OnInit {
             
             this.FinalForm.controls['title'].setValue(this.finalWishList.title); 
             this.FinalForm.controls['comments'].setValue(this.finalWishList.comments);
+            this.FinalForm.controls['calendarDate'].setValue(this.finalWishList.calendarDate);
           }       
         }
       }, (err) => {

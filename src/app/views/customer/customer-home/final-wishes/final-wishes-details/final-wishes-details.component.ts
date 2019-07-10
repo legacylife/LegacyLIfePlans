@@ -78,8 +78,12 @@ export class FinalWishesDetailsComponent implements OnInit {
       })
   }
 
-  deleteFinalWish() {
-    var statMsg = "Are you sure you want to delete final wish?"
+  deleteFinalWish(FolderNames) {
+    let folder = "";
+    if(FolderNames == 'Funeral Plans'){ folder = 'funeral plan details'}
+    if(FolderNames == 'Obituary'){ folder = 'obituary details'}
+    if(FolderNames == 'Celebration of Life'){ folder = 'celebration of life details'}
+    var statMsg = "Are you sure you want to delete "+folder+"?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
         if (res) {

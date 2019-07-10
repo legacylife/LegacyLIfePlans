@@ -28,7 +28,7 @@ export class RealEstateModelComponent implements OnInit {
       address: new FormControl(''),
       mortgageHolder: new FormControl(''),
       accountNumber: new FormControl(''),
-      phoneContact: new FormControl(''),
+      phoneContact: new FormControl('',Validators.pattern(/^[0-9]{7,15}$/)),
       deedLocation: new FormControl(''),
       comments: new FormControl(''),
       profileId: new FormControl('')
@@ -48,7 +48,7 @@ export class RealEstateModelComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }, query)
     }
-    this.userapi.apiRequest('post', 'customer/view-real-estate', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'realEstateAssets/view-real-estate', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
