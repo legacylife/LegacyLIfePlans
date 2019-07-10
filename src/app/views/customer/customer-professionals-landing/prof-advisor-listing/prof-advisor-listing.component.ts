@@ -24,6 +24,10 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
   profilePicture: any = "assets/images/arkenea/default.jpg";
   abc: string;
   interval: any
+  showAdvisorListing = false;
+  showAdvisorListingCnt: any;
+  showQualityAdvisorListing  = false;
+  showQualityAdvisorListingCnt: any;
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -33,20 +37,23 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
-    this.getAdvisorLists();    
+    this.getAdvisorLists('','');    
     var that = this;
     this.interval =  setInterval(function(){
-      let abc = localStorage.getItem('businessTypeIcon')
-      console.log(abc, that.abc)      
-      if(that.abc !== abc){
-        that.getAdvisorLists('',abc)
-        that.abc = abc
+      let abc = localStorage.getItem('businessTypeIcon');
+      if(abc){
+        if(that.abc !== abc){
+          that.getAdvisorLists('',abc)
+          that.abc = abc
+        }
       }
     }, 1000)
   }
   
   ngOnDestroy(){
+    console.log("Interval",this.interval)
     clearInterval(this.interval);
+    console.log("clearInterval",this.interval)
   }
 
   // onStorageChange(changes){
@@ -55,7 +62,6 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
 
   //function to get all events
   getAdvisorLists = (query:any = {}, search:any = false) => {
-    console.log('-----',search);
      let req_vars = {
       query: Object.assign({ userType: "advisor", status: "Active" }, query),
       fields: {},
@@ -71,9 +77,9 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
         offset: '',
         limit: '',
         order: { "createdOn": -1 },
-      }
+      }      
     }
-console.log("req_vars",req_vars) 
+
     this.userapi.apiRequest('post', 'userlist/list', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
@@ -83,9 +89,22 @@ console.log("req_vars",req_vars)
           return dtype.sponsoredAdvisor == 'yes'
         }).map(el => el)
 
+        this.showAdvisorListingCnt = result.data.totalUsers;
+        if (result.data.totalUsers>0) {
+          this.showAdvisorListing = true;
+        }else{this.showAdvisorListing = false;}  
+
         this.qualityAdvisor = advisorData.filter(dtype => {
           return dtype.sponsoredAdvisor == 'no'
         }).map(el => el)
+
+        this.showQualityAdvisorListingCnt = this.qualityAdvisor.length;
+        if (this.showQualityAdvisorListingCnt>0) {
+          this.showQualityAdvisorListing = true;
+        }      
+        if(search){
+          localStorage.removeItem('businessTypeIcon') 
+        }
       }
     }, (err) => {
       console.error(err)
