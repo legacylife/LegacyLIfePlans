@@ -393,7 +393,6 @@ router.post('/finalWishes', cors(), function(req,res){
 })
 
 router.post('/petsdocuments', cors(), function(req,res){
-
   var fstream;
   let authTokens = { authCode: "" }
   if (req.busboy) {
