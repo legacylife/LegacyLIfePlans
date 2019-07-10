@@ -26,6 +26,7 @@ const FileActivityLog = require('./../models/FileActivityLog.js')
 const SpecialNeeds = require('./../models/SpecialNeeds.js')
 const s3 = require('./../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
+const Trustee = require('./../models/Trustee.js')
 
 var auth = jwt({
   secret: constants.secret,
