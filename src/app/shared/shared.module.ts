@@ -64,6 +64,7 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
 import { AppComfirmComponent } from './services/app-confirm/app-confirm.component';
 import { AppLoaderComponent } from './services/app-loader/app-loader.component';
 
+
 // DIRECTIVES
 import { FontSizeDirective } from './directives/font-size.directive';
 import { ScrollToDirective } from './directives/scroll-to.directive';
@@ -94,6 +95,7 @@ import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { TodosListingComponent } from './../views/todos-listing/todos-listing.component';
 import { TodosComponent } from './../views/todos/todos.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { CardDetailsComponent } from './components/card-details-modal/card-details-modal.component';
 /* 
   Only Required if you want to use Angular Landing
   (https://themeforest.net/item/angular-landing-material-design-angular-app-landing-page/21198258)
@@ -131,7 +133,8 @@ const classesToInclude = [
   ExcerptPipe,
   GetValueByKeyPipe,
   TodosListingComponent,
-  TodosComponent
+  TodosComponent,
+  CardDetailsComponent
 ]
 
 @NgModule({
@@ -172,7 +175,7 @@ const classesToInclude = [
     MatSliderModule,
     DragDropModule
   ],
-  entryComponents: [AppComfirmComponent, AppLoaderComponent,TodosComponent],
+  entryComponents: [AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent],
   providers: [
     ThemeService,
     LayoutService,
