@@ -83,9 +83,8 @@ import { FinalWishesComponent } from './customer-home/final-wishes/final-wishes-
 import { FinalWishesFormModalComponent } from './customer-home/final-wishes/final-wishes-form-modal/final-wishes-form-modal.component';
 import { FinalWishesDetailsComponent } from './customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
 //Pets
-import { PetsListComponent } from './customer-home/pets/pets-list/pets-list.component';
 import { PetsModalComponent } from './customer-home/pets/pets-modal/pets-modal.component';
-import { PetsDetailsComponent } from './customer-home/pets/pets-details/pets-details.component';
+//import { PetsDetailsComponent } from './customer-home/pets/pets-details/pets-details.component';
 //Time capsule
 import { TimeCapsuleListComponent } from './customer-home/time-capsule/time-capsule-list/time-capsule-list.component';
 import { TimeCapsuleMoalComponent } from './customer-home/time-capsule/time-capsule-modal/time-capsule-modal.component';
@@ -200,8 +199,7 @@ export class GlobalVariables {
     CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent, ProfAddTrusteeModalComponent,
     CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent, FinalWishesComponent,
     FinalWishesFormModalComponent, FinalWishesDetailsComponent,
-    PetsListComponent, PetsDetailsComponent, PetsModalComponent,
-    ListingComponent, DetailsComponent, RealEstateModelComponent,
+    PetsModalComponent, ListingComponent, DetailsComponent, RealEstateModelComponent,
     VehicleModelComponent, AssetsModelComponent,
     SpecialNeedsListingComponent, SpecialNeedsDetailsComponent,
     SpecialNeedsModelComponent, DetailsVehiclesComponent, DetailsAssetsComponent,

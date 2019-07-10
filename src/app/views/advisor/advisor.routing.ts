@@ -21,6 +21,12 @@ import { GetFeaturedComponent } from './get-featured/get-featured.component';
 import { AdvisorLeadsComponent } from './advisor-leads/advisor-leads.component';
 import { AdvisorLeadsDetailsComponent } from './advisor-leads-details/advisor-leads-details.component';
 import { TodosListingComponent } from '../todos-listing/todos-listing.component';
+import { PetsListComponent } from '../customer/customer-home/pets/pets-list/pets-list.component';
+//import { PetsDetailsComponent } from '../customer/customer-home/pets/pets-details/pets-details.component';
+
+
+
+
 console.log('advisor---routing');
 export const AdvisorRoutes: Routes = [
   {
@@ -103,8 +109,6 @@ export const AdvisorRoutes: Routes = [
         canActivate: [UserAuthGuard]
       }
     ]
-
-
   },
   {
     path: 'dashboard-updates',
@@ -129,7 +133,7 @@ export const AdvisorRoutes: Routes = [
     ],
   },
   {
-    path: 'legacies',
+    path: 'legacies-old',
     component: AdvisorLayoutComponent,
     children: [
       {
@@ -137,6 +141,23 @@ export const AdvisorRoutes: Routes = [
         component: LegaciesComponent,
         canActivate: [UserAuthGuard]
       }
+    ]
+  },
+  {
+    path: 'legacies',
+    component: AdvisorLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: PetsListComponent,
+        canActivate: [UserAuthGuard],
+        children: [
+          {
+            path: 'pets/:id',
+            component: PetsListComponent
+          }
+        ]
+      },
     ]
   },
   {

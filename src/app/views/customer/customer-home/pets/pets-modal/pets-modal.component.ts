@@ -10,6 +10,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../../config';
 import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
+import { log } from 'util';
 const URL = serverUrl + '/api/documents/petsdocuments';
 const filePath = s3Details.url+'/'+s3Details.petsFilePath;
 @Component({
@@ -32,7 +33,11 @@ export class PetsModalComponent implements OnInit {
   petsList:any;
   profileIdHiddenVal:boolean = false;
   selectedProfileId: string;
+  selectedLegaciesId: string='';
+  selectedLegaciesURL:string='';
+  selectedProfileModule:string='';
   docPath: string;
+  customerLegacyType:string='customer';
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService  ) 
@@ -49,19 +54,30 @@ export class PetsModalComponent implements OnInit {
       profileId: new FormControl('')
      });
      this.petDocumentsList = [];
-
      const locationArray = location.href.split('/')
      this.selectedProfileId = locationArray[locationArray.length - 1];
+     this.selectedProfileModule = locationArray[locationArray.length - 2];
+     this.selectedLegaciesURL = locationArray[locationArray.length - 3];
 
     if(this.selectedProfileId && this.selectedProfileId == 'pets'){
       this.selectedProfileId = "";   
-    }
-    
-     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
-     this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    } 
 
-     this.getPetsView();
+    if(this.selectedProfileId && this.selectedProfileModule != 'pets-view' && this.selectedLegaciesURL == 'legacies'){
+      this.selectedLegaciesId = localStorage.getItem("endUserId")                                     
+      this.userId = this.selectedProfileId
+      this.customerLegacyType = localStorage.getItem("endUserType")
+      this.selectedProfileId = "";                                                                                                                                                                                                                                                                                                                                                                      
+    } 
+
+    if(this.selectedLegaciesURL == 'legacies'){
+      this.selectedLegaciesId = localStorage.getItem("endUserId");
     }
+
+    this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    this.getPetsView();
+  }
 
 
     PetFormSubmit(profileInData = null) {
@@ -72,10 +88,16 @@ export class PetsModalComponent implements OnInit {
       if(profileIds){
         this.selectedProfileId = profileIds;
       }
+      profileInData.customerLegacyId = this.selectedLegaciesId
+      profileInData.customerLegacyType = this.customerLegacyType
       const req_vars = {
-        query: Object.assign({ _id: this.selectedProfileId,customerId: this.userId  }),
+        query: Object.assign({ 
+          _id: this.selectedProfileId,
+          customerId: this.userId
+        }),
         proquery: Object.assign(profileInData)
       }
+
       this.loader.open();     
       this.userapi.apiRequest('post', 'pets/pets-form-submit', req_vars).subscribe(result => {
         this.loader.close();
@@ -138,17 +160,17 @@ export class PetsModalComponent implements OnInit {
             var query = {};
             const req_vars = {
               query: Object.assign({ _id: ids }, query),
-              proquery: Object.assign({ documents: this.petDocumentsList }, query),
+              proquery: Object.assign({ idProofDocuments: this.petDocumentsList }, query),
               fileName: Object.assign({ docName: tmName }, query)
             }
-            this.userapi.apiRequest('post', 'documents/deletePets', req_vars).subscribe(result => {
+            this.userapi.apiRequest('post', 'documents/deleteIdDoc', req_vars).subscribe(result => {
               if (result.status == "error") {
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
               } else {
-                // if(this.petDocumentsList.length<1){
-                //   this.PetForm.controls['idProofDocuments_temp'].setValue('');
-                // }  
+                if(this.petDocumentsList.length<1){
+                  this.PetForm.controls['idProofDocuments_temp'].setValue('');
+                }  
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
               }

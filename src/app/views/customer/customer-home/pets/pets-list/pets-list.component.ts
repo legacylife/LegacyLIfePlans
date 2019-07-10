@@ -5,6 +5,7 @@ import { egretAnimations } from '../../../../../shared/animations/egret-animatio
 import { UserAPIService } from './../../../../../userapi.service';
 import { AppLoaderService } from '../../../../../shared/services/app-loader/app-loader.service';
 import { PetsModalComponent } from './../pets-modal/pets-modal.component';
+//import { serverUrl, s3Details } from './../../../../../config.ts';
 
 @Component({
   selector: 'app-customer-home',
@@ -12,6 +13,7 @@ import { PetsModalComponent } from './../pets-modal/pets-modal.component';
   styleUrls: ['./pets-list.component.scss'],
   animations: [egretAnimations]
 })
+
 export class PetsListComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   showPetsListing = false;
@@ -22,10 +24,21 @@ export class PetsListComponent implements OnInit {
  
   modifiedDate:any;
   PetList:any = [];
-
+  customerData:any = [];
+  selectedLegaciesURL: string;
+  selectedLegaciesId: string;
+  dynamicRouteValue = 'dashboard'
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    const locationArray = location.href.split('/')
+    this.selectedLegaciesId = locationArray[locationArray.length - 1];
+    this.selectedLegaciesURL = locationArray[locationArray.length - 3];
+    if(this.selectedLegaciesId && this.selectedLegaciesURL == 'legacies'){
+      this.userId = this.selectedLegaciesId
+      this.getCustomerDetails();
+      this.dynamicRouteValue = 'legacies'
+    }
     this.getPetsList();
   }
 
@@ -62,6 +75,21 @@ export class PetsListComponent implements OnInit {
         // If user press cancel
         return;
       }
+    })
+  }
+
+  getCustomerDetails(query = {}){
+    const req_vars = {
+      query: Object.assign({ _id: this.selectedLegaciesId }, query)
+    }
+    this.userapi.apiRequest('post', 'userlist/viewall', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        this.customerData = result.data;
+      }
+    }, (err) => {
+      console.error(err)
     })
   }
 }

@@ -119,11 +119,11 @@ export const CustomerRoutes: Routes = [
             component: EssentialsMyProfessionalsDetailsComponent
           },
           {
-            path: 'shared-lagacies',
+            path: 'shared-legacies',
             component: CustomerSharedLegaciesComponent
           },
           {
-            path: 'lagacies-details',
+            path: 'legacies-details',
             component: CustomerLegaciesDetailsComponent
           },
           {
@@ -225,6 +225,27 @@ export const CustomerRoutes: Routes = [
             path: 'electronic-media-view/:id',
             component: ElectronicMediaDetailsComponent
           },
+        ]
+      },
+    ]
+  },
+  {
+    path: 'legacies',
+    component: CustomerLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: CustomerHomeComponent,
+        canActivate: [UserAuthGuard],
+        children: [
+          {
+            path: 'pets/:id',
+            component: PetsListComponent
+          },
+          {
+            path: 'pets-view/:id',
+            component: PetsDetailsComponent
+          }, 
         ]
       },
     ]

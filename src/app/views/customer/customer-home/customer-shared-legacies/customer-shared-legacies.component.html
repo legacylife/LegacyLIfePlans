@@ -1,39 +1,22 @@
 <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
-  <!-- Filters -->
-
-  <!-- Right side -->
   <div class="full-width">
-
     <div class="">
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Shared Legacies</mat-card-title>
         </mat-card-header>
         <mat-card-content class="pt-0 sl--hgt">
-
           <div class="shared--legacy--wrapper">
-            <div class="sl--box" *ngFor="let lBox of legacyBox" [routerLink]="'/customer/dashboard/lagacies-details'">
+            <div class="sl--box" *ngFor="let user of allSharedLegacyList">
               <div class="sl--pic">
-                <img alt="" src="{{lBox.photo}}">
+                <img alt="" src="assets/images/arkenea/john.png">
               </div>              
-              <h2 class="sl--name text-center">{{lBox.name}}</h2>
-              <a class="sl--action">
-                <mat-icon>insert_drive_file</mat-icon>
-                {{lBox.action}}
-              </a>
+              <h2 class="sl--name text-center">{{user.firstName}} {{user.lastName}}</h2>
+              <a class="sl--action" [routerLink]="['/customer/legacies/pets', user.customerId]"><mat-icon>insert_drive_file</mat-icon>View Plan</a>
             </div>
-
-
           </div>
-
-
         </mat-card-content>
       </mat-card>
-
     </div>
-
-
-
   </div>
-
 </div>
