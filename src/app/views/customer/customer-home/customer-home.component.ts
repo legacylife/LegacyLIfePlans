@@ -1,19 +1,3 @@
-// import { Component, OnInit } from '@angular/core';
-
-// @Component({
-//   selector: 'app-customer-home',
-//   templateUrl: './customer-home.component.html',
-//   styleUrls: ['./customer-home.component.scss']
-// })
-// export class CustomerHomeComponent implements OnInit {
-
-//   constructor() { }
-
-//   ngOnInit() {
-//   }
-
-// }
-
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MatSnackBar, MatSidenav } from '@angular/material';
 import { Product } from '../../../shared/models/product.model';
@@ -42,23 +26,24 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   public filterForm: FormGroup;
   public cart: any[];
   public cartData: any;
-
+  customerLegaicesId:string=''
   constructor(
-    // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
-    // this.categories$ = this.shopService.getCategories();
     this.categories = ["My essentials", "Pets"]
-
-   
     this.products = []
     this.cartData = []
     this.filterForm = this.fb.group({
       search: ['']
     })
+    const locationArray = location.href.split('/')
+
+    if(locationArray[locationArray.length - 3] == "legacies"){
+        this.customerLegaicesId = locationArray[locationArray.length - 1];
+    }    
   }
   showSecoDay() {
     this.dayFirst = false;

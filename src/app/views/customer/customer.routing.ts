@@ -245,7 +245,11 @@ export const CustomerRoutes: Routes = [
           {
             path: 'pets-view/:id',
             component: PetsDetailsComponent
-          }, 
+          },
+          {
+            path: 'essential-day-one/:id',
+            component: CustomerEssentialDayOneComponent
+          } 
         ]
       },
     ]
