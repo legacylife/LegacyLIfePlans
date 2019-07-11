@@ -708,6 +708,13 @@ function fileActivityLogList(req, res) {
   }).sort(order).skip(offset).limit(limit)
 }
 
+function getSharedLegaciesList(req,res){  
+  let { query } = req.body
+  Trustee.find(query, function (err, list) {
+    res.send(resFormat.rSuccess({ list }))
+  })
+}
+
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
@@ -729,5 +736,6 @@ router.post("/get-emergency-contacts", getEmergencyContacts)
 router.post("/view-emergency-contacts", viewEmergencyContacts)
 router.post("/deletecontact", deleteEcontact)
 router.post("/file-activity-log-list", fileActivityLogList)
+router.post("/shared-legacies-list", getSharedLegaciesList)
 
 module.exports = router
