@@ -32,7 +32,7 @@ export class PetsListComponent implements OnInit {
   customerData: any = [];
   selectedLegaciesURL: string;
   selectedLegaciesId: string;
-  dynamicRoute = "customer/dashboard";
+  dynamicRoute = "/customer/dashboard/";
   constructor(
     private route: ActivatedRoute,
     private router: Router,

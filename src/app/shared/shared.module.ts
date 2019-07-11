@@ -97,7 +97,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CardDetailsComponent } from './components/card-details-modal/card-details-modal.component';
 import { PetsListComponent } from 'app/views/customer/customer-home/pets/pets-list/pets-list.component';
 import { PetsDetailsComponent } from 'app/views/customer/customer-home/pets/pets-details/pets-details.component';
-
+import { PetsModalComponent } from 'app/views/customer/customer-home/pets/pets-modal/pets-modal.component';
+import { FileUploadModule } from 'ng2-file-upload';
 
 /* 
   Only Required if you want to use Angular Landing
@@ -139,7 +140,8 @@ const classesToInclude = [
   TodosComponent,
   CardDetailsComponent,
   PetsListComponent,
-  PetsDetailsComponent
+  PetsDetailsComponent,
+  PetsModalComponent
 ]
 
 @NgModule({
@@ -178,9 +180,10 @@ const classesToInclude = [
     MatProgressBarModule,
     MatExpansionModule,
     MatSliderModule,
-    DragDropModule
+    DragDropModule,
+    FileUploadModule
   ],
-  entryComponents: [AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent],
+  entryComponents: [AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,PetsModalComponent],
   providers: [
     ThemeService,
     LayoutService,

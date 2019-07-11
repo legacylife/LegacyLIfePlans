@@ -83,7 +83,7 @@ import { FinalWishesComponent } from './customer-home/final-wishes/final-wishes-
 import { FinalWishesFormModalComponent } from './customer-home/final-wishes/final-wishes-form-modal/final-wishes-form-modal.component';
 import { FinalWishesDetailsComponent } from './customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
 //Pets
-import { PetsModalComponent } from './customer-home/pets/pets-modal/pets-modal.component';
+//import { PetsModalComponent } from './customer-home/pets/pets-modal/pets-modal.component';
 //import { PetsDetailsComponent } from './customer-home/pets/pets-details/pets-details.component';
 //Time capsule
 import { TimeCapsuleListComponent } from './customer-home/time-capsule/time-capsule-list/time-capsule-list.component';
@@ -199,7 +199,7 @@ export class GlobalVariables {
     CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent, ProfAddTrusteeModalComponent,
     CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent, FinalWishesComponent,
     FinalWishesFormModalComponent, FinalWishesDetailsComponent,
-    PetsModalComponent, ListingComponent, DetailsComponent, RealEstateModelComponent,
+    ListingComponent, DetailsComponent, RealEstateModelComponent,
     VehicleModelComponent, AssetsModelComponent,
     SpecialNeedsListingComponent, SpecialNeedsDetailsComponent,
     SpecialNeedsModelComponent, DetailsVehiclesComponent, DetailsAssetsComponent,
@@ -216,7 +216,7 @@ export class GlobalVariables {
   entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,
     addTrusteeModalComponent, PersonalProfileModalComponent, MarkAsDeceasedComponent,
     legalStuffModalComponent, essentialsMyProfessionalsComponent, SendAnEmailComponent,
-    HireAdvisorComponent, FinalWishesFormModalComponent, PetsModalComponent, AssetsModelComponent,
+    HireAdvisorComponent, FinalWishesFormModalComponent, AssetsModelComponent,
     SpecialNeedsModelComponent, RealEstateModelComponent, VehicleModelComponent, TimeCapsuleMoalComponent,
     InsuranceModalComponent, FinanceModalComponent, DebtModalComponent, DevicesModalComponent, ProfAddTrusteeModalComponent,
     LettersMessagesModelComponent,ElectronicMediaModalComponent
