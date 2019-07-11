@@ -51,7 +51,8 @@ export class PetsModalComponent implements OnInit {
       petType: new FormControl(''),
       veterinarian: new FormControl(''),
       dietaryConcerns: new FormControl(''),
-      profileId: new FormControl('')
+      profileId: new FormControl(''),
+      hiddenCustomerId: new FormControl('')
      });
      this.petDocumentsList = [];
      const locationArray = location.href.split('/')
@@ -67,12 +68,14 @@ export class PetsModalComponent implements OnInit {
       this.selectedLegaciesId = localStorage.getItem("endUserId")                                     
       this.userId = this.selectedProfileId
       this.customerLegacyType = localStorage.getItem("endUserType")
-      this.selectedProfileId = "";                                                                                                                                                                                                                                                                                                                                                                      
+      this.selectedProfileId = "";                                                                                                                                                                                                                                                                                                                                                              
     } 
 
     if(this.selectedLegaciesURL == 'legacies'){
       this.selectedLegaciesId = localStorage.getItem("endUserId");
     }
+
+    this.PetForm.controls['hiddenCustomerId'].setValue(this.userId);
 
     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
     this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
@@ -93,11 +96,11 @@ export class PetsModalComponent implements OnInit {
       const req_vars = {
         query: Object.assign({ 
           _id: this.selectedProfileId,
-          customerId: this.userId
+          customerId: this.PetForm.controls['hiddenCustomerId'].value
         }),
         proquery: Object.assign(profileInData)
       }
-
+        
       this.loader.open();     
       this.userapi.apiRequest('post', 'pets/pets-form-submit', req_vars).subscribe(result => {
         this.loader.close();
@@ -121,7 +124,7 @@ export class PetsModalComponent implements OnInit {
       if (this.selectedProfileId) {
         profileIds = this.selectedProfileId;
         req_vars = {
-          query: Object.assign({ _id:profileIds, customerId: this.userId })
+          query: Object.assign({ _id:profileIds })
         }
       }
 
@@ -135,6 +138,7 @@ export class PetsModalComponent implements OnInit {
             this.petsList = result.data;                    
             let profileIds = this.petsList._id;
             this.PetForm.controls['profileId'].setValue(profileIds);
+            this.PetForm.controls['hiddenCustomerId'].setValue(this.petsList.customerId);
             this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
             this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
             this.petDocumentsList = result.data.documents;            
@@ -151,6 +155,7 @@ export class PetsModalComponent implements OnInit {
 
   PetDelete(doc, name, tmName) {
       let ids = this.PetForm.controls['profileId'].value;
+
       var statMsg = "Are you sure you want to delete '" + name + "' file?"
       this.confirmService.confirm({ message: statMsg })
         .subscribe(res => {
@@ -160,10 +165,10 @@ export class PetsModalComponent implements OnInit {
             var query = {};
             const req_vars = {
               query: Object.assign({ _id: ids }, query),
-              proquery: Object.assign({ idProofDocuments: this.petDocumentsList }, query),
+              proquery: Object.assign({ documents: this.petDocumentsList }, query),
               fileName: Object.assign({ docName: tmName }, query)
             }
-            this.userapi.apiRequest('post', 'documents/deleteIdDoc', req_vars).subscribe(result => {
+            this.userapi.apiRequest('post', 'documents/deletePets', req_vars).subscribe(result => {
               if (result.status == "error") {
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })

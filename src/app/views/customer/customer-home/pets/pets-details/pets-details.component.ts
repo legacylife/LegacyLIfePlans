@@ -18,7 +18,9 @@ const filePath = s3Details.url+'/'+s3Details.petsFilePath;
 export class PetsDetailsComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   userId: string;
+  userType:string;
   selectedProfileId: string = "";
+  selectedLegaciesURL:string= "";
   row: any;
   re =  "/(?:\.([^.]+))?$/" ;
   docPath: string; 
@@ -34,6 +36,12 @@ export class PetsDetailsComponent implements OnInit {
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.getPetsView();
+    if (localStorage.getItem("endUserType") == "customer") {
+      this.userType = "customer";
+    } else {
+      this.userType = "advisor";
+    }
+    this.selectedLegaciesURL = locationArray[locationArray.length - 3];
   }
 
   //function to get all events
@@ -74,7 +82,11 @@ export class PetsDetailsComponent implements OnInit {
       })
   }
 
-  deletePets() {
+  deletePets(customerId='') {
+    var redirectModule = ''
+    if(this.userType == 'advisor'){
+      redirectModule = customerId
+    }
     var statMsg = "Are you sure you want to delete pet details?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
@@ -90,7 +102,7 @@ export class PetsDetailsComponent implements OnInit {
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard', 'pets'])
+              this.router.navigate(['/', this.userType , this.selectedLegaciesURL,  'pets', redirectModule])
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {

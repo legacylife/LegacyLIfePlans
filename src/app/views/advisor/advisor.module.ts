@@ -79,6 +79,9 @@ import { CountUpModule } from 'countup.js-angular2';
 import { LyResizingCroppingImageModule } from '@alyle/ui/resizing-cropping-images';
 /** Import themes */
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
+import { PetsModalComponent } from '../customer/customer-home/pets/pets-modal/pets-modal.component';
+import { AdvisorHomeComponent } from './advisor-home/advisor-home.component';
+
 
 export class GlobalVariables {
   testVal = '#00bcd4';
@@ -156,13 +159,13 @@ export class GlobalVariables {
     ChangePassComponent, HomeComponent, ReferAndEarnModalComponent, AdvisorLegacyDetailsComponent,
     LegaciesDetailsLandingComponent, MarkAsDeceasedComponent,
     GetFeaturedComponent, SubmitEnquiryModalComponent, AdvisorLeadsComponent, AdvisorLeadsDetailsComponent, 
-    ProspectPeoplesModalComponent,//TodosComponent,TodosListingComponent
+    ProspectPeoplesModalComponent,PetsModalComponent,AdvisorHomeComponent
   ], providers: [
     // { provide: LY_THEME, useClass: MinimaLight, multi: true },
     // { provide: LY_THEME, useClass: MinimaDark, multi: true },
     // { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, ProfilePicService, CanDeactivateGuard
   ], entryComponents: [ChangePassComponent, ReferAndEarnModalComponent, MarkAsDeceasedComponent, SubmitEnquiryModalComponent, 
-    ProspectPeoplesModalComponent],
+    ProspectPeoplesModalComponent,PetsModalComponent],
 })
 export class AdvisorModule { }
