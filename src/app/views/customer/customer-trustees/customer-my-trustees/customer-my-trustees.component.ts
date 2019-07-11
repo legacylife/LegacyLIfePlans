@@ -5,6 +5,7 @@ import { egretAnimations } from '../../../../shared/animations/egret-animations'
 import { UserAPIService } from './../../../../userapi.service';
 import { addTrusteeModalComponent } from './../../customer-home/add-trustee-modal/add-trustee-modal.component';
 import { serverUrl, s3Details } from '../../../../config';
+const filePath = 'https://s3.amazonaws.com/llp-test';
 
 @Component({
   selector: 'app-customer-my-trustees',
@@ -17,23 +18,47 @@ export class CustomerMyTrusteeComponent implements OnInit {
   userId: string;
   trustyListing:any = [];
   fileActivityLogList:any;
-  showTrustyListing = false;
+  showTrustyListing : boolean = false;
   showTrustyListingCnt: any;
   profileUrl = s3Details.url+'/profilePictures/';
-  constructor(private userapi: UserAPIService,private dialog: MatDialog,private snack: MatSnackBar,
-  ) { }
-
+  testImg = '/pk.png';
+  docPath: string; 
+  
+  constructor(private userapi: UserAPIService,private dialog: MatDialog,private snack: MatSnackBar,) { }
 
   ngOnInit() {
-    // profilePic: 'assets/images/arkenea/ca.jpg',
-    // userName: 'Allen Barry',
-    // emailId: 'barryallen@gmail.com',
-    // totalFiles: '24 Files',
-    // totalFolders: '9 Folders',
-    // position: 'CFA, CIC',
-    // status: 'assigned'
     this.userId = localStorage.getItem("endUserId");
+    this.docPath = filePath;
+ 
     this.getTrusteeList('All','-1');
+  }
+
+  createDirectory = () => {    
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ folderName: this.userId }, query)
+    }
+    this.userapi.download('documents/createUserDir', req_vars).subscribe(res => {
+        console.log(res);
+    });
+  }
+
+  downloadFile = (filename) => {    
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+    }
+    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+      window.open(window.URL.createObjectURL(res));
+      this.downloadFiles(filename)
+    });
+  }
+
+  downloadFiles(filePath){
+    var link=document.createElement('a');
+    link.href = filePath;
+    link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+    link.click();
   }
 
   getTrusteeList = (search,sort) => {

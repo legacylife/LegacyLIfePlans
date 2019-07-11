@@ -16,7 +16,7 @@ const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 export class CustomerHiredAdvisorComponent implements OnInit {
   allPeoples: any[];
   advisorListing: any[];
-  showAdvisorListing = false;
+  showAdvisorListing  : boolean = false;
   showAdvisorListingCnt: any;
   userId: string;
   profileFilePath: string = profileFilePath;
@@ -31,32 +31,7 @@ export class CustomerHiredAdvisorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.allPeoples = [
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'Allen Barry',
-        totalFiles: '24 Files',
-        totalFolders: '9 Folders',
-        position: 'CFA, CIC',
-        status: 'advisor'
-      },
-      {
-        profilePic: 'assets/images/arkenea/emily.png',
-        userName: 'Emily Doe',
-        totalFiles: '4 Files',
-        totalFolders: '1 Folders',
-        position: 'CFA, CIC',
-        status: 'advisor'
-      },
-      {
-        profilePic: 'assets/images/arkenea/john.png',
-        userName: 'Johnson Smith',
-        totalFiles: '15 Files',
-        totalFolders: '6 Folders',
-        position: 'CFA, CIC',
-        status: 'advisor'
-      }
-    ];
+   
     this.userId = localStorage.getItem("endUserId");
     this.getAdvisorList();
   }

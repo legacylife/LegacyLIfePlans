@@ -10,9 +10,10 @@
                     <header>My People</header>
                   </mat-panel-title>
                 </mat-expansion-panel-header>
+         
                 <ul class="legacy--list m-0 p-0">
-                  <li *ngFor="let btl of businessTypeIcon">
-                    <a (click)="changeTrigger(btl.opt_name)">
+                  <li *ngFor="let btl of businessTypeIcon; let i = index"  [class.active]="i == selectedRow">
+                    <a (click)="changeTrigger(btl.opt_name,i)">
                       <mat-icon class="icon-file">{{btl.opt_code}}</mat-icon> {{btl.opt_name}}
                       <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
                     </a>

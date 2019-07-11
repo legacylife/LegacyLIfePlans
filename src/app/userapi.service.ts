@@ -130,6 +130,10 @@ export class UserAPIService {
     }    
     return this.userInfo
   }  
+  
+  public download(path: string, params: any): Observable<any> {
+    return this.http.post(serverUrl + `/api/${path}`, params, { responseType: 'blob'});
+  }
 
   //function to make request from frontend
   private request(method: 'post' | 'get', type: string, data?: any): Observable<any> {

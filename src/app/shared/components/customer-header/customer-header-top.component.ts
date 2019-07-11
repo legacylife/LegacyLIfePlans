@@ -50,12 +50,10 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
       this.profilePicture =  nextValue
     })
 
-    if (localStorage.getItem('endUserProfilePicture') && localStorage.getItem('endUserProfilePicture') != 'assets/images/arkenea/default.jpg') {
+    if(localStorage.getItem('endUserProfilePicture') && localStorage.getItem('endUserProfilePicture') != 'assets/images/arkenea/default.jpg'){
       this.profilePicture = localStorage.getItem('endUserProfilePicture') 
     }
-
-
-    
+   
     this.layoutConf = this.layout.layoutConf;
     this.egretThemes = this.themeService.egretThemes;
     this.menuItemSub = this.navService.menuItems$

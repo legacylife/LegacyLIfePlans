@@ -24,9 +24,9 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
   profilePicture: any = "assets/images/arkenea/default.jpg";
   abc: string;
   interval: any
-  showAdvisorListing = false;
+  showAdvisorListing : boolean = false;
   showAdvisorListingCnt: any;
-  showQualityAdvisorListing  = false;
+  showQualityAdvisorListing : boolean = false;
   showQualityAdvisorListingCnt: any;
   constructor(
     private route: ActivatedRoute,
@@ -49,16 +49,10 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
       }
     }, 1000)
   }
-  
+ 
   ngOnDestroy(){
-    console.log("Interval",this.interval)
-    clearInterval(this.interval);
-    console.log("clearInterval",this.interval)
+    clearInterval(this.interval);   
   }
-
-  // onStorageChange(changes){
-  //   console.log('dsffds',changes);
-  // }
 
   //function to get all events
   getAdvisorLists = (query:any = {}, search:any = false) => {
