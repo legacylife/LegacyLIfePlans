@@ -67,8 +67,6 @@ import { ReferAndEarnModalComponent } from './legacies/refer-and-earn-modal/refe
 
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CountUpModule } from 'countup.js-angular2';
-//import { TodosComponent } from '../todos/todos.component';
-//import { TodosListingComponent } from '../todos-listing/todos-listing.component';
 /** Import Alyle UI */
 // import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
 /** Import the component modules */

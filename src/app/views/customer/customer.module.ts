@@ -82,9 +82,6 @@ import { ProfAdvisorListingComponent } from './customer-professionals-landing/pr
 import { FinalWishesComponent } from './customer-home/final-wishes/final-wishes-list/final-wishes-list.component';
 import { FinalWishesFormModalComponent } from './customer-home/final-wishes/final-wishes-form-modal/final-wishes-form-modal.component';
 import { FinalWishesDetailsComponent } from './customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
-//Pets
-//import { PetsModalComponent } from './customer-home/pets/pets-modal/pets-modal.component';
-//import { PetsDetailsComponent } from './customer-home/pets/pets-details/pets-details.component';
 //Time capsule
 import { TimeCapsuleListComponent } from './customer-home/time-capsule/time-capsule-list/time-capsule-list.component';
 import { TimeCapsuleMoalComponent } from './customer-home/time-capsule/time-capsule-modal/time-capsule-modal.component';
@@ -128,8 +125,6 @@ import { LettersMessagesDetailsComponent } from './customer-home/legacy-life-let
 import { LettersMessagesModelComponent } from './customer-home/legacy-life-letters-messages/letters-messages-model/letters-messages-model.component';
 import { ElectronicMediaModalComponent } from './customer-home/passwords-digital-assets/electronic-media/electronic-media-modal/electronic-media-modal.component';
 import { ElectronicMediaDetailsComponent } from './customer-home/passwords-digital-assets/electronic-media/electronic-media-details/electronic-media-details.component';
-//import { TodosComponent } from '../todos/todos.component';
-//import { TodosListingComponent } from '../todos-listing/todos-listing.component';
 export class GlobalVariables {
   testVal = '#00bcd4';
   Quepal = {
