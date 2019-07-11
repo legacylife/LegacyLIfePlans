@@ -48,4 +48,6 @@ const uploadFile = (filename, path) => {
     }
   })
 }
-module.exports = { uploadFile }
+
+
+module.exports = { uploadFile, s3 }

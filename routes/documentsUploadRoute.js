@@ -1177,6 +1177,52 @@ function deleteInviteDocument(req, res) {
   })
 }
 
+function downloadDocs(req,res) {
+  let { query } = req.body;
+  let filePath = query.docPath+'/'+query.filename;
+  let filename = query.filename
+  var params = {Bucket: constants.s3Details.bucketName,Key:filename};
+ 
+  let ext = filename.split('.')
+  ext = ext[ext.length - 1];
+  try {
+    const stream = s3.s3.getObject(params).createReadStream();    
+    res.set({
+      'Content-Disposition': 'attachment; filename='.filename,
+      'Content-Type': 'image/'+ext+'; charset=utf-8'
+    });
+    stream.pipe(res);
+  } catch (error) {
+    res.status(401).send(resFormat.rError({message :error}))  
+  }
+}
+
+function createDirectory(req,res) {
+    let { query } = req.body;
+    let folders = constants.basicFolders;
+    try {
+        async.each(folders, (folder)=>{
+          createAllDirectory(query.folderName+'/'+folder);         
+        })        
+     res.status(200).send(resFormat.rSuccess({message :"Folders Created successfully!"}))  
+    } catch (error) {
+      res.status(401).send(resFormat.rError({message :error}))  
+    }
+}
+
+async function createAllDirectory(folderName,res) {
+    var params = {Bucket: constants.s3Details.bucketName, Key:folderName+'/000.png'};
+    try {
+      const stream = s3.s3.putObject(params, (err, data)=>{
+        console.log(data);
+      })
+      let result = { "message": "Folders created successfully!" }
+      res.status(200).send(resFormat.rSuccess(result))
+    } catch (error) {
+      res.status(401).send(resFormat.rError({message :error}))  
+    }
+}
+
 router.post("/deleteAdvDoc", deleteDoc);
 router.post("/deleteIdDoc", deleteIdDocument);
 router.post("/deletesubFolderDoc", deletesubFolderDoc);
@@ -1187,4 +1233,6 @@ router.post("/deleteInsuranceDoc", deleteInsuranceDocument);
 router.post("/deleteFinanceDoc", deleteFinanceDocument);
 router.post("/deleteletterMessageDoc", letterMessageDocument);
 router.post("/deleteInviteDocument", deleteInviteDocument);
+router.post("/createUserDir", createDirectory);
+router.post("/downloadDocument", downloadDocs);
 module.exports = router
