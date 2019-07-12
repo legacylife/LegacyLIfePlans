@@ -26,6 +26,7 @@ export class FinanceDetailsComponent implements OnInit {
   row: any;
   policyTypeList:any[];
   re =  "/(?:\.([^.]+))?$/" ;
+  trusteeLegaciesAction:boolean=true;
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -38,6 +39,9 @@ export class FinanceDetailsComponent implements OnInit {
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.getfinanceView();
+
+    let urlData = this.userapi.getURLData();
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   //function to get all events

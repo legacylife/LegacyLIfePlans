@@ -20,6 +20,7 @@ export class LettersMessagesDetailsComponent implements OnInit {
   row: any;
   re =  "/(?:\.([^.]+))?$/" ;
   docPath: string; 
+  trusteeLegaciesAction:boolean=true;
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -32,6 +33,9 @@ export class LettersMessagesDetailsComponent implements OnInit {
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.getLettersMessageView();
+    let urlData = this.userapi.getURLData();
+this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
+
   }
 
 //function to get all events

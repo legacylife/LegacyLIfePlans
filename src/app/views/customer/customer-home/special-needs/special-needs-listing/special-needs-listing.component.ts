@@ -24,6 +24,10 @@ export class SpecialNeedsListingComponent implements OnInit {
 
   friendNeighborList: any = [];
   friendNeighborListing = false;
+  dynamicRoute:string;
+  selectedLegaciesId: string;
+  customerLegacyType:string='customer';
+  trusteeLegaciesAction:boolean=true;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,7 +42,10 @@ export class SpecialNeedsListingComponent implements OnInit {
     this.getyoungChildrenList();
     this.getcPDisabilityList();
     this.getfriendNeighborList();
-    
+
+    let urlData = this.userapi.getURLData();
+    this.dynamicRoute = urlData.dynamicRoute;
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   getyoungChildrenList(query = {}, search = false) {

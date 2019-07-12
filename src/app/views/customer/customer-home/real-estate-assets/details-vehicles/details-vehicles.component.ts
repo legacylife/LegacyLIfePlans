@@ -19,6 +19,7 @@ export class DetailsVehiclesComponent implements OnInit {
   userId: string;
   selectedProfileId: string = "";
   row: any;
+  trusteeLegaciesAction:boolean=true;
   constructor(
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
     private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router) {
@@ -29,6 +30,8 @@ export class DetailsVehiclesComponent implements OnInit {
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.userId = localStorage.getItem("endUserId");
     this.getRealEstateVehicleDetails();
+    let urlData = this.userapi.getURLData();
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   getRealEstateVehicleDetails(query = {}, search = false) {

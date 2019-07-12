@@ -23,6 +23,7 @@ export class TimeCapsuleDetailsComponent implements OnInit {
   selectedProfileId: string = "";
   row: any;
   re =  "/(?:\.([^.]+))?$/" ;
+  trusteeLegaciesAction:boolean=true;
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -35,6 +36,8 @@ export class TimeCapsuleDetailsComponent implements OnInit {
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.getTimeCapsuleView();
+    let urlData = this.userapi.getURLData();
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   //function to get all events

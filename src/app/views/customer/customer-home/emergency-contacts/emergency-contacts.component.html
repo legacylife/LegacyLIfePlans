@@ -3,7 +3,7 @@
     <div class="">
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
-          <mat-card-title class="m-0" [routerLink]="['/customer/dashboard/emergency-contacts']">Emergency Contacts
+          <mat-card-title class="m-0">Emergency Contacts
           </mat-card-title>
         </mat-card-header>
         <mat-card-content>
@@ -14,13 +14,13 @@
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Contacts</mat-card-title>
-          <div *ngIf="showContactListing">
+          <div *ngIf="showContactListing && trusteeLegaciesAction">
             <!--span class="no--of--trustee">{{showContactCnt}} Contact{{showContactCnt>1 ? 's' : ''}}</span-->
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openModal(contactForm)">+ Add
             </button>
           </div>
         </mat-card-header>
-        <mat-card-content *ngIf="!showContactListing">
+        <mat-card-content *ngIf="!showContactListing && trusteeLegaciesAction">
           <div class="build--ur--legacy" (click)="openModal(contactForm)">
             <mat-icon>person_pin</mat-icon>
             <p>
@@ -30,7 +30,7 @@
         </mat-card-content>
 
         <mat-card-content class="appointees--wrapper" *ngIf="showContactListing">
-          <div class="cust--user--details mt-1" *ngFor="let profileData of eContactList; let i = index" [routerLink]="['/customer/dashboard/emergency-contacts-details', profileData._id]">
+          <div class="cust--user--details mt-1" *ngFor="let profileData of eContactList; let i = index" [routerLink]="[dynamicRoute+'emergency-contacts-details', profileData._id]">
             <div class="name--letters">{{profileData?.name.charAt(0)}}</div>
             <div class="user--name">
               <h5>{{profileData.name}}</h5>

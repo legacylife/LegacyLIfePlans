@@ -28,6 +28,7 @@ export class DeviceDetailsComponent implements OnInit {
   passwordType: any[];
   typeOfDocumentList: any[];
   IsVisible: boolean = true;
+  trusteeLegaciesAction:boolean=true;
   constructor( 
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -44,6 +45,8 @@ export class DeviceDetailsComponent implements OnInit {
       radius: 30, margin: 20,      
     });
     this.getDeviceView();
+    let urlData = this.userapi.getURLData();
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   setPattern(pattern: any) {

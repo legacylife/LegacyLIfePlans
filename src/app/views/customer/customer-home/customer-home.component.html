@@ -7,7 +7,7 @@
         <div class="shadow--sec">
 
           <mat-accordion>
-            <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel [expanded]="myLegacy">
               <mat-expansion-panel-header [collapsedHeight]="'56px'" [expandedHeight]="'56px'">
                 <mat-panel-title>
                   <header>My Legacy</header>
@@ -74,7 +74,7 @@
               </ul>
 
             </mat-expansion-panel>
-            <mat-expansion-panel>
+            <mat-expansion-panel [expanded]="sharedLegacies">
               <mat-expansion-panel-header [collapsedHeight]="'56px'" [expandedHeight]="'56px'">
                 <mat-panel-title [routerLink]="['/customer/dashboard/shared-legacies']">
                   <header>Shared Legacies</header>

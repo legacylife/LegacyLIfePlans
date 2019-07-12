@@ -22,6 +22,7 @@ export class FinalWishesDetailsComponent implements OnInit {
   row: any;
   docPath: string;
   re =  "/(?:\.([^.]+))?$/" ;
+  trusteeLegaciesAction:boolean=true;
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -34,6 +35,8 @@ export class FinalWishesDetailsComponent implements OnInit {
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.getFinalWishView();
+    let urlData = this.userapi.getURLData();
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   //function to get all events

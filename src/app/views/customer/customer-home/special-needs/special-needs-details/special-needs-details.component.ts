@@ -20,6 +20,7 @@ export class SpecialNeedsDetailsComponent implements OnInit {
   selectedProfileId: string = "";
   row: any;
   title: string;
+  trusteeLegaciesAction:boolean=true;
   constructor(
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
     private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router) {
@@ -30,6 +31,8 @@ export class SpecialNeedsDetailsComponent implements OnInit {
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.userId = localStorage.getItem("endUserId");
     this.getSpecialNeedsDetails();
+    let urlData = this.userapi.getURLData();
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   //function to get all events

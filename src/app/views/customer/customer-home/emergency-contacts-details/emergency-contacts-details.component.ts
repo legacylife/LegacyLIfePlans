@@ -30,6 +30,7 @@ export class EmergencyContactsDetailsComponent implements OnInit {
   modalRef: any = null;
   relationshipList: any[]
   eContactFormGroup: FormGroup;
+  trusteeLegaciesAction:boolean=true;
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -52,6 +53,9 @@ export class EmergencyContactsDetailsComponent implements OnInit {
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.userId = localStorage.getItem("endUserId");
     this.getEmergencyContactsDetails();
+
+    let urlData = this.userapi.getURLData();
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   //function to get all events

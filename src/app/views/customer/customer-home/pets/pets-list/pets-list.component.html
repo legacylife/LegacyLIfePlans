@@ -2,7 +2,7 @@
   <div class="full-width">
     <div class="">
 
-      <mat-card class="p-0 mb-1" *ngIf="selectedLegaciesId!='pets'">
+      <mat-card class="p-0 mb-1" *ngIf="customerLegaciesId!='pets'">
         <mat-card-title class="">
           <div class="card-title-text">Legacy Details</div>
           <mat-divider></mat-divider>
@@ -62,12 +62,12 @@
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Pets</mat-card-title>
-          <div *ngIf="showPetsListing">
+          <div *ngIf="showPetsListing && trusteeLegaciesAction">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openPetsModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
-        <mat-card-content *ngIf="!showPetsListing">
+        <mat-card-content *ngIf="!showPetsListing && trusteeLegaciesAction">
           <div class="build--ur--legacy" (click)="openPetsModal({}, true)">
             <mat-icon>pets</mat-icon>
             <p>

@@ -22,12 +22,12 @@
         <mat-card class="empty--section p-0">
           <mat-card-header class="m-0">
             <mat-card-title class="m-0">Estate</mat-card-title>
-            <div *ngIf="showEstateListing">
+            <div *ngIf="showEstateListing && trusteeLegaciesAction">
               <!--span class="no--of--trustee">{{showEstateListingCnt}} Estate{{showEstateListingCnt>1 ? 's' : ''}}</span-->
               <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openLegalStuffModal('Estate', true)">+ Add</button>
             </div>
           </mat-card-header>
-          <mat-card-content *ngIf="!showEstateListing">
+          <mat-card-content *ngIf="!showEstateListing && trusteeLegaciesAction">
             <div class="build--ur--legacy" (click)="openLegalStuffModal('Estate', true)">
               <mat-icon>business</mat-icon>
               <p>
@@ -37,7 +37,7 @@
           </mat-card-content>
 
           <mat-card-content class="appointees--wrapper" *ngIf="showEstateListing">
-            <div class="cust--user--details mt-1" *ngFor="let legal of estateList; let i = index" [routerLink]="['/customer/dashboard/legal-detail-view', legal._id]">
+            <div class="cust--user--details mt-1" *ngFor="let legal of estateList; let i = index" [routerLink]="[dynamicRoute+'legal-detail-view', legal._id]">
               <div class="name--letters">{{getType(legal?.typeOfDocument,legal?.subFolderName).charAt(0)}}</div>
               <div class="user--name">
                 <h5>{{getType(legal?.typeOfDocument,legal?.subFolderName)}}</h5>
@@ -52,12 +52,12 @@
         <mat-card class="empty--section p-0">
             <mat-card-header class="m-0">
               <mat-card-title class="m-0">Healthcare</mat-card-title>
-              <div *ngIf="showhealthcareListing">
+              <div *ngIf="showhealthcareListing && trusteeLegaciesAction">
                 <!--span class="no--of--trustee">{{showhealthcareListingCnt}} Healthcare{{showhealthcareListingCnt>1 ? 's' : ''}}</span-->
                 <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openLegalStuffModal('Healthcare', true)">+ Add</button>
               </div>
             </mat-card-header>
-            <mat-card-content *ngIf="!showhealthcareListing">
+            <mat-card-content *ngIf="!showhealthcareListing && trusteeLegaciesAction">
               <div class="build--ur--legacy" (click)="openLegalStuffModal('Healthcare', true)">
                 <mat-icon>healing</mat-icon>
                 <p>
@@ -67,7 +67,7 @@
             </mat-card-content>
 
             <mat-card-content class="appointees--wrapper" *ngIf="showhealthcareListing">
-              <div class="cust--user--details mt-1" *ngFor="let legal of healthcareList; let i = index" [routerLink]="['/customer/dashboard/legal-detail-view', legal._id]">
+              <div class="cust--user--details mt-1" *ngFor="let legal of healthcareList; let i = index" [routerLink]="[dynamicRoute+'legal-detail-view', legal._id]">
                 <div class="name--letters">{{getType(legal?.typeOfDocument,legal.subFolderName).charAt(0)}}</div>
                 <div class="user--name">
                   <h5>{{getType(legal?.typeOfDocument,legal?.subFolderName)}}</h5>
@@ -82,12 +82,12 @@
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Personal Affairs</mat-card-title>
-          <div *ngIf="showaffairsListing">
+          <div *ngIf="showaffairsListing  && trusteeLegaciesAction">
             <!--span class="no--of--trustee">{{showaffairsListingCnt}} Personal Affair{{showaffairsListingCnt>1 ? 's' : ''}}</span-->
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openLegalStuffModal('Personal Affairs', true)">+ Add</button>
           </div>
         </mat-card-header>
-        <mat-card-content *ngIf="!showaffairsListing">
+        <mat-card-content *ngIf="!showaffairsListing  && trusteeLegaciesAction">
           <div class="build--ur--legacy" (click)="openLegalStuffModal('Personal Affairs', true)">
             <mat-icon>library_add</mat-icon>
             <p>
@@ -97,7 +97,7 @@
         </mat-card-content>
 
         <mat-card-content class="appointees--wrapper" *ngIf="showaffairsListing">
-          <div class="cust--user--details mt-1" *ngFor="let legal of affairsList; let i = index" [routerLink]="['/customer/dashboard/legal-detail-view', legal._id]">
+          <div class="cust--user--details mt-1" *ngFor="let legal of affairsList; let i = index" [routerLink]="[dynamicRoute+'legal-detail-view', legal._id]">
             <div class="name--letters">{{getType(legal?.typeOfDocument,legal?.subFolderName).charAt(0)}}</div>
             <div class="user--name">
               <h5>{{getType(legal.typeOfDocument,legal.subFolderName)}}</h5>

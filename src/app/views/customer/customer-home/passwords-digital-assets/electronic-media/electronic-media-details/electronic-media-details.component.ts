@@ -22,6 +22,7 @@ export class ElectronicMediaDetailsComponent implements OnInit {
   re =  "/(?:\.([^.]+))?$/" ;
   docPath: string; 
   typeOfList:any[];
+  trusteeLegaciesAction:boolean=true;
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -33,6 +34,8 @@ export class ElectronicMediaDetailsComponent implements OnInit {
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.getElectronicMediaView();
+    let urlData = this.userapi.getURLData();
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   //function to get all events

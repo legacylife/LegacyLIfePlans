@@ -4,7 +4,7 @@
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Real Estates & Assets</mat-card-title>
-          <div class="right--actions">
+          <div class="right--actions" *ngIf="trusteeLegaciesAction">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openProfileModal({}, true)">
               <mat-icon>edit</mat-icon>

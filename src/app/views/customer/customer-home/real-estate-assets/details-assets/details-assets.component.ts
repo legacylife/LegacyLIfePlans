@@ -21,6 +21,7 @@ export class DetailsAssetsComponent implements OnInit {
   selectedProfileId: string = "";
   row: any;
   RealEstateAssetsType: any=[];
+  trusteeLegaciesAction:boolean=true;
   constructor(
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
     private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router) {
@@ -32,6 +33,9 @@ export class DetailsAssetsComponent implements OnInit {
     this.userId = localStorage.getItem("endUserId");
     this.getRealEstateAssetDetails();
     this.RealEstateAssetsType = RealEstateAssetsType
+
+    let urlData = this.userapi.getURLData();
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   getRealEstateAssetDetails(query = {}, search = false) {

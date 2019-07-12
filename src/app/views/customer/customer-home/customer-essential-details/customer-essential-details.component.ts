@@ -36,7 +36,8 @@ export class CustomerEssentialDetailsComponent implements OnInit {
   ccChurchLandlineNumbersList: string = "";
   ccContactLandlineNumbersList: string = "";
   createdOn: any;
-  ppaddressData: string = ""
+  ppaddressData: string = "";
+  trusteeLegaciesAction:boolean=true;
 
   constructor(
     // private shopService: ShopService,
@@ -51,6 +52,9 @@ export class CustomerEssentialDetailsComponent implements OnInit {
 
     this.userId = localStorage.getItem("endUserId");
     this.getEssentialProfileDetails();
+
+    let urlData = this.userapi.getURLData();
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   //function to get all events

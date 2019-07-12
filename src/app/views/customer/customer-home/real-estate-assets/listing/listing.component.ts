@@ -24,7 +24,8 @@ export class ListingComponent implements OnInit {
   showRealEstateVehiclesListing = false;
   showAssetsListing = false;
   realEstateAssetsList: any = [];
-
+  dynamicRoute:string;
+  trusteeLegaciesAction:boolean=true;
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -38,7 +39,9 @@ export class ListingComponent implements OnInit {
     this.getRealEstateList();
     this.getRealEstateVehiclesList();
     this.getRealEstateAssetsList();
-    
+    let urlData = this.userapi.getURLData();
+    this.dynamicRoute = urlData.dynamicRoute;
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   getRealEstateList(query = {}, search = false) {

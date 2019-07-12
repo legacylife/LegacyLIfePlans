@@ -29,7 +29,8 @@ export class CustomerLegalStuffComponent implements OnInit {
   legaStuffList: any = [];
   selectedProfileId:string = "";
   typeOfDocumentList: any[];
-
+  dynamicRoute:string;
+  trusteeLegaciesAction:boolean=true;
   userId: string;
   constructor(
     private route: ActivatedRoute,
@@ -41,6 +42,9 @@ export class CustomerLegalStuffComponent implements OnInit {
     this.userId = localStorage.getItem("endUserId");
     this.showEstateListingCnt = 0;    
     this.getEstateList();
+    let urlData = this.userapi.getURLData();
+    this.dynamicRoute = urlData.dynamicRoute;
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
 

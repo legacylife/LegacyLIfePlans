@@ -21,6 +21,8 @@ export class EmergencyContactsComponent implements OnInit {
   eContactList: any = []
   updateContact: any = []
   selectedProfileId: string;
+  dynamicRoute:string;
+  trusteeLegaciesAction:boolean=true;
   constructor(private route: ActivatedRoute,
     private snack: MatSnackBar,
     private router: Router,
@@ -50,6 +52,9 @@ export class EmergencyContactsComponent implements OnInit {
     }
 
     this.getEmergencyContacts()
+    let urlData = this.userapi.getURLData();
+    this.dynamicRoute = urlData.dynamicRoute;
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   openModal(content: any = {}, isNew?) {

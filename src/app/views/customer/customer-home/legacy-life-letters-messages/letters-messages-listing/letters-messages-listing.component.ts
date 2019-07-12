@@ -20,11 +20,16 @@ export class LettersMessagesListingComponent implements OnInit {
   lettersMessagesList: any = [];
   selectedProfileId:string = "";
   showListingCnt: any;
+  dynamicRoute:string;
+trusteeLegaciesAction:boolean=true;
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) {  }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.getLetterMessageList();
+    let urlData = this.userapi.getURLData();
+    this.dynamicRoute = urlData.dynamicRoute;
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   getLetterMessageList = (query = {}) => {

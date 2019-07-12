@@ -26,6 +26,7 @@ export class DebtDetailsComponent implements OnInit {
   row: any;
   policyTypeList:any[];
   re =  "/(?:\.([^.]+))?$/" ;
+  trusteeLegaciesAction:boolean=true;
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -38,6 +39,9 @@ export class DebtDetailsComponent implements OnInit {
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.getdebtView();
+    let urlData = this.userapi.getURLData();
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
+
   }
 
   //function to get all events

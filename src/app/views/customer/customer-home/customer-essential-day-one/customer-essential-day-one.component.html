@@ -8,7 +8,7 @@
     <div class="">
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
-          <mat-card-title class="m-0" [routerLink]="['/customer/dashboard/customer-essential']">My Essentials </mat-card-title>
+          <mat-card-title class="m-0">My Essentials </mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <p class="info m-0">The section where you can manage your personal, professional and religious information.
@@ -22,12 +22,12 @@
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Personal Profile</mat-card-title>
-          <div *ngIf="showProfileListing">
+          <div *ngIf="showProfileListing && trusteeLegaciesAction">
             <!--span class="no--of--trustee">{{showProfileListingCnt}} Profile{{showProfileListingCnt>1 ? 's' : ''}}</span-->
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openProfileModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
-        <mat-card-content *ngIf="!showProfileListing">
+        <mat-card-content *ngIf="!showProfileListing && trusteeLegaciesAction">
           <div class="build--ur--legacy" (click)="openProfileModal({}, true)">
             <mat-icon>person_pin</mat-icon>
             <p>
@@ -37,7 +37,7 @@
         </mat-card-content>
 
         <mat-card-content class="appointees--wrapper" *ngIf="showProfileListing">
-          <div class="cust--user--details mt-1" *ngFor="let profileData of essentialProfileList; let i = index" [routerLink]="['/customer/dashboard/essential-detail-view', profileData._id]">
+          <div class="cust--user--details mt-1" *ngFor="let profileData of essentialProfileList; let i = index" [routerLink]="[dynamicRoute+'essential-detail-view', profileData._id]">
             <div class="name--letters">{{profileData.ppFirstName.charAt(0)+profileData.ppLastName.charAt(0)}}</div>
             <div class="user--name">
               <h5>{{profileData.ppFirstName +' '+ profileData.ppLastName}}</h5>
@@ -53,12 +53,12 @@
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">ID Box </mat-card-title>
-          <div *ngIf="showIdProofListing">
+          <div *ngIf="showIdProofListing && trusteeLegaciesAction">
             <!--span class="no--of--trustee">{{showIDListingCnt}} ID{{showIDListingCnt>1 ? 's' : ''}}</span-->
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openAddIdBoxModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
-        <mat-card-content *ngIf="!showIdProofListing">
+        <mat-card-content *ngIf="!showIdProofListing && trusteeLegaciesAction">
           <div class="build--ur--legacy" (click)="openAddIdBoxModal({}, true)">
             <mat-icon>library_add</mat-icon>
             <p>
@@ -69,7 +69,7 @@
 
         <mat-card-content class="appointees--wrapper" *ngIf="showIdProofListing">
 
-          <div class="cust--user--details mt-1" *ngFor="let idData of essentialIDList; let i = index" [routerLink]="['/customer/dashboard/essential-detail-idbox', idData._id]">
+          <div class="cust--user--details mt-1" *ngFor="let idData of essentialIDList; let i = index" [routerLink]="[dynamicRoute+'essential-detail-idbox', idData._id]">
             <div class="name--letters">{{getDocType(idData.documentType).charAt(0)}}</div>
             <div class="user--name">
               <h5>{{getDocType(idData.documentType)}}</h5>
@@ -86,12 +86,12 @@
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">My Professionals </mat-card-title>
-          <div *ngIf="showProfessionalsListing">
+          <div *ngIf="showProfessionalsListing && trusteeLegaciesAction">
             <!--span class="no--of--trustee">{{showProfessionalCnt}} Professional{{showProfessionalCnt>1 ? 's' : ''}}</span-->
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openProfessionalBoxModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
-        <mat-card-content *ngIf="!showProfessionalsListing">
+        <mat-card-content *ngIf="!showProfessionalsListing && trusteeLegaciesAction">
           <div class="build--ur--legacy" (click)="openProfessionalBoxModal({}, true)">
             <mat-icon>people</mat-icon>
             <p>
@@ -101,7 +101,7 @@
         </mat-card-content>
 
         <mat-card-content class="appointees--wrapper" *ngIf="showProfessionalsListing">
-          <div class="cust--user--details mt-1" *ngFor="let profileData of essentialProfessionalList; let i = index" [routerLink]="['/customer/dashboard/essential-professionals-detail', profileData._id]">
+          <div class="cust--user--details mt-1" *ngFor="let profileData of essentialProfessionalList; let i = index" [routerLink]="[dynamicRoute+'essential-professionals-detail', profileData._id]">
             <div class="name--letters">{{profileData.namedProfessionals.charAt(0)}}</div>
             <div class="user--name">
               <h5>{{profileData.businessName}}</h5>

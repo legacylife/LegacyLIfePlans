@@ -26,6 +26,9 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
   row: any;
   docPath: string;
   documentTypeList: any[] = documentTypes;
+  trusteeLegaciesAction:boolean=true;
+
+
   constructor(  
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
@@ -39,6 +42,8 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.getEssentialIDDetails();
+    let urlData = this.userapi.getURLData();
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   //function to get all events

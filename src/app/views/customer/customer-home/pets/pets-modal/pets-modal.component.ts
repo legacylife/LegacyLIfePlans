@@ -33,7 +33,7 @@ export class PetsModalComponent implements OnInit {
   petsList:any;
   profileIdHiddenVal:boolean = false;
   selectedProfileId: string;
-  selectedLegaciesId: string='';
+  customerLegaciesId: string='';
   selectedLegaciesURL:string='';
   selectedProfileModule:string='';
   docPath: string;
@@ -65,14 +65,14 @@ export class PetsModalComponent implements OnInit {
     } 
 
     if(this.selectedProfileId && this.selectedProfileModule != 'pets-view' && this.selectedLegaciesURL == 'legacies'){
-      this.selectedLegaciesId = localStorage.getItem("endUserId")                                     
+      this.customerLegaciesId = localStorage.getItem("endUserId")                                     
       this.userId = this.selectedProfileId
       this.customerLegacyType = localStorage.getItem("endUserType")
       this.selectedProfileId = "";                                                                                                                                                                                                                                                                                                                                                              
     } 
 
     if(this.selectedLegaciesURL == 'legacies'){
-      this.selectedLegaciesId = localStorage.getItem("endUserId");
+      this.customerLegaciesId = localStorage.getItem("endUserId");
     }
 
     this.PetForm.controls['hiddenCustomerId'].setValue(this.userId);
@@ -91,7 +91,7 @@ export class PetsModalComponent implements OnInit {
       if(profileIds){
         this.selectedProfileId = profileIds;
       }
-      profileInData.customerLegacyId = this.selectedLegaciesId
+      profileInData.customerLegacyId = this.customerLegaciesId
       profileInData.customerLegacyType = this.customerLegacyType
       const req_vars = {
         query: Object.assign({ 

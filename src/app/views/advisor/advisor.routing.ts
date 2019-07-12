@@ -24,6 +24,7 @@ import { TodosListingComponent } from '../todos-listing/todos-listing.component'
 import { PetsListComponent } from '../customer/customer-home/pets/pets-list/pets-list.component';
 import { PetsDetailsComponent } from '../customer/customer-home/pets/pets-details/pets-details.component';
 import { AdvisorHomeComponent } from './advisor-home/advisor-home.component';
+import { CustomerEssentialDayOneComponent } from '../customer/customer-home/customer-essential-day-one/customer-essential-day-one.component';
 
 console.log('advisor---routing');
 export const AdvisorRoutes: Routes = [
@@ -157,7 +158,11 @@ export const AdvisorRoutes: Routes = [
           {
             path: 'pets-view/:id',
             component: PetsDetailsComponent
-          }, 
+          },
+          {
+            path: 'essential-day-one/:id',
+            component: CustomerEssentialDayOneComponent
+          }  
         ]
       },
     ]

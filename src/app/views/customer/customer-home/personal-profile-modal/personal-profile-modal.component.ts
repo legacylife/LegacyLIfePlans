@@ -40,6 +40,9 @@ export class PersonalProfileModalComponent implements OnInit {
   ccwklandlineNumbers: any;
   cccontactlandline: any;
   ccChurchlandlineNumbers: any;
+  dynamicRoute:string;
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';
   constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService, private userapi: UserAPIService, ) { }
 
   ngOnInit() {
@@ -113,7 +116,13 @@ export class PersonalProfileModalComponent implements OnInit {
       this.getDetails();
     }
 
-
+    let urlData = this.userapi.getURLData();
+    this.dynamicRoute = urlData.dynamicRoute;
+     if (urlData.lastThird == "legacies" && urlData.lastTwo == 'essential-day-one') {
+      this.customerLegaciesId = this.userId;
+      this.userId = urlData.lastOne;
+      this.customerLegacyType =  urlData.userType
+    }
   }
 
   getDetails = (query = {}, search = false) => {
@@ -268,7 +277,10 @@ export class PersonalProfileModalComponent implements OnInit {
     this.ccChurchLandlineNumbers = ccChurchLandlineNumbersArr.controls.map(o => { return o.value })
     profileInData.ccChurchLandlineNumbers = this.ccChurchLandlineNumbers
 
-
+    
+    profileInData.customerLegacyId = this.customerLegaciesId
+    profileInData.customerLegacyType = this.customerLegacyType
+    
     if (profileInData.profileId) {
       this.selectedProfileId = profileInData.profileId;
     }

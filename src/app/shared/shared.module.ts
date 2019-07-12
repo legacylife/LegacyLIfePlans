@@ -99,6 +99,8 @@ import { PetsListComponent } from 'app/views/customer/customer-home/pets/pets-li
 import { PetsDetailsComponent } from 'app/views/customer/customer-home/pets/pets-details/pets-details.component';
 import { PetsModalComponent } from 'app/views/customer/customer-home/pets/pets-modal/pets-modal.component';
 import { FileUploadModule } from 'ng2-file-upload';
+import { CustomerEssentialDayOneComponent } from 'app/views/customer/customer-home/customer-essential-day-one/customer-essential-day-one.component';
+
 
 /* 
   Only Required if you want to use Angular Landing
@@ -141,7 +143,8 @@ const classesToInclude = [
   CardDetailsComponent,
   PetsListComponent,
   PetsDetailsComponent,
-  PetsModalComponent
+  PetsModalComponent,
+  CustomerEssentialDayOneComponent
 ]
 
 @NgModule({

@@ -30,6 +30,8 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
   modifiedDate:any;
   policyTypeList:any[];
   financeTypeList:any[];
+  dynamicRoute:string;
+  trusteeLegaciesAction:boolean=true;
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
 
   ngOnInit() {
@@ -37,6 +39,9 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
     this.getInsuranceList();
     this.getFinanceList();
     this.getDebtList();
+    let urlData = this.userapi.getURLData();
+    this.dynamicRoute = urlData.dynamicRoute;
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   getInsuranceList = (query = {}) => {

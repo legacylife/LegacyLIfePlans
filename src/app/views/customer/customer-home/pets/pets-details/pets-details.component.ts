@@ -24,6 +24,7 @@ export class PetsDetailsComponent implements OnInit {
   row: any;
   re =  "/(?:\.([^.]+))?$/" ;
   docPath: string; 
+  trusteeLegaciesAction:boolean=true;
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -42,6 +43,11 @@ export class PetsDetailsComponent implements OnInit {
       this.userType = "advisor";
     }
     this.selectedLegaciesURL = locationArray[locationArray.length - 3];
+
+    
+    let urlData = this.userapi.getURLData();
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
+
   }
 
   //function to get all events

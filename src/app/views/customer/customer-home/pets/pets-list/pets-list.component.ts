@@ -31,8 +31,9 @@ export class PetsListComponent implements OnInit {
   PetList: any = [];
   customerData: any = [];
   selectedLegaciesURL: string;
-  selectedLegaciesId: string;
-  dynamicRoute = "/customer/dashboard/";
+  customerLegaciesId: string;
+  dynamicRoute:string;
+  trusteeLegaciesAction:boolean=true;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -48,14 +49,19 @@ export class PetsListComponent implements OnInit {
       this.userType = "advisor";
     }
     const locationArray = location.href.split("/");
-    this.selectedLegaciesId = locationArray[locationArray.length - 1];
+    this.customerLegaciesId = locationArray[locationArray.length - 1];
     this.selectedLegaciesURL = locationArray[locationArray.length - 3];
-    if (this.selectedLegaciesId && this.selectedLegaciesURL == "legacies") {
-      this.userId = this.selectedLegaciesId;
+    if (this.customerLegaciesId && this.selectedLegaciesURL == "legacies") {
+      this.userId = this.customerLegaciesId;
       this.getCustomerDetails();
-      this.dynamicRoute = "/" + this.userType + "/legacies/";
+      //this.dynamicRoute = "/" + this.userType + "/legacies/";
     }
     this.getPetsList();
+
+    let urlData = this.userapi.getURLData();
+    this.dynamicRoute = urlData.dynamicRoute;
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
+
   }
 
   getPetsList = (query = {}) => {
@@ -101,7 +107,7 @@ export class PetsListComponent implements OnInit {
 
   getCustomerDetails(query = {}) {
     const req_vars = {
-      query: Object.assign({ _id: this.selectedLegaciesId }, query)
+      query: Object.assign({ _id: this.customerLegaciesId }, query)
     };
     this.userapi.apiRequest("post", "userlist/viewall", req_vars).subscribe(
       result => {

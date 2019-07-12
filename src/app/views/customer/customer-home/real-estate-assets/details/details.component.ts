@@ -20,6 +20,7 @@ export class DetailsComponent implements OnInit {
   selectedProfileId: string = "";
   row: any;
   typeOfRealEstateTypeList: any[];
+  trusteeLegaciesAction:boolean=true;
   constructor(
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
     private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router) {
@@ -31,6 +32,9 @@ export class DetailsComponent implements OnInit {
     this.userId = localStorage.getItem("endUserId");
     this.getRealEstateDetails();
     this.typeOfRealEstateTypeList = RealEstateType
+
+    let urlData = this.userapi.getURLData();
+    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   //function to get all events

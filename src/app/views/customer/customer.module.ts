@@ -51,7 +51,6 @@ import { CustomerProfessionalComponent } from './customer-professionals/customer
 import { CustomerHomeEssentialComponent } from './customer-home/customer-essential/customer-home-essential.component';
 import { CustomerDashboardComponent } from './customer-home/customer-dashboard/customer-dashboard.component';
 import { CustomerDashboardDayOneComponent } from './customer-home/customer-dashboard-day-one/customer-dashboard-day-one.component';
-import { CustomerEssentialDayOneComponent } from './customer-home/customer-essential-day-one/customer-essential-day-one.component';
 import { CustomerEssentialDetailsComponent } from './customer-home/customer-essential-details/customer-essential-details.component';
 import { EmergencyContactsDetailsComponent } from './customer-home/emergency-contacts-details/emergency-contacts-details.component';
 import { CustomerEssentialDetailsIdboxComponent } from './customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
@@ -184,7 +183,7 @@ export class GlobalVariables {
     CustomerSignupComponent, UpdateProfileComponent,
     CustomerHomeComponent, FormatTimePipe, CustomerAccountSettingComponent, ChangePassComponent,
     CustomerSubscriptionComponent, CustomerTrusteesComponent, CustomerProfessionalComponent,
-    CustomerHomeEssentialComponent, CustomerDashboardComponent, CustomerDashboardDayOneComponent, CustomerEssentialDayOneComponent,
+    CustomerHomeEssentialComponent, CustomerDashboardComponent, CustomerDashboardDayOneComponent,
     CustomerEssentialDetailsComponent, CustomerEssentialDetailsIdboxComponent, EssenioalIdBoxComponent,
     PersonalProfileModalComponent, CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent,
     CustomerMyPeopleComponent, CustomerLegalStuffComponent, legalStuffModalComponent,

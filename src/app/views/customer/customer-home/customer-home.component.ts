@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms'
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../shared/animations/egret-animations';
+import { UserAPIService } from 'app/userapi.service';
 
 @Component({
   selector: 'app-customer-home',
@@ -27,9 +28,12 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   public cart: any[];
   public cartData: any;
   customerLegaicesId:string=''
+  myLegacy:boolean = true
+  sharedLegacies:boolean = false
   constructor(
     private fb: FormBuilder,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private userapi:UserAPIService
   ) { }
 
   ngOnInit() {
@@ -39,10 +43,12 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
     this.filterForm = this.fb.group({
       search: ['']
     })
-    const locationArray = location.href.split('/')
-
-    if(locationArray[locationArray.length - 3] == "legacies"){
-        this.customerLegaicesId = locationArray[locationArray.length - 1];
+    
+    let urlData = this.userapi.getURLData();
+    if(urlData.lastThird == 'legacies'){
+      this.customerLegaicesId = urlData.lastOne
+      this.myLegacy= false
+      this.sharedLegacies =true 
     }    
   }
   showSecoDay() {
