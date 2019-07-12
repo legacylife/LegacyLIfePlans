@@ -34,7 +34,8 @@ import {
   MatNativeDateModule,
   MatProgressBarModule,
   MatExpansionModule,
-  MatSliderModule
+  MatSliderModule,
+  MatStepperModule
 } from '@angular/material';
 // ONLY REQUIRED FOR **SIDE** NAVIGATION LAYOUT
 import { HeaderSideComponent } from './components/header-side/header-side.component';
@@ -100,6 +101,8 @@ import { PetsDetailsComponent } from 'app/views/customer/customer-home/pets/pets
 import { PetsModalComponent } from 'app/views/customer/customer-home/pets/pets-modal/pets-modal.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { CustomerEssentialDayOneComponent } from 'app/views/customer/customer-home/customer-essential-day-one/customer-essential-day-one.component';
+import { PersonalProfileModalComponent } from 'app/views/customer/customer-home/personal-profile-modal/personal-profile-modal.component';
+import { CustomerEssentialDetailsComponent } from 'app/views/customer/customer-home/customer-essential-details/customer-essential-details.component';
 
 
 /* 
@@ -144,7 +147,9 @@ const classesToInclude = [
   PetsListComponent,
   PetsDetailsComponent,
   PetsModalComponent,
-  CustomerEssentialDayOneComponent
+  CustomerEssentialDayOneComponent,
+  PersonalProfileModalComponent,
+  CustomerEssentialDetailsComponent
 ]
 
 @NgModule({
@@ -184,9 +189,10 @@ const classesToInclude = [
     MatExpansionModule,
     MatSliderModule,
     DragDropModule,
-    FileUploadModule
+    FileUploadModule,
+    MatStepperModule
   ],
-  entryComponents: [AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,PetsModalComponent],
+  entryComponents: [AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,PetsModalComponent,PersonalProfileModalComponent],
   providers: [
     ThemeService,
     LayoutService,

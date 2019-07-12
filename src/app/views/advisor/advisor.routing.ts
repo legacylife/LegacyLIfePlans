@@ -25,6 +25,8 @@ import { PetsListComponent } from '../customer/customer-home/pets/pets-list/pets
 import { PetsDetailsComponent } from '../customer/customer-home/pets/pets-details/pets-details.component';
 import { AdvisorHomeComponent } from './advisor-home/advisor-home.component';
 import { CustomerEssentialDayOneComponent } from '../customer/customer-home/customer-essential-day-one/customer-essential-day-one.component';
+import { CustomerEssentialDetailsComponent } from '../customer/customer-home/customer-essential-details/customer-essential-details.component';
+
 
 console.log('advisor---routing');
 export const AdvisorRoutes: Routes = [
@@ -152,17 +154,140 @@ export const AdvisorRoutes: Routes = [
         canActivate: [UserAuthGuard],
         children: [
           {
+            path: 'customer-day-one/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'customer-day-two/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'customer-essential/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'essential-day-one/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'essential-detail-view/:id',
+            component: CustomerEssentialDetailsComponent
+          },
+          {
+            path: 'essential-detail-idbox/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'essential-professionals-detail/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'shared-legacies',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'legacies-details/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'legal-stuff/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'emergency-contacts/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+	        {
+            path: 'legal-detail-view/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'emergency-contacts-details/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'real-estate-assets/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'real-estate-detail-view/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'real-estate-vehicle-detail-view/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'real-estate-assets-detail-view/:id',
+            component: CustomerEssentialDayOneComponent
+          }, {
+            path: 'final-wishes/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'final-wishes-view/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
             path: 'pets/:id',
             component: PetsListComponent
           },
           {
             path: 'pets-view/:id',
             component: PetsDetailsComponent
+          },   
+          {
+            path: 'time-capsule/:id',
+            component: CustomerEssentialDayOneComponent
+          },         
+          {
+            path: 'time-capsule-view/:id',
+            component: CustomerEssentialDayOneComponent
           },
           {
-            path: 'essential-day-one/:id',
+            path: 'special-needs/:id',
             component: CustomerEssentialDayOneComponent
-          }  
+          },
+          {
+            path: 'special-needs-view/:id',
+            component: CustomerEssentialDayOneComponent
+          },   
+          {
+            path: 'insurance-finance-debt/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'insurance-view/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'finance-view/:id',
+            component: CustomerEssentialDayOneComponent
+          }, 
+          {
+            path: 'debt-view/:id',
+            component: CustomerEssentialDayOneComponent
+          },  
+          {
+            path: 'passwords-digital-assests/:id',
+            component: CustomerEssentialDayOneComponent
+          },         
+          {
+            path: 'device-view/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'letters-messages/:id',
+            component: CustomerEssentialDayOneComponent
+          },         
+          {
+            path: 'letters-messages-view/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'electronic-media-view/:id',
+            component: CustomerEssentialDayOneComponent
+          }
         ]
       },
     ]

@@ -41,17 +41,26 @@ export class PersonalProfileModalComponent implements OnInit {
   cccontactlandline: any;
   ccChurchlandlineNumbers: any;
   dynamicRoute:string;
-  customerLegaciesId: string;
+  customerLegaciesId:string='';
   customerLegacyType:string='customer';
+  urlData:any={};
   constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService, private userapi: UserAPIService, ) { }
 
   ngOnInit() {
     this.countryList = countries;
     this.userId = localStorage.getItem("endUserId");
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
-    if (this.selectedProfileId && this.selectedProfileId == 'essential-day-one') {
+    this.urlData = this.userapi.getURLData();
+
+    this.selectedProfileId = this.urlData.lastOne;
+    if (this.selectedProfileId && this.selectedProfileId == 'essential-day-one' && this.urlData.lastThird != "legacies") {
       this.selectedProfileId = "";
+    }
+    
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'essential-day-one') {
+        this.customerLegaciesId = this.userId;
+        this.customerLegacyType =  this.urlData.userType;
+        this.userId = this.urlData.lastOne;          
+        this.selectedProfileId = "";        
     }
 
     this.step = localStorage.getItem("ID_step");
@@ -114,16 +123,11 @@ export class PersonalProfileModalComponent implements OnInit {
 
     if (this.selectedProfileId && this.selectedProfileId != '') {
       this.getDetails();
-    }
-
-    let urlData = this.userapi.getURLData();
-    this.dynamicRoute = urlData.dynamicRoute;
-     if (urlData.lastThird == "legacies" && urlData.lastTwo == 'essential-day-one') {
-      this.customerLegaciesId = this.userId;
-      this.userId = urlData.lastOne;
-      this.customerLegacyType =  urlData.userType
-    }
+    }  
   }
+
+
+
 
   getDetails = (query = {}, search = false) => {
     const req_vars = {
@@ -277,9 +281,10 @@ export class PersonalProfileModalComponent implements OnInit {
     this.ccChurchLandlineNumbers = ccChurchLandlineNumbersArr.controls.map(o => { return o.value })
     profileInData.ccChurchLandlineNumbers = this.ccChurchLandlineNumbers
 
-    
-    profileInData.customerLegacyId = this.customerLegaciesId
-    profileInData.customerLegacyType = this.customerLegacyType
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'essential-day-one') {
+      profileInData.customerLegacyId = this.customerLegaciesId
+      profileInData.customerLegacyType = this.customerLegacyType
+    }
     
     if (profileInData.profileId) {
       this.selectedProfileId = profileInData.profileId;
@@ -307,9 +312,12 @@ export class PersonalProfileModalComponent implements OnInit {
         
         if (steps == 3) {
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
-          this.router.navigate(['/', 'customer', 'dashboard', 'essential-detail-view', result.data.ppID])
+          if(this.urlData.userType == 'advisor'){
+            this.router.navigate(['/', 'advisor', 'legacies', 'essential-detail-view', result.data.ppID])
+          }else{
+            this.router.navigate(['/', 'customer', 'dashboard', 'essential-detail-view', result.data.ppID])
+          }
           this.dialog.closeAll();
-
         }
       }
     }, (err) => {

@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatStepperModule } from '@angular/material/stepper';
+
 import {
   MatListModule,
   MatIconModule,
@@ -28,7 +28,8 @@ import {
   MatSliderModule,
   MatSnackBarModule,
   MatSidenavModule,
-  MatDialogModule
+  MatDialogModule,
+  MatStepperModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -51,12 +52,10 @@ import { CustomerProfessionalComponent } from './customer-professionals/customer
 import { CustomerHomeEssentialComponent } from './customer-home/customer-essential/customer-home-essential.component';
 import { CustomerDashboardComponent } from './customer-home/customer-dashboard/customer-dashboard.component';
 import { CustomerDashboardDayOneComponent } from './customer-home/customer-dashboard-day-one/customer-dashboard-day-one.component';
-import { CustomerEssentialDetailsComponent } from './customer-home/customer-essential-details/customer-essential-details.component';
 import { EmergencyContactsDetailsComponent } from './customer-home/emergency-contacts-details/emergency-contacts-details.component';
 import { CustomerEssentialDetailsIdboxComponent } from './customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
 import { CustomerSharedLegaciesComponent } from './customer-home/customer-shared-legacies/customer-shared-legacies.component';
 import { EssenioalIdBoxComponent } from './customer-home/essenioal-id-box/essenioal-id-box.component';
-import { PersonalProfileModalComponent } from './customer-home/personal-profile-modal/personal-profile-modal.component';
 import { CustomerLegaciesDetailsComponent } from './customer-home/customer-legacies-details/customer-legacies-details.component';
 import { MarkAsDeceasedComponent } from './customer-home/mark-as-deceased-modal/mark-as-deceased-modal.component';
 import { CustomerMyPeopleComponent } from './customer-trustees/customer-my-people/customer-my-people.component';
@@ -184,8 +183,8 @@ export class GlobalVariables {
     CustomerHomeComponent, FormatTimePipe, CustomerAccountSettingComponent, ChangePassComponent,
     CustomerSubscriptionComponent, CustomerTrusteesComponent, CustomerProfessionalComponent,
     CustomerHomeEssentialComponent, CustomerDashboardComponent, CustomerDashboardDayOneComponent,
-    CustomerEssentialDetailsComponent, CustomerEssentialDetailsIdboxComponent, EssenioalIdBoxComponent,
-    PersonalProfileModalComponent, CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent,
+    CustomerEssentialDetailsIdboxComponent, EssenioalIdBoxComponent,
+    CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent,
     CustomerMyPeopleComponent, CustomerLegalStuffComponent, legalStuffModalComponent,
     addTrusteeModalComponent, essentialsMyProfessionalsComponent, EssentialsMyProfessionalsDetailsComponent,
     EmergencyContactsComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,
@@ -208,7 +207,7 @@ export class GlobalVariables {
     // { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },
   ], bootstrap: [CustomerSignupComponent],
   entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,
-    addTrusteeModalComponent, PersonalProfileModalComponent, MarkAsDeceasedComponent,
+    addTrusteeModalComponent, MarkAsDeceasedComponent,
     legalStuffModalComponent, essentialsMyProfessionalsComponent, SendAnEmailComponent,
     HireAdvisorComponent, FinalWishesFormModalComponent, AssetsModelComponent,
     SpecialNeedsModelComponent, RealEstateModelComponent, VehicleModelComponent, TimeCapsuleMoalComponent,
