@@ -183,7 +183,7 @@ function sendTrusteeMail(emailId,comment,number,inviteByName,inviteToName,client
       body = body.replace("{LINK}", clientUrl);
       body = body.replace("{SERVER_LINK}", clientUrl);      
       const mailOptions = {
-        to: 'pankajk@arkenea.com',
+        to: emailId,
         subject: Remider+''+template.mailSubject,
         html: body
       }

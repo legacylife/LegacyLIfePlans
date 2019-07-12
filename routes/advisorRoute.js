@@ -245,11 +245,12 @@ function hireAdvisorOLD(req, res) {
 }
 
 
-function hireAdvisor(req, res) {
+function hireAdvisorStatus(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let { from } = req.body;
-  console.log("query",query,"Proquery",proquery,"from",from);
+  let { extraFields } = req.body;
+
  // let { extrafields } = req.body;
 //  clientUrl = constants.serverUrl + "/customer/signup";
   if(query._id){
@@ -258,20 +259,30 @@ function hireAdvisor(req, res) {
         let result = { "message": "Something Wrong!" }
         res.send(resFormat.rError(result));
       } else {
-        if (custData && custData._id) {
-          // proquery.status = 'Pending'; 
+        if (custData && custData._id) {   
           proquery.modifiedOn = new Date();
           HiredAdvisors.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
               res.send(resFormat.rError(err))
-            } else {             
-           
+            } else {                        
               if (from.logId) {
-                AdvisorActivityLog.updateOne({ _id: from.logId }, { $set: { actionTaken: proquery.status } }, function (err, logDetails) {
+                AdvisorActivityLog.updateOne({_id:from.logId}, { $set: { actionTaken: proquery.status}}, function (err, logDetails) {
                   if (err) {
                     res.send(resFormat.rError(err))
                   } else {
-                    let result = { "message": "Request reminder sent successfully" }
+                    let MsgText = 'accepted';
+                    if(proquery.status=='Rejected'){
+                        MsgText = 'rejected';
+                    }
+                  
+                    let custEmail = extraFields.custEmail;
+                    let custName = extraFields.custName;                  
+                    let advFname = extraFields.advFname;
+                    let advLname = extraFields.advLname;
+                    let subStatus = "Legacy request "+MsgText;
+                    let EmailMesg = advFname+" "+advLname+" has been "+MsgText+" your legacy request"; 
+                    stat = sendHireStatusMail(custEmail,custName,EmailMesg,subStatus);                     
+                    let result = { "message": "Legacy request "+MsgText+" successfully" }
                     res.status(200).send(resFormat.rSuccess(result))
                   }
                 })
@@ -307,7 +318,19 @@ function hireAdvisor(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
-        
+     
+        User.findOne({ _id: query.customerId }, { firstName: 1, lastName: 1, username: 1 }, function (err, advisorUser) {
+          if (err) {
+            res.status(401).send(resFormat.rError(err))
+          } else {
+            let inviteByName = extraFields.inviteByName;       
+            let toEmail = advisorUser.username;
+            let advName = advisorUser.firstName;
+            let EmailMesg = inviteByName+" has been send you legacy request"; 
+            stat = sendHireStatusMail(toEmail,advName,EmailMesg,'');           
+          }
+        })   
+       
         User.findOne({ _id: query.customerId }, { firstName: 1, lastName: 1, profilePicture: 1 }, function (err, userList) {
           if (err) {
             let result = { "message": "Something Wrong!" }
@@ -335,8 +358,7 @@ function hireAdvisor(req, res) {
               }
             })
           }
-        })
-        //stat = sendTrusteeMail(proquery.email,proquery.messages,proquery.folderCount,extrafields.inviteByName,proquery.firstName,clientUrl,""); 
+        })      
         let result = { "message": "Request sent successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
@@ -344,7 +366,31 @@ function hireAdvisor(req, res) {
   }
 }
 
-function hireAdvisorListing(req, res) {
+
+function sendHireStatusMail(emailId,toName,comment,subStatus) {
+
+  emailTemplatesRoute.getEmailTemplateByCode("HireAdvisorStatus").then((template) => {
+   if (template) {
+     template = JSON.parse(JSON.stringify(template));
+    
+     let body = template.mailBody.replace("{toName}", toName);                      
+     body = body.replace("{comment}", comment);
+ 
+     const mailOptions = {
+       to: emailId,//'pankajk@arkenea.com',
+       subject: subStatus+''+template.mailSubject,
+       html: body
+     }
+     console.log("mailOptions",mailOptions)
+     sendEmail(mailOptions);
+     return true;
+   } else {
+     return false;
+   }
+ })
+}
+
+function hireAdvisorList(req, res) {
   let { fields, offset, query, order, limit, search } = req.body
   let totalRecords = 0
   if (search && !isEmpty(query)) {
@@ -364,7 +410,7 @@ function hireAdvisorListing(req, res) {
       } else {
         res.send(resFormat.rSuccess({ advisorList, totalRecords }))
       }
-    }).sort(order).skip(offset).limit(limit).populate('advisorId')
+    }).sort(order).skip(offset).limit(limit).populate('customerId').populate('advisorId');
   })
 }
 
@@ -460,6 +506,6 @@ router.post("/fileupload", fileupload)
 router.post("/contactadvisor", contactAdvisor)
 router.post("/recentupdatelist", recentUpdateList)
 router.post("/checkHireAdvisor", checkHireAdvisorRequest)
-router.post("/hireadvisor", hireAdvisor)
-router.post("/hireAdvisorListing", hireAdvisorListing)
+router.post("/hireadvisor", hireAdvisorStatus)
+router.post("/hireAdvisorListing", hireAdvisorList)
 module.exports = router
