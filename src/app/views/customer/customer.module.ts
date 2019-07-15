@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import {
   MatListModule,
   MatIconModule,
@@ -97,14 +95,7 @@ import { DebtModalComponent } from './customer-home/insurance-finance-debt/debt-
 
 /** Import themes */
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
-import { ListingComponent } from './customer-home/real-estate-assets/listing/listing.component';
-import { DetailsComponent } from './customer-home/real-estate-assets/details/details.component';
-import { RealEstateModelComponent } from './customer-home/real-estate-assets/real-estate-model/real-estate-model.component';
-import { VehicleModelComponent } from './customer-home/real-estate-assets/vehicle-model/vehicle-model.component';
-import { AssetsModelComponent } from './customer-home/real-estate-assets/assets-model/assets-model.component';
-import { DetailsVehiclesComponent } from './customer-home/real-estate-assets/details-vehicles/details-vehicles.component';
-import { DetailsAssetsComponent } from './customer-home/real-estate-assets/details-assets/details-assets.component';
- //letters-messages-listing
+//letters-messages-listing
 import { LettersMessagesListingComponent } from './customer-home/legacy-life-letters-messages/letters-messages-listing/letters-messages-listing.component';
 import { LettersMessagesDetailsComponent } from './customer-home/legacy-life-letters-messages/letters-messages-details/letters-messages-details.component';
 import { LettersMessagesModelComponent } from './customer-home/legacy-life-letters-messages/letters-messages-model/letters-messages-model.component';
@@ -173,12 +164,9 @@ import { LettersMessagesModelComponent } from './customer-home/legacy-life-lette
     addTrusteeModalComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,CustomerLegalStuffDetailsComponent,
     CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent, ProfAddTrusteeModalComponent,
     CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent, FinalWishesComponent,
-    FinalWishesFormModalComponent, FinalWishesDetailsComponent, ListingComponent, DetailsComponent, RealEstateModelComponent,
-    VehicleModelComponent, AssetsModelComponent, DetailsVehiclesComponent, DetailsAssetsComponent,
-    TimeCapsuleListComponent, TimeCapsuleMoalComponent, TimeCapsuleDetailsComponent, InsuranceFinanceDebtListComponent,
-    InsuranceModalComponent, InsuranceDetailsComponent, FinanceModalComponent, FinanceDetailsComponent,
-    DebtModalComponent, LettersMessagesListingComponent,LettersMessagesDetailsComponent,
-    LettersMessagesModelComponent
+    FinalWishesFormModalComponent, FinalWishesDetailsComponent, TimeCapsuleListComponent, TimeCapsuleMoalComponent, TimeCapsuleDetailsComponent, 
+    InsuranceFinanceDebtListComponent, InsuranceModalComponent, InsuranceDetailsComponent, FinanceModalComponent, FinanceDetailsComponent,
+    DebtModalComponent, LettersMessagesListingComponent,LettersMessagesDetailsComponent, LettersMessagesModelComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
     // { provide: LY_THEME, useClass: MinimaLight, multi: true },
@@ -188,8 +176,7 @@ import { LettersMessagesModelComponent } from './customer-home/legacy-life-lette
   entryComponents: [ChangePassComponent,
     addTrusteeModalComponent, MarkAsDeceasedComponent,
     legalStuffModalComponent, SendAnEmailComponent,
-    HireAdvisorComponent, FinalWishesFormModalComponent, AssetsModelComponent,
-    RealEstateModelComponent, VehicleModelComponent, TimeCapsuleMoalComponent,
+    HireAdvisorComponent, FinalWishesFormModalComponent, TimeCapsuleMoalComponent,
     InsuranceModalComponent, FinanceModalComponent, DebtModalComponent, ProfAddTrusteeModalComponent,
     LettersMessagesModelComponent
   ]

@@ -36,6 +36,10 @@ import { DebtDetailsComponent } from '../customer/customer-home/insurance-financ
 import { ElectronicMediaDetailsComponent } from '../customer/customer-home/passwords-digital-assets/electronic-media/electronic-media-details/electronic-media-details.component';
 import { EmergencyContactsComponent } from '../customer/customer-home/emergency-contacts/emergency-contacts.component';
 import { EmergencyContactsDetailsComponent } from '../customer/customer-home/emergency-contacts-details/emergency-contacts-details.component';
+import { ListingComponent } from '../customer/customer-home/real-estate-assets/listing/listing.component';
+import { DetailsComponent } from '../customer/customer-home/real-estate-assets/details/details.component';
+import { DetailsVehiclesComponent } from '../customer/customer-home/real-estate-assets/details-vehicles/details-vehicles.component';
+import { DetailsAssetsComponent } from '../customer/customer-home/real-estate-assets/details-assets/details-assets.component';
 
 
 console.log('advisor---routing');
@@ -217,19 +221,19 @@ export const AdvisorRoutes: Routes = [
           },
           {
             path: 'real-estate-assets/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: ListingComponent
           },
           {
             path: 'real-estate-detail-view/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: DetailsComponent
           },
           {
             path: 'real-estate-vehicle-detail-view/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: DetailsVehiclesComponent
           },
           {
             path: 'real-estate-assets-detail-view/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: DetailsAssetsComponent
           }, {
             path: 'final-wishes/:id',
             component: CustomerEssentialDayOneComponent // temp

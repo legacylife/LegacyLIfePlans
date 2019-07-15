@@ -118,6 +118,13 @@ import { ElectronicMediaModalComponent } from 'app/views/customer/customer-home/
 import { DebtDetailsComponent } from 'app/views/customer/customer-home/insurance-finance-debt/debt-details/debt-details.component';
 import { EmergencyContactsComponent } from 'app/views/customer/customer-home/emergency-contacts/emergency-contacts.component';
 import { EmergencyContactsDetailsComponent } from 'app/views/customer/customer-home/emergency-contacts-details/emergency-contacts-details.component';
+import { ListingComponent } from 'app/views/customer/customer-home/real-estate-assets/listing/listing.component';
+import { DetailsComponent } from 'app/views/customer/customer-home/real-estate-assets/details/details.component';
+import { DetailsVehiclesComponent } from 'app/views/customer/customer-home/real-estate-assets/details-vehicles/details-vehicles.component';
+import { DetailsAssetsComponent } from 'app/views/customer/customer-home/real-estate-assets/details-assets/details-assets.component';
+import { AssetsModelComponent } from 'app/views/customer/customer-home/real-estate-assets/assets-model/assets-model.component';
+import { VehicleModelComponent } from 'app/views/customer/customer-home/real-estate-assets/vehicle-model/vehicle-model.component';
+import { RealEstateModelComponent } from 'app/views/customer/customer-home/real-estate-assets/real-estate-model/real-estate-model.component';
 
 
 /* 
@@ -179,7 +186,14 @@ const classesToInclude = [
   ElectronicMediaModalComponent,
   DebtDetailsComponent,
   EmergencyContactsComponent,
-  EmergencyContactsDetailsComponent
+  EmergencyContactsDetailsComponent,
+  ListingComponent,
+  DetailsComponent,
+  DetailsVehiclesComponent,
+  DetailsAssetsComponent,
+  AssetsModelComponent,
+  VehicleModelComponent,
+  RealEstateModelComponent
 ]
 
 @NgModule({
@@ -225,7 +239,9 @@ const classesToInclude = [
   entryComponents: [
     AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,
     PetsModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent,SpecialNeedsModelComponent,
-    DevicesModalComponent,ElectronicMediaModalComponent
+    DevicesModalComponent,ElectronicMediaModalComponent,AssetsModelComponent,
+    VehicleModelComponent,
+    RealEstateModelComponent
   ],
   providers: [
     ThemeService,

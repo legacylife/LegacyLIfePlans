@@ -19,6 +19,9 @@ export class AssetsModelComponent implements OnInit {
   profileIdHiddenVal: boolean = false;
   typeOfRealEstateAssetsType: any[];
   assetNewToggle: boolean = false;
+  urlData:any={};
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';
   constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService, private userapi: UserAPIService, ) {
 
   }
@@ -34,13 +37,20 @@ export class AssetsModelComponent implements OnInit {
       comments: new FormControl(''),
       profileId: new FormControl('')
     });
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
-    if (this.selectedProfileId && this.selectedProfileId == 'real-estate-assets') {
+
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    if (this.selectedProfileId && this.selectedProfileId == 'real-estate-assets' && this.urlData.lastThird != "legacies") {
       this.selectedProfileId = "";
     }
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'real-estate-assets') {
+        this.customerLegaciesId = this.userId;
+        this.customerLegacyType =  this.urlData.userType;
+        this.userId = this.urlData.lastOne;          
+        this.selectedProfileId = "";        
+    }
     this.typeOfRealEstateAssetsType = RealEstateAssetsType
-    this.getRealEstateAssetsDetails();
+    this.getRealEstateAssetsDetails();    
   }
 
   assetsFormSubmit(assetsData) {
@@ -50,11 +60,16 @@ export class AssetsModelComponent implements OnInit {
     if (profileIds) {
       this.selectedProfileId = profileIds;
     }
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'real-estate-assets') {
+      assetsData.customerLegacyId = this.customerLegaciesId
+      assetsData.customerLegacyType = this.customerLegacyType
+    }
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }),
       proquery: Object.assign(assetsData),
       from: Object.assign({ customerId: this.userId })
     }
+
     this.loader.open();
     this.userapi.apiRequest('post', 'realEstateAssets/real-estate-assets', req_vars).subscribe(result => {
       this.loader.close();
@@ -85,7 +100,6 @@ export class AssetsModelComponent implements OnInit {
         this.assetsForm.controls['assetValue'].setValue(this.row.assetValue);
         this.assetsForm.controls['location'].setValue(this.row.location);
         this.assetsForm.controls['comments'].setValue(this.row.comments);
-
         if (this.row.asset == 6) {
           this.assetNewToggle = true
         } else {

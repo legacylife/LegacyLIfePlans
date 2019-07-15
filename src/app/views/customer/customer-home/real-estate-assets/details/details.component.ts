@@ -21,20 +21,20 @@ export class DetailsComponent implements OnInit {
   row: any;
   typeOfRealEstateTypeList: any[];
   trusteeLegaciesAction:boolean=true;
+  urlData:any={};
+
   constructor(
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
     private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router) {
   }
 
   ngOnInit() {
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
     this.userId = localStorage.getItem("endUserId");
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
     this.getRealEstateDetails();
     this.typeOfRealEstateTypeList = RealEstateType
-
-    let urlData = this.userapi.getURLData();
-    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   //function to get all events
@@ -46,6 +46,9 @@ export class DetailsComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
+        if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
+          this.trusteeLegaciesAction = false;
+        }
         this.row = result.data
       }
     }, (err) => {
@@ -53,7 +56,7 @@ export class DetailsComponent implements OnInit {
     })
   }
 
-  deleteRealEstate() {
+  deleteRealEstate(customerId='') {
     var statMsg = "Are you sure you want to delete this record?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
@@ -69,7 +72,11 @@ export class DetailsComponent implements OnInit {
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard', 'real-estate-assets'])
+              if(this.urlData.userType == 'advisor'){
+                this.router.navigate(['/', 'advisor', 'legacies', 'real-estate-assets', customerId])
+              }else{
+                this.router.navigate(['/', 'customer', 'dashboard', 'real-estate-assets'])
+              }
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {

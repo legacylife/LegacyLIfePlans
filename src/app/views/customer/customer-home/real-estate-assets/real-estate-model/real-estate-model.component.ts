@@ -18,6 +18,9 @@ export class RealEstateModelComponent implements OnInit {
   selectedProfileId: string;  
   profileIdHiddenVal: boolean = false;
   typeOfRealEstateType: any[];
+  urlData:any={};
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';
   constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService, private userapi: UserAPIService, ) {
 
   }
@@ -34,11 +37,18 @@ export class RealEstateModelComponent implements OnInit {
       profileId: new FormControl('')
     });
 
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
-    if (this.selectedProfileId && this.selectedProfileId == 'real-estate-assets') {
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    if (this.selectedProfileId && this.selectedProfileId == 'real-estate-assets' && this.urlData.lastThird != "legacies") {
       this.selectedProfileId = "";
     }
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'real-estate-assets') {
+        this.customerLegaciesId = this.userId;
+        this.customerLegacyType =  this.urlData.userType;
+        this.userId = this.urlData.lastOne;          
+        this.selectedProfileId = "";        
+    }
+
     this.getRealEstateDetails();
     this.typeOfRealEstateType = RealEstateType;
   }
@@ -65,7 +75,7 @@ export class RealEstateModelComponent implements OnInit {
     }, (err) => {
       console.error(err)
     })
-  }
+  } 
   
   realEstateFormSubmit(realEstateData) {
     var query = {};
@@ -73,6 +83,10 @@ export class RealEstateModelComponent implements OnInit {
     let profileIds = this.realEstateForm.controls['profileId'].value;
     if (profileIds) {
       this.selectedProfileId = profileIds;
+    }
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'real-estate-assets') {
+      realEstateData.customerLegacyId = this.customerLegaciesId
+      realEstateData.customerLegacyType = this.customerLegacyType
     }
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }),

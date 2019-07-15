@@ -26,6 +26,7 @@ export class ListingComponent implements OnInit {
   realEstateAssetsList: any = [];
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
+  urlData:any={};
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -36,12 +37,15 @@ export class ListingComponent implements OnInit {
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    this.urlData = this.userapi.getURLData();
+    this.dynamicRoute = this.urlData.dynamicRoute;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    if (this.urlData.lastThird == "legacies") {
+      this.userId = this.urlData.lastOne;
+    }
     this.getRealEstateList();
     this.getRealEstateVehiclesList();
     this.getRealEstateAssetsList();
-    let urlData = this.userapi.getURLData();
-    this.dynamicRoute = urlData.dynamicRoute;
-    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   getRealEstateList(query = {}, search = false) {
