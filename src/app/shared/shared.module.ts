@@ -103,6 +103,10 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { CustomerEssentialDayOneComponent } from 'app/views/customer/customer-home/customer-essential-day-one/customer-essential-day-one.component';
 import { PersonalProfileModalComponent } from 'app/views/customer/customer-home/personal-profile-modal/personal-profile-modal.component';
 import { CustomerEssentialDetailsComponent } from 'app/views/customer/customer-home/customer-essential-details/customer-essential-details.component';
+import { CustomerEssentialDetailsIdboxComponent } from 'app/views/customer/customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
+import { EssenioalIdBoxComponent } from 'app/views/customer/customer-home/essenioal-id-box/essenioal-id-box.component';
+import { essentialsMyProfessionalsComponent } from 'app/views/customer/customer-home/essentials-my-professionals/essentials-my-professionals.component';
+import { EssentialsMyProfessionalsDetailsComponent } from 'app/views/customer/customer-home/essentials-my-professionals-details/essentials-my-professionals-details.component';
 
 
 /* 
@@ -149,7 +153,11 @@ const classesToInclude = [
   PetsModalComponent,
   CustomerEssentialDayOneComponent,
   PersonalProfileModalComponent,
-  CustomerEssentialDetailsComponent
+  CustomerEssentialDetailsComponent,
+  CustomerEssentialDetailsIdboxComponent,
+  EssenioalIdBoxComponent,
+  essentialsMyProfessionalsComponent,
+  EssentialsMyProfessionalsDetailsComponent
 ]
 
 @NgModule({
@@ -192,7 +200,10 @@ const classesToInclude = [
     FileUploadModule,
     MatStepperModule
   ],
-  entryComponents: [AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,PetsModalComponent,PersonalProfileModalComponent],
+  entryComponents: [
+    AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,
+    PetsModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent
+  ],
   providers: [
     ThemeService,
     LayoutService,

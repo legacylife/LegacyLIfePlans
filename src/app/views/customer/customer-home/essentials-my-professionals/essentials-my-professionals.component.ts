@@ -20,13 +20,13 @@ export class essentialsMyProfessionalsComponent implements OnInit {
   profileIdHiddenVal:boolean = false;
   selectedProfileId:string;
   profesional:any;
+  urlData:any={};
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService  ) { }
 
   ngOnInit() {
-    this.userId = localStorage.getItem("endUserId");    
-      const locationArray = location.href.split('/')
-      this.selectedProfileId = locationArray[locationArray.length - 1];
-   
+      this.userId = localStorage.getItem("endUserId");    
       this.professionalForm = this.fb.group({
         namedProfessionals: new FormControl('', Validators.required),
         businessName: new FormControl(''),
@@ -37,13 +37,21 @@ export class essentialsMyProfessionalsComponent implements OnInit {
         profileId: new FormControl('')
       });
 
-      if(this.selectedProfileId && this.selectedProfileId == 'essential-day-one'){
-        this.selectedProfileId = "";   
+      this.urlData = this.userapi.getURLData();
+      this.selectedProfileId = this.urlData.lastOne;
+      if (this.selectedProfileId && this.selectedProfileId == 'essential-day-one' && this.urlData.lastThird != "legacies") {
+        this.selectedProfileId = "";
       }
+      
+      if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'essential-day-one') {
+        this.customerLegaciesId = this.userId;
+        this.customerLegacyType =  this.urlData.userType;
+        this.userId = this.urlData.lastOne;          
+        this.selectedProfileId = "";        
+      }
+
       if(this.selectedProfileId){
         this.professionalForm.controls['profileId'].setValue(this.selectedProfileId); 
-      }
-      if(this.selectedProfileId && this.selectedProfileId != ''){
         this.getProfessionalDetails();
       }
     }
@@ -80,13 +88,18 @@ export class essentialsMyProfessionalsComponent implements OnInit {
     ProfessFormSubmit(profileInData = null) {
       var query = {};
       var proquery = {};
-      
+      if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'essential-day-one') {
+        profileInData.customerLegacyId = this.customerLegaciesId
+        profileInData.customerLegacyType = this.customerLegacyType       
+      }
+      if(!profileInData.profileId || profileInData.profileId ==''){
+        profileInData.customerId = this.userId
+      }
       const req_vars = {
-        query: Object.assign({ _id: profileInData.profileId, customerId: this.userId }, query),
+        query: Object.assign({ _id: profileInData.profileId}, query),
         proquery: Object.assign(profileInData)
       }
-      this.loader.open();
-      console.log("req_vars", req_vars);
+      this.loader.open();      
       this.userapi.apiRequest('post', 'customer/my-essentials-profile-submit', req_vars).subscribe(result => {
         this.loader.close();
         if (result.status == "error") {

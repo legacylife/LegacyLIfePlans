@@ -26,6 +26,8 @@ import { PetsDetailsComponent } from '../customer/customer-home/pets/pets-detail
 import { AdvisorHomeComponent } from './advisor-home/advisor-home.component';
 import { CustomerEssentialDayOneComponent } from '../customer/customer-home/customer-essential-day-one/customer-essential-day-one.component';
 import { CustomerEssentialDetailsComponent } from '../customer/customer-home/customer-essential-details/customer-essential-details.component';
+import { CustomerEssentialDetailsIdboxComponent } from '../customer/customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
+import { EssentialsMyProfessionalsDetailsComponent } from '../customer/customer-home/essentials-my-professionals-details/essentials-my-professionals-details.component';
 
 
 console.log('advisor---routing');
@@ -175,58 +177,58 @@ export const AdvisorRoutes: Routes = [
           },
           {
             path: 'essential-detail-idbox/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDetailsIdboxComponent
           },
           {
             path: 'essential-professionals-detail/:id',
-            component: CustomerEssentialDayOneComponent
+            component: EssentialsMyProfessionalsDetailsComponent // temp
           },
           {
             path: 'shared-legacies',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
           {
             path: 'legacies-details/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
           {
             path: 'legal-stuff/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
           {
             path: 'emergency-contacts/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
 	        {
             path: 'legal-detail-view/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
           {
             path: 'emergency-contacts-details/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
           {
             path: 'real-estate-assets/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
           {
             path: 'real-estate-detail-view/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
           {
             path: 'real-estate-vehicle-detail-view/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
           {
             path: 'real-estate-assets-detail-view/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           }, {
             path: 'final-wishes/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
           {
             path: 'final-wishes-view/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
           {
             path: 'pets/:id',
@@ -238,55 +240,55 @@ export const AdvisorRoutes: Routes = [
           },   
           {
             path: 'time-capsule/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },         
           {
             path: 'time-capsule-view/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
           {
             path: 'special-needs/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
           {
             path: 'special-needs-view/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },   
           {
             path: 'insurance-finance-debt/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
           {
             path: 'insurance-view/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
           {
             path: 'finance-view/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           }, 
           {
             path: 'debt-view/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },  
           {
             path: 'passwords-digital-assests/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },         
           {
             path: 'device-view/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
           {
             path: 'letters-messages/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },         
           {
             path: 'letters-messages-view/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           },
           {
             path: 'electronic-media-view/:id',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent // temp
           }
         ]
       },

@@ -34,6 +34,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   dynamicRoute:string;
   customerLegaciesId: string;
   trusteeLegaciesAction:boolean=true;
+  urlData:any={};
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -45,13 +46,13 @@ export class CustomerEssentialDayOneComponent implements OnInit {
     this.showProfileListingCnt = 0;
     this.showIDListingCnt = 0;
     
-    let urlData = this.userapi.getURLData();
-    this.customerLegaciesId = urlData.lastOne;
-    this.dynamicRoute = urlData.dynamicRoute;
-    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
+    this.urlData = this.userapi.getURLData();
+    this.customerLegaciesId = this.urlData.lastOne;
+    this.dynamicRoute = this.urlData.dynamicRoute;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
 
-    if (urlData.lastThird == "legacies") {
-      this.userId = urlData.lastOne;
+    if (this.urlData.lastThird == "legacies") {
+      this.userId = this.urlData.lastOne;
     }    
     this.getEssentialProfileList();
     this.getEssentialIdList();

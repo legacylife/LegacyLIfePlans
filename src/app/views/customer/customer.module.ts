@@ -53,9 +53,7 @@ import { CustomerHomeEssentialComponent } from './customer-home/customer-essenti
 import { CustomerDashboardComponent } from './customer-home/customer-dashboard/customer-dashboard.component';
 import { CustomerDashboardDayOneComponent } from './customer-home/customer-dashboard-day-one/customer-dashboard-day-one.component';
 import { EmergencyContactsDetailsComponent } from './customer-home/emergency-contacts-details/emergency-contacts-details.component';
-import { CustomerEssentialDetailsIdboxComponent } from './customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
 import { CustomerSharedLegaciesComponent } from './customer-home/customer-shared-legacies/customer-shared-legacies.component';
-import { EssenioalIdBoxComponent } from './customer-home/essenioal-id-box/essenioal-id-box.component';
 import { CustomerLegaciesDetailsComponent } from './customer-home/customer-legacies-details/customer-legacies-details.component';
 import { MarkAsDeceasedComponent } from './customer-home/mark-as-deceased-modal/mark-as-deceased-modal.component';
 import { CustomerMyPeopleComponent } from './customer-trustees/customer-my-people/customer-my-people.component';
@@ -66,8 +64,6 @@ import { legalStuffModalComponent } from './customer-home/legal-stuff-modal/lega
 import { CustomerLegalStuffDetailsComponent } from './customer-home/customer-legal-stuff-details/customer-legal-stuff-details.component';
 import { addTrusteeModalComponent } from './customer-home/add-trustee-modal/add-trustee-modal.component';
 import { EmergencyContactsComponent } from './customer-home/emergency-contacts/emergency-contacts.component';
-import { essentialsMyProfessionalsComponent } from './customer-home/essentials-my-professionals/essentials-my-professionals.component';
-import { EssentialsMyProfessionalsDetailsComponent } from './customer-home/essentials-my-professionals-details/essentials-my-professionals-details.component';
 import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
 import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
 // Professional
@@ -183,18 +179,14 @@ export class GlobalVariables {
     CustomerHomeComponent, FormatTimePipe, CustomerAccountSettingComponent, ChangePassComponent,
     CustomerSubscriptionComponent, CustomerTrusteesComponent, CustomerProfessionalComponent,
     CustomerHomeEssentialComponent, CustomerDashboardComponent, CustomerDashboardDayOneComponent,
-    CustomerEssentialDetailsIdboxComponent, EssenioalIdBoxComponent,
     CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent,
     CustomerMyPeopleComponent, CustomerLegalStuffComponent, legalStuffModalComponent,
-    addTrusteeModalComponent, essentialsMyProfessionalsComponent, EssentialsMyProfessionalsDetailsComponent,
-    EmergencyContactsComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,
+    addTrusteeModalComponent, EmergencyContactsComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,
     EmergencyContactsDetailsComponent, CustomerLegalStuffDetailsComponent,
     CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent, ProfAddTrusteeModalComponent,
     CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent, FinalWishesComponent,
-    FinalWishesFormModalComponent, FinalWishesDetailsComponent,
-    ListingComponent, DetailsComponent, RealEstateModelComponent,
-    VehicleModelComponent, AssetsModelComponent,
-    SpecialNeedsListingComponent, SpecialNeedsDetailsComponent,
+    FinalWishesFormModalComponent, FinalWishesDetailsComponent, ListingComponent, DetailsComponent, RealEstateModelComponent,
+    VehicleModelComponent, AssetsModelComponent, SpecialNeedsListingComponent, SpecialNeedsDetailsComponent,
     SpecialNeedsModelComponent, DetailsVehiclesComponent, DetailsAssetsComponent,
     TimeCapsuleListComponent, TimeCapsuleMoalComponent, TimeCapsuleDetailsComponent, InsuranceFinanceDebtListComponent,
     InsuranceModalComponent, InsuranceDetailsComponent, FinanceModalComponent, FinanceDetailsComponent, DebtDetailsComponent,
@@ -206,9 +198,9 @@ export class GlobalVariables {
     // { provide: LY_THEME, useClass: MinimaDark, multi: true },
     // { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },
   ], bootstrap: [CustomerSignupComponent],
-  entryComponents: [ChangePassComponent, EssenioalIdBoxComponent,
+  entryComponents: [ChangePassComponent,
     addTrusteeModalComponent, MarkAsDeceasedComponent,
-    legalStuffModalComponent, essentialsMyProfessionalsComponent, SendAnEmailComponent,
+    legalStuffModalComponent, SendAnEmailComponent,
     HireAdvisorComponent, FinalWishesFormModalComponent, AssetsModelComponent,
     SpecialNeedsModelComponent, RealEstateModelComponent, VehicleModelComponent, TimeCapsuleMoalComponent,
     InsuranceModalComponent, FinanceModalComponent, DebtModalComponent, DevicesModalComponent, ProfAddTrusteeModalComponent,

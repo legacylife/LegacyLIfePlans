@@ -24,8 +24,6 @@ export class CustomerEssentialDetailsComponent implements OnInit {
   dayFirst = true;
   daySeco = false;
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-
-
   userId: string;
   selectedProfileId: string = "";
   row: any;
@@ -52,7 +50,6 @@ export class CustomerEssentialDetailsComponent implements OnInit {
     this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction;
     this.userId = localStorage.getItem("endUserId");
     this.getEssentialProfileDetails();
-    console.log(this.urlData);
   }
 
   //function to get all events
@@ -64,14 +61,9 @@ export class CustomerEssentialDetailsComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        console.log("customerLegacyId : ",  result.data.customerLegacyId);
-        console.log("customerLegacyType : ",  result.data.customerLegacyType);
-        /*
-        if(result.data.customerLegacyId && ){
+        if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
           this.trusteeLegaciesAction = false;
         }
-        */
-
         this.row = result.data
         this.ppaddressData = (this.row.ppAddressLine1 ? this.row.ppAddressLine1 : '') + " " + (this.row.ppAddressLine2 ? this.row.ppAddressLine2 : '') + " " + (this.row.ppCity ? this.row.ppCity : '') + " " + (this.row.ppState ?this.row.ppState : '') +" "+ (this.row.ppCountry ? this.row.ppCountry : '') +" "+ (this.row.ppZipCode ? this.row.ppZipCode :'')
         this.createdOn = this.row.createdOn ? this.row.createdOn : "";
