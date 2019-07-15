@@ -3,6 +3,8 @@ var constants = require("./../config/constants")
 
 var vehiclesSchema = new mongoose.Schema({
   customerId: String,
+  customerLegacyId: String,
+  customerLegacyType: String,
   model: String,
   year: String,
   make: String,
@@ -17,3 +19,4 @@ var vehiclesSchema = new mongoose.Schema({
 })
 
 module.exports = mongoose.model('vehicles', vehiclesSchema)
+ 
