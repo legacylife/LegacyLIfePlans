@@ -8,7 +8,8 @@ import { AppLoaderService } from '../../../../../shared/services/app-loader/app-
 import { AppConfirmService } from '../../../../../shared/services/app-confirm/app-confirm.service';
 import { PetsModalComponent } from './../pets-modal/pets-modal.component';
 import { s3Details } from '../../../../../config';
-const filePath = s3Details.url+'/'+s3Details.petsFilePath;
+
+
 @Component({
   selector: 'app-customer-home',
   templateUrl: './pets-details.component.html',
@@ -30,8 +31,9 @@ export class PetsDetailsComponent implements OnInit {
 
   ngOnInit() {  
     this.userId = localStorage.getItem("endUserId");
+    const filePath = this.userId+'/'+s3Details.petsFilePath;
     this.docPath = filePath;
-    const locationArray = location.href.split('/')
+    const locationArray = location.href.split('/');
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.getPetsView();
   }
@@ -100,5 +102,25 @@ export class PetsDetailsComponent implements OnInit {
         }
       })
   }
+
+  downloadFile = (filename) => {    
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+    }
+    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+      window.open(window.URL.createObjectURL(res));
+      this.downloadFiles(this.docPath+filename)
+    });
+  }
+  
+  downloadFiles(filePath){
+    var link=document.createElement('a');
+   // link.href = filePath;
+    link.href = s3Details.url+'/'+filePath;
+    link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+    link.click();
+  }
+
 
 }

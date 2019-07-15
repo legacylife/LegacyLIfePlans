@@ -12,7 +12,6 @@ import { FileUploader } from 'ng2-file-upload';
 import { cloneDeep } from 'lodash'
 import { serverUrl, s3Details } from '../../../../config';
 const URL = serverUrl + '/api/documents/legalStuff';
-const filePath = s3Details.url+'/'+s3Details.legalStuffDocumentsPath;
 @Component({
   selector: 'app-legal-stuff-modal',
   templateUrl: './legal-stuff-modal.component.html',
@@ -40,6 +39,7 @@ export class legalStuffModalComponent implements OnInit {
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
   ngOnInit() {
+    const filePath = this.userId+'/'+s3Details.legalStuffDocumentsPath;
     this.docPath = filePath; 
     if(this.newName && this.newName != ''){
       this.folderName = this.newName
@@ -49,8 +49,7 @@ export class legalStuffModalComponent implements OnInit {
     if (this.selectedProfileId && this.selectedProfileId == 'legal-stuff') {
       this.selectedProfileId = "";
     }
- 
-   
+    
     if(this.folderName=='Estate'){
       this.typeOfDocumentList = EstateTypeOfDocument;
     }else if(this.folderName=='Healthcare'){
@@ -89,7 +88,7 @@ export class legalStuffModalComponent implements OnInit {
         message: Object.assign({ messageText: this.folderName })
       }
     }
-    //console.log("profileInData",profileInData)
+
     this.loader.open();     
     this.userapi.apiRequest('post', 'customer/essentials-legal-form-submit', req_vars).subscribe(result => {
       this.loader.close();
@@ -285,6 +284,21 @@ export class legalStuffModalComponent implements OnInit {
     var key;  
     key = event.charCode;
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
+  }
+
+  downloadFile = (filename) => {    
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+    }
+    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+      window.open(window.URL.createObjectURL(res));
+      let filePath = s3Details.url+'/'+this.docPath+filename;
+      var link=document.createElement('a');
+      link.href = filePath;
+      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+      link.click();
+    });
   }
 
 }

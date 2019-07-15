@@ -9,7 +9,6 @@ import { AppConfirmService } from '../../../../../shared/services/app-confirm/ap
 import { DebtModalComponent } from './../debt-modal/debt-modal.component';
 import { DebtType } from '../../../../../selectList';  
 import { s3Details } from '../../../../../config';
-const filePath = s3Details.url+'/'+s3Details.debtFilePath;
 
 @Component({
   selector: 'app-customer-home',
@@ -34,6 +33,7 @@ export class DebtDetailsComponent implements OnInit {
 
   ngOnInit() {  
     this.userId = localStorage.getItem("endUserId");
+    const filePath = this.userId+'/'+s3Details.debtFilePath;
     this.docPath = filePath;
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
@@ -112,5 +112,21 @@ export class DebtDetailsComponent implements OnInit {
     }).map(el => el.opt_name)[0]
     return filteredTyes
 }
+
+downloadFile = (filename) => {    
+  let query = {};
+  let req_vars = {
+    query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+  }
+  this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+    window.open(window.URL.createObjectURL(res));
+    let filePath = s3Details.url+'/'+this.docPath+filename;
+    var link=document.createElement('a');
+    link.href = filePath;
+    link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+    link.click();
+  });
+}
+
 
 }

@@ -10,9 +10,8 @@ import { serverUrl, s3Details } from '../../../../../config';
 import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 import { FinancePolicyType } from '../../../../../selectList';
-
 const URL = serverUrl + '/api/documents/financeDocuments';
-const filePath = s3Details.url+'/'+s3Details.financeFilePath;
+
 @Component({
   selector: 'app-essenioal-id-box',
   templateUrl: './finance-modal.component.html',
@@ -37,6 +36,7 @@ export class FinanceModalComponent implements OnInit {
 
   ngOnInit() {
         this.userId = localStorage.getItem("endUserId");
+        const filePath = this.userId+'/'+s3Details.financeFilePath;
         this.financeTypeList = FinancePolicyType;
         this.docPath = filePath;
         this.FinanceForm = this.fb.group({
@@ -304,5 +304,20 @@ export class FinanceModalComponent implements OnInit {
     if ((event.which != 46 ) && (event.which < 48 || event.which > 57)) {
       event.preventDefault();
     }
+  }
+
+  downloadFile = (filename) => {    
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+    }
+    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+      window.open(window.URL.createObjectURL(res));
+      let filePath = s3Details.url+'/'+this.docPath+filename;
+      var link=document.createElement('a');
+      link.href = filePath;
+      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+      link.click();
+    });
   }
 }

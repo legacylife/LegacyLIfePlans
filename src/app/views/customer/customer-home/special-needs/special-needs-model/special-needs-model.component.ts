@@ -47,9 +47,18 @@ export class SpecialNeedsModelComponent implements OnInit {
   }
 
   getSpecialNeedsDetails = (query = {}, search = false) => {
-    const req_vars = {
-      query: Object.assign({ _id: this.selectedProfileId }, query)
+    let req_vars = {
+      query: Object.assign({ customerId: this.userId,status:"Pending" })
     }
+   
+    let profileIds = '';
+    if (this.selectedProfileId) {
+      profileIds = this.selectedProfileId;
+      req_vars = {
+        query: Object.assign({ _id:profileIds, customerId: this.userId })
+      }
+    }
+
     this.userapi.apiRequest('post', 'specialNeeds/view-special-needs', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)

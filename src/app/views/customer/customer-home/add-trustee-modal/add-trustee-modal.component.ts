@@ -259,7 +259,6 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
 
   getTrusteeView = (query = {}, search = false) => {    
     let  profileIds = this.selectedProfileId;
-    console.log("profileIds",profileIds)
     let  req_vars = {
       query: Object.assign({status:"blanck"})
     }

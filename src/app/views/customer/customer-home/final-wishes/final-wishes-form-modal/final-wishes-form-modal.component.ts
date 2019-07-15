@@ -9,7 +9,6 @@ import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../../config';
 import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
-const filePath = s3Details.url+'/'+s3Details.finalWishesFilePath;
 const URL = serverUrl + '/api/documents/finalWishes';
 @Component({
   selector: 'app-essenioal-id-box',
@@ -40,6 +39,7 @@ export class FinalWishesFormModalComponent implements OnInit {
 
   ngOnInit() {
      this.userId = localStorage.getItem("endUserId");
+     const filePath = this.userId+'/'+s3Details.finalWishesFilePath;
      this.docPath = filePath;
      if(this.newName && this.newName != ''){
       this.folderName = this.newName
@@ -273,5 +273,18 @@ export class FinalWishesFormModalComponent implements OnInit {
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
   }
 
-
+  downloadFile = (filename) => {    
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+    }
+    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+      window.open(window.URL.createObjectURL(res));
+      let filePath = s3Details.url+'/'+this.docPath+filename;
+      var link=document.createElement('a');
+      link.href = filePath;
+      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+      link.click();
+    });
+  }
 }
