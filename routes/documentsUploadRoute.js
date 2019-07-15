@@ -56,7 +56,7 @@ router.post('/advisorDocument', cors(), function(req,res){
               fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
               file.pipe(fstream);
               fstream.on('close', async function () {
-                await s3.uploadFile(newFilename, docFilePath);  
+                await s3.uploadFile(newFilename, userId+'/'+docFilePath);  
                 if(result.advisorDocuments){
                   oldTmpFiles = result.advisorDocuments;
                 }
@@ -123,7 +123,7 @@ router.post('/myEssentialsID', cors(), function(req,res){
                 fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
                 file.pipe(fstream);
                 fstream.on('close', async function () {
-                  await s3.uploadFile(newFilename,IDdocFilePath);  
+                  await s3.uploadFile(newFilename,userId+'/'+IDdocFilePath);  
                   tmpallfiles = {
                     "title" : filename,
                     "size" : encoding,
@@ -157,7 +157,7 @@ router.post('/myEssentialsID', cors(), function(req,res){
                 fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
                 file.pipe(fstream);
                 fstream.on('close', async function () {
-                  await s3.uploadFile(newFilename,IDdocFilePath);  
+                  await s3.uploadFile(newFilename,userId+'/'+IDdocFilePath);  
                   
                   tmpallfiles = {
                     "title" : filename,
@@ -223,7 +223,7 @@ router.post('/legalStuff', cors(), function(req,res){
               fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
               file.pipe(fstream);
               fstream.on('close', async function () {
-                await s3.uploadFile(newFilename,legalStuffdocFilePath);                  
+                await s3.uploadFile(newFilename,userId+'/'+legalStuffdocFilePath);                  
                 tmpallfiles = {
                   "title" : filename,
                   "size" : encoding,
@@ -234,14 +234,10 @@ router.post('/legalStuff', cors(), function(req,res){
                     if (err) {
                         res.status(500).send(resFormat.rError(err))
                     } else {       
-
-                      console.log("11",result)
-                    if (result) {             
-                      console.log("22",result)                
+                    if (result) {                   
                         if(result.subFolderDocuments){
                           oldTmpFiles = result.subFolderDocuments;
-                        }
-                        console.log("22",result)                
+                        }                
                         oldTmpFiles.push(tmpallfiles);  
                         LegalStuff.updateOne(q, { $set: { subFolderDocuments: oldTmpFiles } }, function (err, updatedUser) {
                           if (err) {
@@ -260,7 +256,7 @@ router.post('/legalStuff', cors(), function(req,res){
                 fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
                 file.pipe(fstream);
                 fstream.on('close', async function () {
-                  await s3.uploadFile(newFilename,legalStuffdocFilePath);  
+                  await s3.uploadFile(newFilename,userId+'/'+legalStuffdocFilePath);  
                   tmpallfiles = {
                     "title" : filename,
                     "size" : encoding,
@@ -326,7 +322,7 @@ router.post('/finalWishes', cors(), function(req,res){
               fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
               file.pipe(fstream);
               fstream.on('close', async function () {
-                await s3.uploadFile(newFilename,finalWishesFilePath);                  
+                await s3.uploadFile(newFilename,userId+'/'+finalWishesFilePath);                  
                 tmpallfiles = {
                   "title" : filename,
                   "size" : encoding,
@@ -359,7 +355,7 @@ router.post('/finalWishes', cors(), function(req,res){
                 fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
                 file.pipe(fstream);
                 fstream.on('close', async function () {
-                  await s3.uploadFile(newFilename,finalWishesFilePath);  
+                  await s3.uploadFile(newFilename,userId+'/'+finalWishesFilePath);  
                   tmpallfiles = {
                     "title" : filename,
                     "size" : encoding,
@@ -425,7 +421,7 @@ router.post('/petsdocuments', cors(), function(req,res){
               fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
               file.pipe(fstream);
               fstream.on('close', async function () {
-                await s3.uploadFile(newFilename,petsFilePath);                  
+                await s3.uploadFile(newFilename,userId+'/'+petsFilePath);                  
                 tmpallfiles = {
                   "title" : filename,
                   "size" : encoding,
@@ -458,7 +454,7 @@ router.post('/petsdocuments', cors(), function(req,res){
                 fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
                 file.pipe(fstream);
                 fstream.on('close', async function () {
-                  await s3.uploadFile(newFilename,petsFilePath);  
+                  await s3.uploadFile(newFilename,userId+'/'+petsFilePath);  
                   tmpallfiles = {
                     "title" : filename,
                     "size" : encoding,
@@ -524,7 +520,7 @@ router.post('/timeCapsuledocuments', cors(), function(req,res){
               fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
               file.pipe(fstream);
               fstream.on('close', async function () {
-                await s3.uploadFile(newFilename,timeCapsuleFilePath);                  
+                await s3.uploadFile(newFilename,userId+'/'+timeCapsuleFilePath);                  
                 tmpallfiles = {
                   "title" : filename,
                   "size" : encoding,
@@ -557,7 +553,7 @@ router.post('/timeCapsuledocuments', cors(), function(req,res){
                 fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
                 file.pipe(fstream);
                 fstream.on('close', async function () {
-                  await s3.uploadFile(newFilename,timeCapsuleFilePath);  
+                  await s3.uploadFile(newFilename,userId+'/'+timeCapsuleFilePath);  
                   tmpallfiles = {
                     "title" : filename,
                     "size" : encoding,
@@ -623,7 +619,7 @@ router.post('/insuranceDocuments', cors(), function(req,res){
               fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
               file.pipe(fstream);
               fstream.on('close', async function () {
-                await s3.uploadFile(newFilename,insuranceFilePath);                  
+                await s3.uploadFile(newFilename,userId+'/'+insuranceFilePath);                  
                 tmpallfiles = {
                   "title" : filename,
                   "size" : encoding,
@@ -656,7 +652,7 @@ router.post('/insuranceDocuments', cors(), function(req,res){
                 fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
                 file.pipe(fstream);
                 fstream.on('close', async function () {
-                  await s3.uploadFile(newFilename,insuranceFilePath);  
+                  await s3.uploadFile(newFilename,userId+'/'+insuranceFilePath);  
                   tmpallfiles = {
                     "title" : filename,
                     "size" : encoding,
@@ -721,7 +717,7 @@ router.post('/financeDocuments', cors(), function(req,res){
               fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
               file.pipe(fstream);
               fstream.on('close', async function () {
-                await s3.uploadFile(newFilename,financeFilePath);                  
+                await s3.uploadFile(newFilename,userId+'/'+financeFilePath);                  
                 tmpallfiles = {
                   "title" : filename,
                   "size" : encoding,
@@ -754,7 +750,7 @@ router.post('/financeDocuments', cors(), function(req,res){
                 fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
                 file.pipe(fstream);
                 fstream.on('close', async function () {
-                  await s3.uploadFile(newFilename,financeFilePath);  
+                  await s3.uploadFile(newFilename,userId+'/'+financeFilePath);  
                   tmpallfiles = {
                     "title" : filename,
                     "size" : encoding,
@@ -821,7 +817,7 @@ router.post('/letterMessage', cors(), function(req,res){
               fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
               file.pipe(fstream);
               fstream.on('close', async function () {
-                await s3.uploadFile(newFilename,letterMessageFilePath);                  
+                await s3.uploadFile(newFilename,userId+'/'+letterMessageFilePath);                  
                 tmpallfiles = {
                   "title" : filename,
                   "size" : encoding,
@@ -854,7 +850,7 @@ router.post('/letterMessage', cors(), function(req,res){
                 fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
                 file.pipe(fstream);
                 fstream.on('close', async function () {
-                  await s3.uploadFile(newFilename,letterMessageFilePath);  
+                  await s3.uploadFile(newFilename,userId+'/'+letterMessageFilePath);  
                   tmpallfiles = {
                     "title" : filename,
                     "size" : encoding,
@@ -1135,7 +1131,7 @@ router.post('/invite', cors(), function(req,res){
                 fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
                 file.pipe(fstream);
                 fstream.on('close', async function () {
-                  await s3.uploadFile(newFilename,inviteDocumentsPath);  
+                  await s3.uploadFile(newFilename,userId+'/'+inviteDocumentsPath);  
                   tmpallfiles = {
                     "title" : filename,
                     "size" : encoding,
@@ -1223,6 +1219,58 @@ async function createAllDirectory(folderName,res) {
     }
 }
 
+function userFolderSize(req,res) {
+  let { query } = req.body;
+ 
+  let filename = query.userId;
+
+  const s3params = {
+    Bucket: constants.s3Details.bucketName,
+    MaxKeys: 20,
+    //Delimiter: '/'+filename,
+    Prefix: filename
+  };
+  // const s3params = {
+  //   Bucket: 'bucket-name',
+  //   MaxKeys: 20,
+  //   Delimiter: '/',
+  //   Prefix: 'directory-1/'
+  // };
+
+ // let totalSize = map(s3.s3, constants.s3Details.bucketName, "prefix")(s => s.getSize).sum
+
+  // s3.s3.listObjectsV2 (s3params, (err, data) => {
+  //   if (err) {
+  //     console.log("stream ",err);// reject (err);
+  //   }
+  //   console.log ("data",data);
+  // });
+  console.log("s3params :-  ",s3params);
+
+  var params = {Bucket: constants.s3Details.bucketName, Key:filename+'/pets'};
+  // let ext = filename.split('.')
+  // ext = ext[ext.length - 1];
+  try {
+    
+    const stream = s3.s3.listObjectsV2(s3params, (err, data)=>{
+      console.log("data :-  ",data);
+    })
+  // console.log("stream :- ",stream);
+
+   console.log("================================");
+    // const stream = s3.s3.listObjects(params).createReadStream();    
+    // res.set({
+    //   'Content-Disposition': 'attachment; filename='.filename,
+    //   'Content-Type': 'image/png; charset=utf-8'
+    // });
+    // stream.pipe(res);
+    // console.log("stream ",stream);
+
+  } catch (error) {
+    res.status(401).send(resFormat.rError({message :error}))  
+  }
+}
+
 router.post("/deleteAdvDoc", deleteDoc);
 router.post("/deleteIdDoc", deleteIdDocument);
 router.post("/deletesubFolderDoc", deletesubFolderDoc);
@@ -1230,9 +1278,10 @@ router.post("/deletesubFolderWishesDoc", deleteWishessubFolderDoc);
 router.post("/deletePets", deletePetDoc);
 router.post("/deleteTimeCapsuleDoc", deleteTimeCapsuleDoc);
 router.post("/deleteInsuranceDoc", deleteInsuranceDocument);
-router.post("/deleteFinanceDoc", deleteFinanceDocument);
+router.post("/deleteFinanceDoc", deleteFinanceDocument); 
 router.post("/deleteletterMessageDoc", letterMessageDocument);
 router.post("/deleteInviteDocument", deleteInviteDocument);
 router.post("/createUserDir", createDirectory);
 router.post("/downloadDocument", downloadDocs);
+router.post("/checkFolderSize", userFolderSize);
 module.exports = router

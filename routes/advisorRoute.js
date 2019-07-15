@@ -251,8 +251,6 @@ function hireAdvisorStatus(req, res) {
   let { from } = req.body;
   let { extraFields } = req.body;
 
- // let { extrafields } = req.body;
-//  clientUrl = constants.serverUrl + "/customer/signup";
   if(query._id){
     HiredAdvisors.findOne(query, function (err, custData) {      
       if (err) {
@@ -273,8 +271,7 @@ function hireAdvisorStatus(req, res) {
                     let MsgText = 'accepted';
                     if(proquery.status=='Rejected'){
                         MsgText = 'rejected';
-                    }
-                  
+                    }                  
                     let custEmail = extraFields.custEmail;
                     let custName = extraFields.custName;                  
                     let advFname = extraFields.advFname;
@@ -309,7 +306,6 @@ function hireAdvisorStatus(req, res) {
             insert.folderCount = proquery.folderCount;
             insert.advisorId = ObjectId(proquery.advisorId);
             insert.status = 'Pending';
-
             insert.createdOn = new Date();
             insert.modifiedOn = new Date();     
             insert.createdby = query.customerId;
@@ -317,8 +313,7 @@ function hireAdvisorStatus(req, res) {
             insert.save({$set:proquery}, function (err, newEntry) {
       if (err) {
         res.send(resFormat.rError(err))
-      } else {
-     
+      } else {     
         User.findOne({ _id: query.customerId }, { firstName: 1, lastName: 1, username: 1 }, function (err, advisorUser) {
           if (err) {
             res.status(401).send(resFormat.rError(err))
@@ -329,8 +324,7 @@ function hireAdvisorStatus(req, res) {
             let EmailMesg = inviteByName+" has been send you legacy request"; 
             stat = sendHireStatusMail(toEmail,advName,EmailMesg,'');           
           }
-        })   
-       
+        })          
         User.findOne({ _id: query.customerId }, { firstName: 1, lastName: 1, profilePicture: 1 }, function (err, userList) {
           if (err) {
             let result = { "message": "Something Wrong!" }
@@ -366,22 +360,17 @@ function hireAdvisorStatus(req, res) {
   }
 }
 
-
 function sendHireStatusMail(emailId,toName,comment,subStatus) {
-
   emailTemplatesRoute.getEmailTemplateByCode("HireAdvisorStatus").then((template) => {
    if (template) {
-     template = JSON.parse(JSON.stringify(template));
-    
+     template = JSON.parse(JSON.stringify(template));    
      let body = template.mailBody.replace("{toName}", toName);                      
-     body = body.replace("{comment}", comment);
- 
+     body = body.replace("{comment}", comment); 
      const mailOptions = {
        to: emailId,//'pankajk@arkenea.com',
        subject: subStatus+''+template.mailSubject,
        html: body
      }
-     console.log("mailOptions",mailOptions)
      sendEmail(mailOptions);
      return true;
    } else {
