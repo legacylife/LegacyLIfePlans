@@ -203,7 +203,7 @@ export const CustomerRoutes: Routes = [
           }, 
           {
             path: 'debt-view/:id',
-            component: DebtDetailsComponent
+            component: DebtDetailsComponent 
           },  
           {
             path: 'passwords-digital-assests',

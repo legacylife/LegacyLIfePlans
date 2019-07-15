@@ -31,6 +31,7 @@ export class EmergencyContactsDetailsComponent implements OnInit {
   relationshipList: any[]
   eContactFormGroup: FormGroup;
   trusteeLegaciesAction:boolean=true;
+  urlData:any={};
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -49,13 +50,11 @@ export class EmergencyContactsDetailsComponent implements OnInit {
       profileId: new FormControl('')
     });
 
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
     this.userId = localStorage.getItem("endUserId");
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
     this.getEmergencyContactsDetails();
-
-    let urlData = this.userapi.getURLData();
-    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   //function to get all events
@@ -68,7 +67,10 @@ export class EmergencyContactsDetailsComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.row = result.data;               
+        if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
+          this.trusteeLegaciesAction = false;
+        }
+        this.row = result.data;
         this.eContactFormGroup.controls['name'].setValue(this.row.name);
         this.eContactFormGroup.controls['relationship'].setValue(this.row.relationship);
         this.eContactFormGroup.controls['address'].setValue(this.row.address);
@@ -83,7 +85,7 @@ export class EmergencyContactsDetailsComponent implements OnInit {
     })
   }
 
-  deleteProfile() {
+  deleteProfile(customerId) {
     var statMsg = "Are you sure you want to delete contact?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
@@ -99,7 +101,12 @@ export class EmergencyContactsDetailsComponent implements OnInit {
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard', 'emergency-contacts'])
+              
+              if(this.urlData.userType == 'advisor'){
+                this.router.navigate(['/', 'advisor', 'legacies', 'emergency-contacts', customerId])
+              }else{
+                this.router.navigate(['/', 'customer', 'dashboard', 'emergency-contacts'])
+              }
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {

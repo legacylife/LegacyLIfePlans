@@ -21,18 +21,18 @@ export class SpecialNeedsDetailsComponent implements OnInit {
   row: any;
   title: string;
   trusteeLegaciesAction:boolean=true;
+  urlData:any={};
   constructor(
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
     private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router) {
   }
 
   ngOnInit() {
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
     this.userId = localStorage.getItem("endUserId");
-    this.getSpecialNeedsDetails();
-    let urlData = this.userapi.getURLData();
-    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId =  this.urlData.lastOne;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    this.getSpecialNeedsDetails();    
   }
 
   //function to get all events
@@ -44,6 +44,9 @@ export class SpecialNeedsDetailsComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
+        if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
+          this.trusteeLegaciesAction = false;
+        }
         this.row = result.data
         if (result.data.folderName == "Young_Children") {
           this.title = "Young Children"
@@ -58,7 +61,7 @@ export class SpecialNeedsDetailsComponent implements OnInit {
     })
   }
 
-  deleteSpecialNeeds() {
+  deleteSpecialNeeds(customerId='') {
     var statMsg = "Are you sure you want to delete this record?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
@@ -74,7 +77,11 @@ export class SpecialNeedsDetailsComponent implements OnInit {
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard', 'special-needs'])
+              if(this.urlData.userType == 'advisor'){
+                this.router.navigate(['/', 'advisor', 'legacies', 'special-needs', customerId])
+                }else{
+                this.router.navigate(['/', 'customer', 'dashboard', 'special-needs'])
+                }
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {

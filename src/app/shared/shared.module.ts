@@ -107,6 +107,17 @@ import { CustomerEssentialDetailsIdboxComponent } from 'app/views/customer/custo
 import { EssenioalIdBoxComponent } from 'app/views/customer/customer-home/essenioal-id-box/essenioal-id-box.component';
 import { essentialsMyProfessionalsComponent } from 'app/views/customer/customer-home/essentials-my-professionals/essentials-my-professionals.component';
 import { EssentialsMyProfessionalsDetailsComponent } from 'app/views/customer/customer-home/essentials-my-professionals-details/essentials-my-professionals-details.component';
+import { SpecialNeedsModelComponent } from 'app/views/customer/customer-home/special-needs/special-needs-model/special-needs-model.component';
+import { SpecialNeedsListingComponent } from 'app/views/customer/customer-home/special-needs/special-needs-listing/special-needs-listing.component';
+import { SpecialNeedsDetailsComponent } from 'app/views/customer/customer-home/special-needs/special-needs-details/special-needs-details.component';
+import { DeviceDetailsComponent } from 'app/views/customer/customer-home/passwords-digital-assets/devices/device-details/device-details.component';
+import { ElectronicMediaDetailsComponent } from 'app/views/customer/customer-home/passwords-digital-assets/electronic-media/electronic-media-details/electronic-media-details.component';
+import { PasswordsDigitalAssetsListComponent } from 'app/views/customer/customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
+import { DevicesModalComponent } from 'app/views/customer/customer-home/passwords-digital-assets/devices/devices-modal/devices-modal.component';
+import { ElectronicMediaModalComponent } from 'app/views/customer/customer-home/passwords-digital-assets/electronic-media/electronic-media-modal/electronic-media-modal.component';
+import { DebtDetailsComponent } from 'app/views/customer/customer-home/insurance-finance-debt/debt-details/debt-details.component';
+import { EmergencyContactsComponent } from 'app/views/customer/customer-home/emergency-contacts/emergency-contacts.component';
+import { EmergencyContactsDetailsComponent } from 'app/views/customer/customer-home/emergency-contacts-details/emergency-contacts-details.component';
 
 
 /* 
@@ -157,7 +168,18 @@ const classesToInclude = [
   CustomerEssentialDetailsIdboxComponent,
   EssenioalIdBoxComponent,
   essentialsMyProfessionalsComponent,
-  EssentialsMyProfessionalsDetailsComponent
+  EssentialsMyProfessionalsDetailsComponent,
+  SpecialNeedsListingComponent,
+  SpecialNeedsDetailsComponent,
+  SpecialNeedsModelComponent,
+  DeviceDetailsComponent,
+  ElectronicMediaDetailsComponent,
+  PasswordsDigitalAssetsListComponent,
+  DevicesModalComponent,
+  ElectronicMediaModalComponent,
+  DebtDetailsComponent,
+  EmergencyContactsComponent,
+  EmergencyContactsDetailsComponent
 ]
 
 @NgModule({
@@ -202,7 +224,8 @@ const classesToInclude = [
   ],
   entryComponents: [
     AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,
-    PetsModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent
+    PetsModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent,SpecialNeedsModelComponent,
+    DevicesModalComponent,ElectronicMediaModalComponent
   ],
   providers: [
     ThemeService,

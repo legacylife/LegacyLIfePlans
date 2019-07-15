@@ -26,15 +26,21 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
   modifiedDate:any;
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
+  urlData:any={};
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';
 
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    this.urlData = this.userapi.getURLData();
+    this.dynamicRoute = this.urlData.dynamicRoute;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    if (this.urlData.lastThird == "legacies") {
+      this.userId = this.urlData.lastOne;
+    }
     this.getDevicesList();
     this.getElectronicMediaList();
-    let urlData = this.userapi.getURLData();
-    this.dynamicRoute = urlData.dynamicRoute;
-    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   getDevicesList = (query = {}) => {

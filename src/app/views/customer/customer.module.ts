@@ -52,7 +52,6 @@ import { CustomerProfessionalComponent } from './customer-professionals/customer
 import { CustomerHomeEssentialComponent } from './customer-home/customer-essential/customer-home-essential.component';
 import { CustomerDashboardComponent } from './customer-home/customer-dashboard/customer-dashboard.component';
 import { CustomerDashboardDayOneComponent } from './customer-home/customer-dashboard-day-one/customer-dashboard-day-one.component';
-import { EmergencyContactsDetailsComponent } from './customer-home/emergency-contacts-details/emergency-contacts-details.component';
 import { CustomerSharedLegaciesComponent } from './customer-home/customer-shared-legacies/customer-shared-legacies.component';
 import { CustomerLegaciesDetailsComponent } from './customer-home/customer-legacies-details/customer-legacies-details.component';
 import { MarkAsDeceasedComponent } from './customer-home/mark-as-deceased-modal/mark-as-deceased-modal.component';
@@ -63,7 +62,6 @@ import { CustomerLegalStuffComponent } from './customer-home/customer-legal-stuf
 import { legalStuffModalComponent } from './customer-home/legal-stuff-modal/legal-stuff-modal.component';
 import { CustomerLegalStuffDetailsComponent } from './customer-home/customer-legal-stuff-details/customer-legal-stuff-details.component';
 import { addTrusteeModalComponent } from './customer-home/add-trustee-modal/add-trustee-modal.component';
-import { EmergencyContactsComponent } from './customer-home/emergency-contacts/emergency-contacts.component';
 import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
 import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
 // Professional
@@ -86,13 +84,10 @@ import { InsuranceModalComponent } from './customer-home/insurance-finance-debt/
 import { InsuranceDetailsComponent } from './customer-home/insurance-finance-debt/insurance-details/insurance-details.component';
 import { FinanceDetailsComponent } from './customer-home/insurance-finance-debt/finance-details/finance-details.component';
 import { FinanceModalComponent } from './customer-home/insurance-finance-debt/finance-modal/finance-modal.component';
-import { DebtDetailsComponent } from './customer-home/insurance-finance-debt/debt-details/debt-details.component';
 import { DebtModalComponent } from './customer-home/insurance-finance-debt/debt-modal/debt-modal.component';
 
 //passwords-digital-assets
-import { PasswordsDigitalAssetsListComponent } from './customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
-import { DevicesModalComponent } from './customer-home/passwords-digital-assets/devices/devices-modal/devices-modal.component';
-
+ 
 //import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
 /** Import the component modules */
 // import { LyButtonModule } from '@alyle/ui/button';
@@ -109,17 +104,11 @@ import { VehicleModelComponent } from './customer-home/real-estate-assets/vehicl
 import { AssetsModelComponent } from './customer-home/real-estate-assets/assets-model/assets-model.component';
 import { DetailsVehiclesComponent } from './customer-home/real-estate-assets/details-vehicles/details-vehicles.component';
 import { DetailsAssetsComponent } from './customer-home/real-estate-assets/details-assets/details-assets.component';
-import { SpecialNeedsListingComponent } from './customer-home/special-needs/special-needs-listing/special-needs-listing.component';
-import { SpecialNeedsDetailsComponent } from './customer-home/special-needs/special-needs-details/special-needs-details.component';
-import { SpecialNeedsModelComponent } from './customer-home/special-needs/special-needs-model/special-needs-model.component';
-import { DeviceDetailsComponent } from './customer-home/passwords-digital-assets/devices/device-details/device-details.component';
-//letters-messages-listing
+ //letters-messages-listing
 import { LettersMessagesListingComponent } from './customer-home/legacy-life-letters-messages/letters-messages-listing/letters-messages-listing.component';
 import { LettersMessagesDetailsComponent } from './customer-home/legacy-life-letters-messages/letters-messages-details/letters-messages-details.component';
 import { LettersMessagesModelComponent } from './customer-home/legacy-life-letters-messages/letters-messages-model/letters-messages-model.component';
-import { ElectronicMediaModalComponent } from './customer-home/passwords-digital-assets/electronic-media/electronic-media-modal/electronic-media-modal.component';
-import { ElectronicMediaDetailsComponent } from './customer-home/passwords-digital-assets/electronic-media/electronic-media-details/electronic-media-details.component';
-export class GlobalVariables {
+  export class GlobalVariables {
   testVal = '#00bcd4';
   Quepal = {
     default: `linear-gradient(135deg,#11998e 0%,#38ef7d 100%)`,
@@ -181,17 +170,15 @@ export class GlobalVariables {
     CustomerHomeEssentialComponent, CustomerDashboardComponent, CustomerDashboardDayOneComponent,
     CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent,
     CustomerMyPeopleComponent, CustomerLegalStuffComponent, legalStuffModalComponent,
-    addTrusteeModalComponent, EmergencyContactsComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,
-    EmergencyContactsDetailsComponent, CustomerLegalStuffDetailsComponent,
+    addTrusteeModalComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,CustomerLegalStuffDetailsComponent,
     CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent, ProfAddTrusteeModalComponent,
     CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent, FinalWishesComponent,
     FinalWishesFormModalComponent, FinalWishesDetailsComponent, ListingComponent, DetailsComponent, RealEstateModelComponent,
-    VehicleModelComponent, AssetsModelComponent, SpecialNeedsListingComponent, SpecialNeedsDetailsComponent,
-    SpecialNeedsModelComponent, DetailsVehiclesComponent, DetailsAssetsComponent,
+    VehicleModelComponent, AssetsModelComponent, DetailsVehiclesComponent, DetailsAssetsComponent,
     TimeCapsuleListComponent, TimeCapsuleMoalComponent, TimeCapsuleDetailsComponent, InsuranceFinanceDebtListComponent,
-    InsuranceModalComponent, InsuranceDetailsComponent, FinanceModalComponent, FinanceDetailsComponent, DebtDetailsComponent,
-    DebtModalComponent, PasswordsDigitalAssetsListComponent, DevicesModalComponent,DeviceDetailsComponent,LettersMessagesListingComponent,LettersMessagesDetailsComponent,
-    LettersMessagesModelComponent,ElectronicMediaModalComponent,ElectronicMediaDetailsComponent
+    InsuranceModalComponent, InsuranceDetailsComponent, FinanceModalComponent, FinanceDetailsComponent,
+    DebtModalComponent, LettersMessagesListingComponent,LettersMessagesDetailsComponent,
+    LettersMessagesModelComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
     // { provide: LY_THEME, useClass: MinimaLight, multi: true },
@@ -202,9 +189,9 @@ export class GlobalVariables {
     addTrusteeModalComponent, MarkAsDeceasedComponent,
     legalStuffModalComponent, SendAnEmailComponent,
     HireAdvisorComponent, FinalWishesFormModalComponent, AssetsModelComponent,
-    SpecialNeedsModelComponent, RealEstateModelComponent, VehicleModelComponent, TimeCapsuleMoalComponent,
-    InsuranceModalComponent, FinanceModalComponent, DebtModalComponent, DevicesModalComponent, ProfAddTrusteeModalComponent,
-    LettersMessagesModelComponent,ElectronicMediaModalComponent
+    RealEstateModelComponent, VehicleModelComponent, TimeCapsuleMoalComponent,
+    InsuranceModalComponent, FinanceModalComponent, DebtModalComponent, ProfAddTrusteeModalComponent,
+    LettersMessagesModelComponent
   ]
 })
 export class CustomerModule { }

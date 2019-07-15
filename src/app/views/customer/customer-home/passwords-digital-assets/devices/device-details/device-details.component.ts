@@ -29,6 +29,7 @@ export class DeviceDetailsComponent implements OnInit {
   typeOfDocumentList: any[];
   IsVisible: boolean = true;
   trusteeLegaciesAction:boolean=true;
+  urlData:any={};
   constructor( 
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -37,16 +38,14 @@ export class DeviceDetailsComponent implements OnInit {
 
   ngOnInit() {  
     this.userId = localStorage.getItem("endUserId");
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
-
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;    
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
     this.lock = new PatternLock('#patternHolder8', {
       allowRepeat: false,
       radius: 30, margin: 20,      
     });
-    this.getDeviceView();
-    let urlData = this.userapi.getURLData();
-    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
+    this.getDeviceView();    
   }
 
   setPattern(pattern: any) {
@@ -71,6 +70,9 @@ export class DeviceDetailsComponent implements OnInit {
         console.log(result.data)
       } else {
         if (result.data) {
+          if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
+            this.trusteeLegaciesAction = false;
+          }
           this.row = result.data;
           if(this.row.passwordPattern!=''){
             this.IsVisible= false;
@@ -100,7 +102,7 @@ export class DeviceDetailsComponent implements OnInit {
       })
   }
 
-  deleteDevices() {
+  deleteDevices(customerId='') {
     var statMsg = "Are you sure you want to delete device details?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
@@ -116,7 +118,11 @@ export class DeviceDetailsComponent implements OnInit {
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard', 'passwords-digital-assests'])
+              if(this.urlData.userType == 'advisor'){
+                this.router.navigate(['/', 'advisor', 'legacies', 'passwords-digital-assests', customerId])
+              }else{
+                this.router.navigate(['/', 'customer', 'dashboard', 'passwords-digital-assests'])
+              }
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {

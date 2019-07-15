@@ -28,7 +28,7 @@ export class SpecialNeedsListingComponent implements OnInit {
   selectedLegaciesId: string;
   customerLegacyType:string='customer';
   trusteeLegaciesAction:boolean=true;
-
+  urlData:any={};
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -39,13 +39,16 @@ export class SpecialNeedsListingComponent implements OnInit {
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    this.urlData = this.userapi.getURLData();
+    this.dynamicRoute = this.urlData.dynamicRoute;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+
+    if (this.urlData.lastThird == "legacies") {
+      this.userId = this.urlData.lastOne;
+    }
     this.getyoungChildrenList();
     this.getcPDisabilityList();
-    this.getfriendNeighborList();
-
-    let urlData = this.userapi.getURLData();
-    this.dynamicRoute = urlData.dynamicRoute;
-    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
+    this.getfriendNeighborList();  
   }
 
   getyoungChildrenList(query = {}, search = false) {

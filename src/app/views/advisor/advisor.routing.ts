@@ -28,6 +28,14 @@ import { CustomerEssentialDayOneComponent } from '../customer/customer-home/cust
 import { CustomerEssentialDetailsComponent } from '../customer/customer-home/customer-essential-details/customer-essential-details.component';
 import { CustomerEssentialDetailsIdboxComponent } from '../customer/customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
 import { EssentialsMyProfessionalsDetailsComponent } from '../customer/customer-home/essentials-my-professionals-details/essentials-my-professionals-details.component';
+import { SpecialNeedsListingComponent } from '../customer/customer-home/special-needs/special-needs-listing/special-needs-listing.component';
+import { SpecialNeedsDetailsComponent } from '../customer/customer-home/special-needs/special-needs-details/special-needs-details.component';
+import { PasswordsDigitalAssetsListComponent } from '../customer/customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
+import { DeviceDetailsComponent } from '../customer/customer-home/passwords-digital-assets/devices/device-details/device-details.component';
+import { DebtDetailsComponent } from '../customer/customer-home/insurance-finance-debt/debt-details/debt-details.component';
+import { ElectronicMediaDetailsComponent } from '../customer/customer-home/passwords-digital-assets/electronic-media/electronic-media-details/electronic-media-details.component';
+import { EmergencyContactsComponent } from '../customer/customer-home/emergency-contacts/emergency-contacts.component';
+import { EmergencyContactsDetailsComponent } from '../customer/customer-home/emergency-contacts-details/emergency-contacts-details.component';
 
 
 console.log('advisor---routing');
@@ -197,7 +205,7 @@ export const AdvisorRoutes: Routes = [
           },
           {
             path: 'emergency-contacts/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: EmergencyContactsComponent
           },
 	        {
             path: 'legal-detail-view/:id',
@@ -205,7 +213,7 @@ export const AdvisorRoutes: Routes = [
           },
           {
             path: 'emergency-contacts-details/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: EmergencyContactsDetailsComponent
           },
           {
             path: 'real-estate-assets/:id',
@@ -248,11 +256,11 @@ export const AdvisorRoutes: Routes = [
           },
           {
             path: 'special-needs/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: SpecialNeedsListingComponent
           },
           {
             path: 'special-needs-view/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: SpecialNeedsDetailsComponent
           },   
           {
             path: 'insurance-finance-debt/:id',
@@ -268,15 +276,15 @@ export const AdvisorRoutes: Routes = [
           }, 
           {
             path: 'debt-view/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: DebtDetailsComponent
           },  
           {
             path: 'passwords-digital-assests/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: PasswordsDigitalAssetsListComponent
           },         
           {
             path: 'device-view/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: DeviceDetailsComponent
           },
           {
             path: 'letters-messages/:id',
@@ -288,7 +296,7 @@ export const AdvisorRoutes: Routes = [
           },
           {
             path: 'electronic-media-view/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: ElectronicMediaDetailsComponent
           }
         ]
       },
