@@ -637,8 +637,11 @@ body{
                 &.get--feature{
                     border-radius: 2px;
                     background-color: #f9e17f;
-                }
-                &.active,
+                }       
+                &.active--link{
+                    border-radius: 2px;
+                    background-color: #f9e17f;
+                }        
                 &:hover{
                     .mat-icon,
                     span{

@@ -20,24 +20,24 @@ export const AuthRoutes: Routes = [
   {
     path: 'signin',
       component: SigninComponent,
-      data: { title: 'SignIn' },
+      data: { title: 'Signin' },
       canActivate: [ UserPreAuthGuard ]
   },
   {
       path: 'reset-password/:id',
       component: ResetPasswordComponent,
-      data: { title: 'reset password' },
+      data: { title: 'Reset Password' },
       canActivate: [ UserPreAuthGuard ]
   },
   {
     path: 'password-reset-success',
       component: PasswordResetSuccessfulComponent,
-      data: { title: 'reset password' },
+      data: { title: 'Reset Password' },
       canActivate: [ UserPreAuthGuard ]
   }, {
     path: 'forgot-password-success',
     component: ForgotPasswordSuccessfulComponent,
-    data: { title: 'Forgot password thank you' },
+    data: { title: 'Thank You' },
     canActivate: [ UserPreAuthGuard ]
   }
 

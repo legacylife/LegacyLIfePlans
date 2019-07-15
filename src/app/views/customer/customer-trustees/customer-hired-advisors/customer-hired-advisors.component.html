@@ -27,8 +27,8 @@
                   <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
                   <mat-menu #beforeMenu="matMenu" xPosition="before" class="llp--menu--droupdown">
                     <button mat-menu-item><span>Manage</span></button>
-                    <button mat-menu-item><span>View</span></button>
-                    <button mat-menu-item><span>Resend Invitation</span></button>
+                    <button mat-menu-item [routerLink]="['/customer/professionals/prof-details', row.advisorId?._id]"><span>View</span></button>
+                    <!-- <button mat-menu-item><span>Resend Invitation</span></button> -->
                   </mat-menu>
               </div>
             </mat-card-title>

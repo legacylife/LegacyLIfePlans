@@ -72,7 +72,8 @@ export const CustomerRoutes: Routes = [
       {
         path: '',
         component: CustomerSignupComponent,
-        canActivate: [UserPreAuthGuard]
+        canActivate: [UserPreAuthGuard],
+        data: { title: 'Customer Signup' }
       }
     ],
   },
@@ -92,138 +93,172 @@ export const CustomerRoutes: Routes = [
           },
           {
             path: 'customer-day-one',
-            component: CustomerDashboardDayOneComponent
+            component: CustomerDashboardDayOneComponent,
+            data: { title: 'Dashboard' }
           },
           {
             path: 'customer-day-two',
-            component: CustomerDashboardComponent
+            component: CustomerDashboardComponent,
+            data: { title: 'Dashboard' }
           },
           {
             path: 'customer-essential',
-            component: CustomerHomeEssentialComponent
+            component: CustomerHomeEssentialComponent,
+            data: { title: 'Essentials' }
           },
           {
             path: 'essential-day-one',
-            component: CustomerEssentialDayOneComponent
+            component: CustomerEssentialDayOneComponent,
+            data: { title: 'My Essentials' }
           },
           {
             path: 'essential-detail-view/:id',
-            component: CustomerEssentialDetailsComponent
+            component: CustomerEssentialDetailsComponent,
+            data: { title: 'My Essentials Detail' }
           },
           {
             path: 'essential-detail-idbox/:id',
-            component: CustomerEssentialDetailsIdboxComponent
+            component: CustomerEssentialDetailsIdboxComponent,
+            data: { title: 'My Essentials Detail' }
           },
           {
             path: 'essential-professionals-detail/:id',
-            component: EssentialsMyProfessionalsDetailsComponent
+            component: EssentialsMyProfessionalsDetailsComponent,
+            data: { title: 'Professionals Detail' }
           },
           {
             path: 'shared-lagacies',
-            component: CustomerSharedLegaciesComponent
+            component: CustomerSharedLegaciesComponent,
+            data: { title: 'Shared Lagacies' }
           },
           {
             path: 'lagacies-details',
-            component: CustomerLegaciesDetailsComponent
+            component: CustomerLegaciesDetailsComponent,
+            data: { title: 'Lagacies Details' }
           },
           {
             path: 'legal-stuff',
-            component: CustomerLegalStuffComponent
-          },
-          {
-            path: 'emergency-contacts',
-            component: EmergencyContactsComponent
+            component: CustomerLegalStuffComponent,
+            data: { title: 'Legal-Stuff List' }
           },
 	        {
             path: 'legal-detail-view/:id',
-            component: CustomerLegalStuffDetailsComponent
+            component: CustomerLegalStuffDetailsComponent,
+            data: { title: 'Legal-Stuff Detail' }
+          },
+          {
+            path: 'emergency-contacts',
+            component: EmergencyContactsComponent,
+            data: { title: 'Emergency Contacts' }
           },
           {
             path: 'emergency-contacts-details/:id',
-            component: EmergencyContactsDetailsComponent
+            component: EmergencyContactsDetailsComponent,
+            data: { title: 'Emergency Contacts Details' }
           },
           {
             path: 'real-estate-assets',
-            component: ListingComponent
+            component: ListingComponent,
+            data: { title: 'Real Estates' }
           },
           {
             path: 'real-estate-detail-view/:id',
-            component: DetailsComponent
+            component: DetailsComponent,
+            data: { title: 'Real Estate Detail' }
           },
           {
             path: 'real-estate-vehicle-detail-view/:id',
-            component: DetailsVehiclesComponent
+            component: DetailsVehiclesComponent,
+            data: { title: 'Real Estate Vehicle Detail' }
           },
           {
             path: 'real-estate-assets-detail-view/:id',
-            component: DetailsAssetsComponent
+            component: DetailsAssetsComponent,
+            data: { title: 'Real Assets Detail' }
           }, {
             path: 'final-wishes',
-            component: FinalWishesComponent
+            component: FinalWishesComponent,
+            data: { title: 'Final Wishes' }
           },
           {
             path: 'final-wishes-view/:id',
-            component: FinalWishesDetailsComponent
+            component: FinalWishesDetailsComponent,
+            data: { title: 'Final Wishes Details' }
           },
           {
             path: 'pets',
-            component: PetsListComponent
+            component: PetsListComponent,
+            data: { title: 'Pets List' }
           },
           {
             path: 'pets-view/:id',
-            component: PetsDetailsComponent
+            component: PetsDetailsComponent,
+            data: { title: 'Pets View' }
           },   
           {
             path: 'time-capsule',
-            component: TimeCapsuleListComponent
+            component: TimeCapsuleListComponent,
+            data: { title: 'Time Capsule List' }
           },         
           {
             path: 'time-capsule-view/:id',
-            component: TimeCapsuleDetailsComponent
+            component: TimeCapsuleDetailsComponent,
+            data: { title: 'Time Capsule Details' }
           },
           {
             path: 'special-needs',
-            component: SpecialNeedsListingComponent
+            component: SpecialNeedsListingComponent,
+            data: { title: 'Special Needs List' }
           },
           {
             path: 'special-needs-view/:id',
-            component: SpecialNeedsDetailsComponent
+            component: SpecialNeedsDetailsComponent,
+            data: { title: 'Special Needs Details' }
           },   
           {
             path: 'insurance-finance-debt',
-            component: InsuranceFinanceDebtListComponent
+            component: InsuranceFinanceDebtListComponent,
+            data: { title: 'Insurance-Finance-Debt List' }
           },
           {
             path: 'insurance-view/:id',
-            component: InsuranceDetailsComponent
+            component: InsuranceDetailsComponent,
+            data: { title: 'Insurance Details' }
           },
           {
             path: 'finance-view/:id',
-            component: FinanceDetailsComponent
+            component: FinanceDetailsComponent,
+            data: { title: 'Finance Details' }
           }, 
           {
             path: 'debt-view/:id',
-            component: DebtDetailsComponent
+            component: DebtDetailsComponent,
+            data: { title: 'Debt Details' }
           },  
           {
             path: 'passwords-digital-assests',
-            component: PasswordsDigitalAssetsListComponent
+            component: PasswordsDigitalAssetsListComponent,
+            data: { title: 'Passwords Digital Assests List' }
           },         
           {
             path: 'device-view/:id',
-            component: DeviceDetailsComponent
+            component: DeviceDetailsComponent,
+            data: { title: 'Digital Devices' }
           },
           {
             path: 'letters-messages',
-            component: LettersMessagesListingComponent
+            component: LettersMessagesListingComponent,
+            data: { title: 'Letters Messages List' }
           },         
           {
             path: 'letters-messages-view/:id',
-            component: LettersMessagesDetailsComponent
+            component: LettersMessagesDetailsComponent,
+            data: { title: 'Letters Messages Details' }
           },
           {
             path: 'electronic-media-view/:id',
-            component: ElectronicMediaDetailsComponent
+            component: ElectronicMediaDetailsComponent,
+            data: { title: 'Electronic Media Details' }
           },
         ]
       },
@@ -235,22 +270,26 @@ export const CustomerRoutes: Routes = [
     children: [
       {
         path: '',
-        component: TodosListingComponent       
+        component: TodosListingComponent,
+        data: { title: 'To-Do\'s' }       
       }
     ]
   },
   {
     path: 'trustees',
     component: CustomerLayoutComponent,
+    data: { title: '' },
     children: [
       {
         path: '',
         component: CustomerTrusteesComponent,
         canActivate: [UserAuthGuard],
+        data: { title: 'Trustees List' },
         children: [
           {
             path: '',
-            component: CustomerMyTrusteeComponent
+            component: CustomerMyTrusteeComponent,
+            data: { title: 'Trustees List' }
           },
           {
             path: 'my-people',
@@ -258,28 +297,13 @@ export const CustomerRoutes: Routes = [
           },          
           {
             path: 'hired-advisor',
-            component: CustomerHiredAdvisorComponent
+            component: CustomerHiredAdvisorComponent,
+            data: { title: 'Hired Advisor List' }
           }
         ]
       },
     ]
-  },
-
-  {
-    path: 'professionals2',
-    component: CustomerLayoutComponent,
-    children: [
-      {      
-        children: [
-          {
-            path: 'prof-details2/:id',
-            component: CustomerProfessionalComponent
-          }
-        ]
-      },
-    ]
-  },
-  
+  }, 
   {
     path: 'professionals',
     component: CustomerLayoutComponent,
@@ -287,6 +311,7 @@ export const CustomerRoutes: Routes = [
       {
         path: 'prof-details/:id',
         component: CustomerProfessionalComponent,
+        data: { title: 'Professionals List' }
         // canActivate: [UserAuthGuard],
         // children: [
         //   {
@@ -308,7 +333,8 @@ export const CustomerRoutes: Routes = [
         children: [
           {
             path: 'prof-advisor-listing',
-            component: ProfAdvisorListingComponent
+            component: ProfAdvisorListingComponent,
+            data: { title: 'Advisor listing' }
           }
         ]
       }
@@ -321,7 +347,8 @@ export const CustomerRoutes: Routes = [
       {
         path: '',
         component: UpdateProfileComponent,
-        canActivate: [UserAuthGuard]
+        canActivate: [UserAuthGuard],
+        data: { title: 'Update Profile' }
       }
     ]
   }, {
@@ -332,17 +359,20 @@ export const CustomerRoutes: Routes = [
         path: '',
         component: CustomerAccountSettingComponent,
         canActivate: [UserAuthGuard],
-        canDeactivate: [CanDeactivateGuard]
+        canDeactivate: [CanDeactivateGuard],
+        data: { title: 'Account Setting' }
       }
     ]
   }, {
     path: 'customer-subscription',
     component: CustomerLayoutComponent,
+    data: { title: 'Subscription' },
     children: [
       {
         path: '',
         component: CustomerSubscriptionComponent,
-        canActivate: [UserAuthGuard]
+        canActivate: [UserAuthGuard],
+        data: { title: 'Subscription' }
       }
     ]
   },
