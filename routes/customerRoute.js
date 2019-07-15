@@ -224,6 +224,8 @@ function emergencyContactsSubmit(req, res) {
     let { proquery } = req.body;
     var emergency = new emergencyContacts();
     emergency.customerId = from.customerId;
+    emergency.customerLegacyId = proquery.customerLegacyId;
+    emergency.customerLegacyType = proquery.customerLegacyType;
     emergency.address = proquery.address;
     emergency.emailAddress = proquery.emailAddress;
     emergency.mobile = proquery.mobile;
