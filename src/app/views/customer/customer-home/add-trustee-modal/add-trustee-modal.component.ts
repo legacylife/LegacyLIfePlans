@@ -259,11 +259,12 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
 
   getTrusteeView = (query = {}, search = false) => {    
     let  profileIds = this.selectedProfileId;
+    console.log("profileIds",profileIds)
     let  req_vars = {
       query: Object.assign({status:"blanck"})
     }
     if (profileIds) {
-      let  req_vars = {
+        req_vars = {
           query: Object.assign({_id:profileIds})
       }
     }
@@ -279,8 +280,9 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
       
           this.trustFormGroup.controls['profileId'].setValue(profileIds);
           this.trustFormGroup.controls['firstName'].setValue(this.row.firstName);
-          this.trustFormGroup.controls['lastName'].setValue(this.row.lastName); 
+          this.trustFormGroup.controls['lastName'].setValue(this.row.lastName);           
           this.trustFormGroup.controls['email'].setValue(this.row.email);
+          this.trustFormGroup.controls['email'].disable();
           this.trustFormGroup.controls['emailValidation'].setValue('1');
           this.trustFormGroup.controls['relation'].setValue(this.row.relation);
 

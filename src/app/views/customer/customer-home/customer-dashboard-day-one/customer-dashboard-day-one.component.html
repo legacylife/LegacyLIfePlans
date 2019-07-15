@@ -40,7 +40,7 @@
           </div>
         </mat-card-content>
         <mat-card-content class="appointees--wrapper" *ngIf="showTrustyListing">  
-            <mat-card class="appointees--section p-0 {{row?.status==='Pending' ? 'pending' : ''}}"  *ngFor="let row of trustyListing; let i = index"  [routerLink]="['/customer/dashboard/trustee-view', row?._id]">
+            <mat-card class="appointees--section p-0 {{row?.status==='Pending' ? 'pending' : ''}}"  *ngFor="let row of trustyListing; let i = index">
                 <mat-card-header class="m-0">
                   <mat-card-title class="m-0">
                     <div class="appointees--pic">

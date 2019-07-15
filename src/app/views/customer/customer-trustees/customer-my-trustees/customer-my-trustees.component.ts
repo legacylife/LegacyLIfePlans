@@ -33,34 +33,6 @@ export class CustomerMyTrusteeComponent implements OnInit {
     this.getTrusteeList('All','-1');
   }
 
-  createDirectory = () => {    
-    let query = {};
-    let req_vars = {
-      query: Object.assign({ folderName: this.userId }, query)
-    }
-    this.userapi.download('documents/createUserDir', req_vars).subscribe(res => {
-        console.log(res);
-    });
-  }
-
-  downloadFile = (filename) => {    
-    let query = {};
-    let req_vars = {
-      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
-    }
-    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
-      window.open(window.URL.createObjectURL(res));
-      this.downloadFiles(filename)
-    });
-  }
-
-  downloadFiles(filePath){
-    var link=document.createElement('a');
-    link.href = filePath;
-    link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
-    link.click();
-  }
-
   getTrusteeList = (search,sort) => {
     if(sort){
       localStorage.setItem("trustee_sort", sort);
@@ -96,7 +68,6 @@ export class CustomerMyTrusteeComponent implements OnInit {
     })
   }
 
-
   openAddTrusteeModal(id,isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(addTrusteeModalComponent, {     
       width: '720px',
@@ -131,6 +102,43 @@ export class CustomerMyTrusteeComponent implements OnInit {
     })
  }
 
+ createDirectory = () => {    
+  let query = {};
+  let req_vars = {
+    query: Object.assign({ folderName: this.userId }, query)
+  }
+  this.userapi.download('documents/createUserDir', req_vars).subscribe(res => {
+      console.log(res);
+  });
+}
 
+downloadFile = (filename) => {    
+  let query = {};
+  let req_vars = {
+    query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+  }
+  this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+    window.open(window.URL.createObjectURL(res));
+    this.downloadFiles(filename)
+  });
+}
+
+downloadFiles(filePath){
+  var link=document.createElement('a');
+  link.href = filePath;
+  link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+  link.click();
+}
+
+
+FolderSize = () => {    
+  let query = {};
+  let req_vars = {
+    query: Object.assign({ userId: this.userId}, query)
+  }
+  this.userapi.download('documents/checkFolderSize', req_vars).subscribe(res => {
+    console.log(res);
+  });
+}
 
 }
