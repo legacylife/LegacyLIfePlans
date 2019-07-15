@@ -1174,11 +1174,11 @@ function deleteInviteDocument(req, res) {
 }
 
 function downloadDocs(req,res) {
-  let { query } = req.body;
-  let filePath = query.docPath+'/'+query.filename;
-  let filename = query.filename
-  var params = {Bucket: constants.s3Details.bucketName,Key:filename};
- 
+  let { query } = req.body; 
+  let filePath = query.docPath+query.filename;
+  let filename = query.filename;
+  var params = {Bucket: constants.s3Details.bucketName,Key:filePath};
+  console.log("params --->",params);
   let ext = filename.split('.')
   ext = ext[ext.length - 1];
   try {
@@ -1226,10 +1226,11 @@ function userFolderSize(req,res) {
 
   const s3params = {
     Bucket: constants.s3Details.bucketName,
-    MaxKeys: 20,
+    MaxKeys: 2000,
     //Delimiter: '/'+filename,
     Prefix: filename
   };
+  
   // const s3params = {
   //   Bucket: 'bucket-name',
   //   MaxKeys: 20,
@@ -1252,7 +1253,7 @@ function userFolderSize(req,res) {
   // ext = ext[ext.length - 1];
   try {
     
-    const stream = s3.s3.listObjectsV2(s3params, (err, data)=>{
+    const stream = s3.s3.getObject(s3params, (err, data)=>{
       console.log("data :-  ",data);
     })
   // console.log("stream :- ",stream);
