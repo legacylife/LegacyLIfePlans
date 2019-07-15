@@ -425,7 +425,9 @@ function myProfessionalsUpdate(req, res) {
   } else {
     let { proquery } = req.body;
     var profesion = new MyProfessional();
-    profesion.customerId = query.customerId;
+    profesion.customerId = proquery.customerId;
+    profesion.customerLegacyId = proquery.customerLegacyId;
+    profesion.customerLegacyType = proquery.customerLegacyType;
     profesion.namedProfessionals = proquery.namedProfessionals;
     profesion.businessName = proquery.businessName;
     profesion.name = proquery.name;
@@ -441,7 +443,7 @@ function myProfessionalsUpdate(req, res) {
       } else {
         console.log("newEntry :-", newEntry);
 
-        logData.customerId = query.customerId;
+        logData.customerId = proquery.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
