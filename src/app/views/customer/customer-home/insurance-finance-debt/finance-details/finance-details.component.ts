@@ -26,6 +26,7 @@ export class FinanceDetailsComponent implements OnInit {
   row: any;
   policyTypeList:any[];
   re =  "/(?:\.([^.]+))?$/" ;
+  urlData:any={};
   trusteeLegaciesAction:boolean=true;
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
@@ -36,12 +37,10 @@ export class FinanceDetailsComponent implements OnInit {
   ngOnInit() {  
     this.userId = localStorage.getItem("endUserId");
     this.docPath = filePath;
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
+    this.urlData = this.userapi.getURLData();
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    this.selectedProfileId = this.urlData.lastOne;
     this.getfinanceView();
-
-    let urlData = this.userapi.getURLData();
-    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   //function to get all events
@@ -59,6 +58,9 @@ export class FinanceDetailsComponent implements OnInit {
         console.log(result.data)
       } else {
         if (result.data) {
+          if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
+            this.trusteeLegaciesAction = false;
+          }
           this.row = result.data;
         }
       }  
@@ -82,7 +84,7 @@ export class FinanceDetailsComponent implements OnInit {
       })
   }
 
-  deleteFinance() {
+  deleteFinance(customerId='') {
     var statMsg = "Are you sure you want to delete finance details?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
@@ -98,7 +100,11 @@ export class FinanceDetailsComponent implements OnInit {
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard', 'insurance-finance-debt'])
+              if(this.urlData.userType == 'advisor'){
+                this.router.navigate(['/', 'advisor', 'legacies', 'insurance-finance-debt', customerId])
+              }else{
+                this.router.navigate(['/', 'customer', 'dashboard', 'insurance-finance-debt'])
+              }
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {

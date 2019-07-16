@@ -131,6 +131,12 @@ import { TimeCapsuleDetailsComponent } from 'app/views/customer/customer-home/ti
 import { legalStuffModalComponent } from 'app/views/customer/customer-home/legal-stuff-modal/legal-stuff-modal.component';
 import { CustomerLegalStuffComponent } from 'app/views/customer/customer-home/customer-legal-stuff/customer-legal-stuff.component';
 import { CustomerLegalStuffDetailsComponent } from 'app/views/customer/customer-home/customer-legal-stuff-details/customer-legal-stuff-details.component';
+import { InsuranceFinanceDebtListComponent } from 'app/views/customer/customer-home/insurance-finance-debt/insurance-finance-debt-list/insurance-finance-debt-list.component';
+import { InsuranceDetailsComponent } from 'app/views/customer/customer-home/insurance-finance-debt/insurance-details/insurance-details.component';
+import { FinanceDetailsComponent } from 'app/views/customer/customer-home/insurance-finance-debt/finance-details/finance-details.component';
+import { InsuranceModalComponent } from 'app/views/customer/customer-home/insurance-finance-debt/insurance-modal/insurance-modal.component';
+import { FinanceModalComponent } from 'app/views/customer/customer-home/insurance-finance-debt/finance-modal/finance-modal.component';
+import { DebtModalComponent } from 'app/views/customer/customer-home/insurance-finance-debt/debt-modal/debt-modal.component';
 
 
 /* 
@@ -205,7 +211,14 @@ const classesToInclude = [
   TimeCapsuleDetailsComponent,
   legalStuffModalComponent,
   CustomerLegalStuffComponent,
-  CustomerLegalStuffDetailsComponent
+  CustomerLegalStuffDetailsComponent,
+  InsuranceFinanceDebtListComponent,
+  InsuranceDetailsComponent,
+  FinanceDetailsComponent,
+  DebtDetailsComponent,
+  InsuranceModalComponent,
+  FinanceModalComponent,
+  DebtModalComponent
 ]
 
 @NgModule({
@@ -252,7 +265,8 @@ const classesToInclude = [
     AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,
     PetsModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent,SpecialNeedsModelComponent,
     DevicesModalComponent,ElectronicMediaModalComponent,AssetsModelComponent,
-    VehicleModelComponent,RealEstateModelComponent,TimeCapsuleMoalComponent,legalStuffModalComponent
+    VehicleModelComponent,RealEstateModelComponent,TimeCapsuleMoalComponent,legalStuffModalComponent,InsuranceModalComponent,
+    FinanceModalComponent,DebtModalComponent
   ],
   providers: [
     ThemeService,

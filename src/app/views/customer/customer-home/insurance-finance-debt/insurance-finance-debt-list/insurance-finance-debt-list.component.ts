@@ -32,16 +32,21 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
   financeTypeList:any[];
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
+  urlData:any={};
+
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    this.urlData = this.userapi.getURLData();
+    this.dynamicRoute = this.urlData.dynamicRoute;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction;
+    if (this.urlData.lastThird == "legacies") {
+      this.userId = this.urlData.lastOne;
+    }
     this.getInsuranceList();
     this.getFinanceList();
-    this.getDebtList();
-    let urlData = this.userapi.getURLData();
-    this.dynamicRoute = urlData.dynamicRoute;
-    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
+    this.getDebtList();    
   }
 
   getInsuranceList = (query = {}) => {
@@ -78,7 +83,7 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
         return;
       }
     })
-  }
+  } 
 
   getFinanceList = (query = {}) => {
     const req_vars = {
@@ -91,7 +96,6 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
         console.log(result.data)
       } else {
         this.financeListing = result.data.financeList;
-        console.log(this.financeListing)
         this.showFinanceListingCnt = this.financeListing.length;  
         if (this.showFinanceListingCnt>0) {
           this.showFinanceListing = true;
@@ -122,7 +126,6 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
       console.error(err);
     })
   }
-
 
   openDebtModal() {
     let dialogRef: MatDialogRef<any> = this.dialog.open(DebtModalComponent, {     

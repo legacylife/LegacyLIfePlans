@@ -69,13 +69,6 @@ import { ProfAdvisorListingComponent } from './customer-professionals-landing/pr
 import { FinalWishesComponent } from './customer-home/final-wishes/final-wishes-list/final-wishes-list.component';
 import { FinalWishesFormModalComponent } from './customer-home/final-wishes/final-wishes-form-modal/final-wishes-form-modal.component';
 import { FinalWishesDetailsComponent } from './customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
-//Insurance Finance & Debt
-import { InsuranceFinanceDebtListComponent } from './customer-home/insurance-finance-debt/insurance-finance-debt-list/insurance-finance-debt-list.component';
-import { InsuranceModalComponent } from './customer-home/insurance-finance-debt/insurance-modal/insurance-modal.component';
-import { InsuranceDetailsComponent } from './customer-home/insurance-finance-debt/insurance-details/insurance-details.component';
-import { FinanceDetailsComponent } from './customer-home/insurance-finance-debt/finance-details/finance-details.component';
-import { FinanceModalComponent } from './customer-home/insurance-finance-debt/finance-modal/finance-modal.component';
-import { DebtModalComponent } from './customer-home/insurance-finance-debt/debt-modal/debt-modal.component';
 
 //passwords-digital-assets
  
@@ -157,8 +150,7 @@ import { LettersMessagesModelComponent } from './customer-home/legacy-life-lette
     CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent, ProfAddTrusteeModalComponent,
     CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent, FinalWishesComponent,
     FinalWishesFormModalComponent, FinalWishesDetailsComponent, 
-    InsuranceFinanceDebtListComponent, InsuranceModalComponent, InsuranceDetailsComponent, FinanceModalComponent, FinanceDetailsComponent,
-    DebtModalComponent, LettersMessagesListingComponent,LettersMessagesDetailsComponent, LettersMessagesModelComponent
+    LettersMessagesListingComponent,LettersMessagesDetailsComponent, LettersMessagesModelComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
     // { provide: LY_THEME, useClass: MinimaLight, multi: true },
@@ -168,8 +160,7 @@ import { LettersMessagesModelComponent } from './customer-home/legacy-life-lette
   entryComponents: [ChangePassComponent,
     addTrusteeModalComponent, MarkAsDeceasedComponent,
     SendAnEmailComponent, HireAdvisorComponent, FinalWishesFormModalComponent,
-    InsuranceModalComponent, FinanceModalComponent, DebtModalComponent, ProfAddTrusteeModalComponent,
-    LettersMessagesModelComponent
+    ProfAddTrusteeModalComponent,LettersMessagesModelComponent
   ]
 })
 export class CustomerModule { }

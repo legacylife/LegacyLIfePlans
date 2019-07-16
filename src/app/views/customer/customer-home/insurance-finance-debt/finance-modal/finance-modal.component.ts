@@ -33,6 +33,9 @@ export class FinanceModalComponent implements OnInit {
   newVal:boolean = false;
   docPath: string;
   selectedProfileId: string;
+  urlData:any={};
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,private confirmService: AppConfirmService,private loader: AppLoaderService,private router: Router, private userapi: UserAPIService) { }
 
   ngOnInit() {
@@ -52,12 +55,17 @@ export class FinanceModalComponent implements OnInit {
         });
 
         this.FinanceDocsList = [];
-        const locationArray = location.href.split('/')
-        this.selectedProfileId = locationArray[locationArray.length - 1];
-
-        if(this.selectedProfileId && this.selectedProfileId == 'insurance-finance-debt'){
-          this.selectedProfileId = "";   
-        }    
+        this.urlData = this.userapi.getURLData();
+        this.selectedProfileId = this.urlData.lastOne;
+        if (this.selectedProfileId && this.selectedProfileId == 'insurance-finance-debt' && this.urlData.lastThird != "legacies") {
+          this.selectedProfileId = "";
+        }        
+        if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'insurance-finance-debt') {
+            this.customerLegaciesId = this.userId;
+            this.customerLegacyType =  this.urlData.userType;
+            this.userId = this.urlData.lastOne;          
+            this.selectedProfileId = "";        
+        }
         this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
         this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
         this.getFinanceView();
@@ -102,8 +110,16 @@ export class FinanceModalComponent implements OnInit {
       if(profileIds){
         this.selectedProfileId = profileIds;
       }
+      if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'insurance-finance-debt') {
+        profileInData.customerLegacyId = this.customerLegaciesId
+        profileInData.customerLegacyType = this.customerLegacyType
+      }
+  
+      if(!profileInData.profileId || profileInData.profileId ==''){
+        profileInData.customerId = this.userId
+      }
       const req_vars = {
-        query: Object.assign({ _id: this.selectedProfileId,customerId: this.userId  }),
+        query: Object.assign({ _id: this.selectedProfileId}),
         proquery: Object.assign(profileInData)
       }
       this.loader.open();     
@@ -129,7 +145,7 @@ export class FinanceModalComponent implements OnInit {
       if (this.selectedProfileId) {
         profileIds = this.selectedProfileId;
         req_vars = {
-          query: Object.assign({ _id:profileIds, customerId: this.userId })
+          query: Object.assign({ _id:profileIds })
         }
       }
       this.loader.open(); 
@@ -249,7 +265,7 @@ export class FinanceModalComponent implements OnInit {
       }
       if(profileIds){
          req_vars = {
-          query: Object.assign({ _id:profileIds, customerId: this.userId  }),
+          query: Object.assign({ _id:profileIds }),
           fields:{_id:1,documents:1}
         }
       }    

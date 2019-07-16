@@ -44,6 +44,9 @@ import { TimeCapsuleListComponent } from '../customer/customer-home/time-capsule
 import { TimeCapsuleDetailsComponent } from '../customer/customer-home/time-capsule/time-capsule-details/time-capsule-details.component';
 import { CustomerLegalStuffDetailsComponent } from '../customer/customer-home/customer-legal-stuff-details/customer-legal-stuff-details.component';
 import { CustomerLegalStuffComponent } from '../customer/customer-home/customer-legal-stuff/customer-legal-stuff.component';
+import { InsuranceFinanceDebtListComponent } from '../customer/customer-home/insurance-finance-debt/insurance-finance-debt-list/insurance-finance-debt-list.component';
+import { InsuranceDetailsComponent } from '../customer/customer-home/insurance-finance-debt/insurance-details/insurance-details.component';
+import { FinanceDetailsComponent } from '../customer/customer-home/insurance-finance-debt/finance-details/finance-details.component';
 
 
 console.log('advisor---routing');
@@ -272,15 +275,15 @@ export const AdvisorRoutes: Routes = [
           },   
           {
             path: 'insurance-finance-debt/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: InsuranceFinanceDebtListComponent
           },
           {
             path: 'insurance-view/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: InsuranceDetailsComponent
           },
           {
             path: 'finance-view/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: FinanceDetailsComponent
           }, 
           {
             path: 'debt-view/:id',
