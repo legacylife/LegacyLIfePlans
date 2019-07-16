@@ -92,7 +92,7 @@ function petsFormUpdate(req, res) {
   } else { 
             let { proquery } = req.body;
             var insert = new pet();
-            insert.customerId = query.customerId;
+            insert.customerId = proquery.customerId;
             insert.customerLegacyId = proquery.customerLegacyId;
             insert.customerLegacyType = proquery.customerLegacyType;
             insert.name = proquery.name;

@@ -348,6 +348,8 @@ function personalIdUpdate(req, res) {
     let { proquery } = req.body;
     var personal = new personalIdProof();
     proquery.customerId = from.customerId;
+    proquery.customerLegacyId = proquery.customerLegacyId;
+    proquery.customerLegacyType = proquery.customerLegacyType;
     proquery.status = 'Active';
     proquery.createdOn = new Date();
     proquery.modifiedOn = new Date();
