@@ -137,6 +137,9 @@ import { FinanceDetailsComponent } from 'app/views/customer/customer-home/insura
 import { InsuranceModalComponent } from 'app/views/customer/customer-home/insurance-finance-debt/insurance-modal/insurance-modal.component';
 import { FinanceModalComponent } from 'app/views/customer/customer-home/insurance-finance-debt/finance-modal/finance-modal.component';
 import { DebtModalComponent } from 'app/views/customer/customer-home/insurance-finance-debt/debt-modal/debt-modal.component';
+import { FinalWishesComponent } from 'app/views/customer/customer-home/final-wishes/final-wishes-list/final-wishes-list.component';
+import { FinalWishesDetailsComponent } from 'app/views/customer/customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
+import { FinalWishesFormModalComponent } from 'app/views/customer/customer-home/final-wishes/final-wishes-form-modal/final-wishes-form-modal.component';
 
 
 /* 
@@ -218,7 +221,10 @@ const classesToInclude = [
   DebtDetailsComponent,
   InsuranceModalComponent,
   FinanceModalComponent,
-  DebtModalComponent
+  DebtModalComponent,
+  FinalWishesComponent,
+  FinalWishesDetailsComponent,
+  FinalWishesFormModalComponent
 ]
 
 @NgModule({
@@ -266,7 +272,7 @@ const classesToInclude = [
     PetsModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent,SpecialNeedsModelComponent,
     DevicesModalComponent,ElectronicMediaModalComponent,AssetsModelComponent,
     VehicleModelComponent,RealEstateModelComponent,TimeCapsuleMoalComponent,legalStuffModalComponent,InsuranceModalComponent,
-    FinanceModalComponent,DebtModalComponent
+    FinanceModalComponent,DebtModalComponent,FinalWishesFormModalComponent
   ],
   providers: [
     ThemeService,

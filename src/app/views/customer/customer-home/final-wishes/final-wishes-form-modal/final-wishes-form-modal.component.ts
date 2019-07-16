@@ -31,6 +31,10 @@ export class FinalWishesFormModalComponent implements OnInit {
   finalWishList:any = [];
   docPath: string;  
   showCalendarField:boolean = false; 
+  urlData:any={};
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';
+
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService  ,@Inject(MAT_DIALOG_DATA) public data: any ) 
@@ -50,24 +54,29 @@ export class FinalWishesFormModalComponent implements OnInit {
       calendarDate: new FormControl(''),
       profileId: new FormControl('')
      });
+    
      this.wishDocumentsList = [];
-
-     const locationArray = location.href.split('/')
-     this.selectedProfileId = locationArray[locationArray.length - 1];
-
-     if(this.selectedProfileId && this.selectedProfileId == 'final-wishes'){
-        this.selectedProfileId = "";   
-     }    
-
-     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
-     this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
-     this.subFolderDocumentsList = [];
-     this.getFinalWishesView();
-
-     if(this.folderName == 'Celebration of Life'){
-       this.showCalendarField = true;
-     }
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    if (this.selectedProfileId && this.selectedProfileId == 'final-wishes' && this.urlData.lastThird != "legacies") {
+      this.selectedProfileId = "";
     }
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'final-wishes') {
+        this.customerLegaciesId = this.userId;
+        this.customerLegacyType =  this.urlData.userType;
+        this.userId = this.urlData.lastOne;          
+        this.selectedProfileId = "";        
+    }
+
+    this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
+    this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
+    this.subFolderDocumentsList = [];
+    this.getFinalWishesView();
+
+    if(this.folderName == 'Celebration of Life'){
+       this.showCalendarField = true;
+    }
+  }
 
     getFinalWishesView = (query = {}, search = false) => {    
       let req_vars = {
@@ -111,19 +120,29 @@ export class FinalWishesFormModalComponent implements OnInit {
       var query = {};
       var proquery = {};     
       profileInData.subFolderName = this.folderName;
+      if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'final-wishes') {
+        profileInData.customerLegacyId = this.customerLegaciesId
+        profileInData.customerLegacyType = this.customerLegacyType
+      }
+
+      if(!profileInData.profileId || profileInData.profileId ==''){
+        profileInData.customerId = this.userId
+      }
+
       let req_vars = {
-        query: Object.assign({customerId: this.userId,subFolderName:this.folderName }),
+        query: Object.assign({subFolderName:this.folderName }),
         proquery: Object.assign(profileInData),
         message: Object.assign({ messageText: this.folderName })
       }
       let profileIds = this.FinalForm.controls['profileId'].value;
       if(profileIds){
         req_vars = {
-          query: Object.assign({ _id:profileIds, customerId: this.userId }),
+          query: Object.assign({ _id:profileIds}),
           proquery: Object.assign(profileInData),
           message: Object.assign({ messageText: this.folderName })
         }
       }
+
       this.loader.open();     
       this.userapi.apiRequest('post', 'finalwish/wishes-form-submit', req_vars).subscribe(result => {
         this.loader.close();
@@ -194,10 +213,10 @@ export class FinalWishesFormModalComponent implements OnInit {
     }
     if(profileIds){
        req_vars = {
-        query: Object.assign({ _id:profileIds, customerId: this.userId }),
+        query: Object.assign({ _id:profileIds }),
         fields:{_id:1,subFolderDocuments:1}
       }
-    }    
+    }
     this.userapi.apiRequest('post', 'finalwish/view-wish-details', req_vars).subscribe(result => {
       if (result.status == "error") {
       } else {

@@ -30,18 +30,21 @@ export class FinalWishesComponent implements OnInit {
   modifiedDate:any;
 
   WishesList:any = [];
+  urlData:any={};
+	  
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
 
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    this.urlData = this.userapi.getURLData();
+    this.dynamicRoute = this.urlData.dynamicRoute;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    if (this.urlData.lastThird == "legacies") {
+      this.userId = this.urlData.lastOne;
+    }    
     this.getWishList();
-    let urlData = this.userapi.getURLData();
-    this.dynamicRoute = urlData.dynamicRoute;
-    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
-    
-
   }
 
   getWishList = (query = {}) => {

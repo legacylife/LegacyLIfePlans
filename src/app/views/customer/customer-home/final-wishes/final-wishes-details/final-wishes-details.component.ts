@@ -23,6 +23,7 @@ export class FinalWishesDetailsComponent implements OnInit {
   docPath: string;
   re =  "/(?:\.([^.]+))?$/" ;
   trusteeLegaciesAction:boolean=true;
+  urlData:any={};
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -32,11 +33,10 @@ export class FinalWishesDetailsComponent implements OnInit {
   ngOnInit() {
     this.docPath = filePath;
     this.userId = localStorage.getItem("endUserId");
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
     this.getFinalWishView();
-    let urlData = this.userapi.getURLData();
-    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   //function to get all events
@@ -54,6 +54,9 @@ export class FinalWishesDetailsComponent implements OnInit {
         console.log(result.data)
       } else {
         if (result.data) {
+          if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
+            this.trusteeLegaciesAction = false;
+          }          
           this.row = result.data;
         }
       }  
@@ -81,7 +84,7 @@ export class FinalWishesDetailsComponent implements OnInit {
       })
   }
 
-  deleteFinalWish(FolderNames) {
+  deleteFinalWish(FolderNames, customerId='') {
     let folder = "";
     if(FolderNames == 'Funeral Plans'){ folder = 'funeral plan details'}
     if(FolderNames == 'Obituary'){ folder = 'obituary details'}
@@ -101,7 +104,11 @@ export class FinalWishesDetailsComponent implements OnInit {
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard', 'final-wishes'])
+              if(this.urlData.userType == 'advisor'){
+                this.router.navigate(['/', 'advisor', 'legacies', 'final-wishes', customerId])
+              }else{
+                this.router.navigate(['/', 'customer', 'dashboard', 'final-wishes'])
+              }
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {

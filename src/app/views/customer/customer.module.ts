@@ -65,12 +65,6 @@ import { SendAnEmailComponent } from './customer-professionals/send-an-email-mod
 import { HireAdvisorComponent } from './hire-advisor-modal/hire-advisor-modal.component';
 import { ProfAddTrusteeModalComponent } from './customer-professionals/prof-add-trustee-modal/prof-add-trustee-modal.component';
 import { ProfAdvisorListingComponent } from './customer-professionals-landing/prof-advisor-listing/prof-advisor-listing.component';
-//FinalWishes
-import { FinalWishesComponent } from './customer-home/final-wishes/final-wishes-list/final-wishes-list.component';
-import { FinalWishesFormModalComponent } from './customer-home/final-wishes/final-wishes-form-modal/final-wishes-form-modal.component';
-import { FinalWishesDetailsComponent } from './customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
-
-//passwords-digital-assets
  
 //import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
 /** Import the component modules */
@@ -148,8 +142,7 @@ import { LettersMessagesModelComponent } from './customer-home/legacy-life-lette
     CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent,
     CustomerMyPeopleComponent, addTrusteeModalComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,
     CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent, ProfAddTrusteeModalComponent,
-    CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent, FinalWishesComponent,
-    FinalWishesFormModalComponent, FinalWishesDetailsComponent, 
+    CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent, 
     LettersMessagesListingComponent,LettersMessagesDetailsComponent, LettersMessagesModelComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
@@ -159,7 +152,7 @@ import { LettersMessagesModelComponent } from './customer-home/legacy-life-lette
   ], bootstrap: [CustomerSignupComponent],
   entryComponents: [ChangePassComponent,
     addTrusteeModalComponent, MarkAsDeceasedComponent,
-    SendAnEmailComponent, HireAdvisorComponent, FinalWishesFormModalComponent,
+    SendAnEmailComponent, HireAdvisorComponent,
     ProfAddTrusteeModalComponent,LettersMessagesModelComponent
   ]
 })

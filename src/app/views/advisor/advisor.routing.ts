@@ -47,6 +47,8 @@ import { CustomerLegalStuffComponent } from '../customer/customer-home/customer-
 import { InsuranceFinanceDebtListComponent } from '../customer/customer-home/insurance-finance-debt/insurance-finance-debt-list/insurance-finance-debt-list.component';
 import { InsuranceDetailsComponent } from '../customer/customer-home/insurance-finance-debt/insurance-details/insurance-details.component';
 import { FinanceDetailsComponent } from '../customer/customer-home/insurance-finance-debt/finance-details/finance-details.component';
+import { FinalWishesComponent } from '../customer/customer-home/final-wishes/final-wishes-list/final-wishes-list.component';
+import { FinalWishesDetailsComponent } from '../customer/customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
 
 
 console.log('advisor---routing');
@@ -243,11 +245,11 @@ export const AdvisorRoutes: Routes = [
             component: DetailsAssetsComponent
           }, {
             path: 'final-wishes/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: FinalWishesComponent
           },
           {
             path: 'final-wishes-view/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: FinalWishesDetailsComponent
           },
           {
             path: 'pets/:id',
