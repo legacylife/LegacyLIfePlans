@@ -21,6 +21,7 @@ export class LettersMessagesDetailsComponent implements OnInit {
   re =  "/(?:\.([^.]+))?$/" ;
   docPath: string; 
   trusteeLegaciesAction:boolean=true;
+  urlData:any={};
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -30,12 +31,11 @@ export class LettersMessagesDetailsComponent implements OnInit {
   ngOnInit() {  
     this.userId = localStorage.getItem("endUserId");
     this.docPath = filePath;
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
+    
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
     this.getLettersMessageView();
-    let urlData = this.userapi.getURLData();
-this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
-
   }
 
 //function to get all events
@@ -53,6 +53,9 @@ getLettersMessageView = (query = {}, search = false) => {
       console.log(result.data)
     } else {
       if (result.data) {
+        if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
+          this.trusteeLegaciesAction = false;
+        }
         this.row = result.data;
       }
     }  
@@ -76,7 +79,7 @@ openLettersMessageModal() {
     })
 }
 
-deleteLettersMessage() {
+deleteLettersMessage(customerId='') {
   var statMsg = "Are you sure you want to delete letters message details?"
   this.confirmService.confirm({ message: statMsg })
     .subscribe(res => {
@@ -92,7 +95,11 @@ deleteLettersMessage() {
             this.snack.open(result.data.message, 'OK', { duration: 4000 })
           } else {
             this.loader.close();
-            this.router.navigate(['/', 'customer', 'dashboard', 'letters-messages'])
+            if(this.urlData.userType == 'advisor'){
+              this.router.navigate(['/', 'advisor', 'legacies', 'letters-messages', customerId])
+            }else{
+              this.router.navigate(['/', 'customer', 'dashboard', 'letters-messages'])
+            }
             this.snack.open(result.data.message, 'OK', { duration: 4000 })
           }
         }, (err) => {

@@ -75,10 +75,6 @@ import { ProfAdvisorListingComponent } from './customer-professionals-landing/pr
 
 /** Import themes */
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
-//letters-messages-listing
-import { LettersMessagesListingComponent } from './customer-home/legacy-life-letters-messages/letters-messages-listing/letters-messages-listing.component';
-import { LettersMessagesDetailsComponent } from './customer-home/legacy-life-letters-messages/letters-messages-details/letters-messages-details.component';
-import { LettersMessagesModelComponent } from './customer-home/legacy-life-letters-messages/letters-messages-model/letters-messages-model.component';
   export class GlobalVariables {
   testVal = '#00bcd4';
   Quepal = {
@@ -142,8 +138,7 @@ import { LettersMessagesModelComponent } from './customer-home/legacy-life-lette
     CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent,
     CustomerMyPeopleComponent, addTrusteeModalComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,
     CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent, ProfAddTrusteeModalComponent,
-    CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent, 
-    LettersMessagesListingComponent,LettersMessagesDetailsComponent, LettersMessagesModelComponent
+    CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
     // { provide: LY_THEME, useClass: MinimaLight, multi: true },
@@ -153,7 +148,7 @@ import { LettersMessagesModelComponent } from './customer-home/legacy-life-lette
   entryComponents: [ChangePassComponent,
     addTrusteeModalComponent, MarkAsDeceasedComponent,
     SendAnEmailComponent, HireAdvisorComponent,
-    ProfAddTrusteeModalComponent,LettersMessagesModelComponent
+    ProfAddTrusteeModalComponent
   ]
 })
 export class CustomerModule { }
