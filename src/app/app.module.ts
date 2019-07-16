@@ -80,6 +80,8 @@ import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser'
 import { ChangePicComponent } from './views/change-pic/change-pic.component';
 //import { TodosComponent } from './views/todos/todos.component';
 // import { TodosListingComponent } from './views/todos-listing/todos-listing.component';
+import { NgxStripeModule } from 'ngx-stripe';
+
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }

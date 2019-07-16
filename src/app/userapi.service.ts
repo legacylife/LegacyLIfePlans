@@ -187,7 +187,7 @@ export class UserAPIService {
     this.removeKeyFromStorage('userexpiryDate')
     this.removeKeyFromStorage('userHeaderDetails')
     this.removeKeyFromStorage('endUserProfilePicture')
-
+    localStorage.clear();
     this.router.navigate(["signin"]);
   }
 

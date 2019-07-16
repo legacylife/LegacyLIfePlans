@@ -43,10 +43,10 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   pdisplay: boolean = false
   pcropperDisplay: boolean = false
   profileImage = null
+
   /**
    * Subscription variable declaration
    */
-
   planName: string = 'free'
   autoRenewalStatus: string = 'off'
   subscriptionExpireDate: string = ''
@@ -55,8 +55,9 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   isSubscribePlan: boolean = false
   isSubscribedBefore: boolean = false
   autoRenewalFlag: boolean = false
+  autoRenewalVal:boolean = false
   isPremiumExpired: boolean = false
-
+  isSubscriptionCanceled:boolean = false
   userCreateOn: any
   userSubscriptionDate: any
   today: Date = moment().toDate()
@@ -111,7 +112,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
      */
     let diff: any
     let expireDate: any
-    let subscriptionDate      = localStorage.getItem("endUserSubscriptionOn")
+    let subscriptionDate      = localStorage.getItem("endUserSubscriptionStartDate")
     this.userCreateOn         = moment( localStorage.getItem("endUserCreatedOn") )
     this.isSubscribedBefore   = ( subscriptionDate !== 'undefined' && subscriptionDate !== null) ? true : false
     
@@ -132,11 +133,15 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
     }
     else if( this.isSubscribedBefore ) {
-      this.userSubscriptionDate = moment( localStorage.getItem("endUserSubscriptionOn") )
+      this.isSubscriptionCanceled = ( localStorage.getItem("endUserSubscriptionStatus") && localStorage.getItem("endUserSubscriptionStatus") == 'canceled' ) ? true : false
+      this.autoRenewalFlag = ( localStorage.getItem("endUserAutoRenewalStatus") && localStorage.getItem("endUserAutoRenewalStatus") == 'true' ) ? true : false
+      this.autoRenewalVal = this.autoRenewalFlag
+      this.autoRenewalStatus = this.autoRenewalVal ? 'on' : 'off'
+      this.userSubscriptionDate = moment( localStorage.getItem("endUserSubscriptionEndDate") )
       this.isAccountFree    = false
-      diff                  = this.getDateDiff( this.userSubscriptionDate.toDate(), this.today )
-      
-      if( diff <= 360 ) {
+      diff                  = this.getDateDiff( this.today, this.userSubscriptionDate.toDate() )
+      console.log(diff)
+      if( diff >= 0 ) {
         expireDate            = this.userSubscriptionDate
         this.isPremiumExpired = false
         this.isSubscribePlan  = true
@@ -359,13 +364,57 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   }
 
   autoRenewal() {
-    if( this.autoRenewalFlag ) {
+    if( this.autoRenewalVal ) {
       this.autoRenewalStatus = 'off'
-      this.autoRenewalFlag = false
+      this.autoRenewalVal = false
     }
     else{
       this.autoRenewalStatus = 'on'
-      this.autoRenewalFlag = true
+      this.autoRenewalVal = true
+    }
+    
+    this.updateAutoRenewalStatus()
+  }
+
+  updateAutoRenewalStatus () {
+    this.loader.open();
+    const req_vars = {
+      query: Object.assign({ _id: this.userId, userType: "customer", status: this.autoRenewalVal }, {})
+    }
+    
+    this.userapi.apiRequest('post', 'userlist/autorenewalupdate', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        this.loader.close();
+      }
+      else {
+        let returnData = result.data
+        localStorage.setItem('endUserAutoRenewalStatus', returnData.autoRenewalStatus);
+        this.loader.close();
+      }
+    }, (err) => {
+      this.loader.close();
+    })
+  }
+
+  cancelSubscription= (query = {}) => {
+    if( !this.isSubscriptionCanceled ) {
+      this.loader.open();
+      const req_vars = {
+        query: Object.assign({ _id: this.userId, userType: "customer" }, query)
+      }
+      
+      this.userapi.apiRequest('post', 'userlist/cancelsubscription', req_vars).subscribe(result => {
+        if (result.status == "error") {
+          this.loader.close();
+        } else {
+          let cancelData = result.data
+          localStorage.setItem('endUserSubscriptionStatus', cancelData.subscriptionStatus);
+          this.isSubscriptionCanceled = true
+          this.loader.close();
+        }
+      }, (err) => {
+        this.loader.close();
+      })
     }
   }
 

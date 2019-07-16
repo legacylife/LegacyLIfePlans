@@ -112,14 +112,14 @@
                       </header>
                       <div class="llp--slide--wrapper">
                         <div class="set-auto">Set auto-payment option</div>
-                        <mat-slide-toggle class="llp--slide--toggle" [checked]="isSubscribePlan && autoRenewalFlag" [disabled]="isAccountFree" (click)="isSubscribePlan && autoRenewal()">{{autoRenewalStatus | uppercase}}</mat-slide-toggle>
+                        <mat-slide-toggle class="llp--slide--toggle" [checked]="autoRenewalFlag" [disabled]="isAccountFree" (click)="isSubscribePlan && autoRenewal()">{{autoRenewalStatus | uppercase}}</mat-slide-toggle>
                       </div>
                       <p class="turning">Turning the auto-payment option ON will automatically deduct the subscription amount from your associated
                         card
                       </p>
                       <div class="manage--cancel">
-                        <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/customer/customer-subscription'">Manage subscription</button>
-                        <a class="clr--red" [class.not-allowed]="isAccountFree" [attr.disabled]="isAccountFree">Cancel subscription</a>
+                        <button mat-raised-button class="llp--primary--green--btn" [class.not-allowed]="isSubscribePlan && !isPremiumExpired" [disabled]="isSubscribePlan && !isPremiumExpired" [routerLink]="'/customer/customer-subscription'">Manage subscription</button>
+                        <a class="clr--red" [class.not-allowed]="isAccountFree || isSubscriptionCanceled" [attr.disabled]="isAccountFree || isSubscriptionCanceled" (click)="(!isAccountFree || !isSubscriptionCanceled) && cancelSubscription()">Cancel subscription</a>
                       </div>
                     </div>
                     <!-- <div class="deactivate--acc">

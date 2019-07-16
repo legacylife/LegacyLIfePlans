@@ -53,14 +53,17 @@ export class SigninComponent implements OnInit {
       this.loader.close();
       if (result.status=="success") {      
         userData = result.data;
-        console.log(userData.userType);
+        //console.log(userData.userType);
         localStorage.setItem("endUserId", userData.userId);
         localStorage.setItem("endUserType", userData.userType);
         localStorage.setItem("endUserFirstName", userData.firstName);
         localStorage.setItem("endUserLastName", userData.lastName); 
         localStorage.setItem("endUserProfilePicture", userData.profilePicture); 
         localStorage.setItem("endUserCreatedOn", userData.createdOn);
-        localStorage.setItem("endUserSubscriptionOn", userData.subscriptionOn);
+        localStorage.setItem("endUserSubscriptionStartDate", userData.subscriptionStartDate);
+        localStorage.setItem("endUserSubscriptionEndDate", userData.subscriptionEndDate);
+        localStorage.setItem("endUserSubscriptionStatus", userData.subscriptionStatus);
+        localStorage.setItem("endUserAutoRenewalStatus", userData.autoRenewalStatus);
         
         if (userData.profilePicture) {
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + userData.profilePicture;
@@ -78,9 +81,9 @@ export class SigninComponent implements OnInit {
       } else {
        // this.llpCustsigninForm.controls['username'].enable();
         var emails = this.llpCustsigninForm.controls['username'].value
-        console.log('0000000000')
+        //console.log('0000000000')
         if(result.data.invalidEmail){
-          console.log('11111')
+          //console.log('11111')
           this.invalidEmail = true;
           this.invalidMessage = result.data.message
           this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : true})
@@ -88,14 +91,14 @@ export class SigninComponent implements OnInit {
           //this.llpCustsigninForm.controls['username'].markAsUntouched();
         //  this.llpCustsigninForm.controls['username'].markAsTouched();
         }else if(result.data.invalidPassword){
-          console.log('2222222222')
+          //console.log('2222222222')
           //this.llpCustsigninForm.controls['username'].markAsTouched();
           this.llpCustsigninForm.controls['password'].setErrors({'invalid' : true});
           //this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false});
           this.llpCustsigninForm.controls['password'].markAsUntouched();
           this.invalidEmail = false;
         }else{
-          console.log('3333333333')
+          //console.log('3333333333')
           this.llpCustsigninForm.controls['username'].markAsUntouched();
           this.invalidEmail = false;
           this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false})
