@@ -3,6 +3,8 @@ var constants = require("./../config/constants")
 
 var debtsSchema = new mongoose.Schema({
   customerId: String,
+  customerLegacyId: String,
+  customerLegacyType: String,
   debtsType: String,
   debtsTypeNew: String,
   bankLendarName: String,
