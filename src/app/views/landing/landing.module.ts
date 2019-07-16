@@ -30,6 +30,7 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
 import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CountUpModule } from 'countup.js-angular2';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   imports: [
@@ -55,6 +56,7 @@ import { CountUpModule } from 'countup.js-angular2';
     FileUploadModule,
     SharedModule,
     CountUpModule,
+    MatExpansionModule,
     RouterModule.forChild(LandingRoutes)
   ],
   declarations: [
