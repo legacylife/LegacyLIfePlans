@@ -6,35 +6,30 @@
           <div class="card-title-text">Legacy Access</div>
           <mat-divider></mat-divider>
         </mat-card-title>
-
-
         <mat-card-content class="recent--update--section" *ngIf="!showAdvisorListing">
           <p>All the user legacies you have got access to, will be displayed here. Currently you have no legacy access from
             any user.</p>
           <div class="red--box">
-
             <img src="assets/images/arkenea/invite-now.png" />
             <p>Encourage your friends, loved ones, acquaintances to create a legacy for their loved ones!
               <a (click)="openReferAndEarnModal();"> Invite Now</a>
             </p>
           </div>
         </mat-card-content>
-
         <mat-card-content class="recent--update--section legacy--wrapper pr-0 pt-0"  *ngIf="showAdvisorListing">
           <div class="legacy--box" *ngFor="let row of advisorListing">
             <div class="legacy--pic">
-              <img src="{{profileUrl}}{{row.advisorId!=null ? row?.advisorId.profilePicture : 'default.jpg'}}" />
+              <img src="{{profileUrl}}{{row.customerId!=null ? row?.customerId.profilePicture : 'default.jpg'}}" />
             </div>
-            <h4 class="legacy--name">{{row?.advisorId.firstName}} {{row?.advisorId.lastName}}</h4>
+            <h4 class="legacy--name">{{row?.customerId.firstName}} {{row?.customerId.lastName}}</h4>
             <div class="legacy-confirm" *ngIf="row?.status === 'Pending'">
-              <div class="yes" (click)="hireAdvisor(row?._id,'confirmHire','Pending')">
+              <div class="yes" (click)="hireAdvisor(row?._id,'confirmHire','Pending',row?.customerId.username,row?.customerId.firstName,row?.advisorId.firstName,row?.advisorId.lastName)">
                 <mat-icon>check</mat-icon>Confirm Hiring
               </div>
-              <div class="yes no" (click)="hireAdvisor(row?._id,'rejectHire','Pending')">
+              <div class="yes no" (click)="hireAdvisor(row?._id,'rejectHire','Pending',row?.customerId.username,row?.customerId.firstName,row?.advisorId.firstName,row?.advisorId.lastName)">
                 <mat-icon>close</mat-icon>Reject Hiring
               </div>
             </div>
-
             <div class="legacy-confirm view-legacy" *ngIf="row?.status === 'Active'">
               <div class="yes">
                 <mat-icon>description</mat-icon>

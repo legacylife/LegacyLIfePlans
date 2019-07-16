@@ -5,12 +5,14 @@ import { CountUp, CountUpOptions } from 'countup.js';
 import * as $ from 'jquery';
 import { debounce } from 'lodash';
 
+
 @Component({
   selector: 'app-landing-home-page',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  panelOpenState = false;
 
   resetCounter = debounce(() => {
     this.opts = {

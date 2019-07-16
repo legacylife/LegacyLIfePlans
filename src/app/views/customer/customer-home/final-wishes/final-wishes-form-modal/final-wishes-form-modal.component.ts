@@ -9,7 +9,6 @@ import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../../config';
 import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
-const filePath = s3Details.url+'/'+s3Details.finalWishesFilePath;
 const URL = serverUrl + '/api/documents/finalWishes';
 @Component({
   selector: 'app-essenioal-id-box',
@@ -29,7 +28,8 @@ export class FinalWishesFormModalComponent implements OnInit {
   fileErrors: any;
   subFolderDocumentsList: any;
   finalWishList:any = [];
-  docPath: string;   
+  docPath: string;  
+  showCalendarField:boolean = false; 
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService  ,@Inject(MAT_DIALOG_DATA) public data: any ) 
@@ -39,6 +39,7 @@ export class FinalWishesFormModalComponent implements OnInit {
 
   ngOnInit() {
      this.userId = localStorage.getItem("endUserId");
+     const filePath = this.userId+'/'+s3Details.finalWishesFilePath;
      this.docPath = filePath;
      if(this.newName && this.newName != ''){
       this.folderName = this.newName
@@ -46,6 +47,7 @@ export class FinalWishesFormModalComponent implements OnInit {
      this.FinalForm = this.fb.group({
       title: new FormControl('',Validators.required),
       comments: new FormControl(''),
+      calendarDate: new FormControl(''),
       profileId: new FormControl('')
      });
      this.wishDocumentsList = [];
@@ -61,6 +63,10 @@ export class FinalWishesFormModalComponent implements OnInit {
      this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
      this.subFolderDocumentsList = [];
      this.getFinalWishesView();
+
+     if(this.folderName == 'Celebration of Life'){
+       this.showCalendarField = true;
+     }
     }
 
     getFinalWishesView = (query = {}, search = false) => {    
@@ -93,6 +99,7 @@ export class FinalWishesFormModalComponent implements OnInit {
             
             this.FinalForm.controls['title'].setValue(this.finalWishList.title); 
             this.FinalForm.controls['comments'].setValue(this.finalWishList.comments);
+            this.FinalForm.controls['calendarDate'].setValue(this.finalWishList.calendarDate);
           }       
         }
       }, (err) => {
@@ -266,5 +273,18 @@ export class FinalWishesFormModalComponent implements OnInit {
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
   }
 
-
+  downloadFile = (filename) => {    
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+    }
+    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+      window.open(window.URL.createObjectURL(res));
+      let filePath = s3Details.url+'/'+this.docPath+filename;
+      var link=document.createElement('a');
+      link.href = filePath;
+      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+      link.click();
+    });
+  }
 }

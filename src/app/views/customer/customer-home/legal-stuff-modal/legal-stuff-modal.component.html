@@ -39,7 +39,7 @@
         <div *ngIf="subFolderDocumentsList" >
         <h3 class="header--text fnt--16">Uploaded ID proof</h3>
         <mat-chip-list class="doc--list" *ngFor="let doc of subFolderDocumentsList; index as i">
-            <mat-chip><a href="{{docPath}}{{doc.tmpName}}" >{{doc.title}}</a><mat-icon matChipRemove  (click)="subFolderDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+            <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove  (click)="subFolderDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
         </mat-chip-list>
         </div>
 

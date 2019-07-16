@@ -9,8 +9,10 @@
     <div fxLayout="row wrap">
       <div fxFlex.xs="100">
         <mat-form-field class="full-width">
-          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="model" placeholder="Model"
+          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="model" placeholder="Model*"
             [formControl]="vehiclesForm.controls['model']">
+          <mat-icon matTooltip="Please enter model" matTooltipClass="llp--tooltip error" *ngIf="vehiclesForm.controls['model'].hasError('required') && vehiclesForm.controls['model'].touched"
+          class="red--alert">help_outline</mat-icon>
         </mat-form-field>
       </div>
     </div>

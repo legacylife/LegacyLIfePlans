@@ -8,7 +8,6 @@ import { AppLoaderService } from '../../../../../shared/services/app-loader/app-
 import { AppConfirmService } from '../../../../../shared/services/app-confirm/app-confirm.service';
 import { TimeCapsuleMoalComponent } from './../time-capsule-modal/time-capsule-modal.component';
 import { s3Details } from '../../../../../config';
-const filePath = s3Details.url+'/'+s3Details.timeCapsuleFilePath;
 @Component({
   selector: 'app-customer-home',
   templateUrl: './time-capsule-details.component.html',
@@ -31,6 +30,7 @@ export class TimeCapsuleDetailsComponent implements OnInit {
 
   ngOnInit() {  
     this.userId = localStorage.getItem("endUserId");
+    const filePath = this.userId+'/'+s3Details.timeCapsuleFilePath;
     this.docPath = filePath;
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
@@ -102,4 +102,19 @@ export class TimeCapsuleDetailsComponent implements OnInit {
       })
   }
 
+
+  downloadFile = (filename) => {    
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+    }
+    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+      window.open(window.URL.createObjectURL(res));
+      let filePath = s3Details.url+'/'+this.docPath+filename;
+      var link=document.createElement('a');
+      link.href = filePath;
+      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+      link.click();
+    });
+  }
 }

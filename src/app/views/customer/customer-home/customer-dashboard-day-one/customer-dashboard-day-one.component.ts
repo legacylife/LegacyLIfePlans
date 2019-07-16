@@ -28,7 +28,7 @@ export class CustomerDashboardDayOneComponent implements OnInit {
 
   profileUrl = s3Details.url+'/profilePictures/';
   constructor(private fb: FormBuilder, private dialog: MatDialog,private snackBar: MatSnackBar,private userapi: UserAPIService) { }
-  ngOnInit() {
+  ngOnInit() { 
     this.userId = localStorage.getItem("endUserId");
 
     this.getFileActivityLogList();
@@ -113,7 +113,8 @@ export class CustomerDashboardDayOneComponent implements OnInit {
     this.sideNav.opened = !this.sideNav.opened;
   }
 
-  openAddTrusteeModal(id, isNew?) {
+
+  openAddTrusteeModal(id, isNew?) {  
     let dialogRef: MatDialogRef<any> = this.dialog.open(addTrusteeModalComponent, {     
       width: '720px',
       disableClose: true,
@@ -128,6 +129,9 @@ export class CustomerDashboardDayOneComponent implements OnInit {
         return;
       }
     })
+
+    //setTimeout(() => dialogRef );
+
   }
 }
 

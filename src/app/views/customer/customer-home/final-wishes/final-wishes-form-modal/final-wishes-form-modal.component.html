@@ -10,9 +10,20 @@
       <div fxFlex.xs="100">
       
         <mat-form-field class="full-width">
-          <input matInput name="title" maxlength="20" placeholder="Title*" [formControl]="FinalForm.controls['title']">
-          <mat-icon matTooltip="Please enter wish title" matTooltipClass="llp--tooltip error" *ngIf="FinalForm.controls['title'].hasError('required') && FinalForm.controls['title'].touched"
+          <input matInput name="title"placeholder="Title*" [formControl]="FinalForm.controls['title']">
+          <mat-icon matTooltip="Please enter title" matTooltipClass="llp--tooltip error" *ngIf="FinalForm.controls['title'].hasError('required') && FinalForm.controls['title'].touched"
           class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <!-- <mat-form-field class="full-width" *ngIf="showCalendarField">
+          <input matInput name="calendarDate" placeholder="Calendar" [formControl]="FinalForm.controls['calendarDate']">          
+        </mat-form-field> -->
+
+        <mat-form-field class="full-width llp-datepicker" *ngIf="showCalendarField">
+          <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Calendar" aria-readonly="true" readonly [formControl]="FinalForm.controls['calendarDate']">
+          <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+          <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
+          </mat-datepicker>         
         </mat-form-field>
 
         <div class="upload--buss--docs--sec">
@@ -32,7 +43,7 @@
           <div *ngIf="subFolderDocumentsList" >
             <h3 class="header--text fnt--16">Uploaded document</h3>
             <mat-chip-list class="doc--list" *ngFor="let doc of subFolderDocumentsList; index as i">
-                <mat-chip><a href="{{docPath}}{{doc.tmpName}}" >{{doc.title}}</a><mat-icon matChipRemove  (click)="subFolderDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+                <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove  (click)="subFolderDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
             </mat-chip-list>
           </div>
 

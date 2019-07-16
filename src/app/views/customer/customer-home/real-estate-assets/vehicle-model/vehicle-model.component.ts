@@ -24,7 +24,7 @@ export class VehicleModelComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.vehiclesForm = this.fb.group({
-      model: new FormControl(''),
+      model: new FormControl('',Validators.required),
       year: new FormControl(''),
       make: new FormControl(''),
       titleLocation: new FormControl(''),

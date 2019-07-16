@@ -10,7 +10,7 @@ import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.s
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { serverUrl,s3Details } from 'app/config';
 const URL = serverUrl + '/api/documents/letterMessage';
-const filePath = s3Details.url+'/'+s3Details.letterMessageDocumentsPath;
+
 @Component({
   selector: 'app-letters-messages-model',
   templateUrl: './letters-messages-model.component.html',
@@ -34,9 +34,9 @@ export class LettersMessagesModelComponent implements OnInit {
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
   ngOnInit() {
+    const filePath = this.userId+'/'+s3Details.letterMessageDocumentsPath;
     this.docPath = filePath; 
- 
-    const locationArray = location.href.split('/')
+     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
     if (this.selectedProfileId && this.selectedProfileId == 'letters-messages') {
       this.selectedProfileId = "";
@@ -260,4 +260,19 @@ export class LettersMessagesModelComponent implements OnInit {
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
   }
 
+
+  downloadFile = (filename) => {    
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+    }
+    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+      window.open(window.URL.createObjectURL(res));
+      let filePath = s3Details.url+'/'+this.docPath+filename;
+      var link=document.createElement('a');
+      link.href = filePath;
+      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+      link.click();
+    });
+  }
 }

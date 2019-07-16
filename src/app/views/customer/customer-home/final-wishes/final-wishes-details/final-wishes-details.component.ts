@@ -8,7 +8,6 @@ import { AppLoaderService } from '../../../../../shared/services/app-loader/app-
 import { AppConfirmService } from '../../../../../shared/services/app-confirm/app-confirm.service';
 import { FinalWishesFormModalComponent } from './../final-wishes-form-modal/final-wishes-form-modal.component';
 import { s3Details } from '../../../../../config';
-const filePath = s3Details.url+'/'+s3Details.finalWishesFilePath;
 @Component({
   selector: 'app-customer-home',
   templateUrl: './final-wishes-details.component.html',
@@ -29,13 +28,13 @@ export class FinalWishesDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.docPath = filePath;
     this.userId = localStorage.getItem("endUserId");
+    const filePath = this.userId+'/'+s3Details.finalWishesFilePath;
+    this.docPath = filePath;
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.getFinalWishView();
   }
-
   //function to get all events
   getFinalWishView = (query = {}, search = false) => {
     let profileIds = '';
@@ -78,8 +77,12 @@ export class FinalWishesDetailsComponent implements OnInit {
       })
   }
 
-  deleteFinalWish() {
-    var statMsg = "Are you sure you want to delete final wish?"
+  deleteFinalWish(FolderNames) {
+    let folder = "";
+    if(FolderNames == 'Funeral Plans'){ folder = 'funeral plan details'}
+    if(FolderNames == 'Obituary'){ folder = 'obituary details'}
+    if(FolderNames == 'Celebration of Life'){ folder = 'celebration of life details'}
+    var statMsg = "Are you sure you want to delete "+folder+"?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
         if (res) {
@@ -105,4 +108,18 @@ export class FinalWishesDetailsComponent implements OnInit {
       })
   }
 
+  downloadFile = (filename) => {    
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+    }
+    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+      window.open(window.URL.createObjectURL(res));
+      let filePath = s3Details.url+'/'+this.docPath+filename;
+      var link=document.createElement('a');
+      link.href = filePath;
+      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+      link.click();
+    });
+  }
 }

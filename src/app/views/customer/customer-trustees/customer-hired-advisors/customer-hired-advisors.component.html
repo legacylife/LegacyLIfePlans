@@ -27,8 +27,8 @@
                   <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
                   <mat-menu #beforeMenu="matMenu" xPosition="before" class="llp--menu--droupdown">
                     <button mat-menu-item><span>Manage</span></button>
-                    <button mat-menu-item><span>View</span></button>
-                    <button mat-menu-item><span>Resend Invitation</span></button>
+                    <button mat-menu-item [routerLink]="['/customer/professionals/prof-details', row.advisorId?._id]"><span>View</span></button>
+                    <!-- <button mat-menu-item><span>Resend Invitation</span></button> -->
                   </mat-menu>
               </div>
             </mat-card-title>
@@ -39,17 +39,15 @@
               <mat-icon>school</mat-icon>
               {{row.advisorId?.businessType}}
             </div>
-            <!-- <div class="ad--strip">
+            <div class="ad--strip">
               Advisor
-            </div> -->
+            </div>
           </mat-card-content>
         </mat-card>
       </mat-card-content>
       <mat-card-content class="appointees--wrapper" *ngIf="!showAdvisorListing">
           <div class="files--folder mt-1">Currently you do not have any advisor associated.</div>
       </mat-card-content>
-
-
     </mat-card>
   </div>
 </div>

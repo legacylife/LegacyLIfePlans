@@ -15,17 +15,16 @@
               </a>      
             </div>
           </li> -->
-
         <li>
-          <a matRipple [routerLink]="['/advisor/dashboard']">
+          <a matRipple [routerLink]="['/advisor/dashboard']" routerLinkActive="active--link">
             <mat-icon class="home">home</mat-icon> Home</a>
         </li>
         <li>
-          <a matRipple routerLink="/advisor/legacies">
+          <a matRipple routerLink="/advisor/legacies" routerLinkActive="active--link">
             <mat-icon class="icon-trustees">people</mat-icon> Legacies</a>
         </li>
         <li>
-          <a matRipple routerLink="/advisor/leads">
+          <a matRipple routerLink="/advisor/leads" routerLinkActive="active--link">
             <mat-icon class="icon-professionals">perm_identity</mat-icon> Leads</a>
         </li>
         <li class="more--link">
@@ -43,14 +42,10 @@
             </button>
           </mat-menu>
         </li>
-
       </ul>
       <span fxFlex></span>
       <!-- End Navigation -->
-
-
       <!-- invite -->
-
       <button mat-button class="top--search--btn">
         <mat-icon>search</mat-icon>
       </button>
@@ -66,11 +61,11 @@
       </div>
 
       <mat-menu #accountMenu="matMenu" class="llp--menu--droupdown" xPosition="before">
-        <button class="get--feature" mat-menu-item [routerLink]="['/advisor/get-featured']">
+        <button mat-menu-item [routerLink]="['/advisor/get-featured']" routerLinkActive="active--link">
           <mat-icon>featured_play_list</mat-icon>
           <span>Get Featured </span>
         </button>
-        <button mat-menu-item [routerLink]="['/advisor/account-setting']">
+        <button mat-menu-item [routerLink]="['/advisor/account-setting']" routerLinkActive="active--link">
           <mat-icon>settings</mat-icon>
           <span>Account Settings</span>
         </button>

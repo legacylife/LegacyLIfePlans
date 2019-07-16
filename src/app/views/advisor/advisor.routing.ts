@@ -41,7 +41,8 @@ export const AdvisorRoutes: Routes = [
       {
         path: '',
         component: AdvisorSignupComponent,
-        canActivate: [UserPreAuthGuard]
+        canActivate: [UserPreAuthGuard],
+        data: { title: 'Advisor Singin' }
       }
     ],
   },
@@ -52,7 +53,8 @@ export const AdvisorRoutes: Routes = [
       {
         path: '',
         component: SetPasswordComponent,
-        canActivate: [UserPreAuthGuard]
+        canActivate: [UserPreAuthGuard],
+        data: { title: 'Set Password' }
       }
     ],
 
@@ -64,7 +66,8 @@ export const AdvisorRoutes: Routes = [
       {
         path: '',
         component: AdvisorSignupComponent,
-        canActivate: [UserPreAuthGuard]
+        canActivate: [UserPreAuthGuard],
+        data: { title: 'Advisor Signup' }
       }
     ],
 
@@ -76,11 +79,10 @@ export const AdvisorRoutes: Routes = [
       {
         path: '',
         component: BusinessInfoComponent,
-        canActivate: [UserPreAuthGuard]
+        canActivate: [UserPreAuthGuard],
+        data: { title: 'Business Info' }
       }
     ]
-
-
   },
   {
     path: 'thank-you',
@@ -89,7 +91,8 @@ export const AdvisorRoutes: Routes = [
       {
         path: '',
         component: ThankYouComponent,
-        canActivate: [UserPreAuthGuard]
+        canActivate: [UserPreAuthGuard],
+        data: { title: 'Thank You' }
       }
     ]
   },
@@ -100,11 +103,10 @@ export const AdvisorRoutes: Routes = [
       {
         path: '',
         component: AdvisorDashboardComponent,
-        canActivate: [UserAuthGuard]
+        canActivate: [UserAuthGuard],
+        data: { title: 'Dashboard' }
       }
     ]
-
-
   },
   {
     path: 'dashboard-updates',
@@ -113,7 +115,8 @@ export const AdvisorRoutes: Routes = [
       {
         path: '',
         component: AdvisorDashboardUpdateComponent,
-        canActivate: [UserAuthGuard]
+        canActivate: [UserAuthGuard],
+        data: { title: 'Dashboard Updates' }
       }
     ]
   }, {
@@ -124,46 +127,54 @@ export const AdvisorRoutes: Routes = [
         path: '',
         component: AdvisorAccountSettingComponent,
         canActivate: [UserAuthGuard],
-        canDeactivate: [CanDeactivateGuard]
+        canDeactivate: [CanDeactivateGuard],
+        data: { title: 'Account Setting' }
       }
     ],
   },
   {
     path: 'legacies',
     component: AdvisorLayoutComponent,
+    data: { title: 'Legacies List' },
     children: [
       {
         path: '',
         component: LegaciesComponent,
-        canActivate: [UserAuthGuard]
+        canActivate: [UserAuthGuard],
+        data: { title: 'Legacies List' }
       }
     ]
   },
   {
     path: 'leads',
     component: AdvisorLayoutComponent,
+    data: { title: 'Leads List' },
     children: [
       {
         path: '',
         component: AdvisorLeadsComponent,
-        canActivate: [UserAuthGuard]
+        canActivate: [UserAuthGuard],
+        data: { title: 'Leads List' }
       }
     ]
   },
   {
     path: 'leads-details/:id',
     component: AdvisorLayoutComponent,
+    data: { title: 'Leads Details' },
     children: [
       {
         path: '',
         component: AdvisorLeadsDetailsComponent,
-        canActivate: [UserAuthGuard]
+        canActivate: [UserAuthGuard],
+        data: { title: 'Leads Details' }
       }
     ]
   },
   {
     path: 'legacies-details',
-    component: AdvisorLayoutComponent,
+    component: AdvisorLayoutComponent,   
+    data: { title: ''},
     children: [
       {
         path: '',
@@ -172,7 +183,8 @@ export const AdvisorRoutes: Routes = [
         children: [
           {
             path: 'user-legacies-detail',
-            component: LegaciesDetailsLandingComponent
+            component: LegaciesDetailsLandingComponent,
+            data: { title: 'Legacies Details' }
           }
         ]
       }
@@ -181,36 +193,41 @@ export const AdvisorRoutes: Routes = [
   {
     path: 'to-dos',
     component: AdvisorLayoutComponent,
+    data: { title: 'Todo\'s' },
     children: [
       {
         path: '',
-        component: TodosListingComponent       
+        component: TodosListingComponent,
+        data: { title: 'Todo\'s' }
       }
     ]
   },
   {
     path: 'get-featured',
     component: AdvisorLayoutComponent,
+    data: { title: 'Get Featured' },
     children: [
       {
         path: '',
         component: GetFeaturedComponent,
-        canActivate: [UserAuthGuard]
+        canActivate: [UserAuthGuard],
+        data: { title: 'Get Featured' }
       }
     ]
   },
   {
     path: 'subscription',
     component: AdvisorLayoutComponent,
+    data: { title: 'Subscription' },
     children: [
       {
         path: '',
         component: AdvisorSubscriptionComponent,
-        canActivate: [UserAuthGuard]
+        canActivate: [UserAuthGuard],
+        data: { title: 'Subscription' }
       }
     ]
   },
-
   {
     path: '**',
     redirectTo: 'dashboard'

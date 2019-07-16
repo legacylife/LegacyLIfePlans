@@ -39,7 +39,7 @@ export const rootRouterConfig: Routes = [
     children: [{
       path: '',
       loadChildren: './views/customer/customer.module#CustomerModule',
-      data: { title: 'Customer Signup' }
+      //data: { title: 'Customer Signup' }
     },
   ]
   }, 

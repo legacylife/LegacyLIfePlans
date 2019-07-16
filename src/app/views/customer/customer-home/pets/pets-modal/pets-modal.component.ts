@@ -11,7 +11,6 @@ import { serverUrl, s3Details } from '../../../../../config';
 import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 const URL = serverUrl + '/api/documents/petsdocuments';
-const filePath = s3Details.url+'/'+s3Details.petsFilePath;
 @Component({
   selector: 'app-essenioal-id-box',
   templateUrl: './pets-modal.component.html',
@@ -40,6 +39,7 @@ export class PetsModalComponent implements OnInit {
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    const filePath = this.userId+'/'+s3Details.petsFilePath;
     this.docPath = filePath;
     this.PetForm = this.fb.group({
       name: new FormControl('',Validators.required),
@@ -62,7 +62,6 @@ export class PetsModalComponent implements OnInit {
 
      this.getPetsView();
     }
-
 
     PetFormSubmit(profileInData = null) {
       var query = {};
@@ -268,6 +267,19 @@ export class PetsModalComponent implements OnInit {
   }
   
 
- 
+  downloadFile = (filename) => {    
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+    }
+    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+      window.open(window.URL.createObjectURL(res));
+      let filePath = s3Details.url+'/'+this.docPath+filename;
+      var link=document.createElement('a');
+      link.href = filePath;
+      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+      link.click();
+    });
+  }
 
 }

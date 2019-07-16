@@ -30,7 +30,7 @@ export class LegaciesComponent implements OnInit {
 
   getAdvisorlisting(insert = null) {
     const req_vars = {
-        query: Object.assign({advisorId:this.userId}),
+        query: Object.assign({advisorId:this.userId, "status": { $ne: 'Rejected' }}),
       }    
       this.loader.open();
       this.userapi.apiRequest('post', 'advisor/hireAdvisorListing', req_vars).subscribe(result => {
@@ -46,8 +46,7 @@ export class LegaciesComponent implements OnInit {
         }
       }, (err) => {
         console.error(err)
-      })
-  
+      })  
   }
 
   openReferAndEarnModal(data: any = {}, isNew?) {
@@ -62,7 +61,7 @@ export class LegaciesComponent implements OnInit {
     });
   }
 
-  hireAdvisor(ids,actionName,actionTaken) {
+  hireAdvisor(ids,actionName,actionTaken,custEmail,custName,advFname,advLname) {
     let statMsg = 'Are you sure you want to reject hire request?'
     let hirestatus = actionTaken;
     if (actionName == 'confirmHire') {
@@ -81,7 +80,8 @@ export class LegaciesComponent implements OnInit {
         const req_vars = {
           query: Object.assign({ _id:ids}),
           proquery: Object.assign(proquery),
-          from: Object.assign({ logId:ids})
+          from: Object.assign({ logId:ids}),
+          extraFields: Object.assign({ custEmail:custEmail,custName:custName,advFname:advFname,advLname:advLname})
         }
         this.userapi.apiRequest('post', 'advisor/hireadvisor', req_vars).subscribe(result => {
           this.loader.close();

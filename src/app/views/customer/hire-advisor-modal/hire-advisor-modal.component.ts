@@ -39,17 +39,15 @@ export class HireAdvisorComponent implements OnInit, AfterViewInit  {
   ) {this.ids = data.id;}
 
   ngOnInit() {
-    console.log("userId---",localStorage.getItem("endUserId"))
     this.buildItemForm();
     this.userSections = userSections;  
     this.selectedProfileId = '';   
-    console.log("advisor---",this.ids)
     if(this.ids){     
       this.checkAdvisorView();
     }   
   }
 
-    ngAfterViewInit(){ 
+  ngAfterViewInit(){ 
     if(!this.selectedProfileId){
       this.trusteeFormGroup.controls['selectAll'].setValue('never');
         this.onRadioChange('never');     
@@ -164,10 +162,12 @@ trusteeFormGroupSubmit(insert = null) {
         this.selectedProfileId = profileIds;
     }        
 
+    let inviteByName = localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName");
     const req_vars = {
       query: Object.assign({_id:this.selectedProfileId,customerId:this.userId,advisorId:this.ids}),
       proquery: Object.assign(this.RequestData),
-      from: Object.assign({ logId: "" })
+      from: Object.assign({ logId: "" }),
+      extraFields: Object.assign({ inviteByName:inviteByName})
     }
     
     this.loader.open();
