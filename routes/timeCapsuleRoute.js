@@ -91,7 +91,9 @@ function timeCapsulesFormUpdate(req, res) {
   } else { 
             let { proquery } = req.body;
             var insert = new timeCapsule();
-            insert.customerId = query.customerId;
+            insert.customerLegacyId = proquery.customerLegacyId;
+            insert.customerLegacyType = proquery.customerLegacyType;
+            insert.customerId = proquery.customerId;
             insert.name = proquery.name;  
             insert.status = 'Active';
             insert.createdOn = new Date();

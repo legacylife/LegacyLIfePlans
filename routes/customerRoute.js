@@ -534,7 +534,9 @@ function legalStuffUpdate(req, res) {
   } else {
     let { proquery } = req.body;
     var legals = new LegalStuff();
-    legals.customerId = query.customerId;
+    legals.customerId = proquery.customerId;
+    legals.customerLegacyId = proquery.customerLegacyId;
+    legals.customerLegacyType = proquery.customerLegacyType;
     legals.subFolderName = proquery.subFolderName;
     legals.typeOfDocument = proquery.typeOfDocument;
     legals.comments = proquery.comments;
