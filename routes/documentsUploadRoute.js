@@ -22,6 +22,7 @@ var async = require('async');
 var archiver = require('archiver');
 var stream =require('stream');
 const AWS = require('aws-sdk')
+var S3Sizer = require('aws-s3-size');
 //const XmlStream = require('xml-stream')
 const docFilePath = constants.s3Details.advisorsDocumentsPath;
 const IDdocFilePath = constants.s3Details.myEssentialsDocumentsPath;
@@ -79,6 +80,7 @@ router.post('/advisorDocument', cors(), function(req,res){
                   if (err) {
                     res.send(resFormat.rError(err))
                   } else {
+                    getuserFolderSize(userId);
                     let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
                     res.send(resFormat.rSuccess(result))
                   }
@@ -152,6 +154,7 @@ router.post('/myEssentialsID', cors(), function(req,res){
                           if (err) {
                             res.send(resFormat.rError(err))
                           } else {
+                            getuserFolderSize(userId);
                             let result = { userId:userId, allDocs:tmpallfiles, "message": "ID proof uploaded successfully!" }
                             res.send(resFormat.rSuccess(result))
                           }
@@ -183,6 +186,7 @@ router.post('/myEssentialsID', cors(), function(req,res){
                 if (err) {
                   res.send(resFormat.rError(err))
                    } else {
+                     getuserFolderSize(userId);
                      let result = { "message": "ID proof uploaded successfully!" }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
@@ -251,6 +255,7 @@ router.post('/legalStuff', cors(), function(req,res){
                           if (err) {
                             res.send(resFormat.rError(err))
                           } else {
+                            getuserFolderSize(userId);
                             let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
                             res.send(resFormat.rSuccess(result))
                           }
@@ -282,6 +287,7 @@ router.post('/legalStuff', cors(), function(req,res){
                   if (err) {
                   res.send(resFormat.rError(err))
                    } else {
+                    getuserFolderSize(userId);
                     let result = { "message": "Document uploaded successfully!" }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
@@ -350,6 +356,7 @@ router.post('/finalWishes', cors(), function(req,res){
                           if (err) {
                             res.send(resFormat.rError(err))
                           } else {
+                            getuserFolderSize(userId);
                             let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
                             res.send(resFormat.rSuccess(result))
                           }
@@ -381,6 +388,7 @@ router.post('/finalWishes', cors(), function(req,res){
                   if (err) {
                   res.send(resFormat.rError(err))
                    } else {
+                    getuserFolderSize(userId);
                     let result = { "message": "Document uploaded successfully!" }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
@@ -449,6 +457,7 @@ router.post('/petsdocuments', cors(), function(req,res){
                           if (err) {
                             res.send(resFormat.rError(err))
                           } else {
+                            getuserFolderSize(userId);
                             let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
                             res.send(resFormat.rSuccess(result))
                           }
@@ -479,6 +488,7 @@ router.post('/petsdocuments', cors(), function(req,res){
                   if (err) {
                   res.send(resFormat.rError(err))
                    } else {
+                    getuserFolderSize(userId);
                     let result = { "message": "Document uploaded successfully!" }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
@@ -548,6 +558,7 @@ router.post('/timeCapsuledocuments', cors(), function(req,res){
                           if (err) {
                             res.send(resFormat.rError(err))
                           } else {
+                            getuserFolderSize(userId);
                             let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
                             res.send(resFormat.rSuccess(result))
                           }
@@ -578,6 +589,7 @@ router.post('/timeCapsuledocuments', cors(), function(req,res){
                   if (err) {
                   res.send(resFormat.rError(err))
                    } else {
+                    getuserFolderSize(userId);
                     let result = { "message": "Document uploaded successfully!" }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
@@ -647,6 +659,7 @@ router.post('/insuranceDocuments', cors(), function(req,res){
                           if (err) {
                             res.send(resFormat.rError(err))
                           } else {
+                            getuserFolderSize(userId);
                             let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
                             res.send(resFormat.rSuccess(result))
                           }
@@ -677,11 +690,11 @@ router.post('/insuranceDocuments', cors(), function(req,res){
                   if (err) {
                   res.send(resFormat.rError(err))
                    } else {
+                    getuserFolderSize(userId);
                     let result = { "message": "Document uploaded successfully!" }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
                  })
-
               })
            }
          } 
@@ -745,6 +758,7 @@ router.post('/financeDocuments', cors(), function(req,res){
                           if (err) {
                             res.send(resFormat.rError(err))
                           } else {
+                            getuserFolderSize(userId);
                             let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
                             res.send(resFormat.rSuccess(result))
                           }
@@ -775,6 +789,7 @@ router.post('/financeDocuments', cors(), function(req,res){
                   if (err) {
                   res.send(resFormat.rError(err))
                    } else {
+                    getuserFolderSize(userId);
                     let result = { "message": "Document uploaded successfully!" }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
@@ -789,8 +804,6 @@ router.post('/financeDocuments', cors(), function(req,res){
     })
   }
 })
-
-
 
 router.post('/letterMessage', cors(), function(req,res){
   var fstream;
@@ -845,6 +858,7 @@ router.post('/letterMessage', cors(), function(req,res){
                           if (err) {
                             res.send(resFormat.rError(err))
                           } else {
+                            getuserFolderSize(userId);
                             let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
                             res.send(resFormat.rSuccess(result))
                           }
@@ -875,6 +889,7 @@ router.post('/letterMessage', cors(), function(req,res){
                   if (err) {
                   res.send(resFormat.rError(err))
                    } else {
+                    getuserFolderSize(userId);
                     let result = { "message": "Document uploaded successfully!" }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
@@ -1156,6 +1171,7 @@ router.post('/invite', cors(), function(req,res){
                   if (err) {
                   res.send(resFormat.rError(err))
                    } else {
+                    getuserFolderSize(userId);
                     let result = { "message": "Document uploaded successfully!" }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
@@ -1229,55 +1245,33 @@ async function createAllDirectory(folderName,res) {
 
 function userFolderSize(req,res) {
   let { query } = req.body;
- 
-  let filename = query.userId;
-
-  const s3params = {
-    Bucket: constants.s3Details.bucketName,
-    MaxKeys: 2000,
-    //Delimiter: '/'+filename,
-    Prefix: filename
-  };
-  
-  // const s3params = {
-  //   Bucket: 'bucket-name',
-  //   MaxKeys: 20,
-  //   Delimiter: '/',
-  //   Prefix: 'directory-1/'
-  // };
-
- // let totalSize = map(s3.s3, constants.s3Details.bucketName, "prefix")(s => s.getSize).sum
-
-  // s3.s3.listObjectsV2 (s3params, (err, data) => {
-  //   if (err) {
-  //     console.log("stream ",err);// reject (err);
-  //   }
-  //   console.log ("data",data);
-  // });
-  console.log("s3params :-  ",s3params);
-
-  var params = {Bucket: constants.s3Details.bucketName, Key:filename+'/pets'};
-  // let ext = filename.split('.')
-  // ext = ext[ext.length - 1];
+  let folder = query.userId;
   try {
-    
-    const stream = s3.s3.getObject(s3params, (err, data)=>{
-      console.log("data :-  ",data);
-    })
-  // console.log("stream :- ",stream);
-
-   console.log("================================");
-    // const stream = s3.s3.listObjects(params).createReadStream();    
-    // res.set({
-    //   'Content-Disposition': 'attachment; filename='.filename,
-    //   'Content-Type': 'image/png; charset=utf-8'
-    // });
-    // stream.pipe(res);
-    // console.log("stream ",stream);
-
+    getuserFolderSize(folder);
+    let result = { "message": "Folders size successfully!","size":size }
+    res.status(200).send(resFormat.rSuccess(result))
   } catch (error) {
     res.status(401).send(resFormat.rError({message :error}))  
   }
+}
+
+function getuserFolderSize(folder) {
+    const s3Sizer = new S3Sizer({
+        accessKeyId: constants.s3Details.awsKey,
+        secretAccessKey: constants.s3Details.awsSecret,
+        region:"us-east-1"
+    });
+
+    s3Sizer.getFolderSize(constants.s3Details.bucketName, folder, function(err, size) {
+      User.updateOne({ _id: folder }, { $set: { s3Size: size } }, function (err, updatedUser) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          let result = { size:size, "message": "Document uploaded successfully!" }
+          res.send(resFormat.rSuccess(result))
+        }
+      })
+   });
 }
 
 function downloadZipfiles(req,res) {
@@ -1400,6 +1394,6 @@ router.post("/deleteletterMessageDoc", letterMessageDocument);
 router.post("/deleteInviteDocument", deleteInviteDocument);
 router.post("/createUserDir", createDirectory);
 router.post("/downloadDocument", downloadDocs);
-router.post("/downloadZip", downloadZipfiles);
+router.post("/downloadZip",downloadZipfiles);
 router.post("/checkFolderSize", userFolderSize);
 module.exports = router

@@ -64,6 +64,7 @@ var userSchema = new mongoose.Schema({
   managingPrincipleName : String, 
   advisorDocuments : Array,
   folders:Array,
+  s3Size:String,
   sponsoredAdvisor:String,
   // Subscription fields
   manageOtherProceducers : String, 
