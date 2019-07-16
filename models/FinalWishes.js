@@ -3,6 +3,8 @@ var constants = require("./../config/constants")
 
 var finalWishesSchema = new mongoose.Schema({
   customerId: String,
+  customerLegacyId: String,
+  customerLegacyType: String,
   title: String,
   subFolderName: String,
   calendarDate: String,
