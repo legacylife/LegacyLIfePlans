@@ -79,6 +79,7 @@ import { CountUpModule } from 'countup.js-angular2';
 import { LyResizingCroppingImageModule } from '@alyle/ui/resizing-cropping-images';
 /** Import themes */
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
+import { OurPlanComponent } from './our-plan/our-plan.component';
 
 export class GlobalVariables {
   testVal = '#00bcd4';
@@ -156,7 +157,7 @@ export class GlobalVariables {
     ChangePassComponent, HomeComponent, ReferAndEarnModalComponent, AdvisorLegacyDetailsComponent,
     LegaciesDetailsLandingComponent, MarkAsDeceasedComponent,
     GetFeaturedComponent, SubmitEnquiryModalComponent, AdvisorLeadsComponent, AdvisorLeadsDetailsComponent, 
-    ProspectPeoplesModalComponent,//TodosComponent,TodosListingComponent
+    ProspectPeoplesModalComponent, OurPlanComponent,//TodosComponent,TodosListingComponent
   ], providers: [
     // { provide: LY_THEME, useClass: MinimaLight, multi: true },
     // { provide: LY_THEME, useClass: MinimaDark, multi: true },

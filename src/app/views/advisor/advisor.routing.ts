@@ -21,6 +21,7 @@ import { GetFeaturedComponent } from './get-featured/get-featured.component';
 import { AdvisorLeadsComponent } from './advisor-leads/advisor-leads.component';
 import { AdvisorLeadsDetailsComponent } from './advisor-leads-details/advisor-leads-details.component';
 import { TodosListingComponent } from '../todos-listing/todos-listing.component';
+import { OurPlanComponent } from './our-plan/our-plan.component';
 console.log('advisor---routing');
 export const AdvisorRoutes: Routes = [
   {
@@ -30,6 +31,17 @@ export const AdvisorRoutes: Routes = [
       {
         path: '',
         component: HomeComponent,
+        canActivate: [UserPreAuthGuard]
+      }
+    ],
+  },
+  {
+    path: 'our-plan',
+    component: AdvisorLandingLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: OurPlanComponent,
         canActivate: [UserPreAuthGuard]
       }
     ],
