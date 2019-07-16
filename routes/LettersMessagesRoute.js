@@ -92,11 +92,11 @@ function LettersMessageFormUpdate(req, res) {
   } else { 
             let { proquery } = req.body;
             var insert = new pet();
-            insert.customerId = query.customerId;
-            insert.name = proquery.name;
-            insert.petType = proquery.petType;            
-            insert.veterinarian = proquery.veterinarian;
-            insert.dietaryConcerns = proquery.dietaryConcerns;        
+            insert.customerId = proquery.customerId;
+            insert.title = proquery.title;
+            insert.subject = proquery.subject;            
+            insert.documents = proquery.documents;
+            insert.letterBox = proquery.letterBox;
             insert.status = 'Active';
             insert.createdOn = new Date();
             insert.modifiedOn = new Date();
