@@ -134,6 +134,7 @@ export const AdvisorRoutes: Routes = [
   }, {
     path: 'account-setting',
     component: AdvisorLayoutComponent,
+    data: { title: 'Account Setting' },
     children: [
       {
         path: '',

@@ -279,8 +279,8 @@ export class FinalWishesFormModalComponent implements OnInit {
       query: Object.assign({ docPath: this.docPath, filename: filename }, query)
     }
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
-      window.open(window.URL.createObjectURL(res));
-      let filePath = s3Details.url+'/'+this.docPath+filename;
+      var downloadURL =window.URL.createObjectURL(res)
+      let filePath = downloadURL;
       var link=document.createElement('a');
       link.href = filePath;
       link.download = filePath.substr(filePath.lastIndexOf('/') + 1);

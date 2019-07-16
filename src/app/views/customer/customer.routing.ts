@@ -68,6 +68,7 @@ export const CustomerRoutes: Routes = [
   {
     path: 'signup',
     component: AuthLayoutComponent,
+    data: { title: '' },
     children: [
       {
         path: '',
