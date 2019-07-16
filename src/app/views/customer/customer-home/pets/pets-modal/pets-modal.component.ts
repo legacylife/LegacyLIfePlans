@@ -10,9 +10,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../../config';
 import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
-import { log } from 'util';
 const URL = serverUrl + '/api/documents/petsdocuments';
-const filePath = s3Details.url+'/'+s3Details.petsFilePath;
 @Component({
   selector: 'app-essenioal-id-box',
   templateUrl: './pets-modal.component.html',
@@ -33,11 +31,11 @@ export class PetsModalComponent implements OnInit {
   petsList:any;
   profileIdHiddenVal:boolean = false;
   selectedProfileId: string;
-  customerLegaciesId: string='';
-  selectedLegaciesURL:string='';
-  selectedProfileModule:string='';
   docPath: string;
+  urlData:any={};
+  customerLegaciesId: string;
   customerLegacyType:string='customer';
+
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService  ) 
@@ -45,43 +43,33 @@ export class PetsModalComponent implements OnInit {
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    const filePath = this.userId+'/'+s3Details.petsFilePath;
     this.docPath = filePath;
     this.PetForm = this.fb.group({
       name: new FormControl('',Validators.required),
       petType: new FormControl(''),
       veterinarian: new FormControl(''),
       dietaryConcerns: new FormControl(''),
-      profileId: new FormControl(''),
-      hiddenCustomerId: new FormControl('')
+      profileId: new FormControl('')
      });
-     this.petDocumentsList = [];
-     const locationArray = location.href.split('/')
-     this.selectedProfileId = locationArray[locationArray.length - 1];
-     this.selectedProfileModule = locationArray[locationArray.length - 2];
-     this.selectedLegaciesURL = locationArray[locationArray.length - 3];
+    this.petDocumentsList = [];
 
-    if(this.selectedProfileId && this.selectedProfileId == 'pets'){
-      this.selectedProfileId = "";   
-    } 
-
-    if(this.selectedProfileId && this.selectedProfileModule != 'pets-view' && this.selectedLegaciesURL == 'legacies'){
-      this.customerLegaciesId = localStorage.getItem("endUserId")                                     
-      this.userId = this.selectedProfileId
-      this.customerLegacyType = localStorage.getItem("endUserType")
-      this.selectedProfileId = "";                                                                                                                                                                                                                                                                                                                                                              
-    } 
-
-    if(this.selectedLegaciesURL == 'legacies'){
-      this.customerLegaciesId = localStorage.getItem("endUserId");
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    if (this.selectedProfileId && this.selectedProfileId == 'pets' && this.urlData.lastThird != "legacies") {
+      this.selectedProfileId = "";
     }
-
-    this.PetForm.controls['hiddenCustomerId'].setValue(this.userId);
-
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'pets') {
+        this.customerLegaciesId = this.userId;
+        this.customerLegacyType =  this.urlData.userType;
+        this.userId = this.urlData.lastOne;          
+        this.selectedProfileId = "";        
+    }
+    
     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
     this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
     this.getPetsView();
   }
-
 
     PetFormSubmit(profileInData = null) {
       var query = {};
@@ -91,16 +79,17 @@ export class PetsModalComponent implements OnInit {
       if(profileIds){
         this.selectedProfileId = profileIds;
       }
-      profileInData.customerLegacyId = this.customerLegaciesId
-      profileInData.customerLegacyType = this.customerLegacyType
+      if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'pets') {
+        profileInData.customerLegacyId = this.customerLegaciesId
+        profileInData.customerLegacyType = this.customerLegacyType
+      }        
+      if(!profileInData.profileId || profileInData.profileId ==''){
+        profileInData.customerId = this.userId
+      }
       const req_vars = {
-        query: Object.assign({ 
-          _id: this.selectedProfileId,
-          customerId: this.PetForm.controls['hiddenCustomerId'].value
-        }),
+        query: Object.assign({ _id: this.selectedProfileId }),
         proquery: Object.assign(profileInData)
       }
-        
       this.loader.open();     
       this.userapi.apiRequest('post', 'pets/pets-form-submit', req_vars).subscribe(result => {
         this.loader.close();
@@ -124,7 +113,7 @@ export class PetsModalComponent implements OnInit {
       if (this.selectedProfileId) {
         profileIds = this.selectedProfileId;
         req_vars = {
-          query: Object.assign({ _id:profileIds })
+          query: Object.assign({ _id:profileIds})
         }
       }
 
@@ -138,7 +127,6 @@ export class PetsModalComponent implements OnInit {
             this.petsList = result.data;                    
             let profileIds = this.petsList._id;
             this.PetForm.controls['profileId'].setValue(profileIds);
-            this.PetForm.controls['hiddenCustomerId'].setValue(this.petsList.customerId);
             this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
             this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
             this.petDocumentsList = result.data.documents;            
@@ -155,7 +143,6 @@ export class PetsModalComponent implements OnInit {
 
   PetDelete(doc, name, tmName) {
       let ids = this.PetForm.controls['profileId'].value;
-
       var statMsg = "Are you sure you want to delete '" + name + "' file?"
       this.confirmService.confirm({ message: statMsg })
         .subscribe(res => {
@@ -173,9 +160,6 @@ export class PetsModalComponent implements OnInit {
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
               } else {
-                if(this.petDocumentsList.length<1){
-                  this.PetForm.controls['idProofDocuments_temp'].setValue('');
-                }  
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
               }
@@ -244,7 +228,7 @@ export class PetsModalComponent implements OnInit {
       }
       if(profileIds){
          req_vars = {
-          query: Object.assign({ _id:profileIds, customerId: this.userId  }),
+          query: Object.assign({ _id:profileIds}),
           fields:{_id:1,documents:1}
         }
       }    
@@ -295,6 +279,19 @@ export class PetsModalComponent implements OnInit {
   }
   
 
- 
+  downloadFile = (filename) => {    
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+    }
+    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+      window.open(window.URL.createObjectURL(res));
+      let filePath = s3Details.url+'/'+this.docPath+filename;
+      var link=document.createElement('a');
+      link.href = filePath;
+      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+      link.click();
+    });
+  }
 
 }

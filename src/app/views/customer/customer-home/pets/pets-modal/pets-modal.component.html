@@ -50,7 +50,7 @@
          <div *ngIf="petDocumentsList" >
           <h3 class="header--text fnt--16">Uploaded pet documents </h3>
           <mat-chip-list class="doc--list" *ngFor="let doc of petDocumentsList; index as i">
-              <mat-chip><a href="{{docPath}}{{doc.tmpName}}">{{doc.title}}</a><mat-icon matChipRemove (click)="PetDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+              <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove (click)="PetDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
           </mat-chip-list>
          </div>
 
@@ -65,8 +65,6 @@
 
           <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
             <input matInput name="profileId" [formControl]="PetForm.controls['profileId']" readonly="readonly">
-            <input matInput name="hiddenCustomerId" [formControl]="PetForm.controls['hiddenCustomerId']" readonly="readonly">
-
           </mat-form-field>
       </div>
     </div>

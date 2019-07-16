@@ -8,7 +8,8 @@ import { AppLoaderService } from '../../../../../shared/services/app-loader/app-
 import { AppConfirmService } from '../../../../../shared/services/app-confirm/app-confirm.service';
 import { PetsModalComponent } from './../pets-modal/pets-modal.component';
 import { s3Details } from '../../../../../config';
-const filePath = s3Details.url+'/'+s3Details.petsFilePath;
+
+
 @Component({
   selector: 'app-customer-home',
   templateUrl: './pets-details.component.html',
@@ -18,12 +19,13 @@ const filePath = s3Details.url+'/'+s3Details.petsFilePath;
 export class PetsDetailsComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   userId: string;
-  userType:string;
   selectedProfileId: string = "";
-  selectedLegaciesURL:string= "";
   row: any;
   re =  "/(?:\.([^.]+))?$/" ;
   docPath: string; 
+  urlData:any={};
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';
   trusteeLegaciesAction:boolean=true;
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
@@ -33,21 +35,12 @@ export class PetsDetailsComponent implements OnInit {
 
   ngOnInit() {  
     this.userId = localStorage.getItem("endUserId");
-    this.docPath = filePath;
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
+    const filePath = this.userId+'/'+s3Details.petsFilePath;
+    this.docPath = filePath;    
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction    
     this.getPetsView();
-    if (localStorage.getItem("endUserType") == "customer") {
-      this.userType = "customer";
-    } else {
-      this.userType = "advisor";
-    }
-    this.selectedLegaciesURL = locationArray[locationArray.length - 3];
-
-    
-    let urlData = this.userapi.getURLData();
-    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
-
   }
 
   //function to get all events
@@ -60,11 +53,14 @@ export class PetsDetailsComponent implements OnInit {
         query: Object.assign({ _id: profileIds })
       }
     }
-    this.userapi.apiRequest('post', 'pets/view-pets-details', req_vars).subscribe(result => {     
+    this.userapi.apiRequest('post', 'pets/view-pets-details', req_vars).subscribe(result => {   
       if (result.status == "error") {
         console.log(result.data)
       } else {
         if (result.data) {
+          if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
+            this.trusteeLegaciesAction = false;
+          }
           this.row = result.data;        
         }
       }  
@@ -89,10 +85,6 @@ export class PetsDetailsComponent implements OnInit {
   }
 
   deletePets(customerId='') {
-    var redirectModule = ''
-    if(this.userType == 'advisor'){
-      redirectModule = customerId
-    }
     var statMsg = "Are you sure you want to delete pet details?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
@@ -108,7 +100,12 @@ export class PetsDetailsComponent implements OnInit {
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', this.userType , this.selectedLegaciesURL,  'pets', redirectModule])
+              if(this.urlData.userType == 'advisor'){
+                this.router.navigate(['/', 'advisor', 'legacies', 'pets', customerId])
+              }else{
+                this.router.navigate(['/', 'customer', 'dashboard', 'pets'])
+              }
+
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {
@@ -118,5 +115,25 @@ export class PetsDetailsComponent implements OnInit {
         }
       })
   }
+
+  downloadFile = (filename) => {    
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+    }
+    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+      window.open(window.URL.createObjectURL(res));
+      this.downloadFiles(this.docPath+filename)
+    });
+  }
+  
+  downloadFiles(filePath){
+    var link=document.createElement('a');
+   // link.href = filePath;
+    link.href = s3Details.url+'/'+filePath;
+    link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+    link.click();
+  }
+
 
 }

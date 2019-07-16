@@ -316,4 +316,7 @@ export class UserAPIService {
     return returnData;
   }
   
+  public download(path: string, params: any): Observable<any> {
+    return this.http.post(serverUrl + `/api/${path}`, params, { responseType: 'blob'});
+  }
 }

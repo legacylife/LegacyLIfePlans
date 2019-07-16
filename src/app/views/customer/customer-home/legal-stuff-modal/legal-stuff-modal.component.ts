@@ -220,7 +220,7 @@ export class legalStuffModalComponent implements OnInit {
     }
     if(profileIds){
        req_vars = {
-        query: Object.assign({ _id:profileIds, customerId: this.userId }),
+        query: Object.assign({ _id:profileIds }),
         fields:{_id:1,subFolderDocuments:1}
       }
     }    
