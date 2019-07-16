@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 const resFormat = require('./../helpers/responseFormat')
 var fs = require('fs')
+var path = require('path')
 var cors = require('cors')
 const Busboy = require('busboy')
 var constants = require('./../config/constants')
@@ -16,6 +17,12 @@ const insurance = require('../models/Insurance.js')
 const Finance = require('../models/Finances.js')
 const Invite = require('../models/Invite.js')
 const InviteTemp = require('../models/InviteTemp.js')
+var s3Archiver = require('s3-archiver');
+var async = require('async');
+var archiver = require('archiver');
+var stream =require('stream');
+const AWS = require('aws-sdk')
+//const XmlStream = require('xml-stream')
 const docFilePath = constants.s3Details.advisorsDocumentsPath;
 const IDdocFilePath = constants.s3Details.myEssentialsDocumentsPath;
 const legalStuffdocFilePath = constants.s3Details.legalStuffDocumentsPath;
@@ -29,6 +36,7 @@ const inviteDocumentsPath = constants.s3Details.inviteDocumentsPath;
 const lettersMessage = require('./../models/LettersMessages.js')
 var DIR = './uploads/';
 
+process.setMaxListeners(0);
 router.post('/advisorDocument', cors(), function(req,res){
   var fstream;
   let authTokens = { authCode: "" }
@@ -1178,7 +1186,6 @@ function downloadDocs(req,res) {
   let filePath = query.docPath+query.filename;
   let filename = query.filename;
   var params = {Bucket: constants.s3Details.bucketName,Key:filePath};
-  console.log("params --->",params);
   let ext = filename.split('.')
   ext = ext[ext.length - 1];
   try {
@@ -1188,6 +1195,7 @@ function downloadDocs(req,res) {
       'Content-Type': 'image/'+ext+'; charset=utf-8'
     });
     stream.pipe(res);
+    res.status(200).send(resFormat.rSuccess({message :"Zip File download successfully"}))  
   } catch (error) {
     res.status(401).send(resFormat.rError({message :error}))  
   }
@@ -1272,6 +1280,114 @@ function userFolderSize(req,res) {
   }
 }
 
+function downloadZipfiles(req,res) {
+        let { query } = req.body; 
+        let filesPath = query.docPath;       
+        let ext = query.downloadFileName.split('/');
+        let downloadFileName = ext[0]+ '-' + new Date().getTime();      
+        const params = {Bucket: constants.s3Details.bucketName,
+          Prefix: filesPath
+        };
+        const stream = s3.s3.listObjectsV2(params, (err, data)=>{
+        try {
+          let files = []
+        async.each(data.Contents, (folder, cb)=>{
+            files.push(folder.Key);  
+            cb()
+        }, ()=>{        
+          try {           
+            var archive = archiver('zip', {});
+            // Handle various useful events if you need them.
+            archive.on('end', () => {});
+            archive.on('warning', () => {});
+            archive.on('error', () => {});      
+            // Set up the archive we want to present as a download.
+            res.attachment(downloadFileName+'.zip');
+            let s3OutputStream = uploadFromStream(downloadFileName);
+            archive.pipe(s3OutputStream);
+
+            async.each(files, (folder)=>{
+                let filePath = folder;                 
+                let filename = folder;
+                var getparams = {Bucket: constants.s3Details.bucketName,Key:filePath};
+                const stream = s3.s3.getObject(getparams).createReadStream();    
+                archive.append(stream,{name: filename});                    
+            })            
+            archive.finalize();              
+              // let downloadfilePath = 'downloads/'+downloadFileName+'.zip';
+              // let downloadFilenames = downloadFileName+'.zip';
+              // downloadZip(downloadfilePath, downloadFilenames);       
+         
+          } catch (error) {
+            res.status(401).send(resFormat.rError({message :error}))  
+          }
+        }) 
+        } catch (error) {         
+          res.status(401).send(resFormat.rError({message :error}))  
+        }
+   })              
+}
+
+function downloadZip(downloadfilePath,downloadFilenames) {
+    var downLoadparams = {Bucket: constants.s3Details.bucketName,Key:downloadfilePath};
+    try {
+      const streams = s3.s3.getObject(downLoadparams).createReadStream();    
+      res.set({
+        'Content-Disposition': 'attachment; filename='.downloadFilenames,
+        'Content-Type': 'file/zip; charset=utf-8'
+      });
+      streams.pipe(res);
+      res.status(200).send(resFormat.rSuccess({message :"Zip File download successfully"}))  
+    } catch (error) {
+      res.status(401).send(resFormat.rError({message :error}))  
+    }     
+}
+
+function uploadFromStream(fileName) {
+  var pass = new stream.PassThrough();
+  var params = {Bucket: constants.s3Details.bucketName, Key: 'downloads/'+fileName+'.zip', Body: pass};
+  s3.s3.upload(params, function(err, data) {  
+    });
+  return pass;
+}
+
+function downloadZipfilesPronit(req,res) {
+  // const s3Zip = require('s3-zip')
+  // let { query } = req.body; 
+  // let filesPath = query.docPath;
+  // const params = {Bucket: constants.s3Details.bucketName,
+  //   Prefix: filesPath
+  // };
+  //       const stream = s3.s3.listObjectsV2(params, (err, data)=>{
+  //       try {
+  //         console.log(data);
+  //         let files = []
+  //       async.each(data.Contents, (folder, cb)=>{
+        
+  //           console.log("row->  ",folder);
+  //           files.push(folder.Key);
+  //           cb()
+  //       }, ()=>{
+  //         console.log(files);
+  //         // zip(files)
+  //         try {
+           
+  //         const output = fs.createWriteStream(path.join(__dirname, "new.zip" ))
+  //         s3Zip
+  //          .archive({region: "us-east-1", bucket: constants.s3Details.bucketName, preserveFolderStructure: true }, filesPath, files)
+         
+  //         } catch (error) {
+  //           console.log(error);
+  //         }
+  //       })
+
+  //       res.status(200).send(resFormat.rSuccess({message :"Folders Created successfully!"}))  
+  //       } catch (error) {
+  //       res.status(401).send(resFormat.rError({message :error}))  
+  //       }
+  //       })              
+}
+
 router.post("/deleteAdvDoc", deleteDoc);
 router.post("/deleteIdDoc", deleteIdDocument);
 router.post("/deletesubFolderDoc", deletesubFolderDoc);
@@ -1284,5 +1400,6 @@ router.post("/deleteletterMessageDoc", letterMessageDocument);
 router.post("/deleteInviteDocument", deleteInviteDocument);
 router.post("/createUserDir", createDirectory);
 router.post("/downloadDocument", downloadDocs);
+router.post("/downloadZip", downloadZipfiles);
 router.post("/checkFolderSize", userFolderSize);
 module.exports = router

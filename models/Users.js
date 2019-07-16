@@ -54,6 +54,8 @@ var userSchema = new mongoose.Schema({
 	id: String,  
     links: String
   }], 
+  specialites:Array,
+  hobbies:Array,
   websiteLinks:Array,
   businessPhonePrefix : String, 
   businessPhoneNumber : String, 
