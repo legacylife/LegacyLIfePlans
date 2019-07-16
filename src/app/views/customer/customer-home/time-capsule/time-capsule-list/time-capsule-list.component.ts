@@ -18,16 +18,23 @@ export class TimeCapsuleListComponent implements OnInit {
   userId: string;
   timeCapsuleListing:any = [];
   modifiedDate:any;
-  dynamicRoute:string;
+  dynamicRoute:string;  
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';
   trusteeLegaciesAction:boolean=true;
+  urlData:any={};
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    this.urlData = this.userapi.getURLData();
+    this.customerLegaciesId = this.urlData.lastOne;
+    this.dynamicRoute = this.urlData.dynamicRoute;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    if (this.urlData.lastThird == "legacies") {
+      this.userId = this.urlData.lastOne;
+    }
     this.getTimecapsuleList();
-    let urlData = this.userapi.getURLData();
-    this.dynamicRoute = urlData.dynamicRoute;
-    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
   getTimecapsuleList = (query = {}) => {

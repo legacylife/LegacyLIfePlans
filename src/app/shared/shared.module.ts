@@ -125,6 +125,12 @@ import { DetailsAssetsComponent } from 'app/views/customer/customer-home/real-es
 import { AssetsModelComponent } from 'app/views/customer/customer-home/real-estate-assets/assets-model/assets-model.component';
 import { VehicleModelComponent } from 'app/views/customer/customer-home/real-estate-assets/vehicle-model/vehicle-model.component';
 import { RealEstateModelComponent } from 'app/views/customer/customer-home/real-estate-assets/real-estate-model/real-estate-model.component';
+import { TimeCapsuleListComponent } from 'app/views/customer/customer-home/time-capsule/time-capsule-list/time-capsule-list.component';
+import { TimeCapsuleMoalComponent } from 'app/views/customer/customer-home/time-capsule/time-capsule-modal/time-capsule-modal.component';
+import { TimeCapsuleDetailsComponent } from 'app/views/customer/customer-home/time-capsule/time-capsule-details/time-capsule-details.component';
+import { legalStuffModalComponent } from 'app/views/customer/customer-home/legal-stuff-modal/legal-stuff-modal.component';
+import { CustomerLegalStuffComponent } from 'app/views/customer/customer-home/customer-legal-stuff/customer-legal-stuff.component';
+import { CustomerLegalStuffDetailsComponent } from 'app/views/customer/customer-home/customer-legal-stuff-details/customer-legal-stuff-details.component';
 
 
 /* 
@@ -193,7 +199,13 @@ const classesToInclude = [
   DetailsAssetsComponent,
   AssetsModelComponent,
   VehicleModelComponent,
-  RealEstateModelComponent
+  RealEstateModelComponent,
+  TimeCapsuleListComponent,
+  TimeCapsuleMoalComponent,
+  TimeCapsuleDetailsComponent,
+  legalStuffModalComponent,
+  CustomerLegalStuffComponent,
+  CustomerLegalStuffDetailsComponent
 ]
 
 @NgModule({
@@ -240,8 +252,7 @@ const classesToInclude = [
     AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,
     PetsModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent,SpecialNeedsModelComponent,
     DevicesModalComponent,ElectronicMediaModalComponent,AssetsModelComponent,
-    VehicleModelComponent,
-    RealEstateModelComponent
+    VehicleModelComponent,RealEstateModelComponent,TimeCapsuleMoalComponent,legalStuffModalComponent
   ],
   providers: [
     ThemeService,

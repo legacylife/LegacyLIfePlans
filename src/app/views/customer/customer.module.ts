@@ -56,9 +56,6 @@ import { MarkAsDeceasedComponent } from './customer-home/mark-as-deceased-modal/
 import { CustomerMyPeopleComponent } from './customer-trustees/customer-my-people/customer-my-people.component';
 import { CustomerMyTrusteeComponent } from './customer-trustees/customer-my-trustees/customer-my-trustees.component';
 import { CustomerHiredAdvisorComponent } from './customer-trustees/customer-hired-advisors/customer-hired-advisors.component';
-import { CustomerLegalStuffComponent } from './customer-home/customer-legal-stuff/customer-legal-stuff.component';
-import { legalStuffModalComponent } from './customer-home/legal-stuff-modal/legal-stuff-modal.component';
-import { CustomerLegalStuffDetailsComponent } from './customer-home/customer-legal-stuff-details/customer-legal-stuff-details.component';
 import { addTrusteeModalComponent } from './customer-home/add-trustee-modal/add-trustee-modal.component';
 import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
 import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
@@ -72,10 +69,6 @@ import { ProfAdvisorListingComponent } from './customer-professionals-landing/pr
 import { FinalWishesComponent } from './customer-home/final-wishes/final-wishes-list/final-wishes-list.component';
 import { FinalWishesFormModalComponent } from './customer-home/final-wishes/final-wishes-form-modal/final-wishes-form-modal.component';
 import { FinalWishesDetailsComponent } from './customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
-//Time capsule
-import { TimeCapsuleListComponent } from './customer-home/time-capsule/time-capsule-list/time-capsule-list.component';
-import { TimeCapsuleMoalComponent } from './customer-home/time-capsule/time-capsule-modal/time-capsule-modal.component';
-import { TimeCapsuleDetailsComponent } from './customer-home/time-capsule/time-capsule-details/time-capsule-details.component';
 //Insurance Finance & Debt
 import { InsuranceFinanceDebtListComponent } from './customer-home/insurance-finance-debt/insurance-finance-debt-list/insurance-finance-debt-list.component';
 import { InsuranceModalComponent } from './customer-home/insurance-finance-debt/insurance-modal/insurance-modal.component';
@@ -160,11 +153,10 @@ import { LettersMessagesModelComponent } from './customer-home/legacy-life-lette
     CustomerSubscriptionComponent, CustomerTrusteesComponent, CustomerProfessionalComponent,
     CustomerHomeEssentialComponent, CustomerDashboardComponent, CustomerDashboardDayOneComponent,
     CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent,
-    CustomerMyPeopleComponent, CustomerLegalStuffComponent, legalStuffModalComponent,
-    addTrusteeModalComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,CustomerLegalStuffDetailsComponent,
+    CustomerMyPeopleComponent, addTrusteeModalComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,
     CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent, ProfAddTrusteeModalComponent,
     CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent, FinalWishesComponent,
-    FinalWishesFormModalComponent, FinalWishesDetailsComponent, TimeCapsuleListComponent, TimeCapsuleMoalComponent, TimeCapsuleDetailsComponent, 
+    FinalWishesFormModalComponent, FinalWishesDetailsComponent, 
     InsuranceFinanceDebtListComponent, InsuranceModalComponent, InsuranceDetailsComponent, FinanceModalComponent, FinanceDetailsComponent,
     DebtModalComponent, LettersMessagesListingComponent,LettersMessagesDetailsComponent, LettersMessagesModelComponent
   ], providers: [
@@ -175,8 +167,7 @@ import { LettersMessagesModelComponent } from './customer-home/legacy-life-lette
   ], bootstrap: [CustomerSignupComponent],
   entryComponents: [ChangePassComponent,
     addTrusteeModalComponent, MarkAsDeceasedComponent,
-    legalStuffModalComponent, SendAnEmailComponent,
-    HireAdvisorComponent, FinalWishesFormModalComponent, TimeCapsuleMoalComponent,
+    SendAnEmailComponent, HireAdvisorComponent, FinalWishesFormModalComponent,
     InsuranceModalComponent, FinanceModalComponent, DebtModalComponent, ProfAddTrusteeModalComponent,
     LettersMessagesModelComponent
   ]

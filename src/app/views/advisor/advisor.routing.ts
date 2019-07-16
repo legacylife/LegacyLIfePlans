@@ -40,6 +40,10 @@ import { ListingComponent } from '../customer/customer-home/real-estate-assets/l
 import { DetailsComponent } from '../customer/customer-home/real-estate-assets/details/details.component';
 import { DetailsVehiclesComponent } from '../customer/customer-home/real-estate-assets/details-vehicles/details-vehicles.component';
 import { DetailsAssetsComponent } from '../customer/customer-home/real-estate-assets/details-assets/details-assets.component';
+import { TimeCapsuleListComponent } from '../customer/customer-home/time-capsule/time-capsule-list/time-capsule-list.component';
+import { TimeCapsuleDetailsComponent } from '../customer/customer-home/time-capsule/time-capsule-details/time-capsule-details.component';
+import { CustomerLegalStuffDetailsComponent } from '../customer/customer-home/customer-legal-stuff-details/customer-legal-stuff-details.component';
+import { CustomerLegalStuffComponent } from '../customer/customer-home/customer-legal-stuff/customer-legal-stuff.component';
 
 
 console.log('advisor---routing');
@@ -205,7 +209,7 @@ export const AdvisorRoutes: Routes = [
           },
           {
             path: 'legal-stuff/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: CustomerLegalStuffComponent
           },
           {
             path: 'emergency-contacts/:id',
@@ -213,7 +217,7 @@ export const AdvisorRoutes: Routes = [
           },
 	        {
             path: 'legal-detail-view/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: CustomerLegalStuffDetailsComponent
           },
           {
             path: 'emergency-contacts-details/:id',
@@ -252,11 +256,11 @@ export const AdvisorRoutes: Routes = [
           },   
           {
             path: 'time-capsule/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: TimeCapsuleListComponent
           },         
           {
             path: 'time-capsule-view/:id',
-            component: CustomerEssentialDayOneComponent // temp
+            component: TimeCapsuleDetailsComponent
           },
           {
             path: 'special-needs/:id',

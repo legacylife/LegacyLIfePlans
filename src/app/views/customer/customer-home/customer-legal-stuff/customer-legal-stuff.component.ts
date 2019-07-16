@@ -29,9 +29,15 @@ export class CustomerLegalStuffComponent implements OnInit {
   legaStuffList: any = [];
   selectedProfileId:string = "";
   typeOfDocumentList: any[];
+  userId: string;
+  
+  urlData:any={};
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
-  userId: string;
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';														
+
+
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -41,10 +47,14 @@ export class CustomerLegalStuffComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.showEstateListingCnt = 0;    
+    this.urlData = this.userapi.getURLData();
+    this.dynamicRoute = this.urlData.dynamicRoute;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    
+    if (this.urlData.lastThird == "legacies") {
+      this.userId = this.urlData.lastOne;
+    }
     this.getEstateList();
-    let urlData = this.userapi.getURLData();
-    this.dynamicRoute = urlData.dynamicRoute;
-    this.trusteeLegaciesAction = urlData.trusteeLegaciesAction
   }
 
 
