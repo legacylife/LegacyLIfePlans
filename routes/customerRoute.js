@@ -27,6 +27,7 @@ const SpecialNeeds = require('./../models/SpecialNeeds.js')
 const s3 = require('./../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
 const Trustee = require('./../models/Trustee.js')
+const HiredAdvisors = require('./../models/HiredAdvisors.js')
 
 var auth = jwt({
   secret: constants.secret,
@@ -723,6 +724,23 @@ function getSharedLegaciesList(req,res){
   })
 }
 
+function legacyUserRemove(req,res){
+  let userData = {};
+  let { query } = req.body;
+  let userstring = ''
+  userData.status = 'Deleted';
+  userData.modifiedOn = new Date();
+  if( query.userType == 'advisor'){
+    HiredAdvisors.updateOne({ customerId : query.customerId, advisorId : query.advisorId }, { $set: userData }, function (err, updatedDetails){ });
+    userstring = 'Advisor'
+  }else{
+    Trustee.updateOne({ customerId : query.customerId, trusteeId : query.trusteeId }, { $set: userData }, function (err, updatedDetails){});
+    userstring = 'Trustee'
+  }
+  let result = { "message": userstring + " removed successfully" }
+  res.status(200).send(resFormat.rSuccess(result))   
+}
+
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
@@ -745,5 +763,5 @@ router.post("/view-emergency-contacts", viewEmergencyContacts)
 router.post("/deletecontact", deleteEcontact)
 router.post("/file-activity-log-list", fileActivityLogList)
 router.post("/shared-legacies-list", getSharedLegaciesList)
-
+router.post("/legacy-user-remove", legacyUserRemove)
 module.exports = router
