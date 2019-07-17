@@ -118,13 +118,20 @@ export class PetsDetailsComponent implements OnInit {
     });
   }
   
-  // downloadFiles(filePath){
-  //   var link=document.createElement('a');
-  //  // link.href = filePath;
-  //   link.href = s3Details.url+'/'+filePath;
-  //   link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
-  //   link.click();
-  // }
+  DownloadZip = () => {      
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:s3Details.petsFilePath,AllDocuments:this.row.documents }, query)
+    }
+    this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {
+      var downloadURL =window.URL.createObjectURL(res)
+      let filePath = downloadURL;
+      var link=document.createElement('a');
+      link.href = filePath;
+      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+      link.click();
+    });
+  }
 
 
 }

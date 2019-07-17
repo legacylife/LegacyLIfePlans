@@ -122,4 +122,19 @@ export class FinalWishesDetailsComponent implements OnInit {
       link.click();
     });
   }
+
+  DownloadZip = () => {      
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:s3Details.finalWishesFilePath,AllDocuments:this.row.subFolderDocuments }, query)
+    }
+    this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {
+      var downloadURL =window.URL.createObjectURL(res)
+      let filePath = downloadURL;
+      var link=document.createElement('a');
+      link.href = filePath;
+      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+      link.click();
+    });
+  }
 }

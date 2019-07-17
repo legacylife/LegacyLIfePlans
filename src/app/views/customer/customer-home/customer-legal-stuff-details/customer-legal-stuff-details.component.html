@@ -8,10 +8,10 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Legal Stuff</mat-card-title>
           <div class="right--actions">
-            <!-- <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="DownloadZip()">
               <mat-icon>file_download</mat-icon>
               <span class="hide--sm--txt">Download</span>
-            </button> -->
+            </button>
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openLegalStuffModals(row?.subFolderName, true)">
               <mat-icon>edit</mat-icon>
               <span class="hide--sm--txt">Edit</span>
@@ -33,7 +33,7 @@
               </span>
             </div>
             <div class="details--body">
-              <h3>{{getType(row?.typeOfDocument)}}</h3>
+              <h3 *ngIf="row?.typeOfDocument">{{getType(row?.typeOfDocument)}}</h3>
               <div fxLayout="row wrap" class="mb--10">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Comments:</label>
