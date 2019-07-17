@@ -206,7 +206,7 @@ export const AdvisorRoutes: Routes = [
             path: 'essential-professionals-detail/:id',
             component: EssentialsMyProfessionalsDetailsComponent // temp
           },
-          {
+          { 
             path: 'shared-legacies',
             component: CustomerEssentialDayOneComponent // temp
           },

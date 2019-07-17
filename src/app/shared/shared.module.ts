@@ -143,6 +143,7 @@ import { FinalWishesFormModalComponent } from 'app/views/customer/customer-home/
 import { LettersMessagesListingComponent } from 'app/views/customer/customer-home/legacy-life-letters-messages/letters-messages-listing/letters-messages-listing.component';
 import { LettersMessagesDetailsComponent } from 'app/views/customer/customer-home/legacy-life-letters-messages/letters-messages-details/letters-messages-details.component';
 import { LettersMessagesModelComponent } from 'app/views/customer/customer-home/legacy-life-letters-messages/letters-messages-model/letters-messages-model.component';
+import { AdvisorLegacyDetailsComponent } from 'app/views/advisor-legacy-details/advisor-legacy-details.component';
 
 
 /* 
@@ -230,7 +231,8 @@ const classesToInclude = [
   FinalWishesFormModalComponent,
   LettersMessagesListingComponent,
   LettersMessagesDetailsComponent,
-  LettersMessagesModelComponent
+  LettersMessagesModelComponent,
+  AdvisorLegacyDetailsComponent
 ]
 
 @NgModule({
