@@ -88,7 +88,7 @@ function trustFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let { extrafields } = req.body;
-  clientUrl = constants.serverUrl + "/customer/signup";
+  clientUrl = constants.clientUrl + "/customer/signup";
   var logData = {}
   logData.fileName = proquery.firstName;
   logData.folderName = 'Trustee';
@@ -100,26 +100,23 @@ function trustFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details  added';
+          let resText = 'details added';
           if (custData.firstName){
             resText = 'details updated';
           }
           let { proquery } = req.body;   
           
           if(proquery.trustId && proquery.trustId!='0')
-          proquery.status = 'Active'; 
-          proquery.trustId =  ObjectId(proquery.trustId);
+            proquery.status = 'Active';
+
+          proquery.trustId && proquery.trustId != '' ? proquery.trustId = proquery.trustId : delete proquery.trustId;
+
           proquery.modifiedOn = new Date();
           trust.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              /*logData.customerId = custData.customerId;
-              logData.fileId = custData._id;
-              actitivityLog.updateActivityLog(logData);*/
-              
-              stat = sendTrusteeMail(proquery.email,proquery.messages,proquery.folderCount,extrafields.inviteByName,proquery.firstName,clientUrl,"Reminder: ");
-          
+              stat = sendTrusteeMail(proquery.email,proquery.messages,proquery.folderCount,extrafields.inviteByName,proquery.firstName,clientUrl,"Reminder: ");          
               let result = { "message": "Trustee "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -147,7 +144,6 @@ function trustFormUpdate(req, res) {
               insert.trustId = ObjectId(proquery.trustId);
               insert.status = 'Active';
             }else{
-              insert.trustId = null;
               insert.status = 'Pending';
             }            
             insert.createdOn = new Date();
@@ -198,7 +194,7 @@ function sendTrusteeMail(emailId,comment,number,inviteByName,inviteToName,client
 function trustResendInvitation(req, res) {
   let { query } = req.body;
   let { extrafields } = req.body;
-  clientUrl = constants.serverUrl + "/customer/signup";
+  clientUrl = constants.clientUrl + "/customer/signup";
    trust.findOne(query, {}, function (err, trustDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
