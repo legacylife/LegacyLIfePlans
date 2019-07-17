@@ -931,34 +931,15 @@ function deleteDoc(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-
       User.updateOne({ _id: fileDetails._id }, proquery, function (err, updatedUser) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-        // console.log("HERE ",docFilePath+fileName.docName);
-        /*  var deleteParam = {
-            Bucket: 'advisorsDocs',
-            Delete: {
-                Objects: [
-                    {Key: docFilePath+fileName.docName},
-                ]
-            }
-        };    
-        s3.deleteObjects(deleteParam, function(err, data) {
-            if (err) console.log(err, err.stack);
-            else console.log('delete', data);
-        });
-      */
-          let result = { userId:fileDetails._id, "message": "File deleted successfully" }
+          resMsg = deleteDocumentS3(fileDetails.customerId,docFilePath,fileName.docName);
+          let result = { userId:fileDetails._id, "message": resMsg }
           res.send(resFormat.rSuccess(result))
         }
       })
-
-
-
-      //let result = { "message": "File deleted successfully!" }
-      //res.send(resFormat.rSuccess(result))
     }
   })
 }
@@ -976,7 +957,8 @@ function deleteIdDocument(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          let result = { userId:fileDetails._id, "message": "File deleted successfully" }
+          resMsg = deleteDocumentS3(fileDetails.customerId,IDdocFilePath,fileName.docName);
+          let result = { userId:fileDetails._id, "message": resMsg }
           res.send(resFormat.rSuccess(result))
         }
       })
@@ -988,6 +970,7 @@ function deleteIdDocument(req, res) {
 function deletesubFolderDoc(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+  let { fileName } = req.body;
   let fields = {};
   LegalStuff.findOne(query, fields, function (err, fileDetails) {
     if (err) {
@@ -997,7 +980,8 @@ function deletesubFolderDoc(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          let result = { userId:fileDetails._id, "message": "File deleted successfully" }
+          resMsg = deleteDocumentS3(fileDetails.customerId,legalStuffdocFilePath,fileName.docName);
+          let result = { userId:fileDetails._id, "message": resMsg }
           res.send(resFormat.rSuccess(result))
         }
       })
@@ -1009,6 +993,7 @@ function deletesubFolderDoc(req, res) {
 function deleteWishessubFolderDoc(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+  let { fileName } = req.body;
   let fields = {};
   finalWish.findOne(query, fields, function (err, fileDetails) {
     if (err) {
@@ -1018,7 +1003,8 @@ function deleteWishessubFolderDoc(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          let result = { userId:fileDetails._id, "message": "File deleted successfully" }
+          resMsg = deleteDocumentS3(fileDetails.customerId,finalWishesFilePath,fileName.docName);
+          let result = { userId:fileDetails._id, "message": resMsg }
           res.send(resFormat.rSuccess(result))
         }
       })
@@ -1029,6 +1015,7 @@ function deleteWishessubFolderDoc(req, res) {
 function deletePetDoc(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+  let { fileName } = req.body;
   let fields = {};
   pet.findOne(query, fields, function (err, fileDetails) {
     if (err) {
@@ -1038,7 +1025,8 @@ function deletePetDoc(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          let result = { userId:fileDetails._id, "message": "File deleted successfully" }
+          resMsg = deleteDocumentS3(fileDetails.customerId,petsFilePath,fileName.docName);
+          let result = { userId:fileDetails._id, "message": resMsg }
           res.send(resFormat.rSuccess(result))
         }
       })
@@ -1050,6 +1038,7 @@ function deletePetDoc(req, res) {
 function deleteTimeCapsuleDoc(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+  let { fileName } = req.body;
   let fields = {};
   timeCapsule.findOne(query, fields, function (err, fileDetails) {
     if (err) {
@@ -1059,7 +1048,8 @@ function deleteTimeCapsuleDoc(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          let result = { userId:fileDetails._id, "message": "File deleted successfully" }
+          resMsg = deleteDocumentS3(fileDetails.customerId,timeCapsuleFilePath,fileName.docName);
+          let result = { userId:fileDetails._id, "message": resMsg }
           res.send(resFormat.rSuccess(result))
         }
       })
@@ -1071,6 +1061,7 @@ function deleteTimeCapsuleDoc(req, res) {
 function deleteInsuranceDocument(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+  let { fileName } = req.body;
   let fields = {};
   insurance.findOne(query, fields, function (err, fileDetails) {
     if (err) {
@@ -1080,17 +1071,42 @@ function deleteInsuranceDocument(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          let result = { userId:fileDetails._id, "message": "File deleted successfully" }
-          res.send(resFormat.rSuccess(result))
+              resMsg = deleteDocumentS3(fileDetails.customerId,insuranceFilePath,fileName.docName);
+              let result = { userId:fileDetails._id, "message": resMsg }
+              res.send(resFormat.rSuccess(result));
         }
       })
     }
   })
 }
 
+function deleteDocumentS3(customerId,filePaths,fileName){
+  let filePath = customerId+'/'+filePaths+fileName;
+  const params = {Bucket: constants.s3Details.bucketName,Key: filePath}
+  let resMsg = "Something Wrong please try again!";
+     try {
+         s3.s3.headObject(params).promise()
+         try {
+              s3.s3.deleteObject(params).promise()
+              resMsg = "File deleted successfully";
+         }
+         catch (err) {
+           resMsg = "ERROR in file Deleting : " + JSON.stringify(err);
+           console.log("0",resMsg)
+         }
+     } catch (err) {
+             resMsg = "File not Found ERROR : " + err.code;
+             console.log("00",resMsg)
+     }
+    return resMsg;
+}
+
+
+
 function deleteFinanceDocument(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+  let { fileName } = req.body;
   let fields = {};
   Finance.findOne(query, fields, function (err, fileDetails) {
     if (err) {
@@ -1100,7 +1116,8 @@ function deleteFinanceDocument(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          let result = { userId:fileDetails._id, "message": "File deleted successfully" }
+          resMsg = deleteDocumentS3(fileDetails.customerId,financeFilePath,fileName.docName);
+          let result = { userId:fileDetails._id, "message": resMsg }
           res.send(resFormat.rSuccess(result))
         }
       })
@@ -1109,7 +1126,7 @@ function deleteFinanceDocument(req, res) {
 }
 
 
-function letterMessageDocument(req, res) {
+function deleteLetterMessageDocument(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let fields = {};
@@ -1121,7 +1138,8 @@ function letterMessageDocument(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          let result = { userId:fileDetails._id, "message": "File deleted successfully" }
+          resMsg = deleteDocumentS3(fileDetails.customerId,letterMessageFilePath,fileName.docName);
+          let result = { userId:fileDetails._id, "message": resMsg }
           res.send(resFormat.rSuccess(result))
         }
       })
@@ -1187,11 +1205,13 @@ router.post('/invite', cors(), function(req,res){
 
 function deleteInviteDocument(req, res) {
   let { query } = req.body;
+ // let { fileName } = req.body;
    InviteTemp.deleteOne(query, function (err, data) {   
       if (err) {
         res.send(resFormat.rError(err))
       } else {
-        let result = {"message": "File deleted successfully" }
+       // resMsg = deleteDocumentS3(fileDetails.customerId,inviteDocumentsPath,fileName.docName);
+        let result = { userId:fileDetails._id, "message": "File deleted successfully!" }
         res.send(resFormat.rSuccess(result))
       }    
   })
@@ -1247,7 +1267,7 @@ function userFolderSize(req,res) {
   let { query } = req.body;
   let folder = query.userId;
   try {
-    getuserFolderSize(folder);
+    let size = getuserFolderSize(folder,res);
     let result = { "message": "Folders size successfully!","size":size }
     res.status(200).send(resFormat.rSuccess(result))
   } catch (error) {
@@ -1255,7 +1275,7 @@ function userFolderSize(req,res) {
   }
 }
 
-function getuserFolderSize(folder) {
+function getuserFolderSize(folder,res) {
     const s3Sizer = new S3Sizer({
         accessKeyId: constants.s3Details.awsKey,
         secretAccessKey: constants.s3Details.awsSecret,
@@ -1265,61 +1285,72 @@ function getuserFolderSize(folder) {
     s3Sizer.getFolderSize(constants.s3Details.bucketName, folder, function(err, size) {
       User.updateOne({ _id: folder }, { $set: { s3Size: size } }, function (err, updatedUser) {
         if (err) {
-          res.send(resFormat.rError(err))
+          return err;
         } else {
-          let result = { size:size, "message": "Document uploaded successfully!" }
-          res.send(resFormat.rSuccess(result))
+         return size;
         }
       })
    });
 }
 
 function downloadZipfiles(req,res) {
-        let { query } = req.body; 
-        let filesPath = query.docPath;       
-        let ext = query.downloadFileName.split('/');
-        let downloadFileName = ext[0]+ '-' + new Date().getTime();      
-        const params = {Bucket: constants.s3Details.bucketName,
-          Prefix: filesPath
-        };
-        const stream = s3.s3.listObjectsV2(params, (err, data)=>{
-        try {
-          let files = []
-        async.each(data.Contents, (folder, cb)=>{
-            files.push(folder.Key);  
-            cb()
-        }, ()=>{        
-          try {           
-            var archive = archiver('zip', {});
-            // Handle various useful events if you need them.
-            archive.on('end', () => {});
-            archive.on('warning', () => {});
-            archive.on('error', () => {});      
-            // Set up the archive we want to present as a download.
-            res.attachment(downloadFileName+'.zip');
-            let s3OutputStream = uploadFromStream(downloadFileName);
-            archive.pipe(s3OutputStream);
+  let { query } = req.body; 
+  let filesPath = query.docPath;       
+  let ext = query.downloadFileName.split('/');
+  let downloadFileName = ext[0]+ '-' + new Date().getTime();      
+  if(query.AllDocuments){
+    let AllDocs = query.AllDocuments;
+    let docList = []
+    
+    async.each(AllDocs, (row)=>{
+      docList.push(filesPath+row.tmpName);  
+    })
+    const params = {Bucket: constants.s3Details.bucketName,Prefix: filesPath};
+    const stream = s3.s3.listObjectsV2(params, (err, data)=>{
+    try {
+      let files = []
+    async.each(data.Contents, (folder, cb)=>{
+      if (docList.includes(folder.Key)){
+        files.push(folder.Key);  
+      }      
+        cb()
+    }, ()=>{        
+      try {           
+        var archive = archiver('zip', {});
+        // Handle various useful events if you need them.
+        archive.on('end', () => {});
+        archive.on('warning', () => {});
+        archive.on('error', () => {});      
+        // Set up the archive we want to present as a download.
+        res.attachment(downloadFileName+'.zip');
+        let s3OutputStream = uploadFromStream(downloadFileName);
+        archive.pipe(s3OutputStream);
 
-            async.each(files, (folder)=>{
-                let filePath = folder;                 
-                let filename = folder;
-                var getparams = {Bucket: constants.s3Details.bucketName,Key:filePath};
-                const stream = s3.s3.getObject(getparams).createReadStream();    
-                archive.append(stream,{name: filename});                    
-            })            
-            archive.finalize();              
-              // let downloadfilePath = 'downloads/'+downloadFileName+'.zip';
-              // let downloadFilenames = downloadFileName+'.zip';
-              // downloadZip(downloadfilePath, downloadFilenames);       
-         
-          } catch (error) {
-            res.status(401).send(resFormat.rError({message :error}))  
-          }
-        }) 
-        } catch (error) {         
-          res.status(401).send(resFormat.rError({message :error}))  
-        }
-   })              
+        async.each(files, (folder)=>{
+            let filePath = folder;                 
+            let filename = folder;
+            var getparams = {Bucket: constants.s3Details.bucketName,Key:filePath};
+            const stream = s3.s3.getObject(getparams).createReadStream();    
+            archive.append(stream,{name: filename});                    
+        })            
+        archive.finalize();              
+          // let downloadfilePath = 'downloads/'+downloadFileName+'.zip';
+          // let downloadFilenames = downloadFileName+'.zip';
+          // downloadZip(downloadfilePath, downloadFilenames);    
+          let result = { "message": "Folders zip download successfully!"}
+          console.log(result);
+          res.status(200).send(resFormat.rSuccess(result))
+      } catch (error) {
+        res.status(401).send(resFormat.rError({message :error}))  
+      }
+    }) 
+    } catch (error) {         
+      res.status(401).send(resFormat.rError({message :error}))  
+    }
+  })        
+}else{
+  res.status(401).send(resFormat.rError({message :"Sorry files not found!"}))  
+}
 }
 
 function downloadZip(downloadfilePath,downloadFilenames) {
@@ -1390,7 +1421,7 @@ router.post("/deletePets", deletePetDoc);
 router.post("/deleteTimeCapsuleDoc", deleteTimeCapsuleDoc);
 router.post("/deleteInsuranceDoc", deleteInsuranceDocument);
 router.post("/deleteFinanceDoc", deleteFinanceDocument); 
-router.post("/deleteletterMessageDoc", letterMessageDocument);
+router.post("/deleteletterMessageDoc", deleteLetterMessageDocument);
 router.post("/deleteInviteDocument", deleteInviteDocument);
 router.post("/createUserDir", createDirectory);
 router.post("/downloadDocument", downloadDocs);
