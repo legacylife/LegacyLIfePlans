@@ -4,6 +4,8 @@ var passport = require('passport')
 var request = require('request')
 var jwt = require('express-jwt')
 const mongoose = require('mongoose')
+var objectId = mongoose.Types.ObjectId();
+const stripe = require("stripe")("sk_test_eXXvQMZIUrR3N1IEAqRQVTlw");
 
 var async = require('async')
 var crypto = require('crypto')
@@ -308,6 +310,257 @@ function generateToken(n) {
   return token;
 }
 
+function getProductDetails(req, res) {
+  let { query } = req.body;
+  let fields = {}
+  User.findOne(query, fields, function (err, userProfile) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      stripe.plans.list( { limit: 3 }, function(err, plans) {
+          // asynchronously called
+          res.status(200).send(resFormat.rSuccess( {plans, "message": "Subscription Plans"}))    
+      });
+    }
+  })
+}
+
+function getCustomerCard(req, res) {
+  let { query } = req.body;
+  let fields = {}
+  User.findOne(query, fields, function (err, userProfile) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      let stripeCustomerId = userProfile.stripeCustomerId;
+      let result = {};
+      if( stripeCustomerId && stripeCustomerId != null ) {
+        stripe.customers.listSources(
+          stripeCustomerId,
+          {
+            limit: 1,
+            object: 'card',
+          },
+          function(err, cards) {
+          // asynchronously called
+          let cardData = cards.data[0]
+          //console.log(cardData)
+          result = { exp_month:cardData.exp_month, exp_year:cardData.exp_year, type:cardData.funding, last4:cardData.last4, brand:cardData.brand, "message": "Yes" }
+          res.status(200).send(resFormat.rSuccess(result))
+        });
+      }
+      else{
+        result = { "message": "No" }
+        res.status(200).send(resFormat.rSuccess(result))
+      }
+      
+    }
+  })
+}
+/**
+ * Get yearly subscription for customer
+ * @param {*} req 
+ * @param {*} res 
+ */
+function getSubscription(req, res) {
+  let requestParam = req.body.query
+  let param = {query :{_id:requestParam._id, userType:requestParam.userType }}
+  let { query } = param;
+  let fields = {}
+  User.findOne(query, fields, function (err, userProfile) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    }
+    else {
+      let stripeCustomerId = ""
+      let planId = requestParam.planId
+
+      /**
+       * Check user have stripe customer id or not. If not create stripe customer id.
+       */
+      if( userProfile.stripeCustomerId ) {
+        stripeCustomerId = userProfile.stripeCustomerId;
+        //If user want to pay with new card, update card details against the user in stripe
+        if( requestParam.token != null ) {
+          stripe.customers.update(
+            stripeCustomerId,
+            { source : requestParam.token },
+              function(err, customer) {
+              if ( err ) {
+                res.status(401).send(resFormat.rError(err))
+              }
+              createSubscription( userProfile, stripeCustomerId, planId, requestParam, res )
+            }
+          );
+        }
+        else{
+          createSubscription( userProfile, stripeCustomerId, planId, requestParam, res )
+        }
+      }
+      else{
+        stripe.customers.create({
+          email:userProfile.username,
+          description: 'Customer for '+userProfile.username,
+          source: requestParam.token // obtained with Stripe.js
+        }, function(err, customer) {
+          if( err ) {
+            res.status(401).send(resFormat.rError(err))
+          }
+          else{
+            stripeCustomerId = customer.id
+            createSubscription( userProfile, stripeCustomerId, planId, requestParam, res )
+          }
+        });
+      }
+    }
+  })
+}
+
+/**
+ * Apply to subscription and update the object against to user
+ */
+function createSubscription( userProfile, stripeCustomerId, planId, requestParam, res ) {
+  stripe.subscriptions.create({
+    customer: stripeCustomerId,
+    items: [ 
+      { plan: planId }
+    ]
+  }, function(err, subscription) {
+    if (err) {
+      res.send(resFormat.rError(err))
+    }
+    else {
+      let subscriptionStartDate = subscription.current_period_start*1000
+      let subscriptionEndDate = subscription.current_period_end*1000
+      let subscriptionDetails = {"_id" : objectId,
+                                "productId" : subscription.items.data[0]['plan']['product'],
+                                "planId" : planId,
+                                "subscriptionId" : subscription.id,
+                                "startDate" : new Date(subscriptionStartDate),
+                                "endDate" : new Date(subscriptionEndDate),
+                                "interval" : subscription.items.data[0]['plan']['interval'],
+                                "currency" : subscription.items.data[0]['plan']['currency'],
+                                "amount" : subscription.items.data[0]['plan']['amount'] / 100,
+                                "status" : 'paid',
+                                "autoRenewal": subscription.collection_method == 'charge_automatically' ? true : false,
+                                "paymentMode" : 'online',
+                                "paidOn" : new Date(),
+                                "createdOn" : new Date(),
+                                "createdBy" : mongoose.Types.ObjectId(requestParam._id)
+                              };
+      let userSubscription = []
+      if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
+        userSubscription = userProfile.subscriptionDetails
+      }
+      userSubscription.push(subscriptionDetails)
+      //Update user details
+      User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription } }, function (err, updated) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
+        }
+      })
+    }
+  });
+}
+
+function autoRenewalUpdate(req, res) {
+  let requestParam = req.body.query
+  let param = {query :{_id:requestParam._id, userType:requestParam.userType }}
+  let { query } = param;
+  let fields = {}
+  User.findOne(query, fields, function (err, userProfile) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } 
+    else {
+      if( userProfile.stripeCustomerId ) {
+        let subscriptionDetails = userProfile.subscriptionDetails ? userProfile.subscriptionDetails : null
+        let subscriptionId = subscriptionDetails != null ? subscriptionDetails[(subscriptionDetails.length-1)]['subscriptionId'] : ""
+        if( subscriptionId != "" ) {
+          let data = {}
+          let autoRenewalStatus = requestParam.status
+          // Number of days a customer has to pay invoices generated by this subscription. Valid only for subscriptions where collection_method is set to send_invoice
+          if( !autoRenewalStatus ) {
+            data = { collection_method: 'send_invoice', days_until_due: 30 }
+          }
+          else{
+            data = { collection_method: 'charge_automatically' }
+          }
+          stripe.subscriptions.update(
+            subscriptionId,
+            data,
+            function(err, confirmation) {
+              if( err ) {
+                res.status(401).send(resFormat.rError(err))
+              }
+              let updatedSubscriptionObject = subscriptionDetails
+              updatedSubscriptionObject[updatedSubscriptionObject.length-1]['autoRenewal'] = autoRenewalStatus
+              User.updateOne({ _id: requestParam._id }, { $set: { subscriptionDetails : updatedSubscriptionObject } }, function (err, updated) {
+                if (err) {
+                  res.send(resFormat.rError(err))
+                }
+                res.status(200).send(resFormat.rSuccess({'autoRenewalStatus': autoRenewalStatus, 'message':'Done'}));
+              })
+          });
+        }
+        else{
+          res.status(401).send(resFormat.rError({'message':'Not subscribed any plan yet'}))
+        }
+      }
+      else{
+        res.status(401).send(resFormat.rError({'message':'Unauthorize access'}))
+      }
+    }
+  })
+}
+
+function cancelSubscription(req, res) {
+  let { query } = req.body;
+  let fields = {}
+  User.findOne(query, fields, function (err, userProfile) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } 
+    else {
+      if( userProfile.stripeCustomerId ) {
+        let subscriptionDetails = userProfile.subscriptionDetails ? userProfile.subscriptionDetails : null
+        let subscriptionId = subscriptionDetails != null ? subscriptionDetails[(subscriptionDetails.length-1)]['subscriptionId'] : ""
+        if( subscriptionId != "" ) {
+          
+          stripe.subscriptions.del(
+            subscriptionId,
+            function(err, confirmation) {
+              if( err ) {
+                res.status(401).send(resFormat.rError(err))
+              }
+              let updatedSubscriptionObject = subscriptionDetails
+              updatedSubscriptionObject[updatedSubscriptionObject.length-1]['status'] = confirmation.status
+              User.updateOne({ _id: req.body.query._id }, { $set: { subscriptionDetails : updatedSubscriptionObject } }, function (err, updated) {
+                if (err) {
+                  res.send(resFormat.rError(err))
+                }
+                res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':'Done'}));
+              })
+          });
+        }
+        else{
+          res.status(401).send(resFormat.rError({'message':'Not subscribed any plan yet'}))
+        }
+      }
+      else{
+        res.status(401).send(resFormat.rError({'message':'Unauthorize access'}))
+      }
+    }
+  })
+}
+
+router.post(["/autorenewalupdate"], autoRenewalUpdate);
+router.post(["/cancelsubscription"], cancelSubscription);
+router.post(["/getsubscription"], getSubscription);
+router.post(["/getproductdetails"], getProductDetails);
+router.post(["/getcustomercard"], getCustomerCard);
 router.post("/list", list);
 router.post("/addmember", addNewMember);
 router.post("/updatestatus", updateStatus);

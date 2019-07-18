@@ -57,7 +57,20 @@ function signin(req, res) {
             res.send(resFormat.rError(err))
           } else {
             console.log("type ",user.userType);
-            let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, profilePicture : user.profilePicture, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false }
+            let subscriptionDetails = user.subscriptionDetails ? user.subscriptionDetails : null
+            let subscriptionStartDate = "",
+            subscriptionEndDate = "",
+            subscriptionStatus = "",
+            autoRenewal = "";
+            //console.log(user,'---',user.subscriptionDetails,"---",subscriptionDetails)
+            if( subscriptionDetails != null && subscriptionDetails.length >0 ) {
+              subscriptionStartDate = subscriptionDetails[(subscriptionDetails.length-1)]['startDate']
+              subscriptionEndDate = subscriptionDetails[(subscriptionDetails.length-1)]['endDate']
+              subscriptionStatus = subscriptionDetails[(subscriptionDetails.length-1)]['status']
+              autoRenewal = subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] ? subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] : false
+            }
+            let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, profilePicture : user.profilePicture, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false, "createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate" : subscriptionEndDate, "subscriptionStatus" : subscriptionStatus, "autoRenewalStatus": autoRenewal }
+            //console.log("result --- ",result)
             res.status(200).send(resFormat.rSuccess(result))
           }
         })

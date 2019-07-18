@@ -102,7 +102,9 @@ var userSchema = new mongoose.Schema({
   status: String,
   profileSetup: String,
   allowNotifications:String,
-  allowNotifications:String
+  allowNotifications:String,
+  stripeCustomerId:String,
+  subscriptionDetails:Array
 })
 
 //function to set password
