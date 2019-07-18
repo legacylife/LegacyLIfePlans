@@ -8,6 +8,7 @@ import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms'
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { serverUrl, s3Details } from '../../../config';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
+import { SubscriptionService } from 'app/shared/services/subscription.service';
 //import { delay } from 'rxjs/operators';
 console.log('signin');
 @Component({
@@ -26,7 +27,7 @@ export class SigninComponent implements OnInit {
   password: FormControl;
   profilePicture: any = "assets/images/arkenea/default.jpg"
 
-  constructor(private router: Router,private picService : ProfilePicService, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
+  constructor(private router: Router,private picService : ProfilePicService, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService, private subscriptionservice:SubscriptionService) { }
 
   ngOnInit() {
     this.llpCustsigninForm = new FormGroup({
@@ -65,7 +66,9 @@ export class SigninComponent implements OnInit {
         localStorage.setItem("endUserSubscriptionStatus", userData.subscriptionStatus);
         localStorage.setItem("endUserAutoRenewalStatus", userData.autoRenewalStatus);
         localStorage.setItem("endUserProSubscription", 'no');
-        
+
+        this.subscriptionservice.checkSubscription( ( returnArr )=> {})
+
         if (userData.profilePicture) {
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + userData.profilePicture;
           localStorage.setItem('endUserProfilePicture', this.profilePicture)
