@@ -3,6 +3,8 @@ var constants = require("./../config/constants")
 
 var electronicMediaSchema = new mongoose.Schema({
   customerId: String,
+  customerLegacyId: String,
+  customerLegacyType: String,
   mediaType: String,
   username:String,
   password:String,

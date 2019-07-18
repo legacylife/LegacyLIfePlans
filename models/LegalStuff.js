@@ -3,6 +3,8 @@ var constants = require("./../config/constants")
 
 var legalStuffSchema = new mongoose.Schema({
   customerId: String,
+  customerLegacyId: String,
+  customerLegacyType: String,
   subFolderName: String,
   typeOfDocument: String,
   subFolderDocuments: Array,

@@ -142,7 +142,9 @@ function deviceFormUpdate(req, res) {
   } else { 
             let { proquery } = req.body;
             var insert = new PDA();
-            insert.customerId = query.customerId;
+            insert.customerId = proquery.customerId;
+            insert.customerLegacyId = proquery.customerLegacyId;
+            insert.customerLegacyType = proquery.customerLegacyType;
             insert.deviceName = proquery.deviceName;
             insert.deviceList = proquery.deviceList;            
             insert.username = proquery.username;
@@ -247,7 +249,9 @@ function electronicMediaFormUpdate(req, res) {
   } else { 
             let { proquery } = req.body;
             var insert = new EMedia();
-            insert.customerId = query.customerId;        
+            insert.customerId = proquery.customerId;
+            insert.customerLegacyId = proquery.customerLegacyId;
+            insert.customerLegacyType = proquery.customerLegacyType;
             insert.mediaType = proquery.mediaType;
             insert.username = proquery.username;
             insert.password = proquery.password;        

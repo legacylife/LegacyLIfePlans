@@ -92,7 +92,9 @@ function insuranceFormUpdate(req, res) {
   } else { 
             let { proquery } = req.body;
             var insert = new insurance();
-            insert.customerId = query.customerId;
+            insert.customerId = proquery.customerId;
+            insert.customerLegacyId = proquery.customerLegacyId;
+            insert.customerLegacyType = proquery.customerLegacyType;
             insert.policyType = proquery.policyType;  
             insert.company = proquery.company;  
             insert.policyNumber = proquery.policyNumber;  
@@ -224,7 +226,9 @@ function financesFormUpdate(req, res) {
   } else { 
             let { proquery } = req.body;
             var insert = new Finance();
-            insert.customerId = query.customerId;
+            insert.customerId = proquery.customerId;
+            insert.customerLegacyId = proquery.customerLegacyId;
+            insert.customerLegacyType = proquery.customerLegacyType;
             insert.financesType = proquery.financesType;  
             insert.administatorName = proquery.administatorName; 
             insert.financesTypeNew = proquery.financesTypeNew;  
@@ -336,7 +340,9 @@ function debtFormUpdate(req, res) {
   } else { 
             let { proquery } = req.body;
             var insert = new Debts();
-            insert.customerId = query.customerId;
+            insert.customerId = proquery.customerId;
+            insert.customerLegacyId = proquery.customerLegacyId;
+            insert.customerLegacyType = proquery.customerLegacyType;
             insert.debtsType = proquery.debtsType;  
             insert.bankLendarName = proquery.bankLendarName; 
             insert.debtsTypeNew = proquery.debtsTypeNew;  

@@ -94,7 +94,9 @@ function wishFormUpdate(req, res) {
   } else { 
             let { proquery } = req.body;
             var insert = new finalWish();
-            insert.customerId = query.customerId;
+            insert.customerId = proquery.customerId;
+            insert.customerLegacyId = proquery.customerLegacyId;
+            insert.customerLegacyType = proquery.customerLegacyType;
             insert.subFolderName = proquery.subFolderName;
             insert.title = proquery.title;
             insert.comments = proquery.comments;            

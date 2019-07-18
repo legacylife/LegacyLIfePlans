@@ -3,6 +3,8 @@ var constants = require("./../config/constants")
 
 var realEstateSchema = new mongoose.Schema({
   customerId: String,
+  customerLegacyId: String,
+  customerLegacyType: String,
   estateType: String,
   address: String,
   mortgageHolder: String,
@@ -16,3 +18,4 @@ var realEstateSchema = new mongoose.Schema({
 })
 
 module.exports = mongoose.model('real_estate', realEstateSchema)
+ 

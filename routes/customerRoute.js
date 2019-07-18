@@ -26,6 +26,8 @@ const FileActivityLog = require('./../models/FileActivityLog.js')
 const SpecialNeeds = require('./../models/SpecialNeeds.js')
 const s3 = require('./../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
+const Trustee = require('./../models/Trustee.js')
+const HiredAdvisors = require('./../models/HiredAdvisors.js')
 
 var auth = jwt({
   secret: constants.secret,
@@ -223,6 +225,8 @@ function emergencyContactsSubmit(req, res) {
     let { proquery } = req.body;
     var emergency = new emergencyContacts();
     emergency.customerId = from.customerId;
+    emergency.customerLegacyId = proquery.customerLegacyId;
+    emergency.customerLegacyType = proquery.customerLegacyType;
     emergency.address = proquery.address;
     emergency.emailAddress = proquery.emailAddress;
     emergency.mobile = proquery.mobile;
@@ -345,6 +349,8 @@ function personalIdUpdate(req, res) {
     let { proquery } = req.body;
     var personal = new personalIdProof();
     proquery.customerId = from.customerId;
+    proquery.customerLegacyId = proquery.customerLegacyId;
+    proquery.customerLegacyType = proquery.customerLegacyType;
     proquery.status = 'Active';
     proquery.createdOn = new Date();
     proquery.modifiedOn = new Date();
@@ -424,7 +430,9 @@ function myProfessionalsUpdate(req, res) {
   } else {
     let { proquery } = req.body;
     var profesion = new MyProfessional();
-    profesion.customerId = query.customerId;
+    profesion.customerId = proquery.customerId;
+    profesion.customerLegacyId = proquery.customerLegacyId;
+    profesion.customerLegacyType = proquery.customerLegacyType;
     profesion.namedProfessionals = proquery.namedProfessionals;
     profesion.businessName = proquery.businessName;
     profesion.name = proquery.name;
@@ -440,7 +448,7 @@ function myProfessionalsUpdate(req, res) {
       } else {
         console.log("newEntry :-", newEntry);
 
-        logData.customerId = query.customerId;
+        logData.customerId = proquery.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
@@ -529,7 +537,9 @@ function legalStuffUpdate(req, res) {
   } else {
     let { proquery } = req.body;
     var legals = new LegalStuff();
-    legals.customerId = query.customerId;
+    legals.customerId = proquery.customerId;
+    legals.customerLegacyId = proquery.customerLegacyId;
+    legals.customerLegacyType = proquery.customerLegacyType;
     legals.subFolderName = proquery.subFolderName;
     legals.typeOfDocument = proquery.typeOfDocument;
     legals.comments = proquery.comments;
@@ -707,6 +717,30 @@ function fileActivityLogList(req, res) {
   }).sort(order).skip(offset).limit(limit)
 }
 
+function getSharedLegaciesList(req,res){  
+  let { query } = req.body
+  Trustee.find(query, function (err, list) {
+    res.send(resFormat.rSuccess({ list }))
+  })
+}
+
+function legacyUserRemove(req,res){
+  let userData = {};
+  let { query } = req.body;
+  let userstring = ''
+  userData.status = 'Deleted';
+  userData.modifiedOn = new Date();
+  if( query.userType == 'advisor'){
+    HiredAdvisors.updateOne({ customerId : query.customerId, advisorId : query.advisorId }, { $set: userData }, function (err, updatedDetails){ });
+    userstring = 'Advisor'
+  }else{
+    Trustee.updateOne({ customerId : query.customerId, trusteeId : query.trusteeId }, { $set: userData }, function (err, updatedDetails){});
+    userstring = 'Trustee'
+  }
+  let result = { "message": userstring + " removed successfully" }
+  res.status(200).send(resFormat.rSuccess(result))   
+}
+
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
@@ -728,5 +762,6 @@ router.post("/get-emergency-contacts", getEmergencyContacts)
 router.post("/view-emergency-contacts", viewEmergencyContacts)
 router.post("/deletecontact", deleteEcontact)
 router.post("/file-activity-log-list", fileActivityLogList)
-
+router.post("/shared-legacies-list", getSharedLegaciesList)
+router.post("/legacy-user-remove", legacyUserRemove)
 module.exports = router

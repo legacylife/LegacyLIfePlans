@@ -3,6 +3,8 @@ var constants = require("./../config/constants")
 
 var emergencyContactsSchema = new mongoose.Schema({
   customerId: String,
+  customerLegacyId: String,
+  customerLegacyType: String,
   name: String,
   relationship: String,
   address: String,

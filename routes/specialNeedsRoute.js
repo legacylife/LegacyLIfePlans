@@ -64,6 +64,8 @@ function specialNeedsSubmit(req, res) {
     let { proquery } = req.body; 
     var snObj = new SpecialNeeds();
     snObj.customerId = from.customerId;
+    snObj.customerLegacyId = proquery.customerLegacyId;
+    snObj.customerLegacyType = proquery.customerLegacyType;
     snObj.title = proquery.title;
     snObj.folderName = proquery.folderName;
     snObj.comments = proquery.comments;

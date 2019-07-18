@@ -3,6 +3,8 @@ var constants = require("./../config/constants")
 
 var timeCapsuleSchema = new mongoose.Schema({
   customerId: String,
+  customerLegacyId: String,
+  customerLegacyType: String,
   name: String,
   documents: Array,
   status: String,
