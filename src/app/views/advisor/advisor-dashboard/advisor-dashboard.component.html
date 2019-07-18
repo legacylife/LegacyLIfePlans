@@ -33,9 +33,9 @@
               </button>
             </mat-list-item>
             <mat-menu #menu="matMenu"  xPosition="before">
-              <button mat-menu-item  *ngIf="logData.actionTaken == 'Pending'" (click)="hireAdvisor(logData?._id,'confirmHire','Pending')">
+              <button mat-menu-item  *ngIf="logData.actionTaken == 'Pending'" (click)="hireAdvisor(logData?.hiredAdvisorRefId,'confirmHire','Pending',logData?._id)">
                 <mat-icon>check</mat-icon> Confirm hiring</button>
-              <button mat-menu-item class="reject"  *ngIf="logData.actionTaken == 'Pending'" (click)="hireAdvisor(logData?._id,'rejectHire','Pending')">
+              <button mat-menu-item class="reject"  *ngIf="logData.actionTaken == 'Pending'" (click)="hireAdvisor(logData?.hiredAdvisorRefId,'rejectHire','Pending',logData?._id)">
                 <mat-icon>cancel</mat-icon> Reject hiring</button>
               <button mat-menu-item>
                 <mat-icon>assignment</mat-icon> View profile</button>
