@@ -30,6 +30,10 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';
 
+  DevicesManagementSection:string='now';
+  ElectronicMediaManagementSection:string='now';
+  LegacyPermissionError:string="You don't have permission of this section";
+
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -38,6 +42,10 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
     this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
     if (this.urlData.lastThird == "legacies") {
       this.userId = this.urlData.lastOne;
+      this.userapi.getUserAccess(this.userId, (userAccess) => {
+        this.DevicesManagementSection = userAccess.DevicesManagement
+        this.ElectronicMediaManagementSection= userAccess.ElectronicMediaManagement
+      });
     }
     this.getDevicesList();
     this.getElectronicMediaList();

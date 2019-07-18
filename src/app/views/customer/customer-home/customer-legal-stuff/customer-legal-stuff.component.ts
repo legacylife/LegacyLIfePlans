@@ -35,8 +35,12 @@ export class CustomerLegalStuffComponent implements OnInit {
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
   customerLegaciesId: string;
-  customerLegacyType:string='customer';														
+  customerLegacyType:string='customer';					
 
+  EstateManagementSection:string='now';
+  HealthcareManagementSection:string='now';
+  PersonalAffairsManagementSection:string='now';
+  LegacyPermissionError:string="You don't have permission of this section";
 
   constructor(
     private route: ActivatedRoute,
@@ -53,11 +57,14 @@ export class CustomerLegalStuffComponent implements OnInit {
     
     if (this.urlData.lastThird == "legacies") {
       this.userId = this.urlData.lastOne;
+      this.userapi.getUserAccess(this.userId, (userAccess) => {
+        this.EstateManagementSection = userAccess.EstateManagement 
+        this.HealthcareManagementSection= userAccess.HealthcareManagement
+        this.PersonalAffairsManagementSection= userAccess.PersonalAffairsManagement
+      });
     }
     this.getEstateList();
   }
-
-
 
   getEstateList = (query = {}) => {
     const req_vars = {

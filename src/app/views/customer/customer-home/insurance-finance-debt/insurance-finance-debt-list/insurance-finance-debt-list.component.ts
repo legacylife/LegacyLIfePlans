@@ -19,7 +19,7 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   showInsuranceListing = false;
   showInsuranceListingCnt: any;
-  showFinanceListing = false;
+  showFinanceListing = false; 
   showFinanceListingCnt: any;
   showDebtListing = false;
   showDebtListingCnt: any;
@@ -33,6 +33,10 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
+  InsuranceManagementSection:string='now';
+  FinancesManagementSection:string='now';
+  DebtManagementSection:string='now';
+  LegacyPermissionError:string="You don't have permission of this section";
 
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
 
@@ -43,7 +47,12 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
     this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction;
     if (this.urlData.lastThird == "legacies") {
       this.userId = this.urlData.lastOne;
-    }
+      this.userapi.getUserAccess(this.userId, (userAccess) => {
+        this.InsuranceManagementSection = userAccess.InsuranceManagement 
+        this.FinancesManagementSection= userAccess.FinancesManagement 
+        this.DebtManagementSection= userAccess.DebtManagement
+      });
+    }    
     this.getInsuranceList();
     this.getFinanceList();
     this.getDebtList();    

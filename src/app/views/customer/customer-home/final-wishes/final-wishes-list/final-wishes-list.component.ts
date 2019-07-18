@@ -30,11 +30,15 @@ export class FinalWishesComponent implements OnInit {
   modifiedDate:any;
 
   WishesList:any = [];
-  urlData:any={};
-	  
+  urlData:any={};	  
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
 
+  FuneralPlansManagementSection:string='now';
+  ObituaryManagementSection:string='now';
+  CelebrationLifeManagementSection:string='now';
+  LegacyPermissionError:string="You don't have permission of this section";
+ 
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -43,6 +47,11 @@ export class FinalWishesComponent implements OnInit {
     this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
     if (this.urlData.lastThird == "legacies") {
       this.userId = this.urlData.lastOne;
+      this.userapi.getUserAccess(this.userId, (userAccess) => {
+        this.FuneralPlansManagementSection = userAccess.FuneralPlansManagement
+        this.ObituaryManagementSection= userAccess.ObituaryManagement
+        this.CelebrationLifeManagementSection= userAccess.CelebrationLifeManagement
+      });
     }    
     this.getWishList();
   }

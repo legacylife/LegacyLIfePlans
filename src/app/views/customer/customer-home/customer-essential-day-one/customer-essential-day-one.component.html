@@ -1,6 +1,4 @@
 <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
-  <!-- Filters -->
-  <!-- Right side -->
   <div class="full-width">
     <div class="">
       <advisor-legacy-details></advisor-legacy-details>
@@ -11,109 +9,129 @@
         <mat-card-content>
           <p class="info m-0">The section where you can manage your personal, professional and religious information.
             <a class="legal--link">
-              <mat-icon>open_in_new</mat-icon> www.legalnature.com</a>
+              <mat-icon>open_in_new</mat-icon> www.legalnature.com
+            </a>
           </p>
-          <p class="info m-0"> You can also manage your License, Non-Driver State ID, Department of Defense (DOD), Birth Certificate, Social Security
+          <p class="info m-0"> You can also manage your License, Non-Driver State ID, Department of Defense (DOD), Birth
+            Certificate, Social Security
             Number (SSN), Passport, Visa in the ID Box section.</p>
         </mat-card-content>
       </mat-card>
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Personal Profile</mat-card-title>
-          <div *ngIf="showProfileListing && trusteeLegaciesAction">
-            <!--span class="no--of--trustee">{{showProfileListingCnt}} Profile{{showProfileListingCnt>1 ? 's' : ''}}</span-->
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openProfileModal({}, true)">+ Add</button>
+          <div *ngIf="showProfileListing && trusteeLegaciesAction && PersonalProfileManagementSection=='now'">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
+              (click)="openProfileModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
-        <mat-card-content *ngIf="!showProfileListing && trusteeLegaciesAction">
-          <div class="build--ur--legacy" (click)="openProfileModal({}, true)">
-            <mat-icon>person_pin</mat-icon>
-            <p>
-              <a>Add Personal Profile</a>
-            </p>
-          </div>
-        </mat-card-content>
-
-        <mat-card-content class="appointees--wrapper" *ngIf="showProfileListing">
-          <div class="cust--user--details mt-1" *ngFor="let profileData of essentialProfileList; let i = index" [routerLink]="[dynamicRoute+'essential-detail-view', profileData._id]">
-            <div class="name--letters">{{profileData.ppFirstName.charAt(0)+profileData.ppLastName.charAt(0)}}</div>
-            <div class="user--name">
-              <h5>{{profileData.ppFirstName +' '+ profileData.ppLastName}}</h5>
-              <p class="mb-0">Last modified:
-                <span *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+        <div *ngIf="PersonalProfileManagementSection=='now'">
+          <mat-card-content *ngIf="!showProfileListing && trusteeLegaciesAction">
+            <div class="build--ur--legacy" (click)="openProfileModal({}, true)">
+              <mat-icon>person_pin</mat-icon>
+              <p>
+                <a>Add Personal Profile</a>
               </p>
             </div>
-          </div>
+          </mat-card-content>
+
+          <mat-card-content class="appointees--wrapper" *ngIf="showProfileListing">
+            <div class="cust--user--details mt-1" *ngFor="let profileData of essentialProfileList; let i = index"
+              [routerLink]="[dynamicRoute+'essential-detail-view', profileData._id]">
+              <div class="name--letters">{{profileData.ppFirstName.charAt(0)+profileData.ppLastName.charAt(0)}}</div>
+              <div class="user--name">
+                <h5>{{profileData.ppFirstName +' '+ profileData.ppLastName}}</h5>
+                <p class="mb-0">Last modified:
+                  <span
+                    *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                  <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+                </p>
+              </div>
+            </div>
+          </mat-card-content>
+        </div>
+        <mat-card-content *ngIf="PersonalProfileManagementSection !='now'">
+          <div>{{LegacyPermissionError}}</div>
         </mat-card-content>
       </mat-card>
 
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">ID Box </mat-card-title>
-          <div *ngIf="showIdProofListing && trusteeLegaciesAction">
-            <!--span class="no--of--trustee">{{showIDListingCnt}} ID{{showIDListingCnt>1 ? 's' : ''}}</span-->
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openAddIdBoxModal({}, true)">+ Add</button>
+          <div *ngIf="showIdProofListing && trusteeLegaciesAction && IDBoxManagementSection=='now'">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
+              (click)="openAddIdBoxModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
-        <mat-card-content *ngIf="!showIdProofListing && trusteeLegaciesAction">
-          <div class="build--ur--legacy" (click)="openAddIdBoxModal({}, true)">
-            <mat-icon>library_add</mat-icon>
-            <p>
-              <a>Add ID Box</a>
-            </p>
-          </div>
-        </mat-card-content>
-
-        <mat-card-content class="appointees--wrapper" *ngIf="showIdProofListing">
-
-          <div class="cust--user--details mt-1" *ngFor="let idData of essentialIDList; let i = index" [routerLink]="[dynamicRoute+'essential-detail-idbox', idData._id]">
-            <div class="name--letters">{{getDocType(idData.documentType).charAt(0)}}</div>
-            <div class="user--name">
-              <h5>{{getDocType(idData.documentType)}}</h5>
-              <p class="mb-0">Last modified:
-                <span *ngIf="idData.modifiedOn && idData.modifiedOn != ''">{{idData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                <span *ngIf="!idData.modifiedOn">{{idData.createdOn | date: 'yyyy/MM/dd'}}</span>
+        <div *ngIf="IDBoxManagementSection=='now'">
+          <mat-card-content *ngIf="!showIdProofListing && trusteeLegaciesAction">
+            <div class="build--ur--legacy" (click)="openAddIdBoxModal({}, true)">
+              <mat-icon>library_add</mat-icon>
+              <p>
+                <a>Add ID Box</a>
               </p>
             </div>
-          </div>
+          </mat-card-content>
 
+          <mat-card-content class="appointees--wrapper" *ngIf="showIdProofListing">
+
+            <div class="cust--user--details mt-1" *ngFor="let idData of essentialIDList; let i = index"
+              [routerLink]="[dynamicRoute+'essential-detail-idbox', idData._id]">
+              <div class="name--letters">{{getDocType(idData.documentType).charAt(0)}}</div>
+              <div class="user--name">
+                <h5>{{getDocType(idData.documentType)}}</h5>
+                <p class="mb-0">Last modified:
+                  <span
+                    *ngIf="idData.modifiedOn && idData.modifiedOn != ''">{{idData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                  <span *ngIf="!idData.modifiedOn">{{idData.createdOn | date: 'yyyy/MM/dd'}}</span>
+                </p>
+              </div>
+            </div>
+          </mat-card-content>
+        </div>
+        <mat-card-content *ngIf="IDBoxManagementSection !='now'">
+          <div>{{LegacyPermissionError}}</div>
         </mat-card-content>
       </mat-card>
+
 
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">My Professionals</mat-card-title>
-          <div *ngIf="showProfessionalsListing && trusteeLegaciesAction">
-            <!--span class="no--of--trustee">{{showProfessionalCnt}} Professional{{showProfessionalCnt>1 ? 's' : ''}}</span-->
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openProfessionalBoxModal({}, true)">+ Add</button>
+          <div *ngIf="showProfessionalsListing && trusteeLegaciesAction && MyProfessionalsManagementSection=='now'">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
+              (click)="openProfessionalBoxModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
-        <mat-card-content *ngIf="!showProfessionalsListing && trusteeLegaciesAction">
-          <div class="build--ur--legacy" (click)="openProfessionalBoxModal({}, true)">
-            <mat-icon>people</mat-icon>
-            <p>
-              <a>Add Professionals</a>
-            </p>
-          </div>
-        </mat-card-content>
-
-        <mat-card-content class="appointees--wrapper" *ngIf="showProfessionalsListing">
-          <div class="cust--user--details mt-1" *ngFor="let profileData of essentialProfessionalList; let i = index" [routerLink]="[dynamicRoute+'essential-professionals-detail', profileData._id]">
-            <div class="name--letters">{{profileData.namedProfessionals.charAt(0)}}</div>
-            <div class="user--name">
-              <h5>{{profileData.businessName}}</h5>
-              <p class="mb-0">Last modified:
-                <span *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+        <div *ngIf="MyProfessionalsManagementSection=='now'">
+          <mat-card-content *ngIf="!showProfessionalsListing && trusteeLegaciesAction">
+            <div class="build--ur--legacy" (click)="openProfessionalBoxModal({}, true)">
+              <mat-icon>people</mat-icon>
+              <p>
+                <a>Add Professionals</a>
               </p>
             </div>
-          </div>
+          </mat-card-content>
+
+          <mat-card-content class="appointees--wrapper" *ngIf="showProfessionalsListing">
+            <div class="cust--user--details mt-1" *ngFor="let profileData of essentialProfessionalList; let i = index"
+              [routerLink]="[dynamicRoute+'essential-professionals-detail', profileData._id]">
+              <div class="name--letters">{{profileData.namedProfessionals.charAt(0)}}</div>
+              <div class="user--name">
+                <h5>{{profileData.businessName}}</h5>
+                <p class="mb-0">Last modified:
+                  <span
+                    *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                  <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+                </p>
+              </div>
+            </div>
+          </mat-card-content>
+        </div>
+        <mat-card-content *ngIf="MyProfessionalsManagementSection !='now'">
+          <div>You don't have permission of this section </div>
         </mat-card-content>
       </mat-card>
-
     </div>
-
   </div>
-
 </div>

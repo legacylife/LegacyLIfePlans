@@ -27,6 +27,12 @@ export class ListingComponent implements OnInit {
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
+
+  RealEstateManagementSection:string='now';
+  VehiclesManagementSection:string='now';
+  AssetsManagementSection:string='now';
+  LegacyPermissionError:string="You don't have permission of this section";
+
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -34,7 +40,7 @@ export class ListingComponent implements OnInit {
   ) {
 
   }
-
+ 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.urlData = this.userapi.getURLData();
@@ -42,6 +48,11 @@ export class ListingComponent implements OnInit {
     this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
     if (this.urlData.lastThird == "legacies") {
       this.userId = this.urlData.lastOne;
+      this.userapi.getUserAccess(this.userId, (userAccess) => {
+        this.RealEstateManagementSection = userAccess.RealEstateManagement
+        this.VehiclesManagementSection= userAccess.VehiclesManagement
+        this.AssetsManagementSection= userAccess.AssetsManagement
+      });
     }
     this.getRealEstateList();
     this.getRealEstateVehiclesList();

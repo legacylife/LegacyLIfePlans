@@ -17,10 +17,11 @@
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Pets</mat-card-title>
-          <div *ngIf="showPetsListing && trusteeLegaciesAction">
+          <div *ngIf="showPetsListing && trusteeLegaciesAction && PetsManagementSection=='now'">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openPetsModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
+        <div *ngIf="PetsManagementSection=='now'">
         <mat-card-content *ngIf="!showPetsListing && trusteeLegaciesAction">
           <div class="build--ur--legacy" (click)="openPetsModal({}, true)">
             <mat-icon>pets</mat-icon>
@@ -41,6 +42,10 @@
             </div>
           </div>
         </mat-card-content>
+      </div>
+      <mat-card-content *ngIf="PetsManagementSection !='now'">
+          <div>{{LegacyPermissionError}}</div>
+      </mat-card-content>
       </mat-card>
     </div>
   </div>

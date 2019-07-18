@@ -27,6 +27,9 @@ export class EmergencyContactsComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';	
 
+  emergencyContactsManagementSection:string='now';
+  LegacyPermissionError:string="You don't have permission of this section";
+
   constructor(private route: ActivatedRoute,
     private snack: MatSnackBar,
     private router: Router,
@@ -61,7 +64,11 @@ export class EmergencyContactsComponent implements OnInit {
         this.customerLegaciesId = this.userId;
         this.customerLegacyType =  this.urlData.userType;
         this.userId = this.urlData.lastOne;          
-        this.selectedProfileId = "";        
+        this.selectedProfileId = "";
+        
+        this.userapi.getUserAccess(this.userId, (userAccess) => {
+          this.emergencyContactsManagementSection = userAccess.emergencyContactsManagement 
+        }); 
     }
     this.getEmergencyContacts()
   }

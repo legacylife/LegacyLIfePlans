@@ -29,6 +29,7 @@ export class UserAPIService {
   private userInfo: any
   private accessSection: any
   private fileAccessInfo:any
+  private userAccess:any={}
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -319,4 +320,15 @@ export class UserAPIService {
   public download(path: string, params: any): Observable<any> {
     return this.http.post(serverUrl + `/api/${path}`, params, { responseType: 'blob'});
   }
+
+  public getUserAccess(customerId, callback){
+    const req_vars = {
+      query: Object.assign({ customerId: customerId })
+    }
+    this.apiRequest('post', 'trustee/view-details', req_vars).subscribe(result => {
+      this.userAccess = result.data.userAccess;
+      callback(this.userAccess)
+    });
+  }
+
 }

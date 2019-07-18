@@ -15,12 +15,13 @@
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Contacts</mat-card-title>
-          <div *ngIf="showContactListing && trusteeLegaciesAction">
+          <div *ngIf="showContactListing && trusteeLegaciesAction && emergencyContactsManagementSection=='now'">
             <!--span class="no--of--trustee">{{showContactCnt}} Contact{{showContactCnt>1 ? 's' : ''}}</span-->
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openModal(contactForm)">+ Add
             </button>
           </div>
         </mat-card-header>
+        <div *ngIf="emergencyContactsManagementSection=='now'">
         <mat-card-content *ngIf="!showContactListing && trusteeLegaciesAction">
           <div class="build--ur--legacy" (click)="openModal(contactForm)">
             <mat-icon>person_pin</mat-icon>
@@ -41,6 +42,10 @@
             </div>
           </div>
         </mat-card-content>
+      </div>
+      <mat-card-content *ngIf="emergencyContactsManagementSection !='now'">
+          <div>{{LegacyPermissionError}}</div>
+      </mat-card-content>
       </mat-card>
     </div>
   </div>

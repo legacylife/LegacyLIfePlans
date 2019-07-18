@@ -29,7 +29,8 @@ export class PetsListComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';														
   trusteeLegaciesAction:boolean=true;
-
+  PetsManagementSection:string='now';
+  LegacyPermissionError:string="You don't have permission of this section";
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
   ngOnInit() { 
     this.userId = localStorage.getItem("endUserId");
@@ -40,6 +41,9 @@ export class PetsListComponent implements OnInit {
     if (this.urlData.lastThird == "legacies") {
       this.userId = this.urlData.lastOne;
       this.getCustomerDetails();
+      this.userapi.getUserAccess(this.userId, (userAccess) => {
+        this.PetsManagementSection = userAccess.PetsManagement
+      });
     }
     this.getPetsList();
   }

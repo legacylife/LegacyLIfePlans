@@ -14,11 +14,12 @@
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Young Children</mat-card-title>
-          <div *ngIf="showYoungChildrenListing && trusteeLegaciesAction">
+          <div *ngIf="showYoungChildrenListing && trusteeLegaciesAction && YoungChildrenManagementSection=='now'">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openModal('Young_Children', true)">+ Add</button>
           </div>
         </mat-card-header>
+        <div *ngIf="YoungChildrenManagementSection=='now'">
         <mat-card-content *ngIf="!showYoungChildrenListing && trusteeLegaciesAction">
           <div class="build--ur--legacy" (click)="openModal('Young_Children', true)">
             <mat-icon>person_pin</mat-icon>
@@ -39,17 +40,24 @@
                 <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
               </p>
             </div>
-          </div>
+          </div>      
         </mat-card-content>
+      </div>
+      <mat-card-content *ngIf="YoungChildrenManagementSection !='now'">
+          <div>{{LegacyPermissionError}}</div>
+      </mat-card-content>
       </mat-card>
+
+
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Child/Parent with Disability </mat-card-title>
-          <div *ngIf="showCPDisabilityListing && trusteeLegaciesAction">
+          <div *ngIf="showCPDisabilityListing && trusteeLegaciesAction && ChildParentDisabilityManagementSection=='now'">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openModal('Child_Parent', true)">+ Add</button>
           </div>
         </mat-card-header>
+        <div *ngIf="ChildParentDisabilityManagementSection=='now'">
         <mat-card-content *ngIf="!showCPDisabilityListing && trusteeLegaciesAction">
           <div class="build--ur--legacy" (click)="openModal('Child_Parent', true)">
             <mat-icon>library_add</mat-icon>
@@ -72,15 +80,21 @@
             </div>
           </div>
         </mat-card-content>
+      </div>
+      <mat-card-content *ngIf="ChildParentDisabilityManagementSection !='now'">
+          <div>{{LegacyPermissionError}}</div>
+      </mat-card-content>
       </mat-card>
+      
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Friend/Neighbor you provide or care for</mat-card-title>
-          <div *ngIf="friendNeighborListing && trusteeLegaciesAction">
+          <div *ngIf="friendNeighborListing && trusteeLegaciesAction && FriendNeighborCareManagementSection=='now'">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openModal('Friend_Neighbor', true)">+ Add</button>
           </div>
         </mat-card-header>
+        <div *ngIf="FriendNeighborCareManagementSection=='now'">
         <mat-card-content *ngIf="!friendNeighborListing && trusteeLegaciesAction">
           <div class="build--ur--legacy" (click)="openModal('Friend_Neighbor', true)">
             <mat-icon>people</mat-icon>
@@ -103,6 +117,10 @@
             </div>
           </div>
         </mat-card-content>
+      </div>
+      <mat-card-content *ngIf="FriendNeighborCareManagementSection !='now'">
+          <div>{{LegacyPermissionError}}</div>
+      </mat-card-content>
       </mat-card>
     </div>
   </div>
