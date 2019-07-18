@@ -92,7 +92,9 @@ function insuranceFormUpdate(req, res) {
   } else { 
             let { proquery } = req.body;
             var insert = new insurance();
-            insert.customerId = query.customerId;
+            insert.customerId = proquery.customerId;
+            insert.customerLegacyId = proquery.customerLegacyId;
+            insert.customerLegacyType = proquery.customerLegacyType;
             insert.policyType = proquery.policyType;  
             insert.company = proquery.company;  
             insert.policyNumber = proquery.policyNumber;  
@@ -196,8 +198,8 @@ function financesFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details  added';
-          if (custData.policyType){
+          let resText = 'details added';
+          if (custData.financesType){
             resText = 'details updated';
           }
           let { proquery } = req.body;   
@@ -211,7 +213,7 @@ function financesFormUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Insurance "+resText+" successfully" }
+              let result = { "message": "Finance "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -224,7 +226,9 @@ function financesFormUpdate(req, res) {
   } else { 
             let { proquery } = req.body;
             var insert = new Finance();
-            insert.customerId = query.customerId;
+            insert.customerId = proquery.customerId;
+            insert.customerLegacyId = proquery.customerLegacyId;
+            insert.customerLegacyType = proquery.customerLegacyType;
             insert.financesType = proquery.financesType;  
             insert.administatorName = proquery.administatorName; 
             insert.financesTypeNew = proquery.financesTypeNew;  
@@ -244,7 +248,7 @@ function financesFormUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Insurance added successfully!" }
+        let result = { "message": "Finance details added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -307,8 +311,8 @@ function debtFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details  added';
-          if (custData.policyType){
+          let resText = 'details added';
+          if (custData.debtsType){
             resText = 'details updated';
           }
           let { proquery } = req.body;   
@@ -323,7 +327,7 @@ function debtFormUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Insurance "+resText+" successfully" }
+              let result = { "message": "Debt "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -336,7 +340,9 @@ function debtFormUpdate(req, res) {
   } else { 
             let { proquery } = req.body;
             var insert = new Debts();
-            insert.customerId = query.customerId;
+            insert.customerId = proquery.customerId;
+            insert.customerLegacyId = proquery.customerLegacyId;
+            insert.customerLegacyType = proquery.customerLegacyType;
             insert.debtsType = proquery.debtsType;  
             insert.bankLendarName = proquery.bankLendarName; 
             insert.debtsTypeNew = proquery.debtsTypeNew;  
@@ -356,7 +362,7 @@ function debtFormUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Insurance added successfully!" }
+        let result = { "message": "Debt details added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })

@@ -54,6 +54,8 @@ var userSchema = new mongoose.Schema({
 	id: String,  
     links: String
   }], 
+  specialites:Array,
+  hobbies:Array,
   websiteLinks:Array,
   businessPhonePrefix : String, 
   businessPhoneNumber : String, 
@@ -62,6 +64,8 @@ var userSchema = new mongoose.Schema({
   managingPrincipleName : String, 
   advisorDocuments : Array,
   folders:Array,
+  s3Size:String,
+  sponsoredAdvisor:String,
   // Subscription fields
   manageOtherProceducers : String, 
   howManyProducers : String, 

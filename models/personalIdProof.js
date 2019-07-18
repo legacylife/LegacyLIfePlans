@@ -3,6 +3,8 @@ var constants = require("./../config/constants")
 
 var personalIdProofSchema = new mongoose.Schema({  
   customerId: String,
+  customerLegacyId: String,
+  customerLegacyType: String,
   documentType:String,
   socialSecurityNumber:String,
   locationSocialSecurityCard:String,

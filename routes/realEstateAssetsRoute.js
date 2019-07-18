@@ -66,7 +66,9 @@ function realEstateSubmit(req, res) {
   } else { 
     let { proquery } = req.body; 
     var realEstate = new RealEstate();
-    realEstate.customerId = from.customerId;
+    realEstate.customerId = from.customerId;    
+    realEstate.customerLegacyId = proquery.customerLegacyId;
+    realEstate.customerLegacyType = proquery.customerLegacyType;
     realEstate.estateType = proquery.estateType;
     realEstate.address = proquery.address;
     realEstate.mortgageHolder = proquery.mortgageHolder;
@@ -182,6 +184,8 @@ function realEstateVehicleSubmit(req, res) {
     let { proquery } = req.body; 
     var vehiclesObj = new Vehicles();
     vehiclesObj.customerId = from.customerId;
+    vehiclesObj.customerLegacyId = proquery.customerLegacyId;
+    vehiclesObj.customerLegacyType = proquery.customerLegacyType;
     vehiclesObj.model = proquery.model;
     vehiclesObj.year = proquery.year;
     vehiclesObj.make = proquery.make;
@@ -298,6 +302,8 @@ function realEstateAssetsSubmit(req, res) {
     let { proquery } = req.body; 
     var assetsObj = new Assets();
     assetsObj.customerId = from.customerId;
+    assetsObj.customerLegacyId = proquery.customerLegacyId;
+    assetsObj.customerLegacyType = proquery.customerLegacyType;
     assetsObj.asset = proquery.asset;
     assetsObj.assetNew = proquery.assetNew;
     assetsObj.assetType = proquery.assetType;

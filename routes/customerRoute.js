@@ -26,7 +26,8 @@ const FileActivityLog = require('./../models/FileActivityLog.js')
 const SpecialNeeds = require('./../models/SpecialNeeds.js')
 const s3 = require('./../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
-const InviteTemp = require('./../models/InviteTemp.js')
+const Trustee = require('./../models/Trustee.js')
+const HiredAdvisors = require('./../models/HiredAdvisors.js')
 
 var auth = jwt({
   secret: constants.secret,
@@ -45,7 +46,7 @@ function myEssentialsUpdate(req, res) {
 
   if (query._id) {
     myessentials.findOne(query, function (err, custData) {
-      
+
       if (err) {
         let result = { "message": "Something Wrong!" }
         res.send(resFormat.rError(result));
@@ -59,7 +60,7 @@ function myEssentialsUpdate(req, res) {
               res.send(resFormat.rError(err))
             } else {
 
-              if(!proquery.ppFirstName){
+              if (!proquery.ppFirstName) {
                 logData.fileName = custData.ppFirstName + ' ' + custData.ppLastName;
               }
               logData.customerId = custData.customerId;
@@ -101,7 +102,7 @@ function myEssentialsUpdate(req, res) {
       }
     })
   }
- 
+
 }
 //function to get list of essential profile details as per given criteria
 function essentialProfileList(req, res) {
@@ -130,12 +131,12 @@ function essentialProfileList(req, res) {
 }
 
 function essentialIdList(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body  
+  let { fields, offset, query, order, limit, search } = req.body
   personalIdProof.find(query, fields, function (err, essentialIDList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      totalIDRecords = essentialIDList.length; 
+      totalIDRecords = essentialIDList.length;
       res.send(resFormat.rSuccess({ essentialIDList, totalIDRecords }))
     }
   }).sort(order).skip(offset).limit(limit)
@@ -157,12 +158,12 @@ function viewEssentialID(req, res) {
 }
 
 function essentialProfessionalsList(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body  
+  let { fields, offset, query, order, limit, search } = req.body
   MyProfessional.find(query, fields, function (err, essentialProfessionalList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      totalProfessionalRecords = essentialProfessionalList.length; 
+      totalProfessionalRecords = essentialProfessionalList.length;
       res.send(resFormat.rSuccess({ essentialProfessionalList, totalProfessionalRecords }))
     }
   }).sort(order).skip(offset).limit(limit)
@@ -193,14 +194,14 @@ function emergencyContactsSubmit(req, res) {
   logData.folderName = 'emergency_contacts';
   logData.subFolderName = 'emergency_contacts';
 
-  if(query._id ){
-    emergencyContacts.findOne(query, function (err, custData) {      
+  if (query._id) {
+    emergencyContacts.findOne(query, function (err, custData) {
       if (err) {
         let result = { "message": "Something Wrong!" }
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let { proquery } = req.body;  
+          let { proquery } = req.body;
           proquery.modifiedOn = new Date();
           emergencyContacts.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
@@ -220,16 +221,18 @@ function emergencyContactsSubmit(req, res) {
         }
       }
     })
-  } else { 
-    let { proquery } = req.body; 
+  } else {
+    let { proquery } = req.body;
     var emergency = new emergencyContacts();
     emergency.customerId = from.customerId;
+    emergency.customerLegacyId = proquery.customerLegacyId;
+    emergency.customerLegacyType = proquery.customerLegacyType;
     emergency.address = proquery.address;
-    emergency.emailAddress= proquery.emailAddress;
-    emergency.mobile= proquery.mobile;
-    emergency.name= proquery.name;
-    emergency.phone= proquery.phone;
-    emergency.relationship= proquery.relationship;
+    emergency.emailAddress = proquery.emailAddress;
+    emergency.mobile = proquery.mobile;
+    emergency.name = proquery.name;
+    emergency.phone = proquery.phone;
+    emergency.relationship = proquery.relationship;
     emergency.status = 'Active';
     emergency.createdOn = new Date();
     emergency.modifiedOn = new Date();
@@ -265,7 +268,7 @@ function viewEmergencyContacts(req, res) {
 
 function deleteEcontact(req, res) {
   let { query } = req.body;
-  let fields = { }
+  let fields = {}
   emergencyContacts.findOne(query, fields, function (err, profileInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -309,18 +312,18 @@ function personalIdUpdate(req, res) {
   logData.folderName = 'myessential';
   logData.subFolderName = 'id-box';
 
-  if(query._id ){
-    personalIdProof.findOne(query, function (err, custData) {      
+  if (query._id) {
+    personalIdProof.findOne(query, function (err, custData) {
       if (err) {
         let result = { "message": "Something Wrong!" }
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
           let resText = 'added';
-          if (custData.documentType){
+          if (custData.documentType) {
             resText = 'updated';
           }
-          let { proquery } = req.body;  
+          let { proquery } = req.body;
           proquery.modifiedOn = new Date();
           proquery.status = 'Active';
           personalIdProof.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
@@ -332,7 +335,7 @@ function personalIdUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "ID box details "+resText+" successfully!" }
+              let result = { "message": "ID box details " + resText + " successfully!" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -342,10 +345,12 @@ function personalIdUpdate(req, res) {
         }
       }
     })
-  } else { 
-    let { proquery } = req.body; 
+  } else {
+    let { proquery } = req.body;
     var personal = new personalIdProof();
     proquery.customerId = from.customerId;
+    proquery.customerLegacyId = proquery.customerLegacyId;
+    proquery.customerLegacyType = proquery.customerLegacyType;
     proquery.status = 'Active';
     proquery.createdOn = new Date();
     proquery.modifiedOn = new Date();
@@ -367,7 +372,7 @@ function personalIdUpdate(req, res) {
 
 function deleteProfile(req, res) {
   let { query } = req.body;
-  let fields = { }
+  let fields = {}
   myessentials.findOne(query, fields, function (err, profileInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -395,8 +400,8 @@ function myProfessionalsUpdate(req, res) {
   logData.folderName = 'myessential';
   logData.subFolderName = 'essential-professionals';
 
-  if(query._id ){
-    MyProfessional.findOne(query, function (err, custData) {      
+  if (query._id) {
+    MyProfessional.findOne(query, function (err, custData) {
       if (err) {
         let result = { "message": "Something Wrong!" }
         res.send(resFormat.rError(result));
@@ -412,7 +417,7 @@ function myProfessionalsUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Professional details updated successfully!","ppID" : custData._id }
+              let result = { "message": "Professional details updated successfully!", "ppID": custData._id }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -423,9 +428,11 @@ function myProfessionalsUpdate(req, res) {
       }
     })
   } else {
-    let { proquery } = req.body;    
+    let { proquery } = req.body;
     var profesion = new MyProfessional();
-    profesion.customerId = query.customerId;
+    profesion.customerId = proquery.customerId;
+    profesion.customerLegacyId = proquery.customerLegacyId;
+    profesion.customerLegacyType = proquery.customerLegacyType;
     profesion.namedProfessionals = proquery.namedProfessionals;
     profesion.businessName = proquery.businessName;
     profesion.name = proquery.name;
@@ -436,26 +443,26 @@ function myProfessionalsUpdate(req, res) {
     profesion.createdOn = new Date();
     profesion.modifiedOn = new Date();
     profesion.save({ $set: proquery }, function (err, newEntry) {
-    if (err) {
-          res.send(resFormat.rError(err))
-        } else {
-          console.log("newEntry :-",newEntry);
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        console.log("newEntry :-", newEntry);
 
-          logData.customerId = query.customerId;
-          logData.fileId = newEntry._id;
-          actitivityLog.updateActivityLog(logData);
+        logData.customerId = proquery.customerId;
+        logData.fileId = newEntry._id;
+        actitivityLog.updateActivityLog(logData);
 
-          let result = { "message": "Professional details added successfully!" }
-          res.status(200).send(resFormat.rSuccess(result))
-        }
-      })
-  } 
+        let result = { "message": "Professional details added successfully!" }
+        res.status(200).send(resFormat.rSuccess(result))
+      }
+    })
+  }
 }
 
 
 function deleteProfessionals(req, res) {
   let { query } = req.body;
-  let fields = { }
+  let fields = {}
   MyProfessional.findOne(query, fields, function (err, profileInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -478,35 +485,35 @@ function deleteProfessionals(req, res) {
 function legalStuffUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
-  let {message} = req.body;
+  let { message } = req.body;
 
   var logData = {}
-  if(proquery.subFolderName == 'Estate') {
+  if (proquery.subFolderName == 'Estate') {
     logData.fileName = constants.EstateTypeOfDocument[proquery.typeOfDocument];
   }
-  if(proquery.subFolderName == 'Healthcare') {
+  if (proquery.subFolderName == 'Healthcare') {
     logData.fileName = constants.HealthcareTypeOfDocument[proquery.typeOfDocument];
   }
-  if(proquery.subFolderName == 'Personal Affairs') {
+  if (proquery.subFolderName == 'Personal Affairs') {
     logData.fileName = constants.PersonalAffairsTypeOfDocument[proquery.typeOfDocument];
   }
-  
+
   logData.folderName = 'legalstuff';
   logData.subFolderName = proquery.subFolderName;
 
-  if(query._id ){
-    LegalStuff.findOne(query, function (err, custData) {      
+  if (query._id) {
+    LegalStuff.findOne(query, function (err, custData) {
       if (err) {
         let result = { "message": "Something Wrong!" }
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
           let resText = 'details  added';
-          if (custData.typeOfDocument){
+          if (custData.typeOfDocument) {
             resText = 'details updated';
           }
-          let { proquery } = req.body;   
-          proquery.status = 'Active';   
+          let { proquery } = req.body;
+          proquery.status = 'Active';
           proquery.modifiedOn = new Date();
           LegalStuff.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
@@ -517,7 +524,7 @@ function legalStuffUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": message.messageText+" "+resText+" successfully" }
+              let result = { "message": message.messageText + " " + resText + " successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -527,17 +534,19 @@ function legalStuffUpdate(req, res) {
         }
       }
     })
-  } else { 
-            let { proquery } = req.body;
-            var legals = new LegalStuff();
-            legals.customerId = query.customerId;
-            legals.subFolderName = proquery.subFolderName;
-            legals.typeOfDocument = proquery.typeOfDocument;
-            legals.comments = proquery.comments;            
-            legals.status = 'Active';
-            legals.createdOn = new Date();
-            legals.modifiedOn = new Date();
-            legals.save({$set:proquery}, function (err, newEntry) {
+  } else {
+    let { proquery } = req.body;
+    var legals = new LegalStuff();
+    legals.customerId = proquery.customerId;
+    legals.customerLegacyId = proquery.customerLegacyId;
+    legals.customerLegacyType = proquery.customerLegacyType;
+    legals.subFolderName = proquery.subFolderName;
+    legals.typeOfDocument = proquery.typeOfDocument;
+    legals.comments = proquery.comments;
+    legals.status = 'Active';
+    legals.createdOn = new Date();
+    legals.modifiedOn = new Date();
+    legals.save({ $set: proquery }, function (err, newEntry) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
@@ -546,7 +555,7 @@ function legalStuffUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": message.messageText+" added successfully!" }
+        let result = { "message": message.messageText + " added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -555,7 +564,7 @@ function legalStuffUpdate(req, res) {
 
 function legalStuffUpdate1(req, res) {
   let { query } = req.body;
-  let {message} = req.body;
+  let { message } = req.body;
   if (query.customerId) {
     LegalStuff.findOne(query, function (err, custData) {
       if (err) {
@@ -563,32 +572,32 @@ function legalStuffUpdate1(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData.customerId) {
-          let { proquery } = req.body;   
-          proquery.status = 'Active';   
+          let { proquery } = req.body;
+          proquery.status = 'Active';
           proquery.modifiedOn = new Date();
           LegalStuff.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              let result = { "message": message.messageText+" updated successfully!" }
+              let result = { "message": message.messageText + " updated successfully!" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
         } else {
-            let { proquery } = req.body;
-            var legals = new LegalStuff();
-            legals.customerId = query.customerId;
-            legals.subFolderName = proquery.subFolderName;
-            legals.typeOfDocument = proquery.typeOfDocument;
-            legals.comments = proquery.comments;            
-            legals.status = 'Active';
-            legals.createdOn = new Date();
-            legals.modifiedOn = new Date();
-            legals.save({$set:proquery}, function (err, newEntry) {
+          let { proquery } = req.body;
+          var legals = new LegalStuff();
+          legals.customerId = query.customerId;
+          legals.subFolderName = proquery.subFolderName;
+          legals.typeOfDocument = proquery.typeOfDocument;
+          legals.comments = proquery.comments;
+          legals.status = 'Active';
+          legals.createdOn = new Date();
+          legals.modifiedOn = new Date();
+          legals.save({ $set: proquery }, function (err, newEntry) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              let result = { "message": message.messageText+" have been added successfully!" }
+              let result = { "message": message.messageText + " have been added successfully!" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -618,7 +627,7 @@ function viewLegalStuffDetails(req, res) {
 
 function deleteIdBox(req, res) {
   let { query } = req.body;
-  let fields = { }
+  let fields = {}
   personalIdProof.findOne(query, fields, function (err, profileInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -677,7 +686,7 @@ function legalEstateList(req, res) {
 
 function deleteLegalStuff(req, res) {
   let { query } = req.body;
-  let fields = { }
+  let fields = {}
   LegalStuff.findOne(query, fields, function (err, legalInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -696,34 +705,41 @@ function deleteLegalStuff(req, res) {
   })
 }
 
-
 function fileActivityLogList(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body  
+  let { fields, offset, query, order, limit, search } = req.body
   FileActivityLog.find(query, fields, function (err, activityLogList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      totalRecords = activityLogList.length; 
+      totalRecords = activityLogList.length;
       res.send(resFormat.rSuccess({ activityLogList, totalRecords }))
     }
   }).sort(order).skip(offset).limit(limit)
 }
 
-function viewInviteDetails(req, res) {
-  let { query } = req.body;
-  let fields = {}
-  if (req.body.fields) {
-    fields = req.body.fields
-  }
-  InviteTemp.find(query, fields, function (err, InviteList) {
-    if (err) {
-      res.status(401).send(resFormat.rError(err))
-    } else {
-      res.send(resFormat.rSuccess(InviteList))
-    }
+function getSharedLegaciesList(req,res){  
+  let { query } = req.body
+  Trustee.find(query, function (err, list) {
+    res.send(resFormat.rSuccess({ list }))
   })
 }
 
+function legacyUserRemove(req,res){
+  let userData = {};
+  let { query } = req.body;
+  let userstring = ''
+  userData.status = 'Deleted';
+  userData.modifiedOn = new Date();
+  if( query.userType == 'advisor'){
+    HiredAdvisors.updateOne({ customerId : query.customerId, advisorId : query.advisorId }, { $set: userData }, function (err, updatedDetails){ });
+    userstring = 'Advisor'
+  }else{
+    Trustee.updateOne({ customerId : query.customerId, trusteeId : query.trusteeId }, { $set: userData }, function (err, updatedDetails){});
+    userstring = 'Trustee'
+  }
+  let result = { "message": userstring + " removed successfully" }
+  res.status(200).send(resFormat.rSuccess(result))   
+}
 
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
@@ -740,12 +756,12 @@ router.post("/essential-professional-list", essentialProfessionalsList)
 router.post("/view-professional-details", viewEssentialProfessionals)
 router.post("/view-id-details", viewEssentialID)
 router.post("/essentials-legal-form-submit", legalStuffUpdate)
-router.post("/view-legalStuff-details", viewLegalStuffDetails) //
+router.post("/view-legalStuff-details", viewLegalStuffDetails)
 router.post("/emergency-contacts", emergencyContactsSubmit)
 router.post("/get-emergency-contacts", getEmergencyContacts)
 router.post("/view-emergency-contacts", viewEmergencyContacts)
 router.post("/deletecontact", deleteEcontact)
 router.post("/file-activity-log-list", fileActivityLogList)
-router.post("/view-invite-details", viewInviteDetails)
-
+router.post("/shared-legacies-list", getSharedLegaciesList)
+router.post("/legacy-user-remove", legacyUserRemove)
 module.exports = router

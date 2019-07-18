@@ -344,7 +344,6 @@ function forgotPassword(req, res) {
   //find user based on email id
 
   User.findOne({ "username": req.body.username }, {}, function (err, user) {
-    console.log("asdadsd",user)
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else if (!user) {

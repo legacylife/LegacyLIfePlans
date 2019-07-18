@@ -2,8 +2,12 @@ var mongoose = require( 'mongoose' )
 var constants = require("./../config/constants")
 
 var hireAdvisorsSchema = new mongoose.Schema({
-  customerId: mongoose.Schema.Types.ObjectId,
-  advisorId: mongoose.Schema.Types.ObjectId,
+  customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  advisorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  selectAll : String,  
+  userAccess:Object,  
+  filesCount: String,
+  folderCount: String,
   status: String,
   createdOn: Date,
   modifiedOn: Date,

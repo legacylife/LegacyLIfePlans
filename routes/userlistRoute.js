@@ -52,13 +52,19 @@ function list(req, res) {
         let newContact = JSON.parse(JSON.stringify(contact))
       }, function (exc) {
         contacts.sort((a, b) => (a.createdOn > b.createdOn) ? -1 : ((b.createdOn > a.createdOn) ? 1 : 0));
+        if (err) {
+          res.status(401).send(resFormat.rError(err))
+        } else {
         res.send(resFormat.rSuccess({ userList: contacts, totalUsers }))
+        }
       }) //end of async
 
       if (err) {
         res.status(401).send(resFormat.rError(err))
-      } else {
-        res.send(resFormat.rSuccess({ userList, totalUsers }))
+      } else {      
+        if(totalUsers){
+          res.send(resFormat.rSuccess({ userList, totalUsers }))
+        }        
       }
     }).sort(order).skip(offset).limit(limit)
   })

@@ -3,6 +3,8 @@ var constants = require("./../config/constants")
 
 var devicePasswordsSchema = new mongoose.Schema({
   customerId: String,
+  customerLegacyId: String,
+  customerLegacyType: String,
   deviceList: String,
   deviceName: String,
   username:String,

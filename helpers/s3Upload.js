@@ -8,7 +8,6 @@ const s3 = new AWS.S3({
 });
 
 const uploadFile = (filename, path) => {
-  console.log(filename)
   return new Promise(function(resolve, reject) {
     if (fs.existsSync(__dirname + '/../tmp/'+filename)) {
       console.log("File exists")
@@ -48,4 +47,6 @@ const uploadFile = (filename, path) => {
     }
   })
 }
-module.exports = { uploadFile }
+
+
+module.exports = { uploadFile, s3 }

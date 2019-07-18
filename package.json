@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.6.1",
+    "aws-s3-size": "^0.1.0",
     "aws-sdk": "^2.344.0",
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",
@@ -40,6 +41,7 @@
     "path": "^0.12.7",
     "q": "^1.5.1",
     "request": "^2.88.0",
-    "stripe": "^6.36.0"
+    "stripe": "^6.36.0",
+    "s3-archiver": "^1.0.4"
   }
 }
