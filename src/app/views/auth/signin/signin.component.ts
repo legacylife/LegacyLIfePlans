@@ -64,6 +64,7 @@ export class SigninComponent implements OnInit {
         localStorage.setItem("endUserSubscriptionEndDate", userData.subscriptionEndDate);
         localStorage.setItem("endUserSubscriptionStatus", userData.subscriptionStatus);
         localStorage.setItem("endUserAutoRenewalStatus", userData.autoRenewalStatus);
+        localStorage.setItem("endUserProSubscription", 'no');
         
         if (userData.profilePicture) {
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + userData.profilePicture;

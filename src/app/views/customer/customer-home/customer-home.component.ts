@@ -34,6 +34,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   public currentPage: any;
   dayFirst = true;
   daySeco = false;
+  isProUser: boolean = false
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
 
   public products: any[];
@@ -50,6 +51,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
     // this.categories$ = this.shopService.getCategories();
     this.categories = ["My essentials", "Pets"]
 

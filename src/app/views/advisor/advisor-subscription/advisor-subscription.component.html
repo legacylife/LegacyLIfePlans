@@ -16,65 +16,59 @@
             <div class="plan--text">
               <div class="plan--header">
                 <img alt="" class="cornar--stars" src="assets/images/arkenea/star.png">
-                <div class="plan--type">Legacy Life Advisor License</div>
+                <div class="plan--type">Premium</div>
                 <div class="relative">
-                  <span class="doller">$</span>
-                  <span class="amt">85</span>
-                  <span class="duration">a year</span>
+                  <span class="doller">{{planAmount | currency : planCurrency : 'symbol': '.0-0' | slice :0:1}}</span>
+                  <span class="amt">{{planAmount | number : '.0-0'}}</span>
+                  <span class="duration">a {{planInterval}}</span>
                 </div>
-                <div class="space">
-                  For 7 GB Space
-                </div>
+                
               </div>
               <div class="plan--body">
-                <h5>Legacy Life Plan Features</h5>
+                <h5>Legacy Life Plan Features-Advisor</h5>
                 <mat-list class="p-0">
                   <div fxLayout="row wrap">
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                       <mat-list-item>
-                        <mat-icon>check</mat-icon> In-Depth Estate Planning Platform
+                        <mat-icon>check</mat-icon> Workflow Dashboard
                       </mat-list-item>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                       <mat-list-item>
-                        <mat-icon>check</mat-icon> Professional Resources and Guides
+                        <mat-icon>check</mat-icon> Usage Tracker
                       </mat-list-item>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                       <mat-list-item>
-                        <mat-icon>check</mat-icon> Secure Encrypted Document Storage
+                        <mat-icon>check</mat-icon> Client Relationship Builder
                       </mat-list-item>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                       <mat-list-item>
-                        <mat-icon>check</mat-icon> Online Help
+                        <mat-icon>check</mat-icon> Advisor Co-Branding Support
                       </mat-list-item>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                       <mat-list-item>
-                        <mat-icon>check</mat-icon> Unlimited Trustees
+                        <mat-icon>check</mat-icon> Shared Content Library
                       </mat-list-item>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                       <mat-list-item>
-                        <mat-icon>check</mat-icon> Video & Picture Time Capsule
+                        <mat-icon>check</mat-icon> Unlimited Legacy Life Invites
                       </mat-list-item>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                       <mat-list-item>
-                        <mat-icon>check</mat-icon> Local Advisor Directory
+                        <mat-icon>check</mat-icon> Network Aggregator
                       </mat-list-item>
                     </div>
                   </div>
                 </mat-list>
               </div>
 
-              <div class="extra--price">
-                <mat-checkbox> Purchase extra 10GB space for $50 a year </mat-checkbox>
-              </div>
-
               <div class="text-center">
-                <button mat-raised-button class="llp--primary--btn" (click)="openCardDetailsModal();">Purchase Advisor License</button>
+                <button mat-raised-button class="llp--primary--btn" (click)="openCardDetailsModal();">Proceed to Pay {{planAmount | currency : planCurrency : 'symbol': '.0-0'}}</button>
               </div>
             </div>
           </div>

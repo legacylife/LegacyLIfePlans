@@ -123,13 +123,31 @@
                 <div fxFlex.xs="100" fxFlex.sm="60" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60">
                   <div class="manage--sub--section">
                     <header>
-                      <div class="stan--plan"> Free Access</div>
-                      <div class="ur--sub">Valid till
-                        <span>06/07/2019</span>
+                      <div class="stan--plan"> {{planName}} plan</div>
+                      <div class="ur--sub" *ngIf="isSubscribePlan">Your subscription will automatically renew on
+                        <span>{{subscriptionExpireDate}}</span>
+                      </div>
+                      <div class="ur--sub" *ngIf="isAccountFree">You are currently on free plan and expired on
+                        <span>{{subscriptionExpireDate}}</span>
                       </div>
                     </header>
 
-                    <mat-card class="p-0 black--header">
+                    <div class="llp--slide--wrapper">
+                      <div class="set-auto">Set auto-payment option</div>
+                      <mat-slide-toggle class="llp--slide--toggle" [checked]="autoRenewalFlag" [disabled]="isAccountFree" (click)="isSubscribePlan && autoRenewal()">{{autoRenewalStatus | uppercase}}</mat-slide-toggle>
+                    </div>
+                    <p class="turning">Turning the auto-payment option ON will automatically deduct the subscription
+                      amount from your associated
+                      card
+                    </p>
+
+                    <div class="manage--cancel">
+                      <!-- <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/advisor/subscription'">Manage subscription</button> -->
+                      <button mat-raised-button class="llp--primary--green--btn" [class.not-allowed]="isSubscribePlan && !isPremiumExpired" [disabled]="isSubscribePlan && !isPremiumExpired" [routerLink]="'/advisor/subscription'">Manage subscription</button>
+                      <a class="clr--red" [class.not-allowed]="isAccountFree || isSubscriptionCanceled" [attr.disabled]="isAccountFree || isSubscriptionCanceled" (click)="(!isAccountFree || !isSubscriptionCanceled) && cancelSubscription()">Cancel subscription</a>
+                    </div>
+
+                    <mat-card class="mt-1 p-0 black--header">
                       <mat-card-title class="">
                         <div class="card-title-text">Invitation Status</div>
                         <mat-divider></mat-divider>
@@ -143,9 +161,7 @@
                       </mat-card-content>
                     </mat-card>
 
-                    <div class="manage--cancel">
-                      <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/advisor/subscription'">Manage subscription</button>
-                    </div>
+                    
                   </div>
                  
                 </div>

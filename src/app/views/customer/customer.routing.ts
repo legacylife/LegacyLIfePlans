@@ -62,7 +62,7 @@ import { LettersMessagesListingComponent } from './customer-home/legacy-life-let
 import { LettersMessagesDetailsComponent } from './customer-home/legacy-life-letters-messages/letters-messages-details/letters-messages-details.component';
 import { ElectronicMediaDetailsComponent } from './customer-home/passwords-digital-assets/electronic-media/electronic-media-details/electronic-media-details.component';
 import { TodosListingComponent } from '../todos-listing/todos-listing.component';
-
+import { ProUserAuthGuard as ProUserGuard } from '../../shared/services/auth/prouserauth.guard';
 
 export const CustomerRoutes: Routes = [
   {
@@ -159,105 +159,126 @@ export const CustomerRoutes: Routes = [
           {
             path: 'real-estate-assets',
             component: ListingComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Real Estates' }
           },
           {
             path: 'real-estate-detail-view/:id',
             component: DetailsComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Real Estate Detail' }
           },
           {
             path: 'real-estate-vehicle-detail-view/:id',
             component: DetailsVehiclesComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Real Estate Vehicle Detail' }
           },
           {
             path: 'real-estate-assets-detail-view/:id',
             component: DetailsAssetsComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Real Assets Detail' }
           }, {
             path: 'final-wishes',
             component: FinalWishesComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Final Wishes' }
           },
           {
             path: 'final-wishes-view/:id',
             component: FinalWishesDetailsComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Final Wishes Details' }
           },
           {
             path: 'pets',
             component: PetsListComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Pets List' }
           },
           {
             path: 'pets-view/:id',
             component: PetsDetailsComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Pets View' }
           },   
           {
             path: 'time-capsule',
             component: TimeCapsuleListComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Time Capsule List' }
           },         
           {
             path: 'time-capsule-view/:id',
             component: TimeCapsuleDetailsComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Time Capsule Details' }
           },
           {
             path: 'special-needs',
             component: SpecialNeedsListingComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Special Needs List' }
           },
           {
             path: 'special-needs-view/:id',
             component: SpecialNeedsDetailsComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Special Needs Details' }
           },   
           {
             path: 'insurance-finance-debt',
             component: InsuranceFinanceDebtListComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Insurance-Finance-Debt List' }
           },
           {
             path: 'insurance-view/:id',
             component: InsuranceDetailsComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Insurance Details' }
           },
           {
             path: 'finance-view/:id',
             component: FinanceDetailsComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Finance Details' }
           }, 
           {
             path: 'debt-view/:id',
             component: DebtDetailsComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Debt Details' }
           },  
           {
             path: 'passwords-digital-assests',
             component: PasswordsDigitalAssetsListComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Passwords Digital Assests List' }
           },         
           {
             path: 'device-view/:id',
             component: DeviceDetailsComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Digital Devices' }
           },
           {
             path: 'letters-messages',
             component: LettersMessagesListingComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Letters Messages List' }
           },         
           {
             path: 'letters-messages-view/:id',
             component: LettersMessagesDetailsComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Letters Messages Details' }
           },
           {
             path: 'electronic-media-view/:id',
             component: ElectronicMediaDetailsComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Electronic Media Details' }
           },
         ]

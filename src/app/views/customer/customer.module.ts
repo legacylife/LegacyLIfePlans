@@ -103,6 +103,7 @@ import { DebtModalComponent } from './customer-home/insurance-finance-debt/debt-
 import { PasswordsDigitalAssetsListComponent } from './customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
 import { DevicesModalComponent } from './customer-home/passwords-digital-assets/devices/devices-modal/devices-modal.component';
 
+import { ProUserAuthGuard } from '../../shared/services/auth/prouserauth.guard';
 //import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
 /** Import the component modules */
 // import { LyButtonModule } from '@alyle/ui/button';
@@ -210,7 +211,7 @@ export class GlobalVariables {
     DebtModalComponent, PasswordsDigitalAssetsListComponent, DevicesModalComponent,DeviceDetailsComponent,LettersMessagesListingComponent,LettersMessagesDetailsComponent,
     LettersMessagesModelComponent,ElectronicMediaModalComponent,ElectronicMediaDetailsComponent
   ], providers: [
-    MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,
+    MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,ProUserAuthGuard
     // { provide: LY_THEME, useClass: MinimaLight, multi: true },
     // { provide: LY_THEME, useClass: MinimaDark, multi: true },
     // { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },

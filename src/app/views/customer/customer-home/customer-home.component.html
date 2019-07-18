@@ -21,17 +21,17 @@
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
                   </a>
                 </li>
-                <li>
+                <li *ngIf="isProUser">
                   <a [routerLink]="['/customer/dashboard/insurance-finance-debt']">
                     <mat-icon class="icon-file">monetization_on</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Insurance Finance & Debt</a>
                 </li>
-                <li>
+                <li *ngIf="isProUser">
                   <a [routerLink]="['/customer/dashboard/pets']">
                     <mat-icon class="icon-file">pets</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Pets</a>
                 </li>
-                <li>
+                <li *ngIf="isProUser">
                   <a [routerLink]="['/customer/dashboard/special-needs']">
                     <mat-icon class="icon-file">help</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Special Needs</a>
@@ -41,7 +41,7 @@
                     <mat-icon class="icon-file">gavel</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Legal Stuff</a>
                 </li>
-                <li>
+                <li *ngIf="isProUser">
                   <a [routerLink]="['/customer/dashboard/passwords-digital-assests']">
                     <mat-icon class="icon-file">lock</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Passwords & Digital Assests</a>
@@ -51,22 +51,22 @@
                     <mat-icon class="icon-file">contact_phone</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Emergency Contacts</a>
                 </li>
-                <li>
+                <li *ngIf="isProUser">
                   <a [routerLink]="['/customer/dashboard/real-estate-assets']">
                     <mat-icon class="icon-file">business</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Real Estates & Assets</a>
                 </li>
-                <li>
+                <li *ngIf="isProUser">
                   <a [routerLink]="['/customer/dashboard/time-capsule']">
                     <mat-icon class="icon-file">access_time</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Time Capsule</a>
                 </li>
-                <li>
+                <li *ngIf="isProUser">
                     <a [routerLink]="['/customer/dashboard/letters-messages']">
                     <mat-icon class="icon-file">markunread</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Legacy Life Letters & Messages</a>
                 </li>
-                <li>
+                <li *ngIf="isProUser">
                   <a [routerLink]="['/customer/dashboard/final-wishes']">
                     <mat-icon class="icon-file">date_range</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Final Wishes</a>

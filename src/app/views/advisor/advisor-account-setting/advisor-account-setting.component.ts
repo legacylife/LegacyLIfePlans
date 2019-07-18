@@ -18,6 +18,9 @@ import { serverUrl, s3Details } from '../../../config';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { ChangePicComponent } from './../../change-pic/change-pic.component';
 import { CanComponentDeactivate } from '../../../shared/services/auth/can-deactivate.guard';
+import { SubscriptionService } from '../../../shared/services/subscription.service';
+import  * as moment  from 'moment'
+
 const filePath = s3Details.url+'/'+s3Details.advisorsDocumentsPath;
 const URL = serverUrl + '/api/documents/advisorDocument';
 interface websiteLink {
@@ -27,7 +30,8 @@ interface websiteLink {
   selector: 'app-advisor-account-setting',
   templateUrl: './advisor-account-setting.component.html',
   styleUrls: ['./advisor-account-setting.component.scss'],
-  animations: [egretAnimations]
+  animations: [egretAnimations],
+  providers: [SubscriptionService]
 })
 export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeactivate {
   userId = localStorage.getItem("endUserId");
@@ -71,9 +75,28 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   phoneval:string
   docPath:string
   modified = false // display confirmation popup if user click on other link
+
+  /**
+   * Subscription variable declaration
+   */
+  planName: string = 'free'
+  autoRenewalStatus: string = 'off'
+  subscriptionExpireDate: string = ''
+
+  isAccountFree: boolean = true
+  isSubscribePlan: boolean = false
+  isSubscribedBefore: boolean = false
+  autoRenewalFlag: boolean = false
+  autoRenewalVal:boolean = false
+  isPremiumExpired: boolean = false
+  isSubscriptionCanceled:boolean = false
+  userCreateOn: any
+  userSubscriptionDate: any
+  today: Date = moment().toDate()
+
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
-    private loader: AppLoaderService, private confirmService: AppConfirmService, private picService: ProfilePicService) { }
+    private loader: AppLoaderService, private confirmService: AppConfirmService, private picService: ProfilePicService, private subscriptionservice:SubscriptionService) { }
 
   ngOnInit() {
     this.docPath = filePath;
@@ -141,6 +164,69 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     this.socialMediaLinkss = [];
     this.advisorDocumentsList = [];
     this.getProfile();
+
+
+    /**
+     * Check the user subscription details
+     */
+    this.subscriptionservice.checkSubscription( ( returnArr )=> {
+      this.userCreateOn = returnArr.userCreateOn
+      this.isSubscribedBefore = returnArr.isSubscribedBefore
+      this.isSubscriptionCanceled = returnArr.isSubscriptionCanceled
+      this.autoRenewalFlag = returnArr.autoRenewalFlag
+      this.autoRenewalVal = returnArr.autoRenewalVal
+      this.autoRenewalStatus = returnArr.autoRenewalStatus
+      this.isAccountFree = returnArr.isAccountFree
+      this.isPremiumExpired = returnArr.isPremiumExpired
+      this.isSubscribePlan = returnArr.isSubscribePlan
+      this.planName = returnArr.planName
+      this.subscriptionExpireDate = returnArr.subscriptionExpireDate
+    })
+    /* let diff: any
+    let expireDate: any
+    let subscriptionDate      = localStorage.getItem("endUserSubscriptionStartDate")
+    this.userCreateOn         = moment( localStorage.getItem("endUserCreatedOn") )
+    this.isSubscribedBefore   = ( subscriptionDate !== 'undefined' && subscriptionDate !== null && subscriptionDate !== "" ) ? true : false
+    
+    if( !this.isSubscribedBefore ) {
+      this.isAccountFree    = true
+      this.isSubscribePlan  = false
+      diff                  = this.subscriptionservice.getDateDiff( this.userCreateOn.toDate(), this.today )
+      console.log("diff",diff)
+      if( diff <= 30 ) {
+        expireDate            = this.userCreateOn.add(30,"days")
+        this.isPremiumExpired = false
+      }
+      else{
+        expireDate            = this.userCreateOn.add(60,"days")
+        this.isPremiumExpired = true
+      }
+      
+      this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
+    }
+    else if( this.isSubscribedBefore ) {
+      this.isSubscriptionCanceled = ( localStorage.getItem("endUserSubscriptionStatus") && localStorage.getItem("endUserSubscriptionStatus") == 'canceled' ) ? true : false
+      this.autoRenewalFlag        = ( localStorage.getItem("endUserAutoRenewalStatus") && localStorage.getItem("endUserAutoRenewalStatus") == 'true' ) ? true : false
+      this.autoRenewalVal         = this.autoRenewalFlag
+      this.autoRenewalStatus      = this.autoRenewalVal ? 'on' : 'off'
+      this.userSubscriptionDate   = moment( localStorage.getItem("endUserSubscriptionEndDate") )
+      this.isAccountFree    = false
+      diff                  = this.subscriptionservice.getDateDiff( this.today, this.userSubscriptionDate.toDate() )
+      
+      if( diff >= 0 ) {
+        expireDate            = this.userSubscriptionDate
+        this.isPremiumExpired = false
+        this.isSubscribePlan  = true
+        this.planName         = 'Standard'
+      }
+      else{
+        expireDate            = this.userSubscriptionDate.add(30,"days")
+        this.isPremiumExpired = true
+        this.isSubscribePlan  = false
+        this.planName         = 'Free'
+      }
+      this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
+    } */
   }
 
   canDeactivate(): any {
@@ -624,4 +710,22 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     }
     return this.showHowManyProducer    
   }
+
+  autoRenewal() {
+    if( this.autoRenewalVal ) {
+      this.autoRenewalStatus = 'off'
+      this.autoRenewalVal = false
+    }
+    else{
+      this.autoRenewalStatus = 'on'
+      this.autoRenewalVal = true
+    }
+    
+    this.subscriptionservice.updateAutoRenewalStatus( this.userId, this.autoRenewalVal )
+  }
+
+  cancelSubscription= (query = {}) => {
+    this.isSubscriptionCanceled = this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled )
+  }
+
 }

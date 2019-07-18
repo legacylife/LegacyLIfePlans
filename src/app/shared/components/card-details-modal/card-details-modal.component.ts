@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import { MatSnackBar, MatDialog } from '@angular/material';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserAPIService } from './../../../userapi.service';
 import { StripeService, Elements, Element as StripeElement, ElementsOptions } from 'ngx-stripe';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
+import { SubscriptionService } from 'app/shared/services/subscription.service';
 
 @Component({
   selector: 'card-details-modal',
@@ -14,10 +12,6 @@ import { ProfilePicService } from 'app/shared/services/profile-pic.service';
   styleUrls: ['./card-details-modal.component.scss']
 })
 export class CardDetailsComponent implements OnInit {
-
-  tiles: any
-  basicPlan = true;
-  planInfo = false;
   /**
    * declaration: stripe gateway data
    */
@@ -25,7 +19,6 @@ export class CardDetailsComponent implements OnInit {
   card: StripeElement
   elementsOptions: ElementsOptions = { locale: 'en' }
   stripePayment: FormGroup
-
   /**
    * declaration: user plan data
    */
@@ -34,32 +27,18 @@ export class CardDetailsComponent implements OnInit {
   planInterval:string = ""
   planName:string = ""
   planAmount:number = 0
-  planDesc:string = ""
-  planUsers:number = 0
   planCurrency:string = ""
 
-  cards: any
   oldCard: string = ""
   userId = ""
   endUserType = ""
   token: string = ""
-
-
-  /**
-   * declaration: flash message data
-   */
-  showSuccessMessage = false;
-  successMessage = "";
-  showErrorMessage = false;
-  errorMessage = "";
-
   stripePaymentError="";
-
   hideNewCardForm: boolean = false
   payUsingNewCardCheckbox: boolean = false
 
-  constructor(private stripeService: StripeService, private userapi: UserAPIService, private loader: AppLoaderService, private fb: FormBuilder, private picService: ProfilePicService ) {
-  }
+  constructor(private stripeService: StripeService, private userapi: UserAPIService, private loader: AppLoaderService, 
+    private fb: FormBuilder, private picService: ProfilePicService, private subscriptionservice:SubscriptionService ) {}
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -72,39 +51,13 @@ export class CardDetailsComponent implements OnInit {
 
   // get product plan
   getProductDetails = (query = {}) => {
-    this.loader.open();
-    const req_vars = {
-      query: Object.assign({ _id: this.userId, userType: this.endUserType }, query)
-    }
-    
-    this.userapi.apiRequest('post', 'userlist/getproductdetails', req_vars).subscribe(result => {
-      if (result.status == "error") {
-        this.loader.close();
-      } else {
-        const plans = result.data.plans
-        if( plans && result.status=="success" && plans.data.length>0 ) {
-          plans.data.forEach( obj => {
-            if( this.endUserType== 'customer' && obj.id == 'C_YEARLY' ) {
-              this.productId    = obj.product
-              this.planId       = obj.id
-              this.planInterval = obj.interval
-              this.planAmount   = ( obj.amount / 100 )
-              this.planCurrency = (obj.currency).toLocaleUpperCase()
-            }
-            else if( this.endUserType== 'advisor' && obj.id == 'A_MONTHLY' ) {
-              this.productId    = obj.product
-              this.planId       = obj.id
-              this.planInterval = obj.interval
-              this.planAmount   = ( obj.amount / 100 )
-              this.planCurrency = (obj.currency).toLocaleUpperCase()
-            }
-          })
-        }
-        this.getCustomerCard()
-        //this.loader.close();
-      }
-    }, (err) => {
-      this.loader.close();
+    this.subscriptionservice.getProductDetails({}, (returnArr)=>{
+      this.productId    = returnArr.productId
+      this.planId       = returnArr.planId
+      this.planInterval = returnArr.planInterval
+      this.planAmount   = returnArr.planAmount
+      this.planCurrency = returnArr.planCurrency
+      this.getCustomerCard()
     })
   }
 
@@ -116,7 +69,7 @@ export class CardDetailsComponent implements OnInit {
     this.userapi.apiRequest('post', 'userlist/getcustomercard', req_vars).subscribe(result => {
       const data = result.data
       
-      if( data ) {
+      if( data && data.message == 'Yes') {
         this.oldCard = data
         this.hideNewCardForm = true
         this.loader.close();
@@ -125,12 +78,11 @@ export class CardDetailsComponent implements OnInit {
         this.mountCard()
       }
     }, (err) => {
-      console.log(err.message)
+      this.loader.close();
     })
   }
 
   payUsingNewCard = () => {
-    
     if( !this.payUsingNewCardCheckbox ) {
       this.loader.open();
       this.payUsingNewCardCheckbox = true
@@ -185,7 +137,8 @@ export class CardDetailsComponent implements OnInit {
             //send token to backend to complete transaction
             this.getSubscription(result.token.id);
             this.loader.close();
-          } else if (result.error) {
+          }
+          else if (result.error) {
             // Error creating the token
             this.loader.close();
             this.stripePaymentError = result.error.message;
@@ -206,36 +159,21 @@ export class CardDetailsComponent implements OnInit {
       query: Object.assign({ _id: this.userId, userType: this.endUserType, token:token, planId: this.planId }, {})
     }
     this.userapi.apiRequest('post', 'userlist/getsubscription', req_vars).subscribe(result => {
-    
       const data = result
-      
-      if(data) {
-        if(data.errorCode==403) {
-          //window.location.href='/logout/';
-        }
-        else if(data.status=='success') {
-          /* this.showSuccessMessage = true;
-          this.successMessage = data.message;          
-          this.basicPlan = false;
-          this.planInfo = true; */
-          localStorage.setItem('endUserSubscriptionStartDate', data.subscriptionStartDate);
-          localStorage.setItem('endUserSubscriptionEndDate', data.subscriptionEndDate);
-          /* this.currentUserJson['subscription'] = true
-          this.currentUserJson['subscriptionEnd'] = data.endDate
-          localStorage.setItem('currentUser', JSON.stringify(this.currentUserJson));
-
-          this.userService.changeActiveHrUrl();    */      
-        }
-        else{
-          this.showErrorMessage = true
-          this.errorMessage = data.message
-          //this.sendingRequest=false;
-        }
+      if (result.status == "error") {
+        this.loader.close();
       }
+      
+      if(data.status=='success') {
+        localStorage.setItem('endUserSubscriptionStartDate', data.subscriptionStartDate);
+        localStorage.setItem('endUserSubscriptionEndDate', data.subscriptionEndDate);
+        //this.router.navigate(['LoggedoutPage']);
+        
+        //this.userService.changeActiveHrUrl();
+      }
+      this.loader.close();
     }, (err) => {      
-        this.showErrorMessage = true;
-        this.errorMessage = err.message;  
-        //this.sendingRequest=false;
+      this.loader.close();
     })
   }
 }

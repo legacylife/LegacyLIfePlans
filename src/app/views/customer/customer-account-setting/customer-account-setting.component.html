@@ -139,7 +139,7 @@
                         <a class="clr--red" [class.not-allowed]="isAccountFree || isSubscriptionCanceled" [attr.disabled]="isAccountFree || isSubscriptionCanceled" (click)="(!isAccountFree || !isSubscriptionCanceled) && cancelSubscription()">Cancel subscription</a>
                       </div>
                     </div>
-                    <div class="upgrade--account ">
+                    <div class="upgrade--account " *ngIf="isProUser">
                       <header>
                         <div class="add--on">
                           <mat-checkbox> Add On </mat-checkbox>

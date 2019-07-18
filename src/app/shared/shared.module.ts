@@ -97,6 +97,7 @@ import { TodosComponent } from './../views/todos/todos.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CardDetailsComponent } from './components/card-details-modal/card-details-modal.component';
 import { InviteComponent } from './components/header-top/invite-modal/invite-modal.component';
+import { SubscriptionService } from './services/subscription.service';
 /* 
   Only Required if you want to use Angular Landing
   (https://themeforest.net/item/angular-landing-material-design-angular-app-landing-page/21198258)
@@ -190,7 +191,8 @@ const classesToInclude = [
     AuthGuard,
     ProfilePicService,
     AppConfirmService,
-    AppLoaderService
+    AppLoaderService,
+    SubscriptionService
     // LandingPageService
   ],
   declarations: classesToInclude,
