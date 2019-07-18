@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MatSnackBar, MatSidenav } from '@angular/material';
+import { MatSnackBar, MatSidenav, MatDialogRef, MatDialog } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms'
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { egretAnimations } from 'app/shared/animations/egret-animations';
 import { UserAPIService } from 'app/userapi.service';
+import { MarkAsDeceasedComponent } from '../advisor-legacy-details/mark-as-deceased-modal/mark-as-deceased-modal.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -31,7 +33,8 @@ export class AdvisorHomeComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private userapi: UserAPIService
+    private userapi: UserAPIService,
+    private router: Router, private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -62,5 +65,13 @@ export class AdvisorHomeComponent implements OnInit, OnDestroy {
 
   toggleSideNav() {
     this.sideNav.opened = !this.sideNav.opened;
+  }
+
+  markAsDeceasedModal(data: any = {}, isNew?) {
+    let title = isNew ? 'Add new member' : 'Update member';
+    let dialogRef: MatDialogRef<any> = this.dialog.open(MarkAsDeceasedComponent, {
+      width: '720px',
+      disableClose: true,
+    })
   }
 }
