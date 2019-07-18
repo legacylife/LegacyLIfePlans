@@ -156,20 +156,17 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
     })
   }
 
-  CalculateDistance() {  
+  CalculateDistance() {  //Test function not in use
     let query = {};
     let zipcode1 = '89103';
     let zipcode2 = '16103';
-
     const req_vars = {
       query: Object.assign({ from: zipcode1,to: zipcode2 }, query),
     }   
-
     this.userapi.apiRequest('post', 'distance/calculateZipDistance', req_vars).subscribe(result => {  
       if (result.status == "error") {
         console.log(result.data)
       } else {
-
          this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
