@@ -27,8 +27,8 @@
             </mat-form-field>
            <mat-form-field class="full-width">
                 <mat-label>Relationship *</mat-label>
-                <mat-select placeholder="ID/Document*" name="relation" [formControl]="trustFormGroup.controls['relation']">
-                  <mat-option value="">Select a ID/Document</mat-option>
+                <mat-select placeholder="Select a relationship type*" name="relation" [formControl]="trustFormGroup.controls['relation']">
+                  <mat-option value="">Select a relationship type</mat-option>
                   <mat-option *ngFor="let option of relationTypeList"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
                 </mat-select>
                   <mat-icon matTooltip="Please select relationship" matTooltipClass="llp--tooltip error" *ngIf="trustFormGroup.controls['relation'].hasError('required') && trustFormGroup.controls['relation'].touched" class="red--alert">help_outline</mat-icon>
@@ -140,8 +140,9 @@
           <p class="sub--head text-center">We're ready to email {{Email_USER}} an invitation asking to be a Trustee to your Legacy.</p>
           <div class="profile--body--scroll">
             <mat-form-field class="full-width mt-1">
-              <textarea matInput placeholder="Add a personal message" rows="7" [formControl]="thirdFormGroup.controls['messages']"></textarea>
+              <textarea (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" rows="7" maxlength="256" matInput placeholder="Add a personal messages"  name="messages" [formControl]="thirdFormGroup.controls['messages']"></textarea>
               <mat-icon matTooltip="Please enter personal message" matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['messages'].hasError('required') && thirdFormGroup.controls['messages'].touched" class="red--alert">help_outline</mat-icon>
+              <div class="char--limit" style="float: right;">{{ 256 - thirdFormGroup.controls['messages'].value?.length }}</div>
             </mat-form-field>
           </div>
           <div class="mt-1 text-center">
