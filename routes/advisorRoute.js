@@ -4,15 +4,13 @@ var passport = require('passport')
 var request = require('request')
 var jwt = require('express-jwt')
 const mongoose = require('mongoose')
-
 var async = require('async')
 var crypto = require('crypto')
 var fs = require('fs')
 var nodemailer = require('nodemailer')
-const { isEmpty, cloneDeep } = require('lodash')
+const { isEmpty, cloneDeep , map, sortBy} = require('lodash')
 const Busboy = require('busboy')
 // const Mailchimp = require('mailchimp-api-v3')
-
 const User = require('./../models/Users')
 var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
@@ -21,6 +19,7 @@ const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 const AdvisorActivityLog = require('./../models/AdvisorActivityLog')
 const HiredAdvisors = require('./../models/HiredAdvisors')
 const s3 = require('./../helpers/s3Upload')
+var zipcodes = require('zipcodes');
 
 var auth = jwt({
   secret: constants.secret,
@@ -488,6 +487,69 @@ function generateToken(n) {
   return token;
 }
 
+//function to get list of user as per given criteria
+function professionalsListing(req, res) {
+
+  let { fields, offset, query, order, limit, search,extraQuery } = req.body
+  let totalUsers = 0
+  if (search && !isEmpty(query)) {
+    Object.keys(query).map(function (key, index) {
+      if (key !== "status") {
+        query[key] = new RegExp(query[key], 'i')
+      }
+    })
+  }
+
+  User.countDocuments(query, function (err, userCount) {
+    if (userCount) {
+      totalUsers = userCount
+    }
+ 
+    User.find(query, function (err, userList) {
+      let contacts = [];
+      async.each(userList, function (contact, callback) {
+        let newContact = JSON.parse(JSON.stringify(contact))
+      }, function (exc) {
+        contacts.sort((a, b) => (a.createdOn > b.createdOn) ? -1 : ((b.createdOn > a.createdOn) ? 1 : 0));
+        if (err) {
+          res.status(401).send(resFormat.rError(err))
+        } else {         
+        res.send(resFormat.rSuccess({ userList: contacts, totalUsers }))
+        }
+      }) //end of async
+  
+      if (err) {
+        res.status(401).send(resFormat.rError(err))
+      } else {     
+        if(totalUsers){         
+          // let distanceUserList = sortBy(map(userList, (user, index)=>{
+          //   var dist = zipcodes.distance('89103',user.zipcode);
+          //   let newRow = Object.assign({}, user._doc, {"distance": `${dist}`})
+          //   return newRow
+          // }), 'distance');   
+          User.findOne(extraQuery,{zipcode:1}, function (err, zips) {
+            if (err) {
+                res.status(500).send(resFormat.rError(err))
+            } else {       
+            if (zips) {         
+                let distanceUserList = sortBy(map(userList, (user, index)=>{
+                  var dist = zipcodes.distance(zips.zipcode,user.zipcode);
+                  let newRow = Object.assign({}, user._doc, {"distance": `${dist}`})
+                  return newRow
+                }), 'distance');   
+                res.send(resFormat.rSuccess({distanceUserList,totalUsers }))
+              }else{
+                let distanceUserList = userList;
+                res.send(resFormat.rSuccess({distanceUserList,totalUsers}))
+              }
+            } 
+            })
+        }        
+      }
+    }).sort(order).skip(offset).limit(limit)
+  })
+}
+
 
 router.post("/activateadvisor", activateAdvisor)
 router.post("/rejectadvisor", rejectAdvisor)
@@ -497,4 +559,6 @@ router.post("/recentupdatelist", recentUpdateList)
 router.post("/checkHireAdvisor", checkHireAdvisorRequest)
 router.post("/hireadvisor", hireAdvisorStatus)
 router.post("/hireAdvisorListing", hireAdvisorList)
+router.post("/professionalsList", professionalsListing)
+
 module.exports = router

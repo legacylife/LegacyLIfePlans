@@ -50,11 +50,12 @@ function trustsList(req, res) {
 
 function getUserDetails(req, res) {
   let { query } = req.body;
+  if(query.email){ 
   trust.findOne(query, {}, function (err, trustDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      if(trustDetails){
+      if(trustDetails){        
           message = "'"+trustDetails.email+"' has already been invited as a trustee.";
           status = 'Exist';
           let result = { "code": status,"message": message }
@@ -71,6 +72,9 @@ function getUserDetails(req, res) {
             }else if(userDetails && userDetails.userType=='sysadmin'){
               message = "You can't send invitaion '"+query.email+"' this email id is register as system admin.";
               status = 'Exist';           
+            }else if(userDetails && query.customerId==userDetails._id){
+              message = "You can't send invitaion from your own email id.";
+              status = 'Exist';           
             }else{
               message = "";       
               status = 'success';
@@ -81,7 +85,12 @@ function getUserDetails(req, res) {
         })      
       }     
     }
-  }) 
+   }) 
+  } else{
+    message = "Please enter email id"; status = 'Exist'; 
+    let result = { "code": status,"message": message,"userDetails":'' }
+    res.status(200).send(resFormat.rSuccess(result));      
+  }
 }
 
 function trustFormUpdate(req, res) {
