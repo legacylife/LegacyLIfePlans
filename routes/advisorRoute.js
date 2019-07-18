@@ -20,6 +20,7 @@ const AdvisorActivityLog = require('./../models/AdvisorActivityLog')
 const HiredAdvisors = require('./../models/HiredAdvisors')
 const s3 = require('./../helpers/s3Upload')
 var zipcodes = require('zipcodes');
+const advisorActivityLog = require('./../helpers/advisorActivityLog')
 
 var auth = jwt({
   secret: constants.secret,
@@ -200,38 +201,8 @@ function hireAdvisorOLD(req, res) {
               res.send(resFormat.rError(err))
             } else {
 
-              User.findOne({ _id: query.customerId }, { firstName: 1, lastName: 1, profilePicture: 1 }, function (err, userList) {
-
-                if (err) {
-                  let result = { "message": "Something Wrong!" }
-                  res.send(resFormat.rError(result));
-                } else {
-                  var advisorLog = new AdvisorActivityLog();
-                  advisorLog.status = 'Pending';
-                  advisorLog.customerId = query.customerId;
-                  advisorLog.advisorId = query.advisorId;
-                  advisorLog.createdOn = new Date();
-                  advisorLog.modifiedOn = new Date();
-                  advisorLog.createdby = query.customerId;
-                  advisorLog.modifiedby = query.customerId;
-
-                  advisorLog.sectionName = "hired";
-                  advisorLog.actionTaken = "Pending";
-                  advisorLog.customerProfileImage = userList.profilePicture;
-                  advisorLog.customerFirstName = userList.firstName;
-                  advisorLog.customerLastName = userList.lastName;
-                  advisorLog.activityMessage = " has confirmed to hire you";
-
-                  advisorLog.save({}, function (err, newEntry) {
-                    if (err) {
-                      res.send(resFormat.rError(err))
-                    } else {
-                      let result = { "message": "Request sent successfully!" }
-                      res.status(200).send(resFormat.rSuccess(result))
-                    }
-                  })
-                }
-              })
+              // Add entry in advisor activity log
+              advisorActivityLog.updateActivityLog(req.body);
             }
           })
         }
@@ -312,8 +283,8 @@ function hireAdvisorStatus(req, res) {
             insert.save({$set:proquery}, function (err, newEntry) {
       if (err) {
         res.send(resFormat.rError(err))
-      } else {     
-        User.findOne({ _id: query.customerId }, { firstName: 1, lastName: 1, username: 1 }, function (err, advisorUser) {
+      } else {
+        User.findOne({ _id: proquery.advisorId }, { firstName: 1, lastName: 1, username: 1 }, function (err, advisorUser) {
           if (err) {
             res.status(401).send(resFormat.rError(err))
           } else {
@@ -323,35 +294,10 @@ function hireAdvisorStatus(req, res) {
             let EmailMesg = inviteByName+" has been send you legacy request"; 
             stat = sendHireStatusMail(toEmail,advName,EmailMesg,'');           
           }
-        })          
-        User.findOne({ _id: query.customerId }, { firstName: 1, lastName: 1, profilePicture: 1 }, function (err, userList) {
-          if (err) {
-            let result = { "message": "Something Wrong!" }
-            res.send(resFormat.rError(result));
-          } else {
-            var advisorLog = new AdvisorActivityLog();
-            advisorLog.status = 'Pending';
-            advisorLog.customerId = query.customerId;
-            advisorLog.advisorId = query.advisorId;
-            advisorLog.createdOn = new Date();
-            advisorLog.modifiedOn = new Date();
-            advisorLog.createdby = query.customerId;
-            advisorLog.modifiedby = query.customerId;
-            advisorLog.sectionName = "hired";
-            advisorLog.actionTaken = "Pending";
-            advisorLog.customerProfileImage = userList.profilePicture;
-            advisorLog.customerFirstName = userList.firstName;
-            advisorLog.customerLastName = userList.lastName;
-            advisorLog.activityMessage = " has confirmed to hire you";
-            advisorLog.save({}, function (err, newEntry) {
-              if (err) {
-                res.send(resFormat.rError(err))
-              } else {
-                let result = { "message": "Request sent successfully!" }                
-              }
-            })
-          }
-        })      
+        })
+        // Add entry in advisor activity log
+        advisorActivityLog.updateActivityLog(query.customerId, proquery.advisorId, 'hired', newEntry._id);
+
         let result = { "message": "Request sent successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
@@ -429,30 +375,12 @@ function contactAdvisor(req, res) {
           }
           sendEmail(mailOptions)
 
-          // Add activity log
-          var advisorLog = new AdvisorActivityLog();
-          advisorLog.customerId = user._id;
-          advisorLog.advisorId = advisorDetails.advisorId;
-          advisorLog.createdOn = new Date();
-          advisorLog.modifiedOn = new Date();
-          advisorLog.createdby = user._id;
-          advisorLog.modifiedby = user._id;
+          // Add entry in advisor activity log
+          advisorActivityLog.updateActivityLog(user._id, advisorDetails.advisorId, 'contact');
 
-          advisorLog.sectionName = "contact";
-          advisorLog.actionTaken = "";
-          advisorLog.customerProfileImage = user.profilePicture;
-          advisorLog.customerFirstName = user.firstName;
-          advisorLog.customerLastName = user.lastName;
-          advisorLog.activityMessage = "contacted you";
+          let result = { "message": "The advisor's contact details are sent on your email." }
+          res.status(200).send(resFormat.rSuccess(result))
 
-          advisorLog.save({}, function (err, newEntry) {
-            if (err) {
-              res.send(resFormat.rError(err))
-            } else {
-              let result = { "message": "The advisor’s contact details are sent on your email." }
-              res.status(200).send(resFormat.rSuccess(result))
-            }
-          })
         } else {
           res.status(401).send(resFormat.rError('Some error Occured'))
         }
