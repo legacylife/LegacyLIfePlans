@@ -9,6 +9,7 @@ import { AppConfirmService } from '../../../../../shared/services/app-confirm/ap
 import { InsuranceModalComponent } from './../insurance-modal/insurance-modal.component';
 import { InsurancePolicyType } from '../../../../../selectList';  
 import { s3Details } from '../../../../../config';
+import 'rxjs/Rx' ;
 @Component({
   selector: 'app-customer-home',
   templateUrl: './insurance-details.component.html',
@@ -112,14 +113,30 @@ export class InsuranceDetailsComponent implements OnInit {
     return filteredTyes
 }
 
+
 downloadFile = (filename) => {    
   let query = {};
   let req_vars = {
     query: Object.assign({ docPath: this.docPath, filename: filename }, query)
   }
   this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
-    window.open(window.URL.createObjectURL(res));
-    let filePath = s3Details.url+'/'+this.docPath+filename;
+    var downloadURL =window.URL.createObjectURL(res)
+    let filePath = downloadURL;
+    var link=document.createElement('a');
+    link.href = filePath;
+    link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+    link.click();
+  });
+}
+
+DownloadZip = () => {      
+  let query = {};
+  let req_vars = {
+    query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:s3Details.insuranceFilePath,AllDocuments:this.row.documents }, query)
+  }
+  this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {
+    var downloadURL =window.URL.createObjectURL(res)
+    let filePath = downloadURL;
     var link=document.createElement('a');
     link.href = filePath;
     link.download = filePath.substr(filePath.lastIndexOf('/') + 1);

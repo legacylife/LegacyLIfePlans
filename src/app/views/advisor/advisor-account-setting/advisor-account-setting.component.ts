@@ -45,7 +45,6 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   ProfileForm: FormGroup;
   AddressForm: FormGroup;
   LicenseForm: FormGroup;
-  //userId: string;
   state_name: string;
   short_code: string;
   maxDate = new Date(new Date());
@@ -59,6 +58,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   advisorDocumentsList: any;
   awardsYears: any;
   websiteLinks: any;// websiteLink[] = [{ 'links': "" }]
+  specialitesGroup: any;
+  hobbiesGroup: any;
   showHowManyProducer: boolean
   advisorDocuments_temps = false;
   uploadedFile: File
@@ -99,6 +100,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     private loader: AppLoaderService, private confirmService: AppConfirmService, private picService: ProfilePicService, private subscriptionservice:SubscriptionService) { }
 
   ngOnInit() {
+    const filePath = this.userId+'/'+s3Details.advisorsDocumentsPath;
     this.docPath = filePath;
     this.picService.itemValue.subscribe((nextValue) => {
       this.profilePicture = nextValue
@@ -133,7 +135,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       //websiteLinks: this.fb.array(this.websiteLinks.map(elem => this.createWebsiteGroup(elem))),
       websiteLinks: this.fb.array([this.fb.group({ links: ['', Validators.required] })]),
       awardsYears: this.fb.array([this.fb.group({ title: ['', Validators.required], year: ['', Validators.required] })]),
-
+      specialitesGroup:  this.fb.array([this.fb.group({ name: ['', Validators.required] })]),
+      hobbiesGroup:  this.fb.array([this.fb.group({ name: ['', Validators.required] })]),
       socialMediaLinks: new FormGroup({
         facebook: new FormControl(''),
         twitter: new FormControl(''),
@@ -233,8 +236,6 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     //return !this.ProfileForm.dirty;
     return !this.modified;
   }
-
-  
 
   //function to get all events
   getProfile = (query = {}, search = false) => {
@@ -344,6 +345,14 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
 
   get weblinksPoints() {
     return this.AddressForm.get('websiteLinks') as FormArray;
+  }
+
+  get specialitesPoints() {
+    return this.AddressForm.get('specialitesGroup') as FormArray;
+  }
+
+  get hobbiesPoints() {
+    return this.AddressForm.get('hobbiesGroup') as FormArray;
   }
 
   //function to create phone group for contact
@@ -610,6 +619,29 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     control.removeAt(i);
   }
 
+  addSpecialites() {
+    this.specialitesPoints.push(this.fb.group({
+      links: ['', [Validators.required, Validators.compose([CustomValidators.name])]]
+    }));
+  }
+
+
+  addHobbies() {
+    this.hobbiesPoints.push(this.fb.group({
+      links: ['', [Validators.required, Validators.compose([CustomValidators.name])]]
+    }));
+  }
+
+  deleteSpecialites(i) {
+    const control = <FormArray>this.AddressForm.controls['specialitesGroup'];
+    control.removeAt(i);
+  }
+
+  deleteHobbies(i) {
+    const control = <FormArray>this.AddressForm.controls['hobbiesGroup'];
+    control.removeAt(i);
+  }
+
   changePasspordModal(): void {
     const dialogRef = this.dialog.open(ChangePassComponent, {
       width: '555px',
@@ -728,4 +760,19 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     this.isSubscriptionCanceled = this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled )
   }
 
+  
+downloadFile = (filename) => {    
+  let query = {};
+  let req_vars = {
+    query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+  }
+  this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+    window.open(window.URL.createObjectURL(res));
+    let filePath = s3Details.url+'/'+this.docPath+filename;
+    var link=document.createElement('a');
+    link.href = filePath;
+    link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+    link.click();
+  });
+}
 }

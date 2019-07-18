@@ -58,7 +58,7 @@ export class AdvisorDashboardComponent implements OnInit {
     })
   }
 
-  hireAdvisor(ids,actionName,actionTaken) {
+  hireAdvisor(hiredAdvisorRefId,actionName,actionTaken,ids) {
     let statMsg = 'Are you sure you want to reject hire request?'
     let hirestatus = actionTaken;
     if (actionName == 'confirmHire') {
@@ -74,11 +74,13 @@ export class AdvisorDashboardComponent implements OnInit {
        this.loader.open();
         let query = {};
         let proquery = {status : hirestatus};
+        let extraFields = {advFname : localStorage.getItem("endUserFirstName"), advLname : localStorage.getItem("endUserLastName")}
 
         const req_vars = {
-          query: Object.assign({ _id:ids}),
+          query: Object.assign({ _id:hiredAdvisorRefId}),
           proquery: Object.assign(proquery),
-          from: Object.assign({ logId:ids})
+          from: Object.assign({ logId:ids}),
+          extraFields: Object.assign(extraFields)
         }
         this.userapi.apiRequest('post', 'advisor/hireadvisor', req_vars).subscribe(result => {
           this.loader.close();

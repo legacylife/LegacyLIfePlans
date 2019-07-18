@@ -60,7 +60,7 @@ export class CustomerProfessionalComponent implements OnInit {
         if(result.data.profilePicture){
           this.profilePicture = filePath + result.data.profilePicture;
         }        
-      //  this.leadsCount();
+        this.leadsCount();
       }
     }, (err) => {
       console.error(err)
@@ -76,7 +76,6 @@ export class CustomerProfessionalComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-
                     
       }
     }, (err) => {
@@ -84,7 +83,6 @@ export class CustomerProfessionalComponent implements OnInit {
       //this.showLoading = false
     })
   }
-
 
   openSendEmailModal(data: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(SendAnEmailComponent, {

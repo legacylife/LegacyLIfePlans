@@ -1,0 +1,111 @@
+@import 'llp-global-styles.scss';
+
+.pricing--section{
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 35px;
+        .plan-pricing{
+        flex-grow: 1;
+        box-shadow: -2.6px 1.5px 7px 0 rgba(0, 0, 0, 0.1) !important;
+        border-radius: 4px;
+        }
+    .card-title-text{
+        height: 155px;
+        background-color: #d0d5ac;
+        padding: 25px;
+        
+        .plan--type{
+        color: #222324;
+        font-size: 22px;
+        text-transform: uppercase;
+        }
+        .doller{
+        color: #222324;
+        font-size: 40px;
+        font-family: $font--lato--regular;
+        }
+        .amt{
+        color: #222324;
+        font-size: 72px;
+        font-family: $font--lato--bold;
+        line-height: 84px;
+        }
+        .duration{
+        color: #222324;
+        font-size: 20px;
+        font-family: $font--lato--regular;
+        margin-left: 10px;
+        }
+    }
+    .mat-card-content{
+        border: none;
+        padding: 60px 30px;
+        .mat-list{
+        padding: 0;
+        .mat-list-item{
+        text-align: left;
+        height: auto;
+        padding: 9px 0;
+        ::ng-deep .mat-list-item-content{
+            padding: 0;
+            display: flex !important;
+            justify-content: space-between;
+            text-align: left;
+            font-size: 18px !important;
+            font-family: $font--lato--regular;
+        }
+        .limited{
+            display: flex;
+            margin-left: 15px;
+            font-size: 14px;
+        .clear{
+            color: #c72128;
+            height: 20px;
+            width: 20px;
+            font-size: 20px;
+        }
+        .check{
+            color: #727a33;
+            height: 20px;
+            width: 20px;
+            font-size: 20px;
+            }
+        }
+        }
+        
+        }
+    }
+    .get--started--btn{
+        margin-top: 55px;
+        width: 163px;
+        height: 60px;
+    }
+    
+    .standard{
+        margin-right:15px; 
+    }
+    .premium{
+        margin-left: 15px;
+    .mat-card-title{
+    .card-title-text{
+        background-color: #ecca40;
+        position: relative;
+    .cornar--stars{
+        position: absolute;
+        right: 12px;
+        top: 11px;
+        }
+    }
+    
+    }
+    }
+    }
+
+    @media only screen and (max-width: 599px){
+        .pricing--section .premium,
+        .pricing--section .standard{
+            margin: 0 0 20px 0;
+        }
+    }

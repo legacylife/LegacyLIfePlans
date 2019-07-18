@@ -129,9 +129,6 @@ export class CustomerDashboardDayOneComponent implements OnInit {
         return;
       }
     })
-
-    //setTimeout(() => dialogRef );
-
   }
 }
 
