@@ -24,8 +24,6 @@ export class CustomerEssentialDetailsComponent implements OnInit {
   dayFirst = true;
   daySeco = false;
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-
-
   userId: string;
   selectedProfileId: string = "";
   row: any;
@@ -36,8 +34,9 @@ export class CustomerEssentialDetailsComponent implements OnInit {
   ccChurchLandlineNumbersList: string = "";
   ccContactLandlineNumbersList: string = "";
   createdOn: any;
-  ppaddressData: string = ""
-
+  ppaddressData: string = "";
+  trusteeLegaciesAction:boolean=true;
+  urlData:any={};
   constructor(
     // private shopService: ShopService,
     private fb: FormBuilder,
@@ -46,9 +45,9 @@ export class CustomerEssentialDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
-
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction;
     this.userId = localStorage.getItem("endUserId");
     this.getEssentialProfileDetails();
   }
@@ -58,11 +57,13 @@ export class CustomerEssentialDetailsComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }, query)
     }
-
     this.userapi.apiRequest('post', 'customer/view-essential-profile', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
+        if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
+          this.trusteeLegaciesAction = false;
+        }
         this.row = result.data
         this.ppaddressData = (this.row.ppAddressLine1 ? this.row.ppAddressLine1 : '') + " " + (this.row.ppAddressLine2 ? this.row.ppAddressLine2 : '') + " " + (this.row.ppCity ? this.row.ppCity : '') + " " + (this.row.ppState ?this.row.ppState : '') +" "+ (this.row.ppCountry ? this.row.ppCountry : '') +" "+ (this.row.ppZipCode ? this.row.ppZipCode :'')
         this.createdOn = this.row.createdOn ? this.row.createdOn : "";
@@ -80,7 +81,7 @@ export class CustomerEssentialDetailsComponent implements OnInit {
 
   }
 
-  deleteProfile() {
+  deleteProfile(customerId='') {
     var statMsg = "Are you sure you want to delete profile?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
@@ -96,7 +97,11 @@ export class CustomerEssentialDetailsComponent implements OnInit {
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard', 'essential-day-one'])
+              if(this.urlData.userType == 'advisor'){
+                this.router.navigate(['/', 'advisor', 'legacies', 'essential-day-one', customerId])
+              }else{
+                this.router.navigate(['/', 'customer', 'dashboard', 'essential-day-one'])
+              } 
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {

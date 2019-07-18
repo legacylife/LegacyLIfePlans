@@ -8,18 +8,20 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Legal Stuff</mat-card-title>
           <div class="right--actions">
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="DownloadZip()">
+             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="DownloadZip()">
               <mat-icon>file_download</mat-icon>
               <span class="hide--sm--txt">Download</span>
             </button>
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openLegalStuffModals(row?.subFolderName, true)">
-              <mat-icon>edit</mat-icon>
-              <span class="hide--sm--txt">Edit</span>
-            </button>
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="deleteLegalStuff()">
-              <mat-icon>delete</mat-icon>
-              <span class="hide--sm--txt">Delete</span>
-            </button>
+            <div *ngIf="trusteeLegaciesAction">
+              <button  mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openLegalStuffModals(row?.subFolderName, true)">
+                <mat-icon>edit</mat-icon>
+                <span class="hide--sm--txt">Edit</span>
+              </button>
+              <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="deleteLegalStuff(row?.customerId)">
+                <mat-icon>delete</mat-icon>
+                <span class="hide--sm--txt">Delete</span>
+              </button>
+            </div>
           </div>
         </mat-card-header>
         <mat-card-content>

@@ -21,6 +21,15 @@ export class EmergencyContactsComponent implements OnInit {
   eContactList: any = []
   updateContact: any = []
   selectedProfileId: string;
+  dynamicRoute:string;
+  trusteeLegaciesAction:boolean=true;
+  urlData:any={};
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';	
+
+  emergencyContactsManagementSection:string='now';
+  LegacyPermissionError:string="You don't have permission of this section";
+
   constructor(private route: ActivatedRoute,
     private snack: MatSnackBar,
     private router: Router,
@@ -43,12 +52,24 @@ export class EmergencyContactsComponent implements OnInit {
       profileId: new FormControl('')
     });
 
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
-    if (this.selectedProfileId && this.selectedProfileId == 'emergency-contacts') {
-      this.selectedProfileId = "";
-    }
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    this.dynamicRoute = this.urlData.dynamicRoute;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
 
+    if (this.selectedProfileId && this.selectedProfileId == 'emergency-contacts' && this.urlData.lastThird != "legacies") {
+      this.selectedProfileId = "";
+    }    
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'emergency-contacts') {
+        this.customerLegaciesId = this.userId;
+        this.customerLegacyType =  this.urlData.userType;
+        this.userId = this.urlData.lastOne;          
+        this.selectedProfileId = "";
+        
+        this.userapi.getUserAccess(this.userId, (userAccess) => {
+          this.emergencyContactsManagementSection = userAccess.emergencyContactsManagement 
+        }); 
+    }
     this.getEmergencyContacts()
   }
 
@@ -74,11 +95,16 @@ export class EmergencyContactsComponent implements OnInit {
       if(profileIds){
         this.selectedProfileId = profileIds;
       }
-      const req_vars = {
-        query: Object.assign({ _id: this.selectedProfileId  }),
-        proquery: Object.assign(profileInData),   
-        from: Object.assign({ customerId: this.userId }) 
-      }
+
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'emergency-contacts') {
+      profileInData.customerLegacyId = this.customerLegaciesId
+      profileInData.customerLegacyType = this.customerLegacyType
+    }
+    const req_vars = {
+      query: Object.assign({ _id: this.selectedProfileId  }),
+      proquery: Object.assign(profileInData),   
+      from: Object.assign({ customerId: this.userId }) 
+    }
     
     this.loader.open();     
     this.userapi.apiRequest('post', 'customer/emergency-contacts', req_vars).subscribe(result => {

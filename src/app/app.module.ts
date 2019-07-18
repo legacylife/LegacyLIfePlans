@@ -78,8 +78,6 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 // AoT requires an exported function for factories
 import { ChangePicComponent } from './views/change-pic/change-pic.component';
-//import { TodosComponent } from './views/todos/todos.component';
-// import { TodosListingComponent } from './views/todos-listing/todos-listing.component';
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }

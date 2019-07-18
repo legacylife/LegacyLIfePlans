@@ -4,12 +4,12 @@
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Passwords Digital & Assests</mat-card-title>
-          <div class="right--actions">
+          <div class="right--actions" *ngIf="trusteeLegaciesAction">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openDevicesModal()">
               <mat-icon>edit</mat-icon>
               <span class="hide--sm--txt">Edit</span>
             </button>
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="deleteDevices()">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="deleteDevices(row?.customerId)">
               <mat-icon>delete</mat-icon>
               <span class="hide--sm--txt">Delete</span>
             </button>

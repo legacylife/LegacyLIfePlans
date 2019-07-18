@@ -1,33 +1,34 @@
 <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
-  <!-- Filters -->
-
-  <!-- Right side -->
   <div class="full-width">
-
     <div class="">
+      <advisor-legacy-details></advisor-legacy-details>
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Legal Stuff</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p class="info m-0">Manage your Wills, Affidavits, Codicil, Joint Revocable Living Trust, Revocable Living Trust, Irrevocable Trust
+          <p class="info m-0">Manage your Wills, Affidavits, Codicil, Joint Revocable Living Trust, Revocable Living
+            Trust, Irrevocable Trust
             through 'Estate'.</p>
-          <p class="info m-0">Manage your Advance Healthcare Directive, Healthcare Power of Attorney, Healthcare Proxy, Living Will, Medical
+          <p class="info m-0">Manage your Advance Healthcare Directive, Healthcare Power of Attorney, Healthcare Proxy,
+            Living Will, Medical
             Power of Attorney from Healthcare section.</p>
-          <p class="info m-0">You can manage Power of Attorney, Durable Power of Attorney, Revocation of Power of Attorney from Personal affairs
+          <p class="info m-0">You can manage Power of Attorney, Durable Power of Attorney, Revocation of Power of
+            Attorney from Personal affairs
             section.
           </p>
         </mat-card-content>
       </mat-card>
-        <mat-card class="empty--section p-0">
-          <mat-card-header class="m-0">
-            <mat-card-title class="m-0">Estate</mat-card-title>
-            <div *ngIf="showEstateListing">
-              <!--span class="no--of--trustee">{{showEstateListingCnt}} Estate{{showEstateListingCnt>1 ? 's' : ''}}</span-->
-              <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openLegalStuffModal('Estate', true)">+ Add</button>
-            </div>
-          </mat-card-header>
-          <mat-card-content *ngIf="!showEstateListing">
+      <mat-card class="empty--section p-0">
+        <mat-card-header class="m-0">
+          <mat-card-title class="m-0">Estate</mat-card-title>
+          <div *ngIf="showEstateListing && trusteeLegaciesAction && EstateManagementSection=='now'">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
+              (click)="openLegalStuffModal('Estate', true)">+ Add</button>
+          </div>
+        </mat-card-header>
+        <div *ngIf="EstateManagementSection=='now'">
+          <mat-card-content *ngIf="!showEstateListing && trusteeLegaciesAction">
             <div class="build--ur--legacy" (click)="openLegalStuffModal('Estate', true)">
               <mat-icon>business</mat-icon>
               <p>
@@ -37,78 +38,95 @@
           </mat-card-content>
 
           <mat-card-content class="appointees--wrapper" *ngIf="showEstateListing">
-            <div class="cust--user--details mt-1" *ngFor="let legal of estateList; let i = index" [routerLink]="['/customer/dashboard/legal-detail-view', legal._id]">
+            <div class="cust--user--details mt-1" *ngFor="let legal of estateList; let i = index"
+              [routerLink]="[dynamicRoute+'legal-detail-view', legal._id]">
               <div class="name--letters">{{getType(legal?.typeOfDocument,legal?.subFolderName).charAt(0)}}</div>
               <div class="user--name">
                 <h5>{{getType(legal?.typeOfDocument,legal?.subFolderName)}}</h5>
                 <p class="mb-0">Last modified:
-                    <span>{{legal.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                  <span>{{legal.modifiedOn | date: 'yyyy/MM/dd'}}</span>
                 </p>
               </div>
             </div>
           </mat-card-content>
-        </mat-card>
+        </div>
+        <mat-card-content *ngIf="EstateManagementSection !='now'">
+          <div>{{LegacyPermissionError}}</div>
+        </mat-card-content>
+      </mat-card>
 
-        <mat-card class="empty--section p-0">
-            <mat-card-header class="m-0">
-              <mat-card-title class="m-0">Healthcare</mat-card-title>
-              <div *ngIf="showhealthcareListing">
-                <!--span class="no--of--trustee">{{showhealthcareListingCnt}} Healthcare{{showhealthcareListingCnt>1 ? 's' : ''}}</span-->
-                <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openLegalStuffModal('Healthcare', true)">+ Add</button>
-              </div>
-            </mat-card-header>
-            <mat-card-content *ngIf="!showhealthcareListing">
-              <div class="build--ur--legacy" (click)="openLegalStuffModal('Healthcare', true)">
-                <mat-icon>healing</mat-icon>
-                <p>
-                    <a>Add Healthcare</a>
+
+      <mat-card class="empty--section p-0">
+        <mat-card-header class="m-0">
+          <mat-card-title class="m-0">Healthcare</mat-card-title>
+          <div *ngIf="showhealthcareListing && trusteeLegaciesAction && HealthcareManagementSection=='now'">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
+              (click)="openLegalStuffModal('Healthcare', true)">+ Add</button>
+          </div>
+        </mat-card-header>
+        <div *ngIf="HealthcareManagementSection=='now'">
+          <mat-card-content *ngIf="!showhealthcareListing && trusteeLegaciesAction">
+            <div class="build--ur--legacy" (click)="openLegalStuffModal('Healthcare', true)">
+              <mat-icon>healing</mat-icon>
+              <p>
+                <a>Add Healthcare</a>
+              </p>
+            </div>
+          </mat-card-content>
+
+          <mat-card-content class="appointees--wrapper" *ngIf="showhealthcareListing">
+            <div class="cust--user--details mt-1" *ngFor="let legal of healthcareList; let i = index"
+              [routerLink]="[dynamicRoute+'legal-detail-view', legal._id]">
+              <div class="name--letters">{{getType(legal?.typeOfDocument,legal.subFolderName).charAt(0)}}</div>
+              <div class="user--name">
+                <h5>{{getType(legal?.typeOfDocument,legal?.subFolderName)}}</h5>
+                <p class="mb-0">Last modified:
+                  <span>{{legal.modifiedOn | date: 'yyyy/MM/dd'}}</span>
                 </p>
               </div>
-            </mat-card-content>
-
-            <mat-card-content class="appointees--wrapper" *ngIf="showhealthcareListing">
-              <div class="cust--user--details mt-1" *ngFor="let legal of healthcareList; let i = index" [routerLink]="['/customer/dashboard/legal-detail-view', legal._id]">
-                <div class="name--letters">{{getType(legal?.typeOfDocument,legal.subFolderName).charAt(0)}}</div>
-                <div class="user--name">
-                  <h5>{{getType(legal?.typeOfDocument,legal?.subFolderName)}}</h5>
-                  <p class="mb-0">Last modified:
-                      <span>{{legal.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                  </p>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
+            </div>
+          </mat-card-content>
+        </div>
+        <mat-card-content *ngIf="HealthcareManagementSection !='now'">
+          <div>{{LegacyPermissionError}}</div>
+        </mat-card-content>
+      </mat-card>
 
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Personal Affairs</mat-card-title>
-          <div *ngIf="showaffairsListing">
-            <!--span class="no--of--trustee">{{showaffairsListingCnt}} Personal Affair{{showaffairsListingCnt>1 ? 's' : ''}}</span-->
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openLegalStuffModal('Personal Affairs', true)">+ Add</button>
+          <div *ngIf="showaffairsListing  && trusteeLegaciesAction && PersonalAffairsManagementSection=='now'">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
+              (click)="openLegalStuffModal('Personal Affairs', true)">+ Add</button>
           </div>
         </mat-card-header>
-        <mat-card-content *ngIf="!showaffairsListing">
-          <div class="build--ur--legacy" (click)="openLegalStuffModal('Personal Affairs', true)">
-            <mat-icon>library_add</mat-icon>
-            <p>
-              <a>Add Personal Affairs</a>
-            </p>
-          </div>
-        </mat-card-content>
-
-        <mat-card-content class="appointees--wrapper" *ngIf="showaffairsListing">
-          <div class="cust--user--details mt-1" *ngFor="let legal of affairsList; let i = index" [routerLink]="['/customer/dashboard/legal-detail-view', legal._id]">
-            <div class="name--letters">{{getType(legal?.typeOfDocument,legal?.subFolderName).charAt(0)}}</div>
-            <div class="user--name">
-              <h5>{{getType(legal.typeOfDocument,legal.subFolderName)}}</h5>
-              <p class="mb-0">Last modified:
-                  <span>{{legal.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+        <div *ngIf="PersonalAffairsManagementSection=='now'">
+          <mat-card-content *ngIf="!showaffairsListing  && trusteeLegaciesAction">
+            <div class="build--ur--legacy" (click)="openLegalStuffModal('Personal Affairs', true)">
+              <mat-icon>library_add</mat-icon>
+              <p>
+                <a>Add Personal Affairs</a>
               </p>
             </div>
-          </div>
+          </mat-card-content>
+
+          <mat-card-content class="appointees--wrapper" *ngIf="showaffairsListing">
+            <div class="cust--user--details mt-1" *ngFor="let legal of affairsList; let i = index"
+              [routerLink]="[dynamicRoute+'legal-detail-view', legal._id]">
+              <div class="name--letters">{{getType(legal?.typeOfDocument,legal?.subFolderName).charAt(0)}}</div>
+              <div class="user--name">
+                <h5>{{getType(legal.typeOfDocument,legal.subFolderName)}}</h5>
+                <p class="mb-0">Last modified:
+                  <span>{{legal.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                </p>
+              </div>
+            </div>
+          </mat-card-content>
+        </div>
+        <mat-card-content *ngIf="PersonalAffairsManagementSection !='now'">
+          <div>{{LegacyPermissionError}}</div>
         </mat-card-content>
       </mat-card>
-
     </div>
 
   </div>

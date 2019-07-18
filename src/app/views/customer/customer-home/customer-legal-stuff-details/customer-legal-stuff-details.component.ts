@@ -24,6 +24,8 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
   typeOfDocumentList: any[];
   docPath: string = "";
   re =  "/(?:\.([^.]+))?$/" ;
+  urlData:any={};
+  trusteeLegaciesAction:boolean=true;
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -34,8 +36,9 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
     this.userId = localStorage.getItem("endUserId");
     const filePath = this.userId+'/'+s3Details.legalStuffDocumentsPath;
     this.docPath = filePath;   
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
     this.getEssentialLegalView();
   }
 
@@ -54,6 +57,9 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
         console.log(result.data)
       } else {
         if (result.data) {
+          if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
+            this.trusteeLegaciesAction = false;
+          }
           this.row = result.data;
         }
       }  
@@ -81,7 +87,7 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
       })
   }
 
-  deleteLegalStuff() {
+  deleteLegalStuff(customerId='') {
     var statMsg = "Are you sure you want to delete legal stuff?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
@@ -96,8 +102,12 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
-              this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard', 'legal-stuff'])
+              this.loader.close();              
+              if(this.urlData.userType == 'advisor'){
+                this.router.navigate(['/', 'advisor', 'legacies', 'legal-stuff', customerId])
+              }else{
+                this.router.navigate(['/', 'customer', 'dashboard', 'legal-stuff'])
+              }
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {
@@ -109,7 +119,7 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
   }
 
   getType(key) {
-    if (this.row.subFolderName) {
+    if (key!= null && this.row.subFolderName) {
       if(this.row.subFolderName=='Estate'){
         this.typeOfDocumentList = EstateTypeOfDocument;
       }else if(this.row.subFolderName=='Healthcare'){

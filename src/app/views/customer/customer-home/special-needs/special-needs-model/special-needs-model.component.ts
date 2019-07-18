@@ -18,6 +18,11 @@ export class SpecialNeedsModelComponent implements OnInit {
   profileIdHiddenVal: boolean = false;
   folderName: any;
   folderNameHidden: string="";
+  urlData:any={};
+  customerLegaciesId: string;
+  customerLegacyType:string='customer'
+  trusteeLegaciesAction:boolean=true;
+
   constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService,
     private userapi: UserAPIService, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.folderNameHidden = data.folderName;
@@ -38,10 +43,17 @@ export class SpecialNeedsModelComponent implements OnInit {
       folderName: new FormControl(''),
       profileId: new FormControl('')
     });
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
     if (this.selectedProfileId && this.selectedProfileId == 'special-needs') {
       this.selectedProfileId = "";
+    }
+
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'special-needs') {
+      this.customerLegaciesId = this.userId;
+      this.customerLegacyType =  this.urlData.userType;
+      this.userId = this.urlData.lastOne;          
+      this.selectedProfileId = "";        
     }
     this.getSpecialNeedsDetails();
   }
@@ -84,11 +96,15 @@ export class SpecialNeedsModelComponent implements OnInit {
     
     let newData = snData
     newData.folderName =  this.folderNameHidden
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'special-needs') {
+      newData.customerLegacyId = this.customerLegaciesId
+      newData.customerLegacyType = this.customerLegacyType
+    }
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }),
       proquery: Object.assign(newData),
       from: Object.assign({ customerId: this.userId })
-    }    
+    }
     this.loader.open();
     this.userapi.apiRequest('post', 'specialNeeds/special-needs', req_vars).subscribe(result => {
       this.loader.close();

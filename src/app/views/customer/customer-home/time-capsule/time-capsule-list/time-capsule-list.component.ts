@@ -18,10 +18,28 @@ export class TimeCapsuleListComponent implements OnInit {
   userId: string;
   timeCapsuleListing:any = [];
   modifiedDate:any;
+  dynamicRoute:string;  
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';
+  trusteeLegaciesAction:boolean=true;
+  urlData:any={};
+  TimeCapsuleManagementSection:string='now';
+  LegacyPermissionError:string="You don't have permission of this section";
+
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    this.urlData = this.userapi.getURLData();
+    this.customerLegaciesId = this.urlData.lastOne;
+    this.dynamicRoute = this.urlData.dynamicRoute;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    if (this.urlData.lastThird == "legacies") {
+      this.userId = this.urlData.lastOne;
+      this.userapi.getUserAccess(this.userId, (userAccess) => {
+        this.TimeCapsuleManagementSection = userAccess.TimeCapsuleManagement 
+      });
+    }
     this.getTimecapsuleList();
   }
 

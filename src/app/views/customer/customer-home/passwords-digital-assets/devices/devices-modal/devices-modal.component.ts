@@ -35,10 +35,16 @@ export class DevicesModalComponent implements OnInit {
   pattrenTempMissing: boolean = false;
   invalidMessage: string;
   DisplayPatternHolder = { 'visibility': 'hidden' };
+
+  urlData:any={};	  
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';
+  
   constructor(private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService, private loader: AppLoaderService,
     private router: Router, private userapi: UserAPIService) { }
 
   ngOnInit() {
+    
     this.userId = localStorage.getItem("endUserId");
     this.deviceListing = DevicesList;
     this.passwordType = PasswordType;
@@ -56,11 +62,17 @@ export class DevicesModalComponent implements OnInit {
 
     this.petDocumentsList = [];
 
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
-
-    if(this.selectedProfileId && this.selectedProfileId == 'passwords-digital-assests') {
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    if (this.selectedProfileId && this.selectedProfileId == 'passwords-digital-assests' && this.urlData.lastThird != "legacies") {
       this.selectedProfileId = "";
+    }
+
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'passwords-digital-assests') {
+      this.customerLegaciesId = this.userId;
+      this.customerLegacyType =  this.urlData.userType;
+      this.userId = this.urlData.lastOne;          
+      this.selectedProfileId = "";        
     }
 
     this.lock = new PatternLock('#patternHolder', {
@@ -198,8 +210,16 @@ export class DevicesModalComponent implements OnInit {
           console.log('3333')
         }
 
+        if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'passwords-digital-assests') {
+          profileInData.customerLegacyId = this.customerLegaciesId
+          profileInData.customerLegacyType = this.customerLegacyType
+        }
+        if(!profileInData.profileId || profileInData.profileId ==''){
+          profileInData.customerId = this.userId
+        }
+
         const req_vars = {
-          query: Object.assign({ _id: this.selectedProfileId, customerId: this.userId }),
+          query: Object.assign({ _id: this.selectedProfileId}),
           proquery: Object.assign(profileInData)
         }
         this.loader.open();
@@ -225,7 +245,7 @@ export class DevicesModalComponent implements OnInit {
     if (this.selectedProfileId) {
       profileIds = this.selectedProfileId;
       req_vars = {
-        query: Object.assign({ _id: profileIds, customerId: this.userId })
+        query: Object.assign({ _id: profileIds })
       }
     }
     this.loader.open();

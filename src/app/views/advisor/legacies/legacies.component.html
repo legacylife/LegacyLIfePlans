@@ -33,7 +33,7 @@
             <div class="legacy-confirm view-legacy" *ngIf="row?.status === 'Active'">
               <div class="yes">
                 <mat-icon>description</mat-icon>
-                <a [routerLink]="'/advisor/legacies-details/user-legacies-detail'">View Legacy</a>
+                <a [routerLink]="['/advisor/legacies/essential-day-one', row?.customerId._id]">View Legacy</a>
               </div>
             </div>
           </div>

@@ -128,7 +128,7 @@ export const CustomerRoutes: Routes = [
             data: { title: 'Professionals Detail' }
           },
           {
-            path: 'shared-lagacies',
+            path: 'shared-legacies',
             component: CustomerSharedLegaciesComponent,
             data: { title: 'Shared Lagacies' }
           },
@@ -261,6 +261,154 @@ export const CustomerRoutes: Routes = [
             component: ElectronicMediaDetailsComponent,
             data: { title: 'Electronic Media Details' }
           },
+        ]
+      },
+    ]
+  },
+  {
+    path: 'legacies',
+    component: CustomerLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: CustomerHomeComponent,
+        canActivate: [UserAuthGuard],
+        children: [
+          {
+            path: 'customer-day-one/:id',
+            component: CustomerDashboardDayOneComponent
+          },
+          {
+            path: 'customer-day-two/:id',
+            component: CustomerDashboardComponent
+          },
+          {
+            path: 'customer-essential/:id',
+            component: CustomerHomeEssentialComponent
+          },
+          {
+            path: 'essential-day-one/:id',
+            component: CustomerEssentialDayOneComponent
+          },
+          {
+            path: 'essential-detail-view/:id',
+            component: CustomerEssentialDetailsComponent
+          },
+          {
+            path: 'essential-detail-idbox/:id',
+            component: CustomerEssentialDetailsIdboxComponent
+          },
+          {
+            path: 'essential-professionals-detail/:id',
+            component: EssentialsMyProfessionalsDetailsComponent
+          },
+          {
+            path: 'shared-legacies',
+            component: CustomerSharedLegaciesComponent
+          },
+          {
+            path: 'legacies-details/:id',
+            component: CustomerLegaciesDetailsComponent
+          },
+          {
+            path: 'legal-stuff/:id',
+            component: CustomerLegalStuffComponent
+          },
+          {
+            path: 'emergency-contacts/:id',
+            component: EmergencyContactsComponent
+          },
+	        {
+            path: 'legal-detail-view/:id',
+            component: CustomerLegalStuffDetailsComponent
+          },
+          {
+            path: 'emergency-contacts-details/:id',
+            component: EmergencyContactsDetailsComponent
+          },
+          {
+            path: 'real-estate-assets/:id',
+            component: ListingComponent
+          },
+          {
+            path: 'real-estate-detail-view/:id',
+            component: DetailsComponent
+          },
+          {
+            path: 'real-estate-vehicle-detail-view/:id',
+            component: DetailsVehiclesComponent
+          },
+          {
+            path: 'real-estate-assets-detail-view/:id',
+            component: DetailsAssetsComponent
+          }, {
+            path: 'final-wishes/:id',
+            component: FinalWishesComponent
+          },
+          {
+            path: 'final-wishes-view/:id',
+            component: FinalWishesDetailsComponent
+          },
+          {
+            path: 'pets/:id',
+            component: PetsListComponent
+          },
+          {
+            path: 'pets-view/:id',
+            component: PetsDetailsComponent
+          },   
+          {
+            path: 'time-capsule/:id',
+            component: TimeCapsuleListComponent
+          },         
+          {
+            path: 'time-capsule-view/:id',
+            component: TimeCapsuleDetailsComponent
+          },
+          {
+            path: 'special-needs/:id',
+            component: SpecialNeedsListingComponent
+          },
+          {
+            path: 'special-needs-view/:id',
+            component: SpecialNeedsDetailsComponent
+          },   
+          {
+            path: 'insurance-finance-debt/:id',
+            component: InsuranceFinanceDebtListComponent
+          },
+          {
+            path: 'insurance-view/:id',
+            component: InsuranceDetailsComponent
+          },
+          {
+            path: 'finance-view/:id',
+            component: FinanceDetailsComponent
+          }, 
+          {
+            path: 'debt-view/:id',
+            component: DebtDetailsComponent
+          },  
+          {
+            path: 'passwords-digital-assests/:id',
+            component: PasswordsDigitalAssetsListComponent
+          },         
+          {
+            path: 'device-view/:id',
+            component: DeviceDetailsComponent
+          },
+          {
+            path: 'letters-messages/:id',
+            component: LettersMessagesListingComponent
+          },         
+          {
+            path: 'letters-messages-view/:id',
+            component: LettersMessagesDetailsComponent
+          },
+          {
+            path: 'electronic-media-view/:id',
+            component: ElectronicMediaDetailsComponent
+          }
         ]
       },
     ]

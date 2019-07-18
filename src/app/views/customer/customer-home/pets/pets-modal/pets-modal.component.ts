@@ -32,6 +32,10 @@ export class PetsModalComponent implements OnInit {
   profileIdHiddenVal:boolean = false;
   selectedProfileId: string;
   docPath: string;
+  urlData:any={};
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';
+
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService  ) 
@@ -48,20 +52,24 @@ export class PetsModalComponent implements OnInit {
       dietaryConcerns: new FormControl(''),
       profileId: new FormControl('')
      });
-     this.petDocumentsList = [];
+    this.petDocumentsList = [];
 
-     const locationArray = location.href.split('/')
-     this.selectedProfileId = locationArray[locationArray.length - 1];
-
-    if(this.selectedProfileId && this.selectedProfileId == 'pets'){
-      this.selectedProfileId = "";   
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    if (this.selectedProfileId && this.selectedProfileId == 'pets' && this.urlData.lastThird != "legacies") {
+      this.selectedProfileId = "";
+    }
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'pets') {
+        this.customerLegaciesId = this.userId;
+        this.customerLegacyType =  this.urlData.userType;
+        this.userId = this.urlData.lastOne;          
+        this.selectedProfileId = "";        
     }
     
-     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
-     this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
-
-     this.getPetsView();
-    }
+    this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    this.getPetsView();
+  }
 
     PetFormSubmit(profileInData = null) {
       var query = {};
@@ -71,8 +79,15 @@ export class PetsModalComponent implements OnInit {
       if(profileIds){
         this.selectedProfileId = profileIds;
       }
+      if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'pets') {
+        profileInData.customerLegacyId = this.customerLegaciesId
+        profileInData.customerLegacyType = this.customerLegacyType
+      }        
+      if(!profileInData.profileId || profileInData.profileId ==''){
+        profileInData.customerId = this.userId
+      }
       const req_vars = {
-        query: Object.assign({ _id: this.selectedProfileId,customerId: this.userId  }),
+        query: Object.assign({ _id: this.selectedProfileId }),
         proquery: Object.assign(profileInData)
       }
       this.loader.open();     
@@ -98,7 +113,7 @@ export class PetsModalComponent implements OnInit {
       if (this.selectedProfileId) {
         profileIds = this.selectedProfileId;
         req_vars = {
-          query: Object.assign({ _id:profileIds, customerId: this.userId })
+          query: Object.assign({ _id:profileIds})
         }
       }
 
@@ -145,9 +160,6 @@ export class PetsModalComponent implements OnInit {
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
               } else {
-                // if(this.petDocumentsList.length<1){
-                //   this.PetForm.controls['idProofDocuments_temp'].setValue('');
-                // }  
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
               }
@@ -216,7 +228,7 @@ export class PetsModalComponent implements OnInit {
       }
       if(profileIds){
          req_vars = {
-          query: Object.assign({ _id:profileIds, customerId: this.userId  }),
+          query: Object.assign({ _id:profileIds}),
           fields:{_id:1,documents:1}
         }
       }    
@@ -260,26 +272,25 @@ export class PetsModalComponent implements OnInit {
   
   checkSpecialChar(event)
   {  
-    var key;  
-    
+    var key;      
     key = event.charCode;
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
   }
   
 
-  downloadFile = (filename) => {    
+  downloadFile = filename => {
     let query = {};
     let req_vars = {
       query: Object.assign({ docPath: this.docPath, filename: filename }, query)
-    }
-    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
-      var downloadURL =window.URL.createObjectURL(res)
-      let filePath = downloadURL;
-      var link=document.createElement('a');
-      link.href = filePath;
-      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
-      link.click();
-    });
-  }
+    };
+    this.userapi.download("documents/downloadDocument", req_vars).subscribe(res => {
+        var downloadURL = window.URL.createObjectURL(res);
+        let filePath = downloadURL;
+        var link = document.createElement("a");
+        link.href = filePath;
+        link.download = filePath.substr(filePath.lastIndexOf("/") + 1);
+        link.click();
+      });
+  };
 
 }

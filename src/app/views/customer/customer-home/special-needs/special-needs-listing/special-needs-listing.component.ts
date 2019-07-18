@@ -24,21 +24,41 @@ export class SpecialNeedsListingComponent implements OnInit {
 
   friendNeighborList: any = [];
   friendNeighborListing = false;
+  dynamicRoute:string;
+  selectedLegaciesId: string;
+  customerLegacyType:string='customer';
+  trusteeLegaciesAction:boolean=true;
+  urlData:any={};
+
+  YoungChildrenManagementSection:string='now';
+  ChildParentDisabilityManagementSection:string='now';
+  FriendNeighborCareManagementSection:string='now';
+  LegacyPermissionError:string="You don't have permission of this section";
 
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
     private userapi: UserAPIService, private loader: AppLoaderService
   ) {
-
   }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    this.urlData = this.userapi.getURLData();
+    this.dynamicRoute = this.urlData.dynamicRoute;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+
+    if (this.urlData.lastThird == "legacies") {
+      this.userId = this.urlData.lastOne;
+      this.userapi.getUserAccess(this.userId, (userAccess) => {
+        this.YoungChildrenManagementSection = userAccess.YoungChildrenManagement
+        this.ChildParentDisabilityManagementSection= userAccess.ChildParentDisabilityManagement
+        this.FriendNeighborCareManagementSection= userAccess.FriendNeighborCareManagement
+      });
+    }
     this.getyoungChildrenList();
     this.getcPDisabilityList();
     this.getfriendNeighborList();
-    
   }
 
   getyoungChildrenList(query = {}, search = false) {

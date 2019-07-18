@@ -24,6 +24,14 @@ export class ListingComponent implements OnInit {
   showRealEstateVehiclesListing = false;
   showAssetsListing = false;
   realEstateAssetsList: any = [];
+  dynamicRoute:string;
+  trusteeLegaciesAction:boolean=true;
+  urlData:any={};
+
+  RealEstateManagementSection:string='now';
+  VehiclesManagementSection:string='now';
+  AssetsManagementSection:string='now';
+  LegacyPermissionError:string="You don't have permission of this section";
 
   constructor(
     private route: ActivatedRoute,
@@ -32,13 +40,23 @@ export class ListingComponent implements OnInit {
   ) {
 
   }
-
+ 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    this.urlData = this.userapi.getURLData();
+    this.dynamicRoute = this.urlData.dynamicRoute;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    if (this.urlData.lastThird == "legacies") {
+      this.userId = this.urlData.lastOne;
+      this.userapi.getUserAccess(this.userId, (userAccess) => {
+        this.RealEstateManagementSection = userAccess.RealEstateManagement
+        this.VehiclesManagementSection= userAccess.VehiclesManagement
+        this.AssetsManagementSection= userAccess.AssetsManagement
+      });
+    }
     this.getRealEstateList();
     this.getRealEstateVehiclesList();
     this.getRealEstateAssetsList();
-    
   }
 
   getRealEstateList(query = {}, search = false) {

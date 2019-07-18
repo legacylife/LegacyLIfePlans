@@ -67,8 +67,6 @@ import { ReferAndEarnModalComponent } from './legacies/refer-and-earn-modal/refe
 
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CountUpModule } from 'countup.js-angular2';
-//import { TodosComponent } from '../todos/todos.component';
-//import { TodosListingComponent } from '../todos-listing/todos-listing.component';
 /** Import Alyle UI */
 // import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
 /** Import the component modules */
@@ -80,6 +78,7 @@ import { LyResizingCroppingImageModule } from '@alyle/ui/resizing-cropping-image
 /** Import themes */
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
 import { OurPlanComponent } from './our-plan/our-plan.component';
+import { AdvisorHomeComponent } from './advisor-home/advisor-home.component';
 
 export class GlobalVariables {
   testVal = '#00bcd4';
@@ -157,7 +156,7 @@ export class GlobalVariables {
     ChangePassComponent, HomeComponent, ReferAndEarnModalComponent, AdvisorLegacyDetailsComponent,
     LegaciesDetailsLandingComponent, MarkAsDeceasedComponent,
     GetFeaturedComponent, SubmitEnquiryModalComponent, AdvisorLeadsComponent, AdvisorLeadsDetailsComponent, 
-    ProspectPeoplesModalComponent, OurPlanComponent,//TodosComponent,TodosListingComponent
+    ProspectPeoplesModalComponent, OurPlanComponent, AdvisorHomeComponent
   ], providers: [
     // { provide: LY_THEME, useClass: MinimaLight, multi: true },
     // { provide: LY_THEME, useClass: MinimaDark, multi: true },
