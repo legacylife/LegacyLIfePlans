@@ -459,7 +459,7 @@ function professionalsListing(req, res) {
             if (err) {
                 res.status(500).send(resFormat.rError(err))
             } else {       
-            if (zips) {         
+            if (zips && zips.zipcode) {         
                 let distanceUserList = sortBy(map(userList, (user, index)=>{
                   var dist = zipcodes.distance(zips.zipcode,user.zipcode);
                   let newRow = Object.assign({}, user._doc, {"distance": `${dist}`})

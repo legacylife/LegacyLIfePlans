@@ -4,7 +4,6 @@ var passport = require('passport')
 var request = require('request')
 var jwt = require('express-jwt')
 const mongoose = require('mongoose')
-
 var async = require('async')
 var crypto = require('crypto')
 var fs = require('fs')
@@ -12,13 +11,14 @@ var nodemailer = require('nodemailer')
 const { isEmpty, cloneDeep } = require('lodash')
 const Busboy = require('busboy')
 // const Mailchimp = require('mailchimp-api-v3')
-
 const User = require('./../models/Users')
 const OtpCheck = require('./../models/OtpCheck')
 var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
+const trust = require('./../models/Trustee.js')
+ObjectId = require('mongodb').ObjectID;
 const AWS = require('aws-sdk');
 const s3 = require('./../helpers/s3Upload')
 
@@ -552,6 +552,7 @@ async function checkUserOtp(req, res) {
                 "username": newUser.username,
                 "userType": newUser.userType
               }
+              checkTrustee(newUser.userType,newUser._id,newUser.username)
               OtpCheck.deleteOne({ "_id": otpdata._id }, function (err, otpdata) {
                 console.log(err)
                 if (err) {
@@ -565,10 +566,8 @@ async function checkUserOtp(req, res) {
                   res.send(resFormat.rSuccess({ "userId":newUser._id, "profilePicture": newUser.profilePicture, "username": newUser.username, "userType": newUser.userType, code: "success", message: message }))
                 }
               })
-
             }
           })
-
         } else {
           res.send(resFormat.rSuccess({ code: "error", message: "Invalid OTP" }))
         }
@@ -577,6 +576,24 @@ async function checkUserOtp(req, res) {
   } catch (e) {
     res.status(401).send(resFormat.rError(e.message))
   }
+}
+
+function checkTrustee(userType,trustId,emailId) {
+  trust.findOne({email:emailId}, function (err, trustDetails) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      if(trustDetails && trustDetails._id){  
+          trust.updateOne({ _id: trustDetails._id }, { status:"Active",trustId:ObjectId(trustId),modifiedOn:new Date() }, function (err, updatedDetails) {
+          if (err) {
+            res.send(resFormat.rError(err))
+          } else {
+            return 'done';
+          }
+        })
+      }
+    }
+   });  
 }
 
 function sendOtpMail(emailId, otpN) {
