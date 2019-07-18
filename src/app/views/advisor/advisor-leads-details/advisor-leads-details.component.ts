@@ -18,6 +18,8 @@ export class AdvisorLeadsDetailsComponent implements OnInit {
   profilePicture: any = "assets/images/arkenea/default.jpg"  
   selectedProfileId:string;
   row: any;
+  filesCount: any;
+  recordCount: any;
   profileData: any;
   about: string;
   userId : string;
@@ -36,13 +38,15 @@ export class AdvisorLeadsDetailsComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }, query)
     }
-    this.userapi.apiRequest('post', 'userlist/viewall', req_vars).subscribe(result => {   //userlist/viewall
+    this.userapi.apiRequest('post', 'lead/view-details', req_vars).subscribe(result => {   //userlist/viewall
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.row = result.data;  
-        if(result.data.profilePicture){
-          this.profilePicture = filePath + result.data.profilePicture;
+        this.row = result.data.userDetails;  
+        this.filesCount = result.data.filesCount;  
+        this.recordCount = result.data.recordCount;  
+        if(result.data.userDetails.profilePicture){
+          this.profilePicture = filePath + result.data.userDetails.profilePicture;
         }                   
       }
     }, (err) => {
