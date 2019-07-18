@@ -60,8 +60,9 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
       query: Object.assign({ userType: "advisor", status: "Active" }, query),
       fields: {},
       offset: '',
-      limit: '',
+      limit: 4,
       order: { "createdOn": -1 },
+      extraQuery: Object.assign({ _id: this.userId }, query),
     }
 
     if(search){
@@ -69,16 +70,17 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
         query: Object.assign({ userType: "advisor", status: "Active", businessType:search }, query),
         fields: {},
         offset: '',
-        limit: '',
+        limit: 4,
         order: { "createdOn": -1 },
+        extraQuery: Object.assign({ _id: this.userId }, query),
       }      
     }
 
-    this.userapi.apiRequest('post', 'userlist/list', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'advisor/professionalsList', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        let advisorData = result.data.userList;
+        let advisorData = result.data.distanceUserList;
         this.adListings = advisorData.filter(dtype => {
           return dtype.sponsoredAdvisor == 'yes'
         }).map(el => el)
@@ -154,6 +156,25 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
     })
   }
 
+  CalculateDistance() {  
+    let query = {};
+    let zipcode1 = '89103';
+    let zipcode2 = '16103';
 
+    const req_vars = {
+      query: Object.assign({ from: zipcode1,to: zipcode2 }, query),
+    }   
+
+    this.userapi.apiRequest('post', 'distance/calculateZipDistance', req_vars).subscribe(result => {  
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+
+         this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      }
+    }, (err) => {
+      console.error(err);
+    })
+  }
 
 }
