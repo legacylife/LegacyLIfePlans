@@ -45,11 +45,11 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
     })
     
     let urlData = this.userapi.getURLData();
-    if(urlData.lastThird == 'legacies'){
+    if(urlData.lastThird == 'legacies' && urlData.lastOne){
       this.customerLegaicesId = urlData.lastOne
       this.myLegacy= false
       this.sharedLegacies =true 
-    }    
+    }
   }
   showSecoDay() {
     this.dayFirst = false;

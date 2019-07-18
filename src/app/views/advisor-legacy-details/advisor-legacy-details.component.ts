@@ -31,10 +31,12 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.urlData = this.userapi.getURLData();
-    if(this.urlData.userType == "advisor"){
-      this.userAs = 'Advisor'; 
+    if (this.urlData.lastThird == "legacies") {
+      if(this.urlData.userType == "advisor"){
+        this.userAs = 'Advisor'; 
+      }
+      this.getCustomerDetails();
     }
-    this.getCustomerDetails();
   }
   
   getCustomerDetails(query = {}){

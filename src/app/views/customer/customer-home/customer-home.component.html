@@ -74,13 +74,13 @@
               </ul>
 
             </mat-expansion-panel>
-            <mat-expansion-panel [expanded]="sharedLegacies">
+            <mat-expansion-panel [expanded]="sharedLegacies" >
               <mat-expansion-panel-header [collapsedHeight]="'56px'" [expandedHeight]="'56px'">
                 <mat-panel-title [routerLink]="['/customer/dashboard/shared-legacies']">
                   <header>Shared Legacies</header>
                 </mat-panel-title>
               </mat-expansion-panel-header>
-              <ul class="legacy--list m-0 p-0">
+              <ul class="legacy--list m-0 p-0"  *ngIf="sharedLegacies">
                 <li>
                     <a [routerLink]="['/customer/legacies/essential-day-one', customerLegaicesId]">
                       <mat-icon class="icon-file">insert_drive_file</mat-icon> My Essentials
