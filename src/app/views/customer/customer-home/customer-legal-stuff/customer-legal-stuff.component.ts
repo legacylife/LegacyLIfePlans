@@ -29,8 +29,19 @@ export class CustomerLegalStuffComponent implements OnInit {
   legaStuffList: any = [];
   selectedProfileId:string = "";
   typeOfDocumentList: any[];
-
   userId: string;
+  
+  urlData:any={};
+  dynamicRoute:string;
+  trusteeLegaciesAction:boolean=true;
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';					
+
+  EstateManagementSection:string='now';
+  HealthcareManagementSection:string='now';
+  PersonalAffairsManagementSection:string='now';
+  LegacyPermissionError:string="You don't have permission of this section";
+
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -40,10 +51,20 @@ export class CustomerLegalStuffComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.showEstateListingCnt = 0;    
+    this.urlData = this.userapi.getURLData();
+    this.dynamicRoute = this.urlData.dynamicRoute;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    
+    if (this.urlData.lastThird == "legacies") {
+      this.userId = this.urlData.lastOne;
+      this.userapi.getUserAccess(this.userId, (userAccess) => {
+        this.EstateManagementSection = userAccess.EstateManagement 
+        this.HealthcareManagementSection= userAccess.HealthcareManagement
+        this.PersonalAffairsManagementSection= userAccess.PersonalAffairsManagement
+      });
+    }
     this.getEstateList();
   }
-
-
 
   getEstateList = (query = {}) => {
     const req_vars = {

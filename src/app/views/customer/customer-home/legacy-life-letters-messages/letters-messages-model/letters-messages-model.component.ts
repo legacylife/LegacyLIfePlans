@@ -29,17 +29,27 @@ export class LettersMessagesModelComponent implements OnInit {
   selectedProfileId: string;
   newName:string = "";
   docPath: string;
+  urlData:any={};
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';
+
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService,private userapi: UserAPIService ) {}
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
   ngOnInit() {
     const filePath = this.userId+'/'+s3Details.letterMessageDocumentsPath;
-    this.docPath = filePath; 
-     const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
-    if (this.selectedProfileId && this.selectedProfileId == 'letters-messages') {
+    this.docPath = filePath;
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    if (this.selectedProfileId && this.selectedProfileId == 'letters-messages' && this.urlData.lastThird != "legacies") {
       this.selectedProfileId = "";
+    }
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'letters-messages') {
+        this.customerLegaciesId = this.userId;
+        this.customerLegacyType =  this.urlData.userType;
+        this.userId = this.urlData.lastOne;          
+        this.selectedProfileId = "";        
     }
 
     this.LettersMessagesForm = this.fb.group({
@@ -58,7 +68,10 @@ export class LettersMessagesModelComponent implements OnInit {
    LettersMessagesFormSubmit(profileInData = null) {
     var query = {};
     var proquery = {};     
-
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'letters-messages') {
+      profileInData.customerLegacyId = this.customerLegaciesId
+      profileInData.customerLegacyType = this.customerLegacyType
+    }
     let req_vars = {
       query: Object.assign({customerId: this.userId }),
       proquery: Object.assign(profileInData),
@@ -67,7 +80,7 @@ export class LettersMessagesModelComponent implements OnInit {
     let profileIds = this.LettersMessagesForm.controls['profileId'].value;
     if(profileIds){
       req_vars = {
-        query: Object.assign({ _id:profileIds, customerId: this.userId }),
+        query: Object.assign({ _id:profileIds }),
         proquery: Object.assign(profileInData),
         message: Object.assign({})
       }
@@ -179,7 +192,7 @@ export class LettersMessagesModelComponent implements OnInit {
     }
     if(profileIds){
        req_vars = {
-        query: Object.assign({ _id:profileIds, customerId: this.userId }),
+        query: Object.assign({ _id:profileIds }),
         fields:{_id:1,documents:1}
       }
     }    
@@ -218,8 +231,7 @@ export class LettersMessagesModelComponent implements OnInit {
             if (result.status == "error") {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
-            } else {
-              
+            } else {              
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }

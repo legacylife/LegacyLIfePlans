@@ -19,10 +19,11 @@ import { documentTypes } from '../../../../selectList';
 })
 export class CustomerEssentialDayOneComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
+  userId: string;
+  urlData:any={};
   showProfileListing = false;
   showIdProofListing = false;
-  showProfessionalsListing = false;
-  userId: string;
+  showProfessionalsListing = false;  
   essentialProfileList:any = [];
   essentialIDList:any = [];
   essentialProfessionalList:any = [];
@@ -31,6 +32,13 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   showIDListingCnt:any;
   documentTypeList: any[] = documentTypes;
   modifiedDate:any;
+  dynamicRoute:string;
+  customerLegaciesId: string;
+  trusteeLegaciesAction:boolean=true;  
+  PersonalProfileManagementSection:string='now';
+  IDBoxManagementSection:string='now';
+  MyProfessionalsManagementSection:string='now';
+  LegacyPermissionError:string="You don't have permission of this section";
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -41,6 +49,20 @@ export class CustomerEssentialDayOneComponent implements OnInit {
     this.userId = localStorage.getItem("endUserId");
     this.showProfileListingCnt = 0;
     this.showIDListingCnt = 0;
+    
+    this.urlData = this.userapi.getURLData();
+    this.customerLegaciesId = this.urlData.lastOne;
+    this.dynamicRoute = this.urlData.dynamicRoute;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+   
+    if (this.urlData.lastThird == "legacies") {
+      this.userId = this.urlData.lastOne;
+      this.userapi.getUserAccess(this.userId, (userAccess) => {
+        this.PersonalProfileManagementSection = userAccess.PersonalProfileManagement 
+        this.IDBoxManagementSection= userAccess.IDBoxManagement 
+        this.MyProfessionalsManagementSection= userAccess.MyProfessionalsManagement 
+      });
+    }
     this.getEssentialProfileList();
     this.getEssentialIdList();
     this.getEssentialProfessionalList();
@@ -172,5 +194,6 @@ export class CustomerEssentialDayOneComponent implements OnInit {
       return dtype.opt_code === key
     }).map(el => el.opt_name)[0]
     return filteredTyes
-  }
+  } 
+   
 }

@@ -22,6 +22,8 @@ export class ElectronicMediaDetailsComponent implements OnInit {
   re =  "/(?:\.([^.]+))?$/" ;
   docPath: string; 
   typeOfList:any[];
+  trusteeLegaciesAction:boolean=true;
+  urlData:any={};
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -30,8 +32,9 @@ export class ElectronicMediaDetailsComponent implements OnInit {
 
   ngOnInit() {  
     this.userId = localStorage.getItem("endUserId");
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
     this.getElectronicMediaView();
   }
 
@@ -50,6 +53,9 @@ export class ElectronicMediaDetailsComponent implements OnInit {
         console.log(result.data)
       } else {
         if (result.data) {
+          if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
+            this.trusteeLegaciesAction = false;
+          }
           this.row = result.data;        
         }
       }  
@@ -73,7 +79,7 @@ export class ElectronicMediaDetailsComponent implements OnInit {
       })
   }
 
-  deleteElectronicMedia() {
+  deleteElectronicMedia(customerId='') {
     var statMsg = "Are you sure you want to delete electronic media details?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
@@ -89,7 +95,13 @@ export class ElectronicMediaDetailsComponent implements OnInit {
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard', 'passwords-digital-assests'])
+              if(this.urlData.userType == 'advisor'){
+                this.router.navigate(['/', 'advisor', 'legacies', 'passwords-digital-assests', customerId])
+              }else{
+                this.router.navigate(['/', 'customer', 'dashboard', 'passwords-digital-assests'])
+              }
+
+
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {

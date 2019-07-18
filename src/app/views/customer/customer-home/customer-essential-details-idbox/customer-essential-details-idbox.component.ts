@@ -26,6 +26,8 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
   row: any;
   docPath: string;
   documentTypeList: any[] = documentTypes;
+  trusteeLegaciesAction:boolean=true;
+  urlData:any={};
   constructor(  
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
@@ -37,8 +39,9 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
     this.userId = localStorage.getItem("endUserId");
     const filePath = this.userId+'/'+s3Details.myEssentialsDocumentsPath;
     this.docPath = filePath;
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
     this.getEssentialIDDetails();
   }
 
@@ -51,6 +54,9 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
+        if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
+          this.trusteeLegaciesAction = false;
+        }
         this.row = result.data;
       }
     }, (err) => {
@@ -74,7 +80,7 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
       })
   }
 
-  deleteIdProofRecord() {
+  deleteIdProofRecord(customerId='') {
     var statMsg = "Are you sure you want to delete ID Box?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
@@ -90,7 +96,11 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard', 'essential-day-one'])
+              if(this.urlData.userType == 'advisor'){
+                this.router.navigate(['/', 'advisor', 'legacies', 'essential-day-one', customerId])
+              }else{
+                this.router.navigate(['/', 'customer', 'dashboard', 'essential-day-one'])
+              }
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {

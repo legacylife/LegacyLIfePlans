@@ -29,6 +29,7 @@ export class UserAPIService {
   private userInfo: any
   private accessSection: any
   private fileAccessInfo:any
+  private userAccess:any={}
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -279,5 +280,55 @@ export class UserAPIService {
     return this.fileAccessInfo;
   }
 
+  // get url params just like, ID, Module
+  public getURLData(){
+    let userType =  '';
+    let lastOne =  '';
+    let lastTwo =  '';
+    let lastThird =  '';
+    let lastFourth = '';
+    let dynamicRoute = '/customer/dashboard/';
+    let returnData:any = {};
+    let trusteeLegaciesAction:boolean = true;
+
+    if (localStorage.getItem("endUserType") == "customer") {
+      userType = "customer";
+    } else {
+      userType = "advisor";
+    }
+    
+    const locationArray = location.href.split("/");
+    lastOne   = locationArray[locationArray.length - 1]; // ID , if there or component name ( ex . pets, legal stuff )
+    lastTwo   = locationArray[locationArray.length - 2]; // component name ( ex . pets, legal stuff )
+    lastThird = locationArray[locationArray.length - 3]; // user section .. legaices/dashboard
+    lastFourth = locationArray[locationArray.length - 4]; // user section .. customer/advisor
+    if (lastThird == "legacies") {
+      dynamicRoute = "/" + userType + "/legacies/"; 
+      if (lastFourth =='customer') {
+        trusteeLegaciesAction = false
+      } 
+    } 
+
+    returnData = {
+      'lastOne': lastOne,
+      'lastTwo': lastTwo,
+      'lastThird': lastThird,
+      'lastFourth':lastFourth,
+      'dynamicRoute': dynamicRoute,
+      'userType': userType,
+      'trusteeLegaciesAction':trusteeLegaciesAction
+    }
+    return returnData;
+  }
+
+  public getUserAccess(customerId, callback){
+    const req_vars = {
+      query: Object.assign({ customerId: customerId })
+    }
+    this.apiRequest('post', 'trustee/view-details', req_vars).subscribe(result => {
+      this.userAccess = result.data.userAccess;
+      callback(this.userAccess)
+    });
+  }
 
 }

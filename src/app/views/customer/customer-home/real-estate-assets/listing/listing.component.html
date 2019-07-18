@@ -1,6 +1,7 @@
 <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
   <div class="full-width">
     <div class="">
+      <advisor-legacy-details></advisor-legacy-details>
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Real Estates & Assets
@@ -13,96 +14,112 @@
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Real Estate</mat-card-title>
-          <div *ngIf="showRealEstateListing">
+          <div *ngIf="showRealEstateListing && trusteeLegaciesAction && RealEstateManagementSection=='now'">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openModal('RealEstate', true)">+ Add</button>
           </div>
         </mat-card-header>
-        <mat-card-content *ngIf="!showRealEstateListing">
-          <div class="build--ur--legacy" (click)="openModal('RealEstate', true)">
-            <mat-icon>person_pin</mat-icon>
-            <p>
-              <a>Add Real Estate</a>
-            </p>
-          </div>
-        </mat-card-content>
-        <mat-card-content class="appointees--wrapper" *ngIf="showRealEstateListing">
-          <div class="cust--user--details mt-1" *ngFor="let profileData of realEstateList; let i = index"
-            [routerLink]="['/customer/dashboard/real-estate-detail-view', profileData._id]">
-            <div class="name--letters">{{getType(profileData.estateType,'RealEstate').charAt(0)}}</div>
-            <div class="user--name">
-              <h5>{{getType(profileData.estateType,'RealEstate')}}</h5>
-              <p class="mb-0">Last modified:
-                <span
-                  *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+        <div *ngIf="RealEstateManagementSection=='now'">
+          <mat-card-content *ngIf="!showRealEstateListing && trusteeLegaciesAction">
+            <div class="build--ur--legacy" (click)="openModal('RealEstate', true)">
+              <mat-icon>person_pin</mat-icon>
+              <p>
+                <a>Add Real Estate</a>
               </p>
             </div>
-          </div>
+          </mat-card-content>
+          <mat-card-content class="appointees--wrapper" *ngIf="showRealEstateListing">
+            <div class="cust--user--details mt-1" *ngFor="let profileData of realEstateList; let i = index"
+              [routerLink]="[dynamicRoute+'real-estate-detail-view', profileData._id]">
+              <div class="name--letters">{{getType(profileData.estateType,'RealEstate').charAt(0)}}</div>
+              <div class="user--name">
+                <h5>{{getType(profileData.estateType,'RealEstate')}}</h5>
+                <p class="mb-0">Last modified:
+                  <span
+                    *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                  <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+                </p>
+              </div>
+            </div>
+          </mat-card-content>
+        </div>
+        <mat-card-content *ngIf="RealEstateManagementSection !='now'">
+          <div>{{LegacyPermissionError}}</div>
         </mat-card-content>
-     </mat-card>
+      </mat-card>
 
 
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Vehicles </mat-card-title>
-          <div *ngIf="showRealEstateVehiclesListing">
+          <div *ngIf="showRealEstateVehiclesListing && trusteeLegaciesAction && VehiclesManagementSection=='now'">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openModal('Vehicles', true)">+ Add</button>
           </div>
         </mat-card-header>
-        <mat-card-content *ngIf="!showRealEstateVehiclesListing">
-          <div class="build--ur--legacy" (click)="openModal('Vehicles', true)">
-            <mat-icon>library_add</mat-icon>
-            <p>
-              <a>Add Vehicles</a>
-            </p>
-          </div>
-        </mat-card-content>
-        <mat-card-content class="appointees--wrapper" *ngIf="showRealEstateVehiclesListing">
-          <div class="cust--user--details mt-1" *ngFor="let vehicleData of realEstateVehiclesList; let i = index"
-            [routerLink]="['/customer/dashboard/real-estate-vehicle-detail-view', vehicleData._id]">
-            <div class="name--letters">{{vehicleData.model.charAt(0)}}</div>
-            <div class="user--name">
-              <h5>{{vehicleData.model}}</h5>
-              <p class="mb-0">Last modified:
-                <span
-                  *ngIf="vehicleData.modifiedOn && vehicleData.modifiedOn != ''">{{vehicleData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                <span *ngIf="!vehicleData.modifiedOn">{{vehicleData.createdOn | date: 'yyyy/MM/dd'}}</span>
+        <div *ngIf="VehiclesManagementSection=='now'">
+          <mat-card-content *ngIf="!showRealEstateVehiclesListing && trusteeLegaciesAction">
+            <div class="build--ur--legacy" (click)="openModal('Vehicles', true)">
+              <mat-icon>library_add</mat-icon>
+              <p>
+                <a>Add Vehicles</a>
               </p>
             </div>
-          </div>
+          </mat-card-content>
+          <mat-card-content class="appointees--wrapper" *ngIf="showRealEstateVehiclesListing">
+            <div class="cust--user--details mt-1" *ngFor="let vehicleData of realEstateVehiclesList; let i = index"
+              [routerLink]="[dynamicRoute+'real-estate-vehicle-detail-view', vehicleData._id]">
+              <div class="name--letters">{{vehicleData.model.charAt(0)}}</div>
+              <div class="user--name">
+                <h5>{{vehicleData.model}}</h5>
+                <p class="mb-0">Last modified:
+                  <span
+                    *ngIf="vehicleData.modifiedOn && vehicleData.modifiedOn != ''">{{vehicleData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                  <span *ngIf="!vehicleData.modifiedOn">{{vehicleData.createdOn | date: 'yyyy/MM/dd'}}</span>
+                </p>
+              </div>
+            </div>
+          </mat-card-content>
+        </div>
+        <mat-card-content *ngIf="VehiclesManagementSection !='now'">
+          <div>{{LegacyPermissionError}}</div>
         </mat-card-content>
       </mat-card>
+
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Assets</mat-card-title>
-          <div *ngIf="showAssetsListing">
+          <div *ngIf="showAssetsListing && trusteeLegaciesAction && AssetsManagementSection=='now'">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openModal('Assets', true)">+ Add</button>
           </div>
         </mat-card-header>
-        <mat-card-content *ngIf="!showAssetsListing">
-          <div class="build--ur--legacy" (click)="openModal('Assets', true)">
-            <mat-icon>people</mat-icon>
-            <p>
-              <a>Add Assets</a>
-            </p>
-          </div>
-        </mat-card-content>
-        <mat-card-content class="appointees--wrapper" *ngIf="showAssetsListing">
-          <div class="cust--user--details mt-1" *ngFor="let profileData of realEstateAssetsList; let i = index"
-            [routerLink]="['/customer/dashboard/real-estate-assets-detail-view', profileData._id]">
-            <div class="name--letters">{{getType(profileData.asset,'Assets').charAt(0)}}</div>
-            <div class="user--name">
-              <h5>{{ profileData?.asset == 6 ? profileData?.assetNew : getType(profileData?.asset,'Assets') }}</h5>
-              <p class="mb-0">Last modified:
-                <span
-                  *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+        <div *ngIf="AssetsManagementSection=='now'">
+          <mat-card-content *ngIf="!showAssetsListing && trusteeLegaciesAction">
+            <div class="build--ur--legacy" (click)="openModal('Assets', true)">
+              <mat-icon>people</mat-icon>
+              <p>
+                <a>Add Assets</a>
               </p>
             </div>
-          </div>
+          </mat-card-content>
+          <mat-card-content class="appointees--wrapper" *ngIf="showAssetsListing">
+            <div class="cust--user--details mt-1" *ngFor="let profileData of realEstateAssetsList; let i = index"
+              [routerLink]="[dynamicRoute+'real-estate-assets-detail-view', profileData._id]">
+              <div class="name--letters">{{getType(profileData.asset,'Assets').charAt(0)}}</div>
+              <div class="user--name">
+                <h5>{{ profileData?.asset == 6 ? profileData?.assetNew : getType(profileData?.asset,'Assets') }}</h5>
+                <p class="mb-0">Last modified:
+                  <span
+                    *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
+                  <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+                </p>
+              </div>
+            </div>
+          </mat-card-content>
+        </div>
+        <mat-card-content *ngIf="AssetsManagementSection !='now'">
+          <div>{{LegacyPermissionError}}</div>
         </mat-card-content>
       </mat-card>
     </div>

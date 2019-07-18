@@ -20,6 +20,8 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
   userId: string;
   selectedProfileId: string = "";
   row: any;
+  urlData:any={};
+  trusteeLegaciesAction:boolean=true;
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -27,11 +29,11 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.categories$ = this.shopService.getCategories();this.categories = ["My essentials", "Pets"]this.products = [] this.cartData = []  this.filterForm = this.fb.group({     search: ['']    })
     this.userId = localStorage.getItem("endUserId");
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
-    this.getEssentialProfileDetails();
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    this.getEssentialProfileDetails(); 
   }
 
   //function to get all events
@@ -43,6 +45,9 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
+        if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
+          this.trusteeLegaciesAction = false;
+        }
         this.row = result.data;
       }
     }, (err) => {
@@ -67,7 +72,7 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
       })
   }
 
-  deleteProfessionals() {
+  deleteProfessionals(customerId='') {
     var statMsg = "Are you sure you want to delete professionals?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
@@ -83,7 +88,11 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard', 'essential-day-one'])
+              if(this.urlData.userType == 'advisor'){
+                this.router.navigate(['/', 'advisor', 'legacies', 'essential-day-one', customerId])
+              }else{
+                this.router.navigate(['/', 'customer', 'dashboard', 'essential-day-one'])
+              }
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {

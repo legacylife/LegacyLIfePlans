@@ -9,15 +9,17 @@
                     <mat-icon>file_download</mat-icon>
                     <span class="hide--sm--txt">Download</span>
               </button>    
+            <div *ngIf="trusteeLegaciesAction">
               <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openLettersMessageModal()">
                 <mat-icon>edit</mat-icon>
                 <span class="hide--sm--txt">Edit</span>
               </button>
-              <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="deleteLettersMessage()">
+              <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="deleteLettersMessage(row?.customerId)">
                 <mat-icon>delete</mat-icon>
                 <span class="hide--sm--txt">Delete</span>
               </button>
             </div>
+          </div>
           </mat-card-header>
           <mat-card-content>
             <div class="details--wrapper mb-1">

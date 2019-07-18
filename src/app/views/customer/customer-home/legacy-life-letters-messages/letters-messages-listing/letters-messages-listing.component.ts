@@ -20,10 +20,24 @@ export class LettersMessagesListingComponent implements OnInit {
   lettersMessagesList: any = [];
   selectedProfileId:string = "";
   showListingCnt: any;
+  dynamicRoute:string;
+  trusteeLegaciesAction:boolean=true;
+  urlData:any={};
+  LegacyLifeLettersMessagesManagementSection:string='now';
+  LegacyPermissionError:string="You don't have permission of this section";
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) {  }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    this.urlData = this.userapi.getURLData();
+    this.dynamicRoute = this.urlData.dynamicRoute;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    if (this.urlData.lastThird == "legacies") {
+      this.userId = this.urlData.lastOne;
+      this.userapi.getUserAccess(this.userId, (userAccess) => {
+        this.LegacyLifeLettersMessagesManagementSection = userAccess.LegacyLifeLettersMessagesManagement
+      });
+    }
     this.getLetterMessageList();
   }
 

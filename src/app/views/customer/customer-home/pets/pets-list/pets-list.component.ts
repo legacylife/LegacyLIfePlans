@@ -22,10 +22,29 @@ export class PetsListComponent implements OnInit {
  
   modifiedDate:any;
   PetList:any = [];
+  customerData:any = [];
 
+  urlData:any={};
+	dynamicRoute:string;
+  customerLegaciesId: string;
+  customerLegacyType:string='customer';														
+  trusteeLegaciesAction:boolean=true;
+  PetsManagementSection:string='now';
+  LegacyPermissionError:string="You don't have permission of this section";
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
-  ngOnInit() {
+  ngOnInit() { 
     this.userId = localStorage.getItem("endUserId");
+    this.urlData = this.userapi.getURLData();
+    this.customerLegaciesId = this.urlData.lastOne;
+    this.dynamicRoute = this.urlData.dynamicRoute;
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction    
+    if (this.urlData.lastThird == "legacies") {
+      this.userId = this.urlData.lastOne;
+      this.getCustomerDetails();
+      this.userapi.getUserAccess(this.userId, (userAccess) => {
+        this.PetsManagementSection = userAccess.PetsManagement
+      });
+    }
     this.getPetsList();
   }
 
@@ -62,6 +81,21 @@ export class PetsListComponent implements OnInit {
         // If user press cancel
         return;
       }
+    })
+  }
+
+  getCustomerDetails(query = {}){
+    const req_vars = {
+      query: Object.assign({ _id: this.customerLegaciesId }, query)
+    }
+    this.userapi.apiRequest('post', 'userlist/viewall', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        this.customerData = result.data;
+      }
+    }, (err) => {
+      console.error(err)
     })
   }
 }

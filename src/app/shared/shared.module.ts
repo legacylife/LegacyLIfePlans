@@ -34,7 +34,8 @@ import {
   MatNativeDateModule,
   MatProgressBarModule,
   MatExpansionModule,
-  MatSliderModule
+  MatSliderModule,
+  MatStepperModule
 } from '@angular/material';
 // ONLY REQUIRED FOR **SIDE** NAVIGATION LAYOUT
 import { HeaderSideComponent } from './components/header-side/header-side.component';
@@ -63,7 +64,6 @@ import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { AppComfirmComponent } from './services/app-confirm/app-confirm.component';
 import { AppLoaderComponent } from './services/app-loader/app-loader.component';
-
 
 // DIRECTIVES
 import { FontSizeDirective } from './directives/font-size.directive';
@@ -98,11 +98,60 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CardDetailsComponent } from './components/card-details-modal/card-details-modal.component';
 import { InviteComponent } from './components/header-top/invite-modal/invite-modal.component';
 import { SubscriptionService } from './services/subscription.service';
+import { PetsListComponent } from 'app/views/customer/customer-home/pets/pets-list/pets-list.component';
+import { PetsDetailsComponent } from 'app/views/customer/customer-home/pets/pets-details/pets-details.component';
+import { PetsModalComponent } from 'app/views/customer/customer-home/pets/pets-modal/pets-modal.component';
+import { FileUploadModule } from 'ng2-file-upload';
+import { CustomerEssentialDayOneComponent } from 'app/views/customer/customer-home/customer-essential-day-one/customer-essential-day-one.component';
+import { PersonalProfileModalComponent } from 'app/views/customer/customer-home/personal-profile-modal/personal-profile-modal.component';
+import { CustomerEssentialDetailsComponent } from 'app/views/customer/customer-home/customer-essential-details/customer-essential-details.component';
+import { CustomerEssentialDetailsIdboxComponent } from 'app/views/customer/customer-home/customer-essential-details-idbox/customer-essential-details-idbox.component';
+import { EssenioalIdBoxComponent } from 'app/views/customer/customer-home/essenioal-id-box/essenioal-id-box.component';
+import { essentialsMyProfessionalsComponent } from 'app/views/customer/customer-home/essentials-my-professionals/essentials-my-professionals.component';
+import { EssentialsMyProfessionalsDetailsComponent } from 'app/views/customer/customer-home/essentials-my-professionals-details/essentials-my-professionals-details.component';
+import { SpecialNeedsModelComponent } from 'app/views/customer/customer-home/special-needs/special-needs-model/special-needs-model.component';
+import { SpecialNeedsListingComponent } from 'app/views/customer/customer-home/special-needs/special-needs-listing/special-needs-listing.component';
+import { SpecialNeedsDetailsComponent } from 'app/views/customer/customer-home/special-needs/special-needs-details/special-needs-details.component';
+import { DeviceDetailsComponent } from 'app/views/customer/customer-home/passwords-digital-assets/devices/device-details/device-details.component';
+import { ElectronicMediaDetailsComponent } from 'app/views/customer/customer-home/passwords-digital-assets/electronic-media/electronic-media-details/electronic-media-details.component';
+import { PasswordsDigitalAssetsListComponent } from 'app/views/customer/customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
+import { DevicesModalComponent } from 'app/views/customer/customer-home/passwords-digital-assets/devices/devices-modal/devices-modal.component';
+import { ElectronicMediaModalComponent } from 'app/views/customer/customer-home/passwords-digital-assets/electronic-media/electronic-media-modal/electronic-media-modal.component';
+import { DebtDetailsComponent } from 'app/views/customer/customer-home/insurance-finance-debt/debt-details/debt-details.component';
+import { EmergencyContactsComponent } from 'app/views/customer/customer-home/emergency-contacts/emergency-contacts.component';
+import { EmergencyContactsDetailsComponent } from 'app/views/customer/customer-home/emergency-contacts-details/emergency-contacts-details.component';
+import { ListingComponent } from 'app/views/customer/customer-home/real-estate-assets/listing/listing.component';
+import { DetailsComponent } from 'app/views/customer/customer-home/real-estate-assets/details/details.component';
+import { DetailsVehiclesComponent } from 'app/views/customer/customer-home/real-estate-assets/details-vehicles/details-vehicles.component';
+import { DetailsAssetsComponent } from 'app/views/customer/customer-home/real-estate-assets/details-assets/details-assets.component';
+import { AssetsModelComponent } from 'app/views/customer/customer-home/real-estate-assets/assets-model/assets-model.component';
+import { VehicleModelComponent } from 'app/views/customer/customer-home/real-estate-assets/vehicle-model/vehicle-model.component';
+import { RealEstateModelComponent } from 'app/views/customer/customer-home/real-estate-assets/real-estate-model/real-estate-model.component';
+import { TimeCapsuleListComponent } from 'app/views/customer/customer-home/time-capsule/time-capsule-list/time-capsule-list.component';
+import { TimeCapsuleMoalComponent } from 'app/views/customer/customer-home/time-capsule/time-capsule-modal/time-capsule-modal.component';
+import { TimeCapsuleDetailsComponent } from 'app/views/customer/customer-home/time-capsule/time-capsule-details/time-capsule-details.component';
+import { legalStuffModalComponent } from 'app/views/customer/customer-home/legal-stuff-modal/legal-stuff-modal.component';
+import { CustomerLegalStuffComponent } from 'app/views/customer/customer-home/customer-legal-stuff/customer-legal-stuff.component';
+import { CustomerLegalStuffDetailsComponent } from 'app/views/customer/customer-home/customer-legal-stuff-details/customer-legal-stuff-details.component';
+import { InsuranceFinanceDebtListComponent } from 'app/views/customer/customer-home/insurance-finance-debt/insurance-finance-debt-list/insurance-finance-debt-list.component';
+import { InsuranceDetailsComponent } from 'app/views/customer/customer-home/insurance-finance-debt/insurance-details/insurance-details.component';
+import { FinanceDetailsComponent } from 'app/views/customer/customer-home/insurance-finance-debt/finance-details/finance-details.component';
+import { InsuranceModalComponent } from 'app/views/customer/customer-home/insurance-finance-debt/insurance-modal/insurance-modal.component';
+import { FinanceModalComponent } from 'app/views/customer/customer-home/insurance-finance-debt/finance-modal/finance-modal.component';
+import { DebtModalComponent } from 'app/views/customer/customer-home/insurance-finance-debt/debt-modal/debt-modal.component';
+import { FinalWishesComponent } from 'app/views/customer/customer-home/final-wishes/final-wishes-list/final-wishes-list.component';
+import { FinalWishesDetailsComponent } from 'app/views/customer/customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
+import { FinalWishesFormModalComponent } from 'app/views/customer/customer-home/final-wishes/final-wishes-form-modal/final-wishes-form-modal.component';
+import { LettersMessagesListingComponent } from 'app/views/customer/customer-home/legacy-life-letters-messages/letters-messages-listing/letters-messages-listing.component';
+import { LettersMessagesDetailsComponent } from 'app/views/customer/customer-home/legacy-life-letters-messages/letters-messages-details/letters-messages-details.component';
+import { LettersMessagesModelComponent } from 'app/views/customer/customer-home/legacy-life-letters-messages/letters-messages-model/letters-messages-model.component';
+import { AdvisorLegacyDetailsComponent } from 'app/views/advisor-legacy-details/advisor-legacy-details.component';
+
+
 /* 
   Only Required if you want to use Angular Landing
   (https://themeforest.net/item/angular-landing-material-design-angular-app-landing-page/21198258)
 */
-// import { LandingPageService } from '../shared/services/landing-page.service';
 
 const classesToInclude = [
   HeaderTopComponent,
@@ -136,7 +185,56 @@ const classesToInclude = [
   GetValueByKeyPipe,
   TodosListingComponent,
   TodosComponent,
-  CardDetailsComponent,InviteComponent
+  CardDetailsComponent,
+  InviteComponent,
+  PetsListComponent,
+  PetsDetailsComponent,
+  PetsModalComponent,
+  CustomerEssentialDayOneComponent,
+  PersonalProfileModalComponent,
+  CustomerEssentialDetailsComponent,
+  CustomerEssentialDetailsIdboxComponent,
+  EssenioalIdBoxComponent,
+  essentialsMyProfessionalsComponent,
+  EssentialsMyProfessionalsDetailsComponent,
+  SpecialNeedsListingComponent,
+  SpecialNeedsDetailsComponent,
+  SpecialNeedsModelComponent,
+  DeviceDetailsComponent,
+  ElectronicMediaDetailsComponent,
+  PasswordsDigitalAssetsListComponent,
+  DevicesModalComponent,
+  ElectronicMediaModalComponent,
+  DebtDetailsComponent,
+  EmergencyContactsComponent,
+  EmergencyContactsDetailsComponent,
+  ListingComponent,
+  DetailsComponent,
+  DetailsVehiclesComponent,
+  DetailsAssetsComponent,
+  AssetsModelComponent,
+  VehicleModelComponent,
+  RealEstateModelComponent,
+  TimeCapsuleListComponent,
+  TimeCapsuleMoalComponent,
+  TimeCapsuleDetailsComponent,
+  legalStuffModalComponent,
+  CustomerLegalStuffComponent,
+  CustomerLegalStuffDetailsComponent,
+  InsuranceFinanceDebtListComponent,
+  InsuranceDetailsComponent,
+  FinanceDetailsComponent,
+  DebtDetailsComponent,
+  InsuranceModalComponent,
+  FinanceModalComponent,
+  DebtModalComponent,
+  FinalWishesComponent,
+  FinalWishesDetailsComponent,
+  FinalWishesFormModalComponent,
+  LettersMessagesListingComponent,
+  LettersMessagesDetailsComponent,
+  LettersMessagesModelComponent,
+  AdvisorLegacyDetailsComponent
 ]
 
 @NgModule({
@@ -175,9 +273,17 @@ const classesToInclude = [
     MatProgressBarModule,
     MatExpansionModule,
     MatSliderModule,
-    DragDropModule
+    DragDropModule,
+    FileUploadModule,
+    MatStepperModule
   ],
-  entryComponents: [AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent],
+  entryComponents: [
+    AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,
+    PetsModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent,SpecialNeedsModelComponent,
+    DevicesModalComponent,ElectronicMediaModalComponent,AssetsModelComponent,
+    VehicleModelComponent,RealEstateModelComponent,TimeCapsuleMoalComponent,legalStuffModalComponent,InsuranceModalComponent,
+    FinanceModalComponent,DebtModalComponent,FinalWishesFormModalComponent,LettersMessagesModelComponent
+  ],
   providers: [
     ThemeService,
     LayoutService,
@@ -193,7 +299,7 @@ const classesToInclude = [
     AppConfirmService,
     AppLoaderService,
     SubscriptionService
-    // LandingPageService
+    // LandingPageService    
   ],
   declarations: classesToInclude,
   exports: classesToInclude

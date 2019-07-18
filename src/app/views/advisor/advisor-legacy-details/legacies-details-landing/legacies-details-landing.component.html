@@ -6,7 +6,7 @@
       <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="70" fxFlex.lg="80" fxFlex.xl="80">
         <mat-card class="p-0 mb-1">
           <mat-card-title class="">
-            <div class="card-title-text">Legacy Details</div>            
+            <div class="card-title-text">Legacy Details</div>
             <mat-divider></mat-divider>
           </mat-card-title>
 
@@ -31,19 +31,23 @@
               </mat-list-item>
               <mat-menu #menu1="matMenu" xPosition="before">
                 <button mat-menu-item>
-                  <mat-icon>file_download</mat-icon> Download All</button>
+                  <mat-icon>file_download</mat-icon> Download All
+                </button>
                 <button mat-menu-item class="reject">
-                  <mat-icon>cancel</mat-icon> Remove Myself as a Trustee</button>
+                  <mat-icon>cancel</mat-icon> Remove Myself as a Trustee
+                </button>
                 <button mat-menu-item>
-                  <mat-icon>monetization_on</mat-icon> Renew Subscription</button>
+                  <mat-icon>monetization_on</mat-icon> Renew Subscription
+                </button>
                 <button mat-menu-item>
-                  <mat-icon>markunread</mat-icon> Connect for Help</button>
+                  <mat-icon>markunread</mat-icon> Connect for Help
+                </button>
               </mat-menu>
             </mat-nav-list>
           </mat-card-content>
         </mat-card>
 
-        <mat-card class="empty--section p-0 mb-1">        
+        <mat-card class="empty--section p-0 mb-1">
           <mat-card-header class="m-0">
             <mat-card-title class="m-0">Personal Profile</mat-card-title>
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">+ Add</button>
@@ -79,7 +83,7 @@
           </mat-card-content>
         </mat-card>
 
-        <mat-card class="empty--section p-0 mb--20">         
+        <mat-card class="empty--section p-0 mb--20">
           <mat-card-header class="m-0">
             <mat-card-title class="m-0">ID Box</mat-card-title>
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn">+ Add</button>
@@ -140,7 +144,8 @@
                     <div class="adjust">
                       <p class="invites">Unlocked after death
                       </p>
-                      <button mat-raised-button class="llp--primary--btn p-0" (click)="markAsDeceasedModal({}, true)">Mark as Deceased</button>
+                      <button mat-raised-button class="llp--primary--btn p-0"
+                        (click)="markAsDeceasedModal({}, true)">Mark as Deceased</button>
                     </div>
                   </mat-card-content>
                 </mat-card>

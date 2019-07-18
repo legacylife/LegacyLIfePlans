@@ -25,6 +25,8 @@ export class InsuranceDetailsComponent implements OnInit {
   row: any;
   policyTypeList:any[];
   re =  "/(?:\.([^.]+))?$/" ;
+  trusteeLegaciesAction:boolean=true;
+  urlData:any={};
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -35,9 +37,9 @@ export class InsuranceDetailsComponent implements OnInit {
     this.userId = localStorage.getItem("endUserId");
     const filePath = this.userId+'/'+s3Details.insuranceFilePath;
     this.docPath = filePath;
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
-    this.getInsuranceView();
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne
+    this.getInsuranceView();    
   }
 
   //function to get all events
@@ -55,6 +57,9 @@ export class InsuranceDetailsComponent implements OnInit {
         console.log(result.data)
       } else {
         if (result.data) {
+          if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
+            this.trusteeLegaciesAction = false;
+          }
           this.row = result.data;
         }
       }  
@@ -78,7 +83,7 @@ export class InsuranceDetailsComponent implements OnInit {
       })
   }
 
-  deleteInsurance() {
+  deleteInsurance(customerId='') {
     var statMsg = "Are you sure you want to delete insurance details?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
@@ -94,7 +99,11 @@ export class InsuranceDetailsComponent implements OnInit {
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              this.router.navigate(['/', 'customer', 'dashboard', 'insurance-finance-debt'])
+              if(this.urlData.userType == 'advisor'){
+                this.router.navigate(['/', 'advisor', 'legacies', 'insurance-finance-debt', customerId])
+              }else{
+                this.router.navigate(['/', 'customer', 'dashboard', 'insurance-finance-debt'])
+              }
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {
