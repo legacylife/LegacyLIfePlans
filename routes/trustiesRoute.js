@@ -61,7 +61,7 @@ function getUserDetails(req, res) {
           let result = { "code": status,"message": message }
           res.status(200).send(resFormat.rSuccess(result));
       }else{      
-        let fields = {_id: 1,userType: 1, status: 1}      
+        let fields = {_id: 1,userType: 1,firstName:1,lastName:1, status: 1}      
         User.findOne({"username":query.email}, fields, function (err, userDetails) {
           if (err) {
             res.status(401).send(resFormat.rError(err))
@@ -73,7 +73,7 @@ function getUserDetails(req, res) {
               message = "You can't send invitaion '"+query.email+"' this email id is register as system admin.";
               status = 'Exist';           
             }else if(userDetails && query.customerId==userDetails._id){
-              message = "You can't send invitaion from your own email id.";
+              message = "This email is the owner of Legacy Life plans and cannot be a trustee. Please enter another email ID";
               status = 'Exist';           
             }else{
               message = "";       
