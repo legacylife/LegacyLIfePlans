@@ -15,6 +15,7 @@ var constants = require('../config/constants')
 const resFormat = require('../helpers/responseFormat')
 const emailTemplates = require('./emailTemplatesRoute.js')
 const lead = require('../models/Leads.js')
+const trust = require('./../models/Trustee.js')
 ObjectId = require('mongodb').ObjectID;
 
 const actitivityLog = require('../helpers/fileAccessLog')
@@ -104,7 +105,44 @@ function userDetails(req, res) {
   })
 }
 
+
+//function get details of user from url param
+function userView(req, res) {
+  let { query } = req.body
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  User.findOne(query, fields, function (err, userDetails) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      //Acting as Trustee
+
+      
+        // trust.countDocuments({trustId:userDetails._id}, function (err, TrusteeCount) {
+        //       TrusteeCounts = TrusteeCount;
+        //       console.log("CNT",TrusteeCount)
+        //       let result = { userDetails: userDetails, TrusteeCount: TrusteeCounts, "message": "Status Updated successfully!" }
+        //       res.status(200).send(resFormat.rSuccess(result))
+        // });
+
+        trust.aggregate([ 
+          { $match: { "trustId": userDetails._id }},
+          { $group: { _id : null, filesCount : { $sum: "$filesCount" },folderCount : { $sum: "$folderCount" },recordCount : { $sum: 1 }}}
+        ],function (err, statisticsCounts) {
+          //console.log("CNT",statisticsCounts);
+          filesCount = statisticsCounts[0].filesCount ? statisticsCounts[0].filesCount : 0;
+          folderCount = statisticsCounts[0].folderCount ? statisticsCounts[0].folderCount : 0;
+          recordCount = statisticsCounts[0].recordCount ? statisticsCounts[0].recordCount : 0;
+           let result = { userDetails: userDetails, filesCount: filesCount, folderCount: folderCount, recordCount: recordCount, "message": "Status Updated successfully!" }
+          res.status(200).send(resFormat.rSuccess(result))
+        });
+    }
+  })
+}
+
 router.post("/listing", leadsList)
 router.post("/lead-submit", leadUpdate)
-router.post("/get-user-details", userDetails)
+router.post("/view-details", userView)
 module.exports = router

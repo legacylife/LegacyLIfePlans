@@ -15,8 +15,8 @@ var TrusteeSchema = new mongoose.Schema({
   selectAll : String,  
   userAccess:Object,
   trustId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  filesCount: String,
-  folderCount: String,
+  filesCount: Number,
+  folderCount: Number,
   status: String,
   createdOn: Date,
   modifiedOn: Date
