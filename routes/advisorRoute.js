@@ -257,23 +257,30 @@ function hireAdvisorStatus(req, res) {
                           res.status(401).send(resFormat.rError(err))
                         } else {
                           custEmail = custData.username;
-                          custName = custData.firstName;  
-                          console.log("ahfgasjkfgjkgahsdfjfg")
+                          custName = custData.firstName;   
                           stat = sendHireStatusMail(custEmail,custName,EmailMesg,subStatus); 
                           res.status(200).send(resFormat.rSuccess(result))
                         }
                       })
-                    }  
-                    else {
-                      console.log("348568324658326458634586 sdhfskjafdh ahfgasjkfgjkgahsdfjfg")
+                    } else {
                       stat = sendHireStatusMail(custEmail,custName,EmailMesg,subStatus);
                       res.status(200).send(resFormat.rSuccess(result))
-                    } 
-                    
+                    }                     
                   }
                 })
               }
-              else {
+              else {              
+              User.findOne({ _id: proquery.advisorId }, { firstName: 1, lastName: 1, username: 1 }, function (err, advisorUser) {
+                  if (err) {
+                    res.status(401).send(resFormat.rError(err))
+                  } else {
+                    let inviteByName = extraFields.inviteByName;       
+                    let toEmail = advisorUser.username;
+                    let advName = advisorUser.firstName;
+                    let EmailMesg = inviteByName+" has been update and send you legacy request"; 
+                    stat = sendHireStatusMail(toEmail,advName,EmailMesg,'');           
+                  }
+                })
                 let result = { "message": "Request reminder sent successfully" }
                 res.status(200).send(resFormat.rSuccess(result))
               }
@@ -415,7 +422,7 @@ function checkHireAdvisorRequest(req, res) {
   HiredAdvisors.findOne(query, function (err, found) {
     let result = { code : "","message": "" }
     if (found) {
-      result = { code : "Exist","message": "Request already Sent" }     
+      result = { "RequestData" : found,code : "Exist","message": "Request already Sent" }     
     }
     res.status(200).send(resFormat.rSuccess(result))
   })
