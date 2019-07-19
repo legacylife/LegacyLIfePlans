@@ -43,7 +43,14 @@
               <div class="count--txt">Appointed Files</div>
             </div>
             <div class="counters--box">
-              <div class="count">0</div>
+              <div class="count" *ngIf="ownLegacyFilesCount==''">
+                <mat-icon>history</mat-icon>
+              </div>
+
+              <div class="count" *ngIf="ownLegacyFilesCount!=''">
+                {{ownLegacyFilesCount }}
+              </div>
+              
               <div class="count--txt">Own Legacy Files</div>
             </div>
           </div>
