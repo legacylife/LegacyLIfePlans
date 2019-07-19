@@ -149,7 +149,7 @@
                     <div class="upgrade--account " *ngIf="isProUser">
                       <header>
                         <div class="add--on">
-                          <mat-checkbox (click)="getAddOnPack()" [checked]="isGetAddOn" [disableRipple]="isGetAddOn" [class.not-allowed]="isGetAddOn"> Add On </mat-checkbox>
+                          <mat-checkbox (click)="getAddOnPack()" [checked]="isGetAddOn" [disabled]="isGetAddOn" [class.not-allowed]="isGetAddOn"> Add On </mat-checkbox>
                         </div>
                         <div class="add--info">
                           <p>Legacy Life Memory Plus!</p>

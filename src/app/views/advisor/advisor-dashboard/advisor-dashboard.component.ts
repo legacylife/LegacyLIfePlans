@@ -10,6 +10,7 @@ import { AppLoaderService } from '../../../shared/services/app-loader/app-loader
 
 import { UserAPIService } from './../../../userapi.service';
 import { s3Details } from '../../../config';
+import { ReferAndEarnModalComponent } from '../legacies/refer-and-earn-modal/refer-and-earn-modal.component';
 const profileFilePath = s3Details.url+'/'+s3Details.profilePicturesPath;
 
 @Component({
@@ -121,4 +122,10 @@ export class AdvisorDashboardComponent implements OnInit {
     })
   }
 
+  openInviteModal(data: any = {}, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
+      width: '720px',
+      disableClose: true,
+    })
+  }
 }

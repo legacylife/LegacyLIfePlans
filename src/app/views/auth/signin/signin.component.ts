@@ -66,6 +66,7 @@ export class SigninComponent implements OnInit {
         localStorage.setItem("endUserSubscriptionStatus", userData.subscriptionStatus);
         localStorage.setItem("endUserAutoRenewalStatus", userData.autoRenewalStatus);
         localStorage.setItem("endUserProSubscription", 'no');
+        localStorage.setItem("endUserSubscriptionAddon", userData.addOnGiven);
 
         this.subscriptionservice.checkSubscription( ( returnArr )=> {})
 
