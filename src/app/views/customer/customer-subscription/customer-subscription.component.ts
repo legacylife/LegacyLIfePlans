@@ -19,6 +19,8 @@ import { SubscriptionService } from '../../../shared/services/subscription.servi
   planInterval:string = ""
   planAmount:number = 0
   planCurrency:string = ""
+  defaultSpace:number = 0
+  spaceDimension:string = 'GB'
 
   constructor(private dialog: MatDialog, private subscriptionservice:SubscriptionService) { }
 
@@ -34,6 +36,8 @@ import { SubscriptionService } from '../../../shared/services/subscription.servi
       this.planInterval = returnArr.planInterval
       this.planAmount   = returnArr.planAmount
       this.planCurrency = returnArr.planCurrency
+      this.defaultSpace = returnArr.defaultSpace
+      this.spaceDimension = returnArr.spaceDimension
     })
   }
 
@@ -41,6 +45,9 @@ import { SubscriptionService } from '../../../shared/services/subscription.servi
      let dialogRef: MatDialogRef<any> = this.dialog.open(CardDetailsComponent, {
        width: '500px',
        disableClose: true,
+       data: {
+        for: 'subscription',
+      }
      })
    }
 

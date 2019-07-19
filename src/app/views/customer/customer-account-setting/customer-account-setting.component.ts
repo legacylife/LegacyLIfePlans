@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { UserAPIService } from './../../../userapi.service';
-import { MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
+import { MatDialog, MatSnackBar, MatSidenav, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { egretAnimations } from '../../../shared/animations/egret-animations';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
@@ -19,6 +19,7 @@ import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { CanComponentDeactivate } from '../../../shared/services/auth/can-deactivate.guard';
 import { SubscriptionService } from '../../../shared/services/subscription.service';
 import  * as moment  from 'moment'
+import { CardDetailsComponent } from 'app/shared/components/card-details-modal/card-details-modal.component';
 
 @Component({
   selector: 'app-customer-account-setting',
@@ -52,6 +53,11 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   planName: string = 'free'
   autoRenewalStatus: string = 'off'
   subscriptionExpireDate: string = ''
+  defaultSpace:number = 0
+  spaceDimension:string = 'GB'
+  addOnSpace:string = ''
+  addOnAmountFor:string = ''
+  addOnAmount:number = 0
 
   isAccountFree: boolean = true
   isSubscribePlan: boolean = false
@@ -64,9 +70,10 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   userSubscriptionDate: any
   today: Date = moment().toDate()
   isProUser:boolean = false
-  
+  getAddOn:boolean = false
   modified = false // display confirmation popup if user click on other link
-  
+  isGetAddOn:boolean = false
+
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder,
     private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
     private loader: AppLoaderService, private picService: ProfilePicService, private confirmService: AppConfirmService,
@@ -126,6 +133,20 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       this.isSubscribePlan = returnArr.isSubscribePlan
       this.planName = returnArr.planName
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
+
+      this.subscriptionservice.getPlanDetails( ( planData )=> {
+        //console.log("planData",planData)
+        this.addOnSpace = planData.metadata.addOnSpace
+        this.spaceDimension = planData.metadata.spaceDimension
+        
+        let subscriptionDate = moment( localStorage.getItem("endUserSubscriptionEndDate") )
+        let diff = Math.round(this.subscriptionservice.getDateDiff( this.today, subscriptionDate.toDate() ))
+        this.addOnAmount = (diff > 364 ? planData.metadata.addOnCharges : ( (planData.metadata.addOnCharges/365)*diff ) ).toFixed(2)
+        let addOnMaxDurationDay = Number (planData.metadata.addOnMaxDurationDay)
+        //console.log("diff",diff,"addOnMaxDurationDay",addOnMaxDurationDay,"typeof addOnMaxDurationDay",typeof addOnMaxDurationDay)
+        this.addOnAmountFor = diff > 364 ? 'per year' : 'for '+(diff)+' days'
+      })
+      this.isGetAddOn = localStorage.getItem('endUserSubscriptionAddon') && localStorage.getItem('endUserSubscriptionAddon') == 'yes' ? true : false
     })
     this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
   }
@@ -353,4 +374,27 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     this.isSubscriptionCanceled = this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled )
   }
 
+  getAddOnPack() {
+    if( this.getAddOn ) {
+      this.getAddOn = false
+    }
+    else{
+      this.getAddOn = true
+    }
+  }
+
+  openCardDetailsModal() {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(CardDetailsComponent, {
+      width: '500px',
+      disableClose: true,
+      data: {
+        for: 'addon',
+      }
+    })
+    dialogRef.afterClosed()
+      .subscribe(res => {
+        this.isGetAddOn = localStorage.getItem('endUserSubscriptionAddon') && localStorage.getItem('endUserSubscriptionAddon') == 'yes' ? true : false
+      })
+  }
+  
 }

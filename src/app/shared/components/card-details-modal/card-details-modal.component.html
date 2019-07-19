@@ -8,7 +8,7 @@
 <form class="llp-form-wrapper">
   <div class="ll--modal--body">
     <div class="plan-details">
-      <h5>Amount to be paid: {{planAmount | currency : planCurrency : 'symbol' : '.0-0'}}</h5>
+      <h5>Amount to be paid: {{planAmount | currency : planCurrency : 'symbol'}}</h5>
     </div>
     <div>
       <div class="new-card-details" [hidden]="hideNewCardForm">
@@ -23,12 +23,12 @@
               <tr>
                 <th>Card Number</th>
                 <th>Expiry</th>
-                <th>Type</th>
+                <!-- <th>Type</th> -->
               </tr>
               <tr>
                 <th>XXXX-XXXX-XXXX-{{oldCard.last4}}</th>
                 <th>{{oldCard.exp_month}} / {{oldCard.exp_year}}</th>
-                <th>{{oldCard.type | titlecase }}</th>
+                <!-- <th>{{oldCard.type | titlecase }}</th> -->
               </tr>
             </tbody>
           </table>

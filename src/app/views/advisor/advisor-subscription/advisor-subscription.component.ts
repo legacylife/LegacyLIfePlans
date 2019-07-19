@@ -29,6 +29,9 @@ import { SubscriptionService } from '../../../shared/services/subscription.servi
     let dialogRef: MatDialogRef<any> = this.dialog.open(CardDetailsComponent, {
       width: '500px',
       disableClose: true,
+      data: {
+        for: 'subscription',
+      }
     })
   }
 

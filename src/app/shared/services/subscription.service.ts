@@ -83,7 +83,13 @@ export class SubscriptionService {
         expireDate            = this.userSubscriptionDate
         this.isPremiumExpired = false
         this.isSubscribePlan  = true
-        this.planName         = 'Standard'
+        if(this.usertype == 'advisor') {
+          this.planName         = 'Standard'
+        }
+        else{
+          this.planName         = 'Legacy Life'
+        }
+        
         localStorage.setItem('endUserProSubscription', 'yes');
       }
       else {
@@ -136,7 +142,9 @@ export class SubscriptionService {
                                 planId : obj.id,
                                 planInterval : obj.interval,
                                 planAmount : ( obj.amount / 100 ),
-                                planCurrency : (obj.currency).toLocaleUpperCase()
+                                planCurrency : (obj.currency).toLocaleUpperCase(),
+                                defaultSpace : obj.metadata.defaultSpace,
+                                spaceDimension : obj.metadata.spaceDimension
                               }
             }
             else if( this.usertype == 'advisor' && obj.id == 'A_MONTHLY' ) {
@@ -155,6 +163,25 @@ export class SubscriptionService {
     }, (err) => {
       this.loader.close();
     })
+  }
+
+  // get plan details
+  getPlanDetails = ( callback ):any => {
+    
+    const req_vars = {
+      query: Object.assign({ _id: this.userId, userType: this.usertype }, {})
+    }
+    
+    this.userapi.apiRequest('post', 'userlist/getplandetails', req_vars).subscribe(result => {
+      
+      const planDetails = result.data.plan
+      let returnArr = {}
+      if( result.status=="success" && planDetails ) {
+          returnArr = planDetails
+      }
+      callback(returnArr);
+    },
+    (err) => { })
   }
 
   /**

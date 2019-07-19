@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserAPIService } from './../../../userapi.service';
 import { StripeService, Elements, Element as StripeElement, ElementsOptions } from 'ngx-stripe';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { SubscriptionService } from 'app/shared/services/subscription.service';
+import { Router } from '@angular/router';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import  * as moment  from 'moment'
 
 @Component({
   selector: 'card-details-modal',
@@ -12,6 +15,7 @@ import { SubscriptionService } from 'app/shared/services/subscription.service';
   styleUrls: ['./card-details-modal.component.scss']
 })
 export class CardDetailsComponent implements OnInit {
+  for:string = 'subscription'
   /**
    * declaration: stripe gateway data
    */
@@ -28,6 +32,7 @@ export class CardDetailsComponent implements OnInit {
   planName:string = ""
   planAmount:number = 0
   planCurrency:string = ""
+  spaceAlloted:string
 
   oldCard: string = ""
   userId = ""
@@ -36,9 +41,14 @@ export class CardDetailsComponent implements OnInit {
   stripePaymentError="";
   hideNewCardForm: boolean = false
   payUsingNewCardCheckbox: boolean = false
-
+  today: Date = moment().toDate()
+  
   constructor(private stripeService: StripeService, private userapi: UserAPIService, private loader: AppLoaderService, 
-    private fb: FormBuilder, private picService: ProfilePicService, private subscriptionservice:SubscriptionService ) {}
+    private fb: FormBuilder, private picService: ProfilePicService, private subscriptionservice:SubscriptionService, 
+    private router: Router, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog ) {
+      // get data from popup to check fro which the popup is open i.e for subscription charges or addon payment
+      this.for = data.for
+    }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -46,7 +56,13 @@ export class CardDetailsComponent implements OnInit {
     this.stripePayment = this.fb.group({
       name: ['', [Validators.required,this.picService.noWhitespaceValidator]]
     });
-    this.getProductDetails()
+    if( this.for == 'subscription' ) {
+      this.getProductDetails()
+    }
+    else{
+      this.getPlanDetails()
+    }
+    console.log("open modal for",this.for)
   }
 
   // get product plan
@@ -57,6 +73,21 @@ export class CardDetailsComponent implements OnInit {
       this.planInterval = returnArr.planInterval
       this.planAmount   = returnArr.planAmount
       this.planCurrency = returnArr.planCurrency
+      this.getCustomerCard()
+    })
+  }
+
+  // get product plan
+  getPlanDetails = (query = {}) => {
+    this.subscriptionservice.getPlanDetails( (returnArr) => {
+      /* this.productId    = returnArr.productId
+      this.planId       = returnArr.planId
+      this.planInterval = returnArr.planInterval */
+      let subscriptionDate = moment( localStorage.getItem("endUserSubscriptionEndDate") )
+      let diff = Math.round(this.subscriptionservice.getDateDiff( this.today, subscriptionDate.toDate() ))
+      this.planAmount   = (diff > 364 ? returnArr.metadata.addOnCharges : ( (returnArr.metadata.addOnCharges/365)*diff )).toFixed(2)//diff > 364 ? 50 :( returnArr.metadata.addOnCharges / diff)
+      this.planCurrency = (returnArr.currency).toLocaleUpperCase()
+      this.spaceAlloted = returnArr.metadata.addOnSpace
       this.getCustomerCard()
     })
   }
@@ -126,7 +157,12 @@ export class CardDetailsComponent implements OnInit {
   //function to generate stripe token
   completePayment = () => {
     if( this.oldCard !== "" && !this.payUsingNewCardCheckbox ) {
-      this.getSubscription();
+      if( this.for == 'subscription' ) {
+        this.getSubscription();
+      }
+      else{
+        this.getAddOn();
+      }
     }
     else {
       const name = this.stripePayment.get('name').value;
@@ -135,7 +171,12 @@ export class CardDetailsComponent implements OnInit {
         .subscribe(result => {
           if (result && result.token) {
             //send token to backend to complete transaction
-            this.getSubscription(result.token.id);
+            if( this.for == 'subscription' ) {
+              this.getSubscription(result.token.id);
+            }
+            else{
+              this.getAddOn(result.token.id);
+            }
             this.loader.close();
           }
           else if (result.error) {
@@ -167,9 +208,31 @@ export class CardDetailsComponent implements OnInit {
       if(data.status=='success') {
         localStorage.setItem('endUserSubscriptionStartDate', data.subscriptionStartDate);
         localStorage.setItem('endUserSubscriptionEndDate', data.subscriptionEndDate);
-        //this.router.navigate(['LoggedoutPage']);
-        
-        //this.userService.changeActiveHrUrl();
+        let url = '/'+this.endUserType+'/account-setting'
+        this.router.navigate([url]);
+      }
+      this.loader.close();
+    }, (err) => {      
+      this.loader.close();
+    })
+  }
+
+  // function to subscribe a paid addon plan
+  getAddOn = ( token = null) => {
+    this.loader.open();
+    const req_vars = {
+      query: Object.assign({ _id: this.userId, userType: this.endUserType, token:token, currency: (this.planCurrency).toLocaleLowerCase(), amount: this.planAmount, spaceAlloted: this.spaceAlloted }, {})
+    }
+    this.userapi.apiRequest('post', 'userlist/getaddon', req_vars).subscribe(result => {
+      const data = result.data
+      if (result.status == "error") {
+        this.loader.close();
+      }
+      else if(result.status=='success') {
+        localStorage.setItem('endUserSubscriptionAddon', 'yes');
+        this.dialog.closeAll(); 
+        //let url = '/'+this.endUserType+'/dashboard'
+        //this.router.navigate([url]);
       }
       this.loader.close();
     }, (err) => {      

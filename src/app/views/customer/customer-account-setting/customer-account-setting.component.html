@@ -53,7 +53,7 @@
         <mat-tab-group class="acc--sett--tab">
           <mat-tab label="Account Details">
             <!-- account details -->
-            <form class="llp-form-wrapper" [formGroup]="ProfileForm" (ngSubmit)="ProfileSubmit()">
+            <form class="llp-form-wrapper" [formGroup]="ProfileForm">
               <div class="account--details">
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
@@ -142,16 +142,15 @@
                     <div class="upgrade--account " *ngIf="isProUser">
                       <header>
                         <div class="add--on">
-                          <mat-checkbox> Add On </mat-checkbox>
+                          <mat-checkbox (click)="getAddOnPack()" [checked]="isGetAddOn" [disableRipple]="isGetAddOn" [class.not-allowed]="isGetAddOn"> Add On </mat-checkbox>
                         </div>
                         <div class="add--info">
                           <p>Legacy Life Memory Plus!</p>
-                          <p class="m-0"><span>10 gb </span> upgrade <span>$50 </span> per year</p>
+                          <p class="m-0"><span>{{addOnSpace}} {{spaceDimension}} </span> upgrade <span>${{addOnAmount}} </span> {{addOnAmountFor}}</p>
                         </div>
                       </header>
                       <div class="text-center">
-                        <button mat-raised-button class="llp--primary--green--btn llp--primary--sm--btn upgrade--btn"
-                          disabled>Upgrade</button>
+                        <button mat-raised-button class="llp--primary--green--btn llp--primary--sm--btn upgrade--btn" [class.not-allowed]="isProUser && !getAddOn && isGetAddOn" [disabled]="isProUser && !getAddOn && isGetAddOn" (click)="isProUser && getAddOn && openCardDetailsModal();">Upgrade</button>
                       </div>
                       <p class="space--info m-0">The memory upgrade is for additional video and picture storage that
                         will offer a total of 17 gigs. In most circumstances the Legacy plan documents will use less
@@ -164,7 +163,7 @@
                 <div fx.Flex="100" class="text-center mt--30">
                   <button mat-raised-button type="button" class="llp--secondary--btn mr-1"
                     [routerLink]="'/customer/dashboard'">Cancel</button>
-                  <button mat-raised-button class="llp--primary--btn" [disabled]="ProfileForm.invalid">Save</button>
+                  <button mat-raised-button class="llp--primary--btn" [disabled]="ProfileForm.invalid" (click)="ProfileSubmit()">Save</button>
                 </div>
               </div>
             </form>
