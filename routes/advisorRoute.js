@@ -18,6 +18,8 @@ const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 const AdvisorActivityLog = require('./../models/AdvisorActivityLog')
 const HiredAdvisors = require('./../models/HiredAdvisors')
+const trust = require('./../models/Trustee.js')
+//ObjectId = require('mongodb').ObjectID;
 const s3 = require('./../helpers/s3Upload')
 var zipcodes = require('zipcodes');
 const advisorActivityLog = require('./../helpers/advisorActivityLog')
@@ -514,6 +516,7 @@ router.post("/recentupdatelist", recentUpdateList)
 router.post("/checkHireAdvisor", checkHireAdvisorRequest)
 router.post("/hireadvisor", hireAdvisorStatus)
 router.post("/hireAdvisorListing", hireAdvisorList)
+router.post("/myPeoplesListing", myPeoplesList)
 router.post("/professionalsList", professionalsListing)
 
 module.exports = router
