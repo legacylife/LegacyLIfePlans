@@ -31,7 +31,7 @@ var constants = {
   ses: {
     key: "AKIAUPQ3GZ6WJFHZAMNB",
     secret: "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",
-    fromEmail: "subodh@arkenea.com",
+    fromEmail: "accountservices@legacylifeplans.com",
   }, // Local - http://localhost:4200 & http://localhost:80
   clientUrl: process.env.clientUrl || 'http://localhost:4200', // staging - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
   mailServerUrl : process.env.mailServerUri || 'http://localhost:8080', // staging - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080

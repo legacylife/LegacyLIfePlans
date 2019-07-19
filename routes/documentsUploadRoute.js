@@ -1309,7 +1309,7 @@ function downloadZipfiles(req,res) {
     const stream = s3.s3.listObjectsV2(params, (err, data)=>{
     try {
       let files = []
-    async.each(data.Contents, (folder, cb)=>{
+     async.each(data.Contents, (folder, cb)=>{
       if (docList.includes(folder.Key)){
         files.push(folder.Key);  
       }      
@@ -1333,13 +1333,16 @@ function downloadZipfiles(req,res) {
             const stream = s3.s3.getObject(getparams).createReadStream();    
             archive.append(stream,{name: filename});                    
         })            
-        archive.finalize();              
-          // let downloadfilePath = 'downloads/'+downloadFileName+'.zip';
-          // let downloadFilenames = downloadFileName+'.zip';
-          // downloadZip(downloadfilePath, downloadFilenames);    
+        archive.finalize();  
+        archive.on('finish', async () => {
+          let downloadfilePath = 'downloads/'+downloadFileName+'.zip';
+          let downloadFilenames = downloadFileName+'.zip';
+          //downloadZip(downloadfilePath, downloadFilenames,res);    
           let result = { "message": "Folders zip download successfully!"}
           console.log(result);
           res.status(200).send(resFormat.rSuccess(result))
+        });            
+          
       } catch (error) {
         res.status(401).send(resFormat.rError({message :error}))  
       }
@@ -1353,16 +1356,20 @@ function downloadZipfiles(req,res) {
 }
 }
 
-function downloadZip(downloadfilePath,downloadFilenames) {
+function downloadZip(downloadfilePath,downloadFilenames,res) {
     var downLoadparams = {Bucket: constants.s3Details.bucketName,Key:downloadfilePath};
     try {
-      const streams = s3.s3.getObject(downLoadparams).createReadStream();    
-      res.set({
-        'Content-Disposition': 'attachment; filename='.downloadFilenames,
-        'Content-Type': 'file/zip; charset=utf-8'
-      });
+      const streams = s3.s3.getObject(downLoadparams).createReadStream(); 
+     
+   
       streams.pipe(res);
-      res.status(200).send(resFormat.rSuccess({message :"Zip File download successfully"}))  
+      // console.log("download file name >>>>>",downloadFilenames)
+      // res.set({
+      //   'Content-Disposition': `attachment; filename=`+downloadFilenames,
+      //   'Content-Type': 'file/zip; charset=utf-8'
+      // });
+      // streams.pipe(res);
+      // res.status(200).send(resFormat.rSuccess({message :"Zip File download successfully"}))  
     } catch (error) {
       res.status(401).send(resFormat.rError({message :error}))  
     }     
