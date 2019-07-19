@@ -323,10 +323,43 @@ function getProductDetails(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      stripe.plans.list( { limit: 3 }, function(err, plans) {
+      stripe.plans.list( { limit: 3, active:true }, function(err, plans) {
           // asynchronously called
           res.status(200).send(resFormat.rSuccess( {plans, "message": "Subscription Plans"}))    
       });
+    }
+  })
+}
+
+function getPlanDetails(req, res) {
+  let requestParam = req.body.query
+  let param = {query :{_id:requestParam._id, userType:requestParam.userType }}
+  let { query } = param;
+  let fields = {}
+  User.findOne(query, fields, function (err, userProfile) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      if( userProfile.stripeCustomerId ) {
+        let subscriptionDetails = userProfile.subscriptionDetails ? userProfile.subscriptionDetails : null
+        let planId = subscriptionDetails != null ? subscriptionDetails[(subscriptionDetails.length-1)]['planId'] : ""
+        if( planId != "" ) {
+          stripe.plans.retrieve(
+            planId,
+            function(err, plan) {
+              if (err) {
+                res.status(401).send(resFormat.rError(err))
+              }
+              res.status(200).send(resFormat.rSuccess( {plan, "message": "Plan Details"}))    
+          });
+        }
+        else{
+          res.status(401).send(resFormat.rError(err))
+        }
+      }
+      else{
+        res.status(401).send(resFormat.rError(err))
+      }
     }
   })
 }
@@ -450,6 +483,8 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                                 "status" : 'paid',
                                 "autoRenewal": subscription.collection_method == 'charge_automatically' ? true : false,
                                 "paymentMode" : 'online',
+                                "defaultSpace" : subscription.items.data[0]['plan']['metadata']['defaultSpace'],
+                                "spaceDimension" : subscription.items.data[0]['plan']['metadata']['spaceDimension'],
                                 "paidOn" : new Date(),
                                 "createdOn" : new Date(),
                                 "createdBy" : mongoose.Types.ObjectId(requestParam._id)
@@ -465,6 +500,111 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
           res.send(resFormat.rError(err))
         } else {
           res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
+        }
+      })
+    }
+  });
+}
+
+/**
+ * Get addon subscription for customer
+ * @param {*} req 
+ * @param {*} res 
+ */
+function getAddon(req, res) {
+  let requestParam = req.body.query
+  let param = {query :{_id:requestParam._id, userType:requestParam.userType }}
+  let { query } = param;
+  let fields = {}
+  User.findOne(query, fields, function (err, userProfile) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    }
+    else {
+      let stripeCustomerId = ""
+      let planId = requestParam.planId
+
+      /**
+       * Check user have stripe customer id or not. If not create stripe customer id.
+       */
+      if( userProfile.stripeCustomerId ) {
+        stripeCustomerId = userProfile.stripeCustomerId;
+        //If user want to pay with new card, update card details against the user in stripe
+        if( requestParam.token != null ) {
+          stripe.customers.update(
+            stripeCustomerId,
+            { source : requestParam.token },
+              function(err, customer) {
+              if ( err ) {
+                res.status(401).send(resFormat.rError(err))
+              }
+              chargeForAddon( userProfile, stripeCustomerId, requestParam, res )
+            }
+          );
+        }
+        else{
+          chargeForAddon( userProfile, stripeCustomerId, requestParam, res )
+        }
+      }
+      else{
+        stripe.customers.create({
+          email:userProfile.username,
+          description: 'Customer for '+userProfile.username,
+          source: requestParam.token // obtained with Stripe.js
+        }, function(err, customer) {
+          if( err ) {
+            res.status(401).send(resFormat.rError(err))
+          }
+          else{
+            stripeCustomerId = customer.id
+            chargeForAddon( userProfile, stripeCustomerId, requestParam, res )
+          }
+        });
+      }
+    }
+  })
+}
+
+/**
+ * Apply to addon plan and update the object against to user
+ */
+function chargeForAddon( userProfile, stripeCustomerId, requestParam, res ) {
+  
+  stripe.charges.create({
+    customer: stripeCustomerId,
+    amount: (requestParam.amount)*100,
+    currency: requestParam.currency,
+    description: "Addon Charge for "+userProfile.username,
+    capture: true,
+    receipt_email: userProfile.username,
+  }, function(err, charge) {
+    if (err) {
+      res.send(resFormat.rError(err))
+    }
+    else {
+      let addOnDetails = {"_id" : objectId,
+                          "chargeId" : charge.id,
+                          "currency" : charge.currency,
+                          "amount" : (charge.amount)/100,
+                          "status" : 'paid',
+                          "paymentMode" : 'online',
+                          "spaceAlloted" : requestParam.spaceAlloted,
+                          "spaceDimension" : 'GB',
+                          "paidOn" : new Date(),
+                          "createdOn" : new Date(),
+                          "createdBy" : mongoose.Types.ObjectId(requestParam._id)
+                        };
+      let userSubscriptionAddOn = []
+      if( userProfile.addOnDetails && userProfile.addOnDetails.length > 0 ) {
+        userSubscriptionAddOn = userProfile.addOnDetails
+      }
+      userSubscriptionAddOn.push(addOnDetails)
+      //Update user details
+      User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, addOnDetails : userSubscriptionAddOn } }, function (err, updated) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
         }
       })
     }
@@ -564,8 +704,10 @@ function cancelSubscription(req, res) {
 
 router.post(["/autorenewalupdate"], autoRenewalUpdate);
 router.post(["/cancelsubscription"], cancelSubscription);
+router.post(["/getaddon"], getAddon);
 router.post(["/getsubscription"], getSubscription);
 router.post(["/getproductdetails"], getProductDetails);
+router.post(["/getplandetails"], getPlanDetails);
 router.post(["/getcustomercard"], getCustomerCard);
 router.post("/list", list);
 router.post("/addmember", addNewMember);
