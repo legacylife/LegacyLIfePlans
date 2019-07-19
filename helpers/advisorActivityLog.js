@@ -5,7 +5,7 @@ const User = require('./../models/Users')
 
 
 
-const updateActivityLog = (customerId, advisorId, sectionName, hiredAdvisorRefId="") => {
+const updateActivityLog = (customerId, advisorId, sectionName, hiredAdvisorRefId ="", trusteeName = "") => {
   console.log("hirejkakjhkashd >>>",hiredAdvisorRefId)
   return new Promise(function (resolve, reject) {
 
@@ -35,6 +35,10 @@ const updateActivityLog = (customerId, advisorId, sectionName, hiredAdvisorRefId
         }
         if (sectionName == 'contact') {
           advisorLog.activityMessage = " contacted you";
+        }
+
+        if (sectionName == 'trustee') {          
+          advisorLog.activityMessage = " added "+ trusteeName + " as a trustee";
         }
 
         advisorLog.save({}, function (err, newEntry) {

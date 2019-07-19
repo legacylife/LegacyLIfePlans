@@ -15,6 +15,8 @@ var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const emailTemplates = require('./emailTemplatesRoute.js')
 const trust = require('./../models/Trustee.js')
+const HiredAdvisors = require('./../models/HiredAdvisors')
+const advisorActivityLog = require('./../helpers/advisorActivityLog')
 ObjectId = require('mongodb').ObjectID;
 
 const actitivityLog = require('./../helpers/fileAccessLog')
@@ -50,46 +52,46 @@ function trustsList(req, res) {
 
 function getUserDetails(req, res) {
   let { query } = req.body;
-  if(query.email){ 
-  trust.findOne(query, {}, function (err, trustDetails) {
-    if (err) {
-      res.status(401).send(resFormat.rError(err))
-    } else {
-      if(trustDetails){        
-          message = "'"+trustDetails.email+"' has already been invited as a trustee.";
+  if (query.email) {
+    trust.findOne(query, {}, function (err, trustDetails) {
+      if (err) {
+        res.status(401).send(resFormat.rError(err))
+      } else {
+        if (trustDetails) {
+          message = "'" + trustDetails.email + "' has already been invited as a trustee.";
           status = 'Exist';
-          let result = { "code": status,"message": message }
+          let result = { "code": status, "message": message }
           res.status(200).send(resFormat.rSuccess(result));
-      }else{      
-        let fields = {_id: 1,userType: 1,firstName:1,lastName:1, status: 1}      
-        User.findOne({"username":query.email}, fields, function (err, userDetails) {
-          if (err) {
-            res.status(401).send(resFormat.rError(err))
-          } else {
-            if(userDetails && userDetails.userType=='advisor'){
-              message = "You can't send invitaion '"+query.email+"' this email id is register as advisor.";
-              status = 'Exist';
-            }else if(userDetails && userDetails.userType=='sysadmin'){
-              message = "You can't send invitaion '"+query.email+"' this email id is register as system admin.";
-              status = 'Exist';           
-            }else if(userDetails && query.customerId==userDetails._id){
-              message = "This email is the owner of Legacy Life plans and cannot be a trustee. Please enter another email ID";
-              status = 'Exist';           
-            }else{
-              message = "";       
-              status = 'success';
-            }              
-          }          
-          let result = { "code": status,"message": message,"userDetails":userDetails }
-          res.status(200).send(resFormat.rSuccess(result));
-        })      
-      }     
-    }
-   }) 
-  } else{
-    message = "Please enter email id"; status = 'Exist'; 
-    let result = { "code": status,"message": message,"userDetails":'' }
-    res.status(200).send(resFormat.rSuccess(result));      
+        } else {
+          let fields = { _id: 1, userType: 1, firstName: 1, lastName: 1, status: 1 }
+          User.findOne({ "username": query.email }, fields, function (err, userDetails) {
+            if (err) {
+              res.status(401).send(resFormat.rError(err))
+            } else {
+              if (userDetails && userDetails.userType == 'advisor') {
+                message = "You can't send invitaion '" + query.email + "' this email id is register as advisor.";
+                status = 'Exist';
+              } else if (userDetails && userDetails.userType == 'sysadmin') {
+                message = "You can't send invitaion '" + query.email + "' this email id is register as system admin.";
+                status = 'Exist';
+              } else if (userDetails && query.customerId == userDetails._id) {
+                message = "This email is the owner of Legacy Life plans and cannot be a trustee. Please enter another email ID";
+                status = 'Exist';
+              } else {
+                message = "";
+                status = 'success';
+              }
+            }
+            let result = { "code": status, "message": message, "userDetails": userDetails }
+            res.status(200).send(resFormat.rSuccess(result));
+          })
+        }
+      }
+    })
+  } else {
+    message = "Please enter email id"; status = 'Exist';
+    let result = { "code": status, "message": message, "userDetails": '' }
+    res.status(200).send(resFormat.rSuccess(result));
   }
 }
 
@@ -102,20 +104,20 @@ function trustFormUpdate(req, res) {
   logData.fileName = proquery.firstName;
   logData.folderName = 'Trustee';
   logData.subFolderName = 'Add Trustee';
-  if(query._id){   
-    trust.findOne(query, function (err, custData) {      
+  if (query._id) {
+    trust.findOne(query, function (err, custData) {
       if (err) {
         let result = { "message": "Something Wrong!" }
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
           let resText = 'details added';
-          if (custData.firstName){
+          if (custData.firstName) {
             resText = 'details updated';
           }
-          let { proquery } = req.body;   
-          
-          if(proquery.trustId && proquery.trustId!='0')
+          let { proquery } = req.body;
+
+          if (proquery.trustId && proquery.trustId != '0')
             proquery.status = 'Active';
 
           proquery.trustId && proquery.trustId != '' ? proquery.trustId = proquery.trustId : delete proquery.trustId;
@@ -125,8 +127,8 @@ function trustFormUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              stat = sendTrusteeMail(proquery.email,proquery.messages,proquery.folderCount,extrafields.inviteByName,proquery.firstName,clientUrl,"Reminder: ");          
-              let result = { "message": "Trustee "+resText+" successfully" }
+              stat = sendTrusteeMail(proquery.email, proquery.messages, proquery.folderCount, extrafields.inviteByName, proquery.firstName, clientUrl, "Reminder: ");
+              let result = { "message": "Trustee " + resText + " successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -136,37 +138,44 @@ function trustFormUpdate(req, res) {
         }
       }
     })
-  } else { 
-            let { proquery } = req.body;
-            var insert = new trust();
-            insert.customerId = query.customerId;
-            insert.firstName = proquery.firstName;  
-            insert.lastName = proquery.lastName;
-            insert.relation = proquery.relation;
-            insert.email = proquery.email;
-            insert.messages = proquery.messages;
-            insert.selectAll = proquery.selectAll;
-            insert.userAccess = proquery.userAccess;
-            insert.filesCount = proquery.filesCount;
-            insert.folderCount = proquery.folderCount;
-            if(proquery.trustId!=''){
-              insert.trustId = ObjectId(proquery.trustId);
-              insert.status = 'Active';
-            }else{
-              insert.status = 'Pending';
-            }            
-            insert.createdOn = new Date();
-            insert.modifiedOn = new Date();           
-            insert.save({$set:proquery}, function (err, newEntry) {
+  } else {
+    let { proquery } = req.body;
+    var insert = new trust();
+    insert.customerId = query.customerId;
+    insert.firstName = proquery.firstName;
+    insert.lastName = proquery.lastName;
+    insert.relation = proquery.relation;
+    insert.email = proquery.email;
+    insert.messages = proquery.messages;
+    insert.selectAll = proquery.selectAll;
+    insert.userAccess = proquery.userAccess;
+    insert.filesCount = proquery.filesCount;
+    insert.folderCount = proquery.folderCount;
+    if (proquery.trustId != '') {
+      insert.trustId = ObjectId(proquery.trustId);
+      insert.status = 'Active';
+    } else {
+      insert.status = 'Pending';
+    }
+    insert.createdOn = new Date();
+    insert.modifiedOn = new Date();
+    insert.save({ $set: proquery }, function (err, newEntry) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
 
-        /*logData.customerId = query.customerId;
-        logData.fileId = newEntry._id;
-        actitivityLog.updateActivityLog(logData);*/
+        // Get all advisor of current logged in customers
+        HiredAdvisors.find({ customerId: query.customerId }, function (err, data) {
+          if (data.length > 0) {
+            for (var i = 0; i < data.length; i++) {
+              let trusteeName = proquery.firstName +' ' + proquery.lastName;
+              advisorActivityLog.updateActivityLog(query.customerId, data[i].advisorId, 'trustee','',trusteeName);
+            }
+          } 
+        })
         
-        stat = sendTrusteeMail(proquery.email,proquery.messages,proquery.folderCount,extrafields.inviteByName,proquery.firstName,clientUrl,""); 
+        
+        stat = sendTrusteeMail(proquery.email, proquery.messages, proquery.folderCount, extrafields.inviteByName, proquery.firstName, clientUrl, "");
         let result = { "message": "Trustee added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
@@ -174,22 +183,22 @@ function trustFormUpdate(req, res) {
   }
 }
 
-function sendTrusteeMail(emailId,comment,number,inviteByName,inviteToName,clientUrl,Remider) {
-   emailTemplates.getEmailTemplateByCode("InviteTrustee").then((template) => {
+function sendTrusteeMail(emailId, comment, number, inviteByName, inviteToName, clientUrl, Remider) {
+  emailTemplates.getEmailTemplateByCode("InviteTrustee").then((template) => {
     if (template) {
       template = JSON.parse(JSON.stringify(template));
-      let body = template.mailBody.replace("{inviteToName}", inviteToName);                      
+      let body = template.mailBody.replace("{inviteToName}", inviteToName);
       body = body.replace("{number}", number);
-      body = body.replace("{inviteByName}",inviteByName);
-      body = body.replace("{inviteByName}",inviteByName);
-      body = body.replace("{inviteByName}",inviteByName);
-      body = body.replace("{inviteByName}",inviteByName);
+      body = body.replace("{inviteByName}", inviteByName);
+      body = body.replace("{inviteByName}", inviteByName);
+      body = body.replace("{inviteByName}", inviteByName);
+      body = body.replace("{inviteByName}", inviteByName);
       body = body.replace("{comment}", comment);
       body = body.replace("{LINK}", clientUrl);
-      body = body.replace("{SERVER_LINK}", clientUrl);      
+      body = body.replace("{SERVER_LINK}", clientUrl);
       const mailOptions = {
         to: emailId,
-        subject: Remider+''+template.mailSubject,
+        subject: Remider + '' + template.mailSubject,
         html: body
       }
       sendEmail(mailOptions);
@@ -204,26 +213,26 @@ function trustResendInvitation(req, res) {
   let { query } = req.body;
   let { extrafields } = req.body;
   clientUrl = constants.clientUrl + "/customer/signup";
-   trust.findOne(query, {}, function (err, trustDetails) {
+  trust.findOne(query, {}, function (err, trustDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      stat = sendTrusteeMail(trustDetails.email,trustDetails.messages,trustDetails.folderCount,extrafields.inviteByName,trustDetails.firstName,clientUrl,"Reminder: "); 
+      stat = sendTrusteeMail(trustDetails.email, trustDetails.messages, trustDetails.folderCount, extrafields.inviteByName, trustDetails.firstName, clientUrl, "Reminder: ");
       let result = { "message": "Trustee invitation send successfully!" }
       res.status(200).send(resFormat.rSuccess(result))
     }
-  }) 
+  })
 }
 
 function getTrusteeDetails(req, res) {
   let { query } = req.body;
-   trust.findOne(query, {}, function (err, trustDetails) {
+  trust.findOne(query, {}, function (err, trustDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
       res.status(200).send(resFormat.rSuccess(trustDetails));
     }
-  }) 
+  })
 }
 
 
