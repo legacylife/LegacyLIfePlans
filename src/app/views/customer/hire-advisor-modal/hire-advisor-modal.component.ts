@@ -30,13 +30,14 @@ export class HireAdvisorComponent implements OnInit, AfterViewInit  {
   trust_id: string;
   headerName = true;
   ids: string;
+  updates: string;
   alreadyRequestSend:boolean = true;
   row: any = [];
   constructor(
     private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private stepper: MatStepperModule,
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService,@Inject(MAT_DIALOG_DATA) public data: any
-  ) {this.ids = data.id;}
+  ) {this.ids = data.id;this.updates = data.update;}
 
   ngOnInit() {
     this.buildItemForm();
@@ -96,7 +97,39 @@ checkAdvisorView(insert = null) {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
         if(result.data.code=='Exist'){
-          this.alreadyRequestSend = false;
+          this.row = result.data.RequestData;
+          this.selectedProfileId = result.data.RequestData._id;   
+          if(this.updates=='update'){
+            this.alreadyRequestSend = true;
+            this.trusteeFormGroup.controls['selectAll'].setValue(this.row.selectAll);
+            this.trusteeFormGroup.controls['PersonalProfileManagement'].setValue(this.row.userAccess.PersonalProfileManagement);
+            this.trusteeFormGroup.controls['IDBoxManagement'].setValue(this.row.userAccess.IDBoxManagement);
+            this.trusteeFormGroup.controls['MyProfessionalsManagement'].setValue(this.row.userAccess.MyProfessionalsManagement);
+            this.trusteeFormGroup.controls['EstateManagement'].setValue(this.row.userAccess.EstateManagement);          
+            this.trusteeFormGroup.controls['HealthcareManagement'].setValue(this.row.userAccess.HealthcareManagement);
+            this.trusteeFormGroup.controls['PersonalAffairsManagement'].setValue(this.row.userAccess.PersonalAffairsManagement);
+            this.trusteeFormGroup.controls['DevicesManagement'].setValue(this.row.userAccess.DevicesManagement);
+            this.trusteeFormGroup.controls['ElectronicMediaManagement'].setValue(this.row.userAccess.ElectronicMediaManagement);
+            this.trusteeFormGroup.controls['RealEstateManagement'].setValue(this.row.userAccess.RealEstateManagement);
+            this.trusteeFormGroup.controls['emergencyContactsManagement'].setValue(this.row.userAccess.emergencyContactsManagement);
+            this.trusteeFormGroup.controls['VehiclesManagement'].setValue(this.row.userAccess.VehiclesManagement);
+            this.trusteeFormGroup.controls['AssetsManagement'].setValue(this.row.userAccess.AssetsManagement);
+            this.trusteeFormGroup.controls['InsuranceManagement'].setValue(this.row.userAccess.InsuranceManagement);
+            this.trusteeFormGroup.controls['FinancesManagement'].setValue(this.row.userAccess.FinancesManagement);
+            this.trusteeFormGroup.controls['DebtManagement'].setValue(this.row.userAccess.DebtManagement);
+            this.trusteeFormGroup.controls['PetsManagement'].setValue(this.row.userAccess.PetsManagement);
+            this.trusteeFormGroup.controls['YoungChildrenManagement'].setValue(this.row.userAccess.YoungChildrenManagement);
+            this.trusteeFormGroup.controls['ChildParentDisabilityManagement'].setValue(this.row.userAccess.ChildParentDisabilityManagement);
+            this.trusteeFormGroup.controls['FriendNeighborCareManagement'].setValue(this.row.userAccess.FriendNeighborCareManagement);
+            this.trusteeFormGroup.controls['TimeCapsuleManagement'].setValue(this.row.userAccess.TimeCapsuleManagement);
+            this.trusteeFormGroup.controls['LegacyLifeLettersMessagesManagement'].setValue(this.row.userAccess.LegacyLifeLettersMessagesManagement);
+            this.trusteeFormGroup.controls['FuneralPlansManagement'].setValue(this.row.userAccess.FuneralPlansManagement);
+            this.trusteeFormGroup.controls['ObituaryManagement'].setValue(this.row.userAccess.ObituaryManagement);
+            this.trusteeFormGroup.controls['CelebrationLifeManagement'].setValue(this.row.userAccess.CelebrationLifeManagement);
+            this.trusteeFormGroup.controls['profileId'].setValue(this.selectedProfileId);
+          }else{
+            this.alreadyRequestSend = false;
+          }          
         }        
       }
     }, (err) => {

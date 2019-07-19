@@ -41,7 +41,7 @@ export class CustomerMyTrusteeComponent implements OnInit {
     let req_vars = {};
     if(search=='All'){
        req_vars = {
-        query: Object.assign({ customerId: this.userId}, query),
+        query: Object.assign({ customerId: this.userId, status: { $nin:['Deleted'] }}, query),
         fields: {},
         order: {"createdOn": sort},
       }

@@ -2,7 +2,27 @@
 @import '../customer-my-people/customer-my-people.component.scss';
 
 .degree--names{
-    height: 92px;
+    height: 57px;
     overflow: auto;
     align-items: flex-start !important;
+}
+
+
+.status--pending{
+    background-color: #f6f7f7;
+    color: #c72128;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .pending{
+        color: #c72128;
+        font-size: 16px;
+        margin-top: 3px;
+    }
+    .mat-icon{
+        height: 30px;
+        width: 30px;
+        font-size: 30px;
+    }
 }

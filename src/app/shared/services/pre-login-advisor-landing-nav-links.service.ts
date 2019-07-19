@@ -67,6 +67,7 @@ export class LandingAdvisorNavService {
   // Or you can customize this method to supply different menu for
   // different user type.
   publishNavigationChange(menuType: string) {
+    
     switch (menuType) {
       // case 'separator-menu':
       //   this.menuItems.next(this.separatorMenu);

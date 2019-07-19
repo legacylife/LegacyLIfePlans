@@ -132,11 +132,10 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       zipcode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
       businessPhoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
       bioText: new FormControl('', Validators.required),
-      //websiteLinks: this.fb.array(this.websiteLinks.map(elem => this.createWebsiteGroup(elem))),
       websiteLinks: this.fb.array([this.fb.group({ links: ['', Validators.required] })]),
       awardsYears: this.fb.array([this.fb.group({ title: ['', Validators.required], year: ['', Validators.required] })]),
-      specialitesGroup:  this.fb.array([this.fb.group({ name: ['', Validators.required] })]),
-      hobbiesGroup:  this.fb.array([this.fb.group({ name: ['', Validators.required] })]),
+      //specialitesGroup:  this.fb.array([this.fb.group({ name: [''] })]),
+      //hobbiesGroup:  this.fb.array([this.fb.group({ name: [''] })]),
       socialMediaLinks: new FormGroup({
         facebook: new FormControl(''),
         twitter: new FormControl(''),

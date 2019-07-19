@@ -28,7 +28,8 @@
               <p mat-line class="when">
                 {{row?.modifiedOn | date: 'MMM dd, yyyy'}}
               </p>
-              <button mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu" *ngIf="logData.sectionName == 'hired'">
+              <!-- *ngIf="logData.sectionName == 'hired'" -->
+              <button mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu">  
                 <mat-icon>more_vert</mat-icon>
               </button>
             </mat-list-item>
@@ -37,7 +38,7 @@
                 <mat-icon>check</mat-icon> Confirm hiring</button>
               <button mat-menu-item class="reject"  *ngIf="logData.actionTaken == 'Pending'" (click)="hireAdvisor(logData?.hiredAdvisorRefId,'rejectHire','Pending',logData?._id)">
                 <mat-icon>cancel</mat-icon> Reject hiring</button>
-              <button mat-menu-item>
+              <button mat-menu-item [routerLink]="['/advisor/leads-details', logData?.customerId]">
                 <mat-icon>assignment</mat-icon> View profile</button>
             </mat-menu>
           </mat-nav-list>
@@ -55,10 +56,10 @@
                   <mat-divider></mat-divider>
                 </mat-card-title>
                 <mat-card-content class="invite--body--section">
-                  <h4 class="count">0<span>/45</span></h4>
+                  <h4 class="count">{{invitedMembersCount}}<span>/45</span></h4>
                   <p class="daysgo">26 days to go</p>
                   <p class="invites">Invites sent in this month</p>
-                  <button mat-raised-button class="llp--primary--btn">Invite Now</button>
+                  <button mat-raised-button class="llp--primary--btn" (click)="openInviteModal({})">Invite Now</button>
                 </mat-card-content>
               </mat-card>
             </div>
@@ -71,11 +72,11 @@
                       <mat-divider></mat-divider>
                     </mat-card-title>
                     <mat-card-content class="invite--body--section">
-                      <h4 class="count">0<span></span></h4>
+                      <h4 class="count">{{LeadsCount}}<span></span></h4>
                       <div class="adjust">
                           <p class="invites">0 users have shown 
                               interest</p>
-                          <button mat-raised-button class="llp--primary--btn">View All</button>
+                          <button mat-raised-button class="llp--primary--btn" [routerLink]="['/advisor/leads']">View All</button>
                       </div>
                     </mat-card-content>
                   </mat-card>

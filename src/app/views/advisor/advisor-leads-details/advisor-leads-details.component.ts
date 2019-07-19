@@ -24,14 +24,17 @@ export class AdvisorLeadsDetailsComponent implements OnInit {
   about: string;
   userId : string;
   tootltipList: string;
+  urlData:any={};
+  ownLegacyFilesCount:string='';
   @ViewChild(MatBottomSheet) private sideNav: MatBottomSheet;
   constructor(private _bottomSheet: MatBottomSheet, _elementRef: ElementRef, private route: ActivatedRoute,private userapi: UserAPIService,private router: Router) { }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId"); 
-    const locationArray = location.href.split('/')
-    this.selectedProfileId = locationArray[locationArray.length - 1];
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
     this.tootltipList = 'Bernice Hutchison, Mark McLoud, Christopher Harrison, Charles Nicholson, Melissa Boynton';
-    this.getUserView();
+    this.getUserView();    
+    this.getOwnLegacyFilesCount();
   }
 
   getUserView = (query = {}, search = false) => {
@@ -54,18 +57,18 @@ export class AdvisorLeadsDetailsComponent implements OnInit {
     })
   }
 
-
-
-//  trustee/acting-as-trustee
   openMorePeople(): void {
     this._bottomSheet.open(ProspectPeoplesModalComponent);
   }
 
-  // openBottomSheet() {
-  //   const bottomSheet: MatBottomSheetRef<any> = this._bottomSheet.open(ProspectPeoplesModalComponent, {
-  //     width: '720px'
-  //   });
-  // }
-
-
+  getOwnLegacyFilesCount(){
+    const params = {
+      query: Object.assign({ customerId: this.selectedProfileId, status: 'Active'})
+    }
+    this.userapi.apiRequest('post', 'lead/get-own-legacy-files-count', params).subscribe(result => {
+        this.ownLegacyFilesCount = result.data.ownLegacyFilesCount
+    }, (err) => {
+      console.error("error : ", err)
+    })
+  }
 }
