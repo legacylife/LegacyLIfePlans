@@ -30,6 +30,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ThemeService } from '../../../services/theme.service';
 // import PerfectScrollbar from 'perfect-scrollbar';
 import { LayoutService } from '../../../services/layout.service';
+import { NavigationService } from '../../../services/navigation.service';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -54,6 +55,7 @@ export class AdvisorLandingLayoutComponent implements OnInit, AfterViewInit {
     public translate: TranslateService,
     public themeService: ThemeService,
     private layout: LayoutService,
+    private navigation: NavigationService,
     private media: ObservableMedia
   ) {
     // Close sidenav after route change in mobile
@@ -67,6 +69,7 @@ export class AdvisorLandingLayoutComponent implements OnInit, AfterViewInit {
     translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
   }
   ngOnInit() {
+    this.navigation.publishNavigationChange("advisor")
     this.layoutConf = this.layout.layoutConf;
     this.moduleLoaderSub = this.router.events.subscribe(event => {
       if(event instanceof RouteConfigLoadStart || event instanceof ResolveStart) {

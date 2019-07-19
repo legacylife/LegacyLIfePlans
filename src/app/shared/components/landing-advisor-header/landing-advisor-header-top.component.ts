@@ -85,8 +85,10 @@ export class LandingAdvisorHeaderTopComponent implements OnInit, OnDestroy {
     var content = document.getElementById("advisor-home-content")
     // console.log(content)
     var scrolldiv = document.getElementById(scrolldivid)
-    var topPos = scrolldiv.offsetTop;
-    content.scrollTop = topPos;
+    var topPos = scrolldiv ? scrolldiv.offsetTop : 0;
+    if(content) {
+      content.scrollTop = topPos;
+    }
 
     // var scrolldiv = document.getElementById(scrolldivid)
     // scrolldiv.scrollIntoView()

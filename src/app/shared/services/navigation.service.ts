@@ -173,7 +173,8 @@ export class NavigationService {
   preAdvisorMenu: IMenuItem[] = [
 
     {
-      name: 'About Us',
+      // name: 'About Us',
+      name: '123456',
       type: 'extLink',
       icon: 'image_aspect_ratio',
       state: '#ad-about-us '
@@ -253,7 +254,7 @@ export class NavigationService {
       name: 'Contact Us',
       type: 'extLink',
       icon: 'phone',
-      state: 'contact-us'
+      state: '#contact-us'
     },
     {
       name: 'For Advisor',
