@@ -63,7 +63,7 @@ import { LettersMessagesDetailsComponent } from './customer-home/legacy-life-let
 import { ElectronicMediaDetailsComponent } from './customer-home/passwords-digital-assets/electronic-media/electronic-media-details/electronic-media-details.component';
 import { TodosListingComponent } from '../todos-listing/todos-listing.component';
 import { ProUserAuthGuard as ProUserGuard } from '../../shared/services/auth/prouserauth.guard';
-
+console.log("cutostomer routing...")
 export const CustomerRoutes: Routes = [
   {
     path: 'signup',
@@ -446,24 +446,25 @@ export const CustomerRoutes: Routes = [
     ]
   },
   {
-    path: 'trustees',
+    path: 'my-peoples',//path: 'trustees',
     component: CustomerLayoutComponent,
-    data: { title: '' },
+    // data: { title: '' },
     children: [
       {
         path: '',
         component: CustomerTrusteesComponent,
         canActivate: [UserAuthGuard],
-        data: { title: 'Trustees List' },
+        // data: { title: 'Trustees List' },
         children: [
           {
-            path: '',
+            path: 'trustees',
             component: CustomerMyTrusteeComponent,
             data: { title: 'Trustees List' }
           },
           {
-            path: 'my-people',
-            component: CustomerMyPeopleComponent
+            path: '',
+            component: CustomerMyPeopleComponent,
+            data: { title: 'My Peoples List' }
           },          
           {
             path: 'hired-advisor',
