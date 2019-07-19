@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CountUp, CountUpOptions } from 'countup.js';
 import * as $ from 'jquery';
 import { debounce } from 'lodash';
+import { UserAPIService } from 'app/userapi.service';
 
 
 @Component({
@@ -179,13 +180,42 @@ export class HomeComponent implements OnInit, OnDestroy {
   endVal4: number = 320
   opts: CountUpOptions;
 
-  constructor(private router: Router) { }
+  /**
+   * declaration: user plan data
+   */
+  productId:any = ""
+  planId:any = ""
+  planInterval:string = ""
+  planAmount:number = 0
+  planCurrency:string = ""
+  
+  constructor(private router: Router, private userapi: UserAPIService) { }
 
   ngOnInit() {
     this.opts = {
       duration: 2
     };
     window.addEventListener('scroll', this.isScrolledIntoViewOne, true);
+
+    
+    this.userapi.apiRequest('post', 'auth/getproductdetails', {}).subscribe(result => {
+      const plans = result.data.plans
+      let returnArr = {}
+      if( plans && result.status=="success" && plans.data.length>0 ) {
+        plans.data.forEach( obj => {
+          if( obj.id == 'C_YEARLY' ) {
+            this.productId =  obj.product
+            this.planId = obj.id
+            this.planInterval = obj.interval
+            this.planAmount = ( obj.amount / 100 )
+            this.planCurrency = (obj.currency).toLocaleUpperCase()
+          }
+        })
+      }
+    },
+    (err) => {
+      
+    })
   }
   ngOnDestroy() {
     window.removeEventListener('scroll', this.isScrolledIntoViewOne, true);

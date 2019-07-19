@@ -159,7 +159,7 @@ export class CardDetailsComponent implements OnInit {
       query: Object.assign({ _id: this.userId, userType: this.endUserType, token:token, planId: this.planId }, {})
     }
     this.userapi.apiRequest('post', 'userlist/getsubscription', req_vars).subscribe(result => {
-      const data = result
+      const data = result.data
       if (result.status == "error") {
         this.loader.close();
       }
