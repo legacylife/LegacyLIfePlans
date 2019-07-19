@@ -14,35 +14,39 @@
       </mat-card-header>
       <mat-card-content class="appointees--wrapper" *ngIf="showAdvisorListing">
         <mat-card class="appointees--section p-0 {{row.status === 'pending' ? 'pending' : ''}}" *ngFor="let row of advisorListing">      
-          <mat-card-header class="m-0">
-            <mat-card-title class="m-0">
-              <div class="appointees--pic">
-                  <img src="{{getProfileImage(row.advisorId?.profilePicture)}}" />
+            <mat-card-header class="m-0">
+                <mat-card-title class="m-0">
+                  <div class="appointees--pic">
+                      <img src="{{getProfileImage(row.advisorId?.profilePicture)}}" />
+                  </div>
+                  <div class="appointees--desc">
+                    <h5>{{row.advisorId?.firstName}} {{row.advisorId?.lastName}}</h5>
+                    <p class="position m-0" >{{row.advisorId?.userType}}</p>
+                  </div>
+                  <div class="cursor-pointer">
+                      <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
+                      <mat-menu #beforeMenu="matMenu" xPosition="before" class="llp--menu--droupdown">
+                        <button mat-menu-item  (click)="openHireAdvisorModal(row.advisorId?._id,'update',true)"><span>Manage</span></button>
+                        <button mat-menu-item [routerLink]="['/customer/professionals/prof-details', row.advisorId?._id]"><span>View</span></button>
+                        <!-- <button mat-menu-item><span>Resend Invitation</span></button> -->
+                      </mat-menu>
+                  </div>
+                </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content class="status--advisor relative">
+              <div class="files--folder mt-1 degree--names">
+                <mat-icon>school</mat-icon>
+                {{row.advisorId?.businessType}}
+              </div>              
+              <div class="ad--strip">
+                Advisor
               </div>
-              <div class="appointees--desc">
-                <h5>{{row.advisorId?.firstName}} {{row.advisorId?.lastName}}</h5>
-                <p class="position m-0" >{{row.advisorId?.userType}}</p>
-              </div>
-              <div class="cursor-pointer">
-                  <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
-                  <mat-menu #beforeMenu="matMenu" xPosition="before" class="llp--menu--droupdown">
-                    <button mat-menu-item><span>Manage</span></button>
-                    <button mat-menu-item [routerLink]="['/customer/professionals/prof-details', row.advisorId?._id]"><span>View</span></button>
-                    <!-- <button mat-menu-item><span>Resend Invitation</span></button> -->
-                  </mat-menu>
-              </div>
-            </mat-card-title>
-          </mat-card-header>
-           <!-- all hired advisor -->
-          <mat-card-content class="status--advisor relative">
-            <div class="files--folder mt-1 degree--names">
-              <mat-icon>school</mat-icon>
-              {{row.advisorId?.businessType}}
-            </div>
-            <div class="ad--strip">
-              Advisor
-            </div>
-          </mat-card-content>
+              <!-- <div class="mt-1 status--pending" *ngIf="row?.status==='Pending'">
+                <mat-icon>history</mat-icon>
+                <p class="pending">Request Pending...</p>
+              </div> -->
+            </mat-card-content>
         </mat-card>
       </mat-card-content>
       <mat-card-content class="appointees--wrapper" *ngIf="!showAdvisorListing">

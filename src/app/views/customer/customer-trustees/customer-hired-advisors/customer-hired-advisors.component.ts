@@ -1,9 +1,10 @@
 import { Component, OnInit} from '@angular/core';
-import {  MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material'
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserAPIService } from './../../../../userapi.service';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
+import { HireAdvisorComponent } from '../../hire-advisor-modal/hire-advisor-modal.component';
 import { s3Details } from '../../../../config';
 const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 
@@ -38,9 +39,10 @@ export class CustomerHiredAdvisorComponent implements OnInit {
 
   getAdvisorList = (query = {}) => {
     const req_vars = {
-      query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      //query: Object.assign({ customerId: this.userId, status: "Active" }, query),//'Rejected',
+      query: Object.assign({customerId:this.userId, status: { $nin:['Deleted'] }}),
       fields:{},
-      limit: 6,
+      limit: '',
       order:{"createdOn": -1},
     }
     this.userapi.apiRequest('post', 'advisor/hireAdvisorListing', req_vars).subscribe(result => {
@@ -55,6 +57,18 @@ export class CustomerHiredAdvisorComponent implements OnInit {
       }
     }, (err) => {
       console.error(err);
+    })
+  }
+
+
+  openHireAdvisorModal(id: any = {},update: any = {}, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(HireAdvisorComponent, {
+      width: '720px',
+      disableClose: true,
+      data: {
+        id: id,
+        update: update,
+      },
     })
   }
 
