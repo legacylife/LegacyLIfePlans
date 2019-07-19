@@ -91,7 +91,7 @@ function LettersMessageFormUpdate(req, res) {
     })
   } else { 
             let { proquery } = req.body;
-            var insert = new pet();
+            var insert = new lettersMessage();
             insert.customerId = proquery.customerId;
             insert.title = proquery.title;
             insert.subject = proquery.subject;            
