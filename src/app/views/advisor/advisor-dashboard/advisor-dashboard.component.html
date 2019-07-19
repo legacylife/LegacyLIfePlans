@@ -28,7 +28,8 @@
               <p mat-line class="when">
                 {{row?.modifiedOn | date: 'MMM dd, yyyy'}}
               </p>
-              <button mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu" *ngIf="logData.sectionName == 'hired'">
+              <!-- *ngIf="logData.sectionName == 'hired'" -->
+              <button mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu">  
                 <mat-icon>more_vert</mat-icon>
               </button>
             </mat-list-item>
@@ -37,7 +38,7 @@
                 <mat-icon>check</mat-icon> Confirm hiring</button>
               <button mat-menu-item class="reject"  *ngIf="logData.actionTaken == 'Pending'" (click)="hireAdvisor(logData?.hiredAdvisorRefId,'rejectHire','Pending',logData?._id)">
                 <mat-icon>cancel</mat-icon> Reject hiring</button>
-              <button mat-menu-item>
+              <button mat-menu-item [routerLink]="['/advisor/leads-details', logData?.customerId]">
                 <mat-icon>assignment</mat-icon> View profile</button>
             </mat-menu>
           </mat-nav-list>
