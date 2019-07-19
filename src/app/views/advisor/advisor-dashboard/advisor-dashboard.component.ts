@@ -23,6 +23,8 @@ export class AdvisorDashboardComponent implements OnInit {
   userId: string;
   recentActivityLogList:any;
   profileFilePath:string = profileFilePath;
+  invitedMembersCount:any;
+  LeadsCount:any;
 
   constructor(
     private userapi: UserAPIService,
@@ -34,6 +36,27 @@ export class AdvisorDashboardComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.getAdvisorActivityLogList();
+    this.getInviteMembersCount();
+    this.getLeadsCount();
+  }
+
+  getInviteMembersCount() {
+    const params = {
+      inviteById: this.userId,
+      inviteType: 'advisor'
+    }
+    this.userapi.apiRequest('post', 'invite/get-invite-members-count', params).subscribe(result => {
+      this.invitedMembersCount = result.data.count
+    })
+  }
+
+  getLeadsCount() {
+    const params = {
+      advisorId: this.userId
+    }
+    this.userapi.apiRequest('post', 'lead/get-leads-count', params).subscribe(result => {
+      this.LeadsCount = result.data.count
+    })
   }
 
   getAdvisorActivityLogList = (query = {}, search = false) => {

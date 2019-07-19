@@ -56,10 +56,10 @@
                   <mat-divider></mat-divider>
                 </mat-card-title>
                 <mat-card-content class="invite--body--section">
-                  <h4 class="count">0<span>/45</span></h4>
+                  <h4 class="count">{{invitedMembersCount}}<span>/45</span></h4>
                   <p class="daysgo">26 days to go</p>
                   <p class="invites">Invites sent in this month</p>
-                  <button mat-raised-button class="llp--primary--btn">Invite Now</button>
+                  <button mat-raised-button class="llp--primary--btn" (click)="openInviteModal({})">Invite Now</button>
                 </mat-card-content>
               </mat-card>
             </div>
@@ -72,11 +72,11 @@
                       <mat-divider></mat-divider>
                     </mat-card-title>
                     <mat-card-content class="invite--body--section">
-                      <h4 class="count">0<span></span></h4>
+                      <h4 class="count">{{LeadsCount}}<span></span></h4>
                       <div class="adjust">
                           <p class="invites">0 users have shown 
                               interest</p>
-                          <button mat-raised-button class="llp--primary--btn">View All</button>
+                          <button mat-raised-button class="llp--primary--btn" [routerLink]="['/advisor/leads']">View All</button>
                       </div>
                     </mat-card-content>
                   </mat-card>

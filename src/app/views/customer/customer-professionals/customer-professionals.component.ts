@@ -95,12 +95,13 @@ export class CustomerProfessionalComponent implements OnInit {
     this.sideNav.opened = !this.sideNav.opened;
   }
 
-  openHireAdvisorModal(id: any = {}, isNew?) {
+  openHireAdvisorModal(id: any = {},update: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(HireAdvisorComponent, {
       width: '720px',
       disableClose: true,
       data: {
         id: id,
+        update: update,
       },
     })
   }
