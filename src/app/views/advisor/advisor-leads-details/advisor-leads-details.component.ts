@@ -70,6 +70,5 @@ export class AdvisorLeadsDetailsComponent implements OnInit {
     }, (err) => {
       console.error("error : ", err)
     })
-
   }
 }
