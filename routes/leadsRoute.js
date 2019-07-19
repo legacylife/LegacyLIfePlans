@@ -132,9 +132,9 @@ function userView(req, res) {
           { $group: { _id : null, filesCount : { $sum: "$filesCount" },folderCount : { $sum: "$folderCount" },recordCount : { $sum: 1 }}}
         ],function (err, statisticsCounts) {
           //console.log("CNT",statisticsCounts);
-          filesCount = statisticsCounts[0].filesCount ? statisticsCounts[0].filesCount : 0;
-          folderCount = statisticsCounts[0].folderCount ? statisticsCounts[0].folderCount : 0;
-          recordCount = statisticsCounts[0].recordCount ? statisticsCounts[0].recordCount : 0;
+          filesCount = statisticsCounts[0] ? statisticsCounts[0].filesCount : 0;
+          folderCount = statisticsCounts[0] ? statisticsCounts[0].folderCount : 0;
+          recordCount = statisticsCounts[0] ? statisticsCounts[0].recordCount : 0;
            let result = { userDetails: userDetails, filesCount: filesCount, folderCount: folderCount, recordCount: recordCount, "message": "Status Updated successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         });

@@ -27,7 +27,7 @@ var auth = jwt({
   userProperty: 'payload'
 })
 
-// Function to activate advisor
+// Function to activate advisoradvisor
 function activateAdvisor(req, res) {
   console.log("request body >>>>>>", req.body)
   let { query } = req.body;
@@ -222,14 +222,14 @@ function hireAdvisorStatus(req, res) {
   let { extraFields } = req.body;
 
   if(query._id){
-    HiredAdvisors.findOne(query, function (err, custData) {      
+    HiredAdvisors.findOne(query, function (err, HiredData) {      
       if (err) {
         let result = { "message": "Something Wrong!" }
         res.send(resFormat.rError(result));
       } else {
-        if (custData && custData._id) {   
+        if (HiredData && HiredData._id) {   
           proquery.modifiedOn = new Date();
-          HiredAdvisors.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
+          HiredAdvisors.updateOne({ _id: HiredData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {                        
@@ -241,16 +241,35 @@ function hireAdvisorStatus(req, res) {
                     let MsgText = 'accepted';
                     if(proquery.status=='Rejected'){
                         MsgText = 'rejected';
-                    }                  
+                    } 
                     let custEmail = extraFields.custEmail;
-                    let custName = extraFields.custName;                  
+                    let custName = extraFields.custName;
+
                     let advFname = extraFields.advFname;
                     let advLname = extraFields.advLname;
                     let subStatus = "Legacy request "+MsgText;
                     let EmailMesg = advFname+" "+advLname+" has been "+MsgText+" your legacy request"; 
-                    stat = sendHireStatusMail(custEmail,custName,EmailMesg,subStatus);                     
                     let result = { "message": "Legacy request "+MsgText+" successfully" }
-                    res.status(200).send(resFormat.rSuccess(result))
+
+                    if(!extraFields.custEmail){
+                      User.findOne({ _id: HiredData.customerId }, { firstName: 1, lastName: 1, username: 1 }, function (err, custData) {
+                        if (err) {
+                          res.status(401).send(resFormat.rError(err))
+                        } else {
+                          custEmail = custData.username;
+                          custName = custData.firstName;  
+                          console.log("ahfgasjkfgjkgahsdfjfg")
+                          stat = sendHireStatusMail(custEmail,custName,EmailMesg,subStatus); 
+                          res.status(200).send(resFormat.rSuccess(result))
+                        }
+                      })
+                    }  
+                    else {
+                      console.log("348568324658326458634586 sdhfskjafdh ahfgasjkfgjkgahsdfjfg")
+                      stat = sendHireStatusMail(custEmail,custName,EmailMesg,subStatus);
+                      res.status(200).send(resFormat.rSuccess(result))
+                    } 
+                    
                   }
                 })
               }
