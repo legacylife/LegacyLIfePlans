@@ -1,11 +1,15 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { UserAPIService } from './../../../../userapi.service';
+import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
-
+import { HireAdvisorComponent } from '../../hire-advisor-modal/hire-advisor-modal.component';
+import { addTrusteeModalComponent } from './../../customer-home/add-trustee-modal/add-trustee-modal.component';
+import { s3Details } from '../../../../config';
+const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 
 @Component({
   selector: 'app-customer-home',
@@ -15,89 +19,106 @@ import { egretAnimations } from '../../../../shared/animations/egret-animations'
 })
 export class CustomerMyPeopleComponent implements OnInit {
   allPeoples: any[];
-
-  constructor(
+  advisorListing: any[];
+  showallPeoplesListing  : boolean = false;
+  showallPeoplesListingCnt: any;
+  userId: string;
+  profileFilePath: string = profileFilePath;
+  profilePicture: any = "assets/images/arkenea/default.jpg";
+  profileUrl = s3Details.url+'/profilePictures/';
+  constructor( private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService,private snack: MatSnackBar
   ) { }
 
-
   ngOnInit() {
-    this.allPeoples = [
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'Allen Barry',
-        emailId: 'barryallen@gmail.com',
-        totalFiles: '24 Files',
-        totalFolders: '9 Folders',
-        position: 'CFA, CIC',
-        status: 'assigned'
-      },
-      {
-        profilePic: 'assets/images/arkenea/emily.png',
-        userName: 'Emily Doe',
-        emailId: 'emilydoe@gmail.com',
-        totalFiles: '4 Files',
-        totalFolders: '1 Folders',
-        position: 'CFA, CIC',
-        status: 'pending'
-      },
-      {
-        profilePic: 'assets/images/arkenea/john.png',
-        userName: 'Johnson Smith',
-        emailId: 'johnson.smith@gmail.com',
-        totalFiles: '15 Files',
-        totalFolders: '6 Folders',
-        position: 'CFA, CIC',
-        status: 'advisor'
-      },
-      {
-        profilePic: 'assets/images/arkenea/user-male.png',
-        userName: 'James Anderson',
-        emailId: 'james.anderson@gmail.com',
-        totalFiles: '15 Files',
-        totalFolders: '6 Folders',
-        position: 'CFA, CIC',
-        status: 'assigned'
-      },
-      {
-        profilePic: 'assets/images/arkenea/ca.jpg',
-        userName: 'Allen Barry',
-        emailId: 'barryallen@gmail.com',
-        totalFiles: '24 Files',
-        totalFolders: '9 Folders',
-        position: 'CFA, CIC',
-        status: 'assigned'
-      },
-      {
-        profilePic: 'assets/images/arkenea/emily.png',
-        userName: 'Emily Doe',
-        emailId: 'emilydoe@gmail.com',
-        totalFiles: '4 Files',
-        totalFolders: '1 Folders',
-        position: 'CFA, CIC',
-        status: 'pending'
-      },
-      {
-        profilePic: 'assets/images/arkenea/john.png',
-        userName: 'Johnson Smith',
-        emailId: 'johnson.smith@gmail.com',
-        totalFiles: '15 Files',
-        totalFolders: '6 Folders',
-        position: 'CFA, CIC',
-        status: 'advisor'
-      },
-      {
-        profilePic: 'assets/images/arkenea/user-male.png',
-        userName: 'James Anderson',
-        emailId: 'james.anderson@gmail.com',
-        totalFiles: '15 Files',
-        totalFolders: '6 Folders',
-        position: 'CFA, CIC',
-        status: 'assigned'
-      },
-    ];
+    // this.allPeoples = [
+    //   {
+    //     profilePic: 'assets/images/arkenea/ca.jpg',
+    //     userName: 'Allen Barry',
+    //     emailId: 'barryallen@gmail.com',
+    //     totalFiles: '24 Files',
+    //     totalFolders: '9 Folders',
+    //     position: 'CFA, CIC',
+    //     status: 'assigned'
+    //   },     
+    // ];
+    this.userId = localStorage.getItem("endUserId");
+    this.getMyPeoplesList();
   }
 
 
+  getMyPeoplesList = (advquery:any = {},trustquery:any = {}, search:any = false) => {
+
+    const req_vars = {
+     //query: Object.assign({ customerId: this.userId, status: "Active" }, query),status: { $nin:['Deleted'] }  //'Rejected',
+     trustquery: Object.assign({customerId:this.userId, status: {$nin:['Deleted']}}, trustquery),
+     advquery: Object.assign({customerId:this.userId, status:{ $nin:['Deleted','Rejected'] } }, advquery),
+     fields: {},
+     order: {"createdOn": '-1'},
+    }
+
+   this.userapi.apiRequest('post', 'advisor/myPeoplesListing', req_vars).subscribe(result => {  //hireAdvisorListing
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        this.allPeoples = result.data.myPeoples;
+        this.showallPeoplesListingCnt = result.data.totalPeoplesRecords;
+        if (result.data.totalRecords>'0') {
+          this.showallPeoplesListing = true;
+        }else{ 
+           this.showallPeoplesListing = false;
+          }
+      }
+    }, (err) => {
+      console.error(err);
+    })
+  }
 
 
+  openHireAdvisorModal(id: any = {},update: any = {}, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(HireAdvisorComponent, {
+      width: '720px',
+      disableClose: true,
+      data: {
+        id: id,
+        update: update,
+      },
+    })
+  }
+
+
+  
+  openAddTrusteeModal(id,isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(addTrusteeModalComponent, {     
+      width: '720px',
+      data: {
+        id: id,
+      },
+      disableClose: true,
+    });
+    dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getMyPeoplesList();
+      if (!res) {
+        return;
+      }
+    })
+  }
+
+  resendInvitation(id){
+    let query = {};
+     const req_vars = {
+       query: Object.assign({_id: id}, query),   
+       extrafields: Object.assign({inviteByName:localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName")})
+     }
+     this.userapi.apiRequest('post', 'trustee/resend-invitation', req_vars).subscribe(result => {
+       if (result.status == "error") {
+         console.log(result.data)
+       } else {
+         this.snack.open(result.data.message, 'OK', { duration: 4000 })
+       }
+     }, (err) => {
+       console.error(err);
+     })
+  }
+  
 }

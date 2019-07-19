@@ -82,23 +82,26 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
         console.log(result.data)
       } else {
         let advisorData = result.data.distanceUserList;
-        this.adListings = advisorData.filter(dtype => {
-          return dtype.sponsoredAdvisor == 'yes'
-        }).map(el => el)
+        
+        if(advisorData && advisorData.length){
+            this.adListings = advisorData.filter(dtype => {
+              return dtype.sponsoredAdvisor == 'yes'
+            }).map(el => el)
 
-        this.showAdvisorListingCnt = result.data.totalUsers;
-        if (result.data.totalUsers>0) {
-          this.showAdvisorListing = true;
-        }else{this.showAdvisorListing = false;}  
+            this.showAdvisorListingCnt = result.data.totalUsers;
+            if (result.data.totalUsers>0) {
+              this.showAdvisorListing = true;
+            }else{this.showAdvisorListing = false;}  
 
-        this.qualityAdvisor = advisorData.filter(dtype => {
-          return dtype.sponsoredAdvisor == 'no'
-        }).map(el => el)
+            this.qualityAdvisor = advisorData.filter(dtype => {
+              return dtype.sponsoredAdvisor == 'no'
+            }).map(el => el)
 
-        this.showQualityAdvisorListingCnt = this.qualityAdvisor.length;
-        if (this.showQualityAdvisorListingCnt>0) {
-          this.showQualityAdvisorListing = true;
-        }      
+            this.showQualityAdvisorListingCnt = this.qualityAdvisor.length;
+            if (this.showQualityAdvisorListingCnt>0) {
+              this.showQualityAdvisorListing = true;
+            }      
+        }
         if(search){
           localStorage.removeItem('businessTypeIcon') 
         }
