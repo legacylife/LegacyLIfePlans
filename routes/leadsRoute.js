@@ -35,7 +35,7 @@ function leadsList(req, res) {
       }
     })
   }
-  
+
   lead.count(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
@@ -52,7 +52,7 @@ function leadsList(req, res) {
 
 function leadUpdate(req, res) {
   let { query } = req.body;
-   lead.findOne(query, function (err, leadData) {      
+  lead.findOne(query, function (err, leadData) {
     if (err) {
       let result = { "message": "Something Wrong!" }
       res.send(resFormat.rError(result));
@@ -65,14 +65,14 @@ function leadUpdate(req, res) {
         insert.status = 'Active';
         insert.createdOn = new Date();
         insert.modifiedOn = new Date();
-        insert.save({$set:query}, function (err, newEntry) {
-        if (err) {
-          res.send(resFormat.rError(err))
-        } else {
-          let result = { "message": "Leads added successfully!" }
-          res.status(200).send(resFormat.rSuccess(result))
-        }
-      })
+        insert.save({ $set: query }, function (err, newEntry) {
+          if (err) {
+            res.send(resFormat.rError(err))
+          } else {
+            let result = { "message": "Leads added successfully!" }
+            res.status(200).send(resFormat.rSuccess(result))
+          }
+        })
       }
     }
   })
@@ -89,15 +89,13 @@ function userDetails(req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {
 
-      if(userList){
-       
-        trust.countDocuments({trustId:userList._id}, fields, function (err, userCount) {
-            if (userCount) {
-             // totalUsers = userCount;
-            }
+      if (userList) {
+
+        trust.countDocuments({ trustId: userList._id }, fields, function (err, userCount) {
+          if (userCount) {
+            // totalUsers = userCount;
+          }
         });
-
-
       }
 
       res.send(resFormat.rSuccess(userList))
@@ -119,30 +117,43 @@ function userView(req, res) {
     } else {
       //Acting as Trustee
 
-      
-        // trust.countDocuments({trustId:userDetails._id}, function (err, TrusteeCount) {
-        //       TrusteeCounts = TrusteeCount;
-        //       console.log("CNT",TrusteeCount)
-        //       let result = { userDetails: userDetails, TrusteeCount: TrusteeCounts, "message": "Status Updated successfully!" }
-        //       res.status(200).send(resFormat.rSuccess(result))
-        // });
 
-        trust.aggregate([ 
-          { $match: { "trustId": userDetails._id }},
-          { $group: { _id : null, filesCount : { $sum: "$filesCount" },folderCount : { $sum: "$folderCount" },recordCount : { $sum: 1 }}}
-        ],function (err, statisticsCounts) {
-          //console.log("CNT",statisticsCounts);
-          filesCount = statisticsCounts[0] ? statisticsCounts[0].filesCount : 0;
-          folderCount = statisticsCounts[0] ? statisticsCounts[0].folderCount : 0;
-          recordCount = statisticsCounts[0] ? statisticsCounts[0].recordCount : 0;
-           let result = { userDetails: userDetails, filesCount: filesCount, folderCount: folderCount, recordCount: recordCount, "message": "Status Updated successfully!" }
-          res.status(200).send(resFormat.rSuccess(result))
-        });
+      // trust.countDocuments({trustId:userDetails._id}, function (err, TrusteeCount) {
+      //       TrusteeCounts = TrusteeCount;
+      //       console.log("CNT",TrusteeCount)
+      //       let result = { userDetails: userDetails, TrusteeCount: TrusteeCounts, "message": "Status Updated successfully!" }
+      //       res.status(200).send(resFormat.rSuccess(result))
+      // });
+
+      trust.aggregate([
+        { $match: { "trustId": userDetails._id } },
+        { $group: { _id: null, filesCount: { $sum: "$filesCount" }, folderCount: { $sum: "$folderCount" }, recordCount: { $sum: 1 } } }
+      ], function (err, statisticsCounts) {
+        //console.log("CNT",statisticsCounts);
+        filesCount = statisticsCounts[0] ? statisticsCounts[0].filesCount : 0;
+        folderCount = statisticsCounts[0] ? statisticsCounts[0].folderCount : 0;
+        recordCount = statisticsCounts[0] ? statisticsCounts[0].recordCount : 0;
+        let result = { userDetails: userDetails, filesCount: filesCount, folderCount: folderCount, recordCount: recordCount, "message": "Status Updated successfully!" }
+        res.status(200).send(resFormat.rSuccess(result))
+      });
     }
+  })
+}
+
+async function getLeadsCount(req, res) {
+  let paramData = req.body
+  let resultCount = 0
+  await lead.find(paramData, function (err, data) {
+      if (data != null) {
+          resultCount = data.length
+      }
+      result = { "count": resultCount }
+      res.status(200).send(resFormat.rSuccess(result))
   })
 }
 
 router.post("/listing", leadsList)
 router.post("/lead-submit", leadUpdate)
 router.post("/view-details", userView)
+router.post("/get-leads-count", getLeadsCount)
 module.exports = router

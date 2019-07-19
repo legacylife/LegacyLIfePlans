@@ -251,6 +251,7 @@ function hireAdvisorStatus(req, res) {
                     let EmailMesg = advFname+" "+advLname+" has been "+MsgText+" your legacy request"; 
                     let result = { "message": "Legacy request "+MsgText+" successfully" }
 
+                    // If we don't have customer email & name then we will fetch from user table
                     if(!extraFields.custEmail){
                       User.findOne({ _id: HiredData.customerId }, { firstName: 1, lastName: 1, username: 1 }, function (err, custData) {
                         if (err) {
