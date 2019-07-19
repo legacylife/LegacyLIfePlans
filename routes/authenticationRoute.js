@@ -21,7 +21,7 @@ const trust = require('./../models/Trustee.js')
 ObjectId = require('mongodb').ObjectID;
 const AWS = require('aws-sdk');
 const s3 = require('./../helpers/s3Upload')
-
+const stripe = require("stripe")("sk_test_eXXvQMZIUrR3N1IEAqRQVTlw");
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -643,6 +643,13 @@ async function advdocuments(req, res) {
   }
 }
 
+function getProductDetails(req, res) {
+  stripe.plans.list( { limit: 3 }, function(err, plans) {
+    // asynchronously called
+    res.status(200).send(resFormat.rSuccess( {plans, "message": "Subscription Plans"}))    
+  });
+}
+
 router.post(["/signup", "/register"], create)
 router.post("/signin", signin)
 router.post("/cust-profile-update", custProfileUpdate)
@@ -657,5 +664,6 @@ router.post("/common", common)
 router.post("/checkEmail", checkEmail)
 router.post("/checkOtp", checkUserOtp)
 router.post("/advdocuments", advdocuments)
+router.post(["/getproductdetails"], getProductDetails);
 
 module.exports = router
