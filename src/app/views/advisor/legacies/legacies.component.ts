@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
-import { ReferAndEarnModalComponent } from './refer-and-earn-modal/refer-and-earn-modal.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserAPIService } from './../../../userapi.service';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { s3Details } from '../../../config';
+import { ReferAndEarnModalComponent } from 'app/views/refer-and-earn-modal/refer-and-earn-modal.component';
 @Component({
   selector: 'app-legacies-blank',
   templateUrl: './legacies.component.html',
@@ -96,6 +96,13 @@ export class LegaciesComponent implements OnInit {
           this.loader.close();
         })
       }
+    })
+  }
+
+  openInviteModal(data: any = {}, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
+      width: '720px',
+      disableClose: true,
     })
   }
   
