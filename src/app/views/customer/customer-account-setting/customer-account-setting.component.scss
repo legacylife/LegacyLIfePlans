@@ -221,11 +221,41 @@
                 }
             }            
         }
+        .storage--sec{
+            margin-top: 20px;
+            .storage{
+                font-size: 16px;
+                color: #333;
+                font-family: $font--lato--regular;
+            }
+            .remain{
+                font-size: 13px;
+                color: #666;
+                font-family: $font--lato--regular;
+            }
+            ::ng-deep {
+                .mat-progress-bar{
+                    margin: 6px 0 4px 0;
+                    height: 8px;
+                }
+                .mat-progress-bar-buffer{
+                    background-color: #fff;
+                    border: 1px solid #727a33;
+                }
+                .mat-progress-bar-fill{
+                    &::after{
+                        background-color: #727a33 !important;
+                    }
+                }
+            }
+
+        }
         .deactivate--acc{
             text-align: center;
             padding-right: 0;
             margin-top: 25px;
         }
+        
         .upgrade--account{
             margin: 0 19px 10px 66px;
             header{

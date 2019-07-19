@@ -84,11 +84,12 @@ export class LandingCustomerHeaderTopComponent implements OnInit, OnDestroy {
   contentScroll(scrolldivid) {
     var content = document.getElementById("customer-home-content")
     // console.log(content)
-    console.log(scrolldivid)
     var scrolldiv = document.getElementById(scrolldivid)
-    var topPos = scrolldiv.offsetTop;
-    content.scrollTop = topPos;
-    
+    var topPos = scrolldiv ? scrolldiv.offsetTop : 0;
+    if(content) {
+      content.scrollTop = topPos;
+    }
+
     // var scrolldiv = document.getElementById(scrolldivid)
     // scrolldiv.scrollIntoView()
   }
