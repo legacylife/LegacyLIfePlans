@@ -70,9 +70,9 @@ function signin(req, res) {
               autoRenewal = subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] ? subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] : false
             }
             let addOnDetails = user.addOnDetails ? user.addOnDetails : null
-            let addOnGiven = false
+            let addOnGiven = 'no'
             if( addOnDetails != null && addOnDetails.length >0 ) {
-              addOnGiven = addOnDetails[(addOnDetails.length-1)]['status'] && addOnDetails[(addOnDetails.length-1)]['status'] == 'paid' ? true : false
+              addOnGiven = addOnDetails[(addOnDetails.length-1)]['status'] && addOnDetails[(addOnDetails.length-1)]['status'] == 'paid' ? 'yes' : 'no'
             }
             let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, profilePicture : user.profilePicture, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false, "createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate" : subscriptionEndDate, "subscriptionStatus" : subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven }
             //console.log("result --- ",result)
