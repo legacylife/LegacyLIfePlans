@@ -541,6 +541,9 @@ async function checkUserOtp(req, res) {
             user.salt = userSecurityDetails.salt;
             user.hash = userSecurityDetails.hash;
           }
+          else {
+            user.sponsoredAdvisor = 'no';
+          }
           
 
           user.save(function (err, newUser) {

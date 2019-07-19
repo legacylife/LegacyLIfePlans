@@ -3,10 +3,10 @@ var debug = require('debug')('LLP:server')
 const fs = require('fs')
 const http = require('http')
 const https = require('https')
-var port = normalizePort(process.env.PORT || '3000')
+var port = normalizePort(process.env.PORT || '80')
 
- const server = http.createServer(app).listen(8080, () => {
-   console.log('http server running at ' + 8080)
+ const server = http.createServer(app).listen(port, () => {
+   console.log('http server running at ' + port)
  })
 
 function normalizePort(val) {
