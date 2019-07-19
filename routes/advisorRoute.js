@@ -18,6 +18,8 @@ const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 const AdvisorActivityLog = require('./../models/AdvisorActivityLog')
 const HiredAdvisors = require('./../models/HiredAdvisors')
+const trust = require('./../models/Trustee.js')
+//ObjectId = require('mongodb').ObjectID;
 const s3 = require('./../helpers/s3Upload')
 var zipcodes = require('zipcodes');
 const advisorActivityLog = require('./../helpers/advisorActivityLog')
@@ -27,7 +29,7 @@ var auth = jwt({
   userProperty: 'payload'
 })
 
-// Function to activate advisor
+// Function to activate advisoradvisor
 function activateAdvisor(req, res) {
   console.log("request body >>>>>>", req.body)
   let { query } = req.body;
@@ -222,14 +224,14 @@ function hireAdvisorStatus(req, res) {
   let { extraFields } = req.body;
 
   if(query._id){
-    HiredAdvisors.findOne(query, function (err, custData) {      
+    HiredAdvisors.findOne(query, function (err, HiredData) {      
       if (err) {
         let result = { "message": "Something Wrong!" }
         res.send(resFormat.rError(result));
       } else {
-        if (custData && custData._id) {   
+        if (HiredData && HiredData._id) {   
           proquery.modifiedOn = new Date();
-          HiredAdvisors.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
+          HiredAdvisors.updateOne({ _id: HiredData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {                        
@@ -241,20 +243,47 @@ function hireAdvisorStatus(req, res) {
                     let MsgText = 'accepted';
                     if(proquery.status=='Rejected'){
                         MsgText = 'rejected';
-                    }                  
+                    } 
                     let custEmail = extraFields.custEmail;
-                    let custName = extraFields.custName;                  
+                    let custName = extraFields.custName;
+
                     let advFname = extraFields.advFname;
                     let advLname = extraFields.advLname;
                     let subStatus = "Legacy request "+MsgText;
                     let EmailMesg = advFname+" "+advLname+" has been "+MsgText+" your legacy request"; 
-                    stat = sendHireStatusMail(custEmail,custName,EmailMesg,subStatus);                     
                     let result = { "message": "Legacy request "+MsgText+" successfully" }
-                    res.status(200).send(resFormat.rSuccess(result))
+
+                    // If we don't have customer email & name then we will fetch from user table
+                    if(!extraFields.custEmail){
+                      User.findOne({ _id: HiredData.customerId }, { firstName: 1, lastName: 1, username: 1 }, function (err, custData) {
+                        if (err) {
+                          res.status(401).send(resFormat.rError(err))
+                        } else {
+                          custEmail = custData.username;
+                          custName = custData.firstName;   
+                          stat = sendHireStatusMail(custEmail,custName,EmailMesg,subStatus); 
+                          res.status(200).send(resFormat.rSuccess(result))
+                        }
+                      })
+                    } else {
+                      stat = sendHireStatusMail(custEmail,custName,EmailMesg,subStatus);
+                      res.status(200).send(resFormat.rSuccess(result))
+                    }                     
                   }
                 })
               }
-              else {
+              else {              
+              User.findOne({ _id: proquery.advisorId }, { firstName: 1, lastName: 1, username: 1 }, function (err, advisorUser) {
+                  if (err) {
+                    res.status(401).send(resFormat.rError(err))
+                  } else {
+                    let inviteByName = extraFields.inviteByName;       
+                    let toEmail = advisorUser.username;
+                    let advName = advisorUser.firstName;
+                    let EmailMesg = inviteByName+" has been update and send you legacy request"; 
+                    stat = sendHireStatusMail(toEmail,advName,EmailMesg,'');           
+                  }
+                })
                 let result = { "message": "Request reminder sent successfully" }
                 res.status(200).send(resFormat.rSuccess(result))
               }
@@ -396,7 +425,7 @@ function checkHireAdvisorRequest(req, res) {
   HiredAdvisors.findOne(query, function (err, found) {
     let result = { code : "","message": "" }
     if (found) {
-      result = { code : "Exist","message": "Request already Sent" }     
+      result = { "RequestData" : found,code : "Exist","message": "Request already Sent" }     
     }
     res.status(200).send(resFormat.rSuccess(result))
   })
@@ -478,6 +507,42 @@ function professionalsListing(req, res) {
   })
 }
 
+function myPeoplesList(req, res) {
+  let { fields, offset, advquery,trustquery, order, limit, search } = req.body
+  let totalRecords = 0
+    HiredAdvisors.find(advquery, fields, function (err, advisorList) {
+      if (err) {
+        res.status(401).send(resFormat.rError(err))
+      } else {
+
+          trust.find(trustquery, fields, function (err, trustList) {
+            if (err) {
+              res.status(401).send(resFormat.rError(err))
+            } else {
+              totalTrustRecords = trustList.length;
+              totalAdvRecords = advisorList.length;
+
+              let trustListing = map(trustList, (user, index)=>{
+                var type = "trustee";
+                let newRow = Object.assign({}, user._doc, {"type": `${type}`})
+                return newRow
+              });  
+
+              let advisorListing = map(advisorList, (user, index)=>{
+                var types = "advisor";
+                let newRows = Object.assign({}, user._doc, {"type": `${types}`})
+                return newRows
+              });  
+              myPeoplesList = trustListing.concat(advisorListing);
+              totalPeoplesRecords =  myPeoplesList.length;
+
+              myPeoples =  sortBy(myPeoplesList, 'modifiedOn');
+              res.send(resFormat.rSuccess({myPeoples,totalPeoplesRecords,trustList,totalTrustRecords,advisorList,totalAdvRecords}))
+            }
+          }).sort(order).skip(offset).limit(limit).populate('trustId')
+      }
+    }).sort(order).skip(offset).limit(limit).populate('advisorId');
+}
 
 router.post("/activateadvisor", activateAdvisor)
 router.post("/rejectadvisor", rejectAdvisor)
@@ -487,6 +552,7 @@ router.post("/recentupdatelist", recentUpdateList)
 router.post("/checkHireAdvisor", checkHireAdvisorRequest)
 router.post("/hireadvisor", hireAdvisorStatus)
 router.post("/hireAdvisorListing", hireAdvisorList)
+router.post("/myPeoplesListing", myPeoplesList)
 router.post("/professionalsList", professionalsListing)
 
 module.exports = router
