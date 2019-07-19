@@ -28,6 +28,7 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
   showAdvisorListingCnt: any;
   showQualityAdvisorListing : boolean = false;
   showQualityAdvisorListingCnt: any;
+  profileUrl = s3Details.url+'/profilePictures/';
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -60,7 +61,7 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
       query: Object.assign({ userType: "advisor", status: "Active" }, query),
       fields: {},
       offset: '',
-      limit: 4,
+      limit: '',
       order: { "createdOn": -1 },
       extraQuery: Object.assign({ _id: this.userId }, query),
     }
@@ -70,7 +71,7 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
         query: Object.assign({ userType: "advisor", status: "Active", businessType:search }, query),
         fields: {},
         offset: '',
-        limit: 4,
+        limit: '',
         order: { "createdOn": -1 },
         extraQuery: Object.assign({ _id: this.userId }, query),
       }      

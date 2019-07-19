@@ -5166,6 +5166,13 @@ ngx-slick-carousel@^0.4.4:
   dependencies:
     tslib "^1.9.0"
 
+ngx-stripe@^7.4.3:
+  version "7.4.3"
+  resolved "https://registry.yarnpkg.com/ngx-stripe/-/ngx-stripe-7.4.3.tgz#ed304aadd578e48f0e86790c27a511f47757c14a"
+  integrity sha512-JF4kDBAL/Vo2zgWm+sxmXqBibcg+HH0768Ry9I+imt5KITOwWKprr6vUcRf4wlCEk92SIHZY9npuVBKng/1ZuA==
+  dependencies:
+    tslib "^1.9.0"
+
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
