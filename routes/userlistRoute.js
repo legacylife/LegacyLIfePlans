@@ -371,9 +371,10 @@ function getCustomerCard(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      let stripeCustomerId = userProfile.stripeCustomerId;
+      
       let result = {};
-      if( stripeCustomerId && stripeCustomerId != null ) {
+      if( userProfile.stripeCustomerId ) {
+        let stripeCustomerId = userProfile.stripeCustomerId;
         stripe.customers.listSources(
           stripeCustomerId,
           {
