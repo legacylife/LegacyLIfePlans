@@ -507,6 +507,42 @@ function professionalsListing(req, res) {
   })
 }
 
+function myPeoplesList(req, res) {
+  let { fields, offset, advquery,trustquery, order, limit, search } = req.body
+  let totalRecords = 0
+    HiredAdvisors.find(advquery, fields, function (err, advisorList) {
+      if (err) {
+        res.status(401).send(resFormat.rError(err))
+      } else {
+
+          trust.find(trustquery, fields, function (err, trustList) {
+            if (err) {
+              res.status(401).send(resFormat.rError(err))
+            } else {
+              totalTrustRecords = trustList.length;
+              totalAdvRecords = advisorList.length;
+
+              let trustListing = map(trustList, (user, index)=>{
+                var type = "trustee";
+                let newRow = Object.assign({}, user._doc, {"type": `${type}`})
+                return newRow
+              });  
+
+              let advisorListing = map(advisorList, (user, index)=>{
+                var types = "advisor";
+                let newRows = Object.assign({}, user._doc, {"type": `${types}`})
+                return newRows
+              });  
+              myPeoplesList = trustListing.concat(advisorListing);
+              totalPeoplesRecords =  myPeoplesList.length;
+
+              myPeoples =  sortBy(myPeoplesList, 'modifiedOn');
+              res.send(resFormat.rSuccess({myPeoples,totalPeoplesRecords,trustList,totalTrustRecords,advisorList,totalAdvRecords}))
+            }
+          }).sort(order).skip(offset).limit(limit).populate('trustId')
+      }
+    }).sort(order).skip(offset).limit(limit).populate('advisorId');
+}
 
 router.post("/activateadvisor", activateAdvisor)
 router.post("/rejectadvisor", rejectAdvisor)
