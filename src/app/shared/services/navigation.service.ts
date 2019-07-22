@@ -128,6 +128,12 @@ export class NavigationService {
       type: 'link',
       icon: 'markunread',
       state: 'home'
+    },
+    {
+      name: 'Log Out',
+      type: 'extLink',
+      icon: 'assignment_return',
+      state: 'home '
     }
   ];
 
@@ -167,6 +173,12 @@ export class NavigationService {
       type: 'link',
       icon: 'markunread',
       state: 'home'
+    },
+    {
+      name: 'Log Out',
+      type: 'extLink',
+      icon: 'assignment_return',
+      state: 'home '
     }
   ];
 
@@ -225,7 +237,6 @@ export class NavigationService {
   ];
 
   preCustomerMenu: IMenuItem[] = [
-
     {
       name: 'About Us',
       type: 'extLink',
