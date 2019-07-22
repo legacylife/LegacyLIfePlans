@@ -30,30 +30,29 @@ export class CustomerMyPeopleComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.allPeoples = [
-    //   {
-    //     profilePic: 'assets/images/arkenea/ca.jpg',
-    //     userName: 'Allen Barry',
-    //     emailId: 'barryallen@gmail.com',
-    //     totalFiles: '24 Files',
-    //     totalFolders: '9 Folders',
-    //     position: 'CFA, CIC',
-    //     status: 'assigned'
-    //   },     
-    // ];
     this.userId = localStorage.getItem("endUserId");
-    this.getMyPeoplesList();
+    this.getMyPeoplesList('All','-1');
   }
 
-
-  getMyPeoplesList = (advquery:any = {},trustquery:any = {}, search:any = false) => {
-
-    const req_vars = {
+  getMyPeoplesList = (search,sort,advquery:any = {},trustquery:any = {}) => {
+   
+    let req_vars = {};
+    if(search=='All'){
+     req_vars = {
      //query: Object.assign({ customerId: this.userId, status: "Active" }, query),status: { $nin:['Deleted'] }  //'Rejected',
      trustquery: Object.assign({customerId:this.userId, status: {$nin:['Deleted']}}, trustquery),
      advquery: Object.assign({customerId:this.userId, status:{ $nin:['Deleted','Rejected'] } }, advquery),
      fields: {},
-     order: {"createdOn": '-1'},
+     order: {"createdOn": sort},
+     }
+    }else{
+      req_vars = {
+        //query: Object.assign({ customerId: this.userId, status: "Active" }, query),status: { $nin:['Deleted'] }  //'Rejected',
+        trustquery: Object.assign({customerId:this.userId, status: search}, trustquery),
+        advquery: Object.assign({customerId:this.userId, status:search}, advquery),
+        fields: {},
+        order: {"createdOn": sort},
+        }
     }
 
    this.userapi.apiRequest('post', 'advisor/myPeoplesListing', req_vars).subscribe(result => {  //hireAdvisorListing
@@ -85,7 +84,6 @@ export class CustomerMyPeopleComponent implements OnInit {
     })
   }
 
-
   
   openAddTrusteeModal(id,isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(addTrusteeModalComponent, {     
@@ -97,7 +95,7 @@ export class CustomerMyPeopleComponent implements OnInit {
     });
     dialogRef.afterClosed()
     .subscribe(res => {
-      this.getMyPeoplesList();
+      this.getMyPeoplesList('All','-1');
       if (!res) {
         return;
       }
