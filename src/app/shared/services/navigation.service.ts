@@ -173,8 +173,7 @@ export class NavigationService {
   preAdvisorMenu: IMenuItem[] = [
 
     {
-      // name: 'About Us',
-      name: '123456',
+      name: 'About Us',
       type: 'extLink',
       icon: 'image_aspect_ratio',
       state: '#ad-about-us '
@@ -288,21 +287,27 @@ export class NavigationService {
   // Or you can customize this method to supply different menu for
   // different user type.
   publishNavigationChange(menuType: string) {
+    let loginUserId =  localStorage.getItem('endUserId');
     switch (menuType) {
       case 'admin':
         this.menuItems.next(this.adminMenu);
         break;
       case 'customer':
-        this.menuItems.next(this.customerMenu);
+          if(loginUserId){
+            this.menuItems.next(this.customerMenu);
+           }else{
+            this.menuItems.next(this.preCustomerMenu);
+           }      
         break;
       case 'advisor':
+       if(loginUserId){
         this.menuItems.next(this.advisorMenu);
-        break;
-      case 'pre-advisor':
+       }else{
         this.menuItems.next(this.preAdvisorMenu);
+       }      
         break;
       default:
-        this.menuItems.next(this.preCustomerMenu);
+        this.menuItems.next(this.preAdvisorMenu);
     }
   }
 }
