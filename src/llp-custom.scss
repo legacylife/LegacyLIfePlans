@@ -672,12 +672,20 @@ body{
    Top header css (start here)
 ------------------------------------------*/
 
-// .llp--top--fixed--header{
-//     position: fixed !important;
-//     width: 100%;
-//     top: 0;
-// }
-
+.llp--top--fixed--header{
+    position: fixed !important;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+.margin--lg,
+.header-margin {
+    margin-top: 80px;
+}
+.margin--inner--pages{
+    margin-top: 60px !important
+}
 /* -- 
    Top header css (end here)
 ------------------------------------------*/

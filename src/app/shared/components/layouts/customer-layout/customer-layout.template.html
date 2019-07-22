@@ -8,7 +8,7 @@
   <!-- Main Container -->
   <mat-sidenav-container 
   [dir]='layoutConf.dir'
-  class="app-admin-container app-side-nav-container mat-drawer-transition"
+  class="app-admin-container app-side-nav-container header-margin margin--inner--pages"
   [ngClass]="{
     'navigation-top': layoutConf.navigationPos === 'top',
     'sidebar-full': layoutConf.sidebarStyle === 'full',
@@ -17,6 +17,7 @@
     'layout-intransition': layoutConf.layoutInTransition,
     'sidebar-opened': layoutConf.sidebarStyle !== 'closed' && layoutConf.navigationPos === 'side',
     'sidebar-closed': layoutConf.sidebarStyle === 'closed',
+    'header-margin': layoutConf.sidebarStyle === 'closed',
     'fixed-topbar': layoutConf.topbarFixed && layoutConf.navigationPos === 'side'
   }">
   <!-- SIDEBAR -->
