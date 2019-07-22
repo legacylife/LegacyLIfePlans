@@ -814,7 +814,7 @@ body{
     }
     .pad--r--lg{padding-right: 0;}
     .header-margin{
-        margin-top: 62px !important;
+        padding-top: 62px !important;
     }
     .llp--landing--wrapper .topnav {
         height: 62px !important;
@@ -855,7 +855,7 @@ body{
 
 @media only screen and (min-width: 600px) and (max-width: 959px){
     .header-margin{
-        margin-top: 62px !important;
+        padding-top: 62px !important;
     }
     .llp--landing--wrapper .topnav {
         height: 62px !important;
