@@ -56,11 +56,19 @@
           <div class="pros--details">
             <h5>Prospect Details</h5>
             <div class="cust--user--details mt-1">
-              <div class="name--letters">TA</div>
-              <div class="user--name">
-                <h5 class="pros--name">Tom Anderson and  <span  mat-icon-button matTooltip="{{tootltipList}}"> 5 others</span></h5>
-                <!-- <span (click)="openMorePeople()"> 5 others</span> -->
+              <div class="name--letters">{{firstMutualFriend.charAt(0)}}</div>
+              <div class="user--name" *ngIf="mutualFriendAvailable">
+                <h5 class="pros--name" *ngIf="mutualFriendCount < 1">
+                  {{firstMutualFriend}}
+                </h5>
+                <h5 class="pros--name" *ngIf="mutualFriendCount > 0"> 
+                    {{firstMutualFriend}} and  <span  mat-icon-button matTooltip="{{mutualFriendList}}"> {{mutualFriendCount}} others</span>
+                </h5>
                 <p class="mb-0">As an Appointee</p>               
+              </div>
+
+              <div class="user--name" *ngIf="!mutualFriendAvailable">
+                  <p class="mb-0">No records found!</p>    
               </div>
             </div>
           </div>

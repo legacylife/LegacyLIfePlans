@@ -23,18 +23,23 @@ export class AdvisorLeadsDetailsComponent implements OnInit {
   profileData: any;
   about: string;
   userId : string;
-  tootltipList: string;
   urlData:any={};
   ownLegacyFilesCount:string='';
+
+  mutualFriendList: string;
+  firstMutualFriend:string='';
+  mutualFriendCount:number=0
+  mutualFriendAvailable = false
   @ViewChild(MatBottomSheet) private sideNav: MatBottomSheet;
   constructor(private _bottomSheet: MatBottomSheet, _elementRef: ElementRef, private route: ActivatedRoute,private userapi: UserAPIService,private router: Router) { }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId"); 
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
-    this.tootltipList = 'Bernice Hutchison, Mark McLoud, Christopher Harrison, Charles Nicholson, Melissa Boynton';
+    
     this.getUserView();    
     this.getOwnLegacyFilesCount();
+    this.getMutualFriend();
   }
 
   getUserView = (query = {}, search = false) => {
@@ -71,4 +76,26 @@ export class AdvisorLeadsDetailsComponent implements OnInit {
       console.error("error : ", err)
     })
   }
+
+  getMutualFriend(){
+    const params = {
+      query: Object.assign({ customerId: this.selectedProfileId, advisorId :this.userId })
+    }
+    this.userapi.apiRequest('post', 'lead/get-mutual-friend', params).subscribe(result => {
+        var fData = result.data
+        if(result.status == 'success' && fData.length > 0){
+          this.firstMutualFriend = fData[0].firstName + " " + fData[0].lastName
+          this.mutualFriendCount = (fData.length - 1)
+          var namesData = [];
+          for(var index = 1;index<fData.length;index++){
+            namesData.push(fData[index].firstName + " " + fData[index].lastName)
+          }
+          this.mutualFriendList = namesData.join(",")
+          this.mutualFriendAvailable = true
+        }
+    }, (err) => {
+      console.error("error : ", err)
+    })
+  }
+
 }
