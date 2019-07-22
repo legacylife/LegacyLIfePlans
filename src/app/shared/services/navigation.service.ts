@@ -237,7 +237,7 @@ export class NavigationService {
   ];
 
   preCustomerMenu: IMenuItem[] = [
-    {
+    { 
       name: 'About Us',
       type: 'extLink',
       icon: 'image_aspect_ratio',
