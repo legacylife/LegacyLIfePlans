@@ -43,7 +43,7 @@
       </div>
 
       <div *ngIf="documentsList" >
-          <h3 class="header--text fnt--16">Uploaded ID proof</h3>
+          <h3 class="header--text fnt--16">Uploaded documents</h3>
           <mat-chip-list class="doc--list" *ngFor="let doc of documentsList; index as i">
               <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove (click)="docDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
           </mat-chip-list>

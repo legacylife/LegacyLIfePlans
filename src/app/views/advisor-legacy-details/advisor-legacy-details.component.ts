@@ -78,7 +78,7 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
             if(this.urlData.userType == 'advisor'){
               this.router.navigate(['/', 'advisor', 'shared-legacies'])
             }else{
-              this.router.navigate(['/', 'customer', 'trustees'])
+              this.router.navigate(['/', 'customer','dashboard', 'shared-legacies'])
             }
             this.snack.open(result.data.message, 'OK', { duration: 4000 })            
           }, (err) => {

@@ -80,7 +80,7 @@ openLettersMessageModal() {
 }
 
 deleteLettersMessage(customerId='') {
-  var statMsg = "Are you sure you want to delete letters message details?"
+  var statMsg = "Are you sure you want to delete letter and message details?"
   this.confirmService.confirm({ message: statMsg })
     .subscribe(res => {
       if (res) {
