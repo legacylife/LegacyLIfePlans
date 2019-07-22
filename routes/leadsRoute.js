@@ -18,6 +18,7 @@ const resFormat = require('../helpers/responseFormat')
 const emailTemplates = require('./emailTemplatesRoute.js')
 const lead = require('../models/Leads.js')
 const trust = require('./../models/Trustee.js')
+const HiredAdvisors = require('./../models/HiredAdvisors.js')
 const actitivityLog = require('../helpers/fileAccessLog')
 
 const Assets= require('./../models/Assets.js')
@@ -313,10 +314,49 @@ async function getLeadsCount(req, res) {
   })
 }
 
+async function getMutualFriend(req, res){
+  let {query} = req.body
+  let mutualFrnds = []
+  await trust.find({"customerId" : query.customerId, "status": "Active"},'trustId', function (err, details) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {      
+      if(details.length > 0){
+          let detailsLength =  details.length   
+            for(let index=0; index<detailsLength; index++){
+              mutualFrnds.push(details[index].trustId)
+            }
+            HiredAdvisors.aggregate([
+              { 
+                $match: {
+                "customerId": { $in: mutualFrnds } , advisorId : query.advisorId , "status": "Active"
+                } 
+              },
+              { 
+                "$project": {
+                  "_id": 1,
+                  "customerId": 1
+                }
+              },
+            ], function (err, results) {
+              let mutualFrndsIds = [];
+              for(let index=0; index<results.length; index++){
+                mutualFrndsIds.push(details[index].trustId)
+              }
+              User.find({"_id" : { $in: mutualFrndsIds } },{'firstName': 1, 'lastName': 1}, function (err, names) {
+                res.status(200).send(resFormat.rSuccess(names))
+              })
+          });
+      }
+    }    
+  })
+}
+
 router.post("/listing", leadsList)
 router.post("/lead-submit", leadUpdate)
 router.post("/view-details", userView)
 router.post("/get-own-legacy-files-count", getOwnLegacyFilesCount)
 router.post("/get-leads-count", getLeadsCount)
+router.post("/get-mutual-friend", getMutualFriend)
 
 module.exports = router
