@@ -217,7 +217,8 @@
                     font-size: 16px;
                 }
                 ::ng-deep .not-allowed{
-                    cursor: not-allowed
+                    cursor: not-allowed;
+                    pointer-events: none;
                 }
             }            
         }
@@ -329,7 +330,8 @@
                 }
             }
             ::ng-deep .not-allowed{
-                cursor: not-allowed
+                cursor: not-allowed;
+                pointer-events: none;
             }
         }
         

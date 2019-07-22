@@ -141,10 +141,14 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
         
         let subscriptionDate = moment( localStorage.getItem("endUserSubscriptionEndDate") )
         let diff = Math.round(this.subscriptionservice.getDateDiff( this.today, subscriptionDate.toDate() ))
-        this.addOnAmount = (diff > 364 ? planData.metadata.addOnCharges : ( (planData.metadata.addOnCharges/365)*diff ) ).toFixed(2)
+        let addOnCharges = Number (planData.metadata.addOnCharges)
+        let addOnAmount = diff > 364 ? addOnCharges : ( (addOnCharges/365)*diff ).toFixed(2)
+        this.addOnAmount = Number(addOnAmount)
+        this.addOnAmountFor = diff > 364 ? 'per year' : 'for '+(diff)+' days'
+        /* this.addOnAmount = (diff > 364 ? planData.metadata.addOnCharges : ( (planData.metadata.addOnCharges/365)*diff ) ).toFixed(2)
         let addOnMaxDurationDay = Number (planData.metadata.addOnMaxDurationDay)
         //console.log("diff",diff,"addOnMaxDurationDay",addOnMaxDurationDay,"typeof addOnMaxDurationDay",typeof addOnMaxDurationDay)
-        this.addOnAmountFor = diff > 364 ? 'per year' : 'for '+(diff)+' days'
+        this.addOnAmountFor = diff > 364 ? 'per year' : 'for '+(diff)+' days' */
       })
       this.isGetAddOn = localStorage.getItem('endUserSubscriptionAddon') && localStorage.getItem('endUserSubscriptionAddon') == 'yes' ? true : false
     })
