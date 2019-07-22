@@ -373,7 +373,7 @@ function getCustomerCard(req, res) {
     } else {
       
       let result = {};
-      if( userProfile.stripeCustomerId ) {
+      if( userProfile.stripeCustomerId && userProfile.stripeCustomerId != null ) {
         let stripeCustomerId = userProfile.stripeCustomerId;
         stripe.customers.listSources(
           stripeCustomerId,
