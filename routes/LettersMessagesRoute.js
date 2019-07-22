@@ -79,7 +79,7 @@ function LettersMessageFormUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Letter message "+resText+" successfully" }
+              let result = { "message": "Letter and message "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -109,7 +109,7 @@ function LettersMessageFormUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Details added successfully!" }
+        let result = { "message": "Letter and message details added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })

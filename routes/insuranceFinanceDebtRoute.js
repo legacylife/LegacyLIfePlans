@@ -64,7 +64,7 @@ function insuranceFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details  added';
+          let resText = 'details added';
           if (custData.policyType){
             resText = 'details updated';
           }
@@ -114,7 +114,7 @@ function insuranceFormUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Insurance added successfully!" }
+        let result = { "message": "Insurance details added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
