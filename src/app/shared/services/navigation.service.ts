@@ -97,43 +97,43 @@ export class NavigationService {
       name: 'Home',
       type: 'link',
       icon: 'home',
-      state: 'home'
+      state: '/advisor/dashboard'
     },
     {
       name: 'Legacies',
       type: 'link',
       icon: 'people',
-      state: 'home'
+      state: '/advisor/shared-legacies'
     },
     {
       name: 'Leads',
       type: 'link',
       icon: 'person',
-      state: 'home'
+      state: '/advisor/leads'
     },
     {
       name: 'To dos',
       type: 'link',
       icon: 'list',
-      state: 'home'
+      state: '/advisor/to-dos'
     },
     {
       name: 'Coachs Corner',
       type: 'link',
       icon: 'book',
-      state: 'home'
+      state: '/advisor/dashboard'
     },
     {
       name: 'Invite',
       type: 'link',
       icon: 'markunread',
-      state: 'home'
+      state: '/advisor/dashboard'
     },
     {
       name: 'Log Out',
       type: 'extLink',
       icon: 'assignment_return',
-      state: 'home '
+      state: '/advisor/dashboard '
     }
   ];
 
@@ -142,43 +142,43 @@ export class NavigationService {
       name: 'Home',
       type: 'link',
       icon: 'home',
-      state: 'home'
+      state: '/customer/dashboard'
     },
     {
       name: 'Trustees',
       type: 'link',
       icon: 'people',
-      state: 'home'
+      state: '/customer/my-peoples'
     },
     {
       name: 'Professionals',
       type: 'link',
       icon: 'perm_identity',
-      state: 'home'
+      state: '/customer/professionals-landing/prof-advisor-listing'
     },
     {
-      name: 'To dos ',
+      name: 'To dos',
       type: 'link',
       icon: 'list ',
-      state: 'home'
+      state: '/customer/to-dos'
     },
     {
       name: 'Coach’s Corner',
       type: 'link',
       icon: 'book',
-      state: 'home'
+      state: '/customer/dashboard'
     },
     {
       name: 'Invite',
       type: 'link',
       icon: 'markunread',
-      state: 'home'
+      state: '/customer/dashboard'
     },
     {
       name: 'Log Out',
       type: 'extLink',
       icon: 'assignment_return',
-      state: 'home '
+      state: '/customer/dashboard '
     }
   ];
 

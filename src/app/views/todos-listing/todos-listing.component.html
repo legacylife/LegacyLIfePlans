@@ -13,7 +13,7 @@
                 <mat-card-content>
                   <mat-nav-list class="pt-0" *ngIf="viewMode != rowIndex">
                     <mat-list-item>
-                      <p>
+                      <p class="text-nl2br">
                         {{todo.comments}}
                         <span class="when">{{todo.createdOn  | date: 'yyyy/MM/dd H:m:s'}}</span>
                       </p>

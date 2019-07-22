@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { MatSnackBar, MatDialog } from "@angular/material";
 import { UserAPIService } from "app/userapi.service";
 import { AppLoaderService } from "app/shared/services/app-loader/app-loader.service";
+import { AppConfirmService } from "app/shared/services/app-confirm/app-confirm.service";
 
 @Component({
   selector: "app-todos",
@@ -34,7 +35,8 @@ export class TodosComponent implements OnInit {
     public dialog: MatDialog,
     private loader: AppLoaderService,
     private userapi: UserAPIService,
-    private snack: MatSnackBar
+    private snack: MatSnackBar,
+    private confirmService: AppConfirmService
   ) {}
 
   ngOnInit() {
@@ -106,26 +108,30 @@ export class TodosComponent implements OnInit {
     this.todosForm.controls["comments"].setValue(formData.comments.trim());
   }
 
-  delete(id){
-    let data = {
-      "_id" : id
-    }
-    this.loader.open();
-    this.userapi.apiRequest("post", "todos/delete-todos", data).subscribe(
-      result => {
-        this.loader.close();
-        if (result.status == "error") {
-          this.snack.open(result.data.message, "OK", { duration: 4000 });
-        } else {
-          this.snack.open(result.data.message, "OK", { duration: 4000 });
-          this.todosForm.reset();
-          this.getTodos();
+  delete(id=''){
+    var statMsg = "Are you sure you want to delete this to-do?"
+    this.confirmService.confirm({ message: statMsg })
+      .subscribe(res => {
+
+        if (res) {
+            let data = {"_id" : id}
+            this.loader.open();
+            this.userapi.apiRequest("post", "todos/delete-todos", data).subscribe(
+              result => {
+                this.loader.close();
+                if (result.status == "error") {
+                  this.snack.open(result.data.message, "OK", { duration: 4000 });
+                } else {
+                  this.snack.open(result.data.message, "OK", { duration: 4000 });
+                  this.todosForm.reset();
+                  this.getTodos();
+                }
+              },
+              err => {
+                console.error(err);
+            });
         }
-      },
-      err => {
-        console.error(err);
-      }
-    ); 
+    })
   }
 
   todosFormUpdate(){
@@ -161,5 +167,9 @@ export class TodosComponent implements OnInit {
       this.updateTodosButton = true
     }
   }
-  
+  redirectToLising(endUserType){
+      this.router.navigate(['/', endUserType , 'to-dos'])
+      this.dialog.closeAll(); 
+  }
+    
 }
