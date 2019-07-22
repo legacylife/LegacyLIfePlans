@@ -128,6 +128,12 @@ export class NavigationService {
       type: 'link',
       icon: 'markunread',
       state: 'home'
+    },
+    {
+      name: 'Log Out',
+      type: 'extLink',
+      icon: 'assignment_return',
+      state: 'home '
     }
   ];
 
@@ -167,14 +173,19 @@ export class NavigationService {
       type: 'link',
       icon: 'markunread',
       state: 'home'
+    },
+    {
+      name: 'Log Out',
+      type: 'extLink',
+      icon: 'assignment_return',
+      state: 'home '
     }
   ];
 
   preAdvisorMenu: IMenuItem[] = [
 
     {
-      // name: 'About Us',
-      name: '123456',
+      name: 'About Us',
       type: 'extLink',
       icon: 'image_aspect_ratio',
       state: '#ad-about-us '
@@ -226,8 +237,7 @@ export class NavigationService {
   ];
 
   preCustomerMenu: IMenuItem[] = [
-
-    {
+    { 
       name: 'About Us',
       type: 'extLink',
       icon: 'image_aspect_ratio',
@@ -287,22 +297,30 @@ export class NavigationService {
   // You can remove this method and customizer component.
   // Or you can customize this method to supply different menu for
   // different user type.
+  
   publishNavigationChange(menuType: string) {
+    let loginUserId =  localStorage.getItem('endUserId');
     switch (menuType) {
       case 'admin':
         this.menuItems.next(this.adminMenu);
         break;
       case 'customer':
-        this.menuItems.next(this.customerMenu);
+          if(loginUserId){
+            this.menuItems.next(this.customerMenu);
+           }else{
+            this.menuItems.next(this.preCustomerMenu);
+           }      
         break;
+
       case 'advisor':
+       if(loginUserId){
         this.menuItems.next(this.advisorMenu);
-        break;
-      case 'pre-advisor':
-        this.menuItems.next(this.preAdvisorMenu);
+       }else{
+        this.menuItems.next(this.preAdvisorMenu);       
+       }      
         break;
       default:
-        this.menuItems.next(this.preCustomerMenu);
+        this.menuItems.next(this.preAdvisorMenu);
     }
   }
 }

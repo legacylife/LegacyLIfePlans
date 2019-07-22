@@ -20,7 +20,7 @@ export class ProUserAuthGuard implements CanActivate {
         return true
       }
       else {
-        this.router.navigate(['/customer/dashboard/customer-day-one'])
+        this.router.navigate(['/customer/dashboard'])
       }
     }
     else{
