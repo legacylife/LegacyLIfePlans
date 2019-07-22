@@ -43,7 +43,7 @@ export class CustomerMyPeopleComponent implements OnInit {
      trustquery: Object.assign({customerId:this.userId, status: {$nin:['Deleted']}}, trustquery),
      advquery: Object.assign({customerId:this.userId, status:{ $nin:['Deleted','Rejected'] } }, advquery),
      fields: {},
-     order: {"createdOn": sort},
+     order: {"modifiedOn": '-1'},
      }
     }else{
       req_vars = {
@@ -51,7 +51,7 @@ export class CustomerMyPeopleComponent implements OnInit {
         trustquery: Object.assign({customerId:this.userId, status: search}, trustquery),
         advquery: Object.assign({customerId:this.userId, status:search}, advquery),
         fields: {},
-        order: {"createdOn": sort},
+        order: {"modifiedOn": sort},
         }
     }
 

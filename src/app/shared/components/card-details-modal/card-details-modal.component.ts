@@ -205,7 +205,7 @@ export class CardDetailsComponent implements OnInit {
         this.loader.close();
       }
       
-      if(data.status=='success') {
+      if(result.status=='success') {
         localStorage.setItem('endUserSubscriptionStartDate', data.subscriptionStartDate);
         localStorage.setItem('endUserSubscriptionEndDate', data.subscriptionEndDate);
         let url = '/'+this.endUserType+'/account-setting'
