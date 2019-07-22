@@ -286,6 +286,7 @@ export class NavigationService {
   // You can remove this method and customizer component.
   // Or you can customize this method to supply different menu for
   // different user type.
+  
   publishNavigationChange(menuType: string) {
     let loginUserId =  localStorage.getItem('endUserId');
     switch (menuType) {
@@ -299,11 +300,12 @@ export class NavigationService {
             this.menuItems.next(this.preCustomerMenu);
            }      
         break;
+
       case 'advisor':
        if(loginUserId){
         this.menuItems.next(this.advisorMenu);
        }else{
-        this.menuItems.next(this.preAdvisorMenu);
+        this.menuItems.next(this.preAdvisorMenu);       
        }      
         break;
       default:
