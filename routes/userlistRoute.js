@@ -21,7 +21,7 @@ const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 const s3 = require('./../helpers/s3Upload')
-
+var currencyFormatter = require('currency-formatter');
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -484,6 +484,7 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                                 "status" : 'paid',
                                 "autoRenewal": subscription.collection_method == 'charge_automatically' ? true : false,
                                 "paymentMode" : 'online',
+                                "planName" : subscription.items.data[0]['plan']['metadata']['name']+' Plan',
                                 "defaultSpace" : subscription.items.data[0]['plan']['metadata']['defaultSpace'],
                                 "spaceDimension" : subscription.items.data[0]['plan']['metadata']['spaceDimension'],
                                 "paidOn" : new Date(),
@@ -491,16 +492,44 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                                 "createdBy" : mongoose.Types.ObjectId(requestParam._id)
                               };
       let userSubscription = []
+      let EmailTemplateName = "NewSubscription";
       if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
         userSubscription = userProfile.subscriptionDetails
+        EmailTemplateName = "AutoRenewal"
       }
       userSubscription.push(subscriptionDetails)
       //Update user details
       User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription } }, function (err, updated) {
         if (err) {
           res.send(resFormat.rError(err))
-        } else {
-          res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
+        }
+        else {
+          //subscription purchased email template
+          emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
+            if(template) {
+              template = JSON.parse(JSON.stringify(template));
+              let body = template.mailBody.replace("{full_name}", userProfile.firstname+' '+userProfile.firstname);
+              body = body.replace("{plan_name}",subscriptionDetails.planName);
+              body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: subscriptionDetails.currency }));
+              body = body.replace("{duration}",subscriptionDetails.interval);
+              body = body.replace("{paid_on}",subscriptionDetails.paidOn);
+              body = body.replace("{start_date}",subscriptionDetails.startDate);
+              body = body.replace("{end_date}",subscriptionDetails.subscriptionId);
+              body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
+              body = body.replace("{more_space}", subscription.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
+              body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
+              const mailOptions = {
+                to : req.body.username,
+                subject : template.mailSubject,
+                html: body
+              }
+              sendEmail(mailOptions)
+              res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
+            } else {
+              res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
+            }
+          })
+          //res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
         }
       })
     }
@@ -604,8 +633,32 @@ function chargeForAddon( userProfile, stripeCustomerId, requestParam, res ) {
       User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, addOnDetails : userSubscriptionAddOn } }, function (err, updated) {
         if (err) {
           res.send(resFormat.rError(err))
-        } else {
-          res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
+        }
+        else {
+          //subscription purchased email template
+          emailTemplatesRoute.getEmailTemplateByCode("AddonSubscription").then((template) => {
+            let subscriptionDetails = userProfile.subscriptionDetails
+            if(template) {
+              template = JSON.parse(JSON.stringify(template));
+              let body = template.mailBody.replace("{full_name}", userProfile.firstname+' '+userProfile.firstname);
+              body = body.replace("{addon_space}",addOnDetails.spaceAlloted+' '+addOnDetails.spaceDimension);
+              body = body.replace("{plan_name}",subscriptionDetails[subscriptionDetails.length-1]['planName']);
+              body = body.replace("{amount}", currencyFormatter.format(addOnDetails.amount, { code: addOnDetails.currency }));
+              body = body.replace("{duration}",subscriptionDetails[subscriptionDetails.length-1]['interval']);
+              body = body.replace("{paid_on}",addOnDetails.paidOn);
+              body = body.replace("{end_date}",subscriptionDetails[subscriptionDetails.length-1]['endDate']);
+              const mailOptions = {
+                to : req.body.username,
+                subject : template.mailSubject,
+                html: body
+              }
+              sendEmail(mailOptions)
+              res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
+            } else {
+              res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
+            }
+          })
+          //res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
         }
       })
     }
@@ -688,7 +741,26 @@ function cancelSubscription(req, res) {
                 if (err) {
                   res.send(resFormat.rError(err))
                 }
-                res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':'Done'}));
+
+                //subscription purchased email template
+                emailTemplatesRoute.getEmailTemplateByCode("SubscriptionCanceled").then((template) => {
+                  if(template) {
+                    template = JSON.parse(JSON.stringify(template));
+                    let body = template.mailBody.replace("{full_name}", userProfile.firstname+' '+userProfile.firstname);
+                    body = body.replace("{canceled_on}",new Date());
+                    body = body.replace("{end_date}",updatedSubscriptionObject[updatedSubscriptionObject.length-1]['status']);
+                    const mailOptions = {
+                      to : req.body.username,
+                      subject : template.mailSubject,
+                      html: body
+                    }
+                    sendEmail(mailOptions)
+                    res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':'Done'}));
+                  } else {
+                    res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':'Done'}));
+                  }
+                })
+                
               })
           });
         }

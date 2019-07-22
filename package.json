@@ -20,6 +20,7 @@
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "crypto": "^1.0.1",
+    "currency-formatter": "^1.5.4",
     "dateformat": "^3.0.3",
     "express": "^4.16.3",
     "express-jwt": "^5.3.1",
@@ -41,8 +42,8 @@
     "path": "^0.12.7",
     "q": "^1.5.1",
     "request": "^2.88.0",
-    "stripe": "^6.36.0",
     "s3-archiver": "^1.0.4",
+    "stripe": "^6.36.0",
     "zipcodes": "^8.0.0"
   }
 }
