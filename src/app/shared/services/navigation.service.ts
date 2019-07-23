@@ -158,7 +158,7 @@ export class NavigationService {
     },
     {
       name: 'To dos',
-      type: 'link',
+      type: 'button',
       icon: 'list ',
       state: '/customer/to-dos'
     },
@@ -170,7 +170,7 @@ export class NavigationService {
     },
     {
       name: 'Invite',
-      type: 'link',
+      type: 'button',
       icon: 'markunread',
       state: '/customer/dashboard'
     },

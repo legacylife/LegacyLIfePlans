@@ -1,4 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { MatDialogRef, MatDialog } from '@angular/material';
+import { InviteComponent } from '../header-top/invite-modal/invite-modal.component';
+import { TodosComponent } from 'app/views/todos/todos.component';
+import { LayoutService } from 'app/shared/services/layout.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -9,7 +13,10 @@ export class SidenavComponent {
   @Input('hasIconMenu') public hasIconTypeMenuItem: boolean;
   @Input('iconMenuTitle') public iconTypeMenuTitle: string;
 
-  constructor() {}
+  constructor(
+    private dialog: MatDialog,
+    private layout: LayoutService,
+  ) {}
   ngOnInit() {}
 
   // Only for demo purpose
@@ -26,4 +33,38 @@ export class SidenavComponent {
       ]
     });
   }
+
+  closeSidenav(){
+    this.layout.publishLayoutChange({
+      sidebarStyle: 'closed'
+    })
+  }
+ 
+
+  openSmModal(name) {
+
+    console.log(name);
+
+    switch (name) {
+      case "Invite":
+      let dialogRef: MatDialogRef<any> = this.dialog.open(InviteComponent, {
+        width: '720px',
+        disableClose: true,
+      });    
+        
+        break;
+        
+        case "To dos":
+          let dialogRef1: MatDialogRef<any> = this.dialog.open(TodosComponent, {
+            width: '720px',
+            disableClose: true,
+          });
+    
+      default:
+        break;
+    }
+
+    
+  }
+  
 }
