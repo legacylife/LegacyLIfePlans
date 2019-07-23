@@ -719,8 +719,18 @@ function fileActivityLogList(req, res) {
 
 function getSharedLegaciesList(req,res){  
   let { query } = req.body
-  Trustee.find(query, function (err, list) {
-    res.send(resFormat.rSuccess({ list }))
+  
+  Trustee.find(query, 'customerId',  function (err, list) {
+    let trustLength = list.length;
+    if(trustLength>0){
+      let userData = []
+      for(let index=0;index<trustLength;index++){
+        userData.push(list[index].customerId)
+      }
+      User.find({"_id" : { $in: userData } },{ '_id':1, 'firstName': 1, 'lastName': 1 , 'profilePicture': 1}, function (err, results) {
+        res.send(resFormat.rSuccess({ results }))
+      })
+    }
   })
 }
 
