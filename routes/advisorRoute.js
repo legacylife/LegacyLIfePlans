@@ -544,6 +544,18 @@ function myPeoplesList(req, res) {
     }).sort(order).skip(offset).limit(limit).populate('advisorId');
 }
 
+
+function getAdvisorDetails(req, res) {
+  let { query } = req.body;
+  HiredAdvisors.findOne(query, {}, function (err, advisorDetails) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.status(200).send(resFormat.rSuccess(advisorDetails));
+    }
+  })
+}
+
 router.post("/activateadvisor", activateAdvisor)
 router.post("/rejectadvisor", rejectAdvisor)
 router.post("/fileupload", fileupload)
@@ -554,5 +566,6 @@ router.post("/hireadvisor", hireAdvisorStatus)
 router.post("/hireAdvisorListing", hireAdvisorList)
 router.post("/myPeoplesListing", myPeoplesList)
 router.post("/professionalsList", professionalsListing)
+router.post("/view-details", getAdvisorDetails)
 
 module.exports = router

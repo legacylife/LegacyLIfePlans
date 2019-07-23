@@ -725,16 +725,14 @@ function getSharedLegaciesList(req,res){
 }
 
 function legacyUserRemove(req,res){
-  let userData = {};
-  let { query } = req.body;
+  let query  = req.body;
   let userstring = ''
-  userData.status = 'Deleted';
-  userData.modifiedOn = new Date();
-  if( query.userType == 'advisor'){
-    HiredAdvisors.updateOne({ customerId : query.customerId, advisorId : query.advisorId }, { $set: userData }, function (err, updatedDetails){ });
+  let userData = { status: 'Deleted', modifiedOn : new Date() }
+   if( query.userType == 'advisor'){
+    HiredAdvisors.updateOne({ customerId : query.customerId, advisorId : query.advisorId }, userData , function (err, updatedDetails){ });
     userstring = 'Advisor'
   }else{
-    Trustee.updateOne({ customerId : query.customerId, trusteeId : query.trusteeId }, { $set: userData }, function (err, updatedDetails){});
+    Trustee.updateOne({ customerId : query.customerId, trustId : query.trustId }, userData , function (err, updatedDetails){});
     userstring = 'Trustee'
   }
   let result = { "message": userstring + " removed successfully" }
