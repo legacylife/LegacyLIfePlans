@@ -851,9 +851,19 @@ body{
             height: auto !important; 
         }
     }
+    // for ipad
+    .app-admin-container.sidebar-closed .main-content-wrap{
+        height: calc(100vh - 65px) !important;
+    }
 }
 
 @media only screen and (min-width: 600px) and (max-width: 959px){
+    // for ipad
+    .app-admin-container.navigation-top {
+        .main-content-wrap {
+          height: calc(100vh - 65px) !important;;
+        }
+    }
     .header-margin{
         padding-top: 62px !important;
     }

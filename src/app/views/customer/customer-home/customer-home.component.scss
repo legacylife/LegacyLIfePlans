@@ -157,7 +157,7 @@
             .mat-card-header{
                 background-color: #fff;
                 border-bottom: 1px solid #dadce0;
-                padding: 0 20px;
+                padding: 0 10px 0 20px;
 
                 .mat-card-title{
                     display: flex;
@@ -289,7 +289,7 @@
         width: 100%;
     }
     .llp--content--wrapper .empty--section .mat-card-content{
-        padding: 15px 10px
+        padding: 15px 10px !important;
     }
     .llp--content--wrapper .files--wrapper .recent--acc--files{
         width: 48%;

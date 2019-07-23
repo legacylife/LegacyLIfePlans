@@ -93,7 +93,7 @@
             .mat-card-header{
                 background-color: #fff;
                 border-bottom: 1px solid #dadce0;
-                padding: 0 20px;
+                padding: 0 10px 0 20px;
                 position: relative;
 
                 .mat-card-title{
@@ -218,7 +218,7 @@
         margin: 15px 0 0 0 ;
     }
     .llp--content--wrapper .empty--section .mat-card-content{
-        padding: 15px 10px
+        padding: 15px 10px !important;
     }
     .llp--primary--btn{
         padding: 0px 10px !important;

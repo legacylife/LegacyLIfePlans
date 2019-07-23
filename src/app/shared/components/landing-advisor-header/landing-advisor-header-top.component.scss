@@ -10,13 +10,14 @@
             img{
                 height: auto;
                 cursor: pointer;
+                margin-left: 25px;
             }   
         }
         ul{
             display: flex;
             align-items: center;
             &.menu{
-                padding-right: 50px;
+                padding-right: 20px;
                 margin-left: auto;
                 li{
                     a{

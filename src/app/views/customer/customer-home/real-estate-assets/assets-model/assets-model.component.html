@@ -6,7 +6,7 @@
 </div>
 <form class="llp-form-wrapper" (ngSubmit)="assetsFormSubmit(assetsForm.value)">
   <div class="ll--modal--body idbox--modal--hgt">
-    <div fxLayout="row wrap">
+    <div fxLayout="row wrap" class="pt-1">
       <div fxFlex.xs="100">
         <mat-form-field class="full-width">
           <mat-select placeholder="Assets*" name="asset" (selectionChange)="assetChange($event)" [formControl]="assetsForm.controls['asset']">
