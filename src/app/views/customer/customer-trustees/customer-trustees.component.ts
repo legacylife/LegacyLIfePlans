@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material';
+import { LayoutService } from 'app/shared/services/layout.service';
 @Component({
   selector: 'app-customer-trustees',
   templateUrl: './customer-trustees.component.html',
@@ -7,12 +8,19 @@ import { MatSidenav } from '@angular/material';
 })
 export class CustomerTrusteesComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  constructor() { }
+  layout = null
+  
+  constructor( private layoutServ: LayoutService) {
+
+    this.layout = layoutServ.layoutConf
+   }
 
   ngOnInit() {
   }
   toggleSideNav() {
-    this.sideNav.opened = !this.sideNav.opened;
+    if(this.layout.isMobile){
+      this.sideNav.opened = !this.sideNav.opened;
+    }  
   }
 
 }

@@ -15,136 +15,156 @@
               </mat-expansion-panel-header>
 
               <ul class="legacy--list m-0 p-0">
-                <li>
+                <li (click)="toggleSideNav()">
                   <a [routerLink]="['/customer/dashboard/essential-day-one']">
-                    <mat-icon class="icon-file">insert_drive_file</mat-icon> My Essentials 
+                    <mat-icon class="icon-file">insert_drive_file</mat-icon> My Essentials
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
                   </a>
                 </li>
-                <li *ngIf="isProUser">
+                <li (click)="toggleSideNav()" *ngIf="isProUser">
                   <a [routerLink]="['/customer/dashboard/insurance-finance-debt']">
                     <mat-icon class="icon-file">monetization_on</mat-icon>
-                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Insurance Finance & Debt</a>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Insurance Finance & Debt
+                  </a>
                 </li>
-                <li *ngIf="isProUser">
+                <li (click)="toggleSideNav()" *ngIf="isProUser">
                   <a [routerLink]="['/customer/dashboard/pets']">
                     <mat-icon class="icon-file">pets</mat-icon>
-                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Pets</a>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Pets
+                  </a>
                 </li>
-                <li *ngIf="isProUser">
+                <li (click)="toggleSideNav()" *ngIf="isProUser">
                   <a [routerLink]="['/customer/dashboard/special-needs']">
                     <mat-icon class="icon-file">help</mat-icon>
-                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Special Needs</a>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Special Needs
+                  </a>
                 </li>
-                <li>
+                <li (click)="toggleSideNav()">
                   <a [routerLink]="['/customer/dashboard/legal-stuff']">
                     <mat-icon class="icon-file">gavel</mat-icon>
-                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Legal Stuff</a>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Legal Stuff
+                  </a>
                 </li>
-                <li *ngIf="isProUser">
+                <li (click)="toggleSideNav()" *ngIf="isProUser">
                   <a [routerLink]="['/customer/dashboard/passwords-digital-assests']">
                     <mat-icon class="icon-file">lock</mat-icon>
-                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Passwords & Digital Assests</a>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Passwords & Digital Assests
+                  </a>
                 </li>
-                <li>
+                <li (click)="toggleSideNav()">
                   <a [routerLink]="['/customer/dashboard/emergency-contacts']">
                     <mat-icon class="icon-file">contact_phone</mat-icon>
-                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Emergency Contacts</a>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Emergency Contacts
+                  </a>
                 </li>
-                <li *ngIf="isProUser">
+                <li (click)="toggleSideNav()" *ngIf="isProUser">
                   <a [routerLink]="['/customer/dashboard/real-estate-assets']">
                     <mat-icon class="icon-file">business</mat-icon>
-                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Real Estates & Assets</a>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Real Estates & Assets
+                  </a>
                 </li>
-                <li *ngIf="isProUser">
+                <li (click)="toggleSideNav()" *ngIf="isProUser">
                   <a [routerLink]="['/customer/dashboard/time-capsule']">
                     <mat-icon class="icon-file">access_time</mat-icon>
-                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Time Capsule</a>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Time Capsule
+                  </a>
                 </li>
-                <li *ngIf="isProUser">
-                    <a [routerLink]="['/customer/dashboard/letters-messages']">
+                <li (click)="toggleSideNav()" *ngIf="isProUser">
+                  <a [routerLink]="['/customer/dashboard/letters-messages']">
                     <mat-icon class="icon-file">markunread</mat-icon>
-                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Legacy Life Letters & Messages</a>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Legacy Life Letters & Messages
+                  </a>
                 </li>
-                <li *ngIf="isProUser">
+                <li (click)="toggleSideNav()" *ngIf="isProUser">
                   <a [routerLink]="['/customer/dashboard/final-wishes']">
                     <mat-icon class="icon-file">date_range</mat-icon>
-                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Final Wishes</a>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Final Wishes
+                  </a>
                 </li>
               </ul>
 
             </mat-expansion-panel>
-            <mat-expansion-panel [expanded]="sharedLegacies" >
+            <mat-expansion-panel [expanded]="sharedLegacies">
               <mat-expansion-panel-header [collapsedHeight]="'56px'" [expandedHeight]="'56px'">
                 <mat-panel-title [routerLink]="['/customer/dashboard/shared-legacies']">
                   <header>Shared Legacies</header>
                 </mat-panel-title>
               </mat-expansion-panel-header>
-              <ul class="legacy--list m-0 p-0"  *ngIf="sharedLegacies">
-                <li>
-                    <a [routerLink]="['/customer/legacies/essential-day-one', customerLegaicesId]">
-                      <mat-icon class="icon-file">insert_drive_file</mat-icon> My Essentials
-                      <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
-                    </a>
-                  </li>
-                  <li>
-                    <a [routerLink]="['/customer/legacies/insurance-finance-debt', customerLegaicesId]">
-                      <mat-icon class="icon-file">monetization_on</mat-icon>
-                      <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Insurance Finance & Debt</a>
-                  </li>
-                  <li>
-                    <a [routerLink]="['/customer/legacies/pets', customerLegaicesId]">
-                      <mat-icon class="icon-file">pets</mat-icon>
-                      <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Pets</a>
-                  </li>
-                  <li>
-                    <a [routerLink]="['/customer/legacies/special-needs', customerLegaicesId]">
-                      <mat-icon class="icon-file">help</mat-icon>
-                      <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Special Needs</a>
-                  </li>
-                  <li>
-                    <a [routerLink]="['/customer/legacies/legal-stuff', customerLegaicesId]">
-                      <mat-icon class="icon-file">gavel</mat-icon>
-                      <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Legal Stuff</a>
-                  </li>
-                  <li>
-                    <a [routerLink]="['/customer/legacies/passwords-digital-assests', customerLegaicesId]">
-                      <mat-icon class="icon-file">lock</mat-icon>
-                      <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Passwords & Digital Assests</a>
-                  </li>
-                  <li>
-                    <a [routerLink]="['/customer/legacies/emergency-contacts', customerLegaicesId]">
-                      <mat-icon class="icon-file">contact_phone</mat-icon>
-                      <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Emergency Contacts</a>
-                  </li>
-                  <li>
-                    <a [routerLink]="['/customer/legacies/real-estate-assets', customerLegaicesId]">
-                      <mat-icon class="icon-file">business</mat-icon>
-                      <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Real Estates & Assets</a>
-                  </li>
-                  <li>
-                    <a [routerLink]="['/customer/legacies/time-capsule', customerLegaicesId]">
-                      <mat-icon class="icon-file">access_time</mat-icon>
-                      <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Time Capsule</a>
-                  </li>
-                  <li>
-                      <a [routerLink]="['/customer/legacies/letters-messages', customerLegaicesId]">
-                      <mat-icon class="icon-file">markunread</mat-icon>
-                      <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Legacy Life Letters & Messages</a>
-                  </li>
-                  <li>
-                    <a [routerLink]="['/customer/legacies/final-wishes', customerLegaicesId]">
-                      <mat-icon class="icon-file">date_range</mat-icon>
-                      <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Final Wishes</a>
-                  </li>
+              <ul class="legacy--list m-0 p-0" *ngIf="sharedLegacies">
+                <li (click)="toggleSideNav()">
+                  <a [routerLink]="['/customer/legacies/essential-day-one', customerLegaicesId]">
+                    <mat-icon class="icon-file">insert_drive_file</mat-icon> My Essentials
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
+                  </a>
+                </li>
+                <li (click)="toggleSideNav()">
+                  <a [routerLink]="['/customer/legacies/insurance-finance-debt', customerLegaicesId]">
+                    <mat-icon class="icon-file">monetization_on</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Insurance Finance & Debt
+                  </a>
+                </li>
+                <li (click)="toggleSideNav()">
+                  <a [routerLink]="['/customer/legacies/pets', customerLegaicesId]">
+                    <mat-icon class="icon-file">pets</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Pets
+                  </a>
+                </li>
+                <li (click)="toggleSideNav()">
+                  <a [routerLink]="['/customer/legacies/special-needs', customerLegaicesId]">
+                    <mat-icon class="icon-file">help</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Special Needs
+                  </a>
+                </li>
+                <li (click)="toggleSideNav()">
+                  <a [routerLink]="['/customer/legacies/legal-stuff', customerLegaicesId]">
+                    <mat-icon class="icon-file">gavel</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Legal Stuff
+                  </a>
+                </li>
+                <li (click)="toggleSideNav()">
+                  <a [routerLink]="['/customer/legacies/passwords-digital-assests', customerLegaicesId]">
+                    <mat-icon class="icon-file">lock</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Passwords & Digital Assests
+                  </a>
+                </li>
+                <li (click)="toggleSideNav()">
+                  <a [routerLink]="['/customer/legacies/emergency-contacts', customerLegaicesId]">
+                    <mat-icon class="icon-file">contact_phone</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Emergency Contacts
+                  </a>
+                </li>
+                <li (click)="toggleSideNav()">
+                  <a [routerLink]="['/customer/legacies/real-estate-assets', customerLegaicesId]">
+                    <mat-icon class="icon-file">business</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Real Estates & Assets
+                  </a>
+                </li>
+                <li (click)="toggleSideNav()">
+                  <a [routerLink]="['/customer/legacies/time-capsule', customerLegaicesId]">
+                    <mat-icon class="icon-file">access_time</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Time Capsule
+                  </a>
+                </li>
+                <li (click)="toggleSideNav()">
+                  <a [routerLink]="['/customer/legacies/letters-messages', customerLegaicesId]">
+                    <mat-icon class="icon-file">markunread</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Legacy Life Letters & Messages
+                  </a>
+                </li>
+                <li (click)="toggleSideNav()">
+                  <a [routerLink]="['/customer/legacies/final-wishes', customerLegaicesId]">
+                    <mat-icon class="icon-file">date_range</mat-icon>
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Final Wishes
+                  </a>
+                </li>
               </ul>
             </mat-expansion-panel>
           </mat-accordion>
         </div>
       </div>
     </mat-sidenav>
-     <!-- toggleSideNav -->
-     <div class="shop-top-toolbar p-0 llp--toggle-btn ml-1">
+    <!-- toggleSideNav -->
+    <div class="shop-top-toolbar p-0 llp--toggle-btn ml-1">
       <button mat-icon-button class="p-0" (click)="toggleSideNav()">
         <mat-icon>short_text</mat-icon>
       </button>
