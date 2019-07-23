@@ -23,6 +23,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Estate</mat-card-title>
           <div *ngIf="showEstateListing && trusteeLegaciesAction && EstateManagementSection=='now'">
+              <a (click)="openManageTrusteeModal('Estate','EstateManagement', true)">{{trusteeEstateCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openLegalStuffModal('Estate', true)">+ Add</button>
           </div>
@@ -60,6 +61,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Healthcare</mat-card-title>
           <div *ngIf="showhealthcareListing && trusteeLegaciesAction && HealthcareManagementSection=='now'">
+              <a (click)="openManageTrusteeModal('Healthcare','HealthcareManagement', true)">{{trusteeHealthcareCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openLegalStuffModal('Healthcare', true)">+ Add</button>
           </div>
@@ -96,6 +98,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Personal Affairs</mat-card-title>
           <div *ngIf="showaffairsListing  && trusteeLegaciesAction && PersonalAffairsManagementSection=='now'">
+              <a (click)="openManageTrusteeModal('Personal Affairs','PersonalAffairsManagement', true)">{{trusteePrAffCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openLegalStuffModal('Personal Affairs', true)">+ Add</button>
           </div>

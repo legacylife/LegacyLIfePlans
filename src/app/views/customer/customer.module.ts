@@ -57,6 +57,7 @@ import { CustomerMyPeopleComponent } from './customer-trustees/customer-my-peopl
 import { CustomerMyTrusteeComponent } from './customer-trustees/customer-my-trustees/customer-my-trustees.component';
 import { CustomerHiredAdvisorComponent } from './customer-trustees/customer-hired-advisors/customer-hired-advisors.component';
 import { addTrusteeModalComponent } from './customer-home/add-trustee-modal/add-trustee-modal.component';
+import { ManageTrusteeModalComponent } from './customer-home/manage-trustee-modal/manage-trustee-modal.component';
 import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
 import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
 // Professional
@@ -138,7 +139,7 @@ import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
     CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent,
     CustomerMyPeopleComponent, addTrusteeModalComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,
     CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent, ProfAddTrusteeModalComponent,
-    CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent
+    CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent,ManageTrusteeModalComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard, CountryEditCanDeactivateGuard,ProUserAuthGuard
     // { provide: LY_THEME, useClass: MinimaLight, multi: true },
@@ -148,7 +149,7 @@ import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
   entryComponents: [ChangePassComponent,
     addTrusteeModalComponent, MarkAsDeceasedComponent,
     SendAnEmailComponent, HireAdvisorComponent,
-    ProfAddTrusteeModalComponent
+    ProfAddTrusteeModalComponent,ManageTrusteeModalComponent
   ]
 })
 export class CustomerModule { }

@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
 import { legalStuffModalComponent } from '../legal-stuff-modal/legal-stuff-modal.component';
 import { EstateTypeOfDocument,HealthcareTypeOfDocument,PersonalAffairsTypeOfDocument } from '../../../../selectList';
-
+import { ManageTrusteeModalComponent } from '../manage-trustee-modal/manage-trustee-modal.component';
 @Component({
   selector: 'app-customer-legal-stuff',
   templateUrl: './customer-legal-stuff.component.html',
@@ -30,7 +30,7 @@ export class CustomerLegalStuffComponent implements OnInit {
   selectedProfileId:string = "";
   typeOfDocumentList: any[];
   userId: string;
-  
+  trusteeEstateCnt: any;  trusteeHealthcareCnt: any;  trusteePrAffCnt: any;
   urlData:any={};
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
@@ -66,9 +66,9 @@ export class CustomerLegalStuffComponent implements OnInit {
     this.getEstateList();
   }
 
-  getEstateList = (query = {}) => {
+  getEstateList = (query = {}) => {    
     const req_vars = {
-      query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      query: Object.assign({ customerId: this.userId, status: "Active" }, query),      
       fields: {},
       order: {"createdOn": -1},
     }
@@ -79,7 +79,6 @@ export class CustomerLegalStuffComponent implements OnInit {
       } else {
 
         this.legaStuffList = result.data.legalList;
-
         this.estateList = this.legaStuffList.filter(dtype => {
           return dtype.subFolderName == 'Estate'
         }).map(el => el)
@@ -101,19 +100,21 @@ export class CustomerLegalStuffComponent implements OnInit {
           return dtype.subFolderName == 'Personal Affairs'
         }).map(el => el)
         this.showaffairsListingCnt = this.affairsList.length
+        
+        this.trusteeEstateCnt = result.data.totalEstateTrusteeRecords;
+        this.trusteeHealthcareCnt = result.data.totalHealthTrusteeRecords
+        this.trusteePrAffCnt = result.data.totalPerAffTrusteeRecords;
+
         if (this.showaffairsListingCnt > 0) {
           this.showaffairsListing = true;
         }
-
       }
     }, (err) => {
       console.error(err);
     })
   }
 
-
   openLegalStuffModal(FolderName, isNew?) {
-
     let dialogRef: MatDialogRef<any> = this.dialog.open(legalStuffModalComponent, {
       data: {
         FolderName: FolderName,
@@ -121,7 +122,6 @@ export class CustomerLegalStuffComponent implements OnInit {
       width: '720px',
       disableClose: true,
     });
-
     dialogRef.afterClosed()
     .subscribe(res => {
       this.getEstateList();
@@ -130,27 +130,43 @@ export class CustomerLegalStuffComponent implements OnInit {
         return;
       }
     })
-
   }
 
   getType(key, folderName) {
+    if (folderName) {
+      if(folderName=='Estate'){
+        this.typeOfDocumentList = EstateTypeOfDocument;
+      }else if(folderName=='Healthcare'){
+        this.typeOfDocumentList = HealthcareTypeOfDocument;
+      }else if(folderName=='Personal Affairs'){
+        this.typeOfDocumentList = PersonalAffairsTypeOfDocument;      
+      }    
+
+      let filteredTyes = this.typeOfDocumentList.filter(dtype => {
+        return dtype.opt_code === key
+      }).map(el => el.opt_name)[0]
+      return filteredTyes
+    }
+  }
+
+  openManageTrusteeModal(title,code,isNew?) {
+        let dialogRef: MatDialogRef<any> = this.dialog.open(ManageTrusteeModalComponent, {
+          width: '720px',
+          disableClose: true, 
+          data: {
+            title: title,
+            code:code
+          }
+        }) 
+        dialogRef.afterClosed()
+        .subscribe(res => {
+           this.getEstateList();
+          if (!res) {
+            // If user press cancel
+            return;
+          }
+        })
+   }
     
-        if (folderName) {
-    
-          if(folderName=='Estate'){
-            this.typeOfDocumentList = EstateTypeOfDocument;
-          }else if(folderName=='Healthcare'){
-            this.typeOfDocumentList = HealthcareTypeOfDocument;
-          }else if(folderName=='Personal Affairs'){
-            this.typeOfDocumentList = PersonalAffairsTypeOfDocument;      
-          }    
-    
-          let filteredTyes = this.typeOfDocumentList.filter(dtype => {
-            return dtype.opt_code === key
-          }).map(el => el.opt_name)[0]
-          return filteredTyes
-        }
-    
-      }
 
 }

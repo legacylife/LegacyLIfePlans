@@ -7,7 +7,7 @@ import { AppLoaderService } from '../../../../../shared/services/app-loader/app-
 import { InsuranceModalComponent } from './../insurance-modal/insurance-modal.component';
 import { FinanceModalComponent } from './../finance-modal/finance-modal.component';
 import { DebtModalComponent } from './../debt-modal/debt-modal.component';
-
+import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-trustee-modal.component';
 import { InsurancePolicyType,FinancePolicyType,DebtType } from '../../../../../selectList';
 @Component({
   selector: 'app-customer-home',
@@ -33,6 +33,9 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
+  trusteeInsuranceCnt:any;
+  trusteeDebtCnt:any;  
+  trusteeFinanceCnt:any;
   InsuranceManagementSection:string='now';
   FinancesManagementSection:string='now';
   DebtManagementSection:string='now';
@@ -59,24 +62,30 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
   }
 
   getInsuranceList = (query = {}) => {
+    let trusteeQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      trusteeQuery: Object.assign({ customerId: this.userId,"userAccess.InsuranceManagement" : "now", status:"Active" }, trusteeQuery),
       fields: {},
       order: {"createdOn": -1},
     }
+    this.loader.open(); 
     this.userapi.apiRequest('post', 'insuranceFinanceDebt/insuranceListing', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
         this.insuranceListing = result.data.insuranceList;
         this.showInsuranceListingCnt = this.insuranceListing.length;  
+        this.trusteeInsuranceCnt = result.data.totalTrusteeRecords;   
         if (this.showInsuranceListingCnt>0) {
           this.showInsuranceListing = true;
         }
       }
+      
     }, (err) => {
       console.error(err);
     })
+    this.loader.close();
   }
 
   openInsuranceModal() {
@@ -95,45 +104,56 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
   } 
 
   getFinanceList = (query = {}) => {
+    let trusteeQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      trusteeQuery: Object.assign({ customerId: this.userId,"userAccess.FinancesManagement" : "now", status:"Active" }, trusteeQuery),
       fields: {},
       order: {"createdOn": -1},
     }
+    this.loader.open(); 
     this.userapi.apiRequest('post', 'insuranceFinanceDebt/financeListing', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
         this.financeListing = result.data.financeList;
         this.showFinanceListingCnt = this.financeListing.length;  
+        this.trusteeFinanceCnt = result.data.totalTrusteeRecords; 
         if (this.showFinanceListingCnt>0) {
           this.showFinanceListing = true;
         }
-      }
+      }      
     }, (err) => {
       console.error(err);
     })
+    this.loader.close();
   }
 
   getDebtList = (query = {}) => {
+    let trusteeQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      trusteeQuery: Object.assign({ customerId: this.userId,"userAccess.DebtManagement" : "now", status:"Active" }, trusteeQuery),
       fields: {},
       order: {"createdOn": -1},
     }
+    this.loader.open(); 
     this.userapi.apiRequest('post', 'insuranceFinanceDebt/debtListing', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
         this.debtListing = result.data.debtList;
         this.showDebtListingCnt = this.debtListing.length;  
+        this.trusteeDebtCnt = result.data.totalTrusteeRecords;
         if (this.showDebtListingCnt>0) {
           this.showDebtListing = true;
         }
       }
+     
     }, (err) => {
       console.error(err);
     })
+    this.loader.close();
   }
 
   openDebtModal() {
@@ -182,6 +202,30 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
       return filteredTyes
   }
 
+  openManageTrusteeModal(title,code,isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ManageTrusteeModalComponent, {
+      width: '720px',
+      disableClose: true, 
+      data: {
+        title: title,
+        code:code
+      }
+    }) 
+    dialogRef.afterClosed()
+    .subscribe(res => {
+        if(code=='InsuranceManagement'){
+          this.getInsuranceList();
+        }else if(code=='FinancesManagement'){
+          this.getFinanceList();
+        }else if(code=='DebtManagement'){
+          this.getDebtList();
+        }
+      if (!res) {
+        // If user press cancel
+        return;
+      }
+    })
+   }
 
  
 }

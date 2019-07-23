@@ -20,9 +20,10 @@
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Personal Profile</mat-card-title>
+         
           <div *ngIf="showProfileListing && trusteeLegaciesAction && PersonalProfileManagementSection=='now'">
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
-              (click)="openProfileModal({}, true)">+ Add</button>
+              <a (click)="openManageTrusteeModal('Personal Profile','PersonalProfileManagement', true)">{{trusteeProfileCnt}} Trustees</a>   
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openProfileModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
         <div *ngIf="PersonalProfileManagementSection=='now'">
@@ -59,6 +60,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">ID Box </mat-card-title>
           <div *ngIf="showIdProofListing && trusteeLegaciesAction && IDBoxManagementSection=='now'">
+              <a (click)="openManageTrusteeModal('ID Box','IDBoxManagement', true)">{{trusteeIdCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openAddIdBoxModal({}, true)">+ Add</button>
           </div>
@@ -99,6 +101,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">My Professionals</mat-card-title>
           <div *ngIf="showProfessionalsListing && trusteeLegaciesAction && MyProfessionalsManagementSection=='now'">
+              <a (click)="openManageTrusteeModal('My Professionals','MyProfessionalsManagement', true)">{{trusteeProfessionalCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openProfessionalBoxModal({}, true)">+ Add</button>
           </div>
