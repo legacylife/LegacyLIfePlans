@@ -571,7 +571,26 @@ async function checkUserOtp(req, res) {
                     message = "Welcome to Legacy Life Plans. Your account credentials are successfully saved.";
                   else
                     message = "You have successfully signup. Please update your profile."; 
-                  res.send(resFormat.rSuccess({ "userId":newUser._id, "profilePicture": newUser.profilePicture, "username": newUser.username, "userType": newUser.userType, code: "success", message: message }))
+
+                    let subscriptionDetails   = newUser.subscriptionDetails ? newUser.subscriptionDetails : null
+                    let subscriptionStartDate = "",
+                    subscriptionEndDate       = "",
+                    subscriptionStatus        = "",
+                    autoRenewal               = "";
+                    
+                    if( subscriptionDetails != null && subscriptionDetails.length >0 ) {
+                      subscriptionStartDate = subscriptionDetails[(subscriptionDetails.length-1)]['startDate']
+                      subscriptionEndDate   = subscriptionDetails[(subscriptionDetails.length-1)]['endDate']
+                      subscriptionStatus    = subscriptionDetails[(subscriptionDetails.length-1)]['status']
+                      autoRenewal           = subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] ? subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] : false
+                    }
+                    let addOnDetails= user.addOnDetails ? user.addOnDetails : null
+                    let addOnGiven  = 'no'
+                    if( addOnDetails != null && addOnDetails.length >0 ) {
+                      addOnGiven = addOnDetails[(addOnDetails.length-1)]['status'] && addOnDetails[(addOnDetails.length-1)]['status'] == 'paid' ? 'yes' : 'no'
+                    }
+                    
+                  res.send(resFormat.rSuccess({ "userId":newUser._id, "profilePicture": newUser.profilePicture, "username": newUser.username, "userType": newUser.userType, code: "success", message: message,"createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate" : subscriptionEndDate, "subscriptionStatus" : subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven }))
                 }
               })
             }

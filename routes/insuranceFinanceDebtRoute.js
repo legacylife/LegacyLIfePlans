@@ -18,14 +18,14 @@ const Finance = require('../models/Finances.js')
 const Debts = require('../models/Debts.js')
 const s3 = require('../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
-
+const Trustee = require('./../models/Trustee.js')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
 })
 
 function insuranceList(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body
+  let { fields, offset, query,trusteeQuery, order, limit, search } = req.body
   let totalRecords = 0
   if (search && !isEmpty(query)) {
     Object.keys(query).map(function (key, index) {
@@ -42,7 +42,17 @@ function insuranceList(req, res) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-        res.send(resFormat.rSuccess({ insuranceList, totalRecords }))
+        let totalTrusteeRecords = 0;
+        if(totalRecords>0){
+          Trustee.count(trusteeQuery, function (err, TrusteeCount) {
+            if (TrusteeCount) {
+              totalTrusteeRecords = TrusteeCount
+            }
+            res.send(resFormat.rSuccess({ insuranceList, totalRecords,totalTrusteeRecords }))
+          })
+        }else{
+          res.send(resFormat.rSuccess({ insuranceList, totalRecords,totalTrusteeRecords }))
+        }     
       }
     }).sort(order).skip(offset).limit(limit)
   })
@@ -158,7 +168,7 @@ function deleteInsurance(req, res) {
 
 
 function financeList(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body
+  let { fields, offset, query, trusteeQuery,order, limit, search } = req.body
   let totalRecords = 0
   if (search && !isEmpty(query)) {
     Object.keys(query).map(function (key, index) {
@@ -175,7 +185,17 @@ function financeList(req, res) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-        res.send(resFormat.rSuccess({ financeList, totalRecords }))
+        let totalTrusteeRecords = 0;
+        if(totalRecords>0){
+          Trustee.count(trusteeQuery, function (err, TrusteeCount) {
+            if (TrusteeCount) {
+              totalTrusteeRecords = TrusteeCount
+            }
+            res.send(resFormat.rSuccess({ financeList, totalRecords,totalTrusteeRecords }))
+          })
+        }else{
+          res.send(resFormat.rSuccess({ financeList, totalRecords,totalTrusteeRecords }))
+        } 
       }
     }).sort(order).skip(offset).limit(limit)
   })
@@ -271,7 +291,7 @@ function viewFinance(req, res) {
 }
 
 function debtList(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body
+  let { fields, offset, query, trusteeQuery,order, limit, search } = req.body
   let totalRecords = 0
   if (search && !isEmpty(query)) {
     Object.keys(query).map(function (key, index) {
@@ -288,7 +308,17 @@ function debtList(req, res) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-        res.send(resFormat.rSuccess({ debtList, totalRecords }))
+        let totalTrusteeRecords = 0;
+        if(totalRecords>0){
+          Trustee.count(trusteeQuery, function (err, TrusteeCount) {
+            if (TrusteeCount) {
+              totalTrusteeRecords = TrusteeCount
+            }
+            res.send(resFormat.rSuccess({ debtList, totalRecords,totalTrusteeRecords }))
+          })
+        }else{
+          res.send(resFormat.rSuccess({ debtList, totalRecords,totalTrusteeRecords }))
+        } 
       }
     }).sort(order).skip(offset).limit(limit)
   })
