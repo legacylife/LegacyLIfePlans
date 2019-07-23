@@ -10,37 +10,49 @@
             <mat-option value="All">All</mat-option>
             <mat-option value="Active">Active</mat-option>
             <mat-option value="Pending">Pending</mat-option>
-            </mat-select>
-          </div>
+          </mat-select>
+        </div>
       </mat-card-header>
       <mat-card-content class="appointees--wrapper">
         <mat-card class="appointees--section p-0 {{peoples.status === 'Pending' ? 'pending' : ''}}" *ngFor="let peoples of allPeoples">
           <mat-card-header class="m-0">
             <mat-card-title class="m-0">
               <div class="appointees--pic">
-                <img  *ngIf="peoples.type === 'trustee'" src="{{profileUrl}}{{(peoples?.trustId!=null && peoples?.trustId.profilePicture!=null) ? peoples?.trustId.profilePicture : 'default.jpg'}}" />  
-                <img  *ngIf="peoples.type === 'advisor'" src="{{profileUrl}}{{(peoples?.advisorId!=null && peoples?.advisorId.profilePicture!=null) ? peoples?.advisorId.profilePicture : 'default.jpg'}}" />  
+                <img *ngIf="peoples.type === 'trustee'" src="{{profileUrl}}{{(peoples?.trustId!=null && peoples?.trustId.profilePicture!=null) ? peoples?.trustId.profilePicture : 'default.jpg'}}"
+                />
+                <img *ngIf="peoples.type === 'advisor'" src="{{profileUrl}}{{(peoples?.advisorId!=null && peoples?.advisorId.profilePicture!=null) ? peoples?.advisorId.profilePicture : 'default.jpg'}}"
+                />
               </div>
               <div class="appointees--desc">
-                <h5 *ngIf="peoples.type === 'trustee'">{{(peoples?.trustId!=null && peoples?.trustId.firstName!=null) ? peoples?.trustId.firstName : peoples?.firstName}} {{(peoples?.trustId!=null && peoples?.trustId.lastName!=null) ? peoples?.trustId.lastName : peoples?.lastName}}</h5>
-         
+                <h5 *ngIf="peoples.type === 'trustee'">{{(peoples?.trustId!=null && peoples?.trustId.firstName!=null) ? peoples?.trustId.firstName : peoples?.firstName}}
+                  {{(peoples?.trustId!=null && peoples?.trustId.lastName!=null) ? peoples?.trustId.lastName : peoples?.lastName}}</h5>
+
                 <h5 *ngIf="peoples.type === 'advisor'">{{peoples?.advisorId.firstName}} {{peoples?.advisorId.lastName}}</h5>
-                <p class="position m-0" *ngIf="peoples.type === 'advisor'">CFA, CIC</p>
+                <p class="position m-0" *ngIf="peoples.type === 'advisor'">{{peoples?.advisorId ? peoples?.advisorId.businessType : "" }}</p>
                 <p class="m-0" *ngIf="peoples.type === 'trustee'">
-                    {{(peoples?.trustId!=null && peoples?.trustId.username!=null) ? peoples?.trustId.username : ''}}
+                  {{(peoples?.trustId!=null && peoples?.trustId.username!=null) ? peoples?.trustId.username : ''}}
                 </p>
               </div>
               <div class="cursor-pointer">
-                  <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
-                  <mat-menu #beforeMenu="matMenu" xPosition="before" class="llp--menu--droupdown">
-                    <button mat-menu-item *ngIf="peoples.type === 'advisor'" (click)="openHireAdvisorModal(peoples?.advisorId._id,'update',true)"><span>Manage</span></button>                   
-                    <button mat-menu-item *ngIf="peoples.type === 'trustee'" (click)="openAddTrusteeModal(peoples?._id,true)"><span>Manage</span></button>
-                    <button mat-menu-item *ngIf="peoples.type === 'advisor'" [routerLink]="['/customer/professionals/prof-details', peoples?.advisorId._id]"><span>View</span></button>                   
-                    <button mat-menu-item  *ngIf="peoples.type === 'trustee' && peoples?.status === 'Pending'" (click)="resendInvitation(peoples?._id)"><span>Resend Invitation</span></button>
-                  </mat-menu>
+                <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
+                <mat-menu #beforeMenu="matMenu" xPosition="before" class="llp--menu--droupdown">
+                  <button mat-menu-item *ngIf="peoples.type === 'advisor'" (click)="openHireAdvisorModal(peoples?.advisorId._id,'update',true)">
+                    <span>Manage</span>
+                  </button>
+                  <button mat-menu-item *ngIf="peoples.type === 'trustee'" (click)="openAddTrusteeModal(peoples?._id,true)">
+                    <span>Manage</span>
+                  </button>
+                  <button mat-menu-item *ngIf="peoples.type === 'advisor'" [routerLink]="['/customer/professionals/prof-details', peoples?.advisorId._id]">
+                    <span>View</span>
+                  </button>
+                  <button mat-menu-item *ngIf="peoples.type === 'trustee' && peoples?.status === 'Pending'" (click)="resendInvitation(peoples?._id)">
+                    <span>Resend Invitation</span>
+                  </button>
+                </mat-menu>
               </div>
             </mat-card-title>
           </mat-card-header>
+          
           <mat-card-content *ngIf="peoples.type === 'trustee' && peoples?.status === 'Active'">
             <h4>Assigned</h4>
             <div class="files--folder">
@@ -55,8 +67,15 @@
           <!-- Pending -->
           <mat-card-content class="status--advisor relative status--pending" *ngIf="peoples?.status === 'Pending'">
             <mat-icon>history</mat-icon>
-            <p class="pending">Pending...</p>
-            <div class="ad--strip advisor--pending"> Advisor </div>
+            <!-- <p class="pending">Pending...</p> // original code by pankaj -->
+            <p class="pending" *ngIf="!peoples?.trustId">Pending...</p>
+            <p class="" *ngIf="peoples?.trustId && peoples?.trustId.userType == 'advisor'">
+              This user is an Advisor on Legacy Life plans.
+              <a class="pending" [routerLink]="['/customer/professionals/prof-details', peoples?.trustId._id]">Click here</a> to view the Advisor
+            </p>
+
+
+            <div class="ad--strip advisor--pending" *ngIf="peoples.type === 'advisor'"> Advisor </div>
           </mat-card-content>
           <!-- all hired advisor -->
           <mat-card-content class="status--advisor relative" *ngIf="peoples?.type === 'advisor' && peoples?.status !== 'Pending'">
@@ -68,6 +87,7 @@
               Advisor
             </div>
           </mat-card-content>
+
         </mat-card>
       </mat-card-content>
     </mat-card>
