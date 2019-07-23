@@ -8,11 +8,12 @@
         <mat-card-content class="pt-0 sl--hgt">
           <div class="shared--legacy--wrapper" *ngIf="allSharedLegacyLength>0">
             <div class="sl--box" *ngFor="let user of allSharedLegacyList">
-              <div class="sl--pic">
-                <img alt="" src="assets/images/arkenea/john.png">
-              </div>              
-              <h2 class="sl--name text-center">{{user.firstName}} {{user.lastName}}</h2>
-              <a class="sl--action" [routerLink]="['/customer/legacies/essential-day-one', user.customerId]"><mat-icon>insert_drive_file</mat-icon>View Plan</a>
+              <div class="sl--pic" [routerLink]="['/customer/legacies/essential-day-one', user._id]">
+                <img alt="profile Picture" *ngIf="user.profilePicture" src="{{profilePicturesPath}}{{user.profilePicture}}">
+                <img alt="default profile Picture" *ngIf="!user.profilePicture" src="{{defaultProfilePicture}}">
+              </div>                 
+              <h2 class="sl--name text-center" [routerLink]="['/customer/legacies/essential-day-one', user._id]">{{user.firstName}} {{user.lastName}}</h2>
+              <a class="sl--action" [routerLink]="['/customer/legacies/essential-day-one', user._id]"><mat-icon>insert_drive_file</mat-icon>View Plan</a>
             </div>
           </div>
           <div class="mt-1" *ngIf="allSharedLegacyLength<1">
