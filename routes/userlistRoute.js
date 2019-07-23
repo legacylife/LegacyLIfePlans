@@ -340,7 +340,7 @@ function getPlanDetails(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      if( userProfile.stripeCustomerId ) {
+      if( userProfile && userProfile.stripeCustomerId ) {
         let subscriptionDetails = userProfile.subscriptionDetails ? userProfile.subscriptionDetails : null
         let planId = subscriptionDetails != null ? subscriptionDetails[(subscriptionDetails.length-1)]['planId'] : ""
         if( planId != "" ) {
