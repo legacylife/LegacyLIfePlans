@@ -201,6 +201,7 @@ export class CardDetailsComponent implements OnInit {
     }
     this.userapi.apiRequest('post', 'userlist/getsubscription', req_vars).subscribe(result => {
       const data = result.data
+      console.log("result:",result)
       if (result.status == "error") {
         this.loader.close();
       }
@@ -208,6 +209,7 @@ export class CardDetailsComponent implements OnInit {
       if(result.status=='success') {
         localStorage.setItem('endUserSubscriptionStartDate', data.subscriptionStartDate);
         localStorage.setItem('endUserSubscriptionEndDate', data.subscriptionEndDate);
+        localStorage.setItem('endUserAutoRenewalStatus', "true");
         let url = '/'+this.endUserType+'/account-setting'
         this.dialog.closeAll(); 
         this.router.navigate([url]);
