@@ -323,13 +323,24 @@ export class UserAPIService {
   }
 
   public getUserAccess(customerId, callback){
-    const req_vars = {
-      query: Object.assign({ customerId: customerId })
+    let loggedinCustomerId = localStorage.getItem("endUserId")
+    if (localStorage.getItem("endUserType") == "customer") {
+      const params = {
+        query: Object.assign({ customerId: customerId, trustId: loggedinCustomerId })
+      }
+      this.apiRequest('post', 'trustee/view-details', params).subscribe(result => {
+        this.userAccess = result.data.userAccess;
+        callback(this.userAccess)
+      });
+    }else{
+      const params = {
+        query: Object.assign({ customerId: customerId, advisorId: loggedinCustomerId })
+      }
+      this.apiRequest('post', 'advisor/view-details', params).subscribe(result => {
+        this.userAccess = result.data.userAccess;
+        callback(this.userAccess)
+      });
     }
-    this.apiRequest('post', 'trustee/view-details', req_vars).subscribe(result => {
-      this.userAccess = result.data.userAccess;
-      callback(this.userAccess)
-    });
   }
 
 }

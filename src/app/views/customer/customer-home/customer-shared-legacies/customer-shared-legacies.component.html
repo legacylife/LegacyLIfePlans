@@ -6,7 +6,7 @@
           <mat-card-title class="m-0">Shared Legacies</mat-card-title> 
         </mat-card-header>
         <mat-card-content class="pt-0 sl--hgt">
-          <div class="shared--legacy--wrapper">
+          <div class="shared--legacy--wrapper" *ngIf="allSharedLegacyLength>0">
             <div class="sl--box" *ngFor="let user of allSharedLegacyList">
               <div class="sl--pic">
                 <img alt="" src="assets/images/arkenea/john.png">
@@ -14,6 +14,9 @@
               <h2 class="sl--name text-center">{{user.firstName}} {{user.lastName}}</h2>
               <a class="sl--action" [routerLink]="['/customer/legacies/essential-day-one', user.customerId]"><mat-icon>insert_drive_file</mat-icon>View Plan</a>
             </div>
+          </div>
+          <div class="mt-1" *ngIf="allSharedLegacyLength<1">
+            No record found!
           </div>
         </mat-card-content>
       </mat-card>

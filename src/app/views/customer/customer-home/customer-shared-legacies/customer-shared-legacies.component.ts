@@ -26,6 +26,7 @@ export class CustomerSharedLegaciesComponent implements OnInit {
   userId: string;
   endUserType: string;
   allSharedLegacyList: any[];
+  allSharedLegacyLength:number=0
 
   constructor(
     private route: ActivatedRoute,
@@ -54,6 +55,7 @@ export class CustomerSharedLegaciesComponent implements OnInit {
             console.log(result.data);
           } else {
             this.allSharedLegacyList = result.data.list;
+            this.allSharedLegacyLength = this.allSharedLegacyList.length
           }
         }
       );
