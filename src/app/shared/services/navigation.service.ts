@@ -112,10 +112,10 @@ export class NavigationService {
       state: '/advisor/leads'
     },
     {
-      name: 'To dos',
-      type: 'link',
+      name: 'To dos ad',
+      type: 'button',
       icon: 'list',
-      state: '/advisor/to-dos'
+      state: '/advisor'
     },
     {
       name: 'Coachs Corner',
@@ -124,8 +124,8 @@ export class NavigationService {
       state: '/advisor/dashboard'
     },
     {
-      name: 'Invite',
-      type: 'link',
+      name: 'Invite ad',
+      type: 'button',
       icon: 'markunread',
       state: '/advisor/dashboard'
     },
