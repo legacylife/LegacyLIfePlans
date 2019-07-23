@@ -10,7 +10,7 @@ import { UserAPIService } from './../../../../userapi.service';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 import { essentialsMyProfessionalsComponent } from './../../customer-home/essentials-my-professionals/essentials-my-professionals.component';
 import { documentTypes } from '../../../../selectList';
-
+import { ManageTrusteeModalComponent } from '../manage-trustee-modal/manage-trustee-modal.component';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './customer-essential-day-one.component.html',
@@ -29,6 +29,9 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   essentialProfessionalList:any = [];
   showProfessionalCnt:any;
   showProfileListingCnt:any;
+  trusteeProfileCnt:any;
+  trusteeIdCnt:any;
+  trusteeProfessionalCnt:any;
   showIDListingCnt:any;
   documentTypeList: any[] = documentTypes;
   modifiedDate:any;
@@ -69,54 +72,66 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   }
 
   getEssentialProfileList = (query = {}, search = false) => {
+    let personalProfileQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status:"Active" }, query),
+      personalProfileQuery: Object.assign({ customerId: this.userId,"userAccess.PersonalProfileManagement" : "now", status:"Active" }, personalProfileQuery),
       fields: {},
       offset: '',
       limit: '',
       order: {"modifiedOn": -1},
     }   
+    this.loader.open(); 
     this.userapi.apiRequest('post', 'customer/essential-profile-list', req_vars).subscribe(result => {     
       if (result.status == "error") {
         console.log(result.data)
       } else {
         this.essentialProfileList = result.data.essentialList;        
+        this.trusteeProfileCnt = result.data.totalTrusteeRecords;   
         if(result.data.totalRecords > 0){
           this.showProfileListingCnt = result.data.totalRecords;
           this.showProfileListing = true;
         }        
-      }
+      }      
     }, (err) => {
       console.error(err);
     })
+    this.loader.close();
   }
   
   getEssentialIdList = (query = {}, search = false) => { 
+    let idQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status:"Active" }, query),
+      idQuery: Object.assign({ customerId: this.userId,"userAccess.IDBoxManagement" : "now", status:"Active" }, idQuery),
       fields: {},
       offset: '',
       limit: '',
       order: {"modifiedOn": -1},
     }
+    this.loader.open(); 
     this.userapi.apiRequest('post', 'customer/essential-id-list', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
         this.essentialIDList = result.data.essentialIDList;        
+        this.trusteeIdCnt = result.data.totalTrusteeIDRecords;   
         if(result.data.totalIDRecords > 0){         
           this.showIDListingCnt = result.data.totalIDRecords;
           this.showIdProofListing = true;
         }       
-      }
+      }      
     }, (err) => {
       console.error(err);
     })
+    this.loader.close();
   }
 
   getEssentialProfessionalList = (query = {}, search = false) => { 
+    let professionalsQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status:"Active" }, query),
+      professionalsQuery: Object.assign({ customerId: this.userId,"userAccess.MyProfessionalsManagement" : "now", status:"Active" }, professionalsQuery),
       fields: {},
       offset: '',
       limit: '',
@@ -129,15 +144,18 @@ export class CustomerEssentialDayOneComponent implements OnInit {
       console.log(result.data)
     } else {
       this.essentialProfessionalList = result.data.essentialProfessionalList;
+      this.trusteeProfessionalCnt = result.data.totalTrusteeProfessionalsRecords;
+      //console.log("trusteeProfessionalCnt",this.trusteeProfessionalCnt)
       if(result.data.totalProfessionalRecords > 0){         
         this.showProfessionalCnt = result.data.totalProfessionalRecords;
         this.showProfessionalsListing = true;
       }       
     }
-    this.loader.close();
+  
   }, (err) => {
     console.error(err);
   })
+  this.loader.close();
  }
 
  openAddIdBoxModal(data: any = {}, isNew?) {
@@ -157,7 +175,6 @@ export class CustomerEssentialDayOneComponent implements OnInit {
  }
 
   openProfileModal(data: any = {}, isNew?) {
-    
     localStorage.setItem("personalProfileAction", "added");
     let dialogRef: MatDialogRef<any> = this.dialog.open(PersonalProfileModalComponent, {
       width: '720px',
@@ -196,4 +213,28 @@ export class CustomerEssentialDayOneComponent implements OnInit {
     return filteredTyes
   } 
    
+  openManageTrusteeModal(title,code,isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ManageTrusteeModalComponent, {
+      width: '720px',
+      disableClose: true, 
+      data: {
+        title: title,
+        code:code
+      }
+    }) 
+    dialogRef.afterClosed()
+    .subscribe(res => {
+        if(code=='PersonalProfileManagement'){
+          this.getEssentialProfileList();
+        }else if(code=='IDBoxManagement'){
+          this.getEssentialIdList();
+        }else if(code=='MyProfessionalsManagement'){
+          this.getEssentialProfessionalList();
+        }
+      if (!res) {
+        // If user press cancel
+        return;
+      }
+    })
+   }
 }

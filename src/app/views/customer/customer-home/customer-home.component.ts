@@ -6,6 +6,7 @@ import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../shared/animations/egret-animations';
 import { UserAPIService } from 'app/userapi.service';
+import { LayoutService } from 'app/shared/services/layout.service';
 
 @Component({
   selector: 'app-customer-home',
@@ -19,8 +20,10 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   public currentPage: any;
   dayFirst = true;
   daySeco = false;
+  layout = null;
   isProUser: boolean = false
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
+  
 
   public products: any[];
   public categories: any[];
@@ -31,11 +34,14 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   customerLegaicesId:string=''
   myLegacy:boolean = true
   sharedLegacies:boolean = false
-  constructor(
+  constructor(private layoutServ: LayoutService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private userapi:UserAPIService
-  ) { }
+    private userapi:UserAPIService,
+    
+  ) {
+    this.layout = layoutServ.layoutConf
+   }
 
   ngOnInit() {
     this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
@@ -68,6 +74,8 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   }
 
   toggleSideNav() {
-    this.sideNav.opened = !this.sideNav.opened;
+    if(this.layout.isMobile){
+      this.sideNav.opened = !this.sideNav.opened;
+    }  
   }
 }

@@ -85,7 +85,10 @@ export class CardDetailsComponent implements OnInit {
       this.planInterval = returnArr.planInterval */
       let subscriptionDate = moment( localStorage.getItem("endUserSubscriptionEndDate") )
       let diff = Math.round(this.subscriptionservice.getDateDiff( this.today, subscriptionDate.toDate() ))
-      this.planAmount   = (diff > 364 ? returnArr.metadata.addOnCharges : ( (returnArr.metadata.addOnCharges/365)*diff )).toFixed(2)//diff > 364 ? 50 :( returnArr.metadata.addOnCharges / diff)
+      let addOnCharges = Number (returnArr.metadata.addOnCharges)
+      let addOnAmount = diff > 364 ? addOnCharges : ( (addOnCharges/365)*diff ).toFixed(2)
+      this.planAmount   = Number(addOnAmount)
+      //(diff > 364 ? returnArr.metadata.addOnCharges : ( (returnArr.metadata.addOnCharges/365)*diff )).toFixed(2)//diff > 364 ? 50 :( returnArr.metadata.addOnCharges / diff)
       this.planCurrency = (returnArr.currency).toLocaleUpperCase()
       this.spaceAlloted = returnArr.metadata.addOnSpace
       this.getCustomerCard()
@@ -201,6 +204,7 @@ export class CardDetailsComponent implements OnInit {
     }
     this.userapi.apiRequest('post', 'userlist/getsubscription', req_vars).subscribe(result => {
       const data = result.data
+      console.log("result:",result)
       if (result.status == "error") {
         this.loader.close();
       }
@@ -208,6 +212,7 @@ export class CardDetailsComponent implements OnInit {
       if(result.status=='success') {
         localStorage.setItem('endUserSubscriptionStartDate', data.subscriptionStartDate);
         localStorage.setItem('endUserSubscriptionEndDate', data.subscriptionEndDate);
+        localStorage.setItem('endUserAutoRenewalStatus', "true");
         let url = '/'+this.endUserType+'/account-setting'
         this.dialog.closeAll(); 
         this.router.navigate([url]);

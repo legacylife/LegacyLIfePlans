@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Renderer2, ViewChild, HostListener } from '@angular/core';
 import { NavigationService } from '../../services/navigation.service';
 import { Subscription } from 'rxjs';
 import { ThemeService } from '../../../shared/services/theme.service';
@@ -107,7 +107,7 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
       width: '720px',
       disableClose: true,
     })
-  }
+  }  
 
   openTodosModal(data: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(TodosComponent, {

@@ -15,6 +15,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Young Children</mat-card-title>
           <div *ngIf="showYoungChildrenListing && trusteeLegaciesAction && YoungChildrenManagementSection=='now'">
+              <a (click)="openManageTrusteeModal('Young Children','YoungChildrenManagement', true)">{{trusteeYoungChildCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openModal('Young_Children', true)">+ Add</button>
           </div>
@@ -53,6 +54,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Child/Parent with Disability </mat-card-title>
           <div *ngIf="showCPDisabilityListing && trusteeLegaciesAction && ChildParentDisabilityManagementSection=='now'">
+              <a (click)="openManageTrusteeModal('Child/Parent with Disability','ChildParentDisabilityManagement', true)">{{trusteeChildParentCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openModal('Child_Parent', true)">+ Add</button>
           </div>
@@ -90,6 +92,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Friend/Neighbor you provide or care for</mat-card-title>
           <div *ngIf="friendNeighborListing && trusteeLegaciesAction && FriendNeighborCareManagementSection=='now'">
+              <a (click)="openManageTrusteeModal('Friend/Neighbor','FriendNeighborCareManagement', true)">{{trusteeFriendNeighborCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openModal('Friend_Neighbor', true)">+ Add</button>
           </div>

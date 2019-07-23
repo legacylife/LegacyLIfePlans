@@ -5,7 +5,7 @@ import { Subscription, Observable } from 'rxjs';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { UserAPIService } from 'app/userapi.service';
 import { SpecialNeedsModelComponent } from '../special-needs-model/special-needs-model.component';
-
+import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-trustee-modal.component';
 @Component({
   selector: 'app-special-needs-listing',
   templateUrl: './special-needs-listing.component.html',
@@ -29,7 +29,7 @@ export class SpecialNeedsListingComponent implements OnInit {
   customerLegacyType:string='customer';
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
-
+  trusteeFriendNeighborCnt :any={}; trusteeChildParentCnt:any={}; trusteeYoungChildCnt:any={};
   YoungChildrenManagementSection:string='now';
   ChildParentDisabilityManagementSection:string='now';
   FriendNeighborCareManagementSection:string='now';
@@ -62,8 +62,10 @@ export class SpecialNeedsListingComponent implements OnInit {
   }
 
   getyoungChildrenList(query = {}, search = false) {
+    let trusteeQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active" , folderName: "Young_Children" }, query),
+      trusteeQuery: Object.assign({ customerId: this.userId,"userAccess.YoungChildrenManagement" : "now", status:"Active" }, trusteeQuery),
       fields: {},
       offset: '',
       limit: '',
@@ -73,8 +75,9 @@ export class SpecialNeedsListingComponent implements OnInit {
        if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.youngChildrenList = result.data;
-        if (result.data.length > 0) {
+        this.youngChildrenList = result.data.specialNeedsList;        
+        this.trusteeYoungChildCnt = result.data.totalTrusteeRecords;   
+        if (result.data.specialNeedsList.length > 0) {
           this.showYoungChildrenListing = true;
         }
       }
@@ -84,8 +87,10 @@ export class SpecialNeedsListingComponent implements OnInit {
   }
 
   getcPDisabilityList(query = {}, search = false) {
+    let trusteeQuery = {}; 
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active", folderName: "Child_Parent" }, query),
+      trusteeQuery: Object.assign({ customerId: this.userId,"userAccess.ChildParentDisabilityManagement" : "now", status:"Active" }, trusteeQuery),
       fields: {},
       offset: '',
       limit: '',
@@ -95,20 +100,22 @@ export class SpecialNeedsListingComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.cPDisabilityList = result.data;
-        if (result.data.length > 0) {
+        this.cPDisabilityList = result.data.specialNeedsList;
+        this.trusteeChildParentCnt = result.data.totalTrusteeRecords;   
+        if (result.data.specialNeedsList.length > 0) {
           this.showCPDisabilityListing = true;
         }
       }
     }, (err) => {
       console.error(err);
     })
-  }
-
+  }  
 
   getfriendNeighborList(query = {}, search = false) {
+    let trusteeQuery = {}; 
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active", folderName: "Friend_Neighbor" }, query),
+      trusteeQuery: Object.assign({ customerId: this.userId,"userAccess.FriendNeighborCareManagement" : "now", status:"Active" }, trusteeQuery),
       fields: {},
       offset: '',
       limit: '',
@@ -118,8 +125,9 @@ export class SpecialNeedsListingComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.friendNeighborList = result.data;
-        if (result.data.length > 0) {
+        this.friendNeighborList = result.data.specialNeedsList;
+        this.trusteeFriendNeighborCnt = result.data.totalTrusteeRecords;   
+        if (result.data.specialNeedsList.length > 0) {
           this.friendNeighborListing = true;
         }
       }
@@ -150,4 +158,29 @@ export class SpecialNeedsListingComponent implements OnInit {
         }
       })
   }
+
+  openManageTrusteeModal(title,code,isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ManageTrusteeModalComponent, {
+      width: '720px',
+      disableClose: true, 
+      data: {
+        title: title,
+        code:code
+      }
+    }) 
+    dialogRef.afterClosed()
+    .subscribe(res => {
+        if(code=='YoungChildrenManagement'){
+          this.getyoungChildrenList();
+        }else if(code=='ChildParentDisabilityManagement'){
+          this.getcPDisabilityList();
+        }else if(code=='FriendNeighborCareManagement'){
+          this.getfriendNeighborList();
+        }
+      if (!res) {
+        // If user press cancel
+        return;
+      }
+    })
+   }
 }
