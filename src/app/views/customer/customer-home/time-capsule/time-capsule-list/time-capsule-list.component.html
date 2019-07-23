@@ -19,8 +19,8 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Time Capsule</mat-card-title>
           <div *ngIf="showTimeCapsuleListing && trusteeLegaciesAction && TimeCapsuleManagementSection=='now'">
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
-              (click)="openTimeCapsuleModal({}, true)">+ Add</button>
+            <a class="no--of--trustee" (click)="openManageTrusteeModal('Time Capsule','TimeCapsuleManagement', true)">{{trusteeTimeCapsuleCnt}} Trustees</a>   
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openTimeCapsuleModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
         <div *ngIf="TimeCapsuleManagementSection=='now'">

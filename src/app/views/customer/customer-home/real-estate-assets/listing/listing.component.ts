@@ -8,7 +8,7 @@ import { RealEstateModelComponent } from '../real-estate-model/real-estate-model
 import { VehicleModelComponent } from '../vehicle-model/vehicle-model.component';
 import { AssetsModelComponent } from '../assets-model/assets-model.component';
 import { RealEstateType, RealEstateAssetsType } from 'app/selectList';
-
+import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-trustee-modal.component';
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.component.html',
@@ -27,7 +27,9 @@ export class ListingComponent implements OnInit {
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
-
+  trusteeRealEstateCnt:any;
+  trusteeVehicleCnt:any;
+  trusteeAssetsCnt:any;
   RealEstateManagementSection:string='now';
   VehiclesManagementSection:string='now';
   AssetsManagementSection:string='now';
@@ -60,8 +62,10 @@ export class ListingComponent implements OnInit {
   }
 
   getRealEstateList(query = {}, search = false) {
+    let trusteeQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      trusteeQuery: Object.assign({ customerId: this.userId,"userAccess.RealEstateManagement" : "now", status:"Active" }, trusteeQuery),
       fields: {},
       offset: '',
       limit: '',
@@ -71,8 +75,10 @@ export class ListingComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.realEstateList = result.data;
-        if (result.data.length > 0) {
+        this.realEstateList = result.data.realEstateList;
+        this.trusteeRealEstateCnt = result.data.totalTrusteeRecords;
+        
+        if (result.data.realEstateList.length > 0) {
           this.showRealEstateListing = true;
         }
       }
@@ -82,8 +88,10 @@ export class ListingComponent implements OnInit {
   }
 
   getRealEstateVehiclesList(query = {}, search = false) {
+    let trusteeQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      trusteeQuery: Object.assign({ customerId: this.userId,"userAccess.VehiclesManagement" : "now", status:"Active" }, trusteeQuery),
       fields: {},
       offset: '',
       limit: '',
@@ -93,8 +101,9 @@ export class ListingComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.realEstateVehiclesList = result.data;
-        if (result.data.length > 0) {
+        this.realEstateVehiclesList = result.data.realEstateVehiclesList;
+        this.trusteeVehicleCnt = result.data.totalTrusteeRecords;
+        if (result.data.realEstateVehiclesList.length > 0) {
           this.showRealEstateVehiclesListing = true;
         }
       }
@@ -105,8 +114,10 @@ export class ListingComponent implements OnInit {
 
 
   getRealEstateAssetsList(query = {}, search = false) {
+    let trusteeQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      trusteeQuery: Object.assign({ customerId: this.userId,"userAccess.AssetsManagement" : "now", status:"Active" }, trusteeQuery),
       fields: {},
       offset: '',
       limit: '',
@@ -116,8 +127,9 @@ export class ListingComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.realEstateAssetsList = result.data;
-        if (result.data.length > 0) {
+        this.realEstateAssetsList = result.data.realEstateAssetsList;
+        this.trusteeAssetsCnt = result.data.totalTrusteeRecords;
+        if (result.data.realEstateAssetsList.length > 0) {
           this.showAssetsListing = true;
         }
       }
@@ -168,5 +180,30 @@ export class ListingComponent implements OnInit {
       return filteredTyes
     }
   }
+
+  openManageTrusteeModal(title,code,isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ManageTrusteeModalComponent, {
+      width: '720px',
+      disableClose: true, 
+      data: {
+        title: title,
+        code:code
+      }
+    }) 
+    dialogRef.afterClosed()
+    .subscribe(res => {
+        if(code=='RealEstateManagement'){
+          this.getRealEstateList();
+        }else if(code=='VehiclesManagement'){
+          this.getRealEstateVehiclesList();
+        }else if(code=='AssetsManagement'){
+          this.getRealEstateAssetsList();
+        }
+      if (!res) {
+        // If user press cancel
+        return;
+      }
+    })
+   }
 
 }

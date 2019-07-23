@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@ang
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { UserAPIService } from 'app/userapi.service';
 import { RelationshipType } from '../../../../selectList';
+import { ManageTrusteeModalComponent } from '../manage-trustee-modal/manage-trustee-modal.component';
 @Component({
   selector: 'app-emergency-contacts',
   templateUrl: './emergency-contacts.component.html',
@@ -121,18 +122,19 @@ export class EmergencyContactsComponent implements OnInit {
   }
 
   getEmergencyContacts() {
+    let trusteeQuery = {};
     const params = {
-      query: Object.assign({ "customerId": this.userId,"status":"Active"}),
+      query: Object.assign({"customerId": this.userId,"status":"Active"}),
+      trusteeQuery: Object.assign({ customerId: this.userId,"userAccess.emergencyContactsManagement" : "now", status:"Active" }, trusteeQuery),
       order: {"createdOn": -1},
     }
-    this.userapi.apiRequest('post', 'customer/get-emergency-contacts', params).subscribe(result => {
-      if (result.data.length > 0) {
-        this.showContactListing = true
-        this.eContactList = result.data
-        this.showContactCnt = this.eContactList.length;
+    this.userapi.apiRequest('post', 'customer/get-emergency-contacts', params).subscribe(result => {    
+      if (result.data.eContactsList.length > 0) {
+        this.showContactListing = true;
+        this.eContactList = result.data.eContactsList;
+        this.showContactCnt = result.data.totalTrusteeRecords;
       }
     })
-
   }  
   
   getType(key) {
@@ -162,5 +164,24 @@ export class EmergencyContactsComponent implements OnInit {
       event.preventDefault();
     }
   }
+
+  openManageTrusteeModal(title,code,isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ManageTrusteeModalComponent, {
+      width: '720px',
+      disableClose: true, 
+      data: {
+        title: title,
+        code:code
+      }
+    }) 
+    dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getEmergencyContacts();
+      if (!res) {
+        // If user press cancel
+        return;
+      }
+    })
+   }
    
 }
