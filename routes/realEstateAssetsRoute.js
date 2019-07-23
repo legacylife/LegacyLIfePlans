@@ -19,7 +19,7 @@ const SpecialNeeds = require('./../models/SpecialNeeds.js')
 const RealEstate = require('./../models/RealEstate.js')
 const Vehicles = require('./../models/Vehicles.js')
 const Assets = require('./../models/Assets.js')
-
+const Trustee = require('./../models/Trustee.js')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -96,12 +96,22 @@ function realEstateSubmit(req, res) {
 }
 
 function getRealEstateList(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body
+  let { fields, offset, query, trusteeQuery, order, limit, search } = req.body
   RealEstate.find(query, function (err, realEstateList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      res.send(resFormat.rSuccess(realEstateList))
+      let totalTrusteeRecords = 0;
+      if(realEstateList.length>0){
+        Trustee.count(trusteeQuery, function (err, TrusteeCount) {
+          if (TrusteeCount) {
+            totalTrusteeRecords = TrusteeCount
+          }
+          res.send(resFormat.rSuccess({realEstateList,totalTrusteeRecords}))
+        })
+      }else{
+        res.send(resFormat.rSuccess({realEstateList,totalTrusteeRecords}))
+      }
     }
   }).sort(order).skip(offset).limit(limit)
 }
@@ -229,12 +239,22 @@ function viewRealEstateVehicle(req, res) {
 }
 
 function getRealEstateVehiclesList(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body
+  let { fields, offset, query, trusteeQuery, order, limit, search } = req.body
   Vehicles.find(query, function (err, realEstateVehiclesList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      res.send(resFormat.rSuccess(realEstateVehiclesList))
+      let totalTrusteeRecords = 0;
+      if(realEstateVehiclesList.length>0){
+        Trustee.count(trusteeQuery, function (err, TrusteeCount) {
+          if (TrusteeCount) {
+            totalTrusteeRecords = TrusteeCount
+          }
+          res.send(resFormat.rSuccess({realEstateVehiclesList,totalTrusteeRecords}))
+        })
+      }else{
+        res.send(resFormat.rSuccess({realEstateVehiclesList,totalTrusteeRecords}))
+      }
     }
   }).sort(order).skip(offset).limit(limit)
 }
@@ -330,12 +350,22 @@ function realEstateAssetsSubmit(req, res) {
 }
 
 function getRealEstateAssetsList(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body
+  let { fields, offset, query, trusteeQuery, order, limit, search } = req.body
   Assets.find(query, function (err, realEstateAssetsList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      res.send(resFormat.rSuccess(realEstateAssetsList))
+      let totalTrusteeRecords = 0;
+      if(realEstateAssetsList.length>0){
+        Trustee.count(trusteeQuery, function (err, TrusteeCount) {
+          if (TrusteeCount) {
+            totalTrusteeRecords = TrusteeCount
+          }
+          res.send(resFormat.rSuccess({realEstateAssetsList,totalTrusteeRecords}))
+        })
+      }else{
+        res.send(resFormat.rSuccess({realEstateAssetsList,totalTrusteeRecords}))
+      }
     }
   }).sort(order).skip(offset).limit(limit)
 }

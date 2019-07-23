@@ -679,12 +679,22 @@ function deleteIdBox(req, res) {
 
 // get emergency Contacts of customer
 function getEmergencyContacts(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body
+  let { fields, offset, query,trusteeQuery, order, limit, search } = req.body
   emergencyContacts.find(query, function (err, eContactsList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      res.send(resFormat.rSuccess(eContactsList))
+      let totalTrusteeRecords = 0;
+      if(eContactsList.length>0){
+        Trustee.count(trusteeQuery, function (err, TrusteeCount) {
+          if (TrusteeCount) {
+            totalTrusteeRecords = TrusteeCount
+          }
+          res.send(resFormat.rSuccess({ eContactsList,totalTrusteeRecords}))
+        })
+      }else{
+        res.send(resFormat.rSuccess({ eContactsList,totalTrusteeRecords}))
+      }
     }
   }).sort(order).skip(offset).limit(limit)
 }
@@ -708,9 +718,7 @@ function legalEstateList(req, res) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-        let totalEstateTrusteeRecords = 0;
-        let totalHealthTrusteeRecords = 0;
-        let totalPerAffTrusteeRecords = 0;
+        let totalEstateTrusteeRecords = 0; let totalHealthTrusteeRecords = 0; let totalPerAffTrusteeRecords = 0;
         if(totalRecords>0){
             Trustee.find(query, function (err, trusteeList) {          
               const EstateList = trusteeList.filter(dtype => {
