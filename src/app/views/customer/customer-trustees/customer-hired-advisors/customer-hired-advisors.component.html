@@ -35,18 +35,44 @@
             </mat-card-header>
 
             <mat-card-content class="status--advisor relative">
-              <div class="files--folder mt-1 degree--names">
+              <div class="files--folder mt-1 degree--names" *ngIf="row?.status==='Active'">
                 <mat-icon>school</mat-icon>
                 {{row.advisorId?.businessType}}
-              </div>              
+              </div> 
+              <div class="mt-1 status--pending" *ngIf="row?.status==='Pending'">
+                <mat-icon>history</mat-icon>
+                <p class="pending">Request Pending...</p>
+              </div>             
               <div class="ad--strip">
                 Advisor
               </div>
-              <!-- <div class="mt-1 status--pending" *ngIf="row?.status==='Pending'">
-                <mat-icon>history</mat-icon>
-                <p class="pending">Request Pending...</p>
-              </div> -->
+              
             </mat-card-content>
+
+            <!-- Code if we want to show files & folder count -->
+
+            <!-- <mat-card-content *ngIf="row?.status==='Active'">
+                <h4>Assigned</h4>
+                <div class="files--folder">
+                  <mat-icon>insert_drive_file</mat-icon>
+                  {{row?.filesCount}} Files
+                </div>
+                <div class="files--folder mb-0">
+                  <mat-icon>folder</mat-icon>
+                  {{row?.folderCount}} Folders
+                </div>            
+              </mat-card-content>
+
+              <mat-card-content class="status--pending" *ngIf="row?.status==='Pending'">
+                <mat-icon>history</mat-icon>
+                <p class="pending">Request Pending...</p>            
+              </mat-card-content> 
+              <!-- Pending -->
+              
+
+
+
+
         </mat-card>
       </mat-card-content>
 
