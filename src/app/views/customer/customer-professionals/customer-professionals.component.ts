@@ -105,4 +105,9 @@ export class CustomerProfessionalComponent implements OnInit {
       },
     })
   }
+
+  getAdvisorSpecilities(businessType){
+    let types = String(businessType)
+    return types.replace(",",", ")
+  }
 }

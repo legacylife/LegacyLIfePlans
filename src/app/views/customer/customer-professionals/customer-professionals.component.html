@@ -10,13 +10,13 @@
           </div>
           <div class="acc--user--details text-center">
             <h2>{{row?.firstName}} {{row?.lastName}}</h2>
-            <p>CFA, CIC</p>
+            <p>{{row?.businessName ? row?.businessName : ""}}</p>
             <div class="sta--m">
               <mat-icon>star</mat-icon> Premium member</div>
           </div>
           <div class="sett--fp">
             <mat-icon>school</mat-icon>
-            {{row?.businessType}}
+            {{getAdvisorSpecilities(row?.businessType)}}
           </div> 
           <div class="feature--profile">
             <div class="email--phone">
@@ -56,12 +56,12 @@
                     <label class="strong--label">Date of Birth:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.dateOfBirth}}</label>
+                    <label class="normal--label">{{row?.dateOfBirth  | date: 'MMM dd, yyyy'}}</label>
                   </div>
                 </div>
                 <div fxLayout="row wrap" class="mb--10" *ngFor="let items of row?.websiteLinks; let PI = index">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
-                    <label class="strong--label">Domain {{PI}}:</label>
+                    <label class="strong--label">Domain:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
                     <label class="normal--label">{{items?.links}}</label>
@@ -72,7 +72,7 @@
                     <label class="strong--label">Job Title:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.businessType}}</label>
+                    <label class="normal--label"> {{getAdvisorSpecilities(row?.businessType)}}</label>
                   </div>
                 </div>
                 <div fxLayout="row wrap" class="mb--10">

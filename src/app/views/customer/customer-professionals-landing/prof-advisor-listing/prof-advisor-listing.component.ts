@@ -179,4 +179,9 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
     })
   }
 
+  getAdvisorSpecilities(businessType){
+    let types = String(businessType)
+    return types.replace(",",", ")
+  }
+
 }
