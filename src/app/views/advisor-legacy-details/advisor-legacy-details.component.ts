@@ -65,13 +65,9 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
           this.loader.open();
           let req_vars = {};          
           if(this.urlData.userType == 'advisor'){
-            req_vars = {
-              query: Object.assign({customerId:this.urlData.lastOne, advisorId:localStorage.getItem("endUserId"), userType : this.urlData.userType})
-            }
-          }else{
-            req_vars = {
-              query: Object.assign({customerId:this.urlData.lastOne, trusteeId:localStorage.getItem("endUserId"), userType : this.urlData.userType})
-            }
+            req_vars = {customerId:this.urlData.lastOne, advisorId:localStorage.getItem("endUserId"), userType : this.urlData.userType}
+          }else{            
+            req_vars = {customerId:this.urlData.lastOne, trustId:localStorage.getItem("endUserId"), userType : this.urlData.userType}
           }
           this.userapi.apiRequest('post', 'customer/legacy-user-remove', req_vars).subscribe(result => {
             this.loader.close();            
@@ -85,7 +81,7 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
             console.error(err)
             this.loader.close();
           })
-        }        
+        }
       })
   }
 }

@@ -108,7 +108,13 @@ export class AdvisorSignupComponent implements OnInit {
           localStorage.setItem("endUsername", result.data.username)
           localStorage.setItem("endUserId", result.data.userId)
           localStorage.setItem("endUserType", result.data.userType)
-
+          localStorage.setItem("endUserCreatedOn", result.data.createdOn);
+          localStorage.setItem("endUserSubscriptionStartDate", result.data.subscriptionStartDate);
+          localStorage.setItem("endUserSubscriptionEndDate", result.data.subscriptionEndDate);
+          localStorage.setItem("endUserSubscriptionStatus", result.data.subscriptionStatus);
+          localStorage.setItem("endUserAutoRenewalStatus", result.data.autoRenewalStatus);
+          localStorage.setItem("endUserProSubscription", 'no');
+          localStorage.setItem("endUserSubscriptionAddon", result.data.addOnGiven);
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
           this.router.navigate(['/', 'advisor', 'business-info']);
         } else {

@@ -56,12 +56,12 @@
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Finance</mat-card-title>
-          <div *ngIf="showFinanceListing && trusteeLegaciesAction && InsuranceManagementSection=='now'">
+          <div *ngIf="showFinanceListing && trusteeLegaciesAction && FinancesManagementSection=='now'">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openFinanceModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
-        <div *ngIf="InsuranceManagementSection=='now'">
+        <div *ngIf="FinancesManagementSection=='now'">
           <mat-card-content *ngIf="!showFinanceListing && trusteeLegaciesAction">
             <div class="build--ur--legacy" (click)="openFinanceModal({}, true)">
               <mat-icon>access_time</mat-icon>
@@ -83,7 +83,7 @@
             </div>
           </mat-card-content>
         </div>
-        <mat-card-content *ngIf="InsuranceManagementSection !='now'">
+        <mat-card-content *ngIf="FinancesManagementSection !='now'">
           <div>{{LegacyPermissionError}}</div>
         </mat-card-content>
       </mat-card>
