@@ -587,12 +587,14 @@ async function checkUserOtp(req, res) {
 }
 
 function checkTrustee(userType,trustId,emailId) {
+  let status = "";
   trust.findOne({email:emailId}, function (err, trustDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      if(trustDetails && trustDetails._id){  
-          trust.updateOne({ _id: trustDetails._id }, { status:"Active",trustId:ObjectId(trustId),modifiedOn:new Date() }, function (err, updatedDetails) {
+      if(trustDetails && trustDetails._id){ 
+        userType == 'advisor' ? status = 'Pending' : 'Active';
+          trust.updateOne({ _id: trustDetails._id }, { status:status,trustId:ObjectId(trustId),modifiedOn:new Date() }, function (err, updatedDetails) {
           if (err) {
             res.send(resFormat.rError(err))
           } else {

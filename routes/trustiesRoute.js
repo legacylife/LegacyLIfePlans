@@ -127,7 +127,7 @@ function trustFormUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              stat = sendTrusteeMail(proquery.email, proquery.messages, proquery.folderCount, extrafields.inviteByName, proquery.firstName, clientUrl, "Reminder: ");
+              //stat = sendTrusteeMail(proquery.email, proquery.messages, proquery.folderCount, extrafields.inviteByName, proquery.firstName, clientUrl, "Reminder: ");
               let result = { "message": "Trustee " + resText + " successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -176,7 +176,7 @@ function trustFormUpdate(req, res) {
         
         
         stat = sendTrusteeMail(proquery.email, proquery.messages, proquery.folderCount, extrafields.inviteByName, proquery.firstName, clientUrl, "");
-        let result = { "message": "Trustee added successfully!" }
+        let result = { "message": "Trustee details added successfully" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
