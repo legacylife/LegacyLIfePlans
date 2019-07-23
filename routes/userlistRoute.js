@@ -506,20 +506,22 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
         else {
           //subscription purchased email template
           emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
+            //console.log("template",template)
             if(template) {
               template = JSON.parse(JSON.stringify(template));
-              let body = template.mailBody.replace("{full_name}", userProfile.firstname+' '+userProfile.firstname);
+              let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '');
               body = body.replace("{plan_name}",subscriptionDetails.planName);
-              body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: subscriptionDetails.currency }));
+              body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
               body = body.replace("{duration}",subscriptionDetails.interval);
               body = body.replace("{paid_on}",subscriptionDetails.paidOn);
               body = body.replace("{start_date}",subscriptionDetails.startDate);
-              body = body.replace("{end_date}",subscriptionDetails.subscriptionId);
+              body = body.replace("{end_date}",subscriptionDetails.endDate);
               body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
               body = body.replace("{more_space}", subscription.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
               body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
+              //console.log("body",body)
               const mailOptions = {
-                to : req.body.username,
+                to : userProfile.username,
                 subject : template.mailSubject,
                 html: body
               }
@@ -640,15 +642,15 @@ function chargeForAddon( userProfile, stripeCustomerId, requestParam, res ) {
             let subscriptionDetails = userProfile.subscriptionDetails
             if(template) {
               template = JSON.parse(JSON.stringify(template));
-              let body = template.mailBody.replace("{full_name}", userProfile.firstname+' '+userProfile.firstname);
+              let body = template.mailBody.replace("{full_name}", userProfile.firstName+' '+userProfile.lastName);
               body = body.replace("{addon_space}",addOnDetails.spaceAlloted+' '+addOnDetails.spaceDimension);
               body = body.replace("{plan_name}",subscriptionDetails[subscriptionDetails.length-1]['planName']);
-              body = body.replace("{amount}", currencyFormatter.format(addOnDetails.amount, { code: addOnDetails.currency }));
+              body = body.replace("{amount}", currencyFormatter.format(addOnDetails.amount, { code: (addOnDetails.currency).toUpperCase() }));
               body = body.replace("{duration}",subscriptionDetails[subscriptionDetails.length-1]['interval']);
               body = body.replace("{paid_on}",addOnDetails.paidOn);
               body = body.replace("{end_date}",subscriptionDetails[subscriptionDetails.length-1]['endDate']);
               const mailOptions = {
-                to : req.body.username,
+                to : userProfile.username,
                 subject : template.mailSubject,
                 html: body
               }
@@ -728,41 +730,45 @@ function cancelSubscription(req, res) {
         let subscriptionDetails = userProfile.subscriptionDetails ? userProfile.subscriptionDetails : null
         let subscriptionId = subscriptionDetails != null ? subscriptionDetails[(subscriptionDetails.length-1)]['subscriptionId'] : ""
         if( subscriptionId != "" ) {
-          
-          stripe.subscriptions.del(
-            subscriptionId,
-            function(err, confirmation) {
-              if( err ) {
-                res.status(401).send(resFormat.rError(err))
-              }
-              let updatedSubscriptionObject = subscriptionDetails
-              updatedSubscriptionObject[updatedSubscriptionObject.length-1]['status'] = confirmation.status
-              User.updateOne({ _id: req.body.query._id }, { $set: { subscriptionDetails : updatedSubscriptionObject } }, function (err, updated) {
-                if (err) {
-                  res.send(resFormat.rError(err))
+          if( subscriptionDetails[subscriptionDetails.length-1]['status'] == 'canceled') {
+            stripe.subscriptions.del(
+              subscriptionId,
+              function(err, confirmation) {
+                if( err ) {
+                  res.status(401).send(resFormat.rError(err))
                 }
-
-                //subscription purchased email template
-                emailTemplatesRoute.getEmailTemplateByCode("SubscriptionCanceled").then((template) => {
-                  if(template) {
-                    template = JSON.parse(JSON.stringify(template));
-                    let body = template.mailBody.replace("{full_name}", userProfile.firstname+' '+userProfile.firstname);
-                    body = body.replace("{canceled_on}",new Date());
-                    body = body.replace("{end_date}",updatedSubscriptionObject[updatedSubscriptionObject.length-1]['status']);
-                    const mailOptions = {
-                      to : req.body.username,
-                      subject : template.mailSubject,
-                      html: body
-                    }
-                    sendEmail(mailOptions)
-                    res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':'Done'}));
-                  } else {
-                    res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':'Done'}));
+                let updatedSubscriptionObject = subscriptionDetails
+                updatedSubscriptionObject[updatedSubscriptionObject.length-1]['status'] = confirmation.status
+                User.updateOne({ _id: req.body.query._id }, { $set: { subscriptionDetails : updatedSubscriptionObject } }, function (err, updated) {
+                  if (err) {
+                    res.send(resFormat.rError(err))
                   }
+
+                  //subscription purchased email template
+                  emailTemplatesRoute.getEmailTemplateByCode("SubscriptionCanceled").then((template) => {
+                    if(template) {
+                      template = JSON.parse(JSON.stringify(template));
+                      let body = template.mailBody.replace("{full_name}", userProfile.firstName+' '+userProfile.lastName);
+                      body = body.replace("{canceled_on}",new Date());
+                      body = body.replace("{end_date}",updatedSubscriptionObject[updatedSubscriptionObject.length-1]['endDate']);
+                      const mailOptions = {
+                        to : userProfile.username,
+                        subject : template.mailSubject,
+                        html: body
+                      }
+                      sendEmail(mailOptions)
+                      res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':'Done'}));
+                    } else {
+                      res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':'Done'}));
+                    }
+                  })
+                  
                 })
-                
-              })
-          });
+            });
+          }
+          else{
+            res.status(401).send(resFormat.rError({'message':'You already canceled the subscription.'}))
+          }
         }
         else{
           res.status(401).send(resFormat.rError({'message':'Not subscribed any plan yet'}))
