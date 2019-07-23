@@ -24,7 +24,7 @@
         <mat-list-item>
           <p class="text-nl2br">
             {{todo.comments}}
-            <span class="when">{{todo.createdOn  | date: 'yyyy/MM/dd H:m:s'}}</span>
+            <span class="when">{{todo.modifiedOn  | date: 'yyyy/MM/dd H:m:s'}}</span>
           </p>
           <button class="more" mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu1">
             <mat-icon>more_vert</mat-icon>

@@ -14,7 +14,7 @@ import { egretAnimations } from "../../../../shared/animations/egret-animations"
 import { MarkAsDeceasedComponent } from "../mark-as-deceased-modal/mark-as-deceased-modal.component";
 import { AppLoaderService } from "app/shared/services/app-loader/app-loader.service";
 import { UserAPIService } from "app/userapi.service";
-
+import { s3Details } from "app/config";
 @Component({
   selector: "app-customer-shared-legacies",
   templateUrl: "./customer-shared-legacies.component.html",
@@ -27,7 +27,8 @@ export class CustomerSharedLegaciesComponent implements OnInit {
   endUserType: string;
   allSharedLegacyList: any[];
   allSharedLegacyLength:number=0
-
+  defaultProfilePicture: any = "assets/images/arkenea/default.jpg"
+  profilePicturesPath = s3Details.url + "/" + s3Details.profilePicturesPath
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -54,7 +55,7 @@ export class CustomerSharedLegaciesComponent implements OnInit {
           if (result.status == "error") {
             console.log(result.data);
           } else {
-            this.allSharedLegacyList = result.data.list;
+            this.allSharedLegacyList = result.data.results;
             this.allSharedLegacyLength = this.allSharedLegacyList.length
           }
         }

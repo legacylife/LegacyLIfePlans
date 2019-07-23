@@ -18,7 +18,7 @@
             <mat-card-title class="m-0">
               <div class="appointees--pic">                  
                 <img src="{{profileUrl}}{{(row?.trustId!=null && row?.trustId.profilePicture!=null) ? row?.trustId.profilePicture : 'default.jpg'}}" />                
-              </div>
+              </div>   
               <div class="appointees--desc">
                 <h5>{{(row?.trustId!=null && row?.trustId.firstName!=null) ? row?.trustId.firstName : row?.firstName}} {{(row?.trustId!=null && row?.trustId.lastName!=null) ? row?.trustId.lastName : row?.lastName}}</h5>
                 <p class="m-0">{{row?.email}}</p>
