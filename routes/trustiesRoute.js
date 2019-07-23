@@ -236,19 +236,59 @@ function getTrusteeDetails(req, res) {
 }
 
 
-// function trusteeCount(req, res){
-//   let { query } = req.body;
-//   trust.countDocuments(query, function (err, userCount){
-//     if(userCount){
-//       totalUsers = userCount
-//     }
-//   })
-// }
+function getSubSectionsList(req, res){
+  let { fields, offset, query, order, limit, search } = req.body
+  trust.countDocuments(query, function (err, userCount){
+    if(userCount){
+      totalUsers = userCount
+      trust.find(query, fields, function (err, trusteeUsersList) {
+        if (err) {
+          res.status(401).send(resFormat.rError(err))
+        } else {
+          //  console.log("trusteeUsersList",trusteeUsersList)
+            trusteeCount = trusteeUsersList.length;
+            res.status(200).send(resFormat.rSuccess({trusteeUsersList,trusteeCount}));
+        }
+      }).populate('trustId')  
+    }
+  })
+}
+
+
+ function trusteeFormSubmit(req, res){
+    let { query } = req.body;
+    let key = query.insertArray.code;
+    let list = query.insertArray.accessManagement;
+    
+    async.each(list, (contact,callback) => {
+      let newContact = JSON.parse(JSON.stringify(contact))
+      let ext = newContact.ids.split('##');
+      if (ext[0]) {
+        let documentId = ext[0];
+        let value = ext[1];
+          let updateData = {}
+          updateData[`userAccess.${key}`] = value;
+           trust.updateOne({ _id: documentId},{ $set:  updateData }, function (err, updatedDetails) {
+            if (err) {
+              res.status(401).send(resFormat.rError(err))
+            }
+            else {
+              callback()
+            }
+          })
+       } 
+      }, (err) => {
+        let result = { "message": "Trustee permissions updated successfully" }
+        res.status(200).send(resFormat.rSuccess(result));
+    })
+}
+
 
 router.post("/listing", trustsList)
 router.post("/get-user", getUserDetails)
 router.post("/view-details", getTrusteeDetails)
 router.post("/form-submit", trustFormUpdate)
 router.post("/resend-invitation", trustResendInvitation)
-//router.post("/acting-as-trustee", trusteeCount)
+router.post("/subSectionsList", getSubSectionsList)
+router.post("/subSections-form-submit", trusteeFormSubmit)
 module.exports = router
