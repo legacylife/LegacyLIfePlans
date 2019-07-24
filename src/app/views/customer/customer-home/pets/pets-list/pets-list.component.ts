@@ -30,6 +30,7 @@ export class PetsListComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';														
   trusteeLegaciesAction:boolean=true;
+  showTrusteeCnt:boolean=true;
   PetsManagementSection:string='now';
   LegacyPermissionError:string="You don't have permission of this section";
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
@@ -45,6 +46,7 @@ export class PetsListComponent implements OnInit {
       this.userapi.getUserAccess(this.userId, (userAccess) => {
         this.PetsManagementSection = userAccess.PetsManagement
       });
+      this.showTrusteeCnt = false;
     }
     this.getPetsList();
   }

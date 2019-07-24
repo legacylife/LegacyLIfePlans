@@ -47,6 +47,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
 
     if(this.ids && this.ids!=='undefined'){
       this.selectedProfileId = this.ids;   
+      this.myStepper.selectedIndex = Number('1');
       this.getTrusteeView();
     }    
   }
@@ -104,6 +105,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
 
   onChangeFormIndex(event){
     const {selectedIndex} = event;
+    console.log("selectedIndex",selectedIndex," Event",event)
     let stepHeader = document.getElementsByClassName('mat-horizontal-stepper-header')
     forEach(stepHeader, (element, index) => {
       element.classList = String(element.classList).replace('proActive', '')

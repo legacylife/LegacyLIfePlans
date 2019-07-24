@@ -23,6 +23,7 @@ export class LettersMessagesListingComponent implements OnInit {
   trusteeLettersMessagesCnt: any;
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
+  showTrusteeCnt:boolean=true;
   urlData:any={};
   LegacyLifeLettersMessagesManagementSection:string='now';
   LegacyPermissionError:string="You don't have permission of this section";
@@ -38,6 +39,7 @@ export class LettersMessagesListingComponent implements OnInit {
       this.userapi.getUserAccess(this.userId, (userAccess) => {
         this.LegacyLifeLettersMessagesManagementSection = userAccess.LegacyLifeLettersMessagesManagement
       });
+      this.showTrusteeCnt = false;
     }
     this.getLetterMessageList();
   }

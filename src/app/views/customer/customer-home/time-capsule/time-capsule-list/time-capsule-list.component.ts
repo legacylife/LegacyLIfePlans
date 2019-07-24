@@ -24,6 +24,7 @@ export class TimeCapsuleListComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';
   trusteeLegaciesAction:boolean=true;
+  showTrusteeCnt:boolean=true;
   urlData:any={};
   TimeCapsuleManagementSection:string='now';
   LegacyPermissionError:string="You don't have permission of this section";
@@ -31,7 +32,7 @@ export class TimeCapsuleListComponent implements OnInit {
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
 
   ngOnInit() {
-    this.userId = localStorage.getItem("endUserId");
+    this.userId = localStorage.getItem("endUserId");    
     this.urlData = this.userapi.getURLData();
     this.customerLegaciesId = this.urlData.lastOne;
     this.dynamicRoute = this.urlData.dynamicRoute;
@@ -41,6 +42,7 @@ export class TimeCapsuleListComponent implements OnInit {
       this.userapi.getUserAccess(this.userId, (userAccess) => {
         this.TimeCapsuleManagementSection = userAccess.TimeCapsuleManagement 
       });
+      this.showTrusteeCnt = false;
     }
     this.getTimecapsuleList();
   }

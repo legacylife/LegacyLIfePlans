@@ -32,6 +32,7 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
   financeTypeList:any[];
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
+  showTrusteeCnt:boolean=true;
   urlData:any={};
   trusteeInsuranceCnt:any;
   trusteeDebtCnt:any;  
@@ -55,6 +56,7 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
         this.FinancesManagementSection= userAccess.FinancesManagement 
         this.DebtManagementSection= userAccess.DebtManagement
       });
+      this.showTrusteeCnt = false;
     }    
     this.getInsuranceList();
     this.getFinanceList();
