@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
-
-
-
 import { UserAPIService } from './../../../userapi.service';
 import { s3Details } from '../../../config';
-import { ReferAndEarnModalComponent } from '../legacies/refer-and-earn-modal/refer-and-earn-modal.component';
+import { ReferAndEarnModalComponent } from 'app/views/refer-and-earn-modal/refer-and-earn-modal.component';
+//import { ReferAndEarnModalComponent } from '../legacies/refer-and-earn-modal/refer-and-earn-modal.component';
+
 const profileFilePath = s3Details.url+'/'+s3Details.profilePicturesPath;
 
 @Component({

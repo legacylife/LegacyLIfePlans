@@ -24,7 +24,8 @@ export class AdvisorLeadsDetailsComponent implements OnInit {
   about: string;
   userId : string;
   urlData:any={};
-  ownLegacyFilesCount:string='';
+  ownLegacyFilesCount:number=0;
+  ownLegacyFilesCountEnable:boolean= false;
 
   mutualFriendList: string;
   firstMutualFriend:string='';
@@ -37,9 +38,9 @@ export class AdvisorLeadsDetailsComponent implements OnInit {
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
     
-    this.getUserView();    
-    this.getOwnLegacyFilesCount();
+    this.getUserView();
     this.getMutualFriend();
+    this.getOwnLegacyFilesCount();
   }
 
   getUserView = (query = {}, search = false) => {
@@ -72,6 +73,7 @@ export class AdvisorLeadsDetailsComponent implements OnInit {
     }
     this.userapi.apiRequest('post', 'lead/get-own-legacy-files-count', params).subscribe(result => {
         this.ownLegacyFilesCount = result.data.ownLegacyFilesCount
+        this.ownLegacyFilesCountEnable = true
     }, (err) => {
       console.error("error : ", err)
     })
