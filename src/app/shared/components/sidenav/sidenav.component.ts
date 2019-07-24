@@ -17,8 +17,8 @@ export class SidenavComponent {
   constructor(
     private dialog: MatDialog,
     private layout: LayoutService,
-  ) {}
-  ngOnInit() {}
+  ) { }
+  ngOnInit() { }
 
   // Only for demo purpose
   addMenuItem() {
@@ -29,60 +29,60 @@ export class SidenavComponent {
       icon: 'done',
       state: 'material',
       sub: [
-        {name: 'SUBITEM', state: 'cards'},
-        {name: 'SUBITEM', state: 'buttons'}
+        { name: 'SUBITEM', state: 'cards' },
+        { name: 'SUBITEM', state: 'buttons' }
       ]
     });
   }
 
-  closeSidenav(){
+  closeSidenav() {
     this.layout.publishLayoutChange({
       sidebarStyle: 'closed'
     })
   }
- 
+
 
   openSmModal(name) {
-    
+
     console.log(name);
 
     switch (name) {
-      
+
       case "Invite":
-      let dialogRef: MatDialogRef<any> = this.dialog.open(InviteComponent, {
-        width: '720px',
-        disableClose: true,
-      });    
-        
+        let dialogRef: MatDialogRef<any> = this.dialog.open(InviteComponent, {
+          width: '720px',
+          disableClose: true,
+        });
+
         break;
 
-        case "Invite ad":
-          let dialogRef0: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
-            width: '720px',
-            disableClose: true,
-          });    
-            
-            break;
-        
-        case "To dos":
-          let dialogRef1: MatDialogRef<any> = this.dialog.open(TodosComponent, {
-            width: '720px',
-            disableClose: true,
-          });
+      case "Invite ad":
+        let dialogRef0: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
+          width: '720px',
+          disableClose: true,
+        });
 
-          break;
-        
-          case "To dos ad":
-            let dialogRef2: MatDialogRef<any> = this.dialog.open(TodosComponent, {
-              width: '720px',
-              disableClose: true,
-            });
-    
+        break;
+
+      case "To dos":
+        let dialogRef1: MatDialogRef<any> = this.dialog.open(TodosComponent, {
+          width: '720px',
+          disableClose: true,
+        });
+
+        break;
+
+      case "To dos ad":
+        let dialogRef2: MatDialogRef<any> = this.dialog.open(TodosComponent, {
+          width: '720px',
+          disableClose: true,
+        });
+
       default:
         break;
     }
 
-    
+
   }
-  
+
 }
