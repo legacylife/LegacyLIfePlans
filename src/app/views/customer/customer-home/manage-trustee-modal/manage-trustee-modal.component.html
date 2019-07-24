@@ -28,40 +28,41 @@
             </div>
           </div>
           <div formArrayName="accessManagement">
-            <mat-radio-group class="llp-radio">
-              <div fxLayout="row wrap" *ngFor="let row of rows; let i = index" [formGroupName]="i">
-
-
-                <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
-                  <label class="left--header">{{row?.trustId.firstName}} {{row?.trustId.lastName}} </label>
-                </div>
-                <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
-                  <mat-list-item>
-                    <mat-radio-button value="{{row?._id}}##now"
-                      [checked]="getAccessVal(row?.userAccess, code,'now') === 'now'">Now</mat-radio-button>
-                  </mat-list-item>
-                </div>
-                <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
-                  <mat-list-item>
-                    <mat-radio-button value="{{row?._id}}##afterDeath"
-                      [checked]="getAccessVal(row?.userAccess, code,'afterDeath') === 'afterDeath'">After Death
-                    </mat-radio-button>
-                  </mat-list-item>
-                </div>
-                <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
-                  <mat-list-item>
-                    <mat-radio-button value="{{row?._id}}##never"
-                      [checked]="getAccessVal(row?.userAccess, code,'never') === 'never'">Never</mat-radio-button>
-                  </mat-list-item>
-                </div>
-
-
-                <div class="add--new" *ngIf="listLength == i" (click)="openAddTrusteeModal('', true)">
-                  <mat-icon>add_circle</mat-icon>
-                  Add Trustee
-                </div>
-            </div>
-         </mat-radio-group>
+              <div *ngFor="let row of rows; let i = index" [formGroupName]="i">
+                  <mat-form-field class="full-width" *ngIf="HiddenVal">
+                        <input matInput name="oldValue" [formControl]="trusteeFormGroup.controls['oldValue']" readonly="readonly">
+                  </mat-form-field> 
+                  <mat-radio-group class="llp-radio" formControlName="ids">
+                    <div fxLayout="row wrap">
+                      <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
+                        <label class="left--header">{{row?.trustId.firstName}} {{row?.trustId.lastName}} </label>
+                      </div>
+                      <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                        <mat-list-item>
+                          <mat-radio-button value="{{row?._id}}##now"
+                            [checked]="getAccessVal(row?.userAccess, code,'now') === 'now'">Now</mat-radio-button>
+                        </mat-list-item>
+                      </div>
+                      <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                        <mat-list-item>
+                          <mat-radio-button value="{{row?._id}}##afterDeath"
+                            [checked]="getAccessVal(row?.userAccess, code,'afterDeath') === 'afterDeath'">After Death
+                          </mat-radio-button>
+                        </mat-list-item>
+                      </div>
+                      <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                        <mat-list-item>
+                          <mat-radio-button value="{{row?._id}}##never"
+                            [checked]="getAccessVal(row?.userAccess, code,'never') === 'never'">Never</mat-radio-button>
+                        </mat-list-item>
+                      </div>
+                      <div class="add--new" *ngIf="listLength == i" (click)="openAddTrusteeModal('', true)">
+                        <mat-icon>add_circle</mat-icon>
+                        Add Trustee
+                      </div>          
+                  </div>
+                </mat-radio-group>
+             </div>
         </div>
       </div>
     </div>

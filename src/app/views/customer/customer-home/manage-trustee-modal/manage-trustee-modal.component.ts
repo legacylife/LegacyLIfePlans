@@ -44,14 +44,14 @@ ngOnInit() {
 buildItemForm() {
     this.trusteeFormGroup = this.fb.group({ 
       code: new FormControl(this.code,[]),
-      accessManagement: this.fb.array([this.fb.group({ ids: [''] })]), 
+      accessManagement: this.fb.array([this.fb.group({ ids: [''],oldValue:[] })]), 
     });
 }
 
 ngAfterViewInit(){ 
 }
  
-manageTrusteeSubmit(insert = null) {
+manageTrusteeSubmit(insert = null) {console.log("insert",insert)
     const  req_vars = {
       query: Object.assign({ insertArray: insert,customerId: this.userId  })
     } 
@@ -100,6 +100,7 @@ manageTrusteeSubmit(insert = null) {
   createDefinition(values,documentId): FormGroup {
     return this.fb.group({
       ids: [documentId+'##'+values],
+      oldValue: [values],
     });
   }
 
