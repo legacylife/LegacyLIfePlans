@@ -19,7 +19,7 @@ import { PersonalProfileModalComponent } from '../personal-profile-modal/persona
 })
 export class CustomerHomeEssentialComponent implements OnInit {
  @ViewChild(MatSidenav) private sideNav: MatSidenav;
-
+ showTrusteeCnt:boolean=true;  
   constructor(
     private route: ActivatedRoute, 
     private router: Router, private dialog: MatDialog,
