@@ -5,6 +5,7 @@ import { egretAnimations } from '../../../../../shared/animations/egret-animatio
 import { UserAPIService } from './../../../../../userapi.service';
 import { AppLoaderService } from '../../../../../shared/services/app-loader/app-loader.service';
 import { PetsModalComponent } from './../pets-modal/pets-modal.component';
+import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-trustee-modal.component';
 
 @Component({
   selector: 'app-customer-home',
@@ -23,7 +24,7 @@ export class PetsListComponent implements OnInit {
   modifiedDate:any;
   PetList:any = [];
   customerData:any = [];
-
+  trusteePetsCnt:any;
   urlData:any={};
 	dynamicRoute:string;
   customerLegaciesId: string;
@@ -49,8 +50,10 @@ export class PetsListComponent implements OnInit {
   }
 
   getPetsList = (query = {}) => {
+    let trusteeQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      trusteeQuery: Object.assign({ customerId: this.userId,"userAccess.PetsManagement" : "now", status:"Active" }, trusteeQuery),
       fields: {},
       order: {"createdOn": -1},
     }
@@ -60,6 +63,7 @@ export class PetsListComponent implements OnInit {
       } else {
         this.petsListing = result.data.petList;
         this.showPetsListingCnt = this.petsListing.length;  
+        this.trusteePetsCnt = result.data.totalTrusteeRecords;  
         if (this.showPetsListingCnt>0) {
           this.showPetsListing = true;
         }
@@ -98,4 +102,23 @@ export class PetsListComponent implements OnInit {
       console.error(err)
     })
   }
+
+  openManageTrusteeModal(title,code,isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ManageTrusteeModalComponent, {
+      width: '720px',
+      disableClose: true, 
+      data: {
+        title: title,
+        code:code
+      }
+    }) 
+    dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getPetsList();
+      if (!res) {
+        // If user press cancel
+        return;
+      }
+    })
+   }
 }

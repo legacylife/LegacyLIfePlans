@@ -286,10 +286,11 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width about--txtarea">
-                      <textarea matInput placeholder="About You*" value="Your professional summary, achievements, client experience" name="bioText" [formControl]="AddressForm.controls['bioText']"></textarea>
-                      <div class="char--limit">0 / 500 chars</div>
+                      <textarea matInput placeholder="About You*" maxlength="500" value="Your professional summary, achievements, client experience" name="bioText" [formControl]="AddressForm.controls['bioText']"></textarea>
+                      <!-- <div class="char--limit">0 / 500 chars</div> -->
                       <mat-icon matTooltip="Please enter bio text" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['bioText'].hasError('required') && AddressForm.controls['bioText'].touched"
                       class="red--alert">help_outline</mat-icon>
+                      <div class="char--limit" style="float: right;">{{ 500 - AddressForm.controls['bioText'].value?.length }} / 500 chars</div>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" formArrayName="awardsYears">

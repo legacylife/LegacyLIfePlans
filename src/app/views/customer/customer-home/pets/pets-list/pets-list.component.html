@@ -18,6 +18,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Pets</mat-card-title>
           <div *ngIf="showPetsListing && trusteeLegaciesAction && PetsManagementSection=='now'">
+              <a class="no--of--trustee" (click)="openManageTrusteeModal('Pets','PetsManagement', true)">{{trusteePetsCnt}} Trustees</a> 
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openPetsModal({}, true)">+ Add</button>
           </div>
         </mat-card-header>
