@@ -730,7 +730,7 @@ function cancelSubscription(req, res) {
         let subscriptionDetails = userProfile.subscriptionDetails ? userProfile.subscriptionDetails : null
         let subscriptionId = subscriptionDetails != null ? subscriptionDetails[(subscriptionDetails.length-1)]['subscriptionId'] : ""
         if( subscriptionId != "" ) {
-          if( subscriptionDetails[subscriptionDetails.length-1]['status'] == 'canceled') {
+          if( subscriptionDetails[subscriptionDetails.length-1]['status'] == 'paid') {
             stripe.subscriptions.del(
               subscriptionId,
               function(err, confirmation) {
