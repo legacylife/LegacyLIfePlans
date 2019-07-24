@@ -38,6 +38,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   dynamicRoute:string;
   customerLegaciesId: string;
   trusteeLegaciesAction:boolean=true;  
+  showTrusteeCnt:boolean=true;  
   PersonalProfileManagementSection:string='now';
   IDBoxManagementSection:string='now';
   MyProfessionalsManagementSection:string='now';
@@ -65,6 +66,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
         this.IDBoxManagementSection= userAccess.IDBoxManagement 
         this.MyProfessionalsManagementSection= userAccess.MyProfessionalsManagement 
       });
+      this.showTrusteeCnt = false;
     }
     this.getEssentialProfileList();
     this.getEssentialIdList();

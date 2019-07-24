@@ -31,6 +31,7 @@
                         <mat-list-item>
                             <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
                               <label class="left--header">{{row?.trustId.firstName}} {{row?.trustId.lastName}} </label>
+                              <label class="left--header" *ngIf="listLength == i"><a class="no--of--trustee" (click)="openAddTrusteeModal('', true)"><mat-icon class="icon--plus">+</mat-icon>Add Trustee</a></label>                              
                             </div>
                             <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                  
                                 <mat-radio-button value="{{row?._id}}##now" [checked]="getAccessVal(row?.userAccess, code,'now') === 'now'">Now</mat-radio-button>                    
@@ -42,8 +43,8 @@
                                 <mat-radio-button value="{{row?._id}}##never" [checked]="getAccessVal(row?.userAccess, code,'never') === 'never'">Never</mat-radio-button>                    
                             </div>               
                         </mat-list-item>
-                      </mat-radio-group>
-                  </div>
+                      </mat-radio-group>                      
+                  </div>                  
                 </div>
               </div>
             </div>
@@ -53,8 +54,8 @@
           <div class="mt-1 text-center">
               <button mat-raised-button type="button" class="llp--secondary--btn mr-1" [mat-dialog-close]="">Cancel</button>
               <button mat-raised-button class="llp--primary--btn">Save</button>
-          </div>
-        </div> 
-      </form>
-  </div>
+          </div>          
+        </div>         
+      </form>      
+  </div>  
 </div>

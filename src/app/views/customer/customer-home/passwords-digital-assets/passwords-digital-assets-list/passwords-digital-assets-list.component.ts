@@ -31,7 +31,7 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';
-
+  showTrusteeCnt:boolean=true;
   DevicesManagementSection:string='now';
   ElectronicMediaManagementSection:string='now';
   LegacyPermissionError:string="You don't have permission of this section";
@@ -48,6 +48,7 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
         this.DevicesManagementSection = userAccess.DevicesManagement
         this.ElectronicMediaManagementSection= userAccess.ElectronicMediaManagement
       });
+      this.showTrusteeCnt = false;
     }
     this.getDevicesList();
     this.getElectronicMediaList();

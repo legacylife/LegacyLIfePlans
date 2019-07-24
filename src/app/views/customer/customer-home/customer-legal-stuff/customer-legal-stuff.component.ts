@@ -36,7 +36,7 @@ export class CustomerLegalStuffComponent implements OnInit {
   trusteeLegaciesAction:boolean=true;
   customerLegaciesId: string;
   customerLegacyType:string='customer';					
-
+  showTrusteeCnt:boolean=true;
   EstateManagementSection:string='now';
   HealthcareManagementSection:string='now';
   PersonalAffairsManagementSection:string='now';
@@ -62,6 +62,7 @@ export class CustomerLegalStuffComponent implements OnInit {
         this.HealthcareManagementSection= userAccess.HealthcareManagement
         this.PersonalAffairsManagementSection= userAccess.PersonalAffairsManagement
       });
+      this.showTrusteeCnt = false;
     }
     this.getEstateList();
   }

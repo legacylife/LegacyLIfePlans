@@ -31,6 +31,7 @@ export class FinalWishesComponent implements OnInit {
   urlData:any={};	  
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
+  showTrusteeCnt:boolean=true;
   trusteeFuneralCnt:any;
   trusteeObituaryCnt:any;
   trusteeCelebrationCnt:any;
@@ -52,6 +53,7 @@ export class FinalWishesComponent implements OnInit {
         this.ObituaryManagementSection= userAccess.ObituaryManagement
         this.CelebrationLifeManagementSection= userAccess.CelebrationLifeManagement
       });
+      this.showTrusteeCnt = false;
     }    
     this.getWishList();
   }

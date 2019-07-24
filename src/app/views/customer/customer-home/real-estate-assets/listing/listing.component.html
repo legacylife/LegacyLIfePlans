@@ -15,7 +15,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Real Estate</mat-card-title>
           <div *ngIf="showRealEstateListing && trusteeLegaciesAction && RealEstateManagementSection=='now'">
-            <a class="no--of--trustee" (click)="openManageTrusteeModal('Real Estate','RealEstateManagement', true)">{{trusteeRealEstateCnt}} Trustees</a>  
+            <a class="no--of--trustee" *ngIf="showTrusteeCnt"  (click)="openManageTrusteeModal('Real Estate','RealEstateManagement', true)">{{trusteeRealEstateCnt}} Trustees</a>  
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openModal('RealEstate', true)">+ Add</button>
           </div>
         </mat-card-header>
@@ -51,7 +51,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Vehicles </mat-card-title>
           <div *ngIf="showRealEstateVehiclesListing && trusteeLegaciesAction && VehiclesManagementSection=='now'">
-            <a class="no--of--trustee" (click)="openManageTrusteeModal('Vehicles','VehiclesManagement', true)">{{trusteeVehicleCnt}} Trustees</a>  
+            <a class="no--of--trustee" *ngIf="showTrusteeCnt"  (click)="openManageTrusteeModal('Vehicles','VehiclesManagement', true)">{{trusteeVehicleCnt}} Trustees</a>  
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openModal('Vehicles', true)">+ Add</button>
           </div>
         </mat-card-header>
@@ -88,7 +88,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Assets</mat-card-title>
           <div *ngIf="showAssetsListing && trusteeLegaciesAction && AssetsManagementSection=='now'">   
-              <a class="no--of--trustee" (click)="openManageTrusteeModal('Assets','AssetsManagement', true)">{{trusteeAssetsCnt}} Trustees</a>  
+              <a class="no--of--trustee" *ngIf="showTrusteeCnt"  (click)="openManageTrusteeModal('Assets','AssetsManagement', true)">{{trusteeAssetsCnt}} Trustees</a>  
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openModal('Assets', true)">+ Add</button>
           </div>
         </mat-card-header>

@@ -20,52 +20,52 @@ const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 export class CustomerMyPeopleComponent implements OnInit {
   allPeoples: any[];
   advisorListing: any[];
-  showallPeoplesListing  : boolean = false;
+  showallPeoplesListing: boolean = false;
   showallPeoplesListingCnt: any;
   userId: string;
   profileFilePath: string = profileFilePath;
   profilePicture: any = "assets/images/arkenea/default.jpg";
-  profileUrl = s3Details.url+'/profilePictures/';
-  constructor( private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService,private snack: MatSnackBar
+  profileUrl = s3Details.url + '/profilePictures/';
+  constructor(private route: ActivatedRoute, private router: Router, private dialog: MatDialog, private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar
   ) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
-    this.getMyPeoplesList('All','-1');
+    this.getMyPeoplesList('All', '-1');
   }
 
-  getMyPeoplesList = (search,sort,advquery:any = {},trustquery:any = {}) => {
-   
+  getMyPeoplesList = (search, sort, advquery: any = {}, trustquery: any = {}) => {
+
     let req_vars = {};
-    if(search=='All'){
-     req_vars = {
-     //query: Object.assign({ customerId: this.userId, status: "Active" }, query),status: { $nin:['Deleted'] }  //'Rejected',
-     trustquery: Object.assign({customerId:this.userId, status: {$nin:['Deleted']}}, trustquery),
-     advquery: Object.assign({customerId:this.userId, status:{ $nin:['Deleted','Rejected'] } }, advquery),
-     fields: {},
-     order: {"modifiedOn": '-1'},
-     }
-    }else{
+    if (search == 'All') {
       req_vars = {
         //query: Object.assign({ customerId: this.userId, status: "Active" }, query),status: { $nin:['Deleted'] }  //'Rejected',
-        trustquery: Object.assign({customerId:this.userId, status: search}, trustquery),
-        advquery: Object.assign({customerId:this.userId, status:search}, advquery),
+        trustquery: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted'] } }, trustquery),
+        advquery: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted', 'Rejected'] } }, advquery),
         fields: {},
-        order: {"modifiedOn": sort},
-        }
+        order: { "modifiedOn": '-1' },
+      }
+    } else {
+      req_vars = {
+        //query: Object.assign({ customerId: this.userId, status: "Active" }, query),status: { $nin:['Deleted'] }  //'Rejected',
+        trustquery: Object.assign({ customerId: this.userId, status: search }, trustquery),
+        advquery: Object.assign({ customerId: this.userId, status: search }, advquery),
+        fields: {},
+        order: { "modifiedOn": sort },
+      }
     }
 
-   this.userapi.apiRequest('post', 'advisor/myPeoplesListing', req_vars).subscribe(result => {  //hireAdvisorListing
+    this.userapi.apiRequest('post', 'advisor/myPeoplesListing', req_vars).subscribe(result => {  //hireAdvisorListing
       if (result.status == "error") {
         console.log(result.data)
       } else {
         this.allPeoples = result.data.myPeoples;
         this.showallPeoplesListingCnt = result.data.totalPeoplesRecords;
-        if (result.data.totalRecords>'0') {
+        if (result.data.totalPeoplesRecords > 0) {
           this.showallPeoplesListing = true;
-        }else{ 
-           this.showallPeoplesListing = false;
-          }
+        } else {
+          this.showallPeoplesListing = false;
+        }
       }
     }, (err) => {
       console.error(err);
@@ -73,7 +73,7 @@ export class CustomerMyPeopleComponent implements OnInit {
   }
 
 
-  openHireAdvisorModal(id: any = {},update: any = {}, isNew?) {
+  openHireAdvisorModal(id: any = {}, update: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(HireAdvisorComponent, {
       width: '720px',
       disableClose: true,
@@ -84,9 +84,9 @@ export class CustomerMyPeopleComponent implements OnInit {
     })
   }
 
-  
-  openAddTrusteeModal(id,isNew?) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(addTrusteeModalComponent, {     
+
+  openAddTrusteeModal(id, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(addTrusteeModalComponent, {
       width: '720px',
       data: {
         id: id,
@@ -94,29 +94,29 @@ export class CustomerMyPeopleComponent implements OnInit {
       disableClose: true,
     });
     dialogRef.afterClosed()
-    .subscribe(res => {
-      this.getMyPeoplesList('All','-1');
-      if (!res) {
-        return;
+      .subscribe(res => {
+        this.getMyPeoplesList('All', '-1');
+        if (!res) {
+          return;
+        }
+      })
+  }
+
+  resendInvitation(id) {
+    let query = {};
+    const req_vars = {
+      query: Object.assign({ _id: id }, query),
+      extrafields: Object.assign({ inviteByName: localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName") })
+    }
+    this.userapi.apiRequest('post', 'trustee/resend-invitation', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
+    }, (err) => {
+      console.error(err);
     })
   }
 
-  resendInvitation(id){
-    let query = {};
-     const req_vars = {
-       query: Object.assign({_id: id}, query),   
-       extrafields: Object.assign({inviteByName:localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName")})
-     }
-     this.userapi.apiRequest('post', 'trustee/resend-invitation', req_vars).subscribe(result => {
-       if (result.status == "error") {
-         console.log(result.data)
-       } else {
-         this.snack.open(result.data.message, 'OK', { duration: 4000 })
-       }
-     }, (err) => {
-       console.error(err);
-     })
-  }
-  
 }

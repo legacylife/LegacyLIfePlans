@@ -16,7 +16,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Contacts</mat-card-title>
           <div *ngIf="showContactListing && trusteeLegaciesAction && emergencyContactsManagementSection=='now'">
-            <a class="no--of--trustee" (click)="openManageTrusteeModal('Emergency contacts','emergencyContactsManagement', true)">{{showContactCnt}} Trustees</a>   
+            <a class="no--of--trustee" *ngIf="showTrusteeCnt"  (click)="openManageTrusteeModal('Emergency contacts','emergencyContactsManagement', true)">{{showContactCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openModal(contactForm)">+ Add
             </button>
           </div>

@@ -34,7 +34,7 @@ export class ListingComponent implements OnInit {
   VehiclesManagementSection:string='now';
   AssetsManagementSection:string='now';
   LegacyPermissionError:string="You don't have permission of this section";
-
+  showTrusteeCnt:boolean=true;
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -55,6 +55,7 @@ export class ListingComponent implements OnInit {
         this.VehiclesManagementSection= userAccess.VehiclesManagement
         this.AssetsManagementSection= userAccess.AssetsManagement
       });
+      this.showTrusteeCnt = false;
     }
     this.getRealEstateList();
     this.getRealEstateVehiclesList();
