@@ -9,6 +9,8 @@ import { AdvisorRejectPopupComponent } from './ngx-table-popup/advisor-reject-po
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { serverUrl, s3Details } from '../../../config';
+import { SubscriptionService } from 'app/shared/services/subscription.service';
+import  * as moment  from 'moment'
 const filePath = s3Details.url+'/'+s3Details.profilePicturesPath;
 @Component({
   selector: 'userview',
@@ -27,11 +29,35 @@ export class userviewComponent implements OnInit {
   loggedInUserDetails: any;
   profilePicture: any = "assets/images/arkenea/default.jpg"
   statMsg = "";
+  subscriptionDetails:object = {
+    planStatus:'Trial',
+    expiryDate:'',
+    planName: 'Free Plan'
+  }
+    /**
+   * Subscription variable declaration
+   */
+  planName: string = 'Free'
+  autoRenewalStatus: string = 'off'
+  subscriptionExpireDate: string = ''
+
+  isAccountFree: boolean = true
+  isSubscribePlan: boolean = false
+  isSubscribedBefore: boolean = false
+  autoRenewalFlag: boolean = false
+  autoRenewalVal:boolean = false
+  isPremiumExpired: boolean = false
+  isSubscriptionCanceled:boolean = false
+  userCreateOn: any
+  userSubscriptionDate: any
+  today: Date = moment().toDate()
+
  // websites:any;
   constructor(
     private api: APIService, private route: ActivatedRoute, 
     private router: Router, private snack: MatSnackBar, private dialog: MatDialog,
-    private confirmService: AppConfirmService, private loader: AppLoaderService) { }
+    private confirmService: AppConfirmService, private loader: AppLoaderService,
+    private subscriptionservice:SubscriptionService) { }
   ngOnInit() {
     this.dpPath = filePath;
     const locationArray = location.href.split('/')
@@ -55,6 +81,72 @@ export class userviewComponent implements OnInit {
       } else {
         this.row = result.data
         this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + result.data.profilePicture;
+        
+        if(this.row.userType != 'sysAdmin') {
+          let subscriptions = this.row.subscriptionDetails ? this.row.subscriptionDetails : null
+          if( subscriptions != null ) {
+            let currentSubscription = subscriptions[subscriptions.length-1]
+            let diff: any
+            let expireDate: any
+            let subscriptionDate      = currentSubscription && currentSubscription.startDate ? currentSubscription.startDate : null
+            this.userCreateOn         = moment( this.row.createdOn )
+            this.isSubscribedBefore   = ( subscriptionDate !== 'undefined' && subscriptionDate !== null && subscriptionDate !== "") ? true : false
+            
+            if( !this.isSubscribedBefore ) {
+              this.isAccountFree    = true
+              this.isSubscribePlan  = false
+              diff                  = this.subscriptionservice.getDateDiff( this.userCreateOn.toDate(), this.today )
+
+              if( diff <= 30 ) {
+                expireDate            = this.userCreateOn.add(30,"days")
+                this.isPremiumExpired = false
+              }
+              else {
+                if( this.row.usertype == 'customer' ) {
+                  expireDate            = this.userCreateOn.add(60,"days")
+                }
+                else{
+                  expireDate            = this.userCreateOn.add(30,"days")
+                }        
+                this.isPremiumExpired = true
+              }
+              this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
+            }
+            else if( this.isSubscribedBefore ) {
+              this.isSubscriptionCanceled = ( currentSubscription.status && currentSubscription.status == 'canceled' ) ? true : false
+              this.autoRenewalFlag = ( currentSubscription.autoRenewal && currentSubscription.autoRenewal == 'true' ) ? true : false
+              this.autoRenewalVal = this.autoRenewalFlag
+              this.autoRenewalStatus = this.autoRenewalVal ? 'on' : 'off'
+              this.userSubscriptionDate = moment( currentSubscription.endDate )
+              this.isAccountFree    = false
+              diff                  = this.subscriptionservice.getDateDiff( this.today, this.userSubscriptionDate.toDate() )
+              
+              if( diff >= 0 ) {
+                expireDate            = this.userSubscriptionDate
+                this.isPremiumExpired = false
+                this.isSubscribePlan  = true
+                if(this.row.usertype == 'advisor') {
+                  this.planName         = 'Standard'
+                }
+                else{
+                  this.planName         = 'Legacy Life'
+                }
+              }
+              else {
+                if( this.row.usertype == 'customer' ) {
+                  expireDate          = this.userSubscriptionDate.add(30,"days")
+                }
+                else{
+                  expireDate            = this.userSubscriptionDate
+                }
+                this.isPremiumExpired = true
+                this.isSubscribePlan  = false
+                this.planName         = 'Free'
+              }
+              this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
+            }
+          }
+        }
       }
     }, (err) => {
       console.error(err)

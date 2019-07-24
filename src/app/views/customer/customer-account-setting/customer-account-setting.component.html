@@ -143,10 +143,10 @@
                       </p>
                       <div class="manage--cancel">
                         <button mat-raised-button class="llp--primary--green--btn" [class.not-allowed]="isSubscribePlan && !isPremiumExpired" [disabled]="isSubscribePlan && !isPremiumExpired" [routerLink]="'/customer/customer-subscription'">Manage subscription</button>
-                        <a class="clr--red" [class.not-allowed]="isAccountFree || isSubscriptionCanceled" [attr.disabled]="isAccountFree || isSubscriptionCanceled" (click)="(!isAccountFree || !isSubscriptionCanceled) && cancelSubscription()">Cancel subscription</a>
+                        <a class="clr--red" [class.not-allowed]="!isSubscribePlan || !isAccountFree || isSubscriptionCanceled" [attr.disabled]="!isSubscribePlan || !isAccountFree || isSubscriptionCanceled" (click)="isSubscribePlan && (!isAccountFree || !isSubscriptionCanceled) && cancelSubscription()">Cancel subscription</a>
                       </div>
                     </div>
-                    <div class="upgrade--account " *ngIf="isProUser">
+                    <div class="upgrade--account " *ngIf="isProUser && isSubscribePlan">
                       <header>
                         <div class="add--on">
                           <mat-checkbox (click)="getAddOnPack()" [checked]="isGetAddOn" [disabled]="isGetAddOn" [class.not-allowed]="isGetAddOn"> Add On </mat-checkbox>
@@ -157,7 +157,7 @@
                         </div>
                       </header>
                       <div class="text-center">
-                        <button mat-raised-button class="llp--primary--green--btn llp--primary--sm--btn upgrade--btn" [class.not-allowed]="isProUser && !getAddOn && isGetAddOn" [disabled]="isProUser && !getAddOn && isGetAddOn" (click)="isProUser && getAddOn && openCardDetailsModal();">Upgrade</button>
+                        <button mat-raised-button class="llp--primary--green--btn llp--primary--sm--btn upgrade--btn" [class.not-allowed]="isProUser && !getAddOn" [disabled]="isProUser && !getAddOn" (click)="isProUser && !isGetAddOn && openCardDetailsModal();">Upgrade</button>
                       </div>
                       <p class="space--info m-0">The memory upgrade is for additional video and picture storage that
                         will offer a total of 17 gigs. In most circumstances the Legacy plan documents will use less

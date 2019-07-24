@@ -112,7 +112,7 @@ export class CustomerSignupComponent implements OnInit {
           localStorage.setItem("endUserSubscriptionEndDate", result.data.subscriptionEndDate);
           localStorage.setItem("endUserSubscriptionStatus", result.data.subscriptionStatus);
           localStorage.setItem("endUserAutoRenewalStatus", result.data.autoRenewalStatus);
-          localStorage.setItem("endUserProSubscription", 'no');
+          localStorage.setItem("endUserProSubscription", 'yes');
           localStorage.setItem("endUserSubscriptionAddon", result.data.addOnGiven);
           if (result.data.profilePicture) {
             this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + result.data.profilePicture;
