@@ -3,6 +3,7 @@ import { UserAPIService } from 'app/userapi.service';
 import { AppLoaderService } from './app-loader/app-loader.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import  * as moment  from 'moment'
+import { MatSnackBar } from '@angular/material';
 
 @Injectable()
 export class SubscriptionService {
@@ -29,7 +30,7 @@ export class SubscriptionService {
   userSubscriptionDate: any
   today: Date = moment().toDate()
 
-  constructor( private userapi: UserAPIService, private loader: AppLoaderService ) {
+  constructor( private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar ) {
     this.userId = localStorage.getItem("endUserId");
     this.usertype = localStorage.getItem("endUserType");
   }
@@ -200,7 +201,7 @@ export class SubscriptionService {
   updateAutoRenewalStatus ( userId, autoRenewalVal:boolean ) : any {
     this.loader.open();
     const req_vars = {
-      query: Object.assign({ _id: userId, userType: "customer", status: autoRenewalVal }, {})
+      query: Object.assign({ _id: userId, userType: this.usertype, status: autoRenewalVal }, {})
     }
     
     this.userapi.apiRequest('post', 'userlist/autorenewalupdate', req_vars).subscribe(result => {
@@ -211,6 +212,7 @@ export class SubscriptionService {
       else {
         let returnData = result.data
         localStorage.setItem('endUserAutoRenewalStatus', returnData.autoRenewalStatus);
+        this.snack.open("Auto renewal status updated.", 'OK', { duration: 4000 })
         this.loader.close();
         return true
       }
@@ -229,7 +231,7 @@ export class SubscriptionService {
     if( !isSubscriptionCanceled ) {
       this.loader.open();
       const req_vars = {
-        query: Object.assign({ _id: userId, userType: "customer" }, {})
+        query: Object.assign({ _id: userId, userType: this.usertype }, {})
       }
       
       this.userapi.apiRequest('post', 'userlist/cancelsubscription', req_vars).subscribe(result => {
@@ -239,6 +241,7 @@ export class SubscriptionService {
         } else {
           let cancelData = result.data
           localStorage.setItem('endUserSubscriptionStatus', cancelData.subscriptionStatus)
+          this.snack.open("Subscription successfully canceled. Please check email for more info.", 'OK', { duration: 4000 })
           this.loader.close()
           return true
         }
