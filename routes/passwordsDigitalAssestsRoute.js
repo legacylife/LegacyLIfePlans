@@ -14,6 +14,7 @@ const resFormat = require('./../helpers/responseFormat')
 const PDA = require('./../models/PasswordNDigitalAssets.js')
 const EMedia = require('./../models/ElectronicMedia.js')
 const actitivityLog = require('./../helpers/fileAccessLog')
+const Trustee = require('./../models/Trustee.js')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -74,7 +75,7 @@ function patternUpdate(req, res) {
 }
 
 function DeviceList(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body
+  let { fields, offset, query,trusteeQuery, order, limit, search } = req.body
   let totalRecords = 0
   if (search && !isEmpty(query)) {
     Object.keys(query).map(function (key, index) {
@@ -91,7 +92,17 @@ function DeviceList(req, res) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-        res.send(resFormat.rSuccess({deviceList, totalRecords }))
+        let totalTrusteeRecords = 0;
+        if(totalRecords>0){
+          Trustee.count(trusteeQuery, function (err, TrusteeCount) {
+            if (TrusteeCount) {
+              totalTrusteeRecords = TrusteeCount
+            }
+            res.send(resFormat.rSuccess({ deviceList,totalRecords,totalTrusteeRecords}))
+          })
+        }else{
+          res.send(resFormat.rSuccess({ deviceList,totalRecords,totalTrusteeRecords}))
+        }
       }
     }).sort(order).skip(offset).limit(limit)
   })
@@ -275,7 +286,7 @@ function electronicMediaFormUpdate(req, res) {
 
 
 function electronicMediaList(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body
+  let { fields, offset, query,trusteeQuery, order, limit, search } = req.body
   let totalRecords = 0
   if (search && !isEmpty(query)) {
     Object.keys(query).map(function (key, index) {
@@ -292,7 +303,17 @@ function electronicMediaList(req, res) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-        res.send(resFormat.rSuccess({electronicMediaList, totalRecords }))
+        let totalTrusteeRecords = 0;
+        if(totalRecords>0){
+          Trustee.count(trusteeQuery, function (err, TrusteeCount) {
+            if (TrusteeCount) {
+              totalTrusteeRecords = TrusteeCount
+            }
+            res.send(resFormat.rSuccess({ electronicMediaList,totalRecords,totalTrusteeRecords}))
+          })
+        }else{
+          res.send(resFormat.rSuccess({ electronicMediaList,totalRecords,totalTrusteeRecords}))
+        }
       }
     }).sort(order).skip(offset).limit(limit)
   })

@@ -107,7 +107,7 @@ function myEssentialsUpdate(req, res) {
 //function to get list of essential profile details as per given criteria
 function essentialProfileList(req, res) {
 
-  let { fields, offset, query, order, limit, search } = req.body
+  let { fields, offset, query,personalProfileQuery, order, limit, search } = req.body
   let totalRecords = 0
   if (search && !isEmpty(query)) {
     Object.keys(query).map(function (key, index) {
@@ -124,20 +124,40 @@ function essentialProfileList(req, res) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-        res.send(resFormat.rSuccess({ essentialList, totalRecords }))
+        let totalTrusteeRecords = 0;
+        if(essentialList){
+          Trustee.count(personalProfileQuery, function (err, TrusteeCount) {
+          if (TrusteeCount) {
+            totalTrusteeRecords = TrusteeCount
+          }
+          res.send(resFormat.rSuccess({ essentialList, totalRecords,totalTrusteeRecords }))
+        })
+       }else{
+        res.send(resFormat.rSuccess({ essentialList, totalRecords,totalTrusteeRecords }))
+       }
       }
     }).sort(order).skip(offset).limit(limit)
   })
 }
 
 function essentialIdList(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body
+  let { fields, offset, query, idQuery, order, limit, search } = req.body
   personalIdProof.find(query, fields, function (err, essentialIDList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
       totalIDRecords = essentialIDList.length;
-      res.send(resFormat.rSuccess({ essentialIDList, totalIDRecords }))
+      let totalTrusteeIDRecords = 0;
+    if(totalIDRecords>0){
+      Trustee.count(idQuery, function (err, TrusteeCount) {
+        if (TrusteeCount) {
+          totalTrusteeIDRecords = TrusteeCount
+        }
+        res.send(resFormat.rSuccess({ essentialIDList, totalIDRecords, totalTrusteeIDRecords }))
+      })
+    }else{
+      res.send(resFormat.rSuccess({ essentialIDList, totalIDRecords, totalTrusteeIDRecords }))
+    }
     }
   }).sort(order).skip(offset).limit(limit)
 }
@@ -158,13 +178,23 @@ function viewEssentialID(req, res) {
 }
 
 function essentialProfessionalsList(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body
+  let { fields, offset, query,professionalsQuery, order, limit, search } = req.body
   MyProfessional.find(query, fields, function (err, essentialProfessionalList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
       totalProfessionalRecords = essentialProfessionalList.length;
-      res.send(resFormat.rSuccess({ essentialProfessionalList, totalProfessionalRecords }))
+      let totalTrusteeProfessionalsRecords = 0;
+      if(totalProfessionalRecords>0){
+        Trustee.count(professionalsQuery, function (err, TrusteeCount) {
+          if (TrusteeCount) {
+            totalTrusteeProfessionalsRecords = TrusteeCount
+          }
+          res.send(resFormat.rSuccess({ essentialProfessionalList, totalProfessionalRecords ,totalTrusteeProfessionalsRecords}))
+        })
+      }else{
+        res.send(resFormat.rSuccess({ essentialProfessionalList, totalProfessionalRecords, totalTrusteeProfessionalsRecords }))
+      }
     }
   }).sort(order).skip(offset).limit(limit)
 }
@@ -649,19 +679,29 @@ function deleteIdBox(req, res) {
 
 // get emergency Contacts of customer
 function getEmergencyContacts(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body
+  let { fields, offset, query,trusteeQuery, order, limit, search } = req.body
   emergencyContacts.find(query, function (err, eContactsList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      res.send(resFormat.rSuccess(eContactsList))
+      let totalTrusteeRecords = 0;
+      if(eContactsList.length>0){
+        Trustee.count(trusteeQuery, function (err, TrusteeCount) {
+          if (TrusteeCount) {
+            totalTrusteeRecords = TrusteeCount
+          }
+          res.send(resFormat.rSuccess({ eContactsList,totalTrusteeRecords}))
+        })
+      }else{
+        res.send(resFormat.rSuccess({ eContactsList,totalTrusteeRecords}))
+      }
     }
   }).sort(order).skip(offset).limit(limit)
 }
 
 
 function legalEstateList(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body
+  let { fields, offset, query, trusteeQuery, order, limit, search } = req.body
   let totalRecords = 0
   if (search && !isEmpty(query)) {
     Object.keys(query).map(function (key, index) {
@@ -678,7 +718,29 @@ function legalEstateList(req, res) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-        res.send(resFormat.rSuccess({ legalList, totalRecords }))
+        let totalEstateTrusteeRecords = 0; let totalHealthTrusteeRecords = 0; let totalPerAffTrusteeRecords = 0;
+        if(totalRecords>0){
+            Trustee.find(query, function (err, trusteeList) {          
+              const EstateList = trusteeList.filter(dtype => {
+                return dtype.userAccess.EstateManagement == 'now'
+              }).map(el => el)
+               totalEstateTrusteeRecords = EstateList.length;
+
+              const HealthList = trusteeList.filter(dtype => {
+                return dtype.userAccess.HealthcareManagement == 'now'
+              }).map(el => el)
+               totalHealthTrusteeRecords = HealthList.length;
+
+              const PersonalAffairsList = trusteeList.filter(dtype => {
+                return dtype.userAccess.PersonalAffairsManagement == 'now'
+              }).map(el => el)
+               totalPerAffTrusteeRecords = PersonalAffairsList.length;
+          
+              res.send(resFormat.rSuccess({ legalList,totalRecords,totalEstateTrusteeRecords,totalHealthTrusteeRecords,totalPerAffTrusteeRecords}))      
+          })
+        }else{
+          res.send(resFormat.rSuccess({ legalList,totalRecords,totalEstateTrusteeRecords,totalHealthTrusteeRecords,totalPerAffTrusteeRecords}))
+        }
       }
     }).sort(order).skip(offset).limit(limit)
   })
@@ -719,8 +781,18 @@ function fileActivityLogList(req, res) {
 
 function getSharedLegaciesList(req,res){  
   let { query } = req.body
-  Trustee.find(query, function (err, list) {
-    res.send(resFormat.rSuccess({ list }))
+  
+  Trustee.find(query, 'customerId',  function (err, list) {
+    let trustLength = list.length;
+    if(trustLength>0){
+      let userData = []
+      for(let index=0;index<trustLength;index++){
+        userData.push(list[index].customerId)
+      }
+      User.find({"_id" : { $in: userData } },{ '_id':1, 'firstName': 1, 'lastName': 1 , 'profilePicture': 1}, function (err, results) {
+        res.send(resFormat.rSuccess({ results }))
+      })
+    }
   })
 }
 

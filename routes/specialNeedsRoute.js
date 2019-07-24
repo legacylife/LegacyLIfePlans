@@ -16,7 +16,7 @@ const resFormat = require('../helpers/responseFormat')
 const s3 = require('../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
 const SpecialNeeds = require('./../models/SpecialNeeds.js')
-
+const Trustee = require('./../models/Trustee.js')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -89,12 +89,22 @@ function specialNeedsSubmit(req, res) {
 }
 
 function getSpecialNeedsList(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body
-  SpecialNeeds.find(query, function (err, youngChildrenList) {
+  let { fields, offset, query,trusteeQuery, order, limit, search } = req.body
+  SpecialNeeds.find(query, function (err, specialNeedsList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      res.send(resFormat.rSuccess(youngChildrenList))
+      let totalTrusteeRecords = 0;
+      if(specialNeedsList.length>0){
+        Trustee.count(trusteeQuery, function (err, TrusteeCount) {
+          if (TrusteeCount) {
+            totalTrusteeRecords = TrusteeCount
+          }
+          res.send(resFormat.rSuccess({specialNeedsList,totalTrusteeRecords }))
+        })
+      }else{
+        res.send(resFormat.rSuccess({specialNeedsList,totalTrusteeRecords }))
+      } 
     }
   }).sort(order).skip(offset).limit(limit)
 }

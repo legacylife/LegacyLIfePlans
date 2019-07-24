@@ -16,7 +16,7 @@ const resFormat = require('./../helpers/responseFormat')
 const finalWish = require('./../models/FinalWishes.js')
 const s3 = require('./../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
-
+const Trustee = require('./../models/Trustee.js')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -41,7 +41,29 @@ function finalList(req, res) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-        res.send(resFormat.rSuccess({ wishList, totalRecords }))
+        let totalFuneralTrusteeRecords = 0; let totalObituaryTrusteeRecords = 0; let totalCelebrTrusteeRecords = 0;
+        if(totalRecords>0){
+            Trustee.find(query, function (err, trusteeList) {          
+              const FuneralPlansList = trusteeList.filter(dtype => {
+                return dtype.userAccess.FuneralPlansManagement == 'now'
+              }).map(el => el)
+               totalFuneralTrusteeRecords = FuneralPlansList.length;
+
+              const ObituaryList = trusteeList.filter(dtype => {
+                return dtype.userAccess.ObituaryManagement == 'now'
+              }).map(el => el)
+               totalObituaryTrusteeRecords = ObituaryList.length;
+
+              const CelebrationList = trusteeList.filter(dtype => {
+                return dtype.userAccess.CelebrationLifeManagement == 'now'
+              }).map(el => el)
+               totalCelebrTrusteeRecords = CelebrationList.length;
+          
+              res.send(resFormat.rSuccess({ wishList,totalRecords,totalFuneralTrusteeRecords,totalObituaryTrusteeRecords,totalCelebrTrusteeRecords}))      
+          })
+        }else{
+          res.send(resFormat.rSuccess({ wishList,totalRecords,totalFuneralTrusteeRecords,totalObituaryTrusteeRecords,totalCelebrTrusteeRecords}))
+        }
       }
     }).sort(order).skip(offset).limit(limit)
   })
