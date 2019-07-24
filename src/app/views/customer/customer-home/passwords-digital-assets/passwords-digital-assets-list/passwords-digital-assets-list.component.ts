@@ -7,6 +7,7 @@ import { AppLoaderService } from '../../../../../shared/services/app-loader/app-
 import { DevicesModalComponent } from './../devices/devices-modal/devices-modal.component';
 import { ElectronicMediaModalComponent } from './../electronic-media/electronic-media-modal/electronic-media-modal.component';
 import { ElectronicMediaLists } from '../../../../../selectList';
+import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-trustee-modal.component';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './passwords-digital-assets-list.component.html',
@@ -24,6 +25,7 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
   electronicMediaListing:any = [];
   typeOfList:any = [];
   modifiedDate:any;
+  trusteeDeviceCnt:any;  trusteeElectonicCnt:any;
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
@@ -52,8 +54,10 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
   }
 
   getDevicesList = (query = {}) => {
+    let trusteeQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      trusteeQuery: Object.assign({ customerId: this.userId,"userAccess.DevicesManagement" : "now", status:"Active" }, trusteeQuery),
       fields: {},
       order: {"createdOn": -1},
     }
@@ -62,7 +66,8 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
         console.log(result.data)
       } else {
         this.devicesListing = result.data.deviceList;
-        this.showDevicesListingCnt = this.devicesListing.length;  
+        this.showDevicesListingCnt = this.devicesListing.length; 
+        this.trusteeDeviceCnt = result.data.totalTrusteeRecords;  
         if (this.showDevicesListingCnt>0) {
           this.showDevicesListing = true;
         }
@@ -73,8 +78,10 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
   }
 
   getElectronicMediaList = (query = {}) => {
+    let trusteeQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      trusteeQuery: Object.assign({ customerId: this.userId,"userAccess.ElectronicMediaManagement" : "now", status:"Active" }, trusteeQuery),
       fields: {},
       order: {"createdOn": -1},
     }
@@ -84,6 +91,7 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
       } else {
         this.electronicMediaListing = result.data.electronicMediaList;
         this.showElectronicMediaListingCnt = this.electronicMediaListing.length;  
+        this.trusteeElectonicCnt = result.data.totalTrusteeRecords; 
         if (this.showElectronicMediaListingCnt>0) {
           this.showElectronicMediaListing = true;
         }
@@ -123,7 +131,6 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
     })
   }
 
-
   getType(key) {
     this.typeOfList = ElectronicMediaLists;
     let filteredTyes = this.typeOfList.filter(dtype => {
@@ -132,5 +139,26 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
     return filteredTyes
   }
 
-  
+  openManageTrusteeModal(title,code,isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ManageTrusteeModalComponent, {
+      width: '720px',
+      disableClose: true, 
+      data: {
+        title: title,
+        code:code
+      }
+    }) 
+    dialogRef.afterClosed()
+    .subscribe(res => {
+        if(code=='DevicesManagement'){
+          this.getDevicesList();
+        }else if(code=='ElectronicMediaManagement'){
+          this.getElectronicMediaList();
+        }
+      if (!res) {
+        // If user press cancel
+        return;
+      }
+    })
+   }
 }

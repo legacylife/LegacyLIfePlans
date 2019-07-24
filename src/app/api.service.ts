@@ -226,6 +226,14 @@ export class APIService {
     this.removeKeyFromStorage('expiryDate')
     this.removeKeyFromStorage('userHeaderDetails')
     this.removeKeyFromStorage('sectionAccess')
+
+    this.removeKeyFromStorage('endUserCreatedOn')
+    this.removeKeyFromStorage('endUserSubscriptionStartDate')
+    this.removeKeyFromStorage('endUserSubscriptionEndDate')
+    this.removeKeyFromStorage('endUserSubscriptionStatus')
+    this.removeKeyFromStorage('endUserAutoRenewalStatus')
+    this.removeKeyFromStorage('endUserSubscriptionAddon')
+    this.removeKeyFromStorage('endUserSubscriptionAddon')
     localStorage.clear();
     this.router.navigate(["llp-admin", "signin"])
   }

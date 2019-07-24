@@ -15,17 +15,15 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Real Estate</mat-card-title>
           <div *ngIf="showRealEstateListing && trusteeLegaciesAction && RealEstateManagementSection=='now'">
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
-              (click)="openModal('RealEstate', true)">+ Add</button>
+            <a class="no--of--trustee" (click)="openManageTrusteeModal('Real Estate','RealEstateManagement', true)">{{trusteeRealEstateCnt}} Trustees</a>  
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openModal('RealEstate', true)">+ Add</button>
           </div>
         </mat-card-header>
         <div *ngIf="RealEstateManagementSection=='now'">
           <mat-card-content *ngIf="!showRealEstateListing && trusteeLegaciesAction">
             <div class="build--ur--legacy" (click)="openModal('RealEstate', true)">
               <mat-icon>person_pin</mat-icon>
-              <p>
-                <a>Add Real Estate</a>
-              </p>
+              <p><a>Add Real Estate</a></p>
             </div>
           </mat-card-content>
           <mat-card-content class="appointees--wrapper" *ngIf="showRealEstateListing">
@@ -53,8 +51,8 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Vehicles </mat-card-title>
           <div *ngIf="showRealEstateVehiclesListing && trusteeLegaciesAction && VehiclesManagementSection=='now'">
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
-              (click)="openModal('Vehicles', true)">+ Add</button>
+            <a class="no--of--trustee" (click)="openManageTrusteeModal('Vehicles','VehiclesManagement', true)">{{trusteeVehicleCnt}} Trustees</a>  
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openModal('Vehicles', true)">+ Add</button>
           </div>
         </mat-card-header>
         <div *ngIf="VehiclesManagementSection=='now'">
@@ -89,9 +87,9 @@
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Assets</mat-card-title>
-          <div *ngIf="showAssetsListing && trusteeLegaciesAction && AssetsManagementSection=='now'">
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
-              (click)="openModal('Assets', true)">+ Add</button>
+          <div *ngIf="showAssetsListing && trusteeLegaciesAction && AssetsManagementSection=='now'">   
+              <a class="no--of--trustee" (click)="openManageTrusteeModal('Assets','AssetsManagement', true)">{{trusteeAssetsCnt}} Trustees</a>  
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openModal('Assets', true)">+ Add</button>
           </div>
         </mat-card-header>
         <div *ngIf="AssetsManagementSection=='now'">

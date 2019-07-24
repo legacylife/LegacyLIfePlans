@@ -20,7 +20,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Insurance</mat-card-title>
           <div *ngIf="showInsuranceListing && trusteeLegaciesAction && InsuranceManagementSection=='now'">
-              <a (click)="openManageTrusteeModal('Insurance','InsuranceManagement', true)">{{trusteeInsuranceCnt}} Trustees</a>   
+              <a class="no--of--trustee" (click)="openManageTrusteeModal('Insurance','InsuranceManagement', true)">{{trusteeInsuranceCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openInsuranceModal({}, true)">+ Add</button>
           </div>
@@ -58,7 +58,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Finance</mat-card-title>
           <div *ngIf="showFinanceListing && trusteeLegaciesAction && FinancesManagementSection=='now'">
-              <a (click)="openManageTrusteeModal('Finance','FinancesManagement', true)">{{trusteeFinanceCnt}} Trustees</a>   
+              <a class="no--of--trustee" (click)="openManageTrusteeModal('Finance','FinancesManagement', true)">{{trusteeFinanceCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openFinanceModal({}, true)">+ Add</button>
           </div>
@@ -94,7 +94,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Debt</mat-card-title>
           <div *ngIf="showDebtListing && trusteeLegaciesAction  && DebtManagementSection=='now'">
-              <a (click)="openManageTrusteeModal('Debt','DebtManagement', true)">{{trusteeDebtCnt}} Trustees</a>   
+              <a class="no--of--trustee" (click)="openManageTrusteeModal('Debt','DebtManagement', true)">{{trusteeDebtCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openDebtModal({}, true)">+ Add</button>
           </div>

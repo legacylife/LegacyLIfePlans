@@ -8,7 +8,7 @@ import { egretAnimations } from 'app/shared/animations/egret-animations';
 import { UserAPIService } from 'app/userapi.service';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { LettersMessagesModelComponent } from '../letters-messages-model/letters-messages-model.component';
-
+import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-trustee-modal.component';
 @Component({
   selector: 'app-letters-messages-listing',
   templateUrl: './letters-messages-listing.component.html',
@@ -20,6 +20,7 @@ export class LettersMessagesListingComponent implements OnInit {
   lettersMessagesList: any = [];
   selectedProfileId:string = "";
   showListingCnt: any;
+  trusteeLettersMessagesCnt: any;
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
@@ -42,8 +43,10 @@ export class LettersMessagesListingComponent implements OnInit {
   }
 
   getLetterMessageList = (query = {}) => {
+    let trusteeQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      trusteeQuery: Object.assign({ customerId: this.userId,"userAccess.LegacyLifeLettersMessagesManagement" : "now", status:"Active" }, trusteeQuery),
       fields: {},
       order: {"createdOn": -1},
     }
@@ -53,6 +56,7 @@ export class LettersMessagesListingComponent implements OnInit {
       } else {
         this.lettersMessagesList = result.data.lettersMessagesList;
         this.showListingCnt = this.lettersMessagesList.length;  
+        this.trusteeLettersMessagesCnt = result.data.totalTrusteeRecords;
         if (this.showListingCnt>0) {
           this.showListing = true;
         }
@@ -77,4 +81,22 @@ export class LettersMessagesListingComponent implements OnInit {
     })
   }
  
+  openManageTrusteeModal(title,code,isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ManageTrusteeModalComponent, {
+      width: '720px',
+      disableClose: true, 
+      data: {
+        title: title,
+        code:code
+      }
+    }) 
+    dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getLetterMessageList();
+      if (!res) {
+        // If user press cancel
+        return;
+      }
+    })
+   }
 }

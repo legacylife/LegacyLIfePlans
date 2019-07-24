@@ -7,7 +7,7 @@ import { egretAnimations } from '../../../../../shared/animations/egret-animatio
 import { UserAPIService } from './../../../../../userapi.service';
 import { AppLoaderService } from '../../../../../shared/services/app-loader/app-loader.service';
 import { FinalWishesFormModalComponent } from './../final-wishes-form-modal/final-wishes-form-modal.component';
-
+import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-trustee-modal.component';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './final-wishes-list.component.html',
@@ -22,18 +22,18 @@ export class FinalWishesComponent implements OnInit {
   showObituaryListingCnt: any;
   showCelebrationLifesListing = false;
   showCelebrationLifesListingCnt: any;
-
   userId: string;
   FuneralPlansList:any = [];
   ObituaryList:any = [];
   CelebrationLifesList:any = [];
   modifiedDate:any;
-
   WishesList:any = [];
   urlData:any={};	  
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
-
+  trusteeFuneralCnt:any;
+  trusteeObituaryCnt:any;
+  trusteeCelebrationCnt:any;
   FuneralPlansManagementSection:string='now';
   ObituaryManagementSection:string='now';
   CelebrationLifeManagementSection:string='now';
@@ -87,6 +87,11 @@ export class FinalWishesComponent implements OnInit {
           return dtype.subFolderName == 'Celebration of Life'
         }).map(el => el)
         this.showCelebrationLifesListingCnt = this.CelebrationLifesList.length
+        
+        this.trusteeFuneralCnt = result.data.totalFuneralTrusteeRecords;
+        this.trusteeObituaryCnt = result.data.totalObituaryTrusteeRecords
+        this.trusteeCelebrationCnt = result.data.totalCelebrTrusteeRecords;
+
         if (this.showCelebrationLifesListingCnt > 0) {
           this.showCelebrationLifesListing = true;
         }
@@ -114,4 +119,23 @@ export class FinalWishesComponent implements OnInit {
       }
     })
   }
+
+  openManageTrusteeModal(title,code,isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ManageTrusteeModalComponent, {
+      width: '720px',
+      disableClose: true, 
+      data: {
+        title: title,
+        code:code
+      }
+    }) 
+    dialogRef.afterClosed()
+    .subscribe(res => {
+       this.getWishList();
+      if (!res) {
+        // If user press cancel
+        return;
+      }
+    })
+}
 }

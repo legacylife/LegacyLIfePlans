@@ -19,6 +19,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Funeral Plans</mat-card-title>
           <div *ngIf="showFuneralPlansListing && trusteeLegaciesAction && FuneralPlansManagementSection=='now'">
+              <a class="no--of--trustee" (click)="openManageTrusteeModal('Funeral Plans','FuneralPlansManagement', true)">{{trusteeFuneralCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openFinalWishModal('Funeral Plans', true)">+ Add</button>
           </div>
         </mat-card-header>
@@ -53,6 +54,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Obituary </mat-card-title>
           <div *ngIf="showObituaryListing && trusteeLegaciesAction && ObituaryManagementSection=='now'">
+              <a class="no--of--trustee" (click)="openManageTrusteeModal('Obituary','ObituaryManagement', true)">{{trusteeObituaryCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openFinalWishModal('Obituary', true)">+ Add</button>
           </div>
         </mat-card-header>
@@ -87,6 +89,7 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Celebration of Life</mat-card-title>
           <div *ngIf="showCelebrationLifesListing && trusteeLegaciesAction && CelebrationLifeManagementSection=='now'">
+             <a class="no--of--trustee" (click)="openManageTrusteeModal('Celebration of Life','CelebrationLifeManagement', true)">{{trusteeCelebrationCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openFinalWishModal('Celebration of Life', true)">+ Add</button>
           </div>
         </mat-card-header>
