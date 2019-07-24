@@ -589,14 +589,11 @@ export class EssenioalIdBoxComponent implements OnInit {
   }
   
   checkSpecialChar(event)
-
   {  
-    var key;  
-    
+    var key;      
     key = event.charCode;
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
-  }
-  
+  }  
 
   downloadFile = (filename) => {    
     let query = {};
@@ -608,7 +605,7 @@ export class EssenioalIdBoxComponent implements OnInit {
       let filePath = downloadURL;
       var link=document.createElement('a');
       link.href = filePath;
-      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+      link.download = filename;
       link.click();
     });
   }
