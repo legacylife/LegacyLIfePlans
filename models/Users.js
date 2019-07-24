@@ -110,9 +110,9 @@ var userSchema = new mongoose.Schema({
   stripeCustomerId:String,
   subscriptionDetails:Array,
   addOnDetails:Array,
-  sevenDaysReminder:String,
-  threeDaysReminder:String,
-  oneDayReminder:String
+  upgradeReminderEmailDay:Array,
+  renewalOnReminderEmailDay:Array,
+  renewalOffReminderEmailDay:Array
 })
 
 //function to set password
