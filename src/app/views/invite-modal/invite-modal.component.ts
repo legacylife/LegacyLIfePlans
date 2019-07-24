@@ -30,10 +30,7 @@ export class InviteComponent implements OnInit {
     this.inviteForm = this.fb.group({
       inviteMembers: this.fb.array([this.fb.group({
         name: ['', Validators.required],
-        email: new FormControl('', Validators.compose([
-          Validators.required,
-          Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
-        ])),
+        email: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
         relation: ['', Validators.required]
       })]),
     });
@@ -46,10 +43,7 @@ export class InviteComponent implements OnInit {
   addRow() {
     this.inviteMembersList.push(this.fb.group({
       name: ['', Validators.required],
-      email: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
-      ])),
+      email: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
       relation: ['', Validators.required]
     }));
   }
