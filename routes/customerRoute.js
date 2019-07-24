@@ -28,6 +28,7 @@ const s3 = require('./../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
 const Trustee = require('./../models/Trustee.js')
 const HiredAdvisors = require('./../models/HiredAdvisors.js')
+const InviteTemp = require('./../models/InviteTemp.js')
 
 var auth = jwt({
   secret: constants.secret,
@@ -782,7 +783,7 @@ function fileActivityLogList(req, res) {
 function getSharedLegaciesList(req,res){  
   let { query } = req.body
   
-  Trustee.find(query, 'customerId',  function (err, list) {
+  Trustee.find(query, {customerId:1},  function (err, list) {
     let trustLength = list.length;
     if(trustLength>0){
       let userData = []
@@ -801,14 +802,29 @@ function legacyUserRemove(req,res){
   let userstring = ''
   let userData = { status: 'Deleted', modifiedOn : new Date() }
    if( query.userType == 'advisor'){
-    HiredAdvisors.updateOne({ customerId : query.customerId, advisorId : query.advisorId }, userData , function (err, updatedDetails){ });
+    HiredAdvisors.updateMany({ customerId : query.customerId, advisorId : query.advisorId }, userData , function (err, updatedDetails){ });
     userstring = 'Advisor'
   }else{
-    Trustee.updateOne({ customerId : query.customerId, trustId : query.trustId }, userData , function (err, updatedDetails){});
+    Trustee.updateMany({ customerId : query.customerId, trustId : query.trustId }, userData , function (err, updatedDetails){});
     userstring = 'Trustee'
   }
   let result = { "message": userstring + " removed successfully" }
   res.status(200).send(resFormat.rSuccess(result))   
+}
+
+function viewInviteDetails(req, res) {
+  let { query } = req.body;
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  InviteTemp.find(query, fields, function (err, InviteList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(InviteList))
+    }
+  })
 }
 
 router.post("/my-essentials-req", myEssentialsUpdate)
@@ -834,4 +850,5 @@ router.post("/deletecontact", deleteEcontact)
 router.post("/file-activity-log-list", fileActivityLogList)
 router.post("/shared-legacies-list", getSharedLegaciesList)
 router.post("/legacy-user-remove", legacyUserRemove)
+router.post("/view-invite-details", viewInviteDetails)
 module.exports = router
