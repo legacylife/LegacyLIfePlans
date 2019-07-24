@@ -23,6 +23,8 @@ var auth = jwt({
     userProperty: 'payload'
 })
 
+var moment    = require('moment');
+
 // customer can send invite to members 
 async function inviteMembers(req, res) {
     let members = req.body.data.inviteMembers;
@@ -142,14 +144,40 @@ async function inviteMemberCheckEmail(req, res) {
 async function getInviteMembersCount(req, res) {
     let paramData = req.body
     let resultCount = 0
-    await Invite.find(paramData, function (err, data) {
-        if (data != null) {
-            resultCount = data.length
-        }
-        result = { "count": resultCount }
-        res.status(200).send(resFormat.rSuccess(result))
-    })
+    let searchParam = { _id: paramData.inviteById, userType: paramData.inviteType}
+    
+    let userDetails = await User.find(searchParam)
+
+    if( userDetails && userDetails.length > 0 ) {
+        let userCreatedOn   = userDetails[0]['createdOn'],
+            today           = moment().toDate(),
+            completedMonths = Math.round( getDateDiff( today, moment(userCreatedOn).toDate() )),
+            startDate       = new Date(userCreatedOn);
+            startDate.setMonth( startDate.getMonth() + (completedMonths-1) );
+        let endDate         = new Date(userCreatedOn)
+            endDate.setMonth( endDate.getMonth() + completedMonths );        
+        paramData.createdOn = { $gte: new Date(startDate) , $lt: new Date(endDate) }
+        
+        await Invite.find(paramData, function (err, data) {
+            if (data != null) {
+                resultCount = data.length
+            }
+            result = { "count": resultCount }
+            res.status(200).send(resFormat.rSuccess(result))
+        })
+    }
 }
+
+/**
+ * return date difference in days
+ * @param startDate 
+ * @param endDate 
+ */
+function getDateDiff( endDate, startDate ) {
+    return moment.duration( 
+        moment(endDate).diff( moment(startDate) ) 
+      ).asMonths()
+  }
 
 router.post("/invite-members", inviteMembers)
 router.post("/invite-member-check-email", inviteMemberCheckEmail)
