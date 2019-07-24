@@ -17,19 +17,16 @@
       <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
         <mat-form-field class="full-width">
           <input value="" matInput placeholder="Name*" formControlName="name" name="name">
-          <mat-icon matTooltip="Please enter name" matTooltipClass="llp--tooltip error" *ngIf="ilist.required"
-            class="red--alert">help_outline</mat-icon>
+          <!--mat-icon matTooltip="Please enter name" matTooltipClass="llp--tooltip error" *ngIf="ilist.required"
+            class="red--alert">help_outline</mat-icon-->
         </mat-form-field>
       </div>
       <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
         <mat-form-field class="full-width">
           <input matInput value="" placeholder="Email*" formControlName="email" name="email"
-            (blur)="emailIdCheckInvite(pointIndex, ilist.valid)">
-          <mat-icon matTooltip="Please enter valid email" matTooltipClass="llp--tooltip error"
-            *ngIf="ilist.touched && ilist.invalid" class="red--alert">help_outline</mat-icon>
-         
-          <mat-icon matTooltip="Already sent!" matTooltipClass="llp--tooltip error" *ngIf="alreadySentEmails!=''" class="red--alert">help_outline</mat-icon>
-
+            (blur)="emailIdCheckInvite(pointIndex)">
+          <!---mat-icon matTooltip="Please enter valid email" matTooltipClass="llp--tooltip error"
+            *ngIf="ilist.touched && ilist.invalid" class="red--alert">help_outline</mat-icon---->
         </mat-form-field>
       </div>
       <div fxFlex.xs="90" fxFlex.sm="95" fxFlex.md="35" fxFlex.lg="36" fxFlex.xl="37" class="pad--r--lg">
