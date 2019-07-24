@@ -255,7 +255,7 @@ function getSubSectionsList(req, res){
 }
 
 
- function trusteeFormSubmit(req, res){
+ function trusteePermissionsUpdate(req, res){
     let { query } = req.body;
     let key = query.insertArray.code;
     let list = query.insertArray.accessManagement;
@@ -263,12 +263,25 @@ function getSubSectionsList(req, res){
     async.each(list, (contact,callback) => {
       let newContact = JSON.parse(JSON.stringify(contact))
       let ext = newContact.ids.split('##');
+      
       if (ext[0]) {
         let documentId = ext[0];
         let value = ext[1];
+        let fields = { filesCount: 1, folderCount: 1 ,userAccess:1}
+        trust.findOne({ _id: documentId},fields, function (err, trustDetails) {
+          var filescnt = parseInt(trustDetails.filesCount);
+          if(newContact.oldValue=='now' && value!='now'){
+            filescnt = parseInt(filescnt)-1;
+            
+          }else if(newContact.oldValue!='now' && value=='now'){
+            filescnt = parseInt(filescnt)+1;
+          }
+
           let updateData = {}
           updateData[`userAccess.${key}`] = value;
-           trust.updateOne({ _id: documentId},{ $set:  updateData }, function (err, updatedDetails) {
+          updateData['filesCount'] = filescnt;
+
+          trust.updateOne({ _id: documentId},{ $set:  updateData }, function (err, updatedDetails) {
             if (err) {
               res.status(401).send(resFormat.rError(err))
             }
@@ -276,6 +289,7 @@ function getSubSectionsList(req, res){
               callback()
             }
           })
+        })
        } 
       }, (err) => {
         let result = { "message": "Trustee permissions updated successfully" }
@@ -290,5 +304,5 @@ router.post("/view-details", getTrusteeDetails)
 router.post("/form-submit", trustFormUpdate)
 router.post("/resend-invitation", trustResendInvitation)
 router.post("/subSectionsList", getSubSectionsList)
-router.post("/subSections-form-submit", trusteeFormSubmit)
+router.post("/subSections-form-submit", trusteePermissionsUpdate)
 module.exports = router
