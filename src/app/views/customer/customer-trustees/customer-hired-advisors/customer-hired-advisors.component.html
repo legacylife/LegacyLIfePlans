@@ -21,7 +21,7 @@
                   </div>
                   <div class="appointees--desc">
                     <h5>{{row.advisorId?.firstName}} {{row.advisorId?.lastName}}</h5>
-                    <p class="position m-0" >{{row.advisorId?.userType}}</p>
+                    <p class="position m-0" >{{row.advisorId?.businessName}}</p>
                   </div>
                   <div class="cursor-pointer">
                       <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
@@ -34,7 +34,7 @@
                 </mat-card-title>
             </mat-card-header>
 
-            <mat-card-content class="status--advisor relative">
+            <mat-card-content class="status--advisor relative status--pending">
               <div class="files--folder mt-1 degree--names" *ngIf="row?.status==='Active'">
                 <mat-icon>school</mat-icon>
                 {{row.advisorId?.businessType}}

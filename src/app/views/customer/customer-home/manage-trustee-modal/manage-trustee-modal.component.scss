@@ -1,10 +1,20 @@
 @import 'llp-global-styles.scss';
 @import '../personal-profile-modal/personal-profile-modal.component.scss';
 
+.invite--sub--line {
+    font-size: 20px;
+    color: #000;
+    font-family: $font--lato--regular!important;
+    margin: 0 0 30px;
+    text-align: center;
+}
+
+.profile--body--scroll{
+    overflow: auto;
+}
 .trust--legacy--wrapper{
     .cover{
-        border-bottom: 1px solid #d1dbde;
-        margin-bottom: 20px;
+        padding: 0 20px;
         .header{
             font-size: 16px;
             color: #222324;
@@ -49,11 +59,11 @@
                 display: none;
                 &.bold{
                     display: block;
-                    margin-bottom: 10px;
+                    margin-bottom: 0 !important;
                 }
             }
             .left--header{
-                margin-bottom: 10px;
+                margin-top: 20px;
             }
             .center--txt{
                 text-align: left;
@@ -70,6 +80,9 @@
                     }
                 }
             }
+            .add--new{
+                margin-top: 15px;
+            }
         }
         
     }
@@ -82,11 +95,11 @@
                 display: none;
                 &.bold{
                     display: block;
-                    margin-bottom: 15px;
+                    margin-bottom: 0 !important;
                 }
             }
             .left--header{
-                margin-bottom: 10px;
+                margin-top: 25px;
             }
             .center--txt{
                 text-align: left;
@@ -100,6 +113,9 @@
                         margin: 0;
                     }
                 }
+            }
+            .add--new{
+                margin-top: 15px;
             }
         }
         

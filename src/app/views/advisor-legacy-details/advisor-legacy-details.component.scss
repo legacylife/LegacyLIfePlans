@@ -1,2 +1,6 @@
 
 @import 'llp-global-styles.scss';
+
+::ng-deep .large--size{
+    width: 246px !important;
+}

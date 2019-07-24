@@ -3,10 +3,10 @@ import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@ang
 import { UserAPIService } from './../../../../userapi.service';
 import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
-import { MatDialog, MatSnackBar,MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef,MatDialog, MatSnackBar,MAT_DIALOG_DATA } from '@angular/material';
 import { Router } from '@angular/router';
 import { userSections } from '../../../../config';
-
+import { addTrusteeModalComponent } from '../add-trustee-modal/add-trustee-modal.component';
 @Component({
   selector: 'app-manage-trustee-modal',
   templateUrl: './manage-trustee-modal.component.html',
@@ -21,6 +21,7 @@ export class ManageTrusteeModalComponent implements OnInit, AfterViewInit {
   selectedProfileId: string;
   profileIdHiddenVal = false;
   trust_id: any;
+  listLength: any;
   hdtitle: string;
   code: string;
   rows: any = [];
@@ -29,7 +30,7 @@ export class ManageTrusteeModalComponent implements OnInit, AfterViewInit {
   HiddenVal = false;
   constructor(
     private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService,
-    private router: Router, private userapi: UserAPIService,@Inject(MAT_DIALOG_DATA) public data: any
+    private router: Router,private dialogRef2: MatDialogRef<ManageTrusteeModalComponent>, private userapi: UserAPIService,@Inject(MAT_DIALOG_DATA) public data: any
   ) { this.hdtitle = data.title;this.code = data.code; }
  
 ngOnInit() {
@@ -81,6 +82,8 @@ manageTrusteeSubmit(insert = null) {
       } else {
         if(result.data){    
           this.rows = result.data.trusteeUsersList;   
+          this.listLength = this.rows.length-1;
+         
           this.trusteeFormGroup.controls['code'].setValue(this.code);
           this.accessManagement = this.trusteeFormGroup.get('accessManagement') as FormArray;
           this.accessManagement.removeAt(0);
@@ -105,6 +108,17 @@ manageTrusteeSubmit(insert = null) {
     //console.log("access key>>>>>",Object.keys(sectionName))
     //return Object.keys(sectionName);
     return accessArray[sectionName];
+ }
+
+ openAddTrusteeModal(id, isNew?) {
+  this.dialogRef2.close(ManageTrusteeModalComponent);
+   let dialogRef: MatDialogRef<any> = this.dialog.open(addTrusteeModalComponent, {
+     width: '720px',
+     disableClose: true,
+     data: {
+      id: id,
+    }
+   })
  }
 
 }
