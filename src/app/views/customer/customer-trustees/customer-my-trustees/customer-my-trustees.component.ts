@@ -127,7 +127,6 @@ downloadFile = (filename) => {
   });
 }
 
-
 FolderSize = () => {    
   let query = {};
   let req_vars = {
