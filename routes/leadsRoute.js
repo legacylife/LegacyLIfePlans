@@ -321,15 +321,17 @@ async function getMutualFriend(req, res){
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {      
-      if(details.length > 0){
+      if(details.length > 0){        
           let detailsLength =  details.length   
             for(let index=0; index<detailsLength; index++){
-              mutualFrnds.push(details[index].trustId)
+              if(details[index].trustId){
+                mutualFrnds.push(ObjectId(details[index].trustId))
+              }
             }
             HiredAdvisors.aggregate([
               { 
                 $match: {
-                "customerId": { $in: mutualFrnds } , advisorId : query.advisorId , "status": "Active"
+                  "customerId": { $in: mutualFrnds } , advisorId : ObjectId(query.advisorId) , "status": "Active"
                 } 
               },
               { 
@@ -341,11 +343,12 @@ async function getMutualFriend(req, res){
             ], function (err, results) {
               let mutualFrndsIds = [];
               for(let index=0; index<results.length; index++){
-                mutualFrndsIds.push(details[index].trustId)
+                mutualFrndsIds.push(ObjectId(results[index].customerId))
               }
               User.find({"_id" : { $in: mutualFrndsIds } },{'firstName': 1, 'lastName': 1}, function (err, names) {
                 res.status(200).send(resFormat.rSuccess(names))
               })
+               
           });
       }
     }    
