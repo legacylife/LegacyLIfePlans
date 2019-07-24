@@ -437,6 +437,7 @@ export const CustomerRoutes: Routes = [
   {
     path: 'to-dos',
     component: CustomerLayoutComponent,
+    canActivate: [UserAuthGuard],
     children: [
       {
         path: '',
@@ -448,12 +449,13 @@ export const CustomerRoutes: Routes = [
   {
     path: 'my-peoples',//path: 'trustees',
     component: CustomerLayoutComponent,
+    canActivate: [UserAuthGuard],
     // data: { title: '' },
     children: [
       {
         path: '',
         component: CustomerTrusteesComponent,
-        canActivate: [UserAuthGuard],
+        
         // data: { title: 'Trustees List' },
         children: [
           {
@@ -478,6 +480,7 @@ export const CustomerRoutes: Routes = [
   {
     path: 'professionals',
     component: CustomerLayoutComponent,
+    canActivate: [UserAuthGuard],
     children: [
       {
         path: 'prof-details/:id',

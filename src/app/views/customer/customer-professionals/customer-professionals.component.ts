@@ -84,10 +84,13 @@ export class CustomerProfessionalComponent implements OnInit {
     })
   }
 
-  openSendEmailModal(data: any = {}, isNew?) {
+  openSendEmailModal(id: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(SendAnEmailComponent, {
       width: '720px',
       disableClose: true,
+      data: {
+        id: id
+      },
     })
   }
 

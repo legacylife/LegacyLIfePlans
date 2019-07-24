@@ -88,7 +88,7 @@ export class HireAdvisorComponent implements OnInit, AfterViewInit  {
 
 checkAdvisorView(insert = null) {
   const req_vars = {
-      query: Object.assign({customerId:this.userId,advisorId:this.ids}),
+      query: Object.assign({customerId:this.userId,advisorId:this.ids, status: { $nin: ['Deleted', 'Rejected'] }}),
     }    
     this.loader.open();
     this.userapi.apiRequest('post', 'advisor/checkHireAdvisor', req_vars).subscribe(result => {

@@ -5,23 +5,30 @@
   </button>
 </div>
 
-<form class="llp-form-wrapper">
+<form class="llp-form-wrapper" (ngSubmit)="sendEmailFormSubmit(sendEmailForm.value)">
   <div class="ll--modal--body idbox--modal--hgt">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Your Name" [formControl]="sendEmailForm.controls['name']" name="name">
 
-    <form class="llp-form-wrapper">
-      <mat-form-field class="full-width">
-        <input matInput value="John Smith" placeholder="Your Name">
+        <mat-icon matTooltip="Please enter full name" matTooltipClass="llp--tooltip error" *ngIf="sendEmailForm.controls['name'].hasError('required') && sendEmailForm.controls['name'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
-      <mat-form-field class="full-width">
-        <input matInput value="" placeholder="Email">
-      </mat-form-field>
-      <mat-form-field class="full-width">
-        <textarea matInput rows="6" placeholder="Comments or Questions for Advisor*" value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco lab oris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptatvelit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,unt in culpa qui officia deserunt mollit anim id est laborum."></textarea>
-      </mat-form-field>
-    </form>
 
-  </div>
+      <mat-form-field class="full-width">
+        <input matInput value="" placeholder="Email" [formControl]="sendEmailForm.controls['email']">
+
+        <mat-icon matTooltip="Please enter email id" matTooltipClass="llp--tooltip error" *ngIf="sendEmailForm.controls['email'].hasError('required') && sendEmailForm.controls['email'].touched"     class="red--alert">help_outline</mat-icon>
+
+        <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" *ngIf="sendEmailForm.controls['email'].hasError('pattern')" class="red--alert">help_outline</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+          <textarea (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" maxlength="500" matInput placeholder="Message or Questions for Advisor*" name="message" [formControl]="sendEmailForm.controls['message']"></textarea>
+          <div class="char--limit" style="float: right;">{{ 500 - sendEmailForm.controls['message'].value?.length }}</div>
+
+          <mat-icon matTooltip="Please enter email message" matTooltipClass="llp--tooltip error" *ngIf="sendEmailForm.controls['message'].hasError('required') && sendEmailForm.controls['message'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+   </div>
   <div class="ll--modal--footer text-center">
-    <button mat-raised-button class="llp--primary--btn">Send</button>
+    <button mat-raised-button class="llp--primary--btn" [disabled]="!sendEmailForm.valid">Send</button>
   </div>
 </form>

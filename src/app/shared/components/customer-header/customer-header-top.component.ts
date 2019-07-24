@@ -47,11 +47,15 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.picService.itemValue.subscribe((nextValue) => {
-      this.profilePicture =  nextValue
+      if(nextValue)
+        this.profilePicture =  nextValue
     })
 
-    if(localStorage.getItem('endUserProfilePicture') && localStorage.getItem('endUserProfilePicture') != 'assets/images/arkenea/default.jpg'){
+    if(localStorage.getItem('endUserProfilePicture') != "undefined" && localStorage.getItem('endUserProfilePicture') != 'assets/images/arkenea/default.jpg'){
       this.profilePicture = localStorage.getItem('endUserProfilePicture') 
+    }
+    else {
+      this.profilePicture = 'assets/images/arkenea/default.jpg' 
     }
    
     this.layoutConf = this.layout.layoutConf;
