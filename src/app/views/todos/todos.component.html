@@ -8,7 +8,7 @@
 <div class="ll--modal--body todo--modal--hgt">
   <form class="llp-form-wrapper mt-1" [formGroup]="todosForm" (ngSubmit)="todosFormSubmit()">
     <mat-form-field class="full-width no-mar">
-      <textarea (blur)="trimInput(todosForm.value)" matInput placeholder="Add Your To-Do's Here" name="comments"
+      <textarea   rows="4" (blur)="trimInput(todosForm.value)" matInput placeholder="Add Your To-Do's Here" name="comments"
         [formControl]="todosForm.controls['comments']"></textarea>
       <mat-icon matTooltip="Please enter your to-do's" matTooltipClass="llp--tooltip error"
         *ngIf="todosForm.controls['comments'].hasError('required') && todosForm.controls['comments'].touched"
@@ -38,8 +38,8 @@
       <form class="llp-form-wrapper" [formGroup]="todosUpdateForm" (ngSubmit)="todosFormUpdate()">
         <mat-nav-list class="pt-0" *ngIf="viewMode == rowIndex">
           <mat-list-item>
-            <mat-form-field class="full-width no-mar">
-              <textarea (blur)="updateCommentCheck(todosUpdateForm.value)" matInput name="update_comments"
+            <mat-form-field class="full-width no-mar p-0">
+              <textarea   rows="4" (blur)="updateCommentCheck(todosUpdateForm.value)" matInput name="update_comments"
                 [formControl]="todosUpdateForm.controls['update_comments']"
                 value="{{todo.comments}}">{{todo.comments}}</textarea>
               <mat-icon matTooltip="Please enter your to-do's" matTooltipClass="llp--tooltip error"
