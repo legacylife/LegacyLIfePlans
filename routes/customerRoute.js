@@ -28,6 +28,7 @@ const s3 = require('./../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
 const Trustee = require('./../models/Trustee.js')
 const HiredAdvisors = require('./../models/HiredAdvisors.js')
+const InviteTemp = require('./../models/InviteTemp.js')
 
 var auth = jwt({
   secret: constants.secret,
@@ -811,6 +812,21 @@ function legacyUserRemove(req,res){
   res.status(200).send(resFormat.rSuccess(result))   
 }
 
+function viewInviteDetails(req, res) {
+  let { query } = req.body;
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  InviteTemp.find(query, fields, function (err, InviteList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(InviteList))
+    }
+  })
+}
+
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
@@ -834,4 +850,5 @@ router.post("/deletecontact", deleteEcontact)
 router.post("/file-activity-log-list", fileActivityLogList)
 router.post("/shared-legacies-list", getSharedLegaciesList)
 router.post("/legacy-user-remove", legacyUserRemove)
+router.post("/view-invite-details", viewInviteDetails)
 module.exports = router
