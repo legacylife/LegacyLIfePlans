@@ -6,7 +6,7 @@ import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.serv
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { SubscriptionService } from 'app/shared/services/subscription.service';
 import { Router } from '@angular/router';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialog, MatSnackBar } from '@angular/material';
 import  * as moment  from 'moment'
 
 @Component({
@@ -45,7 +45,7 @@ export class CardDetailsComponent implements OnInit {
   
   constructor(private stripeService: StripeService, private userapi: UserAPIService, private loader: AppLoaderService, 
     private fb: FormBuilder, private picService: ProfilePicService, private subscriptionservice:SubscriptionService, 
-    private router: Router, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog ) {
+    private router: Router, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private snack: MatSnackBar ) {
       // get data from popup to check fro which the popup is open i.e for subscription charges or addon payment
       this.for = data.for
     }
@@ -213,8 +213,10 @@ export class CardDetailsComponent implements OnInit {
         localStorage.setItem('endUserSubscriptionStartDate', data.subscriptionStartDate);
         localStorage.setItem('endUserSubscriptionEndDate', data.subscriptionEndDate);
         localStorage.setItem('endUserAutoRenewalStatus', "true");
+        localStorage.setItem('endUserSubscriptionStatus', "paid");
         let url = '/'+this.endUserType+'/account-setting'
         this.dialog.closeAll(); 
+        this.snack.open("Account upgraded successfully. Please check email for more info.", 'OK', { duration: 4000 })
         this.router.navigate([url]);
       }
       this.loader.close();
@@ -237,6 +239,7 @@ export class CardDetailsComponent implements OnInit {
       else if(result.status=='success') {
         localStorage.setItem('endUserSubscriptionAddon', 'yes');
         this.dialog.closeAll(); 
+        this.snack.open("Add on successfully added to your account. Please check email for more info.", 'OK', { duration: 4000 })
         //let url = '/'+this.endUserType+'/dashboard'
         //this.router.navigate([url]);
       }

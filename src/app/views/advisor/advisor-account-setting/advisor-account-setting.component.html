@@ -144,7 +144,7 @@
                     <div class="manage--cancel">
                       <!-- <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/advisor/subscription'">Manage subscription</button> -->
                       <button mat-raised-button class="llp--primary--green--btn" [class.not-allowed]="isSubscribePlan && !isPremiumExpired" [disabled]="isSubscribePlan && !isPremiumExpired" [routerLink]="'/advisor/subscription'">Manage subscription</button>
-                      <a class="clr--red" [class.not-allowed]="isAccountFree || isSubscriptionCanceled" [attr.disabled]="isAccountFree || isSubscriptionCanceled" (click)="(!isAccountFree || !isSubscriptionCanceled) && cancelSubscription()">Cancel subscription</a>
+                      <a class="clr--red" [class.not-allowed]="!isSubscribePlan || !isAccountFree || isSubscriptionCanceled" [attr.disabled]="!isSubscribePlan || !isAccountFree || isSubscriptionCanceled" (click)="isSubscribePlan && (!isAccountFree || !isSubscriptionCanceled) && cancelSubscription()">Cancel subscription</a>
                     </div>
 
                     <mat-card class="mt-1 p-0 black--header">
@@ -157,7 +157,7 @@
                         </h4>
                         <p class="daysgo">9 days to go</p>
                         <p class="invites">Invites sent in this month</p>
-                        <button mat-raised-button class="llp--primary--btn">Invite Now</button>
+                        <button mat-raised-button class="llp--primary--btn" (click)="openInviteModal({})">Invite Now</button>
                       </mat-card-content>
                     </mat-card>
 

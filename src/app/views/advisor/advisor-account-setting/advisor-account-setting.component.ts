@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { UserAPIService } from './../../../userapi.service';
-import { MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
+import { MatDialog, MatSnackBar, MatSidenav, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms'
 import { egretAnimations } from '../../../shared/animations/egret-animations';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
@@ -20,6 +20,7 @@ import { ChangePicComponent } from './../../change-pic/change-pic.component';
 import { CanComponentDeactivate } from '../../../shared/services/auth/can-deactivate.guard';
 import { SubscriptionService } from '../../../shared/services/subscription.service';
 import  * as moment  from 'moment'
+import { ReferAndEarnModalComponent } from '../legacies/refer-and-earn-modal/refer-and-earn-modal.component';
 
 const filePath = s3Details.url+'/'+s3Details.advisorsDocumentsPath;
 const URL = serverUrl + '/api/documents/advisorDocument';
@@ -184,51 +185,6 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       this.planName = returnArr.planName
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
     })
-    /* let diff: any
-    let expireDate: any
-    let subscriptionDate      = localStorage.getItem("endUserSubscriptionStartDate")
-    this.userCreateOn         = moment( localStorage.getItem("endUserCreatedOn") )
-    this.isSubscribedBefore   = ( subscriptionDate !== 'undefined' && subscriptionDate !== null && subscriptionDate !== "" ) ? true : false
-    
-    if( !this.isSubscribedBefore ) {
-      this.isAccountFree    = true
-      this.isSubscribePlan  = false
-      diff                  = this.subscriptionservice.getDateDiff( this.userCreateOn.toDate(), this.today )
-      console.log("diff",diff)
-      if( diff <= 30 ) {
-        expireDate            = this.userCreateOn.add(30,"days")
-        this.isPremiumExpired = false
-      }
-      else{
-        expireDate            = this.userCreateOn.add(60,"days")
-        this.isPremiumExpired = true
-      }
-      
-      this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
-    }
-    else if( this.isSubscribedBefore ) {
-      this.isSubscriptionCanceled = ( localStorage.getItem("endUserSubscriptionStatus") && localStorage.getItem("endUserSubscriptionStatus") == 'canceled' ) ? true : false
-      this.autoRenewalFlag        = ( localStorage.getItem("endUserAutoRenewalStatus") && localStorage.getItem("endUserAutoRenewalStatus") == 'true' ) ? true : false
-      this.autoRenewalVal         = this.autoRenewalFlag
-      this.autoRenewalStatus      = this.autoRenewalVal ? 'on' : 'off'
-      this.userSubscriptionDate   = moment( localStorage.getItem("endUserSubscriptionEndDate") )
-      this.isAccountFree    = false
-      diff                  = this.subscriptionservice.getDateDiff( this.today, this.userSubscriptionDate.toDate() )
-      
-      if( diff >= 0 ) {
-        expireDate            = this.userSubscriptionDate
-        this.isPremiumExpired = false
-        this.isSubscribePlan  = true
-        this.planName         = 'Standard'
-      }
-      else{
-        expireDate            = this.userSubscriptionDate.add(30,"days")
-        this.isPremiumExpired = true
-        this.isSubscribePlan  = false
-        this.planName         = 'Free'
-      }
-      this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
-    } */
   }
 
   canDeactivate(): any {
@@ -774,4 +730,11 @@ downloadFile = (filename) => {
     link.click();
   });
 }
+
+  openInviteModal(data: any = {}, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
+      width: '720px',
+      disableClose: true,
+    })
+  }
 }

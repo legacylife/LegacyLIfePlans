@@ -135,7 +135,7 @@
                       </header>
                       <div class="llp--slide--wrapper">
                         <div class="set-auto">Set auto-payment option</div>
-                        <mat-slide-toggle class="llp--slide--toggle" [checked]="autoRenewalFlag" [disabled]="isAccountFree" (click)="isSubscribePlan && autoRenewal()">{{autoRenewalStatus | uppercase}}</mat-slide-toggle>
+                        <mat-slide-toggle class="llp--slide--toggle" [checked]="autoRenewalFlag" [disabled]="isAccountFree || isSubscriptionCanceled" (click)="(isSubscribePlan && !isSubscriptionCanceled) && autoRenewal()">{{autoRenewalStatus | uppercase}}</mat-slide-toggle>
                       </div>
                       <p class="turning">Turning the auto-payment option ON will automatically deduct the subscription
                         amount from your associated
@@ -143,7 +143,7 @@
                       </p>
                       <div class="manage--cancel">
                         <button mat-raised-button class="llp--primary--green--btn" [class.not-allowed]="isSubscribePlan && !isPremiumExpired" [disabled]="isSubscribePlan && !isPremiumExpired" [routerLink]="'/customer/customer-subscription'">Manage subscription</button>
-                        <a class="clr--red" [class.not-allowed]="!isSubscribePlan || !isAccountFree || isSubscriptionCanceled" [attr.disabled]="!isSubscribePlan || !isAccountFree || isSubscriptionCanceled" (click)="isSubscribePlan && (!isAccountFree || !isSubscriptionCanceled) && cancelSubscription()">Cancel subscription</a>
+                        <a class="clr--red" [class.not-allowed]="!isSubscribePlan || isSubscriptionCanceled" [attr.disabled]="!isSubscribePlan || isSubscriptionCanceled" (click)="isSubscribePlan && !isSubscriptionCanceled && cancelSubscription()">Cancel subscription</a>
                       </div>
                     </div>
                     <div class="upgrade--account " *ngIf="isProUser && isSubscribePlan">
@@ -157,7 +157,7 @@
                         </div>
                       </header>
                       <div class="text-center">
-                        <button mat-raised-button class="llp--primary--green--btn llp--primary--sm--btn upgrade--btn" [class.not-allowed]="isProUser && !getAddOn" [disabled]="isProUser && !getAddOn" (click)="isProUser && !isGetAddOn && openCardDetailsModal();">Upgrade</button>
+                        <button mat-raised-button class="llp--primary--green--btn llp--primary--sm--btn upgrade--btn" [class.not-allowed]="(isProUser && isGetAddOn) || !getAddOn" [disabled]="(isProUser && isGetAddOn) || !getAddOn" (click)="isProUser && !isGetAddOn && openCardDetailsModal();">Upgrade</button>
                       </div>
                       <p class="space--info m-0">The memory upgrade is for additional video and picture storage that
                         will offer a total of 17 gigs. In most circumstances the Legacy plan documents will use less

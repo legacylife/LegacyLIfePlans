@@ -121,6 +121,10 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     /**
      * Check the user subscription details
      */
+    this.checkSubscription()
+  }
+
+  checkSubscription() {
     this.subscriptionservice.checkSubscription( ( returnArr )=> {
       this.userCreateOn = returnArr.userCreateOn
       this.isSubscribedBefore = returnArr.isSubscribedBefore
@@ -135,20 +139,14 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
 
       this.subscriptionservice.getPlanDetails( ( planData )=> {
-        //console.log("planData",planData)
         this.addOnSpace = planData.metadata.addOnSpace
-        this.spaceDimension = planData.metadata.spaceDimension
-        
+        this.spaceDimension = planData.metadata.spaceDimension        
         let subscriptionDate = moment( localStorage.getItem("endUserSubscriptionEndDate") )
         let diff = Math.round(this.subscriptionservice.getDateDiff( this.today, subscriptionDate.toDate() ))
         let addOnCharges = Number (planData.metadata.addOnCharges)
         let addOnAmount = diff > 364 ? addOnCharges : ( (addOnCharges/365)*diff ).toFixed(2)
         this.addOnAmount = Number(addOnAmount)
         this.addOnAmountFor = diff > 364 ? 'per year' : 'for '+(diff)+' days'
-        /* this.addOnAmount = (diff > 364 ? planData.metadata.addOnCharges : ( (planData.metadata.addOnCharges/365)*diff ) ).toFixed(2)
-        let addOnMaxDurationDay = Number (planData.metadata.addOnMaxDurationDay)
-        //console.log("diff",diff,"addOnMaxDurationDay",addOnMaxDurationDay,"typeof addOnMaxDurationDay",typeof addOnMaxDurationDay)
-        this.addOnAmountFor = diff > 364 ? 'per year' : 'for '+(diff)+' days' */
       })
       this.isGetAddOn = localStorage.getItem('endUserSubscriptionAddon') && localStorage.getItem('endUserSubscriptionAddon') == 'yes' ? true : false
     })
@@ -374,8 +372,9 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     this.subscriptionservice.updateAutoRenewalStatus( this.userId, this.autoRenewalVal )
   }
 
-  cancelSubscription= (query = {}) => {
-    this.isSubscriptionCanceled = this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled )
+  cancelSubscription= async (query = {}) => {
+    this.isSubscriptionCanceled = await this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled )
+    this.checkSubscription()
   }
 
   getAddOnPack() {
