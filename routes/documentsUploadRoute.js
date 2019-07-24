@@ -1224,14 +1224,14 @@ function downloadDocs(req,res) {
   var params = {Bucket: constants.s3Details.bucketName,Key:filePath};
   let ext = filename.split('.')
   ext = ext[ext.length - 1];
+  console.log("params ->",params,ext);
   try {
     const stream = s3.s3.getObject(params).createReadStream();    
     res.set({
-      'Content-Disposition': 'attachment; filename='.filename,
+      'Content-Disposition': 'attachment; filename='+filename,
       'Content-Type': 'image/'+ext+'; charset=utf-8'
     });
-    stream.pipe(res);
-    res.status(200).send(resFormat.rSuccess({message :"Zip File download successfully"}))  
+    stream.pipe(res);    
   } catch (error) {
     res.status(401).send(resFormat.rError({message :error}))  
   }
@@ -1293,23 +1293,24 @@ function getuserFolderSize(folder,res) {
    });
 }
 
-function downloadZipfiles(req,res) {
+function downloadZipfilesDinzy(req,res) {
   let { query } = req.body; 
   let { docPath, AllDocuments } = query;
 
-  let ext = query.downloadFileName.split('/');
-  const zipName = ext[0]+ '-' + new Date().getTime()
-  let downloadFileName = zipName + '.zip';
+  //let ext = query.downloadFileName.split('/');
+  //const zipName = ext[0]+ '-' + new Date().getTime()
+  let downloadFileName = zipName;
    
   if (AllDocuments) {
     let docList = []
     AllDocuments.map((row)=>{
       docList.push(docPath+row.tmpName);
-    })
+    });
+    console.log("docList ",docList)
     const params = {Bucket: constants.s3Details.bucketName,Prefix: docPath};
-    console.log("reading docPath=>", docPath)
+   // console.log("reading docPath=>", docPath)
     s3.s3.listObjectsV2(params, (err, data)=>{
-      console.log("data=>", data)
+     
       let files = []
       data.Contents.map((o)=> {
         if(docList.indexOf(o.Key)){ 
@@ -1319,7 +1320,7 @@ function downloadZipfiles(req,res) {
       var output = fs.createWriteStream('tmp/' + downloadFileName);
       var archive = archiver('zip', {});
       res.attachment(downloadFileName);
-      
+      console.log("files=>", files)
       async.each(files, (filename, callback)=>{
        
         var getparams = {Bucket: constants.s3Details.bucketName,Key:filename};
@@ -1339,7 +1340,7 @@ function downloadZipfiles(req,res) {
           var pass = new stream.PassThrough();
           var params = {Bucket: constants.s3Details.bucketName, Key: 'downloads/'+downloadFileName, Body:archive};
           s3.s3.upload(params, function(s3Err, data) {
-            console.log("s3Err",s3Err)
+           // console.log("s3Err",s3Err)
             if (s3Err) { 
               throw s3Err
             } else {
@@ -1367,11 +1368,14 @@ function downloadZipfiles(req,res) {
   }
 }
 
-function downloadZipfiles1(req,res) {
+function downloadZipfiles(req,res) {
   let { query } = req.body; 
   let filesPath = query.docPath;       
-  let ext = query.downloadFileName.split('/');
-  let downloadFileName = ext[0]+ '-' + new Date().getTime();      
+  //let ext = query.downloadFileName.split('/');
+  //let downloadFileName = ext[0]+ '-' + new Date().getTime();     
+  
+  let downloadFileName = query.downloadFileName;
+
   if(query.AllDocuments){
     let AllDocs = query.AllDocuments;
     let docList = []
@@ -1397,56 +1401,28 @@ function downloadZipfiles1(req,res) {
         archive.on('warning', () => {});
         archive.on('error', () => {});      
         // Set up the archive we want to present as a download.
-        res.attachment(downloadFileName+'.zip');
-        let s3OutputStream = uploadFromStream(downloadFileName);
+        res.attachment(downloadFileName);
+        let s3OutputStream = uploadFromStream(downloadFileName,res);
         archive.pipe(s3OutputStream);
-
-        // async.each(files, (folder)=>{
-        //     let filePath = folder;                 
-        //     let filename = folder;
-        //     var getparams = {Bucket: constants.s3Details.bucketName,Key:filePath};
-        //     const stream = s3.s3.getObject(getparams).createReadStream();    
-        //     archive.append(stream,{name: filename});                    
-        // }) 
-
-        // archive.finalize();  
-        // archive.on('finish', async () => {
-        //   let downloadfilePath = 'downloads/'+downloadFileName+'.zip';
-        //   let downloadFilenames = downloadFileName+'.zip';
-        //   downloadZip(downloadfilePath, downloadFilenames,res);    
-        //   let result = { "message": "Folders zip download successfully!"}
-        //   console.log(result);
-        //   res.status(200).send(resFormat.rSuccess(result))
-        // }); 
         
-        
+        //console.log("files >>>>>  ",s3OutputStream)
+        async.each(files, (folder,callback)=>{
+            let filePath = folder;                 
+            let filename = folder;
+            var getparams = {Bucket: constants.s3Details.bucketName,Key:filePath};
+            const stream = s3.s3.getObject(getparams).createReadStream();    
+            archive.append(stream,{name: filename});    
+            callback()                
+        }) 
 
-        async.each(files, (folder, callback)=>{
-          let filePath = folder;                 
-          let filename = folder;
-          var getparams = {Bucket: constants.s3Details.bucketName,Key:filePath};
-          const stream = s3.s3.getObject(getparams).createReadStream();    
-          archive.append(stream,{name: filename});
-          callback()
-      }, () => {
         archive.finalize();  
-        archive.on('end', async () => {
-          let downloadfilePath = 'downloads/'+downloadFileName+'.zip';
-          let downloadFilenames = downloadFileName+'.zip';
-          downloadZip(downloadfilePath, downloadFilenames,res);
-          // let result = { "message": "Folders zip download successfully!"}
-          // console.log(result);
-          // res.status(200).send(resFormat.rSuccess(result))
-        });  
-      }) 
 
-
-
-
-
-
-
-          
+        archive.on('finish', async () => {
+          // let downloadfilePath = 'downloads/'+downloadFileName+'.zip';
+          // let downloadFilenames = downloadFileName+'.zip';
+          // console.log("FINISH re BHO !! ",downloadfilePath,downloadFilenames)
+          // downloadZip(downloadfilePath, downloadFilenames,res);           
+        }); 
       } catch (error) {
         res.status(401).send(resFormat.rError({message :error}))  
       }
@@ -1460,32 +1436,38 @@ function downloadZipfiles1(req,res) {
 }
 }
 
-function downloadZip(downloadfilePath,downloadFilenames,res) {
-    // var downLoadparams = {Bucket: constants.s3Details.bucketName,Key:'downloads/pets-1563866749336.zip'};
-    var downLoadparams = {Bucket: constants.s3Details.bucketName,Key:downloadfilePath};
+function uploadFromStream(zipfileName,res) {
+  var pass = new stream.PassThrough();
+  let fileName = 'downloads/'+zipfileName;
+  var params = {Bucket: constants.s3Details.bucketName, Key: fileName, Body: pass};
+  s3.s3.upload(params, function(err, data) {  
+    var downLoadparams = {Bucket: constants.s3Details.bucketName,Key:fileName};
     try {
       const streams = s3.s3.getObject(downLoadparams).createReadStream(); 
-     
-   
+      res.set({
+        'Content-Disposition': 'attachment; filename='+zipfileName,
+        'Content-Type': 'image/zip; charset=utf-8'
+      });
       streams.pipe(res);
-      // console.log("download file name >>>>>",downloadFilenames)
-       //res.set({
-       //  'Content-Disposition': `attachment; filename=`+downloadFilenames,
-       //  'Content-Type': 'file/zip; charset=utf-8'
-       //});
-       //streams.pipe(res);
-      // res.status(200).send(resFormat.rSuccess({message :"Zip File download successfully"}))  
-    } catch (error) {
-      res.status(401).send(resFormat.rError({message :error}))  
-    }     
+    }catch(error){
+        console.log("error",error)
+    }  
+  });
+  return pass;
 }
 
-function uploadFromStream(fileName) {
-  var pass = new stream.PassThrough();
-  var params = {Bucket: constants.s3Details.bucketName, Key: 'downloads/'+fileName+'.zip', Body: pass};
-  s3.s3.upload(params, function(err, data) {  
+function downloadZip(downloadfilePath,downloadFilenames,res) {
+  var downLoadparams = {Bucket: constants.s3Details.bucketName,Key:downloadfilePath};
+  try {
+    const streams = s3.s3.getObject(downLoadparams).createReadStream(); 
+    res.set({
+      'Content-Disposition': 'attachment; filename='+downloadFilenames,
+      'Content-Type': 'image/zip; charset=utf-8'
     });
-  return pass;
+    streams.pipe(res);
+  } catch (error) {
+    res.status(401).send(resFormat.rError({message :error}))  
+  }     
 }
 
 function downloadZipfilesPronit(req,res) {
