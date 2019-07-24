@@ -1,61 +1,79 @@
-<div class="ll--modal--header llp--close--modal">
+<div class="ll--modal--header">
+  Would you like to share your {{hdtitle}}?
   <button class="modal--close" [mat-dialog-close]="">
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
 </div>
-<div class="ll--modal--body per--profile--wrapper p-0">
-  <div class="stepper--wrapper">
-        <form  class="llp-form-wrapper"  [formGroup]="trusteeFormGroup"  (ngSubmit)="manageTrusteeSubmit(trusteeFormGroup.value)">     
-          <h3 class="main--head text-center">Would you like to share your {{hdtitle}}!</h3>
-          <p class="sub--head text-center">Manage Trustee Permissions</p>
-          <div class="profile--body--scroll">
-            <div class="trust--legacy--wrapper">
-              <div class="cover mt-1">
-                  <div fxLayout="row wrap">
-                    <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
-                      <label class="header bold">Share With...</label>
-                    </div>
-                    <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
-                      <label class="header">Now</label>
-                    </div>
-                    <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
-                      <label class="header">After Death</label>
-                    </div>
-                    <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
-                      <label class="header">Never</label>
-                    </div>
-                  </div>
-                  <div formArrayName="accessManagement">
-                  <div fxLayout="row wrap" *ngFor="let row of rows; let i = index" [formGroupName]="i">
-                      <mat-radio-group class="llp-radio" formControlName="ids" >
-                        <mat-list-item>
-                            <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
-                              <label class="left--header">{{row?.trustId.firstName}} {{row?.trustId.lastName}} </label>
-                              <label class="left--header" *ngIf="listLength == i"><a class="no--of--trustee" (click)="openAddTrusteeModal('', true)"><mat-icon class="icon--plus">+</mat-icon>Add Trustee</a></label>                              
-                            </div>
-                            <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                  
-                                <mat-radio-button value="{{row?._id}}##now" [checked]="getAccessVal(row?.userAccess, code,'now') === 'now'">Now</mat-radio-button>                    
-                            </div>
-                            <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                    
-                                <mat-radio-button value="{{row?._id}}##afterDeath" [checked]="getAccessVal(row?.userAccess, code,'afterDeath') === 'afterDeath'">After Death</mat-radio-button>                    
-                            </div>
-                            <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                    
-                                <mat-radio-button value="{{row?._id}}##never" [checked]="getAccessVal(row?.userAccess, code,'never') === 'never'">Never</mat-radio-button>                    
-                            </div>               
-                        </mat-list-item>
-                      </mat-radio-group>                      
-                  </div>                  
-                </div>
-              </div>
+<div class="ll--modal--body manage--permission p-0">
+  <form class="llp-form-wrapper" [formGroup]="trusteeFormGroup"
+    (ngSubmit)="manageTrusteeSubmit(trusteeFormGroup.value)">
+
+    <p class="invite--sub--line">Manage Trustee Permissions</p>
+
+    <div class="profile--body--scroll">
+      <div class="trust--legacy--wrapper">
+        <div class="cover">
+          <div fxLayout="row wrap">
+            <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
+              <label class="header bold">Share With...</label>
             </div>
-            <mat-form-field class="full-width" *ngIf="HiddenVal">
-                <input matInput name="code" [formControl]="trusteeFormGroup.controls['code']" readonly="readonly">
-              </mat-form-field>
-          <div class="mt-1 text-center">
-              <button mat-raised-button type="button" class="llp--secondary--btn mr-1" [mat-dialog-close]="">Cancel</button>
-              <button mat-raised-button class="llp--primary--btn">Save</button>
-          </div>          
-        </div>         
-      </form>      
-  </div>  
+            <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+              <label class="header">Now</label>
+            </div>
+            <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+              <label class="header">After Death</label>
+            </div>
+            <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+              <label class="header">Never</label>
+            </div>
+          </div>
+          <div formArrayName="accessManagement">
+            <mat-radio-group class="llp-radio">
+              <div fxLayout="row wrap" *ngFor="let row of rows; let i = index" [formGroupName]="i">
+
+
+                <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
+                  <label class="left--header">{{row?.trustId.firstName}} {{row?.trustId.lastName}} </label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                  <mat-list-item>
+                    <mat-radio-button value="{{row?._id}}##now"
+                      [checked]="getAccessVal(row?.userAccess, code,'now') === 'now'">Now</mat-radio-button>
+                  </mat-list-item>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                  <mat-list-item>
+                    <mat-radio-button value="{{row?._id}}##afterDeath"
+                      [checked]="getAccessVal(row?.userAccess, code,'afterDeath') === 'afterDeath'">After Death
+                    </mat-radio-button>
+                  </mat-list-item>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                  <mat-list-item>
+                    <mat-radio-button value="{{row?._id}}##never"
+                      [checked]="getAccessVal(row?.userAccess, code,'never') === 'never'">Never</mat-radio-button>
+                  </mat-list-item>
+                </div>
+
+
+                <div class="add--new" *ngIf="listLength == i" (click)="openAddTrusteeModal('', true)">
+                  <mat-icon>add_circle</mat-icon>
+                  Add Trustee
+                </div>
+            </div>
+         </mat-radio-group>
+        </div>
+      </div>
+    </div>
+    <mat-form-field class="full-width" *ngIf="HiddenVal">
+      <input matInput name="code" [formControl]="trusteeFormGroup.controls['code']" readonly="readonly">
+    </mat-form-field>
+
+    <div class="ll--modal--footer text-center">
+      <button mat-raised-button type="button" class="llp--secondary--btn" [mat-dialog-close]="">Cancel</button>
+      <button mat-raised-button class="llp--primary--btn">Save</button>
+    </div>
+
+</div>
+</form>
 </div>

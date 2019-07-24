@@ -18,7 +18,7 @@
           <div *ngIf="showContactListing && trusteeLegaciesAction && emergencyContactsManagementSection=='now'">
             <a class="no--of--trustee" *ngIf="showTrusteeCnt"  (click)="openManageTrusteeModal('Emergency contacts','emergencyContactsManagement', true)">{{showContactCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openModal(contactForm)">+ Add
-            </button>
+            </button> 
           </div>
         </mat-card-header>
         <div *ngIf="emergencyContactsManagementSection=='now'">
