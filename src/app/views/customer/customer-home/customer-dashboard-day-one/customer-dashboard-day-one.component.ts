@@ -38,7 +38,7 @@ export class CustomerDashboardDayOneComponent implements OnInit {
 
   getTrusteeList = (query = {}) => {
     const req_vars = {
-      query: Object.assign({ customerId: this.userId }, query),//, status: "Active"
+      query: Object.assign({ customerId: this.userId, status: { $ne: 'Deleted'} }, query),//, status: "Active"
       fields: {},
       limit: 6,
       order: {"createdOn": -1},

@@ -144,11 +144,11 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
     if(profileIds && profileIds!=='undefined'){
       this.trustFormGroup.controls['emailValidation'].setValue('');
        req_vars = {
-        query: Object.assign({_id:{ $ne: profileIds}, email: this.trustFormGroup.controls['email'].value,customerId: this.userId  })
+        query: Object.assign({_id:{ $ne: profileIds}, status: { $nin:['Deleted'] }, email: this.trustFormGroup.controls['email'].value,customerId: this.userId  })
         }
     }else{
       req_vars = {
-        query: Object.assign({ email: this.trustFormGroup.controls['email'].value,customerId: this.userId  })
+        query: Object.assign({ email: this.trustFormGroup.controls['email'].value,customerId: this.userId,status: { $nin:['Deleted'] } })
       } 
     }
 

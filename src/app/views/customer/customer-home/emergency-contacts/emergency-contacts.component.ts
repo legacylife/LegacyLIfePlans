@@ -25,6 +25,7 @@ export class EmergencyContactsComponent implements OnInit {
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
   showTrusteeCntboolean=true;
+  showTrusteeCnt:boolean=true;
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';	
