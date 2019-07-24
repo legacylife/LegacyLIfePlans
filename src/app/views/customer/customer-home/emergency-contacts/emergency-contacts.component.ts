@@ -24,6 +24,8 @@ export class EmergencyContactsComponent implements OnInit {
   selectedProfileId: string;
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
+  showTrusteeCntboolean=true;
+  showTrusteeCnt:boolean=true;
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';	
@@ -70,6 +72,7 @@ export class EmergencyContactsComponent implements OnInit {
         this.userapi.getUserAccess(this.userId, (userAccess) => {
           this.emergencyContactsManagementSection = userAccess.emergencyContactsManagement 
         }); 
+        this.showTrusteeCnt = false;
     }
     this.getEmergencyContacts()
   }

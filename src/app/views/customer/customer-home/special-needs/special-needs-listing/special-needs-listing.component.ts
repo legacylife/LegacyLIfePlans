@@ -28,6 +28,7 @@ export class SpecialNeedsListingComponent implements OnInit {
   selectedLegaciesId: string;
   customerLegacyType:string='customer';
   trusteeLegaciesAction:boolean=true;
+  showTrusteeCnt:boolean=true;
   urlData:any={};
   trusteeFriendNeighborCnt :any={}; trusteeChildParentCnt:any={}; trusteeYoungChildCnt:any={};
   YoungChildrenManagementSection:string='now';
@@ -55,6 +56,7 @@ export class SpecialNeedsListingComponent implements OnInit {
         this.ChildParentDisabilityManagementSection= userAccess.ChildParentDisabilityManagement
         this.FriendNeighborCareManagementSection= userAccess.FriendNeighborCareManagement
       });
+      this.showTrusteeCnt = false;
     }
     this.getyoungChildrenList();
     this.getcPDisabilityList();

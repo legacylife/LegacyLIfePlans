@@ -14,7 +14,7 @@ export class SubscriptionService {
   /**
    * Subscription variable declaration
    */
-  planName: string = 'free'
+  planName: string = 'Free'
   autoRenewalStatus: string = 'off'
   subscriptionExpireDate: string = ''
 
@@ -57,6 +57,13 @@ export class SubscriptionService {
       if( diff <= 30 ) {
         expireDate            = this.userCreateOn.add(30,"days")
         this.isPremiumExpired = false
+        if(this.usertype == 'advisor') {
+          this.planName         = 'Standard'
+        }
+        else{
+          this.planName         = 'Legacy Life'
+        }
+        localStorage.setItem('endUserProSubscription', 'yes');
       }
       else {
         if( this.usertype == 'customer' ) {
@@ -64,10 +71,11 @@ export class SubscriptionService {
         }
         else{
           expireDate            = this.userCreateOn.add(30,"days")
-        }        
+        }
+        this.planName         = 'Free'
+        localStorage.setItem('endUserProSubscription', 'no');
         this.isPremiumExpired = true
       }
-      localStorage.setItem('endUserProSubscription', 'no');
       this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
     }
     else if( this.isSubscribedBefore ) {

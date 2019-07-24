@@ -201,6 +201,7 @@ export class UserAPIService {
     this.removeKeyFromStorage('endUserAutoRenewalStatus')
     this.removeKeyFromStorage('endUserSubscriptionAddon')
     this.removeKeyFromStorage('endUserSubscriptionAddon')
+    this.removeKeyFromStorage('endUserProSubscription')
     this.router.navigate(["signin"]);
   }
 

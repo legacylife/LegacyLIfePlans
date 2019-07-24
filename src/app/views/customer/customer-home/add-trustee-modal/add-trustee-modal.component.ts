@@ -47,6 +47,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
 
     if(this.ids && this.ids!=='undefined'){
       this.selectedProfileId = this.ids;   
+      this.myStepper.selectedIndex = Number('1');
       this.getTrusteeView();
     }    
   }
@@ -104,6 +105,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
 
   onChangeFormIndex(event){
     const {selectedIndex} = event;
+    console.log("selectedIndex",selectedIndex," Event",event)
     let stepHeader = document.getElementsByClassName('mat-horizontal-stepper-header')
     forEach(stepHeader, (element, index) => {
       element.classList = String(element.classList).replace('proActive', '')
@@ -142,11 +144,11 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
     if(profileIds && profileIds!=='undefined'){
       this.trustFormGroup.controls['emailValidation'].setValue('');
        req_vars = {
-        query: Object.assign({_id:{ $ne: profileIds}, email: this.trustFormGroup.controls['email'].value,customerId: this.userId  })
+        query: Object.assign({_id:{ $ne: profileIds}, status: { $nin:['Deleted'] }, email: this.trustFormGroup.controls['email'].value,customerId: this.userId  })
         }
     }else{
       req_vars = {
-        query: Object.assign({ email: this.trustFormGroup.controls['email'].value,customerId: this.userId  })
+        query: Object.assign({ email: this.trustFormGroup.controls['email'].value,customerId: this.userId,status: { $nin:['Deleted'] } })
       } 
     }
 

@@ -41,12 +41,8 @@ export class SidenavComponent {
     })
   }
 
-
-  openSmModal(name) {
-
-    console.log(name);
-
-    switch (name) {
+    openSmModal(name) {
+    switch (name) { 
 
       case "Invite":
         let dialogRef: MatDialogRef<any> = this.dialog.open(InviteComponent, {
