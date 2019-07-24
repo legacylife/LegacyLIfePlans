@@ -194,6 +194,13 @@ export class UserAPIService {
     this.removeKeyFromStorage('endUserProfilePicture')
     this.removeKeyFromStorage('endUserFirstName')
     this.removeKeyFromStorage('endUserLastName')
+    this.removeKeyFromStorage('endUserCreatedOn')
+    this.removeKeyFromStorage('endUserSubscriptionStartDate')
+    this.removeKeyFromStorage('endUserSubscriptionEndDate')
+    this.removeKeyFromStorage('endUserSubscriptionStatus')
+    this.removeKeyFromStorage('endUserAutoRenewalStatus')
+    this.removeKeyFromStorage('endUserSubscriptionAddon')
+    this.removeKeyFromStorage('endUserSubscriptionAddon')
     this.router.navigate(["signin"]);
   }
 
