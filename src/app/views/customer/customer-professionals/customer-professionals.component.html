@@ -6,7 +6,7 @@
           <div class="account--pic--wrapper">
             <div class="account--pic">
               <img src="{{profilePicture}}" />
-            </div>            
+            </div>
           </div>
           <div class="acc--user--details text-center">
             <h2>{{row?.firstName}} {{row?.lastName}}</h2>
@@ -17,7 +17,7 @@
           <div class="sett--fp">
             <mat-icon>school</mat-icon>
             {{getAdvisorSpecilities(row?.businessType)}}
-          </div> 
+          </div>
           <div class="feature--profile">
             <div class="email--phone">
               <mat-icon>markunread</mat-icon>
@@ -37,7 +37,7 @@
       </button>
     </div>
     <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
-      <div class="full-width">  
+      <div class="full-width">
         <mat-card class="empty--section p-0">
           <mat-card-header class="m-0 ">
             <mat-card-title class="m-0">Business Details</mat-card-title>
@@ -56,7 +56,7 @@
                     <label class="strong--label">Date of Birth:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.dateOfBirth  | date: 'MMM dd, yyyy'}}</label>
+                    <label class="normal--label">{{row?.dateOfBirth | date: 'MMM dd, yyyy'}}</label>
                   </div>
                 </div>
                 <div fxLayout="row wrap" class="mb--10" *ngFor="let items of row?.websiteLinks; let PI = index">
@@ -96,21 +96,21 @@
                     <label class="strong--label">Location:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.city}}, {{row?.state}} {{row?.zipcode}}</label>                                        
+                    <label class="normal--label">{{row?.city}}, {{row?.state}} {{row?.zipcode}}</label>
                   </div>
-                </div>    
+                </div>
               </div>
-            </div>  
+            </div>
             <div class="details--wrapper mb-1">
               <div class="details--header">
                 <div class="d-flex align--items--center">
-                  <mat-icon>insert_drive_file</mat-icon>About James
+                  <mat-icon>insert_drive_file</mat-icon>About 
                 </div>
               </div>
               <div class="details--body">
                 <p class="abt--us">{{row?.bioText}}</p>
               </div>
-            </div>    
+            </div>
             <div class="specialites--wrapper">
               <div class="box--sec">
                 <div class="logo">
@@ -119,44 +119,26 @@
                   </div>
                 </div>
                 <h3>Specialites</h3>
-                <div class="desc">
-                  <mat-icon>arrow_forward</mat-icon>
-                  Insurance disputes
-                </div>
-                <div class="desc">
-                  <mat-icon>arrow_forward</mat-icon>
-                  Business disputes
-                </div>
-                <div class="desc">
-                  <mat-icon>arrow_forward</mat-icon>
-                  Product liability
-                </div>
-                <div class="desc">
-                  <mat-icon>arrow_forward</mat-icon>
-                  Pharmaceutical liability and medical documents
-                </div>
-                <div class="desc">
-                  <mat-icon>arrow_forward</mat-icon>
-                  Workers compensation
-                </div>
-                <div class="desc">
-                  <mat-icon>arrow_forward</mat-icon>
-                  Premises liability
+                <div *ngIf="row?.specialites">
+                  <div class="desc" *ngFor="let multi of row?.specialites;">
+                    <mat-icon>arrow_forward</mat-icon>
+                    {{multi.name}}
+                  </div>
                 </div>
               </div>
-              <div class="box--sec" >
+              <div class="box--sec">
                 <div class="logo">
                   <div class="logo--inner">
                     <mat-icon>star</mat-icon>
                   </div>
                 </div>
-                <h3>Awards and Organizations</h3>                 
-                <div *ngIf="row?.awardsYears" >
-                <div class="desc" *ngFor="let multi of row?.awardsYears;">
-                  <mat-icon>arrow_forward</mat-icon>
-                  {{multi.title}}
+                <h3>Awards and Organizations</h3>
+                <div *ngIf="row?.awardsYears">
+                  <div class="desc" *ngFor="let multi of row?.awardsYears;">
+                    <mat-icon>arrow_forward</mat-icon>
+                    {{multi.title}}
+                  </div>
                 </div>
-              </div>               
               </div>
               <div class="box--sec">
                 <div class="logo">
@@ -165,19 +147,13 @@
                   </div>
                 </div>
                 <h3>Hobbies</h3>
-                <div class="desc">
-                  <mat-icon>arrow_forward</mat-icon>
-                  Swimming
+                <div *ngIf="row?.hobbies">
+                  <div class="desc" *ngFor="let multi of row?.hobbies;">
+                    <mat-icon>arrow_forward</mat-icon>
+                    {{multi.name}}
+                  </div>
                 </div>
-                <div class="desc">
-                  <mat-icon>arrow_forward</mat-icon>
-                  Reading a book
-                </div>
-                <div class="desc">
-                  <mat-icon>arrow_forward</mat-icon>
-                  Listening to music
-                </div>
-              </div>   
+              </div>
             </div>
           </mat-card-content>
         </mat-card>

@@ -59,8 +59,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   advisorDocumentsList: any;
   awardsYears: any;
   websiteLinks: any;// websiteLink[] = [{ 'links': "" }]
-  specialitesGroup: any;
-  hobbiesGroup: any;
+  specialites: any;
+  hobbies: any;
   showHowManyProducer: boolean
   advisorDocuments_temps = false;
   uploadedFile: File
@@ -135,8 +135,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       bioText: new FormControl('', Validators.required),
       websiteLinks: this.fb.array([this.fb.group({ links: ['', Validators.required] })]),
       awardsYears: this.fb.array([this.fb.group({ title: ['', Validators.required], year: ['', Validators.required] })]),
-      //specialitesGroup:  this.fb.array([this.fb.group({ name: [''] })]),
-      //hobbiesGroup:  this.fb.array([this.fb.group({ name: [''] })]),
+      specialites:  this.fb.array([this.fb.group({ name: [''] })]),
+      hobbies:  this.fb.array([this.fb.group({ name: [''] })]),
       socialMediaLinks: new FormGroup({
         facebook: new FormControl(''),
         twitter: new FormControl(''),
@@ -226,6 +226,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
 
         this.awards = this.profile.awardsYears;
         this.websiteLinks = this.profile.websiteLinks;
+        this.specialites = this.profile.specialites;
+        this.hobbies = this.profile.hobbies;
         this.advisorDocumentsList = this.profile.advisorDocuments;
 
         this.cityval = this.profile.city ? this.profile.city : ""
@@ -251,6 +253,18 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         webctrls.removeAt(0)
         this.websiteLinks.forEach((element: any, index) => {
           webctrls.push(this.editGroupweb(element.links))
+        })
+
+        const specialityctrls = this.AddressForm.get('specialites') as FormArray;
+        specialityctrls.removeAt(0)
+        this.specialites.forEach((element: any, index) => {
+          specialityctrls.push(this.editGroupspeciality(element.name))
+        })
+
+        const hobbiesctrls = this.AddressForm.get('hobbies') as FormArray;
+        hobbiesctrls.removeAt(0)
+        this.hobbies.forEach((element: any, index) => {
+          hobbiesctrls.push(this.editGrouphobbies(element.name))
         })
 
         const ctrl = this.getFormGroup('socialMediaLinks')
@@ -294,6 +308,18 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     });
   }
 
+  editGroupspeciality(name) {
+    return this.fb.group({
+      name: [name, Validators.required]
+    });
+  }
+
+  editGrouphobbies(name) {
+    return this.fb.group({
+      name: [name, Validators.required]
+    });
+  }
+
   get awardsPoints() {
     return this.AddressForm.get('awardsYears') as FormArray;
   }
@@ -303,11 +329,11 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   }
 
   get specialitesPoints() {
-    return this.AddressForm.get('specialitesGroup') as FormArray;
+    return this.AddressForm.get('specialites') as FormArray;
   }
 
   get hobbiesPoints() {
-    return this.AddressForm.get('hobbiesGroup') as FormArray;
+    return this.AddressForm.get('hobbies') as FormArray;
   }
 
   //function to create phone group for contact
@@ -370,6 +396,12 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     const awardsYearsArr = <FormArray>this.AddressForm.get('awardsYears')
     this.awardsYears = awardsYearsArr.controls.map(o => { return o.value })
 
+    const specialitesGroupArr = <FormArray>this.AddressForm.get('specialites')
+    this.specialites = specialitesGroupArr.controls.map(o => { return o.value }) 
+
+    const hobbiesGroupArr = <FormArray>this.AddressForm.get('hobbies')
+    this.hobbies = hobbiesGroupArr.controls.map(o => { return o.value })
+
     console.log(this.AddressForm.value)
     let AddressInData = {
       addressLine1: this.AddressForm.controls['addressLine1'].value,
@@ -385,6 +417,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       bioText: this.AddressForm.controls['bioText'].value,
       websiteLinks: this.websiteLinks,
       awardsYears: this.awardsYears,
+      specialites: this.specialites,
+      hobbies: this.hobbies,
       socialMediaLinks: ({
         "facebook": facebook,
         "twitter": twitter,
@@ -576,24 +610,24 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
 
   addSpecialites() {
     this.specialitesPoints.push(this.fb.group({
-      links: ['', [Validators.required, Validators.compose([CustomValidators.name])]]
+      name: ['', Validators.required]
     }));
   }
 
 
   addHobbies() {
     this.hobbiesPoints.push(this.fb.group({
-      links: ['', [Validators.required, Validators.compose([CustomValidators.name])]]
+      name: ['', [Validators.required]]
     }));
   }
 
   deleteSpecialites(i) {
-    const control = <FormArray>this.AddressForm.controls['specialitesGroup'];
+    const control = <FormArray>this.AddressForm.controls['specialites'];
     control.removeAt(i);
   }
 
   deleteHobbies(i) {
-    const control = <FormArray>this.AddressForm.controls['hobbiesGroup'];
+    const control = <FormArray>this.AddressForm.controls['hobbies'];
     control.removeAt(i);
   }
 
