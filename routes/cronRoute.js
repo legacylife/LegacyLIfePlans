@@ -13,6 +13,104 @@ async function getSelectedPlanDetails( planId ) {
   return await stripe.plans.retrieve( planId );
 }
 
+function autoRenewalOnUpdateSubscription() {
+  User.aggregate([
+    {
+      $project: {
+        createdOn: 1, username:1, firstName:1,lastName:1,renewalReminderEmailDay:1,stripeCustomerId:1,
+        subscriptionDetails: {$arrayElemAt: ["$subscriptionDetails", -1]},
+      }
+    },
+    {
+      $match: {"subscriptionDetails.autoRenewal": true}
+    }
+  ], async function(err,userList) {
+    if( !err && userList ) {
+      if( userList.length > 0 ) {
+        let customerProductDetails= await getSelectedPlanDetails( 'C_YEARLY');
+        let customerPlanDetails   = { amount: customerProductDetails.amount / 100,
+                                      planInterval: customerProductDetails.interval,
+                                      planName: customerProductDetails.metadata.name+' Plan',
+                                      planAmount: currencyFormatter.format( customerProductDetails.amount, { code: (customerProductDetails.currency).toUpperCase() }),
+                                      defaultSpace: customerProductDetails.metadata.defaultSpace+' '+customerProductDetails.metadata.spaceDimension
+                                    }
+        let advisorProductDetails = await getSelectedPlanDetails( 'A_MONTHLY');
+        let advisorPlanDetails    = { amount: advisorProductDetails.amount / 100,
+                                      planInterval: advisorProductDetails.interval,
+                                      planName: advisorProductDetails.metadata.name+' Plan',
+                                      planAmount: currencyFormatter.format( advisorProductDetails.amount, { code: (advisorProductDetails.currency).toUpperCase() })
+                                    }
+
+        userList.forEach( ( val, index ) => {
+          let subscriptionDetails   = val.subscriptionDetails,
+              daysRemainingToExpire = getDateDiff( today, moment(subscriptionDetails.endDate).toDate() )
+          
+          if ( daysRemainingToExpire > 0 ) {
+            let userCreatedOn = val.createdOn,
+                userId        = val._id,
+                userEmailId   = val.username,
+                userFullName  = val.firstName ? val.firstName+' '+(val.lastName ? val.lastName : '') : 'User';
+                
+            let sendEmailReminder         = false,
+                whichDayEmailReminderSend = null,
+                freeAccessRemainingDays   = 0;
+            
+            //If the auto-payment option is On, the system will send reminder notifications on the user’s email (1 day) before renewal date
+            if( daysRemainingToExpire > 0 && daysRemainingToExpire <= 1 && ( !val.renewalOnReminderEmailDay || !val.renewalOnReminderEmailDay.includes(1) )) {
+              //reminder before 1day of premium access expires
+              sendEmailReminder         = true
+              whichDayEmailReminderSend = 1
+              freeAccessRemainingDays   = '1 day'
+            }
+            
+            //console.log("userType",val.userType,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
+            //send email reminder if above conditions true
+            if( sendEmailReminder && whichDayEmailReminderSend != null ) {
+              let reminderSentDays = []
+              if( val.renewalOnReminderEmailDay ) {
+                reminderSentDays = val.renewalOnReminderEmailDay
+              }
+              reminderSentDays.push(whichDayEmailReminderSend)
+              //free premium plan expiry plan reminer email
+              emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOnReminderEmail').then( (template) => {
+                if(template) {
+                  let planData = {}
+                  if( userList.userType == 'customer' ) {
+                    planData = customerPlanDetails
+                  }
+                  else{
+                    planData = advisorPlanDetails
+                  }
+                  template = JSON.parse(JSON.stringify(template));
+                  let body = template.mailBody.replace("{full_name}", userFullName);
+                      body = body.replace("{plan_name}",planData.planName);
+                      body = body.replace("{amount}", planData.planAmount);
+                      body = body.replace("{duration}", planData.planInterval);
+                      body = body.replace("{remaining_days}", freeAccessRemainingDays);
+
+                  const mailOptions = { to : userEmailId,
+                                        subject : template.mailSubject,
+                                        html: body
+                                      }
+                  sendEmail( mailOptions, (response) => {
+                    if( response ) {
+                      User.updateOne({ _id: userId }, { $set: { renewalOnReminderEmailDay: whichDayEmailReminderSend } }, function (err, updated) {
+                        if ( !err ) {
+                          console.log("updated")
+                        }
+                      })
+                    }
+                  })
+                }
+              })
+            }
+          }
+        })
+      }
+    }
+  })
+}
+
 function autoRenewalOnReminderEmail() {
   User.aggregate([
     {
@@ -328,8 +426,9 @@ function getDateDiff( startDate, endDate ) {
     ).asDays()
 }
 
-router.post(["/autorenewalonreminderemail"], autoRenewalOnReminderEmail);
-router.post(["/autorenewaloffreminderemail"], autoRenewalOffReminderEmail);
-router.post(["/beforesubscriptionreminderemail"], beforeSubscriptionReminderEmail);
+router.post(["/auto-renewal-on-update-subscription"], autoRenewalOnUpdateSubscription);
+router.post(["/auto-renewal-on-reminder-email"], autoRenewalOnReminderEmail);
+router.post(["/auto-renewal-off-reminder-email"], autoRenewalOffReminderEmail);
+router.post(["/before-subscription-reminder-email"], beforeSubscriptionReminderEmail);
 
 module.exports = router
