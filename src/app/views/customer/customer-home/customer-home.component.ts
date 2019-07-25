@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,HostListener } from '@angular/core';
 import { MatSnackBar, MatSidenav } from '@angular/material';
 import { Product } from '../../../shared/models/product.model';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms'
@@ -32,6 +32,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   public cart: any[];
   public cartData: any;
   customerLegaicesId:string=''
+  activeHeading: string = "";
   myLegacy:boolean = true
   sharedLegacies:boolean = false
   constructor(private layoutServ: LayoutService,
@@ -42,6 +43,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   ) {
     this.layout = layoutServ.layoutConf
    }
+
 
   ngOnInit() {
     this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
@@ -59,11 +61,33 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
       this.myLegacy= false
       this.sharedLegacies =true 
     }
+    // const loc = location.href;
+    // const locArray = loc.split('/')
+    // //console.log("arrray =>",locArray,locArray[5],locArray[7]);
+    // this.activeHeading = '';
+    // if(locArray && locArray[5]){
+    //   this.activeHeading = locArray[5];//'real-estate-vehicle-detail-view';
+    //  // console.log("activeHeading locArray ===>",this.activeHeading);
+    // }else{
+    //   this.activeHeading = '';
+    // }
+    // //console.log("activeHeading again===>",this.activeHeading);
   }
+
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    const loc = location.href;
+    const locArray = loc.split('/')
+    this.activeHeading = '';
+    if(locArray && locArray[5]){
+      this.activeHeading = locArray[5];//'real-estate-vehicle-detail-view';
+    } 
+  }
+
   showSecoDay() {
     this.dayFirst = false;
     this.daySeco = true;
   }
+  
   ngOnDestroy() {
 
   }
