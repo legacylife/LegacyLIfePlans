@@ -1,14 +1,14 @@
 <div class="app-admin-wrap" [dir]='layoutConf.dir'>
   <!-- Header for top navigation layout -->
   <!-- ONLY REQUIRED FOR **TOP** NAVIGATION LAYOUT -->
-  <app-header-top 
-    *ngIf="layoutConf.navigationPos === 'top'" 
-    [notificPanel]="notificationPanel">
-  </app-header-top>
+  <app-header-side 
+  *ngIf="layoutConf.navigationPos === 'side'"
+  [notificPanel]="notificationPanel">
+</app-header-side> 
   <!-- Main Container -->
   <mat-sidenav-container 
   [dir]='layoutConf.dir'
-  class="app-admin-container app-side-nav-container header-margin margin--inner--pages "
+  class="app-admin-container pt-0 app-side-nav-container header-margin margin--inner--pages "
   [ngClass]="{
     'navigation-top': layoutConf.navigationPos === 'top',
     'sidebar-full': layoutConf.sidebarStyle === 'full',
@@ -32,10 +32,7 @@
     <div class="main-content-wrap" [perfectScrollbar]="scrollConfig" [disabled]="layoutConf.topbarFixed">
       <!-- Header for side navigation layout -->
       <!-- ONLY REQUIRED FOR **SIDE** NAVIGATION LAYOUT -->
-      <app-header-side 
-        *ngIf="layoutConf.navigationPos === 'side'"
-        [notificPanel]="notificationPanel">
-      </app-header-side>
+      <!-- -->
 
       <div class="rightside-content-hold admin--right--section" [perfectScrollbar]="scrollConfig" [disabled]="!layoutConf.topbarFixed">
         <!-- View Loader -->
