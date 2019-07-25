@@ -16,10 +16,14 @@ export class UserAuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
       this.userInfo = this.userapi.getUserInfo()
-
+      let isProuser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
       var pathArray = window.location.pathname.split('/');
       this.userUrlType = pathArray[1];
-      
+      console.log("this.userUrlType",this.userUrlType)
+      /* if( !isProuser && this.userUrlType != 'account-setting' ) {
+        this.router.navigate(['/'+this.userInfo.endUserType+'/account-setting']);
+        return false;
+      } */
       if ((this.userInfo && this.userInfo.endUserType == '') || (this.userUrlType != 'signin' && this.userInfo.endUserType != this.userUrlType)) {
         this.router.navigateByUrl('/signin');
         return false;

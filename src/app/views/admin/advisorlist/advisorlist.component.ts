@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { egretAnimations } from "../../../shared/animations/egret-animations";
+import { SubscriptionService } from 'app/shared/services/subscription.service';
 
 @Component({
   selector: 'advisorlist',
@@ -22,7 +23,7 @@ export class advisorlistComponent implements OnInit {
   advisorlistdata = [];
   aceessSection: any
   my_messages:any;
-  constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
+  constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService, private subscriptionservice:SubscriptionService) { }
   ngOnInit() {
     this.aceessSection = this.api.getUserAccess('advisormanagement');
     this.my_messages = {
@@ -44,7 +45,17 @@ export class advisorlistComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.advisorlistdata = this.rows = this.temp = result.data.userList
+        this.advisorlistdata = this.rows = this.temp = result.data.userList.map(row=>{
+          if(row.userType != 'sysAdmin') {
+            let subscriptionData = {}
+            this.subscriptionservice.checkSubscriptionAdminPanel( row, ( returnArr )=> {
+              row['subscriptionData'] = {status : returnArr.isAccountFree && !returnArr.isSubscribePlan ? 'Trial' : 'Paid',
+                                  endDate: returnArr.subscriptionExpireDate
+                                  }
+            })
+          }
+          return row;
+        })
       }
     }, (err) => {
       console.error(err)

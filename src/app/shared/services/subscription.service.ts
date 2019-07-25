@@ -87,7 +87,7 @@ export class SubscriptionService {
       this.userSubscriptionDate = moment( localStorage.getItem("endUserSubscriptionEndDate") )
       this.isAccountFree    = false
       diff                  = this.getDateDiff( this.today, this.userSubscriptionDate.toDate() )
-      
+      console.log("diffdiffdiff",diff)
       if( diff >= 0 ) {
         expireDate            = this.userSubscriptionDate
         this.isPremiumExpired = false
@@ -127,6 +127,89 @@ export class SubscriptionService {
                       planName : this.planName,
                       subscriptionExpireDate : this.subscriptionExpireDate
                     }
+    callback(returnArr)
+  }
+
+  checkSubscriptionAdminPanel = (userDetails,callback) => {
+    let returnArr = {}
+    if(userDetails.userType != 'sysAdmin') {
+      let subscriptions = userDetails.subscriptionDetails ? userDetails.subscriptionDetails : null
+      if( subscriptions != null ) {
+        let currentSubscription = subscriptions[subscriptions.length-1]
+        let diff: any
+        let expireDate: any
+        let subscriptionDate      = currentSubscription && currentSubscription.startDate ? currentSubscription.startDate : null
+        this.userCreateOn         = moment( userDetails.createdOn )
+        this.isSubscribedBefore   = ( subscriptionDate !== 'undefined' && subscriptionDate !== null && subscriptionDate !== "") ? true : false
+        
+        if( !this.isSubscribedBefore ) {
+          this.isAccountFree    = true
+          this.isSubscribePlan  = false
+          diff                  = this.getDateDiff( this.userCreateOn.toDate(), this.today )
+
+          if( diff <= 30 ) {
+            expireDate            = this.userCreateOn.add(30,"days")
+            this.isPremiumExpired = false
+          }
+          else {
+            if( userDetails.usertype == 'customer' ) {
+              expireDate            = this.userCreateOn.add(60,"days")
+            }
+            else{
+              expireDate            = this.userCreateOn.add(30,"days")
+            }        
+            this.isPremiumExpired = true
+          }
+          this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
+        }
+        else if( this.isSubscribedBefore ) {
+          this.isSubscriptionCanceled = ( currentSubscription.status && currentSubscription.status == 'canceled' ) ? true : false
+          this.autoRenewalFlag = ( currentSubscription.autoRenewal && currentSubscription.autoRenewal == 'true' ) ? true : false
+          this.autoRenewalVal = this.autoRenewalFlag
+          this.autoRenewalStatus = this.autoRenewalVal ? 'on' : 'off'
+          this.userSubscriptionDate = moment( currentSubscription.endDate )
+          this.isAccountFree    = false
+          diff                  = this.getDateDiff( this.today, this.userSubscriptionDate.toDate() )
+          
+          if( diff >= 0 ) {
+            expireDate            = this.userSubscriptionDate
+            this.isPremiumExpired = false
+            this.isSubscribePlan  = true
+            if( userDetails.usertype == 'advisor' ) {
+              this.planName         = 'Standard'
+            }
+            else{
+              this.planName         = 'Legacy Life'
+            }
+          }
+          else {
+            if( userDetails.usertype == 'customer' ) {
+              expireDate          = this.userSubscriptionDate.add(30,"days")
+            }
+            else{
+              expireDate            = this.userSubscriptionDate
+            }
+            this.isPremiumExpired = true
+            this.isSubscribePlan  = false
+            this.planName         = 'Free'
+          }
+          this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
+        }
+
+        returnArr = { userCreateOn:  this.userCreateOn,
+                      isSubscribedBefore: this.isSubscribedBefore,
+                      isSubscriptionCanceled : this.isSubscriptionCanceled,
+                      autoRenewalFlag : this.autoRenewalFlag,
+                      autoRenewalVal : this.autoRenewalVal,
+                      autoRenewalStatus : this.autoRenewalStatus,
+                      isAccountFree: this.isAccountFree,
+                      isPremiumExpired : this.isPremiumExpired,
+                      isSubscribePlan : this.isSubscribePlan,
+                      planName : this.planName,
+                      subscriptionExpireDate : this.subscriptionExpireDate
+                    }
+      }
+    }
     callback(returnArr)
   }
 

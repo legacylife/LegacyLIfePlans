@@ -83,7 +83,20 @@ export class userviewComponent implements OnInit {
         this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + result.data.profilePicture;
         
         if(this.row.userType != 'sysAdmin') {
-          let subscriptions = this.row.subscriptionDetails ? this.row.subscriptionDetails : null
+          this.subscriptionservice.checkSubscriptionAdminPanel( this.row, ( returnArr )=> {
+            this.userCreateOn = returnArr.userCreateOn
+            this.isSubscribedBefore = returnArr.isSubscribedBefore
+            this.isSubscriptionCanceled = returnArr.isSubscriptionCanceled
+            this.autoRenewalFlag = returnArr.autoRenewalFlag
+            this.autoRenewalVal = returnArr.autoRenewalVal
+            this.autoRenewalStatus = returnArr.autoRenewalStatus
+            this.isAccountFree = returnArr.isAccountFree
+            this.isPremiumExpired = returnArr.isPremiumExpired
+            this.isSubscribePlan = returnArr.isSubscribePlan
+            this.planName = returnArr.planName
+            this.subscriptionExpireDate = returnArr.subscriptionExpireDate
+          })
+          /* let subscriptions = this.row.subscriptionDetails ? this.row.subscriptionDetails : null
           if( subscriptions != null ) {
             let currentSubscription = subscriptions[subscriptions.length-1]
             let diff: any
@@ -145,7 +158,7 @@ export class userviewComponent implements OnInit {
               }
               this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
             }
-          }
+          } */
         }
       }
     }, (err) => {

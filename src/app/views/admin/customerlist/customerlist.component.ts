@@ -6,6 +6,7 @@ import { AppConfirmService } from '../../../shared/services/app-confirm/app-conf
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { egretAnimations } from "../../../shared/animations/egret-animations";
 import "./customerlist.component.css";
+import { SubscriptionService } from 'app/shared/services/subscription.service';
 
 @Component({
   selector: 'customerlist',
@@ -22,7 +23,26 @@ export class customerlistComponent implements OnInit {
   temp = [];
   aceessSection: any;
   my_messages:any;
-  constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
+
+  /**
+   * Subscription variable declaration
+   */
+  planName: string = 'Free'
+  autoRenewalStatus: string = 'off'
+  subscriptionExpireDate: string = ''
+
+  isAccountFree: boolean = true
+  isSubscribePlan: boolean = false
+  isSubscribedBefore: boolean = false
+  autoRenewalFlag: boolean = false
+  autoRenewalVal:boolean = false
+  isPremiumExpired: boolean = false
+  isSubscriptionCanceled:boolean = false
+  userCreateOn: any
+  userSubscriptionDate: any
+
+  constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService,
+    private subscriptionservice:SubscriptionService) { }
   ngOnInit() {
     this.aceessSection = this.api.getUserAccess('usermanagement')
     this.my_messages = {
@@ -44,7 +64,17 @@ export class customerlistComponent implements OnInit {
       if (result.status == "error") {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
-        this.rows = this.temp = result.data.userList
+        this.rows = this.temp = result.data.userList.map(row=>{
+          if(row.userType != 'sysAdmin') {
+            let subscriptionData = {}
+            this.subscriptionservice.checkSubscriptionAdminPanel( row, ( returnArr )=> {
+              row['subscriptionData'] = {status : returnArr.isAccountFree && !returnArr.isSubscribePlan ? 'Trial' : 'Paid',
+                                  endDate: returnArr.subscriptionExpireDate
+                                  }
+            })
+          }
+          return row;
+        })
       }
     }, (err) => {
       console.error(err)
