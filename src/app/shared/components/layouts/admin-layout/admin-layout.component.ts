@@ -116,5 +116,6 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
       sidebarStyle: 'closed'
     })
   }
+
   
 }

@@ -77,7 +77,7 @@ export class NavigationService {
       state: 'admin/map'
     },
     {
-      name: 'DECEASED REQUESTS',
+      name: 'DECEASED REQUESTS 01',
       type: 'link',
       tooltip: 'Deceased requests',
       icon: 'add_location',

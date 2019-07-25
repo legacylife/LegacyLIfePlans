@@ -35,14 +35,18 @@ export class SidenavComponent {
     });
   }
 
-  closeSidenav() {
-    this.layout.publishLayoutChange({
-      sidebarStyle: 'closed'
-    })
+  closeSidenav(item?: any) {
+   
+    if (!item.state.includes('admin')) {
+      this.layout.publishLayoutChange({
+        sidebarStyle: 'closed'
+      })
+    }
+
   }
 
-    openSmModal(name) {
-    switch (name) { 
+  openSmModal(name) {
+    switch (name) {
 
       case "Invite":
         let dialogRef: MatDialogRef<any> = this.dialog.open(InviteComponent, {
