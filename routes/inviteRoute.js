@@ -155,14 +155,15 @@ async function getInviteMembersCount(req, res) {
             startDate       = new Date(userCreatedOn);
             startDate.setMonth( startDate.getMonth() + (completedMonths-1) );
         let endDate         = new Date(userCreatedOn)
-            endDate.setMonth( endDate.getMonth() + completedMonths );        
+            endDate.setMonth( endDate.getMonth() + completedMonths );
+        let remainingDays = Math.abs(Math.round( getDateDiff( today, moment(endDate).toDate(), 'asDays' )))
         paramData.createdOn = { $gte: new Date(startDate) , $lt: new Date(endDate) }
         
         await Invite.find(paramData, function (err, data) {
             if (data != null) {
                 resultCount = data.length
             }
-            result = { "count": resultCount }
+            result = { "count": resultCount,"remainingDays":remainingDays }
             res.status(200).send(resFormat.rSuccess(result))
         })
     }
@@ -173,10 +174,17 @@ async function getInviteMembersCount(req, res) {
  * @param startDate 
  * @param endDate 
  */
-function getDateDiff( endDate, startDate ) {
-    return moment.duration( 
-        moment(endDate).diff( moment(startDate) ) 
-      ).asMonths()
+function getDateDiff( endDate, startDate, returnAs=null ) {
+    if( returnAs == 'asDays') {
+        return moment.duration( 
+            moment(endDate).diff( moment(startDate) ) 
+        ).asDays()
+    }
+    else{
+        return moment.duration( 
+            moment(endDate).diff( moment(startDate) ) 
+        ).asMonths()
+    }
   }
 
 router.post("/invite-members", inviteMembers)
