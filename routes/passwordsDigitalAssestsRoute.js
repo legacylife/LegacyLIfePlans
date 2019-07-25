@@ -15,6 +15,7 @@ const PDA = require('./../models/PasswordNDigitalAssets.js')
 const EMedia = require('./../models/ElectronicMedia.js')
 const actitivityLog = require('./../helpers/fileAccessLog')
 const Trustee = require('./../models/Trustee.js')
+const commonhelper = require('./../helpers/commonhelper')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -168,6 +169,14 @@ function deviceFormUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+        //created helper for customer to send email about files added by advisor
+        if(proquery.customerLegacyType == "advisor"){
+          var sendData = {}
+          sendData.sectionName = "Passwords Digital & Assests";  
+          sendData.customerId = proquery.customerId;
+          sendData.customerLegacyId = proquery.customerLegacyId;
+          commonhelper.customerAdvisorLegacyNotifications(sendData)
+        }
 
         logData.customerId = query.customerId;
         logData.fileId = newEntry._id;
@@ -274,6 +283,15 @@ function electronicMediaFormUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+        //created helper for customer to send email about files added by advisor
+        if(proquery.customerLegacyType == "advisor"){
+          var sendData = {}
+          sendData.sectionName = "Passwords Digital & Assests";  
+          sendData.customerId = proquery.customerId;
+          sendData.customerLegacyId = proquery.customerLegacyId;
+          commonhelper.customerAdvisorLegacyNotifications(sendData)
+        }
+        
         logData.customerId = query.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);

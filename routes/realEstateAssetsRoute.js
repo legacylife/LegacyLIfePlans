@@ -20,6 +20,8 @@ const RealEstate = require('./../models/RealEstate.js')
 const Vehicles = require('./../models/Vehicles.js')
 const Assets = require('./../models/Assets.js')
 const Trustee = require('./../models/Trustee.js')
+const commonhelper = require('./../helpers/commonhelper')
+
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -83,6 +85,15 @@ function realEstateSubmit(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+
+        //created helper for customer to send email about files added by advisor
+        if(proquery.customerLegacyType == "advisor"){
+          var sendData = {}
+          sendData.sectionName = "Real Estates & Assets";  
+          sendData.customerId = from.customerId;
+          sendData.customerLegacyId = proquery.customerLegacyId;
+          commonhelper.customerAdvisorLegacyNotifications(sendData)
+        }
 
         logData.customerId = from.customerId;
         logData.fileId = newEntry._id;
@@ -212,6 +223,15 @@ function realEstateVehicleSubmit(req, res) {
         res.send(resFormat.rError(err))
       } else {
 
+        //created helper for customer to send email about files added by advisor
+        if(proquery.customerLegacyType == "advisor"){
+          var sendData = {}
+          sendData.sectionName = "Real Estates & Assets";  
+          sendData.customerId = from.customerId;
+          sendData.customerLegacyId = proquery.customerLegacyId;
+          commonhelper.customerAdvisorLegacyNotifications(sendData)
+        }
+
         logData.customerId = from.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
@@ -337,6 +357,14 @@ function realEstateAssetsSubmit(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+        //created helper for customer to send email about files added by advisor
+        if(proquery.customerLegacyType == "advisor"){
+          var sendData = {}
+          sendData.sectionName = "Real Estates & Assets";  
+          sendData.customerId = from.customerId;
+          sendData.customerLegacyId = proquery.customerLegacyId;
+          commonhelper.customerAdvisorLegacyNotifications(sendData)
+        }
 
         logData.customerId = from.customerId;
         logData.fileId = newEntry._id;

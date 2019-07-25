@@ -12,6 +12,7 @@ var nodemailer = require('nodemailer')
 const { isEmpty, cloneDeep } = require('lodash')
 const Busboy = require('busboy')
 // const Mailchimp = require('mailchimp-api-v3')
+const commonhelper = require('./../helpers/commonhelper')
 
 const User = require('./../models/Users')
 var constants = require('./../config/constants')
@@ -83,6 +84,8 @@ function myEssentialsUpdate(req, res) {
     let { from } = req.body;
     var myessential = new myessentials();
     myessential.customerId = from.customerId;
+    myessential.customerLegacyId = proquery.customerLegacyId;
+    myessential.customerLegacyType = proquery.customerLegacyType;
     myessential.ppFirstName = proquery.ppFirstName;
     myessential.ppMiddleName = proquery.ppMiddleName;
     myessential.ppLastName = proquery.ppLastName;
@@ -95,6 +98,16 @@ function myEssentialsUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+
+        //created helper for customer to send email about files added by advisor
+        if(proquery.customerLegacyType == "advisor"){
+          var sendData = {}
+          sendData.sectionName = "My Essentials";  
+          sendData.customerId = from.customerId;
+          sendData.customerLegacyId = proquery.customerLegacyId;
+          commonhelper.customerAdvisorLegacyNotifications(sendData)
+        }
+
         logData.customerId = from.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
@@ -271,6 +284,16 @@ function emergencyContactsSubmit(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+
+        //created helper for customer to send email about files added by advisor
+        if(proquery.customerLegacyType == "advisor"){
+          var sendData = {}
+          sendData.sectionName = "Emergency Contacts";  
+          sendData.customerId = from.customerId;
+          sendData.customerLegacyId = proquery.customerLegacyId;
+          commonhelper.customerAdvisorLegacyNotifications(sendData)
+        }
+        
         logData.customerId = from.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
@@ -389,11 +412,18 @@ function personalIdUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+        //created helper for customer to send email about files added by advisor
+        if(proquery.customerLegacyType == "advisor"){
+          var sendData = {}
+          sendData.sectionName = "My Essentials";
+          sendData.customerId = from.customerId;
+          sendData.customerLegacyId = proquery.customerLegacyId;
+          commonhelper.customerAdvisorLegacyNotifications(sendData)
+        } 
 
         logData.customerId = from.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
-
         let result = { "message": "ID box details added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
@@ -477,7 +507,15 @@ function myProfessionalsUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
-        console.log("newEntry :-", newEntry);
+        
+        //created helper for customer to send email about files added by advisor
+        if(proquery.customerLegacyType == "advisor"){
+          var sendData = {}
+          sendData.sectionName = "My Essentials";  
+          sendData.customerId = proquery.customerId;
+          sendData.customerLegacyId = proquery.customerLegacyId;
+          commonhelper.customerAdvisorLegacyNotifications(sendData)
+        }
 
         logData.customerId = proquery.customerId;
         logData.fileId = newEntry._id;
@@ -581,6 +619,15 @@ function legalStuffUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+
+        //created helper for customer to send email about files added by advisor
+        if(proquery.customerLegacyType == "advisor"){
+          var sendData = {}
+          sendData.sectionName = "Legal Stuff";  
+          sendData.customerId = proquery.customerId;
+          sendData.customerLegacyId = proquery.customerLegacyId;
+          commonhelper.customerAdvisorLegacyNotifications(sendData)
+        }
 
         logData.customerId = query.customerId;
         logData.fileId = newEntry._id;

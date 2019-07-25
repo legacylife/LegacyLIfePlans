@@ -17,6 +17,7 @@ const lettersMessage = require('./../models/LettersMessages.js')
 const s3 = require('./../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
 const Trustee = require('./../models/Trustee.js')
+const commonhelper = require('./../helpers/commonhelper')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -103,6 +104,8 @@ function LettersMessageFormUpdate(req, res) {
             let { proquery } = req.body;
             var insert = new lettersMessage();
             insert.customerId = proquery.customerId;
+            insert.customerLegacyId = proquery.customerLegacyId;
+            insert.customerLegacyType = proquery.customerLegacyType;
             insert.title = proquery.title;
             insert.subject = proquery.subject;            
             insert.documents = proquery.documents;
@@ -111,17 +114,25 @@ function LettersMessageFormUpdate(req, res) {
             insert.createdOn = new Date();
             insert.modifiedOn = new Date();
             insert.save({$set:proquery}, function (err, newEntry) {
-      if (err) {
-        res.send(resFormat.rError(err))
-      } else {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              //created helper for customer to send email about files added by advisor
+              if(proquery.customerLegacyType == "advisor"){
+                var sendData = {}
+                sendData.sectionName = "Legacy Life Letters & Messages";  
+                sendData.customerId = proquery.customerId;
+                sendData.customerLegacyId = proquery.customerLegacyId;
+                commonhelper.customerAdvisorLegacyNotifications(sendData)
+              }
 
-        logData.customerId = query.customerId;
-        logData.fileId = newEntry._id;
-        actitivityLog.updateActivityLog(logData);
+              logData.customerId = query.customerId;
+              logData.fileId = newEntry._id;
+              actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Letter and message details added successfully!" }
-        res.status(200).send(resFormat.rSuccess(result))
-      }
+              let result = { "message": "Letter and message details added successfully!" }
+              res.status(200).send(resFormat.rSuccess(result))
+            }
     })
   }
 }

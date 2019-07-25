@@ -13,7 +13,7 @@ module.exports = (mailOptions) => {
         attachments: mailOptions.attachments,
       }).build((error, message) => {
         if (error) {
-            console.log('Error while build');
+            console.log('************ Error while build ************ ');
         }
         client.sendRawEmail(
           {
@@ -22,9 +22,9 @@ module.exports = (mailOptions) => {
           },
           function (rawError) {
             if (rawError){
-              console.error('Error in RAW email sending', rawError);
+              console.error('************ Error in RAW email sending ************ ', rawError);
             }else{
-              console.log('Email sent with attachments!');
+              console.log('************ Email sent with attachments! ************ ');
             }
           }
         )

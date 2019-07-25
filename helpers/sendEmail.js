@@ -11,14 +11,14 @@ module.exports = (mailOptions, callback) => {
     message: emailBody,
   }, function(error, data, response){
       if(error) {
-        console.log("Email Error!")
+        console.log("************ Email Error! ************ ")
         console.log(error);
         if(callback){
           callback(response)
         }
         
       } else {
-        console.log("Email Sent!")
+        console.log("************ Email Sent! ************ ")
         if(callback){
           callback(response)
         }
