@@ -71,7 +71,7 @@
         <!-- Account details -->
         <mat-tab-group class="acc--sett--tab">
           <mat-tab label="Account Details">
-            <form class="llp-form-wrapper" [formGroup]="ProfileForm" (ngSubmit)="ProfileSubmit()">
+            <form class="llp-form-wrapper" [formGroup]="ProfileForm">
               <div class="account--details">
               <div fxLayout="row wrap">
                 <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">               
@@ -153,9 +153,9 @@
                         <mat-divider></mat-divider>
                       </mat-card-title>
                       <mat-card-content class="invite--body--section">
-                        <h4 class="count">12<span>/45</span>
+                        <h4 class="count">{{invitedMembersCount}}<span>/30</span>
                         </h4>
-                        <p class="daysgo">9 days to go</p>
+                        <p class="daysgo">{{remainingDays}} days to go</p>
                         <p class="invites">Invites sent in this month</p>
                         <button mat-raised-button class="llp--primary--btn" (click)="openInviteModal({})">Invite Now</button>
                       </mat-card-content>
@@ -169,7 +169,7 @@
 
               <div fx.Flex="100" class="text-center mt--30">
                 <button mat-raised-button  type="button" class="llp--secondary--btn mr-1" [routerLink]="'/advisor/dashboard'">Cancel</button>
-                <button mat-raised-button class="llp--primary--btn" [disabled]="ProfileForm.invalid">Save</button>
+                <button mat-raised-button class="llp--primary--btn" [disabled]="ProfileForm.invalid" (click)="ProfileSubmit()">Save</button>
               </div>
             </div>
           </form>

@@ -227,14 +227,14 @@ export class SubscriptionService {
    * @param userId 
    * @param isSubscriptionCanceled 
    */
-  cancelSubscription ( userId, isSubscriptionCanceled:boolean ): boolean {
+  cancelSubscription ( userId, isSubscriptionCanceled:boolean ): any {
     if( !isSubscriptionCanceled ) {
       this.loader.open();
       const req_vars = {
         query: Object.assign({ _id: userId, userType: this.usertype }, {})
       }
       
-      this.userapi.apiRequest('post', 'userlist/cancelsubscription', req_vars).subscribe(result => {
+      return this.userapi.apiRequest('post', 'userlist/cancelsubscription', req_vars).subscribe(result => {
         if (result.status == "error") {
           this.loader.close()
           return false
