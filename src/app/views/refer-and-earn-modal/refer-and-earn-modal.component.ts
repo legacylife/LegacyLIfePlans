@@ -26,6 +26,7 @@ export class ReferAndEarnModalComponent implements OnInit {
   exitEmails: any = []
   alreadySentEmails = ""
   invitedMembersCount = 0
+  remainingDays = 0
   public hasBaseDropZoneOver: boolean = false;
   documentsMissing: boolean = false;
   documents_temps = false;
@@ -131,6 +132,7 @@ export class ReferAndEarnModalComponent implements OnInit {
     }
     this.userapi.apiRequest('post', 'invite/get-invite-members-count', params).subscribe(result => {
       this.invitedMembersCount = result.data.count
+      this.remainingDays = result.data.remainingDays
     })
   }
 

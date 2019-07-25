@@ -22,8 +22,9 @@ export class AdvisorDashboardComponent implements OnInit {
   userId: string;
   recentActivityLogList: any;
   profileFilePath: string = profileFilePath;
-  invitedMembersCount: any;
-  LeadsCount: any;
+  invitedMembersCount: any = 0
+  remainingDays:any = 0
+  LeadsCount: any = 0
 
   constructor(
     private userapi: UserAPIService,
@@ -46,6 +47,7 @@ export class AdvisorDashboardComponent implements OnInit {
     }
     this.userapi.apiRequest('post', 'invite/get-invite-members-count', params).subscribe(result => {
       this.invitedMembersCount = result.data.count
+      this.remainingDays = result.data.remainingDays
     })
   }
 

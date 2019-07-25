@@ -20,7 +20,8 @@ import { ChangePicComponent } from './../../change-pic/change-pic.component';
 import { CanComponentDeactivate } from '../../../shared/services/auth/can-deactivate.guard';
 import { SubscriptionService } from '../../../shared/services/subscription.service';
 import  * as moment  from 'moment'
-import { ReferAndEarnModalComponent } from '../legacies/refer-and-earn-modal/refer-and-earn-modal.component';
+import { ReferAndEarnModalComponent } from 'app/views/refer-and-earn-modal/refer-and-earn-modal.component';
+//import { ReferAndEarnModalComponent } from '../legacies/refer-and-earn-modal/refer-and-earn-modal.component';
 
 const filePath = s3Details.url+'/'+s3Details.advisorsDocumentsPath;
 const URL = serverUrl + '/api/documents/advisorDocument';
@@ -95,6 +96,9 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   userCreateOn: any
   userSubscriptionDate: any
   today: Date = moment().toDate()
+
+  invitedMembersCount: any = 0
+  remainingDays:any = 0
 
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
@@ -172,6 +176,11 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     /**
      * Check the user subscription details
      */
+    this.checkSubscription()
+    this.getInviteMembersCount();
+  }
+
+  checkSubscription() {
     this.subscriptionservice.checkSubscription( ( returnArr )=> {
       this.userCreateOn = returnArr.userCreateOn
       this.isSubscribedBefore = returnArr.isSubscribedBefore
@@ -186,7 +195,16 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
     })
   }
-
+  getInviteMembersCount() {
+    const params = {
+      inviteById: this.userId,
+      inviteType: 'advisor'
+    }
+    this.userapi.apiRequest('post', 'invite/get-invite-members-count', params).subscribe(result => {
+      this.invitedMembersCount = result.data.count
+      this.remainingDays = result.data.remainingDays
+    })
+  }
   canDeactivate(): any {
     //return !this.ProfileForm.dirty;
     return !this.modified;
@@ -745,8 +763,9 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     this.subscriptionservice.updateAutoRenewalStatus( this.userId, this.autoRenewalVal )
   }
 
-  cancelSubscription= (query = {}) => {
-    this.isSubscriptionCanceled = this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled )
+  cancelSubscription= async (query = {}) => {
+    this.isSubscriptionCanceled = await this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled )
+    this.checkSubscription()
   }
 
   
