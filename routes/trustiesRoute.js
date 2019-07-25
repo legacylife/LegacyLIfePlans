@@ -36,7 +36,7 @@ function trustsList(req, res) {
       }
     })
   }
-  trust.count(query, function (err, listCount) {
+  trust.countDocuments(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
     }

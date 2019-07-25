@@ -830,7 +830,7 @@ function fileActivityLogList(req, res) {
 function getSharedLegaciesList(req,res){  
   let { query } = req.body
   
-  Trustee.find(query, 'customerId',  function (err, list) {
+  Trustee.find(query, {customerId:1},  function (err, list) {
     let trustLength = list.length;
     if(trustLength>0){
       let userData = []
@@ -849,10 +849,10 @@ function legacyUserRemove(req,res){
   let userstring = ''
   let userData = { status: 'Deleted', modifiedOn : new Date() }
    if( query.userType == 'advisor'){
-    HiredAdvisors.updateOne({ customerId : query.customerId, advisorId : query.advisorId }, userData , function (err, updatedDetails){ });
+    HiredAdvisors.updateMany({ customerId : query.customerId, advisorId : query.advisorId }, userData , function (err, updatedDetails){ });
     userstring = 'Advisor'
   }else{
-    Trustee.updateOne({ customerId : query.customerId, trustId : query.trustId }, userData , function (err, updatedDetails){});
+    Trustee.updateMany({ customerId : query.customerId, trustId : query.trustId }, userData , function (err, updatedDetails){});
     userstring = 'Trustee'
   }
   let result = { "message": userstring + " removed successfully" }

@@ -34,7 +34,7 @@ function PetsList(req, res) {
       }
     })
   }
-  pet.count(query, function (err, listCount) {
+  pet.countDocuments(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
     }
@@ -44,7 +44,7 @@ function PetsList(req, res) {
       } else {
         let totalTrusteeRecords = 0;
         if(totalRecords){
-          Trustee.count(trusteeQuery, function (err, TrusteeCount) {
+          Trustee.countDocuments(trusteeQuery, function (err, TrusteeCount) {
           if (TrusteeCount) {
             totalTrusteeRecords = TrusteeCount
           }

@@ -363,7 +363,7 @@ function hireAdvisorList(req, res) {
       }
     })
   }
-  HiredAdvisors.count(query, function (err, listCount) {
+  HiredAdvisors.countDocuments(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
     }
