@@ -72,6 +72,10 @@ export class LettersMessagesModelComponent implements OnInit {
       profileInData.customerLegacyId = this.customerLegaciesId
       profileInData.customerLegacyType = this.customerLegacyType
     }
+    if(!profileInData.profileId || profileInData.profileId ==''){
+      profileInData.customerId = this.userId
+    }
+
     let req_vars = {
       query: Object.assign({customerId: this.userId }),
       proquery: Object.assign(profileInData),
@@ -85,7 +89,7 @@ export class LettersMessagesModelComponent implements OnInit {
         message: Object.assign({})
       }
     }
-    
+
     this.loader.open();     
     this.userapi.apiRequest('post', 'lettersMessages/letters-form-submit', req_vars).subscribe(result => {
       this.loader.close();
