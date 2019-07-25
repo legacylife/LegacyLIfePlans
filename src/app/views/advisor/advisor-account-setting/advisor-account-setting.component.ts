@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { UserAPIService } from './../../../userapi.service';
-import { MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
+import { MatDialog, MatSnackBar, MatSidenav, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms'
 import { egretAnimations } from '../../../shared/animations/egret-animations';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
@@ -20,6 +20,8 @@ import { ChangePicComponent } from './../../change-pic/change-pic.component';
 import { CanComponentDeactivate } from '../../../shared/services/auth/can-deactivate.guard';
 import { SubscriptionService } from '../../../shared/services/subscription.service';
 import  * as moment  from 'moment'
+import { ReferAndEarnModalComponent } from 'app/views/refer-and-earn-modal/refer-and-earn-modal.component';
+//import { ReferAndEarnModalComponent } from '../legacies/refer-and-earn-modal/refer-and-earn-modal.component';
 
 const filePath = s3Details.url+'/'+s3Details.advisorsDocumentsPath;
 const URL = serverUrl + '/api/documents/advisorDocument';
@@ -58,8 +60,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   advisorDocumentsList: any;
   awardsYears: any;
   websiteLinks: any;// websiteLink[] = [{ 'links': "" }]
-  specialitesGroup: any;
-  hobbiesGroup: any;
+  specialites: any;
+  hobbies: any;
   showHowManyProducer: boolean
   advisorDocuments_temps = false;
   uploadedFile: File
@@ -94,6 +96,9 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   userCreateOn: any
   userSubscriptionDate: any
   today: Date = moment().toDate()
+
+  invitedMembersCount: any = 0
+  remainingDays:any = 0
 
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
@@ -134,8 +139,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       bioText: new FormControl('', Validators.required),
       websiteLinks: this.fb.array([this.fb.group({ links: ['', Validators.required] })]),
       awardsYears: this.fb.array([this.fb.group({ title: ['', Validators.required], year: ['', Validators.required] })]),
-      //specialitesGroup:  this.fb.array([this.fb.group({ name: [''] })]),
-      //hobbiesGroup:  this.fb.array([this.fb.group({ name: [''] })]),
+      specialites:  this.fb.array([this.fb.group({ name: [''] })]),
+      hobbies:  this.fb.array([this.fb.group({ name: [''] })]),
       socialMediaLinks: new FormGroup({
         facebook: new FormControl(''),
         twitter: new FormControl(''),
@@ -171,6 +176,11 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     /**
      * Check the user subscription details
      */
+    this.checkSubscription()
+    this.getInviteMembersCount();
+  }
+
+  checkSubscription() {
     this.subscriptionservice.checkSubscription( ( returnArr )=> {
       this.userCreateOn = returnArr.userCreateOn
       this.isSubscribedBefore = returnArr.isSubscribedBefore
@@ -184,53 +194,17 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       this.planName = returnArr.planName
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
     })
-    /* let diff: any
-    let expireDate: any
-    let subscriptionDate      = localStorage.getItem("endUserSubscriptionStartDate")
-    this.userCreateOn         = moment( localStorage.getItem("endUserCreatedOn") )
-    this.isSubscribedBefore   = ( subscriptionDate !== 'undefined' && subscriptionDate !== null && subscriptionDate !== "" ) ? true : false
-    
-    if( !this.isSubscribedBefore ) {
-      this.isAccountFree    = true
-      this.isSubscribePlan  = false
-      diff                  = this.subscriptionservice.getDateDiff( this.userCreateOn.toDate(), this.today )
-      console.log("diff",diff)
-      if( diff <= 30 ) {
-        expireDate            = this.userCreateOn.add(30,"days")
-        this.isPremiumExpired = false
-      }
-      else{
-        expireDate            = this.userCreateOn.add(60,"days")
-        this.isPremiumExpired = true
-      }
-      
-      this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
-    }
-    else if( this.isSubscribedBefore ) {
-      this.isSubscriptionCanceled = ( localStorage.getItem("endUserSubscriptionStatus") && localStorage.getItem("endUserSubscriptionStatus") == 'canceled' ) ? true : false
-      this.autoRenewalFlag        = ( localStorage.getItem("endUserAutoRenewalStatus") && localStorage.getItem("endUserAutoRenewalStatus") == 'true' ) ? true : false
-      this.autoRenewalVal         = this.autoRenewalFlag
-      this.autoRenewalStatus      = this.autoRenewalVal ? 'on' : 'off'
-      this.userSubscriptionDate   = moment( localStorage.getItem("endUserSubscriptionEndDate") )
-      this.isAccountFree    = false
-      diff                  = this.subscriptionservice.getDateDiff( this.today, this.userSubscriptionDate.toDate() )
-      
-      if( diff >= 0 ) {
-        expireDate            = this.userSubscriptionDate
-        this.isPremiumExpired = false
-        this.isSubscribePlan  = true
-        this.planName         = 'Standard'
-      }
-      else{
-        expireDate            = this.userSubscriptionDate.add(30,"days")
-        this.isPremiumExpired = true
-        this.isSubscribePlan  = false
-        this.planName         = 'Free'
-      }
-      this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
-    } */
   }
-
+  getInviteMembersCount() {
+    const params = {
+      inviteById: this.userId,
+      inviteType: 'advisor'
+    }
+    this.userapi.apiRequest('post', 'invite/get-invite-members-count', params).subscribe(result => {
+      this.invitedMembersCount = result.data.count
+      this.remainingDays = result.data.remainingDays
+    })
+  }
   canDeactivate(): any {
     //return !this.ProfileForm.dirty;
     return !this.modified;
@@ -270,6 +244,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
 
         this.awards = this.profile.awardsYears;
         this.websiteLinks = this.profile.websiteLinks;
+        this.specialites = this.profile.specialites;
+        this.hobbies = this.profile.hobbies;
         this.advisorDocumentsList = this.profile.advisorDocuments;
 
         this.cityval = this.profile.city ? this.profile.city : ""
@@ -295,6 +271,18 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         webctrls.removeAt(0)
         this.websiteLinks.forEach((element: any, index) => {
           webctrls.push(this.editGroupweb(element.links))
+        })
+
+        const specialityctrls = this.AddressForm.get('specialites') as FormArray;
+        specialityctrls.removeAt(0)
+        this.specialites.forEach((element: any, index) => {
+          specialityctrls.push(this.editGroupspeciality(element.name))
+        })
+
+        const hobbiesctrls = this.AddressForm.get('hobbies') as FormArray;
+        hobbiesctrls.removeAt(0)
+        this.hobbies.forEach((element: any, index) => {
+          hobbiesctrls.push(this.editGrouphobbies(element.name))
         })
 
         const ctrl = this.getFormGroup('socialMediaLinks')
@@ -338,6 +326,18 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     });
   }
 
+  editGroupspeciality(name) {
+    return this.fb.group({
+      name: [name, Validators.required]
+    });
+  }
+
+  editGrouphobbies(name) {
+    return this.fb.group({
+      name: [name, Validators.required]
+    });
+  }
+
   get awardsPoints() {
     return this.AddressForm.get('awardsYears') as FormArray;
   }
@@ -347,11 +347,11 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   }
 
   get specialitesPoints() {
-    return this.AddressForm.get('specialitesGroup') as FormArray;
+    return this.AddressForm.get('specialites') as FormArray;
   }
 
   get hobbiesPoints() {
-    return this.AddressForm.get('hobbiesGroup') as FormArray;
+    return this.AddressForm.get('hobbies') as FormArray;
   }
 
   //function to create phone group for contact
@@ -414,6 +414,12 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     const awardsYearsArr = <FormArray>this.AddressForm.get('awardsYears')
     this.awardsYears = awardsYearsArr.controls.map(o => { return o.value })
 
+    const specialitesGroupArr = <FormArray>this.AddressForm.get('specialites')
+    this.specialites = specialitesGroupArr.controls.map(o => { return o.value }) 
+
+    const hobbiesGroupArr = <FormArray>this.AddressForm.get('hobbies')
+    this.hobbies = hobbiesGroupArr.controls.map(o => { return o.value })
+
     console.log(this.AddressForm.value)
     let AddressInData = {
       addressLine1: this.AddressForm.controls['addressLine1'].value,
@@ -429,6 +435,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       bioText: this.AddressForm.controls['bioText'].value,
       websiteLinks: this.websiteLinks,
       awardsYears: this.awardsYears,
+      specialites: this.specialites,
+      hobbies: this.hobbies,
       socialMediaLinks: ({
         "facebook": facebook,
         "twitter": twitter,
@@ -620,24 +628,24 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
 
   addSpecialites() {
     this.specialitesPoints.push(this.fb.group({
-      links: ['', [Validators.required, Validators.compose([CustomValidators.name])]]
+      name: ['', Validators.required]
     }));
   }
 
 
   addHobbies() {
     this.hobbiesPoints.push(this.fb.group({
-      links: ['', [Validators.required, Validators.compose([CustomValidators.name])]]
+      name: ['', [Validators.required]]
     }));
   }
 
   deleteSpecialites(i) {
-    const control = <FormArray>this.AddressForm.controls['specialitesGroup'];
+    const control = <FormArray>this.AddressForm.controls['specialites'];
     control.removeAt(i);
   }
 
   deleteHobbies(i) {
-    const control = <FormArray>this.AddressForm.controls['hobbiesGroup'];
+    const control = <FormArray>this.AddressForm.controls['hobbies'];
     control.removeAt(i);
   }
 
@@ -755,8 +763,9 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     this.subscriptionservice.updateAutoRenewalStatus( this.userId, this.autoRenewalVal )
   }
 
-  cancelSubscription= (query = {}) => {
-    this.isSubscriptionCanceled = this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled )
+  cancelSubscription= async (query = {}) => {
+    this.isSubscriptionCanceled = await this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled )
+    this.checkSubscription()
   }
 
   
@@ -774,4 +783,11 @@ downloadFile = (filename) => {
     link.click();
   });
 }
+
+  openInviteModal(data: any = {}, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
+      width: '720px',
+      disableClose: true,
+    })
+  }
 }

@@ -9,7 +9,7 @@ import { s3Details } from '../../../config';
 import { ReferAndEarnModalComponent } from 'app/views/refer-and-earn-modal/refer-and-earn-modal.component';
 //import { ReferAndEarnModalComponent } from '../legacies/refer-and-earn-modal/refer-and-earn-modal.component';
 
-const profileFilePath = s3Details.url+'/'+s3Details.profilePicturesPath;
+const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 
 @Component({
   selector: 'app-advisor-dashboard',
@@ -18,17 +18,18 @@ const profileFilePath = s3Details.url+'/'+s3Details.profilePicturesPath;
 })
 export class AdvisorDashboardComponent implements OnInit {
 
-  recentLogs : boolean = false;
+  recentLogs: boolean = false;
   userId: string;
-  recentActivityLogList:any;
-  profileFilePath:string = profileFilePath;
-  invitedMembersCount:any;
-  LeadsCount:any;
+  recentActivityLogList: any;
+  profileFilePath: string = profileFilePath;
+  invitedMembersCount: any = 0
+  remainingDays:any = 0
+  LeadsCount: any = 0
 
   constructor(
     private userapi: UserAPIService,
-    private router: Router, private dialog: MatDialog, 
-    private snack: MatSnackBar, private confirmService: AppConfirmService, 
+    private router: Router, private dialog: MatDialog,
+    private snack: MatSnackBar, private confirmService: AppConfirmService,
     private loader: AppLoaderService
   ) { }
 
@@ -46,6 +47,7 @@ export class AdvisorDashboardComponent implements OnInit {
     }
     this.userapi.apiRequest('post', 'invite/get-invite-members-count', params).subscribe(result => {
       this.invitedMembersCount = result.data.count
+      this.remainingDays = result.data.remainingDays
     })
   }
 
@@ -64,23 +66,23 @@ export class AdvisorDashboardComponent implements OnInit {
       fields: {},
       offset: 0,
       limit: 6,
-      order: {"modifiedOn": -1},
-    }   
-    this.userapi.apiRequest('post', 'advisor/recentupdatelist', req_vars).subscribe(result => {  
+      order: { "modifiedOn": -1 },
+    }
+    this.userapi.apiRequest('post', 'advisor/recentupdatelist', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.recentActivityLogList = result.data.logList;        
-        if(result.data.totalRecords > 0){
+        this.recentActivityLogList = result.data.logList;
+        if (result.data.totalRecords > 0) {
           this.recentLogs = true;
-        }        
+        }
       }
     }, (err) => {
       console.error(err);
     })
   }
 
-  hireAdvisor(hiredAdvisorRefId,actionName,actionTaken,ids) {
+  hireAdvisor(hiredAdvisorRefId, actionName, actionTaken, ids) {
     let statMsg = 'Are you sure you want to reject hire request?'
     let hirestatus = actionTaken;
     if (actionName == 'confirmHire') {
@@ -93,15 +95,15 @@ export class AdvisorDashboardComponent implements OnInit {
 
     this.confirmService.confirm({ message: statMsg }).subscribe(res => {
       if (res) {
-       this.loader.open();
+        this.loader.open();
         let query = {};
-        let proquery = {status : hirestatus};
-        let extraFields = {advFname : localStorage.getItem("endUserFirstName"), advLname : localStorage.getItem("endUserLastName")}
+        let proquery = { status: hirestatus };
+        let extraFields = { advFname: localStorage.getItem("endUserFirstName"), advLname: localStorage.getItem("endUserLastName") }
 
         const req_vars = {
-          query: Object.assign({ _id:hiredAdvisorRefId}),
+          query: Object.assign({ _id: hiredAdvisorRefId }),
           proquery: Object.assign(proquery),
-          from: Object.assign({ logId:ids}),
+          from: Object.assign({ logId: ids }),
           extraFields: Object.assign(extraFields)
         }
         this.userapi.apiRequest('post', 'advisor/hireadvisor', req_vars).subscribe(result => {
@@ -125,5 +127,14 @@ export class AdvisorDashboardComponent implements OnInit {
       width: '720px',
       disableClose: true,
     })
+
+    dialogRef.afterClosed()
+      .subscribe(res => {
+        this.getInviteMembersCount();
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
   }
 }

@@ -152,11 +152,11 @@ export class UserAPIService {
           let userType = localStorage.getItem("endUserType");
           if (userType != "sysadmin") {
             const { token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, userProfilePicture } = response.data
-            if(userType == 'customer' || userType == 'advisor'){
+            /*if(userType == 'customer' || userType == 'advisor'){
               this.endUsersaveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data, userProfilePicture)
             } else {
               this.endUsersaveToken(token, userId, userType, username, authCode, expiryDate, emailApiType, userHeaderDetails, mainUserId, data, userProfilePicture)
-            }            
+            } */           
             return response
           } else {
             return { status: "error", data: { message: "Please check your credentials" } }

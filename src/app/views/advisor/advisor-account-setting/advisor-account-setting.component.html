@@ -71,7 +71,7 @@
         <!-- Account details -->
         <mat-tab-group class="acc--sett--tab">
           <mat-tab label="Account Details">
-            <form class="llp-form-wrapper" [formGroup]="ProfileForm" (ngSubmit)="ProfileSubmit()">
+            <form class="llp-form-wrapper" [formGroup]="ProfileForm">
               <div class="account--details">
               <div fxLayout="row wrap">
                 <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">               
@@ -144,7 +144,7 @@
                     <div class="manage--cancel">
                       <!-- <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/advisor/subscription'">Manage subscription</button> -->
                       <button mat-raised-button class="llp--primary--green--btn" [class.not-allowed]="isSubscribePlan && !isPremiumExpired" [disabled]="isSubscribePlan && !isPremiumExpired" [routerLink]="'/advisor/subscription'">Manage subscription</button>
-                      <a class="clr--red" [class.not-allowed]="isAccountFree || isSubscriptionCanceled" [attr.disabled]="isAccountFree || isSubscriptionCanceled" (click)="(!isAccountFree || !isSubscriptionCanceled) && cancelSubscription()">Cancel subscription</a>
+                      <a class="clr--red" [class.not-allowed]="!isSubscribePlan || !isAccountFree || isSubscriptionCanceled" [attr.disabled]="!isSubscribePlan || !isAccountFree || isSubscriptionCanceled" (click)="isSubscribePlan && (!isAccountFree || !isSubscriptionCanceled) && cancelSubscription()">Cancel subscription</a>
                     </div>
 
                     <mat-card class="mt-1 p-0 black--header">
@@ -153,11 +153,11 @@
                         <mat-divider></mat-divider>
                       </mat-card-title>
                       <mat-card-content class="invite--body--section">
-                        <h4 class="count">12<span>/45</span>
+                        <h4 class="count">{{invitedMembersCount}}<span>/30</span>
                         </h4>
-                        <p class="daysgo">9 days to go</p>
+                        <p class="daysgo">{{remainingDays}} days to go</p>
                         <p class="invites">Invites sent in this month</p>
-                        <button mat-raised-button class="llp--primary--btn">Invite Now</button>
+                        <button mat-raised-button class="llp--primary--btn" (click)="openInviteModal({})">Invite Now</button>
                       </mat-card-content>
                     </mat-card>
 
@@ -169,7 +169,7 @@
 
               <div fx.Flex="100" class="text-center mt--30">
                 <button mat-raised-button  type="button" class="llp--secondary--btn mr-1" [routerLink]="'/advisor/dashboard'">Cancel</button>
-                <button mat-raised-button class="llp--primary--btn" [disabled]="ProfileForm.invalid">Save</button>
+                <button mat-raised-button class="llp--primary--btn" [disabled]="ProfileForm.invalid" (click)="ProfileSubmit()">Save</button>
               </div>
             </div>
           </form>
@@ -324,9 +324,9 @@
                     </div>
                 </div>
 
-                <!-- <h3 class="header--text fnt--16 mb-1">Specialites</h3>
+                <h3 class="header--text fnt--16 mb-1">Specialites</h3>
                 <div fxLayout="row wrap">
-                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg"  formGroupName="specialitesGroup">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg"  formGroupName="specialites">
                     <div fxLayout="row wrap" *ngFor="let web of specialitesPoints.controls; let i = index"  [formGroupName]="i">
                       <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
                         <mat-form-field class="full-width">
@@ -346,7 +346,7 @@
                       </div>
                     </div>
                   </div>
-                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" formArrayName="hobbiesGroup">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" formArrayName="hobbies">
                     <h3 class="header--text fnt--16 mb-1">Hobbies</h3>       
                     <div fxLayout="row wrap" *ngFor="let web of hobbiesPoints.controls; let i = index"  [formGroupName]="i">
                       <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
@@ -367,7 +367,7 @@
                       </div>
                     </div>
                   </div>
-                </div> -->
+                </div>
 
                 <h3 class="header--text fnt--16 mb-1">Social Media</h3>
                 <div fxLayout="row wrap">

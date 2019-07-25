@@ -118,26 +118,42 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
     return filteredTyes
   }
 
-  downloadDocs() {
-   var query = {};
-    const req_vars = {
-      query: Object.assign({ _id: this.selectedProfileId }, query)
+  // downloadDocs() {
+  //  var query = {};
+  //   const req_vars = {
+  //     query: Object.assign({ _id: this.selectedProfileId }, query)
+  //   }
+  //   this.userapi.apiRequest('post', 'documents/downloadDocs', req_vars).subscribe(result => {  
+  //     if (result.status == "error") {
+  //       this.loader.close();
+  //       this.snack.open(result.data.message, 'OK', { duration: 4000 })
+  //     } else {
+  //       this.loader.close();
+  //       this.router.navigate(['/', 'customer', 'dashboard', 'essential-day-one'])
+  //       this.snack.open(result.data.message, 'OK', { duration: 4000 })
+  //     }
+  //   }, (err) => {
+  //     console.error(err)
+  //     this.loader.close();
+  //   })
+  // }
+
+  DownloadZip = () => {      
+    let query = {};
+    var ZipName = "Idbox-"+Math.floor(Math.random() * Math.floor(999999999999999))+".zip"; 
+    let req_vars = {
+      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.idProofDocuments }, query)
     }
-    console.log(" > >>> >>> >> ",req_vars);
-    this.userapi.apiRequest('post', 'documents/downloadDocs', req_vars).subscribe(result => {
-  
-      if (result.status == "error") {
-        this.loader.close();
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
-      } else {
-        this.loader.close();
-        this.router.navigate(['/', 'customer', 'dashboard', 'essential-day-one'])
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
-      }
-    }, (err) => {
-      console.error(err)
-      this.loader.close();
-    })
+    this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
+    this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {
+      var downloadURL =window.URL.createObjectURL(res)
+      let filePath = downloadURL;
+      var link=document.createElement('a');
+      link.href = filePath;
+      link.download = ZipName;
+      link.click();
+      this.snack.dismiss();
+    });
   }
 
   downloadFile = (filename) => {    

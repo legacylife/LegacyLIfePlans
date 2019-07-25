@@ -77,14 +77,14 @@ export class DevicesModalComponent implements OnInit {
 
     this.lock = new PatternLock('#patternHolder', {
       allowRepeat: false,
-      radius: 30, margin: 20,
+      radius: 22, margin: 12,
       //  onDraw:this.savePattren
       onDraw: (pattern) => {
         document.getElementById('patternHolder').className = 'hides';
         this.savePattren(pattern);
       }
     });
-
+   
     this.getDeviceView();
   }
 
@@ -131,7 +131,7 @@ export class DevicesModalComponent implements OnInit {
   }
 
   setPattern(pattern: any, ids) {
-    this.lock = new PatternLock(ids, { enableSetPattern: true, radius: 30, margin: 20 });
+    this.lock = new PatternLock(ids, { enableSetPattern: true, radius: 22, margin: 12 });//Old margin radius: 30, margin: 20
     this.lock.setPattern(pattern);
     this.DevicesForm.controls['pattrenTemp'].setValue('1');
     this.lock.disable();
@@ -195,19 +195,15 @@ export class DevicesModalComponent implements OnInit {
         if (profileIds) {
           this.selectedProfileId = profileIds;
         }
-        console.log("password type>>>",this.DevicesForm.controls['passwordType'].value)
         if(this.DevicesForm.controls['passwordType'].value=='1'){
           profileInData.pin = '';
           profileInData.passwordPattern = '';
-          console.log('111')
         }else if(this.DevicesForm.controls['passwordType'].value=='2'){
           profileInData.password = '';
           profileInData.passwordPattern = '';
-          console.log('2222')
         }else if(this.DevicesForm.controls['passwordType'].value=='3'){
           profileInData.pin = '';
           profileInData.password = '';
-          console.log('3333')
         }
 
         if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'passwords-digital-assests') {
@@ -239,7 +235,7 @@ export class DevicesModalComponent implements OnInit {
 
   getDeviceView = (query = {}, search = false) => {
     let req_vars = {
-      query: Object.assign({ customerId: this.userId, status: "Pending" })
+      query: Object.assign({ customerId: this.userId, deviceList:{$ne:null}, status: "Pending" })
     }
     let profileIds = '';
     if (this.selectedProfileId) {
@@ -264,9 +260,10 @@ export class DevicesModalComponent implements OnInit {
           this.DevicesForm.controls['username'].setValue(this.deviceList.username);
           this.DevicesForm.controls['password'].setValue(this.deviceList.password);
           this.DevicesForm.controls['passwordType'].setValue(this.deviceList.passwordType);
-          this.DevicesForm.controls['pin'].setValue(this.deviceList.pin);
-          if(this.deviceList.passwordPattern!=''){
-            this.DevicesForm.controls['pattrenTemp'].setValue('1');
+          this.DevicesForm.controls['pin'].setValue(this.deviceList.pin);    
+          if(this.deviceList.passwordPattern!='' && this.deviceList.passwordType=='3'){
+            this.DevicesForm.controls['pattrenTemp'].setValue('');
+           //If we need to show edit the popup pattern this.setPattern(this.deviceList.passwordPattern, '#patternHolder7');
             this.IsVisible= false;
           }
           else {
@@ -303,8 +300,9 @@ export class DevicesModalComponent implements OnInit {
   resetPattern(event) {
     // document.getElementById('patternHolder7').className = 'hides';
     // document.getElementById('patternHolder').className = '';
-    this.lock.reset()
-    
+    //http://ignitersworld.com/lab/patternLock.html
+    this.lock.reset();
+    this.lock.enable();    
   }
 
 }

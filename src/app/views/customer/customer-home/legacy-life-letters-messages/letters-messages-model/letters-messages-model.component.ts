@@ -287,7 +287,7 @@ export class LettersMessagesModelComponent implements OnInit {
       let filePath = downloadURL;
       var link=document.createElement('a');
       link.href = filePath;
-      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+      link.download = filename;
       link.click();
     });
   }

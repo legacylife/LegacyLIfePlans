@@ -286,9 +286,9 @@ export class PetsModalComponent implements OnInit {
     this.userapi.download("documents/downloadDocument", req_vars).subscribe(res => {
         var downloadURL = window.URL.createObjectURL(res);
         let filePath = downloadURL;
-        var link = document.createElement("a");
+        var link=document.createElement('a');
         link.href = filePath;
-        link.download = filePath.substr(filePath.lastIndexOf("/") + 1);
+        link.download = filename;
         link.click();
       });
   };

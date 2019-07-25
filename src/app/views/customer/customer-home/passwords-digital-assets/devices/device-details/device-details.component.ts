@@ -41,10 +41,11 @@ export class DeviceDetailsComponent implements OnInit {
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;    
     this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
-    this.lock = new PatternLock('#patternHolder8', {
-      allowRepeat: false,
-      radius: 30, margin: 20,      
-    });
+    // this.lock = new PatternLock('#patternHolder8', {
+    //   allowRepeat: false,
+    //   radius: 30, margin: 20,      
+    // });
+    
     this.getDeviceView();    
   }
 
@@ -74,11 +75,10 @@ export class DeviceDetailsComponent implements OnInit {
             this.trusteeLegaciesAction = false;
           }
           this.row = result.data;
+          this.IsVisible= true;
           if(this.row.passwordPattern!=''){
             this.IsVisible= false;
             this.setPattern(this.row.passwordPattern);          
-          }else{
-            this.IsVisible= true;
           }
         }
       }  

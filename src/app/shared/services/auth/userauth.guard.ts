@@ -20,10 +20,11 @@ export class UserAuthGuard implements CanActivate {
       var pathArray = window.location.pathname.split('/');
       this.userUrlType = pathArray[1];
       
-      if ((this.userInfo && this.userInfo.endUserType == '') || (this.userUrlType != 'signin' && this.userInfo.endUserType != this.userUrlType) ) {
+      if ((this.userInfo && this.userInfo.endUserType == '') || (this.userUrlType != 'signin' && this.userInfo.endUserType != this.userUrlType)) {
         this.router.navigateByUrl('/signin');
         return false;
       }
+      
     return true;
   }
 }

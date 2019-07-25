@@ -122,22 +122,23 @@ export class TimeCapsuleDetailsComponent implements OnInit {
       let filePath = downloadURL;
       var link=document.createElement('a');
       link.href = filePath;
-      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+      link.download = filename;
       link.click();
     });
   }
 
   DownloadZip = () => {      
     let query = {};
+    var ZipName = "pets-"+Math.floor(Math.random() * Math.floor(999999999999999))+".zip"; 
     let req_vars = {
-      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:s3Details.timeCapsuleFilePath,AllDocuments:this.row.documents }, query)
+      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query)
     }
     this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {
       var downloadURL =window.URL.createObjectURL(res)
       let filePath = downloadURL;
       var link=document.createElement('a');
       link.href = filePath;
-      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
+      link.download = ZipName;
       link.click();
     });
   }
