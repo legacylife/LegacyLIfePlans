@@ -103,4 +103,11 @@ export class CustomerHiredAdvisorComponent implements OnInit {
     }
   }
 
+  getAdvisorSpecilities(businessType){
+    if(businessType)
+      return businessType.join(", ")
+    else
+      return ""
+  }
+
 }

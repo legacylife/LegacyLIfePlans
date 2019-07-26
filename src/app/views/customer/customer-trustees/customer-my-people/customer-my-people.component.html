@@ -83,8 +83,8 @@
           <!-- all hired advisor -->
           <mat-card-content class="status--advisor relative" *ngIf="peoples?.type === 'advisor' && peoples?.status !== 'Pending'">
             <div class="files--folder mt-1">
-              <mat-icon>school</mat-icon>
-              {{peoples.advisorId?.businessType}}
+              <mat-icon>school</mat-icon>              
+              {{getAdvisorSpecilities(peoples.advisorId?.businessType)}}
             </div>
             <div class="ad--strip">
               Advisor

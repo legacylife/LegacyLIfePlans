@@ -38,7 +38,7 @@
             <mat-card-content class="status--advisor relative status--pending">
               <div class="files--folder mt-1 degree--names" *ngIf="row?.status==='Active'">
                 <mat-icon>school</mat-icon>
-                {{row.advisorId?.businessType}}
+                {{getAdvisorSpecilities(row.advisorId?.businessType)}}
               </div> 
               <div class="mt-1 status--pending" *ngIf="row?.status==='Pending'">
                 <mat-icon>history</mat-icon>

@@ -131,4 +131,11 @@ export class CustomerMyPeopleComponent implements OnInit {
     })
   }
 
+  getAdvisorSpecilities(businessType){
+    if(businessType)
+      return businessType.join(", ")
+    else
+      return ""
+  }
+
 }
