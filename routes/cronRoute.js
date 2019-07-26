@@ -8,6 +8,7 @@ const today   = moment().toDate()
 const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 var currencyFormatter     = require('currency-formatter');
+const mongoose = require('mongoose')
 var objectId = mongoose.Types.ObjectId();
 
 async function getSelectedPlanDetails( planId ) {
