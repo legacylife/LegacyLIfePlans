@@ -250,6 +250,10 @@ function getSubSectionsList(req, res){
             res.status(200).send(resFormat.rSuccess({trusteeUsersList,trusteeCount}));
         }
       }).populate('trustId')  
+    }else{
+      let trusteeUsersList = [];
+      let trusteeCount = '';
+      res.status(200).send(resFormat.rSuccess({trusteeUsersList,trusteeCount}));
     }
   })
 }

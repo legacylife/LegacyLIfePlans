@@ -508,17 +508,21 @@ function professionalsListing(req, res) {
 }
 
 function myPeoplesList(req, res) {
-  let { fields, offset, advquery,trustquery, order, limit, search } = req.body
+  let { fields, offset, advquery,trustquery, order, limit, search } = req.body;
+  
+  console.log("order=>",order)
   let totalRecords = 0
     HiredAdvisors.find(advquery, fields, function (err, advisorList) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-
           trust.find(trustquery, fields, function (err, trustList) {
             if (err) {
               res.status(401).send(resFormat.rError(err))
             } else {
+
+              //console.log("trustList:- ",trustList,"advisorList :- ",advisorList);
+
               totalTrustRecords = trustList.length;
               totalAdvRecords = advisorList.length;
 
@@ -536,7 +540,7 @@ function myPeoplesList(req, res) {
               myPeoplesList = trustListing.concat(advisorListing);
               totalPeoplesRecords =  myPeoplesList.length;
 
-              myPeoples =  sortBy(myPeoplesList, 'modifiedOn');
+              myPeoples =  myPeoplesList;//sortBy(myPeoplesList, 'modifiedOn');
               res.send(resFormat.rSuccess({myPeoples,totalPeoplesRecords,trustList,totalTrustRecords,advisorList,totalAdvRecords}))
             }
           }).sort(order).skip(offset).limit(limit).populate('trustId')
