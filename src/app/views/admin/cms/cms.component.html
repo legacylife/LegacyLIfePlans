@@ -1,12 +1,15 @@
 <div class="row" *ngIf="aceessSection">
-  <mat-form-field class="margin-333" style="width: 100%">
-    <input matInput placeholder="Type to filter all columns" value="" (keyup)='updateFilter($event)'>
-  </mat-form-field>
-  <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+
+  <form class="llp-form-wrapper">
+    <mat-form-field class="no-mar full-width">
+      <input matInput placeholder="Type to filter all columns" value="" (keyup)='updateFilter($event)'>
+    </mat-form-field>
+  </form>
+
+  <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
     <mat-card-content class="p-0">
-      <ngx-datatable class="material ml-0 mr-0" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [limit]="10"
-      [messages]="my_messages"
-        [rowHeight]="'auto'">
+      <ngx-datatable class="material ml-0 mr-0" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50"
+        [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
         <ngx-datatable-column name="Page For" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row?.pageFor }}
@@ -29,7 +32,8 @@
         </ngx-datatable-column>
         <ngx-datatable-column name="Actions" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            <a mat-icon-button mat-sm-button color="primary" class="mb-1" [routerLink]="['/admin/cmsedit', row._id]" title="View">
+            <a mat-icon-button mat-sm-button color="primary" class="mb-1" [routerLink]="['/admin/cmsedit', row._id]"
+              title="View">
               <mat-icon class="icon--edit--sm">edit</mat-icon>
             </a>
           </ng-template>
