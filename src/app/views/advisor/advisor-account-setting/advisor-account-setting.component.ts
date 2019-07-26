@@ -193,6 +193,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       this.isSubscribePlan = returnArr.isSubscribePlan
       this.planName = returnArr.planName
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
+      console.log("this.isSubscriptionCanceled==",this.isSubscriptionCanceled)
     })
   }
   getInviteMembersCount() {
@@ -763,9 +764,12 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     this.subscriptionservice.updateAutoRenewalStatus( this.userId, this.autoRenewalVal )
   }
 
-  cancelSubscription= async (query = {}) => {
-    this.isSubscriptionCanceled = await this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled )
-    this.checkSubscription()
+  cancelSubscription= (query = {}) => {
+    this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled, (value) =>{ 
+      this.isSubscriptionCanceled = value
+      console.log("this.isSubscriptionCanceled",this.isSubscriptionCanceled)
+      this.checkSubscription()
+    })
   }
 
   

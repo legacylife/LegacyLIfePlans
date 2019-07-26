@@ -310,7 +310,7 @@ export class SubscriptionService {
    * @param userId 
    * @param isSubscriptionCanceled 
    */
-  cancelSubscription ( userId, isSubscriptionCanceled:boolean ): any {
+  cancelSubscription ( userId, isSubscriptionCanceled:boolean,cb ): any {
     if( !isSubscriptionCanceled ) {
       this.loader.open();
       const req_vars = {
@@ -320,20 +320,21 @@ export class SubscriptionService {
       return this.userapi.apiRequest('post', 'userlist/cancelsubscription', req_vars).subscribe(result => {
         if (result.status == "error") {
           this.loader.close()
-          return false
+          cb(false)
+
         } else {
           let cancelData = result.data
           localStorage.setItem('endUserSubscriptionStatus', cancelData.subscriptionStatus)
           this.snack.open("Subscription successfully canceled. Please check email for more info.", 'OK', { duration: 4000 })
           this.loader.close()
-          return true
+          cb(true)
         }
       }, (err) => {
         this.loader.close()
-        return false
+        cb(false)
       })
     }
-    return false
+    cb(false)
   }
 
   /**

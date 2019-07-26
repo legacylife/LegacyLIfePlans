@@ -43,6 +43,8 @@ export class CardDetailsComponent implements OnInit {
   payUsingNewCardCheckbox: boolean = false
   today: Date = moment().toDate()
   
+  isButtonEnabled:boolean = false
+
   constructor(private stripeService: StripeService, private userapi: UserAPIService, private loader: AppLoaderService, 
     private fb: FormBuilder, private picService: ProfilePicService, private subscriptionservice:SubscriptionService, 
     private router: Router, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private snack: MatSnackBar ) {
@@ -87,7 +89,9 @@ export class CardDetailsComponent implements OnInit {
       let diff = Math.round(this.subscriptionservice.getDateDiff( this.today, subscriptionDate.toDate() ))
       let addOnCharges = Number (returnArr.metadata.addOnCharges)
       let addOnAmount = diff > 364 ? addOnCharges : ( (addOnCharges/365)*diff ).toFixed(2)
-      this.planAmount   = Number(addOnAmount)
+      //this.planAmount   = Number(addOnAmount)
+      let finalAddOnAmount = Number(addOnAmount)
+      this.planAmount = finalAddOnAmount < 0.5 ? 0.5 : finalAddOnAmount
       //(diff > 364 ? returnArr.metadata.addOnCharges : ( (returnArr.metadata.addOnCharges/365)*diff )).toFixed(2)//diff > 364 ? 50 :( returnArr.metadata.addOnCharges / diff)
       this.planCurrency = (returnArr.currency).toLocaleUpperCase()
       this.spaceAlloted = returnArr.metadata.addOnSpace
@@ -107,6 +111,7 @@ export class CardDetailsComponent implements OnInit {
         this.oldCard = data
         this.hideNewCardForm = true
         this.loader.close();
+        this.isButtonEnabled = true
       }
       else{
         this.mountCard()
@@ -154,6 +159,7 @@ export class CardDetailsComponent implements OnInit {
         }
       this.card.mount('#card-fields');
       this.loader.close();
+      this.isButtonEnabled = true
     });
   }
 

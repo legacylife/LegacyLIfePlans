@@ -58,7 +58,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   addOnSpace:string = ''
   addOnAmountFor:string = ''
   addOnAmount:number = 0
-  totalSpaceAlloted: number = 0
+  totalSpaceAlloted: number = 1
   spaceProgressBar:any = 100
   totalUsedSpace:any = 0
 
@@ -140,38 +140,49 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       this.isSubscribePlan = returnArr.isSubscribePlan
       this.planName = returnArr.planName
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
+      console.log("isAccountFree",this.isAccountFree,"isSubscribePlan",this.isSubscribePlan,"isPremiumExpired",this.isPremiumExpired)
+      this.totalUsedSpace = 0.5;
 
       this.subscriptionservice.getPlanDetails( ( planData )=> {
-        //console.log("planData",planData)
-        this.defaultSpace = planData.metadata.defaultSpace
-        this.addOnSpace = planData.metadata.addOnSpace
-        this.spaceDimension = planData.metadata.spaceDimension        
-        let subscriptionDate = moment( localStorage.getItem("endUserSubscriptionEndDate") )
-        let diff = Math.round(this.subscriptionservice.getDateDiff( this.today, subscriptionDate.toDate() ))
-        let addOnCharges = Number (planData.metadata.addOnCharges)
-        let addOnAmount = diff > 364 ? addOnCharges : ( (addOnCharges/365)*diff ).toFixed(2)
-        this.addOnAmount = Number(addOnAmount)
-        this.addOnAmountFor = diff > 364 ? 'per year' : 'for '+(diff)+' days'
+        //console.log("planData",Object.keys(planData))
+        if( planData && (Object.keys(planData).length !== 0) ) {
+          this.defaultSpace = planData.metadata.defaultSpace
+          this.addOnSpace = planData.metadata.addOnSpace
+          this.spaceDimension = planData.metadata.spaceDimension        
+          let subscriptionDate = moment( localStorage.getItem("endUserSubscriptionEndDate") )
+          let diff = Math.round(this.subscriptionservice.getDateDiff( this.today, subscriptionDate.toDate() ))
+          let addOnCharges = Number (planData.metadata.addOnCharges)
+          let addOnAmount = diff > 364 ? addOnCharges : ( (addOnCharges/365)*diff ).toFixed(2)
+          let finalAddOnAmount = Number(addOnAmount)
+          this.addOnAmount = finalAddOnAmount < 0.5 ? 0.5 : finalAddOnAmount
+          this.addOnAmountFor = diff > 364 ? 'per year' : 'for '+(diff)+' days'
 
-        this.isGetAddOn = localStorage.getItem('endUserSubscriptionAddon') && localStorage.getItem('endUserSubscriptionAddon') == 'yes' ? true : false
-        console.log("isGetAddOn",this.isGetAddOn,"isAccountFree",this.isAccountFree,"isSubscribePlan",this.isSubscribePlan,"isPremiumExpired",this.isPremiumExpired)
-        let allotedSpace:any = 1
-        if( this.isAccountFree && !this.isPremiumExpired ) {
-          allotedSpace = this.defaultSpace
+          this.isGetAddOn = localStorage.getItem('endUserSubscriptionAddon') && localStorage.getItem('endUserSubscriptionAddon') == 'yes' ? true : false
+          
+          //console.log("isGetAddOn",this.isGetAddOn,"isAccountFree",this.isAccountFree,"isSubscribePlan",this.isSubscribePlan,"isPremiumExpired",this.isPremiumExpired)
+          let allotedSpace:any = 1
+          if( this.isAccountFree && !this.isPremiumExpired ) {
+            allotedSpace = this.defaultSpace
+          }
+          else if( this.isSubscribePlan && !this.isPremiumExpired ) {
+            allotedSpace = this.defaultSpace
+            if( this.isGetAddOn ) {
+              allotedSpace = Number(this.addOnSpace) + Number(this.defaultSpace)
+            }
+          }
+          this.totalSpaceAlloted = allotedSpace
+          this.spaceProgressBar = (this.totalUsedSpace * 100 / this.totalSpaceAlloted).toFixed(2)
         }
-        else if( this.isSubscribePlan && !this.isPremiumExpired ) {
-          allotedSpace = this.defaultSpace
-          if( this.isGetAddOn ) {
-            allotedSpace = Number(this.addOnSpace) + Number(this.defaultSpace)
+        else{
+          if( this.isAccountFree && !this.isPremiumExpired ) {
+            this.totalSpaceAlloted = 7
+            this.spaceProgressBar = (this.totalUsedSpace * 100 / this.totalSpaceAlloted).toFixed(2)
           }
         }
-        this.totalSpaceAlloted = allotedSpace
-        this.totalUsedSpace = 0.5;
-
-        this.spaceProgressBar = (this.totalUsedSpace * 100 / this.totalSpaceAlloted).toFixed(2)
         //console.log("totalUsedSpace",this.totalUsedSpace,"totalSpaceAlloted",this.totalSpaceAlloted,"spaceProgressBar",this.spaceProgressBar)
       })
     })
+    this.spaceProgressBar = (this.totalUsedSpace * 100 / this.totalSpaceAlloted).toFixed(2)
     this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
   }
 
@@ -394,9 +405,12 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     this.subscriptionservice.updateAutoRenewalStatus( this.userId, this.autoRenewalVal )
   }
 
-  cancelSubscription= async (query = {}) => {
-    this.isSubscriptionCanceled = await this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled )
-    this.checkSubscription()
+  cancelSubscription= (query = {}) => {
+    this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled, (value)=> {
+      this.isSubscriptionCanceled= value;
+      this.checkSubscription()
+    })
+    // this.checkSubscription()
   }
 
   getAddOnPack() {
@@ -419,6 +433,9 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed()
       .subscribe(res => {
         this.isGetAddOn = localStorage.getItem('endUserSubscriptionAddon') && localStorage.getItem('endUserSubscriptionAddon') == 'yes' ? true : false
+        let allotedSpace = Number(this.addOnSpace) + Number(this.defaultSpace)
+        this.totalSpaceAlloted = allotedSpace
+        this.spaceProgressBar = (this.totalUsedSpace * 100 / this.totalSpaceAlloted).toFixed(2)
       })
   }
   
