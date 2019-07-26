@@ -7,19 +7,13 @@
     </div>
  -->
     <div class="branding admin--branding default-bg">
-        <!-- <img src="assets/images/arkenea/admin-small-small-logo.png" alt="" class="app-logo"> -->
-        <!-- Two different logos for dark and light themes -->
-        <img 
-        src="assets/images/logo-text-white.png" 
-        alt="" 
-        class="app-logo-text"
+      <!-- <img src="assets/images/arkenea/admin-small-small-logo.png" alt="" class="app-logo"> -->
+      <!-- Two different logos for dark and light themes -->
+      <!-- <img src="assets/images/logo-text-white.png" alt="" class="app-logo-text"
         *ngIf="themeService.activatedTheme?.name?.indexOf('dark') !== -1">
-        <img 
-        src="assets/images/arkenea/small-logo.png" 
-        alt="" 
-        class="app-logo-text"
-        *ngIf="themeService.activatedTheme?.name?.indexOf('dark') === -1">
-      </div>
+      <img src="assets/images/arkenea/small-logo.png" alt="" class="app-logo-text"
+        *ngIf="themeService.activatedTheme?.name?.indexOf('dark') === -1"> -->
+    </div>
 
     <!-- Sidebar user 
     <div class="app-user">
@@ -61,6 +55,7 @@
       <mat-divider class="mat-divider mat-divider-horizontal" role="separator" aria-orientation="horizontal" style="margin-top:100px"></mat-divider>
     </div>-->
     <!-- Navigation -->
-    <app-sidenav [items]="menuItems" [hasIconMenu]="hasIconTypeMenuItem" [iconMenuTitle]="iconTypeMenuTitle" ></app-sidenav>
+    <app-sidenav [items]="menuItems" [hasIconMenu]="hasIconTypeMenuItem" [iconMenuTitle]="iconTypeMenuTitle">
+    </app-sidenav>
   </div>
 </div>

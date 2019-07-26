@@ -1,88 +1,84 @@
 <div class="container llp--left--panel--view">
   <mat-sidenav-container>
-
-
     <mat-sidenav EgretSideNavToggle class="shop-sidebar llp--menu--list">
       <div class="shop-filters-wrap llp--left--panel">
         <div class="shadow--sec">
-
           <mat-accordion>
             <mat-expansion-panel [expanded]="myLegacy">
               <mat-expansion-panel-header [collapsedHeight]="'56px'" [expandedHeight]="'56px'">
                 <mat-panel-title>
                   <header>My Legacy</header>
                 </mat-panel-title>
-              </mat-expansion-panel-header>
-
+              </mat-expansion-panel-header>           
               <ul class="legacy--list m-0 p-0">
-                <li (click)="toggleSideNav()" routerLinkActive="active">
+                <li (click)="toggleSideNav()" routerLinkActive="active" class="{{activeHeading=='essential-detail-view' || activeHeading=='essential-detail-idbox' || activeHeading=='essential-professionals-detail' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/dashboard/essential-day-one']">
                     <mat-icon class="icon-file">insert_drive_file</mat-icon> My Essentials
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active" *ngIf="isProUser">
+                <li (click)="toggleSideNav()" routerLinkActive="active" *ngIf="isProUser" class="{{activeHeading=='insurance-view' || activeHeading=='finance-view' || activeHeading=='debt-view' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/dashboard/insurance-finance-debt']">
                     <mat-icon class="icon-file">monetization_on</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Insurance Finance & Debt
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active" routerLinkActive="active" *ngIf="isProUser">
+                <li (click)="toggleSideNav()" routerLinkActive="active" routerLinkActive="active" *ngIf="isProUser" class="{{activeHeading=='pets-view' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/dashboard/pets']">
                     <mat-icon class="icon-file">pets</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Pets
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active" *ngIf="isProUser">
+
+                <li (click)="toggleSideNav()" routerLinkActive="active" *ngIf="isProUser" class="{{activeHeading=='special-needs-view' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/dashboard/special-needs']">
                     <mat-icon class="icon-file">help</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Special Needs
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active">
+                <li (click)="toggleSideNav()" routerLinkActive="active" class="{{activeHeading=='legal-detail-view' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/dashboard/legal-stuff']">
                     <mat-icon class="icon-file">gavel</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Legal Stuff
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active" *ngIf="isProUser">
+                <li (click)="toggleSideNav()" routerLinkActive="active" *ngIf="isProUser" class="{{activeHeading=='device-view' || activeHeading=='electronic-media-view' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/dashboard/passwords-digital-assests']">
                     <mat-icon class="icon-file">lock</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Passwords & Digital Assests
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active">
+                <li (click)="toggleSideNav()" routerLinkActive="active" class="{{activeHeading=='emergency-contacts-details' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/dashboard/emergency-contacts']">
                     <mat-icon class="icon-file">contact_phone</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Emergency Contacts
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active" *ngIf="isProUser">
+                <li (click)="toggleSideNav()" routerLinkActive="active" *ngIf="isProUser" class="{{activeHeading==='real-estate-vehicle-detail-view' || activeHeading=='real-estate-detail-view' || activeHeading=='real-estate-assets-detail-view' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/dashboard/real-estate-assets']">
                     <mat-icon class="icon-file">business</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Real Estates & Assets
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active" *ngIf="isProUser">
+                <li (click)="toggleSideNav()" routerLinkActive="active" *ngIf="isProUser" class="{{activeHeading==='time-capsule-view' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/dashboard/time-capsule']">
                     <mat-icon class="icon-file">access_time</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Time Capsule
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active" *ngIf="isProUser">
+                <li (click)="toggleSideNav()" routerLinkActive="active" *ngIf="isProUser" class="{{activeHeading==='letters-messages-view' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/dashboard/letters-messages']">
                     <mat-icon class="icon-file">markunread</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Legacy Life Letters & Messages
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active" *ngIf="isProUser">
+                <li (click)="toggleSideNav()" routerLinkActive="active" *ngIf="isProUser" class="{{activeHeading==='final-wishes-view' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/dashboard/final-wishes']">
                     <mat-icon class="icon-file">date_range</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Final Wishes
                   </a>
                 </li>
-              </ul>
-
+            </ul>
             </mat-expansion-panel>
             <mat-expansion-panel [expanded]="sharedLegacies">
               <mat-expansion-panel-header [collapsedHeight]="'56px'" [expandedHeight]="'56px'">
@@ -91,32 +87,32 @@
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <ul class="legacy--list m-0 p-0" *ngIf="sharedLegacies">
-                <li (click)="toggleSideNav()" routerLinkActive="active">
-                  <a [routerLink]="['/customer/legacies/essential-day-one', customerLegaicesId]">
+                <li (click)="toggleSideNav()" routerLinkActive="active" class="{{activeHeading=='essential-detail-view' || activeHeading=='essential-detail-idbox' || activeHeading=='essential-professionals-detail' ? 'active' : ''}}">
+                  <a [routerLink]="['/customer/legacies/essential-day-one', customerLegaicesId]" >
                     <mat-icon class="icon-file">insert_drive_file</mat-icon> My Essentials
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active">
+                <li (click)="toggleSideNav()" routerLinkActive="active" class="{{activeHeading=='insurance-view' || activeHeading=='finance-view' || activeHeading=='debt-view' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/legacies/insurance-finance-debt', customerLegaicesId]">
                     <mat-icon class="icon-file">monetization_on</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Insurance Finance & Debt
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active">
+                <li (click)="toggleSideNav()" routerLinkActive="active" class="{{activeHeading=='pets-view' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/legacies/pets', customerLegaicesId]">
                     <mat-icon class="icon-file">pets</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Pets
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active">
+                <li (click)="toggleSideNav()" routerLinkActive="active" class="{{activeHeading=='special-needs-view' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/legacies/special-needs', customerLegaicesId]">
                     <mat-icon class="icon-file">help</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Special Needs
                   </a>
                 </li>
                 <li (click)="toggleSideNav()" routerLinkActive="active">
-                  <a [routerLink]="['/customer/legacies/legal-stuff', customerLegaicesId]">
+                  <a [routerLink]="['/customer/legacies/legal-stuff', customerLegaicesId]" class="{{activeHeading=='legal-detail-view' ? 'active' : ''}}">
                     <mat-icon class="icon-file">gavel</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Legal Stuff
                   </a>
@@ -127,31 +123,31 @@
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Passwords & Digital Assests
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active">
+                <li (click)="toggleSideNav()" routerLinkActive="active" class="{{activeHeading=='emergency-contacts-details' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/legacies/emergency-contacts', customerLegaicesId]">
                     <mat-icon class="icon-file">contact_phone</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Emergency Contacts
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active">
+                <li (click)="toggleSideNav()" routerLinkActive="active" class="{{activeHeading==='real-estate-vehicle-detail-view' || activeHeading=='real-estate-detail-view' || activeHeading=='real-estate-assets-detail-view' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/legacies/real-estate-assets', customerLegaicesId]">
                     <mat-icon class="icon-file">business</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Real Estates & Assets
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active">
+                <li (click)="toggleSideNav()" routerLinkActive="active" class="{{activeHeading==='time-capsule-view' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/legacies/time-capsule', customerLegaicesId]">
                     <mat-icon class="icon-file">access_time</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Time Capsule
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active">
+                <li (click)="toggleSideNav()" routerLinkActive="active" class="{{activeHeading==='letters-messages-view' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/legacies/letters-messages', customerLegaicesId]">
                     <mat-icon class="icon-file">markunread</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Legacy Life Letters & Messages
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" routerLinkActive="active">
+                <li (click)="toggleSideNav()" routerLinkActive="active" class="{{activeHeading==='final-wishes-view' ? 'active' : ''}}">
                   <a [routerLink]="['/customer/legacies/final-wishes', customerLegaicesId]">
                     <mat-icon class="icon-file">date_range</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Final Wishes

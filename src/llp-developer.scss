@@ -39,3 +39,12 @@ Note: Please do not add important anywhere. If any concern feel free to ask.
 .app-admin-container .rightside-content-hold.admin--right--section{
     height: calc(100ch - 232px);
 }
+
+.admin--logo{
+    img{
+        max-width: 100%;
+    }
+}
+.admin--toggle{
+    margin-left: 15px !important;
+}

@@ -11,6 +11,7 @@ import { delay } from 'rxjs/operators';
 import { serverUrl, s3Details } from '../../../config';
 import { SubscriptionService } from 'app/shared/services/subscription.service';
 import  * as moment  from 'moment'
+import { LayoutService } from 'app/shared/services/layout.service';
 const filePath = s3Details.url+'/'+s3Details.profilePicturesPath;
 @Component({
   selector: 'userview',
@@ -18,6 +19,7 @@ const filePath = s3Details.url+'/'+s3Details.profilePicturesPath;
   styleUrls: ['./userlist.component.scss']
 })
 export class userviewComponent implements OnInit {
+  layoutConf: any;
   userId: string
   successMessage: string = ""
   errorMessage: string = ""
@@ -54,11 +56,13 @@ export class userviewComponent implements OnInit {
 
  // websites:any;
   constructor(
+    private layout: LayoutService,
     private api: APIService, private route: ActivatedRoute, 
     private router: Router, private snack: MatSnackBar, private dialog: MatDialog,
     private confirmService: AppConfirmService, private loader: AppLoaderService,
     private subscriptionservice:SubscriptionService) { }
   ngOnInit() {
+    this.layoutConf = this.layout.layoutConf;
     this.dpPath = filePath;
     const locationArray = location.href.split('/')
     this.selectedUserId = locationArray[locationArray.length - 1]
@@ -83,7 +87,20 @@ export class userviewComponent implements OnInit {
         this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + result.data.profilePicture;
         
         if(this.row.userType != 'sysAdmin') {
-          let subscriptions = this.row.subscriptionDetails ? this.row.subscriptionDetails : null
+          this.subscriptionservice.checkSubscriptionAdminPanel( this.row, ( returnArr )=> {
+            this.userCreateOn = returnArr.userCreateOn
+            this.isSubscribedBefore = returnArr.isSubscribedBefore
+            this.isSubscriptionCanceled = returnArr.isSubscriptionCanceled
+            this.autoRenewalFlag = returnArr.autoRenewalFlag
+            this.autoRenewalVal = returnArr.autoRenewalVal
+            this.autoRenewalStatus = returnArr.autoRenewalStatus
+            this.isAccountFree = returnArr.isAccountFree
+            this.isPremiumExpired = returnArr.isPremiumExpired
+            this.isSubscribePlan = returnArr.isSubscribePlan
+            this.planName = returnArr.planName
+            this.subscriptionExpireDate = returnArr.subscriptionExpireDate
+          })
+          /* let subscriptions = this.row.subscriptionDetails ? this.row.subscriptionDetails : null
           if( subscriptions != null ) {
             let currentSubscription = subscriptions[subscriptions.length-1]
             let diff: any
@@ -145,7 +162,7 @@ export class userviewComponent implements OnInit {
               }
               this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
             }
-          }
+          } */
         }
       }
     }, (err) => {
@@ -204,4 +221,15 @@ export class userviewComponent implements OnInit {
       })
   }
 
+  
+  toggleSidenav() {
+    if(this.layoutConf.sidebarStyle === 'closed') {      
+      return this.layout.publishLayoutChange({
+        sidebarStyle: 'full'
+      })
+    }
+    this.layout.publishLayoutChange({
+      sidebarStyle: 'closed'
+    })
+  }
 }

@@ -25,8 +25,8 @@
         </ngx-datatable-column>
         <ngx-datatable-column name="Subscription Status" prop="end_date" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.subscription_detail ? row?.subscription_detail.end_date : ""}} <br />
-            Expiry Date : {{ row?.subscription_detail ? row?.subscription_detail.end_date : ""}}
+            Status: {{ row?.subscriptionData ? row?.subscriptionData.status : ""}} <br />
+            Expiry Date : {{ row?.subscriptionData ? row?.subscriptionData.endDate : ""}}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column name="Sign up Request" prop="createdOn" [flexGrow]="1.1">

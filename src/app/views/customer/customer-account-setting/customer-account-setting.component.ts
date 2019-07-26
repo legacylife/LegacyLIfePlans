@@ -58,6 +58,9 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   addOnSpace:string = ''
   addOnAmountFor:string = ''
   addOnAmount:number = 0
+  totalSpaceAlloted: number = 0
+  spaceProgressBar:any = 100
+  totalUsedSpace:any = 0
 
   isAccountFree: boolean = true
   isSubscribePlan: boolean = false
@@ -139,6 +142,8 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
 
       this.subscriptionservice.getPlanDetails( ( planData )=> {
+        //console.log("planData",planData)
+        this.defaultSpace = planData.metadata.defaultSpace
         this.addOnSpace = planData.metadata.addOnSpace
         this.spaceDimension = planData.metadata.spaceDimension        
         let subscriptionDate = moment( localStorage.getItem("endUserSubscriptionEndDate") )
@@ -147,8 +152,25 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
         let addOnAmount = diff > 364 ? addOnCharges : ( (addOnCharges/365)*diff ).toFixed(2)
         this.addOnAmount = Number(addOnAmount)
         this.addOnAmountFor = diff > 364 ? 'per year' : 'for '+(diff)+' days'
+
+        this.isGetAddOn = localStorage.getItem('endUserSubscriptionAddon') && localStorage.getItem('endUserSubscriptionAddon') == 'yes' ? true : false
+        console.log("isGetAddOn",this.isGetAddOn,"isAccountFree",this.isAccountFree,"isSubscribePlan",this.isSubscribePlan,"isPremiumExpired",this.isPremiumExpired)
+        let allotedSpace:any = 1
+        if( this.isAccountFree && !this.isPremiumExpired ) {
+          allotedSpace = this.defaultSpace
+        }
+        else if( this.isSubscribePlan && !this.isPremiumExpired ) {
+          allotedSpace = this.defaultSpace
+          if( this.isGetAddOn ) {
+            allotedSpace = Number(this.addOnSpace) + Number(this.defaultSpace)
+          }
+        }
+        this.totalSpaceAlloted = allotedSpace
+        this.totalUsedSpace = 0.5;
+
+        this.spaceProgressBar = (this.totalUsedSpace * 100 / this.totalSpaceAlloted).toFixed(2)
+        //console.log("totalUsedSpace",this.totalUsedSpace,"totalSpaceAlloted",this.totalSpaceAlloted,"spaceProgressBar",this.spaceProgressBar)
       })
-      this.isGetAddOn = localStorage.getItem('endUserSubscriptionAddon') && localStorage.getItem('endUserSubscriptionAddon') == 'yes' ? true : false
     })
     this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
   }
