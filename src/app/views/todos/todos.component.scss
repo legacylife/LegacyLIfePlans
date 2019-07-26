@@ -19,12 +19,10 @@
                     margin-bottom: 0;
                     font-size: 16px;
                     color: #222324;
-                    .when{
-                        display: block;
-                        font-size: 13px;
-                        color: #828385;
-                        margin-top: 5px;
-                    } 
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    
                 }
                 .more{
                     padding: 0;
@@ -34,6 +32,12 @@
                 }
             }
         }
+        .when{
+            display: block;
+            font-size: 13px;
+            color: #828385;
+            margin: 0px 0 15px 20px;
+        } 
     }
 }
 .mat-menu-item{
