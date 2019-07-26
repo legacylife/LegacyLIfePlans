@@ -26,6 +26,30 @@
                 color: #222324;
             }
 
+            .search--box{
+                position: relative;
+                input{
+                    width: 215px;
+                    background: #fff;
+                    padding: 6px 36px 6px 10px;
+                    border-radius: 2px;
+                    height: 20px;
+                    border: none;
+                    color: #222324;
+                    font-size: 15px;
+                    font-family: $font--lato--regular;
+                    &:focus{
+                        outline-color: #727933;
+                    }
+                }
+                .mat-icon{
+                    position: absolute;
+                    right: 6px;
+                    top: 6px;
+                    cursor: pointer;
+                }
+                
+            }
          
         }
         .mat-card-content{

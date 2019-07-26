@@ -11,7 +11,7 @@
           <div class="red--box">
             <img src="assets/images/arkenea/invite-now.png" />
             <p>Encourage your friends, loved ones, acquaintances to create a legacy for their loved ones!
-              <a routerLink="/advisor/dashboard-updates"> Invite Now</a>
+              <a (click)="openInviteModal();"> Invite Now</a>
             </p>
           </div>
         </mat-card-content>
@@ -50,11 +50,12 @@
         <div fxLayout="row wrap">
           <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
             <div class="right--boxes">
-              <mat-card class="p-0">
+
+              <mat-card class="p-0" *ngIf="invitedMembersCount<30">
                 <mat-card-title class="">
                   <div class="card-title-text">Invitation Status</div>
                   <mat-divider></mat-divider>
-                </mat-card-title>
+                </mat-card-title> 
                 <mat-card-content class="invite--body--section">
                   <h4 class="count">{{invitedMembersCount}}<span>/30</span></h4>
                   <p class="daysgo">{{remainingDays}} days to go</p>
@@ -62,6 +63,26 @@
                   <button mat-raised-button class="llp--primary--btn" (click)="openInviteModal({})">Invite Now</button>
                 </mat-card-content>
               </mat-card>
+
+              <mat-card class="p-0 target--completed" *ngIf="invitedMembersCount>=30">
+                <mat-card-content class="">
+                  <div class="header--wrapper">
+                    <header class="sub--header" style="background-image: url('assets/images/arkenea/congratulations.png')">
+                      <span>Congratulations!</span>
+                    </header>
+                    <p class="warn">
+                      Your <span>Free Trial</span>
+                      period has been
+                      extended for
+                      30 days!</p>                      
+                  </div>
+                  <div class="free--access">
+                    Free access valid till {{remainingDays}} days
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+
             </div>
           </div>
           <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">

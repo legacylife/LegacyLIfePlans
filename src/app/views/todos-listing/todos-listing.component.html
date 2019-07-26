@@ -14,9 +14,9 @@
                   <mat-nav-list class="pt-0" *ngIf="viewMode != rowIndex">
                     <mat-list-item>
                       <p class="text-nl2br capitalize">
-                        {{todo.comments}}
-                        <span class="when">{{todo.modifiedOn  | date: 'yyyy/MM/dd H:m:s'}}</span>
+                        {{todo.comments}}                       
                       </p>
+                      
                       <button class="more" mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu1">
                         <mat-icon>more_vert</mat-icon>
                       </button>
@@ -25,6 +25,8 @@
                       <button mat-menu-item (click)="edit(rowIndex)">Edit</button>
                       <button mat-menu-item (click)="delete(todo._id)">Delete</button>
                     </mat-menu>
+
+                    <div class="when">{{todo.modifiedOn  | date: 'yyyy/MM/dd H:m:s'}}</div>
                   </mat-nav-list>
                   <form class="llp-form-wrapper" [formGroup]="todosUpdateForm" (ngSubmit)="todosFormUpdate()">
                     <mat-nav-list class="pt-0" *ngIf="viewMode == rowIndex">

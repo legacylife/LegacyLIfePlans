@@ -30,8 +30,9 @@ export class CustomerMyPeopleComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
     this.userId = localStorage.getItem("endUserId");
-    this.getMyPeoplesList('All', '-1');
+    this.getMyPeoplesList('All', -1);
   }
 
   getMyPeoplesList = (search, sort, advquery: any = {}, trustquery: any = {}) => {
@@ -43,13 +44,22 @@ export class CustomerMyPeopleComponent implements OnInit {
         trustquery: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted'] } }, trustquery),
         advquery: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted', 'Rejected'] } }, advquery),
         fields: {},
-        order: { "modifiedOn": '-1' },
+        order: { "modifiedOn": -1 },
       }
     } else {
+    //  console.log("search",search,'----')
+      let custSearch = { $nin: ['Deleted'] };
+      let advSearch = { $nin: ['Deleted', 'Rejected'] } 
+      
+      if(search!=''){
+        custSearch = search;
+        advSearch = search;  
+       }
+      // console.log("custSearch",custSearch,'advSearch',advSearch)
       req_vars = {
         //query: Object.assign({ customerId: this.userId, status: "Active" }, query),status: { $nin:['Deleted'] }  //'Rejected',
-        trustquery: Object.assign({ customerId: this.userId, status: search }, trustquery),
-        advquery: Object.assign({ customerId: this.userId, status: search }, advquery),
+        trustquery: Object.assign({ customerId: this.userId, status: custSearch }, trustquery),
+        advquery: Object.assign({ customerId: this.userId, status: advSearch }, advquery),
         fields: {},
         order: { "modifiedOn": sort },
       }

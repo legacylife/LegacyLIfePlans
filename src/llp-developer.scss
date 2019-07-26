@@ -37,7 +37,8 @@ Note: Please do not add important anywhere. If any concern feel free to ask.
     font-family: $font--lato--bold !important;
 }
 .app-admin-container .rightside-content-hold.admin--right--section{
-    height: calc(100ch - 232px);
+    height: calc(100vh - 85px);
+    padding: 0 20px;
 }
 
 .admin--logo{
@@ -47,4 +48,7 @@ Note: Please do not add important anywhere. If any concern feel free to ask.
 }
 .admin--toggle{
     margin-left: 15px !important;
+}
+.border-t{
+    border-top: solid 1px #e1e5c7 !important;
 }

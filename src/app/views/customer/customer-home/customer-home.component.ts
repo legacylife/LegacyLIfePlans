@@ -61,17 +61,6 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
       this.myLegacy= false
       this.sharedLegacies =true 
     }
-    // const loc = location.href;
-    // const locArray = loc.split('/')
-    // //console.log("arrray =>",locArray,locArray[5],locArray[7]);
-    // this.activeHeading = '';
-    // if(locArray && locArray[5]){
-    //   this.activeHeading = locArray[5];//'real-estate-vehicle-detail-view';
-    //  // console.log("activeHeading locArray ===>",this.activeHeading);
-    // }else{
-    //   this.activeHeading = '';
-    // }
-    // //console.log("activeHeading again===>",this.activeHeading);
   }
 
   @HostListener('document:click', ['$event']) clickedOutside(event){
@@ -79,8 +68,8 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
     const locArray = loc.split('/')
     this.activeHeading = '';
     if(locArray && locArray[5]){
-      this.activeHeading = locArray[5];//'real-estate-vehicle-detail-view';
-    } 
+      this.activeHeading = locArray[5];
+    }   
   }
 
   showSecoDay() {

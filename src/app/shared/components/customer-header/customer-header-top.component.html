@@ -43,11 +43,11 @@
             </button> -->
 
             <ul class="menu header--ul m-0 p-0">
-              <!-- <li class="mat-menu-item">
-                <a matRipple routerLink="/customer">
+              <li class="mat-menu-item">
+                <a matRipple  (click)="openAddTrusteeModal('', true)">
                   <mat-icon>group_add</mat-icon> Add Trustees
                 </a>
-              </li> -->
+              </li>
               <li class="mat-menu-item" (click)="openTodosModal({})">
                 <a matRipple><mat-icon>list</mat-icon> To dos</a>
               </li>
@@ -67,9 +67,9 @@
 
       <!-- invite -->
 
-      <button mat-button class="top--search--btn">
+      <!-- <button mat-button class="top--search--btn">
         <mat-icon>search</mat-icon>
-      </button>
+      </button> -->
 
       <button mat-raised-button class="invite--btn" (click)="openInviteModal({})">
         <mat-icon>markunread</mat-icon>Invite</button>

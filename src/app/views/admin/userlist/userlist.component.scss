@@ -1,8 +1,43 @@
-.basic--info--wrapper{
-    ::ng-deep .mat-list{
-        .mat-list-item{
-            min-height: 48px;
-            height: auto;
-        }
+
+.admin--users--table{
+    padding: 0;
+    ::ng-deep .mat-card-content{
+        border: solid 1px #e1e5c7 !important;
+    }
+    .material-icons{
+        color: #c72128;
+    }
+    .active--status--chip[ng-reflect-selected="Active"]{
+        background: transparent;
+        color: #727a33;
+        border: 1px solid #727a33;
+        width: 60px;
+        text-align: center;
+    }
+    .active--status--chip[ng-reflect-selected="Inactive"]{
+        background: transparent;
+        color: #c72128;
+        border: 1px solid #c72128;
+        width: 60px;
+        text-align: center;
+    }
+    
+    ::ng-deep .ngx-datatable.material .datatable-header .datatable-header-cell .datatable-header-cell-wrapper,
+    ::ng-deep .ngx-datatable .datatable-header .datatable-header-cell.sortable .datatable-header-cell-wrapper{
+        font-family: 'latobold';
+        color: #fff;
+    }
+    ::ng-deep .ngx-datatable.material .datatable-header .datatable-header-cell,
+    ::ng-deep .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell{
+        padding: 5px 10px;
+        border-bottom: 1px solid #f1eded;
+    }
+    ::ng-deep .ngx-datatable.material .datatable-header .datatable-header-cell{
+        border-bottom: none;
+    }
+    ::ng-deep .ngx-datatable .datatable-header{
+        height: auto !important;
+        background: #727933;
+        color: #fff;
     }
 }

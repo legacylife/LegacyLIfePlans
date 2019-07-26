@@ -48,7 +48,7 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
         console.log(result.data)
       } else {
         this.customerData = result.data;
-        if(this.customerData.profilePicture){
+        if(this.customerData && this.customerData.profilePicture){
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + this.customerData.profilePicture;
         }
       }

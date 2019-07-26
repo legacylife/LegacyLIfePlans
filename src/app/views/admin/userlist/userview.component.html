@@ -13,7 +13,7 @@
         <span fxFlex="8px"></span>
         <button mat-raised-button class="mat-warn" (click)="rejectPopUp({}, true)">Reject</button>
       </div>
-      <mat-card-content class="pt-0">
+      <mat-card-content class="pt-0 border-t">
         <mat-list>
          <!-- <mat-list-item *ngIf="row?.userType != 'sysadmin'" *ngFor="let web of websites;">             
             <mat-icon class="mr-1">public</mat-icon> {{web.links}}
@@ -36,7 +36,7 @@
         <!-- Basic Info starts -->
         <mat-card class="default mb-1 basic--info--wrapper">
           <mat-card-title class="p-1">Basic Info</mat-card-title>
-          <mat-card-content class="p-0">
+          <mat-card-content class="p-0 border-t">
             <mat-list class="compact-list mb-1">
               <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
                 <div fxLayout="row" fxFlex="100">
@@ -120,7 +120,7 @@
         <!-- Admin panel section list  -->
         <mat-card class="default" *ngIf="row?.userType == 'sysadmin'">
           <mat-card-title>Access To Sections</mat-card-title>
-          <mat-card-content class="p-0">
+          <mat-card-content class="p-0 border-t">
             <div class="list-tasktype">
               <div class="tasktype-item">
                 <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess.usermanagement === 'fullaccess'"></mat-checkbox>
@@ -171,7 +171,7 @@
         <!-- Subscription starts -->
         <mat-card class="default" *ngIf="row?.userType != 'sysadmin'">
           <mat-card-title class="p-1">Subscription Details</mat-card-title>
-          <mat-card-content class="p-0">
+          <mat-card-content class="p-0 border-t">
             <mat-list class="compact-list mb-1">
               <mat-list-item class="">
                 <div fxLayout="row" fxFlex="100">
@@ -203,7 +203,7 @@
      <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
           <mat-card class="default" *ngIf="row?.userType == 'advisor'">
               <mat-card-title class="p-1">Uploaded documents</mat-card-title>
-              <mat-card-content class="p-0">
+              <mat-card-content class="p-0 border-t">
                 <mat-list class="compact-list mb-1" *ngFor="let doc of row.advisorDocuments">
                   <mat-list-item class="">
                     <div fxLayout="row" fxFlex="100">

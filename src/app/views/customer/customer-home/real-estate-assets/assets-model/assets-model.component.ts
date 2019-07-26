@@ -126,6 +126,7 @@ export class AssetsModelComponent implements OnInit {
   assetChange(event) {
     if (event.value == 6) {
       this.assetNewToggle = true
+      this.assetsForm.get('assetNew').setValidators(Validators.required);      
     } else {
       this.assetNewToggle = false
     }

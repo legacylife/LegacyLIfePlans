@@ -43,7 +43,7 @@ export class CustomerHiredAdvisorComponent implements OnInit {
     if(search=='All'){
       req_vars = {
         //query: Object.assign({ customerId: this.userId, status: "Active" }, query),//'Rejected',
-        query: Object.assign({customerId:this.userId, status: { $nin:['Deleted'] }}),
+        query: Object.assign({customerId:this.userId, status: { $nin:['Deleted', 'Rejected'] }}),
        fields: {},
        order: {"createdOn": sort},
      }
