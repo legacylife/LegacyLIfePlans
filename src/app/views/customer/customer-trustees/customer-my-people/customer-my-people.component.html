@@ -5,7 +5,7 @@
       <mat-card-header class="m-0 header--with--sort">
         <mat-card-title class="m-0">My People</mat-card-title>
         <div class="right--filters">
-          <mat-icon class="compare--icon" (selectionChange)="getMyPeoplesList('','1')">compare_arrows</mat-icon>
+          <mat-icon class="compare--icon" (click)="getMyPeoplesList('',1)">compare_arrows</mat-icon>
           <mat-select placeholder="All" (selectionChange)="getMyPeoplesList($event.value,'')">
             <mat-option value="All">All</mat-option>
             <mat-option value="Active">Active</mat-option>
