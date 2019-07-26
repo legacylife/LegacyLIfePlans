@@ -18,7 +18,7 @@ async function getSelectedPlanDetails( planId ) {
 function autoRenewalOnUpdateSubscription ( req, res ) {
   let requestParam = req.body
   console.log("requestParamrequestParam==========",requestParam)
-  /* if( requestParam != null || requestParam.length >0 ) {
+  if( requestParam != null || requestParam.length >0 ) {
     let eventId = requestParam.data.id
     let eventType = requestParam.data.object.event
 
@@ -100,7 +100,7 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
         }
       })
     }
-  } */
+  }
 }
 
 function autoRenewalOnReminderEmail() {
