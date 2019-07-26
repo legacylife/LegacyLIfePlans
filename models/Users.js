@@ -109,6 +109,7 @@ var userSchema = new mongoose.Schema({
   allowNotifications:String,
   stripeCustomerId:String,
   subscriptionDetails:Array,
+  refereAndEarnSubscriptionDetail:Array,
   addOnDetails:Array,
   upgradeReminderEmailDay:Array,
   renewalOnReminderEmailDay:Array,

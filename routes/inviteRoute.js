@@ -111,12 +111,12 @@ async function inviteMembers(req, res) {
                 resultCount = data.length
             }
         })
-        // upgrade plan for next 45 days.
-        if (resultCount >= 30) {
+        // upgrade plan for next 30 days.
+        if (resultCount >= 5) { //30
             var newDt = new Date();
-            newDt.setDate(newDt.getDate() + 45);
+            newDt.setDate(newDt.getDate() + 30);
             let subscriptionData = {
-                'subscription_detail.end_date': newDt
+                'refereAndEarnSubscriptionDetail.end_date': newDt
             }
             User.updateOne({ _id: inviteById }, { $set: subscriptionData }, function (err, updatedDetails) {})
         }
