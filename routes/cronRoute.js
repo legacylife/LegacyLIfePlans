@@ -136,7 +136,7 @@ function autoRenewalOnReminderEmail() {
 
         userList.forEach( ( val, index ) => {
           let subscriptionDetails   = val.subscriptionDetails,
-              daysRemainingToExpire = getDateDiff( today, moment(subscriptionDetails.endDate).toDate() )
+              daysRemainingToExpire = getDateDiff( today, moment(subscriptionDetails.endDate).toDate(), 'asHours' )
           
           if ( daysRemainingToExpire > 0 ) {
             let userCreatedOn = val.createdOn,
@@ -234,7 +234,7 @@ function autoRenewalOffReminderEmail() {
 
         userList.forEach( ( val, index ) => {
           let subscriptionDetails   = val.subscriptionDetails,
-              daysRemainingToExpire = getDateDiff( today, moment(subscriptionDetails.endDate).toDate() )
+              daysRemainingToExpire = getDateDiff( today, moment(subscriptionDetails.endDate).toDate() , 'asHours' )
           
           if ( daysRemainingToExpire > 0 ) {
             let userCreatedOn = val.createdOn,
@@ -247,7 +247,7 @@ function autoRenewalOffReminderEmail() {
                 freeAccessRemainingDays   = 0;
             
             //If the auto-payment option is OFF, the system will send reminder notifications on the user’s email (30 days, 7 days, 3 days, 1 day) before expiring plan date
-            if( daysRemainingToExpire <= 30 && daysRemainingToExpire > 29 && ( !val.renewalOffReminderEmailDay || !val.renewalOffReminderEmailDay.includes(30) )) {
+            if( daysRemainingToExpire <= 10 && daysRemainingToExpire > 9 && ( !val.renewalOffReminderEmailDay || !val.renewalOffReminderEmailDay.includes(30) )) {
               //reminder before 30days of premium access expires
               sendEmailReminder         = true
               whichDayEmailReminderSend = 30
@@ -341,7 +341,7 @@ function beforeSubscriptionReminderEmail() {
             userEmailId   = val.username,
             userFullName  = val.firstname ? val.firstname+' '+(val.lastname ? val.lastname : '') : 'User',
             today         = moment().toDate(),
-            diff          = Math.round( getDateDiff( moment(userCreatedOn).toDate(), today ));
+            diff          = Math.round( getDateDiff( moment(userCreatedOn).toDate(), today, 'asHours' ));
 
         let freePremiumAccessRemainDays = Math.abs( diff - 30 ), //The first time registered customer gets free access to all premium features for 30 days
             sendEmailReminder           = false,
@@ -415,10 +415,22 @@ function beforeSubscriptionReminderEmail() {
  * @param startDate 
  * @param endDate 
  */
-function getDateDiff( startDate, endDate ) {
-  return moment.duration( 
+function getDateDiff( startDate, endDate, returnAs=null ) {
+  if( returnAs == 'asHours') {
+    return moment.duration( 
+      moment(endDate).diff( moment(startDate) ) 
+    ).asHours()  
+  }
+  else if(returnAs == 'asDays') {
+    return moment.duration( 
       moment(endDate).diff( moment(startDate) ) 
     ).asDays()
+  }
+  else{
+    return moment.duration( 
+      moment(endDate).diff( moment(startDate) ) 
+    ).asMonths()
+  }
 }
 
 router.post(["/auto-renewal-on-update-subscription"], autoRenewalOnUpdateSubscription);
