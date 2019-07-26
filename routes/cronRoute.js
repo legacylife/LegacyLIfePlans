@@ -17,23 +17,24 @@ async function getSelectedPlanDetails( planId ) {
 
 function autoRenewalOnUpdateSubscription ( req, res ) {
   let requestParam = req.body
-  console.log("requestParamrequestParam==========",requestParam)
+  //console.log("requestParamrequestParam==========",requestParam)
   if( requestParam != null || requestParam.length >0 ) {
-    let eventId = requestParam.data.id
-    let eventType = requestParam.data.object.event
+    let eventId = requestParam.id
+    let eventType = requestParam.type
 
     if( eventType == 'customer.subscription.updated' ) {
       let subscriptionData =  requestParam.data.object
       let customerId = subscriptionData.customer
-      User.find( { stripeCustomerId:customerId }, {}, function (err, userProfile) {
-        if( !err && userProfile.length > 0 ) {
+      User.find( { stripeCustomerId:customerId }, {}, function (err, userData) {
+        if( !err && userData.length > 0 ) {
+          let userProfile = userData[0]
           if( subscriptionData.object == 'subscription' ) {
             let subscriptionDetails = {"_id" : objectId,
                                         "productId" : subscriptionData.items.data[0]['plan']['product'],
                                         "planId" : subscriptionData.items.data[0]['plan']['id'],
                                         "subscriptionId" : subscriptionData.id,
-                                        "startDate" : new Date(subscriptionData.current_period_start),
-                                        "endDate" : new Date(subscriptionData.current_period_end),
+                                        "startDate" : new Date(subscriptionData.current_period_start*1000),
+                                        "endDate" : new Date(subscriptionData.current_period_end*1000),
                                         "interval" : subscriptionData.items.data[0]['plan']['interval'],
                                         "currency" : subscriptionData.items.data[0]['plan']['currency'],
                                         "amount" : subscriptionData.items.data[0]['plan']['amount'] / 100,
@@ -61,6 +62,7 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
               }
             }
             userSubscription.push(subscriptionDetails)
+            //console.log(userSubscription)
             //Update user details
             User.updateOne({ _id: userProfile._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription } }, function (err, updated) {
               if (err) {
@@ -89,9 +91,10 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
                       html: body
                     }
                     sendEmail(mailOptions)
-                    res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
+                    
+                    console.log("email sent")
                   } else {
-                    res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
+                    console.log("email sent")
                   }
                 })
               }

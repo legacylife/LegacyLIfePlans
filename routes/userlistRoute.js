@@ -340,25 +340,27 @@ function getPlanDetails(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
+      console.log("userProfile",userProfile)
       if( userProfile && userProfile.stripeCustomerId ) {
         let subscriptionDetails = userProfile.subscriptionDetails ? userProfile.subscriptionDetails : null
         let planId = subscriptionDetails != null ? subscriptionDetails[(subscriptionDetails.length-1)]['planId'] : ""
-        if( planId != "" ) {
+        console.log("planId",planId)
+        if( planId && planId!= null || planId != "" ) {
           stripe.plans.retrieve(
             planId,
             function(err, plan) {
               if (err) {
-                res.status(401).send(resFormat.rError(err))
+                res.status(200).send(resFormat.rError(err))
               }
               res.status(200).send(resFormat.rSuccess( {plan, "message": "Plan Details"}))    
           });
         }
         else{
-          res.status(401).send(resFormat.rError(err))
+          res.status(200).send(resFormat.rError(""))
         }
       }
       else{
-        res.status(401).send(resFormat.rError(err))
+        res.status(401).send(resFormat.rError(""))
       }
     }
   })
