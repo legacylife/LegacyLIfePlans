@@ -373,11 +373,21 @@ function personalIdUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
+          let { proquery } = req.body;
           let resText = 'added';
           if (custData.documentType) {
             resText = 'updated';
+          }else{
+            /*
+            if(proquery.customerLegacyType == 'advisor'){
+              var sendData = {}
+              sendData.sectionName = "My Essentials";
+              sendData.customerId = custData.customerId;
+              sendData.customerLegacyId = proquery.customerLegacyId;
+              commonhelper.customerAdvisorLegacyNotifications(sendData)
+            }
+            */
           }
-          let { proquery } = req.body;
           proquery.modifiedOn = new Date();
           proquery.status = 'Active';
           personalIdProof.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
@@ -874,6 +884,18 @@ function viewInviteDetails(req, res) {
   })
 }
 
+function referAndEarnParticipate(req, res) {
+  User.updateOne({ _id: ObjectId(req.body.userId) }, {'IamIntrested':'Yes'}, function (err, updatedDetails) {
+    
+    if (err) {
+      res.send(resFormat.rError(err))
+    } else {
+      let result = { "message": "Record updated successfully!" }
+      res.status(200).send(resFormat.rSuccess(result))
+    }
+  })
+}
+
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
@@ -898,4 +920,6 @@ router.post("/file-activity-log-list", fileActivityLogList)
 router.post("/shared-legacies-list", getSharedLegaciesList)
 router.post("/legacy-user-remove", legacyUserRemove)
 router.post("/view-invite-details", viewInviteDetails)
+router.post("/refer-and-earn-participate", referAndEarnParticipate)
+
 module.exports = router

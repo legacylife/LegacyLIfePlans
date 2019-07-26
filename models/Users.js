@@ -112,7 +112,8 @@ var userSchema = new mongoose.Schema({
   addOnDetails:Array,
   upgradeReminderEmailDay:Array,
   renewalOnReminderEmailDay:Array,
-  renewalOffReminderEmailDay:Array
+  renewalOffReminderEmailDay:Array,
+  IamIntrested: { type: String, default:'No' }, 
 })
 
 //function to set password
