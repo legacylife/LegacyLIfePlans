@@ -58,6 +58,9 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
           this.trusteeLegaciesAction = false;
         }
         this.row = result.data;
+        if(this.row){
+          this.docPath = this.row.customerId+'/'+s3Details.myEssentialsDocumentsPath;
+        }
       }
     }, (err) => {
       console.error(err)
@@ -161,6 +164,7 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
     let req_vars = {
       query: Object.assign({ docPath: this.docPath, filename: filename }, query)
     }
+    this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
       var downloadURL =window.URL.createObjectURL(res)
       let filePath = downloadURL;
@@ -168,6 +172,7 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
       link.href = filePath;
       link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
       link.click();
+      this.snack.dismiss();
     });
   }
 }

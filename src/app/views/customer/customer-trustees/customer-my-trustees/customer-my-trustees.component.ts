@@ -19,6 +19,7 @@ export class CustomerMyTrusteeComponent implements OnInit {
   trustyListing:any = [];
   fileActivityLogList:any;
   showTrustyListing : boolean = false;
+  listingAsc : boolean = true;
   showTrustyListingCnt: any;
   profileUrl = s3Details.url+'/profilePictures/';
   testImg = '/pk.png';
@@ -46,8 +47,12 @@ export class CustomerMyTrusteeComponent implements OnInit {
         order: {"createdOn": sort},
       }
     }else{
+        let custSearch = { $nin: ['Deleted'] };    
+        if(search!=''){
+          custSearch = search;
+        }
        req_vars = {
-        query: Object.assign({ customerId: this.userId, status: search }, query),
+        query: Object.assign({ customerId: this.userId, status: custSearch }, query),
         fields: {},
         order: {"createdOn": sort},
       }
@@ -56,6 +61,11 @@ export class CustomerMyTrusteeComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
+        if(sort==1){
+          this.listingAsc = false;
+        }else{
+          this.listingAsc = true;
+        }
         this.trustyListing = result.data.trustList;
 
         this.showTrustyListingCnt = this.trustyListing.length;  

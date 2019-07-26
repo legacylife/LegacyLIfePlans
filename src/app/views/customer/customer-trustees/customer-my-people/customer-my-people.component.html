@@ -5,7 +5,10 @@
       <mat-card-header class="m-0 header--with--sort">
         <mat-card-title class="m-0">My People</mat-card-title>
         <div class="right--filters">
-          <mat-icon class="compare--icon" (click)="getMyPeoplesList('',1)">compare_arrows</mat-icon>
+          
+          <mat-icon class="compare--icon--desc" *ngIf="this.listingAsc" (click)="getMyPeoplesList('',1)">sort</mat-icon>
+          <mat-icon class="compare--icon--asc" *ngIf="!this.listingAsc" (click)="getMyPeoplesList('',-1)">sort</mat-icon>
+
           <mat-select placeholder="All" (selectionChange)="getMyPeoplesList($event.value,'')">
             <mat-option value="All">All</mat-option>
             <mat-option value="Active">Active</mat-option>
@@ -13,7 +16,7 @@
           </mat-select>
         </div>
       </mat-card-header>
-      <mat-card-content class="appointees--wrapper box--scroll"  *ngIf="this.showallPeoplesListing">
+      <mat-card-content class="appointees--wrapper box--scroll" *ngIf="this.showallPeoplesListing">
         <mat-card class="appointees--section p-0 {{peoples.status === 'Pending' ? 'pending' : ''}}" *ngFor="let peoples of allPeoples">
           <mat-card-header class="m-0">
             <mat-card-title class="m-0">

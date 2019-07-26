@@ -17,7 +17,7 @@ import { userSections } from '../../../../config';
   styleUrls: ['./add-trustee-modal.component.scss']
 })
 export class addTrusteeModalComponent implements OnInit, AfterViewInit {
-  isLinear = true;
+  isLinear = false;
   @ViewChild('stepper') private myStepper: MatStepper;
   invalidMessage: string;
   EmailExist: boolean;
@@ -34,7 +34,9 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
   profileIdHiddenVal = false;
   trust_id: any;
   ids: string;
+  mainHead: string;
   row: any = [];
+  hideFirstStep : Boolean = true;
   constructor(
     private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private stepper: MatStepperModule,
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
@@ -44,11 +46,13 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.buildItemForm();
     this.userSections = userSections;  
-
+    this.mainHead = 'Add a Trustee to your Legacy!';
     if(this.ids && this.ids!=='undefined'){
+      this.mainHead = 'Update Trustee for your Legacy!';
       this.selectedProfileId = this.ids;   
-      this.myStepper.selectedIndex = Number('1');
-      this.getTrusteeView();
+      //this.myStepper.selectedIndex = Number(1);
+      this.hideFirstStep = false;
+      this.getTrusteeView();      
     }    
   }
 

@@ -45,14 +45,22 @@
                     }                  
                     
                 }
-               .compare--icon{
+               .compare--icon--desc{
                     width: 30px;
                     height: 30px;
                     font-size: 30px;
-                    transform: rotate(90deg);
+                    
                     margin: 0 5px 0 0;
                     cursor: pointer;
                }
+               .compare--icon--asc{
+                width: 30px;
+                height: 30px;
+                font-size: 30px;
+                transform: rotate(180deg);
+                margin: 0 5px 0 0;
+                cursor: pointer;
+           }
             }
         }
         .mat-card-content{

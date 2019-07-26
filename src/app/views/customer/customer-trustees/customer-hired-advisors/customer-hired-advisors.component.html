@@ -4,7 +4,8 @@
       <mat-card-header class="m-0 header--with--sort">
         <mat-card-title class="m-0">Hired Advisors</mat-card-title>
         <div class="right--filters">
-          <mat-icon class="compare--icon" (selectionChange)="getAdvisorList('','1')">compare_arrows</mat-icon>
+          <mat-icon class="compare--icon--desc" *ngIf="this.listingAsc" (click)="getAdvisorList('',1)">sort</mat-icon>
+          <mat-icon class="compare--icon--asc" *ngIf="!this.listingAsc" (click)="getAdvisorList('',-1)">sort</mat-icon>
           <mat-select placeholder="All" (selectionChange)="getAdvisorList($event.value,'')">
             <mat-option value="All">All</mat-option>
             <mat-option value="Active">Active</mat-option>
