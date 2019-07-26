@@ -16,7 +16,8 @@ import {
   MatSelectModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatDialogModule
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -35,6 +36,9 @@ import { SigninComponent } from './signin/signin.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { PasswordResetSuccessfulComponent } from './password-reset-successful/password-reset-successful.component';
 import { ForgotPasswordSuccessfulComponent } from './password-reset-successful/forgot-password-successful.component';
+import { SubscriptionComponent } from './subscription/subscription.component';
+import { ReferAndEarnComponent } from './subscription/refer-and-earn/refer-and-earn.component';
+
 
 @NgModule({
   imports: [
@@ -55,12 +59,19 @@ import { ForgotPasswordSuccessfulComponent } from './password-reset-successful/f
     MatDatepickerModule,
     MatNativeDateModule,
     MatTooltipModule,
+    MatDialogModule,
     RouterModule.forChild(AuthRoutes)
   ],
-  declarations: [SigninComponent, ForgotPasswordComponent, LockscreenComponent,
-    NotFoundComponent, ErrorComponent, ResetPasswordComponent, PasswordResetSuccessfulComponent,ForgotPasswordSuccessfulComponent],
-    providers: [
-      MatDatepickerModule,UserPreAuthGuard
-    ]
+  declarations: [
+    SigninComponent, ForgotPasswordComponent, LockscreenComponent,SubscriptionComponent,
+    NotFoundComponent, ErrorComponent, ResetPasswordComponent, PasswordResetSuccessfulComponent,ForgotPasswordSuccessfulComponent,
+    ReferAndEarnComponent
+  ],
+  entryComponents: [
+    ReferAndEarnComponent
+  ],
+  providers: [
+    MatDatepickerModule,UserPreAuthGuard
+  ]
 })
 export class AuthModule { }

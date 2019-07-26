@@ -8,6 +8,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { PasswordResetSuccessfulComponent } from './password-reset-successful/password-reset-successful.component';
 import { ForgotPasswordSuccessfulComponent } from './password-reset-successful/forgot-password-successful.component';
 import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
+import { SubscriptionComponent } from './subscription/subscription.component';
 
 console.log('Auth---routing');
 export const AuthRoutes: Routes = [
@@ -39,6 +40,11 @@ export const AuthRoutes: Routes = [
     component: ForgotPasswordSuccessfulComponent,
     data: { title: 'Thank You' },
     canActivate: [ UserPreAuthGuard ]
+  },
+  {
+    path: 'subscription',
+    component: SubscriptionComponent,
+    data: { title: 'Subscription' }
   }
 
 ];

@@ -147,7 +147,7 @@
                       <a class="clr--red" [class.not-allowed]="!isSubscribePlan || !isAccountFree || isSubscriptionCanceled" [attr.disabled]="!isSubscribePlan || !isAccountFree || isSubscriptionCanceled" (click)="isSubscribePlan && (!isAccountFree || !isSubscriptionCanceled) && cancelSubscription()">Cancel subscription</a>
                     </div>
 
-                    <mat-card class="mt-1 p-0 black--header">
+                    <mat-card class="mt-1 p-0 black--header" *ngIf="invitedMembersCount<30">
                       <mat-card-title class="">
                         <div class="card-title-text">Invitation Status</div>
                         <mat-divider></mat-divider>
@@ -156,9 +156,28 @@
                         <h4 class="count">{{invitedMembersCount}}<span>/30</span>
                         </h4>
                         <p class="daysgo">{{remainingDays}} days to go</p>
-                        <p class="invites">Invites sent in this month</p>
+                        <p class="invites">Invites sent in this month</p> 
                         <button mat-raised-button class="llp--primary--btn" (click)="openInviteModal({})">Invite Now</button>
                       </mat-card-content>
+                    </mat-card>
+
+
+                    <mat-card class="mt-1 p-0 black--header" *ngIf="invitedMembersCount>=30">
+                      <mat-card-content class="">
+                        <div class="header--wrapper">
+                          <header class="sub--header" style="background-image: url('assets/images/arkenea/congratulations.png')">
+                            <span>Congratulations!</span>
+                          </header>
+                          <p class="warn">
+                            Your <span>Free Trial</span>
+                            period has been
+                            extended for
+                            30 days!</p>                      
+                        </div>
+                        <div class="free--access">
+                          Free access valid till {{remainingDays}} days
+                        </div>
+                      </mat-card-content>      
                     </mat-card>
 
                     

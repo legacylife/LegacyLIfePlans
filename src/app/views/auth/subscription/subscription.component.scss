@@ -1,0 +1,238 @@
+@import 'llp-global-styles.scss';
+
+.subscription--wrapper{
+    border: solid 1px #e1e5c7;
+    background-color: #fff; 
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+
+    .header--wrapper{
+        width: 69%;
+        margin: 35px auto;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+
+        .sub--header{
+            &.show--mobile{
+                display: none;
+                span {
+                    font-size: 20px;
+                    padding: 0 30px;
+                }
+            }
+
+            margin: 0 auto 30px;
+            background-repeat: no-repeat;
+            span {
+                font-family: $font--lato--italic;
+                font-size: 36px;
+                color: $clr--10;
+                padding: 0 50px;
+            }
+        }
+
+        &::before{
+            content : "";
+            background-image : url("assets/images/arkenea/leafs-left.png");
+            width: 63px;
+            height: 182px;
+            position: absolute;
+            left: 0;
+            background-size: contain;            
+            background-repeat: no-repeat;
+        }
+        &::after{
+            content : "";
+            background-image : url("assets/images/arkenea/leafs-right.png");
+            width: 63px;
+            height: 182px;
+            position: absolute;
+            right: 0;
+            background-size: contain;           
+            background-repeat: no-repeat;
+        }
+       
+       .warn{
+            font-size: 43px;
+            color: $clr--3;
+            line-height: 1.4;
+            margin: 0;
+            padding: 0 12%;
+            text-align: center;
+            span{
+                color: #ecbe00;
+                font-family: $font--lato--bold;
+            }
+       } 
+    }
+    
+    .free--trail{
+        background-color: #fdfeec;
+        border-top: solid 1px #e1e5c7;
+        padding: 40px 40px 60px 40px;
+        h2{
+            font-size: 28px
+        }
+        .divider-sm{
+            border: solid 1px #e1e5c7;
+            width: 120px;
+            margin: 30px auto;
+        }
+        .refer--earn{
+            padding-left: 28%;
+            position: relative;
+            padding-top: 50px;
+            .refer--row{                
+                display: flex;
+                align-items: center;
+
+                .rate{
+                    border: dashed 2px #c62128;
+                    border-radius: 8px;
+                    height: 124px;
+                    background-color: $clr--1;
+                    text-align: center;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-end;
+                    position: relative;
+                    
+                    h5{
+                        font-size: 40px;
+                        color: #c62128;
+                        font-family: $font--lato--bold;
+                        margin: 0 0 3px 0;
+                    }
+                    p{
+                        font-size: 20px;
+                        color: #222324;
+                        margin-bottom: 10px;
+                        font-family: $font--lato--italic !important;
+                        
+                    }
+                    &::before{
+                        content: "REFER";
+                        font-size: 26px;
+                        color: #737b33;
+                        font-family: $font--lato--italic;
+                        text-transform: uppercase;
+                        position: absolute;
+                        left: 0;
+                        top: -50px;
+                    }
+                    &.earn{
+                        &::before{
+                            content: "Earn";
+                        }
+                    }
+                }
+                .and--txt{
+                    color: #222324;
+                    font-size: 35px;
+                }
+                .actions{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+                .know--more{
+                    color: #c72128;
+                    font-size: 16px;
+                    margin-top: 20px;
+
+                }
+            }
+
+            .refer--earn--img{
+                position: absolute;
+                top: -40%;
+                left: 0;
+            }
+        }
+    }   
+}
+.go--to--acc{
+    width: 185px;
+}
+.iam--inte--btn{
+    width: 165px;
+}
+::ng-deep .llp--secondary--btn{
+    background-color: white !important;
+}
+/* Media query (start here)*/
+
+@media only screen and (max-width: 599px) {
+    .subscription--wrapper{
+        margin: 30px 15px;
+    }
+    .subscription--wrapper .header--wrapper {
+        width: 90%;
+        margin: 20px auto;
+    }
+    .subscription--wrapper .header--wrapper .warn{
+        font-size: 21px;
+    }
+    .subscription--wrapper .free--trail {
+        padding: 25px;
+    }
+    .subscription--wrapper .free--trail .refer--earn {
+        padding-left: 0;
+        padding-top: 45px;
+    }
+    .subscription--wrapper .free--trail .refer--earn .refer--row .and--txt {
+        margin: 20px 0;
+    }
+    .subscription--wrapper .free--trail .refer--earn .refer--row .actions {
+        margin-top: 25px;
+    }
+    .subscription--wrapper .header--wrapper .sub--header,
+    .subscription--wrapper .free--trail .refer--earn .refer--earn--img{
+        display: none;
+    }
+    .subscription--wrapper .header--wrapper .sub--header.show--mobile {
+        display: block;
+    }
+    .subscription--wrapper .header--wrapper::before, 
+    .subscription--wrapper .header--wrapper::after {
+        height: 163px;
+    }
+   
+}
+@media only screen and (min-width: 600px) and (max-width: 959px){
+    .subscription--wrapper .free--trail .refer--earn {
+        padding-left: 50%;
+        padding-top: 50px;
+    }
+    .subscription--wrapper .free--trail .refer--earn .refer--earn--img {
+        top: 0;
+        left: 0;
+    }
+    .subscription--wrapper .free--trail .refer--earn .refer--row .and--txt {
+        margin: 24px 0;
+    }
+    .subscription--wrapper .free--trail .refer--earn .refer--row .actions {        
+        flex-direction: row;        
+        align-items: center;
+        justify-content: center;
+        margin-top: 30px;
+    }
+    .subscription--wrapper .free--trail .refer--earn .refer--row .know--more {
+        margin-top: 0;
+        margin-left: 30px;
+    }
+}
+@media only screen and (min-width: 960px) and (max-width: 979px){}
+@media only screen and (min-width: 980px) and (max-width: 1279px){
+    .subscription--wrapper .free--trail .refer--earn .refer--earn--img {
+        left: -24px;
+    }
+}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){}
+@media only screen and (min-width: 1441px) and (max-width: 1550px){}
+
+/* Media query (end here)*/
