@@ -492,10 +492,17 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                                 "createdBy" : mongoose.Types.ObjectId(requestParam._id)
                               };
       let userSubscription = []
-      let EmailTemplateName = "NewSubscription";
+      let EmailTemplateName = "NewSubscriptionAdviser";
+      if(userProfile.userType == 'customer') {
+        EmailTemplateName = "NewSubscription";
+      }
+
       if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
         userSubscription = userProfile.subscriptionDetails
-        EmailTemplateName = "AutoRenewal"
+        EmailTemplateName = "AutoRenewalAdviser"
+        if(userProfile.userType == 'customer') {
+          EmailTemplateName = "AutoRenewal"
+        }
       }
       userSubscription.push(subscriptionDetails)
       //Update user details
@@ -506,7 +513,6 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
         else {
           //subscription purchased email template
           emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
-            //console.log("template",template)
             if(template) {
               template = JSON.parse(JSON.stringify(template));
               let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '');
@@ -516,10 +522,11 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
               body = body.replace("{paid_on}",subscriptionDetails.paidOn);
               body = body.replace("{start_date}",subscriptionDetails.startDate);
               body = body.replace("{end_date}",subscriptionDetails.endDate);
-              body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
-              body = body.replace("{more_space}", subscription.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
+              if(userProfile.userType == 'customer') {
+                body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
+                body = body.replace("{more_space}", subscription.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
+              }
               body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
-              //console.log("body",body)
               const mailOptions = {
                 to : userProfile.username,
                 subject : template.mailSubject,
@@ -531,7 +538,6 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
               res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
             }
           })
-          //res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
         }
       })
     }
