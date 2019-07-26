@@ -333,7 +333,8 @@ const resetPassword = function (req, res) {
           if (err) {
             res.send(resFormat.rError(err))
           } else {
-            res.send(resFormat.rSuccess('Your password is updated'))
+            let msg = {username : userDetails.username, msg : 'Your password is updated'}
+            res.send(resFormat.rSuccess(msg))
           }
         })
       }
