@@ -20,6 +20,7 @@ export class ManageTrusteeModalComponent implements OnInit, AfterViewInit {
   RequestData: any;
   selectedProfileId: string;
   profileIdHiddenVal = false;
+  listingCnt = false;
   trust_id: any;
   listLength: any;
   hdtitle: string;
@@ -82,14 +83,17 @@ manageTrusteeSubmit(insert = null) {console.log("insert",insert)
       } else {
         if(result.data){    
           this.rows = result.data.trusteeUsersList;   
-          this.listLength = this.rows.length-1;
-         
-          this.trusteeFormGroup.controls['code'].setValue(this.code);
-          this.accessManagement = this.trusteeFormGroup.get('accessManagement') as FormArray;
-          this.accessManagement.removeAt(0);
-          this.rows.forEach((element: any, index) => {
-              this.accessManagement.push(this.createDefinition(element.userAccess[this.code],element._id));
-          })
+          if(this.rows.length>0){
+              this.listingCnt = true;
+              this.listLength = this.rows.length-1;
+            
+              this.trusteeFormGroup.controls['code'].setValue(this.code);
+              this.accessManagement = this.trusteeFormGroup.get('accessManagement') as FormArray;
+              this.accessManagement.removeAt(0);
+              this.rows.forEach((element: any, index) => {
+                  this.accessManagement.push(this.createDefinition(element.userAccess[this.code],element._id));
+              })
+          }
         }       
       }
     }, (err) => {

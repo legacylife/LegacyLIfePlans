@@ -22,8 +22,10 @@
     <div fxLayout="row wrap" *ngIf="assetNewToggle">
       <div fxFlex.xs="100">
         <mat-form-field class="full-width">
-          <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="assetNew" placeholder="Asset New"
+          <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="assetNew" placeholder="Asset New *"
             [formControl]="assetsForm.controls['assetNew']">
+            <mat-icon matTooltip="Please enter new asset" matTooltipClass="llp--tooltip error" *ngIf="assetsForm.controls['assetNew'].hasError('required') && assetsForm.controls['assetNew'].touched"
+            class="red--alert">help_outline</mat-icon>
         </mat-form-field>
       </div>
     </div>
