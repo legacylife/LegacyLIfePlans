@@ -9,7 +9,6 @@ const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 var currencyFormatter     = require('currency-formatter');
 var objectId = mongoose.Types.ObjectId();
-const stripe = require("stripe")("sk_test_eXXvQMZIUrR3N1IEAqRQVTlw");
 
 async function getSelectedPlanDetails( planId ) {
   return await stripe.plans.retrieve( planId );
