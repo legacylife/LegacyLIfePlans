@@ -153,8 +153,7 @@ function recentUpdateList(req, res) {
             as: "userInfo"
           }
       }
-    ], function (err, logList) {
-      console.log(logList[0].userInfo[0])
+    ], function (err, logList) {      
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
