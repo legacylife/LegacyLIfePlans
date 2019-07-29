@@ -132,79 +132,95 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
         User.find( { username: customer_email, stripeCustomerId:customerId }, {}, function (err, userData) {
           if( !err && userData.length > 0 ) {
             let userProfile = userData[0]
-            if( subscriptionData.type == 'subscription' ) {
-              let subscriptionDetails = {"_id" : objectId,
-                                          "productId" : subscriptionData[0]['plan']['product'],
-                                          "planId" : subscriptionData[0]['plan']['id'],
-                                          "subscriptionId" : subscriptionData[0]['subscription'],
-                                          "startDate" : new Date(subscriptionData[0]['period']['start']*1000),
-                                          "endDate" : new Date(subscriptionData[0]['period']['end']*1000),
-                                          "interval" : subscriptionData[0]['plan']['interval'],
-                                          "currency" : subscriptionData[0]['plan']['currency'],
-                                          "amount" : subscriptionData[0]['plan']['amount'] / 100,
-                                          "status" : 'paid',
-                                          "autoRenewal": autoRenewalUpdate == 'charge_automatically' ? true : false,
-                                          "paymentMode" : 'online',
-                                          "planName" : subscriptionData[0]['plan']['metadata']['name']+' Plan',
-                                          "defaultSpace" : subscriptionData[0]['plan']['metadata']['defaultSpace'],
-                                          "spaceDimension" : subscriptionData[0]['plan']['metadata']['spaceDimension'],
-                                          "paidOn" : new Date(),
-                                          "createdOn" : new Date(),
-                                          "createdBy" : mongoose.Types.ObjectId(requestParam._id)
-                                        };
-              let userSubscription = []
-              let EmailTemplateName = "NewSubscriptionAdviser";
-              if(userProfile.userType == 'customer') {
-                EmailTemplateName = "NewSubscription";
+            if( subscriptionData[0]['type'] == 'subscription' ) {
+
+              var currentDate  = new Date();
+              var currentSubscriptionEndDate = ''//new Date(subscriptionData[0]['period']['start']*1000);
+              let updateuser = false
+              let subscriptionDetails   = userData.subscriptionDetails ? userData.subscriptionDetails : null
+              if( subscriptionDetails != null && subscriptionDetails.length > 0 ) {
+                subscriptionEndDate   = subscriptionDetails[(subscriptionDetails.length-1)]['endDate']
+                subscriptionStatus    = subscriptionDetails[(subscriptionDetails.length-1)]['status']
+                currentSubscriptionEndDate = new Date(subscriptionEndDate)
+                if( subscriptionStatus != 'canceled' && currentSubscriptionEndDate < currentDate ) {
+                  updateuser = true
+                }
               }
-        
-              if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
-                userSubscription = userProfile.subscriptionDetails
-                EmailTemplateName = "AutoRenewalAdviser"
+              
+              if( updateuser ) {
+                let subscriptionDetails = {"_id" : objectId,
+                                            "productId" : subscriptionData[0]['plan']['product'],
+                                            "planId" : subscriptionData[0]['plan']['id'],
+                                            "subscriptionId" : subscriptionData[0]['subscription'],
+                                            "startDate" : new Date(subscriptionData[0]['period']['start']*1000),
+                                            "endDate" : new Date(subscriptionData[0]['period']['end']*1000),
+                                            "interval" : subscriptionData[0]['plan']['interval'],
+                                            "currency" : subscriptionData[0]['plan']['currency'],
+                                            "amount" : subscriptionData[0]['plan']['amount'] / 100,
+                                            "status" : 'paid',
+                                            "autoRenewal": autoRenewalUpdate == 'charge_automatically' ? true : false,
+                                            "paymentMode" : 'online',
+                                            "planName" : subscriptionData[0]['plan']['metadata']['name']+' Plan',
+                                            "defaultSpace" : subscriptionData[0]['plan']['metadata']['defaultSpace'],
+                                            "spaceDimension" : subscriptionData[0]['plan']['metadata']['spaceDimension'],
+                                            "paidOn" : new Date(),
+                                            "createdOn" : new Date(),
+                                            "createdBy" : mongoose.Types.ObjectId(requestParam._id)
+                                          };
+                let userSubscription = []
+                let EmailTemplateName = "NewSubscriptionAdviser";
                 if(userProfile.userType == 'customer') {
-                  EmailTemplateName = "AutoRenewal"
+                  EmailTemplateName = "NewSubscription";
                 }
+          
+                if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
+                  userSubscription = userProfile.subscriptionDetails
+                  EmailTemplateName = "AutoRenewalAdviser"
+                  if(userProfile.userType == 'customer') {
+                    EmailTemplateName = "AutoRenewal"
+                  }
+                }
+                userSubscription.push(subscriptionDetails)
+                //console.log(userSubscription)
+                console.log("userFullName",userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '',"email: -",userProfile.username,  "created on :-",userProfile.createdOn);
+                //Update user details
+                User.updateOne({ _id: userProfile._id }, { $set: { subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
+                  if (err) {
+                    res.send(resFormat.rError(err))
+                  }
+                  else {
+                    //subscription purchased email template
+                    emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
+                      if(template) {
+                        template = JSON.parse(JSON.stringify(template));
+                        let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '');
+                        body = body.replace("{plan_name}",subscriptionDetails.planName);
+                        body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
+                        body = body.replace("{duration}",subscriptionDetails.interval);
+                        body = body.replace("{paid_on}",subscriptionDetails.paidOn);
+                        body = body.replace("{start_date}",subscriptionDetails.startDate);
+                        body = body.replace("{end_date}",subscriptionDetails.endDate);
+                        if(userProfile.userType == 'customer') {
+                          body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
+                          body = body.replace("{more_space}", subscriptionData.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
+                        }
+                        body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
+                        const mailOptions = {
+                          to : userProfile.username,
+                          subject : template.mailSubject,
+                          html: body
+                        }
+                        sendEmail(mailOptions)
+                        console.log("email sent")
+                        res.json({received: true});
+                      } else {
+                        console.log("email sent")
+                        res.json({received: true});
+                      }
+                    })
+                  }
+                })
               }
-              userSubscription.push(subscriptionDetails)
-              //console.log(userSubscription)
-              console.log("userFullName",userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '',"email: -",userProfile.username,  "created on :-",userProfile.createdOn);
-              //Update user details
-              User.updateOne({ _id: userProfile._id }, { $set: { subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
-                if (err) {
-                  res.send(resFormat.rError(err))
-                }
-                else {
-                  //subscription purchased email template
-                  emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
-                    if(template) {
-                      template = JSON.parse(JSON.stringify(template));
-                      let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '');
-                      body = body.replace("{plan_name}",subscriptionDetails.planName);
-                      body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
-                      body = body.replace("{duration}",subscriptionDetails.interval);
-                      body = body.replace("{paid_on}",subscriptionDetails.paidOn);
-                      body = body.replace("{start_date}",subscriptionDetails.startDate);
-                      body = body.replace("{end_date}",subscriptionDetails.endDate);
-                      if(userProfile.userType == 'customer') {
-                        body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
-                        body = body.replace("{more_space}", subscriptionData.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
-                      }
-                      body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
-                      const mailOptions = {
-                        to : userProfile.username,
-                        subject : template.mailSubject,
-                        html: body
-                      }
-                      sendEmail(mailOptions)
-                      console.log("email sent")
-                      return true;
-                    } else {
-                      console.log("email sent")
-                      return true;
-                    }
-                  })
-                }
-              })
             }
           }
         })
