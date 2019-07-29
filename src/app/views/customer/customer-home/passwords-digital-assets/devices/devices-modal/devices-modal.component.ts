@@ -81,12 +81,16 @@ export class DevicesModalComponent implements OnInit {
       //  onDraw:this.savePattren
       onDraw: (pattern) => {
         document.getElementById('patternHolder').className = 'hides';
-        this.savePattren(pattern);
+        this.setPattern(pattern, '#patternHolder7');
+       // this.savePattren(pattern);
       }
     });
    
     this.getDeviceView();
   }
+
+
+  
 
   //  ngAfterViewInit(){
   //  this.lock = new PatternLock('#patternHolder',{
@@ -186,6 +190,12 @@ export class DevicesModalComponent implements OnInit {
   DevicesFormSubmit(profileInData = null) {
     var query = {};
     var proquery = {};
+    let pattern = this.getPattern();
+    
+    if(this.DevicesForm.controls['passwordType'].value=='3' && pattern!==''){
+      this.setPattern(pattern, '#patternHolder7');
+    }
+    
     if(this.DevicesForm.controls['passwordType'].value=='3' && this.DevicesForm.controls['pattrenTemp'].value==''){
         this.pattrenTempMissing = true;
         this.invalidMessage = "Please draw your device pattern.";
@@ -204,6 +214,7 @@ export class DevicesModalComponent implements OnInit {
         }else if(this.DevicesForm.controls['passwordType'].value=='3'){
           profileInData.pin = '';
           profileInData.password = '';
+          profileInData.passwordPattern = pattern;
         }
 
         if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'passwords-digital-assests') {
@@ -305,4 +316,9 @@ export class DevicesModalComponent implements OnInit {
     this.lock.enable();    
   }
 
+  getPattern() {
+    let pattern = this.lock.getPattern();
+    console.log("Get pattern :- ",pattern)
+    return pattern;
+  }
 }

@@ -74,7 +74,7 @@ export class DeviceDetailsComponent implements OnInit {
           if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
             this.trusteeLegaciesAction = false;
           }
-          this.row = result.data;
+          this.row = result.data;console.log("Row =>",this.row);
           this.IsVisible= true;
           if(this.row.passwordPattern && typeof this.row.passwordPattern!=='undefined' && this.row.passwordPattern!=''){
             this.IsVisible= false;
