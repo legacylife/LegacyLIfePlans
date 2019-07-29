@@ -160,6 +160,7 @@ function deviceFormUpdate(req, res) {
             insert.deviceName = proquery.deviceName;
             insert.deviceList = proquery.deviceList;            
             insert.username = proquery.username;
+            insert.passwordType = proquery.passwordType;
             //insert.passwordPattern = proquery.passwordPattern;
             insert.password = proquery.password;        
             insert.status = 'Active';
