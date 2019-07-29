@@ -91,10 +91,11 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
                       html: body
                     }
                     sendEmail(mailOptions)
-                    
                     console.log("email sent")
+                    return true;
                   } else {
                     console.log("email sent")
+                    return true;
                   }
                 })
               }
@@ -136,7 +137,7 @@ function autoRenewalOnReminderEmail() {
 
         userList.forEach( ( val, index ) => {
           let subscriptionDetails   = val.subscriptionDetails,
-              daysRemainingToExpire = getDateDiff( today, moment(subscriptionDetails.endDate).toDate(), 'asHours' )
+              daysRemainingToExpire = Math.abs(getDateDiff( today, moment(subscriptionDetails.endDate).toDate(), 'asHours' ))
           
           if ( daysRemainingToExpire > 0 ) {
             let userCreatedOn = val.createdOn,
@@ -234,7 +235,7 @@ function autoRenewalOffReminderEmail() {
 
         userList.forEach( ( val, index ) => {
           let subscriptionDetails   = val.subscriptionDetails,
-              daysRemainingToExpire = getDateDiff( today, moment(subscriptionDetails.endDate).toDate() , 'asHours' )
+              daysRemainingToExpire = Math.abs(getDateDiff( today, moment(subscriptionDetails.endDate).toDate() , 'asHours' ))
           
           if ( daysRemainingToExpire > 0 ) {
             let userCreatedOn = val.createdOn,
