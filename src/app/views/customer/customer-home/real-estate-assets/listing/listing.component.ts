@@ -63,9 +63,11 @@ export class ListingComponent implements OnInit {
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
     if(event.srcElement.outerText=='Send an Invite'){
-      this.getRealEstateList();
-      this.getRealEstateVehiclesList();
-      this.getRealEstateAssetsList();
+      setTimeout(()=>{
+        this.getRealEstateList();
+        this.getRealEstateVehiclesList();
+        this.getRealEstateAssetsList();
+      },2000);              
     }
   }
   getRealEstateList(query = {}, search = false) {

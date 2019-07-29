@@ -126,7 +126,6 @@ manageTrusteeSubmit(insert = null) {console.log("insert",insert)
    })
    dialogRef.afterClosed()
    .subscribe(res => {
-    console.log("asdasd asdasdasd  adasd asd");
      if (!res) {
        // If user press cancel
        return;

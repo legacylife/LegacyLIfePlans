@@ -45,7 +45,9 @@ export class LettersMessagesListingComponent implements OnInit {
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
     if(event.srcElement.outerText=='Send an Invite'){
-      this.getLetterMessageList();
+      setTimeout(()=>{
+        this.getLetterMessageList();    
+      },2000);   
     }
   }
 

@@ -17,7 +17,7 @@ const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 export class CustomerHiredAdvisorComponent implements OnInit {
   allPeoples: any[];
   advisorListing: any[];
-  showAdvisorListing  : boolean = false;
+  showAdvisorListing  : boolean = true;
   listingAsc  : boolean = true;
   showAdvisorListingCnt: any;
   userId: string;

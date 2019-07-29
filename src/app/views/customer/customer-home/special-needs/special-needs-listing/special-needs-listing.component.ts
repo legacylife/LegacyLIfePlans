@@ -64,9 +64,11 @@ export class SpecialNeedsListingComponent implements OnInit {
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
     if(event.srcElement.outerText=='Send an Invite'){
-      this.getyoungChildrenList();
-      this.getcPDisabilityList();
-      this.getfriendNeighborList();
+      setTimeout(()=>{
+        this.getyoungChildrenList();
+        this.getcPDisabilityList();
+        this.getfriendNeighborList();
+      },2000);           
     }
   }
   getyoungChildrenList(query = {}, search = false) {

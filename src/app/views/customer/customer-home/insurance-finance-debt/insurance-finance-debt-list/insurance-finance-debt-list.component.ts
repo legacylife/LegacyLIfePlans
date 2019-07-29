@@ -64,9 +64,11 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
     if(event.srcElement.outerText=='Send an Invite'){
-      this.getInsuranceList();
-      this.getFinanceList();
-      this.getDebtList();    
+      setTimeout(()=>{
+        this.getInsuranceList();
+        this.getFinanceList();
+       this.getDebtList();    
+      },2000);       
     }
   }
 

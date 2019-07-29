@@ -55,8 +55,10 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
     if(event.srcElement.outerText=='Send an Invite'){
-      this.getDevicesList();
-      this.getElectronicMediaList();
+      setTimeout(()=>{
+        this.getDevicesList();
+        this.getElectronicMediaList();
+      },2000);        
     }
   }
 

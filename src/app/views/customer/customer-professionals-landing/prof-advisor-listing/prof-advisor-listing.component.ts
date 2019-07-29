@@ -24,7 +24,7 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
   profilePicture: any = "assets/images/arkenea/default.jpg";
   abc: string;
   interval: any
-  showAdvisorListing: boolean = false;
+  showAdvisorListing: boolean = true;
   showAdvisorListingCnt: any;
   showQualityAdvisorListing: boolean = false;
   showQualityAdvisorListingCnt: any;

@@ -76,7 +76,7 @@ export class DeviceDetailsComponent implements OnInit {
           }
           this.row = result.data;
           this.IsVisible= true;
-          if(this.row.passwordPattern!=''){
+          if(this.row.passwordPattern && typeof this.row.passwordPattern!=='undefined' && this.row.passwordPattern!=''){
             this.IsVisible= false;
             this.setPattern(this.row.passwordPattern);          
           }
@@ -135,17 +135,20 @@ export class DeviceDetailsComponent implements OnInit {
 
   
   getType(key,subFolderName) {
-
       if(subFolderName=='deviceList'){
         this.typeOfDocumentList = DevicesList;
       }else if(subFolderName=='passwordType'){
         this.typeOfDocumentList = PasswordType;
       }
-
+      
       let filteredTyes = this.typeOfDocumentList.filter(dtype => {
         return dtype.opt_code === key
-      }).map(el => el.opt_name)[0]
-      return filteredTyes
+      }).map(el => el.opt_name)[0];
+      
+      if(typeof filteredTyes!=='undefined'){
+        return filteredTyes
+      }
+      
 
   }
 

@@ -18,7 +18,7 @@ export class CustomerMyTrusteeComponent implements OnInit {
   userId: string;
   trustyListing:any = [];
   fileActivityLogList:any;
-  showTrustyListing : boolean = false;
+  showTrustyListing : boolean = true;
   listingAsc : boolean = true;
   showTrustyListingCnt: any;
   profileUrl = s3Details.url+'/profilePictures/';
@@ -71,6 +71,8 @@ export class CustomerMyTrusteeComponent implements OnInit {
         this.showTrustyListingCnt = this.trustyListing.length;  
         if (this.showTrustyListingCnt>0) {
           this.showTrustyListing = true;
+        }else{
+          this.showTrustyListing = false;
         }
       }
     }, (err) => {

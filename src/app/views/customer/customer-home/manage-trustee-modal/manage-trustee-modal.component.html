@@ -33,7 +33,7 @@
                   <mat-radio-group class="llp-radio" formControlName="ids">
                     <div fxLayout="row wrap">
                       <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
-                        <label class="left--header">{{row?.trustId.firstName}} {{row?.trustId.lastName}} </label>
+                        <label class="left--header">{{(row?.trustId.firstName && row?.trustId.firstName!='') ? row?.trustId.firstName : row.firstName}} {{(row?.trustId.lastName && row?.trustId.lastName!='') ? row?.trustId.lastName : row.lastName}} </label>
                       </div>
                       <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
                         <mat-list-item>

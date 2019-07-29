@@ -20,7 +20,7 @@ const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 export class CustomerMyPeopleComponent implements OnInit {
   allPeoples: any[];
   advisorListing: any[];
-  showallPeoplesListing: boolean = false;
+  showallPeoplesListing: boolean = true;
   showallPeoplesListingCnt: any;
   userId: string;
   listingAsc: boolean = true;
