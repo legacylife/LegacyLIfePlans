@@ -455,8 +455,8 @@ function getDateDiff( startDate, endDate, returnAs=null ) {
 }
 
 router.post(["/auto-renewal-on-update-subscription"], autoRenewalOnUpdateSubscription);
-router.post(["/auto-renewal-on-reminder-email"], autoRenewalOnReminderEmail);
-router.post(["/auto-renewal-off-reminder-email"], autoRenewalOffReminderEmail);
-router.post(["/before-subscription-reminder-email"], beforeSubscriptionReminderEmail);
+router.get("/auto-renewal-on-reminder-email", autoRenewalOnReminderEmail);
+router.get("/auto-renewal-off-reminder-email", autoRenewalOffReminderEmail);
+router.get("/before-subscription-reminder-email", beforeSubscriptionReminderEmail);
 
 module.exports = router
