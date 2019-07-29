@@ -111,7 +111,7 @@ function autoRenewalOnReminderEmail() {
   User.aggregate([
     {
       $project: {
-        createdOn: 1, username:1, firstName:1,lastName:1,renewalReminderEmailDay:1,
+        createdOn: 1, username:1, firstName:1,lastName:1,renewalOnReminderEmailDay:1,
         subscriptionDetails: {$arrayElemAt: ["$subscriptionDetails", -1]},
       }
     },
@@ -157,7 +157,7 @@ function autoRenewalOnReminderEmail() {
               freeAccessRemainingDays   = '1 day'
             }
             
-            //console.log("userType",val.userType,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
+            console.log("userType",val.userType,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
             //send email reminder if above conditions true
             if( sendEmailReminder && whichDayEmailReminderSend != null ) {
               let reminderSentDays = []
@@ -165,32 +165,39 @@ function autoRenewalOnReminderEmail() {
                 reminderSentDays = val.renewalOnReminderEmailDay
               }
               reminderSentDays.push(whichDayEmailReminderSend)
-              //free premium plan expiry plan reminer email
-              emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOnReminderEmail').then( (template) => {
-                if(template) {
-                  let planData = {}
-                  if( userList.userType == 'customer' ) {
-                    planData = customerPlanDetails
-                  }
-                  else{
-                    planData = advisorPlanDetails
-                  }
-                  template = JSON.parse(JSON.stringify(template));
-                  let body = template.mailBody.replace("{full_name}", userFullName);
-                      body = body.replace("{plan_name}",planData.planName);
-                      body = body.replace("{amount}", planData.planAmount);
-                      body = body.replace("{duration}", planData.planInterval);
-                      body = body.replace("{remaining_days}", freeAccessRemainingDays);
+              User.updateOne({ _id: requestParam._id }, { $set: { renewalOnReminderEmailDay: reminderSentDays} }, function (err, updated) {
+                if (err) {
+                  res.send(resFormat.rError(err))
+                }
+                else {
+                  //free premium plan expiry plan reminer email
+                  emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOnReminderEmail').then( (template) => {
+                    if(template) {
+                      let planData = {}
+                      if( userList.userType == 'customer' ) {
+                        planData = customerPlanDetails
+                      }
+                      else{
+                        planData = advisorPlanDetails
+                      }
+                      template = JSON.parse(JSON.stringify(template));
+                      let body = template.mailBody.replace("{full_name}", userFullName);
+                          body = body.replace("{plan_name}",planData.planName);
+                          body = body.replace("{amount}", planData.planAmount);
+                          body = body.replace("{duration}", planData.planInterval);
+                          body = body.replace("{remaining_days}", freeAccessRemainingDays);
 
-                  const mailOptions = { to : userEmailId,
-                                        subject : template.mailSubject,
-                                        html: body
-                                      }
-                  sendEmail( mailOptions, (response) => {
-                    if( response ) {
-                      User.updateOne({ _id: userId }, { $set: { renewalOnReminderEmailDay: whichDayEmailReminderSend } }, function (err, updated) {
-                        if ( !err ) {
-                          console.log("updated")
+                      const mailOptions = { to : userEmailId,
+                                            subject : template.mailSubject,
+                                            html: body
+                                          }
+                      sendEmail( mailOptions, (response) => {
+                        if( response ) {
+                          User.updateOne({ _id: userId }, { $set: { renewalOnReminderEmailDay: whichDayEmailReminderSend } }, function (err, updated) {
+                            if ( !err ) {
+                              console.log("updated")
+                            }
+                          })
                         }
                       })
                     }
@@ -209,7 +216,7 @@ function autoRenewalOffReminderEmail() {
   User.aggregate([
     {
       $project: {
-        createdOn: 1, username:1, firstName:1,lastName:1,renewalReminderEmailDay:1,
+        createdOn: 1, username:1, firstName:1,lastName:1,renewalOffReminderEmailDay:1,
         subscriptionDetails: {$arrayElemAt: ["$subscriptionDetails", -1]},
       }
     },
@@ -273,7 +280,7 @@ function autoRenewalOffReminderEmail() {
               freeAccessRemainingDays   = '1 day'
             }
             
-            //console.log("userType",val.userType,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
+            console.log("userType",val.userType,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
             //send email reminder if above conditions true
             if( sendEmailReminder && whichDayEmailReminderSend != null ) {
               let reminderSentDays = []
@@ -281,33 +288,40 @@ function autoRenewalOffReminderEmail() {
                 reminderSentDays = val.renewalOffReminderEmailDay
               }
               reminderSentDays.push(whichDayEmailReminderSend)
-              //free premium plan expiry plan reminer email
-              emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOffReminderEmail').then( (template) => {
-                if(template) {
-                  let planData = {}
-                  if( userList.userType == 'customer' ) {
-                    planData = customerPlanDetails
-                  }
-                  else{
-                    planData = advisorPlanDetails
-                  }
-                
-                  template = JSON.parse(JSON.stringify(template));
-                  let body = template.mailBody.replace("{full_name}", userFullName);
-                      body = body.replace("{plan_name}", planData.planName);
-                      body = body.replace("{amount}", planData.planAmount);
-                      body = body.replace("{duration}", planData.planInterval);
-                      body = body.replace("{remaining_days}",freeAccessRemainingDays);
+              User.updateOne({ _id: requestParam._id }, { $set: { renewalOffReminderEmailDay: reminderSentDays} }, function (err, updated) {
+                if (err) {
+                  res.send(resFormat.rError(err))
+                }
+                else {
+                  //free premium plan expiry plan reminer email
+                  emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOffReminderEmail').then( (template) => {
+                    if(template) {
+                      let planData = {}
+                      if( userList.userType == 'customer' ) {
+                        planData = customerPlanDetails
+                      }
+                      else{
+                        planData = advisorPlanDetails
+                      }
+                    
+                      template = JSON.parse(JSON.stringify(template));
+                      let body = template.mailBody.replace("{full_name}", userFullName);
+                          body = body.replace("{plan_name}", planData.planName);
+                          body = body.replace("{amount}", planData.planAmount);
+                          body = body.replace("{duration}", planData.planInterval);
+                          body = body.replace("{remaining_days}",freeAccessRemainingDays);
 
-                  const mailOptions = { to : userEmailId,
-                                        subject : template.mailSubject,
-                                        html: body
-                                      }
-                  sendEmail(mailOptions, (response) => {
-                    if( response ) {
-                      User.updateOne({ _id: userId }, { $set: { renewalOffReminderEmailDay: whichDayEmailReminderSend } }, function (err, updated) {
-                        if ( !err ) {
-                          console.log("updated")
+                      const mailOptions = { to : userEmailId,
+                                            subject : template.mailSubject,
+                                            html: body
+                                          }
+                      sendEmail(mailOptions, (response) => {
+                        if( response ) {
+                          User.updateOne({ _id: userId }, { $set: { renewalOffReminderEmailDay: whichDayEmailReminderSend } }, function (err, updated) {
+                            if ( !err ) {
+                              console.log("updated")
+                            }
+                          })
                         }
                       })
                     }
@@ -376,35 +390,42 @@ function beforeSubscriptionReminderEmail() {
             reminderSentDays = val.upgradeReminderEmailDay
           }
           reminderSentDays.push(whichDayEmailReminderSend)
-          //free premium plan expiry plan reminer email
-          if( userEmailId == 'dangejasmine@gmail.com') {
-            userEmailId = 'nileshy@arkenea.com'
-            emailTemplatesRoute.getEmailTemplateByCode('beforeSubscriptionReminderEmail').then( (template) => {
-              if(template) {
-                template = JSON.parse(JSON.stringify(template));
-                let body = template.mailBody.replace("{full_name}", userFullName);
-                    body = body.replace("{plan_name}",planName);
-                    body = body.replace("{amount}", planAmount);
-                    body = body.replace("{duration}",planInterval);
-                    body = body.replace("{space_alloted}",defaultSpace);
-                    body = body.replace("{remaining_days}",freeAccessRemainingDays);
+          User.updateOne({ _id: requestParam._id }, { $set: { upgradeReminderEmailDay: reminderSentDays} }, function (err, updated) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            }
+            else {
+            //free premium plan expiry plan reminer email
+            /* if( userEmailId == 'dangejasmine@gmail.com') {
+              userEmailId = 'nileshy@arkenea.com' */
+              emailTemplatesRoute.getEmailTemplateByCode('beforeSubscriptionReminderEmail').then( (template) => {
+                if(template) {
+                  template = JSON.parse(JSON.stringify(template));
+                  let body = template.mailBody.replace("{full_name}", userFullName);
+                      body = body.replace("{plan_name}",planName);
+                      body = body.replace("{amount}", planAmount);
+                      body = body.replace("{duration}",planInterval);
+                      body = body.replace("{space_alloted}",defaultSpace);
+                      body = body.replace("{remaining_days}",freeAccessRemainingDays);
 
-                const mailOptions = { to : userEmailId,
-                                      subject : template.mailSubject,
-                                      html: body
-                                    }
-                sendEmail(mailOptions, (response )=> {
-                  if( response ) {
-                    User.updateOne({ _id: userId }, { $set: { upgradeReminderEmailDay: reminderSentDays } }, function (err, updated) {
-                      if ( !err ) {
-                        console.log("updated")
-                      }
-                    })
-                  }
-                })
-              }
-            })
-          }
+                  const mailOptions = { to : userEmailId,
+                                        subject : template.mailSubject,
+                                        html: body
+                                      }
+                  sendEmail(mailOptions, (response )=> {
+                    if( response ) {
+                      User.updateOne({ _id: userId }, { $set: { upgradeReminderEmailDay: reminderSentDays } }, function (err, updated) {
+                        if ( !err ) {
+                          console.log("updated")
+                        }
+                      })
+                    }
+                  })
+                }
+              })
+            /* } */
+            }
+          })
         }
       })
     }
