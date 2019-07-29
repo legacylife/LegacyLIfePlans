@@ -182,10 +182,10 @@ function autoRenewalOnReminderEmail() {
                       }
                       template = JSON.parse(JSON.stringify(template));
                       let body = template.mailBody.replace("{full_name}", userFullName);
-                          body = body.replace("{plan_name}",planData.planName);
+                          body = template.mailBody.replace("{renewal_date}", moment(subscriptionDetails.endDate).format("YYYY-DD-MM HH:mm"))
                           body = body.replace("{amount}", planData.planAmount);
                           body = body.replace("{duration}", planData.planInterval);
-                          body = body.replace("{remaining_days}", freeAccessRemainingDays);
+                          
 
                       const mailOptions = { to : userEmailId,
                                             subject : template.mailSubject,
@@ -306,10 +306,9 @@ function autoRenewalOffReminderEmail() {
                     
                       template = JSON.parse(JSON.stringify(template));
                       let body = template.mailBody.replace("{full_name}", userFullName);
-                          body = body.replace("{plan_name}", planData.planName);
+                          body = body.replace("{expiring_date}", moment(subscriptionDetails.endDate).format("YYYY-DD-MM HH:mm"));
                           body = body.replace("{amount}", planData.planAmount);
                           body = body.replace("{duration}", planData.planInterval);
-                          body = body.replace("{remaining_days}",freeAccessRemainingDays);
 
                       const mailOptions = { to : userEmailId,
                                             subject : template.mailSubject,
