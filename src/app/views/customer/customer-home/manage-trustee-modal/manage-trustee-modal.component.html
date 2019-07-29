@@ -64,6 +64,7 @@
         </div>
         <mat-card-content class="appointees--wrapper" *ngIf="!listingCnt">
           <div class="files--folder mt-1 invite--sub--line"><h5>Currently you do not have any trustee associated.</h5></div>
+          <div class="add--new" (click)="openAddTrusteeModal('', true)"><mat-icon>add_circle</mat-icon> Add Trustee</div>   
       </mat-card-content>
       </div>
     </div>

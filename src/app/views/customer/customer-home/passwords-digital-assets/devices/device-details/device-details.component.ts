@@ -29,6 +29,7 @@ export class DeviceDetailsComponent implements OnInit {
   typeOfDocumentList: any[];
   IsVisible: boolean = true;
   trusteeLegaciesAction:boolean=true;
+  IsVisibleBoolean:boolean=true;
   urlData:any={};
   constructor( 
     private fb: FormBuilder,
@@ -40,12 +41,11 @@ export class DeviceDetailsComponent implements OnInit {
     this.userId = localStorage.getItem("endUserId");
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;    
-    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction;
     // this.lock = new PatternLock('#patternHolder8', {
     //   allowRepeat: false,
     //   radius: 30, margin: 20,      
-    // });
-    
+    // });    
     this.getDeviceView();    
   }
 
@@ -74,11 +74,16 @@ export class DeviceDetailsComponent implements OnInit {
           if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
             this.trusteeLegaciesAction = false;
           }
-          this.row = result.data;console.log("Row =>",this.row);
-          this.IsVisible= true;
-          if(this.row.passwordPattern && typeof this.row.passwordPattern!=='undefined' && this.row.passwordPattern!=''){
-            this.IsVisible= false;
+          this.row = result.data;//console.log("Row =>",this.row);
+          this.IsVisible = true;
+          if(this.row.passwordPattern && typeof this.row.passwordPattern!=='undefined' && this.row.passwordPattern!==''){
+           // console.log("here =>",this.row.passwordPattern)
+            this.IsVisible = false;
             this.setPattern(this.row.passwordPattern);          
+          }else{ 
+           // console.log("there =>",this.row.passwordPattern);
+            //this.IsVisibleBoolean = false;
+            this.IsVisible = true;
           }
         }
       }  

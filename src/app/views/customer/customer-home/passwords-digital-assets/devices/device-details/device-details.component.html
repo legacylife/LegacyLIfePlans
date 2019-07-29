@@ -72,7 +72,7 @@
                   </div>
               </div>
 
-              <div [hidden]=IsVisible>
+              <div *ngIf="IsVisibleBoolean" [hidden]=IsVisible>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" *ngIf="row?.passwordPattern && row?.passwordPattern>0">
                       <label class="strong--label">Pattern:</label>
                     </div>

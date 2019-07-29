@@ -164,7 +164,7 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
     let req_vars = {
       query: Object.assign({ docPath: this.docPath, filename: filename }, query)
     }
-    this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
+    this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
       var downloadURL =window.URL.createObjectURL(res)
       let filePath = downloadURL;

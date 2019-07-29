@@ -194,6 +194,8 @@ export class DevicesModalComponent implements OnInit {
     
     if(this.DevicesForm.controls['passwordType'].value=='3' && pattern!==''){
       this.setPattern(pattern, '#patternHolder7');
+    }else{
+      this.IsVisible= true;
     }
     
     if(this.DevicesForm.controls['passwordType'].value=='3' && this.DevicesForm.controls['pattrenTemp'].value==''){
@@ -318,7 +320,7 @@ export class DevicesModalComponent implements OnInit {
 
   getPattern() {
     let pattern = this.lock.getPattern();
-    console.log("Get pattern :- ",pattern)
+    console.log("Get pattern :- ",pattern);    
     return pattern;
   }
 }
