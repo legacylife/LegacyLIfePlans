@@ -125,14 +125,14 @@ function autoRenewalOnReminderEmail() {
         let customerPlanDetails   = { amount: customerProductDetails.amount / 100,
                                       planInterval: customerProductDetails.interval,
                                       planName: customerProductDetails.metadata.name+' Plan',
-                                      planAmount: currencyFormatter.format( customerProductDetails.amount, { code: (customerProductDetails.currency).toUpperCase() }),
+                                      planAmount: currencyFormatter.format( (customerProductDetails.amount/100), { code: (customerProductDetails.currency).toUpperCase() }),
                                       defaultSpace: customerProductDetails.metadata.defaultSpace+' '+customerProductDetails.metadata.spaceDimension
                                     }
         let advisorProductDetails = await getSelectedPlanDetails( 'A_MONTHLY');
         let advisorPlanDetails    = { amount: advisorProductDetails.amount / 100,
                                       planInterval: advisorProductDetails.interval,
                                       planName: advisorProductDetails.metadata.name+' Plan',
-                                      planAmount: currencyFormatter.format( advisorProductDetails.amount, { code: (advisorProductDetails.currency).toUpperCase() })
+                                      planAmount: currencyFormatter.format( (advisorProductDetails.amount/100), { code: (advisorProductDetails.currency).toUpperCase() })
                                     }
 
         userList.forEach( ( val, index ) => {
@@ -157,7 +157,7 @@ function autoRenewalOnReminderEmail() {
               freeAccessRemainingDays   = '1 day'
             }
             
-            console.log("userType",val.userType,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
+            console.log("userFullName",userFullName,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
             //send email reminder if above conditions true
             if( sendEmailReminder && whichDayEmailReminderSend != null ) {
               let reminderSentDays = []
@@ -182,7 +182,7 @@ function autoRenewalOnReminderEmail() {
                       }
                       template = JSON.parse(JSON.stringify(template));
                       let body = template.mailBody.replace("{full_name}", userFullName);
-                          body = template.mailBody.replace("{renewal_date}", moment(subscriptionDetails.endDate).format("YYYY-DD-MM HH:mm"))
+                          body = template.mailBody.replace("{renewal_date}", new Date(subscriptionDetails.endDate));
                           body = body.replace("{amount}", planData.planAmount);
                           body = body.replace("{duration}", planData.planInterval);
                           
@@ -230,14 +230,14 @@ function autoRenewalOffReminderEmail() {
         let customerPlanDetails   = { amount: customerProductDetails.amount / 100,
                                       planInterval: customerProductDetails.interval,
                                       planName: customerProductDetails.metadata.name+' Plan',
-                                      planAmount: currencyFormatter.format( customerProductDetails.amount, { code: (customerProductDetails.currency).toUpperCase() }),
+                                      planAmount: currencyFormatter.format( (customerProductDetails.amount/100), { code: (customerProductDetails.currency).toUpperCase() }),
                                       defaultSpace: customerProductDetails.metadata.defaultSpace+' '+customerProductDetails.metadata.spaceDimension
                                     }
         let advisorProductDetails = await getSelectedPlanDetails( 'A_MONTHLY');
         let advisorPlanDetails    = { amount: advisorProductDetails.amount / 100,
                                       planInterval: advisorProductDetails.interval,
                                       planName: advisorProductDetails.metadata.name+' Plan',
-                                      planAmount: currencyFormatter.format( advisorProductDetails.amount, { code: (advisorProductDetails.currency).toUpperCase() })
+                                      planAmount: currencyFormatter.format( (advisorProductDetails.amount/100), { code: (advisorProductDetails.currency).toUpperCase() })
                                     }
 
         userList.forEach( ( val, index ) => {
@@ -306,7 +306,7 @@ function autoRenewalOffReminderEmail() {
                     
                       template = JSON.parse(JSON.stringify(template));
                       let body = template.mailBody.replace("{full_name}", userFullName);
-                          body = body.replace("{expiring_date}", moment(subscriptionDetails.endDate).format("YYYY-DD-MM HH:mm"));
+                          body = body.replace("{expiring_date}", new Date(subscriptionDetails.endDate));
                           body = body.replace("{amount}", planData.planAmount);
                           body = body.replace("{duration}", planData.planInterval);
 
