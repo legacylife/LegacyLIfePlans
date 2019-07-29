@@ -64,7 +64,7 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
             userSubscription.push(subscriptionDetails)
             //console.log(userSubscription)
             //Update user details
-            User.updateOne({ _id: userProfile._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
+            User.updateOne({ _id: userProfile._id }, { $set: { subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
               if (err) {
                 res.send(resFormat.rError(err))
               }
@@ -280,7 +280,7 @@ function autoRenewalOffReminderEmail() {
               freeAccessRemainingDays   = '1 day'
             }
             
-            console.log("userType",val.userType,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
+            console.log("userFullName",userFullName,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
             //send email reminder if above conditions true
             if( sendEmailReminder && whichDayEmailReminderSend != null ) {
               let reminderSentDays = []
