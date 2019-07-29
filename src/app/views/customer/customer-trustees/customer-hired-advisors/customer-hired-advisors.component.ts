@@ -18,6 +18,7 @@ export class CustomerHiredAdvisorComponent implements OnInit {
   allPeoples: any[];
   advisorListing: any[];
   showAdvisorListing  : boolean = false;
+  listingAsc  : boolean = true;
   showAdvisorListingCnt: any;
   userId: string;
   profileFilePath: string = profileFilePath;
@@ -45,14 +46,18 @@ export class CustomerHiredAdvisorComponent implements OnInit {
         //query: Object.assign({ customerId: this.userId, status: "Active" }, query),//'Rejected',
         query: Object.assign({customerId:this.userId, status: { $nin:['Deleted', 'Rejected'] }}),
        fields: {},
-       order: {"createdOn": sort},
+       order: {"modifiedOn": sort},
      }
    }else{
+      let custSearch = { $nin: ['Deleted'] };    
+      if(search!=''){
+        custSearch = search;
+      }
       req_vars = {
-       query: Object.assign({ customerId: this.userId, status: search }, query),
+       query: Object.assign({ customerId: this.userId, status: custSearch }, query),
       // query: Object.assign({customerId:this.userId, status: { $nin:['Deleted'] }}),
        fields: {},
-       order: {"createdOn": sort},
+       order: {"modifiedOn": sort},
      }
    }
    
@@ -60,6 +65,11 @@ export class CustomerHiredAdvisorComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
+        if(sort==1){
+          this.listingAsc = false;
+        }else{
+          this.listingAsc = true;
+        }
         this.advisorListing = result.data.advisorList;
         this.showAdvisorListingCnt = this.advisorListing.length;
         if (result.data.totalRecords>'0') {
@@ -91,6 +101,13 @@ export class CustomerHiredAdvisorComponent implements OnInit {
     else {
       return this.profilePicture;
     }
+  }
+
+  getAdvisorSpecilities(businessType){
+    if(businessType)
+      return businessType.join(", ")
+    else
+      return ""
   }
 
 }

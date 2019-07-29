@@ -24,11 +24,11 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
   profilePicture: any = "assets/images/arkenea/default.jpg";
   abc: string;
   interval: any
-  showAdvisorListing : boolean = false;
+  showAdvisorListing: boolean = false;
   showAdvisorListingCnt: any;
-  showQualityAdvisorListing : boolean = false;
+  showQualityAdvisorListing: boolean = false;
   showQualityAdvisorListingCnt: any;
-  profileUrl = s3Details.url+'/profilePictures/';
+  profileUrl = s3Details.url + '/profilePictures/';
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -38,26 +38,26 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
-    this.getAdvisorLists('','');    
+    this.getAdvisorLists('', '');
     var that = this;
-    this.interval =  setInterval(function(){
+    this.interval = setInterval(function () {
       let abc = localStorage.getItem('businessTypeIcon');
-      if(abc){
-        if(that.abc !== abc){
-          that.getAdvisorLists('',abc)
+      if (abc) {
+        if (that.abc !== abc) {
+          that.getAdvisorLists('', abc)
           that.abc = abc
         }
       }
     }, 1000)
   }
- 
-  ngOnDestroy(){
-    clearInterval(this.interval);   
+
+  ngOnDestroy() {
+    clearInterval(this.interval);
   }
 
   //function to get all events
-  getAdvisorLists = (query:any = {}, search:any = false) => {
-     let req_vars = {
+  getAdvisorLists = (query: any = {}, search: any = false) => {
+    let req_vars = {
       query: Object.assign({ userType: "advisor", status: "Active" }, query),
       fields: {},
       offset: '',
@@ -66,15 +66,15 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
       extraQuery: Object.assign({ _id: this.userId }, query),
     }
 
-    if(search){
-       req_vars = {
-        query: Object.assign({ userType: "advisor", status: "Active", businessType:search }, query),
+    if (search) {
+      req_vars = {
+        query: Object.assign({ userType: "advisor", status: "Active", businessType: search }, query),
         fields: {},
         offset: '',
         limit: '',
         order: { "createdOn": -1 },
         extraQuery: Object.assign({ _id: this.userId }, query),
-      }      
+      }
     }
 
     this.userapi.apiRequest('post', 'advisor/professionalsList', req_vars).subscribe(result => {
@@ -82,28 +82,28 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
         console.log(result.data)
       } else {
         let advisorData = result.data.distanceUserList;
-        
-        if(advisorData && advisorData.length){
-            this.adListings = advisorData.filter(dtype => {
-              return dtype.sponsoredAdvisor == 'yes'
-            }).map(el => el)
 
-            this.showAdvisorListingCnt = result.data.totalUsers;
-            if (result.data.totalUsers>0) {
-              this.showAdvisorListing = true;
-            }else{this.showAdvisorListing = false;}  
+        if (advisorData && advisorData.length) {
+          this.adListings = advisorData.filter(dtype => {
+            return dtype.sponsoredAdvisor == 'yes'
+          }).map(el => el)
 
-            this.qualityAdvisor = advisorData.filter(dtype => {
-              return dtype.sponsoredAdvisor == 'no'
-            }).map(el => el)
+          this.showAdvisorListingCnt = result.data.totalUsers;
+          if (result.data.totalUsers > 0) {
+            this.showAdvisorListing = true;
+          } else { this.showAdvisorListing = false; }
 
-            this.showQualityAdvisorListingCnt = this.qualityAdvisor.length;
-            if (this.showQualityAdvisorListingCnt>0) {
-              this.showQualityAdvisorListing = true;
-            }      
+          this.qualityAdvisor = advisorData.filter(dtype => {
+            return dtype.sponsoredAdvisor == 'no'
+          }).map(el => el)
+
+          this.showQualityAdvisorListingCnt = this.qualityAdvisor.length;
+          if (this.showQualityAdvisorListingCnt > 0) {
+            this.showQualityAdvisorListing = true;
+          }
         }
-        if(search){
-          localStorage.removeItem('businessTypeIcon') 
+        if (search) {
+          localStorage.removeItem('businessTypeIcon')
         }
       }
     }, (err) => {
@@ -113,35 +113,35 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
 
   //function to send contact details of advisor
   sendContactDetails = (advisorDetails, query = {}) => {
-      let search = false;
-      const req_vars = {
-        query: Object.assign({ _id: this.userId }, query),
-        advisorDetails: {
-          "advisorFullname": advisorDetails.firstName + ' ' + advisorDetails.lastName,
-          "advisorEmail": advisorDetails.username,
-          "advisorPhone": advisorDetails.businessPhoneNumber,
-          "advisorAddress": advisorDetails.addressLine1 + ' ' + advisorDetails.city + ' ' + advisorDetails.state + ' ' + advisorDetails.zipcode,
-          "advisorId": advisorDetails._id
+    let search = false;
+    const req_vars = {
+      query: Object.assign({ _id: this.userId }, query),
+      advisorDetails: {
+        "advisorFullname": advisorDetails.firstName + ' ' + advisorDetails.lastName,
+        "advisorEmail": advisorDetails.username,
+        "advisorPhone": advisorDetails.businessPhoneNumber,
+        "advisorAddress": advisorDetails.addressLine1 + ' ' + advisorDetails.city + ' ' + advisorDetails.state + ' ' + advisorDetails.zipcode,
+        "advisorId": advisorDetails._id
+      }
+    }
+    this.userapi.apiRequest('post', 'advisor/contactadvisor', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        if (result.status == "error") {
+          this.loader.close();
+          this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        } else {
+          this.loader.close();
+          this.snack.open(result.data.message, 'OK', { duration: 4000 })
         }
       }
-      this.userapi.apiRequest('post', 'advisor/contactadvisor', req_vars).subscribe(result => {
-        if (result.status == "error") {
-          console.log(result.data)
-        } else {
-          if (result.status == "error") {
-            this.loader.close();
-            this.snack.open(result.data.message, 'OK', { duration: 4000 })
-          } else {
-            this.loader.close();
-            this.snack.open(result.data.message, 'OK', { duration: 4000 })
-          }
-        }
-      }, (err) => {
-        console.error(err)
-      })
-   }
+    }, (err) => {
+      console.error(err)
+    })
+  }
 
-   getProfileImage(fileName) {
+  getProfileImage(fileName) {
     if (fileName) {
       return profileFilePath + fileName;
     }
@@ -150,7 +150,7 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
     }
   }
 
-  openHireAdvisorModal(id: any = {},update: any = {}, isNew?) {
+  openHireAdvisorModal(id: any = {}, update: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(HireAdvisorComponent, {
       width: '720px',
       disableClose: true,
@@ -166,22 +166,24 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
     let zipcode1 = '89103';
     let zipcode2 = '16103';
     const req_vars = {
-      query: Object.assign({ from: zipcode1,to: zipcode2 }, query),
-    }   
-    this.userapi.apiRequest('post', 'distance/calculateZipDistance', req_vars).subscribe(result => {  
+      query: Object.assign({ from: zipcode1, to: zipcode2 }, query),
+    }
+    this.userapi.apiRequest('post', 'distance/calculateZipDistance', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-         this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
     }, (err) => {
       console.error(err);
     })
   }
 
-  getAdvisorSpecilities(businessType){
-    let types = String(businessType)
-    return types.replace(",",", ")
+  getAdvisorSpecilities(businessType) {
+    if (businessType)
+      return businessType.join(", ")
+    else
+      return ""
   }
 
 }

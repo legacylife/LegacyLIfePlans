@@ -31,8 +31,13 @@ export class UserAuthGuard implements CanActivate {
           return false;
         }
       }
-      if ((this.userInfo && this.userInfo.endUserType == '') || (this.userUrlType != 'signin' && this.userInfo.endUserType != this.userUrlType)) {
+      if ((this.userInfo && this.userInfo.endUserType == '') ) {
         this.router.navigateByUrl('/signin');
+        return false;
+      }
+
+      if ((this.userInfo.endUserType != '' && this.userUrlType != '' && this.userUrlType != 'signin' && this.userInfo.endUserType != this.userUrlType)) {
+        this.router.navigateByUrl('/'+this.userInfo.endUserType+'/dashboard');
         return false;
       }
       

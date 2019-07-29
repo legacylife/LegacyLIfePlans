@@ -23,6 +23,7 @@ export class CustomerMyPeopleComponent implements OnInit {
   showallPeoplesListing: boolean = false;
   showallPeoplesListingCnt: any;
   userId: string;
+  listingAsc: boolean = true;
   profileFilePath: string = profileFilePath;
   profilePicture: any = "assets/images/arkenea/default.jpg";
   profileUrl = s3Details.url + '/profilePictures/';
@@ -30,15 +31,13 @@ export class CustomerMyPeopleComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.userId = localStorage.getItem("endUserId");
     this.getMyPeoplesList('All', -1);
   }
 
   getMyPeoplesList = (search, sort, advquery: any = {}, trustquery: any = {}) => {
-
-    let req_vars = {};
-    if (search == 'All') {
+    let req_vars = {};    
+    if (search == 'All'){
       req_vars = {
         //query: Object.assign({ customerId: this.userId, status: "Active" }, query),status: { $nin:['Deleted'] }  //'Rejected',
         trustquery: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted'] } }, trustquery),
@@ -47,15 +46,13 @@ export class CustomerMyPeopleComponent implements OnInit {
         order: { "modifiedOn": -1 },
       }
     } else {
-    //  console.log("search",search,'----')
       let custSearch = { $nin: ['Deleted'] };
-      let advSearch = { $nin: ['Deleted', 'Rejected'] } 
+      let advSearch = { $nin: ['Deleted', 'Rejected'] }
       
       if(search!=''){
         custSearch = search;
         advSearch = search;  
-       }
-      // console.log("custSearch",custSearch,'advSearch',advSearch)
+      }
       req_vars = {
         //query: Object.assign({ customerId: this.userId, status: "Active" }, query),status: { $nin:['Deleted'] }  //'Rejected',
         trustquery: Object.assign({ customerId: this.userId, status: custSearch }, trustquery),
@@ -69,6 +66,11 @@ export class CustomerMyPeopleComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
+        if(sort==1){
+          this.listingAsc = false;
+        }else{
+          this.listingAsc = true;
+        }
         this.allPeoples = result.data.myPeoples;
         this.showallPeoplesListingCnt = result.data.totalPeoplesRecords;
         if (result.data.totalPeoplesRecords > 0) {
@@ -127,6 +129,13 @@ export class CustomerMyPeopleComponent implements OnInit {
     }, (err) => {
       console.error(err);
     })
+  }
+
+  getAdvisorSpecilities(businessType){
+    if(businessType)
+      return businessType.join(", ")
+    else
+      return ""
   }
 
 }
