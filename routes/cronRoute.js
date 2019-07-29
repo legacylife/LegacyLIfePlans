@@ -165,7 +165,7 @@ function autoRenewalOnReminderEmail() {
                 reminderSentDays = val.renewalOnReminderEmailDay
               }
               reminderSentDays.push(whichDayEmailReminderSend)
-              User.updateOne({ _id: requestParam._id }, { $set: { renewalOnReminderEmailDay: reminderSentDays} }, function (err, updated) {
+              User.updateOne({ _id: val._id }, { $set: { renewalOnReminderEmailDay: reminderSentDays} }, function (err, updated) {
                 if (err) {
                   res.send(resFormat.rError(err))
                 }
@@ -288,7 +288,7 @@ function autoRenewalOffReminderEmail() {
                 reminderSentDays = val.renewalOffReminderEmailDay
               }
               reminderSentDays.push(whichDayEmailReminderSend)
-              User.updateOne({ _id: requestParam._id }, { $set: { renewalOffReminderEmailDay: reminderSentDays} }, function (err, updated) {
+              User.updateOne({ _id: val._id }, { $set: { renewalOffReminderEmailDay: reminderSentDays} }, function (err, updated) {
                 if (err) {
                   res.send(resFormat.rError(err))
                 }
@@ -390,7 +390,7 @@ function beforeSubscriptionReminderEmail() {
             reminderSentDays = val.upgradeReminderEmailDay
           }
           reminderSentDays.push(whichDayEmailReminderSend)
-          User.updateOne({ _id: requestParam._id }, { $set: { upgradeReminderEmailDay: reminderSentDays} }, function (err, updated) {
+          User.updateOne({ _id: val._id }, { $set: { upgradeReminderEmailDay: reminderSentDays} }, function (err, updated) {
             if (err) {
               res.send(resFormat.rError(err))
             }
