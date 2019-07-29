@@ -17,7 +17,7 @@ async function getSelectedPlanDetails( planId ) {
 
 function autoRenewalOnUpdateSubscription ( req, res ) {
   let requestParam = req.body
-  //console.log("requestParamrequestParam==========",requestParam)
+  console.log("requestParamrequestParam==========",requestParam)
   if( requestParam != null || requestParam.length >0 ) {
     let eventId = requestParam.id
     let eventType = requestParam.type
