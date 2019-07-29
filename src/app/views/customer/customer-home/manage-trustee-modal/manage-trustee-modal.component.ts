@@ -124,6 +124,14 @@ manageTrusteeSubmit(insert = null) {console.log("insert",insert)
       id: id,
     }
    })
+   dialogRef.afterClosed()
+   .subscribe(res => {
+    console.log("asdasd asdasdasd  adasd asd");
+     if (!res) {
+       // If user press cancel
+       return;
+     }
+   })
  }
 
 }

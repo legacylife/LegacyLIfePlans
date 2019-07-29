@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { egretAnimations } from '../../../../../shared/animations/egret-animations';
@@ -52,6 +52,12 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
     }
     this.getDevicesList();
     this.getElectronicMediaList();
+  }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      this.getDevicesList();
+      this.getElectronicMediaList();
+    }
   }
 
   getDevicesList = (query = {}) => {

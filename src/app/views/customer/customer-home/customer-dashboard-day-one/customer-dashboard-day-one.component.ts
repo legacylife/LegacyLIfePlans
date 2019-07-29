@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { MatSnackBar, MatSidenav, MatDialogRef, MatDialog, } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms'
 import { Subscription, Observable } from 'rxjs';
@@ -35,7 +35,13 @@ export class CustomerDashboardDayOneComponent implements OnInit {
     this.getTrusteeList();
     this.getAdvisorList();
   }
-
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      this.getFileActivityLogList();
+      this.getTrusteeList();
+      this.getAdvisorList();
+    }
+  }
   getTrusteeList = (query = {}) => {
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted'] } }, query),//, status: "Active"

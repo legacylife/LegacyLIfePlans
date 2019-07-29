@@ -108,8 +108,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
   }
 
   onChangeFormIndex(event){
-    const {selectedIndex} = event;
-    console.log("selectedIndex",selectedIndex," Event",event)
+    const {selectedIndex} = event;    
     let stepHeader = document.getElementsByClassName('mat-horizontal-stepper-header')
     forEach(stepHeader, (element, index) => {
       element.classList = String(element.classList).replace('proActive', '')
@@ -230,7 +229,6 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
           return userSection.fileNames.filter(fn => fileCnt.includes(fn.code)).length > 0 ? userSection.id : null;
         })
       }
-    //console.log(" Count => ",fileCnt,fileCnt.length,userSectionsCnt,userSectionsCnt.length)       
     this.RequestData = {
       firstName: this.trustFormGroup.controls['firstName'].value,
       lastName: this.trustFormGroup.controls['lastName'].value,

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
@@ -42,6 +42,11 @@ export class LettersMessagesListingComponent implements OnInit {
       this.showTrusteeCnt = false;
     }
     this.getLetterMessageList();
+  }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      this.getLetterMessageList();
+    }
   }
 
   getLetterMessageList = (query = {}) => {

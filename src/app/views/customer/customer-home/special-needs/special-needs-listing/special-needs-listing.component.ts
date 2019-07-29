@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
@@ -62,7 +62,13 @@ export class SpecialNeedsListingComponent implements OnInit {
     this.getcPDisabilityList();
     this.getfriendNeighborList();
   }
-
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      this.getyoungChildrenList();
+      this.getcPDisabilityList();
+      this.getfriendNeighborList();
+    }
+  }
   getyoungChildrenList(query = {}, search = false) {
     let trusteeQuery = {};
     const req_vars = {

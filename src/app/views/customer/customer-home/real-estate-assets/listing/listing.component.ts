@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
@@ -61,7 +61,13 @@ export class ListingComponent implements OnInit {
     this.getRealEstateVehiclesList();
     this.getRealEstateAssetsList();
   }
-
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      this.getRealEstateList();
+      this.getRealEstateVehiclesList();
+      this.getRealEstateAssetsList();
+    }
+  }
   getRealEstateList(query = {}, search = false) {
     let trusteeQuery = {};
     const req_vars = {

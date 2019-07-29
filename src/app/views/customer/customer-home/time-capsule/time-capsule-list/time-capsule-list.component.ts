@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { egretAnimations } from '../../../../../shared/animations/egret-animations';
@@ -45,6 +45,11 @@ export class TimeCapsuleListComponent implements OnInit {
       this.showTrusteeCnt = false;
     }
     this.getTimecapsuleList();
+  }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      this.getTimecapsuleList();
+    }
   }
 
   getTimecapsuleList = (query = {}) => {

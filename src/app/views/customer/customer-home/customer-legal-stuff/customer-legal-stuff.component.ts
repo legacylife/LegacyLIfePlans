@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
@@ -10,6 +10,7 @@ import { egretAnimations } from '../../../../shared/animations/egret-animations'
 import { legalStuffModalComponent } from '../legal-stuff-modal/legal-stuff-modal.component';
 import { EstateTypeOfDocument,HealthcareTypeOfDocument,PersonalAffairsTypeOfDocument } from '../../../../selectList';
 import { ManageTrusteeModalComponent } from '../manage-trustee-modal/manage-trustee-modal.component';
+
 @Component({
   selector: 'app-customer-legal-stuff',
   templateUrl: './customer-legal-stuff.component.html',
@@ -65,6 +66,11 @@ export class CustomerLegalStuffComponent implements OnInit {
       this.showTrusteeCnt = false;
     }
     this.getEstateList();
+  }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      this.getEstateList();
+    }
   }
 
   getEstateList = (query = {}) => {    
