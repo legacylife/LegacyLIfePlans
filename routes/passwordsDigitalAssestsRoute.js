@@ -163,7 +163,7 @@ function deviceFormUpdate(req, res) {
             insert.passwordType = proquery.passwordType;
             if(proquery.passwordPattern){
               insert.passwordPattern = proquery.passwordPattern;
-            }            
+            }                        
             insert.password = proquery.password;        
             insert.status = 'Active';
             insert.createdOn = new Date();

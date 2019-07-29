@@ -63,8 +63,9 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
             }
             userSubscription.push(subscriptionDetails)
             //console.log(userSubscription)
+            console.log("userFullName",userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '',"email: -",userProfile.username,  "created on :-",userProfile.createdOn);
             //Update user details
-            User.updateOne({ _id: userProfile._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
+            User.updateOne({ _id: userProfile._id }, { $set: { subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
               if (err) {
                 res.send(resFormat.rError(err))
               }
@@ -82,7 +83,7 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
                     body = body.replace("{end_date}",subscriptionDetails.endDate);
                     if(userProfile.userType == 'customer') {
                       body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
-                      body = body.replace("{more_space}", subscription.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
+                      body = body.replace("{more_space}", subscriptionData.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
                     }
                     body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
                     const mailOptions = {
@@ -280,7 +281,7 @@ function autoRenewalOffReminderEmail() {
               freeAccessRemainingDays   = '1 day'
             }
             
-            console.log("userType",val.userType,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
+            console.log("userFullName",userFullName,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
             //send email reminder if above conditions true
             if( sendEmailReminder && whichDayEmailReminderSend != null ) {
               let reminderSentDays = []
@@ -455,8 +456,8 @@ function getDateDiff( startDate, endDate, returnAs=null ) {
 }
 
 router.post(["/auto-renewal-on-update-subscription"], autoRenewalOnUpdateSubscription);
-router.post(["/auto-renewal-on-reminder-email"], autoRenewalOnReminderEmail);
-router.post(["/auto-renewal-off-reminder-email"], autoRenewalOffReminderEmail);
-router.post(["/before-subscription-reminder-email"], beforeSubscriptionReminderEmail);
+router.get("/auto-renewal-on-reminder-email", autoRenewalOnReminderEmail);
+router.get("/auto-renewal-off-reminder-email", autoRenewalOffReminderEmail);
+router.get("/before-subscription-reminder-email", beforeSubscriptionReminderEmail);
 
 module.exports = router

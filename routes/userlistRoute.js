@@ -517,7 +517,7 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
           emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
             if(template) {
               template = JSON.parse(JSON.stringify(template));
-              let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '');
+              let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
               body = body.replace("{plan_name}",subscriptionDetails.planName);
               body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
               body = body.replace("{duration}",subscriptionDetails.interval);
@@ -650,7 +650,7 @@ function chargeForAddon( userProfile, stripeCustomerId, requestParam, res ) {
             let subscriptionDetails = userProfile.subscriptionDetails
             if(template) {
               template = JSON.parse(JSON.stringify(template));
-              let body = template.mailBody.replace("{full_name}", userProfile.firstName+' '+userProfile.lastName);
+              let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
               body = body.replace("{addon_space}",addOnDetails.spaceAlloted+' '+addOnDetails.spaceDimension);
               body = body.replace("{plan_name}",subscriptionDetails[subscriptionDetails.length-1]['planName']);
               body = body.replace("{amount}", currencyFormatter.format(addOnDetails.amount, { code: (addOnDetails.currency).toUpperCase() }));
@@ -756,7 +756,7 @@ function cancelSubscription(req, res) {
                   emailTemplatesRoute.getEmailTemplateByCode("SubscriptionCanceled").then((template) => {
                     if(template) {
                       template = JSON.parse(JSON.stringify(template));
-                      let body = template.mailBody.replace("{full_name}", userProfile.firstName+' '+userProfile.lastName);
+                      let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
                       body = body.replace("{canceled_on}",new Date());
                       body = body.replace("{end_date}",updatedSubscriptionObject[updatedSubscriptionObject.length-1]['endDate']);
                       const mailOptions = {
