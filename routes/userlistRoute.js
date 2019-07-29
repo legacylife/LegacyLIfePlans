@@ -508,7 +508,7 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
       }
       userSubscription.push(subscriptionDetails)
       //Update user details
-      User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription } }, function (err, updated) {
+      User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
         if (err) {
           res.send(resFormat.rError(err))
         }

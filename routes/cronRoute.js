@@ -64,7 +64,7 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
             userSubscription.push(subscriptionDetails)
             //console.log(userSubscription)
             //Update user details
-            User.updateOne({ _id: userProfile._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription } }, function (err, updated) {
+            User.updateOne({ _id: userProfile._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
               if (err) {
                 res.send(resFormat.rError(err))
               }
