@@ -37,16 +37,18 @@ export class CustomerDashboardDayOneComponent implements OnInit {
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
     if(event.srcElement.outerText=='Send an Invite'){
+      setTimeout(()=>{
       this.getFileActivityLogList();
       this.getTrusteeList();
       this.getAdvisorList();
+      },2000);     
     }
   }
   getTrusteeList = (query = {}) => {
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted'] } }, query),//, status: "Active"
       fields: {},
-      limit: 6,
+      limit: 9,
       order: {"createdOn": -1},
     }
     this.userapi.apiRequest('post', 'trustee/listing', req_vars).subscribe(result => {
@@ -69,7 +71,7 @@ export class CustomerDashboardDayOneComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted', 'Rejected'] } }, query),//, status: "Active"
       fields: {},
-      limit: 6,
+      limit: 9,
       order: {"createdOn": -1},
     }
     this.userapi.apiRequest('post', 'advisor/hireAdvisorListing', req_vars).subscribe(result => {
@@ -93,7 +95,7 @@ export class CustomerDashboardDayOneComponent implements OnInit {
       query: Object.assign({ customerId: this.userId }, query),
       fields: {},
       offset: 0,
-      limit: 6,
+      limit: 9,
       order: {"modifiedOn": -1},
     }   
     this.userapi.apiRequest('post', 'customer/file-activity-log-list', req_vars).subscribe(result => {  
