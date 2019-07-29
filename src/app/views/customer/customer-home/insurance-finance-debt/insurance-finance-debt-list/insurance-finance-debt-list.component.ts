@@ -17,11 +17,11 @@ import { InsurancePolicyType,FinancePolicyType,DebtType } from '../../../../../s
 })
 export class InsuranceFinanceDebtListComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  showInsuranceListing = false;
+  showInsuranceListing = true;
   showInsuranceListingCnt: any;
-  showFinanceListing = false; 
+  showFinanceListing = true; 
   showFinanceListingCnt: any;
-  showDebtListing = false;
+  showDebtListing = true;
   showDebtListingCnt: any;
   userId: string;
   insuranceListing:any = [];

@@ -20,10 +20,10 @@ export class CustomerDashboardDayOneComponent implements OnInit {
   userId: string;
   trustyListing:any = [];
   fileActivityLogList:any;
-  showTrustyListing = false;
+  showTrustyListing = true;
   showTrustyListingCnt: any;
   advisorListing:any = [];
-  showAdvisorListing= false;
+  showAdvisorListing= true;
   showAdvisorListingCnt: any;
 
   profileUrl = s3Details.url+'/profilePictures/';
@@ -48,7 +48,7 @@ export class CustomerDashboardDayOneComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted'] } }, query),//, status: "Active"
       fields: {},
-      limit: 9,
+      limit: 3,
       order: {"createdOn": -1},
     }
     this.userapi.apiRequest('post', 'trustee/listing', req_vars).subscribe(result => {
@@ -71,7 +71,7 @@ export class CustomerDashboardDayOneComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted', 'Rejected'] } }, query),//, status: "Active"
       fields: {},
-      limit: 9,
+      limit: 3,
       order: {"createdOn": -1},
     }
     this.userapi.apiRequest('post', 'advisor/hireAdvisorListing', req_vars).subscribe(result => {
@@ -95,7 +95,7 @@ export class CustomerDashboardDayOneComponent implements OnInit {
       query: Object.assign({ customerId: this.userId }, query),
       fields: {},
       offset: 0,
-      limit: 9,
+      limit: 6,
       order: {"modifiedOn": -1},
     }   
     this.userapi.apiRequest('post', 'customer/file-activity-log-list', req_vars).subscribe(result => {  

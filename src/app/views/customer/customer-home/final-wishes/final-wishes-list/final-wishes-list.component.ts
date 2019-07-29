@@ -16,11 +16,11 @@ import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-t
 })
 export class FinalWishesComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  showFuneralPlansListing = false;
+  showFuneralPlansListing = true;
   showFuneralPlansCnt: any;
-  showObituaryListing = false;
+  showObituaryListing = true;
   showObituaryListingCnt: any;
-  showCelebrationLifesListing = false;
+  showCelebrationLifesListing = true;
   showCelebrationLifesListingCnt: any;
   userId: string;
   FuneralPlansList:any = [];

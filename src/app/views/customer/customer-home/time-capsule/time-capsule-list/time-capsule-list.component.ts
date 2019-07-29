@@ -14,7 +14,7 @@ import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-t
 })
 export class TimeCapsuleListComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  showTimeCapsuleListing = false;
+  showTimeCapsuleListing = true;
   showTimeCapsuleListingCnt: any;  
   userId: string;
   timeCapsuleListing:any = [];

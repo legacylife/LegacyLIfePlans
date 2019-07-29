@@ -142,7 +142,10 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
       console.log("isAccountFree",this.isAccountFree,"isSubscribePlan",this.isSubscribePlan,"isPremiumExpired",this.isPremiumExpired)
       this.totalUsedSpace = 0.5;
-
+      if( this.isAccountFree && !this.isPremiumExpired ) {
+        this.totalSpaceAlloted = 7
+        this.spaceProgressBar = (this.totalUsedSpace * 100 / this.totalSpaceAlloted).toFixed(2)
+      }
       this.subscriptionservice.getPlanDetails( ( planData )=> {
         //console.log("planData",Object.keys(planData))
         if( planData && (Object.keys(planData).length !== 0) ) {

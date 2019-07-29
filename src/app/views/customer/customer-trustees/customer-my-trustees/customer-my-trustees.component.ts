@@ -24,6 +24,7 @@ export class CustomerMyTrusteeComponent implements OnInit {
   profileUrl = s3Details.url+'/profilePictures/';
   testImg = '/pk.png';
   docPath: string; 
+  searchMessage:string = ""
   
   constructor(private userapi: UserAPIService,private dialog: MatDialog,private snack: MatSnackBar,) { }
 
@@ -72,6 +73,12 @@ export class CustomerMyTrusteeComponent implements OnInit {
         if (this.showTrustyListingCnt>0) {
           this.showTrustyListing = true;
         }else{
+          if(search !='' && search !='All' && this.showTrustyListingCnt == 0){
+            this.searchMessage = "No records found"
+          }
+          else {
+            this.searchMessage = "Currently you do not have any trustee associated"
+          }
           this.showTrustyListing = false;
         }
       }

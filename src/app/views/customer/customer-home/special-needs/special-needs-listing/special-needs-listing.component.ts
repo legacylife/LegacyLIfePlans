@@ -17,13 +17,13 @@ export class SpecialNeedsListingComponent implements OnInit {
   userId: string;
 
   youngChildrenList: any = [];
-  showYoungChildrenListing = false;
+  showYoungChildrenListing = true;
 
   cPDisabilityList: any = [];
-  showCPDisabilityListing = false;
+  showCPDisabilityListing = true;
 
   friendNeighborList: any = [];
-  friendNeighborListing = false;
+  friendNeighborListing = true;
   dynamicRoute:string;
   selectedLegaciesId: string;
   customerLegacyType:string='customer';

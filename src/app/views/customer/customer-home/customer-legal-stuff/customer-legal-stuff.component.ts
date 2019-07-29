@@ -19,11 +19,11 @@ import { ManageTrusteeModalComponent } from '../manage-trustee-modal/manage-trus
 })
 export class CustomerLegalStuffComponent implements OnInit {
   showEstateListingCnt: any;
-  showEstateListing = false;
+  showEstateListing = true;
   showaffairsListingCnt: any;
-  showaffairsListing = false;
+  showaffairsListing = true;
   showhealthcareListingCnt: any;
-  showhealthcareListing = false;
+  showhealthcareListing = true;
   estateList: any = [];
   healthcareList: any = [];
   affairsList: any = [];

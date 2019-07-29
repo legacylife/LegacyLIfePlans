@@ -16,11 +16,11 @@ import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-t
 })
 export class PasswordsDigitalAssetsListComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  showDevicesListing = false;
+  showDevicesListing = true;
   showDevicesListingCnt: any;
   userId: string;
   devicesListing:any = [];
-  showElectronicMediaListing = false;
+  showElectronicMediaListing = true;
   showElectronicMediaListingCnt: any;
   electronicMediaListing:any = [];
   typeOfList:any = [];

@@ -65,13 +65,16 @@ export class SubscriptionService {
           this.planName         = 'Legacy Life'
         }
         localStorage.setItem('endUserProSubscription', 'yes');
+        localStorage.setItem('endUserProFreeSubscription', 'yes');
       }
       else {
         if( this.usertype == 'customer' ) {
           expireDate            = this.userCreateOn.add(60,"days")
+          localStorage.setItem('endUserProFreeSubscription', 'yes');
         }
         else{
           expireDate            = this.userCreateOn.add(30,"days")
+          localStorage.setItem('endUserProFreeSubscription', 'no');
         }
         this.planName         = 'Free'
         localStorage.setItem('endUserProSubscription', 'no');
@@ -98,15 +101,17 @@ export class SubscriptionService {
         else{
           this.planName         = 'Legacy Life'
         }
-        
+        localStorage.setItem('endUserProFreeSubscription', 'yes');
         localStorage.setItem('endUserProSubscription', 'yes');
       }
       else {
         if( this.usertype == 'customer' ) {
           expireDate          = this.userSubscriptionDate.add(30,"days")
+          localStorage.setItem('endUserProFreeSubscription', 'yes');
         }
         else{
           expireDate            = this.userSubscriptionDate
+          localStorage.setItem('endUserProFreeSubscription', 'no');
         }
         localStorage.setItem('endUserProSubscription', 'no');
         this.isPremiumExpired = true
