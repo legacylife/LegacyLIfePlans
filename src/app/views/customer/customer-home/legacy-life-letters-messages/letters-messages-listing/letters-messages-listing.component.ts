@@ -16,7 +16,7 @@ import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-t
 })
 export class LettersMessagesListingComponent implements OnInit {
   userId: string;
-  showListing = false;
+  showListing = true;
   lettersMessagesList: any = [];
   selectedProfileId:string = "";
   showListingCnt: any;

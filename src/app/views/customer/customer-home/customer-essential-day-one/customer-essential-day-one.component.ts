@@ -21,9 +21,9 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   userId: string;
   urlData:any={};
-  showProfileListing = false;
-  showIdProofListing = false;
-  showProfessionalsListing = false;  
+  showProfileListing = true;
+  showIdProofListing = true;
+  showProfessionalsListing = true;  
   essentialProfileList:any = [];
   essentialIDList:any = [];
   essentialProfessionalList:any = [];

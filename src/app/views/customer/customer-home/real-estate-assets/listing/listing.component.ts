@@ -19,10 +19,10 @@ export class ListingComponent implements OnInit {
   userId: string;
   typeOfLst: any = [];
   realEstateList: any = [];
-  showRealEstateListing = false;
+  showRealEstateListing = true;
   realEstateVehiclesList: any = [];
-  showRealEstateVehiclesListing = false;
-  showAssetsListing = false;
+  showRealEstateVehiclesListing = true;
+  showAssetsListing = true;
   realEstateAssetsList: any = [];
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;

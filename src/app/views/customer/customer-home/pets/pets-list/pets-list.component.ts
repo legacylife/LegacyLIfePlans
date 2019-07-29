@@ -15,7 +15,7 @@ import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-t
 })
 export class PetsListComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  showPetsListing = false;
+  showPetsListing = true;
   showPetsListingCnt: any;
   
   userId: string;

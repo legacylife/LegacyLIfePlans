@@ -27,6 +27,7 @@ export class CustomerMyPeopleComponent implements OnInit {
   profileFilePath: string = profileFilePath;
   profilePicture: any = "assets/images/arkenea/default.jpg";
   profileUrl = s3Details.url + '/profilePictures/';
+  searchMessage : string = "";
   constructor(private route: ActivatedRoute, private router: Router, private dialog: MatDialog, private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar
   ) { }
 
@@ -64,7 +65,7 @@ export class CustomerMyPeopleComponent implements OnInit {
 
     this.userapi.apiRequest('post', 'advisor/myPeoplesListing', req_vars).subscribe(result => {  //hireAdvisorListing
       if (result.status == "error") {
-        console.log(result.data)
+        //console.log(result.data)
       } else {
         if(sort==1){
           this.listingAsc = false;
@@ -76,6 +77,12 @@ export class CustomerMyPeopleComponent implements OnInit {
         if (result.data.totalPeoplesRecords > 0) {
           this.showallPeoplesListing = true;
         } else {
+          if(search !='' && search !='All' && result.data.totalPeoplesRecords == 0){
+            this.searchMessage = "No records found"
+          }
+          else {
+            this.searchMessage = "Currently you do not have any trustee associated"
+          }
           this.showallPeoplesListing = false;
         }
       }

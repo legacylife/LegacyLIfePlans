@@ -24,6 +24,7 @@ export class CustomerHiredAdvisorComponent implements OnInit {
   profileFilePath: string = profileFilePath;
   profilePicture: any = "assets/images/arkenea/default.jpg";
   abc: string;
+  searchMessage:string = "";
   interval: any
   constructor(
     private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService,private snack: MatSnackBar
@@ -74,7 +75,13 @@ export class CustomerHiredAdvisorComponent implements OnInit {
         this.showAdvisorListingCnt = this.advisorListing.length;
         if (result.data.totalRecords>'0') {
           this.showAdvisorListing = true;
-        }else{ 
+        }else{
+          if(search !='' && search !='All' && result.data.totalRecords == 0){
+            this.searchMessage = "No records found"
+          }
+          else {
+            this.searchMessage = "Currently you do not have any advisor associated"
+          } 
            this.showAdvisorListing = false;
           }
       }

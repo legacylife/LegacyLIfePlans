@@ -95,7 +95,7 @@
       </mat-card-content>
 
       <mat-card-content class="appointees--wrapper" *ngIf="!this.showallPeoplesListing">
-          <div class="files--folder mt-1">Currently you do not have any trustee associated.</div>
+          <div class="files--folder mt-1">{{searchMessage}}.</div>
           <!-- <label class="normal--label" (click)="FolderSize()">Check Directory size</label> -->
       </mat-card-content>
     </mat-card>

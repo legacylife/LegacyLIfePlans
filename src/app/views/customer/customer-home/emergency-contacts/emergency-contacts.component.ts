@@ -15,7 +15,7 @@ export class EmergencyContactsComponent implements OnInit {
   closeResult: string
   modalRef: any = null
   eContactFormGroup: FormGroup;
-  showContactListing = false;
+  showContactListing = true;
   showContactCnt: string;
   userId: string
   relationshipList: any[]
