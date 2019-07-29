@@ -18,7 +18,7 @@ const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 })
 export class AdvisorDashboardComponent implements OnInit {
 
-  recentLogs: boolean = false;
+  recentLogs: boolean = true;
   userId: string;
   recentActivityLogList: any;
   profileFilePath: string = profileFilePath;
@@ -65,7 +65,7 @@ export class AdvisorDashboardComponent implements OnInit {
       query: Object.assign({ advisorId: this.userId }, query),
       fields: {},
       offset: 0,
-      limit: 6,
+      limit: "",
       order: { "modifiedOn": -1 },
     }
     this.userapi.apiRequest('post', 'advisor/recentupdatelist', req_vars).subscribe(result => {

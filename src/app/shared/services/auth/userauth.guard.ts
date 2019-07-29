@@ -25,12 +25,12 @@ export class UserAuthGuard implements CanActivate {
       console.log("currentUrl",currentUrl)
       console.log("acceptedUrls",acceptedUrls)
       
-      if( !isProuser ) {
-        if( currentUrl &&  acceptedUrls.indexOf(currentUrl) == -1/* ( currentUrl != '/'+this.userInfo.endUserType+'/account-setting' || currentUrl != '/'+this.userInfo.endUserType+'/'+this.userInfo.endUserType+'-subscription' ) */ ) {
+      /*if( !isProuser ) {
+        if( currentUrl &&  acceptedUrls.indexOf(currentUrl) == -1/* ( currentUrl != '/'+this.userInfo.endUserType+'/account-setting' || currentUrl != '/'+this.userInfo.endUserType+'/'+this.userInfo.endUserType+'-subscription' )  ) {
           this.router.navigate(['/'+this.userInfo.endUserType+'/account-setting']);
           return false;
         }
-      }
+      }*/
       if ((this.userInfo && this.userInfo.endUserType == '') ) {
         this.router.navigateByUrl('/signin');
         return false;

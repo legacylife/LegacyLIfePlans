@@ -146,7 +146,7 @@
 
                     <div class="manage--cancel">
                       <!-- <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/advisor/subscription'">Manage subscription</button> -->
-                      <button mat-raised-button class="llp--primary--green--btn" [class.not-allowed]="isSubscribePlan && !isPremiumExpired" [disabled]="isSubscribePlan && !isPremiumExpired" [routerLink]="'/advisor/subscription'">Manage subscription</button>
+                      <button mat-raised-button class="llp--primary--green--btn" [class.not-allowed]="isSubscribePlan && !isPremiumExpired" [disabled]="isSubscribePlan && !isPremiumExpired" [routerLink]="'/advisor/advisor-subscription'">Manage subscription</button>
                       <a class="clr--red" [class.not-allowed]="!isSubscribePlan || isSubscriptionCanceled" [attr.disabled]="!isSubscribePlan || isSubscriptionCanceled" (click)="isSubscribePlan && !isSubscriptionCanceled && cancelSubscription()">Cancel subscription</a>
                     </div>
 
