@@ -63,6 +63,7 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
             }
             userSubscription.push(subscriptionDetails)
             //console.log(userSubscription)
+            console.log("userFullName",userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '',"email: -",userProfile.username,  "created on :-",userProfile.createdOn);
             //Update user details
             User.updateOne({ _id: userProfile._id }, { $set: { subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
               if (err) {
@@ -82,7 +83,7 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
                     body = body.replace("{end_date}",subscriptionDetails.endDate);
                     if(userProfile.userType == 'customer') {
                       body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
-                      body = body.replace("{more_space}", subscription.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
+                      body = body.replace("{more_space}", subscriptionData.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
                     }
                     body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
                     const mailOptions = {
