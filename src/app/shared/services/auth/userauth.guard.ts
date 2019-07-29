@@ -19,17 +19,18 @@ export class UserAuthGuard implements CanActivate {
       let isProuser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
       var pathArray = window.location.pathname.split('/');
       this.userUrlType = pathArray[1];
-      console.log("this.userUrlType",pathArray[2],"asdasdasda",this.userInfo.endUserType,"isProuser",isProuser)
-      /* if( this.userInfo.endUserType == 'advisor' && !isProuser ) {
-        if( pathArray[2] && pathArray[2] != 'account-setting') {
+      let currentUrl = state.url      
+      let acceptedUrls = ['/'+this.userInfo.endUserType+'/account-setting','/'+this.userInfo.endUserType+'/'+this.userInfo.endUserType+'-subscription']
+      
+      console.log("currentUrl",currentUrl)
+      console.log("acceptedUrls",acceptedUrls)
+      
+      if( !isProuser ) {
+        if( currentUrl &&  acceptedUrls.indexOf(currentUrl) == -1/* ( currentUrl != '/'+this.userInfo.endUserType+'/account-setting' || currentUrl != '/'+this.userInfo.endUserType+'/'+this.userInfo.endUserType+'-subscription' ) */ ) {
           this.router.navigate(['/'+this.userInfo.endUserType+'/account-setting']);
           return false;
         }
-        else{
-          this.router.navigate(['/'+this.userInfo.endUserType+'/account-setting']);
-          return false;
-        }
-      } */
+      }
       if ((this.userInfo && this.userInfo.endUserType == '') || (this.userUrlType != 'signin' && this.userInfo.endUserType != this.userUrlType)) {
         this.router.navigateByUrl('/signin');
         return false;
