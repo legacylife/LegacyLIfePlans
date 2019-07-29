@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
@@ -38,6 +38,13 @@ export class AdvisorDashboardComponent implements OnInit {
     this.getAdvisorActivityLogList();
     this.getInviteMembersCount();
     this.getLeadsCount();
+  }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Invite'){
+      setTimeout(()=>{     
+        this.getInviteMembersCount();    
+      },2000);     
+    } 
   }
 
   getInviteMembersCount() {

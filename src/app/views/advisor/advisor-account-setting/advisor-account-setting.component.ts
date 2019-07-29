@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild ,HostListener} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { UserAPIService } from './../../../userapi.service';
@@ -180,6 +180,13 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     this.getInviteMembersCount();
   }
 
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Invite'){
+      setTimeout(()=>{     
+        this.getInviteMembersCount();    
+      },2000);     
+    } 
+  }
   checkSubscription() {
     this.subscriptionservice.checkSubscription( ( returnArr )=> {
       this.userCreateOn = returnArr.userCreateOn
