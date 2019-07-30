@@ -287,11 +287,11 @@ function autoRenewalOnReminderEmail() {
                 reminderSentDays = val.renewalOnReminderEmailDay
               }
               reminderSentDays.push(whichDayEmailReminderSend)
-              User.updateOne({ _id: val._id }, { $set: { renewalOnReminderEmailDay: reminderSentDays} }, function (err, updated) {
+              /* User.updateOne({ _id: val._id }, { $set: { renewalOnReminderEmailDay: reminderSentDays} }, function (err, updated) {
                 if (err) {
                   res.send(resFormat.rError(err))
                 }
-                else {
+                else { */
                   //free premium plan expiry plan reminer email
                   emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOnReminderEmail').then( (template) => {
                     if(template) {
@@ -315,7 +315,7 @@ function autoRenewalOnReminderEmail() {
                                           }
                       sendEmail( mailOptions, (response) => {
                         if( response ) {
-                          User.updateOne({ _id: userId }, { $set: { renewalOnReminderEmailDay: whichDayEmailReminderSend } }, function (err, updated) {
+                          User.updateOne({ _id: val._id }, { $set: { renewalOnReminderEmailDay: reminderSentDays } }, function (err, updated) {
                             if ( !err ) {
                               console.log("updated")
                             }
@@ -324,8 +324,8 @@ function autoRenewalOnReminderEmail() {
                       })
                     }
                   })
-                }
-              })
+                /* }
+              }) */
             }
           }
         })
@@ -410,11 +410,11 @@ function autoRenewalOffReminderEmail() {
                 reminderSentDays = val.renewalOffReminderEmailDay
               }
               reminderSentDays.push(whichDayEmailReminderSend)
-              User.updateOne({ _id: val._id }, { $set: { renewalOffReminderEmailDay: reminderSentDays} }, function (err, updated) {
+              /* User.updateOne({ _id: val._id }, { $set: { renewalOffReminderEmailDay: reminderSentDays} }, function (err, updated) {
                 if (err) {
                   res.send(resFormat.rError(err))
                 }
-                else {
+                else { */
                   //free premium plan expiry plan reminer email
                   emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOffReminderEmail').then( (template) => {
                     if(template) {
@@ -438,7 +438,7 @@ function autoRenewalOffReminderEmail() {
                                           }
                       sendEmail(mailOptions, (response) => {
                         if( response ) {
-                          User.updateOne({ _id: userId }, { $set: { renewalOffReminderEmailDay: whichDayEmailReminderSend } }, function (err, updated) {
+                          User.updateOne({ _id: val._id }, { $set: { renewalOffReminderEmailDay: reminderSentDays } }, function (err, updated) {
                             if ( !err ) {
                               console.log("updated")
                             }
@@ -447,8 +447,8 @@ function autoRenewalOffReminderEmail() {
                       })
                     }
                   })
-                }
-              })
+                /* }
+              }) */
             }
           }
         })
@@ -511,11 +511,11 @@ function beforeSubscriptionReminderEmail() {
             reminderSentDays = val.upgradeReminderEmailDay
           }
           reminderSentDays.push(whichDayEmailReminderSend)
-          User.updateOne({ _id: val._id }, { $set: { upgradeReminderEmailDay: reminderSentDays} }, function (err, updated) {
+          /* User.updateOne({ _id: val._id }, { $set: { upgradeReminderEmailDay: reminderSentDays} }, function (err, updated) {
             if (err) {
               res.send(resFormat.rError(err))
             }
-            else {
+            else { */
             //free premium plan expiry plan reminer email
             /* if( userEmailId == 'dangejasmine@gmail.com') {
               userEmailId = 'nileshy@arkenea.com' */
@@ -535,7 +535,7 @@ function beforeSubscriptionReminderEmail() {
                                       }
                   sendEmail(mailOptions, (response )=> {
                     if( response ) {
-                      User.updateOne({ _id: userId }, { $set: { upgradeReminderEmailDay: reminderSentDays } }, function (err, updated) {
+                      User.updateOne({ _id: val._id }, { $set: { upgradeReminderEmailDay: reminderSentDays } }, function (err, updated) {
                         if ( !err ) {
                           console.log("updated")
                         }
@@ -545,8 +545,8 @@ function beforeSubscriptionReminderEmail() {
                 }
               })
             /* } */
-            }
-          })
+            /* }
+          }) */
         }
       })
     }
