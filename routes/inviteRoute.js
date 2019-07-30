@@ -111,10 +111,10 @@ async function inviteMembers(req, res) {
                 resultCount = data.length
             }
         })
-        // upgrade plan for next 30 days.
-        if (resultCount >= 5) { //30
+        // upgrade plan for next 45 days.
+        if (resultCount == 5) { //30
             var newDt = new Date();
-            newDt.setDate(newDt.getDate() + 30);
+            newDt.setDate(newDt.getDate() + 45);
             let subscriptionData = {
                 'refereAndEarnSubscriptionDetail.end_date': newDt
             }
@@ -144,27 +144,26 @@ async function inviteMemberCheckEmail(req, res) {
 async function getInviteMembersCount(req, res) {
     let paramData = req.body
     let resultCount = 0
-    let searchParam = { _id: paramData.inviteById, userType: paramData.inviteType}
-    
+    let searchParam = { _id: paramData.inviteById, userType: paramData.inviteType}    
     let userDetails = await User.find(searchParam)
-
     if( userDetails && userDetails.length > 0 ) {
         let userCreatedOn   = userDetails[0]['createdOn'],
-            today           = moment().toDate(),
-            completedMonths = Math.round( getDateDiff( today, moment(userCreatedOn).toDate() )),
-            startDate       = new Date(userCreatedOn);
-            startDate.setMonth( startDate.getMonth() + (completedMonths-1) );
+        today           = moment().toDate(),
+        completedMonths = Math.round( getDateDiff( today, moment(userCreatedOn).toDate() ));
+        let startDate       = new Date(userCreatedOn);
+        if( completedMonths > 1) {
+            startDate.setMonth( startDate.getMonth() + (completedMonths) );
+        }            
         let endDate         = new Date(userCreatedOn)
-            endDate.setMonth( endDate.getMonth() + completedMonths );
+        endDate.setMonth( endDate.getMonth() + (completedMonths + 1) );
         let remainingDays = Math.abs(Math.round( getDateDiff( today, moment(endDate).toDate(), 'asDays' )))
-        paramData.createdOn = { $gte: new Date(startDate) , $lt: new Date(endDate) }
-        
+        paramData.createdOn = { $gte: new Date(startDate) , $lte: new Date(endDate) }
         await Invite.find(paramData, function (err, data) {
             if (data != null) {
                 resultCount = data.length
             }
-            result = { "count": resultCount,"remainingDays":remainingDays }
-            res.status(200).send(resFormat.rSuccess(result))
+        result = { "count": resultCount,"remainingDays":remainingDays }
+        res.status(200).send(resFormat.rSuccess(result))
         })
     }
 }
