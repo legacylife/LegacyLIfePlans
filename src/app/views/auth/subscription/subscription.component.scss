@@ -1,5 +1,11 @@
 @import 'llp-global-styles.scss';
 
+.overflow--wrapper{
+    height: calc(100vh - 100px);
+    margin-top: 64px;
+    overflow: auto;
+    padding-top: 60px;
+}
 .subscription--wrapper{
     border: solid 1px #e1e5c7;
     background-color: #fff; 
@@ -7,6 +13,8 @@
     display: flex;
     flex-direction: column;
     padding: 0;
+    width: 88%;
+    margin-top: 0;
 
     .header--wrapper{
         width: 69%;
@@ -167,9 +175,7 @@
 /* Media query (start here)*/
 
 @media only screen and (max-width: 599px) {
-    .subscription--wrapper{
-        margin: 30px 15px;
-    }
+ 
     .subscription--wrapper .header--wrapper {
         width: 90%;
         margin: 20px auto;
@@ -200,6 +206,13 @@
     .subscription--wrapper .header--wrapper::before, 
     .subscription--wrapper .header--wrapper::after {
         height: 163px;
+    }
+    .subscription--wrapper{
+        width: 91%;
+        margin: 30px 15px;
+    }
+    .overflow--wrapper {
+        margin-top: 0;
     }
    
 }
@@ -232,7 +245,37 @@
         left: -24px;
     }
 }
-@media only screen and (min-width: 1280px) and (max-width: 1440px){}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){
+    .subscription--wrapper .header--wrapper .sub--header span {
+        font-size: 35px;
+        padding: 0 35px;
+    }
+    .subscription--wrapper .header--wrapper .sub--header {
+        margin: 0 auto 10px;
+    }
+    .subscription--wrapper .header--wrapper .warn {
+        font-size: 30px;
+        padding: 0px 22%;
+    }
+    .subscription--wrapper .header--wrapper {
+        width: 56%;
+    }
+    .subscription--wrapper .free--trail h2 {
+        font-size: 24px;
+    }
+    .subscription--wrapper .free--trail .refer--earn .refer--row .rate h5 {
+        font-size: 35px;
+    }
+    .subscription--wrapper .free--trail .refer--earn .refer--row .rate::before {
+        font-size: 23px;
+    }
+    .subscription--wrapper .free--trail .divider-sm {
+        margin: 20px auto;
+    }
+    .subscription--wrapper .free--trail {
+        padding: 40px 40px 44px 40px;
+    }
+}
 @media only screen and (min-width: 1441px) and (max-width: 1550px){}
 
 /* Media query (end here)*/

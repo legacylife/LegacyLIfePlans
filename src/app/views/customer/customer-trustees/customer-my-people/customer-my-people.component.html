@@ -48,7 +48,7 @@
                   <button mat-menu-item *ngIf="peoples.type === 'advisor'" [routerLink]="['/customer/professionals/prof-details', peoples?.advisorId._id]">
                     <span>View</span>
                   </button>
-                  <button mat-menu-item (click)="removeTrusteeAdvisor(peoples)">
+                  <button *ngIf="peoples?.status === 'Active'" mat-menu-item (click)="removeTrusteeAdvisor(peoples)">
                     <span>Remove as a {{peoples.type}}</span>
                   </button>
                   <button mat-menu-item *ngIf="peoples.type === 'trustee' && peoples?.status === 'Pending'" (click)="resendInvitation(peoples?._id)">
