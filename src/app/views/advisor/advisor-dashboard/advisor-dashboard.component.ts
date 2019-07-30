@@ -84,7 +84,7 @@ export class AdvisorDashboardComponent implements OnInit {
           this.recentLogs = true;
         }
         else {
-          this.recentLogs = true;
+          this.recentLogs = false;
         }
       }
     }, (err) => {
