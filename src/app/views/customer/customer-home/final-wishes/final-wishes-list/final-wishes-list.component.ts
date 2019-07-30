@@ -83,6 +83,9 @@ export class FinalWishesComponent implements OnInit {
         if (this.showFuneralPlansCnt>0) {
           this.showFuneralPlansListing = true;
         }
+        else {
+          this.showFuneralPlansListing = false;
+        }
 
         this.ObituaryList = this.WishesList.filter(dtype => {
           return dtype.subFolderName == 'Obituary'
@@ -90,6 +93,9 @@ export class FinalWishesComponent implements OnInit {
         this.showObituaryListingCnt = this.ObituaryList.length
         if (this.showObituaryListingCnt > 0) {
           this.showObituaryListing = true;
+        }
+        else {
+          this.showObituaryListing = false;
         }
 
         this.CelebrationLifesList = this.WishesList.filter(dtype => {
@@ -103,6 +109,9 @@ export class FinalWishesComponent implements OnInit {
 
         if (this.showCelebrationLifesListingCnt > 0) {
           this.showCelebrationLifesListing = true;
+        }
+        else {
+          this.showCelebrationLifesListing = false;
         }
 
       }

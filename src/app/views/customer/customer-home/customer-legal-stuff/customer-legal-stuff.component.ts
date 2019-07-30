@@ -96,6 +96,9 @@ export class CustomerLegalStuffComponent implements OnInit {
         if (this.showEstateListingCnt > 0) {
           this.showEstateListing = true;
         }
+        else {
+          this.showEstateListing = false;
+        }
 
         this.healthcareList = this.legaStuffList.filter(dtype => {
           return dtype.subFolderName == 'Healthcare'
@@ -103,6 +106,9 @@ export class CustomerLegalStuffComponent implements OnInit {
         this.showhealthcareListingCnt = this.healthcareList.length
         if (this.showhealthcareListingCnt > 0) {
           this.showhealthcareListing = true;
+        }
+        else {
+          this.showhealthcareListing = false;
         }
 
         this.affairsList = this.legaStuffList.filter(dtype => {
@@ -116,6 +122,9 @@ export class CustomerLegalStuffComponent implements OnInit {
 
         if (this.showaffairsListingCnt > 0) {
           this.showaffairsListing = true;
+        }
+        else {
+          this.showaffairsListing = false;
         }
       }
     }, (err) => {

@@ -77,6 +77,9 @@ export class PetsListComponent implements OnInit {
         if (this.showPetsListingCnt>0) {
           this.showPetsListing = true;
         }
+        else {
+          this.showPetsListing = false;
+        }
       }
     }, (err) => {
       console.error(err);

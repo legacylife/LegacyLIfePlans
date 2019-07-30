@@ -73,6 +73,9 @@ export class TimeCapsuleListComponent implements OnInit {
         if (this.showTimeCapsuleListingCnt>0) {
           this.showTimeCapsuleListing = true;
         }
+        else {
+          this.showTimeCapsuleListing = false;
+        }
       }
     }, (err) => {
       console.error(err);

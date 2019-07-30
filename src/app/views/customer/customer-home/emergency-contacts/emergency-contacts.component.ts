@@ -141,6 +141,9 @@ export class EmergencyContactsComponent implements OnInit {
         this.eContactList = result.data.eContactsList;
         this.showContactCnt = result.data.totalTrusteeRecords;
       }
+      else {
+        this.showContactListing = false;
+      }
     })
   }  
   

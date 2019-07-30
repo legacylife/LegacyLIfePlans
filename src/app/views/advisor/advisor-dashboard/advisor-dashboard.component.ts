@@ -83,6 +83,9 @@ export class AdvisorDashboardComponent implements OnInit {
         if (result.data.totalRecords > 0) {
           this.recentLogs = true;
         }
+        else {
+          this.recentLogs = true;
+        }
       }
     }, (err) => {
       console.error(err);

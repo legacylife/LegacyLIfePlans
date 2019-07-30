@@ -91,6 +91,9 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
         if (this.showInsuranceListingCnt>0) {
           this.showInsuranceListing = true;
         }
+        else {
+          this.showInsuranceListing = false;
+        }
       }
       
     }, (err) => {
@@ -133,6 +136,9 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
         if (this.showFinanceListingCnt>0) {
           this.showFinanceListing = true;
         }
+        else {
+          this.showFinanceListing = false;
+        }
       }      
     }, (err) => {
       console.error(err);
@@ -158,6 +164,9 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
         this.trusteeDebtCnt = result.data.totalTrusteeRecords;
         if (this.showDebtListingCnt>0) {
           this.showDebtListing = true;
+        }
+        else {
+          this.showDebtListing = false;
         }
       }
      

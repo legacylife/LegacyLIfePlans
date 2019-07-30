@@ -60,6 +60,9 @@ export class CustomerDashboardDayOneComponent implements OnInit {
         if (this.showTrustyListingCnt>0) {
           this.showTrustyListing = true;
         }
+        else {
+          this.showTrustyListing = false;
+        }
       }
     }, (err) => {
       console.error(err);
@@ -84,6 +87,9 @@ export class CustomerDashboardDayOneComponent implements OnInit {
         if (this.showAdvisorListingCnt>0) {
           this.showAdvisorListing = true;
         }
+        else {
+          this.showAdvisorListing = false;
+        }
       }
     }, (err) => {
       console.error(err);
@@ -105,7 +111,10 @@ export class CustomerDashboardDayOneComponent implements OnInit {
         this.fileActivityLogList = result.data.activityLogList;        
         if(result.data.totalRecords > 0){
           this.recentlyAccessedFiles = true;
-        }        
+        } 
+        else {
+          this.recentlyAccessedFiles = false;
+        }       
       }
     }, (err) => {
       console.error(err);
