@@ -82,17 +82,12 @@ export class CardDetailsComponent implements OnInit {
   // get product plan
   getPlanDetails = (query = {}) => {
     this.subscriptionservice.getPlanDetails( (returnArr) => {
-      /* this.productId    = returnArr.productId
-      this.planId       = returnArr.planId
-      this.planInterval = returnArr.planInterval */
       let subscriptionDate = moment( localStorage.getItem("endUserSubscriptionEndDate") )
       let diff = Math.round(this.subscriptionservice.getDateDiff( this.today, subscriptionDate.toDate() ))
       let addOnCharges = Number (returnArr.metadata.addOnCharges)
       let addOnAmount = diff > 364 ? addOnCharges : ( (addOnCharges/365)*diff ).toFixed(2)
-      //this.planAmount   = Number(addOnAmount)
       let finalAddOnAmount = Number(addOnAmount)
       this.planAmount = finalAddOnAmount < 0.5 ? 0.5 : finalAddOnAmount
-      //(diff > 364 ? returnArr.metadata.addOnCharges : ( (returnArr.metadata.addOnCharges/365)*diff )).toFixed(2)//diff > 364 ? 50 :( returnArr.metadata.addOnCharges / diff)
       this.planCurrency = (returnArr.currency).toLocaleUpperCase()
       this.spaceAlloted = returnArr.metadata.addOnSpace
       this.getCustomerCard()
@@ -186,7 +181,7 @@ export class CardDetailsComponent implements OnInit {
             else{
               this.getAddOn(result.token.id);
             }
-            this.loader.close();
+            //this.loader.close();
           }
           else if (result.error) {
             // Error creating the token
@@ -204,17 +199,16 @@ export class CardDetailsComponent implements OnInit {
 
   // function to subscribe a paid plan
   getSubscription = ( token = null) => {
-    this.loader.open();
+    //this.loader.open();
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: this.endUserType, token:token, planId: this.planId }, {})
     }
     this.userapi.apiRequest('post', 'userlist/getsubscription', req_vars).subscribe(result => {
       const data = result.data
-      console.log("result:",result)
       if (result.status == "error") {
+        this.snack.open(result.data, 'OK', { duration: 4000 })
         this.loader.close();
-      }
-      
+      }      
       if(result.status=='success') {
         localStorage.setItem('endUserSubscriptionStartDate', data.subscriptionStartDate);
         localStorage.setItem('endUserSubscriptionEndDate', data.subscriptionEndDate);
@@ -222,35 +216,36 @@ export class CardDetailsComponent implements OnInit {
         localStorage.setItem('endUserSubscriptionStatus', "paid");
         let url = '/'+this.endUserType+'/account-setting'
         this.dialog.closeAll(); 
-        this.snack.open("Account upgraded successfully. Please check email for more info.", 'OK', { duration: 4000 })
+        this.snack.open("You have successfully purchased this subscription. Please check email for more info.", 'OK', { duration: 4000 })
         this.router.navigate([url]);
       }
       this.loader.close();
-    }, (err) => {      
+    }, (err) => {  
+      this.snack.open(err, 'OK', { duration: 4000 })    
       this.loader.close();
     })
   }
 
   // function to subscribe a paid addon plan
   getAddOn = ( token = null) => {
-    this.loader.open();
+    //this.loader.open();
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: this.endUserType, token:token, currency: (this.planCurrency).toLocaleLowerCase(), amount: this.planAmount, spaceAlloted: this.spaceAlloted }, {})
     }
     this.userapi.apiRequest('post', 'userlist/getaddon', req_vars).subscribe(result => {
-      const data = result.data
       if (result.status == "error") {
+        this.snack.open(result.data, 'OK', { duration: 4000 })
         this.loader.close();
       }
       else if(result.status=='success') {
         localStorage.setItem('endUserSubscriptionAddon', 'yes');
         this.dialog.closeAll(); 
-        this.snack.open("Add on successfully added to your account. Please check email for more info.", 'OK', { duration: 4000 })
-        //let url = '/'+this.endUserType+'/dashboard'
-        //this.router.navigate([url]);
+        this.snack.open("Successfully added "+this.spaceAlloted+"GB to your legacy. Please check email for more info.", 'OK', { duration: 4000 })
+        this.loader.close();
       }
-      this.loader.close();
-    }, (err) => {      
+      
+    }, (err) => {  
+      this.snack.open(err, 'OK', { duration: 4000 })    
       this.loader.close();
     })
   }

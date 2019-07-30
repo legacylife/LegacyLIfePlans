@@ -30,6 +30,10 @@ export class SubscriptionService {
   userSubscriptionDate: any
   today: Date = moment().toDate()
 
+
+  invitedMembersCount: number
+  remainingDays: number
+
   constructor( private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar ) {
     this.userId = localStorage.getItem("endUserId");
     this.usertype = localStorage.getItem("endUserType");
@@ -42,22 +46,30 @@ export class SubscriptionService {
   /**
    * Check the user subscription details
    */
-  checkSubscription = (callback) => {
+  checkSubscription = async (callback) => {
     
     let diff: any
     let expireDate: any
     let subscriptionDate      = localStorage.getItem("endUserSubscriptionStartDate")
     this.userCreateOn         = moment( localStorage.getItem("endUserCreatedOn") )
     this.isSubscribedBefore   = ( subscriptionDate !== 'undefined' && subscriptionDate !== null && subscriptionDate !== "") ? true : false
-    
+    let isReferAndEarn        = localStorage.getItem("endisReferAndEarn") && localStorage.getItem("endisReferAndEarn") == 'Yes' ? true : false
     if( !this.isSubscribedBefore ) {
       this.isAccountFree    = true
       this.isSubscribePlan  = false
       diff                  = this.getDateDiff( this.userCreateOn.toDate(), this.today )
 
       if( diff <= 30 ) {
-        expireDate            = this.userCreateOn.add(30,"days")
+        //check if the advisor participate into refer and earn program and he acheived the monthly invitation sent target
+        if( isReferAndEarn && this.usertype == 'advisor') {
+          let extendedDays = await this.getInviteMembersCount()
+          expireDate       = this.userCreateOn.add(extendedDays,"days")
+        }
+        else{
+          expireDate            = this.userCreateOn.add(30,"days")
+        }
         this.isPremiumExpired = false
+
         if(this.usertype == 'advisor') {
           this.planName         = 'Standard'
         }
@@ -69,15 +81,24 @@ export class SubscriptionService {
       }
       else {
         if( this.usertype == 'customer' ) {
-          expireDate            = this.userCreateOn.add(60,"days")
+          expireDate  = this.userCreateOn.add(60,"days")
           localStorage.setItem('endUserProFreeSubscription', 'yes');
+          localStorage.setItem('endUserProSubscription', 'no');
         }
         else{
-          expireDate            = this.userCreateOn.add(30,"days")
-          localStorage.setItem('endUserProFreeSubscription', 'no');
+          if( isReferAndEarn ) {
+            let extendedDays = await this.getInviteMembersCount()
+            expireDate       = this.userCreateOn.add(extendedDays,"days")
+            localStorage.setItem('endUserProFreeSubscription', 'yes');
+            localStorage.setItem('endUserProSubscription', 'yes');
+          }
+          else{
+            expireDate  = this.userCreateOn.add(30,"days")
+            localStorage.setItem('endUserProFreeSubscription', 'no');
+            localStorage.setItem('endUserProSubscription', 'no');
+          }
         }
         this.planName         = 'Free'
-        localStorage.setItem('endUserProSubscription', 'no');
         this.isPremiumExpired = true
       }
       this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
@@ -90,7 +111,7 @@ export class SubscriptionService {
       this.userSubscriptionDate = moment( localStorage.getItem("endUserSubscriptionEndDate") )
       this.isAccountFree    = false
       diff                  = this.getDateDiff( this.today, this.userSubscriptionDate.toDate() )
-      console.log("diffdiffdiff",diff)
+      //console.log("diffdiffdiff",diff)
       if( diff >= 0 ) {
         expireDate            = this.userSubscriptionDate
         this.isPremiumExpired = false
@@ -133,6 +154,56 @@ export class SubscriptionService {
                       subscriptionExpireDate : this.subscriptionExpireDate
                     }
     callback(returnArr)
+  }
+
+  async getInviteMembersCount() {
+    const params = {
+      inviteById: this.userId,
+      inviteType: 'advisor'
+    }
+    await this.userapi.apiRequest('post', 'invite/get-invite-members-count', params).subscribe(result => {
+      let extendedDays = 30
+      if( result.data.count > 5 ) {
+        let completedMonths = extendedDays * (result.data.completedMonths > 1 ? result.data.completedMonths : 1)
+        return completedMonths
+      }
+      else{
+        return extendedDays
+      }
+    })
+    /* const params = {
+      inviteById: this.userId,
+      inviteType: 'advisor'
+    }
+    await this.userapi.apiRequest('post', 'invite/get-invite-members-count', params).subscribe(result => {
+      if( result.data.count > 5 ) {
+        let completedMonths = result.data.completedMonths > 1 ? result.data.completedMonths : 1
+        expireDate          = this.userCreateOn.add( (30*completedMonths),"days")
+      }
+      else{
+        expireDate            = this.userCreateOn.add(30,"days")
+      }
+    }) */
+  }
+
+  async updateSubscriptionKeys () {
+    const req_vars = {
+      query: Object.assign({ _id: this.userId, userType: this.usertype }, {})
+    }
+    
+    await this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe(result => {
+      let userData = result.data.userProfile
+      localStorage.setItem("endUserCreatedOn", userData.createdOn)
+      localStorage.setItem("endUserSubscriptionStartDate", userData.subscriptionStartDate)
+      localStorage.setItem("endUserSubscriptionEndDate", userData.subscriptionEndDate)
+      localStorage.setItem("endUserSubscriptionStatus", userData.subscriptionStatus)
+      localStorage.setItem("endUserAutoRenewalStatus", userData.autoRenewalStatus)
+      localStorage.setItem("endUserProSubscription", 'no')
+      localStorage.setItem("endUserSubscriptionAddon", userData.addOnGiven)
+      localStorage.setItem("endisReferAndEarn", userData.isReferAndEarn)
+      
+      this.checkSubscription( ( returnArr )=> {})
+    })
   }
 
   checkSubscriptionAdminPanel = (userDetails,callback) => {
