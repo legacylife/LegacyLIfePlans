@@ -60,19 +60,24 @@ function signin(req, res) {
             let subscriptionStartDate = "",
             subscriptionEndDate = "",
             subscriptionStatus = "",
-            autoRenewal = "";
+            autoRenewal = ""
+            addOnDetails = user.addOnDetails ? user.addOnDetails : null,
+            addOnGiven = 'no',
+            isReferAndEarn = user.IamIntrested
+
             if( subscriptionDetails != null && subscriptionDetails.length >0 ) {
+              refereEarnStatus = 'No'
               subscriptionStartDate = subscriptionDetails[(subscriptionDetails.length-1)]['startDate']
               subscriptionEndDate = subscriptionDetails[(subscriptionDetails.length-1)]['endDate']
               subscriptionStatus = subscriptionDetails[(subscriptionDetails.length-1)]['status']
               autoRenewal = subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] ? subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] : false
+              //if subscription ends do not sends addon details
+              if( addOnDetails != null && addOnDetails.length > 0 && ( new Date(subscriptionEndDate) < new Date()) ) {
+                addOnGiven = addOnDetails[(addOnDetails.length-1)]['status'] && addOnDetails[(addOnDetails.length-1)]['status'] == 'paid' ? 'yes' : 'no'
+              }
             }
-            let addOnDetails = user.addOnDetails ? user.addOnDetails : null
-            let addOnGiven = 'no'
-            if( addOnDetails != null && addOnDetails.length >0 ) {
-              addOnGiven = addOnDetails[(addOnDetails.length-1)]['status'] && addOnDetails[(addOnDetails.length-1)]['status'] == 'paid' ? 'yes' : 'no'
-            }
-            let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, profilePicture : user.profilePicture, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false, "createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate" : subscriptionEndDate, "subscriptionStatus" : subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven }            
+            
+            let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, profilePicture : user.profilePicture, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false, "createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate" : subscriptionEndDate, "subscriptionStatus" : subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven, "isReferAndEarn": isReferAndEarn }
             res.status(200).send(resFormat.rSuccess(result))
           }
         })

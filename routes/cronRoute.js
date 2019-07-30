@@ -238,12 +238,12 @@ function autoRenewalOnReminderEmail() {
   User.aggregate([
     {
       $project: {
-        createdOn: 1, username:1, firstName:1,lastName:1,renewalOnReminderEmailDay:1,
+        createdOn: 1, username:1, firstName:1,lastName:1,renewalOnReminderEmailDay:1,userType1,
         subscriptionDetails: {$arrayElemAt: ["$subscriptionDetails", -1]},
       }
     },
     {
-      $match: {"subscriptionDetails.autoRenewal": true}
+      $match: {"subscriptionDetails.autoRenewal": true,"subscriptionDetails.status": "paid"}
     }
   ], async function(err,userList) {
     if( !err && userList ) {
@@ -269,8 +269,8 @@ function autoRenewalOnReminderEmail() {
           if ( daysRemainingToExpire > 0 ) {
             let userCreatedOn = val.createdOn,
                 userId        = val._id,
-                userEmailId   = val.username,
-                userFullName  = val.firstName ? val.firstName+' '+(val.lastName ? val.lastName : '') : 'User';
+                userEmailId   = val.username;
+            let userFullName  = val.firstName ? val.firstName+' '+(val.lastName ? val.lastName : '') : 'User';
                 
             let sendEmailReminder         = false,
                 whichDayEmailReminderSend = null,
@@ -297,7 +297,7 @@ function autoRenewalOnReminderEmail() {
               emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOnReminderEmail').then( (template) => {
                 if(template) {
                   let planData = {}
-                  if( userList.userType == 'customer' ) {
+                  if( val.userType == 'customer' ) {
                     planData = customerPlanDetails
                   }
                   else{
@@ -305,7 +305,7 @@ function autoRenewalOnReminderEmail() {
                   }
                   template = JSON.parse(JSON.stringify(template));
                   let body = template.mailBody.replace("{full_name}", userFullName);
-                      body = template.mailBody.replace("{renewal_date}", new Date(subscriptionDetails.endDate));
+                      body = body.replace("{renewal_date}", new Date(subscriptionDetails.endDate));
                       body = body.replace("{amount}", planData.planAmount);
                       body = body.replace("{duration}", planData.planInterval);
                       
@@ -337,12 +337,12 @@ function autoRenewalOffReminderEmail() {
   User.aggregate([
     {
       $project: {
-        createdOn: 1, username:1, firstName:1,lastName:1,renewalOffReminderEmailDay:1,
+        createdOn: 1, username:1, firstName:1,lastName:1,renewalOffReminderEmailDay:1,userType1,
         subscriptionDetails: {$arrayElemAt: ["$subscriptionDetails", -1]},
       }
     },
     {
-      $match: {"subscriptionDetails.autoRenewal": false}
+      $match: {"subscriptionDetails.autoRenewal": false, "subscriptionDetails.status": "paid"}
     }
   ], async function(err,userList) {
     if( !err && userList ) {
@@ -414,7 +414,7 @@ function autoRenewalOffReminderEmail() {
               emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOffReminderEmail').then( (template) => {
                 if(template) {
                   let planData = {}
-                  if( userList.userType == 'customer' ) {
+                  if( val.userType == 'customer' ) {
                     planData = customerPlanDetails
                   }
                   else{

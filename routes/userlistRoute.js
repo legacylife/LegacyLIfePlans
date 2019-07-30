@@ -429,9 +429,41 @@ function getSubscription(req, res) {
             { source : requestParam.token },
               function(err, customer) {
               if ( err ) {
-                res.status(401).send(resFormat.rError(err))
+                switch (err.type) {
+                  case 'StripeCardError':
+                    // A declined card error
+                    //err.message; // => e.g. "Your card's expiration year is invalid."
+                    res.send(resFormat.rError(err.message));
+                    break;
+                  case 'StripeRateLimitError':
+                    // Too many requests made to the API too quickly
+                    res.send(resFormat.rError(err.message));
+                    break;
+                  case 'StripeInvalidRequestError':
+                    // Invalid parameters were supplied to Stripe's API
+                    res.send(resFormat.rError(err.message));
+                    break;
+                  case 'StripeAPIError':
+                    // An error occurred internally with Stripe's API
+                    res.send(resFormat.rError(err.message));
+                    break;
+                  case 'StripeConnectionError':
+                    // Some kind of error occurred during the HTTPS communication
+                    res.send(resFormat.rError(err.message));
+                    break;
+                  case 'StripeAuthenticationError':
+                    // You probably used an incorrect API key
+                    res.send(resFormat.rError(err.message));
+                    break;
+                  default:
+                    // Handle any other types of unexpected errors
+                    res.send(resFormat.rError("Invalid access. Try again"));
+                    break;
+                }
               }
-              createSubscription( userProfile, stripeCustomerId, planId, requestParam, res )
+              else{
+                createSubscription( userProfile, stripeCustomerId, planId, requestParam, res )
+              }
             }
           );
         }
@@ -446,7 +478,37 @@ function getSubscription(req, res) {
           source: requestParam.token // obtained with Stripe.js
         }, function(err, customer) {
           if( err ) {
-            res.status(401).send(resFormat.rError(err))
+            switch (err.type) {
+              case 'StripeCardError':
+                // A declined card error
+                //err.message; // => e.g. "Your card's expiration year is invalid."
+                res.send(resFormat.rError(err.message));
+                break;
+              case 'StripeRateLimitError':
+                // Too many requests made to the API too quickly
+                res.send(resFormat.rError(err.message));
+                break;
+              case 'StripeInvalidRequestError':
+                // Invalid parameters were supplied to Stripe's API
+                res.send(resFormat.rError(err.message));
+                break;
+              case 'StripeAPIError':
+                // An error occurred internally with Stripe's API
+                res.send(resFormat.rError(err.message));
+                break;
+              case 'StripeConnectionError':
+                // Some kind of error occurred during the HTTPS communication
+                res.send(resFormat.rError(err.message));
+                break;
+              case 'StripeAuthenticationError':
+                // You probably used an incorrect API key
+                res.send(resFormat.rError(err.message));
+                break;
+              default:
+                // Handle any other types of unexpected errors
+                res.send(resFormat.rError("Invalid access. Try again"));
+                break;
+            }
           }
           else{
             stripeCustomerId = customer.id
@@ -469,7 +531,39 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
     ]
   }, function(err, subscription) {
     if (err) {
-      res.send(resFormat.rError(err))
+
+      switch (err.type) {
+        case 'StripeCardError':
+          // A declined card error
+          //err.message; // => e.g. "Your card's expiration year is invalid."
+          res.send(resFormat.rError(err.message));
+          break;
+        case 'StripeRateLimitError':
+          // Too many requests made to the API too quickly
+          res.send(resFormat.rError(err.message));
+          break;
+        case 'StripeInvalidRequestError':
+          // Invalid parameters were supplied to Stripe's API
+          res.send(resFormat.rError(err.message));
+          break;
+        case 'StripeAPIError':
+          // An error occurred internally with Stripe's API
+          res.send(resFormat.rError(err.message));
+          break;
+        case 'StripeConnectionError':
+          // Some kind of error occurred during the HTTPS communication
+          res.send(resFormat.rError(err.message));
+          break;
+        case 'StripeAuthenticationError':
+          // You probably used an incorrect API key
+          res.send(resFormat.rError(err.message));
+          break;
+        default:
+          // Handle any other types of unexpected errors
+          res.send(resFormat.rError("Invalid access. Try again"));
+          break;
+      }
+      
     }
     else {
       let subscriptionStartDate = subscription.current_period_start*1000
@@ -576,9 +670,42 @@ function getAddon(req, res) {
             { source : requestParam.token },
               function(err, customer) {
               if ( err ) {
-                res.status(401).send(resFormat.rError(err))
+                switch (err.type) {
+                  case 'StripeCardError':
+                    // A declined card error
+                    //err.message; // => e.g. "Your card's expiration year is invalid."
+                    res.send(resFormat.rError(err.message));
+                    break;
+                  case 'StripeRateLimitError':
+                    // Too many requests made to the API too quickly
+                    res.send(resFormat.rError(err.message));
+                    break;
+                  case 'StripeInvalidRequestError':
+                    // Invalid parameters were supplied to Stripe's API
+                    res.send(resFormat.rError(err.message));
+                    break;
+                  case 'StripeAPIError':
+                    // An error occurred internally with Stripe's API
+                    res.send(resFormat.rError(err.message));
+                    break;
+                  case 'StripeConnectionError':
+                    // Some kind of error occurred during the HTTPS communication
+                    res.send(resFormat.rError(err.message));
+                    break;
+                  case 'StripeAuthenticationError':
+                    // You probably used an incorrect API key
+                    res.send(resFormat.rError(err.message));
+                    break;
+                  default:
+                    // Handle any other types of unexpected errors
+                    res.send(resFormat.rError("Invalid access. Try again"));
+                    break;
+                }
               }
-              chargeForAddon( userProfile, stripeCustomerId, requestParam, res )
+              else{
+                chargeForAddon( userProfile, stripeCustomerId, requestParam, res )
+              }
+              
             }
           );
         }
@@ -593,7 +720,37 @@ function getAddon(req, res) {
           source: requestParam.token // obtained with Stripe.js
         }, function(err, customer) {
           if( err ) {
-            res.status(401).send(resFormat.rError(err))
+            switch (err.type) {
+              case 'StripeCardError':
+                // A declined card error
+                //err.message; // => e.g. "Your card's expiration year is invalid."
+                res.send(resFormat.rError(err.message));
+                break;
+              case 'StripeRateLimitError':
+                // Too many requests made to the API too quickly
+                res.send(resFormat.rError(err.message));
+                break;
+              case 'StripeInvalidRequestError':
+                // Invalid parameters were supplied to Stripe's API
+                res.send(resFormat.rError(err.message));
+                break;
+              case 'StripeAPIError':
+                // An error occurred internally with Stripe's API
+                res.send(resFormat.rError(err.message));
+                break;
+              case 'StripeConnectionError':
+                // Some kind of error occurred during the HTTPS communication
+                res.send(resFormat.rError(err.message));
+                break;
+              case 'StripeAuthenticationError':
+                // You probably used an incorrect API key
+                res.send(resFormat.rError(err.message));
+                break;
+              default:
+                // Handle any other types of unexpected errors
+                res.send(resFormat.rError("Invalid access. Try again"));
+                break;
+            }
           }
           else{
             stripeCustomerId = customer.id
@@ -619,7 +776,38 @@ function chargeForAddon( userProfile, stripeCustomerId, requestParam, res ) {
     receipt_email: userProfile.username,
   }, function(err, charge) {
     if (err) {
-      res.send(resFormat.rError(err))
+      console.log("======================",err)
+      switch (err.type) {
+        case 'StripeCardError':
+          // A declined card error
+          //err.message; // => e.g. "Your card's expiration year is invalid."
+          res.send(resFormat.rError(err.message));
+          break;
+        case 'StripeRateLimitError':
+          // Too many requests made to the API too quickly
+          res.send(resFormat.rError(err.message));
+          break;
+        case 'StripeInvalidRequestError':
+          // Invalid parameters were supplied to Stripe's API
+          res.send(resFormat.rError(err.message));
+          break;
+        case 'StripeAPIError':
+          // An error occurred internally with Stripe's API
+          res.send(resFormat.rError(err.message));
+          break;
+        case 'StripeConnectionError':
+          // Some kind of error occurred during the HTTPS communication
+          res.send(resFormat.rError(err.message));
+          break;
+        case 'StripeAuthenticationError':
+          // You probably used an incorrect API key
+          res.send(resFormat.rError(err.message));
+          break;
+        default:
+          // Handle any other types of unexpected errors
+          res.send(resFormat.rError("Invalid access. Try again"));
+          break;
+      }
     }
     else {
       let addOnDetails = {"_id" : objectId,

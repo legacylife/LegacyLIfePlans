@@ -162,7 +162,7 @@ async function getInviteMembersCount(req, res) {
             if (data != null) {
                 resultCount = data.length
             }
-        result = { "count": resultCount,"remainingDays":remainingDays }
+        result = { "count": resultCount,"remainingDays":remainingDays, "completedMonths":completedMonths }
         res.status(200).send(resFormat.rSuccess(result))
         })
     }
