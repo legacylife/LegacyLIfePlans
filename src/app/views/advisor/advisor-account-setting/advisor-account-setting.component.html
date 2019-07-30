@@ -150,13 +150,13 @@
                       <a class="clr--red" [class.not-allowed]="!isSubscribePlan || isSubscriptionCanceled" [attr.disabled]="!isSubscribePlan || isSubscriptionCanceled" (click)="isSubscribePlan && !isSubscriptionCanceled && cancelSubscription()">Cancel subscription</a>
                     </div>
 
-                    <mat-card class="mt-1 p-0 black--header" *ngIf="invitedMembersCount<30">
+                    <mat-card class="mt-1 p-0 black--header" *ngIf="invitedMembersCount<invitedMembersCountDefault">
                       <mat-card-title class="">
                         <div class="card-title-text">Invitation Status</div>
                         <mat-divider></mat-divider>
                       </mat-card-title>
                       <mat-card-content class="invite--body--section">
-                        <h4 class="count">{{invitedMembersCount}}<span>/30</span>
+                        <h4 class="count">{{invitedMembersCount}}<span>/{{invitedMembersCountDefault}}</span>
                         </h4>
                         <p class="daysgo">{{remainingDays}} days to go</p>
                         <p class="invites">Invites sent in this month</p> 
@@ -165,7 +165,7 @@
                     </mat-card>
 
 
-                    <mat-card class="mt-1 p-0 black--header" *ngIf="invitedMembersCount>=30">
+                    <mat-card class="mt-1 p-0 black--header" *ngIf="invitedMembersCount>=invitedMembersCountDefault">
                       <mat-card-content class="">
                         <div class="header--wrapper">
                           <header class="sub--header" style="background-image: url('assets/images/arkenea/congratulations.png')">
