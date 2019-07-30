@@ -115,7 +115,7 @@ async function getSelectedPlanDetails( planId ) {
 
 function autoRenewalOnUpdateSubscription ( req, res ) {
   let requestParam = req.body
-  console.log("requestParamrequestParam==========",requestParam)
+  //console.log("requestParamrequestParam==========",requestParam)
   if( requestParam != null || requestParam.length >0 ) {
     let eventId = requestParam.id
     let eventType = requestParam.type
@@ -126,18 +126,23 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
       let customer_email = returnData.customer_email
       let autoRenewalUpdate = returnData.collection_method
       //let previous_attributes = requestParam.data.previous_attributes
-      console.log("autoRenewalUpdate==========",autoRenewalUpdate)
+      
       if( autoRenewalUpdate == 'charge_automatically' ) {
+        //console.log("autoRenewalUpdate==========",autoRenewalUpdate)
+        res.json({received: true});
+        //res.status(200).send(resFormat.rSuccess({received: true}));
         let subscriptionData = returnData.lines.data
         User.find( { username: customer_email, stripeCustomerId:customerId }, {}, function (err, userData) {
+          
           if( !err && userData.length > 0 ) {
             let userProfile = userData[0]
+            
             if( subscriptionData[0]['type'] == 'subscription' ) {
 
               var currentDate  = new Date();
               var currentSubscriptionEndDate = ''//new Date(subscriptionData[0]['period']['start']*1000);
               let updateuser = false
-              let subscriptionDetails   = userData.subscriptionDetails ? userData.subscriptionDetails : null
+              let subscriptionDetails   = userProfile.subscriptionDetails ? userProfile.subscriptionDetails : null
               if( subscriptionDetails != null && subscriptionDetails.length > 0 ) {
                 subscriptionEndDate   = subscriptionDetails[(subscriptionDetails.length-1)]['endDate']
                 subscriptionStatus    = subscriptionDetails[(subscriptionDetails.length-1)]['status']
