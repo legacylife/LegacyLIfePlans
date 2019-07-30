@@ -8,97 +8,99 @@ const today   = moment().toDate()
 const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 var currencyFormatter     = require('currency-formatter');
+const mongoose = require('mongoose')
+var objectId = mongoose.Types.ObjectId();
 
 async function getSelectedPlanDetails( planId ) {
   return await stripe.plans.retrieve( planId );
 }
 
-function autoRenewalOnUpdateSubscription() {
-  User.aggregate([
-    {
-      $project: {
-        createdOn: 1, username:1, firstName:1,lastName:1,renewalReminderEmailDay:1,stripeCustomerId:1,
-        subscriptionDetails: {$arrayElemAt: ["$subscriptionDetails", -1]},
-      }
-    },
-    {
-      $match: {"subscriptionDetails.autoRenewal": true}
-    }
-  ], async function(err,userList) {
-    if( !err && userList ) {
-      if( userList.length > 0 ) {
-        let customerProductDetails= await getSelectedPlanDetails( 'C_YEARLY');
-        let customerPlanDetails   = { amount: customerProductDetails.amount / 100,
-                                      planInterval: customerProductDetails.interval,
-                                      planName: customerProductDetails.metadata.name+' Plan',
-                                      planAmount: currencyFormatter.format( customerProductDetails.amount, { code: (customerProductDetails.currency).toUpperCase() }),
-                                      defaultSpace: customerProductDetails.metadata.defaultSpace+' '+customerProductDetails.metadata.spaceDimension
-                                    }
-        let advisorProductDetails = await getSelectedPlanDetails( 'A_MONTHLY');
-        let advisorPlanDetails    = { amount: advisorProductDetails.amount / 100,
-                                      planInterval: advisorProductDetails.interval,
-                                      planName: advisorProductDetails.metadata.name+' Plan',
-                                      planAmount: currencyFormatter.format( advisorProductDetails.amount, { code: (advisorProductDetails.currency).toUpperCase() })
-                                    }
+/* function autoRenewalOnUpdateSubscription ( req, res ) {
+  let requestParam = req.body
+  console.log("requestParamrequestParam==========",requestParam)
+  if( requestParam != null || requestParam.length >0 ) {
+    let eventId = requestParam.id
+    let eventType = requestParam.type
 
-        userList.forEach( ( val, index ) => {
-          let subscriptionDetails   = val.subscriptionDetails,
-              daysRemainingToExpire = getDateDiff( today, moment(subscriptionDetails.endDate).toDate() )
-          
-          if ( daysRemainingToExpire > 0 ) {
-            let userCreatedOn = val.createdOn,
-                userId        = val._id,
-                userEmailId   = val.username,
-                userFullName  = val.firstName ? val.firstName+' '+(val.lastName ? val.lastName : '') : 'User';
-                
-            let sendEmailReminder         = false,
-                whichDayEmailReminderSend = null,
-                freeAccessRemainingDays   = 0;
-            
-            //If the auto-payment option is On, the system will send reminder notifications on the user’s email (1 day) before renewal date
-            if( daysRemainingToExpire > 0 && daysRemainingToExpire <= 1 && ( !val.renewalOnReminderEmailDay || !val.renewalOnReminderEmailDay.includes(1) )) {
-              //reminder before 1day of premium access expires
-              sendEmailReminder         = true
-              whichDayEmailReminderSend = 1
-              freeAccessRemainingDays   = '1 day'
-            }
-            
-            //console.log("userType",val.userType,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
-            //send email reminder if above conditions true
-            if( sendEmailReminder && whichDayEmailReminderSend != null ) {
-              let reminderSentDays = []
-              if( val.renewalOnReminderEmailDay ) {
-                reminderSentDays = val.renewalOnReminderEmailDay
+    if( eventType == 'customer.subscription.updated' ) {
+      let subscriptionData =  requestParam.data.object
+      let customerId = subscriptionData.customer
+      let autoRenewalUpdate = subscriptionData.collection_method
+      let previous_attributes = requestParam.data.previous_attributes
+      console.log("autoRenewalUpdate==========",autoRenewalUpdate)
+      if( autoRenewalUpdate == 'charge_automatically' && previous_attributes.collection_method == 'charge_automatically' ) {
+        User.find( { stripeCustomerId:customerId }, {}, function (err, userData) {
+          if( !err && userData.length > 0 ) {
+            let userProfile = userData[0]
+            if( subscriptionData.object == 'subscription' ) {
+              let subscriptionDetails = {"_id" : objectId,
+                                          "productId" : subscriptionData.items.data[0]['plan']['product'],
+                                          "planId" : subscriptionData.items.data[0]['plan']['id'],
+                                          "subscriptionId" : subscriptionData.id,
+                                          "startDate" : new Date(subscriptionData.current_period_start*1000),
+                                          "endDate" : new Date(subscriptionData.current_period_end*1000),
+                                          "interval" : subscriptionData.items.data[0]['plan']['interval'],
+                                          "currency" : subscriptionData.items.data[0]['plan']['currency'],
+                                          "amount" : subscriptionData.items.data[0]['plan']['amount'] / 100,
+                                          "status" : 'paid',
+                                          "autoRenewal": subscriptionData.collection_method == 'charge_automatically' ? true : false,
+                                          "paymentMode" : 'online',
+                                          "planName" : subscriptionData.items.data[0]['plan']['metadata']['name']+' Plan',
+                                          "defaultSpace" : subscriptionData.items.data[0]['plan']['metadata']['defaultSpace'],
+                                          "spaceDimension" : subscriptionData.items.data[0]['plan']['metadata']['spaceDimension'],
+                                          "paidOn" : new Date(),
+                                          "createdOn" : new Date(),
+                                          "createdBy" : mongoose.Types.ObjectId(requestParam._id)
+                                        };
+              let userSubscription = []
+              let EmailTemplateName = "NewSubscriptionAdviser";
+              if(userProfile.userType == 'customer') {
+                EmailTemplateName = "NewSubscription";
               }
-              reminderSentDays.push(whichDayEmailReminderSend)
-              //free premium plan expiry plan reminer email
-              emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOnReminderEmail').then( (template) => {
-                if(template) {
-                  let planData = {}
-                  if( userList.userType == 'customer' ) {
-                    planData = customerPlanDetails
-                  }
-                  else{
-                    planData = advisorPlanDetails
-                  }
-                  template = JSON.parse(JSON.stringify(template));
-                  let body = template.mailBody.replace("{full_name}", userFullName);
-                      body = body.replace("{plan_name}",planData.planName);
-                      body = body.replace("{amount}", planData.planAmount);
-                      body = body.replace("{duration}", planData.planInterval);
-                      body = body.replace("{remaining_days}", freeAccessRemainingDays);
-
-                  const mailOptions = { to : userEmailId,
-                                        subject : template.mailSubject,
-                                        html: body
-                                      }
-                  sendEmail( mailOptions, (response) => {
-                    if( response ) {
-                      User.updateOne({ _id: userId }, { $set: { renewalOnReminderEmailDay: whichDayEmailReminderSend } }, function (err, updated) {
-                        if ( !err ) {
-                          console.log("updated")
-                        }
-                      })
+        
+              if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
+                userSubscription = userProfile.subscriptionDetails
+                EmailTemplateName = "AutoRenewalAdviser"
+                if(userProfile.userType == 'customer') {
+                  EmailTemplateName = "AutoRenewal"
+                }
+              }
+              userSubscription.push(subscriptionDetails)
+              //console.log(userSubscription)
+              console.log("userFullName",userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '',"email: -",userProfile.username,  "created on :-",userProfile.createdOn);
+              //Update user details
+              User.updateOne({ _id: userProfile._id }, { $set: { subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
+                if (err) {
+                  res.send(resFormat.rError(err))
+                }
+                else {
+                  //subscription purchased email template
+                  emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
+                    if(template) {
+                      template = JSON.parse(JSON.stringify(template));
+                      let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '');
+                      body = body.replace("{plan_name}",subscriptionDetails.planName);
+                      body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
+                      body = body.replace("{duration}",subscriptionDetails.interval);
+                      body = body.replace("{paid_on}",subscriptionDetails.paidOn);
+                      body = body.replace("{start_date}",subscriptionDetails.startDate);
+                      body = body.replace("{end_date}",subscriptionDetails.endDate);
+                      if(userProfile.userType == 'customer') {
+                        body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
+                        body = body.replace("{more_space}", subscriptionData.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
+                      }
+                      body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
+                      const mailOptions = {
+                        to : userProfile.username,
+                        subject : template.mailSubject,
+                        html: body
+                      }
+                      sendEmail(mailOptions)
+                      console.log("email sent")
+                      return true;
+                    } else {
+                      console.log("email sent")
+                      return true;
                     }
                   })
                 }
@@ -108,14 +110,130 @@ function autoRenewalOnUpdateSubscription() {
         })
       }
     }
-  })
+  }
+} */
+
+function autoRenewalOnUpdateSubscription ( req, res ) {
+  let requestParam = req.body
+  console.log("requestParamrequestParam==========",requestParam)
+  if( requestParam != null || requestParam.length >0 ) {
+    let eventId = requestParam.id
+    let eventType = requestParam.type
+
+    if( eventType == 'invoice.payment_succeeded' ) {
+      let returnData =  requestParam.data.object
+      let customerId = returnData.customer
+      let customer_email = returnData.customer_email
+      let autoRenewalUpdate = returnData.collection_method
+      //let previous_attributes = requestParam.data.previous_attributes
+      console.log("autoRenewalUpdate==========",autoRenewalUpdate)
+      if( autoRenewalUpdate == 'charge_automatically' ) {
+        let subscriptionData = returnData.lines.data
+        User.find( { username: customer_email, stripeCustomerId:customerId }, {}, function (err, userData) {
+          if( !err && userData.length > 0 ) {
+            let userProfile = userData[0]
+            if( subscriptionData[0]['type'] == 'subscription' ) {
+
+              var currentDate  = new Date();
+              var currentSubscriptionEndDate = ''//new Date(subscriptionData[0]['period']['start']*1000);
+              let updateuser = false
+              let subscriptionDetails   = userData.subscriptionDetails ? userData.subscriptionDetails : null
+              if( subscriptionDetails != null && subscriptionDetails.length > 0 ) {
+                subscriptionEndDate   = subscriptionDetails[(subscriptionDetails.length-1)]['endDate']
+                subscriptionStatus    = subscriptionDetails[(subscriptionDetails.length-1)]['status']
+                currentSubscriptionEndDate = new Date(subscriptionEndDate)
+                if( subscriptionStatus != 'canceled' && currentSubscriptionEndDate < currentDate ) {
+                  updateuser = true
+                }
+              }
+              
+              if( updateuser ) {
+                let subscriptionDetails = {"_id" : objectId,
+                                            "productId" : subscriptionData[0]['plan']['product'],
+                                            "planId" : subscriptionData[0]['plan']['id'],
+                                            "subscriptionId" : subscriptionData[0]['subscription'],
+                                            "startDate" : new Date(subscriptionData[0]['period']['start']*1000),
+                                            "endDate" : new Date(subscriptionData[0]['period']['end']*1000),
+                                            "interval" : subscriptionData[0]['plan']['interval'],
+                                            "currency" : subscriptionData[0]['plan']['currency'],
+                                            "amount" : subscriptionData[0]['plan']['amount'] / 100,
+                                            "status" : 'paid',
+                                            "autoRenewal": autoRenewalUpdate == 'charge_automatically' ? true : false,
+                                            "paymentMode" : 'online',
+                                            "planName" : subscriptionData[0]['plan']['metadata']['name']+' Plan',
+                                            "defaultSpace" : subscriptionData[0]['plan']['metadata']['defaultSpace'],
+                                            "spaceDimension" : subscriptionData[0]['plan']['metadata']['spaceDimension'],
+                                            "paidOn" : new Date(),
+                                            "createdOn" : new Date(),
+                                            "createdBy" : mongoose.Types.ObjectId(requestParam._id)
+                                          };
+                let userSubscription = []
+                let EmailTemplateName = "NewSubscriptionAdviser";
+                if(userProfile.userType == 'customer') {
+                  EmailTemplateName = "NewSubscription";
+                }
+          
+                if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
+                  userSubscription = userProfile.subscriptionDetails
+                  EmailTemplateName = "AutoRenewalAdviser"
+                  if(userProfile.userType == 'customer') {
+                    EmailTemplateName = "AutoRenewal"
+                  }
+                }
+                userSubscription.push(subscriptionDetails)
+                //console.log(userSubscription)
+                console.log("userFullName",userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '',"email: -",userProfile.username,  "created on :-",userProfile.createdOn);
+                //Update user details
+                User.updateOne({ _id: userProfile._id }, { $set: { subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
+                  if (err) {
+                    res.send(resFormat.rError(err))
+                  }
+                  else {
+                    //subscription purchased email template
+                    emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
+                      if(template) {
+                        template = JSON.parse(JSON.stringify(template));
+                        let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '');
+                        body = body.replace("{plan_name}",subscriptionDetails.planName);
+                        body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
+                        body = body.replace("{duration}",subscriptionDetails.interval);
+                        body = body.replace("{paid_on}",subscriptionDetails.paidOn);
+                        body = body.replace("{start_date}",subscriptionDetails.startDate);
+                        body = body.replace("{end_date}",subscriptionDetails.endDate);
+                        if(userProfile.userType == 'customer') {
+                          body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
+                          body = body.replace("{more_space}", subscriptionData.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
+                        }
+                        body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
+                        const mailOptions = {
+                          to : userProfile.username,
+                          subject : template.mailSubject,
+                          html: body
+                        }
+                        sendEmail(mailOptions)
+                        console.log("email sent")
+                        res.json({received: true});
+                      } else {
+                        console.log("email sent")
+                        res.json({received: true});
+                      }
+                    })
+                  }
+                })
+              }
+            }
+          }
+        })
+      }
+    }
+  }
 }
 
 function autoRenewalOnReminderEmail() {
   User.aggregate([
     {
       $project: {
-        createdOn: 1, username:1, firstName:1,lastName:1,renewalReminderEmailDay:1,
+        createdOn: 1, username:1, firstName:1,lastName:1,renewalOnReminderEmailDay:1,
         subscriptionDetails: {$arrayElemAt: ["$subscriptionDetails", -1]},
       }
     },
@@ -129,19 +247,19 @@ function autoRenewalOnReminderEmail() {
         let customerPlanDetails   = { amount: customerProductDetails.amount / 100,
                                       planInterval: customerProductDetails.interval,
                                       planName: customerProductDetails.metadata.name+' Plan',
-                                      planAmount: currencyFormatter.format( customerProductDetails.amount, { code: (customerProductDetails.currency).toUpperCase() }),
+                                      planAmount: currencyFormatter.format( (customerProductDetails.amount/100), { code: (customerProductDetails.currency).toUpperCase() }),
                                       defaultSpace: customerProductDetails.metadata.defaultSpace+' '+customerProductDetails.metadata.spaceDimension
                                     }
         let advisorProductDetails = await getSelectedPlanDetails( 'A_MONTHLY');
         let advisorPlanDetails    = { amount: advisorProductDetails.amount / 100,
                                       planInterval: advisorProductDetails.interval,
                                       planName: advisorProductDetails.metadata.name+' Plan',
-                                      planAmount: currencyFormatter.format( advisorProductDetails.amount, { code: (advisorProductDetails.currency).toUpperCase() })
+                                      planAmount: currencyFormatter.format( (advisorProductDetails.amount/100), { code: (advisorProductDetails.currency).toUpperCase() })
                                     }
 
         userList.forEach( ( val, index ) => {
           let subscriptionDetails   = val.subscriptionDetails,
-              daysRemainingToExpire = getDateDiff( today, moment(subscriptionDetails.endDate).toDate() )
+              daysRemainingToExpire = Math.abs(getDateDiff( today, moment(subscriptionDetails.endDate).toDate(), 'asHours' ))
           
           if ( daysRemainingToExpire > 0 ) {
             let userCreatedOn = val.createdOn,
@@ -161,7 +279,7 @@ function autoRenewalOnReminderEmail() {
               freeAccessRemainingDays   = '1 day'
             }
             
-            //console.log("userType",val.userType,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
+            console.log("userFullName",userFullName,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
             //send email reminder if above conditions true
             if( sendEmailReminder && whichDayEmailReminderSend != null ) {
               let reminderSentDays = []
@@ -169,32 +287,39 @@ function autoRenewalOnReminderEmail() {
                 reminderSentDays = val.renewalOnReminderEmailDay
               }
               reminderSentDays.push(whichDayEmailReminderSend)
-              //free premium plan expiry plan reminer email
-              emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOnReminderEmail').then( (template) => {
-                if(template) {
-                  let planData = {}
-                  if( userList.userType == 'customer' ) {
-                    planData = customerPlanDetails
-                  }
-                  else{
-                    planData = advisorPlanDetails
-                  }
-                  template = JSON.parse(JSON.stringify(template));
-                  let body = template.mailBody.replace("{full_name}", userFullName);
-                      body = body.replace("{plan_name}",planData.planName);
-                      body = body.replace("{amount}", planData.planAmount);
-                      body = body.replace("{duration}", planData.planInterval);
-                      body = body.replace("{remaining_days}", freeAccessRemainingDays);
+              User.updateOne({ _id: val._id }, { $set: { renewalOnReminderEmailDay: reminderSentDays} }, function (err, updated) {
+                if (err) {
+                  res.send(resFormat.rError(err))
+                }
+                else {
+                  //free premium plan expiry plan reminer email
+                  emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOnReminderEmail').then( (template) => {
+                    if(template) {
+                      let planData = {}
+                      if( userList.userType == 'customer' ) {
+                        planData = customerPlanDetails
+                      }
+                      else{
+                        planData = advisorPlanDetails
+                      }
+                      template = JSON.parse(JSON.stringify(template));
+                      let body = template.mailBody.replace("{full_name}", userFullName);
+                          body = template.mailBody.replace("{renewal_date}", new Date(subscriptionDetails.endDate));
+                          body = body.replace("{amount}", planData.planAmount);
+                          body = body.replace("{duration}", planData.planInterval);
+                          
 
-                  const mailOptions = { to : userEmailId,
-                                        subject : template.mailSubject,
-                                        html: body
-                                      }
-                  sendEmail( mailOptions, (response) => {
-                    if( response ) {
-                      User.updateOne({ _id: userId }, { $set: { renewalOnReminderEmailDay: whichDayEmailReminderSend } }, function (err, updated) {
-                        if ( !err ) {
-                          console.log("updated")
+                      const mailOptions = { to : userEmailId,
+                                            subject : template.mailSubject,
+                                            html: body
+                                          }
+                      sendEmail( mailOptions, (response) => {
+                        if( response ) {
+                          User.updateOne({ _id: userId }, { $set: { renewalOnReminderEmailDay: whichDayEmailReminderSend } }, function (err, updated) {
+                            if ( !err ) {
+                              console.log("updated")
+                            }
+                          })
                         }
                       })
                     }
@@ -213,7 +338,7 @@ function autoRenewalOffReminderEmail() {
   User.aggregate([
     {
       $project: {
-        createdOn: 1, username:1, firstName:1,lastName:1,renewalReminderEmailDay:1,
+        createdOn: 1, username:1, firstName:1,lastName:1,renewalOffReminderEmailDay:1,
         subscriptionDetails: {$arrayElemAt: ["$subscriptionDetails", -1]},
       }
     },
@@ -227,19 +352,19 @@ function autoRenewalOffReminderEmail() {
         let customerPlanDetails   = { amount: customerProductDetails.amount / 100,
                                       planInterval: customerProductDetails.interval,
                                       planName: customerProductDetails.metadata.name+' Plan',
-                                      planAmount: currencyFormatter.format( customerProductDetails.amount, { code: (customerProductDetails.currency).toUpperCase() }),
+                                      planAmount: currencyFormatter.format( (customerProductDetails.amount/100), { code: (customerProductDetails.currency).toUpperCase() }),
                                       defaultSpace: customerProductDetails.metadata.defaultSpace+' '+customerProductDetails.metadata.spaceDimension
                                     }
         let advisorProductDetails = await getSelectedPlanDetails( 'A_MONTHLY');
         let advisorPlanDetails    = { amount: advisorProductDetails.amount / 100,
                                       planInterval: advisorProductDetails.interval,
                                       planName: advisorProductDetails.metadata.name+' Plan',
-                                      planAmount: currencyFormatter.format( advisorProductDetails.amount, { code: (advisorProductDetails.currency).toUpperCase() })
+                                      planAmount: currencyFormatter.format( (advisorProductDetails.amount/100), { code: (advisorProductDetails.currency).toUpperCase() })
                                     }
 
         userList.forEach( ( val, index ) => {
           let subscriptionDetails   = val.subscriptionDetails,
-              daysRemainingToExpire = getDateDiff( today, moment(subscriptionDetails.endDate).toDate() )
+              daysRemainingToExpire = Math.abs(getDateDiff( today, moment(subscriptionDetails.endDate).toDate() , 'asHours' ))
           
           if ( daysRemainingToExpire > 0 ) {
             let userCreatedOn = val.createdOn,
@@ -252,7 +377,7 @@ function autoRenewalOffReminderEmail() {
                 freeAccessRemainingDays   = 0;
             
             //If the auto-payment option is OFF, the system will send reminder notifications on the user’s email (30 days, 7 days, 3 days, 1 day) before expiring plan date
-            if( daysRemainingToExpire <= 30 && daysRemainingToExpire > 29 && ( !val.renewalOffReminderEmailDay || !val.renewalOffReminderEmailDay.includes(30) )) {
+            if( daysRemainingToExpire <= 10 && daysRemainingToExpire > 9 && ( !val.renewalOffReminderEmailDay || !val.renewalOffReminderEmailDay.includes(30) )) {
               //reminder before 30days of premium access expires
               sendEmailReminder         = true
               whichDayEmailReminderSend = 30
@@ -277,7 +402,7 @@ function autoRenewalOffReminderEmail() {
               freeAccessRemainingDays   = '1 day'
             }
             
-            //console.log("userType",val.userType,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
+            console.log("userFullName",userFullName,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
             //send email reminder if above conditions true
             if( sendEmailReminder && whichDayEmailReminderSend != null ) {
               let reminderSentDays = []
@@ -285,33 +410,39 @@ function autoRenewalOffReminderEmail() {
                 reminderSentDays = val.renewalOffReminderEmailDay
               }
               reminderSentDays.push(whichDayEmailReminderSend)
-              //free premium plan expiry plan reminer email
-              emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOffReminderEmail').then( (template) => {
-                if(template) {
-                  let planData = {}
-                  if( userList.userType == 'customer' ) {
-                    planData = customerPlanDetails
-                  }
-                  else{
-                    planData = advisorPlanDetails
-                  }
-                
-                  template = JSON.parse(JSON.stringify(template));
-                  let body = template.mailBody.replace("{full_name}", userFullName);
-                      body = body.replace("{plan_name}", planData.planName);
-                      body = body.replace("{amount}", planData.planAmount);
-                      body = body.replace("{duration}", planData.planInterval);
-                      body = body.replace("{remaining_days}",freeAccessRemainingDays);
+              User.updateOne({ _id: val._id }, { $set: { renewalOffReminderEmailDay: reminderSentDays} }, function (err, updated) {
+                if (err) {
+                  res.send(resFormat.rError(err))
+                }
+                else {
+                  //free premium plan expiry plan reminer email
+                  emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOffReminderEmail').then( (template) => {
+                    if(template) {
+                      let planData = {}
+                      if( userList.userType == 'customer' ) {
+                        planData = customerPlanDetails
+                      }
+                      else{
+                        planData = advisorPlanDetails
+                      }
+                    
+                      template = JSON.parse(JSON.stringify(template));
+                      let body = template.mailBody.replace("{full_name}", userFullName);
+                          body = body.replace("{expiring_date}", new Date(subscriptionDetails.endDate));
+                          body = body.replace("{amount}", planData.planAmount);
+                          body = body.replace("{duration}", planData.planInterval);
 
-                  const mailOptions = { to : userEmailId,
-                                        subject : template.mailSubject,
-                                        html: body
-                                      }
-                  sendEmail(mailOptions, (response) => {
-                    if( response ) {
-                      User.updateOne({ _id: userId }, { $set: { renewalOffReminderEmailDay: whichDayEmailReminderSend } }, function (err, updated) {
-                        if ( !err ) {
-                          console.log("updated")
+                      const mailOptions = { to : userEmailId,
+                                            subject : template.mailSubject,
+                                            html: body
+                                          }
+                      sendEmail(mailOptions, (response) => {
+                        if( response ) {
+                          User.updateOne({ _id: userId }, { $set: { renewalOffReminderEmailDay: whichDayEmailReminderSend } }, function (err, updated) {
+                            if ( !err ) {
+                              console.log("updated")
+                            }
+                          })
                         }
                       })
                     }
@@ -346,7 +477,7 @@ function beforeSubscriptionReminderEmail() {
             userEmailId   = val.username,
             userFullName  = val.firstname ? val.firstname+' '+(val.lastname ? val.lastname : '') : 'User',
             today         = moment().toDate(),
-            diff          = Math.round( getDateDiff( moment(userCreatedOn).toDate(), today ));
+            diff          = Math.round( getDateDiff( moment(userCreatedOn).toDate(), today, 'asHours' ));
 
         let freePremiumAccessRemainDays = Math.abs( diff - 30 ), //The first time registered customer gets free access to all premium features for 30 days
             sendEmailReminder           = false,
@@ -380,35 +511,42 @@ function beforeSubscriptionReminderEmail() {
             reminderSentDays = val.upgradeReminderEmailDay
           }
           reminderSentDays.push(whichDayEmailReminderSend)
-          //free premium plan expiry plan reminer email
-          if( userEmailId == 'dangejasmine@gmail.com') {
-            userEmailId = 'nileshy@arkenea.com'
-            emailTemplatesRoute.getEmailTemplateByCode('beforeSubscriptionReminderEmail').then( (template) => {
-              if(template) {
-                template = JSON.parse(JSON.stringify(template));
-                let body = template.mailBody.replace("{full_name}", userFullName);
-                    body = body.replace("{plan_name}",planName);
-                    body = body.replace("{amount}", planAmount);
-                    body = body.replace("{duration}",planInterval);
-                    body = body.replace("{space_alloted}",defaultSpace);
-                    body = body.replace("{remaining_days}",freeAccessRemainingDays);
+          User.updateOne({ _id: val._id }, { $set: { upgradeReminderEmailDay: reminderSentDays} }, function (err, updated) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            }
+            else {
+            //free premium plan expiry plan reminer email
+            /* if( userEmailId == 'dangejasmine@gmail.com') {
+              userEmailId = 'nileshy@arkenea.com' */
+              emailTemplatesRoute.getEmailTemplateByCode('beforeSubscriptionReminderEmail').then( (template) => {
+                if(template) {
+                  template = JSON.parse(JSON.stringify(template));
+                  let body = template.mailBody.replace("{full_name}", userFullName);
+                      body = body.replace("{plan_name}",planName);
+                      body = body.replace("{amount}", planAmount);
+                      body = body.replace("{duration}",planInterval);
+                      body = body.replace("{space_alloted}",defaultSpace);
+                      body = body.replace("{remaining_days}",freeAccessRemainingDays);
 
-                const mailOptions = { to : userEmailId,
-                                      subject : template.mailSubject,
-                                      html: body
-                                    }
-                sendEmail(mailOptions, (response )=> {
-                  if( response ) {
-                    User.updateOne({ _id: userId }, { $set: { upgradeReminderEmailDay: reminderSentDays } }, function (err, updated) {
-                      if ( !err ) {
-                        console.log("updated")
-                      }
-                    })
-                  }
-                })
-              }
-            })
-          }
+                  const mailOptions = { to : userEmailId,
+                                        subject : template.mailSubject,
+                                        html: body
+                                      }
+                  sendEmail(mailOptions, (response )=> {
+                    if( response ) {
+                      User.updateOne({ _id: userId }, { $set: { upgradeReminderEmailDay: reminderSentDays } }, function (err, updated) {
+                        if ( !err ) {
+                          console.log("updated")
+                        }
+                      })
+                    }
+                  })
+                }
+              })
+            /* } */
+            }
+          })
         }
       })
     }
@@ -420,15 +558,27 @@ function beforeSubscriptionReminderEmail() {
  * @param startDate 
  * @param endDate 
  */
-function getDateDiff( startDate, endDate ) {
-  return moment.duration( 
+function getDateDiff( startDate, endDate, returnAs=null ) {
+  if( returnAs == 'asHours') {
+    return moment.duration( 
+      moment(endDate).diff( moment(startDate) ) 
+    ).asHours()  
+  }
+  else if(returnAs == 'asDays') {
+    return moment.duration( 
       moment(endDate).diff( moment(startDate) ) 
     ).asDays()
+  }
+  else{
+    return moment.duration( 
+      moment(endDate).diff( moment(startDate) ) 
+    ).asMonths()
+  }
 }
 
 router.post(["/auto-renewal-on-update-subscription"], autoRenewalOnUpdateSubscription);
-router.post(["/auto-renewal-on-reminder-email"], autoRenewalOnReminderEmail);
-router.post(["/auto-renewal-off-reminder-email"], autoRenewalOffReminderEmail);
-router.post(["/before-subscription-reminder-email"], beforeSubscriptionReminderEmail);
+router.get("/auto-renewal-on-reminder-email", autoRenewalOnReminderEmail);
+router.get("/auto-renewal-off-reminder-email", autoRenewalOffReminderEmail);
+router.get("/before-subscription-reminder-email", beforeSubscriptionReminderEmail);
 
 module.exports = router

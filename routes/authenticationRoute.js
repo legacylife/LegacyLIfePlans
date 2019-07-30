@@ -561,7 +561,9 @@ async function checkUserOtp(req, res) {
                 "username": newUser.username,
                 "userType": newUser.userType
               }
-              checkTrustee(newUser.userType,newUser._id,newUser.username)
+              if(newUser.userType=='customer'){
+                checkTrustee(newUser.userType,newUser._id,newUser.username)
+              }              
               OtpCheck.deleteOne({ "_id": otpdata._id }, function (err, otpdata) {
                 console.log(err)
                 if (err) {
@@ -613,7 +615,8 @@ function checkTrustee(userType,trustId,emailId) {
       res.status(401).send(resFormat.rError(err))
     } else {
       if(trustDetails && trustDetails._id){ 
-        userType == 'advisor' ? status = 'Pending' : 'Active';
+         //userType == 'customer' ? status = 'Pending' : 'Active';
+          status =  'Active';
           trust.updateOne({ _id: trustDetails._id }, { status:status,trustId:ObjectId(trustId),modifiedOn:new Date() }, function (err, updatedDetails) {
           if (err) {
             res.send(resFormat.rError(err))

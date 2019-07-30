@@ -20,7 +20,7 @@ const uploadFile = (filename, path) => {
           Bucket: constants.s3Details.bucketName,
           Key: path + filename,
           Body: data,
-          ACL: "public-read-write"
+          ACL: "bucket-owner-full-control"
        }
        console.log("Reading file")
        s3.upload(params, function(s3Err, data) {

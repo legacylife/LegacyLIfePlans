@@ -75,7 +75,7 @@ function LettersMessageFormUpdate(req, res) {
       } else {
         if (custData && custData._id) {
           let resText = 'details added';
-          if (custData.name){
+          if (custData.title){
             resText = 'details updated';
           }
           let { proquery } = req.body;   

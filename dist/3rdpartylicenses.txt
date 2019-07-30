@@ -1186,10 +1186,9 @@ MIT
 MIT
 
 chroma-js
-(BSD-3-Clause AND Apache-2.0)
 chroma.js - JavaScript library for color conversions
 
-Copyright (c) 2011-2019, Gregor Aisch
+Copyright (c) 2011-2018, Gregor Aisch
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
