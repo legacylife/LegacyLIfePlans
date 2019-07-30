@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { egretAnimations } from '../../../../../shared/animations/egret-animations';
@@ -16,11 +16,11 @@ import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-t
 })
 export class PasswordsDigitalAssetsListComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  showDevicesListing = false;
+  showDevicesListing = true;
   showDevicesListingCnt: any;
   userId: string;
   devicesListing:any = [];
-  showElectronicMediaListing = false;
+  showElectronicMediaListing = true;
   showElectronicMediaListingCnt: any;
   electronicMediaListing:any = [];
   typeOfList:any = [];
@@ -52,6 +52,14 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
     }
     this.getDevicesList();
     this.getElectronicMediaList();
+  }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      setTimeout(()=>{
+        this.getDevicesList();
+        this.getElectronicMediaList();
+      },2000);        
+    }
   }
 
   getDevicesList = (query = {}) => {

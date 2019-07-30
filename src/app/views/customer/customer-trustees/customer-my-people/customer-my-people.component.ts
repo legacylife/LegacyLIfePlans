@@ -20,36 +20,44 @@ const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 export class CustomerMyPeopleComponent implements OnInit {
   allPeoples: any[];
   advisorListing: any[];
-  showallPeoplesListing: boolean = false;
+  showallPeoplesListing: boolean = true;
   showallPeoplesListingCnt: any;
   userId: string;
+  listingAsc: boolean = true;
   profileFilePath: string = profileFilePath;
   profilePicture: any = "assets/images/arkenea/default.jpg";
   profileUrl = s3Details.url + '/profilePictures/';
+  searchMessage : string = "";
   constructor(private route: ActivatedRoute, private router: Router, private dialog: MatDialog, private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar
   ) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
-    this.getMyPeoplesList('All', '-1');
+    this.getMyPeoplesList('All', -1);
   }
 
   getMyPeoplesList = (search, sort, advquery: any = {}, trustquery: any = {}) => {
-
-    let req_vars = {};
-    if (search == 'All') {
+    let req_vars = {};    
+    if (search == 'All'){
       req_vars = {
         //query: Object.assign({ customerId: this.userId, status: "Active" }, query),status: { $nin:['Deleted'] }  //'Rejected',
         trustquery: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted'] } }, trustquery),
         advquery: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted', 'Rejected'] } }, advquery),
         fields: {},
-        order: { "modifiedOn": '-1' },
+        order: { "modifiedOn": -1 },
       }
     } else {
+      let custSearch = { $nin: ['Deleted'] };
+      let advSearch = { $nin: ['Deleted', 'Rejected'] }
+      
+      if(search!=''){
+        custSearch = search;
+        advSearch = search;  
+      }
       req_vars = {
         //query: Object.assign({ customerId: this.userId, status: "Active" }, query),status: { $nin:['Deleted'] }  //'Rejected',
-        trustquery: Object.assign({ customerId: this.userId, status: search }, trustquery),
-        advquery: Object.assign({ customerId: this.userId, status: search }, advquery),
+        trustquery: Object.assign({ customerId: this.userId, status: custSearch }, trustquery),
+        advquery: Object.assign({ customerId: this.userId, status: advSearch }, advquery),
         fields: {},
         order: { "modifiedOn": sort },
       }
@@ -57,13 +65,24 @@ export class CustomerMyPeopleComponent implements OnInit {
 
     this.userapi.apiRequest('post', 'advisor/myPeoplesListing', req_vars).subscribe(result => {  //hireAdvisorListing
       if (result.status == "error") {
-        console.log(result.data)
+        //console.log(result.data)
       } else {
+        if(sort==1){
+          this.listingAsc = false;
+        }else{
+          this.listingAsc = true;
+        }
         this.allPeoples = result.data.myPeoples;
         this.showallPeoplesListingCnt = result.data.totalPeoplesRecords;
         if (result.data.totalPeoplesRecords > 0) {
           this.showallPeoplesListing = true;
         } else {
+          if(search !='' && search !='All' && result.data.totalPeoplesRecords == 0){
+            this.searchMessage = "No records found"
+          }
+          else {
+            this.searchMessage = "Currently you do not have any trustee associated"
+          }
           this.showallPeoplesListing = false;
         }
       }
@@ -117,6 +136,13 @@ export class CustomerMyPeopleComponent implements OnInit {
     }, (err) => {
       console.error(err);
     })
+  }
+
+  getAdvisorSpecilities(businessType){
+    if(businessType)
+      return businessType.join(", ")
+    else
+      return ""
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
@@ -18,7 +18,7 @@ const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 })
 export class AdvisorDashboardComponent implements OnInit {
 
-  recentLogs: boolean = false;
+  recentLogs: boolean = true;
   userId: string;
   recentActivityLogList: any;
   profileFilePath: string = profileFilePath;
@@ -38,6 +38,13 @@ export class AdvisorDashboardComponent implements OnInit {
     this.getAdvisorActivityLogList();
     this.getInviteMembersCount();
     this.getLeadsCount();
+  }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Invite'){
+      setTimeout(()=>{     
+        this.getInviteMembersCount();    
+      },2000);     
+    } 
   }
 
   getInviteMembersCount() {
@@ -65,7 +72,7 @@ export class AdvisorDashboardComponent implements OnInit {
       query: Object.assign({ advisorId: this.userId }, query),
       fields: {},
       offset: 0,
-      limit: 6,
+      limit: "",
       order: { "modifiedOn": -1 },
     }
     this.userapi.apiRequest('post', 'advisor/recentupdatelist', req_vars).subscribe(result => {

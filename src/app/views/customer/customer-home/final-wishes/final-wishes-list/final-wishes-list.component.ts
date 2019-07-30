@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 //import { Subscription, Observable } from 'rxjs';
@@ -16,11 +16,11 @@ import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-t
 })
 export class FinalWishesComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  showFuneralPlansListing = false;
+  showFuneralPlansListing = true;
   showFuneralPlansCnt: any;
-  showObituaryListing = false;
+  showObituaryListing = true;
   showObituaryListingCnt: any;
-  showCelebrationLifesListing = false;
+  showCelebrationLifesListing = true;
   showCelebrationLifesListingCnt: any;
   userId: string;
   FuneralPlansList:any = [];
@@ -56,6 +56,13 @@ export class FinalWishesComponent implements OnInit {
       this.showTrusteeCnt = false;
     }    
     this.getWishList();
+  }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+     setTimeout(()=>{
+        this.getWishList();
+      },2000);  
+    }
   }
 
   getWishList = (query = {}) => {

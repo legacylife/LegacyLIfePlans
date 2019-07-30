@@ -19,7 +19,7 @@
           <mat-nav-list class="ad--nav--list"  *ngFor="let logData of recentActivityLogList; let i = index">
             <mat-list-item>
               <div mat-list-avatar class="profile--pic">
-                <img alt="" src="{{logData?.customerProfileImage ? profileFilePath + logData.customerProfileImage : 'assets/images/arkenea/default.jpg'}}">
+                <img alt="" src="{{logData?.userInfo && logData?.userInfo[0].profilePicture ? profileFilePath + logData?.userInfo[0].profilePicture : 'assets/images/arkenea/default.jpg'}}">
               </div>
               <div mat-line>
                 <p class="what--happened">

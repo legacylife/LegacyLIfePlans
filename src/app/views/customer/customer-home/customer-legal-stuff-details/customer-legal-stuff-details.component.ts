@@ -61,6 +61,9 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
             this.trusteeLegaciesAction = false;
           }
           this.row = result.data;
+          if(this.row){
+            this.docPath = this.row.customerId+'/'+s3Details.legalStuffDocumentsPath;
+          }
         }
       }  
     }, (err) => {
@@ -139,6 +142,7 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
     let req_vars = {
       query: Object.assign({ docPath: this.docPath, filename: filename }, query)
     }
+    this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
       var downloadURL =window.URL.createObjectURL(res)
       let filePath = downloadURL;
@@ -146,6 +150,7 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
       link.href = filePath;
       link.download = filename;
       link.click();
+      this.snack.dismiss();
     });
   }
 
@@ -155,6 +160,7 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
     let req_vars = {
       query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.subFolderDocuments }, query)
     }
+    this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {
       var downloadURL =window.URL.createObjectURL(res)
       let filePath = downloadURL;
@@ -162,6 +168,7 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
       link.href = filePath;
       link.download = ZipName;
       link.click();
+      this.snack.dismiss();
     });
   }
 }

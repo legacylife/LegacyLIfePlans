@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
@@ -17,13 +17,13 @@ export class SpecialNeedsListingComponent implements OnInit {
   userId: string;
 
   youngChildrenList: any = [];
-  showYoungChildrenListing = false;
+  showYoungChildrenListing = true;
 
   cPDisabilityList: any = [];
-  showCPDisabilityListing = false;
+  showCPDisabilityListing = true;
 
   friendNeighborList: any = [];
-  friendNeighborListing = false;
+  friendNeighborListing = true;
   dynamicRoute:string;
   selectedLegaciesId: string;
   customerLegacyType:string='customer';
@@ -62,7 +62,15 @@ export class SpecialNeedsListingComponent implements OnInit {
     this.getcPDisabilityList();
     this.getfriendNeighborList();
   }
-
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      setTimeout(()=>{
+        this.getyoungChildrenList();
+        this.getcPDisabilityList();
+        this.getfriendNeighborList();
+      },2000);           
+    }
+  }
   getyoungChildrenList(query = {}, search = false) {
     let trusteeQuery = {};
     const req_vars = {

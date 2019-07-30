@@ -407,7 +407,7 @@ export const AdvisorRoutes: Routes = [
     ]
   },
   {
-    path: 'subscription',
+    path: 'advisor-subscription',
     component: AdvisorLayoutComponent,
     data: { title: 'Subscription' },
     children: [

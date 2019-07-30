@@ -5,7 +5,10 @@
       <mat-card-header class="m-0 header--with--sort">
         <mat-card-title class="m-0">My People</mat-card-title>
         <div class="right--filters">
-          <mat-icon class="compare--icon" (selectionChange)="getMyPeoplesList('','1')">compare_arrows</mat-icon>
+          
+          <mat-icon class="compare--icon--desc" *ngIf="this.listingAsc" (click)="getMyPeoplesList('',1)">sort</mat-icon>
+          <mat-icon class="compare--icon--asc" *ngIf="!this.listingAsc" (click)="getMyPeoplesList('',-1)">sort</mat-icon>
+
           <mat-select placeholder="All" (selectionChange)="getMyPeoplesList($event.value,'')">
             <mat-option value="All">All</mat-option>
             <mat-option value="Active">Active</mat-option>
@@ -13,7 +16,7 @@
           </mat-select>
         </div>
       </mat-card-header>
-      <mat-card-content class="appointees--wrapper box--scroll"  *ngIf="this.showallPeoplesListing">
+      <mat-card-content class="appointees--wrapper box--scroll" *ngIf="this.showallPeoplesListing">
         <mat-card class="appointees--section p-0 {{peoples.status === 'Pending' ? 'pending' : ''}}" *ngFor="let peoples of allPeoples">
           <mat-card-header class="m-0">
             <mat-card-title class="m-0">
@@ -80,8 +83,8 @@
           <!-- all hired advisor -->
           <mat-card-content class="status--advisor relative" *ngIf="peoples?.type === 'advisor' && peoples?.status !== 'Pending'">
             <div class="files--folder mt-1">
-              <mat-icon>school</mat-icon>
-              {{peoples.advisorId?.businessType}}
+              <mat-icon>school</mat-icon>              
+              {{getAdvisorSpecilities(peoples.advisorId?.businessType)}}
             </div>
             <div class="ad--strip">
               Advisor
@@ -92,7 +95,7 @@
       </mat-card-content>
 
       <mat-card-content class="appointees--wrapper" *ngIf="!this.showallPeoplesListing">
-          <div class="files--folder mt-1">Currently you do not have any trustee associated.</div>
+          <div class="files--folder mt-1">{{searchMessage}}.</div>
           <!-- <label class="normal--label" (click)="FolderSize()">Check Directory size</label> -->
       </mat-card-content>
     </mat-card>

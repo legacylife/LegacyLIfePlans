@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { MatSnackBar, MatSidenav, MatDialogRef, MatDialog, } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms'
 import { Subscription, Observable } from 'rxjs';
@@ -20,10 +20,10 @@ export class CustomerDashboardDayOneComponent implements OnInit {
   userId: string;
   trustyListing:any = [];
   fileActivityLogList:any;
-  showTrustyListing = false;
+  showTrustyListing = true;
   showTrustyListingCnt: any;
   advisorListing:any = [];
-  showAdvisorListing= false;
+  showAdvisorListing= true;
   showAdvisorListingCnt: any;
 
   profileUrl = s3Details.url+'/profilePictures/';
@@ -35,12 +35,20 @@ export class CustomerDashboardDayOneComponent implements OnInit {
     this.getTrusteeList();
     this.getAdvisorList();
   }
-
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      setTimeout(()=>{
+      this.getFileActivityLogList();
+      this.getTrusteeList();
+      this.getAdvisorList();
+      },2000);     
+    }
+  }
   getTrusteeList = (query = {}) => {
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted'] } }, query),//, status: "Active"
       fields: {},
-      limit: 6,
+      limit: 3,
       order: {"createdOn": -1},
     }
     this.userapi.apiRequest('post', 'trustee/listing', req_vars).subscribe(result => {
@@ -63,7 +71,7 @@ export class CustomerDashboardDayOneComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted', 'Rejected'] } }, query),//, status: "Active"
       fields: {},
-      limit: 6,
+      limit: 3,
       order: {"createdOn": -1},
     }
     this.userapi.apiRequest('post', 'advisor/hireAdvisorListing', req_vars).subscribe(result => {

@@ -61,6 +61,13 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
       this.myLegacy= false
       this.sharedLegacies =true 
     }
+
+    const loc = location.href;
+    const locArray = loc.split('/')
+    this.activeHeading = '';
+    if(locArray && locArray[5]){
+      this.activeHeading = locArray[5];
+    }   
   }
 
   @HostListener('document:click', ['$event']) clickedOutside(event){

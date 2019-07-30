@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
@@ -21,9 +21,9 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   userId: string;
   urlData:any={};
-  showProfileListing = false;
-  showIdProofListing = false;
-  showProfessionalsListing = false;  
+  showProfileListing = true;
+  showIdProofListing = true;
+  showProfessionalsListing = true;  
   essentialProfileList:any = [];
   essentialIDList:any = [];
   essentialProfessionalList:any = [];
@@ -71,6 +71,15 @@ export class CustomerEssentialDayOneComponent implements OnInit {
     this.getEssentialProfileList();
     this.getEssentialIdList();
     this.getEssentialProfessionalList();
+  }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      setTimeout(()=>{
+        this.getEssentialProfileList();
+        this.getEssentialIdList();
+        this.getEssentialProfessionalList();
+      },2000);     
+    }
   }
 
   getEssentialProfileList = (query = {}, search = false) => {

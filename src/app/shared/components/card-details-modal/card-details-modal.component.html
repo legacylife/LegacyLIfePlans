@@ -33,12 +33,13 @@
             </tbody>
           </table>
       </div>
-      <div *ngIf="oldCard != ''">
-        <mat-checkbox class="example-margin"  (click)="payUsingNewCard()">Pay using new card</mat-checkbox>
+      <div class="mt-1" *ngIf="oldCard != ''">
+        <mat-checkbox class="example-margin" (click)="payUsingNewCard()">Pay using new card</mat-checkbox>
+        <p class="ml-5 mt-1 mb-0 fnt--13">*Paying with new card will replace the existing card</p>
       </div>
     </div>
   </div>
   <div class="ll--modal--footer text-center">
-    <button mat-raised-button class="llp--primary--btn" (click)="completePayment()">Complete Payment</button>
+    <button mat-raised-button class="llp--primary--btn" [disabled]="!isButtonEnabled" (click)="completePayment()">Complete Payment</button>
   </div>
 </form>

@@ -61,7 +61,10 @@ export class PetsDetailsComponent implements OnInit {
           if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
             this.trusteeLegaciesAction = false;
           }
-          this.row = result.data;        
+          this.row = result.data;       
+          if(this.row){
+            this.docPath = this.row.customerId+'/'+s3Details.petsFilePath;
+          }
         }
       }  
     }, (err) => {
@@ -121,6 +124,7 @@ export class PetsDetailsComponent implements OnInit {
     let req_vars = {
       query: Object.assign({ docPath: this.docPath, filename: filename }, query)
     }
+    this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
       var downloadURL = window.URL.createObjectURL(res);
       let filePath = downloadURL;                       
@@ -128,6 +132,7 @@ export class PetsDetailsComponent implements OnInit {
       link.href = filePath;
       link.download = filename;
       link.click();
+      this.snack.dismiss();
     });
   }
   

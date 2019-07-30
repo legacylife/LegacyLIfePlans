@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { egretAnimations } from '../../../../../shared/animations/egret-animations';
@@ -15,7 +15,7 @@ import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-t
 })
 export class PetsListComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  showPetsListing = false;
+  showPetsListing = true;
   showPetsListingCnt: any;
   
   userId: string;
@@ -49,6 +49,14 @@ export class PetsListComponent implements OnInit {
       this.showTrusteeCnt = false;
     }
     this.getPetsList();
+  }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      setTimeout(()=>{
+        console.log("Pets here !!! ")
+        this.getPetsList();    
+      },2000);     
+    } 
   }
 
   getPetsList = (query = {}) => {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { egretAnimations } from '../../../../../shared/animations/egret-animations';
@@ -14,7 +14,7 @@ import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-t
 })
 export class TimeCapsuleListComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  showTimeCapsuleListing = false;
+  showTimeCapsuleListing = true;
   showTimeCapsuleListingCnt: any;  
   userId: string;
   timeCapsuleListing:any = [];
@@ -45,6 +45,14 @@ export class TimeCapsuleListComponent implements OnInit {
       this.showTrusteeCnt = false;
     }
     this.getTimecapsuleList();
+  }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      console.log("TimeCapsuleList here !!! ")     
+      setTimeout(()=>{
+        this.getTimecapsuleList();
+      },2000);           
+    }
   }
 
   getTimecapsuleList = (query = {}) => {

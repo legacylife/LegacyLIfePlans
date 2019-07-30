@@ -62,6 +62,9 @@ export class DebtDetailsComponent implements OnInit {
             this.trusteeLegaciesAction = false;
           }
           this.row = result.data;
+          if(this.row){
+            this.docPath = this.row.customerId+'/'+s3Details.debtFilePath;
+          }
         }
       }  
     }, (err) => {

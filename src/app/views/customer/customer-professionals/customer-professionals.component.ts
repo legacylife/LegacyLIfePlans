@@ -110,7 +110,9 @@ export class CustomerProfessionalComponent implements OnInit {
   }
 
   getAdvisorSpecilities(businessType){
-    let types = String(businessType)
-    return types.replace(",",", ")
+    if(businessType)
+      return businessType.join(", ")
+    else
+      return ""
   }
 }

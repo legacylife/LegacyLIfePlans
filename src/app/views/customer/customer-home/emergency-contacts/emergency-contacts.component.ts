@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { MatDialogRef,MatDialog, MatSnackBar } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms'
@@ -15,7 +15,7 @@ export class EmergencyContactsComponent implements OnInit {
   closeResult: string
   modalRef: any = null
   eContactFormGroup: FormGroup;
-  showContactListing = false;
+  showContactListing = true;
   showContactCnt: string;
   userId: string
   relationshipList: any[]
@@ -76,7 +76,11 @@ export class EmergencyContactsComponent implements OnInit {
     }
     this.getEmergencyContacts()
   }
-
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      this.getEmergencyContacts();
+    }
+  }
   openModal(content: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(content, {
       width: '720px',

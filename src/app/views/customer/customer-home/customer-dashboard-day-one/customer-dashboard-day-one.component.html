@@ -66,6 +66,10 @@
                 <mat-card-content class="status--pending" *ngIf="row?.status==='Pending'">
                   <mat-icon>history</mat-icon>
                   <p class="pending">Pending...</p>
+                  <p class="" *ngIf="row?.trustId && row?.trustId.userType == 'advisor'">
+                    This user is an Advisor on Legacy Life plans.
+                    <a class="pending" [routerLink]="['/customer/professionals/prof-details', row?.trustId._id]">Click here</a> to view the Advisor
+                  </p>
                 </mat-card-content>
               </mat-card>     
           </mat-card-content>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { egretAnimations } from '../../../../../shared/animations/egret-animations';
@@ -17,11 +17,11 @@ import { InsurancePolicyType,FinancePolicyType,DebtType } from '../../../../../s
 })
 export class InsuranceFinanceDebtListComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  showInsuranceListing = false;
+  showInsuranceListing = true;
   showInsuranceListingCnt: any;
-  showFinanceListing = false; 
+  showFinanceListing = true; 
   showFinanceListingCnt: any;
-  showDebtListing = false;
+  showDebtListing = true;
   showDebtListingCnt: any;
   userId: string;
   insuranceListing:any = [];
@@ -61,6 +61,15 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
     this.getInsuranceList();
     this.getFinanceList();
     this.getDebtList();    
+  }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      setTimeout(()=>{
+        this.getInsuranceList();
+        this.getFinanceList();
+       this.getDebtList();    
+      },2000);       
+    }
   }
 
   getInsuranceList = (query = {}) => {

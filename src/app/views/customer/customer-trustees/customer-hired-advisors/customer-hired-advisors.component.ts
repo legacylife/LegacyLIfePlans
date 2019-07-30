@@ -17,12 +17,14 @@ const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 export class CustomerHiredAdvisorComponent implements OnInit {
   allPeoples: any[];
   advisorListing: any[];
-  showAdvisorListing  : boolean = false;
+  showAdvisorListing  : boolean = true;
+  listingAsc  : boolean = true;
   showAdvisorListingCnt: any;
   userId: string;
   profileFilePath: string = profileFilePath;
   profilePicture: any = "assets/images/arkenea/default.jpg";
   abc: string;
+  searchMessage:string = "";
   interval: any
   constructor(
     private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService,private snack: MatSnackBar
@@ -43,16 +45,20 @@ export class CustomerHiredAdvisorComponent implements OnInit {
     if(search=='All'){
       req_vars = {
         //query: Object.assign({ customerId: this.userId, status: "Active" }, query),//'Rejected',
-        query: Object.assign({customerId:this.userId, status: { $nin:['Deleted'] }}),
+        query: Object.assign({customerId:this.userId, status: { $nin:['Deleted', 'Rejected'] }}),
        fields: {},
-       order: {"createdOn": sort},
+       order: {"modifiedOn": sort},
      }
    }else{
+      let custSearch = { $nin: ['Deleted'] };    
+      if(search!=''){
+        custSearch = search;
+      }
       req_vars = {
-       query: Object.assign({ customerId: this.userId, status: search }, query),
+       query: Object.assign({ customerId: this.userId, status: custSearch }, query),
       // query: Object.assign({customerId:this.userId, status: { $nin:['Deleted'] }}),
        fields: {},
-       order: {"createdOn": sort},
+       order: {"modifiedOn": sort},
      }
    }
    
@@ -60,11 +66,22 @@ export class CustomerHiredAdvisorComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
+        if(sort==1){
+          this.listingAsc = false;
+        }else{
+          this.listingAsc = true;
+        }
         this.advisorListing = result.data.advisorList;
         this.showAdvisorListingCnt = this.advisorListing.length;
         if (result.data.totalRecords>'0') {
           this.showAdvisorListing = true;
-        }else{ 
+        }else{
+          if(search !='' && search !='All' && result.data.totalRecords == 0){
+            this.searchMessage = "No records found"
+          }
+          else {
+            this.searchMessage = "Currently you do not have any advisor associated"
+          } 
            this.showAdvisorListing = false;
           }
       }
@@ -91,6 +108,13 @@ export class CustomerHiredAdvisorComponent implements OnInit {
     else {
       return this.profilePicture;
     }
+  }
+
+  getAdvisorSpecilities(businessType){
+    if(businessType)
+      return businessType.join(", ")
+    else
+      return ""
   }
 
 }

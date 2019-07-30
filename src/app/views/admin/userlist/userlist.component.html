@@ -1,63 +1,62 @@
-
-<div class="m-333" *ngIf="aceessSection">
-  <!-- <span fxFlex></span> -->
+<div class="mb-1" *ngIf="aceessSection">
   <button mat-raised-button class="llp--primary--btn" (click)="openPopUp({}, true)">+ Add User</button>
 </div>
-<div class="row" *ngIf="aceessSection">    
-<mat-form-field class="margin-333" style="width: 100%">
-  <input 
-  matInput 
-  placeholder="Type to search" 
-  value=""
-  (keyup)='updateFilter($event)'>
-</mat-form-field>
-<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
-  <mat-card-content class="p-0">
-    <ngx-datatable
-          class="material ml-0 mr-0"
-          [rows]="rows"
-          [columnMode]="'flex'"
-          [headerHeight]="50"
-          [footerHeight]="50"
-          [limit]="10"
-          [messages]="my_messages"
-          [rowHeight]="'auto'">
-          <ngx-datatable-column name="Name" prop="firstName" [flexGrow]="1">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row?.firstName +' '+row?.lastName}}
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Email" prop="username" [flexGrow]="1">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row?.username }}
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Type" prop="userType" [flexGrow]="1">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row?.userType }}
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Logged On"  prop="lastLoggedInOn" [flexGrow]="1">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row.lastLoggedInOn | date: 'yyyy/MM/dd HH:mm:ss'}}
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Status" [flexGrow]="1">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-              <mat-chip mat-sm-chip [color]="'primary'" [selected]="row.status" (click)="statusChange(row)">{{row.status}}</mat-chip>
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Actions" [sortable]="false" [draggable]="false" [flexGrow]="1">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-             <button mat-icon-button mat-sm-button color="primary" class="mr-1 p-0" (click)="openPopUp(row)" title="Edit"><mat-icon>edit</mat-icon></button>
-			 <!-- <button mat-icon-button mat-sm-button color="primary" class="mb-1"  [routerLink]="['/', 'userlist', 'userview',{{row._id}}]"  title="View"><mat-icon style="font-size: 32px;">pageview</mat-icon></button>-->
-             <a mat-icon-button mat-sm-button color="primary" class="mb-1 p-0" [routerLink]="['/admin/userview', row._id]" title="View"><mat-icon style="font-size: 32px;">pageview</mat-icon></a>
-             <!--<button mat-icon-button mat-sm-button color="warn" (click)="deleteItem(row)"><mat-icon>delete</mat-icon></button>-->
-            </ng-template>
-          </ngx-datatable-column>
-        </ngx-datatable>
-  </mat-card-content>
-</mat-card>
+
+<div class="row" *ngIf="aceessSection">
+
+    <form class="llp-form-wrapper">
+      <mat-form-field class="no-mar full-width">
+      <input matInput placeholder="Type to search" value="" (keyup)='updateFilter($event)'>
+    </mat-form-field>
+  </form>
+
+  <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+    <mat-card-content class="p-0">
+      <ngx-datatable class="material ml-0 mr-0" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50"
+        [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
+        <ngx-datatable-column name="Name" prop="firstName" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.firstName +' '+row?.lastName}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Email" prop="username" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.username }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Type" prop="userType" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.userType }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Logged On" prop="lastLoggedInOn" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.lastLoggedInOn | date: 'yyyy/MM/dd HH:mm:ss'}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Status" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status" (click)="statusChange(row)">{{row.status}}
+            </mat-chip>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Actions" [sortable]="false" [draggable]="false" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <button mat-icon-button mat-sm-button color="primary" class="mr-1 p-0 icon--edit" (click)="openPopUp(row)"
+              title="Edit">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <!-- <button mat-icon-button mat-sm-button color="primary" class="mb-1"  [routerLink]="['/', 'userlist', 'userview',{{row._id}}]"  title="View"><mat-icon style="font-size: 32px;">pageview</mat-icon></button>-->
+            <a mat-icon-button mat-sm-button color="primary" class="mb-1 p-0 icon--pageview"
+              [routerLink]="['/admin/userview', row._id]" title="View">
+              <mat-icon style="font-size: 32px;">pageview</mat-icon>
+            </a>
+            <!--<button mat-icon-button mat-sm-button color="warn" (click)="deleteItem(row)"><mat-icon>delete</mat-icon></button>-->
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </mat-card-content>
+  </mat-card>
 </div>
 
 <div class="row" *ngIf="!aceessSection">

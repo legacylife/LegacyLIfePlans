@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild ,HostListener} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { UserAPIService } from './../../../userapi.service';
@@ -180,6 +180,13 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     this.getInviteMembersCount();
   }
 
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Invite'){
+      setTimeout(()=>{     
+        this.getInviteMembersCount();    
+      },2000);     
+    } 
+  }
   checkSubscription() {
     this.subscriptionservice.checkSubscription( ( returnArr )=> {
       this.userCreateOn = returnArr.userCreateOn
@@ -193,6 +200,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       this.isSubscribePlan = returnArr.isSubscribePlan
       this.planName = returnArr.planName
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
+      console.log("this.isSubscriptionCanceled==",this.isSubscriptionCanceled)
     })
   }
   getInviteMembersCount() {
@@ -763,9 +771,12 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     this.subscriptionservice.updateAutoRenewalStatus( this.userId, this.autoRenewalVal )
   }
 
-  cancelSubscription= async (query = {}) => {
-    this.isSubscriptionCanceled = await this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled )
-    this.checkSubscription()
+  cancelSubscription= (query = {}) => {
+    this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled, (value) =>{ 
+      this.isSubscriptionCanceled = value
+      console.log("this.isSubscriptionCanceled",this.isSubscriptionCanceled)
+      this.checkSubscription()
+    })
   }
 
   

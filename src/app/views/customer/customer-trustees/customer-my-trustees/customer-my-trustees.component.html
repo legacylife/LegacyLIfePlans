@@ -4,7 +4,8 @@
       <mat-card-header class="m-0 header--with--sort">
         <mat-card-title class="m-0">My Trustees</mat-card-title>
         <div class="right--filters">
-            <mat-icon class="compare--icon" (selectionChange)="getTrusteeList('','1')">compare_arrows</mat-icon>
+            <mat-icon class="compare--icon--desc" *ngIf="this.listingAsc" (click)="getTrusteeList('',1)">sort</mat-icon>
+            <mat-icon class="compare--icon--asc" *ngIf="!this.listingAsc" (click)="getTrusteeList('',-1)">sort</mat-icon>
             <mat-select placeholder="All" (selectionChange)="getTrusteeList($event.value,'')">
               <mat-option value="All">All</mat-option>
               <mat-option value="Active">Active</mat-option>
@@ -64,7 +65,7 @@
         </mat-card>
       </mat-card-content>
       <mat-card-content class="appointees--wrapper" *ngIf="!showTrustyListing">
-          <div class="files--folder mt-1">Currently you do not have any trustee associated.</div>
+          <div class="files--folder mt-1">{{searchMessage}}.</div>
           <!-- <label class="normal--label" (click)="FolderSize()">Check Directory size</label> -->
       </mat-card-content>
 

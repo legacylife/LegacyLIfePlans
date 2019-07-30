@@ -18,11 +18,13 @@ export class CustomerMyTrusteeComponent implements OnInit {
   userId: string;
   trustyListing:any = [];
   fileActivityLogList:any;
-  showTrustyListing : boolean = false;
+  showTrustyListing : boolean = true;
+  listingAsc : boolean = true;
   showTrustyListingCnt: any;
   profileUrl = s3Details.url+'/profilePictures/';
   testImg = '/pk.png';
   docPath: string; 
+  searchMessage:string = ""
   
   constructor(private userapi: UserAPIService,private dialog: MatDialog,private snack: MatSnackBar,) { }
 
@@ -46,8 +48,12 @@ export class CustomerMyTrusteeComponent implements OnInit {
         order: {"createdOn": sort},
       }
     }else{
+        let custSearch = { $nin: ['Deleted'] };    
+        if(search!=''){
+          custSearch = search;
+        }
        req_vars = {
-        query: Object.assign({ customerId: this.userId, status: search }, query),
+        query: Object.assign({ customerId: this.userId, status: custSearch }, query),
         fields: {},
         order: {"createdOn": sort},
       }
@@ -56,11 +62,24 @@ export class CustomerMyTrusteeComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
+        if(sort==1){
+          this.listingAsc = false;
+        }else{
+          this.listingAsc = true;
+        }
         this.trustyListing = result.data.trustList;
 
         this.showTrustyListingCnt = this.trustyListing.length;  
         if (this.showTrustyListingCnt>0) {
           this.showTrustyListing = true;
+        }else{
+          if(search !='' && search !='All' && this.showTrustyListingCnt == 0){
+            this.searchMessage = "No records found"
+          }
+          else {
+            this.searchMessage = "Currently you do not have any trustee associated"
+          }
+          this.showTrustyListing = false;
         }
       }
     }, (err) => {
