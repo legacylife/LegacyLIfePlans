@@ -56,13 +56,11 @@ function signin(req, res) {
           if (err) {
             res.send(resFormat.rError(err))
           } else {
-            console.log("type ",user.userType);
             let subscriptionDetails = user.subscriptionDetails ? user.subscriptionDetails : null
             let subscriptionStartDate = "",
             subscriptionEndDate = "",
             subscriptionStatus = "",
             autoRenewal = "";
-            //console.log(user,'---',user.subscriptionDetails,"---",subscriptionDetails)
             if( subscriptionDetails != null && subscriptionDetails.length >0 ) {
               subscriptionStartDate = subscriptionDetails[(subscriptionDetails.length-1)]['startDate']
               subscriptionEndDate = subscriptionDetails[(subscriptionDetails.length-1)]['endDate']
@@ -74,8 +72,7 @@ function signin(req, res) {
             if( addOnDetails != null && addOnDetails.length >0 ) {
               addOnGiven = addOnDetails[(addOnDetails.length-1)]['status'] && addOnDetails[(addOnDetails.length-1)]['status'] == 'paid' ? 'yes' : 'no'
             }
-            let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, profilePicture : user.profilePicture, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false, "createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate" : subscriptionEndDate, "subscriptionStatus" : subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven }
-            //console.log("result --- ",result)
+            let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, profilePicture : user.profilePicture, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false, "createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate" : subscriptionEndDate, "subscriptionStatus" : subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven }            
             res.status(200).send(resFormat.rSuccess(result))
           }
         })
@@ -125,7 +122,6 @@ function create(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          console.log("updatedUser " + updatedUser);
           const { _id, userType, username, firstName, lastName } = user
           let result = { userId: _id, userType, username, firstName, lastName, "message": "Email verification successful. Logging in to your account" }
           res.send(resFormat.rSuccess(result))
@@ -160,7 +156,6 @@ ss3.upload(params, options, (err, data) => {
   if(err){
     res.send(resFormat.rError("Something went wrong "))
   }else{
-    console.log(query._id, filename)
       User.updateOne({ _id: query._id }, { $set: { profilePicture: filename } }, function (err, updatedUser) {
       if (err) {
         res.send(resFormat.rError(err))
@@ -406,7 +401,6 @@ function s3Upload(params, options, userId) {
     if (err) {
       res.send(resFormat.rError(err))
     } else {
-      console.log(data)
       User.updateOne({ _id: userId }, { $set: { profilePicture: filename } }, function (err, updatedUser) {
         if (err) {
           res.send(resFormat.rError(err))
@@ -455,7 +449,6 @@ async function checkEmail(req, res) {
   try {
     const { username } = req.body;
     User.findOne({ username: username }, { _id :1, username: 1, status:1, userType : 1,profileSetup:1 }, function (err, user) {
-      console.log(user)
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
@@ -527,21 +520,17 @@ async function checkUserOtp(req, res) {
   try {
     let { query } = req.body;
     OtpCheck.findOne(query, function (err, otpdata) {
-      console.log(err)
       if (err) {
         res.send(resFormat.rSuccess({ code: "error", message: "Invalid OTP" }))
       } else {
         if (otpdata) {
-
           var user = new User()
           user.username = otpdata.username
           user.userType = otpdata.userType
           user.status = otpdata.status
           user.lastLoggedInOn = new Date();
-
           user.emailVerified = true;
           user.createdOn = new Date();
-
           if(user.userType != 'advisor'){
             let userSecurityDetails = user.setPassword(otpdata.password)
             user.salt = userSecurityDetails.salt;
@@ -550,8 +539,6 @@ async function checkUserOtp(req, res) {
           else {
             user.sponsoredAdvisor = 'no';
           }
-          
-
           user.save(function (err, newUser) {
             if (err) {
               res.send(resFormat.rError(err))
@@ -561,11 +548,8 @@ async function checkUserOtp(req, res) {
                 "username": newUser.username,
                 "userType": newUser.userType
               }
-              if(newUser.userType=='customer'){
-                checkTrustee(newUser.userType,newUser._id,newUser.username)
-              }              
+              checkTrustee(newUser.userType,newUser._id,newUser.username)
               OtpCheck.deleteOne({ "_id": otpdata._id }, function (err, otpdata) {
-                console.log(err)
                 if (err) {
                   res.send(resFormat.rSuccess({ code: "error", message: "Invalid OTP" }))
                 } else {
@@ -574,13 +558,11 @@ async function checkUserOtp(req, res) {
                     message = "Welcome to Legacy Life Plans. Your account credentials are successfully saved.";
                   else
                     message = "You have successfully signup. Please update your profile."; 
-
                     let subscriptionDetails   = newUser.subscriptionDetails ? newUser.subscriptionDetails : null
                     let subscriptionStartDate = "",
                     subscriptionEndDate       = "",
                     subscriptionStatus        = "",
                     autoRenewal               = "";
-                    
                     if( subscriptionDetails != null && subscriptionDetails.length >0 ) {
                       subscriptionStartDate = subscriptionDetails[(subscriptionDetails.length-1)]['startDate']
                       subscriptionEndDate   = subscriptionDetails[(subscriptionDetails.length-1)]['endDate']
@@ -592,7 +574,6 @@ async function checkUserOtp(req, res) {
                     if( addOnDetails != null && addOnDetails.length >0 ) {
                       addOnGiven = addOnDetails[(addOnDetails.length-1)]['status'] && addOnDetails[(addOnDetails.length-1)]['status'] == 'paid' ? 'yes' : 'no'
                     }
-                    
                   res.send(resFormat.rSuccess({ "userId":newUser._id, "profilePicture": newUser.profilePicture, "username": newUser.username, "userType": newUser.userType, code: "success", message: message,"createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate" : subscriptionEndDate, "subscriptionStatus" : subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven }))
                 }
               })
@@ -615,8 +596,8 @@ function checkTrustee(userType,trustId,emailId) {
       res.status(401).send(resFormat.rError(err))
     } else {
       if(trustDetails && trustDetails._id){ 
-         //userType == 'customer' ? status = 'Pending' : 'Active';
-          status =  'Active';
+        status ='Pending';   
+        if(userType == 'customer')status = 'Active';
           trust.updateOne({ _id: trustDetails._id }, { status:status,trustId:ObjectId(trustId),modifiedOn:new Date() }, function (err, updatedDetails) {
           if (err) {
             res.send(resFormat.rError(err))
