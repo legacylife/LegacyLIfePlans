@@ -9,6 +9,7 @@ import { egretAnimations } from '../../../../shared/animations/egret-animations'
 import { HireAdvisorComponent } from '../../hire-advisor-modal/hire-advisor-modal.component';
 import { addTrusteeModalComponent } from './../../customer-home/add-trustee-modal/add-trustee-modal.component';
 import { s3Details } from '../../../../config';
+import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
 const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 
 @Component({
@@ -28,8 +29,10 @@ export class CustomerMyPeopleComponent implements OnInit {
   profilePicture: any = "assets/images/arkenea/default.jpg";
   profileUrl = s3Details.url + '/profilePictures/';
   searchMessage : string = "";
-  constructor(private route: ActivatedRoute, private router: Router, private dialog: MatDialog, private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar
-  ) { }
+  constructor(private route: ActivatedRoute, private router: Router, private dialog: MatDialog, private userapi: UserAPIService,
+     private loader: AppLoaderService, private snack: MatSnackBar,
+     private confirmService: AppConfirmService){
+  }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -145,4 +148,31 @@ export class CustomerMyPeopleComponent implements OnInit {
       return ""
   }
 
+  removeTrusteeAdvisor(peopleObj){
+    console.log("peopleObj : " , peopleObj);
+    var statMsg = "Are you sure you want remove?"
+    var userType = peopleObj.type
+    this.confirmService.confirm({ message: statMsg })
+      .subscribe(res => {
+        if (res) {
+          this.loader.open();
+          let req_vars = {};
+          if(userType == 'advisor'){
+            req_vars = {customerId:localStorage.getItem("endUserId"), advisorId:peopleObj.advisorId._id, userType : userType}
+          }else{   
+            req_vars = {customerId:localStorage.getItem("endUserId"), trustId:peopleObj.trustId._id, userType : userType}
+          }
+          this.userapi.apiRequest('post', 'customer/legacy-user-remove', req_vars).subscribe(result => {
+            this.loader.close();
+            this.getMyPeoplesList('All', -1);
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          }, (err) => {
+            console.error(err)
+            this.loader.close();
+          })
+           
+        }
+      })       
+  }
+  
 }

@@ -5,6 +5,8 @@ import { egretAnimations } from '../../../../shared/animations/egret-animations'
 import { UserAPIService } from './../../../../userapi.service';
 import { addTrusteeModalComponent } from './../../customer-home/add-trustee-modal/add-trustee-modal.component';
 import { serverUrl, s3Details } from '../../../../config';
+import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
+import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
 const filePath = 'https://s3.amazonaws.com/llp-test';
 
 @Component({
@@ -25,14 +27,20 @@ export class CustomerMyTrusteeComponent implements OnInit {
   testImg = '/pk.png';
   docPath: string; 
   searchMessage:string = ""
-  
-  constructor(private userapi: UserAPIService,private dialog: MatDialog,private snack: MatSnackBar,) { }
+  urlData:any={};
+  constructor(private userapi: UserAPIService,
+    private dialog: MatDialog,
+    private confirmService: AppConfirmService,
+    private loader: AppLoaderService, 
+    private snack: MatSnackBar,
+    private router: Router) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.docPath = filePath;
  
     this.getTrusteeList('All','-1');
+    this.urlData = this.userapi.getURLData();
   }
 
   getTrusteeList = (search,sort) => {
@@ -155,5 +163,25 @@ FolderSize = () => {
     console.log(res);
   });
 }
+
+removeTrusteeAdvisor(removeCustomerId){
+    var statMsg = "Are you sure you want remove?"
+    this.confirmService.confirm({ message: statMsg })
+      .subscribe(res => {
+        if (res) {
+          this.loader.open();
+          let req_vars = {};          
+          req_vars = {customerId:localStorage.getItem("endUserId"), trustId:removeCustomerId, userType : 'customer'}
+          this.userapi.apiRequest('post', 'customer/legacy-user-remove', req_vars).subscribe(result => {
+            this.loader.close();
+            this.getTrusteeList('All','-1');
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          }, (err) => {
+            console.error(err)
+            this.loader.close();
+          })
+      }
+    })
+  }
 
 }
