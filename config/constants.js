@@ -1,7 +1,7 @@
 var constants = {
   secret: "LLP",
   database: { // mongodb://localhost:27017/llp
-    url: process.env.dbURI || 'mongodb://llp:l$l!p#123@ds341557.mlab.com:41557/llp' 
+    url: process.env.dbURI || 'mongodb://llp:llp#123@ds213896.mlab.com:13896/llp-pankaj' 
   }, // mongodb://llp:llp#123@ds129454.mlab.com:29454/llp, mongodb://llp:l$l!p#123@ds341557.mlab.com:41557/llp  mongodb://llp:llp#123@ds213896.mlab.com:13896/llp-pankaj
   google: {
   },
@@ -33,8 +33,8 @@ var constants = {
     secret: "GI/4d3sT5WtV4Rg/QtxRPVo2RsRn71PH/ZdKHt99",
     fromEmail: "accountservices@legacylifeplans.com",
   }, // Local - http://localhost:4200 & http://localhost:80
-  clientUrl: process.env.clientUrl || 'http://ec2-3-209-230-58.compute-1.amazonaws.com', // staging - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
-  mailServerUrl : process.env.mailServerUri || 'http://ec2-3-209-230-58.compute-1.amazonaws.com', // staging - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
+  clientUrl: process.env.clientUrl || 'http://localhost:4200', // staging - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
+  mailServerUrl : process.env.mailServerUri || 'http://localhost:4200', // staging - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
   socialMedia: {
     facebook: {
       clientId: ''
@@ -59,118 +59,115 @@ var constants = {
    "letterMessage"
   ],
   documentTypes: {
-    1: "Driver's License",
-    2: "Non-Driver State ID",
-    3: "Department of Defense (DOD)",
-    4: "Birth Certificate",
-    5: "Social Security Number (SSN)",
-    6: "Passport",
+    1: "Birth Certificate",
+    2: "Department of Defense (DOD)",
+    3: "Driver's License",
+    4: "Non-Driver State ID",
+    5: "Passport",    
+    6: "Social Security Number (SSN)",        
     7: "Visa"
   },
   EstateTypeOfDocument: {
-    1: "Last Will & Testament",
-    2: "Last Will & Testament-with Trust",
-    3: "Affidavit of Domicile",
-    4: "Affidavit of Heirship",
-    5: "Codicil",
-    6: "Joint Revocable Living Trust",
-    7: "Revocable Living Trust",
-    8: "Irrevocable Trust"
+    1: "Affidavit of Domicile",
+    2: "Affidavit of Heirship",
+    3: "Codicil",
+    4: "Irrevocable Trust",
+    5: "Joint Revocable Living Trust",
+    6: "Last Will & Testament",
+    7: "Last Will & Testament-with Trust",    
+    8: "Revocable Living Trust"
   },
   HealthcareTypeOfDocument: {
     1: "Advance Healthcare Directive",
-    2: "Healthcare Power of Attorney",
+    2: "Health Care Power of Attorney",
     3: "Health Care Proxy",
     4: "Living Will",
     5: "Medical Power of Attorney"
   },
   PersonalAffairsTypeOfDocument: {
-    1: "Power of Attorney",
-    2: "Durable Power of Attorney",
+    1: "Durable Power of Attorney",
+    2: "Power of Attorney",
     3: "Revocation of Power of Attorney"
   },
-
   InsurancePolicyType : { 
-    1 : "Home Owners" ,
-    2 : "Auto",   
-    3 : "Business", 
+    1 : "Auto",   
+    2 : "Business",
+    3 : "Home Owners", 
     4 : "Life",
-    5 : "Umbrella" 
-  },
-  
+    5 : "Umbrella"
+  },  
   FinancePolicyType : { 
-    1 : "Bank Accounts", 
-    2 : "Annuity", 
+    7 : "401K", 
+    1 : "Annuity", 
+    2 : "Bank Accounts", 
+    8 : "Brokerage Accounts", 
     3 : "Disability", 
+    6 : "IRA", 
     4 : "Pension", 
     5 : "Roth", 
-    6 : "IRA", 
-    7 : "401K", 
-    8 : "Brokerage Accounts", 
     9 : "Social Security", 
-    10 : "New",
+    10 : "New"
   }, 
   
   DebtType : { 
-    1 : "Credit Cards", 
-    2 : "Mortgage", 
-    3 : "Car loans", 
-    4 : "2nd Mortgage", 
-    5 : "Personal Loans", 
-    6 : "IOU’s", 
+    1 : "2nd Mortgage",     
+    2 : "Car loans", 
+    3 : "Credit Cards", 
+    4 : "IOU’s", 
+    5 : "Mortgage", 
+    6 : "Personal Loans",    
     7 : "New"
-  },  
-  
+  },
   
   DevicesList : { 
-    1 : "Computers", 
-    2 : "Laptop", 
-    3 : "i-pad", 
-    4 : "Tablet", 
-    5 : "Phone", 
+    1 : "Computers",     
+    2 : "i-Pad", 
+    3 : "Laptop",     
+    4 : "Phone", 
+    5 : "Tablet", 
     6 : "Watch"
   },
 
   RealEstateType : {
-    1 : "Personal Home", 
-    2 : "Rental", 
-    3 : "Commercial" 
+    1 : "Commercial",
+    2 : "Personal Home", 
+    3 : "Rental"
   },
   
   RealEstateAssetsType : {
-    1 : "Safe", 
-    2 : "Safe Deposit Box", 
-    3 : "Box", 
-    4 : "Art", 
-    5 : "Jewelry", 
+    1 : "Art", 
+    2 : "Box", 
+    3 : "Jewelry", 
+    4 : "Safe", 
+    5 : "Safe Deposit Box", 
     6 : "New"
   },
 
   ElectronicMediaLists : { 
-    1 : "Gmail", 
-    2 : "Yahoo", 
-    3 : "Outlook", 
-    4 : "ebay", 
-    5 : "Amazon", 
-    6 : "Facebook", 
-    7 : "Instagram", 
-    8 : "Twitter", 
-    9 : "LinkedIn", 
-    10 : "Google", 
-    11 : "Snapchat", 
-    12 : "Flickr", 
-    13 : "iTunes", 
-    14 : "Vimeo", 
-    15 : "YouTube", 
-    16 : "Pinterest", 
-    17 : "Quora", 
-    18 : "Reddit", 
-    19 : "Mix", 
-    20 : "Plazo", 
-    21 : "Ning", 
-    22 : "Mylife", 
-    23 : "Bing", 
-    24 : "Periscope"  
+    1 : "Amazon", 
+    2 : "Bing",
+    3 : "ebay",
+    4 : "Facebook",
+    5 : "Flickr",
+    6 : "Gmail",
+    7 : "Google",
+    8 : "iTunes",
+    9 : "Instagram",
+    10 : "LinkedIn",
+    11 : "Mix",
+    12 : "Mylife",
+    13 : "Ning",
+    14 : "Outlook",
+    15 : "Periscope",
+    16 : "Pinterest",
+    17 : "Plazo",
+    18 : "Quora",
+    19 : "Reddit",
+    20 : "Snapchat",
+    21 : "Twitter",
+    22 : "Vimeo",
+    23 : "Yahoo",
+    24 : "YouTube"
   }
   
 
