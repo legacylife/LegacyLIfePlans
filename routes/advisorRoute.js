@@ -145,6 +145,9 @@ function recentUpdateList(req, res) {
         }
       },
       {
+        $sort: order
+      },
+      {
         $lookup:
           {
             from: "users",
