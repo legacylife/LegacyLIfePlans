@@ -331,6 +331,9 @@ function hireAdvisorStatus(req, res) {
           if (err) {
             res.status(401).send(resFormat.rError(err))
           } else {
+            // Add entry in advisor activity log
+            advisorActivityLog.updateActivityLog(query.customerId, proquery.advisorId, 'hired', newEntry._id);
+
             let inviteByName = extraFields.inviteByName;
             let toEmail = advisorUser.username;
             let advName = advisorUser.firstName;
@@ -338,8 +341,7 @@ function hireAdvisorStatus(req, res) {
             stat = sendHireStatusMail(toEmail, advName, EmailMesg, '');
           }
         })
-        // Add entry in advisor activity log
-        advisorActivityLog.updateActivityLog(query.customerId, proquery.advisorId, 'hired', newEntry._id);
+        
 
         let result = { "message": "Request sent successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
