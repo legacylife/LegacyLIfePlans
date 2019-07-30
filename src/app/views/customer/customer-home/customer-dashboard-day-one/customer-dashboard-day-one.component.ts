@@ -16,7 +16,7 @@ import { serverUrl, s3Details } from '../../../../config';
 })
 export class CustomerDashboardDayOneComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  recentlyAccessedFiles : boolean = false;
+  recentlyAccessedFiles : boolean = true;
   userId: string;
   trustyListing:any = [];
   fileActivityLogList:any;

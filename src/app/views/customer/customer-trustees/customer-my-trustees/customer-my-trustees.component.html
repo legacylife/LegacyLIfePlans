@@ -28,7 +28,7 @@
                   <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
                   <mat-menu #beforeMenu="matMenu" xPosition="before" class="llp--menu--droupdown">
                     <button mat-menu-item  (click)="openAddTrusteeModal(row?._id, true)"><span>Manage</span></button>
-                    <button mat-menu-item *ngIf="row?.status==='Active'"  (click)="removeTrusteeAdvisor(row?.trustId._id)"><span>Remove as a Trustee</span></button>
+                    <button mat-menu-item *ngIf="row?.status==='Active'" (click)="removeTrusteeAdvisor(row?.trustId._id)"><span>Remove as a Trustee</span></button>
                     <button mat-menu-item *ngIf="row?.status==='Pending'" (click)="resendInvitation(row?._id)"><span>Resend Invitation</span></button>
                   </mat-menu>
               </div>

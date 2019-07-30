@@ -10,13 +10,13 @@
   <div class="ll--modal--body refer--earn--modal--body" formArrayName="inviteMembers">
     <h6 class="invite--sub--line">Invite
       <span class="lato--bold">30 people</span> in a month and get
-      <span class="lato--bold">45 days </span> extended free access to all the features.</h6>
+      <span class="lato--bold">30 days </span> extended free access to all the features.</h6>
 
     <div fxLayout="row wrap" *ngFor="let ilist of inviteMembersList.controls; let pointIndex = index"
       [formGroupName]="pointIndex">
       <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
         <mat-form-field class="full-width">
-          <input value="" matInput placeholder="Name*" formControlName="name" name="name">
+          <input class="capitalize" value="" matInput placeholder="Name*" formControlName="name" name="name">
           <!--mat-icon matTooltip="Please enter name" matTooltipClass="llp--tooltip error" *ngIf="ilist.required"
             class="red--alert">help_outline</mat-icon-->
         </mat-form-field>
