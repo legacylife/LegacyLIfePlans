@@ -14,7 +14,7 @@ const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 })
 export class AdvisorLeadsComponent implements OnInit {
   leadsListings: any[];
-  showLeadsListing = false;
+  showLeadsListing = true;
   showLeadsListingCnt: any;  
   userId: string;
   ProfilePic: string = profileFilePath;
@@ -51,6 +51,9 @@ export class AdvisorLeadsComponent implements OnInit {
         this.showLeadsListingCnt = this.leadsListings.length;  
         if (this.showLeadsListingCnt>0) {
           this.showLeadsListing = true;
+        }
+        else {
+          this.showLeadsListing = false;
         }
       }
     }, (err) => {

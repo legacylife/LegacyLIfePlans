@@ -90,6 +90,9 @@ export class ListingComponent implements OnInit {
         if (result.data.realEstateList.length > 0) {
           this.showRealEstateListing = true;
         }
+        else {
+          this.showRealEstateListing = false;
+        }
       }
     }, (err) => {
       console.error(err);
@@ -114,6 +117,9 @@ export class ListingComponent implements OnInit {
         this.trusteeVehicleCnt = result.data.totalTrusteeRecords;
         if (result.data.realEstateVehiclesList.length > 0) {
           this.showRealEstateVehiclesListing = true;
+        }
+        else {
+          this.showRealEstateVehiclesListing = false;
         }
       }
     }, (err) => {

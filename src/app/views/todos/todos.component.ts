@@ -171,5 +171,11 @@ export class TodosComponent implements OnInit {
       this.router.navigate(['/', endUserType , 'to-dos'])
       this.dialog.closeAll(); 
   }
+
+  firstCapitalize(e) {
+    let re = /(^|[.!?]\s+)([a-z])/g;
+    var textBox: HTMLInputElement = <HTMLInputElement>e.target;
+    textBox.value = textBox.value.replace(re, (m, $1, $2) => $1 + $2.toUpperCase());
+  }
     
 }

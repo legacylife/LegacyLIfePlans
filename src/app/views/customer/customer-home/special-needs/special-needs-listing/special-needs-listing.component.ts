@@ -90,6 +90,9 @@ export class SpecialNeedsListingComponent implements OnInit {
         if (result.data.specialNeedsList.length > 0) {
           this.showYoungChildrenListing = true;
         }
+        else {
+          this.showYoungChildrenListing = false;
+        }
       }
     }, (err) => {
       console.error(err);
@@ -115,6 +118,9 @@ export class SpecialNeedsListingComponent implements OnInit {
         if (result.data.specialNeedsList.length > 0) {
           this.showCPDisabilityListing = true;
         }
+        else {
+          this.showCPDisabilityListing = false;
+        }
       }
     }, (err) => {
       console.error(err);
@@ -139,6 +145,9 @@ export class SpecialNeedsListingComponent implements OnInit {
         this.trusteeFriendNeighborCnt = result.data.totalTrusteeRecords;   
         if (result.data.specialNeedsList.length > 0) {
           this.friendNeighborListing = true;
+        }
+        else {
+          this.friendNeighborListing = false;
         }
       }
     }, (err) => {

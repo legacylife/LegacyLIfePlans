@@ -80,6 +80,9 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
         if (this.showDevicesListingCnt>0) {
           this.showDevicesListing = true;
         }
+        else {
+          this.showDevicesListing = false;
+        }
       }
     }, (err) => {
       console.error(err);
@@ -103,6 +106,9 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
         this.trusteeElectonicCnt = result.data.totalTrusteeRecords; 
         if (this.showElectronicMediaListingCnt>0) {
           this.showElectronicMediaListing = true;
+        }
+        else {
+          this.showElectronicMediaListing = false;
         }
       }
     }, (err) => {

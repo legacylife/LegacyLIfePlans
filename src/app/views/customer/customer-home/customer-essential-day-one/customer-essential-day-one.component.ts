@@ -102,7 +102,10 @@ export class CustomerEssentialDayOneComponent implements OnInit {
         if(result.data.totalRecords > 0){
           this.showProfileListingCnt = result.data.totalRecords;
           this.showProfileListing = true;
-        }        
+        }  
+        else {
+          this.showProfileListing = false;
+        }      
       }      
     }, (err) => {
       console.error(err);
@@ -130,7 +133,10 @@ export class CustomerEssentialDayOneComponent implements OnInit {
         if(result.data.totalIDRecords > 0){         
           this.showIDListingCnt = result.data.totalIDRecords;
           this.showIdProofListing = true;
-        }       
+        }   
+        else {
+          this.showIdProofListing = false;
+        }    
       }      
     }, (err) => {
       console.error(err);
@@ -160,7 +166,10 @@ export class CustomerEssentialDayOneComponent implements OnInit {
       if(result.data.totalProfessionalRecords > 0){         
         this.showProfessionalCnt = result.data.totalProfessionalRecords;
         this.showProfessionalsListing = true;
-      }       
+      } 
+      else {
+        this.showProfessionalsListing = false;
+      }      
     }
   
   }, (err) => {

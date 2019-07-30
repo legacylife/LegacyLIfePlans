@@ -69,6 +69,9 @@ export class LettersMessagesListingComponent implements OnInit {
         if (this.showListingCnt>0) {
           this.showListing = true;
         }
+        else {
+          this.showListing = false;
+        }
       }
     }, (err) => {
       console.error(err);
