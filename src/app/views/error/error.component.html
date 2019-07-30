@@ -1,0 +1,27 @@
+<header class="auth-header">
+  <img [routerLink]="['']" class="cursor--pointer" src="assets/images/arkenea/small-logo.png" alt="">
+</header>
+<br><br>
+<div class="page-wrap height-100 default-bg">
+  <div class="app-error">
+    <div class="fix">
+      <mat-icon class="error-icon" color="error">error</mat-icon>
+      <div class="error-text">
+        <h1 class="error-title">Error</h1>        
+      </div>      
+    </div>
+    <div class="">      
+      <div class="">
+        <div class="error-subtitle">The URL provided contains an invalid Command or Value. Please check the URL again.</div>
+      </div>      
+    </div>
+    
+    <div class="error-actions">
+      <button mat-raised-button color="primary" class="mb-1 mr-05"  [routerLink]="['/signin']" *ngIf="loginFlag">Back to Login</button>
+      <button mat-raised-button color="primary" class="mb-1 mr-05"  [routerLink]="['/customer/dashboard']" *ngIf="!loginFlag">Back to Dashboard</button>
+      <!-- <button 
+      mat-raised-button 
+      color="warn">Report this Problem</button> -->
+    </div>
+  </div>
+</div>

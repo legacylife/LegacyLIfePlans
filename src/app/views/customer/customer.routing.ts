@@ -63,6 +63,7 @@ import { LettersMessagesDetailsComponent } from './customer-home/legacy-life-let
 import { ElectronicMediaDetailsComponent } from './customer-home/passwords-digital-assets/electronic-media/electronic-media-details/electronic-media-details.component';
 import { TodosListingComponent } from '../todos-listing/todos-listing.component';
 import { ProUserAuthGuard as ProUserGuard } from '../../shared/services/auth/prouserauth.guard';
+import { ErrorComponent } from './../error/error.component';
 console.log("cutostomer routing...")
 export const CustomerRoutes: Routes = [
   {
@@ -550,6 +551,22 @@ export const CustomerRoutes: Routes = [
       }
     ]
   },
+  {
+    path: 'error',
+    component: ErrorComponent,
+    data: { title: 'Error Page' },
+    children: [
+      {
+        path: '',
+        component: CustomerLayoutComponent,
+        data: { title: 'Error Page' }
+      }
+    ]
+  },
+  {
+    path: '**',
+    redirectTo: '/customer/error'
+  }
   // {
   //   path: 'professionals',
   //   component: CustomerLayoutComponent,

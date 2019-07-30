@@ -79,7 +79,7 @@ import { LyResizingCroppingImageModule } from '@alyle/ui/resizing-cropping-image
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
 import { OurPlanComponent } from './our-plan/our-plan.component';
 import { AdvisorHomeComponent } from './advisor-home/advisor-home.component';
-
+import { ErrorComponent } from './../error/error.component';
 export class GlobalVariables {
   testVal = '#00bcd4';
   Quepal = {
@@ -156,7 +156,7 @@ export class GlobalVariables {
     ChangePassComponent, HomeComponent, ReferAndEarnModalComponent, AdvisorLegacyDetailsComponent,
     LegaciesDetailsLandingComponent, MarkAsDeceasedComponent,
     GetFeaturedComponent, SubmitEnquiryModalComponent, AdvisorLeadsComponent, AdvisorLeadsDetailsComponent, 
-    ProspectPeoplesModalComponent, OurPlanComponent, AdvisorHomeComponent
+    ProspectPeoplesModalComponent, OurPlanComponent, AdvisorHomeComponent,ErrorComponent
   ], providers: [
     // { provide: LY_THEME, useClass: MinimaLight, multi: true },
     // { provide: LY_THEME, useClass: MinimaDark, multi: true },
