@@ -277,14 +277,14 @@ function autoRenewalOnReminderEmail() {
                 freeAccessRemainingDays   = 0;
             
             //If the auto-payment option is On, the system will send reminder notifications on the user’s email (1 day) before renewal date
-            if( daysRemainingToExpire > 0 && daysRemainingToExpire <= 1 && ( !val.renewalOnReminderEmailDay || !val.renewalOnReminderEmailDay.includes(1) )) {
+            if( daysRemainingToExpire > 0 && daysRemainingToExpire <= 1 && !val.renewalOnReminderEmailDay.includes(1) ) {
               //reminder before 1day of premium access expires
               sendEmailReminder         = true
               whichDayEmailReminderSend = 1
               freeAccessRemainingDays   = '1 day'
             }
             
-            console.log("userFullName",userFullName,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
+            //console.log("userFullName",userFullName,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
             //send email reminder if above conditions true
             if( sendEmailReminder && whichDayEmailReminderSend != null ) {
               let reminderSentDays = []
@@ -292,45 +292,39 @@ function autoRenewalOnReminderEmail() {
                 reminderSentDays = val.renewalOnReminderEmailDay
               }
               reminderSentDays.push(whichDayEmailReminderSend)
-              /* User.updateOne({ _id: val._id }, { $set: { renewalOnReminderEmailDay: reminderSentDays} }, function (err, updated) {
-                if (err) {
-                  res.send(resFormat.rError(err))
-                }
-                else { */
-                  //free premium plan expiry plan reminer email
-                  emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOnReminderEmail').then( (template) => {
-                    if(template) {
-                      let planData = {}
-                      if( userList.userType == 'customer' ) {
-                        planData = customerPlanDetails
-                      }
-                      else{
-                        planData = advisorPlanDetails
-                      }
-                      template = JSON.parse(JSON.stringify(template));
-                      let body = template.mailBody.replace("{full_name}", userFullName);
-                          body = template.mailBody.replace("{renewal_date}", new Date(subscriptionDetails.endDate));
-                          body = body.replace("{amount}", planData.planAmount);
-                          body = body.replace("{duration}", planData.planInterval);
-                          
+              
+              //free premium plan expiry plan reminer email
+              emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOnReminderEmail').then( (template) => {
+                if(template) {
+                  let planData = {}
+                  if( userList.userType == 'customer' ) {
+                    planData = customerPlanDetails
+                  }
+                  else{
+                    planData = advisorPlanDetails
+                  }
+                  template = JSON.parse(JSON.stringify(template));
+                  let body = template.mailBody.replace("{full_name}", userFullName);
+                      body = template.mailBody.replace("{renewal_date}", new Date(subscriptionDetails.endDate));
+                      body = body.replace("{amount}", planData.planAmount);
+                      body = body.replace("{duration}", planData.planInterval);
+                      
 
-                      const mailOptions = { to : userEmailId,
-                                            subject : template.mailSubject,
-                                            html: body
-                                          }
-                      sendEmail( mailOptions, (response) => {
-                        if( response ) {
-                          User.updateOne({ _id: val._id }, { $set: { renewalOnReminderEmailDay: reminderSentDays } }, function (err, updated) {
-                            if ( !err ) {
-                              console.log("updated")
-                            }
-                          })
+                  const mailOptions = { to : userEmailId,
+                                        subject : template.mailSubject,
+                                        html: body
+                                      }
+                  sendEmail( mailOptions, (response) => {
+                    if( response ) {
+                      User.updateOne({ _id: val._id }, { $set: { renewalOnReminderEmailDay: reminderSentDays } }, function (err, updated) {
+                        if ( !err ) {
+                          console.log("updated")
                         }
                       })
                     }
                   })
-                /* }
-              }) */
+                }
+              })
             }
           }
         })
@@ -382,32 +376,32 @@ function autoRenewalOffReminderEmail() {
                 freeAccessRemainingDays   = 0;
             
             //If the auto-payment option is OFF, the system will send reminder notifications on the user’s email (30 days, 7 days, 3 days, 1 day) before expiring plan date
-            if( daysRemainingToExpire <= 10 && daysRemainingToExpire > 9 && ( !val.renewalOffReminderEmailDay || !val.renewalOffReminderEmailDay.includes(30) )) {
+            if( daysRemainingToExpire <= 10 && daysRemainingToExpire > 9 && !val.renewalOffReminderEmailDay.includes(30) ) {
               //reminder before 30days of premium access expires
               sendEmailReminder         = true
               whichDayEmailReminderSend = 30
               freeAccessRemainingDays   = '30 days'
             }
-            else if( daysRemainingToExpire <= 7 && daysRemainingToExpire > 6 && ( !val.renewalOffReminderEmailDay || !val.renewalOffReminderEmailDay.includes(7) )) {
+            if( daysRemainingToExpire <= 7 && daysRemainingToExpire > 6 && !val.renewalOffReminderEmailDay.includes(7) ) {
               //reminder before 7days of premium access expires
               sendEmailReminder         = true
               whichDayEmailReminderSend = 7
               freeAccessRemainingDays   = '7 days'
             }
-            else if( daysRemainingToExpire <= 3 && daysRemainingToExpire > 2 && ( !val.renewalOffReminderEmailDay || !val.renewalOffReminderEmailDay.includes(3) )) {
+            if( daysRemainingToExpire <= 3 && daysRemainingToExpire > 2 && !val.renewalOffReminderEmailDay.includes(3) ) {
               //reminder before 3days of premium access expires
               sendEmailReminder         = true
               whichDayEmailReminderSend = 3
               freeAccessRemainingDays   = '3 days'
             }
-            else if( daysRemainingToExpire <= 1 && daysRemainingToExpire > 0 && ( !val.renewalOffReminderEmailDay || !val.renewalOffReminderEmailDay.includes(1) )) {
+            if( daysRemainingToExpire <= 1 && daysRemainingToExpire > 0 && !val.renewalOffReminderEmailDay.includes(1) ) {
               //reminder before 1day of premium access expires
               sendEmailReminder         = true
               whichDayEmailReminderSend = 1
               freeAccessRemainingDays   = '1 day'
             }
             
-            console.log("userFullName",userFullName,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
+            console.log("userFullName",userFullName,"email: -",val.username,  "created on :-",val.createdOn, 'daysRemainingToExpire:-',daysRemainingToExpire, 'freePremiumAccessRemainDays:- ',freeAccessRemainingDays ,"reminder:-",whichDayEmailReminderSend);
             //send email reminder if above conditions true
             if( sendEmailReminder && whichDayEmailReminderSend != null ) {
               let reminderSentDays = []
@@ -415,45 +409,39 @@ function autoRenewalOffReminderEmail() {
                 reminderSentDays = val.renewalOffReminderEmailDay
               }
               reminderSentDays.push(whichDayEmailReminderSend)
-              /* User.updateOne({ _id: val._id }, { $set: { renewalOffReminderEmailDay: reminderSentDays} }, function (err, updated) {
-                if (err) {
-                  res.send(resFormat.rError(err))
-                }
-                else { */
-                  //free premium plan expiry plan reminer email
-                  emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOffReminderEmail').then( (template) => {
-                    if(template) {
-                      let planData = {}
-                      if( userList.userType == 'customer' ) {
-                        planData = customerPlanDetails
-                      }
-                      else{
-                        planData = advisorPlanDetails
-                      }
-                    
-                      template = JSON.parse(JSON.stringify(template));
-                      let body = template.mailBody.replace("{full_name}", userFullName);
-                          body = body.replace("{expiring_date}", new Date(subscriptionDetails.endDate));
-                          body = body.replace("{amount}", planData.planAmount);
-                          body = body.replace("{duration}", planData.planInterval);
+              
+              //free premium plan expiry plan reminer email
+              emailTemplatesRoute.getEmailTemplateByCode('autoRenewalOffReminderEmail').then( (template) => {
+                if(template) {
+                  let planData = {}
+                  if( userList.userType == 'customer' ) {
+                    planData = customerPlanDetails
+                  }
+                  else{
+                    planData = advisorPlanDetails
+                  }
+                
+                  template = JSON.parse(JSON.stringify(template));
+                  let body = template.mailBody.replace("{full_name}", userFullName);
+                      body = body.replace("{expiring_date}", new Date(subscriptionDetails.endDate));
+                      body = body.replace("{amount}", planData.planAmount);
+                      body = body.replace("{duration}", planData.planInterval);
 
-                      const mailOptions = { to : userEmailId,
-                                            subject : template.mailSubject,
-                                            html: body
-                                          }
-                      sendEmail(mailOptions, (response) => {
-                        if( response ) {
-                          User.updateOne({ _id: val._id }, { $set: { renewalOffReminderEmailDay: reminderSentDays } }, function (err, updated) {
-                            if ( !err ) {
-                              console.log("updated")
-                            }
-                          })
+                  const mailOptions = { to : userEmailId,
+                                        subject : template.mailSubject,
+                                        html: body
+                                      }
+                  sendEmail(mailOptions, (response) => {
+                    if( response ) {
+                      User.updateOne({ _id: val._id }, { $set: { renewalOffReminderEmailDay: reminderSentDays } }, function (err, updated) {
+                        if ( !err ) {
+                          console.log("updated")
                         }
                       })
                     }
                   })
-                /* }
-              }) */
+                }
+              })
             }
           }
         })
@@ -490,19 +478,19 @@ function beforeSubscriptionReminderEmail() {
             freeAccessRemainingDays     = 0;
         
         //The system will send reminder notifications on the customer’s email (7 days, 3 days, 1 day before free trial expiry date)
-        if( freePremiumAccessRemainDays <= 7 && freePremiumAccessRemainDays > 6 && ( !val.upgradeReminderEmailDay || !val.upgradeReminderEmailDay.includes(7)) ) {
+        if( freePremiumAccessRemainDays <= 7 && freePremiumAccessRemainDays > 6 && !val.upgradeReminderEmailDay.includes(7) ) {
           //reminder before 7days of free premium access expires
           sendEmailReminder       = true
           whichDayEmailReminderSend  = 7
           freeAccessRemainingDays = '7 days'
         }
-        else if( freePremiumAccessRemainDays <= 3 && freePremiumAccessRemainDays > 2 && ( !val.upgradeReminderEmailDay || !val.upgradeReminderEmailDay.includes(3)) ) {
+        else if( freePremiumAccessRemainDays <= 3 && freePremiumAccessRemainDays > 2 && !val.upgradeReminderEmailDay.includes(3) ) {
           //reminder before 3days of free premium access expires
           sendEmailReminder       = true
           whichDayEmailReminderSend  = 3
           freeAccessRemainingDays = '3 days'
         }
-        else if( freePremiumAccessRemainDays <= 1 && freePremiumAccessRemainDays > 0 && ( !val.upgradeReminderEmailDay || !val.upgradeReminderEmailDay.includes(1)) ) {
+        else if( freePremiumAccessRemainDays <= 1 && freePremiumAccessRemainDays > 0 && !val.upgradeReminderEmailDay.includes(1) ) {
           //reminder before 1day of free premium access expires
           sendEmailReminder       = true
           whichDayEmailReminderSend  = 1
