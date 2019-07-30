@@ -102,7 +102,7 @@ export class TodosComponent implements OnInit {
       }, (err) => {
         console.error(err);
       })
-  }
+  } 
 
   trimInput(formData) {
     this.todosForm.controls["comments"].setValue(formData.comments.trim());
@@ -135,25 +135,29 @@ export class TodosComponent implements OnInit {
   }
 
   todosFormUpdate(){
-    let params = {
-      "_id" : this.todoList[this.viewMode]._id,
-      "comments" : this.todosUpdateForm.value.update_comments
+    if(this.todosUpdateForm.value.update_comments == ""){
+      this.getTodos();
+    }else{
+      let params = {
+        "_id" : this.todoList[this.viewMode]._id,
+        "comments" : this.todosUpdateForm.value.update_comments
+      }
+      this.loader.open();
+      this.userapi.apiRequest("post", "todos/update-todos", params).subscribe(
+        result => {
+          this.loader.close();
+          if (result.status == "error") {
+            this.snack.open(result.data.message, "OK", { duration: 4000 });
+          } else {
+            this.snack.open(result.data.message, "OK", { duration: 4000 });
+            this.todosForm.reset();
+            this.getTodos();
+          }
+        },
+        err => {
+          console.error(err);
+        });
     }
-    this.loader.open();
-    this.userapi.apiRequest("post", "todos/update-todos", params).subscribe(
-      result => {
-        this.loader.close();
-        if (result.status == "error") {
-          this.snack.open(result.data.message, "OK", { duration: 4000 });
-        } else {
-          this.snack.open(result.data.message, "OK", { duration: 4000 });
-          this.todosForm.reset();
-          this.getTodos();
-        }
-      },
-      err => {
-        console.error(err);
-      });
   }
 
   edit(rowIndex){

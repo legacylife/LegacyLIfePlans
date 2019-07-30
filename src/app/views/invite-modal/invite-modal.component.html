@@ -10,7 +10,7 @@
     <div fxLayout="row wrap" *ngFor="let ilist of inviteMembersList.controls; let pointIndex = index" [formGroupName]="pointIndex">
       <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
         <mat-form-field class="full-width">
-          <input matInput placeholder="Name *" formControlName="name" name="name" >          
+          <input  class="capitalize" matInput placeholder="Name *" formControlName="name" name="name" >          
         </mat-form-field>
       </div>
       <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
