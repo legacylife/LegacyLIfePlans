@@ -63,7 +63,7 @@ function signin(req, res) {
             autoRenewal = ""
             addOnDetails = user.addOnDetails ? user.addOnDetails : null,
             addOnGiven = 'no',
-            isReferAndEarn = user.IamIntrested
+            isReferAndEarn = user.IamIntrested && user.IamIntrested == 'Yes' ? 'Yes' :  'No'
 
             if( subscriptionDetails != null && subscriptionDetails.length >0 ) {
               refereEarnStatus = 'No'

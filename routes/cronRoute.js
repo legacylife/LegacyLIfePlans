@@ -238,7 +238,7 @@ function autoRenewalOnReminderEmail() {
   User.aggregate([
     {
       $project: {
-        createdOn: 1, username:1, firstName:1,lastName:1,renewalOnReminderEmailDay:1,userType1,
+        createdOn: 1, username:1, firstName:1,lastName:1,renewalOnReminderEmailDay:1,userType:1,
         subscriptionDetails: {$arrayElemAt: ["$subscriptionDetails", -1]},
       }
     },
@@ -337,7 +337,7 @@ function autoRenewalOffReminderEmail() {
   User.aggregate([
     {
       $project: {
-        createdOn: 1, username:1, firstName:1,lastName:1,renewalOffReminderEmailDay:1,userType1,
+        createdOn: 1, username:1, firstName:1,lastName:1,renewalOffReminderEmailDay:1,userType:1,
         subscriptionDetails: {$arrayElemAt: ["$subscriptionDetails", -1]},
       }
     },
