@@ -147,7 +147,7 @@ import { LettersMessagesDetailsComponent } from 'app/views/customer/customer-hom
 import { LettersMessagesModelComponent } from 'app/views/customer/customer-home/legacy-life-letters-messages/letters-messages-model/letters-messages-model.component';
 import { AdvisorLegacyDetailsComponent } from 'app/views/advisor-legacy-details/advisor-legacy-details.component';
 
-
+import { ErrorComponent } from 'app/views/error/error.component';
 /* 
   Only Required if you want to use Angular Landing
   (https://themeforest.net/item/angular-landing-material-design-angular-app-landing-page/21198258)
@@ -234,7 +234,8 @@ const classesToInclude = [
   LettersMessagesListingComponent,
   LettersMessagesDetailsComponent,
   LettersMessagesModelComponent,
-  AdvisorLegacyDetailsComponent
+  AdvisorLegacyDetailsComponent,
+  ErrorComponent
 ]
 
 @NgModule({

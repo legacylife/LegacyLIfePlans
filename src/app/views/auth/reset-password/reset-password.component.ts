@@ -34,6 +34,11 @@ export class ResetPasswordComponent implements OnInit {
     this.activatedRoute.params.subscribe((params: Params) => {
       this.userId = params.id
     })
+    const locationArray = location.href.split("/");
+    let lastO  = locationArray[locationArray.length - 2];
+    let last   = locationArray[locationArray.length];
+    
+    console.log("lastOne=>",lastO,last)
 
     this.checkToken();
   }
@@ -44,8 +49,7 @@ export class ResetPasswordComponent implements OnInit {
     this.userapi.apiRequest('post', 'auth/resetPassword', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "success") {
-        this.snack.open(result.data, 'OK', { duration: 4000 })
-
+        this.snack.open(result.data.msg, 'OK', { duration: 4000 })
         setTimeout(() => {
           this.router.navigate(['/password-reset-success']);
         }, 2000);
@@ -67,7 +71,7 @@ export class ResetPasswordComponent implements OnInit {
 
     this.userapi.apiRequest('post', 'auth/reset-password-token', req_vars).subscribe(result => {
       if (result.status == "error") {
-        this.router.navigate(['llp-admin', 'error']);
+        this.router.navigate(['error']);
         this.snack.open(result.data, 'OK', { duration: 6000 })
       } else {
         console.log(result.data)

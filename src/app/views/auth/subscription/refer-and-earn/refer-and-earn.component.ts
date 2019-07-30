@@ -20,7 +20,7 @@ export class ReferAndEarnComponent implements OnInit {
       'userId': localStorage.getItem("endUserId")
     }
     this.userapi.apiRequest('post', 'customer/refer-and-earn-participate', req_vars).subscribe(result => {
-      this.router.navigate(['/advisor/dashboard'])
+      this.router.navigate(['/', 'advisor', 'dashboard'])
     })
   }
 }
