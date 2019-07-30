@@ -157,7 +157,7 @@ export class EssenioalIdBoxComponent implements OnInit {
       this.IDForm.controls['idProofDocuments_temp'].setValue('1');
       }
 
-      if(key==1){  
+      if(key==3){  
         this.typeOne = true;      
         this.typeOneTwo = true;      
         this.typeOneTwoSixSeven = true;      
@@ -188,7 +188,7 @@ export class EssenioalIdBoxComponent implements OnInit {
           idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
          });
          
-      }else if(key==2){  
+      }else if(key==4){  
         this.typeTwo = true;      
         this.typeOneTwo = true;      
         this.typeOneTwoSixSeven = true;
@@ -218,7 +218,7 @@ export class EssenioalIdBoxComponent implements OnInit {
           profileId: new FormControl(this.IDForm.controls['profileId'].value,),
           idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
          });
-      }else if(key==3){  
+      }else if(key==2){  
         this.typeThree = true;              
         // this.IDForm.controls['locationDoDID'] = new FormControl(this.IDForm.controls['locationDoDID'].value,Validators.required);
         // this.IDForm.controls['DoDIDNumber'] = new FormControl(this.IDForm.controls['DoDIDNumber'].value,Validators.required);
@@ -245,7 +245,7 @@ export class EssenioalIdBoxComponent implements OnInit {
           profileId: new FormControl(this.IDForm.controls['profileId'].value,),
           idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
          });
-      }else if(key==4){            
+      }else if(key==1){            
         this.typeFour = true;                    
         this.IDForm = this.fb.group({
           documentType: new FormControl(this.IDForm.controls['documentType'].value,Validators.required),
@@ -269,7 +269,7 @@ export class EssenioalIdBoxComponent implements OnInit {
           profileId: new FormControl(this.IDForm.controls['profileId'].value,),
           idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
          });
-        }else if(key==5){     
+        }else if(key==6){     
         this.typeFive = true;             
         this.IDForm = this.fb.group({
           documentType: new FormControl(this.IDForm.controls['documentType'].value,Validators.required),
@@ -293,7 +293,7 @@ export class EssenioalIdBoxComponent implements OnInit {
           profileId: new FormControl(this.IDForm.controls['profileId'].value,),
           idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
          });
-      }else if(key==6){  
+      }else if(key==5){  
         this.typeSix = true;  
         this.typeOneTwoSixSeven = true;         
         this.typeSixSeven = true;        

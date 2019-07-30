@@ -105,5 +105,5 @@ export class LegaciesComponent implements OnInit {
       disableClose: true,
     })
   }
-  
+   
 }

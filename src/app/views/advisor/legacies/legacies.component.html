@@ -18,8 +18,9 @@
         </mat-card-content>
         <mat-card-content class="recent--update--section legacy--wrapper pr-0 pt-0"  *ngIf="showAdvisorListing">
           <div class="legacy--box" *ngFor="let row of advisorListing">
-            <div class="legacy--pic">
-              <img src="{{profileUrl}}{{row.customerId!=null ? row?.customerId.profilePicture : 'default.jpg'}}" />
+            <div class="legacy--pic">              
+              <img *ngIf="row.customerId.profilePicture==null" src="assets/images/arkenea/default.jpg" />
+              <img *ngIf="row.customerId.profilePicture!=null" src="{{profileUrl}}{{row?.customerId.profilePicture}}" />
             </div>
             <h4 class="legacy--name">{{row?.customerId.firstName}} {{row?.customerId.lastName}}</h4>
             <div class="legacy-confirm" *ngIf="row?.status === 'Pending'">
