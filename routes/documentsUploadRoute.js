@@ -1224,7 +1224,6 @@ function downloadDocs(req,res) {
   var params = {Bucket: constants.s3Details.bucketName,Key:filePath};
   let ext = filename.split('.')
   ext = ext[ext.length - 1];
-  console.log("params ->",params,ext);
   try {
     const stream = s3.s3.getObject(params).createReadStream();    
     res.set({
