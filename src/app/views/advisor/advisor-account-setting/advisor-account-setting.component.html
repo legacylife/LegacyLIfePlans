@@ -4,13 +4,13 @@
       <div class="shop-filters-wrap llp--left--panel">
         <mat-card class="account--profile">
           <div class="account--pic--wrapper">
-            <div class="account--pic" >               
+            <div class="account--pic">
               <img src="{{profilePicture}}" />
-            </div>            
+            </div>
             <div class="edit--pic">
               <mat-icon title="edit advisor image" (click)="changePicModal()">edit</mat-icon>
-              <input type="file" name="profilePicture" #profilePic id="profilePicture" class="profile-pic-input" (change)="showSelectedProfilePicture()"
-                accept="image/*" style="display:none;" />
+              <input type="file" name="profilePicture" #profilePic id="profilePicture" class="profile-pic-input"
+                (change)="showSelectedProfilePicture()" accept="image/*" style="display:none;" />
             </div>
           </div>
 
@@ -18,7 +18,8 @@
             <h2>{{firstNameval}} {{lastNameval}}</h2>
             <p>{{cityval}}, {{stateval}} - {{zipcodeval}}</p>
             <div class="sta--m">
-              <mat-icon>star</mat-icon> {{profile.userType}}</div>
+              <mat-icon>star</mat-icon> {{profile.userType}}
+            </div>
           </div>
 
 
@@ -73,128 +74,157 @@
           <mat-tab label="Account Details">
             <form class="llp-form-wrapper" [formGroup]="ProfileForm">
               <div class="account--details">
-              <div fxLayout="row wrap">
-                <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">               
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="firstName" maxlength="20" placeholder="First Name*" value=""  [formControl]="ProfileForm.controls['firstName']">
-                      <mat-icon matTooltip="Please enter first name" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['firstName'].hasError('required') && ProfileForm.controls['firstName'].touched"
-                      class="red--alert">help_outline</mat-icon>
+                      <input class="capitalize" matInput name="firstName" maxlength="20" placeholder="First Name*"
+                        value="" [formControl]="ProfileForm.controls['firstName']">
+                      <mat-icon matTooltip="Please enter first name" matTooltipClass="llp--tooltip error"
+                        *ngIf="ProfileForm.controls['firstName'].hasError('required') && ProfileForm.controls['firstName'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="lastName" maxlength="20" placeholder="Last Name*" value="" [formControl]="ProfileForm.controls['lastName']">
-                      <mat-icon matTooltip="Please enter last name" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['lastName'].hasError('required') && ProfileForm.controls['lastName'].touched"
-                      class="red--alert">help_outline</mat-icon>
+                      <input class="capitalize" matInput name="lastName" maxlength="20" placeholder="Last Name*"
+                        value="" [formControl]="ProfileForm.controls['lastName']">
+                      <mat-icon matTooltip="Please enter last name" matTooltipClass="llp--tooltip error"
+                        *ngIf="ProfileForm.controls['lastName'].hasError('required') && ProfileForm.controls['lastName'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
 
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Mobile Number*" name="phoneNumber"  type="tel"  [formControl]="ProfileForm.controls['phoneNumber']">
+                      <input matInput placeholder="Mobile Number*" name="phoneNumber" type="tel"
+                        [formControl]="ProfileForm.controls['phoneNumber']">
                       <span matPrefix>+1</span>
-                      <mat-icon matTooltip="Please enter mobile number" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['phoneNumber'].hasError('required') && ProfileForm.controls['phoneNumber'].touched"
-                      class="red--alert">help_outline</mat-icon>
-                      <mat-icon matTooltip="Please enter valid mobile number." matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['phoneNumber'].hasError('pattern') && ProfileForm.controls['phoneNumber'].touched"
-                      class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please enter mobile number" matTooltipClass="llp--tooltip error"
+                        *ngIf="ProfileForm.controls['phoneNumber'].hasError('required') && ProfileForm.controls['phoneNumber'].touched"
+                        class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please enter valid mobile number." matTooltipClass="llp--tooltip error"
+                        *ngIf="ProfileForm.controls['phoneNumber'].hasError('pattern') && ProfileForm.controls['phoneNumber'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Landline Number*" name="landlineNumber" type="tel"  [formControl]="ProfileForm.controls['landlineNumber']">
+                      <input matInput placeholder="Landline Number*" name="landlineNumber" type="tel"
+                        [formControl]="ProfileForm.controls['landlineNumber']">
                       <span matPrefix>+1</span>
-                      <mat-icon matTooltip="Please enter landline number" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['phoneNumber'].hasError('required') && ProfileForm.controls['phoneNumber'].touched"
-                      class="red--alert">help_outline</mat-icon>
-                      <mat-icon matTooltip="Please enter valid landline number." matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['landlineNumber'].hasError('pattern') && ProfileForm.controls['landlineNumber'].touched"
-                      class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please enter landline number" matTooltipClass="llp--tooltip error"
+                        *ngIf="ProfileForm.controls['phoneNumber'].hasError('required') && ProfileForm.controls['phoneNumber'].touched"
+                        class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please enter valid landline number." matTooltipClass="llp--tooltip error"
+                        *ngIf="ProfileForm.controls['landlineNumber'].hasError('pattern') && ProfileForm.controls['landlineNumber'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
 
                     <mat-form-field class="full-width llp-datepicker">
-                      <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Date of Birth*" value="" readonly [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
+                      <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="Date of Birth*" value=""
+                        readonly [max]="maxDate" [formControl]="ProfileForm.controls['dateOfBirth']">
                       <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
                       <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
                       </mat-datepicker>
-                      <mat-icon matTooltip="Please select date of birth" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['dateOfBirth'].hasError('required') && ProfileForm.controls['dateOfBirth'].touched"
-                      class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please select date of birth" matTooltipClass="llp--tooltip error"
+                        *ngIf="ProfileForm.controls['dateOfBirth'].hasError('required') && ProfileForm.controls['dateOfBirth'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
 
                     <mat-form-field class="full-width no-mar">
-                      <input matInput name="username" placeholder="Email Address" value="" aria-readonly="true" readonly [formControl]="ProfileForm.controls['username']">
+                      <input matInput name="username" placeholder="Email Address" value="" aria-readonly="true" readonly
+                        [formControl]="ProfileForm.controls['username']">
                     </mat-form-field>
 
                     <div class="full-width text-right">
                       <a class="clr--red fnt--16" (click)="changePasspordModal()">Change password</a>
-                    </div>               
-                </div>
-                <div fxFlex.xs="100" fxFlex.sm="60" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60">
-                  <div class="manage--sub--section">
-                    <header>
-                      <div class="stan--plan"> {{planName}} plan</div>
-                      <div class="ur--sub" *ngIf="isSubscribePlan && autoRenewalVal && !isSubscriptionCanceled">Your subscription will automatically renew on
-                        <span>{{subscriptionExpireDate}}</span>
-                      </div>
-                      <div class="ur--sub" *ngIf="isSubscribePlan && (!autoRenewalVal || isSubscriptionCanceled)">Your subscription will expire on
-                        <span>{{subscriptionExpireDate}}</span>
-                      </div>
-                      <div class="ur--sub" *ngIf="isAccountFree || (!isSubscribePlan && isPremiumExpired)">Your plan will expire on
-                        <span>{{subscriptionExpireDate}}</span>
-                      </div>
-                    </header>
-
-                    <div class="llp--slide--wrapper">
-                      <div class="set-auto">Set auto-payment option</div>
-                      <mat-slide-toggle class="llp--slide--toggle" [checked]="autoRenewalFlag" [disabled]="isAccountFree || isSubscriptionCanceled || (!isSubscribePlan && isPremiumExpired)" (click)="(isSubscribePlan && !isSubscriptionCanceled) && autoRenewal()">{{autoRenewalStatus | uppercase}}</mat-slide-toggle>
                     </div>
-                    <p class="turning">Turning the auto-payment option ON will automatically deduct the subscription
-                      amount from your associated
-                      card
-                    </p>
-
-                    <div class="manage--cancel">
-                      <!-- <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/advisor/subscription'">Manage subscription</button> -->
-                      <button mat-raised-button class="llp--primary--green--btn" [class.not-allowed]="isSubscribePlan && !isPremiumExpired" [disabled]="isSubscribePlan && !isPremiumExpired" [routerLink]="'/advisor/advisor-subscription'">Manage subscription</button>
-                      <a class="clr--red" [class.not-allowed]="!isSubscribePlan || isSubscriptionCanceled" [attr.disabled]="!isSubscribePlan || isSubscriptionCanceled" (click)="isSubscribePlan && !isSubscriptionCanceled && cancelSubscription()">Cancel subscription</a>
-                    </div>
-
-                    <mat-card class="mt-1 p-0 black--header" *ngIf="invitedMembersCount<invitedMembersCountDefault">
-                      <mat-card-title class="">
-                        <div class="card-title-text">Invitation Status</div>
-                        <mat-divider></mat-divider>
-                      </mat-card-title>
-                      <mat-card-content class="invite--body--section">
-                        <h4 class="count">{{invitedMembersCount}}<span>/{{invitedMembersCountDefault}}</span>
-                        </h4>
-                        <p class="daysgo">{{remainingDays}} days to go</p>
-                        <p class="invites">Invites sent in this month</p> 
-                        <button mat-raised-button class="llp--primary--btn" (click)="openInviteModal({})">Invite Now</button>
-                      </mat-card-content>
-                    </mat-card>
-
-
-                    <mat-card class="mt-1 p-0 black--header" *ngIf="invitedMembersCount>=invitedMembersCountDefault">
-                      <mat-card-content class="">
-                        <div class="header--wrapper">
-                          <header class="sub--header" style="background-image: url('assets/images/arkenea/congratulations.png')">
-                            <span>Congratulations!</span>
-                          </header>
-                          <p class="warn">
-                            Your <span>Free Trial</span>
-                            period has been
-                            extended for
-                            30 days!</p>                      
-                        </div>
-                        <div class="free--access">
-                          Free access valid till {{remainingDays}} days
-                        </div>
-                      </mat-card-content>      
-                    </mat-card>
-
-                    
                   </div>
-                 
+                  <div fxFlex.xs="100" fxFlex.sm="60" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60">
+                    <div class="manage--sub--section">
+                      <header>
+                        <div class="stan--plan"> {{planName}} plan</div>
+                        <div class="ur--sub" *ngIf="isSubscribePlan && autoRenewalVal && !isSubscriptionCanceled">Your
+                          subscription will automatically renew on
+                          <span>{{subscriptionExpireDate}}</span>
+                        </div>
+                        <div class="ur--sub" *ngIf="isSubscribePlan && (!autoRenewalVal || isSubscriptionCanceled)">Your
+                          subscription will expire on
+                          <span>{{subscriptionExpireDate}}</span>
+                        </div>
+                        <div class="ur--sub" *ngIf="isAccountFree || (!isSubscribePlan && isPremiumExpired)">Your plan
+                          will expire on
+                          <span>{{subscriptionExpireDate}}</span>
+                        </div>
+                      </header>
+
+                      <div class="llp--slide--wrapper">
+                        <div class="set-auto">Set auto-payment option</div>
+                        <mat-slide-toggle class="llp--slide--toggle" [checked]="autoRenewalFlag"
+                          [disabled]="isAccountFree || isSubscriptionCanceled || (!isSubscribePlan && isPremiumExpired)"
+                          (click)="(isSubscribePlan && !isSubscriptionCanceled) && autoRenewal()">
+                          {{autoRenewalStatus | uppercase}}</mat-slide-toggle>
+                      </div>
+                      <p class="turning">Turning the auto-payment option ON will automatically deduct the subscription
+                        amount from your associated
+                        card
+                      </p>
+
+                      <div class="manage--cancel">
+                        <!-- <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/advisor/subscription'">Manage subscription</button> -->
+                        <button mat-raised-button class="llp--primary--green--btn"
+                          [class.not-allowed]="isSubscribePlan && !isPremiumExpired"
+                          [disabled]="isSubscribePlan && !isPremiumExpired"
+                          [routerLink]="'/advisor/advisor-subscription'">Manage subscription</button>
+                        <a class="clr--red" [class.not-allowed]="!isSubscribePlan || isSubscriptionCanceled"
+                          [attr.disabled]="!isSubscribePlan || isSubscriptionCanceled"
+                          (click)="isSubscribePlan && !isSubscriptionCanceled && cancelSubscription()">Cancel
+                          subscription</a>
+                      </div>
+
+                      <mat-card class="mt-1 p-0 black--header" *ngIf="invitedMembersCount<invitedMembersCountDefault">
+                        <mat-card-title class="">
+                          <div class="card-title-text">Invitation Status</div>
+                          <mat-divider></mat-divider>
+                        </mat-card-title>
+                        <mat-card-content class="invite--body--section">
+                          <h4 class="count">{{invitedMembersCount}}<span>/{{invitedMembersCountDefault}}</span>
+                          </h4>
+                          <p class="daysgo">{{remainingDays}} days to go</p>
+                          <p class="invites">Invites sent in this month</p>
+                          <button mat-raised-button class="llp--primary--btn" (click)="openInviteModal({})">Invite
+                            Now</button>
+                        </mat-card-content>
+                      </mat-card>
+
+
+                      <mat-card class="mt-1 p-0 black--header" *ngIf="invitedMembersCount>=invitedMembersCountDefault">
+                        <mat-card-content class="">
+                          <div class="header--wrapper">
+                            <header class="sub--header"
+                              style="background-image: url('assets/images/arkenea/congratulations.png')">
+                              <span>Congratulations!</span>
+                            </header>
+                            <p class="warn">
+                              Your <span>Free Trial</span>
+                              period has been
+                              extended for
+                              30 days!</p>
+                          </div>
+                          <div class="free--access">
+                            Free access valid till {{remainingDays}} days
+                          </div>
+                        </mat-card-content>
+                      </mat-card>
+
+
+                    </div>
+
+                  </div>
+                </div>
+
+                <div fx.Flex="100" class="text-center mt--30">
+                  <button mat-raised-button type="button" class="llp--secondary--btn mr-1"
+                    [routerLink]="'/advisor/dashboard'">Cancel</button>
+                  <button mat-raised-button class="llp--primary--btn" [disabled]="ProfileForm.invalid"
+                    (click)="ProfileSubmit()">Save</button>
                 </div>
               </div>
-
-              <div fx.Flex="100" class="text-center mt--30">
-                <button mat-raised-button  type="button" class="llp--secondary--btn mr-1" [routerLink]="'/advisor/dashboard'">Cancel</button>
-                <button mat-raised-button class="llp--primary--btn" [disabled]="ProfileForm.invalid" (click)="ProfileSubmit()">Save</button>
-              </div>
-            </div>
-          </form>
+            </form>
           </mat-tab>
           <mat-tab label="Business information">
             <!-- Business Information  -->
@@ -204,19 +234,22 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="businessName" placeholder="Business Name*" value="" [formControl]="AddressForm.controls['businessName']">
-                      <mat-icon matTooltip="Please enter business name" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessName'].hasError('required') && AddressForm.controls['businessName'].touched"
-                      class="red--alert">help_outline</mat-icon>
+                      <input class="capitalize" matInput name="businessName" placeholder="Business Name*" value=""
+                        [formControl]="AddressForm.controls['businessName']">
+                      <mat-icon matTooltip="Please enter business name" matTooltipClass="llp--tooltip error"
+                        *ngIf="AddressForm.controls['businessName'].hasError('required') && AddressForm.controls['businessName'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
                       <mat-label>Years Of Service*</mat-label>
-                      <mat-select  name="yearsOfService" [formControl]="AddressForm.controls['yearsOfService']">
+                      <mat-select name="yearsOfService" [formControl]="AddressForm.controls['yearsOfService']">
                         <mat-option *ngFor="let yos of yearsOfServiceList" [value]="yos">{{yos}}</mat-option>
                       </mat-select>
-                      <mat-icon matTooltip="Please select years of service" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessName'].hasError('required') && AddressForm.controls['businessName'].touched"
-                      class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please select years of service" matTooltipClass="llp--tooltip error"
+                        *ngIf="AddressForm.controls['businessName'].hasError('required') && AddressForm.controls['businessName'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                 </div>
@@ -227,18 +260,20 @@
                       <mat-select name="businessType" [formControl]="AddressForm.controls['businessType']" multiple>
                         <mat-option *ngFor="let btl of businessTypeList" [value]="btl">{{btl}}</mat-option>
                       </mat-select>
-                      <mat-icon matTooltip="Please select business type" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessType'].hasError('required') && AddressForm.controls['businessType'].touched"
-                      class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please select business type" matTooltipClass="llp--tooltip error"
+                        *ngIf="AddressForm.controls['businessType'].hasError('required') && AddressForm.controls['businessType'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
-                      <mat-label>Industry/Domain*</mat-label>                      
+                      <mat-label>Industry/Domain*</mat-label>
                       <mat-select name="industryDomain" [formControl]="AddressForm.controls['industryDomain']" multiple>
                         <mat-option *ngFor="let idl of industryDomainList" [value]="idl">{{idl}}</mat-option>
                       </mat-select>
-                      <mat-icon matTooltip="Please select industry/domain" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['industryDomain'].hasError('required') && AddressForm.controls['industryDomain'].touched"
-                      class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please select industry/domain" matTooltipClass="llp--tooltip error"
+                        *ngIf="AddressForm.controls['industryDomain'].hasError('required') && AddressForm.controls['industryDomain'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                 </div>
@@ -246,23 +281,28 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="addressLine1" placeholder="Address Line 1*" value="" [formControl]="AddressForm.controls['addressLine1']">
-                      <mat-icon matTooltip="Please enter address line 1" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['addressLine1'].hasError('required') && AddressForm.controls['addressLine1'].touched"
-                      class="red--alert">help_outline</mat-icon>
+                      <input class="capitalize" matInput name="addressLine1" placeholder="Address Line 1*" value=""
+                        [formControl]="AddressForm.controls['addressLine1']">
+                      <mat-icon matTooltip="Please enter address line 1" matTooltipClass="llp--tooltip error"
+                        *ngIf="AddressForm.controls['addressLine1'].hasError('required') && AddressForm.controls['addressLine1'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="addressLine2" placeholder="Address Line 2 (optional)" value="" [formControl]="AddressForm.controls['addressLine2']">
+                      <input class="capitalize" matInput name="addressLine2" placeholder="Address Line 2 (optional)"
+                        value="" [formControl]="AddressForm.controls['addressLine2']">
                     </mat-form-field>
                   </div>
                 </div>
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="City" placeholder="City*" value="" [formControl]="AddressForm.controls['city']">
-                      <mat-icon matTooltip="Please enter city" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['city'].hasError('required') && AddressForm.controls['city'].touched"
-                      class="red--alert">help_outline</mat-icon>
+                      <input class="capitalize" matInput name="City" placeholder="City*" value=""
+                        [formControl]="AddressForm.controls['city']">
+                      <mat-icon matTooltip="Please enter city" matTooltipClass="llp--tooltip error"
+                        *ngIf="AddressForm.controls['city'].hasError('required') && AddressForm.controls['city'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
@@ -270,31 +310,40 @@
                       <mat-label>State</mat-label>
                       <mat-select placeholder="State*" name="state" [formControl]="AddressForm.controls['state']">
                         <mat-option value="">Select a state</mat-option>
-                        <mat-option *ngFor="let option of stateList"  [value]="option.state_name">{{option.state_name}}</mat-option>
+                        <mat-option *ngFor="let option of stateList" [value]="option.state_name">{{option.state_name}}
+                        </mat-option>
                       </mat-select>
-                      <mat-icon matTooltip="Please select state" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['state'].hasError('required') && AddressForm.controls['state'].touched"
-                      class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please select state" matTooltipClass="llp--tooltip error"
+                        *ngIf="AddressForm.controls['state'].hasError('required') && AddressForm.controls['state'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                 </div>
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input matInput name="zipcode" maxlength="10" placeholder="Zip Code*" value="" [formControl]="AddressForm.controls['zipcode']">
-                      <mat-icon matTooltip="Please enter zipcode" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['zipcode'].hasError('required') && AddressForm.controls['zipcode'].touched"
-                      class="red--alert">help_outline</mat-icon>
-                      <mat-icon matTooltip="Please enter valid zipcode." matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['zipcode'].hasError('pattern') && AddressForm.controls['zipcode'].touched"
-                      class="red--alert">help_outline</mat-icon>
+                      <input matInput name="zipcode" maxlength="10" placeholder="Zip Code*" value=""
+                        [formControl]="AddressForm.controls['zipcode']">
+                      <mat-icon matTooltip="Please enter zipcode" matTooltipClass="llp--tooltip error"
+                        *ngIf="AddressForm.controls['zipcode'].hasError('required') && AddressForm.controls['zipcode'].touched"
+                        class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please enter valid zipcode." matTooltipClass="llp--tooltip error"
+                        *ngIf="AddressForm.controls['zipcode'].hasError('pattern') && AddressForm.controls['zipcode'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
 
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Business Phone*" type="tel" value="" class="" name="businessPhoneNumber" [formControl]="AddressForm.controls['businessPhoneNumber']">
+                      <input matInput placeholder="Business Phone*" type="tel" value="" class=""
+                        name="businessPhoneNumber" [formControl]="AddressForm.controls['businessPhoneNumber']">
                       <span matPrefix>+1</span>
-                      <mat-icon matTooltip="Please enter business phone" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessPhoneNumber'].hasError('required') && AddressForm.controls['businessPhoneNumber'].touched"
+                      <mat-icon matTooltip="Please enter business phone" matTooltipClass="llp--tooltip error"
+                        *ngIf="AddressForm.controls['businessPhoneNumber'].hasError('required') && AddressForm.controls['businessPhoneNumber'].touched"
                         class="red--alert">help_outline</mat-icon>
-                      <mat-icon matTooltip="Please enter valid business phone number." matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessPhoneNumber'].hasError('pattern') && AddressForm.controls['businessPhoneNumber'].touched"
+                      <mat-icon matTooltip="Please enter valid business phone number."
+                        matTooltipClass="llp--tooltip error"
+                        *ngIf="AddressForm.controls['businessPhoneNumber'].hasError('pattern') && AddressForm.controls['businessPhoneNumber'].touched"
                         class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
@@ -308,48 +357,58 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width about--txtarea">
-                      <textarea matInput placeholder="About You*" maxlength="500" value="Your professional summary, achievements, client experience" name="bioText" [formControl]="AddressForm.controls['bioText']"></textarea>
+                      <textarea matInput placeholder="About You*" maxlength="500"
+                        value="Your professional summary, achievements, client experience" name="bioText"
+                        [formControl]="AddressForm.controls['bioText']"></textarea>
                       <!-- <div class="char--limit">0 / 500 chars</div> -->
-                      <mat-icon matTooltip="Please enter bio text" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['bioText'].hasError('required') && AddressForm.controls['bioText'].touched"
-                      class="red--alert">help_outline</mat-icon>
-                      <div class="char--limit" style="float: right;">{{ 500 - AddressForm.controls['bioText'].value?.length }} / 500 chars</div>
+                      <mat-icon matTooltip="Please enter bio text" matTooltipClass="llp--tooltip error"
+                        *ngIf="AddressForm.controls['bioText'].hasError('required') && AddressForm.controls['bioText'].touched"
+                        class="red--alert">help_outline</mat-icon>
+                      <div class="char--limit" style="float: right;">
+                        {{ 500 - AddressForm.controls['bioText'].value?.length }} / 500 chars</div>
                     </mat-form-field>
                   </div>
-                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" formArrayName="awardsYears">
-                      <h3 class="header--text fnt--16 mb-1">Awards and Organizations</h3>
-  
-                      <div fxLayout="row wrap" *ngFor="let award of awardsPoints.controls; let pointIndex = index"  [formGroupName]="pointIndex">
-                        <div fxFlex.xs="100" fxFlex.sm="65" fxFlex.md="65" fxFlex.lg="65" fxFlex.xl="65" class="pad--r--lg">
-                          <mat-form-field class="full-width">
-                            <input class="capitalize" matInput name="title" placeholder="Title" formControlName="title">
-                          </mat-form-field>
-                        </div>
-                        <div fxFlex.xs="95" fxFlex.sm="30" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pr-2">
-                          <mat-form-field class="full-width">
-                            <input matInput name="year" placeholder="Year" formControlName="year">
-                          </mat-form-field>
-                        </div>
-                        <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" (click)="delete(pointIndex);" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
-                          <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
-                        </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
+                    formArrayName="awardsYears">
+                    <h3 class="header--text fnt--16 mb-1">Awards and Organizations</h3>
+
+                    <div fxLayout="row wrap" *ngFor="let award of awardsPoints.controls; let pointIndex = index"
+                      [formGroupName]="pointIndex">
+                      <div fxFlex.xs="100" fxFlex.sm="65" fxFlex.md="65" fxFlex.lg="65" fxFlex.xl="65"
+                        class="pad--r--lg">
+                        <mat-form-field class="full-width">
+                          <input class="capitalize" matInput name="title" placeholder="Title" formControlName="title">
+                        </mat-form-field>
                       </div>
-  
-                     
-                      <div fxLayout="row wrap" *ngIf="awardsPoints.length < 5">
-                        <div fxFlex.xs="100">
-                            <div class="add--new" (click)="addNewAo();">
-                            <mat-icon>add_circle</mat-icon>
-                            Add New
-                          </div>
+                      <div fxFlex.xs="95" fxFlex.sm="30" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pr-2">
+                        <mat-form-field class="full-width">
+                          <input matInput name="year" placeholder="Year" formControlName="year">
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" (click)="delete(pointIndex);" fxFlex.lg="5"
+                        fxFlex.xl="5" class="text-right">
+                        <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
+                      </div>
+                    </div>
+
+
+                    <div fxLayout="row wrap" *ngIf="awardsPoints.length < 5">
+                      <div fxFlex.xs="100">
+                        <div class="add--new" (click)="addNewAo();">
+                          <mat-icon>add_circle</mat-icon>
+                          Add New
                         </div>
                       </div>
                     </div>
+                  </div>
                 </div>
 
                 <h3 class="header--text fnt--16 mb-1">Specialites</h3>
                 <div fxLayout="row wrap">
-                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg"  formGroupName="specialites">
-                    <div fxLayout="row wrap" *ngFor="let web of specialitesPoints.controls; let i = index"  [formGroupName]="i">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg"
+                    formGroupName="specialites">
+                    <div fxLayout="row wrap" *ngFor="let web of specialitesPoints.controls; let i = index"
+                      [formGroupName]="i">
                       <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
                         <mat-form-field class="full-width">
                           <input matInput placeholder="Name" formControlName="name">
@@ -368,9 +427,11 @@
                       </div>
                     </div>
                   </div>
-                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" formArrayName="hobbies">
-                    <h3 class="header--text fnt--16 mb-1">Hobbies</h3>       
-                    <div fxLayout="row wrap" *ngFor="let web of hobbiesPoints.controls; let i = index"  [formGroupName]="i">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
+                    formArrayName="hobbies">
+                    <h3 class="header--text fnt--16 mb-1">Hobbies</h3>
+                    <div fxLayout="row wrap" *ngFor="let web of hobbiesPoints.controls; let i = index"
+                      [formGroupName]="i">
                       <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
                         <mat-form-field class="full-width">
                           <input matInput placeholder="Name" formControlName="name">
@@ -393,28 +454,38 @@
 
                 <h3 class="header--text fnt--16 mb-1">Social Media</h3>
                 <div fxLayout="row wrap">
-                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg"  formGroupName="socialMediaLinks">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg"
+                    formGroupName="socialMediaLinks">
                     <mat-form-field class="full-width">
-                      <input matInput formControlName="facebook" placeholder="Facebook" value="{{socialMediaLinkss.facebook}}"  [formControl]="getFormGroup('socialMediaLinks').controls['facebook']">
+                      <input matInput formControlName="facebook" placeholder="Facebook"
+                        value="{{socialMediaLinkss.facebook}}"
+                        [formControl]="getFormGroup('socialMediaLinks').controls['facebook']">
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input matInput formControlName="twitter" placeholder="Twitter" value="{{socialMediaLinkss.twitter}}"  [formControl]="getFormGroup('socialMediaLinks').controls['twitter']">
+                      <input matInput formControlName="twitter" placeholder="Twitter"
+                        value="{{socialMediaLinkss.twitter}}"
+                        [formControl]="getFormGroup('socialMediaLinks').controls['twitter']">
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input matInput formControlName="linkedIn" placeholder="LinkedIn" value="{{socialMediaLinkss.linkedIn}}"  [formControl]="getFormGroup('socialMediaLinks').controls['linkedIn']">
+                      <input matInput formControlName="linkedIn" placeholder="LinkedIn"
+                        value="{{socialMediaLinkss.linkedIn}}"
+                        [formControl]="getFormGroup('socialMediaLinks').controls['linkedIn']">
                     </mat-form-field>
                   </div>
-                
-                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" formArrayName="websiteLinks">
-                    <h3 class="header--text fnt--16 mb-1">Websites</h3>       
-                      <div fxLayout="row wrap" *ngFor="let web of weblinksPoints.controls; let i = index"  [formGroupName]="i">
+
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
+                    formArrayName="websiteLinks">
+                    <h3 class="header--text fnt--16 mb-1">Websites</h3>
+                    <div fxLayout="row wrap" *ngFor="let web of weblinksPoints.controls; let i = index"
+                      [formGroupName]="i">
                       <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
                         <mat-form-field class="full-width">
-                          <input matInput placeholder="URL"  formControlName="links">
+                          <input matInput placeholder="URL" formControlName="links">
                         </mat-form-field>
                       </div>
                       <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
-                        <mat-icon class="mt-1 clr--red cursor-pointer" (click)="deleteWebsiteLinks(i);">delete</mat-icon>
+                        <mat-icon class="mt-1 clr--red cursor-pointer" (click)="deleteWebsiteLinks(i);">delete
+                        </mat-icon>
                       </div>
                     </div>
                     <div fxLayout="row wrap" *ngIf="weblinksPoints.length < 5">
@@ -430,7 +501,8 @@
 
 
                 <div fx.Flex="100" class="text-center mt--30">
-                  <button mat-raised-button  type="button" class="llp--secondary--btn mr-1" [routerLink]="'/advisor/dashboard'">Cancel</button>
+                  <button mat-raised-button type="button" class="llp--secondary--btn mr-1"
+                    [routerLink]="'/advisor/dashboard'">Cancel</button>
                   <button mat-raised-button class="llp--primary--btn" [disabled]="AddressForm.invalid">Save</button>
                 </div>
               </form>
@@ -441,7 +513,8 @@
              <form class="llp-form-wrapper"  [formGroup]="LicenseForm" (ngSubmit)="LicenseSubmit()" enctype="multipart/form-data">          
             -->
             <div class="business--information">
-              <form class="llp-form-wrapper"  [formGroup]="LicenseForm" (ngSubmit)="LicenseSubmit()" enctype="multipart/form-data">
+              <form class="llp-form-wrapper" [formGroup]="LicenseForm" (ngSubmit)="LicenseSubmit()"
+                enctype="multipart/form-data">
                 <h3 class="header--text">License Information</h3>
 
                 <div fxLayout="row wrap">
@@ -452,35 +525,48 @@
                       <mat-select [formControl]="LicenseForm.controls['activeLicenceHeld']" multiple>
                         <mat-option *ngFor="let topping of activeLicenseList" [value]="topping">{{topping}}</mat-option>
                       </mat-select>
-                      <mat-icon matTooltip="Please select active licence" matTooltipClass="llp--tooltip error" *ngIf="LicenseForm.controls['activeLicenceHeld'].hasError('required') && LicenseForm.controls['activeLicenceHeld'].touched"
-                      class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please select active licence" matTooltipClass="llp--tooltip error"
+                        *ngIf="LicenseForm.controls['activeLicenceHeld'].hasError('required') && LicenseForm.controls['activeLicenceHeld'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
-                    <mat-radio-group aria-label="Select an option" class="llp-radio" [formControl]="LicenseForm.controls['agencyOversees']">
+                    <mat-radio-group aria-label="Select an option" class="llp-radio"
+                      [formControl]="LicenseForm.controls['agencyOversees']">
                       <div class="checkbox-label">What agency oversees your business?</div>
-                      <mat-radio-button value="FINRA" class="" [checked]="profile.agencyOversees === 'FINRA'">FINRA</mat-radio-button>
-                      <mat-radio-button value="SEC" class="" [checked]="profile.agencyOversees === 'SEC'">SEC</mat-radio-button>
-                      <mat-radio-button value="Both" class="" [checked]="profile.agencyOversees === 'Both'">Both</mat-radio-button>
+                      <mat-radio-button value="FINRA" class="" [checked]="profile.agencyOversees === 'FINRA'">FINRA
+                      </mat-radio-button>
+                      <mat-radio-button value="SEC" class="" [checked]="profile.agencyOversees === 'SEC'">SEC
+                      </mat-radio-button>
+                      <mat-radio-button value="Both" class="" [checked]="profile.agencyOversees === 'Both'">Both
+                      </mat-radio-button>
                     </mat-radio-group>
                   </div>
                 </div>
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="managingPrincipleName" placeholder="Who is your managing principle?" [formControl]="LicenseForm.controls['managingPrincipleName']">
+                      <input class="capitalize" matInput name="managingPrincipleName"
+                        placeholder="Who is your managing principle?"
+                        [formControl]="LicenseForm.controls['managingPrincipleName']">
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
-                    <mat-radio-group aria-label="Select an option" class="llp-radio" name="Producers" [formControl]="LicenseForm.controls['manageOtherProceducers']">
+                    <mat-radio-group aria-label="Select an option" class="llp-radio" name="Producers"
+                      [formControl]="LicenseForm.controls['manageOtherProceducers']">
                       <div class="checkbox-label">Do you manage other products?</div>
-                      <mat-radio-button (change)="showHowManyProducts('1')" value="1" class="" [checked]="profile.howManyProducers !== ''">Yes</mat-radio-button>
-                      <mat-radio-button (change)="showHowManyProducts('2')" value="2" class="" [checked]="profile.howManyProducers === ''">No</mat-radio-button>
-                      <mat-icon matTooltip="Please select option yes or no to manage products" matTooltipClass="llp--tooltip error" *ngIf="LicenseForm.controls['manageOtherProceducers'].hasError('required') && LicenseForm.controls['manageOtherProceducers'].touched"
-                      class="red--alert">help_outline</mat-icon>
+                      <mat-radio-button (change)="showHowManyProducts('1')" value="1" class=""
+                        [checked]="profile.howManyProducers !== ''">Yes</mat-radio-button>
+                      <mat-radio-button (change)="showHowManyProducts('2')" value="2" class=""
+                        [checked]="profile.howManyProducers === ''">No</mat-radio-button>
+                      <mat-icon matTooltip="Please select option yes or no to manage products"
+                        matTooltipClass="llp--tooltip error"
+                        *ngIf="LicenseForm.controls['manageOtherProceducers'].hasError('required') && LicenseForm.controls['manageOtherProceducers'].touched"
+                        class="red--alert">help_outline</mat-icon>
                     </mat-radio-group>
                     <mat-form-field class="full-width" *ngIf="showHowManyProducer">
-                      <input matInput name="howManyProducers" placeholder="If yes, how many?" [required]="showHowManyProducer" [formControl]="LicenseForm.controls['howManyProducers']">
+                      <input matInput name="howManyProducers" placeholder="If yes, how many?"
+                        [required]="showHowManyProducer" [formControl]="LicenseForm.controls['howManyProducers']">
                     </mat-form-field>
                   </div>
                 </div>
@@ -488,58 +574,67 @@
                 <h3 class="header--text">Business Documents</h3>
                 <div fxLayout="row">
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="48" fxFlex.lg="48" fxFlex.xl="48">
-                    <p class="header--desc upload--doc">Upload your business documents for verification for e.g. business license</p>                                   
+                    <p class="header--desc upload--doc">Upload your business documents for verification for e.g.
+                      business license</p>
                   </div>
                 </div>
-                
+
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
-                      <div class="upload--buss--docs--sec">
-                          <label>Upload your business documents*</label>
-                         <div class="upload--box fileupload-drop-zone"
-                         ng2FileDrop
-                         [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-                         (fileOver)="fileOverBase($event)"
-                         [uploader]="uploader">
-                            <input type="file" name="advisorDocuments" id="advisorDocs" ng2FileSelect [uploader]="uploader" multiple  (change)="fileOverBase('')" />  
-                            <mat-icon class="cloud-icon">cloud_upload</mat-icon>
-                            <div class="select--file">Select file from your computer</div>
-                          </div>
-                          <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
-                        </div>
-                        <mat-form-field class="full-width" *ngIf="advisorDocuments_temps">
-                            <input matInput name="advisorDocuments_temp" [formControl]="LicenseForm.controls['advisorDocuments_temp']">
-                          </mat-form-field>
+                    <div class="upload--buss--docs--sec">
+                      <label>Upload your business documents*</label>
+                      <div class="upload--box fileupload-drop-zone" ng2FileDrop
+                        [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
+                        [uploader]="uploader">
+                        <input type="file" name="advisorDocuments" id="advisorDocs" ng2FileSelect [uploader]="uploader"
+                          multiple (change)="fileOverBase('')" />
+                        <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                        <div class="select--file">Select file from your computer</div>
+                      </div>
+                      <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+                    </div>
+                    <mat-form-field class="full-width" *ngIf="advisorDocuments_temps">
+                      <input matInput name="advisorDocuments_temp"
+                        [formControl]="LicenseForm.controls['advisorDocuments_temp']">
+                    </mat-form-field>
                   </div>
 
-                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50" *ngIf="advisorDocumentsList" >
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.lg="50" fxFlex.xl="50" *ngIf="advisorDocumentsList">
                     <h3 class="header--text fnt--16">Uploaded documents</h3>
                     <mat-chip-list class="doc--list" *ngFor="let doc of advisorDocumentsList; index as i">
-                        <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove  (click)="docDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+                      <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a>
+                        <mat-icon matChipRemove (click)="docDelete(i,doc.title,doc.tmpName)">close</mat-icon>
+                      </mat-chip>
                     </mat-chip-list>
                   </div>
 
                   <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
-                      <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
-                  </mat-chip-list>    
+                    <mat-chip>
+                      <mat-error>{{err.error}}</mat-error>
+                    </mat-chip>
+                  </mat-chip-list>
 
                   <mat-form-field class="full-width" *ngIf="advisorDocumentsHide">
-                    <input matInput name="advisorDocuments" [formControl]="LicenseForm.controls['advisorDocuments']" >
+                    <input matInput name="advisorDocuments" [formControl]="LicenseForm.controls['advisorDocuments']">
                   </mat-form-field>
                   <small *ngIf="advisorDocumentsMissing" class="form-error-msg">{{invalidMessage}}</small>
-              </div>
-              
-              <div class="progress" style="margin-bottom: 0; width:50%;" *ngIf="uploader.getNotUploadedItems().length">
-                 <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">{{uploader.progress}}%</div>
-                 
-                 <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="uploader.progress"></mat-progress-bar>
-              </div>
-       
-                <div fx.Flex="100" class="text-center mt--30">
-                      <button mat-raised-button  type="button" class="llp--secondary--btn mr-1"  [routerLink]="'/advisor/dashboard'">Cancel</button>
-                      <button mat-raised-button class="llp--primary--btn" [disabled]="!LicenseForm.valid">Save</button>
                 </div>
-             </form>
+
+                <div class="progress" style="margin-bottom: 0; width:50%;"
+                  *ngIf="uploader.getNotUploadedItems().length">
+                  <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">
+                    {{uploader.progress}}%</div>
+
+                  <mat-progress-bar class="" color="primary" mode="Indeterminate" [value]="uploader.progress">
+                  </mat-progress-bar>
+                </div>
+
+                <div fx.Flex="100" class="text-center mt--30">
+                  <button mat-raised-button type="button" class="llp--secondary--btn mr-1"
+                    [routerLink]="'/advisor/dashboard'">Cancel</button>
+                  <button mat-raised-button class="llp--primary--btn" [disabled]="!LicenseForm.valid">Save</button>
+                </div>
+              </form>
             </div>
           </mat-tab>
         </mat-tab-group>
