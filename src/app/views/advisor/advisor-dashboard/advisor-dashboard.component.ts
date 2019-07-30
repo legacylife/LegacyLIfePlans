@@ -25,7 +25,7 @@ export class AdvisorDashboardComponent implements OnInit {
   invitedMembersCount: any = 0
   remainingDays:any = 0
   LeadsCount: any = 0
-
+  invitedMembersCountDefault:string='5'
   constructor(
     private userapi: UserAPIService,
     private router: Router, private dialog: MatDialog,

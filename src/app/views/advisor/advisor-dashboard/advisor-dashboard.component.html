@@ -51,20 +51,20 @@
           <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
             <div class="right--boxes">
 
-              <mat-card class="p-0" *ngIf="invitedMembersCount<30">
+              <mat-card class="p-0" *ngIf="invitedMembersCount<invitedMembersCountDefault">
                 <mat-card-title class="">
                   <div class="card-title-text">Invitation Status</div>
                   <mat-divider></mat-divider>
                 </mat-card-title> 
                 <mat-card-content class="invite--body--section">
-                  <h4 class="count">{{invitedMembersCount}}<span>/30</span></h4>
+                  <h4 class="count">{{invitedMembersCount}}<span>/ {{invitedMembersCountDefault}}</span></h4>
                   <p class="daysgo">{{remainingDays}} days to go</p>
                   <p class="invites">Invites sent in this month</p>
                   <button mat-raised-button class="llp--primary--btn" (click)="openInviteModal({})">Invite Now</button>
                 </mat-card-content>
               </mat-card>
 
-              <mat-card class="p-0 target--completed" *ngIf="invitedMembersCount>=30">
+              <mat-card class="p-0 target--completed" *ngIf="invitedMembersCount>=invitedMembersCountDefault">
                 <mat-card-content class="">
                   <div class="header--wrapper">
                     <header class="sub--header" style="background-image: url('assets/images/arkenea/congratulations.png')">
@@ -95,9 +95,8 @@
                     <mat-card-content class="invite--body--section">
                       <h4 class="count">{{LeadsCount}}<span></span></h4>
                       <div class="adjust">
-                          <p class="invites">0 users have shown 
-                              interest</p>
-                          <button mat-raised-button class="llp--primary--btn" [routerLink]="['/advisor/leads']">View All</button>
+                        <!--p class="invites">0 users have shown  interest</p-->
+                        <button mat-raised-button class="llp--primary--btn" [routerLink]="['/advisor/leads']">View All</button>
                       </div>
                     </mat-card-content>
                   </mat-card>

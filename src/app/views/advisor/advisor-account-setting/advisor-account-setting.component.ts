@@ -77,6 +77,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   lastNameval:string
   phoneval:string
   docPath:string
+  invitedMembersCountDefault:string = '5'
   modified = false // display confirmation popup if user click on other link
 
   /**
