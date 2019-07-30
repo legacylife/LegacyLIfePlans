@@ -122,12 +122,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   SharedModule,
   HttpClientModule,
   PerfectScrollbarModule,
-  MatDialogModule,
   MatIconModule,
  // ImageCropperModule,
   MatFormFieldModule,
   FileUploadModule,
-
   LyThemeModule.setTheme('minima-light'),
   LyButtonModule,
   LyToolbarModule,

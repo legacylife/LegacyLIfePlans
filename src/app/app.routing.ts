@@ -4,7 +4,7 @@ import { AuthLayoutComponent } from './shared/components/layouts/auth-layout/aut
 import { AdvisorLandingLayoutComponent } from './shared/components/layouts/advisor-landing-layout/advisor-landing-layout.component';
 //import { CustomerLayoutComponent } from './shared/components/layouts/customer-layout/customer-layout.component';
 import { LandingLayoutComponent } from './shared/components/layouts/landing-layout/landing-layout.component';
-
+import { ErrorComponent } from 'app/views/error/error.component';
 import { AuthGuard } from './shared/services/auth/auth.guard';
 console.log('App---routing');
 export const rootRouterConfig: Routes = [
@@ -73,7 +73,12 @@ export const rootRouterConfig: Routes = [
       }
     ]
   },{
+    path: 'error',
+    component: ErrorComponent,
+    loadChildren: './views/auth/auth.module#AuthModule',
+    data: { title: 'Error Page'}
+  },{
     path: '**',
-    redirectTo: 'auth/404'
+    redirectTo: 'error'//error
   }
 ];

@@ -177,7 +177,7 @@ export class TimeCapsuleMoalComponent implements OnInit {
           this.fileErrors.push(pushArry); 
           setTimeout(()=>{    
             this.fileErrors = []
-          }, 5000);
+          }, 3500);
       
         }
       });

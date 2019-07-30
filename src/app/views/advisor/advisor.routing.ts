@@ -52,6 +52,7 @@ import { FinalWishesComponent } from '../customer/customer-home/final-wishes/fin
 import { FinalWishesDetailsComponent } from '../customer/customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
 import { LettersMessagesListingComponent } from '../customer/customer-home/legacy-life-letters-messages/letters-messages-listing/letters-messages-listing.component';
 import { LettersMessagesDetailsComponent } from '../customer/customer-home/legacy-life-letters-messages/letters-messages-details/letters-messages-details.component';
+import { ErrorComponent } from './../error/error.component';
 console.log('advisor---routing');
 export const AdvisorRoutes: Routes = [
   {
@@ -420,7 +421,20 @@ export const AdvisorRoutes: Routes = [
     ]
   },
   {
+    path: 'error',
+    component: ErrorComponent,
+    data: { title: 'Error Page' },
+    children: [
+      {
+        path: '',
+        component: AdvisorLayoutComponent,
+        data: { title: 'Error Page' }
+      }
+    ]
+  },
+  {
     path: '**',
-    redirectTo: 'dashboard'
+    //redirectTo: 'dashboard'
+    redirectTo: '/advisor/error'
   },
 ];
