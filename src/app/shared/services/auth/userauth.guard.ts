@@ -36,7 +36,7 @@ export class UserAuthGuard implements CanActivate {
         return false;
       }
 
-      if ((this.userInfo.endUserType != '' && this.userUrlType != '' && this.userUrlType != 'signin' && this.userInfo.endUserType != this.userUrlType)) {
+      if ((this.userInfo.endUserType != '' && this.userUrlType != ''  && this.userUrlType != 'subscription' && this.userUrlType != 'signin' && this.userInfo.endUserType != this.userUrlType)) {
         this.router.navigateByUrl('/'+this.userInfo.endUserType+'/dashboard');
         return false;
       }
