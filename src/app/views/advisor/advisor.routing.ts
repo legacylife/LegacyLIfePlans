@@ -434,6 +434,7 @@ export const AdvisorRoutes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'dashboard'
+    //redirectTo: 'dashboard'
+    redirectTo: '/advisor/error'
   },
 ];
