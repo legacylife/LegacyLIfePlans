@@ -439,7 +439,7 @@ function common(req, res) {
 router.post('/reset-password-token', function (req, res) {
   User.findOne({ token: req.body.userId }, function (err, userDetails) {
     if (userDetails) {
-      if(userDetails.userType == 'advisor')
+      if(userDetails.userType)// == 'advisor'
         res.send(resFormat.rSuccess({ code: "success", userId: userDetails, username : userDetails.username }))
       else
         res.send(resFormat.rSuccess('Success')) 
