@@ -95,13 +95,14 @@ export class CustomerMyPeopleComponent implements OnInit {
   }
 
 
-  openHireAdvisorModal(id: any = {}, update: any = {}, isNew?) {
+  openHireAdvisorModal(id: any = {}, update: any = {}, isNew?, hireFullName='') {
     let dialogRef: MatDialogRef<any> = this.dialog.open(HireAdvisorComponent, {
       width: '720px',
       disableClose: true,
       data: {
         id: id,
         update: update,
+        hireFullName:hireFullName
       },
     })
   }

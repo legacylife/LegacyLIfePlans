@@ -6,7 +6,7 @@
 </div>
 <div class="ll--modal--body per--profile--wrapper p-0 hire--ad--modal">
     <h3 *ngIf="SubHeaderName" class="main--head text-center m-0">Assign permission</h3>
-    <p *ngIf="SubHeaderName" class="sub--head text-center mt-1">to the Advisor!</p>  
+    <p *ngIf="SubHeaderName" class="sub--head text-center mt-1">to the {{hireFullName}}</p>  
   <div class="stepper--wrapper">
    <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="onChangeFormIndex($event)">
       <mat-step [stepControl]="hireFormGroup">    
@@ -53,7 +53,7 @@
                             <mat-radio-button value="afterDeath">After Death</mat-radio-button>                    
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                    
-                            <mat-radio-button value="never" [checked]="true">Never</mat-radio-button>                    
+                            <mat-radio-button value="never" [checked]="defaultPermission">Never</mat-radio-button>                    
                         </div>               
                     </mat-list-item>
                   </mat-radio-group>
@@ -77,7 +77,7 @@
                                 <mat-radio-button value="afterDeath">After Death</mat-radio-button>                     
                             </div>
                             <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                     
-                                <mat-radio-button value="never" [checked]="true">Never</mat-radio-button>                     
+                                <mat-radio-button value="never" [checked]="defaultPermission">Never</mat-radio-button>                     
                             </div>
                           </mat-list-item>
                       </mat-radio-group>                             

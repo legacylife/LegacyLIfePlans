@@ -31,13 +31,15 @@ export class HireAdvisorComponent implements OnInit, AfterViewInit  {
   headerName = true;
   ids: string;
   updates: string;
+  hireFullName:string;
   alreadyRequestSend:boolean = true;
   row: any = [];
+  defaultPermission:boolean = true;
   constructor(
     private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private stepper: MatStepperModule,
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService,@Inject(MAT_DIALOG_DATA) public data: any
-  ) {this.ids = data.id;this.updates = data.update;}
+  ) {this.ids = data.id;this.updates = data.update; this.hireFullName = data.hireFullName}
 
   ngOnInit() {
     this.buildItemForm();
@@ -45,6 +47,7 @@ export class HireAdvisorComponent implements OnInit, AfterViewInit  {
     this.selectedProfileId = '';   
     if(this.ids){     
       this.checkAdvisorView();
+      this.defaultPermission =false;
     }   
   }
 
