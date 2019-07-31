@@ -87,10 +87,7 @@
                 align-items: center;
                 font-family: $font--lato--bold;
                 font-size: 16px;
-                border: 1px solid #dadce0;
                 cursor: pointer;
-                border-right: none;
-                border-bottom: none;
                 color: $clr--1;
 
                 .mat-icon{
@@ -102,9 +99,6 @@
                 &.no{
                     background-color: $clr--1;
                     color: $clr--2;
-                    border: 1px solid #dadce0;
-                    border-left: none;
-                    border-bottom: none;
                 }                   
             }
 
