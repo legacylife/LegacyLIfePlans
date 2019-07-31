@@ -39,7 +39,7 @@
               <div class="cursor-pointer">
                 <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
                 <mat-menu #beforeMenu="matMenu" xPosition="before" class="llp--menu--droupdown">
-                  <button mat-menu-item *ngIf="peoples.type === 'advisor'" (click)="openHireAdvisorModal(peoples?.advisorId._id,'update',true)">
+                  <button mat-menu-item *ngIf="peoples.type === 'advisor'" (click)="openHireAdvisorModal(peoples?.advisorId._id,'update',true,peoples.advisorId.firstName+' '+peoples.advisorId.lastName)">
                     <span>Manage</span>
                   </button>
                   <button mat-menu-item *ngIf="peoples.type === 'trustee'" (click)="openAddTrusteeModal(peoples?._id,true)">
