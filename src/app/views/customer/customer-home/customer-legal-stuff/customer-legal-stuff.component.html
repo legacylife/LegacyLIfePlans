@@ -41,7 +41,7 @@
           <mat-card-content class="appointees--wrapper" *ngIf="showEstateListing">
             <div class="cust--user--details mt-1" *ngFor="let legal of estateList; let i = index"
               [routerLink]="[dynamicRoute+'legal-detail-view', legal._id]">
-              <div class="name--letters">{{getType(legal?.typeOfDocument,legal?.subFolderName).charAt(0)}}</div>
+              <div class="name--letters">{{getType(legal?.typeOfDocument,legal?.subFolderName).charAt(0)+getType(legal?.typeOfDocument,legal?.subFolderName).charAt(1)}}</div>
               <div class="user--name">
                 <h5>{{getType(legal?.typeOfDocument,legal?.subFolderName)}}</h5>
                 <p class="mb-0">Last modified:
@@ -79,7 +79,7 @@
           <mat-card-content class="appointees--wrapper" *ngIf="showhealthcareListing">
             <div class="cust--user--details mt-1" *ngFor="let legal of healthcareList; let i = index"
               [routerLink]="[dynamicRoute+'legal-detail-view', legal._id]">
-              <div class="name--letters">{{getType(legal?.typeOfDocument,legal.subFolderName).charAt(0)}}</div>
+              <div class="name--letters">{{getType(legal?.typeOfDocument,legal.subFolderName).charAt(0)+getType(legal?.typeOfDocument,legal.subFolderName).charAt(1)}}</div>
               <div class="user--name">
                 <h5>{{getType(legal?.typeOfDocument,legal?.subFolderName)}}</h5>
                 <p class="mb-0">Last modified:
@@ -116,7 +116,7 @@
           <mat-card-content class="appointees--wrapper" *ngIf="showaffairsListing">
             <div class="cust--user--details mt-1" *ngFor="let legal of affairsList; let i = index"
               [routerLink]="[dynamicRoute+'legal-detail-view', legal._id]">
-              <div class="name--letters">{{getType(legal?.typeOfDocument,legal?.subFolderName).charAt(0)}}</div>
+              <div class="name--letters">{{getType(legal?.typeOfDocument,legal?.subFolderName).charAt(0)+getType(legal?.typeOfDocument,legal?.subFolderName).charAt(1)}}</div>
               <div class="user--name">
                 <h5>{{getType(legal.typeOfDocument,legal.subFolderName)}}</h5>
                 <p class="mb-0">Last modified:
