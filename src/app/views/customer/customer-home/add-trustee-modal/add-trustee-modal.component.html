@@ -4,7 +4,7 @@
   </button>
 </div>
 <div class="ll--modal--body per--profile--wrapper p-0">
-  <div class="stepper--wrapper">
+  <div class="stepper--wrapper" id="{{!hideFirstStep ? 'hideStep' : ''}}">
    <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="onChangeFormIndex($event)">
       <mat-step *ngIf="hideFirstStep" [stepControl]="trustFormGroup">     
           <form [formGroup]="trustFormGroup" class="llp-form-wrapper" (ngSubmit)="trustFormGroupSubmit('1',trustFormGroup.value)">      
@@ -127,26 +127,27 @@
             </div>
           </div>
           <div class="mt-1 text-center">
-            <button  mat-raised-button  *ngIf="hideFirstStep"  id="pk12" matStepperPrevious class="llp--back--btn"><mat-icon>arrow_back</mat-icon>Back</button>
-            <button type="button" mat-raised-button matStepperNext  id="pk13" class="llp--primary--btn mb-1">Continue</button>
+            <button  mat-raised-button  *ngIf="hideFirstStep" matStepperPrevious class="llp--back--btn"><mat-icon>arrow_back</mat-icon>Back</button>
+            <button type="button" mat-raised-button matStepperNext *ngIf="hideFirstStep" class="llp--primary--btn mb-1">Continue</button>
+            <button mat-raised-button  *ngIf="!hideFirstStep" class="llp--primary--btn mb-1" [disabled]="secondFormGroup.invalid">Submit</button>
           </div>
         </form>
       </mat-step>
-      <mat-step [stepControl]="thirdFormGroup">
+      <mat-step  *ngIf="hideFirstStep" [stepControl]="thirdFormGroup">
         <form [formGroup]="thirdFormGroup" class="llp-form-wrapper" (ngSubmit)="thirdFormGroupSubmit('3',thirdFormGroup.value)">     
           <h3 class="main--head text-center">{{mainHead}}</h3>
           <p class="sub--head text-center">We're ready to email {{Email_USER}} an invitation asking to be a Trustee to your Legacy.</p>
           <div class="profile--body--scroll">
             <mat-form-field class="full-width mt-1">
-              <textarea (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" rows="7" maxlength="256" matInput placeholder="Add a personal messages"  name="messages" [formControl]="thirdFormGroup.controls['messages']"></textarea>
+              <textarea (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" rows="7" maxlength="256" matInput placeholder="Add a personal message"  name="messages" [formControl]="thirdFormGroup.controls['messages']"></textarea>
               <mat-icon matTooltip="Please enter personal message" matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['messages'].hasError('required') && thirdFormGroup.controls['messages'].touched" class="red--alert">help_outline</mat-icon>
               <div class="char--limit" style="float: right;">{{ 256 - thirdFormGroup.controls['messages'].value?.length }}</div>
             </mat-form-field>
           </div>
           <div class="mt-1 text-center">
-            <button mat-raised-button matStepperPrevious  id="pk1" class="llp--back--btn">
+            <button mat-raised-button matStepperPrevious class="llp--back--btn">
               <mat-icon>arrow_back</mat-icon> Back</button>
-            <button mat-raised-button matStepperNext  value="GFGFG" class="llp--primary--btn mb-1" [disabled]="thirdFormGroup.invalid">Send an Invite</button>
+            <button mat-raised-button matStepperNext  class="llp--primary--btn mb-1" [disabled]="thirdFormGroup.invalid">Send an Invite</button>
           </div>
       </form>
       </mat-step>

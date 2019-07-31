@@ -121,6 +121,22 @@ export class CustomerDashboardDayOneComponent implements OnInit {
     })
   }
 
+  // oldFolderFilesIssue(query = {},) {  
+  //   let Ids = '5d25877d362713b484cfc0f5';//5d25877d362713b484cfc0f5-1563258600717.jpeg
+  //   const req_vars = {
+  //     query: Object.assign({_id: Ids }, query),    
+  //   }   
+  //   this.userapi.apiRequest('post', 'documentsTest/checkFolderS3User', req_vars).subscribe(result => {  
+  //     if (result.status == "error") {
+  //       console.log(result.data)
+  //     } else {
+            
+  //     }
+  //   }, (err) => {
+  //     console.error(err);
+  //   })
+  // }
+
 
   getIconNUrl(logData){
     return this.userapi.getFileIconNUrl(logData);
