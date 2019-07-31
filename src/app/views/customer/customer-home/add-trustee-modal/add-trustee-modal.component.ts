@@ -37,6 +37,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
   mainHead: string;
   row: any = [];
   hideFirstStep : Boolean = true;
+  defaultPermission : Boolean = true;
   constructor(
     private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private stepper: MatStepperModule,
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
@@ -52,8 +53,9 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
       this.selectedProfileId = this.ids;   
       //this.myStepper.selectedIndex = Number(1);
       this.hideFirstStep = false;
-      this.getTrusteeView();      
-    }    
+      this.getTrusteeView();
+      this.defaultPermission = false;   
+    }
   }
 
   buildItemForm() {

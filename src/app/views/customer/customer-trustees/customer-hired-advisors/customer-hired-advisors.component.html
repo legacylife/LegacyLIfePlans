@@ -27,7 +27,7 @@
                   <div class="cursor-pointer">
                       <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
                       <mat-menu #beforeMenu="matMenu" xPosition="before" class="llp--menu--droupdown">
-                        <button mat-menu-item  (click)="openHireAdvisorModal(row.advisorId?._id,'update',true)"><span>Manage</span></button>
+                        <button mat-menu-item  (click)="openHireAdvisorModal(row.advisorId?._id,'update',true,row.advisorId.firstName+' '+row.advisorId.lastName)"><span>Manage</span></button>
                         <button mat-menu-item [routerLink]="['/customer/professionals/prof-details', row.advisorId?._id]"><span>View</span></button>
                         <button mat-menu-item *ngIf="row?.status==='Active'" (click)="removeTrusteeAdvisor(row.advisorId?._id)"><span>Remove as a Advisor</span></button>
                         <!-- <button mat-menu-item><span>Resend Invitation</span></button> -->
@@ -45,7 +45,7 @@
                 <mat-icon>history</mat-icon>
                 <p class="pending">Request Pending...</p>
               </div>             
-              <div class="ad--strip">
+              <div class="ad--strip clr--black">
                 Advisor
               </div>
               
