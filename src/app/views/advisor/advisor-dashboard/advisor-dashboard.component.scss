@@ -9,6 +9,12 @@
             color: #666666;
             font-size: 14px;
             margin: 0 0 20px 0;
+            &.green{
+                color: green;
+            }
+            &.red{
+                color: #c72128;
+            }
         }
         .red--box{
             border: solid 1px #c72128;
