@@ -620,7 +620,7 @@
                   <small *ngIf="advisorDocumentsMissing" class="form-error-msg">{{invalidMessage}}</small>
                 </div>
 
-              <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderCopy.getNotUploadedItems().length || uploader.getNotUploadedItems().length">
+              <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
                 <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
                 <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
               </div>
