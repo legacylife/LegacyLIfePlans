@@ -48,7 +48,8 @@ export class BusinessInfoComponent implements OnInit {
   activeLicenseList: string[] = activeLicense
   industryDomainList: string[] = industryDomain.sort()
   businessTypeList: string[] = businessType.sort()
-  yearsOfServiceList: string[] = yearsOfService
+  yearsOfServiceList: string[] = yearsOfService;
+  currentProgessinPercent:number = 0;
   fileErrors:any;
   constructor(private router: Router, private activeRoute: ActivatedRoute, private stepper: MatStepperModule, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, 
     private loader: AppLoaderService,private confirmService: AppConfirmService) {}//,private http: Http, private el: ElementRef
@@ -256,8 +257,6 @@ export class BusinessInfoComponent implements OnInit {
     var cnt = 0;
     this.fileErrors = [];
     this.uploader.queue.forEach((fileoOb) => {
-      console.log("fileoOb",fileoOb)
-     
       let filename = fileoOb.file.name;
       var extension = filename.substring(filename.lastIndexOf('.') + 1);
       var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
@@ -277,9 +276,17 @@ export class BusinessInfoComponent implements OnInit {
     if(this.uploader.getNotUploadedItems().length){
         this.uploader.uploadAll(); 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => { 
+        this.updateProgressBar();
         this.getProfileField();
       };
     }
+  }
+
+  updateProgressBar(){
+    let totalLength = this.uploader.queue.length;
+    let remainingLength =  this.uploader.getNotUploadedItems().length;
+    this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+    this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
   }
 
    isExtension(ext, extnArray) {

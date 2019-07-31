@@ -33,7 +33,7 @@ export class ReferAndEarnModalComponent implements OnInit {
   fileErrors: any;
   docPath: string;
   documentsList: any;
-
+  currentProgessinPercent:number = 0;
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
     private loader: AppLoaderService, private confirmService: AppConfirmService, @Inject(MAT_DIALOG_DATA) public data: any) {
   }
@@ -164,9 +164,17 @@ export class ReferAndEarnModalComponent implements OnInit {
         this.uploader.uploadItem(fileoOb);
       });
       this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+        this.updateProgressBar();
         this.getInviteDocuments();
       };
     }
+  }
+
+  updateProgressBar(){
+    let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
+    let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
+    this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+    this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
   }
 
   getInviteDocuments = (query = {}, search = false, uploadRemained = true) => {
@@ -180,8 +188,6 @@ export class ReferAndEarnModalComponent implements OnInit {
         if (uploadRemained) {
           this.uploadRemainingFiles()
         }
-        this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
-        this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}` });
         this.documentsList = result.data;
       }
     }, (err) => {
@@ -197,6 +203,7 @@ export class ReferAndEarnModalComponent implements OnInit {
       this.uploaderCopy.uploadItem(fileoOb);
     });
     this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.updateProgressBar();
       this.getInviteDocuments({}, false, false);
     };
   }
