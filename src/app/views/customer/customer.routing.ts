@@ -62,20 +62,20 @@ import { ElectronicMediaDetailsComponent } from './customer-home/passwords-digit
 import { TodosListingComponent } from '../todos-listing/todos-listing.component';
 import { ProUserAuthGuard as ProUserGuard } from '../../shared/services/auth/prouserauth.guard';
 import { ErrorComponent } from './../error/error.component';
-import { LandingLayoutComponent } from '../../shared/components/layouts/landing-layout/landing-layout.component';
+//import { LandingLayoutComponent } from '../../shared/components/layouts/landing-layout/landing-layout.component';
 console.log("cutostomer routing...")
 export const CustomerRoutes: Routes = [
-  {
-    path: '',
-    component: LandingLayoutComponent,
-    children: [
-      {
-        path: '',
-        loadChildren: './views/landing/landing.module#LandingModule',
-        data: { title: 'LLP'}
-      }
-    ]
-  },
+  // {
+  //   path: '',
+  //   component: LandingLayoutComponent,
+  //   children: [
+  //     {
+  //       path: '',
+  //       loadChildren: './views/landing/landing.module#LandingModule',
+  //       data: { title: 'LLP'}
+  //     }
+  //   ]
+  // },
   {
     path: 'signup',
     component: AuthLayoutComponent,
