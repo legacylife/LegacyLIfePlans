@@ -47,113 +47,164 @@ export class SubscriptionService {
    * Check the user subscription details
    */
   checkSubscription = async (callback) => {
+    this.userId = localStorage.getItem("endUserId");
+    this.usertype = localStorage.getItem("endUserType");
+    const req_vars = {
+      query: Object.assign({ _id: this.userId, userType: this.usertype }, {})
+    }
     
-    let diff: any
-    let expireDate: any
-    let subscriptionDate      = localStorage.getItem("endUserSubscriptionStartDate")
-    this.userCreateOn         = moment( localStorage.getItem("endUserCreatedOn") )
-    this.isSubscribedBefore   = ( subscriptionDate !== 'undefined' && subscriptionDate !== null && subscriptionDate !== "") ? true : false
-    let isReferAndEarn        = localStorage.getItem("endisReferAndEarn") && localStorage.getItem("endisReferAndEarn") == 'Yes' ? true : false
-    if( !this.isSubscribedBefore ) {
-      this.isAccountFree    = true
-      this.isSubscribePlan  = false
-      diff                  = this.getDateDiff( this.userCreateOn.toDate(), this.today )
-
-      if( diff <= 30 ) {
-        //check if the advisor participate into refer and earn program and he acheived the monthly invitation sent target
-        if( isReferAndEarn && this.usertype == 'advisor') {
-          let extendedDays = await this.getInviteMembersCount()
-          expireDate       = this.userCreateOn.add(extendedDays,"days")
+    this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe( async (result) => {
+      let userData = result.data.userProfile
+      let defaultSpace = 1, addOnSpace = 0;
+      let subscriptionDetails = userData.subscriptionDetails ? userData.subscriptionDetails : null;
+      let subscriptionStartDate = "",
+      subscriptionEndDate = "",
+      subscriptionStatus = "",
+      autoRenewal = "",
+      addOnDetails = userData.addOnDetails ? userData.addOnDetails : null,
+      addOnGiven = 'no',
+      isReferAndEarnStatus = userData.IamIntrested && userData.IamIntrested == 'Yes' ? 'Yes' :  'No',
+      
+      totalUsedSpace = userData.s3Size && userData.s3Size != 0 ? userData.s3Size : 0;
+      
+      if( subscriptionDetails != null && subscriptionDetails.length > 0 ) {
+        isReferAndEarnStatus = 'No'
+        subscriptionStartDate = subscriptionDetails[(subscriptionDetails.length-1)]['startDate']
+        subscriptionEndDate = subscriptionDetails[(subscriptionDetails.length-1)]['endDate']
+        subscriptionStatus = subscriptionDetails[(subscriptionDetails.length-1)]['status']
+        defaultSpace = subscriptionDetails[(subscriptionDetails.length-1)]['defaultSpace']
+        autoRenewal = subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] ? subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] : false
+        //if subscription ends do not sends addon details
+        if( addOnDetails != null && addOnDetails.length > 0 && ( new Date(subscriptionEndDate) > new Date()) ) {
+          addOnGiven = addOnDetails[(addOnDetails.length-1)]['status'] && addOnDetails[(addOnDetails.length-1)]['status'] == 'paid' ? 'yes' : 'no'
+          addOnSpace = addOnGiven == 'yes' ? addOnDetails[(addOnDetails.length-1)]['spaceAlloted'] : 0
         }
-        else{
-          expireDate            = this.userCreateOn.add(30,"days")
-        }
-        this.isPremiumExpired = false
-
-        if(this.usertype == 'advisor') {
-          this.planName         = 'Standard'
-        }
-        else{
-          this.planName         = 'Legacy Life'
-        }
-        localStorage.setItem('endUserProSubscription', 'yes');
-        localStorage.setItem('endUserProFreeSubscription', 'yes');
       }
-      else {
-        if( this.usertype == 'customer' ) {
-          expireDate  = this.userCreateOn.add(60,"days")
-          localStorage.setItem('endUserProFreeSubscription', 'yes');
-          localStorage.setItem('endUserProSubscription', 'no');
-        }
-        else{
-          if( isReferAndEarn ) {
+      /**
+       * Reset all locastorage variables to check wheater the subscription ends or not
+       */
+      localStorage.setItem("endUserCreatedOn", userData.createdOn)
+      localStorage.setItem("endUserSubscriptionStartDate", subscriptionStartDate)
+      localStorage.setItem("endUserSubscriptionEndDate", subscriptionEndDate)
+      localStorage.setItem("endUserSubscriptionStatus", subscriptionStatus)
+      localStorage.setItem("endUserAutoRenewalStatus", autoRenewal)
+      localStorage.setItem("endUserProSubscription", 'no')
+      localStorage.setItem("endUserSubscriptionAddon", addOnGiven)
+      localStorage.setItem("endisReferAndEarn", isReferAndEarnStatus)
+
+      /**
+       * Setting all variables for displaying the subscription details on account setting page
+       */
+      let diff: any
+      let expireDate: any
+      let subscriptionDate      = localStorage.getItem("endUserSubscriptionStartDate")
+      this.userCreateOn         = moment( localStorage.getItem("endUserCreatedOn") )
+      this.isSubscribedBefore   = ( subscriptionDate !== 'undefined' && subscriptionDate !== null && subscriptionDate !== "") ? true : false
+      let isReferAndEarn        = localStorage.getItem("endisReferAndEarn") && localStorage.getItem("endisReferAndEarn") == 'Yes' ? true : false
+      if( !this.isSubscribedBefore ) {
+        this.isAccountFree    = true
+        this.isSubscribePlan  = false
+        diff                  = this.getDateDiff( this.userCreateOn.toDate(), this.today )
+
+        if( diff <= 30 ) {
+          //check if the advisor participate into refer and earn program and he acheived the monthly invitation sent target
+          if( isReferAndEarn && this.usertype == 'advisor') {
             let extendedDays = await this.getInviteMembersCount()
             expireDate       = this.userCreateOn.add(extendedDays,"days")
-            localStorage.setItem('endUserProFreeSubscription', 'yes');
-            localStorage.setItem('endUserProSubscription', 'yes');
           }
           else{
-            expireDate  = this.userCreateOn.add(30,"days")
-            localStorage.setItem('endUserProFreeSubscription', 'no');
-            localStorage.setItem('endUserProSubscription', 'no');
+            expireDate            = this.userCreateOn.add(30,"days")
           }
-        }
-        this.planName         = 'Free'
-        this.isPremiumExpired = true
-      }
-      this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
-    }
-    else if( this.isSubscribedBefore ) {
-      this.isSubscriptionCanceled = ( localStorage.getItem("endUserSubscriptionStatus") && localStorage.getItem("endUserSubscriptionStatus") == 'canceled' ) ? true : false
-      this.autoRenewalFlag = ( localStorage.getItem("endUserAutoRenewalStatus") && localStorage.getItem("endUserAutoRenewalStatus") == 'true' ) ? true : false
-      this.autoRenewalVal = this.autoRenewalFlag
-      this.autoRenewalStatus = this.autoRenewalVal ? 'on' : 'off'
-      this.userSubscriptionDate = moment( localStorage.getItem("endUserSubscriptionEndDate") )
-      this.isAccountFree    = false
-      diff                  = this.getDateDiff( this.today, this.userSubscriptionDate.toDate() )
-      //console.log("diffdiffdiff",diff)
-      if( diff >= 0 ) {
-        expireDate            = this.userSubscriptionDate
-        this.isPremiumExpired = false
-        this.isSubscribePlan  = true
-        if(this.usertype == 'advisor') {
-          this.planName         = 'Standard'
-        }
-        else{
-          this.planName         = 'Legacy Life'
-        }
-        localStorage.setItem('endUserProFreeSubscription', 'yes');
-        localStorage.setItem('endUserProSubscription', 'yes');
-      }
-      else {
-        if( this.usertype == 'customer' ) {
-          expireDate          = this.userSubscriptionDate.add(30,"days")
+          this.isPremiumExpired = false
+
+          if(this.usertype == 'advisor') {
+            this.planName         = 'Standard'
+          }
+          else{
+            this.planName         = 'Legacy Life'
+          }
+          localStorage.setItem('endUserProSubscription', 'yes');
           localStorage.setItem('endUserProFreeSubscription', 'yes');
         }
-        else{
-          expireDate            = this.userSubscriptionDate
-          localStorage.setItem('endUserProFreeSubscription', 'no');
+        else {
+          if( this.usertype == 'customer' ) {
+            expireDate  = this.userCreateOn.add(60,"days")
+            localStorage.setItem('endUserProFreeSubscription', 'yes');
+            localStorage.setItem('endUserProSubscription', 'no');
+          }
+          else{
+            if( isReferAndEarn ) {
+              let extendedDays = await this.getInviteMembersCount()
+              expireDate       = this.userCreateOn.add(extendedDays,"days")
+              localStorage.setItem('endUserProFreeSubscription', 'yes');
+              localStorage.setItem('endUserProSubscription', 'yes');
+            }
+            else{
+              expireDate  = this.userCreateOn.add(30,"days")
+              localStorage.setItem('endUserProFreeSubscription', 'no');
+              localStorage.setItem('endUserProSubscription', 'no');
+            }
+          }
+          this.planName         = 'Free'
+          this.isPremiumExpired = true
         }
-        localStorage.setItem('endUserProSubscription', 'no');
-        this.isPremiumExpired = true
-        this.isSubscribePlan  = false
-        this.planName         = 'Free'
+        this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
       }
-      this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
-    }
-    let returnArr = { userCreateOn:  this.userCreateOn,
-                      isSubscribedBefore: this.isSubscribedBefore,
-                      isSubscriptionCanceled : this.isSubscriptionCanceled,
-                      autoRenewalFlag : this.autoRenewalFlag,
-                      autoRenewalVal : this.autoRenewalVal,
-                      autoRenewalStatus : this.autoRenewalStatus,
-                      isAccountFree: this.isAccountFree,
-                      isPremiumExpired : this.isPremiumExpired,
-                      isSubscribePlan : this.isSubscribePlan,
-                      planName : this.planName,
-                      subscriptionExpireDate : this.subscriptionExpireDate
-                    }
-    callback(returnArr)
+      else if( this.isSubscribedBefore ) {
+        this.isSubscriptionCanceled = ( localStorage.getItem("endUserSubscriptionStatus") && localStorage.getItem("endUserSubscriptionStatus") == 'canceled' ) ? true : false
+        this.autoRenewalFlag = ( localStorage.getItem("endUserAutoRenewalStatus") && localStorage.getItem("endUserAutoRenewalStatus") == 'true' ) ? true : false
+        this.autoRenewalVal = this.autoRenewalFlag
+        this.autoRenewalStatus = this.autoRenewalVal ? 'on' : 'off'
+        this.userSubscriptionDate = moment( localStorage.getItem("endUserSubscriptionEndDate") )
+        this.isAccountFree    = false
+        diff                  = this.getDateDiff( this.today, this.userSubscriptionDate.toDate() )
+        //console.log("diffdiffdiff",diff)
+        if( diff >= 0 ) {
+          expireDate            = this.userSubscriptionDate
+          this.isPremiumExpired = false
+          this.isSubscribePlan  = true
+          if(this.usertype == 'advisor') {
+            this.planName         = 'Standard'
+          }
+          else{
+            this.planName         = 'Legacy Life'
+          }
+          localStorage.setItem('endUserProFreeSubscription', 'yes');
+          localStorage.setItem('endUserProSubscription', 'yes');
+        }
+        else {
+          if( this.usertype == 'customer' ) {
+            expireDate          = this.userSubscriptionDate.add(30,"days")
+            localStorage.setItem('endUserProFreeSubscription', 'yes');
+          }
+          else{
+            expireDate            = this.userSubscriptionDate
+            localStorage.setItem('endUserProFreeSubscription', 'no');
+          }
+          localStorage.setItem('endUserProSubscription', 'no');
+          this.isPremiumExpired = true
+          this.isSubscribePlan  = false
+          this.planName         = 'Free'
+        }
+        this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
+      }
+      let returnArr = { userCreateOn:  this.userCreateOn,
+                        isSubscribedBefore: this.isSubscribedBefore,
+                        isSubscriptionCanceled : this.isSubscriptionCanceled,
+                        autoRenewalFlag : this.autoRenewalFlag,
+                        autoRenewalVal : this.autoRenewalVal,
+                        autoRenewalStatus : this.autoRenewalStatus,
+                        isAccountFree: this.isAccountFree,
+                        isPremiumExpired : this.isPremiumExpired,
+                        isSubscribePlan : this.isSubscribePlan,
+                        planName : this.planName,
+                        subscriptionExpireDate : this.subscriptionExpireDate,
+                        totalUsedSpace: totalUsedSpace,
+                        defaultSpace: Number( defaultSpace ),
+                        addOnSpace: Number( addOnSpace )
+                      }
+      callback(returnArr)
+    })
   }
 
   async getInviteMembersCount() {
@@ -186,25 +237,47 @@ export class SubscriptionService {
     }) */
   }
 
-  async updateSubscriptionKeys () {
+  /* async updateSubscriptionKeys () {
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: this.usertype }, {})
     }
     
     await this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe(result => {
       let userData = result.data.userProfile
+
+      let subscriptionDetails = userData.subscriptionDetails ? userData.subscriptionDetails : null
+      let subscriptionStartDate = "",
+      subscriptionEndDate = "",
+      subscriptionStatus = "",
+      autoRenewal = "",
+      addOnDetails = userData.addOnDetails ? userData.addOnDetails : null,
+      addOnGiven = 'no',
+      isReferAndEarn = userData.IamIntrested && userData.IamIntrested == 'Yes' ? 'Yes' :  'No'
+
+      if( subscriptionDetails != null && subscriptionDetails.length >0 ) {
+        isReferAndEarn = 'No'
+        subscriptionStartDate = subscriptionDetails[(subscriptionDetails.length-1)]['startDate']
+        subscriptionEndDate = subscriptionDetails[(subscriptionDetails.length-1)]['endDate']
+        subscriptionStatus = subscriptionDetails[(subscriptionDetails.length-1)]['status']
+        autoRenewal = subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] ? subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] : false
+        //if subscription ends do not sends addon details
+        if( addOnDetails != null && addOnDetails.length > 0 && ( new Date(subscriptionEndDate) < new Date()) ) {
+          addOnGiven = addOnDetails[(addOnDetails.length-1)]['status'] && addOnDetails[(addOnDetails.length-1)]['status'] == 'paid' ? 'yes' : 'no'
+        }
+      }
+
       localStorage.setItem("endUserCreatedOn", userData.createdOn)
-      localStorage.setItem("endUserSubscriptionStartDate", userData.subscriptionStartDate)
-      localStorage.setItem("endUserSubscriptionEndDate", userData.subscriptionEndDate)
-      localStorage.setItem("endUserSubscriptionStatus", userData.subscriptionStatus)
-      localStorage.setItem("endUserAutoRenewalStatus", userData.autoRenewalStatus)
+      localStorage.setItem("endUserSubscriptionStartDate", subscriptionStartDate)
+      localStorage.setItem("endUserSubscriptionEndDate", subscriptionEndDate)
+      localStorage.setItem("endUserSubscriptionStatus", subscriptionStatus)
+      localStorage.setItem("endUserAutoRenewalStatus", autoRenewal)
       localStorage.setItem("endUserProSubscription", 'no')
-      localStorage.setItem("endUserSubscriptionAddon", userData.addOnGiven)
-      localStorage.setItem("endisReferAndEarn", userData.isReferAndEarn)
-      
+      localStorage.setItem("endUserSubscriptionAddon", addOnGiven)
+      localStorage.setItem("endisReferAndEarn", isReferAndEarn)
+      console.log("hiiiiiiiiiiiiiiiiiiiiiiii")
       this.checkSubscription( ( returnArr )=> {})
     })
-  }
+  } */
 
   checkSubscriptionAdminPanel = (userDetails,callback) => {
     let returnArr = {}
