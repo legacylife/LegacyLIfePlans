@@ -55,7 +55,8 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   subscriptionExpireDate: string = ''
   defaultSpace:number = 0
   spaceDimension:string = 'GB'
-  addOnSpace:string = ''
+  usedSpaceDimension:string = 'MB'
+  addOnSpace:number = 0
   addOnAmountFor:string = ''
   addOnAmount:number = 0
   totalSpaceAlloted: number = 1
@@ -140,17 +141,33 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       this.isSubscribePlan = returnArr.isSubscribePlan
       this.planName = returnArr.planName
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
+      this.defaultSpace = returnArr.defaultSpace
+      this.addOnSpace = returnArr.addOnSpace
       console.log("isAccountFree",this.isAccountFree,"isSubscribePlan",this.isSubscribePlan,"isPremiumExpired",this.isPremiumExpired)
-      this.totalUsedSpace = 0.5;
-      if( this.isAccountFree && !this.isPremiumExpired ) {
-        this.totalSpaceAlloted = 7
-        this.spaceProgressBar = (this.totalUsedSpace * 100 / this.totalSpaceAlloted).toFixed(2)
+      
+      let devideAmount = 1048576
+      if( ( Number(returnArr.totalUsedSpace) >= 1073741824 ) ) { //If used space is greater or equal to 1 GB
+        this.usedSpaceDimension = 'GB'
+        devideAmount = 1073741824
       }
+      else {//If used space is less than 1 GB
+        this.usedSpaceDimension = 'MB'
+        devideAmount = 1048576
+      }
+      this.totalUsedSpace = ( Number(returnArr.totalUsedSpace) / devideAmount ).toFixed(2)
+      this.totalSpaceAlloted = ( this.defaultSpace + this.addOnSpace )
+
+      if( this.isAccountFree && !this.isPremiumExpired ) {
+        this.spaceProgressBar = (this.totalUsedSpace * 100 / this.totalSpaceAlloted).toFixed(2)
+        if( this.usedSpaceDimension == 'MB' ) {
+          this.spaceProgressBar = (this.totalUsedSpace * 100 / (this.totalSpaceAlloted*1024) ).toFixed(2)
+        }
+      }
+
       this.subscriptionservice.getPlanDetails( ( planData )=> {
-        //console.log("planData",Object.keys(planData))
         if( planData && (Object.keys(planData).length !== 0) ) {
-          this.defaultSpace = planData.metadata.defaultSpace
-          this.addOnSpace = planData.metadata.addOnSpace
+          //this.defaultSpace = planData.metadata.defaultSpace
+          //this.addOnSpace = planData.metadata.addOnSpace
           this.spaceDimension = planData.metadata.spaceDimension        
           let subscriptionDate = moment( localStorage.getItem("endUserSubscriptionEndDate") )
           let diff = Math.round(this.subscriptionservice.getDateDiff( this.today, subscriptionDate.toDate() ))
@@ -162,27 +179,32 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
 
           this.isGetAddOn = localStorage.getItem('endUserSubscriptionAddon') && localStorage.getItem('endUserSubscriptionAddon') == 'yes' ? true : false
           
-          //console.log("isGetAddOn",this.isGetAddOn,"isAccountFree",this.isAccountFree,"isSubscribePlan",this.isSubscribePlan,"isPremiumExpired",this.isPremiumExpired)
           let allotedSpace:any = 1
           if( this.isAccountFree && !this.isPremiumExpired ) {
-            allotedSpace = this.defaultSpace
+            allotedSpace = returnArr.defaultSpace
           }
           else if( this.isSubscribePlan && !this.isPremiumExpired ) {
-            allotedSpace = this.defaultSpace
+            allotedSpace = returnArr.defaultSpace
             if( this.isGetAddOn ) {
-              allotedSpace = Number(this.addOnSpace) + Number(this.defaultSpace)
+              allotedSpace = this.defaultSpace + this.addOnSpace
             }
           }
           this.totalSpaceAlloted = allotedSpace
           this.spaceProgressBar = (this.totalUsedSpace * 100 / this.totalSpaceAlloted).toFixed(2)
+          if( this.usedSpaceDimension == 'MB' ) {
+            this.spaceProgressBar = (this.totalUsedSpace * 100 / (this.totalSpaceAlloted*1024) ).toFixed(2)
+          }
         }
         else{
           if( this.isAccountFree && !this.isPremiumExpired ) {
-            this.totalSpaceAlloted = 7
+            this.totalSpaceAlloted = this.defaultSpace
             this.spaceProgressBar = (this.totalUsedSpace * 100 / this.totalSpaceAlloted).toFixed(2)
+            if( this.usedSpaceDimension == 'MB' ) {
+              this.spaceProgressBar = (this.totalUsedSpace * 100 / (this.totalSpaceAlloted*1024) ).toFixed(2)
+            }
           }
         }
-        //console.log("totalUsedSpace",this.totalUsedSpace,"totalSpaceAlloted",this.totalSpaceAlloted,"spaceProgressBar",this.spaceProgressBar)
+        console.log("totalUsedSpace",this.totalUsedSpace,"totalSpaceAlloted",this.totalSpaceAlloted,"spaceProgressBar",this.spaceProgressBar)
       })
     })
     this.spaceProgressBar = (this.totalUsedSpace * 100 / this.totalSpaceAlloted).toFixed(2)

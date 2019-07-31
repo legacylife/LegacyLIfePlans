@@ -69,21 +69,21 @@ export class SigninComponent implements OnInit {
         localStorage.setItem("endUserSubscriptionAddon", userData.addOnGiven);
         localStorage.setItem("endisReferAndEarn", userData.isReferAndEarn);
 
-        this.subscriptionservice.checkSubscription( ( returnArr )=> {})
-
         if (userData.profilePicture) {
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + userData.profilePicture;
           localStorage.setItem('endUserProfilePicture', this.profilePicture)
           this.picService.setProfilePic = this.profilePicture;
         }
 
-
+        this.subscriptionservice.checkSubscription( ( returnArr )=> {})
         //this.snack.open(result.data.message, 'OK', { duration: 4000 })
         if(userData.userType=='customer'){
           this.router.navigate(['/', 'customer', 'dashboard']);
         }else{
           this.router.navigate(['/', 'advisor', 'dashboard'])
         }  
+
+        
       } else {
        // this.llpCustsigninForm.controls['username'].enable();
         var emails = this.llpCustsigninForm.controls['username'].value
