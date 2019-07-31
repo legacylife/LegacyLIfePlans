@@ -17,12 +17,10 @@ const URL = serverUrl + '/api/documents/petsdocuments';
   styleUrls: ['./pets-modal.component.scss']
 })
 export class PetsModalComponent implements OnInit {
-  //selected = 'option1';
   userId = localStorage.getItem("endUserId");
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public hasBaseDropZoneOver: boolean = false;
-
   invalidMessage: string;
   PetForm: FormGroup;
   documentTypeList: any[] = documentTypes;
@@ -38,8 +36,7 @@ export class PetsModalComponent implements OnInit {
   currentProgessinPercent: number = 0;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
-    private userapi: UserAPIService  ) 
-  { }
+    private userapi: UserAPIService) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -71,7 +68,7 @@ export class PetsModalComponent implements OnInit {
     this.getPetsView();
   }
 
-    PetFormSubmit(profileInData = null) {
+  PetFormSubmit(profileInData = null) {
       var query = {};
       var proquery = {};     
       
@@ -228,7 +225,7 @@ export class PetsModalComponent implements OnInit {
       };
   }
 
-    getPetsDocuments = (query = {}, search = false, uploadRemained = true) => {     
+  getPetsDocuments = (query = {}, search = false, uploadRemained = true) => {     
       let profileIds = this.PetForm.controls['profileId'].value;
       let req_vars = {
         query: Object.assign({customerId: this.userId,status:"Pending" }),
