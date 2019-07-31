@@ -11,6 +11,7 @@ import { EstateTypeOfDocument,HealthcareTypeOfDocument,PersonalAffairsTypeOfDocu
 import { FileUploader } from 'ng2-file-upload';
 import { cloneDeep } from 'lodash'
 import { serverUrl, s3Details } from '../../../../config';
+import { NumberValueAccessor } from '@angular/forms/src/directives';
 const URL = serverUrl + '/api/documents/legalStuff';
 @Component({
   selector: 'app-legal-stuff-modal',
@@ -37,6 +38,7 @@ export class legalStuffModalComponent implements OnInit {
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';
+  currentProgessinPercent:Number = 0;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService ,@Inject(MAT_DIALOG_DATA) public data: any ) { this.folderName = data.FolderName;this.newName = data.newName;}
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
@@ -192,9 +194,17 @@ export class legalStuffModalComponent implements OnInit {
       });
 
       this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+        this.updateProgressBar();
         this.getLegalDocuments();
       };
     }
+  }
+
+  updateProgressBar(){
+    let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
+    let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
+    this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+    this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
   }
 
   uploadRemainingFiles(profileId) {
@@ -206,8 +216,8 @@ export class legalStuffModalComponent implements OnInit {
     });
 
     this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.getLegalDocuments({}, false, false);
-    
+      this.updateProgressBar();
+      this.getLegalDocuments({}, false, false);    
     };
   }
 
@@ -231,8 +241,6 @@ export class legalStuffModalComponent implements OnInit {
         if(uploadRemained) {
           this.uploadRemainingFiles(result.data._id)
         }
-        this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-        this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
         this.subFolderDocumentsList = result.data.subFolderDocuments;        
         if(result.data.subFolderDocuments.length>0){
           this.LegalForm.controls['subFolderDocuments_temp'].setValue('1');

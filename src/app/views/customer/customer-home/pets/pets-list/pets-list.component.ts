@@ -53,7 +53,6 @@ export class PetsListComponent implements OnInit {
   @HostListener('document:click', ['$event']) clickedOutside(event){
     if(event.srcElement.outerText=='Send an Invite'){
       setTimeout(()=>{
-        console.log("Pets here !!! ")
         this.getPetsList();    
       },2000);     
     } 

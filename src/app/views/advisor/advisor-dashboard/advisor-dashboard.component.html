@@ -16,27 +16,38 @@
           </div>
         </mat-card-content>
         <mat-card-content class="recent--update--section" *ngIf="recentLogs">
-          <mat-nav-list class="ad--nav--list"  *ngFor="let logData of recentActivityLogList; let i = index">
+          <mat-nav-list class="ad--nav--list" *ngFor="let logData of recentActivityLogList; let i = index">
             <mat-list-item>
               <div mat-list-avatar class="profile--pic">
                 <img alt="" src="{{logData?.userInfo && logData?.userInfo[0].profilePicture ? profileFilePath + logData?.userInfo[0].profilePicture : 'assets/images/arkenea/default.jpg'}}">
               </div>
               <div mat-line>
                 <p class="what--happened">
-                  <span class="who--does"> {{logData.customerFirstName +' ' + logData.customerLastName}} </span> {{logData.activityMessage}}</p>
+                  <span class="who--does"> {{logData.customerFirstName +' ' + logData.customerLastName}} </span> {{logData.activityMessage}}
+                </p>
+                <p class="mb-0 green" *ngIf="logData?.sectionName == 'hired' && logData?.actionTaken == 'Active'">
+                  Request has confirmed
+                </p>
+                <p class="mb-0" *ngIf="logData?.sectionName == 'hired' && logData?.actionTaken == 'Pending'">
+                  Request is pending for confirmation
+                </p>
+                <p class="mb-0 red" *ngIf="logData?.sectionName == 'hired' && logData?.actionTaken == 'Rejected'">
+                  Request has rejected
+                </p>
+
               </div>
               <p mat-line class="when">
                 {{row?.modifiedOn | date: 'MMM dd, yyyy'}}
               </p>
               <!-- *ngIf="logData.sectionName == 'hired'" -->
-              <button mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu">  
+              <button mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
             </mat-list-item>
-            <mat-menu #menu="matMenu"  xPosition="before">
-              <button mat-menu-item  *ngIf="logData.actionTaken == 'Pending'" (click)="hireAdvisor(logData?.hiredAdvisorRefId,'confirmHire','Pending',logData?._id)">
+            <mat-menu #menu="matMenu" xPosition="before">
+              <button mat-menu-item *ngIf="logData.actionTaken == 'Pending'" (click)="hireAdvisor(logData?.hiredAdvisorRefId,'confirmHire','Pending',logData?._id)">
                 <mat-icon>check</mat-icon> Confirm hiring</button>
-              <button mat-menu-item class="reject"  *ngIf="logData.actionTaken == 'Pending'" (click)="hireAdvisor(logData?.hiredAdvisorRefId,'rejectHire','Pending',logData?._id)">
+              <button mat-menu-item class="reject" *ngIf="logData.actionTaken == 'Pending'" (click)="hireAdvisor(logData?.hiredAdvisorRefId,'rejectHire','Pending',logData?._id)">
                 <mat-icon>cancel</mat-icon> Reject hiring</button>
               <button mat-menu-item [routerLink]="['/advisor/leads-details', logData?.customerId]">
                 <mat-icon>assignment</mat-icon> View profile</button>
@@ -51,13 +62,15 @@
           <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
             <div class="right--boxes">
 
-              <mat-card class="p-0" *ngIf="invitedMembersCount<invitedMembersCountDefault">
+              <mat-card class="p-0" *ngIf="invitedMembersCount < invitedMembersCountDefault">
                 <mat-card-title class="">
                   <div class="card-title-text">Invitation Status</div>
                   <mat-divider></mat-divider>
-                </mat-card-title> 
+                </mat-card-title>
                 <mat-card-content class="invite--body--section">
-                  <h4 class="count">{{invitedMembersCount}}<span>/ {{invitedMembersCountDefault}}</span></h4>
+                  <h4 class="count">{{invitedMembersCount}}
+                    <span>/ {{invitedMembersCountDefault}}</span>
+                  </h4>
                   <p class="daysgo">{{remainingDays}} days to go</p>
                   <p class="invites">Invites sent in this month</p>
                   <button mat-raised-button class="llp--primary--btn" (click)="openInviteModal({})">Invite Now</button>
@@ -71,10 +84,9 @@
                       <span>Congratulations!</span>
                     </header>
                     <p class="warn">
-                      Your <span>Free Trial</span>
-                      period has been
-                      extended for
-                      30 days!</p>                      
+                      Your
+                      <span>Free Trial</span>
+                      period has been extended for 30 days!</p>
                   </div>
                   <div class="free--access">
                     Free access valid till {{remainingDays}} days
@@ -86,21 +98,23 @@
             </div>
           </div>
           <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
-              <div class="right--boxes mr-0">
-                  <mat-card class="p-0">
-                    <mat-card-title class="">
-                      <div class="card-title-text">Monthly Leads</div>
-                      <mat-divider></mat-divider>
-                    </mat-card-title>
-                    <mat-card-content class="invite--body--section">
-                      <h4 class="count">{{LeadsCount}}<span></span></h4>
-                      <div class="adjust">
-                        <!--p class="invites">0 users have shown  interest</p-->
-                        <button mat-raised-button class="llp--primary--btn" [routerLink]="['/advisor/leads']">View All</button>
-                      </div>
-                    </mat-card-content>
-                  </mat-card>
-                </div>
+            <div class="right--boxes mr-0">
+              <mat-card class="p-0">
+                <mat-card-title class="">
+                  <div class="card-title-text">Monthly Leads</div>
+                  <mat-divider></mat-divider>
+                </mat-card-title>
+                <mat-card-content class="invite--body--section">
+                  <h4 class="count">{{LeadsCount}}
+                    <span></span>
+                  </h4>
+                  <div class="adjust">
+                    <!--p class="invites">0 users have shown  interest</p-->
+                    <button mat-raised-button class="llp--primary--btn" [routerLink]="['/advisor/leads']">View All</button>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
           </div>
         </div>
       </div>

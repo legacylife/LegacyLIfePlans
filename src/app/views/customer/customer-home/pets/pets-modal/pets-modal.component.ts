@@ -35,7 +35,7 @@ export class PetsModalComponent implements OnInit {
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';
-
+  currentProgessinPercent: number = 0;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService  ) 
@@ -201,12 +201,20 @@ export class PetsModalComponent implements OnInit {
          });
    
          this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+           this.updateProgressBar();
            this.getPetsDocuments();
          };
        }
     }
+    
+  updateProgressBar(){
+    let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
+    let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
+    this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+    this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+  }
 
-    uploadRemainingFiles(profileId) {
+  uploadRemainingFiles(profileId) {
       this.uploaderCopy.onBeforeUploadItem = (item) => {
         item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
       }
@@ -215,10 +223,10 @@ export class PetsModalComponent implements OnInit {
       });
   
       this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-        this.getPetsDocuments({}, false, false);
-      
+        this.updateProgressBar()
+        this.getPetsDocuments({}, false, false);      
       };
-    }
+  }
 
     getPetsDocuments = (query = {}, search = false, uploadRemained = true) => {     
       let profileIds = this.PetForm.controls['profileId'].value;
@@ -240,8 +248,8 @@ export class PetsModalComponent implements OnInit {
           if(uploadRemained) {
             this.uploadRemainingFiles(profileIds)
           }
-          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-          this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+          // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+          // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           this.petDocumentsList = result.data.documents;              
         }
       }, (err) => {
