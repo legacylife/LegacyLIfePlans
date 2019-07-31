@@ -103,6 +103,23 @@
             }
         }
     }
+
+    .expired--user--info{
+        height: auto;
+        width: 53%;
+        border: 1px solid #c72128;
+        box-shadow: 0 0 5px #e6979a;
+        display: flex;
+        padding: 10px 20px;
+        margin: 25px auto 0 auto !important;
+        border-radius: 4px;
+        
+        p{
+            margin: 0;
+            font-size: 16px;
+            color: #c72128; 
+        }
+    }
 }
 
 @media only screen and (max-width: 599px) {
@@ -152,5 +169,8 @@
     }
     ::ng-deep .mat-checkbox .mat-checkbox-label {
         font-size: 14px;
+    }
+    .expired--user--info{
+        width: 100%;
     }
 }

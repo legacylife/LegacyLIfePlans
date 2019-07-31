@@ -12,7 +12,9 @@
     </mat-card-title>
 
     <mat-card-content>
-
+      <div class="expired--user--info" *ngIf="premiumExpired && freePremiumExpired">
+        <p>Your subscription is expired. Please subscribe to Legacy Life plans to access your legacy again!</p>
+      </div>
       <div class="plans--wrapper">
         <div fxLayout="row wrap" fxLayoutAlign="center">
 

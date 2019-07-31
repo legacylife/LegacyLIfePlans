@@ -202,6 +202,8 @@ export class UserAPIService {
     this.removeKeyFromStorage('endUserSubscriptionAddon')
     this.removeKeyFromStorage('endUserSubscriptionAddon')
     this.removeKeyFromStorage('endUserProSubscription')
+    this.removeKeyFromStorage('endUserProFreeSubscription')
+    this.removeKeyFromStorage('endisReferAndEarn')
     this.router.navigate(["signin"]);
   }
 

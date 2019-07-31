@@ -9,7 +9,12 @@
       <mat-divider></mat-divider>
     </mat-card-title>
     <mat-card-content>
-      <div class="plans--wrapper">
+
+      <div class="expired--user--info" *ngIf="premiumExpired && freePremiumExpired">
+        <p>Your license has expired. Please subscribe to Legacy Life Advisor License to access your account again!</p>
+      </div>
+
+      <div class="plans--wrapper ">
         <div fxLayout="row wrap">
 
           <div fxFlex="100">

@@ -22,7 +22,13 @@ import { SubscriptionService } from '../../../shared/services/subscription.servi
   defaultSpace:number = 0
   spaceDimension:string = 'GB'
 
-  constructor(private dialog: MatDialog, private subscriptionservice:SubscriptionService) { }
+  premiumExpired:boolean = false
+  freePremiumExpired:boolean = false
+
+  constructor(private dialog: MatDialog, private subscriptionservice:SubscriptionService) { 
+    this.premiumExpired = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? false : true
+    this.freePremiumExpired = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? false : true
+  }
 
   ngOnInit() {
     this.getProductDetails()

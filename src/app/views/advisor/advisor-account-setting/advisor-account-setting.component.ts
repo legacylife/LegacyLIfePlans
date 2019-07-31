@@ -201,7 +201,6 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       this.isSubscribePlan = returnArr.isSubscribePlan
       this.planName = returnArr.planName
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
-      console.log("this.isSubscriptionCanceled==",this.isSubscriptionCanceled)
     })
   }
   getInviteMembersCount() {

@@ -235,6 +235,8 @@ export class APIService {
     this.removeKeyFromStorage('endUserSubscriptionAddon')
     this.removeKeyFromStorage('endUserSubscriptionAddon')
     this.removeKeyFromStorage('endUserProSubscription')
+    this.removeKeyFromStorage('endUserProFreeSubscription')
+    this.removeKeyFromStorage('endisReferAndEarn')
     localStorage.clear();
     this.router.navigate(["llp-admin", "signin"])
   }
