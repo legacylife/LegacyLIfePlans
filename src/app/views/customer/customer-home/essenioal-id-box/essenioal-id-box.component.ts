@@ -529,8 +529,7 @@ export class EssenioalIdBoxComponent implements OnInit {
   
       this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
         this.updateProgressBar();
-        this.getIdDocuments({}, false, false);
-      
+        this.getIdDocuments({}, false, false);      
       };
     }
 

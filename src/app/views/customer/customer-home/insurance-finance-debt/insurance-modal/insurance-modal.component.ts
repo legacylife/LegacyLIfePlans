@@ -249,8 +249,8 @@ export class InsuranceModalComponent implements OnInit {
           if(uploadRemained) {
             this.uploadRemainingFiles(profileIds)
           }
-          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-          this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+          // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+          // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           this.InsuranceDocsList = result.data.documents;              
         }
       }, (err) => {

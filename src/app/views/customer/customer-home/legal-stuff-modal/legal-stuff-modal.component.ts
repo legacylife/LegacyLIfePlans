@@ -241,8 +241,6 @@ export class legalStuffModalComponent implements OnInit {
         if(uploadRemained) {
           this.uploadRemainingFiles(result.data._id)
         }
-        this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-        this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
         this.subFolderDocumentsList = result.data.subFolderDocuments;        
         if(result.data.subFolderDocuments.length>0){
           this.LegalForm.controls['subFolderDocuments_temp'].setValue('1');
