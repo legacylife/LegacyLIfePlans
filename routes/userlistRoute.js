@@ -104,13 +104,59 @@ function view(req, res) {
 
 function updateStatus(req, res) {
   let { query } = req.body;
-  let fields = { id: 1, username: 1, status: 1 }
+  let fields = { id: 1, username: 1, status: 1, stripeCustomerId:1, subscriptionDetails:1, firstName:1, lastName:1 }
   User.findOne(query, fields, function (err, userList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
       var upStatus = 'Active';
-      if (userList.status == 'Active') { upStatus = 'Inactive'; }
+      if (userList.status == 'Active') {
+        upStatus = 'Inactive'; 
+
+        if( userList.stripeCustomerId ) {
+          let subscriptionDetails = userList.subscriptionDetails ? userList.subscriptionDetails : null
+          let subscriptionId = subscriptionDetails != null ? subscriptionDetails[(subscriptionDetails.length-1)]['subscriptionId'] : ""
+          if( subscriptionId != "" ) {
+            if( subscriptionDetails[subscriptionDetails.length-1]['status'] == 'paid') {
+              stripe.subscriptions.del(
+                subscriptionId,
+                function(err, confirmation) {
+                  if( err ) {
+                    res.status(401).send(resFormat.rError(err))
+                  }
+                  let updatedSubscriptionObject = subscriptionDetails
+                  updatedSubscriptionObject[updatedSubscriptionObject.length-1]['status'] = confirmation.status
+                  User.updateOne({ _id: req.body.query._id }, { $set: { subscriptionDetails : updatedSubscriptionObject } }, function (err, updated) {
+                    if (err) {
+                      res.send(resFormat.rError(err))
+                    }
+  
+                    //subscription purchased email template
+                    emailTemplatesRoute.getEmailTemplateByCode("SubscriptionCanceled").then((template) => {
+                      if(template) {
+                        template = JSON.parse(JSON.stringify(template));
+                        let body = template.mailBody.replace("{full_name}", userList.firstName ? userList.firstName+' '+ (userList.lastName ? userList.lastName:'') : 'User');
+                        body = body.replace("{canceled_on}",new Date());
+                        body = body.replace("{end_date}",updatedSubscriptionObject[updatedSubscriptionObject.length-1]['endDate']);
+                        const mailOptions = {
+                          to : userList.username,
+                          subject : template.mailSubject,
+                          html: body
+                        }
+                        sendEmail(mailOptions)
+                        res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':'Done'}));
+                      } else {
+                        res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':'Done'}));
+                      }
+                    })
+                  })
+              })
+            }
+          }
+        }
+
+
+      }
       var params = { status: upStatus }
       User.update({ _id: userList._id }, { $set: params }, function (err, updatedUser) {
         if (err) {
