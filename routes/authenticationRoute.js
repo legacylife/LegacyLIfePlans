@@ -60,19 +60,21 @@ function signin(req, res) {
             let subscriptionStartDate = "",
             subscriptionEndDate = "",
             subscriptionStatus = "",
-            autoRenewal = ""
+            autoRenewal = "",
             addOnDetails = user.addOnDetails ? user.addOnDetails : null,
             addOnGiven = 'no',
             isReferAndEarn = user.IamIntrested && user.IamIntrested == 'Yes' ? 'Yes' :  'No'
-
+            //console.log("subscriptionDetailssubscriptionDetails",subscriptionDetails)
             if( subscriptionDetails != null && subscriptionDetails.length >0 ) {
-              refereEarnStatus = 'No'
+              isReferAndEarn = 'No'
               subscriptionStartDate = subscriptionDetails[(subscriptionDetails.length-1)]['startDate']
               subscriptionEndDate = subscriptionDetails[(subscriptionDetails.length-1)]['endDate']
               subscriptionStatus = subscriptionDetails[(subscriptionDetails.length-1)]['status']
               autoRenewal = subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] ? subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] : false
               //if subscription ends do not sends addon details
-              if( addOnDetails != null && addOnDetails.length > 0 && ( new Date(subscriptionEndDate) < new Date()) ) {
+              
+              if( addOnDetails != null && addOnDetails.length > 0 && ( new Date(subscriptionEndDate) > new Date()) ) {
+                //console.log("asdasdasd",new Date(subscriptionEndDate),new Date())
                 addOnGiven = addOnDetails[(addOnDetails.length-1)]['status'] && addOnDetails[(addOnDetails.length-1)]['status'] == 'paid' ? 'yes' : 'no'
               }
             }
