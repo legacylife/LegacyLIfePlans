@@ -248,28 +248,66 @@ function hireAdvisorStatus(req, res) {
       } else {
         if (HiredData && HiredData._id) {
           proquery.modifiedOn = new Date();
+          
           HiredAdvisors.updateOne({ _id: HiredData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              if (from.logId) {
-                AdvisorActivityLog.updateOne({ _id: from.logId }, { $set: { actionTaken: proquery.status } }, function (err, logDetails) {
+              
+              let activityLogID = from.logId;
+              let MsgText = 'accepted';
+              if (proquery.status == 'Rejected') {
+                MsgText = 'rejected';
+              }
+              let custEmail = extraFields.custEmail;
+              let custName = extraFields.custName;
+
+              let advFname = extraFields.advFname;
+              let advLname = extraFields.advLname;
+              let subStatus = "Legacy request " + MsgText;
+              let EmailMesg = advFname + " " + advLname + " has been " + MsgText + " your legacy request";
+              let result = { "message": "Legacy request " + MsgText + " successfully" }
+
+
+              if(!activityLogID && from.hiredAdvisorRefId){
+                console.log("in not activity id>>>>>",from.hiredAdvisorRefId)
+                AdvisorActivityLog.findOne({ hiredAdvisorRefId: from.hiredAdvisorRefId }, { }, async function (err, ActivityLogData) {
+                  if (err) {
+                    res.status(401).send(resFormat.rError(err))
+                  } else {
+                    activityLogID = ActivityLogData._id;
+                    AdvisorActivityLog.updateOne({ _id: activityLogID }, { $set: { actionTaken: proquery.status } }, function (err, logDetails) {
+                      if (err) {
+                        res.send(resFormat.rError(err))
+                      } else {
+                        // If we don't have customer email & name then we will fetch from user table
+                        if (!extraFields.custEmail) {
+                          User.findOne({ _id: HiredData.customerId }, { firstName: 1, lastName: 1, username: 1 }, function (err, custData) {
+                            if (err) {
+                              res.status(401).send(resFormat.rError(err))
+                            } else {
+                              custEmail = custData.username;
+                              custName = custData.firstName;
+                              stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus);
+                              res.status(200).send(resFormat.rSuccess(result))
+                            }
+                          })
+                        } else {
+                          stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus);
+                          res.status(200).send(resFormat.rSuccess(result))
+                        }
+                      }
+                    })
+
+                  }
+                })
+              }
+              else if(activityLogID && !from.hiredAdvisorRefId){
+                console.log("in activity id>>>>>",activityLogID)
+                AdvisorActivityLog.updateOne({ _id: activityLogID }, { $set: { actionTaken: proquery.status } }, function (err, logDetails) {
                   if (err) {
                     res.send(resFormat.rError(err))
                   } else {
-                    let MsgText = 'accepted';
-                    if (proquery.status == 'Rejected') {
-                      MsgText = 'rejected';
-                    }
-                    let custEmail = extraFields.custEmail;
-                    let custName = extraFields.custName;
-
-                    let advFname = extraFields.advFname;
-                    let advLname = extraFields.advLname;
-                    let subStatus = "Legacy request " + MsgText;
-                    let EmailMesg = advFname + " " + advLname + " has been " + MsgText + " your legacy request";
-                    let result = { "message": "Legacy request " + MsgText + " successfully" }
-
                     // If we don't have customer email & name then we will fetch from user table
                     if (!extraFields.custEmail) {
                       User.findOne({ _id: HiredData.customerId }, { firstName: 1, lastName: 1, username: 1 }, function (err, custData) {
@@ -289,7 +327,33 @@ function hireAdvisorStatus(req, res) {
                   }
                 })
               }
+              /*console.log("activityLogID >>>>>>>",activityLogID)
+              if (activityLogID) {
+                AdvisorActivityLog.updateOne({ _id: activityLogID }, { $set: { actionTaken: proquery.status } }, function (err, logDetails) {
+                  if (err) {
+                    res.send(resFormat.rError(err))
+                  } else {
+                    // If we don't have customer email & name then we will fetch from user table
+                    if (!extraFields.custEmail) {
+                      User.findOne({ _id: HiredData.customerId }, { firstName: 1, lastName: 1, username: 1 }, function (err, custData) {
+                        if (err) {
+                          res.status(401).send(resFormat.rError(err))
+                        } else {
+                          custEmail = custData.username;
+                          custName = custData.firstName;
+                          stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus);
+                          res.status(200).send(resFormat.rSuccess(result))
+                        }
+                      })
+                    } else {
+                      stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus);
+                      res.status(200).send(resFormat.rSuccess(result))
+                    }
+                  }
+                })
+              }*/
               else {
+                console.log("in else >>>>>",from.hiredAdvisorRefId)
                 User.findOne({ _id: proquery.advisorId }, { firstName: 1, lastName: 1, username: 1 }, function (err, advisorUser) {
                   if (err) {
                     res.status(401).send(resFormat.rError(err))
@@ -361,7 +425,7 @@ function sendHireStatusMail(emailId, toName, comment, subStatus) {
       body = body.replace("{comment}", comment);
       const mailOptions = {
         to: emailId,//'pankajk@arkenea.com',
-        subject: subStatus + '' + template.mailSubject,
+        subject: subStatus + ' ' + template.mailSubject,
         html: body
       }
       sendEmail(mailOptions);
