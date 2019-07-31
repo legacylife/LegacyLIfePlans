@@ -81,7 +81,7 @@ export const CustomerRoutes: Routes = [
     component: AuthLayoutComponent,
     data: { title: '' },
     children: [
-      {
+      {  
         path: '',
         component: CustomerSignupComponent,
         canActivate: [UserPreAuthGuard],
