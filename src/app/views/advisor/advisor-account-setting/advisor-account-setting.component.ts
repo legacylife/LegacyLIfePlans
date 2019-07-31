@@ -97,7 +97,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   userCreateOn: any
   userSubscriptionDate: any
   today: Date = moment().toDate()
-
+  currentProgessinPercent:number = 0;
   invitedMembersCount: any = 0
   remainingDays:any = 0
 
@@ -503,11 +503,18 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       this.uploader.uploadAll();
       //this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
       this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+        this.updateProgressBar();
         this.getProfileField();
       };
     }
   }
 
+  updateProgressBar(){
+    let totalLength = this.uploader.queue.length;
+    let remainingLength =  this.uploader.getNotUploadedItems().length;
+    this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+    this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+  }
   
   isExtension(ext, extnArray) {
     var result = false;

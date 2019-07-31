@@ -28,7 +28,7 @@
                 <mat-icon>check</mat-icon>Confirm Hiring
               </div>
               <div class="yes no" (click)="hireAdvisor(row?._id,'rejectHire','Pending',row?.customerId.username,row?.customerId.firstName,row?.advisorId.firstName,row?.advisorId.lastName)">
-                <mat-icon>close</mat-icon>Reject Hiring
+                <mat-icon>close</mat-icon>Reject Hiring 
               </div>
             </div>
             <div class="legacy-confirm view-legacy" *ngIf="row?.status === 'Active'">

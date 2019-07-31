@@ -80,7 +80,7 @@ export class LegaciesComponent implements OnInit {
         const req_vars = {
           query: Object.assign({ _id:ids}),
           proquery: Object.assign(proquery),
-          from: Object.assign({ logId:ids}),
+          from: Object.assign({ hiredAdvisorRefId:ids}),
           extraFields: Object.assign({ custEmail:custEmail,custName:custName,advFname:advFname,advLname:advLname})
         }
         this.userapi.apiRequest('post', 'advisor/hireadvisor', req_vars).subscribe(result => {

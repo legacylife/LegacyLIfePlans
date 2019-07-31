@@ -35,6 +35,7 @@ export class FinanceModalComponent implements OnInit {
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';
+  currentProgessinPercent:number = 0;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,private confirmService: AppConfirmService,private loader: AppLoaderService,private router: Router, private userapi: UserAPIService) { }
 
   ngOnInit() {
@@ -238,9 +239,17 @@ export class FinanceModalComponent implements OnInit {
             this.uploader.uploadItem(fileoOb);
          });
          this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+           this.updateProgressBar();
            this.getFinanceDocuments();
          };
        }
+    }
+
+    updateProgressBar(){
+      let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
+      let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
+      this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+      this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
     }
 
     uploadRemainingFiles(profileId) {
@@ -252,8 +261,8 @@ export class FinanceModalComponent implements OnInit {
       });
   
       this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-        this.getFinanceDocuments({}, false, false);
-      
+        this.updateProgressBar();
+        this.getFinanceDocuments({}, false, false);      
       };
     }
 
@@ -277,8 +286,6 @@ export class FinanceModalComponent implements OnInit {
           if(uploadRemained) {
             this.uploadRemainingFiles(profileIds)
           }
-          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-          this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           this.FinanceDocsList = result.data.documents;              
         }
       }, (err) => {

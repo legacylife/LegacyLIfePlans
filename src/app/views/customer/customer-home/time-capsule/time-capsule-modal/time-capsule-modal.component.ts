@@ -9,6 +9,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../../config';
 import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 const URL = serverUrl + '/api/documents/timeCapsuledocuments';
 
 @Component({
@@ -34,6 +35,7 @@ export class TimeCapsuleMoalComponent implements OnInit {
   customerLegacyType:string='customer';														
   trusteeLegaciesAction:boolean=true;
   selectedProfileId: string;
+  currentProgessinPercent: number = 0;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,private confirmService: AppConfirmService,private loader: AppLoaderService,
     private router: Router,
     private userapi: UserAPIService) { }
@@ -190,26 +192,34 @@ export class TimeCapsuleMoalComponent implements OnInit {
             this.uploader.uploadItem(fileoOb);
          });
          this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-           this.getTimeCapsuleDocuments();
+          this.updateProgressBar();
+          this.getTimeCapsuleDocuments();
          };
        }
-    }
+  }
 
-    uploadRemainingFiles(profileId) {
+  updateProgressBar(){
+    let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
+    let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
+    this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+    this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+    //console.log(this.currentProgessinPercent, remainingLength, totalLength);
+  }
+
+  uploadRemainingFiles(profileId) {
       this.uploaderCopy.onBeforeUploadItem = (item) => {
         item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
       }
       this.uploaderCopy.queue.forEach((fileoOb, ind) => {
           this.uploaderCopy.uploadItem(fileoOb);
       });
-  
       this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-        this.getTimeCapsuleDocuments({}, false, false);
-      
+      this.updateProgressBar()
+      this.getTimeCapsuleDocuments({}, false, false);   
       };
-    }
+  }
 
-    getTimeCapsuleDocuments = (query = {}, search = false, uploadRemained = true) => {     
+  getTimeCapsuleDocuments = (query = {}, search = false, uploadRemained = true) => {     
       let profileIds = this.TimeCapsuleForm.controls['profileId'].value;
       let req_vars = {
         query: Object.assign({customerId: this.userId,status:"Pending" }),
@@ -229,16 +239,16 @@ export class TimeCapsuleMoalComponent implements OnInit {
           if(uploadRemained) {
             this.uploadRemainingFiles(profileIds)
           }
-          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-          this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+         // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+         // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           this.timeCapsuleDocsList = result.data.documents;              
         }
       }, (err) => {
         console.error(err);
       })
-    }
+  }
   
-   isExtension(ext, extnArray) {
+  isExtension(ext, extnArray) {
     var result = false;
     var i;
     if (ext) {
@@ -261,13 +271,11 @@ export class TimeCapsuleMoalComponent implements OnInit {
   
   checkSpecialChar(event)
   {  
-    var key;  
-    
+    var key;      
     key = event.charCode;
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
   }
   
-
   downloadFile = (filename) => {    
     let query = {};
     let req_vars = {

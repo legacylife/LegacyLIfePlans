@@ -620,15 +620,11 @@
                   <small *ngIf="advisorDocumentsMissing" class="form-error-msg">{{invalidMessage}}</small>
                 </div>
 
-                <div class="progress" style="margin-bottom: 0; width:50%;"
-                  *ngIf="uploader.getNotUploadedItems().length">
-                  <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">
-                    {{uploader.progress}}%</div>
-
-                  <mat-progress-bar class="" color="primary" mode="Indeterminate" [value]="uploader.progress">
-                  </mat-progress-bar>
-                </div>
-
+              <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
+                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
+                <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
+              </div>
+       
                 <div fx.Flex="100" class="text-center mt--30">
                   <button mat-raised-button type="button" class="llp--secondary--btn mr-1"
                     [routerLink]="'/advisor/dashboard'">Cancel</button>

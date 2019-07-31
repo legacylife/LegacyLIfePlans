@@ -9,6 +9,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../../config';
 import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
+import { NumberValueAccessor } from '@angular/forms/src/directives';
 const URL = serverUrl + '/api/documents/finalWishes';
 @Component({
   selector: 'app-essenioal-id-box',
@@ -33,7 +34,7 @@ export class FinalWishesFormModalComponent implements OnInit {
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';
-
+  currentProgessinPercent:number = 0;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService  ,@Inject(MAT_DIALOG_DATA) public data: any ) 
@@ -187,9 +188,17 @@ export class FinalWishesFormModalComponent implements OnInit {
          });
    
          this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+           this.updateProgressBar();
            this.getWishesDocuments();
          };
        }
+    }
+
+    updateProgressBar(){
+      let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
+      let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
+      this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+      this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
     }
 
     uploadRemainingFiles(profileId) {
@@ -201,6 +210,7 @@ export class FinalWishesFormModalComponent implements OnInit {
       });
   
       this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+        this.updateProgressBar();
         this.getWishesDocuments({}, false, false);      
       };
   }
@@ -225,8 +235,8 @@ export class FinalWishesFormModalComponent implements OnInit {
         if(uploadRemained) {
           this.uploadRemainingFiles(result.data._id)
         }
-        this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-        this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+        // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+        // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
         this.subFolderDocumentsList = result.data.subFolderDocuments;                       
       }
     }, (err) => {

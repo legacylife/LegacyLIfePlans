@@ -32,7 +32,7 @@ export class LettersMessagesModelComponent implements OnInit {
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';
-
+  currentProgessinPercent:number = 0;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService,private userapi: UserAPIService ) {}
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
@@ -127,8 +127,6 @@ export class LettersMessagesModelComponent implements OnInit {
           this.LetterMessageList = result.data;   
           let profileIds = this.LetterMessageList._id;
           this.LettersMessagesForm.controls['profileId'].setValue(profileIds);
-          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-          this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           this.LettersMessagesForm.controls['title'].setValue(this.LetterMessageList.title);
           this.LettersMessagesForm.controls['letterBox'].setValue(this.LetterMessageList.letterBox);
           this.LettersMessagesForm.controls['subject'].setValue(this.LetterMessageList.subject);
@@ -170,9 +168,17 @@ export class LettersMessagesModelComponent implements OnInit {
       });
 
       this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+        this.updateProgressBar();
         this.getlettersMessagesDocuments();
       };
     }
+  }
+
+  updateProgressBar(){
+    let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
+    let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
+    this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+    this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
   }
 
   uploadRemainingFiles(profileId) {
@@ -184,6 +190,7 @@ export class LettersMessagesModelComponent implements OnInit {
     });
 
     this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.updateProgressBar();
       this.getlettersMessagesDocuments({}, false, false);
     };
   }
@@ -208,8 +215,6 @@ export class LettersMessagesModelComponent implements OnInit {
         if(uploadRemained) {
           this.uploadRemainingFiles(result.data._id)
         }
-        this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-        this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
         this.documentsList = result.data.documents;                    
       }
     }, (err) => {

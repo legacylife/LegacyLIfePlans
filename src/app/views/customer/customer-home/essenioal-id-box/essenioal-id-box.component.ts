@@ -55,6 +55,7 @@ export class EssenioalIdBoxComponent implements OnInit {
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';
+  currentProgessinPercent: number = 0;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService  ) 
@@ -496,29 +497,28 @@ export class EssenioalIdBoxComponent implements OnInit {
       
         }
       });
-  
-      // if(this.uploader.getNotUploadedItems().length){
-      //   this.uploader.uploadAll();
-      //   this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      //     this.getIdDocuments();
-      //   };
-      // }
 
       if(this.uploader.getNotUploadedItems().length){
         this.uploaderCopy = cloneDeep(this.uploader)
         this.uploader.queue.splice(1, this.uploader.queue.length - 1)
-        this.uploaderCopy.queue.splice(0, 1)
-        
+        this.uploaderCopy.queue.splice(0, 1)        
         this.uploader.queue.forEach((fileoOb, ind) => {
               this.uploader.uploadItem(fileoOb);
-         });
-   
+        });
          this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+           this.updateProgressBar();
            this.getIdDocuments();
          };
        }
     }
 
+    updateProgressBar(){
+      let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
+      let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
+      this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+      this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+    }
+  
     uploadRemainingFiles(profileId) {
       this.uploaderCopy.onBeforeUploadItem = (item) => {
         item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
@@ -528,8 +528,8 @@ export class EssenioalIdBoxComponent implements OnInit {
       });
   
       this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-        this.getIdDocuments({}, false, false);
-      
+        this.updateProgressBar();
+        this.getIdDocuments({}, false, false);      
       };
     }
 
@@ -553,10 +553,8 @@ export class EssenioalIdBoxComponent implements OnInit {
           if(uploadRemained) {
             this.uploadRemainingFiles(profileIds)
           }
-
-          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-          this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-
+          // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+          // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           this.idProofDocumentsList = result.data.idProofDocuments;
           if(result.data.idProofDocuments.length>0){
             this.IDForm.controls['idProofDocuments_temp'].setValue('1');

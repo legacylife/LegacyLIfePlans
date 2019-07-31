@@ -58,7 +58,7 @@
               </div>
               <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
       </div>            
-      <div *ngIf="FinanceDocsList" >
+         <div *ngIf="FinanceDocsList" >
           <h3 class="header--text fnt--16">Uploaded file documents </h3>
           <mat-chip-list class="doc--list" *ngFor="let doc of FinanceDocsList; index as i">
               <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove (click)="FinanceDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
@@ -67,10 +67,11 @@
           <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
               <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
           </mat-chip-list>    
-          <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
-            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">{{uploader.progress}}%</div>
-            <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="uploader.progress"></mat-progress-bar>
-      </div>
+
+          <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderCopy.getNotUploadedItems().length || uploader.getNotUploadedItems().length">
+            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
+            <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
+          </div>
 
       <mat-form-field class="full-width mt-1">
               <textarea (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" maxlength="500" matInput placeholder="Comments" name="comments" [formControl]="FinanceForm.controls['comments']"></textarea>
