@@ -8,7 +8,7 @@ import { AuthLayoutComponent } from '../../shared/components/layouts/auth-layout
 import { UserAuthGuard } from '../../shared/services/auth/userauth.guard';
 import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
 import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
-import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
+//import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
 import { CustomerSubscriptionComponent } from './customer-subscription/customer-subscription.component';
 import { CustomerTrusteesComponent } from './customer-trustees/customer-trustees.component';
 import { CustomerProfessionalComponent } from './customer-professionals/customer-professionals.component';
@@ -37,7 +37,6 @@ import { ListingComponent } from './customer-home/real-estate-assets/listing/lis
 import { DetailsComponent } from './customer-home/real-estate-assets/details/details.component';
 import { DetailsAssetsComponent } from './customer-home/real-estate-assets/details-assets/details-assets.component';
 import { DetailsVehiclesComponent } from './customer-home/real-estate-assets/details-vehicles/details-vehicles.component';
-
 //final-wishes
 import { FinalWishesComponent } from './customer-home/final-wishes/final-wishes-list/final-wishes-list.component';
 import { FinalWishesDetailsComponent } from './customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
@@ -54,7 +53,6 @@ import { InsuranceFinanceDebtListComponent } from './customer-home/insurance-fin
 import { InsuranceDetailsComponent } from './customer-home/insurance-finance-debt/insurance-details/insurance-details.component';
 import { FinanceDetailsComponent } from './customer-home/insurance-finance-debt/finance-details/finance-details.component';
 import { DebtDetailsComponent } from './customer-home/insurance-finance-debt/debt-details/debt-details.component';
-
 //passwords-digital-assets
 import { PasswordsDigitalAssetsListComponent } from './customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
 import { DeviceDetailsComponent } from './customer-home/passwords-digital-assets/devices/device-details/device-details.component';
@@ -64,8 +62,20 @@ import { ElectronicMediaDetailsComponent } from './customer-home/passwords-digit
 import { TodosListingComponent } from '../todos-listing/todos-listing.component';
 import { ProUserAuthGuard as ProUserGuard } from '../../shared/services/auth/prouserauth.guard';
 import { ErrorComponent } from './../error/error.component';
+//import { LandingLayoutComponent } from '../../shared/components/layouts/landing-layout/landing-layout.component';
 console.log("cutostomer routing...")
 export const CustomerRoutes: Routes = [
+  // {
+  //   path: '',
+  //   component: LandingLayoutComponent,
+  //   children: [
+  //     {
+  //       path: '',
+  //       loadChildren: './views/landing/landing.module#LandingModule',
+  //       data: { title: 'LLP'}
+  //     }
+  //   ]
+  // },
   {
     path: 'signup',
     component: AuthLayoutComponent,
@@ -563,10 +573,10 @@ export const CustomerRoutes: Routes = [
       }
     ]
   },
-  {
-    path: '**',
-    redirectTo: '/customer/error'
-  }
+  // {
+  //   path: '**',
+  //   redirectTo: '/customer/error'
+  // }
   // {
   //   path: 'professionals',
   //   component: CustomerLayoutComponent,
