@@ -33,6 +33,7 @@ export class HireAdvisorComponent implements OnInit, AfterViewInit  {
   updates: string;
   hireFullName:string;
   alreadyRequestSend:boolean = true;
+  hideFirstStep : Boolean = true;
   row: any = [];
   defaultPermission:boolean = true;
   constructor(
@@ -47,8 +48,10 @@ export class HireAdvisorComponent implements OnInit, AfterViewInit  {
     this.selectedProfileId = '';   
     if(this.ids){     
       this.checkAdvisorView();
-      this.defaultPermission =false;
     }   
+    if(this.updates=='update'){
+      this.hideFirstStep = false;
+    }
   }
 
   ngAfterViewInit(){ 

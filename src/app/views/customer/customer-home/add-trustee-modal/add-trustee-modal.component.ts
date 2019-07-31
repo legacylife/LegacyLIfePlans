@@ -187,7 +187,80 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
   }
 
   secondFormGroupSubmit(step, insert = null) {
+    var query = {};
+    var proquery = {};
+    let userAccessDatas = [];
+    userAccessDatas = [{
+        "PersonalProfileManagement":this.secondFormGroup.controls['PersonalProfileManagement'].value,
+        "IDBoxManagement": this.secondFormGroup.controls['IDBoxManagement'].value,
+        "MyProfessionalsManagement": this.secondFormGroup.controls['MyProfessionalsManagement'].value,
+        "InsuranceManagement": this.secondFormGroup.controls['InsuranceManagement'].value,
+        "FinancesManagement": this.secondFormGroup.controls['FinancesManagement'].value,
+        "DebtManagement": this.secondFormGroup.controls['DebtManagement'].value,
+        "PetsManagement": this.secondFormGroup.controls['PetsManagement'].value,
+        "YoungChildrenManagement": this.secondFormGroup.controls['YoungChildrenManagement'].value,
+        "ChildParentDisabilityManagement": this.secondFormGroup.controls['ChildParentDisabilityManagement'].value,
+        "FriendNeighborCareManagement": this.secondFormGroup.controls['FriendNeighborCareManagement'].value,
+        "EstateManagement": this.secondFormGroup.controls['EstateManagement'].value,
+        "HealthcareManagement": this.secondFormGroup.controls['HealthcareManagement'].value,
+        "PersonalAffairsManagement": this.secondFormGroup.controls['PersonalAffairsManagement'].value,
+        "DevicesManagement": this.secondFormGroup.controls['DevicesManagement'].value,
+        "ElectronicMediaManagement": this.secondFormGroup.controls['ElectronicMediaManagement'].value,  
+        "emergencyContactsManagement": this.secondFormGroup.controls['emergencyContactsManagement'].value,
+        "RealEstateManagement": this.secondFormGroup.controls['RealEstateManagement'].value,
+        "VehiclesManagement": this.secondFormGroup.controls['VehiclesManagement'].value,
+        "AssetsManagement": this.secondFormGroup.controls['AssetsManagement'].value,
+        "TimeCapsuleManagement": this.secondFormGroup.controls['TimeCapsuleManagement'].value,
+        "LegacyLifeLettersMessagesManagement": this.secondFormGroup.controls['LegacyLifeLettersMessagesManagement'].value,
+        "FuneralPlansManagement": this.secondFormGroup.controls['FuneralPlansManagement'].value,
+        "ObituaryManagement": this.secondFormGroup.controls['ObituaryManagement'].value,
+        "CelebrationLifeManagement": this.secondFormGroup.controls['CelebrationLifeManagement'].value,
+    }];
+    userAccessDatas = userAccessDatas[0];    
 
+    var fileCnt  = keysIn(userAccessDatas) .filter(key => {
+      return userAccessDatas[key] == 'now'
+    })
+    let userSectionsCnt = '';
+    if(fileCnt.length>0){
+      userSectionsCnt = flatMap(userSections).filter(userSection=>{
+        return userSection.fileNames.filter(fn => fileCnt.includes(fn.code)).length > 0 ? userSection.id : null;
+      })
+    }
+  this.RequestData = {
+    // firstName: this.trustFormGroup.controls['firstName'].value,
+    // lastName: this.trustFormGroup.controls['lastName'].value,
+    // email: this.trustFormGroup.controls['email'].value,
+    // relation: this.trustFormGroup.controls['relation'].value,
+    // messages: this.thirdFormGroup.controls['messages'].value,
+    selectAll: this.secondFormGroup.controls['selectAll'].value,
+    trustId: this.trust_id,
+    userAccess: userAccessDatas,
+    filesCount:  fileCnt.length,
+    folderCount: userSectionsCnt.length,
+   }
+
+    let profileIds = this.trustFormGroup.controls['profileId'].value;
+    if(profileIds){
+        this.selectedProfileId = profileIds;
+    }        
+    const req_vars = {
+      query: Object.assign({_id: this.selectedProfileId,customerId: this.userId}),
+      proquery: Object.assign(this.RequestData),
+      extrafields: Object.assign({inviteByName:localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName")})
+    }
+    this.loader.open();
+    this.userapi.apiRequest('post', 'trustee/form-submit', req_vars).subscribe(result => {
+    this.loader.close();
+      if(result.status == "error"){
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      } else {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        this.dialog.closeAll(); 
+      }
+    }, (err) => {
+      console.error(err)
+    })
   }
 
   thirdFormGroupSubmit(step, insert = null) {
