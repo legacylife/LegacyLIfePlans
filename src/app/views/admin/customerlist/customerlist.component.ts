@@ -5,13 +5,12 @@ import { MatSnackBar } from '@angular/material';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { egretAnimations } from "../../../shared/animations/egret-animations";
-import "./customerlist.component.css";
 import { SubscriptionService } from 'app/shared/services/subscription.service';
 
 @Component({
   selector: 'customerlist',
   templateUrl: './customerlist.component.html',
-  styleUrls: ['./customerlist.component.css'],
+  styleUrls: ['./customerlist.component.scss'],
   animations: egretAnimations
 })
 export class customerlistComponent implements OnInit {
