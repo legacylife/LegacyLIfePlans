@@ -1223,14 +1223,34 @@ function downloadDocs(req,res) {
   let filename = query.filename;
   var params = {Bucket: constants.s3Details.bucketName,Key:filePath};
   let ext = filename.split('.')
-  ext = ext[ext.length - 1];
+  ext = ext[ext.length - 1];console.log("params",params);
   try {
-    const stream = s3.s3.getObject(params).createReadStream();    
-    res.set({
-      'Content-Disposition': 'attachment; filename='+filename,
-      'Content-Type': 'image/'+ext+'; charset=utf-8'
+      s3.s3.headObject(params, function(err, data) {
+      if(data){
+        const stream = s3.s3.getObject(params).createReadStream();    
+        res.set({
+          'Content-Disposition': 'attachment; filename='+filename,
+          'Content-Type': 'image/'+ext+'; charset=utf-8'
+        });
+        stream.pipe(res);    
+      }else{
+        let files = filePath.split('/');
+        oldFile = files[1]+'/'+files[2];
+        var params = {Bucket: constants.s3Details.bucketName,Key:oldFile};
+        s3.s3.headObject(params, function(err, data) {
+          if(data){
+            const stream = s3.s3.getObject(params).createReadStream();    
+            res.set({
+              'Content-Disposition': 'attachment; filename='+filename,
+              'Content-Type': 'image/'+ext+'; charset=utf-8'
+            });
+            stream.pipe(res);    
+          }else{    
+            res.status(401).send(resFormat.rError({message :"File Not Found"}))  
+          }
+        });
+      }
     });
-    stream.pipe(res);    
   } catch (error) {
     res.status(401).send(resFormat.rError({message :error}))  
   }

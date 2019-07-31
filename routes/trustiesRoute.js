@@ -116,12 +116,9 @@ function trustFormUpdate(req, res) {
             resText = 'details updated';
           }
           let { proquery } = req.body;
-
           if (proquery.trustId && proquery.trustId != '0')
             proquery.status = 'Active';
-
           proquery.trustId && proquery.trustId != '' ? proquery.trustId = proquery.trustId : delete proquery.trustId;
-
           proquery.modifiedOn = new Date();
           trust.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
@@ -173,8 +170,6 @@ function trustFormUpdate(req, res) {
             }
           } 
         })
-        
-        
         stat = sendTrusteeMail(proquery.email, proquery.messages, proquery.folderCount, extrafields.inviteByName, proquery.firstName, clientUrl, "");
         let result = { "message": "Trustee details added successfully" }
         res.status(200).send(resFormat.rSuccess(result))
@@ -218,7 +213,7 @@ function trustResendInvitation(req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {
       stat = sendTrusteeMail(trustDetails.email, trustDetails.messages, trustDetails.folderCount, extrafields.inviteByName, trustDetails.firstName, clientUrl, "Reminder: ");
-      let result = { "message": "Trustee invitation send successfully!" }
+      let result = { "message": "Trustee invitation sent successfully!" }
       res.status(200).send(resFormat.rSuccess(result))
     }
   })
@@ -234,7 +229,6 @@ function getTrusteeDetails(req, res) {
     }
   })
 }
-
 
 function getSubSectionsList(req, res){
   let { fields, offset, query, order, limit, search } = req.body
@@ -258,8 +252,7 @@ function getSubSectionsList(req, res){
   })
 }
 
-
- function trusteePermissionsUpdate(req, res){
+function trusteePermissionsUpdate(req, res){
     let { query } = req.body;
     let key = query.insertArray.code;
     let list = query.insertArray.accessManagement;
@@ -300,7 +293,6 @@ function getSubSectionsList(req, res){
         res.status(200).send(resFormat.rSuccess(result));
     })
 }
-
 
 router.post("/listing", trustsList)
 router.post("/get-user", getUserDetails)
