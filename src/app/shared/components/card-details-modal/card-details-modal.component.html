@@ -6,40 +6,43 @@
 </div>
 
 <form class="llp-form-wrapper">
-  <div class="ll--modal--body">
+  <div class="ll--modal--body payment--modal--wrapper">
     <div class="plan-details">
-      <h5>Amount to be paid: {{planAmount | currency : planCurrency : 'symbol'}}</h5>
+      <h5>Amount to be paid: <span>{{planAmount | currency : planCurrency : 'symbol'}}</span></h5>
     </div>
     <div>
       <div class="new-card-details" [hidden]="hideNewCardForm">
         <label>New card details:</label>
-        <div id="card-fields"></div>
-        <label class="error" *ngIf="stripePaymentError!=''">{{stripePaymentError}}</label>
+        <div class="new--card">
+            <div id="card-fields"></div>
+            <label class="error" *ngIf="stripePaymentError!=''">{{stripePaymentError}}</label>
+        </div>
       </div>
       <div class="old-card-details" [hidden]="!hideNewCardForm" *ngIf="oldCard != ''">
         <label>Old card details:</label>
-          <table class="table">
-            <tbody>
-              <tr>
-                <th>Card Number</th>
-                <th>Expiry</th>
-                <!-- <th>Type</th> -->
-              </tr>
-              <tr>
-                <th>XXXX-XXXX-XXXX-{{oldCard.last4}}</th>
-                <th>{{oldCard.exp_month}} / {{oldCard.exp_year}}</th>
-                <!-- <th>{{oldCard.type | titlecase }}</th> -->
-              </tr>
-            </tbody>
-          </table>
+        <table class="table">
+          <tbody>
+            <tr class="thead">
+              <th>Card Number</th>
+              <th>Expiry</th>
+              <!-- <th>Type</th> -->
+            </tr>
+            <tr>
+              <th>XXXX-XXXX-XXXX-{{oldCard.last4}}</th>
+              <th>{{oldCard.exp_month}} / {{oldCard.exp_year}}</th>
+              <!-- <th>{{oldCard.type | titlecase }}</th> -->
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div class="mt-1" *ngIf="oldCard != ''">
         <mat-checkbox class="example-margin" (click)="payUsingNewCard()">Pay using new card</mat-checkbox>
-        <p class="ml-5 mt-1 mb-0 fnt--13">*Paying with new card will replace the existing card</p>
+        <p class="paying--text">*Paying with new card will replace the existing card</p>
       </div>
     </div>
   </div>
   <div class="ll--modal--footer text-center">
-    <button mat-raised-button class="llp--primary--btn" [disabled]="!isButtonEnabled" (click)="completePayment()">Complete Payment</button>
+    <button mat-raised-button class="llp--primary--btn" [disabled]="!isButtonEnabled"
+      (click)="completePayment()">Complete Payment</button>
   </div>
 </form>

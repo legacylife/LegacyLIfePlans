@@ -80,14 +80,19 @@
             justify-content: space-between;
 
             .yes{
-                background-color: $clr--5;
+                background-color: $clr--1;
                 width: 47%; 
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 font-family: $font--lato--bold;
                 font-size: 16px;
+                border: 1px solid #dadce0;
                 cursor: pointer;
+                border-left: none;
+                border-bottom: none;
+                color: $clr--5;
+
                 .mat-icon{
                     width: 25px;
                     height: 25px;
@@ -95,7 +100,11 @@
                     margin-right: 8px;
                 }
                 &.no{
-                    background-color: $clr--2;
+                    background-color: $clr--1;
+                    color: $clr--2;
+                    border: 1px solid #dadce0;
+                    border-right: none;
+                    border-bottom: none;
                 }                   
             }
 
