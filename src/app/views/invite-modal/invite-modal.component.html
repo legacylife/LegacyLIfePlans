@@ -6,7 +6,7 @@
 </div>
 <form class="llp-form-wrapper" [formGroup]="inviteForm" (ngSubmit)="inviteSubmit()">
   <div class="ll--modal--body invite--modal--hgt" formArrayName="inviteMembers">
-    <h6 class="invite--sub--line">Invite your members</h6>
+    <h6 class="invite--sub--line">Enter Invitee Details</h6>
     <div fxLayout="row wrap" *ngFor="let ilist of inviteMembersList.controls; let pointIndex = index" [formGroupName]="pointIndex">
       <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
         <mat-form-field class="full-width">

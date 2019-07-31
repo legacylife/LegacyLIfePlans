@@ -8,19 +8,17 @@ import { ErrorComponent } from 'app/views/error/error.component';
 import { AuthGuard } from './shared/services/auth/auth.guard';
 console.log('App---routing');
 export const rootRouterConfig: Routes = [
-  /*{
-    path: '',
-    pathMatch: 'full', 
-    component: AdvisorLandingLayoutComponent,
-    loadChildren: './views/advisor-landing/advisor-landing.module#AdvisorLandingModule',
-    data: { title: 'LLP'}
-  },*/
   {
     path: '',
     component: LandingLayoutComponent,
     children: [
       {
         path: '',
+        loadChildren: './views/landing/landing.module#LandingModule',
+        data: { title: 'LLP'}
+      },
+      {
+        path: 'customer',
         loadChildren: './views/landing/landing.module#LandingModule',
         data: { title: 'LLP'}
       }
