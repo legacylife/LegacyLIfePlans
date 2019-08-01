@@ -183,7 +183,7 @@ function updateProfile(req, res) {
           res.send(resFormat.rError(err))
         } else {
           User.findOne(query, function (err, updatedUser) {
-            let result = { "userProfile": { userId: updatedUser._id, userType: updatedUser.userType, firstName: updatedUser.firstName, lastName: updatedUser.lastName, phoneNumber: updatedUser.phoneNumber }, "message": "Profile update successfully!" }
+            let result = { "userProfile": { userId: updatedUser._id, userType: updatedUser.userType, firstName: updatedUser.firstName, lastName: updatedUser.lastName, phoneNumber: updatedUser.phoneNumber,profilePicture:updatedUser.profilePicture }, "message": "Profile update successfully!" }
             res.status(200).send(resFormat.rSuccess(result));
           });
         }
