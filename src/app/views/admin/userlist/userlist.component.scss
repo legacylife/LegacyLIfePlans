@@ -11,21 +11,24 @@
         background: transparent;
         color: #727a33;
         border: 1px solid #727a33;
-        width: 60px;
+        width: auto;
         text-align: center;
+        padding: 3px 6px !important;
     }
     .active--status--chip[ng-reflect-selected="Inactive"]{
         background: transparent;
         color: #c72128;
         border: 1px solid #c72128;
-        width: 60px;
+        width: auto;
         text-align: center;
+        padding: 3px 6px !important;
     }
     
     ::ng-deep .ngx-datatable.material .datatable-header .datatable-header-cell .datatable-header-cell-wrapper,
     ::ng-deep .ngx-datatable .datatable-header .datatable-header-cell.sortable .datatable-header-cell-wrapper{
         font-family: 'latobold';
         color: #fff;
+        white-space: normal;
     }
     ::ng-deep .ngx-datatable.material .datatable-header .datatable-header-cell,
     ::ng-deep .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell{
@@ -42,5 +45,21 @@
         height: auto !important;
         background: #727933;
         color: #fff;
+    }
+}
+
+
+.admn--user--details--wrapper{
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important;
+    margin-right: 15px;
+    ::ng-deep  .mat-card{
+        .mat-card-content{
+            border: none;
+        }
+    } 
+    .profile-title{
+        .main-title{
+            text-transform: capitalize;
+        }
     }
 }

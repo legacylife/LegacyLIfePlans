@@ -10,27 +10,27 @@
     <mat-card-content class="p-0">
       <ngx-datatable class="material ml-0 mr-0" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50"
         [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
-        <ngx-datatable-column name="Page For" [flexGrow]="1">
+        <ngx-datatable-column  [resizeable]="false" name="Page For" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row?.pageFor }}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Page Title" [flexGrow]="1">
+        <ngx-datatable-column [resizeable]="false" name="Page Title" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row?.pageTitle }}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Page Code" [flexGrow]="1">
+        <ngx-datatable-column [resizeable]="false" name="Page Code" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row?.pageCode }}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Status" [flexGrow]="1">
+        <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            <mat-chip mat-sm-chip>{{row.status ? 'Active' : 'In-Active'}}</mat-chip>
+            <mat-chip class="active--status--chip" mat-sm-chip>{{row.status ? 'Active' : 'In-Active'}}</mat-chip>
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Actions" [flexGrow]="1">
+        <ngx-datatable-column [resizeable]="false" name="Actions" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <a mat-icon-button mat-sm-button color="primary" class="mb-1" [routerLink]="['/admin/cmsedit', row._id]"
               title="View">
