@@ -57,6 +57,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   spaceDimension:string = 'GB'
   usedSpaceDimension:string = 'MB'
   addOnSpace:number = 0
+  addOnSpaceDisplay:number = 0
   addOnAmountFor:string = ''
   addOnAmount:number = 0
   totalSpaceAlloted: number = 1
@@ -167,7 +168,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       this.subscriptionservice.getPlanDetails( ( planData )=> {
         if( planData && (Object.keys(planData).length !== 0) ) {
           //this.defaultSpace = planData.metadata.defaultSpace
-          //this.addOnSpace = planData.metadata.addOnSpace
+          this.addOnSpaceDisplay = planData.metadata.addOnSpace
           this.spaceDimension = planData.metadata.spaceDimension        
           let subscriptionDate = moment( localStorage.getItem("endUserSubscriptionEndDate") )
           let diff = Math.round(this.subscriptionservice.getDateDiff( this.today, subscriptionDate.toDate() ))
