@@ -1,30 +1,21 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\admin\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add ngx-sripe
+  D:\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add angular-user-idle
 
 PATH: 
-  C:\Users\ADMIN\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\ADMIN\bin;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files\Git\cmd;C:\Program Files (x86)\Brackets\command;C:\composer;C:\Program Files\nodejs;C:\Program Files\Amazon\AWSCLI\bin;C:\Users\ADMIN\AppData\Local\Programs\Python\Python36\Scripts;C:\Users\ADMIN\AppData\Local\Programs\Python\Python36;D:\Microsoft VS Code\bin;C:\Program Files\Heroku\bin;C:\Program Files\nodejs;C:\Program Files\MongoDB\Server\3.4\bin;D:\zend\bin;C:\Users\admin\AppData\Roaming\Composer\vendor\bin;C:\ProgramData\ComposerSetup\bin;C:\Users\ADMIN\AppData\Roaming\Python\36\Scripts;C:\Users\admin\AppData\Roaming\npm;C:\Python27;E:\xampp7.0\php;C:\composer;C:\wkhtmltopdf\bin;C:\Users\ADMIN\AppData\roaming\Python\Python36\scripts;C:\Users\ADMIN\AppData\Roaming\ScanApp2;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+  C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;D:\nodejs\;C:\Program Files\Git\cmd;C:\Program Files (x86)\Yarn\bin\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\PuTTY\;C:\Users\Admin\AppData\Local\Microsoft\WindowsApps;C:\Users\Admin\AppData\Roaming\npm;C:\Program Files\MongoDB\Server\3.6\bin;D:\nodejs;C:\data\db;C:\Users\Admin\AppData\Local\Yarn\bin;C:\Users\Admin\AppData\Local\Programs\Microsoft VS Code\bin;C:\Python27;
 
 Yarn version: 
-  1.13.0
+  1.16.0
 
 Node version: 
-  8.12.0
+  10.15.3
 
 Platform: 
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/ngx-sripe: Not found
-      at Request.params.callback [as _callback] (C:\Users\admin\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66255:18)
-      at Request.self.callback (C:\Users\admin\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:129397:22)
-      at emitTwo (events.js:126:13)
-      at Request.emit (events.js:214:7)
-      at Request.<anonymous> (C:\Users\admin\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:130369:10)
-      at emitOne (events.js:116:13)
-      at Request.emit (events.js:211:7)
-      at IncomingMessage.<anonymous> (C:\Users\admin\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:130291:12)
-      at Object.onceWrapper (events.js:313:30)
-      at emitNone (events.js:111:20)
+  Error: connect ETIMEDOUT 104.16.27.35:443
+      at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1097:14)
 
 npm manifest: 
   {
@@ -5292,6 +5283,13 @@ Lockfile:
     version "0.4.4"
     resolved "https://registry.yarnpkg.com/ngx-slick-carousel/-/ngx-slick-carousel-0.4.4.tgz#9608c995ec40ff6cc89b1755aa08ab08cc5486ea"
     integrity sha512-z/cu8CL7LlUaqtImxC595V644efgjHTdQ9+u3AqL/igQYSELRryENGVH0jyPZuJSpSNvi52I2HGeifPsEd7bkg==
+    dependencies:
+      tslib "^1.9.0"
+  
+  ngx-stripe@^7.4.3:
+    version "7.4.3"
+    resolved "https://registry.yarnpkg.com/ngx-stripe/-/ngx-stripe-7.4.3.tgz#ed304aadd578e48f0e86790c27a511f47757c14a"
+    integrity sha512-JF4kDBAL/Vo2zgWm+sxmXqBibcg+HH0768Ry9I+imt5KITOwWKprr6vUcRf4wlCEk92SIHZY9npuVBKng/1ZuA==
     dependencies:
       tslib "^1.9.0"
   

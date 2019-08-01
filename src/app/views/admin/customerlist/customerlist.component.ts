@@ -67,7 +67,7 @@ export class customerlistComponent implements OnInit {
           if(row.userType != 'sysAdmin') {
             let subscriptionData = {}
             this.subscriptionservice.checkSubscriptionAdminPanel( row, ( returnArr )=> {
-              row['subscriptionData'] = {status : returnArr.isAccountFree && !returnArr.isSubscribePlan ? 'Trial' : 'Paid',
+              row['subscriptionData'] = {status : returnArr.isAccountFree && !returnArr.isSubscribePlan ? 'Trial' : ( returnArr.isSubscribePlan && !returnArr.isPremiumExpired ? 'Paid' : 'Expired'),
                                   endDate: returnArr.subscriptionExpireDate
                                   }
             })

@@ -28,6 +28,7 @@ import { SubscriptionService } from '../../../shared/services/subscription.servi
   }
 
   ngOnInit() {
+    this.dialog.closeAll(); 
     this.getProductDetails()
   }
   
