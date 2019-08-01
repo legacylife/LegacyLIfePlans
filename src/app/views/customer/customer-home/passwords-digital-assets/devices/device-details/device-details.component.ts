@@ -57,7 +57,7 @@ export class DeviceDetailsComponent implements OnInit {
 
   //function to get all events
   getDeviceView = (query = {}, search = false) => {
-    this.IsVisible= true;
+   // this.IsVisible= true;
     let profileIds = '';
     let req_vars = {}
     if (this.selectedProfileId) {
@@ -75,15 +75,12 @@ export class DeviceDetailsComponent implements OnInit {
             this.trusteeLegaciesAction = false;
           }
           this.row = result.data;//console.log("Row =>",this.row);
-          this.IsVisible = true;
+          //this.IsVisible = true;
           if(this.row.passwordPattern && typeof this.row.passwordPattern!=='undefined' && this.row.passwordPattern!==''){
-           // console.log("here =>",this.row.passwordPattern)
             this.IsVisible = false;
             this.setPattern(this.row.passwordPattern);          
           }else{ 
-           // console.log("there =>",this.row.passwordPattern);
-            //this.IsVisibleBoolean = false;
-            this.IsVisible = true;
+            this.IsVisible = true;        
           }
         }
       }  
@@ -99,7 +96,7 @@ export class DeviceDetailsComponent implements OnInit {
     })
     dialogRef.afterClosed()
       .subscribe(res => {
-        this.getDeviceView();
+          this.getDeviceView();
         if (!res) {
           // If user press cancel
           return;
