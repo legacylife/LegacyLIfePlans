@@ -40,7 +40,6 @@ export class SigninComponent implements OnInit {
     this.otpsec = true;
   }
 
-  
   llpCustSignin(userData = null) {
     let signInData = {
       username: this.llpCustsigninForm.controls['username'].value,

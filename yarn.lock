@@ -706,6 +706,13 @@ angular-star-rating@^4.0.0-beta.3:
   dependencies:
     tslib "^1.7.1"
 
+angular-user-idle@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/angular-user-idle/-/angular-user-idle-2.1.4.tgz#66039c8c27f366ad25d26bf9aeea339b0dd51cc1"
+  integrity sha512-M5x/20wD6++wvQOBHoB/0K/IKD6QE/6od/vW4AF0iLaM8dh/MOQ1NAI1wTCk0uTYuJ3hGJEqlVLUhUFpx66WwQ==
+  dependencies:
+    tslib "^1.9.0"
+
 animation-frame-polyfill@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/animation-frame-polyfill/-/animation-frame-polyfill-1.0.1.tgz#5f5ad993a78794bd176acde5b6dce62867410c9d"
