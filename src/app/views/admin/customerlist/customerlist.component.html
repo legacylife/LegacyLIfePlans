@@ -10,62 +10,62 @@
     <mat-card-content class="p-0">
       <ngx-datatable class="material ml-0 mr-0" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50"
         [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
-        <ngx-datatable-column headerClass="tbl--header" name="Email" prop="username" [flexGrow]="1">
+        <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Email" prop="username" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row?.username }}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Verified Status" prop="status" [flexGrow]="1">
+        <ngx-datatable-column  [resizeable]="false" name="Verified Status" prop="status" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row?.status }}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Name" prop="firstName" [flexGrow]="1">
+        <ngx-datatable-column  [resizeable]="false" name="Name" prop="firstName" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row?.firstName ? row?.firstName : row?.lastName ? +' ' +row?.lastName : "N/A"}}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="State" prop="state" [flexGrow]="1">
+        <ngx-datatable-column  [resizeable]="false" name="State" prop="state" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row?.state }}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column prop="city" name="City" [flexGrow]="1">
+        <ngx-datatable-column  [resizeable]="false" prop="city" name="City" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row?.city }}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column prop="zipcode" name="Zipcode" [flexGrow]="1">
+        <ngx-datatable-column [resizeable]="false" prop="zipcode" name="Zipcode" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row?.zipcode }}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column prop="end_date" name="Subscription Status" [flexGrow]="1.1">
+        <ngx-datatable-column [resizeable]="false" prop="end_date" name="Subscription Status" [flexGrow]="1.1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row?.subscriptionData ? row?.subscriptionData.status : ""}}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column prop="end_date" name="Expiry Date" [flexGrow]="1">
+        <ngx-datatable-column [resizeable]="false" prop="end_date" name="Expiry Date" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row?.subscriptionData ? row?.subscriptionData.endDate : ""}}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Own legacy count" [flexGrow]="1.1">
+        <ngx-datatable-column [resizeable]="false" name="Own legacy count" [flexGrow]="1.1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             0
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Status" [flexGrow]="1">
+        <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status" (click)="statusChange(row)"
               title="Status">{{row.status}}</mat-chip>
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Actions" [sortable]="false" [draggable]="false" [flexGrow]="1">
+        <ngx-datatable-column [resizeable]="false" name="Actions" [sortable]="false" [draggable]="false" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <a mat-icon-button mat-sm-button color="primary" class="mb-1" title="View"
               [routerLink]="['/admin/userview', row._id]">
-              <mat-icon style="font-size: 32px;">pageview</mat-icon>
+              <mat-icon style="font-size: 27px;">remove_red_eye</mat-icon>
             </a>
           </ng-template>
         </ngx-datatable-column>

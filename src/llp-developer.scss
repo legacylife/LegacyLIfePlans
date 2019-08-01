@@ -44,3 +44,11 @@ Note: Please do not add important anywhere. If any concern feel free to ask.
 .border-t{
     border-top: solid 1px #e1e5c7 !important;
 }
+.ngx-datatable.material .datatable-header .datatable-header-cell {
+    font-size: 16px;    
+    font-family: $font--lato--bold;
+}
+.ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell{
+    font-family: $font--lato--regular;
+    font-size: 15px;
+}

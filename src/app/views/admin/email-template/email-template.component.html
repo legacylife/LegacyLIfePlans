@@ -11,31 +11,31 @@
     <mat-card-content class="p-0">
       <ngx-datatable class="material ml-0 mr-0" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50"
         [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
-        <ngx-datatable-column name="Email Code" prop="code" [flexGrow]="1">
+        <ngx-datatable-column [resizeable]="false" name="Email Code" prop="code" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row?.code }}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Email Title" prop="title" [flexGrow]="1">
+        <ngx-datatable-column [resizeable]="false" name="Email Title" prop="title" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row?.title }}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Email Subject" prop="mailSubject" [flexGrow]="1">
+        <ngx-datatable-column [resizeable]="false" name="Email Subject" prop="mailSubject" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{ row?.mailSubject }}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Status" [flexGrow]="1">
+        <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            <mat-chip mat-sm-chip>{{row.status ? 'Active' : 'In-Active'}}</mat-chip>
+            <mat-chip class="active--status--chip" mat-sm-chip>{{row.status ? 'Active' : 'In-Active'}}</mat-chip>
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column name="Actions" [flexGrow]="1">
+        <ngx-datatable-column [resizeable]="false" name="Actions" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <a mat-icon-button mat-sm-button color="primary" class="mb-1"
               [routerLink]="['/admin/email-template-edit', row._id]" mattooltip="Toggle Collapse" title="Edit">
-              <mat-icon style="font-size: 32px;">edit</mat-icon>
+              <mat-icon style="font-size: 27px;">edit</mat-icon>
             </a>
           </ng-template>
         </ngx-datatable-column>
