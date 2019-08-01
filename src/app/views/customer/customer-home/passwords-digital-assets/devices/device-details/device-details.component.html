@@ -72,14 +72,14 @@
                   </div>
               </div>
 
-              <div *ngIf="IsVisibleBoolean" [hidden]=IsVisible>
-                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" *ngIf="row?.passwordPattern && row?.passwordPattern>0">
-                      <label class="strong--label">Pattern:</label>
-                    </div>
-                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                      <img src="../../../../../../assets/images/arkenea/icon-arrow.png" style="display:none"/>
-                      <div id="patternHolder8" class="pattern-holder small--pattern"></div>
-                    </div>                  
+              <div [hidden]="IsVisible" class="{{IsVisible ? 'hidden-div' : ''}}">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" *ngIf="row?.passwordPattern && row?.passwordPattern>0">
+                  <label class="strong--label">Pattern:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <img src="../../../../../../assets/images/arkenea/icon-arrow.png" style="display:none"/>
+                  <div id="patternHolder8" class="pattern-holder small--pattern"></div>
+                </div>                  
               </div>
             </div>
           </div>

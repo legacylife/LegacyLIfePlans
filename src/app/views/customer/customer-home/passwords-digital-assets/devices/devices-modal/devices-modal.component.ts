@@ -320,7 +320,7 @@ export class DevicesModalComponent implements OnInit {
 
   getPattern() {
     let pattern = this.lock.getPattern();
-    console.log("Get pattern :- ",pattern);    
+   // console.log("Get pattern :- ",pattern);    
     return pattern;
   }
 }
