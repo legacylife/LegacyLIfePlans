@@ -160,15 +160,15 @@ export const PersonalAffairsTypeOfDocument = [
 
 export const RelationshipType = [
   {
-    opt_name: "Family",
+    opt_name: "Co-worker",
     opt_code: "1"
   },
   {
-    opt_name: "Friends",
+    opt_name: "Family",
     opt_code: "2"
   },
   {
-    opt_name: "Co-worker",
+    opt_name: "Friends",
     opt_code: "3"
   }
 ];

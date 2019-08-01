@@ -51,11 +51,12 @@ export class HireAdvisorComponent implements OnInit, AfterViewInit  {
     }   
     if(this.updates=='update'){
       this.hideFirstStep = false;
+      this.defaultPermission = false;
     }
   }
 
   ngAfterViewInit(){ 
-    if(!this.selectedProfileId){
+    if(this.selectedProfileId){
       this.trusteeFormGroup.controls['selectAll'].setValue('never');
         this.onRadioChange('never');     
     }

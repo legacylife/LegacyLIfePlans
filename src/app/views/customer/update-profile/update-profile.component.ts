@@ -94,11 +94,24 @@ export class UpdateProfileComponent implements OnInit {
       }
       if (result.status == "success") {
         this.loader.close();
+
+        let profileData = result.data.userProfile;  
+        localStorage.setItem("endUserFirstName", profileData.firstName)
+        localStorage.setItem("endUserLastName", profileData.lastName)
+        
+        if (profileData.profilePicture) {
+          this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + profileData.profilePicture;
+          localStorage.setItem('endUserProfilePicture', this.profilePicture)
+          this.picService.setProfilePic = this.profilePicture;
+        }
+        else {
+          this.picService.setProfilePic = this.profilePicture;
+        }
+
         this.snack.open('Your profile information has been updated successfully.', 'OK', { duration: 4000 })
         this.router.navigate(['/', 'customer', 'dashboard']);
       } else {
         this.loader.close();
-        console.log(result.data);
         this.snack.open(result.data, 'OK', { duration: 4000 })
       }
     }, (err) => {

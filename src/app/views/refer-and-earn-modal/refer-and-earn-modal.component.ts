@@ -108,7 +108,7 @@ export class ReferAndEarnModalComponent implements OnInit {
       this.userapi.apiRequest('post', 'invite/invite-member-check-email', params).subscribe(result => {
         if (result.data.status && !this.exitEmails.includes(email)) {
           this.exitEmails.push(email);
-          this.alreadySentEmails = this.exitEmails.join(",")
+          this.alreadySentEmails = this.exitEmails.join(", ")
         }
       })    
       this.checkEmails()

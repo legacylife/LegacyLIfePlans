@@ -6,6 +6,8 @@ import { SendAnEmailComponent } from './send-an-email-modal/send-an-email-modal.
 import { HireAdvisorComponent } from '../hire-advisor-modal/hire-advisor-modal.component';
 import { UserAPIService } from './../../../userapi.service';
 import { s3Details } from '../../../config';
+import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
+import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 const filePath = s3Details.url+'/'+s3Details.profilePicturesPath;
 @Component({
   selector: 'app-customer-professionals',
@@ -21,26 +23,15 @@ export class CustomerProfessionalComponent implements OnInit {
   profileData: any;
   about: string;
   userId : string;
+  advisorStatus : string='';
   constructor(
     private route: ActivatedRoute,private userapi: UserAPIService, 
     private router: Router, private dialog: MatDialog, 
+    private loader: AppLoaderService,private snack: MatSnackBar,private confirmService: AppConfirmService
   ) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
-
-    // this.profileData = {
-    //   proName: 'Mary, Jason & Hodge of Attorney',
-    //   proDomain: 'www.mjhattorenys.com',
-    //   proJob: 'Attorney, Insurance Agent',
-    //   proExp: '12 years',
-    //   proPhone: '+8654321234',
-    //   proLocation: '12  street, Silicon Valley,Avenue NE, Huntsville',
-    // };
-    
-    // this.about = "Lawyer James Anderson once made his mark on the football field as a highschool All - State; and All - American football player.Today he isknown for his courtroom skills as partner with Mary, Jason & Hodge of Attorney Huntsville, Alabama.Morris is a lifelong Alabamian who has been practicing law in Huntsville since earning his law degree from the Attorneys High School."
-    
-
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.getAdvisorView();
@@ -50,21 +41,19 @@ export class CustomerProfessionalComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }, query)
     }
-
     this.userapi.apiRequest('post', 'userlist/viewall', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
         this.profileData = this.row = result.data;  
-        //console.log(this.row);      
         if(result.data.profilePicture){
           this.profilePicture = filePath + result.data.profilePicture;
         }        
         this.leadsCount();
+        this.checkAdvisorView(this.profileData._id)
       }
     }, (err) => {
       console.error(err)
-      //this.showLoading = false
     })
   }
 
@@ -115,4 +104,39 @@ export class CustomerProfessionalComponent implements OnInit {
     else
       return ""
   }
+
+  removeAdvisor(advisorId){
+      var statMsg = "Are you sure you want remove?"
+      this.confirmService.confirm({ message: statMsg })
+        .subscribe(res => {
+          if (res) {
+            this.loader.open();
+            let req_vars = {};          
+            req_vars = {customerId:this.userId, advisorId:advisorId, userType : 'advisor'}
+            this.userapi.apiRequest('post', 'customer/legacy-user-remove', req_vars).subscribe(result => {
+              this.loader.close();
+              this.router.navigate(["customer", "professionals-landing","prof-advisor-listing"])
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })              
+            }, (err) => {
+              console.error(err)
+              this.loader.close();
+            })
+        }
+      })
+  }
+
+  checkAdvisorView(advisorId='') {
+    const req_vars = {
+      query: Object.assign({customerId:this.userId,advisorId:advisorId})
+    }
+    this.userapi.apiRequest('post', 'advisor/checkHireAdvisor', req_vars).subscribe(result => {
+        if(result.status == "success" && result.data.RequestData){
+          this.advisorStatus  = result.data.RequestData.status
+          console.log("advisorStatus :", this.advisorStatus);
+        }
+      }, (err) => {
+      console.error(err)
+    })
+  }
+
 }
