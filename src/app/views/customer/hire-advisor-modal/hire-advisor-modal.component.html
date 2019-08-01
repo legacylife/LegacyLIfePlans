@@ -6,7 +6,7 @@
 </div>
 <div class="ll--modal--body per--profile--wrapper p-0 hire--ad--modal">
     <h3 *ngIf="SubHeaderName" class="main--head text-center m-0">Assign permission</h3>
-    <p *ngIf="SubHeaderName" class="sub--head text-center mt-1">for the {{hireFullName}}</p>  
+    <p *ngIf="SubHeaderName" class="sub--head text-center mt-1">for the {{hireFullName}}</p>
   <div class="stepper--wrapper" id="{{!hideFirstStep ? 'hideStep' : ''}}">
    <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="onChangeFormIndex($event)">
       <mat-step *ngIf="hideFirstStep" [stepControl]="hireFormGroup">    

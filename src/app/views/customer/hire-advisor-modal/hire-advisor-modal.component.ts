@@ -46,6 +46,7 @@ export class HireAdvisorComponent implements OnInit, AfterViewInit  {
     this.buildItemForm();
     this.userSections = userSections;  
     this.selectedProfileId = '';   
+    this.SubHeaderName = true;
     if(this.ids){     
       this.checkAdvisorView();
     }   

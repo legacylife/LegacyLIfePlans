@@ -24,7 +24,7 @@
               <span (click)="openSendEmailModal(selectedProfileId, true)">Send an Email</span>
             </div> 
             <div class="text-center mt--25">
-                <button *ngIf="advisorStatus !='Pending' && advisorStatus !='Active'" mat-raised-button (click)="openHireAdvisorModal(selectedProfileId,'',true)" class="llp--primary--btn w168">Hire this Advisor</button>
+                <button *ngIf="advisorStatus !='Pending' && advisorStatus !='Active'" mat-raised-button (click)="openHireAdvisorModal(selectedProfileId,'',true,fullName)" class="llp--primary--btn w168">Hire this Advisor</button>
                 <button *ngIf="advisorStatus =='Pending'" disabled  mat-raised-button class="llp--primary--btn w168">Request Pending</button>
                 <button *ngIf="advisorStatus =='Active'" mat-raised-button (click)="removeAdvisor(row?._id)" class="llp--primary--btn w168">Remove Advisor</button>
             </div>

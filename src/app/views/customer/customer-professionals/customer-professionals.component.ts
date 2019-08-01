@@ -24,6 +24,7 @@ export class CustomerProfessionalComponent implements OnInit {
   about: string;
   userId : string;
   advisorStatus : string='';
+  fullName: string;
   constructor(
     private route: ActivatedRoute,private userapi: UserAPIService, 
     private router: Router, private dialog: MatDialog, 
@@ -46,6 +47,7 @@ export class CustomerProfessionalComponent implements OnInit {
         console.log(result.data)
       } else {
         this.profileData = this.row = result.data;  
+        this.fullName  = result.data.firstName+' '+result.data.lastName;  
         if(result.data.profilePicture){
           this.profilePicture = filePath + result.data.profilePicture;
         }        
@@ -87,13 +89,14 @@ export class CustomerProfessionalComponent implements OnInit {
     this.sideNav.opened = !this.sideNav.opened;
   }
 
-  openHireAdvisorModal(id: any = {},update: any = {}, isNew?) {
+  openHireAdvisorModal(id: any = {},update: any = {}, isNew?,hireFullName='') {
     let dialogRef: MatDialogRef<any> = this.dialog.open(HireAdvisorComponent, {
       width: '720px',
       disableClose: true,
       data: {
         id: id,
         update: update,
+        hireFullName: hireFullName,
       },
     })
   }
