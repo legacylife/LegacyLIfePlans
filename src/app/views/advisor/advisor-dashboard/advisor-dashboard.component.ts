@@ -7,6 +7,7 @@ import { AppLoaderService } from '../../../shared/services/app-loader/app-loader
 import { UserAPIService } from './../../../userapi.service';
 import { s3Details } from '../../../config';
 import { ReferAndEarnModalComponent } from 'app/views/refer-and-earn-modal/refer-and-earn-modal.component';
+import { SubscriptionService } from 'app/shared/services/subscription.service';
 //import { ReferAndEarnModalComponent } from '../legacies/refer-and-earn-modal/refer-and-earn-modal.component';
 
 const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
@@ -26,19 +27,56 @@ export class AdvisorDashboardComponent implements OnInit {
   remainingDays:any = 0
   LeadsCount: any = 0
   invitedMembersCountDefault:string='5'
+
+  /**
+   * Subscription variable declaration
+   */
+  planName: string = 'free'
+  autoRenewalStatus: string = 'off'
+  subscriptionExpireDate: string = ''
+
+  isAccountFree: boolean = true
+  isSubscribePlan: boolean = false
+  isSubscribedBefore: boolean = false
+  autoRenewalFlag: boolean = false
+  autoRenewalVal:boolean = false
+  isPremiumExpired: boolean = false
+  isSubscriptionCanceled:boolean = false
+  userCreateOn: any
+  userSubscriptionDate: any
+
   constructor(
     private userapi: UserAPIService,
     private router: Router, private dialog: MatDialog,
     private snack: MatSnackBar, private confirmService: AppConfirmService,
-    private loader: AppLoaderService
+    private loader: AppLoaderService,
+    private subscriptionservice:SubscriptionService
   ) { }
 
+  
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.getAdvisorActivityLogList();
     this.getInviteMembersCount();
     this.getLeadsCount();
   }
+
+  checkSubscription() {
+    this.subscriptionservice.checkSubscription( ( returnArr )=> {
+      this.userCreateOn = returnArr.userCreateOn
+      this.isSubscribedBefore = returnArr.isSubscribedBefore
+      this.isSubscriptionCanceled = returnArr.isSubscriptionCanceled
+      this.autoRenewalFlag = returnArr.autoRenewalFlag
+      this.autoRenewalVal = returnArr.autoRenewalVal
+      this.autoRenewalStatus = returnArr.autoRenewalStatus
+      this.isAccountFree = returnArr.isAccountFree
+      this.isPremiumExpired = returnArr.isPremiumExpired
+      this.isSubscribePlan = returnArr.isSubscribePlan
+      this.planName = returnArr.planName
+      this.subscriptionExpireDate = returnArr.subscriptionExpireDate
+    })
+  }
+
   @HostListener('document:click', ['$event']) clickedOutside(event){
     if(event.srcElement.outerText=='Invite'){
       setTimeout(()=>{     

@@ -77,7 +77,7 @@
                 </mat-card-content>
               </mat-card>
 
-              <mat-card class="p-0 target--completed" *ngIf="invitedMembersCount>=invitedMembersCountDefault">
+              <mat-card class="p-0 target--completed" *ngIf="invitedMembersCount>=invitedMembersCountDefault && !isSubscribedBefore">
                 <mat-card-content class="">
                   <div class="header--wrapper">
                     <header class="sub--header" style="background-image: url('assets/images/arkenea/congratulations.png')">

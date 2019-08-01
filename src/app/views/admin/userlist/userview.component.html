@@ -177,7 +177,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Subscription status</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{isAccountFree && !isSubscribePlan ? 'Trial' : 'Paid'}} Account</div>
+                  <div fxFlex="40">{{isAccountFree && !isSubscribePlan ? 'Trial' : ( isSubscribePlan && !isPremiumExpired ? 'Paid' : 'Expired')}} Account</div>
                 </div>
               </mat-list-item>
 
@@ -190,7 +190,7 @@
               </mat-list-item>
               <mat-list-item class="">
               <div fxLayout="row" fxFlex="100">
-                <h6 class="m-0 mr-1">Subscription Plan</h6>
+                <h6 class="m-0 mr-1">Current Plan</h6>
                 <span fxFlex></span>
                 <div fxFlex="40">{{planName}} Plan</div>
               </div>

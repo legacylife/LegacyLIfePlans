@@ -225,16 +225,15 @@ export class SubscriptionService {
       inviteById: this.userId,
       inviteType: 'advisor'
     }
-    await this.userapi.apiRequest('post', 'invite/get-invite-members-count', params).subscribe(result => {
-      let extendedDays = 30
-      if( result.data.count > 5 ) {
-        let completedMonths = extendedDays * (result.data.completedMonths > 1 ? result.data.completedMonths : 1)
-        return completedMonths
-      }
-      else{
-        return extendedDays
-      }
-    })
+    let extendedDays = 30
+    let result = await this.userapi.apiRequest('post', 'invite/get-invite-members-count', params).toPromise()
+    if( result.data.count > 5 ) {
+      let completedMonths = extendedDays * (result.data.completedMonths > 1 ? result.data.completedMonths : 1)
+      return completedMonths
+    }
+    else{
+      return extendedDays
+    }
   }
 
   checkSubscriptionAdminPanel = (userDetails,callback) => {
