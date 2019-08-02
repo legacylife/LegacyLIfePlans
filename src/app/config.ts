@@ -5,24 +5,24 @@ let gmailConnectionLinkEnv = ""
 let officeConnectionLinkEnv = ""
 let mailchimpLinkEnv = ""
 let bucketName = ""
-export let stripeKey= ""
+let stripeSecretKey= ""
 
 //localhost
 if(window.location.hostname.indexOf("localhost") > -1){ // local server
-  serverUrlEnv = "http://localhost:8080"  
-  stripeKey = "pk_test_mB9cnQ2EBtmIiIPUi0kQgIxC"
+  serverUrlEnv = "http://localhost:80"  
+  stripeSecretKey = "pk_test_mB9cnQ2EBtmIiIPUi0kQgIxC"
 }
 else if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") > -1 || window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com:8080") > -1){ // client server
   serverUrlEnv = "http://ec2-3-212-172-15.compute-1.amazonaws.com:8080"  
-  stripeKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
+  stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
 }
 else if(window.location.hostname.indexOf("ec2-3-209-230-58.compute-1.amazonaws.com") > -1){ // test server
   serverUrlEnv = "http://ec2-3-209-230-58.compute-1.amazonaws.com"  
-  stripeKey = "pk_test_mB9cnQ2EBtmIiIPUi0kQgIxC"
+  stripeSecretKey = "pk_test_mB9cnQ2EBtmIiIPUi0kQgIxC"
 }
 else {  //dev server
   serverUrlEnv = "http://ec2-3-212-172-15.compute-1.amazonaws.com:8080" 
-  stripeKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
+  stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
 }
 
 if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") > -1){
@@ -30,7 +30,7 @@ if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") 
 } else {
   bucketName = "llp-staging";
 }
-
+export const stripeKey = stripeSecretKey
 export const serverUrl = serverUrlEnv
 
 export const emailLimit = 20
