@@ -44,7 +44,7 @@ async function inviteMembers(req, res) {
         let s3URL = constants.s3Details.serveUrl+'/'+inviteById+'/'+constants.s3Details.inviteDocumentsPath
         for (var invIndex = 0; invIndex < invitesImagesLength; invIndex++) {
             attachmentsImages.push({
-                "path": s3URL+invitesImages[invIndex].documents[0].tmpName,
+                "path": 'http://ec2-3-212-172-15.compute-1.amazonaws.com:8080/assets/images/arkenea/small-logo.png',//s3URL+invitesImages[invIndex].documents[0].tmpName,
                 "fileName": invitesImages[invIndex].documents[0].title            
             })
         }
@@ -80,8 +80,7 @@ async function inviteMembers(req, res) {
             }
             if(advisorInvite){
                 mailOptions['attachments'] = attachmentsImages               
-                sendEmail(mailOptions)
-                //sendRawEmail(mailOptions)
+                sendRawEmail(mailOptions)
             }else{
                 sendEmail(mailOptions)
             }
