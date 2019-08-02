@@ -36,7 +36,7 @@ var constants = {
       clientId: ''
     }
   },
-  stripeSecretKey: ""
+  stripeSecretKey: "sk_test_eXXvQMZIUrR3N1IEAqRQVTlw"
 }
 
 module.exports = constants
