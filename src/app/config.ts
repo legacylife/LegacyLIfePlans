@@ -25,7 +25,8 @@ else {  //dev server
   stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
 }
 
-if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") > -1){
+if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") > -1 || window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com:8080") > -1 )
+{
   bucketName = "llp-dev";
 } else {
   bucketName = "llp-staging";

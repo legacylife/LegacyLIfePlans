@@ -458,6 +458,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     })
     dialogRef.afterClosed()
       .subscribe(res => {
+        this.checkSubscription()
         this.isGetAddOn = localStorage.getItem('endUserSubscriptionAddon') && localStorage.getItem('endUserSubscriptionAddon') == 'yes' ? true : false
         let allotedSpace = Number(this.addOnSpace) + Number(this.defaultSpace)
         this.totalSpaceAlloted = allotedSpace
