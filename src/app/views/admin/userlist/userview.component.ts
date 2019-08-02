@@ -134,17 +134,16 @@ export class userviewComponent implements OnInit {
             userType : 'advisor'
           }
           this.api.apiRequest('post', 'advisor/activateadvisor', req_vars).subscribe(result => {
+            this.loader.close();
             if (result.status == "error") {
-              this.loader.close();
-              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+              this.snack.open(result.data.message, 'OK', { duration: 4000 });
             } else {
               this.getUser()
-              this.loader.close();
-              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+              this.snack.open(result.data.message, 'OK', { duration: 4000 });
             }
           }, (err) => {
-            console.error(err)
-            this.loader.close();
+            console.error(err);
+            this.snack.open(err, 'OK', { duration: 4000 });
           })
         }
       })
