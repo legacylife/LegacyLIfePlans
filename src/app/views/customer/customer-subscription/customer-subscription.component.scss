@@ -104,20 +104,21 @@
         }
     }
 
-    .expired--user--info{
-        height: auto;
-        width: 53%;
-        border: 1px solid #c72128;
-        box-shadow: 0 0 5px #e6979a;
+    .expired--user--info{ 
+        height: 120px;
+        background: #c72128;
         display: flex;
+        align-items: center;
+        width: 100%;
+        box-shadow: 0 0 5px #e6979a; 
         padding: 10px 20px;
-        margin: 25px auto 0 auto !important;
         border-radius: 4px;
+        margin-top: 25px;
         
         p{
             margin: 0;
-            font-size: 16px;
-            color: #c72128; 
+            font-size: 18px;
+            color: #fff;
         }
     }
 }
