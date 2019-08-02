@@ -868,13 +868,22 @@ function chargeForAddon( userProfile, stripeCustomerId, requestParam, res ) {
                           "createdOn" : new Date(),
                           "createdBy" : mongoose.Types.ObjectId(requestParam._id)
                         };
+      
+      let subscriptionDetails = userProfile.subscriptionDetails
+      if( subscriptionDetails && subscriptionDetails.length > 0 ) {
+        currentSubscription = subscriptionDetails[(subscriptionDetails.length-1)]
+        currentSubscription['addOnDetails'] = addOnDetails
+        subscriptionDetails[(subscriptionDetails.length-1)] = currentSubscription
+      }
+      /* 
       let userSubscriptionAddOn = []
       if( userProfile.addOnDetails && userProfile.addOnDetails.length > 0 ) {
         userSubscriptionAddOn = userProfile.addOnDetails
-      }
+      } 
       userSubscriptionAddOn.push(addOnDetails)
+       */
       //Update user details
-      User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, addOnDetails : userSubscriptionAddOn } }, function (err, updated) {
+      User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails: subscriptionDetails/* addOnDetails : userSubscriptionAddOn */ } }, function (err, updated) {
         if (err) {
           res.send(resFormat.rError(err))
         }

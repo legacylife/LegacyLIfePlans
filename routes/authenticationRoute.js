@@ -61,7 +61,7 @@ function signin(req, res) {
             subscriptionEndDate = "",
             subscriptionStatus = "",
             autoRenewal = "",
-            addOnDetails = user.addOnDetails ? user.addOnDetails : null,
+            //addOnDetails = user.addOnDetails ? user.addOnDetails : null,
             addOnGiven = 'no',
             isReferAndEarn = user.IamIntrested && user.IamIntrested == 'Yes' ? 'Yes' :  'No'
             //console.log("subscriptionDetailssubscriptionDetails",subscriptionDetails)
@@ -73,9 +73,10 @@ function signin(req, res) {
               autoRenewal = subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] ? subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] : false
               //if subscription ends do not sends addon details
               
-              if( addOnDetails != null && addOnDetails.length > 0 && ( new Date(subscriptionEndDate) > new Date()) ) {
+              if( new Date(subscriptionEndDate) > new Date() ) {
                 //console.log("asdasdasd",new Date(subscriptionEndDate),new Date())
-                addOnGiven = addOnDetails[(addOnDetails.length-1)]['status'] && addOnDetails[(addOnDetails.length-1)]['status'] == 'paid' ? 'yes' : 'no'
+                addOnGiven = subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails'] && subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails']['status'] == 'paid' ? 'yes' : 'no'
+                //addOnGiven = addOnDetails[(addOnDetails.length-1)]['status'] && addOnDetails[(addOnDetails.length-1)]['status'] == 'paid' ? 'yes' : 'no'
               }
             }
             
