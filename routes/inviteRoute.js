@@ -42,7 +42,9 @@ async function inviteMembers(req, res) {
         let invitesImages = await InviteTemp.find({ inviteById: inviteById }, function (err, data, index) {});
         let invitesImagesLength = invitesImages.length           
         let s3URL = constants.s3Details.serveUrl+'/'+inviteById+'/'+constants.s3Details.inviteDocumentsPath
+        console.log("s3URL=====",s3URL)
         for (var invIndex = 0; invIndex < invitesImagesLength; invIndex++) {
+            console.log("s3-path=====",s3URL+invitesImages[invIndex].documents[0].tmpName)
             attachmentsImages.push({
                 "path": 'http://ec2-3-212-172-15.compute-1.amazonaws.com:8080/assets/images/arkenea/small-logo.png',//s3URL+invitesImages[invIndex].documents[0].tmpName,
                 "fileName": invitesImages[invIndex].documents[0].title            
