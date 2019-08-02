@@ -1,10 +1,10 @@
-<div class="ll--modal--header">
+<!-- <div class="ll--modal--header">
   Lockscreen 
-</div>
+</div> -->
 <form class="llp-form-wrapper" [formGroup]="lockScreenForm" (ngSubmit)="lockScreenFormSubmit()">
-  <div class="ll--modal--body invite--modal--hgt">
-    <h6 class="invite--sub--line">{{userFullName}} </h6>
-      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
+  <div class="ll--modal--body lock--screen--wrapper">
+    <!-- <h6 class="invite--sub--line"> </h6> -->
+      <!-- <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
           <div class="">
               <mat-form-field class="full-width">
                 <input type="password" name="password" matInput [formControl]="lockScreenForm.controls['password']"  placeholder="Password" value="" required>
@@ -20,7 +20,24 @@
                   <input matInput name="email" [formControl]="lockScreenForm.controls['email']" readonly="readonly">
                 </mat-form-field>
           </div>
+      </div> -->
+
+      <div class="locked">
+        <mat-icon>lock_outline</mat-icon>
       </div>
+      <p class="pep">{{userFullName}} <br> You are locked. Please enter password to unlock! </p>
+      <mat-form-field class="enterpass">
+        <input type="password" name="password" matInput [formControl]="lockScreenForm.controls['password']"  placeholder="Password" value="" required>
+        <mat-icon matTooltip="Please enter password" matTooltipClass="llp--tooltip error" class="red--alert"
+        *ngIf="lockScreenForm.controls['password'].hasError('required') && lockScreenForm.controls['password'].touched">help_outline</mat-icon>
+
+        <mat-icon matTooltip="Please enter correct password." matTooltipClass="llp--tooltip error" class="red--alert"
+            *ngIf="lockScreenForm.controls['password'].invalid">help_outline</mat-icon>
+      </mat-form-field>
+
+
+
+
   </div>
   <div class="ll--modal--footer text-center">
     <button mat-raised-button class="llp--primary--btn" [disabled]="lockScreenForm.invalid">Submit</button>

@@ -13,12 +13,12 @@ import { lockscreenModalComponent } from '../../lockscreen-modal/lockscreen-moda
 @Component({
   selector: 'app-customer-home',
   templateUrl: './customer-home.component.html',
-  styleUrls: ['./customer-home.component.scss'],
+  styleUrls: ['./customer-home.component.scss'], 
   animations: [egretAnimations]
 })
 export class CustomerHomeComponent implements OnInit, OnDestroy {
   public isSideNavOpen: boolean;
-  public viewMode: string = 'grid-view';
+  public viewMode: string = 'grid-view'; 
   public currentPage: any;
   dayFirst = true;
   daySeco = false;
@@ -100,7 +100,9 @@ stopWatching() {
  // console.log("Signin stop watching");
   let dialogRef: MatDialogRef<any> = this.dialog.open(lockscreenModalComponent, {
     width: '720px',
-    disableClose: true,    
+    disableClose: true, 
+    panelClass: 'lock--panel',
+    backdropClass: 'lock--backdrop'   
   }) 
   dialogRef.afterClosed()
   .subscribe(res => {

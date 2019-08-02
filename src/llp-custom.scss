@@ -430,10 +430,6 @@ body{
             min-height: 97px;
         }        
     }
-    // .mat-dialog-container{
-    //     box-shadow: none !important;
-    //     background: transparent !important;
-    // }
 }
 .egret-indigo .mat-progress-spinner circle, .egret-indigo .mat-spinner circle{
     stroke: $clr--2 !important;
@@ -445,6 +441,41 @@ body{
     svg{
         width: 80px !important;
         height: 80px !important;
+    }
+}
+
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing.lock--backdrop {
+    background: rgba(4, 4, 4, 0.9);
+}
+.cdk-global-overlay-wrapper .lock--panel{
+    .mat-dialog-container{
+        background: transparent;
+        box-shadow: none;
+        color:$clr--1;
+        box-shadow: 0 0 5px #5a5353;
+        border-radius: 20px;
+    }
+    form{
+        &.llp-form-wrapper{
+            .mat-form-field{
+                .mat-form-field-label {
+                    color: $clr--1 !important;                  
+                }
+            }
+            &.mat-form-field-invalid{
+                color: $clr--1;
+            }   
+            .mat-form-field-infix{
+                .mat-input-element{
+                    color: $clr--1 !important;
+                }
+            } 
+         
+          
+           
+            
+        }    
+       
     }
 }
 

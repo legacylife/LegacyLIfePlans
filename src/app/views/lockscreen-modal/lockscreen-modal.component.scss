@@ -1,26 +1,37 @@
 
 @import 'llp-global-styles.scss';
 
-.invite--sub--line{
-    font-size: 20px;
-    color: #000;
-    font-family: $font--lato--regular !important;
-    margin: 0 0 30px 0px;
+.lock--screen--wrapper{
     text-align: center;
-}
-.invite--modal--hgt{
-    min-height: 200px;
-    max-height: calc(100vh - 250px);
-    overflow: auto;
-}
 
+    .locked{
+        width: 72px;
+        height: 72px;
+        border: 1px solid #fff;
+        border-radius: 50%;
+        text-align: center;
+        margin: 0 auto;
+        line-height: 93px;
+        margin-top: 29px;
+        .mat-icon{
+            font-size: 42px;
+            width: 42px;
+            height: 42px;
+        }
+    }
 
-@media screen and (orientation:landscape) and (max-width: 850px){
-    .invite--sub--line{
-        margin: 0;
-        font-size: 13px;
+    .pep{
+        color: #fff;
+        margin: 20px 0 20px 0;
+        font-size: 18px;
     }
-    .add--new{
-            font-size: 13px;
+    .enterpass{
+        width: 60% !important;
     }
+   
+    .llp-form-wrapper ::ng-deep .mat-form-field .mat-form-field-label,
+    .llp-form-wrapper ::ng-deep  .mat-form-field-infix .mat-input-element{
+        color: #fff !important;
+   }
+   
 }
