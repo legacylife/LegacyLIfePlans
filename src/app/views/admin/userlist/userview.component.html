@@ -1,4 +1,4 @@
-<div fxLayout="row wrap">
+<div fxLayout="row wrap" *ngIf="showPage">
   <div fxFlex="100" fxFlex.gt-md="300px" fxFlex.gt-sm="50">
     <mat-card class="profile-sidebar admn--user--details--wrapper">
       <div class="propic text-center" *ngIf="row?.userType != 'sysadmin'">
@@ -97,7 +97,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Verified Status</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">Yes</div>
+                  <div fxFlex="40">{{ row?.emailVerified ? 'Yes' : 'No' }}</div>
                 </div>
               </mat-list-item>
 

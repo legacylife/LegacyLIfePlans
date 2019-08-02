@@ -151,4 +151,31 @@ export class TimeCapsuleDetailsComponent implements OnInit {
   }
 
 
+  checkExt = (ext) => {    
+  let extensions  = ['doc','DOC','DOCX','docx','pdf','PDF','jpg','JPG','png','PNG','jpeg','JPEG','txt','TXT','flv','FLV','avi','AVI','wmv','WMV','mpeg','MPEG','webm','WEBM','mov','MOV'];
+    let resp = this.isExtension(ext,extensions);
+    if(!resp){
+      return true;
+    }else{
+     return false;
+    }    
+  }
+
+  isExtension(ext, extnArray) {
+    var result = false;
+    var i;
+    if (ext) {
+        ext = ext.toLowerCase();
+        for (i = 0; i < extnArray.length; i++) {
+            if (extnArray[i].toLowerCase() === ext) {
+                result = true;
+                break;
+            }
+        }
+    }
+    return result;
+  }
+
+
+
 }
