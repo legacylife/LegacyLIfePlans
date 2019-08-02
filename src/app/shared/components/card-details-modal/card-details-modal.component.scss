@@ -30,8 +30,9 @@
 
 
 .old-card-details{
+    overflow: hidden;
     label{
-        width: 95%;
+        width: 100%;
         display: inline-block;
         background-color: $clr--5;
         padding: 10px;
@@ -62,6 +63,7 @@
 }
 .new-card-details{
     margin-top: 10px;
+    overflow: hidden;
     label{
         width: 95%;
         display: inline-block;
@@ -84,3 +86,16 @@
    
 }
 
+/* Media query (start here)*/
+@media only screen and (max-width: 450px) {
+   
+    
+}
+
+@media only screen and (max-width: 599px) {
+  
+    
+}
+@media only screen and (min-width: 600px) and (max-width: 959px){
+
+}

@@ -53,7 +53,7 @@ export class userviewComponent implements OnInit {
   userCreateOn: any
   userSubscriptionDate: any
   today: Date = moment().toDate()
-
+  showPage:boolean = false
  // websites:any;
   constructor(
     private layout: LayoutService,
@@ -74,7 +74,7 @@ export class userviewComponent implements OnInit {
 
   //function to get all events
   getUser = (query = {}, search = false) => {
-
+    this.loader.open()
     const req_vars = {
       query: Object.assign({ _id: this.selectedUserId }, query)
     }
@@ -82,6 +82,8 @@ export class userviewComponent implements OnInit {
     this.api.apiRequest('post', 'userlist/viewall', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
+        this.loader.close()
+        this.showPage = true
       } else {
         this.row = result.data
         this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + result.data.profilePicture;
@@ -100,73 +102,15 @@ export class userviewComponent implements OnInit {
             this.planName = returnArr.planName
             this.subscriptionExpireDate = returnArr.subscriptionExpireDate
           })
-          /* let subscriptions = this.row.subscriptionDetails ? this.row.subscriptionDetails : null
-          if( subscriptions != null ) {
-            let currentSubscription = subscriptions[subscriptions.length-1]
-            let diff: any
-            let expireDate: any
-            let subscriptionDate      = currentSubscription && currentSubscription.startDate ? currentSubscription.startDate : null
-            this.userCreateOn         = moment( this.row.createdOn )
-            this.isSubscribedBefore   = ( subscriptionDate !== 'undefined' && subscriptionDate !== null && subscriptionDate !== "") ? true : false
-            
-            if( !this.isSubscribedBefore ) {
-              this.isAccountFree    = true
-              this.isSubscribePlan  = false
-              diff                  = this.subscriptionservice.getDateDiff( this.userCreateOn.toDate(), this.today )
-
-              if( diff <= 30 ) {
-                expireDate            = this.userCreateOn.add(30,"days")
-                this.isPremiumExpired = false
-              }
-              else {
-                if( this.row.usertype == 'customer' ) {
-                  expireDate            = this.userCreateOn.add(60,"days")
-                }
-                else{
-                  expireDate            = this.userCreateOn.add(30,"days")
-                }        
-                this.isPremiumExpired = true
-              }
-              this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
-            }
-            else if( this.isSubscribedBefore ) {
-              this.isSubscriptionCanceled = ( currentSubscription.status && currentSubscription.status == 'canceled' ) ? true : false
-              this.autoRenewalFlag = ( currentSubscription.autoRenewal && currentSubscription.autoRenewal == 'true' ) ? true : false
-              this.autoRenewalVal = this.autoRenewalFlag
-              this.autoRenewalStatus = this.autoRenewalVal ? 'on' : 'off'
-              this.userSubscriptionDate = moment( currentSubscription.endDate )
-              this.isAccountFree    = false
-              diff                  = this.subscriptionservice.getDateDiff( this.today, this.userSubscriptionDate.toDate() )
-              
-              if( diff >= 0 ) {
-                expireDate            = this.userSubscriptionDate
-                this.isPremiumExpired = false
-                this.isSubscribePlan  = true
-                if(this.row.usertype == 'advisor') {
-                  this.planName         = 'Standard'
-                }
-                else{
-                  this.planName         = 'Legacy Life'
-                }
-              }
-              else {
-                if( this.row.usertype == 'customer' ) {
-                  expireDate          = this.userSubscriptionDate.add(30,"days")
-                }
-                else{
-                  expireDate            = this.userSubscriptionDate
-                }
-                this.isPremiumExpired = true
-                this.isSubscribePlan  = false
-                this.planName         = 'Free'
-              }
-              this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
-            }
-          } */
+          
         }
+        this.loader.close()
+        this.showPage = true
       }
     }, (err) => {
       console.error(err)
+      this.loader.close()
+      this.showPage = true
       //this.showLoading = false
     })
 
