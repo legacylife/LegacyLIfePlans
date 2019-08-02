@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserAPIService } from './../../../../userapi.service';
@@ -37,6 +37,13 @@ export class CustomerMyPeopleComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.getMyPeoplesList('All', -1);
+  }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      setTimeout(()=>{
+        this.getMyPeoplesList('All', -1);
+      },2000);           
+    }
   }
 
   getMyPeoplesList = (search, sort, advquery: any = {}, trustquery: any = {}) => {
