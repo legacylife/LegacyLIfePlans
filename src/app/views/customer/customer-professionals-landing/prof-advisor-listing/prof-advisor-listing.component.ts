@@ -158,7 +158,7 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
         id: id,
         update: update,
         hireFullName:hireFullName
-      }
+      },
     })
   }
 

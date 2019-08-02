@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
@@ -41,6 +41,13 @@ export class CustomerMyTrusteeComponent implements OnInit {
  
     this.getTrusteeList('All','-1');
     this.urlData = this.userapi.getURLData();
+  }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.outerText=='Send an Invite'){
+      setTimeout(()=>{
+        this.getTrusteeList('All','-1');
+      },2000);           
+    }
   }
 
   getTrusteeList = (search,sort) => {
