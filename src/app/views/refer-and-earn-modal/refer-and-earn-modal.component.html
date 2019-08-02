@@ -57,7 +57,7 @@
 
 
     <div class="upload--buss--docs--sec mt-1">
-      <label>Upload invitation image, business card</label>
+      <label>Upload invitation image, business card </label>
       <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
         (fileOver)="fileOverBase($event)" [uploader]="uploader">
         <input type="file" name="documents" ng2FileSelect [uploader]="uploader" multiple (change)="fileOverBase('')" />
@@ -88,6 +88,7 @@
     </mat-chip-list>
 
     <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small>
+
     <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderCopy.getNotUploadedItems().length || uploader.getNotUploadedItems().length">
       <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
       <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>

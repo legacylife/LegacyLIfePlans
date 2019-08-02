@@ -42,7 +42,7 @@ export class userviewComponent implements OnInit {
   planName: string = 'Free'
   autoRenewalStatus: string = 'off'
   subscriptionExpireDate: string = ''
-
+  fullname: string = ''
   isAccountFree: boolean = true
   isSubscribePlan: boolean = false
   isSubscribedBefore: boolean = false
@@ -85,9 +85,14 @@ export class userviewComponent implements OnInit {
         this.loader.close()
         this.showPage = true
       } else {
-        this.row = result.data
-        this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + result.data.profilePicture;
-        
+        this.row = result.data;
+        this.fullname = '';
+        if(this.row.firstName && this.row.firstName!=='undefined' && this.row.lastName && this.row.lastName!=='undefined'){
+          this.fullname = this.row.firstName+' '+this.row.lastName;
+        }
+        if(result.data.profilePicture){
+           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + result.data.profilePicture;
+        }
         if(this.row.userType != 'sysAdmin') {
           this.subscriptionservice.checkSubscriptionAdminPanel( this.row, ( returnArr )=> {
             this.userCreateOn = returnArr.userCreateOn

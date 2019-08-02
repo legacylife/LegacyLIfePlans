@@ -230,6 +230,7 @@
                <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
                 <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
                 <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
+                <p>&nbsp;</p> <p>&nbsp;</p>
               </div>
                 <div class="text-center">
                   <button mat-raised-button class="llp--primary--btn full-width mb-1" [disabled]="forthFormGroup.invalid">Complete</button>

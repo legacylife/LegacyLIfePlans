@@ -5,7 +5,7 @@
         <img src="{{profilePicture}}" alt="">
       </div>
       <div class="profile-title text-center mb-1">         
-        <div class="main-title">{{row?.firstName +' ' + row?.lastName}}</div>
+        <div class="main-title">{{fullname}}</div>
         <div class="text-muted">{{row?.bioText}}</div>
       </div>
       <div class="profile-actions mb-1" fxLayoutAlign="center center" *ngIf="row?.userType == 'advisor' && row?.status == 'Pending'">
