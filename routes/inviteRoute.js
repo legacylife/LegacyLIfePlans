@@ -80,7 +80,8 @@ async function inviteMembers(req, res) {
             }
             if(advisorInvite){
                 mailOptions['attachments'] = attachmentsImages               
-                sendRawEmail(mailOptions)
+                sendEmail(mailOptions)
+                //sendRawEmail(mailOptions)
             }else{
                 sendEmail(mailOptions)
             }
