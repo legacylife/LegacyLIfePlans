@@ -21,7 +21,7 @@ const trust = require('./../models/Trustee.js')
 ObjectId = require('mongodb').ObjectID;
 const AWS = require('aws-sdk');
 const s3 = require('./../helpers/s3Upload')
-const stripe = require("stripe")("sk_test_eXXvQMZIUrR3N1IEAqRQVTlw");
+const stripe = require("stripe")(constants.stripeSecretKey);
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'

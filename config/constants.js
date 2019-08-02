@@ -9,6 +9,7 @@ var constants = {
     appId: "135njeakyrw521pbvsm6w20nb",
     appSecret: "27g7mvf6f606237rhxvsi21v8",
   },
+  stripeSecretKey:'sk_test_eXXvQMZIUrR3N1IEAqRQVTlw', //sk_test_eXXvQMZIUrR3N1IEAqRQVTlw test server // sk_test_ni2JhTNSaNPgEZVHeiciAVVs00YF0EGLTR // client server
   s3Details: {
     url : "https://s3.amazonaws.com/llp-staging",
     bucketName: "llp-staging",
