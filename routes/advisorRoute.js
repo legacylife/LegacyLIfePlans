@@ -270,7 +270,6 @@ function hireAdvisorStatus(req, res) {
 
 
               if(!activityLogID && from.hiredAdvisorRefId){
-                console.log("in not activity id>>>>>",from.hiredAdvisorRefId)
                 AdvisorActivityLog.findOne({ hiredAdvisorRefId: from.hiredAdvisorRefId }, { }, async function (err, ActivityLogData) {
                   if (err) {
                     res.status(401).send(resFormat.rError(err))
@@ -303,7 +302,6 @@ function hireAdvisorStatus(req, res) {
                 })
               }
               else if(activityLogID && !from.hiredAdvisorRefId){
-                console.log("in activity id>>>>>",activityLogID)
                 AdvisorActivityLog.updateOne({ _id: activityLogID }, { $set: { actionTaken: proquery.status } }, function (err, logDetails) {
                   if (err) {
                     res.send(resFormat.rError(err))
@@ -353,7 +351,6 @@ function hireAdvisorStatus(req, res) {
                 })
               }*/
               else {
-                console.log("in else >>>>>",from.hiredAdvisorRefId)
                 User.findOne({ _id: proquery.advisorId }, { firstName: 1, lastName: 1, username: 1 }, function (err, advisorUser) {
                   if (err) {
                     res.status(401).send(resFormat.rError(err))
@@ -362,10 +359,10 @@ function hireAdvisorStatus(req, res) {
                     let toEmail = advisorUser.username;
                     let advName = advisorUser.firstName;
                     let EmailMesg = inviteByName + " has been update and send you legacy request";
-                    stat = sendHireStatusMail(toEmail, advName, EmailMesg, '');
+                   // stat = sendHireStatusMail(toEmail, advName, EmailMesg, ''); comment this function as per FS
                   }
                 })
-                let result = { "message": "Request reminder sent successfully" }
+                let result = { "message": "Advisor details updated successfully" }
                 res.status(200).send(resFormat.rSuccess(result))
               }
             }
