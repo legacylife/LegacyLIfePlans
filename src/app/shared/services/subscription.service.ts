@@ -61,7 +61,7 @@ export class SubscriptionService {
       subscriptionEndDate = "",
       subscriptionStatus = "",
       autoRenewal = "",
-      addOnDetails = userData.addOnDetails ? userData.addOnDetails : null,
+      //addOnDetails = userData.addOnDetails ? userData.addOnDetails : null,
       addOnGiven = 'no',
       isReferAndEarnStatus = userData.IamIntrested && userData.IamIntrested == 'Yes' ? 'Yes' :  'No',
       
@@ -74,11 +74,16 @@ export class SubscriptionService {
         subscriptionStatus = subscriptionDetails[(subscriptionDetails.length-1)]['status']
         defaultSpace = subscriptionDetails[(subscriptionDetails.length-1)]['defaultSpace']
         autoRenewal = subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] ? subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] : false
+        let addOnDetails = subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails']
         //if subscription ends do not sends addon details
-        if( addOnDetails != null && addOnDetails.length > 0 && ( new Date(subscriptionEndDate) > new Date()) ) {
+        if( new Date(subscriptionEndDate) > new Date() ) {
+          addOnGiven = subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails'] && subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails']['status'] == 'paid' ? 'yes' : 'no'
+          addOnSpace = addOnGiven == 'yes' ? addOnDetails['spaceAlloted'] : 0
+        }
+        /* if( addOnDetails != null && addOnDetails.length > 0 && ( new Date(subscriptionEndDate) > new Date()) ) {
           addOnGiven = addOnDetails[(addOnDetails.length-1)]['status'] && addOnDetails[(addOnDetails.length-1)]['status'] == 'paid' ? 'yes' : 'no'
           addOnSpace = addOnGiven == 'yes' ? addOnDetails[(addOnDetails.length-1)]['spaceAlloted'] : 0
-        }
+        } */
       }
       /**
        * Reset all locastorage variables to check wheater the subscription ends or not
