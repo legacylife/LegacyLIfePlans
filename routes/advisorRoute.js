@@ -405,8 +405,6 @@ function hireAdvisorStatus(req, res) {
             stat = sendHireStatusMail(toEmail, advName, EmailMesg, '');
           }
         })
-        
-
         let result = { "message": "Request sent successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }

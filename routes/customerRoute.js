@@ -333,6 +333,7 @@ function deleteEcontact(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          actitivityLog.removeActivityLog(profileInfo._id);
           let result = { "message": "Record deleted successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }
@@ -454,6 +455,7 @@ function deleteProfile(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          actitivityLog.removeActivityLog(profileInfo._id);
           let result = { "message": "Record deleted successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }
@@ -552,6 +554,7 @@ function deleteProfessionals(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          actitivityLog.removeActivityLog(profileInfo._id);
           let result = { "message": "Record deleted successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }
@@ -726,6 +729,7 @@ function deleteIdBox(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          actitivityLog.removeActivityLog(profileInfo._id);
           let result = { "message": "Record deleted successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }
@@ -817,6 +821,7 @@ function deleteLegalStuff(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          actitivityLog.removeActivityLog(legalInfo._id);
           let result = { "message": "Record deleted successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }

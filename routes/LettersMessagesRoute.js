@@ -155,16 +155,17 @@ function viewLettersMessages(req, res) {
 function deleteLettersMessages(req, res) {
   let { query } = req.body;
   let fields = { }
-  lettersMessage.findOne(query, fields, function (err, petInfo) {
+  lettersMessage.findOne(query, fields, function (err, Info) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
       var upStatus = 'Delete';
       var params = { status: upStatus }
-      lettersMessage.update({ _id: petInfo._id }, { $set: params }, function (err, updatedinfo) {
+      lettersMessage.update({ _id: Info._id }, { $set: params }, function (err, updatedinfo) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          actitivityLog.removeActivityLog(Info._id);
           let result = { "message": "Record deleted successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }

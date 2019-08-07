@@ -127,7 +127,7 @@ function petsFormUpdate(req, res) {
           commonhelper.customerAdvisorLegacyNotifications(sendData)
         }
 
-        logData.customerId = query.customerId;
+        logData.customerId = proquery.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
@@ -165,6 +165,7 @@ function deletePets(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+           actitivityLog.removeActivityLog(petInfo._id);
           let result = { "message": "Record deleted successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }
