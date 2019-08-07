@@ -23,6 +23,7 @@ const updateActivityLog = (logData) => {
         res.status(401).send(resFormat.rError(err))
       } else {
         if(activityLog){
+          console.log("ids",activityLog._id)
           FileActivityLog.updateOne({ _id: activityLog._id }, { $set: proquery }, function (err, updatedDetails) {
             if (err) {
               console.log(err)
@@ -42,6 +43,7 @@ const updateActivityLog = (logData) => {
           fileactivitylog.modifiedOn = new Date();
           fileactivitylog.createdBy = logData.customerId;
           fileactivitylog.modifiedBy = logData.customerId;
+          console.log("proquery",proquery)
           fileactivitylog.save({ $set: proquery }, function (err, newEntry) {
             if (err) {
               res.send(resFormat.rError(err))
@@ -51,8 +53,25 @@ const updateActivityLog = (logData) => {
           })
         }
       }
-    })
-    
+    })    
   })
 }
+
+
+const removeActivityLog = (removeId) => {
+ return new Promise(function(resolve, reject) {
+    console.log("removeId->",removeId)
+    var query = { fileId: removeId };
+    FileActivityLog.remove(query, function(err, obj) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        //resolve("success");
+      }
+    });
+
+  })
+}
+
 module.exports = { updateActivityLog }
+module.exports = { removeActivityLog }

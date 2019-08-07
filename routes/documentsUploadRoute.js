@@ -1205,12 +1205,12 @@ router.post('/invite', cors(), function(req,res){
 
 function deleteInviteDocument(req, res) {
   let { query } = req.body;
- // let { fileName } = req.body;
-   InviteTemp.deleteOne(query, function (err, data) {   
+  let { proquery } = req.body;
+   InviteTemp.deleteOne(query, function (err, fileDetails) {   
       if (err) {
         res.send(resFormat.rError(err))
       } else {
-       // resMsg = deleteDocumentS3(fileDetails.customerId,inviteDocumentsPath,fileName.docName);
+        resMsg = deleteDocumentS3(fileDetails.customerId,inviteDocumentsPath,proquery.docName);
         let result = { userId:fileDetails._id, "message": "File deleted successfully!" }
         res.send(resFormat.rSuccess(result))
       }    

@@ -155,6 +155,7 @@ function deleteRealEstate(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          actitivityLog.removeActivityLog(profileInfo._id);
           let result = { "message": "Record deleted successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }
@@ -292,6 +293,7 @@ function deleteRealEstateVehicle(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          actitivityLog.removeActivityLog(profileInfo._id);
           let result = { "message": "Record deleted successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }
@@ -426,6 +428,7 @@ function deleteRealEstateAsset(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          actitivityLog.removeActivityLog(profileInfo._id);
           let result = { "message": "Record deleted successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }

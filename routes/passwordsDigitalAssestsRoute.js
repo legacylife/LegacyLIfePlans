@@ -220,6 +220,7 @@ function deletedevice(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          actitivityLog.removeActivityLog(deviceInfo._id);
           let result = { "message": "Record deleted successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }
@@ -384,6 +385,7 @@ function deleteElectronicMedia(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          actitivityLog.removeActivityLog(ElectronicMediaInfo._id);
           let result = { "message": "Record deleted successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }

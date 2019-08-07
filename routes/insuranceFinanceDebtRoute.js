@@ -130,8 +130,8 @@ function insuranceFormUpdate(req, res) {
           commonhelper.customerAdvisorLegacyNotifications(sendData)
         }
 
-        logData.customerId = query.customerId;
-        logData.fileId = newEntry._id;
+        logData.customerId = proquery.customerId;
+        logData.fileId = newEntry._id;console.log("logData",logData);
         actitivityLog.updateActivityLog(logData);
 
         let result = { "message": "Insurance details added successfully!" }
@@ -168,6 +168,7 @@ function deleteInsurance(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          actitivityLog.removeActivityLog(insuranceInfo._id);
           let result = { "message": "Record deleted successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }
@@ -284,7 +285,7 @@ function financesFormUpdate(req, res) {
           commonhelper.customerAdvisorLegacyNotifications(sendData)
         }
 
-        logData.customerId = query.customerId;
+        logData.customerId = proquery.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
@@ -417,7 +418,7 @@ function debtFormUpdate(req, res) {
           commonhelper.customerAdvisorLegacyNotifications(sendData)
         }
         
-        logData.customerId = query.customerId;
+        logData.customerId = proquery.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
@@ -457,6 +458,7 @@ function debtDebt(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          actitivityLog.removeActivityLog(debtInfo._id);
           let result = { "message": "Record deleted successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }
@@ -479,6 +481,7 @@ function deleteFinances(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          actitivityLog.removeActivityLog(financeInfo._id);
           let result = { "message": "Record deleted successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }

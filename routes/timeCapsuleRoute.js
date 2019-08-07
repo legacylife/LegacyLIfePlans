@@ -161,6 +161,7 @@ function deletetimeCapsules(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          actitivityLog.removeActivityLog(timeCapsuleInfo._id);
           let result = { "message": "Record deleted successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
         }
