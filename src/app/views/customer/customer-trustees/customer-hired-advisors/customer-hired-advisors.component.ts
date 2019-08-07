@@ -54,7 +54,7 @@ export class CustomerHiredAdvisorComponent implements OnInit {
        order: {"modifiedOn": sort},
      }
    }else{
-      let custSearch = { $nin: ['Deleted'] };    
+      let custSearch = { $nin: ['Deleted', 'Rejected'] };
       if(search!=''){
         custSearch = search;
       }
