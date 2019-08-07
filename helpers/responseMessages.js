@@ -67,7 +67,7 @@ let responseArray = [
     {
         "code":614,
         "type":"incorrect-field",
-        "message":"Incorrect {field}. Please try again.",
+        "message":"Incorrect {field}. Please try again.",//{field}=> emailid, password etc.
     },
     {
         "code":615,
@@ -97,7 +97,7 @@ let responseArray = [
     {
         "code":620,
         "type":"required-field",
-        "message":"Please fill {field} details.",
+        "message":"Please fill {field} details.", //{field}=> login
     },
     {
         "code":621,
@@ -122,7 +122,7 @@ let responseArray = [
     {
         "code":625,
         "type":"add-user-email",
-        "message":"Looks like email id already have an account registered with this email as {userType}.",
+        "message":"Looks like email id already have an account registered with this email as {userType}.",//{userType}=> customer, adviser
     },
     {
         "code":626,
@@ -132,7 +132,7 @@ let responseArray = [
     {
         "code":627,
         "type":"valid-field-details",
-        "message":"Please enter the valid {field} details",
+        "message":"Please enter the valid {field} details", //{field}=> emailid, password etc.
     },
     {
         "code":628,
@@ -182,6 +182,6 @@ let responseArray = [
     {
         "code":637,
         "type":"user-details-sent",
-        "message":"The {field} details are sent on your email.",
+        "message":"The {field} details are sent on your email.",//{field} => password, password reset link etc.
     },
 ]

@@ -612,76 +612,81 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
       
     }
     else {
-      let subscriptionStartDate = subscription.current_period_start*1000
-      let subscriptionEndDate = subscription.current_period_end*1000
-      let subscriptionDetails = {"_id" : objectId,
-                                "productId" : subscription.items.data[0]['plan']['product'],
-                                "planId" : planId,
-                                "subscriptionId" : subscription.id,
-                                "startDate" : new Date(subscriptionStartDate),
-                                "endDate" : new Date(subscriptionEndDate),
-                                "interval" : subscription.items.data[0]['plan']['interval'],
-                                "currency" : subscription.items.data[0]['plan']['currency'],
-                                "amount" : subscription.items.data[0]['plan']['amount'] / 100,
-                                "status" : 'paid',
-                                "autoRenewal": subscription.collection_method == 'charge_automatically' ? true : false,
-                                "paymentMode" : 'online',
-                                "planName" : subscription.items.data[0]['plan']['metadata']['name']+' Plan',
-                                "defaultSpace" : subscription.items.data[0]['plan']['metadata']['defaultSpace'],
-                                "spaceDimension" : subscription.items.data[0]['plan']['metadata']['spaceDimension'],
-                                "paidOn" : new Date(),
-                                "createdOn" : new Date(),
-                                "createdBy" : mongoose.Types.ObjectId(requestParam._id)
-                              };
-      let userSubscription = []
-      let EmailTemplateName = "NewSubscriptionAdviser";
-      if(userProfile.userType == 'customer') {
-        EmailTemplateName = "NewSubscription";
-      }
-
-      if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
-        userSubscription = userProfile.subscriptionDetails
-        EmailTemplateName = "AutoRenewalAdviser"
+      if(subscription.status == 'active') {
+        let subscriptionStartDate = subscription.current_period_start*1000
+        let subscriptionEndDate = subscription.current_period_end*1000
+        let subscriptionDetails = {"_id" : objectId,
+                                  "productId" : subscription.items.data[0]['plan']['product'],
+                                  "planId" : planId,
+                                  "subscriptionId" : subscription.id,
+                                  "startDate" : new Date(subscriptionStartDate),
+                                  "endDate" : new Date(subscriptionEndDate),
+                                  "interval" : subscription.items.data[0]['plan']['interval'],
+                                  "currency" : subscription.items.data[0]['plan']['currency'],
+                                  "amount" : subscription.items.data[0]['plan']['amount'] / 100,
+                                  "status" : 'paid',
+                                  "autoRenewal": subscription.collection_method == 'charge_automatically' ? true : false,
+                                  "paymentMode" : 'online',
+                                  "planName" : subscription.items.data[0]['plan']['metadata']['name']+' Plan',
+                                  "defaultSpace" : subscription.items.data[0]['plan']['metadata']['defaultSpace'],
+                                  "spaceDimension" : subscription.items.data[0]['plan']['metadata']['spaceDimension'],
+                                  "paidOn" : new Date(),
+                                  "createdOn" : new Date(),
+                                  "createdBy" : mongoose.Types.ObjectId(requestParam._id)
+                                };
+        let userSubscription = []
+        let EmailTemplateName = "NewSubscriptionAdviser";
         if(userProfile.userType == 'customer') {
-          EmailTemplateName = "AutoRenewal"
+          EmailTemplateName = "NewSubscription";
         }
+
+        if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
+          userSubscription = userProfile.subscriptionDetails
+          EmailTemplateName = "AutoRenewalAdviser"
+          if(userProfile.userType == 'customer') {
+            EmailTemplateName = "AutoRenewal"
+          }
+        }
+        userSubscription.push(subscriptionDetails)
+        //Update user details
+        User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
+          if (err) {
+            res.send(resFormat.rError(err))
+          }
+          else {
+            //subscription purchased email template
+            emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
+              if(template) {
+                template = JSON.parse(JSON.stringify(template));
+                let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
+                body = body.replace("{plan_name}",subscriptionDetails.planName);
+                body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
+                body = body.replace("{duration}",subscriptionDetails.interval);
+                body = body.replace("{paid_on}",subscriptionDetails.paidOn);
+                body = body.replace("{start_date}",subscriptionDetails.startDate);
+                body = body.replace("{end_date}",subscriptionDetails.endDate);
+                if(userProfile.userType == 'customer') {
+                  body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
+                  body = body.replace("{more_space}", subscription.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
+                }
+                body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
+                const mailOptions = {
+                  to : userProfile.username,
+                  subject : template.mailSubject,
+                  html: body
+                }
+                sendEmail(mailOptions)
+                res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
+              } else {
+                res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
+              }
+            })
+          }
+        })
       }
-      userSubscription.push(subscriptionDetails)
-      //Update user details
-      User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
-        if (err) {
-          res.send(resFormat.rError(err))
-        }
-        else {
-          //subscription purchased email template
-          emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
-            if(template) {
-              template = JSON.parse(JSON.stringify(template));
-              let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
-              body = body.replace("{plan_name}",subscriptionDetails.planName);
-              body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
-              body = body.replace("{duration}",subscriptionDetails.interval);
-              body = body.replace("{paid_on}",subscriptionDetails.paidOn);
-              body = body.replace("{start_date}",subscriptionDetails.startDate);
-              body = body.replace("{end_date}",subscriptionDetails.endDate);
-              if(userProfile.userType == 'customer') {
-                body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
-                body = body.replace("{more_space}", subscription.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
-              }
-              body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
-              const mailOptions = {
-                to : userProfile.username,
-                subject : template.mailSubject,
-                html: body
-              }
-              sendEmail(mailOptions)
-              res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
-            } else {
-              res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
-            }
-          })
-        }
-      })
+      else{
+        res.send(resFormat.rError("Transaction could not be completed. Please check the details and try again."));
+      }
     }
   });
 }
@@ -856,64 +861,69 @@ function chargeForAddon( userProfile, stripeCustomerId, requestParam, res ) {
       }
     }
     else {
-      let addOnDetails = {"_id" : objectId,
-                          "chargeId" : charge.id,
-                          "currency" : charge.currency,
-                          "amount" : (charge.amount)/100,
-                          "status" : 'paid',
-                          "paymentMode" : 'online',
-                          "spaceAlloted" : requestParam.spaceAlloted,
-                          "spaceDimension" : 'GB',
-                          "paidOn" : new Date(),
-                          "createdOn" : new Date(),
-                          "createdBy" : mongoose.Types.ObjectId(requestParam._id)
-                        };
-      
-      let subscriptionDetails = userProfile.subscriptionDetails
-      if( subscriptionDetails && subscriptionDetails.length > 0 ) {
-        currentSubscription = subscriptionDetails[(subscriptionDetails.length-1)]
-        currentSubscription['addOnDetails'] = addOnDetails
-        subscriptionDetails[(subscriptionDetails.length-1)] = currentSubscription
-      }
-      /* 
-      let userSubscriptionAddOn = []
-      if( userProfile.addOnDetails && userProfile.addOnDetails.length > 0 ) {
-        userSubscriptionAddOn = userProfile.addOnDetails
-      } 
-      userSubscriptionAddOn.push(addOnDetails)
-       */
-      //Update user details
-      User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails: subscriptionDetails/* addOnDetails : userSubscriptionAddOn */ } }, function (err, updated) {
-        if (err) {
-          res.send(resFormat.rError(err))
+      if(charge.status == 'succeeded') {
+        let addOnDetails = {"_id" : objectId,
+                            "chargeId" : charge.id,
+                            "currency" : charge.currency,
+                            "amount" : (charge.amount)/100,
+                            "status" : 'paid',
+                            "paymentMode" : 'online',
+                            "spaceAlloted" : requestParam.spaceAlloted,
+                            "spaceDimension" : 'GB',
+                            "paidOn" : new Date(),
+                            "createdOn" : new Date(),
+                            "createdBy" : mongoose.Types.ObjectId(requestParam._id)
+                          };
+        
+        let subscriptionDetails = userProfile.subscriptionDetails
+        if( subscriptionDetails && subscriptionDetails.length > 0 ) {
+          currentSubscription = subscriptionDetails[(subscriptionDetails.length-1)]
+          currentSubscription['addOnDetails'] = addOnDetails
+          subscriptionDetails[(subscriptionDetails.length-1)] = currentSubscription
         }
-        else {
-          //subscription purchased email template
-          emailTemplatesRoute.getEmailTemplateByCode("AddonSubscription").then((template) => {
-            let subscriptionDetails = userProfile.subscriptionDetails
-            if(template) {
-              template = JSON.parse(JSON.stringify(template));
-              let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
-              body = body.replace("{addon_space}",addOnDetails.spaceAlloted+' '+addOnDetails.spaceDimension);
-              body = body.replace("{plan_name}",subscriptionDetails[subscriptionDetails.length-1]['planName']);
-              body = body.replace("{amount}", currencyFormatter.format(addOnDetails.amount, { code: (addOnDetails.currency).toUpperCase() }));
-              body = body.replace("{duration}",subscriptionDetails[subscriptionDetails.length-1]['interval']);
-              body = body.replace("{paid_on}",addOnDetails.paidOn);
-              body = body.replace("{end_date}",subscriptionDetails[subscriptionDetails.length-1]['endDate']);
-              const mailOptions = {
-                to : userProfile.username,
-                subject : template.mailSubject,
-                html: body
+        /* 
+        let userSubscriptionAddOn = []
+        if( userProfile.addOnDetails && userProfile.addOnDetails.length > 0 ) {
+          userSubscriptionAddOn = userProfile.addOnDetails
+        } 
+        userSubscriptionAddOn.push(addOnDetails)
+        */
+        //Update user details
+        User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails: subscriptionDetails/* addOnDetails : userSubscriptionAddOn */ } }, function (err, updated) {
+          if (err) {
+            res.send(resFormat.rError(err))
+          }
+          else {
+            //subscription purchased email template
+            emailTemplatesRoute.getEmailTemplateByCode("AddonSubscription").then((template) => {
+              let subscriptionDetails = userProfile.subscriptionDetails
+              if(template) {
+                template = JSON.parse(JSON.stringify(template));
+                let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
+                body = body.replace("{addon_space}",addOnDetails.spaceAlloted+' '+addOnDetails.spaceDimension);
+                body = body.replace("{plan_name}",subscriptionDetails[subscriptionDetails.length-1]['planName']);
+                body = body.replace("{amount}", currencyFormatter.format(addOnDetails.amount, { code: (addOnDetails.currency).toUpperCase() }));
+                body = body.replace("{duration}",subscriptionDetails[subscriptionDetails.length-1]['interval']);
+                body = body.replace("{paid_on}",addOnDetails.paidOn);
+                body = body.replace("{end_date}",subscriptionDetails[subscriptionDetails.length-1]['endDate']);
+                const mailOptions = {
+                  to : userProfile.username,
+                  subject : template.mailSubject,
+                  html: body
+                }
+                sendEmail(mailOptions)
+                res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
+              } else {
+                res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
               }
-              sendEmail(mailOptions)
-              res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
-            } else {
-              res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
-            }
-          })
-          //res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
-        }
-      })
+            })
+            //res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
+          }
+        })
+      }
+      else{
+        res.send(resFormat.rError("Transaction could not be completed. Please check the details and try again."));
+      }
     }
   });
 }
