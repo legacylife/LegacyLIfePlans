@@ -1223,8 +1223,11 @@ function downloadDocs(req,res) {
   let filename = query.filename;
   var params = {Bucket: constants.s3Details.bucketName,Key:filePath};
   let ext = filename.split('.')
-  ext = ext[ext.length - 1];console.log("params",params);
+  ext = ext[ext.length - 1];
+  
+  console.log("query ->",query,"filePath -> ",filePath,"filename -> ",filename)
   try {
+    console.log("params 00 ->",params)
       s3.s3.headObject(params, function(err, data) {
       if(data){
         const stream = s3.s3.getObject(params).createReadStream();    
@@ -1237,6 +1240,7 @@ function downloadDocs(req,res) {
         let files = filePath.split('/');
         oldFile = files[1]+'/'+files[2];
         var params = {Bucket: constants.s3Details.bucketName,Key:oldFile};
+        console.log("params 11 ->",params)
         s3.s3.headObject(params, function(err, data) {
           if(data){
             const stream = s3.s3.getObject(params).createReadStream();    
