@@ -1228,6 +1228,29 @@ function downloadDocs(req,res) {
   console.log("query ->",query,"filePath -> ",filePath,"filename -> ",filename)
   try {
     console.log("params 00 ->",params)
+    const stream = s3.s3.getObject(params).createReadStream();    
+    res.set({
+      'Content-Disposition': 'attachment; filename='+filename,
+      'Content-Type': 'image/'+ext+'; charset=utf-8'
+    });
+    stream.pipe(res);
+  } catch (error) {
+    res.status(401).send(resFormat.rError({message :error}))  
+  }
+}
+
+
+function downloadDocsOLD(req,res) {
+  let { query } = req.body; 
+  let filePath = query.docPath+query.filename;
+  let filename = query.filename;
+  var params = {Bucket: constants.s3Details.bucketName,Key:filePath};
+  let ext = filename.split('.')
+  ext = ext[ext.length - 1];
+  
+  console.log("query ->",query,"filePath -> ",filePath,"filename -> ",filename)
+  try {
+    console.log("params 00 ->",params)
       s3.s3.headObject(params, function(err, data) {
       if(data){
         const stream = s3.s3.getObject(params).createReadStream();    
