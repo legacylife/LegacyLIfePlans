@@ -41,7 +41,7 @@ export class CustomerLegalStuffComponent implements OnInit {
   EstateManagementSection:string='now';
   HealthcareManagementSection:string='now';
   PersonalAffairsManagementSection:string='now';
-  LegacyPermissionError:string="You don't have permission of this section";
+  LegacyPermissionError:string="You don't You don't have access to this section";
 
   constructor(
     private route: ActivatedRoute,

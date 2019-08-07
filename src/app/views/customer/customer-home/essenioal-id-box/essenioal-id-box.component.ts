@@ -96,14 +96,15 @@ export class EssenioalIdBoxComponent implements OnInit {
       if (this.selectedProfileId && this.selectedProfileId == 'essential-day-one' && this.urlData.lastThird != "legacies") {
         this.selectedProfileId = "";
       }
-      
+      console.log(">>>>",this.userId)
       if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'essential-day-one') {
           this.customerLegaciesId = this.userId;
           this.customerLegacyType =  this.urlData.userType;
           this.userId = this.urlData.lastOne;          
           this.selectedProfileId = "";        
+          console.log("******",this.userId)
       }
-
+      console.log("===>",this.userId)
       this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
       this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
       this.getEssentialIdView();

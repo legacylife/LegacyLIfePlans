@@ -26,13 +26,13 @@
                   <span class="who--does"> {{logData.customerFirstName +' ' + logData.customerLastName}} </span> {{logData.activityMessage}}
                 </p>
                 <p class="mb-0 green" *ngIf="logData?.sectionName == 'hired' && logData?.actionTaken == 'Active'">
-                  Request has confirmed
+                  Request has been confirmed
                 </p>
                 <p class="mb-0" *ngIf="logData?.sectionName == 'hired' && logData?.actionTaken == 'Pending'">
                   Request is pending for confirmation
                 </p>
                 <p class="mb-0 red" *ngIf="logData?.sectionName == 'hired' && logData?.actionTaken == 'Rejected'">
-                  Request has rejected
+                  Request has been rejected
                 </p>
 
               </div>

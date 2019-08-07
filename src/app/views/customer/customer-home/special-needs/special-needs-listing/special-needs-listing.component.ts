@@ -34,7 +34,7 @@ export class SpecialNeedsListingComponent implements OnInit {
   YoungChildrenManagementSection:string='now';
   ChildParentDisabilityManagementSection:string='now';
   FriendNeighborCareManagementSection:string='now';
-  LegacyPermissionError:string="You don't have permission of this section";
+  LegacyPermissionError:string="You don't You don't have access to this section";
 
   constructor(
     private route: ActivatedRoute,

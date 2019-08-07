@@ -40,7 +40,7 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
   InsuranceManagementSection:string='now';
   FinancesManagementSection:string='now';
   DebtManagementSection:string='now';
-  LegacyPermissionError:string="You don't have permission of this section";
+  LegacyPermissionError:string="You don't You don't have access to this section";
 
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
 

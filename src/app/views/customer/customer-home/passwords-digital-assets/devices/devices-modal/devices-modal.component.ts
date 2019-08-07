@@ -89,9 +89,6 @@ export class DevicesModalComponent implements OnInit {
     this.getDeviceView();
   }
 
-
-  
-
   //  ngAfterViewInit(){
   //  this.lock = new PatternLock('#patternHolder',{
   //    allowRepeat : true,
@@ -184,7 +181,6 @@ export class DevicesModalComponent implements OnInit {
           profileId: new FormControl(this.DevicesForm.controls['profileId'].value,)
         });            
       }
-
   }
 
   DevicesFormSubmit(profileInData = null) {
@@ -192,17 +188,17 @@ export class DevicesModalComponent implements OnInit {
     var proquery = {};
     let pattern = this.getPattern();
     
-    if(this.DevicesForm.controls['passwordType'].value=='3' && pattern!==''){
+    if(this.DevicesForm.controls['passwordType'].value==3 && pattern!==''){
       this.setPattern(pattern, '#patternHolder7');
     }else{
       this.IsVisible= true;
     }
-    
-    if(this.DevicesForm.controls['passwordType'].value=='3' && this.DevicesForm.controls['pattrenTemp'].value==''){
+   
+    if(this.DevicesForm.controls['passwordType'].value==3 && this.DevicesForm.controls['pattrenTemp'].value==''){
+        this.IsVisible= false;
         this.pattrenTempMissing = true;
         this.invalidMessage = "Please draw your device pattern.";
     }else{
-
         let profileIds = this.DevicesForm.controls['profileId'].value;
         if (profileIds) {
           this.selectedProfileId = profileIds;
