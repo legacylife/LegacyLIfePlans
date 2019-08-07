@@ -181,7 +181,7 @@ function deviceFormUpdate(req, res) {
           commonhelper.customerAdvisorLegacyNotifications(sendData)
         }
 
-        logData.customerId = query.customerId;
+        logData.customerId = proquery.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
@@ -296,7 +296,7 @@ function electronicMediaFormUpdate(req, res) {
           commonhelper.customerAdvisorLegacyNotifications(sendData)
         }
         
-        logData.customerId = query.customerId;
+        logData.customerId = proquery.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
         let result = { "message": "Electronic media added successfully!" }
