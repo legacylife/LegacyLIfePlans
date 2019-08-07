@@ -5,7 +5,7 @@ var request = require('request')
 var jwt = require('express-jwt')
 const mongoose = require('mongoose')
 var objectId = mongoose.Types.ObjectId();
-const stripe = require("stripe")("sk_test_eXXvQMZIUrR3N1IEAqRQVTlw");
+
 
 var async = require('async')
 var crypto = require('crypto')
@@ -26,6 +26,8 @@ var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
 })
+
+const stripe = require("stripe")(constants.stripeSecretKey);
 
 //function to get list of user as per given criteria
 function list(req, res) {
@@ -154,8 +156,6 @@ function updateStatus(req, res) {
             }
           }
         }
-
-
       }
       var params = { status: upStatus }
       User.update({ _id: userList._id }, { $set: params }, function (err, updatedUser) {

@@ -85,11 +85,9 @@ function LettersMessageFormUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-
               logData.customerId = custData.customerId;
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
-
               let result = { "message": "Letter and message "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
