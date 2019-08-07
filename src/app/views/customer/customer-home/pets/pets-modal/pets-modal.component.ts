@@ -170,7 +170,7 @@ export class PetsModalComponent implements OnInit {
 
   public fileOverBase(e: any): void {
       this.hasBaseDropZoneOver = e;
-      this.fileErrors = [];
+      this.fileErrors = [];console.log(" 1 ==> ",this.uploader.queue.length);
       this.uploader.queue.forEach((fileoOb) => {
         let filename = fileoOb.file.name;
         var extension = filename.substring(filename.lastIndexOf('.') + 1);
@@ -189,10 +189,10 @@ export class PetsModalComponent implements OnInit {
       });
 
       if(this.uploader.getNotUploadedItems().length){
-        this.uploaderCopy = cloneDeep(this.uploader)
+        this.uploaderCopy = cloneDeep(this.uploader);console.log(" 2 ==> ",this.uploader.queue.length)
         this.uploader.queue.splice(1, this.uploader.queue.length - 1)
         this.uploaderCopy.queue.splice(0, 1)
-        
+        console.log(" 3 ==> ",this.uploader.queue.length,'==',this.uploaderCopy.queue.length)
         this.uploader.queue.forEach((fileoOb, ind) => {
               this.uploader.uploadItem(fileoOb);
          });
@@ -206,7 +206,8 @@ export class PetsModalComponent implements OnInit {
     
   updateProgressBar(){
     let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
-    let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
+    console.log(" 4 ==> ",this.uploaderCopy.queue.length,"===",this.uploader.queue.length)
+    let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;    
     this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
     this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
   }

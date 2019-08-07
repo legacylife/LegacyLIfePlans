@@ -146,6 +146,8 @@ export class ListingComponent implements OnInit {
         this.trusteeAssetsCnt = result.data.totalTrusteeRecords;
         if (result.data.realEstateAssetsList.length > 0) {
           this.showAssetsListing = true;
+        }else {
+          this.showAssetsListing = false;
         }
       }
     }, (err) => {

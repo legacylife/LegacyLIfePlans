@@ -18,16 +18,18 @@ const filePath = s3Details.url + '/' + s3Details.inviteDocumentsPath;
   styleUrls: ['./refer-and-earn-modal.component.scss']
 })
 export class ReferAndEarnModalComponent implements OnInit {
+  userId = localStorage.getItem("endUserId");
+  public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
+  public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
+  public hasBaseDropZoneOver: boolean = false;
   inviteMembers: any
   inviteForm: FormGroup
-  userId: string
   userFullName: string
   endUserType: string
   exitEmails: any = []
   alreadySentEmails = ""
   invitedMembersCount = 0
   remainingDays = 0
-  public hasBaseDropZoneOver: boolean = false;
   documentsMissing: boolean = false;
   documents_temps = false;
   fileErrors: any;
@@ -37,9 +39,6 @@ export class ReferAndEarnModalComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
     private loader: AppLoaderService, private confirmService: AppConfirmService, @Inject(MAT_DIALOG_DATA) public data: any) {
   }
-  public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
-  public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
-
   ngOnInit() {
     this.docPath = filePath;
     this.userFullName = localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName");
@@ -53,10 +52,11 @@ export class ReferAndEarnModalComponent implements OnInit {
       })]),
     });
 
-    this.getInviteDocuments()
-    this.getInviteMembersCount()
     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
     this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}` });
+
+    this.getInviteDocuments()
+    this.getInviteMembersCount()    
   }
 
   get inviteMembersList() {
@@ -139,6 +139,7 @@ export class ReferAndEarnModalComponent implements OnInit {
   public fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
     this.fileErrors = [];
+    //console.log(" 1 ==> ",this.uploader.queue.length);
     this.uploader.queue.forEach((fileoOb) => {
       let filename = fileoOb.file.name;
       var extension = filename.substring(filename.lastIndexOf('.') + 1);
@@ -157,24 +158,51 @@ export class ReferAndEarnModalComponent implements OnInit {
     });
 
     if (this.uploader.getNotUploadedItems().length) {
-      this.uploaderCopy = cloneDeep(this.uploader)
+      this.uploaderCopy = cloneDeep(this.uploader); 
+      //console.log(" 2 ==> ",this.uploader.queue.length)
       this.uploader.queue.splice(1, this.uploader.queue.length - 1)
       this.uploaderCopy.queue.splice(0, 1)
+      //console.log(" 3 ==> ",this.uploader.queue.length,'==',this.uploaderCopy.queue.length)
       this.uploader.queue.forEach((fileoOb, ind) => {
         this.uploader.uploadItem(fileoOb);
       });
       this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-        this.updateProgressBar();
+       this.updateProgressBar();
         this.getInviteDocuments();
+        //console.log("uploader item ",response,item);
+      //  if(this.uploader.onCompleteAll()){
+          //console.log("CLear 1")
+        this.uploader.clearQueue();
+       // }
       };
     }
   }
 
   updateProgressBar(){
     let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
+    //console.log(" 4 ==> ",this.uploader.queue.length,"===",this.uploaderCopy.queue.length)
     let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
     this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
     this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+  }
+
+  
+  uploadRemainingFiles() {
+    this.uploaderCopy.onBeforeUploadItem = (item) => {
+      item.url = `${URL}?userId=${this.userId}`;
+    }
+    this.uploaderCopy.queue.forEach((fileoOb, ind) => {
+      this.uploaderCopy.uploadItem(fileoOb);
+    });
+    this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.updateProgressBar();
+      this.getInviteDocuments({}, false, false);   
+     // console.log("uploaderCopy item ",response,item);
+      if(this.uploaderCopy.onCompleteAll()){
+        //console.log("CLear 2")
+        this.uploaderCopy.clearQueue();
+      }              
+    };
   }
 
   getInviteDocuments = (query = {}, search = false, uploadRemained = true) => {
@@ -195,18 +223,6 @@ export class ReferAndEarnModalComponent implements OnInit {
     })
   }
 
-  uploadRemainingFiles() {
-    this.uploaderCopy.onBeforeUploadItem = (item) => {
-      item.url = `${URL}?userId=${this.userId}`;
-    }
-    this.uploaderCopy.queue.forEach((fileoOb, ind) => {
-      this.uploaderCopy.uploadItem(fileoOb);
-    });
-    this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.updateProgressBar();
-      this.getInviteDocuments({}, false, false);
-    };
-  }
 
   isExtension(ext, extnArray) {
     var result = false;
@@ -230,10 +246,14 @@ export class ReferAndEarnModalComponent implements OnInit {
         if (res) {
           this.loader.open();
           this.documentsList.splice(index, 1)
-          var query = {};
+          var query = {};var proquery = {};
+          // const req_vars = {
+          //   _id: Object.assign({ "_id": docObject._id }, query),
+          //   documentName: docObject.documents[0].tmpName
+          // }
           const req_vars = {
-            _id: Object.assign({ "_id": docObject._id }, query),
-            documentName: docObject.documents[0].tmpName
+            query: Object.assign({ _id: docObject._id }, query),
+            proquery: Object.assign({ documentName: docObject.documents[0].tmpName }, proquery),
           }
           this.userapi.apiRequest('post', 'documents/deleteInviteDocument', req_vars).subscribe(result => {
             if (result.status == "error") {
