@@ -6,7 +6,6 @@ const User = require('./../models/Users')
 
 
 const updateActivityLog = (customerId, advisorId, sectionName, hiredAdvisorRefId ="", trusteeName = "") => {
-  console.log("hirejkakjhkashd >>>",hiredAdvisorRefId)
   return new Promise(function (resolve, reject) {
 
     User.findOne({ _id: customerId }, { firstName: 1, lastName: 1, profilePicture: 1 }, function (err, userList) {
@@ -30,7 +29,7 @@ const updateActivityLog = (customerId, advisorId, sectionName, hiredAdvisorRefId
 
         if (sectionName == 'hired') {
           advisorLog.actionTaken = "Pending";
-          advisorLog.activityMessage = " has confirmed to hire you";
+          advisorLog.activityMessage = " has requested to hire you";
           advisorLog.hiredAdvisorRefId = hiredAdvisorRefId;
         }
         if (sectionName == 'contact') {
