@@ -4,7 +4,7 @@ const FileActivityLog = require('./../models/FileActivityLog.js')
 
 
 
-const updateActivityLog = (logData) => {
+exports.updateActivityLog = (logData) => {
   
   return new Promise(function(resolve, reject) {
     var proquery = {};
@@ -58,7 +58,7 @@ const updateActivityLog = (logData) => {
 }
 
 
-const removeActivityLog = (removeId) => {
+exports.removeActivityLog = (removeId) => {
  return new Promise(function(resolve, reject) {
     console.log("removeId->",removeId)
     var query = { fileId: removeId };
@@ -73,5 +73,5 @@ const removeActivityLog = (removeId) => {
   })
 }
 
-module.exports = { updateActivityLog }
-module.exports = { removeActivityLog }
+// module.exports = { updateActivityLog }
+// module.exports = { removeActivityLog }
