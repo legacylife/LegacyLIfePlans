@@ -43,7 +43,7 @@ export class ResetPasswordComponent implements OnInit {
     this.api.apiRequest('post', 'auth/resetPassword', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "success") {
-        this.snack.open(result.data, 'OK', { duration: 4000 })
+        this.snack.open(result.data.msg, 'OK', { duration: 4000 })
 
         setTimeout(() => {
           this.router.navigate(['llp-admin', 'password-reset-success']);
