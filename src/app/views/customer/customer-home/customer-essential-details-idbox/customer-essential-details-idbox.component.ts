@@ -68,8 +68,7 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
   }
 
   openIdBoxModal(data: any = {}, isNew?) {
-    console.log('asd')
-    let dialogRef: MatDialogRef<any> = this.dialog.open(EssenioalIdBoxComponent, {
+     let dialogRef: MatDialogRef<any> = this.dialog.open(EssenioalIdBoxComponent, {
       width: '720px',
       disableClose: true,
     })
@@ -170,9 +169,12 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
       let filePath = downloadURL;
       var link=document.createElement('a');
       link.href = filePath;
-      link.download = filePath.substr(filePath.lastIndexOf('/') + 1);
-      link.click();
+      link.download = filename;
+      link.click(); 
       this.snack.dismiss();
     });
   }
+
+
+
 }
