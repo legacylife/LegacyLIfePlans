@@ -524,7 +524,8 @@ export const CustomerRoutes: Routes = [
         data: { title: 'Update Profile' }
       }
     ]
-  }, {
+  },
+  {
     path: 'account-setting',
     component: CustomerLayoutComponent,
     children: [
@@ -536,7 +537,8 @@ export const CustomerRoutes: Routes = [
         data: { title: 'Account Setting' }
       }
     ]
-  }, {
+  },
+  {
     path: 'customer-subscription',
     component: CustomerLayoutComponent,
     data: { title: 'Subscription' },

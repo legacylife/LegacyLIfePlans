@@ -31,7 +31,7 @@ import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CountUpModule } from 'countup.js-angular2';
 import {MatExpansionModule} from '@angular/material/expansion';
-
+console.log('Landing Module..')
 @NgModule({
   imports: [
     CommonModule,

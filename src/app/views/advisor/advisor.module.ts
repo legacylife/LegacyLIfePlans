@@ -4,33 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatStepperModule } from '@angular/material/stepper';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import {
-  MatListModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatMenuModule,
-  MatSlideToggleModule,
-  MatGridListModule,
-  MatChipsModule,
-  MatCheckboxModule,
-  MatRadioModule,
-  MatTabsModule,
-  MatInputModule,
-  MatProgressBarModule,
-  MatDialogModule,
-  MatSelectModule,
-  MatSliderModule,
-  MatExpansionModule,
-  MatSnackBarModule,
-  MatFormFieldModule,
-  MatSidenavModule,
-  MatRippleModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatTooltipModule,
-  MatBottomSheetModule
-} from '@angular/material';
+import { MatListModule,MatIconModule,MatButtonModule,MatCardModule,MatMenuModule,MatSlideToggleModule,MatGridListModule,MatChipsModule,MatCheckboxModule,MatRadioModule,MatTabsModule,MatInputModule,MatProgressBarModule,MatDialogModule,MatSelectModule,MatSliderModule,MatExpansionModule,MatSnackBarModule,MatFormFieldModule,MatSidenavModule,MatRippleModule,MatDatepickerModule,MatNativeDateModule,MatTooltipModule,MatBottomSheetModule} from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
@@ -64,22 +38,14 @@ import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.gu
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { HomeComponent } from './advisor-landing/home/home.component';
 import { ReferAndEarnModalComponent } from './legacies/refer-and-earn-modal/refer-and-earn-modal.component';
-
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CountUpModule } from 'countup.js-angular2';
-/** Import Alyle UI */
-// import { LyThemeModule, LY_THEME, LY_THEME_GLOBAL_VARIABLES } from '@alyle/ui';
-/** Import the component modules */
-// import { LyButtonModule } from '@alyle/ui/button';
-// import { LyToolbarModule } from '@alyle/ui/toolbar';
-// import { LyIconModule } from '@alyle/ui/icon';
-
 import { LyResizingCroppingImageModule } from '@alyle/ui/resizing-cropping-images';
 /** Import themes */
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
 import { OurPlanComponent } from './our-plan/our-plan.component';
 import { AdvisorHomeComponent } from './advisor-home/advisor-home.component';
-
+console.log("Advisor Module");
 export class GlobalVariables {
   testVal = '#00bcd4';
   Quepal = {
@@ -97,9 +63,6 @@ export class GlobalVariables {
     contrast: 'rgba(0, 0, 0, 0.87)'
   };
 }
-
-
-
 @NgModule({
   imports: [
     CommonModule,
@@ -142,27 +105,13 @@ export class GlobalVariables {
     MatBottomSheetModule,
     RouterModule.forChild(AdvisorRoutes),
     CountUpModule,
-
-    // LyThemeModule.setTheme('minima-light'),
-    // LyButtonModule,
-    // LyToolbarModule,
-    // LyResizingCroppingImageModule,
-    // LyIconModule
   ],
   declarations: [
-    AdvisorSignupComponent, BusinessInfoComponent, SetPasswordComponent,
-    FormatTimePipe, ThankYouComponent, AdvisorDashboardComponent, LegaciesComponent,
-    AdvisorDashboardUpdateComponent, AdvisorAccountSettingComponent, AdvisorSubscriptionComponent,
-    ChangePassComponent, HomeComponent, ReferAndEarnModalComponent, AdvisorLegacyDetailsComponent,
-    LegaciesDetailsLandingComponent, MarkAsDeceasedComponent,
-    GetFeaturedComponent, SubmitEnquiryModalComponent, AdvisorLeadsComponent, AdvisorLeadsDetailsComponent, 
-    ProspectPeoplesModalComponent, OurPlanComponent, AdvisorHomeComponent
+    AdvisorSignupComponent,BusinessInfoComponent,SetPasswordComponent,FormatTimePipe,ThankYouComponent,AdvisorDashboardComponent,LegaciesComponent,AdvisorDashboardUpdateComponent, AdvisorAccountSettingComponent, AdvisorSubscriptionComponent,ChangePassComponent,HomeComponent,ReferAndEarnModalComponent,AdvisorLegacyDetailsComponent,LegaciesDetailsLandingComponent,MarkAsDeceasedComponent,
+    GetFeaturedComponent,SubmitEnquiryModalComponent,AdvisorLeadsComponent,AdvisorLeadsDetailsComponent,ProspectPeoplesModalComponent,OurPlanComponent,AdvisorHomeComponent
   ], providers: [
-    // { provide: LY_THEME, useClass: MinimaLight, multi: true },
-    // { provide: LY_THEME, useClass: MinimaDark, multi: true },
-    // { provide: LY_THEME_GLOBAL_VARIABLES, useClass: GlobalVariables },
-    MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, ProfilePicService, CanDeactivateGuard
-  ], entryComponents: [ChangePassComponent, ReferAndEarnModalComponent, MarkAsDeceasedComponent, SubmitEnquiryModalComponent, 
+    MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, ProfilePicService, CanDeactivateGuard],
+     entryComponents: [ChangePassComponent, ReferAndEarnModalComponent, MarkAsDeceasedComponent, SubmitEnquiryModalComponent, 
     ProspectPeoplesModalComponent],
 })
 export class AdvisorModule { }

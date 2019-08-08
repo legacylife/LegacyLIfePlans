@@ -2,32 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  MatListModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatMenuModule,
-  MatSlideToggleModule,
-  MatGridListModule,
-  MatChipsModule,
-  MatCheckboxModule,
-  MatRadioModule,
-  MatTabsModule,
-  MatInputModule,
-  MatSelectModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatFormFieldModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatTooltipModule,
-  MatExpansionModule,
-  MatSliderModule,
-  MatSnackBarModule,
-  MatSidenavModule,
-  MatDialogModule,
-  MatStepperModule
+import { MatListModule,MatIconModule,MatButtonModule,MatCardModule,MatMenuModule,MatSlideToggleModule,MatGridListModule,MatChipsModule,MatCheckboxModule,MatRadioModule,MatTabsModule,MatInputModule,MatSelectModule,MatDatepickerModule,
+  MatNativeDateModule,MatFormFieldModule,MatProgressBarModule,MatProgressSpinnerModule,MatTooltipModule,MatExpansionModule,MatSliderModule,MatSnackBarModule,MatSidenavModule,MatDialogModule,MatStepperModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -59,7 +35,6 @@ import { CustomerHiredAdvisorComponent } from './customer-trustees/customer-hire
 import { addTrusteeModalComponent } from './customer-home/add-trustee-modal/add-trustee-modal.component';
 import { ManageTrusteeModalComponent } from './customer-home/manage-trustee-modal/manage-trustee-modal.component';
 import { CanDeactivateGuard } from '../../shared/services/auth/can-deactivate.guard';
-//import { CountryEditCanDeactivateGuard } from '../../shared/services/country-edit-can-deactivate-guard.service';
 // Professional
 import { CustomerProfDetailsComponent } from './customer-professionals/customer-professionals-details/customer-professionals-details.component';
 import { SendAnEmailComponent } from './customer-professionals/send-an-email-modal/send-an-email-modal.component';
@@ -67,7 +42,7 @@ import { HireAdvisorComponent } from './hire-advisor-modal/hire-advisor-modal.co
 import { ProfAddTrusteeModalComponent } from './customer-professionals/prof-add-trustee-modal/prof-add-trustee-modal.component';
 import { ProfAdvisorListingComponent } from './customer-professionals-landing/prof-advisor-listing/prof-advisor-listing.component';
 import { ProUserAuthGuard } from '../../shared/services/auth/prouserauth.guard';
-
+console.log("Customer module .....");
 /** Import themes */
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
   export class GlobalVariables {
@@ -87,7 +62,6 @@ import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
     contrast: 'rgba(0, 0, 0, 0.87)'
   };
 }
-
 @NgModule({
   imports: [
     CommonModule,
@@ -126,21 +100,11 @@ import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [
-    CustomerSignupComponent, UpdateProfileComponent,
-    CustomerHomeComponent, FormatTimePipe, CustomerAccountSettingComponent, ChangePassComponent,
-    CustomerSubscriptionComponent, CustomerTrusteesComponent, CustomerProfessionalComponent,
-    CustomerHomeEssentialComponent, CustomerDashboardComponent, CustomerDashboardDayOneComponent,
-    CustomerSharedLegaciesComponent, CustomerLegaciesDetailsComponent, MarkAsDeceasedComponent,
-    CustomerMyPeopleComponent, addTrusteeModalComponent, CustomerMyTrusteeComponent, CustomerHiredAdvisorComponent,
-    CustomerProfDetailsComponent, SendAnEmailComponent, HireAdvisorComponent, ProfAddTrusteeModalComponent,
-    CustomerProfessionalsLandingComponent, ProfAdvisorListingComponent,ManageTrusteeModalComponent
+    CustomerSignupComponent,UpdateProfileComponent,CustomerHomeComponent,FormatTimePipe,CustomerAccountSettingComponent,ChangePassComponent,CustomerSubscriptionComponent,CustomerTrusteesComponent,CustomerProfessionalComponent,CustomerHomeEssentialComponent,CustomerDashboardComponent,CustomerDashboardDayOneComponent,CustomerSharedLegaciesComponent,CustomerLegaciesDetailsComponent,MarkAsDeceasedComponent,CustomerMyPeopleComponent,addTrusteeModalComponent,CustomerMyTrusteeComponent,CustomerHiredAdvisorComponent,CustomerProfDetailsComponent, SendAnEmailComponent,HireAdvisorComponent, ProfAddTrusteeModalComponent,CustomerProfessionalsLandingComponent,ProfAdvisorListingComponent,ManageTrusteeModalComponent
   ], providers: [
-    MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, CanDeactivateGuard,ProUserAuthGuard
+    MatDatepickerModule,UserAuthGuard,UserPreAuthGuard, CanDeactivateGuard,ProUserAuthGuard
   ], bootstrap: [CustomerSignupComponent],
-  entryComponents: [ChangePassComponent,
-    addTrusteeModalComponent, MarkAsDeceasedComponent,
-    SendAnEmailComponent, HireAdvisorComponent,
-    ProfAddTrusteeModalComponent,ManageTrusteeModalComponent
+  entryComponents: [ChangePassComponent,addTrusteeModalComponent, MarkAsDeceasedComponent,SendAnEmailComponent, HireAdvisorComponent,ProfAddTrusteeModalComponent,ManageTrusteeModalComponent
   ]
 })
 export class CustomerModule { }

@@ -3,7 +3,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { stripeKey } from './config';
 //import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-console.log("App module .....",stripeKey)
+console.log("App module .....");
 import {
   MatListModule,
   MatIconModule,
@@ -134,7 +134,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   LyResizingCroppingImageModule,
   LyIconModule,
   UserIdleModule.forRoot({idle: 8, timeout: 10, ping: 3}),
-  NgxStripeModule.forRoot("pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"),
+  NgxStripeModule.forRoot("pk_test_mB9cnQ2EBtmIiIPUi0kQgIxC"),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

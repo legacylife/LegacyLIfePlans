@@ -14,15 +14,28 @@ export const rootRouterConfig: Routes = [
     children: [
       {
         path: '',
+        pathMatch: 'full', //Newly added
         loadChildren: './views/landing/landing.module#LandingModule',
-        data: { title: 'LLP'}
+        data: { title: 'LLP Customer'}
       },
       {
         path: 'customer',
+        pathMatch: 'full', //Newly added
         loadChildren: './views/landing/landing.module#LandingModule',
-        data: { title: 'LLP'}
-      }
-    ]
+        data: { title: 'LLP Customer'}
+      },   
+    ],
+  },
+  {
+    path: '',         
+    component: AdvisorLandingLayoutComponent,
+    children: [{
+        path: 'advisor',   
+        pathMatch: 'full',     
+        loadChildren: './views/advisor/advisor.module#AdvisorModule',
+        data: { title: 'Advisor Dashboard'}
+      },        
+    ],
   },
   {
     path: '',
@@ -31,15 +44,15 @@ export const rootRouterConfig: Routes = [
     loadChildren: './views/auth/auth.module#AuthModule',
     data: { title: 'Signin'}
   },
- {
+  {
     path: 'customer',
     pathMatch: 'prefix' ,
     children: [{
       path: '',
       loadChildren: './views/customer/customer.module#CustomerModule',
       //data: { title: 'Customer Signup' }
-    },
-  ]
+      },
+    ]
   }, 
   {
     path: 'advisor',
@@ -47,10 +60,11 @@ export const rootRouterConfig: Routes = [
     children: [{
       path: '',
       loadChildren: './views/advisor/advisor.module#AdvisorModule',
-      data: { title: 'Advisor Signup' }
-    },
-  ]
-  },{
+      data: { title: 'Advisor Dashboard' }
+      },
+    ]
+  }, 
+  {
     path: 'llp-admin',
     pathMatch: 'prefix' ,
     component: AuthLayoutComponent,

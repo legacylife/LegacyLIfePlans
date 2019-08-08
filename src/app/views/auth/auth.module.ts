@@ -38,7 +38,7 @@ import { PasswordResetSuccessfulComponent } from './password-reset-successful/pa
 import { ForgotPasswordSuccessfulComponent } from './password-reset-successful/forgot-password-successful.component';
 import { SubscriptionComponent } from './subscription/subscription.component';
 import { ReferAndEarnComponent } from './subscription/refer-and-earn/refer-and-earn.component';
-
+console.log("Auth Module");
 
 @NgModule({
   imports: [

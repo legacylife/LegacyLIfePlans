@@ -57,15 +57,21 @@ console.log('advisor---routing');
 export const AdvisorRoutes: Routes = [
   {
     path: '',
-    component: AdvisorLandingLayoutComponent,
-    children: [
-      {
-        path: '',
-        component: HomeComponent,
-        canActivate: [UserPreAuthGuard]
-      }
-    ],
+    component: HomeComponent,
+    canActivate: [UserPreAuthGuard],
+    data: { title: 'Home' }
   },
+  // {
+  //   path: '',
+  //   component: AdvisorLandingLayoutComponent,
+  //   children: [
+  //     {
+  //       path: '',
+  //       component: HomeComponent,
+  //       canActivate: [UserPreAuthGuard]
+  //     }
+  //   ],
+  // },
   {
     path: 'our-plan',
     component: AdvisorLandingLayoutComponent,
