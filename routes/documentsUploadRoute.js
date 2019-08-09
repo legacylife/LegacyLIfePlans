@@ -1224,7 +1224,6 @@ function downloadDocs(req,res) {
   var params = {Bucket: constants.s3Details.bucketName,Key:filePath};
   let ext = filename.split('.')
   ext = ext[ext.length - 1];
-  
   console.log("query ->",query,"filePath -> ",filePath,"filename -> ",filename)
   try {
     console.log("params 00 ->",params)

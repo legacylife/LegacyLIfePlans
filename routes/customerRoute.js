@@ -91,6 +91,17 @@ function myEssentialsUpdate(req, res) {
     myessential.ppLastName = proquery.ppLastName;
     myessential.ppDateOfBirth = proquery.ppDateOfBirth;
     myessential.ppEmails = proquery.ppEmails;
+    myessential.ccChurchLandlineNumbers = proquery.ccChurchLandlineNumbers;
+    myessential.ccWorkLandlineNumbers = proquery.ccWorkLandlineNumbers;
+    myessential.cclandlineNumbers = proquery.cclandlineNumbers;
+    myessential.ppAddressLine1 = proquery.ppAddressLine1;
+    myessential.ppAddressLine2 = proquery.ppAddressLine2;
+    myessential.ppCity = proquery.ppCity;
+    myessential.ppCountry = proquery.ppCountry;
+    myessential.ppLandlineNumbers = proquery.ppLandlineNumbers;
+    myessential.ppState = proquery.ppState;
+    myessential.ppZipCode = proquery.ppZipCode;
+    myessential.wpLandlineNumbers = proquery.wpLandlineNumbers;
     myessential.status = 'Active';
     myessential.createdOn = new Date();
     myessential.modifiedOn = new Date();
