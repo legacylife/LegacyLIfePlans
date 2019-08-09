@@ -54,18 +54,22 @@ export class SubscriptionService {
     }
     
     await this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe( async (result) => {
-      let userData = result.data.userProfile
-      let defaultSpace = 1, addOnSpace = 0;
-      let subscriptionDetails = userData.subscriptionDetails ? userData.subscriptionDetails : null;
+      let aftRegistrationDaysDiff = 1,
+          bfrSubCustPremiumAccess = 1, // Before subscription customer's premium access days
+          bfrSubCustFreeAccess    = 1, // Before subscription customer's free access days
+          bfrSubAdvPremiumAccess  = 2  // Before subscription adviser's premium access days
+
+      let userData      = result.data.userProfile
+      let defaultSpace  = 1,
+          addOnSpace    = 0;
+      let subscriptionDetails   = userData.subscriptionDetails ? userData.subscriptionDetails : null
       let subscriptionStartDate = "",
-      subscriptionEndDate = "",
-      subscriptionStatus = "",
-      autoRenewal = "",
-      //addOnDetails = userData.addOnDetails ? userData.addOnDetails : null,
-      addOnGiven = 'no',
-      isReferAndEarnStatus = userData.IamIntrested && userData.IamIntrested == 'Yes' ? 'Yes' :  'No',
-      
-      totalUsedSpace = userData.s3Size && userData.s3Size != 0 ? userData.s3Size : 0;
+          subscriptionEndDate   = "",
+          subscriptionStatus    = "",
+          autoRenewal = "",
+          addOnGiven  = 'no',
+          isReferAndEarnStatus= userData.IamIntrested && userData.IamIntrested == 'Yes' ? 'Yes' :  'No',
+          totalUsedSpace      = userData.s3Size && userData.s3Size != 0 ? userData.s3Size : 0;
       
       if( subscriptionDetails != null && subscriptionDetails.length > 0 ) {
         isReferAndEarnStatus = 'No'
@@ -80,10 +84,6 @@ export class SubscriptionService {
           addOnGiven = subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails'] && subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails']['status'] == 'paid' ? 'yes' : 'no'
           addOnSpace = addOnGiven == 'yes' ? addOnDetails['spaceAlloted'] : 0
         }
-        /* if( addOnDetails != null && addOnDetails.length > 0 && ( new Date(subscriptionEndDate) > new Date()) ) {
-          addOnGiven = addOnDetails[(addOnDetails.length-1)]['status'] && addOnDetails[(addOnDetails.length-1)]['status'] == 'paid' ? 'yes' : 'no'
-          addOnSpace = addOnGiven == 'yes' ? addOnDetails[(addOnDetails.length-1)]['spaceAlloted'] : 0
-        } */
       }
       /**
        * Reset all locastorage variables to check wheater the subscription ends or not
@@ -111,11 +111,12 @@ export class SubscriptionService {
         this.isAccountFree    = true
         this.isSubscribePlan  = false
         diff                  = this.getDateDiff( this.userCreateOn.toDate(), this.today )
-        if( diff <= 30 ) {
-          
+        //check if user completed or not 30 days (i.e aftRegistrationDaysDiff) for registration
+        if( diff <= aftRegistrationDaysDiff ) {
+          defaultSpace = 7
           //check if the advisor participate into refer and earn program and he acheived the monthly invitation sent target
           if( isReferAndEarn && this.usertype == 'advisor') {
-            let extendedDays = 30
+            let extendedDays = bfrSubAdvPremiumAccess
             let result = await this.getInviteMembersCount()
             console.log("result",result)
             if( result.data.count > 5 ) {
@@ -128,7 +129,7 @@ export class SubscriptionService {
             expireDate       = this.userCreateOn.add(extendedDays,"days")
           }
           else{
-            expireDate            = this.userCreateOn.add(30,"days")
+            expireDate            = this.userCreateOn.add(bfrSubCustPremiumAccess,"days")
           }
           this.isPremiumExpired = false
 
@@ -152,8 +153,9 @@ export class SubscriptionService {
         }
         else {
           if( this.usertype == 'customer' ) {
-            expireDate  = this.userCreateOn.add(60,"days")
-            if( diff <= 60 ) {
+            let totalFreeAccessDays = (bfrSubCustFreeAccess+bfrSubCustPremiumAccess)
+            expireDate  = this.userCreateOn.add(totalFreeAccessDays,"days")
+            if( diff <= totalFreeAccessDays ) {
               localStorage.setItem('endUserProFreeSubscription', 'yes');
               localStorage.setItem('endUserProSubscription', 'no');
             }
@@ -164,8 +166,9 @@ export class SubscriptionService {
           }
           else{
             if( isReferAndEarn ) {
-              let extendedDays =30, result = await this.getInviteMembersCount()
-              console.log("result",result)
+              let extendedDays = bfrSubAdvPremiumAccess,
+                  result = await this.getInviteMembersCount()
+              
               if( result.data.count > 5 ) {
                 extendedDays = extendedDays * (result.data.completedMonths > 1 ? result.data.completedMonths : 1)
                 isProFreeAdviser = true
@@ -173,7 +176,7 @@ export class SubscriptionService {
               else{
                 isProFreeAdviser = false
               }
-              //console.log("extendedDaysextendedDays",extendedDays)
+              
               expireDate       = this.userCreateOn.add(extendedDays,"days")
               if( isProFreeAdviser ) {
                 localStorage.setItem('endUserProFreeSubscription', 'yes');
@@ -185,7 +188,7 @@ export class SubscriptionService {
               }
             }
             else{
-              expireDate  = this.userCreateOn.add(30,"days")
+              expireDate  = this.userCreateOn.add(bfrSubAdvPremiumAccess,"days")
               localStorage.setItem('endUserProFreeSubscription', 'no');
               localStorage.setItem('endUserProSubscription', 'no');
             }
@@ -219,7 +222,7 @@ export class SubscriptionService {
         }
         else {
           if( this.usertype == 'customer' ) {
-            expireDate          = this.userSubscriptionDate.add(30,"days")
+            expireDate          = this.userSubscriptionDate.add(bfrSubCustFreeAccess,"days")
             let freeAccessDiff  = this.getDateDiff( this.today, expireDate.toDate() )
             if( freeAccessDiff >= 0 ) {
               localStorage.setItem('endUserProFreeSubscription', 'yes');

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { CardDetailsComponent } from 'app/shared/components/card-details-modal/card-details-modal.component';
 import { SubscriptionService } from '../../../shared/services/subscription.service';
+import { LocationStrategy } from '@angular/common';
 
 @Component({
   selector: 'app-customer-subscription',
@@ -25,16 +26,36 @@ import { SubscriptionService } from '../../../shared/services/subscription.servi
   premiumExpired:boolean = false
   freePremiumExpired:boolean = false
 
-  constructor(private dialog: MatDialog, private subscriptionservice:SubscriptionService) { 
+  isDialogOpen:boolean = false
+
+  constructor(private dialog: MatDialog, private subscriptionservice:SubscriptionService, private locationStrategy: LocationStrategy) { 
     this.premiumExpired = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? false : true
     this.freePremiumExpired = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? false : true
+    //history.pushState([], "", location.href);
+    //this.preventBackButton()
   }
+
+/*   preventBackButton() {
+    this.locationStrategy.onPopState(() => {
+      if(this.isDialogOpen) {
+        console.log("this.dialog",this.isDialogOpen)
+        alert("On click back button transaction terminated. Are you sure you want to terminate this transaction?")
+        history.pushState(null, null, location.href);
+      }
+    })
+  } */
 
   ngOnInit() {
     this.dialog.closeAll();
     this.getProductDetails()
   }
 
+  /* @HostListener("window:beforeunload", ["$event"])
+  unloadHandler(event: Event) {
+    // Do more processing...
+    event.returnValue = false;
+  } */
+ 
   // get product plan
   getProductDetails = (query = {}) => {
     this.subscriptionservice.getProductDetails({}, (returnArr)=>{
@@ -49,13 +70,27 @@ import { SubscriptionService } from '../../../shared/services/subscription.servi
   }
 
   openCardDetailsModal() {
-     let dialogRef: MatDialogRef<any> = this.dialog.open(CardDetailsComponent, {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(CardDetailsComponent, {
        width: '500px',
        disableClose: true,
+       closeOnNavigation:false,
        data: {
         for: 'subscription',
       }
-     })
+    })
+    dialogRef.backdropClick().subscribe(_ => {
+      // Close the dialog
+      dialogRef.close();
+    })
+    /* dialogRef.afterOpened().subscribe(result => {
+      this.isDialogOpen = true
+      console.log("asdasdas",this.isDialogOpen)
+      history.pushState(null, null, location.href);
+    })
+    dialogRef.afterClosed().subscribe(result => {
+      this.isDialogOpen = false
+    }) */
+
    }
 
 }
