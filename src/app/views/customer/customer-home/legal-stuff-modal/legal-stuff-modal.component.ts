@@ -318,13 +318,17 @@ export class legalStuffModalComponent implements OnInit {
     let req_vars = {
       query: Object.assign({ docPath: this.docPath, filename: filename }, query)
     }
+    this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
-      var downloadURL =window.URL.createObjectURL(res)
+      var newBlob = new Blob([res])
+      var downloadURL = window.URL.createObjectURL(newBlob);
       let filePath = downloadURL;
       var link=document.createElement('a');
       link.href = filePath;
       link.download = filename;
+      document.body.appendChild(link);
       link.click();
+      this.snack.dismiss();
     });
   }
 

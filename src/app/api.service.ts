@@ -159,6 +159,10 @@ export class APIService {
     }
   }
 
+  public download(path: string, params: any): Observable<any> {
+    return this.http.post(serverUrl + `/api/${path}`, params, { responseType: 'blob'});
+  }
+  
   //function to check if user is logged in
   public isLoggedIn(): boolean {
     const user = this.getUserDetails()

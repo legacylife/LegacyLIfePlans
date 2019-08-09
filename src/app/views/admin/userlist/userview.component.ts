@@ -27,6 +27,7 @@ export class userviewComponent implements OnInit {
   row: any;
   dpPath: string = ""
   selectedUserId: string = "";
+  docPath:string;
   adminSections = [];
   loggedInUserDetails: any;
   profilePicture: any = "assets/images/arkenea/default.jpg"
@@ -169,6 +170,26 @@ export class userviewComponent implements OnInit {
       })
   }
 
+  downloadFile = (filename) => {   
+    const filePath = this.selectedUserId+'/'+s3Details.advisorsDocumentsPath;
+    this.docPath = filePath; 
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+    }
+    this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
+    this.api.download('documents/downloadDocument', req_vars).subscribe(res => {
+      var newBlob = new Blob([res])
+      var downloadURL = window.URL.createObjectURL(newBlob);
+      let filePath = downloadURL;
+      var link = document.createElement('a');
+      link.href = filePath;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click(); 
+      this.snack.dismiss();
+    });
+  }
   
   toggleSidenav() {
     if(this.layoutConf.sidebarStyle === 'closed') {      

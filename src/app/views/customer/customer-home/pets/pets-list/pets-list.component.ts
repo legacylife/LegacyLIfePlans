@@ -32,7 +32,7 @@ export class PetsListComponent implements OnInit {
   trusteeLegaciesAction:boolean=true;
   showTrusteeCnt:boolean=true;
   PetsManagementSection:string='now';
-  LegacyPermissionError:string="You don't You don't have access to this section";
+  LegacyPermissionError:string="You don't have access to this section";
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
   ngOnInit() { 
     this.userId = localStorage.getItem("endUserId");

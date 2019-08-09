@@ -74,7 +74,7 @@ export class SigninComponent implements OnInit {
           this.picService.setProfilePic = this.profilePicture;
         }
 
-        this.subscriptionservice.checkSubscription( ( returnArr )=> {})
+        this.subscriptionservice.checkSubscription( ( returnArr )=> {}) // IMP for subscription
         //this.snack.open(result.data.message, 'OK', { duration: 4000 })
         if(userData.userType=='customer'){
           this.router.navigate(['/', 'customer', 'dashboard']);

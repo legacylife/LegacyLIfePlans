@@ -42,7 +42,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   PersonalProfileManagementSection:string='now';
   IDBoxManagementSection:string='now';
   MyProfessionalsManagementSection:string='now';
-  LegacyPermissionError:string="You don't You don't have access to this section";
+  LegacyPermissionError:string="You don't have access to this section";
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,

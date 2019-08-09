@@ -56,7 +56,7 @@
                   <label class="strong--label">Phone:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">+1 {{pplandLineNumberList}}</label>
+                  <label class="normal--label" *ngIf="pplandLineNumberList">+1 {{pplandLineNumberList}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -114,7 +114,7 @@
                   <label class="strong--label">Work Number:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">+1 {{wpLandlineNumbersList}}</label>
+                  <label class="normal--label" *ngIf="wpLandlineNumbersList">+1 {{wpLandlineNumbersList}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -195,7 +195,7 @@
                   <label class="strong--label">Phone:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">+1 {{ccWorkLandlineNumbersList}}</label>
+                  <label class="normal--label" *ngIf="ccWorkLandlineNumbersList">+1 {{ccWorkLandlineNumbersList}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -211,7 +211,7 @@
                   <label class="strong--label">Contact person phone:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">+1 {{ccContactLandlineNumbersList}}</label>
+                  <label class="normal--label" *ngIf="ccContactLandlineNumbersList">+1 {{ccContactLandlineNumbersList}}</label>
                 </div>
               </div>
               <h3 class="mt--30">Church/Synagogue/Religious Connection</h3>
@@ -260,7 +260,7 @@
                   <label class="strong--label">Phone:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">+1 {{ccChurchLandlineNumbersList}}</label>
+                  <label class="normal--label" *ngIf="ccChurchLandlineNumbersList">+1 {{ccChurchLandlineNumbersList}}</label>
                 </div>
               </div>
 

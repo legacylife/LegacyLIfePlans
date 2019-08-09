@@ -34,7 +34,7 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
   showTrusteeCnt:boolean=true;
   DevicesManagementSection:string='now';
   ElectronicMediaManagementSection:string='now';
-  LegacyPermissionError:string="You don't You don't have access to this section";
+  LegacyPermissionError:string="You don't have access to this section";
 
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
   ngOnInit() {

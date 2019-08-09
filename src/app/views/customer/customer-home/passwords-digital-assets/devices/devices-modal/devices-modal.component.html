@@ -12,10 +12,10 @@
         <mat-form-field class="full-width">
           <mat-label>Device Type*</mat-label>
         <mat-select placeholder="Device List*" name="deviceList" [formControl]="DevicesForm.controls['deviceList']" >
-          <mat-option value="">Select Policy Type</mat-option>
+          <mat-option value="">Select Device Type</mat-option>
           <mat-option *ngFor="let option of deviceListing"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
         </mat-select>
-          <mat-icon matTooltip="Please select device list" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['deviceList'].hasError('required') && DevicesForm.controls['deviceList'].touched" class="red--alert">help_outline</mat-icon>
+          <mat-icon matTooltip="Please select device type" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['deviceList'].hasError('required') && DevicesForm.controls['deviceList'].touched" class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
         <mat-form-field class="full-width">

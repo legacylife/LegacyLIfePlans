@@ -11,7 +11,7 @@
        <mat-form-field class="full-width">
               
             <mat-select placeholder="Debt Type*" name="debtsType" [formControl]="DebtForm.controls['debtsType']" (selectionChange)="onChangeType($event.value)">
-              <mat-option value="">Select Policy Type</mat-option>
+              <mat-option value="">Select Debt Type</mat-option>
               <mat-option *ngFor="let option of debtsTypeList"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
             </mat-select>
               <mat-icon matTooltip="Please select debt type" matTooltipClass="llp--tooltip error" *ngIf="DebtForm.controls['debtsType'].hasError('required') && DebtForm.controls['debtsType'].touched" class="red--alert">help_outline</mat-icon>

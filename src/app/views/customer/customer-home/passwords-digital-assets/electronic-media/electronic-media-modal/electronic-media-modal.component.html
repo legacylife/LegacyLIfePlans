@@ -12,7 +12,7 @@
         <mat-form-field class="full-width">
             <mat-label>Media Type*</mat-label>
             <mat-select placeholder="Media Type*" name="mediaType" [formControl]="ElectronicMediaForm.controls['mediaType']" >
-              <mat-option value="">Select Policy Type</mat-option>
+              <mat-option value="">Select Media Type</mat-option>
               <mat-option *ngFor="let option of electronicMediaListing"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
             </mat-select>
             <mat-icon matTooltip="Please select media type" matTooltipClass="llp--tooltip error" *ngIf="ElectronicMediaForm.controls['mediaType'].hasError('required') && ElectronicMediaForm.controls['mediaType'].touched" class="red--alert">help_outline</mat-icon>

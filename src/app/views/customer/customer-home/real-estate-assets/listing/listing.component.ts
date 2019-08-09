@@ -33,7 +33,7 @@ export class ListingComponent implements OnInit {
   RealEstateManagementSection:string='now';
   VehiclesManagementSection:string='now';
   AssetsManagementSection:string='now';
-  LegacyPermissionError:string="You don't You don't have access to this section";
+  LegacyPermissionError:string="You don't have access to this section";
   showTrusteeCnt:boolean=true;
   constructor(
     private route: ActivatedRoute,

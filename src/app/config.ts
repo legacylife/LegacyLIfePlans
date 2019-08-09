@@ -9,7 +9,7 @@ let stripeSecretKey= ""
 
 //localhost
 if(window.location.hostname.indexOf("localhost") > -1){ // local server
-  serverUrlEnv = "http://localhost:80"  
+  serverUrlEnv = "http://localhost:8080"  
   stripeSecretKey = "pk_test_mB9cnQ2EBtmIiIPUi0kQgIxC"
 }
 else if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") > -1 || window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com:8080") > -1){ // client server
