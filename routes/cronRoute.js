@@ -18,7 +18,6 @@ async function getSelectedPlanDetails( planId ) {
 
 function autoRenewalOnUpdateSubscription ( req, res ) {
   let requestParam = req.body
-  //console.log("requestParamrequestParam==========",requestParam)
   if( requestParam != null || requestParam.length >0 ) {
     let eventId = requestParam.id
     let eventType = requestParam.type
@@ -28,12 +27,9 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
       let customerId = returnData.customer
       let customer_email = returnData.customer_email
       let autoRenewalUpdate = returnData.collection_method
-      //let previous_attributes = requestParam.data.previous_attributes
       
       if( autoRenewalUpdate == 'charge_automatically' ) {
-        //console.log("autoRenewalUpdate==========",autoRenewalUpdate)
-        res.json({received: true});
-        //res.status(200).send(resFormat.rSuccess({received: true}));
+                
         let subscriptionData = returnData.lines.data
         User.find( { username: customer_email, stripeCustomerId:customerId }, {}, function (err, userData) {
           
@@ -89,8 +85,7 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
                   }
                 }
                 userSubscription.push(subscriptionDetails)
-                //console.log(userSubscription)
-                console.log("userFullName",userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '',"email: -",userProfile.username,  "created on :-",userProfile.createdOn);
+                //console.log("userFullName",userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '',"email: -",userProfile.username,  "created on :-",userProfile.createdOn);
                 //Update user details
                 User.updateOne({ _id: userProfile._id }, { $set: { subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
                   if (err) {
@@ -167,7 +162,7 @@ function autoRenewalOnReminderEmail() {
 
         userList.forEach( ( val, index ) => {
           let subscriptionDetails   = val.subscriptionDetails,
-              daysRemainingToExpire = Math.abs(getDateDiff( today, moment(subscriptionDetails.endDate).toDate(), 'asDays' ))
+              daysRemainingToExpire = Math.abs(getDateDiff( today, moment(subscriptionDetails.endDate).toDate(), 'asHours' ))
           
           if ( daysRemainingToExpire > 0 ) {
             let userCreatedOn = val.createdOn,
@@ -266,7 +261,7 @@ function autoRenewalOffReminderEmail() {
 
         userList.forEach( ( val, index ) => {
           let subscriptionDetails   = val.subscriptionDetails,
-              daysRemainingToExpire = Math.abs(getDateDiff( today, moment(subscriptionDetails.endDate).toDate() , 'asDays' ))
+              daysRemainingToExpire = Math.abs(getDateDiff( today, moment(subscriptionDetails.endDate).toDate() , 'asHours' ))
           
           if ( daysRemainingToExpire > 0 ) {
             let userCreatedOn = val.createdOn,
@@ -304,7 +299,7 @@ function autoRenewalOffReminderEmail() {
               freeAccessRemainingDays   = '1 day'
             }
             
-            console.log("userFullName",userFullName,"email: -",val.username,  "created on :-",val.createdOn, 'daysRemainingToExpire:-',daysRemainingToExpire, 'freePremiumAccessRemainDays:- ',freeAccessRemainingDays ,"reminder:-",whichDayEmailReminderSend);
+            //console.log("userFullName",userFullName,"email: -",val.username,  "created on :-",val.createdOn, 'daysRemainingToExpire:-',daysRemainingToExpire, 'freePremiumAccessRemainDays:- ',freeAccessRemainingDays ,"reminder:-",whichDayEmailReminderSend);
             //send email reminder if above conditions true
             if( sendEmailReminder && whichDayEmailReminderSend != null ) {
               let reminderSentDays = []
@@ -351,9 +346,6 @@ function autoRenewalOffReminderEmail() {
       }
     }
   })
-/*   User.find( { 'subscriptionDetails': { $exists: true }, 'subscriptionDetails': { $elemMatch: { 'autorenewal': false } } }, {}, function(err,userList) {
-    
-  }) */
 }
 
 function beforeSubscriptionReminderEmail() {
@@ -373,9 +365,9 @@ function beforeSubscriptionReminderEmail() {
             userEmailId   = val.username,
             userFullName  = val.firstname ? val.firstname+' '+(val.lastname ? val.lastname : '') : 'User',
             today         = moment().toDate(),
-            diff          = Math.round( getDateDiff( moment(userCreatedOn).toDate(), today, 'asDays' ));
+            diff          = Math.round( getDateDiff( moment(userCreatedOn).toDate(), today, 'asHours' ));
 
-        let freePremiumAccessRemainDays = Math.abs( diff - 30 ), //The first time registered customer gets free access to all premium features for 30 days
+        let freePremiumAccessRemainDays = Math.abs( diff - 24 ), //The first time registered customer gets free access to all premium features for 30 days
             sendEmailReminder           = false,
             whichDayEmailReminderSend   = null,
             freeAccessRemainingDays     = 0;
@@ -407,42 +399,31 @@ function beforeSubscriptionReminderEmail() {
             reminderSentDays = val.upgradeReminderEmailDay
           }
           reminderSentDays.push(whichDayEmailReminderSend)
-          /* User.updateOne({ _id: val._id }, { $set: { upgradeReminderEmailDay: reminderSentDays} }, function (err, updated) {
-            if (err) {
-              res.send(resFormat.rError(err))
-            }
-            else { */
-            //free premium plan expiry plan reminer email
-            /* if( userEmailId == 'dangejasmine@gmail.com') {
-              userEmailId = 'nileshy@arkenea.com' */
-              emailTemplatesRoute.getEmailTemplateByCode('beforeSubscriptionReminderEmail').then( (template) => {
-                if(template) {
-                  template = JSON.parse(JSON.stringify(template));
-                  let body = template.mailBody.replace("{full_name}", userFullName);
-                      body = body.replace("{plan_name}",planName);
-                      body = body.replace("{amount}", planAmount);
-                      body = body.replace("{duration}",planInterval);
-                      body = body.replace("{space_alloted}",defaultSpace);
-                      body = body.replace("{remaining_days}",freeAccessRemainingDays);
+          emailTemplatesRoute.getEmailTemplateByCode('beforeSubscriptionReminderEmail').then( (template) => {
+            if(template) {
+              template = JSON.parse(JSON.stringify(template));
+              let body = template.mailBody.replace("{full_name}", userFullName);
+                  body = body.replace("{plan_name}",planName);
+                  body = body.replace("{amount}", planAmount);
+                  body = body.replace("{duration}",planInterval);
+                  body = body.replace("{space_alloted}",defaultSpace);
+                  body = body.replace("{remaining_days}",freeAccessRemainingDays);
 
-                  const mailOptions = { to : userEmailId,
-                                        subject : template.mailSubject,
-                                        html: body
-                                      }
-                  sendEmail(mailOptions, (response )=> {
-                    if( response ) {
-                      User.updateOne({ _id: val._id }, { $set: { upgradeReminderEmailDay: reminderSentDays } }, function (err, updated) {
-                        if ( !err ) {
-                          console.log("updated")
-                        }
-                      })
+              const mailOptions = { to : userEmailId,
+                                    subject : template.mailSubject,
+                                    html: body
+                                  }
+              sendEmail(mailOptions, (response )=> {
+                if( response ) {
+                  User.updateOne({ _id: val._id }, { $set: { upgradeReminderEmailDay: reminderSentDays } }, function (err, updated) {
+                    if ( !err ) {
+                      console.log("updated")
                     }
                   })
                 }
               })
-            /* } */
-            /* }
-          }) */
+            }
+          })
         }
       })
     }
