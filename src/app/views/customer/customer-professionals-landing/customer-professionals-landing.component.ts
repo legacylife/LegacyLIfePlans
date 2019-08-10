@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material';
 import { businessTypeIcon } from '../../../selectList';
 import { LayoutService } from 'app/shared/services/layout.service';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-customer-professionals-landing',
   templateUrl: './customer-professionals-landing.component.html',
@@ -12,17 +13,21 @@ export class CustomerProfessionalsLandingComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   businessTypeIcon: any = businessTypeIcon;
   selectedRow : Number;
-  constructor(private layoutServ: LayoutService) { 
+
+  message:string;
+
+  constructor(private layoutServ: LayoutService, private data: DataSharingService) { 
     this.layout = layoutServ.layoutConf
   }
 
   ngOnInit() {
-    
+    this.data.currentMessage.subscribe(message => this.message = message)
   }
 
   changeTrigger(key,index){
     this.selectedRow = index;
     localStorage.setItem('businessTypeIcon', key) 
+    this.data.changeMessage(index)
   }
 
   toggleSideNav() {

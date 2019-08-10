@@ -9,6 +9,7 @@ import { UserAPIService } from './../../../../userapi.service';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 import { s3Details } from '../../../../config';
 import { HireAdvisorComponent } from '../../hire-advisor-modal/hire-advisor-modal.component';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 @Component({
   selector: 'app-prof-advisor-listing',
@@ -29,17 +30,21 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
   showQualityAdvisorListing: boolean = false;
   showQualityAdvisorListingCnt: any;
   profileUrl = s3Details.url + '/profilePictures/';
+  message:string;
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
     private userapi: UserAPIService, private loader: AppLoaderService,
-    private snack: MatSnackBar
+    private snack: MatSnackBar,
+    private data: DataSharingService
   ) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.getAdvisorLists('', '');
     var that = this;
+    this.data.currentMessage.subscribe( (message) => { this.message = message })
+    console.log("passedData1",this.message)
     this.interval = setInterval(function () {
       let abc = localStorage.getItem('businessTypeIcon');
       if (abc) {

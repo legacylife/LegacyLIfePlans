@@ -81,6 +81,7 @@ import { GetValueByKeyPipe } from './pipes/get-value-by-key.pipe';
 // SERVICES
 import { ThemeService } from './services/theme.service';
 import { LayoutService } from './services/layout.service';
+import { DataSharingService } from './services/data-sharing.service';
 import { NavigationService } from './services/navigation.service';
 import { AdvisorNavigationService } from './services/pre-login-advisor.service';
 import { CustNavService } from './services/customer-nav-links.service';
@@ -288,6 +289,7 @@ const classesToInclude = [
   providers: [
     ThemeService,
     LayoutService,
+    DataSharingService,
     NavigationService,
     AdvisorNavigationService,
     CustNavService,
