@@ -132,6 +132,118 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
   }
 }
 
+function updateSubscriptionDetailsIfFails ( req, res ) {
+  let requestParam = req.body
+  if( requestParam != null || requestParam.length >0 ) {
+    let eventId = requestParam.id
+    let eventType = requestParam.type
+
+    if( eventType == 'customer.subscription.created' ) {
+      let returnData =  requestParam.data.object
+      let customerId = returnData.customer
+      
+      if( returnData.object == 'subscription' ) {
+        User.find( { stripeCustomerId: customerId }, {}, function (err, userData) {
+          let subscriptionData = returnData.items.data      
+          if( !err && userData.length > 0 ) {
+            let userProfile = userData[0]
+            let updateSubscription = false
+            let usersSubscription = userProfile.subscriptionDetails ? userProfile.subscriptionDetails : null
+            let latestSubscription  = []
+            if( usersSubscription != null && usersSubscription.length > 0 ) {
+              latestSubscription = usersSubscription[(usersSubscription.length-1)]
+              subscriptionStatus = latestSubscription['status']
+              if( subscriptionStatus == 'incomplete' ) {
+                updateSubscription = true
+              }
+            }
+              
+            if( updateSubscription ) {
+              let subscriptionDetails = {"_id" : latestSubscription['_id'],
+                                          "productId" : subscriptionData[0]['plan']['product'],
+                                          "planId" : subscriptionData[0]['plan']['id'],
+                                          "subscriptionId" : subscriptionData[0]['subscription'],
+                                          "startDate" : new Date(returnData.current_period_start*1000),
+                                          "endDate" : new Date(returnData.current_period_end*1000),
+                                          "interval" : subscriptionData[0]['plan']['interval'],
+                                          "currency" : subscriptionData[0]['plan']['currency'],
+                                          "amount" : subscriptionData[0]['plan']['amount'] / 100,
+                                          "status" : 'paid',
+                                          "autoRenewal": returnData.collection_method == 'charge_automatically' ? true : false,
+                                          "paymentMode" : 'online',
+                                          "planName" : subscriptionData[0]['plan']['metadata']['name']+' Plan',
+                                          "defaultSpace" : subscriptionData[0]['plan']['metadata']['defaultSpace'],
+                                          "spaceDimension" : subscriptionData[0]['plan']['metadata']['spaceDimension'],
+                                          "paidOn" : new Date(),
+                                          "createdOn" : latestSubscription['createdOn'],
+                                          "createdBy" : latestSubscription['createdBy']
+                                        };
+              usersSubscription[(usersSubscription.length-1)] = subscriptionDetails
+              let userSubscription = usersSubscription
+              let EmailTemplateName = "NewSubscriptionAdviser";
+              if(userProfile.userType == 'customer') {
+                EmailTemplateName = "NewSubscription";
+              }
+        
+              if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 1 ) {
+                //userSubscription = userProfile.subscriptionDetails
+                EmailTemplateName = "AutoRenewalAdviser"
+                if(userProfile.userType == 'customer') {
+                  EmailTemplateName = "AutoRenewal"
+                }
+              }
+              //console.log("usersSubscription",usersSubscription)
+              //return false;
+              //Update user details
+              User.updateOne({ _id: userProfile._id }, { $set: { subscriptionDetails : usersSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
+                if (err) {
+                  res.send(resFormat.rError(err))
+                }
+                else {
+                  //subscription purchased email template
+                  emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
+                    if(template) {
+                      template = JSON.parse(JSON.stringify(template));
+                      let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '');
+                      body = body.replace("{plan_name}",subscriptionDetails.planName);
+                      body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
+                      body = body.replace("{duration}",subscriptionDetails.interval);
+                      body = body.replace("{paid_on}",subscriptionDetails.paidOn);
+                      body = body.replace("{start_date}",subscriptionDetails.startDate);
+                      body = body.replace("{end_date}",subscriptionDetails.endDate);
+                      if(userProfile.userType == 'customer') {
+                        body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
+                        body = body.replace("{more_space}", subscriptionData[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
+                      }
+                      body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
+                      
+                      const mailOptions = {
+                        to : userProfile.username,
+                        subject : template.mailSubject,
+                        html: body
+                      }
+                      
+                      sendEmail(mailOptions)
+                      console.log("email sent")
+                      res.json({received: true});
+                    } else {
+                      console.log("email sent")
+                      res.json({received: true});
+                    }
+                  })
+                }
+              })
+            }
+            else{
+              res.json({received: true});
+            }
+          }
+        })
+      }
+    }
+  }
+}
+
 function autoRenewalOnReminderEmail() {
   User.aggregate([
     {
@@ -454,6 +566,7 @@ function getDateDiff( startDate, endDate, returnAs=null ) {
 }
 
 router.post(["/auto-renewal-on-update-subscription"], autoRenewalOnUpdateSubscription);
+router.post(["/update-subscription-details-if-fails"], updateSubscriptionDetailsIfFails);
 router.get("/auto-renewal-on-reminder-email", autoRenewalOnReminderEmail);
 router.get("/auto-renewal-off-reminder-email", autoRenewalOffReminderEmail);
 router.get("/before-subscription-reminder-email", beforeSubscriptionReminderEmail);

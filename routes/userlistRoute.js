@@ -430,10 +430,13 @@ function getCustomerCard(req, res) {
             object: 'card',
           },
           function(err, cards) {
+            let result = {}
           // asynchronously called
-          let cardData = cards.data[0]
-          //console.log(cardData)
-          result = { exp_month:cardData.exp_month, exp_year:cardData.exp_year, type:cardData.funding, last4:cardData.last4, brand:cardData.brand, "message": "Yes" }
+          if(cards && cards.data.length > 0) {
+            let cardData = cards.data[0]
+            //console.log(cardData)
+            result = { exp_month:cardData.exp_month, exp_year:cardData.exp_year, type:cardData.funding, last4:cardData.last4, brand:cardData.brand, "message": "Yes" }
+          }
           res.status(200).send(resFormat.rSuccess(result))
         });
       }
@@ -570,125 +573,189 @@ function getSubscription(req, res) {
  * Apply to subscription and update the object against to user
  */
 function createSubscription( userProfile, stripeCustomerId, planId, requestParam, res ) {
-  stripe.subscriptions.create({
-    customer: stripeCustomerId,
-    items: [ 
-      { plan: planId }
-    ]
-  }, function(err, subscription) {
-    if (err) {
+  let subscriptions = []
+  let subscriptionDetails = {"_id" : objectId,
+                          "productId" : '',
+                          "planId" : planId,
+                          "subscriptionId" : '',
+                          "startDate" : new Date(),
+                          "endDate" : '',
+                          "interval" : '',
+                          "currency" : '',
+                          "amount" : 0,
+                          "status" : 'incomplete',
+                          "autoRenewal": false,
+                          "paymentMode" : '',
+                          "planName" : '',
+                          "defaultSpace" : 0,
+                          "spaceDimension" : '',
+                          "paidOn" : '',
+                          "createdOn" : new Date(),
+                          "createdBy" : mongoose.Types.ObjectId(requestParam._id)
+                        };
 
-      switch (err.type) {
-        case 'StripeCardError':
-          // A declined card error
-          //err.message; // => e.g. "Your card's expiration year is invalid."
-          res.send(resFormat.rError(err.message));
-          break;
-        case 'StripeRateLimitError':
-          // Too many requests made to the API too quickly
-          res.send(resFormat.rError(err.message));
-          break;
-        case 'StripeInvalidRequestError':
-          // Invalid parameters were supplied to Stripe's API
-          res.send(resFormat.rError(err.message));
-          break;
-        case 'StripeAPIError':
-          // An error occurred internally with Stripe's API
-          res.send(resFormat.rError(err.message));
-          break;
-        case 'StripeConnectionError':
-          // Some kind of error occurred during the HTTPS communication
-          res.send(resFormat.rError(err.message));
-          break;
-        case 'StripeAuthenticationError':
-          // You probably used an incorrect API key
-          res.send(resFormat.rError(err.message));
-          break;
-        default:
-          // Handle any other types of unexpected errors
-          res.send(resFormat.rError("Invalid access. Try again"));
-          break;
-      }
-      
+  if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
+    subscriptions = userProfile.subscriptionDetails
+  }
+  subscriptions.push(subscriptionDetails)
+  User.updateOne({ _id: userProfile._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : subscriptions } }, function (err, updated) {
+    if (err) {
+      res.send(resFormat.rError(err))
     }
     else {
-      if(subscription.status == 'active') {
-        let subscriptionStartDate = subscription.current_period_start*1000
-        let subscriptionEndDate = subscription.current_period_end*1000
-        let subscriptionDetails = {"_id" : objectId,
-                                  "productId" : subscription.items.data[0]['plan']['product'],
-                                  "planId" : planId,
-                                  "subscriptionId" : subscription.id,
-                                  "startDate" : new Date(subscriptionStartDate),
-                                  "endDate" : new Date(subscriptionEndDate),
-                                  "interval" : subscription.items.data[0]['plan']['interval'],
-                                  "currency" : subscription.items.data[0]['plan']['currency'],
-                                  "amount" : subscription.items.data[0]['plan']['amount'] / 100,
-                                  "status" : 'paid',
-                                  "autoRenewal": subscription.collection_method == 'charge_automatically' ? true : false,
-                                  "paymentMode" : 'online',
-                                  "planName" : subscription.items.data[0]['plan']['metadata']['name']+' Plan',
-                                  "defaultSpace" : subscription.items.data[0]['plan']['metadata']['defaultSpace'],
-                                  "spaceDimension" : subscription.items.data[0]['plan']['metadata']['spaceDimension'],
-                                  "paidOn" : new Date(),
-                                  "createdOn" : new Date(),
-                                  "createdBy" : mongoose.Types.ObjectId(requestParam._id)
-                                };
-        let userSubscription = []
-        let EmailTemplateName = "NewSubscriptionAdviser";
-        if(userProfile.userType == 'customer') {
-          EmailTemplateName = "NewSubscription";
-        }
+      stripe.subscriptions.create({
+        customer: stripeCustomerId,
+        items: [ 
+          { plan: planId }
+        ]
+      }, function(err, subscription) {
+        if (err) {
 
-        if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
-          userSubscription = userProfile.subscriptionDetails
-          EmailTemplateName = "AutoRenewalAdviser"
-          if(userProfile.userType == 'customer') {
-            EmailTemplateName = "AutoRenewal"
+          switch (err.type) {
+            case 'StripeCardError':
+              // A declined card error
+              //err.message; // => e.g. "Your card's expiration year is invalid."
+              res.send(resFormat.rError(err.message));
+              break;
+            case 'StripeRateLimitError':
+              // Too many requests made to the API too quickly
+              res.send(resFormat.rError(err.message));
+              break;
+            case 'StripeInvalidRequestError':
+              // Invalid parameters were supplied to Stripe's API
+              res.send(resFormat.rError(err.message));
+              break;
+            case 'StripeAPIError':
+              // An error occurred internally with Stripe's API
+              res.send(resFormat.rError(err.message));
+              break;
+            case 'StripeConnectionError':
+              // Some kind of error occurred during the HTTPS communication
+              res.send(resFormat.rError(err.message));
+              break;
+            case 'StripeAuthenticationError':
+              // You probably used an incorrect API key
+              res.send(resFormat.rError(err.message));
+              break;
+            default:
+              // Handle any other types of unexpected errors
+              res.send(resFormat.rError("Invalid access. Try again"));
+              break;
           }
+          
         }
-        userSubscription.push(subscriptionDetails)
-        //Update user details
-        User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
-          if (err) {
-            res.send(resFormat.rError(err))
-          }
-          else {
-            //subscription purchased email template
-            emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
-              if(template) {
-                template = JSON.parse(JSON.stringify(template));
-                let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
-                body = body.replace("{plan_name}",subscriptionDetails.planName);
-                body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
-                body = body.replace("{duration}",subscriptionDetails.interval);
-                body = body.replace("{paid_on}",subscriptionDetails.paidOn);
-                body = body.replace("{start_date}",subscriptionDetails.startDate);
-                body = body.replace("{end_date}",subscriptionDetails.endDate);
-                if(userProfile.userType == 'customer') {
-                  body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
-                  body = body.replace("{more_space}", subscription.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
+        else {
+          if(subscription.status == 'active') {
+            let subscriptionStartDate = subscription.current_period_start*1000
+            let subscriptionEndDate = subscription.current_period_end*1000
+
+            User.findOne({_id:userProfile._id,userType:userProfile.userType}, {}, function (err, userDetails) {
+              if (err) {
+                res.status(401).send(resFormat.rError(err))
+              }
+              else {
+                
+                let userSubscription = userDetails.subscriptionDetails
+                let latestSubscription = userSubscription[userSubscription.length-1]
+                let subscriptionDetails = {"_id" : latestSubscription._id,
+                                          "productId" : subscription.items.data[0]['plan']['product'],
+                                          "planId" : latestSubscription.planId,
+                                          "subscriptionId" : subscription.id,
+                                          "startDate" : new Date(subscriptionStartDate),
+                                          "endDate" : new Date(subscriptionEndDate),
+                                          "interval" : subscription.items.data[0]['plan']['interval'],
+                                          "currency" : subscription.items.data[0]['plan']['currency'],
+                                          "amount" : subscription.items.data[0]['plan']['amount'] / 100,
+                                          "status" : 'paid',
+                                          "autoRenewal": subscription.collection_method == 'charge_automatically' ? true : false,
+                                          "paymentMode" : 'online',
+                                          "planName" : subscription.items.data[0]['plan']['metadata']['name']+' Plan',
+                                          "defaultSpace" : subscription.items.data[0]['plan']['metadata']['defaultSpace'],
+                                          "spaceDimension" : subscription.items.data[0]['plan']['metadata']['spaceDimension'],
+                                          "paidOn" : new Date(),
+                                          "createdOn" : latestSubscription.createdOn,
+                                          "createdBy" : latestSubscription.createdBy
+                                        };
+                userSubscription[userSubscription.length-1] = subscriptionDetails
+
+                /* let subscriptionDetails = {"_id" : objectId,
+                                          "productId" : subscription.items.data[0]['plan']['product'],
+                                          "planId" : planId,
+                                          "subscriptionId" : subscription.id,
+                                          "startDate" : new Date(subscriptionStartDate),
+                                          "endDate" : new Date(subscriptionEndDate),
+                                          "interval" : subscription.items.data[0]['plan']['interval'],
+                                          "currency" : subscription.items.data[0]['plan']['currency'],
+                                          "amount" : subscription.items.data[0]['plan']['amount'] / 100,
+                                          "status" : 'paid',
+                                          "autoRenewal": subscription.collection_method == 'charge_automatically' ? true : false,
+                                          "paymentMode" : 'online',
+                                          "planName" : subscription.items.data[0]['plan']['metadata']['name']+' Plan',
+                                          "defaultSpace" : subscription.items.data[0]['plan']['metadata']['defaultSpace'],
+                                          "spaceDimension" : subscription.items.data[0]['plan']['metadata']['spaceDimension'],
+                                          "paidOn" : new Date(),
+                                          "createdOn" : new Date(),
+                                          "createdBy" : mongoose.Types.ObjectId(requestParam._id)
+                                        }; */
+                //let userSubscription = []
+                let EmailTemplateName = "NewSubscriptionAdviser";
+                if(userDetails.userType == 'customer') {
+                  EmailTemplateName = "NewSubscription";
                 }
-                body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
-                const mailOptions = {
-                  to : userProfile.username,
-                  subject : template.mailSubject,
-                  html: body
+
+                if( userDetails.subscriptionDetails && userDetails.subscriptionDetails.length > 0 ) {
+                  //userSubscription = userProfile.subscriptionDetails
+                  EmailTemplateName = "AutoRenewalAdviser"
+                  if(userDetails.userType == 'customer') {
+                    EmailTemplateName = "AutoRenewal"
+                  }
                 }
-                sendEmail(mailOptions)
-                res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
-              } else {
-                res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
+                //userSubscription.push(subscriptionDetails)
+                //Update user details
+                User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
+                  if (err) {
+                    res.send(resFormat.rError(err))
+                  }
+                  else {
+                    //subscription purchased email template
+                    emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
+                      if(template) {
+                        template = JSON.parse(JSON.stringify(template));
+                        let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
+                        body = body.replace("{plan_name}",subscriptionDetails.planName);
+                        body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
+                        body = body.replace("{duration}",subscriptionDetails.interval);
+                        body = body.replace("{paid_on}",subscriptionDetails.paidOn);
+                        body = body.replace("{start_date}",subscriptionDetails.startDate);
+                        body = body.replace("{end_date}",subscriptionDetails.endDate);
+                        if(userProfile.userType == 'customer') {
+                          body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
+                          body = body.replace("{more_space}", subscription.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
+                        }
+                        body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
+                        const mailOptions = {
+                          to : userProfile.username,
+                          subject : template.mailSubject,
+                          html: body
+                        }
+                        sendEmail(mailOptions)
+                        res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
+                      } else {
+                        res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
+                      }
+                    })
+                  }
+                })
               }
             })
           }
-        })
-      }
-      else{
-        res.send(resFormat.rError("Transaction could not be completed. Please check the details and try again."));
-      }
+          else{
+            res.send(resFormat.rError("Transaction could not be completed. Please check the details and try again."));
+          }
+        }
+      });
     }
-  });
+  })
 }
 
 /**
@@ -817,115 +884,157 @@ function getAddon(req, res) {
  * Apply to addon plan and update the object against to user
  */
 function chargeForAddon( userProfile, stripeCustomerId, requestParam, res ) {
+  let addOnDetails = {"_id" : objectId,
+                      "chargeId" : '',
+                      "currency" : '',
+                      "amount" : 0,
+                      "status" : 'incomplete',
+                      "paymentMode" : 'online',
+                      "spaceAlloted" : requestParam.spaceAlloted,
+                      "spaceDimension" : 'GB',
+                      "paidOn" : '',
+                      "createdOn" : new Date(),
+                      "createdBy" : mongoose.Types.ObjectId(requestParam._id)
+                    };
+
+  let subscriptionDetails = userProfile.subscriptionDetails
+  if( subscriptionDetails && subscriptionDetails.length > 0 ) {
+    currentSubscription = subscriptionDetails[(subscriptionDetails.length-1)]
+    currentSubscription['addOnDetails'] = addOnDetails
+    subscriptionDetails[(subscriptionDetails.length-1)] = currentSubscription
   
-  stripe.charges.create({
-    customer: stripeCustomerId,
-    amount: (requestParam.amount)*100,
-    currency: requestParam.currency,
-    description: "Addon Charge for "+userProfile.username,
-    capture: true,
-    receipt_email: userProfile.username,
-  }, function(err, charge) {
-    if (err) {
-      console.log("======================",err)
-      switch (err.type) {
-        case 'StripeCardError':
-          // A declined card error
-          //err.message; // => e.g. "Your card's expiration year is invalid."
-          res.send(resFormat.rError(err.message));
-          break;
-        case 'StripeRateLimitError':
-          // Too many requests made to the API too quickly
-          res.send(resFormat.rError(err.message));
-          break;
-        case 'StripeInvalidRequestError':
-          // Invalid parameters were supplied to Stripe's API
-          res.send(resFormat.rError(err.message));
-          break;
-        case 'StripeAPIError':
-          // An error occurred internally with Stripe's API
-          res.send(resFormat.rError(err.message));
-          break;
-        case 'StripeConnectionError':
-          // Some kind of error occurred during the HTTPS communication
-          res.send(resFormat.rError(err.message));
-          break;
-        case 'StripeAuthenticationError':
-          // You probably used an incorrect API key
-          res.send(resFormat.rError(err.message));
-          break;
-        default:
-          // Handle any other types of unexpected errors
-          res.send(resFormat.rError("Invalid access. Try again"));
-          break;
+    User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails: subscriptionDetails } }, function (err, updated) {
+      if (err) {
+        res.send(resFormat.rError(err))
       }
-    }
-    else {
-      if(charge.status == 'succeeded') {
-        let addOnDetails = {"_id" : objectId,
-                            "chargeId" : charge.id,
-                            "currency" : charge.currency,
-                            "amount" : (charge.amount)/100,
-                            "status" : 'paid',
-                            "paymentMode" : 'online',
-                            "spaceAlloted" : requestParam.spaceAlloted,
-                            "spaceDimension" : 'GB',
-                            "paidOn" : new Date(),
-                            "createdOn" : new Date(),
-                            "createdBy" : mongoose.Types.ObjectId(requestParam._id)
-                          };
-        
-        let subscriptionDetails = userProfile.subscriptionDetails
-        if( subscriptionDetails && subscriptionDetails.length > 0 ) {
-          currentSubscription = subscriptionDetails[(subscriptionDetails.length-1)]
-          currentSubscription['addOnDetails'] = addOnDetails
-          subscriptionDetails[(subscriptionDetails.length-1)] = currentSubscription
-        }
-        /* 
-        let userSubscriptionAddOn = []
-        if( userProfile.addOnDetails && userProfile.addOnDetails.length > 0 ) {
-          userSubscriptionAddOn = userProfile.addOnDetails
-        } 
-        userSubscriptionAddOn.push(addOnDetails)
-        */
-        //Update user details
-        User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails: subscriptionDetails/* addOnDetails : userSubscriptionAddOn */ } }, function (err, updated) {
+      else {
+        stripe.charges.create({
+          customer: stripeCustomerId,
+          amount: (requestParam.amount)*100,
+          currency: requestParam.currency,
+          description: "Addon Charge for "+userProfile.username,
+          capture: true,
+          receipt_email: userProfile.username,
+        }, function(err, charge) {
           if (err) {
-            res.send(resFormat.rError(err))
+            switch (err.type) {
+              case 'StripeCardError':
+                // A declined card error
+                //err.message; // => e.g. "Your card's expiration year is invalid."
+                res.send(resFormat.rError(err.message));
+                break;
+              case 'StripeRateLimitError':
+                // Too many requests made to the API too quickly
+                res.send(resFormat.rError(err.message));
+                break;
+              case 'StripeInvalidRequestError':
+                // Invalid parameters were supplied to Stripe's API
+                res.send(resFormat.rError(err.message));
+                break;
+              case 'StripeAPIError':
+                // An error occurred internally with Stripe's API
+                res.send(resFormat.rError(err.message));
+                break;
+              case 'StripeConnectionError':
+                // Some kind of error occurred during the HTTPS communication
+                res.send(resFormat.rError(err.message));
+                break;
+              case 'StripeAuthenticationError':
+                // You probably used an incorrect API key
+                res.send(resFormat.rError(err.message));
+                break;
+              default:
+                // Handle any other types of unexpected errors
+                res.send(resFormat.rError("Invalid access. Try again"));
+                break;
+            }
           }
           else {
-            //subscription purchased email template
-            emailTemplatesRoute.getEmailTemplateByCode("AddonSubscription").then((template) => {
-              let subscriptionDetails = userProfile.subscriptionDetails
-              if(template) {
-                template = JSON.parse(JSON.stringify(template));
-                let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
-                body = body.replace("{addon_space}",addOnDetails.spaceAlloted+' '+addOnDetails.spaceDimension);
-                body = body.replace("{plan_name}",subscriptionDetails[subscriptionDetails.length-1]['planName']);
-                body = body.replace("{amount}", currencyFormatter.format(addOnDetails.amount, { code: (addOnDetails.currency).toUpperCase() }));
-                body = body.replace("{duration}",subscriptionDetails[subscriptionDetails.length-1]['interval']);
-                body = body.replace("{paid_on}",addOnDetails.paidOn);
-                body = body.replace("{end_date}",subscriptionDetails[subscriptionDetails.length-1]['endDate']);
-                const mailOptions = {
-                  to : userProfile.username,
-                  subject : template.mailSubject,
-                  html: body
+            if(charge.status == 'succeeded') {
+              User.findOne({_id:userProfile._id,userType:userProfile.userType}, {}, function (err, userDetails) {
+                if (err) {
+                  res.status(401).send(resFormat.rError(err))
                 }
-                sendEmail(mailOptions)
-                res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
-              } else {
-                res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
-              }
-            })
-            //res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
+                else {
+                  let userSubscription = userDetails.subscriptionDetails
+                  let latestSubscription = userSubscription[userSubscription.length-1]
+                  let addOnDetails = {"_id" : latestSubscription['addOnDetails']['_id'],
+                                      "chargeId" : charge.id,
+                                      "currency" : charge.currency,
+                                      "amount" : (charge.amount)/100,
+                                      "status" : 'paid',
+                                      "paymentMode" : 'online',
+                                      "spaceAlloted" : requestParam.spaceAlloted,
+                                      "spaceDimension" : 'GB',
+                                      "paidOn" : new Date(),
+                                      "createdOn" : latestSubscription['addOnDetails']['createdOn'],
+                                      "createdBy" : latestSubscription['addOnDetails']['createdBy']
+                                    };
+                  latestSubscription['addOnDetails'] = addOnDetails
+                  userSubscription[userSubscription.length-1] = latestSubscription
+                  /* let addOnDetails = {"_id" : objectId,
+                                      "chargeId" : charge.id,
+                                      "currency" : charge.currency,
+                                      "amount" : (charge.amount)/100,
+                                      "status" : 'paid',
+                                      "paymentMode" : 'online',
+                                      "spaceAlloted" : requestParam.spaceAlloted,
+                                      "spaceDimension" : 'GB',
+                                      "paidOn" : new Date(),
+                                      "createdOn" : new Date(),
+                                      "createdBy" : mongoose.Types.ObjectId(requestParam._id)
+                                    };
+                                    
+                  let subscriptionDetails = userProfile.subscriptionDetails
+                  if( subscriptionDetails && subscriptionDetails.length > 0 ) {
+                    currentSubscription = subscriptionDetails[(subscriptionDetails.length-1)]
+                    currentSubscription['addOnDetails'] = addOnDetails
+                    subscriptionDetails[(subscriptionDetails.length-1)] = currentSubscription
+                  } */
+
+                  //Update user details
+                  User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails: userSubscription } }, function (err, updated) {
+                    if (err) {
+                      res.send(resFormat.rError(err))
+                    }
+                    else {
+                      //subscription purchased email template
+                      emailTemplatesRoute.getEmailTemplateByCode("AddonSubscription").then((template) => {
+                        let subscriptionDetails = userProfile.subscriptionDetails
+                        if(template) {
+                          template = JSON.parse(JSON.stringify(template));
+                          let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
+                          body = body.replace("{addon_space}",addOnDetails.spaceAlloted+' '+addOnDetails.spaceDimension);
+                          body = body.replace("{plan_name}",subscriptionDetails[subscriptionDetails.length-1]['planName']);
+                          body = body.replace("{amount}", currencyFormatter.format(addOnDetails.amount, { code: (addOnDetails.currency).toUpperCase() }));
+                          body = body.replace("{duration}",subscriptionDetails[subscriptionDetails.length-1]['interval']);
+                          body = body.replace("{paid_on}",addOnDetails.paidOn);
+                          body = body.replace("{end_date}",subscriptionDetails[subscriptionDetails.length-1]['endDate']);
+                          const mailOptions = {
+                            to : userProfile.username,
+                            subject : template.mailSubject,
+                            html: body
+                          }
+                          sendEmail(mailOptions)
+                          res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
+                        } else {
+                          res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
+                        }
+                      })
+                      //res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
+                    }
+                  })
+                }
+              })
+            }
+            else{
+              res.send(resFormat.rError("Transaction could not be completed. Please check the details and try again."));
+            }
           }
-        })
+        });
       }
-      else{
-        res.send(resFormat.rError("Transaction could not be completed. Please check the details and try again."));
-      }
-    }
-  });
+    })
+  }
 }
 
 function autoRenewalUpdate(req, res) {
