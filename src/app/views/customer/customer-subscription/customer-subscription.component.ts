@@ -31,30 +31,30 @@ import { LocationStrategy } from '@angular/common';
   constructor(private dialog: MatDialog, private subscriptionservice:SubscriptionService, private locationStrategy: LocationStrategy) { 
     this.premiumExpired = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? false : true
     this.freePremiumExpired = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? false : true
-    //history.pushState([], "", location.href);
-    //this.preventBackButton()
+    this.preventBackButton()
   }
 
-/*   preventBackButton() {
+  preventBackButton() {
     this.locationStrategy.onPopState(() => {
       if(this.isDialogOpen) {
-        console.log("this.dialog",this.isDialogOpen)
-        alert("On click back button transaction terminated. Are you sure you want to terminate this transaction?")
+        alert("Click on back button will be terminated your transaction. Please wait while completion of your transaction or close the payment popup to proceed.")
         history.pushState(null, null, location.href);
       }
     })
-  } */
+  }
 
   ngOnInit() {
     this.dialog.closeAll();
     this.getProductDetails()
   }
 
-  /* @HostListener("window:beforeunload", ["$event"])
+  @HostListener("window:beforeunload", ["$event"])
   unloadHandler(event: Event) {
-    // Do more processing...
-    event.returnValue = false;
-  } */
+    if(this.isDialogOpen) {
+      // Do more processing...
+      event.returnValue = false;
+    }
+  }
  
   // get product plan
   getProductDetails = (query = {}) => {
@@ -78,18 +78,14 @@ import { LocationStrategy } from '@angular/common';
         for: 'subscription',
       }
     })
-    dialogRef.backdropClick().subscribe(_ => {
-      // Close the dialog
-      dialogRef.close();
-    })
-    /* dialogRef.afterOpened().subscribe(result => {
+    dialogRef.afterOpened().subscribe(result => {
       this.isDialogOpen = true
-      console.log("asdasdas",this.isDialogOpen)
+      //console.log("asdasdas",this.isDialogOpen)
       history.pushState(null, null, location.href);
     })
     dialogRef.afterClosed().subscribe(result => {
       this.isDialogOpen = false
-    }) */
+    })
 
    }
 

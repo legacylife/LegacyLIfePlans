@@ -134,7 +134,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   LyResizingCroppingImageModule,
   LyIconModule,
   UserIdleModule.forRoot({idle: 8, timeout: 10, ping: 3}),
-  NgxStripeModule.forRoot("pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"),
+  NgxStripeModule.forRoot("pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"),//pk_test_mB9cnQ2EBtmIiIPUi0kQgIxC dev server // pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk test server
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

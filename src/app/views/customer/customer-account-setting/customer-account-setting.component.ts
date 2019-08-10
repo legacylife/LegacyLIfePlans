@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { UserAPIService } from './../../../userapi.service';
@@ -20,6 +20,7 @@ import { CanComponentDeactivate } from '../../../shared/services/auth/can-deacti
 import { SubscriptionService } from '../../../shared/services/subscription.service';
 import  * as moment  from 'moment'
 import { CardDetailsComponent } from 'app/shared/components/card-details-modal/card-details-modal.component';
+import { LocationStrategy } from '@angular/common';
 
 @Component({
   selector: 'app-customer-account-setting',
@@ -79,10 +80,30 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   modified = false // display confirmation popup if user click on other link
   isGetAddOn:boolean = false
 
+  isDialogOpen:boolean = false
+
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder,
     private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
     private loader: AppLoaderService, private picService: ProfilePicService, private confirmService: AppConfirmService,
-    private subscriptionservice:SubscriptionService ) {
+    private subscriptionservice:SubscriptionService, private locationStrategy: LocationStrategy ) {
+      this.preventBackButton()
+  }
+
+  preventBackButton() {
+    this.locationStrategy.onPopState(() => {
+      if(this.isDialogOpen) {
+        alert("Click on back button will be terminated your transaction. Please wait while completion of the transaction or close the payment popup to proceed.")
+        history.pushState(null, null, location.href);
+      }
+    })
+  }
+
+  @HostListener("window:beforeunload", ["$event"])
+  unloadHandler(event: Event) {
+    if(this.isDialogOpen) {
+      // Do more processing...
+      event.returnValue = false;
+    }
   }
 
   ngOnInit() {
@@ -452,12 +473,18 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     let dialogRef: MatDialogRef<any> = this.dialog.open(CardDetailsComponent, {
       width: '500px',
       disableClose: true,
+      closeOnNavigation:false,
       data: {
         for: 'addon',
       }
     })
+    dialogRef.afterOpened().subscribe(result => {
+      this.isDialogOpen = true
+      history.pushState(null, null, location.href);
+    })
     dialogRef.afterClosed()
       .subscribe(res => {
+        this.isDialogOpen = false
         this.checkSubscription()
         this.isGetAddOn = localStorage.getItem('endUserSubscriptionAddon') && localStorage.getItem('endUserSubscriptionAddon') == 'yes' ? true : false
         let allotedSpace = Number(this.addOnSpace) + Number(this.defaultSpace)

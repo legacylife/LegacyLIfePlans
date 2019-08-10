@@ -84,7 +84,7 @@ export const CustomerRoutes: Routes = [
       {
         path: '',
         component: CustomerHomeComponent,
-        canActivate: [UserAuthGuard],
+        canActivate: [UserAuthGuard,ProUserGuard],
         children: [
           {
             path: '',
