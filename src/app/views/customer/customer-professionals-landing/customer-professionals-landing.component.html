@@ -9,14 +9,13 @@
                   <mat-panel-title>
                     <header>Professionals</header>
                   </mat-panel-title>
-                </mat-expansion-panel-header>
-         
+                </mat-expansion-panel-header>         
                 <ul class="legacy--list m-0 p-0">
                   <li *ngFor="let btl of businessTypeIcon; let i = index"  [class.active]="i == selectedRow" (click)="toggleSideNav()">
-                    <a (click)="changeTrigger(btl.opt_name,i)">
-                      <mat-icon class="icon-file">{{btl.opt_code}}</mat-icon> {{btl.opt_name}}
-                      <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
-                    </a>
+                      <a (click)="changeTrigger(btl.opt_name,i)">
+                          <mat-icon class="icon-file">{{btl.opt_code}}</mat-icon> {{btl.opt_name}}
+                          <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
+                      </a>              
                   </li>                       
                 </ul>  
               </mat-expansion-panel>             
@@ -24,17 +23,12 @@
           </div>
         </div>
       </mat-sidenav>
-  
-       <!-- toggleSideNav -->
+         <!-- toggleSideNav -->
        <div class="shop-top-toolbar p-0 llp--toggle-btn ml-1">
         <button mat-icon-button class="p-0" (click)="toggleSideNav()">
           <mat-icon>short_text</mat-icon>
         </button>
       </div>
-  
       <router-outlet></router-outlet>
-  
-     
     </mat-sidenav-container>
-    
   </div>

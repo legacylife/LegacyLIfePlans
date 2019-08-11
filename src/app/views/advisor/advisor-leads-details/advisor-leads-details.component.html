@@ -10,10 +10,12 @@
 
           <div class="leads--details">
             <div class="leads--pic">
-              <img class="" alt="" src="{{profilePicture}}">
+               <a [routerLink]="['/advisor/leads/profile', row?._id]">
+                 <img class="" alt="" src="{{profilePicture}}">
+              </a>
             </div>
             <div class="leads--infos">
-              <h5>{{row?.firstName}} {{row?.lastName}}</h5>
+              <h5><a [routerLink]="['/advisor/leads/profile', row?._id]">{{row?.firstName}} {{row?.lastName}}</a></h5>
               <div class="icon--and--info unique">
                 <mat-icon>star</mat-icon>
                 Free member

@@ -1,19 +1,25 @@
 <div class="shop-wrap llp--content--wrapper" fxLayout="row" fxLayoutWrap="wrap">
   <div class="full-width">
     <mat-card class="empty--section p-0">
-   
-
       <mat-card-header class="m-0 header--with--sort">
         <mat-card-title class="m-0">Advisor Listing</mat-card-title>
-        <!-- <div class="search--box">          
-          <input type="text" class="" placeholder="Search by name or zip code">
-          <mat-icon>search</mat-icon>
-        </div> -->
-      </mat-card-header>
-
-      <mat-card-content class="appointees--wrapper box--scroll" *ngIf="showAdvisorListing">
-        <mat-card class="appointees--section p-0 sponsored" *ngFor="let peoples of adListings">
-         
+        <form [formGroup]="searchForm" class="llp-form-wrapper" (ngSubmit)="searching()">             
+        <div class="search--box">          
+          <input matInput name="search" placeholder="Search by name or zip code" [formControl]="searchForm.controls['search']"  (input)="toggleSearchSuggestion()">
+          <!-- <input type="text" class="" placeholder="Search by name or zip code"> -->
+          <mat-icon (click)="searching()">search</mat-icon>
+        </div>
+        </form>
+      </mat-card-header>      
+      <mat-card-content class="appointees--wrapper box--scroll search-results" *ngIf="showAdvisorListing"
+      infiniteScroll
+      [infiniteScrollDistance]="1"
+      [infiniteScrollThrottle]="10"
+      [infiniteScrollContainer]="selector"
+      (scrolled)="onScrollDown()"
+      (scrolledUp)="onScrollUp()"
+      [scrollWindow]="false">
+        <mat-card class="appointees--section p-0 sponsored" *ngFor="let peoples of adListings">         
           <mat-card-header class="m-0">
             <mat-card-title class="m-0">
               <div class="appointees--pic">
@@ -23,9 +29,7 @@
                 <h5>{{peoples.firstName + ' ' + peoples.lastName}}</h5>
                 <p class="position m-0">{{peoples.businessName}}</p>
               </div>
-              <div class="sponsored--patch">
-                Sponsored
-              </div>
+              <div class="sponsored--patch">Sponsored</div>
             </mat-card-title>
           </mat-card-header>
           <mat-card-content>
@@ -54,7 +58,7 @@
             </div>
           </mat-card-content>
         </mat-card>
-        <div class="divider" *ngIf="showAdvisorListing">
+        <div class="divider" *ngIf="showQualityListing">
           <p>More quality professional advisors</p>
         </div>
         <mat-card class="appointees--section p-0 " *ngFor="let qualityAd of qualityAdvisor">

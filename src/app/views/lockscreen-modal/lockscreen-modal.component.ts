@@ -25,7 +25,6 @@ export class lockscreenModalComponent implements OnInit {
     this.userFullName = localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName");
     this.userId = localStorage.getItem("endUserId");
     this.endUserType = localStorage.getItem("endUserType");
-
     this.lockScreenForm = this.fb.group({
       email: new FormControl(''),
       password: new FormControl('', Validators.required)
@@ -58,9 +57,14 @@ lockScreenFormSubmit(userData = null) {
     if (result.status=="success") {      
       userData = result.data;
         //close the popup here
+        localStorage.setItem("setIdleFlag", "false");
+        this.dialog.closeAll(); 
     } else {
       if(result.data.message){
-        console.log(result.data.message);
+        if(result.data.invalidPassword){        console.log(result.data.message);
+          this.lockScreenForm.controls['password'].setErrors({'invalid' : true});
+          this.lockScreenForm.controls['password'].markAsUntouched();
+        }
       }      
     }      
   }, (err) => {

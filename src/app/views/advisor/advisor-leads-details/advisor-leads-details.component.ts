@@ -47,7 +47,7 @@ export class AdvisorLeadsDetailsComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }, query)
     }
-    this.userapi.apiRequest('post', 'lead/view-details', req_vars).subscribe(result => {   //userlist/viewall
+    this.userapi.apiRequest('post', 'lead/view-details', req_vars).subscribe(result => { 
       if (result.status == "error") {
         console.log(result.data)
       } else {

@@ -18,6 +18,7 @@ export class CustomerProfessionalsLandingComponent implements OnInit {
 
   constructor(private layoutServ: LayoutService, private data: DataSharingService) { 
     this.layout = layoutServ.layoutConf
+    this.data.changeMessage("All")
   }
 
   ngOnInit() {
@@ -26,8 +27,7 @@ export class CustomerProfessionalsLandingComponent implements OnInit {
 
   changeTrigger(key,index){
     this.selectedRow = index;
-    localStorage.setItem('businessTypeIcon', key) 
-    this.data.changeMessage(index)
+    this.data.changeMessage(key)
   }
 
   toggleSideNav() {

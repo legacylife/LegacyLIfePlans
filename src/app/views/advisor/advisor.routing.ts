@@ -52,6 +52,8 @@ import { FinalWishesComponent } from '../customer/customer-home/final-wishes/fin
 import { FinalWishesDetailsComponent } from '../customer/customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
 import { LettersMessagesListingComponent } from '../customer/customer-home/legacy-life-letters-messages/letters-messages-listing/letters-messages-listing.component';
 import { LettersMessagesDetailsComponent } from '../customer/customer-home/legacy-life-letters-messages/letters-messages-details/letters-messages-details.component';
+import { CustomerProfileComponent } from './customer-profile/customer-profile.component';
+
 import { ErrorComponent } from './../error/error.component';
 console.log('advisor---routing');
 export const AdvisorRoutes: Routes = [
@@ -357,7 +359,20 @@ export const AdvisorRoutes: Routes = [
     ]
   },
   {
-    path: 'leads-details/:id',
+    path: 'leads/profile/:id',
+    component: AdvisorLayoutComponent,
+    data: { title: 'Customer Profile' },
+    children: [
+      {
+        path: '',
+        component: CustomerProfileComponent,
+        canActivate: [UserAuthGuard],
+        data: { title: 'Customer Profile' },
+      }
+    ]
+  },
+  {
+    path: 'leads/details/:id',
     component: AdvisorLayoutComponent,
     data: { title: 'Leads Details' },
     children: [
