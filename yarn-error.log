@@ -1,8 +1,8 @@
 Arguments: 
-  D:\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add angular-user-idle
+  D:\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add @raven/angular-editor --save
 
 PATH: 
-  C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;D:\nodejs\;C:\Program Files\Git\cmd;C:\Program Files (x86)\Yarn\bin\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\PuTTY\;C:\Users\Admin\AppData\Local\Microsoft\WindowsApps;C:\Users\Admin\AppData\Roaming\npm;C:\Program Files\MongoDB\Server\3.6\bin;D:\nodejs;C:\data\db;C:\Users\Admin\AppData\Local\Yarn\bin;C:\Users\Admin\AppData\Local\Programs\Microsoft VS Code\bin;C:\Python27;
+  C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;D:\nodejs\;C:\Program Files\Git\cmd;C:\Program Files (x86)\Yarn\bin\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\PuTTY\;D:\xampp7.1\php;C:\ProgramData\ComposerSetup\bin;C:\Users\Admin\AppData\Local\Microsoft\WindowsApps;C:\Users\Admin\AppData\Roaming\npm;C:\Program Files\MongoDB\Server\3.6\bin;D:\nodejs;C:\data\db;C:\Users\Admin\AppData\Local\Yarn\bin;C:\Users\Admin\AppData\Local\Programs\Microsoft VS Code\bin;C:\Python27;C:\Users\Admin\AppData\Roaming\Composer\vendor\bin
 
 Yarn version: 
   1.16.0
@@ -14,8 +14,17 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: connect ETIMEDOUT 104.16.27.35:443
-      at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1097:14)
+  Error: https://registry.yarnpkg.com/@raven%2fangular-editor: Not found
+      at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:65200:18)
+      at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:129590:22)
+      at Request.emit (events.js:189:13)
+      at Request.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:130562:10)
+      at Request.emit (events.js:189:13)
+      at IncomingMessage.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:130484:12)
+      at Object.onceWrapper (events.js:277:13)
+      at IncomingMessage.emit (events.js:194:15)
+      at endReadableNT (_stream_readable.js:1125:12)
+      at process._tickCallback (internal/process/next_tick.js:63:19)
 
 npm manifest: 
   {
@@ -53,8 +62,10 @@ npm manifest:
       "@ngx-translate/http-loader": "3.0.1",
       "@swimlane/ngx-datatable": "11.1.7",
       "angular-calendar": "0.26.4",
+      "angular-froala-wysiwyg": "^3.0.4",
       "angular-in-memory-web-api": "0.7.0",
       "angular-star-rating": "^4.0.0-beta.3",
+      "angular-user-idle": "^2.1.4",
       "chart.js": "2.5.0",
       "chroma-js": "^2.0.3",
       "classlist.js": "1.1.20150312",
@@ -71,6 +82,7 @@ npm manifest:
       "ng2-validation": "4.2.0",
       "ngx-color-picker": "5.3.8",
       "ngx-img-cropper": "^7.0.6",
+      "ngx-infinite-scroll": "^8.0.0",
       "ngx-pagination": "3.1.0",
       "ngx-perfect-scrollbar": "6.1.0",
       "ngx-quill": "2.0.4",
@@ -807,6 +819,13 @@ Lockfile:
       dom-autoscroller "^2.3.4"
       tslib "^1.9.0"
   
+  angular-froala-wysiwyg@^3.0.4:
+    version "3.0.4"
+    resolved "https://registry.yarnpkg.com/angular-froala-wysiwyg/-/angular-froala-wysiwyg-3.0.4.tgz#b554d710f60b5ebd20c746391c09ee83a57d049a"
+    integrity sha512-nnKnUtAzXnOlN7Tgt1PM+/SaLDD9Y6rKeB+sTgxAZpuHoEzbaOLNWJSU0kG6G99fFtkHO5jiSrBDB3b/6Jisdw==
+    dependencies:
+      froala-editor "^3.0.4"
+  
   angular-in-memory-web-api@0.7.0:
     version "0.7.0"
     resolved "https://registry.yarnpkg.com/angular-in-memory-web-api/-/angular-in-memory-web-api-0.7.0.tgz#a6ea4cf7aa0d1edc369dd41f26c87e785460c3d3"
@@ -825,6 +844,13 @@ Lockfile:
     integrity sha512-2GAaWvmRjKiQovN5lRvK9u24Ksv2mZupYvwij6ShAKuojxm0VB1d3/O9nBeoID0gmthYK+NXaskrJAW+RmStEg==
     dependencies:
       tslib "^1.7.1"
+  
+  angular-user-idle@^2.1.4:
+    version "2.1.4"
+    resolved "https://registry.yarnpkg.com/angular-user-idle/-/angular-user-idle-2.1.4.tgz#66039c8c27f366ad25d26bf9aeea339b0dd51cc1"
+    integrity sha512-M5x/20wD6++wvQOBHoB/0K/IKD6QE/6od/vW4AF0iLaM8dh/MOQ1NAI1wTCk0uTYuJ3hGJEqlVLUhUFpx66WwQ==
+    dependencies:
+      tslib "^1.9.0"
   
   animation-frame-polyfill@^1.0.0:
     version "1.0.1"
@@ -3270,6 +3296,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.2.tgz#3d8cadd90d976569fa835ab1f8e4b23a105605a7"
     integrity sha1-PYyt2Q2XZWn6g1qx+OSyOhBWBac=
   
+  froala-editor@^3.0.4:
+    version "3.0.4"
+    resolved "https://registry.yarnpkg.com/froala-editor/-/froala-editor-3.0.4.tgz#e079eb11bd8c66e193f94cc82768f356408a42a4"
+    integrity sha512-520kcQQwCTLqwCDm/QKBWjhmPtO9o+8NC/iYie0eH1RB0yA678Q+x3NgjEC6FE9cUmRiuQYq3OOktLYaJ+8l0w==
+  
   from2@^2.1.0:
     version "2.3.0"
     resolved "https://registry.yarnpkg.com/from2/-/from2-2.3.0.tgz#8bfb5502bde4a4d36cfdeea007fcca21d7e382af"
@@ -5258,6 +5289,13 @@ Lockfile:
     dependencies:
       tslib "^1.9.0"
   
+  ngx-infinite-scroll@^8.0.0:
+    version "8.0.0"
+    resolved "https://registry.yarnpkg.com/ngx-infinite-scroll/-/ngx-infinite-scroll-8.0.0.tgz#4fc1e1d1bb50baedc4793c28115faec656a8d027"
+    integrity sha512-9KRCFAszLttd735CY1GbqtiVRdEvAGWUL8FQqD+iBGitbhgws4OZS+qdKIV+lrJzYXh+Y2XnOOSiUFADOo4+fQ==
+    dependencies:
+      opencollective-postinstall "^2.0.2"
+  
   ngx-pagination@3.1.0:
     version "3.1.0"
     resolved "https://registry.yarnpkg.com/ngx-pagination/-/ngx-pagination-3.1.0.tgz#66018bca39158215d66211b2b2cf368848b7d9d8"
@@ -5641,6 +5679,11 @@ Lockfile:
     integrity sha512-/yb5mVZBz7mHLySMiSj2DcLtMBbFPJk5JBKEkHVZFxZAPzeg3L026O0T+lbdz1B2nyDnkClRSwRQJdeVUIF7zw==
     dependencies:
       is-wsl "^1.1.0"
+  
+  opencollective-postinstall@^2.0.2:
+    version "2.0.2"
+    resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.2.tgz#5657f1bede69b6e33a45939b061eb53d3c6c3a89"
+    integrity sha512-pVOEP16TrAO2/fjej1IdOyupJY8KDUM1CvsaScRbw6oddvpQoOfGk4ywha0HKKVAD6RkW4x6Q+tNBwhf3Bgpuw==
   
   opn@5.3.0:
     version "5.3.0"

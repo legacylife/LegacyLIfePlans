@@ -28,7 +28,8 @@ export class TimeCapsuleListComponent implements OnInit {
   urlData:any={};
   TimeCapsuleManagementSection:string='now';
   LegacyPermissionError:string="You don't have access to this section";
-
+  instruction_data:any;
+  instruction_data_flag:boolean=false;  
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
 
   ngOnInit() {
@@ -43,7 +44,12 @@ export class TimeCapsuleListComponent implements OnInit {
         this.TimeCapsuleManagementSection = userAccess.TimeCapsuleManagement 
       });
       this.showTrusteeCnt = false;
-    }
+    }else{      
+      this.userapi.getFolderInstructions('time_capsule', (returnData) => {
+        this.instruction_data = returnData;
+        if(this.instruction_data){this.instruction_data_flag = true;}
+      });
+    } 
     this.getTimecapsuleList();
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){

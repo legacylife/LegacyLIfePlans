@@ -42,7 +42,8 @@ export class CustomerLegalStuffComponent implements OnInit {
   HealthcareManagementSection:string='now';
   PersonalAffairsManagementSection:string='now';
   LegacyPermissionError:string="You don't have access to this section";
-
+  instruction_data:any;
+  instruction_data_flag:boolean=false;  
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -64,7 +65,12 @@ export class CustomerLegalStuffComponent implements OnInit {
         this.PersonalAffairsManagementSection= userAccess.PersonalAffairsManagement
       });
       this.showTrusteeCnt = false;
-    }
+    }else{      
+      this.userapi.getFolderInstructions('legal_stuff', (returnData) => {
+        this.instruction_data = returnData;
+        if(this.instruction_data){this.instruction_data_flag = true;}
+      });
+    } 
     this.getEstateList();
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){

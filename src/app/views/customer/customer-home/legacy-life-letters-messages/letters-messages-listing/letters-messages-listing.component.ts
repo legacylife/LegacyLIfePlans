@@ -27,6 +27,8 @@ export class LettersMessagesListingComponent implements OnInit {
   urlData:any={};
   LegacyLifeLettersMessagesManagementSection:string='now';
   LegacyPermissionError:string="You don't have access to this section";
+  instruction_data:any;
+  instruction_data_flag:boolean=false;  
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) {  }
 
   ngOnInit() {
@@ -40,7 +42,12 @@ export class LettersMessagesListingComponent implements OnInit {
         this.LegacyLifeLettersMessagesManagementSection = userAccess.LegacyLifeLettersMessagesManagement
       });
       this.showTrusteeCnt = false;
-    }
+    }else{      
+      this.userapi.getFolderInstructions('legacy_life_letters_messages', (returnData) => {
+        this.instruction_data = returnData;
+        if(this.instruction_data){this.instruction_data_flag = true;}
+      });
+    } 
     this.getLetterMessageList();
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){

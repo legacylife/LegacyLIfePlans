@@ -36,6 +36,8 @@ import { customerlistComponent } from './customerlist/customerlist.component';
 import { advisorlistComponent } from './advisorlist/advisorlist.component';
 import { cmslistComponent } from './cms/cms.component';
 import { cmseditComponent } from './cms/cmsedit.component';
+import { fileUploadInstructionsListComponent } from './file-upload-instructions/file-upload-instructions.component';
+import { fileUploadInstructionsEditComponent } from './file-upload-instructions/file-upload-instructions-edit.component';
 import { EmailTemplateComponent } from './email-template/email-template.component';
 import { EmailTemplateEditComponent } from './email-template/email-template-edit.component';
 import { NgxTablePopupComponent } from './userlist/ngx-table-popup/ngx-table-popup.component';
@@ -80,7 +82,7 @@ import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests
     AppBlankComponent, userlistComponent, userviewComponent, customerlistComponent, advisorlistComponent,
     NgxTablePopupComponent, AdvisorRejectPopupComponent, cmslistComponent, cmseditComponent, ProfileComponent, EmailTemplateComponent,
     EmailTemplateEditComponent, MapComponent, ReferralProgramComponent, ActivityLogComponent, AddManagementComponent,
-    DeceasedRequestsComponent
+    DeceasedRequestsComponent,fileUploadInstructionsListComponent,fileUploadInstructionsEditComponent
   ],
   entryComponents: [NgxTablePopupComponent,AdvisorRejectPopupComponent]
 })

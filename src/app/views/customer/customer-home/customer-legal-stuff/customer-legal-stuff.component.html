@@ -2,22 +2,11 @@
   <div class="full-width">
     <div class="">
       <advisor-legacy-details></advisor-legacy-details>
-      <mat-card class="empty--section p-0">
+      <mat-card class="empty--section p-0" *ngIf="instruction_data_flag">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Legal Stuff</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p class="info m-0">Manage your Wills, Affidavits, Codicil, Joint Revocable Living Trust, Revocable Living
-            Trust, Irrevocable Trust
-            through 'Estate'.</p>
-          <p class="info m-0">Manage your Advance Healthcare Directive, Healthcare Power of Attorney, Healthcare Proxy,
-            Living Will, Medical
-            Power of Attorney from Healthcare section.</p>
-          <p class="info m-0">You can manage Power of Attorney, Durable Power of Attorney, Revocation of Power of
-            Attorney from Personal affairs
-            section.
-          </p>
-        </mat-card-content>
+        </mat-card-header>       
+        <mat-card-content [innerHtml]="instruction_data"></mat-card-content>
       </mat-card>
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">

@@ -63,6 +63,7 @@ export class UserAuthGuard implements CanActivate {
      //https://www.npmjs.com/package/angular-user-idle
      let IdleFlag = localStorage.getItem("setIdleFlag");
       if(IdleFlag=='true'){
+        console.log("LockScreen IdleFlag >> ",IdleFlag)
         this.stopWatching()
       }
      this.userIdle.startWatching();    
@@ -77,7 +78,7 @@ export class UserAuthGuard implements CanActivate {
   }
  
  stopWatching() {
-  //console.log("LockScreen Countdown start >> ")
+  console.log("LockScreen Countdown start >> ")
   localStorage.setItem("setIdleFlag", "true");
    let dialogRef: MatDialogRef<any> = this.dialog.open(lockscreenModalComponent, {
      width: '720px',
@@ -86,6 +87,7 @@ export class UserAuthGuard implements CanActivate {
      backdropClass: 'lock--backdrop'   
    }) 
    dialogRef.afterClosed().subscribe(res => {
+    console.log("LockScreen afterClosed >> ")
     this.restart();
     this.startWatching();
      if (!res) {

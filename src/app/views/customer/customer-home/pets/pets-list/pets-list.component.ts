@@ -33,6 +33,8 @@ export class PetsListComponent implements OnInit {
   showTrusteeCnt:boolean=true;
   PetsManagementSection:string='now';
   LegacyPermissionError:string="You don't have access to this section";
+  instruction_data:any;
+  instruction_data_flag:boolean=false;  
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
   ngOnInit() { 
     this.userId = localStorage.getItem("endUserId");
@@ -47,7 +49,12 @@ export class PetsListComponent implements OnInit {
         this.PetsManagementSection = userAccess.PetsManagement
       });
       this.showTrusteeCnt = false;
-    }
+    }else{      
+      this.userapi.getFolderInstructions('pets', (returnData) => {
+        this.instruction_data = returnData;
+        if(this.instruction_data){this.instruction_data_flag = true;}
+      });
+    } 
     this.getPetsList();
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){

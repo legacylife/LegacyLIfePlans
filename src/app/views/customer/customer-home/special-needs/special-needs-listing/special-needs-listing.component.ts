@@ -35,7 +35,8 @@ export class SpecialNeedsListingComponent implements OnInit {
   ChildParentDisabilityManagementSection:string='now';
   FriendNeighborCareManagementSection:string='now';
   LegacyPermissionError:string="You don't have access to this section";
-
+  instruction_data:any;
+  instruction_data_flag:boolean=false;  
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -57,7 +58,12 @@ export class SpecialNeedsListingComponent implements OnInit {
         this.FriendNeighborCareManagementSection= userAccess.FriendNeighborCareManagement
       });
       this.showTrusteeCnt = false;
-    }
+    }else{      
+      this.userapi.getFolderInstructions('special_needs', (returnData) => {
+        this.instruction_data = returnData;
+        if(this.instruction_data){this.instruction_data_flag = true;}
+      });
+    } 
     this.getyoungChildrenList();
     this.getcPDisabilityList();
     this.getfriendNeighborList();

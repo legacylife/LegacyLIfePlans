@@ -2,14 +2,12 @@
   <div class="full-width">
     <div class="">
       <advisor-legacy-details></advisor-legacy-details>
-      <mat-card class="empty--section p-0">
+      <mat-card class="empty--section p-0" *ngIf="instruction_data_flag">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Special Needs
           </mat-card-title>
         </mat-card-header>
-        <mat-card-content>
-          <p class="info m-0"> You can also manage your Special Needs.</p>
-        </mat-card-content>
+        <mat-card-content [innerHtml]="instruction_data"></mat-card-content>
       </mat-card>
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">

@@ -30,7 +30,7 @@ export class UserAPIService {
   private accessSection: any
   private fileAccessInfo:any
   private userAccess:any={}
-
+  private returnData:any;
   constructor(private http: HttpClient, private router: Router) { }
 
   //function to save token and user id
@@ -332,6 +332,23 @@ export class UserAPIService {
     return returnData;
   }
 
+
+  // get url params just like, ID, Module
+  async getFolderInstructions(folderCode, callback){
+    let returnData  = ''
+    const params = {
+      query: Object.assign({ folderCode: folderCode,status:"Active" })
+    }
+    await this.apiRequest('post', 'cmsFolderInst/view', params).subscribe( (result) => {
+      if(result.data.cmsDetails){
+        this.returnData = result.data.cmsDetails.InstuctionBody;
+        console.log("returnData 00 ",returnData)
+        callback (this.returnData)
+      }
+    });
+  }
+
+  
  async getUserAccess(customerId, callback){
     let loggedinCustomerId = localStorage.getItem("endUserId")
     if (localStorage.getItem("endUserType") == "customer") {

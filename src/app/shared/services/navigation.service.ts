@@ -43,10 +43,14 @@ export class NavigationService {
     },
     {
       name: 'CMS',
-      type: 'link',
+      type: 'dropDown',
       tooltip: 'Content Management System',
       icon: 'pages',
-      state: 'admin/cms'
+      state: 'admin',
+      sub: [
+        { name: 'STATIC PAGES PAGES', state: 'cms' },
+        { name: 'FILE UPLOAD INSTRUCTIONS', state: 'file-upload-instructions' }
+      ]
     },
     {
       name: 'REFERRAL PROGRAM',
