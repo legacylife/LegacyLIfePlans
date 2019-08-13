@@ -18,7 +18,8 @@ import {
   MatTabsModule,
   MatInputModule,
   MatProgressBarModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatSelectModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -42,6 +43,8 @@ import { NgxTablePopupComponent } from './userlist/ngx-table-popup/ngx-table-pop
 import { AdvisorRejectPopupComponent } from './userlist/ngx-table-popup/advisor-reject-popup.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AgmCoreModule } from '@agm/core';
+import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
+import { AgmMarkerSpiderModule } from 'agm-oms';
 import { MapComponent } from './map/map.component';
 import { ReferralProgramComponent } from './referral-program/referral-program.component';
 import { ActivityLogComponent } from './activity-log/activity-log.component';
@@ -66,6 +69,7 @@ import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests
     MatTabsModule,
     MatInputModule,
     MatProgressBarModule,
+    MatSelectModule,
     FlexLayoutModule,
     NgxDatatableModule,
     ChartsModule,
@@ -74,6 +78,8 @@ import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests
     QuillModule,
     MatTooltipModule,
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyBNcjxo_35qnEG17dQvvftWa68eZWepYE0' }),
+    AgmJsMarkerClustererModule,
+    AgmMarkerSpiderModule,
     RouterModule.forChild(AdminRoutes)
   ],
   declarations: [

@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { UserAPIService } from './../../../userapi.service';
 import { s3Details } from '../../../config';
+import  * as moment  from 'moment'
 const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 
 @Component({
@@ -34,7 +35,29 @@ export class AdvisorLeadsComponent implements OnInit {
   }
 
   //function to get all events
-  getLeadsLists = (query = {}, search = false) => {
+  getLeadsLists = (query = {}, search = 'All') => {
+
+    /**
+     * Get leads based on filter
+     */
+    if( search !='All') {
+      let startOfMonth, endOfMonth
+      if( search == 'day') {
+        startOfMonth = moment().startOf('day').format('YYYY-MM-DD HH:mm');
+        endOfMonth   = moment().endOf('day').format('YYYY-MM-DD HH:mm');
+      }
+      else if( search == 'week' ) {
+        startOfMonth = moment().startOf('week').format('YYYY-MM-DD HH:mm');
+        endOfMonth   = moment().endOf('week').format('YYYY-MM-DD HH:mm');
+      }
+      else{
+        startOfMonth = moment().startOf('month').format('YYYY-MM-DD HH:mm');
+        endOfMonth   = moment().endOf('month').format('YYYY-MM-DD HH:mm');
+      }
+      
+      query = Object.assign( {createdOn: { $gte: new Date(startOfMonth) , $lte: new Date(endOfMonth) } })
+    }
+    console.log("queryqueryquery",query)
     const req_vars = {
       query: Object.assign({ advisorId: this.userId, status: "Active" }, query),
       fields: {},
@@ -44,10 +67,10 @@ export class AdvisorLeadsComponent implements OnInit {
     }
     this.userapi.apiRequest('post', 'lead/listing', req_vars).subscribe(result => {
       if (result.status == "error") {
-        console.log(result.data)
+        //console.log(result.data)
       } else {
         this.leadsListings =  result.data.leadList;
-        console.log("Here ",this.leadsListings)
+        //console.log("Here ",this.leadsListings)
         this.showLeadsListingCnt = this.leadsListings.length;  
         if (this.showLeadsListingCnt>0) {
           this.showLeadsListing = true;

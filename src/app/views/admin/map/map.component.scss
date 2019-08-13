@@ -1,0 +1,57 @@
+@import 'llp-global-styles.scss';
+
+::ng-deep .mat-option-text{
+    font-family: $font--lato--regular !important;
+    font-size: 16px;
+}
+
+.mat-card-header{
+    padding: 0 25px;
+    height: 55px;
+    background-color: #e7ebcd;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    ::ng-deep .mat-card-header-text{
+        margin: 0;
+        font-size: 16px;
+        color: #222324;
+    }
+
+    &.header--with--sort{
+        .right--filters{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        ::ng-deep .mat-select{
+            width: 130px;
+            background: #fff;
+            padding: 6px 10px;
+            border-radius: 2px;
+            .mat-select-placeholder {
+                color: #222324;
+                font-size: 16px;
+                font-family: $font--lato--regular;
+            }
+        }
+        .compare--icon--desc{
+            width: 30px;
+            height: 30px;
+            font-size: 30px;
+            
+            margin: 0 5px 0 0;
+            cursor: pointer;
+        }
+        .compare--icon--asc{
+        width: 30px;
+        height: 30px;
+        font-size: 30px;
+        transform: rotate(180deg);
+        margin: 0 5px 0 0;
+        cursor: pointer;
+    }
+    }
+}
+    

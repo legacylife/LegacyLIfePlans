@@ -7,6 +7,11 @@
   resolved "https://registry.yarnpkg.com/@agm/core/-/core-1.0.0-beta.2.tgz#da15c0a5e86fe9e1178f14c36a3e0ffc14f9ad77"
   integrity sha512-3bdfvkWDmJszpj/F6Fzgv7sks0cs/cUEQPfs37tcJFz3jc62SsXy4TGb/WJT8FpH2nSGE6DonP8lXuFxB0lblQ==
 
+"@agm/js-marker-clusterer@^1.0.0-beta.7":
+  version "1.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/@agm/js-marker-clusterer/-/js-marker-clusterer-1.0.0-beta.7.tgz#bf1a3791244c968022e0b9ea0046c5497c7adcb8"
+  integrity sha512-fD6G+mw91ghUqEkoABjix7T1BhDPC4gBR+FwBcyY7D+KmBKUitjJMKDWjvZo2QnR7A3+R3foq+b/2TBnRZxiUw==
+
 "@alyle/ui@^2.7.7":
   version "2.7.7"
   resolved "https://registry.yarnpkg.com/@alyle/ui/-/ui-2.7.7.tgz#61042838d1fb39bfc90af552ea76c8454e8eb3d8"
@@ -331,6 +336,11 @@
   resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-11.1.7.tgz#d4ca01a3c0ee67071da214b739da198179a4d756"
   integrity sha512-TMDN26Q4J+Sh+OPqAx8BK5Q/3hAAmcTAUQ9wvC9nboSOAmYUaHGz8t21yGdeUtRtunIfMpjTnwLa+X2Pfoq42w==
 
+"@types/googlemaps@^3.30.7":
+  version "3.37.3"
+  resolved "https://registry.yarnpkg.com/@types/googlemaps/-/googlemaps-3.37.3.tgz#ad7a49c594512fad13e05237d2849afb11872c57"
+  integrity sha512-4J1fYJhLnzsfZgeAgrzBfNHFVoZHcWp/rK7oImeV7ZhplL19T1kxCoA4xJTuPfS+sKiN06E+xTvj2K13L7Wc1g==
+
 "@types/hopscotch@0.2.28":
   version "0.2.28"
   resolved "https://registry.yarnpkg.com/@types/hopscotch/-/hopscotch-0.2.28.tgz#0fe8795f99faaae064c81658085d9159fab0b6a5"
@@ -613,6 +623,11 @@ agentkeepalive@^3.4.1:
   dependencies:
     humanize-ms "^1.2.1"
 
+agm-oms@^1.0.0-beta.5:
+  version "1.0.0-beta.5"
+  resolved "https://registry.yarnpkg.com/agm-oms/-/agm-oms-1.0.0-beta.5.tgz#7013451b41be325413fbe45b7fc135a3716862a1"
+  integrity sha512-ZUQkYnHLTBT3RVEQ8UgKekrPTMjygCa+53J5jxRXKCTfZY64x6oEYbexMjsRMvi+bSzSOL9VWU08wCZGuFYNTg==
+
 ajv-errors@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/ajv-errors/-/ajv-errors-1.0.1.tgz#f35986aceb91afadec4102fbd85014950cefa64d"
@@ -712,6 +727,11 @@ angular-user-idle@^2.1.4:
   integrity sha512-M5x/20wD6++wvQOBHoB/0K/IKD6QE/6od/vW4AF0iLaM8dh/MOQ1NAI1wTCk0uTYuJ3hGJEqlVLUhUFpx66WwQ==
   dependencies:
     tslib "^1.9.0"
+
+angular5-csv@^0.2.11:
+  version "0.2.11"
+  resolved "https://registry.yarnpkg.com/angular5-csv/-/angular5-csv-0.2.11.tgz#1ce7dd2d074480f2675d35877c3013f7afe11b42"
+  integrity sha512-N2uhl5mr1iziUclBH+NZ/ir5WbQyzwtJ979OaS8p1bRXvh4+NIYOAn9b34zr2IbtTvKWvdn/pgXrXHi35lOO5g==
 
 animation-frame-polyfill@^1.0.0:
   version "1.0.1"
@@ -4267,6 +4287,11 @@ js-base64@^2.1.8:
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.5.1.tgz#1efa39ef2c5f7980bb1784ade4a8af2de3291121"
   integrity sha512-M7kLczedRMYX4L8Mdh4MzyAMM9O5osx+4FcOQuTvr3A9F2D9S5JXheN0ewNbrvK2UatkTRhL5ejGmGSjNMiZuw==
 
+js-marker-clusterer@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/js-marker-clusterer/-/js-marker-clusterer-1.0.0.tgz#c94be85ae8896819e51c131f891dd2b55558dd17"
+  integrity sha1-yUvoWuiJaBnlHBMfiR3StVVY3Rc=
+
 "js-tokens@^3.0.0 || ^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -7768,6 +7793,13 @@ ts-node@2.0.0:
     v8flags "^2.0.11"
     xtend "^4.0.0"
     yn "^1.2.0"
+
+ts-overlapping-marker-spiderfier@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/ts-overlapping-marker-spiderfier/-/ts-overlapping-marker-spiderfier-1.0.2.tgz#92039525a9ae8253b9655894082974bfcc28220f"
+  integrity sha512-S6DOt8IuzboOwjbq+rQwVArEHyKF3iIiNxVtZq+k5pvo7SXTRMpH82nGnrb6VjdF0PKjSaokoEqRf+pwdx6NIw==
+  dependencies:
+    "@types/googlemaps" "^3.30.7"
 
 tsconfig@^5.0.2:
   version "5.0.3"

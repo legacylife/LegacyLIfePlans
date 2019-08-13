@@ -1,20 +1,49 @@
 <div fxLayout="row wrap" *ngIf="aceessSection">
   <div fxFlex="100" fxFlex.gt-sm="100">
     <mat-card class="p-0">
-      <mat-card-title class=" m-0">
-        <div class="card-title-text">Info Window</div>
-        <mat-divider></mat-divider>
-      </mat-card-title>
+      <mat-card-header class="m-0 header--with--sort">
+        <mat-card-title class=" m-0">
+          <div class="card-title-text">Info Window</div>
+        </mat-card-title>
+        <div class="right--filters">
+          
+          <mat-label class="mr-1">User Type</mat-label>
+          <mat-select placeholder="All" (selectionChange)="getUserList( $event.value, onBoardByFilter )">
+            <mat-option value="all">All</mat-option>
+            <mat-option value="advisor">Adviser</mat-option>
+            <mat-option value="customer">Customer</mat-option>
+          </mat-select>
+
+          <mat-label class="m-1">Signup Source</mat-label>
+          <mat-select placeholder="All" (selectionChange)="getUserList( userTypeFilter, $event.value )">
+            <mat-option value="all">All</mat-option>
+            <mat-option value="self">Self</mat-option>
+            <mat-option value="advisor">By Adviser</mat-option>
+            <mat-option value="customer">By Customer</mat-option>
+          </mat-select>
+
+          <mat-icon class="compare--icon--desc ml-1" (click)="downloadAsCSV()">cloud_download</mat-icon>
+        </div>
+      </mat-card-header>
       <mat-card-content class="p-0">
-        <agm-map [ngStyle]="{height: '750px'}" [zoom]="zoom" [latitude]="mapCenter.lat" [longitude]="mapCenter.lng">
-          <agm-marker [latitude]="mapCenter.lat" [longitude]="mapCenter.lng" [label]="'BD'">
-            <agm-info-window [disableAutoPan]="true" [isOpen]="true">
-              <p>
-                <strong>Country:</strong> Bangladesh</p>
-              <p>
-                <strong>Birth date:</strong> 16 December, 1971</p>
-            </agm-info-window>
-          </agm-marker>
+        <agm-map [ngStyle]="{height: '750px'}" [zoom]="zoom" [latitude]="lat" [longitude]="long">
+            
+          <agm-marker-cluster imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m">
+            <!-- <agm-marker-spider> -->
+            <agm-marker *ngFor="let data of mapCenter; let i = index" [iconUrl]="data.icon" [latitude]="data.lat" [longitude]="data.long" [title]="data.label">
+              <agm-info-window [disableAutoPan]="true" [isOpen]="false">
+                <div>
+                    <img style="width: 200px;" src="{{data.image}}"/>
+                    <p><strong>Full Name:</strong>{{data.fullname}}</p>
+                    <p><strong>Business:</strong>{{data.business}}</p>
+                    <p><strong>Address:</strong>{{data.address}}</p>
+                    <p><a [routerLink]="'/admin/userview/'+data.userId">View Profile</a></p>
+                </div>
+              </agm-info-window>
+            </agm-marker>
+          <!-- </agm-marker-spider> -->
+          </agm-marker-cluster>
+          
         </agm-map>
       </mat-card-content>
     </mat-card>
