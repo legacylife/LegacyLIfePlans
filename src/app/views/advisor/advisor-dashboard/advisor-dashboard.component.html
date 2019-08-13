@@ -49,7 +49,7 @@
                 <mat-icon>check</mat-icon> Confirm hiring</button>
               <button mat-menu-item class="reject" *ngIf="logData.actionTaken == 'Pending'" (click)="hireAdvisor(logData?.hiredAdvisorRefId,'rejectHire','Pending',logData?._id)">
                 <mat-icon>cancel</mat-icon> Reject hiring</button>
-              <button mat-menu-item [routerLink]="['/advisor/leads-details', logData?.customerId]">
+              <button mat-menu-item [routerLink]="['/advisor/leads/details', logData?.customerId]">
                 <mat-icon>assignment</mat-icon> View profile</button>
             </mat-menu>
           </mat-nav-list>

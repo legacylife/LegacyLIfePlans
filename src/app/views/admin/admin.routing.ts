@@ -6,6 +6,8 @@ import { customerlistComponent } from './customerlist/customerlist.component';
 import { advisorlistComponent } from './advisorlist/advisorlist.component';
 import { cmslistComponent } from './cms/cms.component';
 import { cmseditComponent } from './cms/cmsedit.component';
+import { fileUploadInstructionsListComponent } from './file-upload-instructions/file-upload-instructions.component';
+import { fileUploadInstructionsEditComponent } from './file-upload-instructions/file-upload-instructions-edit.component';
 import { ProfileComponent } from './profile/profile.component';
 import { EmailTemplateComponent } from './email-template/email-template.component';
 import { EmailTemplateEditComponent } from './email-template/email-template-edit.component';
@@ -53,6 +55,16 @@ export const AdminRoutes: Routes = [
     component: cmseditComponent,
     data: { title: 'CMS Pages', breadcrumb: 'CMS Pages' }
   }, {
+    path: 'file-upload-instructions',
+    component: fileUploadInstructionsListComponent,
+    data: { title: 'File Upload Instructions', breadcrumb: 'File Upload Instructions' },
+    canActivate: [ AuthGuard ],
+  }, 
+  {
+    path: 'file-upload-instructions-edit/:id',
+    component: fileUploadInstructionsEditComponent,
+    data: { title: 'CMS Pages', breadcrumb: 'CMS Pages' }
+  },{
     path: 'email-template',
     component: EmailTemplateComponent,
     data: { title: 'Email Templates', breadcrumb: 'Email Templates' },

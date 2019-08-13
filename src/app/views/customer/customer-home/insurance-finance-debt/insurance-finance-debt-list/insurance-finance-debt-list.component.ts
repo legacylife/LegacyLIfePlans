@@ -41,7 +41,8 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
   FinancesManagementSection:string='now';
   DebtManagementSection:string='now';
   LegacyPermissionError:string="You don't have access to this section";
-
+  instruction_data:any;
+  instruction_data_flag:boolean=false;  
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
 
   ngOnInit() {
@@ -57,7 +58,12 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
         this.DebtManagementSection= userAccess.DebtManagement
       });
       this.showTrusteeCnt = false;
-    }    
+    }else{      
+      this.userapi.getFolderInstructions('Insurance_Finance_Debt', (returnData) => {
+        this.instruction_data = returnData;
+        if(this.instruction_data){this.instruction_data_flag = true;}
+      });
+    }   
     this.getInsuranceList();
     this.getFinanceList();
     this.getDebtList();    

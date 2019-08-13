@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
@@ -13,6 +13,7 @@ import { DataSharingService } from 'app/shared/services/data-sharing.service';
 const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 @Component({
   selector: 'app-prof-advisor-listing',
+  
   templateUrl: './prof-advisor-listing.component.html',
   styleUrls: ['./prof-advisor-listing.component.scss'],
   animations: [egretAnimations]
@@ -23,82 +24,154 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
   userId: string;
   profileFilePath: string = profileFilePath;
   profilePicture: any = "assets/images/arkenea/default.jpg";
-  abc: string;
-  interval: any
+//  interval: any
+  nextOffset = 1;
+  resultLimit = 20;
   showAdvisorListing: boolean = true;
+  showQualityListing: boolean = false;
   showAdvisorListingCnt: any;
   showQualityAdvisorListing: boolean = false;
+  throttle = 10;
+  scrollDistance = 1;
+  scrollUpDistance = 5;  
   showQualityAdvisorListingCnt: any;
   profileUrl = s3Details.url + '/profilePictures/';
-  message:string;
+  advisorData:any = []
+  searchVal:string;
+  searchForm: FormGroup;  
+  searchStatus: boolean = false
   constructor(
     private route: ActivatedRoute,
-    private router: Router, private dialog: MatDialog,
+    private router: Router, private dialog: MatDialog,private fb: FormBuilder,
     private userapi: UserAPIService, private loader: AppLoaderService,
     private snack: MatSnackBar,
     private data: DataSharingService
   ) { }
 
   ngOnInit() {
-    this.userId = localStorage.getItem("endUserId");
-    this.getAdvisorLists('', '');
-    var that = this;
-    this.data.currentMessage.subscribe( (message) => { this.message = message })
-    console.log("passedData1",this.message)
-    this.interval = setInterval(function () {
-      let abc = localStorage.getItem('businessTypeIcon');
-      if (abc) {
-        if (that.abc !== abc) {
-          that.getAdvisorLists('', abc)
-          that.abc = abc
+    this.userId = localStorage.getItem("endUserId"); 
+    this.getAdvisorLists('','',this.resultLimit,0,false,false,false);
+ 
+    this.data.currentMessage.subscribe( (searchKey) => {
+      this.searchVal = searchKey;    
+      if(this.searchVal && this.searchVal!=='All'){
+        this.advisorData = [];      
+        let searchString = this.searchForm.controls['search'].value.trim();
+        if(searchString){
+          this.searchStatus = true;
         }
+        console.log("here 1 ->",this.searchVal,'searchStatus->',this.searchStatus,'searchString->',searchString);
+        this.getAdvisorLists('',this.searchVal,this.resultLimit,0,this.searchStatus,searchString,true)
       }
-    }, 1000)
+    })
+    
+    this.searchForm = this.fb.group({
+      search: new FormControl('')
+     });
+  }
+
+  onScrollDown (ev) {
+    console.log('scrolled down!!', ev,this.searchVal);
+    this.nextOffset++;
+    this.data.currentMessage.subscribe((searchKey) => { 
+      this.searchVal = searchKey; 
+      let searchString = this.searchForm.controls['search'].value.trim();
+      if(searchString){
+        this.searchStatus = true;
+      }
+      if(this.searchVal && this.searchVal!=='All'){
+        console.log("here 2 ",this.searchVal);
+        this.getAdvisorLists('',this.searchVal,this.resultLimit,(this.nextOffset*this.resultLimit),this.searchStatus,searchString,false)
+      }else{
+        console.log("here 3 ",this.searchVal);
+        this.getAdvisorLists('','',this.resultLimit,(this.nextOffset*this.resultLimit),this.searchStatus,searchString,false);
+      }
+    })
+  }
+  
+  searching() {
+    let searchString = this.searchForm.controls['search'].value.trim();
+     console.log("searchValue ->",searchString);
+    if(searchString){
+      this.advisorData = [];
+      this.getAdvisorLists('','',this.resultLimit,0,true,searchString,true);
+    }
+  }
+
+  toggleSearchSuggestion() {
+    let searchValue = this.searchForm.controls['search'].value;
+    this.searchStatus = searchValue.trim().length > 0 ? true : false
+  }
+
+  onScrollUp(ev) {
+    // console.log('scrolled up!', ev);
+    // const start = this.sum;
+    // this.sum += 20;
+    // this.prependItems(start, this.sum);  
+    // this.direction = 'up';
   }
 
   ngOnDestroy() {
-    clearInterval(this.interval);
+   // clearInterval(this.interval);
   }
 
   //function to get all events
-  getAdvisorLists = (query: any = {}, search: any = false) => {
+  getAdvisorLists = (query: any = {},searchbType: any =false,limits,offset,search=false,searchString=false,loader=false) => {
     let req_vars = {
       query: Object.assign({ userType: "advisor", status: "Active" }, query),
-      fields: {},
-      offset: '',
-      limit: '',
+      fields: { salt: 0, hash: 0 },
+      offset: offset,
+      limit: limits,
       order: { "createdOn": -1 },
+      search: search,
+      searchString: searchString,
       extraQuery: Object.assign({ _id: this.userId }, query),
     }
 
-    if (search) {
+    if (searchbType) {
       req_vars = {
-        query: Object.assign({ userType: "advisor", status: "Active", businessType: search }, query),
-        fields: {},
-        offset: '',
-        limit: '',
+        query: Object.assign({ userType: "advisor", status: "Active", businessType: searchbType }, query),
+        fields: { salt: 0, hash: 0 },
+        offset: offset,
+        limit: limits,       
         order: { "createdOn": -1 },
+        search: search,
+        searchString: searchString,
         extraQuery: Object.assign({ _id: this.userId }, query),
       }
     }
 
+    if(loader){ 
+      //this.loader.open();
+    }
     this.userapi.apiRequest('post', 'advisor/professionalsList', req_vars).subscribe(result => {
+         this.loader.close();
       if (result.status == "error") {
         console.log(result.data)
-      } else {
-        let advisorData = result.data.distanceUserList;
-
-        if (advisorData && advisorData.length) {
-          this.adListings = advisorData.filter(dtype => {
+      } else {        
+        this.advisorData = this.advisorData.concat(result.data.distanceUserList);
+        let resultData = this.advisorData;
+        console.log("resultData",resultData)
+        if (resultData && resultData.length) {
+          this.adListings = resultData.filter(dtype => {
             return dtype.sponsoredAdvisor == 'yes'
           }).map(el => el)
 
           this.showAdvisorListingCnt = result.data.totalUsers;
+
           if (result.data.totalUsers > 0) {
             this.showAdvisorListing = true;
-          } else { this.showAdvisorListing = false; }
+          } else { 
+            this.showAdvisorListing = false; 
+          }
 
-          this.qualityAdvisor = advisorData.filter(dtype => {
+          if (this.adListings.length > 0) {
+            this.showQualityListing = true;
+          } else { 
+            this.showQualityListing = false; 
+          }
+
+          this.qualityAdvisor = resultData.filter(dtype => {
             return dtype.sponsoredAdvisor == 'no'
           }).map(el => el)
 
@@ -106,9 +179,9 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
           if (this.showQualityAdvisorListingCnt > 0) {
             this.showQualityAdvisorListing = true;
           }
-        }
-        if (search) {
-          localStorage.removeItem('businessTypeIcon')
+        }else {
+          this.showAdvisorListing = false; 
+          this.showQualityListing = false; 
         }
       }
     }, (err) => {
@@ -191,5 +264,4 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
     else
       return ""
   }
-
 }

@@ -2,17 +2,11 @@
   <div class="full-width">
     <div class="">
       <advisor-legacy-details></advisor-legacy-details>
-      <mat-card class="empty--section p-0">
+      <mat-card class="empty--section p-0" *ngIf="instruction_data_flag">
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Pets</mat-card-title>
         </mat-card-header>
-        <mat-card-content>
-          <p class="info m-0">The section where you can manage your personal, professional and religious information.
-            <a class="legal--link">
-              <mat-icon>open_in_new</mat-icon> www.legalnature.com</a>
-          </p>
-          <p class="info m-0"> You can also manage your Pets name,Pet type, Veterinarian,Dietary Concerns and Pet documents in pets section.</p>
-        </mat-card-content>
+        <mat-card-content [innerHtml]="instruction_data"></mat-card-content>
       </mat-card>
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">

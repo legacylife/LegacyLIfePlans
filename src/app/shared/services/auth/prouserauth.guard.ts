@@ -17,7 +17,6 @@ export class ProUserAuthGuard implements CanActivate {
     this.subscriptionservice.checkSubscription( ( returnArr )=> {
       let isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
       let isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
-      console.log("asdasdasdasdasd",localStorage.getItem('endUserProSubscription'))
       //const expectedRole = route.data.expectedRole
       if (this.userId != null && this.userId != "") {          
         if( (isProUser || isFreeProuser) && this.userType && this.userType == 'customer' ) {

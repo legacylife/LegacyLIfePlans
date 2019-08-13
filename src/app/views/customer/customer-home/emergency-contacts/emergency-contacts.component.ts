@@ -29,10 +29,10 @@ export class EmergencyContactsComponent implements OnInit {
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';	
-
   emergencyContactsManagementSection:string='now';
   LegacyPermissionError:string="You don't have access to this section";
-
+  instruction_data:any;
+  instruction_data_flag:boolean=false;  
   constructor(private route: ActivatedRoute,
     private snack: MatSnackBar,
     private router: Router,
@@ -73,7 +73,12 @@ export class EmergencyContactsComponent implements OnInit {
           this.emergencyContactsManagementSection = userAccess.emergencyContactsManagement 
         }); 
         this.showTrusteeCnt = false;
-    }
+      }else{      
+        this.userapi.getFolderInstructions('emergency_contacts', (returnData) => {
+          this.instruction_data = returnData;
+          if(this.instruction_data){this.instruction_data_flag = true;}
+        });
+      } 
     this.getEmergencyContacts()
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){

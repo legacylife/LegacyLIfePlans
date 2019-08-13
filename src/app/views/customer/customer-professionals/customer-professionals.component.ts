@@ -8,6 +8,7 @@ import { UserAPIService } from './../../../userapi.service';
 import { s3Details } from '../../../config';
 import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
+
 const filePath = s3Details.url+'/'+s3Details.profilePicturesPath;
 @Component({
   selector: 'app-customer-professionals',

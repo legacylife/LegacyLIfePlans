@@ -35,7 +35,8 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
   DevicesManagementSection:string='now';
   ElectronicMediaManagementSection:string='now';
   LegacyPermissionError:string="You don't have access to this section";
-
+  instruction_data:any;
+  instruction_data_flag:boolean=false;  
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -49,6 +50,11 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
         this.ElectronicMediaManagementSection= userAccess.ElectronicMediaManagement
       });
       this.showTrusteeCnt = false;
+    }else{      
+      this.userapi.getFolderInstructions('passwords_digital_assests', (returnData) => {
+        this.instruction_data = returnData;
+        if(this.instruction_data){this.instruction_data_flag = true;}
+      });
     }
     this.getDevicesList();
     this.getElectronicMediaList();

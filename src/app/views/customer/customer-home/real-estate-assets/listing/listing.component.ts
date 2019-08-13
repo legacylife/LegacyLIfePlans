@@ -35,6 +35,8 @@ export class ListingComponent implements OnInit {
   AssetsManagementSection:string='now';
   LegacyPermissionError:string="You don't have access to this section";
   showTrusteeCnt:boolean=true;
+  instruction_data:any;
+  instruction_data_flag:boolean=false;  
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -56,7 +58,12 @@ export class ListingComponent implements OnInit {
         this.AssetsManagementSection= userAccess.AssetsManagement
       });
       this.showTrusteeCnt = false;
-    }
+    }else{      
+      this.userapi.getFolderInstructions('real_estates_assets', (returnData) => {
+        this.instruction_data = returnData;
+        if(this.instruction_data){this.instruction_data_flag = true;}
+      });
+    } 
     this.getRealEstateList();
     this.getRealEstateVehiclesList();
     this.getRealEstateAssetsList();

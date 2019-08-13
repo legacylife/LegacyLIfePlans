@@ -42,18 +42,17 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   PersonalProfileManagementSection:string='now';
   IDBoxManagementSection:string='now';
   MyProfessionalsManagementSection:string='now';
+  instruction_data:any;
+  instruction_data_flag:boolean=false;  
   LegacyPermissionError:string="You don't have access to this section";
   constructor(
-    private route: ActivatedRoute,
-    private router: Router, private dialog: MatDialog,
-    private userapi: UserAPIService, private loader: AppLoaderService
-  ) { }
+    private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.showProfileListingCnt = 0;
     this.showIDListingCnt = 0;
-    
+   
     this.urlData = this.userapi.getURLData();
     this.customerLegaciesId = this.urlData.lastOne;
     this.dynamicRoute = this.urlData.dynamicRoute;
@@ -67,6 +66,11 @@ export class CustomerEssentialDayOneComponent implements OnInit {
         this.MyProfessionalsManagementSection= userAccess.MyProfessionalsManagement 
       });
       this.showTrusteeCnt = false;
+    }else{      
+      this.userapi.getFolderInstructions('My_Essentials', (returnData) => {
+        this.instruction_data = returnData;
+        if(this.instruction_data){this.instruction_data_flag = true;}
+      });
     }
     this.getEssentialProfileList();
     this.getEssentialIdList();

@@ -40,6 +40,7 @@ import { HomeComponent } from './advisor-landing/home/home.component';
 import { ReferAndEarnModalComponent } from './legacies/refer-and-earn-modal/refer-and-earn-modal.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CountUpModule } from 'countup.js-angular2';
+import { CustomerProfileComponent } from './customer-profile/customer-profile.component';
 import { LyResizingCroppingImageModule } from '@alyle/ui/resizing-cropping-images';
 /** Import themes */
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
@@ -108,7 +109,7 @@ export class GlobalVariables {
   ],
   declarations: [
     AdvisorSignupComponent,BusinessInfoComponent,SetPasswordComponent,FormatTimePipe,ThankYouComponent,AdvisorDashboardComponent,LegaciesComponent,AdvisorDashboardUpdateComponent, AdvisorAccountSettingComponent, AdvisorSubscriptionComponent,ChangePassComponent,HomeComponent,ReferAndEarnModalComponent,AdvisorLegacyDetailsComponent,LegaciesDetailsLandingComponent,MarkAsDeceasedComponent,
-    GetFeaturedComponent,SubmitEnquiryModalComponent,AdvisorLeadsComponent,AdvisorLeadsDetailsComponent,ProspectPeoplesModalComponent,OurPlanComponent,AdvisorHomeComponent
+    GetFeaturedComponent,SubmitEnquiryModalComponent,AdvisorLeadsComponent,AdvisorLeadsDetailsComponent,ProspectPeoplesModalComponent,OurPlanComponent,AdvisorHomeComponent,CustomerProfileComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, ProfilePicService, CanDeactivateGuard],
      entryComponents: [ChangePassComponent, ReferAndEarnModalComponent, MarkAsDeceasedComponent, SubmitEnquiryModalComponent, 

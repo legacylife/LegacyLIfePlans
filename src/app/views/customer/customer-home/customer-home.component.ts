@@ -7,8 +7,6 @@ import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../shared/animations/egret-animations';
 import { UserAPIService } from 'app/userapi.service';
 import { LayoutService } from 'app/shared/services/layout.service';
-import { UserIdleService } from 'angular-user-idle';
-import { lockscreenModalComponent } from '../../lockscreen-modal/lockscreen-modal.component';
 
 @Component({
   selector: 'app-customer-home',
@@ -39,8 +37,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   constructor(private layoutServ: LayoutService,
     private fb: FormBuilder,private snackBar: MatSnackBar,
     private userapi:UserAPIService,
-    private dialog: MatDialog,
-    private userIdle: UserIdleService
+    private dialog: MatDialog
   ) {
     this.layout = layoutServ.layoutConf
    }
@@ -68,64 +65,17 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
     if(locArray && locArray[5]){
       this.activeHeading = locArray[5];
     }   
-
-     //For autolock functionality
-     //https://www.npmjs.com/package/angular-user-idle
-     this.userIdle.startWatching();    
-     // Start watching when user idle is starting.
-     this.userIdle.onTimerStart().subscribe(
-       //count => console.log("home here",count)
-     );    
-     // Start watch when time is up.
-    // this.userIdle.onTimeout().subscribe(() => this.stopWatching());
- //For autolock functionality
   }
 
- @HostListener('document:click', ['$event']) clickedOutside(event){
-    const loc = location.href;
-    const locArray = loc.split('/')
-    this.activeHeading = '';
-    if(locArray && locArray[5]){
-      this.activeHeading = locArray[5];
-    }   
- }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+      const loc = location.href;
+      const locArray = loc.split('/')
+      this.activeHeading = '';
+      if(locArray && locArray[5]){
+        this.activeHeading = locArray[5];
+      }   
+  }
   
- //start For autolock functionality
-stop() {
- // console.log("signin stop");
-  this.userIdle.stopTimer();
-}
-
-stopWatching() {
- // console.log("Signin stop watching");
-  let dialogRef: MatDialogRef<any> = this.dialog.open(lockscreenModalComponent, {
-    width: '720px',
-    disableClose: true, 
-    panelClass: 'lock--panel',
-    backdropClass: 'lock--backdrop'   
-  }) 
-  dialogRef.afterClosed()
-  .subscribe(res => {
-    if (!res) {
-      // If user press cancel
-      return;
-    }
-  })
-  this.userIdle.stopWatching();
-}
-
-startWatching() {
- // console.log("signin startWatching");
-  this.userIdle.startWatching();
-}
-
-restart() {
- // console.log("signin restart");
-  this.userIdle.resetTimer();
-}
-//End For autolock functionality
-
-
   showSecoDay() {
     this.dayFirst = false;
     this.daySeco = true;
