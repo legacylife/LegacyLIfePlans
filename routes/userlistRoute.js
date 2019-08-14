@@ -26,9 +26,9 @@ var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
 })
-
+var zipcodes = require('zipcodes');
 const stripe = require("stripe")(constants.stripeSecretKey);
-
+var moment    = require('moment');
 //function to get list of user as per given criteria
 function list(req, res) {
 
@@ -1151,6 +1151,43 @@ function cancelSubscription(req, res) {
   })
 }
 
+function getUsersListForAdminMap(req, res) {
+  let { query } = req.body
+  User.find( query, {}, function (err, userList) {
+    if (err) {
+      res.status(500).send(resFormat.rError(err))
+    }
+    else {
+      if( userList.length > 0 ) {
+        let userDetails = []
+        userList.forEach( (details, index) => {
+          if (details && details.zipcode && details.zipcode != '') {
+            var data = zipcodes.lookup(details.zipcode);
+            if( data ) {
+              let userData = {userId: details._id,
+                              fullname: details.firstName!= "" ? details.firstName+' '+(details.lastName != "" ? details.lastName : '') : '',
+                              profileImage: '',
+                              userType: details.userType,
+                              address: details.addressLine1 ? details.addressLine1 + (details.city ? ', '+details.city : '') + (details.state ? ', '+details.state : '') + (details.country ? ', '+details.country : '') : '',
+                              zipcode: details.zipcode,
+                              business: details.businessType && details.businessType.length > 0 ? details.businessType.join(): '',
+                              latitude: data.latitude,
+                              longitude: data.longitude,
+                              email: details.username,
+                              onBoardVia: 'Self',
+                              lastLogin: moment(details.lastLoggedInOn).format("YYYY-MM-DD hh:mm a")
+                            }
+              userDetails.push(userData)
+            }
+          }
+        })
+        res.send(resFormat.rSuccess({ userDetails }))
+      }
+    }
+  })
+}
+
+router.post("/getuserslistforadminmap",getUsersListForAdminMap);
 router.post(["/autorenewalupdate"], autoRenewalUpdate);
 router.post(["/cancelsubscription"], cancelSubscription);
 router.post(["/getaddon"], getAddon);

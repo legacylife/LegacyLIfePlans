@@ -39,7 +39,7 @@ const RealEstate = require('./../models/RealEstate.js')
 const SpecialNeeds = require('./../models/SpecialNeeds.js')
 const TimeCapsule = require('./../models/TimeCapsule.js')
 const Vehicles = require('./../models/Vehicles.js')
-
+var moment    = require('moment');
 ObjectId = require('mongodb').ObjectID;
 var auth = jwt({
   secret: constants.secret,
@@ -305,6 +305,13 @@ async function getOwnLegacyFilesCount(req, res){
 async function getLeadsCount(req, res) {
   let paramData = req.body
   let resultCount = 0
+  /**
+   * Filter for current month leads count
+   */
+  const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
+  const endOfMonth   = moment().endOf('month').format('YYYY-MM-DD');
+  paramData.createdOn = { $gte: new Date(startOfMonth) , $lte: new Date(endOfMonth) }
+  
   await lead.find(paramData, function (err, data) {
       if (data != null) {
           resultCount = data.length
