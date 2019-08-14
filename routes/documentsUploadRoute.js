@@ -1172,7 +1172,7 @@ router.post('/invite', cors(), function(req,res){
                 fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
                 file.pipe(fstream);
                 fstream.on('close', async function () {
-                  await s3.uploadFile(newFilename,userId+'/'+inviteDocumentsPath);  
+                  await s3.uploadFile(newFilename,inviteDocumentsPath);  
                   tmpallfiles = {
                     "title" : filename,
                     "size" : encoding,
@@ -1189,7 +1189,6 @@ router.post('/invite', cors(), function(req,res){
                   if (err) {
                   res.send(resFormat.rError(err))
                    } else {
-                    getuserFolderSize(userId);
                     let result = { "message": "Document uploaded successfully!" }
                      res.status(200).send(resFormat.rSuccess(result))
                    }

@@ -41,7 +41,7 @@ async function inviteMembers(req, res) {
         advisorInvite = true
         let invitesImages = await InviteTemp.find({ inviteById: inviteById }, function (err, data, index) {});
         let invitesImagesLength = invitesImages.length           
-        let s3URL = constants.s3Details.serveUrl+'/'+inviteById+'/'+constants.s3Details.inviteDocumentsPath
+        let s3URL = constants.s3Details.serveUrl+'/'+constants.s3Details.inviteDocumentsPath
         console.log("s3URL=====",s3URL)
         for (var invIndex = 0; invIndex < invitesImagesLength; invIndex++) {
             console.log("s3-path=====",s3URL+invitesImages[invIndex].documents[0].tmpName)
