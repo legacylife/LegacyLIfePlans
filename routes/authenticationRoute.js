@@ -540,7 +540,7 @@ async function checkEmail(req, res) {
 async function checkUserOtp(req, res) {
   try {
     //let { query } = req.body;
-    let query = {username: req.body.username, otpCode:req.body.otpCode}
+    let query = {username: req.body.query.username, otpCode:req.body.query.otpCode}
     OtpCheck.findOne(query, function (err, otpdata) {
       if (err) {
         res.send(resFormat.rSuccess({ code: "error", message: "Invalid OTP" }))
@@ -552,7 +552,7 @@ async function checkUserOtp(req, res) {
           user.status = otpdata.status
           user.lastLoggedInOn = new Date();
           user.emailVerified = true;
-          user.invitedBy = rey.body.invitedBy
+          user.invitedBy = rey.body.query.invitedBy
           user.createdOn = new Date();
           if(user.userType != 'advisor'){
             let userSecurityDetails = user.setPassword(otpdata.password)
