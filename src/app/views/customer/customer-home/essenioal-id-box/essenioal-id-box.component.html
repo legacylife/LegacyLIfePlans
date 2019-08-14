@@ -119,20 +119,20 @@
                 [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
                 (fileOver)="fileOverBase($event)"
                 [uploader]="uploader">
-                <input type="file" name="idProofDocuments"  ng2FileSelect [uploader]="uploader" multiple  (change)="fileOverBase('')" />  
+                <input type="file" name="documents"  ng2FileSelect [uploader]="uploader" multiple  (change)="fileOverBase('')" />  
                 <mat-icon class="cloud-icon">cloud_upload</mat-icon>
                 <div class="select--file">Select file from your computer</div>
               </div>
               <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
             </div>
-            <mat-form-field class="full-width" *ngIf="idProofDocuments_temps">
-                <input matInput name="idProofDocuments_temp" [formControl]="IDForm.controls['idProofDocuments_temp']">
-                <small *ngIf="IDForm.controls['idProofDocuments_temp'].hasError('required') && IDForm.controls['idProofDocuments_temp'].touched" class="form-error-msg"> Please drag your document. </small>
+            <mat-form-field class="full-width" *ngIf="documents_temps">
+                <input matInput name="documents_temp" [formControl]="IDForm.controls['documents_temp']">
+                <small *ngIf="IDForm.controls['documents_temp'].hasError('required') && IDForm.controls['documents_temp'].touched" class="form-error-msg"> Please drag your document. </small>
             </mat-form-field>
       
-         <div *ngIf="idProofDocumentsList" >
+         <div *ngIf="documentsList" >
           <h3 class="header--text fnt--16">Uploaded ID proof</h3>
-          <mat-chip-list class="doc--list" *ngFor="let doc of idProofDocumentsList; index as i">
+          <mat-chip-list class="doc--list" *ngFor="let doc of documentsList; index as i">
               <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove (click)="IDDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
           </mat-chip-list>
          </div>
@@ -142,10 +142,10 @@
           </mat-chip-list>    
 
           <!-- <mat-form-field class="full-width" *ngIf="advisorDocumentsHide">
-            <input matInput name="idProofDocuments" [formControl]="IDForm.controls['idProofDocuments']" >
+            <input matInput name="documents" [formControl]="IDForm.controls['documents']" >
           </mat-form-field> -->
 
-          <small *ngIf="idProofDocumentsMissing" class="form-error-msg">{{invalidMessage}}</small>
+          <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small>
 
           <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderCopy.getNotUploadedItems().length || uploader.getNotUploadedItems().length">
             <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>

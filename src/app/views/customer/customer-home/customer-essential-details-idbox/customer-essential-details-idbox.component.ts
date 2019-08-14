@@ -144,7 +144,7 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
     let query = {};
     var ZipName = "Idbox-"+Math.floor(Math.random() * Math.floor(999999999999999))+".zip"; 
     let req_vars = {
-      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.idProofDocuments }, query)
+      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query)
     }
     this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {

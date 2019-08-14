@@ -53,7 +53,7 @@ export class InsuranceModalComponent implements OnInit {
         });
 
         this.InsuranceDocsList = [];
-        
+   
         this.urlData = this.userapi.getURLData();
         this.selectedProfileId = this.urlData.lastOne;
         if (this.selectedProfileId && this.selectedProfileId == 'insurance-finance-debt' && this.urlData.lastThird != "legacies") {
@@ -62,7 +62,7 @@ export class InsuranceModalComponent implements OnInit {
         if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'insurance-finance-debt') {
             this.customerLegaciesId = this.userId;
             this.customerLegacyType =  this.urlData.userType;
-            this.userId = this.urlData.lastOne;          
+            this.userId = this.urlData.lastOne;
             this.selectedProfileId = "";        
         }
         
@@ -127,6 +127,12 @@ export class InsuranceModalComponent implements OnInit {
             this.insuranceList = result.data;                    
             let profileIds = this.insuranceList._id;
             this.InsuranceForm.controls['profileId'].setValue(profileIds);
+            if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'insurance-view') {
+              this.customerLegaciesId = this.insuranceList.customerId;
+              this.customerLegacyType =  this.urlData.userType;
+              this.userId = this.insuranceList.customerId;
+            }
+
             this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
             this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
             this.InsuranceDocsList = result.data.documents;            

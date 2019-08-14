@@ -9,6 +9,7 @@ import { UserAPIService } from 'app/userapi.service';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { LettersMessagesModelComponent } from '../letters-messages-model/letters-messages-model.component';
 import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-trustee-modal.component';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-letters-messages-listing',
   templateUrl: './letters-messages-listing.component.html',
@@ -29,7 +30,8 @@ export class LettersMessagesListingComponent implements OnInit {
   LegacyPermissionError:string="You don't have access to this section";
   instruction_data:any;
   instruction_data_flag:boolean=false;  
-  constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) {  }
+  shareLegacFlag:boolean=false;  
+  constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService,private sharedata: DataSharingService) {  }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -41,7 +43,7 @@ export class LettersMessagesListingComponent implements OnInit {
       this.userapi.getUserAccess(this.userId, (userAccess) => {
         this.LegacyLifeLettersMessagesManagementSection = userAccess.LegacyLifeLettersMessagesManagement
       });
-      this.showTrusteeCnt = false;
+      this.showTrusteeCnt = false;this.shareLegacFlag = true;
     }else{      
       this.userapi.getFolderInstructions('legacy_life_letters_messages', (returnData) => {
         this.instruction_data = returnData;
@@ -71,6 +73,14 @@ export class LettersMessagesListingComponent implements OnInit {
         console.log(result.data)
       } else {
         this.lettersMessagesList = result.data.lettersMessagesList;
+        if(this.shareLegacFlag){
+          let lettersMessagesList = '';
+          if(this.LegacyLifeLettersMessagesManagementSection=='now'){
+            lettersMessagesList = this.lettersMessagesList;
+          }
+          let shareLettersMessagesList = {lettersMessagesList: lettersMessagesList };        
+          this.sharedata.shareLegacyData(shareLettersMessagesList);
+        }
         this.showListingCnt = this.lettersMessagesList.length;  
         this.trusteeLettersMessagesCnt = result.data.totalTrusteeRecords;
         if (this.showListingCnt>0) {

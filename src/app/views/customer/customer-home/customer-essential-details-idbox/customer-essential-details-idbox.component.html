@@ -35,7 +35,7 @@
             <div class="details--body">
               <h3>{{getDocType(row?.documentType)}}</h3>
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 1">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 3">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">License Number:</label>
                 </div>
@@ -44,7 +44,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 2">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 4">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                     <label class="strong--label">Non-Driver ID Number:</label>
                   </div>
@@ -53,7 +53,7 @@
                   </div>
                 </div>
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 1 || row?.documentType == 2">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 3 || row?.documentType == 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">State (US states):</label>
                 </div>
@@ -61,7 +61,7 @@
                   <label class="normal--label">{{row?.state}}</label>
                 </div>
               </div>
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 1 || row?.documentType == 2">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 3 || row?.documentType == 2">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Expiration Date:</label>
                 </div>
@@ -69,7 +69,7 @@
                   <label class="normal--label">{{row?.expirationDate | date: 'yyyy/MM/dd'}}</label>
                 </div>
               </div>
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 1 || row?.documentType == 2">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 3 || row?.documentType == 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Location of Driver's License:</label>
                 </div>
@@ -78,7 +78,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 3">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 2">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                     <label class="strong--label">DoD ID Number:</label>
                   </div>
@@ -87,7 +87,7 @@
                   </div>
                 </div>
   
-                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 3">
+                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 2">
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                       <label class="strong--label">DoD Benefits Number (DBN):</label>
                     </div>
@@ -96,7 +96,7 @@
                     </div>
                   </div>
   
-                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 3">
+                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 2">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                     <label class="strong--label">Location of DoD ID:</label>
                   </div>
@@ -105,7 +105,7 @@
                   </div>
                 </div>
 
-                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 4">
+                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 1">
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                       <label class="strong--label">Place of Birth:</label>
                     </div>
@@ -114,7 +114,7 @@
                     </div>
                   </div>
   
-                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 4">
+                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 1">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                     <label class="strong--label">File Number:</label>
                   </div>
@@ -123,7 +123,7 @@
                   </div>
                 </div>
 
-                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 5">
+                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 6">
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                       <label class="strong--label">Social Security Number:</label>
                     </div>
@@ -132,7 +132,7 @@
                     </div>
                   </div>
   
-                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 5">
+                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 6">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                     <label class="strong--label">Location of Social Security Card:</label>
                   </div>
@@ -141,7 +141,7 @@
                   </div>
                 </div>
 
-                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 6">
+                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 7">
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                       <label class="strong--label">Country of issue (manual input):</label>
                     </div>
@@ -150,7 +150,7 @@
                     </div>
                   </div>
   
-                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 6">
+                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 5">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                     <label class="strong--label">Passport Number:</label>
                   </div>
@@ -159,7 +159,7 @@
                   </div>
                 </div>
 
-                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 6">
+                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 5 || row?.documentType == 4">
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                       <label class="strong--label">Expiration Date:</label>
                     </div>
@@ -168,7 +168,7 @@
                     </div>
                   </div>
   
-                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 6">
+                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 5">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                     <label class="strong--label">Location of Passport (manual input):</label>
                   </div>
@@ -177,7 +177,7 @@
                   </div>
                 </div>
 
-                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 7">
+                <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 5">
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                       <label class="strong--label">Country of issue:</label>
                     </div>
@@ -217,7 +217,7 @@
                     <label class="strong--label">Uploaded files:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                      <div class="uploaded--files" *ngFor="let doc of row?.idProofDocuments">
+                      <div class="uploaded--files" *ngFor="let doc of row?.documents">
                         <!-- <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true">picture_as_pdf</mat-icon> -->
                         <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true" *ngIf="doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'pdf' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'PDF' ">picture_as_pdf</mat-icon>
                         <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true" *ngIf="doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'docx' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'doc' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'txt' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'DOCX' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'DOC' || doc.tmpName.substr((doc.tmpName.lastIndexOf('.') + 1)) == 'TXT'">insert_drive_file</mat-icon>
@@ -226,19 +226,11 @@
                         <label class="normal--label"><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a></label>&nbsp; &nbsp;                        
                       </div>
                   </div>
-                  
                 </div>
-
             </div>
           </div>
-
-
-
         </mat-card-content>
       </mat-card>
-
     </div>
-
   </div>
-
 </div>

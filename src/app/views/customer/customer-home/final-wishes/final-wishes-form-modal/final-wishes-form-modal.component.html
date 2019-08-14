@@ -33,16 +33,16 @@
                 [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
                 (fileOver)="fileOverBase($event)"
                 [uploader]="uploader">
-                <input type="file" name="subFolderDocuments"  ng2FileSelect [uploader]="uploader" multiple  (change)="fileOverBase('')" />  
+                <input type="file" name="documents"  ng2FileSelect [uploader]="uploader" multiple  (change)="fileOverBase('')" />  
                 <mat-icon class="cloud-icon">cloud_upload</mat-icon>
                 <div class="select--file">Select file from your computer</div>
               </div>
               <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
             </div>
       
-          <div *ngIf="subFolderDocumentsList" >
+          <div *ngIf="documentsList" >
             <h3 class="header--text fnt--16">Uploaded document</h3>
-            <mat-chip-list class="doc--list" *ngFor="let doc of subFolderDocumentsList; index as i">
+            <mat-chip-list class="doc--list" *ngFor="let doc of documentsList; index as i">
                 <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove  (click)="subFolderDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
             </mat-chip-list>
           </div>

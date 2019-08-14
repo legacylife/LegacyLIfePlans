@@ -24,11 +24,11 @@ export class legalStuffModalComponent implements OnInit {
   public hasBaseDropZoneOver: boolean = false;
   invalidMessage: string;
   LegalForm: FormGroup;
-  subFolderDocumentsMissing = false;
-  subFolderDocuments_temps = false;
+  documentsMissing = false;
+  documents_temps = false;
   fileErrors: any;
   profileIdHiddenVal:boolean = false;
-  subFolderDocumentsList: any;
+  documentsList: any;
   LegalStuffList:any = [];
   folderName: string;
   typeOfDocumentList: any[]
@@ -72,14 +72,14 @@ export class legalStuffModalComponent implements OnInit {
     }
     this.LegalForm = this.fb.group({
       typeOfDocument: new FormControl('', Validators.required),
-      subFolderDocuments_temp: new FormControl([], Validators.required),
+      documents_temp: new FormControl([], Validators.required),
       comments: new FormControl(''), 
       profileId: new FormControl('')
      });
 
      this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
      this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
-     this.subFolderDocumentsList = [];
+     this.documentsList = [];
      this.getEssentialLegalView();
    }
 
@@ -151,9 +151,9 @@ export class legalStuffModalComponent implements OnInit {
           
           this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
           this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
-          this.subFolderDocumentsList = result.data.subFolderDocuments;
-          if(this.LegalStuffList.subFolderDocuments.length>0){
-            this.LegalForm.controls['subFolderDocuments_temp'].setValue('1');
+          this.documentsList = result.data.documents;
+          if(this.LegalStuffList.documents.length>0){
+            this.LegalForm.controls['documents_temp'].setValue('1');
           }
           this.LegalForm.controls['typeOfDocument'].setValue(this.LegalStuffList.typeOfDocument); 
           this.LegalForm.controls['comments'].setValue(this.LegalStuffList.comments);
@@ -225,12 +225,12 @@ export class legalStuffModalComponent implements OnInit {
     let profileIds = this.LegalForm.controls['profileId'].value;
     let req_vars = {
       query: Object.assign({customerId: this.userId,subFolderName:this.folderName,status:"Pending" }),
-      fields:{_id:1,subFolderDocuments:1}
+      fields:{_id:1,documents:1}
     }
     if(profileIds){
        req_vars = {
         query: Object.assign({ _id:profileIds }),
-        fields:{_id:1,subFolderDocuments:1}
+        fields:{_id:1,documents:1}
       }
     }    
     this.userapi.apiRequest('post', 'customer/view-legalStuff-details', req_vars).subscribe(result => {
@@ -241,9 +241,9 @@ export class legalStuffModalComponent implements OnInit {
         if(uploadRemained) {
           this.uploadRemainingFiles(result.data._id)
         }
-        this.subFolderDocumentsList = result.data.subFolderDocuments;        
-        if(result.data.subFolderDocuments.length>0){
-          this.LegalForm.controls['subFolderDocuments_temp'].setValue('1');
+        this.documentsList = result.data.documents;        
+        if(result.data.documents.length>0){
+          this.LegalForm.controls['documents_temp'].setValue('1');
         }         
       }
     }, (err) => {
@@ -258,11 +258,11 @@ export class legalStuffModalComponent implements OnInit {
       .subscribe(res => {
         if (res) {
           this.loader.open();
-          this.subFolderDocumentsList.splice(doc, 1)
+          this.documentsList.splice(doc, 1)
           var query = {};
           const req_vars = {
             query: Object.assign({ _id: ids }, query),
-            proquery: Object.assign({ subFolderDocuments: this.subFolderDocumentsList }, query),
+            proquery: Object.assign({ documents: this.documentsList }, query),
             fileName: Object.assign({ docName: tmName }, query)
           }
           this.userapi.apiRequest('post', 'documents/deletesubFolderDoc', req_vars).subscribe(result => {
@@ -270,8 +270,8 @@ export class legalStuffModalComponent implements OnInit {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
-              if(this.subFolderDocumentsList.length<1){
-                this.LegalForm.controls['subFolderDocuments_temp'].setValue('');
+              if(this.documentsList.length<1){
+                this.LegalForm.controls['documents_temp'].setValue('');
               }  
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })

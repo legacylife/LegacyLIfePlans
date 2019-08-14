@@ -10,7 +10,8 @@ import { egretAnimations } from '../../../../shared/animations/egret-animations'
 import { legalStuffModalComponent } from '../legal-stuff-modal/legal-stuff-modal.component';
 import { EstateTypeOfDocument,HealthcareTypeOfDocument,PersonalAffairsTypeOfDocument } from '../../../../selectList';
 import { ManageTrusteeModalComponent } from '../manage-trustee-modal/manage-trustee-modal.component';
-
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
+import { forEach } from "lodash";
 @Component({
   selector: 'app-customer-legal-stuff',
   templateUrl: './customer-legal-stuff.component.html',
@@ -44,10 +45,11 @@ export class CustomerLegalStuffComponent implements OnInit {
   LegacyPermissionError:string="You don't have access to this section";
   instruction_data:any;
   instruction_data_flag:boolean=false;  
+  shareLegacFlag:boolean=false;  
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
-    private userapi: UserAPIService, private loader: AppLoaderService
+    private userapi: UserAPIService, private loader: AppLoaderService,private sharedata: DataSharingService
   ) { }
 
   ngOnInit() {
@@ -65,6 +67,8 @@ export class CustomerLegalStuffComponent implements OnInit {
         this.PersonalAffairsManagementSection= userAccess.PersonalAffairsManagement
       });
       this.showTrusteeCnt = false;
+      this.shareLegacFlag = true;
+      //this.clearMessages();
     }else{      
       this.userapi.getFolderInstructions('legal_stuff', (returnData) => {
         this.instruction_data = returnData;
@@ -92,12 +96,11 @@ export class CustomerLegalStuffComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-
         this.legaStuffList = result.data.legalList;
         this.estateList = this.legaStuffList.filter(dtype => {
           return dtype.subFolderName == 'Estate'
         }).map(el => el)
-
+        
         this.showEstateListingCnt = this.estateList.length
         if (this.showEstateListingCnt > 0) {
           this.showEstateListing = true;
@@ -109,7 +112,8 @@ export class CustomerLegalStuffComponent implements OnInit {
         this.healthcareList = this.legaStuffList.filter(dtype => {
           return dtype.subFolderName == 'Healthcare'
         }).map(el => el)
-        this.showhealthcareListingCnt = this.healthcareList.length
+        this.showhealthcareListingCnt = this.healthcareList.length;
+
         if (this.showhealthcareListingCnt > 0) {
           this.showhealthcareListing = true;
         }
@@ -120,8 +124,23 @@ export class CustomerLegalStuffComponent implements OnInit {
         this.affairsList = this.legaStuffList.filter(dtype => {
           return dtype.subFolderName == 'Personal Affairs'
         }).map(el => el)
-        this.showaffairsListingCnt = this.affairsList.length
-        
+        this.showaffairsListingCnt = this.affairsList.length;
+
+        if(this.shareLegacFlag){
+          let estateList = '';let healthcareList = '';let affairsList = '';
+          if(this.EstateManagementSection=='now'){
+           estateList = this.estateList;
+          }
+          if(this.HealthcareManagementSection=='now'){
+            healthcareList = this.healthcareList;
+          }
+          if(this.PersonalAffairsManagementSection=='now'){
+            affairsList = this.affairsList;
+          }
+          let shareLegalStuff = {legalStuffEstate: estateList ,legalStuffHealthcare: healthcareList,legalStuffAffairs: affairsList };        
+          this.sharedata.shareLegacyData(shareLegalStuff);
+        }
+     
         this.trusteeEstateCnt = result.data.totalEstateTrusteeRecords;
         this.trusteeHealthcareCnt = result.data.totalHealthTrusteeRecords
         this.trusteePrAffCnt = result.data.totalPerAffTrusteeRecords;
@@ -192,5 +211,8 @@ export class CustomerLegalStuffComponent implements OnInit {
         })
    }
     
+   clearMessages(): void {
+    this.sharedata.clearData();
+  }
 
 }

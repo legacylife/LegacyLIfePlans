@@ -8,6 +8,7 @@ import { UserAPIService } from './../../../../../userapi.service';
 import { AppLoaderService } from '../../../../../shared/services/app-loader/app-loader.service';
 import { FinalWishesFormModalComponent } from './../final-wishes-form-modal/final-wishes-form-modal.component';
 import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-trustee-modal.component';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './final-wishes-list.component.html',
@@ -41,7 +42,8 @@ export class FinalWishesComponent implements OnInit {
   LegacyPermissionError:string="You don't have access to this section";
   instruction_data:any;
   instruction_data_flag:boolean=false;  
-  constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
+  shareLegacFlag:boolean=false;  
+  constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService,private sharedata: DataSharingService) { }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.urlData = this.userapi.getURLData();
@@ -54,7 +56,7 @@ export class FinalWishesComponent implements OnInit {
         this.ObituaryManagementSection= userAccess.ObituaryManagement
         this.CelebrationLifeManagementSection= userAccess.CelebrationLifeManagement
       });
-      this.showTrusteeCnt = false;
+      this.showTrusteeCnt = false; this.shareLegacFlag = true;
     }else{      
       this.userapi.getFolderInstructions('final_wishes', (returnData) => {
         this.instruction_data = returnData;
@@ -88,8 +90,7 @@ export class FinalWishesComponent implements OnInit {
         this.showFuneralPlansCnt = this.FuneralPlansList.length        
         if (this.showFuneralPlansCnt>0) {
           this.showFuneralPlansListing = true;
-        }
-        else {
+        } else {
           this.showFuneralPlansListing = false;
         }
 
@@ -99,8 +100,7 @@ export class FinalWishesComponent implements OnInit {
         this.showObituaryListingCnt = this.ObituaryList.length
         if (this.showObituaryListingCnt > 0) {
           this.showObituaryListing = true;
-        }
-        else {
+        } else {
           this.showObituaryListing = false;
         }
 
@@ -108,7 +108,22 @@ export class FinalWishesComponent implements OnInit {
           return dtype.subFolderName == 'Celebration of Life'
         }).map(el => el)
         this.showCelebrationLifesListingCnt = this.CelebrationLifesList.length
-        
+
+        if(this.shareLegacFlag){
+          let funeralPlans = '';let obituary = '';let celebrationLifes = '';
+          if(this.FuneralPlansManagementSection=='now'){
+            funeralPlans = this.FuneralPlansList;
+          }
+          if(this.ObituaryManagementSection=='now'){
+           obituary = this.ObituaryList;
+          }
+          if(this.CelebrationLifeManagementSection=='now'){
+            celebrationLifes = this.CelebrationLifesList;
+          }
+          let shareFinalWishes = {funeralPlans:funeralPlans,obituary:obituary,celebrationLifes:celebrationLifes };        
+          this.sharedata.shareLegacyData(shareFinalWishes);
+        }
+
         this.trusteeFuneralCnt = result.data.totalFuneralTrusteeRecords;
         this.trusteeObituaryCnt = result.data.totalObituaryTrusteeRecords
         this.trusteeCelebrationCnt = result.data.totalCelebrTrusteeRecords;

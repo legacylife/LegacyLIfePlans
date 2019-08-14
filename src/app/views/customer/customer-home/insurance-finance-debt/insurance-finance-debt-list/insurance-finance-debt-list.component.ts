@@ -9,6 +9,7 @@ import { FinanceModalComponent } from './../finance-modal/finance-modal.componen
 import { DebtModalComponent } from './../debt-modal/debt-modal.component';
 import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-trustee-modal.component';
 import { InsurancePolicyType,FinancePolicyType,DebtType } from '../../../../../selectList';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './insurance-finance-debt-list.component.html',
@@ -43,7 +44,8 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
   LegacyPermissionError:string="You don't have access to this section";
   instruction_data:any;
   instruction_data_flag:boolean=false;  
-  constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
+  shareLegacFlag:boolean=false;  
+  constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService,private sharedata: DataSharingService) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -57,7 +59,7 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
         this.FinancesManagementSection= userAccess.FinancesManagement 
         this.DebtManagementSection= userAccess.DebtManagement
       });
-      this.showTrusteeCnt = false;
+      this.showTrusteeCnt = false;      this.shareLegacFlag = true;
     }else{      
       this.userapi.getFolderInstructions('Insurance_Finance_Debt', (returnData) => {
         this.instruction_data = returnData;
@@ -65,7 +67,9 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
       });
     }   
     this.getInsuranceList();
-    this.getFinanceList();
+    if(this.shareLegacFlag==false){
+      this.getFinanceList();
+    }    
     this.getDebtList();    
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
@@ -92,6 +96,9 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
         console.log(result.data)
       } else {
         this.insuranceListing = result.data.insuranceList;
+        if(this.shareLegacFlag){
+          this.getFinanceList();
+        }
         this.showInsuranceListingCnt = this.insuranceListing.length;  
         this.trusteeInsuranceCnt = result.data.totalTrusteeRecords;   
         if (this.showInsuranceListingCnt>0) {
@@ -137,6 +144,9 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
         console.log(result.data)
       } else {
         this.financeListing = result.data.financeList;
+        if(this.shareLegacFlag){
+          this.creatNewObjectData()
+        }
         this.showFinanceListingCnt = this.financeListing.length;  
         this.trusteeFinanceCnt = result.data.totalTrusteeRecords; 
         if (this.showFinanceListingCnt>0) {
@@ -150,6 +160,25 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
       console.error(err);
     })
     this.loader.close();
+  }
+
+
+  creatNewObjectData() {
+    if(this.shareLegacFlag){
+      let insuranceList = '';
+      if(this.InsuranceManagementSection=='now'){
+        insuranceList = this.insuranceListing;
+      }
+      let shareInsuranceList = {insuranceList: insuranceList };       
+      
+      let FinancesList = '';
+      if(this.FinancesManagementSection=='now'){
+        FinancesList = this.financeListing;
+      }
+      let shareFinancesList = {financesList: FinancesList };      
+      let shareBothLists = Object.assign(shareInsuranceList, shareFinancesList);
+      this.sharedata.shareLegacyData(shareBothLists);
+    }
   }
 
   getDebtList = (query = {}) => {

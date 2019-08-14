@@ -6,6 +6,7 @@ import { UserAPIService } from './../../../../../userapi.service';
 import { AppLoaderService } from '../../../../../shared/services/app-loader/app-loader.service';
 import { TimeCapsuleMoalComponent } from './../time-capsule-modal/time-capsule-modal.component';
 import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-trustee-modal.component';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './time-capsule-list.component.html',
@@ -30,7 +31,8 @@ export class TimeCapsuleListComponent implements OnInit {
   LegacyPermissionError:string="You don't have access to this section";
   instruction_data:any;
   instruction_data_flag:boolean=false;  
-  constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
+  shareLegacFlag:boolean=false;  
+  constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService,private sharedata: DataSharingService) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");    
@@ -43,7 +45,7 @@ export class TimeCapsuleListComponent implements OnInit {
       this.userapi.getUserAccess(this.userId, (userAccess) => {
         this.TimeCapsuleManagementSection = userAccess.TimeCapsuleManagement 
       });
-      this.showTrusteeCnt = false;
+      this.showTrusteeCnt = false; this.shareLegacFlag = true;
     }else{      
       this.userapi.getFolderInstructions('time_capsule', (returnData) => {
         this.instruction_data = returnData;
@@ -74,6 +76,15 @@ export class TimeCapsuleListComponent implements OnInit {
         console.log(result.data)
       } else {
         this.timeCapsuleListing = result.data.timeCapsuleList;
+
+        if(this.shareLegacFlag){
+          let timeCapsuleList = '';
+          if(this.TimeCapsuleManagementSection=='now'){
+            timeCapsuleList = this.timeCapsuleListing;
+          }
+          let shareTimeCapsuleList = {timeCapsuleList: timeCapsuleList };        
+          this.sharedata.shareLegacyData(shareTimeCapsuleList);
+        }
         this.showTimeCapsuleListingCnt = this.timeCapsuleListing.length;  
         this.trusteeTimeCapsuleCnt = result.data.totalTrusteeRecords;  
         if (this.showTimeCapsuleListingCnt>0) {

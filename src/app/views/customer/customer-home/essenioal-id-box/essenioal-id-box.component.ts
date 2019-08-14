@@ -14,7 +14,6 @@ import { states } from '../../../../state';
 import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 const URL = serverUrl + '/api/documents/myEssentialsID';
-
 @Component({
   selector: 'app-essenioal-id-box',
   templateUrl: './essenioal-id-box.component.html',
@@ -32,9 +31,9 @@ export class EssenioalIdBoxComponent implements OnInit {
   advisorDocumentsMissing: boolean = false;
   IDForm: FormGroup;
   documentTypeList: any[] = documentTypes;
-  idProofDocumentsList: any;
-  idProofDocumentsMissing = false;
-  idProofDocuments_temps = false;
+  documentsList: any;
+  documentsMissing = false;
+  documents_temps = false;
   fileErrors: any;
   stateList: any;
   docPath: string;
@@ -85,11 +84,11 @@ export class EssenioalIdBoxComponent implements OnInit {
       expirationDate: new FormControl(''),
       locationPassport: new FormControl(''),
       LocationWorkPermitVisa: new FormControl(''),  
-      idProofDocuments_temp: new FormControl('',Validators.required),
+      documents_temp: new FormControl('',Validators.required),
       comments: new FormControl(''), 
       profileId: new FormControl('')
      });
-     this.idProofDocumentsList = [];
+     this.documentsList = [];
 
       this.urlData = this.userapi.getURLData();
       this.selectedProfileId = this.urlData.lastOne;
@@ -118,12 +117,12 @@ export class EssenioalIdBoxComponent implements OnInit {
       this.typeSix = false;//countryOfIssue expirationDate  locationPassport
       this.typeSeven = false;//countryOfIssue expirationDate  LocationWorkPermitVisa
       this.typeSixSeven = false;
-    let idProofDocuments_tempss = '';
-    if(this.IDForm.controls['idProofDocuments_temp'].value=='1'){
-      idProofDocuments_tempss = '1'; 
+    let documents_tempss = '';
+    if(this.IDForm.controls['documents_temp'].value=='1'){
+      documents_tempss = '1'; 
     }
-    if(idProofDocuments_tempss=='1'){
-      this.IDForm.controls['idProofDocuments_temp'].setValue('1');
+    if(documents_tempss=='1'){
+      this.IDForm.controls['documents_temp'].setValue('1');
       }
 
     this.IDForm = this.fb.group({
@@ -146,14 +145,14 @@ export class EssenioalIdBoxComponent implements OnInit {
       LocationWorkPermitVisa: new FormControl(this.IDForm.controls['LocationWorkPermitVisa'].value,),  
       comments: new FormControl(this.IDForm.controls['comments'].value), 
       profileId: new FormControl(this.IDForm.controls['profileId'].value,),
-      idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
+      documents_temp: new FormControl(documents_tempss,Validators.required)      
      });
 
      this.IDForm.controls['comments'].clearValidators()
      this.IDForm.controls['comments'].updateValueAndValidity()
 
-     if(idProofDocuments_tempss=='1'){
-      this.IDForm.controls['idProofDocuments_temp'].setValue('1');
+     if(documents_tempss=='1'){
+      this.IDForm.controls['documents_temp'].setValue('1');
       }
 
       if(key==3){  
@@ -184,7 +183,7 @@ export class EssenioalIdBoxComponent implements OnInit {
           LocationWorkPermitVisa: new FormControl(this.IDForm.controls['LocationWorkPermitVisa'].value,),  
           comments: new FormControl(this.IDForm.controls['comments'].value), 
           profileId: new FormControl(this.IDForm.controls['profileId'].value,),
-          idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
+          documents_temp: new FormControl(documents_tempss,Validators.required)      
          });
          
       }else if(key==4){  
@@ -215,7 +214,7 @@ export class EssenioalIdBoxComponent implements OnInit {
           LocationWorkPermitVisa: new FormControl(this.IDForm.controls['LocationWorkPermitVisa'].value,),  
           comments: new FormControl(this.IDForm.controls['comments'].value), 
           profileId: new FormControl(this.IDForm.controls['profileId'].value,),
-          idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
+          documents_temp: new FormControl(documents_tempss,Validators.required)      
          });
       }else if(key==2){  
         this.typeThree = true;              
@@ -242,7 +241,7 @@ export class EssenioalIdBoxComponent implements OnInit {
           LocationWorkPermitVisa: new FormControl(this.IDForm.controls['LocationWorkPermitVisa'].value,),  
           comments: new FormControl(this.IDForm.controls['comments'].value), 
           profileId: new FormControl(this.IDForm.controls['profileId'].value,),
-          idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
+          documents_temp: new FormControl(documents_tempss,Validators.required)      
          });
       }else if(key==1){            
         this.typeFour = true;                    
@@ -266,7 +265,7 @@ export class EssenioalIdBoxComponent implements OnInit {
           LocationWorkPermitVisa: new FormControl(this.IDForm.controls['LocationWorkPermitVisa'].value,),  
           comments: new FormControl(this.IDForm.controls['comments'].value), 
           profileId: new FormControl(this.IDForm.controls['profileId'].value,),
-          idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
+          documents_temp: new FormControl(documents_tempss,Validators.required)      
          });
         }else if(key==6){     
         this.typeFive = true;             
@@ -290,7 +289,7 @@ export class EssenioalIdBoxComponent implements OnInit {
           LocationWorkPermitVisa: new FormControl(this.IDForm.controls['LocationWorkPermitVisa'].value,),  
           comments: new FormControl(this.IDForm.controls['comments'].value), 
           profileId: new FormControl(this.IDForm.controls['profileId'].value,),
-          idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
+          documents_temp: new FormControl(documents_tempss,Validators.required)      
          });
       }else if(key==5){  
         this.typeSix = true;  
@@ -316,7 +315,7 @@ export class EssenioalIdBoxComponent implements OnInit {
           LocationWorkPermitVisa: new FormControl(this.IDForm.controls['LocationWorkPermitVisa'].value,),  
           comments: new FormControl(this.IDForm.controls['comments'].value), 
           profileId: new FormControl(this.IDForm.controls['profileId'].value,),
-          idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
+          documents_temp: new FormControl(documents_tempss,Validators.required)      
          });
       }else if(key==7){  
         this.typeSeven = true;     
@@ -342,11 +341,11 @@ export class EssenioalIdBoxComponent implements OnInit {
           LocationWorkPermitVisa: new FormControl(this.IDForm.controls['LocationWorkPermitVisa'].value,Validators.required),  
           comments: new FormControl(this.IDForm.controls['comments'].value), 
           profileId: new FormControl(this.IDForm.controls['profileId'].value,),
-          idProofDocuments_temp: new FormControl(idProofDocuments_tempss,Validators.required)      
+          documents_temp: new FormControl(documents_tempss,Validators.required)      
          });
       }
-      if(idProofDocuments_tempss=='1'){
-        this.IDForm.controls['idProofDocuments_temp'].setValue('1');
+      if(documents_tempss=='1'){
+        this.IDForm.controls['documents_temp'].setValue('1');
       }
 //      this.IDForm.updateValueAndValidity();
   }
@@ -410,9 +409,9 @@ export class EssenioalIdBoxComponent implements OnInit {
             this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
             this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
 
-            this.idProofDocumentsList = result.data.idProofDocuments;
-            if(this.essentialIDList.idProofDocuments.length>0){
-              this.IDForm.controls['idProofDocuments_temp'].setValue('1');
+            this.documentsList = result.data.documents;
+            if(this.essentialIDList.documents.length>0){
+              this.IDForm.controls['documents_temp'].setValue('1');
             }
             this.IDForm.controls['documentType'].setValue(this.essentialIDList.documentType);
             if(this.essentialIDList.documentType){
@@ -450,11 +449,11 @@ export class EssenioalIdBoxComponent implements OnInit {
         .subscribe(res => {
           if (res) {
             this.loader.open();
-            this.idProofDocumentsList.splice(doc, 1)
+            this.documentsList.splice(doc, 1)
             var query = {};
             const req_vars = {
               query: Object.assign({ _id: ids }, query),
-              proquery: Object.assign({ idProofDocuments: this.idProofDocumentsList }, query),
+              proquery: Object.assign({ documents: this.documentsList }, query),
               fileName: Object.assign({ docName: tmName }, query)
             }
             this.userapi.apiRequest('post', 'documents/deleteIdDoc', req_vars).subscribe(result => {
@@ -462,8 +461,8 @@ export class EssenioalIdBoxComponent implements OnInit {
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
               } else {
-                if(this.idProofDocumentsList.length<1){
-                  this.IDForm.controls['idProofDocuments_temp'].setValue('');
+                if(this.documentsList.length<1){
+                  this.IDForm.controls['documents_temp'].setValue('');
                 }  
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
@@ -535,12 +534,12 @@ export class EssenioalIdBoxComponent implements OnInit {
       let profileIds = this.IDForm.controls['profileId'].value;
       let req_vars = {
         query: Object.assign({customerId: this.userId,status:"Pending" }),
-        fields:{_id:1,idProofDocuments:1}
+        fields:{_id:1,documents:1}
       }
       if(profileIds){
          req_vars = {
           query: Object.assign({ _id:profileIds}),
-          fields:{_id:1,idProofDocuments:1}
+          fields:{_id:1,documents:1}
         }
       }    
       this.userapi.apiRequest('post', 'customer/view-id-details', req_vars).subscribe(result => {
@@ -553,9 +552,9 @@ export class EssenioalIdBoxComponent implements OnInit {
           }
           // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-          this.idProofDocumentsList = result.data.idProofDocuments;
-          if(result.data.idProofDocuments.length>0){
-            this.IDForm.controls['idProofDocuments_temp'].setValue('1');
+          this.documentsList = result.data.documents;
+          if(result.data.documents.length>0){
+            this.IDForm.controls['documents_temp'].setValue('1');
           }         
         }
       }, (err) => {

@@ -6,7 +6,7 @@ import { UserAPIService } from './../../../../../userapi.service';
 import { AppLoaderService } from '../../../../../shared/services/app-loader/app-loader.service';
 import { PetsModalComponent } from './../pets-modal/pets-modal.component';
 import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-trustee-modal.component';
-
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './pets-list.component.html',
@@ -35,7 +35,8 @@ export class PetsListComponent implements OnInit {
   LegacyPermissionError:string="You don't have access to this section";
   instruction_data:any;
   instruction_data_flag:boolean=false;  
-  constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
+  shareLegacFlag:boolean=false;  
+  constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService,private sharedata: DataSharingService) { }
   ngOnInit() { 
     this.userId = localStorage.getItem("endUserId");
     this.urlData = this.userapi.getURLData();
@@ -49,6 +50,7 @@ export class PetsListComponent implements OnInit {
         this.PetsManagementSection = userAccess.PetsManagement
       });
       this.showTrusteeCnt = false;
+      this.shareLegacFlag = true;
     }else{      
       this.userapi.getFolderInstructions('pets', (returnData) => {
         this.instruction_data = returnData;
@@ -78,6 +80,14 @@ export class PetsListComponent implements OnInit {
         console.log(result.data)
       } else {
         this.petsListing = result.data.petList;
+        if(this.shareLegacFlag){
+          let petsListing = '';
+          if(this.PetsManagementSection=='now'){
+            petsListing = this.petsListing;
+          }
+          let sharePetsList = {petsList: petsListing };        
+          this.sharedata.shareLegacyData(sharePetsList);
+        }
         this.showPetsListingCnt = this.petsListing.length;  
         this.trusteePetsCnt = result.data.totalTrusteeRecords;  
         if (this.showPetsListingCnt>0) {
