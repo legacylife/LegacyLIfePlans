@@ -52,6 +52,7 @@ import { ReferralProgramComponent } from './referral-program/referral-program.co
 import { ActivityLogComponent } from './activity-log/activity-log.component';
 import { AddManagementComponent } from './ad-management/ad-management.component';
 import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests.component';
+import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 
 @NgModule({
   imports: [
@@ -82,6 +83,7 @@ import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyBNcjxo_35qnEG17dQvvftWa68eZWepYE0' }),
     AgmJsMarkerClustererModule,
     AgmMarkerSpiderModule,
+    RichTextEditorAllModule,
     RouterModule.forChild(AdminRoutes)
   ],
   declarations: [

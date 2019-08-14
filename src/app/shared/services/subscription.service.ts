@@ -305,7 +305,14 @@ export class SubscriptionService {
             }
             else{
               expireDate            = this.userCreateOn.add(30,"days")
-            }        
+            }  
+            let freeAccessDiff  = this.getDateDiff( this.today, expireDate.toDate() )
+            if( freeAccessDiff >= 0 ) {
+              this.isAccountFree    = true
+            }
+            else{
+              this.isAccountFree    = false
+            }      
             this.isPremiumExpired = true
           }
           this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
@@ -336,6 +343,14 @@ export class SubscriptionService {
             }
             else{
               expireDate            = this.userSubscriptionDate
+            }
+
+            let freeAccessDiff  = this.getDateDiff( this.today, expireDate.toDate() )
+            if( freeAccessDiff >= 0 ) {
+              this.isAccountFree    = true
+            }
+            else{
+              this.isAccountFree    = false
             }
             this.isPremiumExpired = true
             this.isSubscribePlan  = false

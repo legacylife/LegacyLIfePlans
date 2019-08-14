@@ -25,7 +25,7 @@
                             <mat-label>Instuctions</mat-label>
                         <mat-card class="p-0">
                             <mat-card-content class="p-0">                                
-                                <quill-editor theme="snow" name="bodytext" options="toolbarOptions" [formControl]="cmsForm.controls['InstuctionBody']"></quill-editor>
+                                <ejs-richtexteditor id='defaultRTE' [formControl]="cmsForm.controls['InstuctionBody']" [toolbarSettings]='tools' [quickToolbarSettings]='quickTools'></ejs-richtexteditor>
                             </mat-card-content>
                         </mat-card>
                     </div>

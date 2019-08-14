@@ -34,7 +34,7 @@
                             <mat-label>Page Body</mat-label>
                         <mat-card class="p-0">
                             <mat-card-content class="p-0">
-                                <quill-editor theme="snow" name="bodytext" [formControl]="cmsForm.controls['pageBody']"></quill-editor>
+                                <ejs-richtexteditor id='defaultRTE' [formControl]="cmsForm.controls['pageBody']" [toolbarSettings]='tools' [quickToolbarSettings]='quickTools'></ejs-richtexteditor>
                             </mat-card-content>
                         </mat-card>
                     </div>

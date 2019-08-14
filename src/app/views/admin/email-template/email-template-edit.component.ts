@@ -5,11 +5,12 @@ import { MatSnackBar } from '@angular/material';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
-
+import { ToolbarService, LinkService, ImageService, HtmlEditorService, TableService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
 
 @Component({
   selector: 'email-template-edit',
-  templateUrl: './email-template-edit.component.html'
+  templateUrl: './email-template-edit.component.html',
+  providers: [ToolbarService, LinkService, ImageService, HtmlEditorService,TableService, QuickToolbarService],
 })
 export class EmailTemplateEditComponent implements OnInit {
 
@@ -20,6 +21,22 @@ export class EmailTemplateEditComponent implements OnInit {
   mailSubject: string
   code: string
   row: any
+
+  public tools: object = {
+    items: ['Undo', 'Redo', '|',
+        'Bold', 'Italic', 'Underline', 'StrikeThrough', '|',
+        'FontName', 'FontSize', 'FontColor', 'BackgroundColor', '|',
+        'SubScript', 'SuperScript', '|',
+        'LowerCase', 'UpperCase', '|',
+        'Formats', 'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
+        'Indent', 'Outdent', '|', 'CreateLink','CreateTable',
+        'Image', '|', 'ClearFormat', 'Print', 'SourceCode', '|', 'FullScreen']
+  };
+  public quickTools: object = {
+      image: [
+          'Replace', 'Align', 'Caption', 'Remove', 'InsertLink', '-', 'Display', 'AltText', 'Dimension']
+  };
+
   constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private loader: AppLoaderService, private snack: MatSnackBar) { }
 
   ngOnInit() {

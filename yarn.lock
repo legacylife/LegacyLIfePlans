@@ -336,6 +336,109 @@
   resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-11.1.7.tgz#d4ca01a3c0ee67071da214b739da198179a4d756"
   integrity sha512-TMDN26Q4J+Sh+OPqAx8BK5Q/3hAAmcTAUQ9wvC9nboSOAmYUaHGz8t21yGdeUtRtunIfMpjTnwLa+X2Pfoq42w==
 
+"@syncfusion/ej2-angular-base@~17.2.39":
+  version "17.2.39"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-angular-base/-/ej2-angular-base-17.2.39.tgz#9fdd3bdc0ffeb1de9c7d33e23c8bfca198843808"
+  integrity sha512-lFW4jn66q44WFQtwY4ql9u0i28VW2CJjbo39OJr99vDasHTZvUuEZD/7+Y8l6r0vHIrBJAISDYAO9f3LiNehGg==
+  dependencies:
+    "@syncfusion/ej2-base" "~17.2.39"
+    core-js "^2.4.1"
+    reflect-metadata "^0.1.9"
+    rxjs "^5.0.0"
+    zone.js "^0.7.2"
+
+"@syncfusion/ej2-angular-richtexteditor@^17.2.41":
+  version "17.2.41"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-angular-richtexteditor/-/ej2-angular-richtexteditor-17.2.41.tgz#abfb4b8b9951ef4fcbe8276fb42f421c60983658"
+  integrity sha512-s/KUVOgbj08FAgRY7WQtXsPIRFPF6vOwhdTv7l1bZvpH5svZcQGNqg1rastsA0J6HgKPdgj2XE7kxw+WlRV8dQ==
+  dependencies:
+    "@syncfusion/ej2-angular-base" "~17.2.39"
+    "@syncfusion/ej2-base" "~17.2.40"
+    "@syncfusion/ej2-richtexteditor" "17.2.41"
+
+"@syncfusion/ej2-base@~17.2.34", "@syncfusion/ej2-base@~17.2.39", "@syncfusion/ej2-base@~17.2.40":
+  version "17.2.40"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-base/-/ej2-base-17.2.40.tgz#c3be7917adc0c32bc4914f2e65496fd7eb96a4d4"
+  integrity sha512-4kSCfQjznzRTPrzmS9sxlXjKUxfGkw3BCKsfljXdfM7QsljTNTQDZxcyMXcr3sESqNSJfq3MKr8wJfvZTnP6pg==
+  dependencies:
+    "@syncfusion/ej2-icons" "~17.2.34"
+
+"@syncfusion/ej2-buttons@~17.2.34", "@syncfusion/ej2-buttons@~17.2.35":
+  version "17.2.35"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-buttons/-/ej2-buttons-17.2.35.tgz#915b15c0582d7faddc302b1fd898f14670959a93"
+  integrity sha512-pOJzWjznSIc6A10STGooCQC7PeUYbwHOC+dBC5aylULS/5qO72RkrjJZIN5XbWBbHI39SRYNeK5QsUAx6sCcow==
+  dependencies:
+    "@syncfusion/ej2-base" "~17.2.34"
+
+"@syncfusion/ej2-data@~17.2.34", "@syncfusion/ej2-data@~17.2.39":
+  version "17.2.39"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-data/-/ej2-data-17.2.39.tgz#f9bcebc6d29221fa7f0751d9d32852e7eacb537c"
+  integrity sha512-6wqtXO1Nnw4Ulzk4XSmITz8r0PotC0WesZDJiXOSGSdx5cKzKHkD9gIM+6ivFcARE1GPHUSkeu4PXhq+TuapBQ==
+  dependencies:
+    "@syncfusion/ej2-base" "~17.2.39"
+
+"@syncfusion/ej2-icons@~17.2.34":
+  version "17.2.34"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-icons/-/ej2-icons-17.2.34.tgz#a775f7d1c6840cfe3918113b2593d7941fd4709e"
+  integrity sha512-AuE0EEQPX4PyTu253DW9MvADNmDsrXjsLurfKktxBO8PnClspSaXBxBwnBnnEkRkpJtmKlWK0F84sUkScNagFA==
+
+"@syncfusion/ej2-inputs@~17.2.41":
+  version "17.2.41"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-inputs/-/ej2-inputs-17.2.41.tgz#150662454bff41701674c7fc3d586d9a5b265752"
+  integrity sha512-zovjeu5WDFGNn4OVgDoiQhCV/QtGsXEnUULAnSV5y5zd4/xG6CJZkYbuvyr+/+xbC78Tvd5eKLBUH84tuwaEGw==
+  dependencies:
+    "@syncfusion/ej2-base" "~17.2.40"
+    "@syncfusion/ej2-buttons" "~17.2.35"
+    "@syncfusion/ej2-popups" "~17.2.35"
+    "@syncfusion/ej2-splitbuttons" "~17.2.40"
+
+"@syncfusion/ej2-lists@~17.2.34":
+  version "17.2.34"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-lists/-/ej2-lists-17.2.34.tgz#676204ba560c69b0471419f3938fc2f2bbd956da"
+  integrity sha512-JtQ6md2SQE4+xTqv2HSHtWYUI3xTBiQoFztEHyGobphlUv6IYRnmFgmmBJ07KZffnvqBi5LgIWB5mNFbEx8pYQ==
+  dependencies:
+    "@syncfusion/ej2-base" "~17.2.34"
+    "@syncfusion/ej2-buttons" "~17.2.34"
+    "@syncfusion/ej2-data" "~17.2.34"
+
+"@syncfusion/ej2-navigations@~17.2.41":
+  version "17.2.41"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-navigations/-/ej2-navigations-17.2.41.tgz#f3d070ae87cb6ea5f4db826927c32262718d4b89"
+  integrity sha512-0/rIvlQoqHPAnDDCThxGjqvkujlmo1wbkj73gyOcjt+m9T6OfLX5KPPa0nM10i0qQ5u1+i5jurtR+tyLeRWGYQ==
+  dependencies:
+    "@syncfusion/ej2-base" "~17.2.40"
+    "@syncfusion/ej2-buttons" "~17.2.35"
+    "@syncfusion/ej2-data" "~17.2.39"
+    "@syncfusion/ej2-inputs" "~17.2.41"
+    "@syncfusion/ej2-lists" "~17.2.34"
+    "@syncfusion/ej2-popups" "~17.2.35"
+
+"@syncfusion/ej2-popups@~17.2.35":
+  version "17.2.35"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-popups/-/ej2-popups-17.2.35.tgz#371239c8528d80bd1653812eccabbea389f07cde"
+  integrity sha512-kwb5XZYVVzhwGO7J55rnuiL+e6jv4BX8zEhDhNRD5p0cUG3EkXu1dXAQgszU/TtJTuX/ZfpTQXrwJqt7XNUEoA==
+  dependencies:
+    "@syncfusion/ej2-base" "~17.2.34"
+    "@syncfusion/ej2-buttons" "~17.2.35"
+
+"@syncfusion/ej2-richtexteditor@17.2.41":
+  version "17.2.41"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-richtexteditor/-/ej2-richtexteditor-17.2.41.tgz#25ea206319b382da2bce952b36337526e68e8af5"
+  integrity sha512-1C+GTKNH0HJpZPdRK0JpaWlFGbuZR4UN3yQotEp4kZVrO4liDnltmGrE2qqkiqLAWWveZJyzBJ+6NQ9SMWWHIg==
+  dependencies:
+    "@syncfusion/ej2-base" "~17.2.40"
+    "@syncfusion/ej2-navigations" "~17.2.41"
+    "@syncfusion/ej2-popups" "~17.2.35"
+    "@syncfusion/ej2-splitbuttons" "~17.2.40"
+
+"@syncfusion/ej2-splitbuttons@~17.2.40":
+  version "17.2.40"
+  resolved "https://registry.yarnpkg.com/@syncfusion/ej2-splitbuttons/-/ej2-splitbuttons-17.2.40.tgz#0a1fc4391ce28b3a9a0aff1f7548cf5c355f0a66"
+  integrity sha512-iwcNVoskL1sCbfW9JOeGqOZwQ9tflAC+GKr5++DmYvXoYy5nsI8vxoFV+bUj1e8ieLobvD3l/LewK7h4/x69zA==
+  dependencies:
+    "@syncfusion/ej2-base" "~17.2.40"
+    "@syncfusion/ej2-popups" "~17.2.35"
+
 "@types/googlemaps@^3.30.7":
   version "3.37.3"
   resolved "https://registry.yarnpkg.com/@types/googlemaps/-/googlemaps-3.37.3.tgz#ad7a49c594512fad13e05237d2849afb11872c57"
@@ -2020,6 +2123,11 @@ core-js@2.6.5, core-js@^2.2.0, core-js@^2.4.0:
   version "2.6.5"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.5.tgz#44bc8d249e7fb2ff5d00e0341a7ffb94fbf67895"
   integrity sha512-klh/kDpwX8hryYL14M9w/xei6vrv6sE8gTHDG7/T/+SEovB/G4ejwcfE/CBzO6Edsu+OETZMZ3wcX/EjUkrl5A==
+
+core-js@^2.4.1:
+  version "2.6.9"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.9.tgz#6b4b214620c834152e179323727fc19741b084f2"
+  integrity sha512-HOpZf6eXmnl7la+cUdMnLvUxKNqLUzJvgIziQ0DiF3JwSImNphIqdGqzj6hIKyX04MmV0poclQ7+wjWvxQyR2A==
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -6458,7 +6566,7 @@ redent@^1.0.0:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
 
-reflect-metadata@^0.1.2:
+reflect-metadata@^0.1.2, reflect-metadata@^0.1.9:
   version "0.1.13"
   resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
   integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
@@ -6722,6 +6830,13 @@ rxjs@6.3.3:
   integrity sha512-JTWmoY9tWCs7zvIk/CvRjhjGaOd+OVBM987mxFo+OW66cGpdKjZcpmc74ES1sB//7Kl/PAe8+wEakuhG4pcgOw==
   dependencies:
     tslib "^1.9.0"
+
+rxjs@^5.0.0:
+  version "5.5.12"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.12.tgz#6fa61b8a77c3d793dbaf270bee2f43f652d741cc"
+  integrity sha512-xx2itnL5sBbqeeiVgNPVuQQ1nC8Jp2WfNJhXWHmElW9YmrpS9UVnNzhP3EH3HFqexO5Tlp8GhYY+WEcqcVMvGw==
+  dependencies:
+    symbol-observable "1.0.1"
 
 rxjs@^6.1.0:
   version "6.5.2"
@@ -7582,6 +7697,11 @@ supports-color@^6.1.0:
   integrity sha512-qe1jfm1Mg7Nq/NSh6XE24gPXROEVsWHxC1LIx//XNlD9iw7YZQGjZNjYN7xGaEG6iKdA8EtNFW6R0gjnVXp+wQ==
   dependencies:
     has-flag "^3.0.0"
+
+symbol-observable@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.1.tgz#8340fc4702c3122df5d22288f88283f513d3fdd4"
+  integrity sha1-g0D8RwLDEi310iKI+IKD9RPT/dQ=
 
 symbol-observable@1.2.0:
   version "1.2.0"
@@ -8594,3 +8714,8 @@ zone.js@0.8.26:
   version "0.8.26"
   resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.8.26.tgz#7bdd72f7668c5a7ad6b118148b4ea39c59d08d2d"
   integrity sha512-W9Nj+UmBJG251wkCacIkETgra4QgBo/vgoEkb4a2uoLzpQG7qF9nzwoLXWU5xj3Fg2mxGvEDh47mg24vXccYjA==
+
+zone.js@^0.7.2:
+  version "0.7.8"
+  resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.7.8.tgz#4f3fe8834d44597f2639053a0fa438df34fffded"
+  integrity sha1-Tz/og01EWX8mOQU6D6Q43zT//e0=

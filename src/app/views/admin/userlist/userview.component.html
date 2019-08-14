@@ -174,7 +174,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Subscription status</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{isAccountFree && !isSubscribePlan ? 'Trial' : ( isSubscribePlan && !isPremiumExpired ? 'Paid' : 'Expired')}} Account</div>
+                  <div fxFlex="40">{{isAccountFree ? 'Trial' : ( isSubscribePlan && !isPremiumExpired ? 'Paid' : 'Expired')}} Account</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="">

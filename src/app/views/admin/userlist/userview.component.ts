@@ -55,6 +55,7 @@ export class userviewComponent implements OnInit {
   userSubscriptionDate: any
   today: Date = moment().toDate()
   showPage:boolean = false
+  isExpired:boolean = false
  // websites:any;
   constructor(
     private layout: LayoutService,
@@ -96,6 +97,7 @@ export class userviewComponent implements OnInit {
         }
         if(this.row.userType != 'sysAdmin') {
           this.subscriptionservice.checkSubscriptionAdminPanel( this.row, ( returnArr )=> {
+            console.log("returnArr",returnArr)
             this.userCreateOn = returnArr.userCreateOn
             this.isSubscribedBefore = returnArr.isSubscribedBefore
             this.isSubscriptionCanceled = returnArr.isSubscriptionCanceled
@@ -107,6 +109,9 @@ export class userviewComponent implements OnInit {
             this.isSubscribePlan = returnArr.isSubscribePlan
             this.planName = returnArr.planName
             this.subscriptionExpireDate = returnArr.subscriptionExpireDate
+            /* if( new Date(this.subscriptionExpireDate) < new Date() ) {
+              this.isExpired = true
+            } */
           })
           
         }

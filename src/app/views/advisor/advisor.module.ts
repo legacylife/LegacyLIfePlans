@@ -46,6 +46,7 @@ import { LyResizingCroppingImageModule } from '@alyle/ui/resizing-cropping-image
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
 import { OurPlanComponent } from './our-plan/our-plan.component';
 import { AdvisorHomeComponent } from './advisor-home/advisor-home.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 console.log("Advisor Module");
 export class GlobalVariables {
   testVal = '#00bcd4';
@@ -104,6 +105,7 @@ export class GlobalVariables {
     HttpModule,
     SlickCarouselModule,
     MatBottomSheetModule,
+    InfiniteScrollModule,
     RouterModule.forChild(AdvisorRoutes),
     CountUpModule,
   ],

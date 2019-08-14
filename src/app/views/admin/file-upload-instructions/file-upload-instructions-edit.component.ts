@@ -5,10 +5,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { MatSnackBar } from '@angular/material';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
+import { ToolbarService, LinkService, ImageService, HtmlEditorService, TableService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
 
 @Component({
   selector: 'file-upload-instructions-edit',
-  templateUrl: './file-upload-instructions-edit.component.html'
+  templateUrl: './file-upload-instructions-edit.component.html',
+  providers: [ToolbarService, LinkService, ImageService, HtmlEditorService,TableService, QuickToolbarService],
 })
 export class fileUploadInstructionsEditComponent implements OnInit {
   cmsForm: FormGroup
@@ -17,6 +19,21 @@ export class fileUploadInstructionsEditComponent implements OnInit {
   row : any
   aceessSection : any;
   
+  public tools: object = {
+    items: ['Undo', 'Redo', '|',
+        'Bold', 'Italic', 'Underline', 'StrikeThrough', '|',
+        'FontName', 'FontSize', 'FontColor', 'BackgroundColor', '|',
+        'SubScript', 'SuperScript', '|',
+        'LowerCase', 'UpperCase', '|',
+        'Formats', 'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
+        'Indent', 'Outdent', '|', 'CreateLink','CreateTable',
+        'Image', '|', 'ClearFormat', 'Print', 'SourceCode', '|', 'FullScreen']
+  };
+  public quickTools: object = {
+      image: [
+          'Replace', 'Align', 'Caption', 'Remove', 'InsertLink', '-', 'Display', 'AltText', 'Dimension']
+  };
+
   constructor(private router: Router, private activeRoute: ActivatedRoute,
      private snack: MatSnackBar, private api: APIService,
      private fb: FormBuilder, private loader: AppLoaderService) { }
