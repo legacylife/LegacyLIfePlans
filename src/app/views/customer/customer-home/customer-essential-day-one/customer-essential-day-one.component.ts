@@ -11,6 +11,7 @@ import { AppLoaderService } from '../../../../shared/services/app-loader/app-loa
 import { essentialsMyProfessionalsComponent } from './../../customer-home/essentials-my-professionals/essentials-my-professionals.component';
 import { documentTypes } from '../../../../selectList';
 import { ManageTrusteeModalComponent } from '../manage-trustee-modal/manage-trustee-modal.component';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './customer-essential-day-one.component.html',
@@ -44,9 +45,10 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   MyProfessionalsManagementSection:string='now';
   instruction_data:any;
   instruction_data_flag:boolean=false;  
+  shareLegacFlag:boolean=false;  
   LegacyPermissionError:string="You don't have access to this section";
   constructor(
-    private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
+    private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService,private sharedata: DataSharingService) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -65,7 +67,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
         this.IDBoxManagementSection= userAccess.IDBoxManagement 
         this.MyProfessionalsManagementSection= userAccess.MyProfessionalsManagement 
       });
-      this.showTrusteeCnt = false;
+      this.showTrusteeCnt = false;this.shareLegacFlag = true;
     }else{      
       this.userapi.getFolderInstructions('My_Essentials', (returnData) => {
         this.instruction_data = returnData;
@@ -75,6 +77,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
     this.getEssentialProfileList();
     this.getEssentialIdList();
     this.getEssentialProfessionalList();
+
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
     if(event.srcElement.outerText=='Send an Invite'){
@@ -101,7 +104,8 @@ export class CustomerEssentialDayOneComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.essentialProfileList = result.data.essentialList;        
+        this.essentialProfileList = result.data.essentialList;   
+
         this.trusteeProfileCnt = result.data.totalTrusteeRecords;   
         if(result.data.totalRecords > 0){
           this.showProfileListingCnt = result.data.totalRecords;
@@ -132,7 +136,15 @@ export class CustomerEssentialDayOneComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.essentialIDList = result.data.essentialIDList;        
+        this.essentialIDList = result.data.essentialIDList;       
+        if(this.shareLegacFlag){
+          let essentialIDList = '';
+          if(this.IDBoxManagementSection=='now'){
+            essentialIDList = this.essentialIDList;
+          }
+          let shareEssentialIdList = {essentialIDList: essentialIDList };        
+          this.sharedata.shareLegacyData(shareEssentialIdList);
+        } 
         this.trusteeIdCnt = result.data.totalTrusteeIDRecords;   
         if(result.data.totalIDRecords > 0){         
           this.showIDListingCnt = result.data.totalIDRecords;
@@ -165,8 +177,9 @@ export class CustomerEssentialDayOneComponent implements OnInit {
       console.log(result.data)
     } else {
       this.essentialProfessionalList = result.data.essentialProfessionalList;
+     
       this.trusteeProfessionalCnt = result.data.totalTrusteeProfessionalsRecords;
-      //console.log("trusteeProfessionalCnt",this.trusteeProfessionalCnt)
+      
       if(result.data.totalProfessionalRecords > 0){         
         this.showProfessionalCnt = result.data.totalProfessionalRecords;
         this.showProfessionalsListing = true;
@@ -181,6 +194,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   })
   this.loader.close();
  }
+
 
  openAddIdBoxModal(data: any = {}, isNew?) {
     let title = isNew ? 'Add new member' : 'Update member';

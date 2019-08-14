@@ -27,7 +27,7 @@ export class FinalWishesFormModalComponent implements OnInit {
   folderName: string;
   newName:string = "";
   fileErrors: any;
-  subFolderDocumentsList: any;
+  documentsList: any;
   finalWishList:any = [];
   docPath: string;  
   showCalendarField:boolean = false; 
@@ -71,7 +71,7 @@ export class FinalWishesFormModalComponent implements OnInit {
 
     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
     this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
-    this.subFolderDocumentsList = [];
+    this.documentsList = [];
     this.getFinalWishesView();
 
     if(this.folderName == 'Celebration of Life'){
@@ -105,7 +105,7 @@ export class FinalWishesFormModalComponent implements OnInit {
             
             this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
             this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
-            this.subFolderDocumentsList = result.data.subFolderDocuments;
+            this.documentsList = result.data.documents;
             
             this.FinalForm.controls['title'].setValue(this.finalWishList.title); 
             this.FinalForm.controls['comments'].setValue(this.finalWishList.comments);
@@ -219,12 +219,12 @@ export class FinalWishesFormModalComponent implements OnInit {
     let profileIds = this.FinalForm.controls['profileId'].value;
     let req_vars = {
       query: Object.assign({customerId: this.userId,subFolderName:this.folderName,status:"Pending" }),
-      fields:{_id:1,subFolderDocuments:1}
+      fields:{_id:1,documents:1}
     }
     if(profileIds){
        req_vars = {
         query: Object.assign({ _id:profileIds }),
-        fields:{_id:1,subFolderDocuments:1}
+        fields:{_id:1,documents:1}
       }
     }
     this.userapi.apiRequest('post', 'finalwish/view-wish-details', req_vars).subscribe(result => {
@@ -237,7 +237,7 @@ export class FinalWishesFormModalComponent implements OnInit {
         }
         // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
         // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-        this.subFolderDocumentsList = result.data.subFolderDocuments;                       
+        this.documentsList = result.data.documents;                       
       }
     }, (err) => {
       console.error(err);
@@ -251,11 +251,11 @@ export class FinalWishesFormModalComponent implements OnInit {
       .subscribe(res => {
         if (res) {
           this.loader.open();
-          this.subFolderDocumentsList.splice(doc, 1)
+          this.documentsList.splice(doc, 1)
           var query = {};
           const req_vars = {
             query: Object.assign({ _id: ids }, query),
-            proquery: Object.assign({ subFolderDocuments: this.subFolderDocumentsList }, query),
+            proquery: Object.assign({ documents: this.documentsList }, query),
             fileName: Object.assign({ docName: tmName }, query)
           }
           this.userapi.apiRequest('post', 'documents/deletesubFolderWishesDoc', req_vars).subscribe(result => {

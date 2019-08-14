@@ -23,9 +23,9 @@
           </button>
         </mat-list-item>
         <mat-menu #menu1="matMenu" xPosition="before" class="llp--menu--droupdown large--size">
-          <!-- <button mat-menu-item>
+          <button mat-menu-item (click)="DownloadZip()">
             <mat-icon>file_download</mat-icon> Download All
-          </button> -->
+          </button>
           <button (click)="remove()" mat-menu-item class="reject">
             <mat-icon>cancel</mat-icon> Remove Myself as an {{userAs}}
           </button>

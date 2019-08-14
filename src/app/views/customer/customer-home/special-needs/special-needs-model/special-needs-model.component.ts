@@ -75,11 +75,13 @@ export class SpecialNeedsModelComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.row = result.data
-        this.specialNeedsForm.controls['profileId'].setValue(this.row._id);
-        this.specialNeedsForm.controls['title'].setValue(this.row.title ? this.row.title : "");
-        this.specialNeedsForm.controls['comments'].setValue(this.row.comments);
-        this.specialNeedsForm.controls['folderName'].setValue(this.row.folderName);
+        this.row = result.data;
+        if(this.row){
+          this.specialNeedsForm.controls['profileId'].setValue(this.row._id);
+          this.specialNeedsForm.controls['title'].setValue(this.row.title ? this.row.title : "");
+          this.specialNeedsForm.controls['comments'].setValue(this.row.comments);
+          this.specialNeedsForm.controls['folderName'].setValue(this.row.folderName);
+        }
       }
     }, (err) => {
       console.error(err)
