@@ -42,9 +42,9 @@ async function inviteMembers(req, res) {
         let invitesImages = await InviteTemp.find({ inviteById: inviteById }, function (err, data, index) {});
         let invitesImagesLength = invitesImages.length           
         let s3URL = constants.s3Details.serveUrl+'/'+constants.s3Details.inviteDocumentsPath
-        console.log("s3URL=====",s3URL)
+        //console.log("s3URL=====",s3URL)
         for (var invIndex = 0; invIndex < invitesImagesLength; invIndex++) {
-            console.log("s3-path=====",s3URL+invitesImages[invIndex].documents[0].tmpName)
+            //console.log("s3-path=====",s3URL+invitesImages[invIndex].documents[0].tmpName)
             attachmentsImages.push({
                 "path": s3URL+invitesImages[invIndex].documents[0].tmpName,
                 "fileName": invitesImages[invIndex].documents[0].title            
@@ -53,12 +53,13 @@ async function inviteMembers(req, res) {
     }
 
     for (var index = 0; index < membersLength; index++) {
+        let inviteCode = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         if (members[index].relation == "Advisor") {
             templateType = 'InviteAdvisor';
-            clientUrl = constants.clientUrl + "/advisor/signup";
+            clientUrl = constants.clientUrl + "/advisor/signup/"+inviteCode;
         } else {
             templateType = 'InviteCustomer';
-            clientUrl = constants.clientUrl + "/customer/signup";
+            clientUrl = constants.clientUrl + "/customer/signup/"+inviteCode;
         }
         let emailId = members[index].email
         let inviteToName = members[index].name
@@ -96,6 +97,7 @@ async function inviteMembers(req, res) {
         InviteObj.email = emailId;
         InviteObj.relation = members[index].relation;
         InviteObj.documents = attachmentsImages;
+        InviteObj.inviteCode = inviteCode;
         InviteObj.status = 'Active';
         InviteObj.createdOn = new Date();
         InviteObj.modifiedOn = new Date();

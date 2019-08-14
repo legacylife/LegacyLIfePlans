@@ -27,6 +27,7 @@ var auth = jwt({
   userProperty: 'payload'
 })
 const profilePicturesPath = constants.s3Details.profilePicturesPath
+const Invite = require('./../models/Invite.js')
 
 //function to check and signin user details
 function signin(req, res) {
@@ -456,7 +457,7 @@ router.post('/reset-password-token', function (req, res) {
 async function checkEmail(req, res) {
   try {
     const { username } = req.body;
-    User.findOne({ username: username }, { _id :1, username: 1, status:1, userType : 1,profileSetup:1 }, function (err, user) {
+    User.findOne({ username: username }, { _id :1, username: 1, status:1, userType : 1,profileSetup:1 }, async function (err, user) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
@@ -473,6 +474,18 @@ async function checkEmail(req, res) {
           res.send(resFormat.rSuccess({ code: "ExistReject", message: "Your account is rejected by admin. Please connect with the admin at support@legacylifeplans.com for any queries." }))
         }
         else {
+          /**
+           * Check invite link is valid or not if user registration using invite link
+           */
+          let { inviteCode } = req.body
+          
+          if( inviteCode != "" || inviteCode != null ) {
+            let invitesCodeExists = await Invite.find({ inviteCode: inviteCode, email:username, inviteType: req.body.userType }, function (err, data, index) {});
+            if( invitesCodeExists.length < 1 ) {
+              res.send(resFormat.rSuccess({ code: "InviteReject", message: "Please enter a valid Email / Invite link." }))
+            }
+          }
+
           OtpCheck.findOne({ username: username }, { username: 1 }, function (err, found) {
             if (err) {
               res.status(401).send(resFormat.rError(err))
@@ -526,7 +539,8 @@ async function checkEmail(req, res) {
 
 async function checkUserOtp(req, res) {
   try {
-    let { query } = req.body;
+    //let { query } = req.body;
+    let query = {username: req.body.username, otpCode:req.body.otpCode}
     OtpCheck.findOne(query, function (err, otpdata) {
       if (err) {
         res.send(resFormat.rSuccess({ code: "error", message: "Invalid OTP" }))
@@ -538,6 +552,7 @@ async function checkUserOtp(req, res) {
           user.status = otpdata.status
           user.lastLoggedInOn = new Date();
           user.emailVerified = true;
+          user.invitedBy = rey.body.invitedBy
           user.createdOn = new Date();
           if(user.userType != 'advisor'){
             let userSecurityDetails = user.setPassword(otpdata.password)
