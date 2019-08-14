@@ -7,7 +7,7 @@ var legalStuffSchema = new mongoose.Schema({
   customerLegacyType: String,
   subFolderName: String,
   typeOfDocument: String,
-  subFolderDocuments: Array,
+  documents: Array,
   comments: String,
   status: String,
   createdOn: Date,

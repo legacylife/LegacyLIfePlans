@@ -525,14 +525,24 @@ function generateToken(n) {
 //function to get list of user as per given criteria
 function professionalsListing(req, res) {
 
-  let { fields, offset, query, order, limit, search, extraQuery } = req.body
+  let { fields, offset, query, order, limit, search,searchString,extraQuery } = req.body;//console.log("limit >>> ",limit)
   let totalUsers = 0
-  if (search && !isEmpty(query)) {
-    Object.keys(query).map(function (key, index) {
-      if (key !== "status") {
-        query[key] = new RegExp(query[key], 'i')
-      }
-    })
+  // if (search && !isEmpty(query)) {
+  //   Object.keys(query).map(function (key, index) {
+  //     if (key !== "status") {
+  //       query[key] = new RegExp(query[key], 'i')
+  //     }
+  //   })  
+  // }
+
+  if(search && searchString && searchString.trim() != "") {
+    const regSearch = new RegExp(searchString , "i")
+    query["$or"] = [
+        { "firstName": regSearch },
+        { "lastName": regSearch },
+        { "zipcode": regSearch },        
+      ]
+      console.log("search",search,"searchString",searchString," query ->",query);
   }
 
   User.countDocuments(query, function (err, userCount) {
@@ -547,16 +557,18 @@ function professionalsListing(req, res) {
       }, function (exc) {
         contacts.sort((a, b) => (a.createdOn > b.createdOn) ? -1 : ((b.createdOn > a.createdOn) ? 1 : 0));
         if (err) {
-          res.status(401).send(resFormat.rError(err))
+         // res.status(401).send(resFormat.rError(err))
         } else {
-          res.send(resFormat.rSuccess({ userList: contacts, totalUsers }))
+          console.log("contacts",contacts,'totalUsers',totalUsers,'userCount',userCount)
+         // res.send(resFormat.rSuccess({ userList: contacts, totalUsers }))
         }
       }) //end of async
 
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-        if (totalUsers) {
+        if (totalUsers>0) {
+         // console.log("userList >>> ",userList.length,'contacts >>>',contacts.length)
           // let distanceUserList = sortBy(map(userList, (user, index)=>{
           //   var dist = zipcodes.distance('89103',user.zipcode);
           //   let newRow = Object.assign({}, user._doc, {"distance": `${dist}`})
@@ -579,6 +591,9 @@ function professionalsListing(req, res) {
               }
             }
           })
+        }else{         
+          distanceUserList = [];
+          res.send(resFormat.rSuccess({ distanceUserList, totalUsers }))
         }
       }
     }).sort(order).skip(offset).limit(limit)
@@ -588,7 +603,6 @@ function professionalsListing(req, res) {
 function myPeoplesList(req, res) {
   let { fields, offset, advquery, trustquery, order, limit, search } = req.body;
 
-  console.log("order=>", order)
   let totalRecords = 0
   HiredAdvisors.find(advquery, fields, function (err, advisorList) {
     if (err) {

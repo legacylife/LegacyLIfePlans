@@ -141,16 +141,16 @@ router.post('/myEssentialsID', cors(), function(req,res){
                     "tmpName" : newFilename
                   }
               
-                  personalIdProof.findOne(q,{idProofDocuments:1,_id:1}, function (err, result) {
+                  personalIdProof.findOne(q,{documents:1,_id:1}, function (err, result) {
                     if (err) {
                         res.status(500).send(resFormat.rError(err))
                     } else {       
                     if (result) {                              
-                        if(result.idProofDocuments){
-                          oldTmpFiles = result.idProofDocuments;
+                        if(result.documents){
+                          oldTmpFiles = result.documents;
                         }
                         oldTmpFiles.push(tmpallfiles); 
-                        personalIdProof.updateOne(q, { $set: { idProofDocuments: oldTmpFiles } }, function (err, updatedUser) {
+                        personalIdProof.updateOne(q, { $set: { documents: oldTmpFiles } }, function (err, updatedUser) {
                           if (err) {
                             res.send(resFormat.rError(err))
                           } else {
@@ -179,7 +179,7 @@ router.post('/myEssentialsID', cors(), function(req,res){
                 oldTmpFiles.push(tmpallfiles); 
                 var personal = new personalIdProof();
                 personal.customerId = userId;
-                personal.idProofDocuments = oldTmpFiles;
+                personal.documents = oldTmpFiles;
                 personal.status = 'Pending';
                 personal.createdOn = new Date();
                 personal.save({}, function (err, newEntry) {
@@ -242,16 +242,16 @@ router.post('/legalStuff', cors(), function(req,res){
                   "extention" : mimetype,
                   "tmpName" : newFilename
                 }
-              LegalStuff.findOne(q,{subFolderDocuments:1,_id:1}, function (err, result) {
+              LegalStuff.findOne(q,{documents:1,_id:1}, function (err, result) {
                     if (err) {
                         res.status(500).send(resFormat.rError(err))
                     } else {       
                     if (result) {                   
-                        if(result.subFolderDocuments){
-                          oldTmpFiles = result.subFolderDocuments;
+                        if(result.documents){
+                          oldTmpFiles = result.documents;
                         }                
                         oldTmpFiles.push(tmpallfiles);  
-                        LegalStuff.updateOne(q, { $set: { subFolderDocuments: oldTmpFiles } }, function (err, updatedUser) {
+                        LegalStuff.updateOne(q, { $set: { documents: oldTmpFiles } }, function (err, updatedUser) {
                           if (err) {
                             res.send(resFormat.rError(err))
                           } else {
@@ -280,7 +280,7 @@ router.post('/legalStuff', cors(), function(req,res){
                var legal = new LegalStuff();
                   legal.customerId = userId;
                   legal.subFolderName = folderName;
-                  legal.subFolderDocuments = oldTmpFiles;
+                  legal.documents = oldTmpFiles;
                   legal.status = 'Pending';
                   legal.createdOn = new Date();
                   legal.save({}, function (err, newEntry) {
@@ -343,16 +343,16 @@ router.post('/finalWishes', cors(), function(req,res){
                   "extention" : mimetype,
                   "tmpName" : newFilename
                 }
-                finalWish.findOne(q,{subFolderDocuments:1,_id:1}, function (err, result) {
+                finalWish.findOne(q,{documents:1,_id:1}, function (err, result) {
                     if (err) {
                         res.status(500).send(resFormat.rError(err))
                     } else {       
                     if (result) {                          
-                        if(result.subFolderDocuments){
-                          oldTmpFiles = result.subFolderDocuments;
+                        if(result.documents){
+                          oldTmpFiles = result.documents;
                         }             
                         oldTmpFiles.push(tmpallfiles);  
-                        finalWish.updateOne(q, { $set: { subFolderDocuments: oldTmpFiles } }, function (err, updatedUser) {
+                        finalWish.updateOne(q, { $set: { documents: oldTmpFiles } }, function (err, updatedUser) {
                           if (err) {
                             res.send(resFormat.rError(err))
                           } else {
@@ -381,7 +381,7 @@ router.post('/finalWishes', cors(), function(req,res){
                 var insert = new finalWish();
                 insert.customerId = userId;
                 insert.subFolderName = folderName;
-                insert.subFolderDocuments = oldTmpFiles;
+                insert.documents = oldTmpFiles;
                 insert.status = 'Pending';
                 insert.createdOn = new Date();
                 insert.save({}, function (err, newEntry) {
@@ -1224,9 +1224,7 @@ function downloadDocs(req,res) {
   var params = {Bucket: constants.s3Details.bucketName,Key:filePath};
   let ext = filename.split('.')
   ext = ext[ext.length - 1];
-  console.log("query ->",query,"filePath -> ",filePath,"filename -> ",filename)
   try {
-    console.log("params 00 ->",params)
     const stream = s3.s3.getObject(params).createReadStream();    
     res.set({
       'Content-Disposition': 'attachment; filename='+filename,
@@ -1246,8 +1244,6 @@ function downloadDocsOLD(req,res) {
   var params = {Bucket: constants.s3Details.bucketName,Key:filePath};
   let ext = filename.split('.')
   ext = ext[ext.length - 1];
-  
-  console.log("query ->",query,"filePath -> ",filePath,"filename -> ",filename)
   try {
     console.log("params 00 ->",params)
       s3.s3.headObject(params, function(err, data) {
@@ -1341,9 +1337,6 @@ function getuserFolderSize(folder,res) {
 function downloadZipfilesDinzy(req,res) {
   let { query } = req.body; 
   let { docPath, AllDocuments } = query;
-
-  //let ext = query.downloadFileName.split('/');
-  //const zipName = ext[0]+ '-' + new Date().getTime()
   let downloadFileName = zipName;
    
   if (AllDocuments) {
@@ -1353,9 +1346,7 @@ function downloadZipfilesDinzy(req,res) {
     });
     console.log("docList ",docList)
     const params = {Bucket: constants.s3Details.bucketName,Prefix: docPath};
-   // console.log("reading docPath=>", docPath)
-    s3.s3.listObjectsV2(params, (err, data)=>{
-     
+    s3.s3.listObjectsV2(params, (err, data)=>{     
       let files = []
       data.Contents.map((o)=> {
         if(docList.indexOf(o.Key)){ 
@@ -1366,13 +1357,11 @@ function downloadZipfilesDinzy(req,res) {
       var archive = archiver('zip', {});
       res.attachment(downloadFileName);
       console.log("files=>", files)
-      async.each(files, (filename, callback)=>{
-       
+      async.each(files, (filename, callback)=>{       
         var getparams = {Bucket: constants.s3Details.bucketName,Key:filename};
         const stream = s3.s3.getObject(getparams).createReadStream();
         console.log("attaching file "+ filename)
         archive.append(stream,{name: filename});
-       
         callback();
       }, () => {
         
@@ -1397,17 +1386,11 @@ function downloadZipfilesDinzy(req,res) {
               downloadZip(downloadfilePath, downloadFileName,res);
             }
           });
-        
-          
         });
         archive.finalize();  
         // res.send(files)
       })
-        
-      
     }) //end of stream
-
-    
   } else{
     res.status(401).send(resFormat.rError({message :"Sorry files not found!"}))  
   }
@@ -1513,43 +1496,6 @@ function downloadZip(downloadfilePath,downloadFilenames,res) {
   } catch (error) {
     res.status(401).send(resFormat.rError({message :error}))  
   }     
-}
-
-function downloadZipfilesPronit(req,res) {
-  // const s3Zip = require('s3-zip')
-  // let { query } = req.body; 
-  // let filesPath = query.docPath;
-  // const params = {Bucket: constants.s3Details.bucketName,
-  //   Prefix: filesPath
-  // };
-  //       const stream = s3.s3.listObjectsV2(params, (err, data)=>{
-  //       try {
-  //         console.log(data);
-  //         let files = []
-  //       async.each(data.Contents, (folder, cb)=>{
-        
-  //           console.log("row->  ",folder);
-  //           files.push(folder.Key);
-  //           cb()
-  //       }, ()=>{
-  //         console.log(files);
-  //         // zip(files)
-  //         try {
-           
-  //         const output = fs.createWriteStream(path.join(__dirname, "new.zip" ))
-  //         s3Zip
-  //          .archive({region: "us-east-1", bucket: constants.s3Details.bucketName, preserveFolderStructure: true }, filesPath, files)
-         
-  //         } catch (error) {
-  //           console.log(error);
-  //         }
-  //       })
-
-  //       res.status(200).send(resFormat.rSuccess({message :"Folders Created successfully!"}))  
-  //       } catch (error) {
-  //       res.status(401).send(resFormat.rError({message :error}))  
-  //       }
-  //       })              
 }
 
 router.post("/deleteAdvDoc", deleteDoc);

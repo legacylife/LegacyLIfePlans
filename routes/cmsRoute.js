@@ -34,7 +34,7 @@ function list(req, res) {
       }
     })
   }
-  Cms.count(query, function(err, cmsCount) {
+  Cms.countDocuments(query, function(err, cmsCount) {
     if(cmsCount) {
       totalRecords = cmsCount
     }

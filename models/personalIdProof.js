@@ -22,7 +22,7 @@ var personalIdProofSchema = new mongoose.Schema({
   expirationDate:String,
   locationPassport:String,
   LocationWorkPermitVisa:String,  
-  idProofDocuments:Array,
+  documents:Array,
   comments:String,
   status: String,
   createdOn: Date,

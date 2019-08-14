@@ -8,7 +8,7 @@ var finalWishesSchema = new mongoose.Schema({
   title: String,
   subFolderName: String,
   calendarDate: String,
-  subFolderDocuments: Array,
+  documents: Array,
   comments: String,
   status: String,
   createdOn: Date,
