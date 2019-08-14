@@ -55,6 +55,7 @@ import { LettersMessagesDetailsComponent } from '../customer/customer-home/legac
 import { CustomerProfileComponent } from './customer-profile/customer-profile.component';
 
 import { ErrorComponent } from './../error/error.component';
+import { CoachsCornerComponent } from 'app/shared/components/coachs-corner/coachs-corner.component';
 console.log('advisor---routing');
 export const AdvisorRoutes: Routes = [
   {
@@ -425,6 +426,17 @@ export const AdvisorRoutes: Routes = [
         component: GetFeaturedComponent,
         canActivate: [UserAuthGuard],
         data: { title: 'Get Featured' }
+      }
+    ]
+  },
+  {
+    path: 'coachs-corner',
+    component: AdvisorLayoutComponent,
+    data: { title: 'Coachs Corner' },
+    children: [
+      {
+        path: '',
+        component: CoachsCornerComponent,
       }
     ]
   },
