@@ -552,7 +552,7 @@ async function checkUserOtp(req, res) {
           user.status = otpdata.status
           user.lastLoggedInOn = new Date();
           user.emailVerified = true;
-          user.invitedBy = rey.body.query.invitedBy
+          user.invitedBy = req.body.query.invitedBy
           user.createdOn = new Date();
           if(user.userType != 'advisor'){
             let userSecurityDetails = user.setPassword(otpdata.password)
