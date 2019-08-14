@@ -36,8 +36,13 @@ export class AdvisorSignupComponent implements OnInit {
   countDown;
   counter = 0;
   tick = 0;
-
-  constructor(private router: Router, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
+  inviteCode:string = ''
+  constructor(private router: Router, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { 
+    this.activeRoute.params.subscribe(params => {
+      this.inviteCode = params['inviteCode'] ? params['inviteCode'] : '';
+    });
+    //console.log("inviteCode",this.inviteCode)
+  }
 
   ngOnInit() {
     this.llpAdvsignupForm = new FormGroup({
@@ -52,7 +57,8 @@ export class AdvisorSignupComponent implements OnInit {
   advProceed() {
     let req_vars = {
       username: this.llpAdvsignupForm.controls['username'].value,
-      userType: 'advisor'
+      userType: 'advisor',
+      inviteCode: this.inviteCode
     }
     this.loader.open();
     this.userapi.apiRequest('post', 'auth/checkEmail', req_vars).subscribe(result => {
@@ -71,6 +77,12 @@ export class AdvisorSignupComponent implements OnInit {
         }*/ else if (result.data.code == "ExistReject") {
           this.llpAdvsignupForm.controls['username'].enable();
           this.invalidMessage = result.data.message;
+          this.EmailExist = true;
+          this.llpAdvsignupForm.controls['username'].setErrors({ 'EmailExist': true })          
+        }else if (result.data.code == "InviteReject") {
+          this.llpAdvsignupForm.controls['username'].enable();
+          //this.invalidMessage = result.data.message;
+          this.snack.open(result.data.message, 'OK', { duration: 10000 })
           this.EmailExist = true;
           this.llpAdvsignupForm.controls['username'].setErrors({ 'EmailExist': true })          
         }else {
@@ -96,9 +108,14 @@ export class AdvisorSignupComponent implements OnInit {
 
 
   OtpProceed() {
+    let invitedBy = ''
+    if( this.inviteCode != '') {
+      invitedBy = 'advisor'
+    }
     let req_vars = {
       username: this.llpAdvsignupForm.controls['username'].value,
-      otpCode: this.llpAdvotpForm.controls['otp'].value
+      otpCode: this.llpAdvotpForm.controls['otp'].value,
+      invitedBy: invitedBy
     }
     this.loader.open();
     this.userapi.apiRequest('post', 'auth/checkOtp', { query: req_vars }).subscribe(result => {

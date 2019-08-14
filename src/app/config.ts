@@ -18,7 +18,7 @@ else if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.c
 }
 else if(window.location.hostname.indexOf("ec2-3-209-230-58.compute-1.amazonaws.com") > -1){ // test server
   serverUrlEnv = "http://ec2-3-209-230-58.compute-1.amazonaws.com"  
-  stripeSecretKey = "pk_test_mB9cnQ2EBtmIiIPUi0kQgIxC"
+  stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
 }
 else {  //dev server
   serverUrlEnv = "http://ec2-3-212-172-15.compute-1.amazonaws.com:8080" 

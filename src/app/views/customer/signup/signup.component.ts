@@ -41,8 +41,12 @@ export class CustomerSignupComponent implements OnInit {
   countDown;
   counter = 0;
   tick = 0;
-
-  constructor(private router: Router,private picService : ProfilePicService, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { }
+  inviteCode:string = ''
+  constructor(private router: Router,private picService : ProfilePicService, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) {
+    this.activeRoute.params.subscribe(params => {
+      this.inviteCode = params['inviteCode'] ? params['inviteCode'] : '';
+    });
+   }
   ngOnInit() {
     this.llpCustsignupForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
@@ -60,7 +64,8 @@ export class CustomerSignupComponent implements OnInit {
     let req_vars = {
       username: this.llpCustsignupForm.controls['username'].value,
       password: this.llpCustsignupForm.controls['password'].value,
-      userType: 'customer'
+      userType: 'customer',
+      inviteCode: this.inviteCode
     }
     this.loader.open();
     this.userapi.apiRequest('post', 'auth/checkEmail', req_vars).subscribe(result => {
@@ -72,6 +77,12 @@ export class CustomerSignupComponent implements OnInit {
           this.EmailExist = true;
           this.llpCustsignupForm.controls['username'].setErrors({ 'EmailExist': true })
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        }else if (result.data.code == "InviteReject") {
+          this.llpCustsignupForm.controls['username'].enable();
+          //this.invalidMessage = result.data.message;
+          this.snack.open(result.data.message, 'OK', { duration: 10000 })
+          this.EmailExist = true;
+          this.llpCustsignupForm.controls['username'].setErrors({ 'EmailExist': true })          
         } else {
           this.llpCustsignupForm.controls['username'].disable();
           this.llpCustsignupForm.controls['password'].disable();
@@ -94,9 +105,14 @@ export class CustomerSignupComponent implements OnInit {
   }
 
   OtpProceed() {
+    let invitedBy = ''
+    if( this.inviteCode != '') {
+      invitedBy = 'customer'
+    }
     let req_vars = {
       username: this.llpCustsignupForm.controls['username'].value,
-      otpCode: this.llpCustotpForm.controls['otp'].value
+      otpCode: this.llpCustotpForm.controls['otp'].value,
+      invitedBy: invitedBy
     }
     this.loader.open();
     this.userapi.apiRequest('post', 'auth/checkOtp', { query: req_vars }).subscribe(result => {

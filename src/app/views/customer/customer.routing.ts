@@ -78,6 +78,18 @@ export const CustomerRoutes: Routes = [
     ],
   },
   {
+    path: 'signup/:inviteCode',
+    component: AuthLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: CustomerSignupComponent,
+        canActivate: [UserPreAuthGuard],
+        data: { title: 'Customer Signup' }
+      }
+    ]
+  },
+  {
     path: 'dashboard',
     component: CustomerLayoutComponent,
     children: [

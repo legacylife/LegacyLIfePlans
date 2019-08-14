@@ -125,6 +125,18 @@ export const AdvisorRoutes: Routes = [
 
   },
   {
+    path: 'signup/:inviteCode',
+    component: AuthLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: AdvisorSignupComponent,
+        canActivate: [UserPreAuthGuard],
+        data: { title: 'Advisor Signup' }
+      }
+    ]
+  },
+  {
     path: 'business-info',
     component: AuthLayoutComponent,
     children: [
