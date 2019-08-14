@@ -1,0 +1,137 @@
+@import 'llp-global-styles.scss';
+
+.coachs--corner--wrapper{
+    .cc--header{
+        font-size: 18px;
+        color: #222324;
+        margin: 25px 0;
+    }
+    .cc--content{
+        display: flex;
+        justify-content: space-between;
+
+        .left{
+            margin-right: 20px;
+            flex: 1;
+
+            ::ng-deep{
+                .mat-tab-header{
+                    height: 55px;
+                    border-radius: 2px;
+                    background-color: #e7ebcd;
+                    margin-bottom: 10px;
+                    border: none;
+                    .mat-tab-label-container{
+                        .mat-tab-label{
+                            min-width: auto;
+                            font-family: $font--lato--bold;
+                            font-size: 16px;
+                            padding: 0 25px;
+                            height: 54px;
+                            color: #222324;
+                            opacity: 9;
+                            &.mat-tab-label-active{
+                                color: #c72128;
+                            }
+                        }
+                    }
+                }
+                .mat-ink-bar{
+                    background-color: #c72128 !important;
+                }
+            }
+           
+            .content--wrapper{
+                border-radius: 2px;
+                border: solid 1px #dadce0;
+                background-color: #fff;
+                margin-bottom: 10px;
+                display: flex;
+                padding: 20px;
+
+                .cont--img{
+                    width: 215px;
+                    height: 153px;
+                    border: 1px solid #dadce0;
+                    margin-top: 2px;
+                    flex-shrink: 0;
+                    overflow: hidden;
+                }
+                .cont--desc{
+                    margin-left: 20px;
+                    h4{
+                        font-size: 18px;
+                        margin:  0 0 15px 0;
+                        color: #222324;
+                    }
+                    .when{
+                        font-size: 13px;
+                        margin-bottom: 10px;
+                        color: #828385;
+                        display: flex;
+                        align-items: center;
+                        .mat-icon{
+                            width: 16px;
+                            height: 16px;
+                            font-size: 16px;
+                            color: #828385;
+                            margin-right: 5px;
+                        }
+                    }
+                    .details{
+                        font-size: 16px; 
+                        color: #222324;
+
+                    }
+                }
+            }
+        }
+        .right{
+            width: 285px;
+            border-radius: 2px;
+            border: solid 1px #dadce0;
+            background-color: #fff;
+            flex-shrink: 0;
+            padding-bottom: 20px;
+
+            header{
+                color: #222324;
+                font-size: 16px;
+                padding: 0 18px;
+                display: flex;
+                height: 52px;    
+                border-bottom: 1px solid #dadce0;    
+                align-items: center;
+                font-family: $font--lato--bold;
+            }
+            section{
+                padding: 0 18px;
+                display: flex;
+                margin-top: 18px;
+                margin-top: 20px;
+
+                .img--box{
+                    width: 52px;
+                    height: 37px;
+                    border: 1px solid #dadce0;
+                    margin-top: 6px;
+                    flex-shrink: 0;
+                    overflow: hidden;
+                }
+                .img--desc{
+                    margin-left: 15px;  
+                    .name{
+                        font-size: 16px;
+                        color: #222324;
+                        margin-bottom: 3px;
+                    }
+                    .views{
+                        font-size: 13px;
+                        color: #828385;
+                        
+                    }
+                }
+            }
+        }
+    }   
+}
