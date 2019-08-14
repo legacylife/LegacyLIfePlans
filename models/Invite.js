@@ -10,6 +10,7 @@ var inviteSchema = new mongoose.Schema({
   relation: String,
   documents:Array,
   status: String,  
+  inviteCode: String,
   createdOn: Date,
   modifiedOn: Date
 })
