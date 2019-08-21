@@ -28,7 +28,7 @@ import { AdvisorLegacyDetailsComponent } from './advisor-legacy-details/advisor-
 import { LegaciesDetailsLandingComponent } from './advisor-legacy-details/legacies-details-landing/legacies-details-landing.component';
 import { GetFeaturedComponent } from './get-featured/get-featured.component';
 import { SubmitEnquiryModalComponent } from './get-featured/submit-enquiry-modal/submit-enquiry-modal.component';
-import { MarkAsDeceasedComponent } from './advisor-legacy-details/mark-as-deceased-modal/mark-as-deceased-modal.component';
+
 import { AdvisorLayoutComponent } from './../../shared/components/layouts/advisor-layout/advisor-layout.component';
 import { states } from '../../state';
 import { yearsOfServiceList, businessTypeList, industryDomainList } from '../../selectList';
@@ -110,11 +110,11 @@ export class GlobalVariables {
     CountUpModule,
   ],
   declarations: [
-    AdvisorSignupComponent,BusinessInfoComponent,SetPasswordComponent,FormatTimePipe,ThankYouComponent,AdvisorDashboardComponent,LegaciesComponent,AdvisorDashboardUpdateComponent, AdvisorAccountSettingComponent, AdvisorSubscriptionComponent,ChangePassComponent,HomeComponent,ReferAndEarnModalComponent,AdvisorLegacyDetailsComponent,LegaciesDetailsLandingComponent,MarkAsDeceasedComponent,
+    AdvisorSignupComponent,BusinessInfoComponent,SetPasswordComponent,FormatTimePipe,ThankYouComponent,AdvisorDashboardComponent,LegaciesComponent,AdvisorDashboardUpdateComponent, AdvisorAccountSettingComponent, AdvisorSubscriptionComponent,ChangePassComponent,HomeComponent,ReferAndEarnModalComponent,AdvisorLegacyDetailsComponent,LegaciesDetailsLandingComponent,
     GetFeaturedComponent,SubmitEnquiryModalComponent,AdvisorLeadsComponent,AdvisorLeadsDetailsComponent,ProspectPeoplesModalComponent,OurPlanComponent,AdvisorHomeComponent,CustomerProfileComponent
   ], providers: [
     MatDatepickerModule, UserAuthGuard, UserPreAuthGuard, ProfilePicService, CanDeactivateGuard],
-     entryComponents: [ChangePassComponent, ReferAndEarnModalComponent, MarkAsDeceasedComponent, SubmitEnquiryModalComponent, 
+     entryComponents: [ChangePassComponent, ReferAndEarnModalComponent, SubmitEnquiryModalComponent, 
     ProspectPeoplesModalComponent],
 })
 export class AdvisorModule { }

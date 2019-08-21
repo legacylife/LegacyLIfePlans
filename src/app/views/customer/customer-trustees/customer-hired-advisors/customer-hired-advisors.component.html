@@ -31,6 +31,12 @@
                         <button mat-menu-item [routerLink]="['/customer/professionals/prof-details', row.advisorId?._id]"><span>View</span></button>
                         <button mat-menu-item *ngIf="row?.status==='Active'" (click)="removeTrusteeAdvisor(row.advisorId?._id)"><span>Remove as a Advisor</span></button>
                         <!-- <button mat-menu-item><span>Resend Invitation</span></button> -->
+                        <button mat-menu-item *ngIf="row?.status === 'Active' && row?.executorStatus!=='Active'" (click)="markAsExecutor('advisor',row?._id,row.advisorId?._id,row?.advisorId.firstName,row?.advisorId.lastName)">
+                          <span>Mark as an Executor</span>
+                      </button>
+                      <button mat-menu-item *ngIf="row?.status === 'Active' && row?.executorStatus==='Active'" (click)="removeAsExecutor('advisor',row?._id,row.advisorId?._id,row?.advisorId.firstName,row?.advisorId.lastName)">
+                        <span>Remove as an Executor</span>
+                      </button>
                       </mat-menu>
                   </div>
                 </mat-card-title>
@@ -48,11 +54,8 @@
               <div class="ad--strip clr--black">
                 Advisor
               </div>
-              
             </mat-card-content>
-
             <!-- Code if we want to show files & folder count -->
-
             <!-- <mat-card-content *ngIf="row?.status==='Active'">
                 <h4>Assigned</h4>
                 <div class="files--folder">
@@ -69,15 +72,9 @@
                 <mat-icon>history</mat-icon>
                 <p class="pending">Request Pending...</p>            
               </mat-card-content> 
-              <!-- Pending -->
-              
-
-
-
-
+               Pending -->
         </mat-card>
       </mat-card-content>
-
       <mat-card-content class="appointees--wrapper" *ngIf="!showAdvisorListing">
           <div class="files--folder mt-1">{{searchMessage}}.</div>
       </mat-card-content>

@@ -1,0 +1,17 @@
+<div class="ll--modal--header">
+  {{heading}}
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+<!-- <div class="ll--modal--body refer--earn--modal--body">
+</div> -->
+
+<div class="ll--modal--body ">
+  <p>Executor is the person assigned to look after your Legacy once deceased. Please note that only one Executor can be appointed to the legacy.</p>
+</div>
+
+<div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn" (click)="markAsExecutor()" *ngIf="for=='setExecutor'">Mark as an Executor</button>
+    <button mat-raised-button class="llp--primary--btn" (click)="removeAsExecutor()" *ngIf="for=='removeExecutor'">remove as an Executor</button>
+</div>

@@ -286,7 +286,176 @@
 }
 /* Media query (start here)*/
 
+.updated--right--panel{
+    ::ng-deep .mat-sidenav-container{
+        width: 100%;
+    }
+    .right--panel--wrapper{
+        margin-left: 15px;        
+        .right--boxes{
+            margin-bottom: 15px;
+            .mat-card{
+                box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important;
+                .mat-card-title{
+                    .card-title-text{
+                        background-color: #222324;
+                        color: #fff;
+                    }
+                }
+                .invite--body--section{
+                    border: none;
+                    height: 220px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    text-align: center;
+
+                    .count{
+                        font-family: $font--lato--bold;
+                        font-size: 45px;
+                        margin: 20px 0 5px 0;
+                        span{
+                            font-size: 26px;
+                            font-family: $font--lato--regular;
+                        }
+                    }
+                    .daysgo{
+                        margin: 0;
+                        font-family: $font--lato--italic !important;
+                        font-size: 22px;
+                    }
+                    .invites{
+                        font-size: 16px;
+                        color: #222324;
+                        margin-bottom: 15px;
+                        margin-top: 32px;
+                    }
+                    .llp--primary--btn{
+                        width: 168px;
+                    }
+                    .adjust{
+                        margin-bottom: -30px;
+                    }
+                }
+            }
+        }
+
+        .target--completed{
+            box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important;
+            height: 300px;
+
+            .mat-card-content{
+                border: none;
+                height: 300px;
+                padding: 0 15px;
+
+                .header--wrapper {
+                    width: 100%;
+                    margin: 20px auto 0;
+                    display: flex;
+                    flex-direction: column;
+                    position: relative;
+                    justify-content: center;
+                    align-items: center;
+
+                    .sub--header {
+                        margin: 0;
+                        background-repeat: no-repeat;
+                        
+                        span {
+                            font-family: $font--lato--bold--italic;
+                            font-size: 20px;
+                            color: #131321;
+                            padding: 0 31px;
+                        }                        
+                    }
+                    .warn{
+                        width: 80%;
+                        margin: 35px auto 0;
+                        text-align: center;
+                        font-size: 22px;
+                        color: #222324;
+                        font-family: $font--lato--bold !important;
+                        span{
+                            color: #ecbe00;     
+                            text-transform: uppercase;                       
+                        }
+                    }
+
+                    &::before{
+                        content: "";
+                        background-image : url("assets/images/arkenea/leafs-left.png");
+                        width: 63px;
+                        height: 120px;
+                        position: absolute;
+                        left: 0;
+                        top: 35px;
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                    }
+                    &::after{
+                        content: "";
+                        background-image : url("assets/images/arkenea/leafs-right.png");
+                        width: 37px;
+                        height: 120px;
+                        position: absolute;
+                        right: 0;
+                        bottom: 0px;
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                    }
+                    
+                }
+                .free--access{
+                    font-size: 16px;
+                    color: #222324;
+                    width: 55%;
+                    text-align: center;
+                    margin: 20px auto 0;
+                    font-family: $font--lato--regular;
+                    position: absolute;
+                    bottom: 12px;
+                    left: 25%;
+                }
+            }
+            
+            
+        }
+    }
+}
+
 @media only screen and (max-width: 599px) {
+    .updated--right--panel{
+        display: flex !important;
+        flex-direction: column !important;
+        .right--panel--wrapper{
+            margin: 0 15px;
+        }
+        .boxes--hori{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            .right--boxes{
+                width: 100%;
+                .invite--body--section{
+                    height: 107px !important;
+                    .count{
+                        font-size: 34px !important;
+                    }
+                    .adjust{
+                        margin: 0 !important;
+                        .invites{
+                            margin-top: 5px !important;
+                        }
+                    }
+                }
+            }
+        }
+        .reverse--order--sm{
+            order: -1;
+        } 
+    }
     .llp--content--wrapper .appointees--wrapper .appointees--section{
         width: 100%;
     }
@@ -337,6 +506,24 @@
     }
 }
 @media only screen and (min-width: 600px) and (max-width: 959px){
+    .updated--right--panel{
+        display: flex !important;
+        flex-direction: column !important;
+        .right--panel--wrapper{
+            margin: 0 15px;
+        }
+        .boxes--hori{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            .right--boxes{
+                width: 49%;
+            }
+        }
+        .reverse--order--sm{
+            order: -1;
+        } 
+    }
     .llp--content--wrapper .appointees--wrapper .appointees--section{
         width: 48%;
     }

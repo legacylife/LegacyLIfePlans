@@ -11,7 +11,8 @@ import { FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { Subscription, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { egretAnimations } from "../../../../shared/animations/egret-animations";
-import { MarkAsDeceasedComponent } from "../mark-as-deceased-modal/mark-as-deceased-modal.component";
+// import { MarkAsDeceasedComponent } from "../mark-as-deceased-modal/mark-as-deceased-modal.component";
+
 import { AppLoaderService } from "app/shared/services/app-loader/app-loader.service";
 import { UserAPIService } from "app/userapi.service";
 import { s3Details } from "app/config";

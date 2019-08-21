@@ -10,6 +10,7 @@ import { HireAdvisorComponent } from '../../hire-advisor-modal/hire-advisor-moda
 import { addTrusteeModalComponent } from './../../customer-home/add-trustee-modal/add-trustee-modal.component';
 import { s3Details } from '../../../../config';
 import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
+import { ExecutorModalComponent } from './../../../executor-modal/executor-modal.component';
 const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 
 @Component({
@@ -182,5 +183,53 @@ export class CustomerMyPeopleComponent implements OnInit {
         }
       })       
   }
+
+
+markAsExecutor(type,docId,userid,firstName,lastName) {
+  let dialogRef: MatDialogRef<any> = this.dialog.open(ExecutorModalComponent, {
+    width: '720px',
+    data: {
+      type: type,
+      docId: docId,
+      userid: userid,
+      firstName: firstName,
+      lastName: lastName,
+      for: 'setExecutor',
+    },
+    disableClose: true,
+  });
+  dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getMyPeoplesList('All', '-1');
+      if (!res) {
+        return;
+      }
+    })
+}
+
+
+removeAsExecutor(type,docId,userid,firstName,lastName) {
+  let dialogRef: MatDialogRef<any> = this.dialog.open(ExecutorModalComponent, {
+    width: '720px',
+    data: {
+      type: type,
+      docId: docId,
+      userid: userid,
+      firstName: firstName,
+      lastName: lastName,
+      for: 'removeExecutor',
+    },
+    disableClose: true,
+  });
+  dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getMyPeoplesList('All', '-1');
+      if (!res) {
+        return;
+      }
+    })
+}
+
+
   
 }

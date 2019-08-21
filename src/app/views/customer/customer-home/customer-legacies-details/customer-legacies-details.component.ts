@@ -6,8 +6,8 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../../shared/animations/egret-animations';
-import { MarkAsDeceasedComponent } from '../mark-as-deceased-modal/mark-as-deceased-modal.component';
-
+// import { MarkAsDeceasedComponent } from '../mark-as-deceased-modal/mark-as-deceased-modal.component';
+import { MarkAsDeceasedComponent } from './../../../../views/mark-as-deceased-modal/mark-as-deceased-modal.component';
 
 @Component({
   selector: 'app-customer-legacies-details',

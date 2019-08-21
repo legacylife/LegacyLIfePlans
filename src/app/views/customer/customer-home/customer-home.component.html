@@ -1,4 +1,4 @@
-<div class="container llp--left--panel--view">
+<div class="container llp--left--panel--view {{sharedLegacies === true ? 'updated--right--panel' : ''}}">
   <mat-sidenav-container>
     <mat-sidenav EgretSideNavToggle class="shop-sidebar llp--menu--list">
       <div class="shop-filters-wrap llp--left--panel">
@@ -167,4 +167,52 @@
     </div>
     <router-outlet></router-outlet>
   </mat-sidenav-container>
+  
+  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="20" fxFlex.xl="20" class="reverse--order--sm mt-1"  *ngIf="sharedLegacies">
+    <div class="right--panel--wrapper">
+      <div fxLayout="row wrap">
+        <div fxFlex.xs="100" class="boxes--hori">
+          <div class="right--boxes mr-0 mb-1">
+            <mat-card class="p-0 black--header">
+              <mat-card-title class="">
+                <div class="card-title-text">Locked Items</div>
+                <mat-divider></mat-divider>
+              </mat-card-title>
+              <mat-card-content class="invite--body--section">
+                <h4 class="count">2
+                  <span></span>
+                </h4>
+                <div class="adjust">
+                  <p class="invites">Unlocked after death
+                  </p>
+                  <button mat-raised-button class="llp--primary--btn p-0" (click)="markAsDeceasedModal({}, true)">Mark
+                    as
+                    Deceased</button>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <div class="right--boxes mr-0">
+            <mat-card class="p-0 black--header">
+              <mat-card-title class="">
+                <div class="card-title-text">Prospects</div>
+                <mat-divider></mat-divider>
+              </mat-card-title>
+              <mat-card-content class="invite--body--section">
+                <h4 class="count">12
+                  <span></span>
+                </h4>
+                <div class="adjust">
+                  <p class="invites">Users associated with this legacy
+                  </p>
+                  <button mat-raised-button class="llp--primary--btn p-0">View</button>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

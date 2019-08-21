@@ -31,7 +31,6 @@ import { ChangePassComponent } from './customer-account-setting/change-pass/chan
 import { states } from '../../state';
 import { CustomerProfessionalsLandingComponent } from './customer-professionals-landing/customer-professionals-landing.component';
 import { CustomerProfessionalComponent } from './customer-professionals/customer-professionals.component';
-import { MarkAsDeceasedComponent } from './customer-home/mark-as-deceased-modal/mark-as-deceased-modal.component';
 import { CustomerMyPeopleComponent } from './customer-trustees/customer-my-people/customer-my-people.component';
 import { CustomerMyTrusteeComponent } from './customer-trustees/customer-my-trustees/customer-my-trustees.component';
 import { CustomerHiredAdvisorComponent } from './customer-trustees/customer-hired-advisors/customer-hired-advisors.component';
@@ -104,11 +103,11 @@ import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [
-    CustomerSignupComponent,UpdateProfileComponent,CustomerHomeComponent,FormatTimePipe,CustomerAccountSettingComponent,ChangePassComponent,CustomerSubscriptionComponent,CustomerTrusteesComponent,CustomerProfessionalComponent,CustomerHomeEssentialComponent,CustomerDashboardComponent,CustomerDashboardDayOneComponent,CustomerSharedLegaciesComponent,CustomerLegaciesDetailsComponent,MarkAsDeceasedComponent,CustomerMyPeopleComponent,addTrusteeModalComponent,CustomerMyTrusteeComponent,CustomerHiredAdvisorComponent,CustomerProfDetailsComponent, SendAnEmailComponent,HireAdvisorComponent, ProfAddTrusteeModalComponent,CustomerProfessionalsLandingComponent,ProfAdvisorListingComponent,ManageTrusteeModalComponent
+    CustomerSignupComponent,UpdateProfileComponent,CustomerHomeComponent,FormatTimePipe,CustomerAccountSettingComponent,ChangePassComponent,CustomerSubscriptionComponent,CustomerTrusteesComponent,CustomerProfessionalComponent,CustomerHomeEssentialComponent,CustomerDashboardComponent,CustomerDashboardDayOneComponent,CustomerSharedLegaciesComponent,CustomerLegaciesDetailsComponent,CustomerMyPeopleComponent,addTrusteeModalComponent,CustomerMyTrusteeComponent,CustomerHiredAdvisorComponent,CustomerProfDetailsComponent, SendAnEmailComponent,HireAdvisorComponent, ProfAddTrusteeModalComponent,CustomerProfessionalsLandingComponent,ProfAdvisorListingComponent,ManageTrusteeModalComponent
   ], providers: [
     MatDatepickerModule,UserAuthGuard,UserPreAuthGuard, CanDeactivateGuard,ProUserAuthGuard
   ], bootstrap: [CustomerSignupComponent],
-  entryComponents: [ChangePassComponent,addTrusteeModalComponent, MarkAsDeceasedComponent,SendAnEmailComponent, HireAdvisorComponent,ProfAddTrusteeModalComponent,ManageTrusteeModalComponent
+  entryComponents: [ChangePassComponent,addTrusteeModalComponent, SendAnEmailComponent, HireAdvisorComponent,ProfAddTrusteeModalComponent,ManageTrusteeModalComponent
   ]
 })
 export class CustomerModule { }
