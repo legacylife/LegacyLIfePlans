@@ -31,6 +31,7 @@ const Trustee = require('./../models/Trustee.js')
 const HiredAdvisors = require('./../models/HiredAdvisors.js')
 const InviteTemp = require('./../models/InviteTemp.js')
 const referEarnSettings = require('./../models/ReferEarnSettings')
+const executor = require('./../models/MarkAsExecutor.js')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -873,14 +874,17 @@ function getSharedLegaciesList(req,res){
 function legacyUserRemove(req,res){
   let query  = req.body;
   let userstring = ''
-  let userData = { status: 'Deleted', modifiedOn : new Date() }
+  let userData = { status: 'Deleted',executorStatus:'', modifiedOn : new Date() }
    if( query.userType == 'advisor'){
     HiredAdvisors.updateMany({ customerId : query.customerId, advisorId : query.advisorId }, userData , function (err, updatedDetails){ });
+    executor.updateOne({'customerId':query.customerId,advisorId:query.advisorId,'status':'Active'}, { $set: {'status':'Deleted','modifiedOn':new Date()} }, function (err, updatedDetails) { })
     userstring = 'Advisor'
   }else{
     Trustee.updateMany({ customerId : query.customerId, trustId : query.trustId }, userData , function (err, updatedDetails){});
-    userstring = 'Trustee'
+    executor.updateOne({'customerId':query.customerId,trustId:query.trustId,'status':'Active'}, { $set: {'status':'Deleted','modifiedOn':new Date()} }, function (err, updatedDetails) { })
+    userstring = 'Trustee'    
   }
+
   let result = { "message": userstring + " removed successfully" }
   res.status(200).send(resFormat.rSuccess(result))   
 }

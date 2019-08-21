@@ -17,6 +17,7 @@ const insurance = require('../models/Insurance.js')
 const Finance = require('../models/Finances.js')
 const Invite = require('../models/Invite.js')
 const InviteTemp = require('../models/InviteTemp.js')
+const MarkDeceased = require('../models/MarkAsDeceased.js')
 var s3Archiver = require('s3-archiver');
 var async = require('async');
 var archiver = require('archiver');
@@ -34,6 +35,7 @@ const insuranceFilePath = constants.s3Details.insuranceFilePath;
 const financeFilePath = constants.s3Details.financeFilePath;
 const letterMessageFilePath = constants.s3Details.letterMessageFilePath;
 const inviteDocumentsPath = constants.s3Details.inviteDocumentsPath;
+const deceasedFilessPath = constants.s3Details.deceasedFilessPath;
 const lettersMessage = require('./../models/LettersMessages.js')
 var DIR = './uploads/';
 
@@ -1215,6 +1217,113 @@ function deleteInviteDocument(req, res) {
       }    
   })
 }
+
+router.post('/deceasedDocuments', cors(), function(req,res){
+  var fstream;
+  let authTokens = { authCode: "" }
+  if (req.busboy) {
+    req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
+      authTokens[fieldname] = val
+    })
+    const {query:{userId}} = req;
+    const {query:{trustId}} = req;
+    const {query:{advisorId}} = req;
+    const {query:{ProfileId}} = req;
+    
+    let q = {customerId: userId}
+    if(ProfileId && ProfileId!='' && ProfileId!='undefined'){
+      q = {_id : ProfileId}
+    }
+    req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+      let tmpallfiles = {};
+      let oldTmpFiles = [];
+      if(userId){
+          let ext = filename.split('.')
+          ext = ext[ext.length - 1];
+          var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
+          let resp = isExtension(ext,fileExts);
+          if(!resp){
+            let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid file extension!" }
+            res.send(resFormat.rSuccess(results))
+          } else{
+                 
+          if(ProfileId){
+              const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+              fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+              file.pipe(fstream);
+              fstream.on('close', async function () {
+                await s3.uploadFile(newFilename,deceasedFilessPath+userId+'/');                  
+                tmpallfiles = {
+                  "title" : filename,
+                  "size" : encoding,
+                  "extention" : mimetype,
+                  "tmpName" : newFilename
+                }
+                MarkDeceased.findOne(q,{documents:1,_id:1}, function (err, result) {
+                    if (err) {
+                        res.status(500).send(resFormat.rError(err))
+                    } else {       
+                    if (result) {                          
+                        if(result.documents){
+                          oldTmpFiles = result.documents;
+                        }             
+                        oldTmpFiles.push(tmpallfiles);  
+                        MarkDeceased.updateOne(q, { $set: { documents: oldTmpFiles } }, function (err, updatedUser) {
+                          if (err) {
+                            res.send(resFormat.rError(err))
+                          } else {
+                            getuserFolderSize(userId);
+                            let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
+                            res.send(resFormat.rSuccess(result))
+                          }
+                       })
+                      }
+                    } 
+                    })
+                 })
+              }else{
+                const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+                fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+                file.pipe(fstream);
+                fstream.on('close', async function () {
+                  await s3.uploadFile(newFilename,deceasedFilessPath+userId+'/');  
+                  tmpallfiles = {
+                    "title" : filename,
+                    "size" : encoding,
+                    "extention" : mimetype,
+                    "tmpName" : newFilename
+                  }
+              oldTmpFiles.push(tmpallfiles);  
+                var insert = new MarkDeceased();
+                insert.customerId = userId;
+               if(advisorId){    
+                insert.advisorId = ObjectId(advisorId);
+               }
+               if(trustId){    
+                insert.trustId = ObjectId(trustId);
+               }
+                insert.documents = oldTmpFiles;
+                insert.status = 'Pending';
+                insert.createdOn = new Date();
+                insert.save({}, function (err, newEntry) {
+                  if (err) {
+                  res.send(resFormat.rError(err))
+                   } else {
+                    let result = { "message": "Document uploaded successfully!" }
+                     res.status(200).send(resFormat.rSuccess(result))
+                   }
+                 })
+              })
+           }
+         } 
+      } else {
+        res.status(401).send(resFormat.rError("User token mismatch."))
+      }
+    })
+  }
+})
+
+
 
 function downloadDocs(req,res) {
   let { query } = req.body; 

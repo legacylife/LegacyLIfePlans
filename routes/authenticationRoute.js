@@ -478,8 +478,7 @@ async function checkEmail(req, res) {
            * Check invite link is valid or not if user registration using invite link
            */
           let { inviteCode } = req.body
-          
-          if( inviteCode != "" || inviteCode != null ) {
+          if(inviteCode){
             let invitesCodeExists = await Invite.find({ inviteCode: inviteCode, email:username, inviteType: req.body.userType }, function (err, data, index) {});
             if( invitesCodeExists.length < 1 ) {
               res.send(resFormat.rSuccess({ code: "InviteReject", message: "Please enter a valid Email / Invite link." }))
