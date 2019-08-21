@@ -12,6 +12,7 @@ var TrusteeSchema = new mongoose.Schema({
   },
   relation : String,
   messages:String,
+  executorStatus:String,
   selectAll : String,  
   userAccess:Object,
   trustId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

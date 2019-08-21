@@ -8,6 +8,7 @@ var hireAdvisorsSchema = new mongoose.Schema({
   userAccess:Object,  
   filesCount: String,
   folderCount: String,
+  executorStatus:String,
   status: String,
   createdOn: Date,
   modifiedOn: Date,
