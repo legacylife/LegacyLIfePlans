@@ -5,7 +5,8 @@ import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { egretAnimations } from 'app/shared/animations/egret-animations';
 import { UserAPIService } from 'app/userapi.service';
-import { MarkAsDeceasedComponent } from '../advisor-legacy-details/mark-as-deceased-modal/mark-as-deceased-modal.component';
+// import { MarkAsDeceasedComponent } from '../advisor-legacy-details/mark-as-deceased-modal/mark-as-deceased-modal.component';
+import { MarkAsDeceasedComponent } from './../../../views/mark-as-deceased-modal/mark-as-deceased-modal.component';
 import { Router } from '@angular/router';
 
 

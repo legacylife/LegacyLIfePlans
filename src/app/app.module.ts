@@ -79,9 +79,12 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 // AoT requires an exported function for factories
 import { ChangePicComponent } from './views/change-pic/change-pic.component';
+import { MarkAsDeceasedComponent } from './views/mark-as-deceased-modal/mark-as-deceased-modal.component';
 //import { TodosComponent } from './views/todos/todos.component';
 // import { TodosListingComponent } from './views/todos-listing/todos-listing.component';
 import { lockscreenModalComponent } from './views/lockscreen-modal/lockscreen-modal.component';
+import { ExecutorModalComponent } from './views/executor-modal/executor-modal.component';
+
 import { NgxStripeModule } from 'ngx-stripe';
 import { UserIdleModule } from 'angular-user-idle';
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -155,7 +158,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     { provide: LY_THEME, useClass: MinimaDark, multi: true },// name: `minima-dark`
     { provide: LY_THEME_GLOBAL_VARIABLES,useClass: GlobalVariables    } 
   ],
-  declarations: [AppComponent, ChangePicComponent, InviteComponent, ReferAndEarnModalComponent,lockscreenModalComponent],
-  entryComponents: [ChangePicComponent,lockscreenModalComponent, InviteComponent, ReferAndEarnModalComponent],
+  declarations: [AppComponent, ChangePicComponent, InviteComponent, ReferAndEarnModalComponent,lockscreenModalComponent,ExecutorModalComponent,MarkAsDeceasedComponent],
+  entryComponents: [ChangePicComponent,lockscreenModalComponent,ExecutorModalComponent, InviteComponent, ReferAndEarnModalComponent,MarkAsDeceasedComponent],
 })
 export class AppModule { }

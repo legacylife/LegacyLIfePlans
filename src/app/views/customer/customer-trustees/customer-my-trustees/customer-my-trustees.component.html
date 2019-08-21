@@ -30,6 +30,12 @@
                     <button mat-menu-item  (click)="openAddTrusteeModal(row?._id, true)"><span>Manage</span></button>
                     <button mat-menu-item *ngIf="row?.status==='Active'" (click)="removeTrusteeAdvisor(row?.trustId._id)"><span>Remove as a Trustee</span></button>
                     <button mat-menu-item *ngIf="row?.status==='Pending'" (click)="resendInvitation(row?._id)"><span>Resend Invitation</span></button>
+                    <button mat-menu-item *ngIf="row?.status === 'Active' && row?.executorStatus!=='Active'" (click)="markAsExecutor('customer',row?._id,row.trustId?._id,row?.trustId.firstName,row?.trustId.lastName)">
+                      <span>Mark as an Executor</span>
+                    </button>
+                    <button mat-menu-item *ngIf="row?.status === 'Active' && row?.executorStatus==='Active'" (click)="removeAsExecutor('customer',row?._id,row.trustId?._id,row?.trustId.firstName,row?.trustId.lastName)">
+                      <span>Remove as an Executor</span>
+                    </button>
                   </mat-menu>
               </div>
             </mat-card-title>

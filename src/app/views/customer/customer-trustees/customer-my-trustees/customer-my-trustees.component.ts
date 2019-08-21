@@ -7,6 +7,7 @@ import { addTrusteeModalComponent } from './../../customer-home/add-trustee-moda
 import { serverUrl, s3Details } from '../../../../config';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
+import { ExecutorModalComponent } from './../../../executor-modal/executor-modal.component';
 const filePath = 'https://s3.amazonaws.com/llp-test';
 
 @Component({
@@ -194,5 +195,111 @@ removeTrusteeAdvisor(removeCustomerId){
       }
     })
   }
+
+markAsExecutor(type,docId,userid,firstName,lastName) {
+  let dialogRef: MatDialogRef<any> = this.dialog.open(ExecutorModalComponent, {
+    width: '720px',
+    data: {
+      type: type,
+      docId: docId,
+      userid: userid,
+      firstName: firstName,
+      lastName: lastName,
+      for: 'setExecutor',
+    },
+    disableClose: true,
+  });
+  dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getTrusteeList('All','-1');
+      if (!res) {
+        return;
+      }
+    })
+}
+
+
+removeAsExecutor(type,docId,userid,firstName,lastName) {
+  let dialogRef: MatDialogRef<any> = this.dialog.open(ExecutorModalComponent, {
+    width: '720px',
+    data: {
+      type: type,
+      docId: docId,
+      userid: userid,
+      firstName: firstName,
+      lastName: lastName,
+      for: 'removeExecutor',
+    },
+    disableClose: true,
+  });
+  dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getTrusteeList('All','-1');
+      if (!res) {
+        return;
+      }
+    })
+}
+//   markAsExecutor(type,docId,userid,firstName,lastName) {  
+//     let  advisorId = '';let trustId = '';
+//     if(type === 'advisor'){
+//       advisorId = userid;
+//       }else{
+//       trustId = userid;
+//     }
+//     var statMsg = "Are you sure you want mark as executor to '"+firstName+' '+lastName+"'?"
+//     var userType = type
+//     this.confirmService.confirm({ message: statMsg })
+//       .subscribe(res => {
+//         if (res) {
+//           this.loader.open();
+//           let req_vars = {};
+//           if(userType == 'advisor'){
+//             req_vars = {customerId:localStorage.getItem("endUserId"),docId:docId,advisorId:advisorId,userType : userType}
+//           }else{   
+//             req_vars = {customerId:localStorage.getItem("endUserId"),docId:docId,trustId:trustId,userType : userType}
+//           }
+//           this.userapi.apiRequest('post', 'executor/addAsExecutor', req_vars).subscribe(result => {
+//             this.loader.close();
+//             this.getTrusteeList('All','-1');
+//             this.snack.open(result.data.message, 'OK', { duration: 4000 })
+//           }, (err) => {
+//             console.error(err)
+//             this.loader.close();
+//           })           
+//         }
+//       })    
+//   }
+
+//  removeAsExecutor(type,docId,userid,firstName,lastName) {
+//     let  advisorId = '';let trustId = '';
+//     if(type === 'advisor'){
+//       advisorId = userid;
+//       }else{
+//       trustId = userid;
+//     }
+//     var statMsg = "Are you sure you want remove as executor to '"+firstName+' '+lastName+"'?"
+//     var userType = type
+//     this.confirmService.confirm({ message: statMsg })
+//       .subscribe(res => {
+//         if (res) {
+//           this.loader.open();
+//           let req_vars = {};
+//           if(userType == 'advisor'){
+//             req_vars = {customerId:localStorage.getItem("endUserId"),docId:docId,advisorId:advisorId,userType : userType}
+//           }else{   
+//             req_vars = {customerId:localStorage.getItem("endUserId"),docId:docId,trustId:trustId,userType : userType}
+//           }
+//           this.userapi.apiRequest('post', 'executor/removeAsExecutor', req_vars).subscribe(result => {
+//             this.loader.close();
+//             this.getTrusteeList('All','-1');
+//             this.snack.open(result.data.message, 'OK', { duration: 4000 })
+//           }, (err) => {
+//             console.error(err)
+//             this.loader.close();
+//           })           
+//         }
+//       })    
+//   }
 
 }

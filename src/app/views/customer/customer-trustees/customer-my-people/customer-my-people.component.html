@@ -29,12 +29,12 @@
               <div class="appointees--desc">
                 <h5 *ngIf="peoples.type === 'trustee'">{{(peoples?.trustId!=null && peoples?.trustId.firstName!=null) ? peoples?.trustId.firstName : peoples?.firstName}}
                   {{(peoples?.trustId!=null && peoples?.trustId.lastName!=null) ? peoples?.trustId.lastName : peoples?.lastName}}</h5>
-
                 <h5 *ngIf="peoples.type === 'advisor'">{{peoples?.advisorId.firstName}} {{peoples?.advisorId.lastName}}</h5>
                 <p class="position m-0" *ngIf="peoples.type === 'advisor'">{{peoples?.advisorId ? peoples?.advisorId.businessName : "" }}</p>
                 <p class="m-0" *ngIf="peoples.type === 'trustee'">
                   {{(peoples?.trustId!=null && peoples?.trustId.username!=null) ? peoples?.trustId.username : ''}}
                 </p>
+                <!-- <div *ngIf="peoples?.executorStatus!==null && peoples?.executorStatus==='Active'" class="sta--m"><mat-icon class="mat-icon material-icons" role="img">star</mat-icon></div>                -->
               </div>
               <div class="cursor-pointer">
                 <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>
@@ -45,7 +45,7 @@
                   <button mat-menu-item *ngIf="peoples.type === 'trustee'" (click)="openAddTrusteeModal(peoples?._id,true)">
                     <span>Manage</span>
                   </button>
-                  <button mat-menu-item *ngIf="peoples.type === 'advisor'" [routerLink]="['/customer/professionals/prof-details', peoples?.advisorId._id]">
+                  <button mat-menu-item *ngIf="peoples.type === 'advisor'" [routerLink]="['/customer/professionals/prof-details',peoples?.advisorId._id]">
                     <span>View</span>
                   </button>
                   <button *ngIf="peoples?.status === 'Active'" mat-menu-item (click)="removeTrusteeAdvisor(peoples)">
@@ -54,13 +54,30 @@
                   <button mat-menu-item *ngIf="peoples.type === 'trustee' && peoples?.status === 'Pending'" (click)="resendInvitation(peoples?._id)">
                     <span>Resend Invitation</span>
                   </button>
+
+            <!-- Trustee Executor -->
+                  <button mat-menu-item *ngIf="peoples.type === 'trustee' && peoples?.status === 'Active' && peoples?.executorStatus!=='Active'" (click)="markAsExecutor(peoples.type,peoples?._id,peoples.trustId?._id,peoples?.trustId.firstName,peoples?.trustId.lastName)">
+                    <span>Mark as an Executor</span>
+                  </button>
+                  <button mat-menu-item *ngIf="peoples.type === 'trustee' && peoples?.status === 'Active' && peoples?.executorStatus==='Active'" (click)="removeAsExecutor(peoples.type,peoples?._id,peoples.trustId?._id,peoples?.trustId.firstName,peoples?.trustId.lastName)">
+                    <span>Remove as an Executor</span>
+                  </button>
+            <!-- END Trustee Executor -->                  
+            <!-- Advisor Executor -->
+                  <button mat-menu-item *ngIf="peoples.type === 'advisor' && peoples?.status === 'Active' && peoples?.executorStatus!=='Active'" (click)="markAsExecutor(peoples.type,peoples?._id,peoples.advisorId?._id,peoples?.advisorId.firstName,peoples?.advisorId.lastName)">
+                      <span>Mark as an Executor</span>
+                  </button>
+                  <button mat-menu-item *ngIf="peoples.type === 'advisor' && peoples?.status === 'Active' && peoples?.executorStatus==='Active'" (click)="removeAsExecutor(peoples.type,peoples?._id,peoples.advisorId?._id,peoples?.advisorId.firstName,peoples?.advisorId.lastName)">
+                    <span>Remove as an Executor</span>
+                  </button>
+            <!-- END Advisor Executor -->      
                 </mat-menu>
               </div>
             </mat-card-title>
           </mat-card-header>
           
           <mat-card-content *ngIf="peoples.type === 'trustee' && peoples?.status === 'Active'">
-            <h4>Assigned</h4>
+            <h4>Assigned</h4>            
             <div class="files--folder">
               <mat-icon>insert_drive_file</mat-icon>
               {{peoples?.filesCount}} Files
@@ -88,7 +105,7 @@
             <div class="files--folder mt-1">
               <mat-icon>school</mat-icon>              
               {{getAdvisorSpecilities(peoples.advisorId?.businessType)}}
-            </div>
+            </div>            
             <div class="ad--strip">
               Advisor
             </div>

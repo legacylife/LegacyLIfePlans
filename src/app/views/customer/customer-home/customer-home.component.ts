@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import { egretAnimations } from '../../../shared/animations/egret-animations';
 import { UserAPIService } from 'app/userapi.service';
 import { LayoutService } from 'app/shared/services/layout.service';
-
+import { MarkAsDeceasedComponent } from './../../../views/mark-as-deceased-modal/mark-as-deceased-modal.component';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './customer-home.component.html',
@@ -94,5 +94,13 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
     if(this.layout.isMobile){
       this.sideNav.opened = !this.sideNav.opened;
     }  
+  }
+
+  markAsDeceasedModal(data: any = {}, isNew?) {
+    let title = isNew ? 'Add new member' : 'Update member';
+    let dialogRef: MatDialogRef<any> = this.dialog.open(MarkAsDeceasedComponent, {
+      width: '720px',
+      disableClose: true,
+    })
   }
 }
