@@ -39,13 +39,24 @@ export class MapComponent implements OnInit {
     this.userTypeFilter = userType
     this.onBoardByFilter = onBoardBy
     this.mapCenter = []
-    let req_var
+    let req_var, query_var
     if( this.userTypeFilter == 'all' ) {
-      req_var = { query: { status:'Active', zipcode:{$exists:true} } }
+      //req_var = { query: { status:'Active', zipcode:{$exists:true} } }
+      query_var = { status:'Active', zipcode:{$exists:true} }
     }
     else{
-      req_var = { query: { userType: this.userTypeFilter, /* onBoardBy: this.onBoardByFilter, */ status:'Active', zipcode:{$exists:true} } }
+      //req_var = { query: { userType: this.userTypeFilter, /* onBoardBy: this.onBoardByFilter, */ status:'Active', zipcode:{$exists:true} } }
+      query_var = { userType: this.userTypeFilter, status:'Active', zipcode:{$exists:true} }
     }
+
+    if( this.onBoardByFilter == 'all' ) {
+      query_var = query_var
+    }
+    else{
+      query_var = Object.assign({ invitedBy: this.onBoardByFilter }, query_var)
+    }
+    req_var = { query: query_var }
+    console.log("?req_var - ",req_var)
     await this.userapi.apiRequest('post', 'userlist/getuserslistforadminmap', req_var).subscribe( (result) => {
       result.data.userDetails.forEach((element,index) => {
         let userData = {lat: element.latitude,

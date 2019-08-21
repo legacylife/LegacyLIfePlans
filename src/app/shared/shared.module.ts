@@ -63,6 +63,7 @@ import { NotificationsComponent } from './components/notifications/notifications
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { AppComfirmComponent } from './services/app-confirm/app-confirm.component';
+import { ReferNEarnPopUpComponent } from 'app/views/admin/userlist/ngx-table-popup/refer-n-earn-popup.component';
 import { AppLoaderComponent } from './services/app-loader/app-loader.component';
 
 // DIRECTIVES
@@ -173,6 +174,7 @@ const classesToInclude = [
   AdvisorLandingLayoutComponent,
   BreadcrumbComponent,
   AppComfirmComponent,
+  ReferNEarnPopUpComponent,
   AppLoaderComponent,
   CustomizerComponent,
   FontSizeDirective,
@@ -281,7 +283,7 @@ const classesToInclude = [
     MatStepperModule
   ],
   entryComponents: [
-    AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,
+    AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,ReferNEarnPopUpComponent,
     PetsModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent,SpecialNeedsModelComponent,
     DevicesModalComponent,ElectronicMediaModalComponent,AssetsModelComponent,
     VehicleModelComponent,RealEstateModelComponent,TimeCapsuleMoalComponent,legalStuffModalComponent,InsuranceModalComponent,

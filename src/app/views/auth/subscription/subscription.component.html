@@ -18,14 +18,14 @@
         <span>30 days</span> free access to all features has been unlocked for your account!</p>
     </div>
 
-    <div class="free--trail">
+    <div class="free--trail" *ngIf="referEarnStatus">
       <h2 class="text-center m-0">Extend your Free Trial Period</h2>
       <div class="divider-sm"></div>
       <div class="refer--earn">
         <div fxLayout="row wrap" class="refer--row">
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="33" fxFlex.lg="30" fxFlex.xl="30">
             <div class="rate">
-              <h5>10 USERS</h5>
+              <h5>{{referEarnTargetCount}} USERS</h5>
               <p>per month</p>
             </div>
           </div>
@@ -36,12 +36,12 @@
           </div>
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="33" fxFlex.lg="30" fxFlex.xl="30">
             <div class="rate earn">
-              <h5>30 DAYS</h5>
+              <h5>{{referEarnExtendedDays}} DAYS</h5>
               <p>free extended access</p>
             </div>
           </div>
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="27" fxFlex.lg="30" fxFlex.xl="30">
-            <div class="actions">
+            <div class="actions" *ngIf="referEarnStatus">
               <button mat-raised-button class="llp--primary--btn iam--inte--btn" (click)="openllpmodal();">I am interested</button>
               <a class="know--more" (click)="openllpmodal();">Know more</a>
             </div>

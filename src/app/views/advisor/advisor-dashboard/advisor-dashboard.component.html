@@ -62,14 +62,14 @@
           <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
             <div class="right--boxes">
 
-              <mat-card class="p-0" *ngIf="invitedMembersCount < invitedMembersCountDefault">
+              <mat-card class="p-0" *ngIf="invitedMembersCount < targetCount">
                 <mat-card-title class="">
                   <div class="card-title-text">Invitation Status</div>
                   <mat-divider></mat-divider>
                 </mat-card-title>
                 <mat-card-content class="invite--body--section">
-                  <h4 class="count">{{invitedMembersCount}}
-                    <span>/ {{invitedMembersCountDefault}}</span>
+                  <h4 class="count">
+                    {{invitedMembersCount}}<span>/ {{targetCount}}</span>
                   </h4>
                   <p class="daysgo">{{remainingDays}} days to go</p>
                   <p class="invites">Invites sent in this month</p>
@@ -77,7 +77,7 @@
                 </mat-card-content>
               </mat-card>
 
-              <mat-card class="p-0 target--completed" *ngIf="invitedMembersCount>=invitedMembersCountDefault && !isSubscribedBefore">
+              <mat-card class="p-0 target--completed" *ngIf="invitedMembersCount >= targetCount && !isSubscribedBefore">
                 <mat-card-content class="">
                   <div class="header--wrapper">
                     <header class="sub--header" style="background-image: url('assets/images/arkenea/congratulations.png')">
@@ -86,7 +86,7 @@
                     <p class="warn">
                       Your
                       <span>Free Trial</span>
-                      period has been extended for 30 days!</p>
+                      period has been extended for {{extendedDays}} days!</p>
                   </div>
                   <div class="free--access">
                     Free access valid till {{remainingDays}} days

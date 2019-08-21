@@ -175,6 +175,57 @@ export class userviewComponent implements OnInit {
       })
   }
 
+  async reactivateReferEarn(row) {
+    
+    let title = '', status = 'activate'
+    if( row.subscriptionDetails && row.subscriptionDetails.length > 0 ) {
+      title = 'Information'
+      status = 'notactivate'
+      this.statMsg = "The Refer and Earn program cannot be applied to the advisor since the user has opted for Paid subscription."  
+    }
+    else{
+      let returnArr = await this.api.apiRequest('get', 'referearnsettings/getdetails', {}).toPromise()
+      let referEarnSettingsArr  = returnArr.data,
+          referEarnStatus       = referEarnSettingsArr.status == 'On' ? true : false,
+          referEarnTargetCount  = 0,
+          referEarnExtendedDays = 0;
+      if( referEarnStatus ) {
+        referEarnTargetCount  = referEarnSettingsArr.targetCount
+        referEarnExtendedDays = referEarnSettingsArr.extendedDays
+      }
+      
+      title   = 'Confirm'
+      status  = 'activate'
+      this.statMsg = "Initiating the Refer and Earn program for the advisor will assign the currently active target "+referEarnTargetCount+" referrals for "+referEarnExtendedDays+" days to the advisor. Are you sure you want to proceed?"
+    }
+    
+    this.confirmService.reactivateReferEarnPopup({ title: title, message: this.statMsg, status: status }).subscribe(res => {
+      if (res) {
+        console.error("res",res)
+        this.loader.open();
+        var query = {};
+        const req_vars = {
+          query: Object.assign({ _id: row._id }, query),
+          userType : 'advisor',
+          status: status
+        }
+        this.api.apiRequest('post', 'advisor/reactivatereferearn', req_vars).subscribe(result => {
+          this.loader.close();
+          if (result.status == "error") {
+            this.snack.open(result.data.message, 'OK', { duration: 4000 });
+          } else {
+            this.getUser()
+            this.snack.open(result.data.message, 'OK', { duration: 4000 });
+          }
+        }, (err) => {
+          console.error(err);
+          this.snack.open(err, 'OK', { duration: 4000 });
+        })
+      }
+    })
+    
+  }
+
   downloadFile = (filename) => {   
     const filePath = this.selectedUserId+'/'+s3Details.advisorsDocumentsPath;
     this.docPath = filePath; 

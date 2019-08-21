@@ -45,6 +45,9 @@ export class AdvisorDashboardComponent implements OnInit {
   userCreateOn: any
   userSubscriptionDate: any
 
+  targetCount:Number = 0
+  extendedDays:Number = 0
+
   constructor(
     private userapi: UserAPIService,
     private router: Router, private dialog: MatDialog,
@@ -93,6 +96,8 @@ export class AdvisorDashboardComponent implements OnInit {
     this.userapi.apiRequest('post', 'invite/get-invite-members-count', params).subscribe(result => {
       this.invitedMembersCount = result.data.count
       this.remainingDays = result.data.remainingDays
+      this.targetCount = result.data.targetCount
+      this.extendedDays = result.data.extendedDays
     })
   }
 

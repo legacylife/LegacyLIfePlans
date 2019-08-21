@@ -176,13 +176,13 @@
                           subscription</a>
                       </div>
 
-                      <mat-card class="mt-1 p-0 black--header" *ngIf="invitedMembersCount<invitedMembersCountDefault">
+                      <mat-card class="mt-1 p-0 black--header" *ngIf="invitedMembersCount < targetCount">
                         <mat-card-title class="">
                           <div class="card-title-text">Invitation Status</div>
                           <mat-divider></mat-divider>
                         </mat-card-title>
                         <mat-card-content class="invite--body--section">
-                          <h4 class="count">{{invitedMembersCount}}<span>/{{invitedMembersCountDefault}}</span>
+                          <h4 class="count">{{invitedMembersCount}}<span>/{{targetCount}}</span>
                           </h4>
                           <p class="daysgo">{{remainingDays}} days to go</p>
                           <p class="invites">Invites sent in this month</p>
@@ -192,7 +192,7 @@
                       </mat-card>
 
 
-                      <mat-card class="mt-1 p-0 black--header" *ngIf="invitedMembersCount>=invitedMembersCountDefault && !isSubscribedBefore">
+                      <mat-card class="mt-1 p-0 black--header" *ngIf="invitedMembersCount >= targetCount && !isSubscribedBefore">
                         <mat-card-content class="">
                           <div class="header--wrapper">
                             <header class="sub--header"
@@ -200,10 +200,8 @@
                               <span>Congratulations!</span>
                             </header>
                             <p class="warn">
-                              Your <span>Free Trial</span>
-                              period has been
-                              extended for
-                              30 days!</p>
+                              Your <span>Free Trial</span> period has been extended for {{extendedDays}} days!
+                            </p>
                           </div> 
                           <div class="free--access">
                             Free access valid till {{remainingDays}} days

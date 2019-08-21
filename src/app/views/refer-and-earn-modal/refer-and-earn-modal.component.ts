@@ -36,6 +36,10 @@ export class ReferAndEarnModalComponent implements OnInit {
   docPath: string;
   documentsList: any;
   currentProgessinPercent:number = 0;
+
+  targetCount:Number = 0
+  extendedDays:Number = 0
+
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
     private loader: AppLoaderService, private confirmService: AppConfirmService, @Inject(MAT_DIALOG_DATA) public data: any) {
   }
@@ -133,6 +137,8 @@ export class ReferAndEarnModalComponent implements OnInit {
     this.userapi.apiRequest('post', 'invite/get-invite-members-count', params).subscribe(result => {
       this.invitedMembersCount = result.data.count
       this.remainingDays = result.data.remainingDays
+      this.targetCount = result.data.targetCount
+      this.extendedDays = result.data.extendedDays
     })
   }
 
