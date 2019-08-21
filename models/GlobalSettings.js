@@ -8,6 +8,7 @@ var globalSettingSchema = new mongoose.Schema({
   name: String,
   description: String,
   status: String,
+  createdBy:String,
   createdOn: Date,
   modifiedOn: Date,
 })

@@ -23,4 +23,5 @@ router.use("/trustee", require("./routes/trustiesRoute"))
 router.use("/lead", require("./routes/leadsRoute"))
 router.use("/cronjobs", require("./routes/cronRoute"))
 router.use("/sendMails", require("./routes/sendUserMailsRoute"))
+router.use("/referearnsettings", require("./routes/referEarnSettingsRoute"))
 module.exports = router

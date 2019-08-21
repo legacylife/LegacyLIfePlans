@@ -30,7 +30,7 @@ const actitivityLog = require('./../helpers/fileAccessLog')
 const Trustee = require('./../models/Trustee.js')
 const HiredAdvisors = require('./../models/HiredAdvisors.js')
 const InviteTemp = require('./../models/InviteTemp.js')
-
+const referEarnSettings = require('./../models/ReferEarnSettings')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -900,8 +900,23 @@ function viewInviteDetails(req, res) {
   })
 }
 
-function referAndEarnParticipate(req, res) {
-  User.updateOne({ _id: ObjectId(req.body.userId) }, {'IamIntrested':'Yes'}, function (err, updatedDetails) {
+async function referAndEarnParticipate(req, res) {
+  //Get latest count and status of refer and Earn settings to update for advisor to getting free access
+  let referEarnSettingsArr    = await referEarnSettings.findOne()
+  const referEarnTargetCount  = Number(referEarnSettingsArr.targetCount)
+  const referEarnExtendedDays = Number(referEarnSettingsArr.extendedDays)
+  
+  var newDt = new Date()
+      newDt.setDate(newDt.getDate() + referEarnExtendedDays)
+  var params = {  IamIntrested: 'Yes',
+                  refereAndEarnSubscriptionDetail: {  endDate: '',
+                                                      targetCount: referEarnTargetCount,
+                                                      noOfDaysExtended: referEarnExtendedDays,
+                                                      updatedOn: new Date(),
+                                                      status: 'Active'
+                                                    }
+                  }
+  User.updateOne({ _id: ObjectId(req.body.userId) }, params, function (err, updatedDetails) {
     
     if (err) {
       res.send(resFormat.rError(err))

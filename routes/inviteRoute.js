@@ -105,7 +105,7 @@ async function inviteMembers(req, res) {
     }
 
     if(advisorInvite){
-        const params = {
+        /* const params = {
             inviteById: inviteById,
             inviteType: 'advisor'
         }
@@ -114,16 +114,17 @@ async function inviteMembers(req, res) {
             if (data != null) {
                 resultCount = data.length
             }
-        })
+        }) */
         // upgrade plan for next 30 days.
-        if (resultCount == 5) { //30
+        /* if (resultCount == 5) { //30
             var newDt = new Date();
             newDt.setDate(newDt.getDate() + 30);
             let subscriptionData = {
                 'refereAndEarnSubscriptionDetail.end_date': newDt
             }
             User.updateOne({ _id: inviteById }, { $set: subscriptionData }, function (err, updatedDetails) {})
-        }
+        } */
+        
         // delete temp invite files
         await InviteTemp.deleteMany({ inviteById: inviteById });
     }
@@ -152,23 +153,85 @@ async function getInviteMembersCount(req, res) {
     let userDetails = await User.find(searchParam)
     if( userDetails && userDetails.length > 0 ) {
         let userCreatedOn   = userDetails[0]['createdOn'],
-        today           = moment().toDate(),
-        completedMonths = Math.round( getDateDiff( today, moment(userCreatedOn).toDate() ));
-        let startDate       = new Date(userCreatedOn);
+            today           = moment().toDate(),
+            completedMonths = getDateDiff( today, moment(userCreatedOn).toDate() ),//Math.round( getDateDiff( today, moment(userCreatedOn).toDate() )),
+            startDate       = new Date(userCreatedOn),
+            endDate         = new Date(userCreatedOn)
+
         if( completedMonths > 1) {
             startDate.setMonth( startDate.getMonth() + (completedMonths) );
-        }            
-        let endDate         = new Date(userCreatedOn)
-        endDate.setMonth( endDate.getMonth() + (completedMonths + 1) );
-        let remainingDays = Math.abs(Math.round( getDateDiff( today, moment(endDate).toDate(), 'asDays' )))
+            endDate.setMonth( endDate.getMonth() + (completedMonths + 1) );
+        }
+        else{
+            endDate.setMonth( endDate.getMonth() + (completedMonths + 1) );
+        }
+         
+        let remainingDays   = Math.abs(Math.round( getDateDiff( today, moment(endDate).toDate(), 'asDays' )))
         paramData.createdOn = { $gte: new Date(startDate) , $lte: new Date(endDate) }
-        await Invite.find(paramData, function (err, data) {
-            if (data != null) {
-                resultCount = data.length
-            }
-        result = { "count": resultCount,"remainingDays":remainingDays, "completedMonths":completedMonths }
+
+        
+        let targetCount  = userDetails[0]['refereAndEarnSubscriptionDetail']['targetCount'],
+            extendedDays = userDetails[0]['refereAndEarnSubscriptionDetail']['noOfDaysExtended']
+        let data = await Invite.find(paramData)
+        
+        console.log("completedMonths ===== ",completedMonths,"\n createdOn ===== ",userDetails[0]['createdOn'],"\n paramData ===== ",paramData.createdOn,"remainingDays",remainingDays,"extendedDays",extendedDays)
+
+        if (data != null) {
+            resultCount = data.length
+        }
+        let freePrimiumExpireDays = Math.abs(getDateDiff( today, moment(userCreatedOn).toDate(), 'asDays' ))
+        console.log("\n freePrimiumExpireDays",freePrimiumExpireDays)
+        if( freePrimiumExpireDays > 30 ) {
+            let newDate = new Date(userCreatedOn)
+                newDate.setMonth( newDate.getMonth() + completedMonths)
+                newDate.setDate( newDate.getDate() + extendedDays)
+            
+            console.log("\n newDate ==== ",newDate)
+            remainingDays = Math.abs(Math.round(getDateDiff( moment(newDate).toDate(), today, 'asDays' )))//remainingDays + extendedDays
+        }
+        else{
+            remainingDays = remainingDays + extendedDays
+        }
+        result = { "count": resultCount,"remainingDays":remainingDays, "completedMonths":completedMonths, "targetCount": targetCount, "extendedDays": extendedDays }
         res.status(200).send(resFormat.rSuccess(result))
-        })
+    }
+}
+
+async function getLastInviteMembersCount(req, res) {
+    let paramData = req.body
+    let resultCount = 0
+    let searchParam = { _id: paramData.inviteById, userType: paramData.inviteType}    
+    let userDetails = await User.find(searchParam)
+    if( userDetails && userDetails.length > 0 ) {
+        let userCreatedOn   = userDetails[0]['createdOn'],
+            today           = moment().toDate(),
+            completedMonths = getDateDiff( today, moment(userCreatedOn).toDate() ),
+            startDate       = new Date(userCreatedOn),
+            endDate         = new Date(userCreatedOn)
+
+        if( completedMonths > 1) {
+            startDate.setMonth( startDate.getMonth() + (completedMonths -1) );
+            endDate.setMonth( endDate.getMonth() + (completedMonths) );
+        }
+        else{
+            endDate.setMonth( endDate.getMonth() + (completedMonths+1) );
+        }
+         
+        let remainingDays   = Math.abs(Math.round( getDateDiff( today, moment(endDate).toDate(), 'asDays' )))
+        paramData.createdOn = { $gte: new Date(startDate) , $lte: new Date(endDate) }
+        
+        let targetCount  = userDetails[0]['refereAndEarnSubscriptionDetail']['targetCount'],
+            extendedDays = userDetails[0]['refereAndEarnSubscriptionDetail']['noOfDaysExtended']
+        let data = await Invite.find(paramData)
+        
+        console.log("completedMonths ===== ",completedMonths,"\n createdOn ===== ",userDetails[0]['createdOn'],"\n paramData ===== ",paramData.createdOn,"remainingDays",remainingDays,"extendedDays",extendedDays)
+
+        if (data != null) {
+            resultCount = data.length
+        }
+        
+        result = { "count": resultCount,"completedMonths":completedMonths, "targetCount": targetCount, "extendedDays": extendedDays }
+        res.status(200).send(resFormat.rSuccess(result))
     }
 }
 
@@ -193,5 +256,6 @@ function getDateDiff( endDate, startDate, returnAs=null ) {
 router.post("/invite-members", inviteMembers)
 router.post("/invite-member-check-email", inviteMemberCheckEmail)
 router.post("/get-invite-members-count", getInviteMembersCount)
+router.post("/get-last-invite-members-count", getLastInviteMembersCount)
 
 module.exports = router

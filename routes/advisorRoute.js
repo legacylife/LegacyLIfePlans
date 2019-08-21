@@ -23,6 +23,8 @@ const trust = require('./../models/Trustee.js')
 const s3 = require('./../helpers/s3Upload')
 var zipcodes = require('zipcodes');
 const advisorActivityLog = require('./../helpers/advisorActivityLog')
+const globalSettings = require('./../models/GlobalSettings')
+const referEarnSettings = require('./../models/ReferEarnSettings')
 
 var auth = jwt({
   secret: constants.secret,
@@ -652,6 +654,49 @@ function getAdvisorDetails(req, res) {
   })
 }
 
+// Function to activate advisoradvisor
+async function reactivateReferEarn(req, res) {
+  let { query } = req.body;
+  let fields = {}
+  let { status } = req.body
+      
+  if( status == 'activate' ) {
+    User.findOne(query, fields, async function (err, userList) {
+      if (err) {
+        res.status(401).send(resFormat.rError(err))
+      }
+      else {
+        let referEarnSettingsArr = await referEarnSettings.findOne()
+        const referEarnTargetCount = Number(referEarnSettingsArr.targetCount)
+        const referEarnExtendedDays = Number(referEarnSettingsArr.extendedDays)
+        
+        var newDt = new Date()
+            newDt.setDate(newDt.getDate() + referEarnExtendedDays)
+        var params = {  IamIntrested: 'Yes',
+                        refereAndEarnSubscriptionDetail: {  endDate: newDt,
+                                                            targetCount: referEarnTargetCount,
+                                                            noOfDaysExtended: referEarnExtendedDays,
+                                                            updatedOn: new Date(),
+                                                            status: 'Active'
+                                                          }
+                      }
+        User.update({ _id: userList._id }, { $set: params }, function (err, updatedUser) {
+          if (err) {
+            res.send(resFormat.rError(err))
+          } else {
+            let result = { userId: updatedUser._id, userType: updatedUser.userType, "message": "Successfully extended the refer and earn program date." }
+            res.status(200).send(resFormat.rSuccess(result))
+          }
+        })
+      }
+    })
+  }
+  else{
+    res.status(200).send(resFormat.rError('Not allowed.'))
+  }
+}
+
+router.post("/reactivatereferearn", reactivateReferEarn)
 router.post("/activateadvisor", activateAdvisor)
 router.post("/rejectadvisor", rejectAdvisor)
 router.post("/fileupload", fileupload)

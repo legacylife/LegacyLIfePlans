@@ -69,12 +69,12 @@ var userSchema = new mongoose.Schema({
   // Subscription fields
   manageOtherProceducers : String, 
   howManyProducers : String, 
-  subscription_detail : {
+/*   subscription_detail : {
       customer_id : String, 
       plan : String, 
       start_date : Date, 
       end_date : Date
-  },
+  }, */
   // System manage fields
   otpCode : String,
   lastLoggedInOn: {
@@ -109,7 +109,7 @@ var userSchema = new mongoose.Schema({
   allowNotifications:String,
   stripeCustomerId:String,
   subscriptionDetails:Array,
-  refereAndEarnSubscriptionDetail:Array,
+  refereAndEarnSubscriptionDetail:Object,
   addOnDetails:Array,
   upgradeReminderEmailDay:Array,
   renewalOnReminderEmailDay:Array,
