@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef, MatDialog } from '@angular/material';
+import { CcShareViaEmailModelComponent } from '../cc-share-via-email-model/cc-share-via-email-model.component';
 
 @Component({
   selector: 'app-cc-detailed-view',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CcDetailedViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialog: MatDialog,) { }
 
   ngOnInit() {
+  }
+
+  openCardDetailsModal() {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(CcShareViaEmailModelComponent, {
+      width: '720px',     
+    })
+   
   }
 
 }

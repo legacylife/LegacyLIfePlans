@@ -152,6 +152,7 @@ import { ErrorComponent } from 'app/views/error/error.component';
 import { CoachsCornerComponent } from './components/coachs-corner/coachs-corner.component';
 import { CcRightPanelComponent } from './components/cc-right-panel/cc-right-panel.component';
 import { CcDetailedViewComponent } from './components/cc-detailed-view/cc-detailed-view.component';
+import { CcShareViaEmailModelComponent } from './components/cc-share-via-email-model/cc-share-via-email-model.component';
 /* 
   Only Required if you want to use Angular Landing
   (https://themeforest.net/item/angular-landing-material-design-angular-app-landing-page/21198258)
@@ -243,7 +244,8 @@ const classesToInclude = [
   ErrorComponent,
   CoachsCornerComponent,
   CcRightPanelComponent,
-  CcDetailedViewComponent
+  CcDetailedViewComponent,
+  CcShareViaEmailModelComponent
 ]
 
 @NgModule({
@@ -291,7 +293,7 @@ const classesToInclude = [
     PetsModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent,SpecialNeedsModelComponent,
     DevicesModalComponent,ElectronicMediaModalComponent,AssetsModelComponent,
     VehicleModelComponent,RealEstateModelComponent,TimeCapsuleMoalComponent,legalStuffModalComponent,InsuranceModalComponent,
-    FinanceModalComponent,DebtModalComponent,FinalWishesFormModalComponent,LettersMessagesModelComponent, InviteComponent
+    FinanceModalComponent,DebtModalComponent,FinalWishesFormModalComponent,LettersMessagesModelComponent, InviteComponent, CcShareViaEmailModelComponent
   ],
   providers: [
     ThemeService,
