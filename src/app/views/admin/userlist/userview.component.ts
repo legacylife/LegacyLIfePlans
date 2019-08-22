@@ -189,10 +189,10 @@ export class userviewComponent implements OnInit {
           referEarnStatus       = referEarnSettingsArr.status == 'On' ? true : false,
           referEarnTargetCount  = 0,
           referEarnExtendedDays = 0;
-      if( referEarnStatus ) {
+      //if( referEarnStatus ) {
         referEarnTargetCount  = referEarnSettingsArr.targetCount
         referEarnExtendedDays = referEarnSettingsArr.extendedDays
-      }
+     // }
       
       title   = 'Confirm'
       status  = 'activate'

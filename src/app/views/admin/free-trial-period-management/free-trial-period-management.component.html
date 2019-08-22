@@ -1,0 +1,74 @@
+<mat-card class="p-0" *ngIf="aceessSection">
+  <mat-card-title class="">
+      <mat-divider></mat-divider>
+  </mat-card-title>
+  <mat-card-content>
+      <form class="llp-form-wrapper pt-1" [formGroup]="freeTrialForm" method="post">
+          <div fxLayout="row wrap">
+            <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0">
+              <div class="pb-0">
+                <mat-label>Title</mat-label>
+                <mat-form-field class="full-width">
+                  <input matInput name="title" [formControl]="freeTrialForm.controls['title']" value="">
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="49" class="pr-0">
+              <div class="pb-0">
+                <mat-label>Premium Access Free Days For Customer</mat-label>
+                <mat-form-field class="full-width">
+                  <input matInput type="number" name="title" [formControl]="freeTrialForm.controls['customerFreeAccessDays']" value="">
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="2" class="pr-0">
+              <div class="pb-0"></div>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="49" class="pr-0">
+              <div class="pb-0">
+                <mat-label>After Premium Access Free Days For Customer</mat-label>
+                <mat-form-field class="full-width">
+                  <input matInput type="number" name="title" [formControl]="freeTrialForm.controls['customerAftrFreeAccessDays']" value="">
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0">
+              <div class="pb-0"></div>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0">
+              <div class="pb-0">
+                <mat-label>Customer Free Trial On/Off Status</mat-label>
+                <mat-slide-toggle class="llp--slide--toggle full-width" [formControl]="freeTrialForm.controls['customerStatus']" [checked]="freeTrialForm.controls['customerStatus']">{{freeTrialForm.controls['customerStatus'].value ? 'ON' : 'OFF'}}</mat-slide-toggle>
+              </div>
+            </div>
+
+            <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0 pt-1">
+              <div class="pb-0"></div>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0">
+              <div class="pb-0">
+                <mat-label>Premium Access Free Days For Advisor</mat-label>
+                <mat-form-field class="full-width">
+                  <input matInput type="number" name="title" [formControl]="freeTrialForm.controls['advisorFreeDays']" value="">
+                </mat-form-field>
+              </div>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0">
+              <div class="pb-0"></div>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0">
+              <div class="pb-0">
+                <mat-label>Advisor Free Trial On/Off Status</mat-label>
+                <mat-slide-toggle class="llp--slide--toggle full-width" [formControl]="freeTrialForm.controls['advisorStatus']" [checked]="freeTrialForm.controls['advisorStatus']">{{freeTrialForm.controls['advisorStatus'].value ? 'ON' : 'OFF'}}</mat-slide-toggle>
+              </div>
+            </div>
+
+          </div>
+          <button mat-raised-button class="mt-1 llp--primary--btn" [disabled]="freeTrialForm.invalid" (click)="updateDetails()">Submit</button>
+      </form>
+  </mat-card-content>
+</mat-card>
+
+<div class="row" *ngIf="!aceessSection">
+  <p>You don't have permission to this section.</p>
+</div>

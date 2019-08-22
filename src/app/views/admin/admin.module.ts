@@ -53,6 +53,7 @@ import { ActivityLogComponent } from './activity-log/activity-log.component';
 import { AddManagementComponent } from './ad-management/ad-management.component';
 import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests.component';
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { FreeTrialPeriodManagementComponent } from './free-trial-period-management/free-trial-period-management.component';
 
 @NgModule({
   imports: [
@@ -90,7 +91,7 @@ import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor'
     AppBlankComponent, userlistComponent, userviewComponent, customerlistComponent, advisorlistComponent,
     NgxTablePopupComponent, AdvisorRejectPopupComponent, cmslistComponent, cmseditComponent, ProfileComponent, EmailTemplateComponent,
     EmailTemplateEditComponent, MapComponent, ReferralProgramComponent, ActivityLogComponent, AddManagementComponent,
-    DeceasedRequestsComponent,fileUploadInstructionsListComponent,fileUploadInstructionsEditComponent
+    DeceasedRequestsComponent,fileUploadInstructionsListComponent,fileUploadInstructionsEditComponent,FreeTrialPeriodManagementComponent
   ],
   entryComponents: [NgxTablePopupComponent,AdvisorRejectPopupComponent]
 })

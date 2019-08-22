@@ -60,6 +60,13 @@ export class NavigationService {
       state: 'admin/referral-program'
     },
     {
+      name: 'FREE TRIAL PERIOD MANAGEMENT',
+      type: 'link',
+      tooltip: 'Free Trial Period Management',
+      icon: 'card_giftcard',
+      state: 'admin/free-trial-period-management'
+    },
+    {
       name: 'ACTIVITY LOG',
       type: 'link',
       tooltip: 'Activity Log',
