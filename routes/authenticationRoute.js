@@ -199,12 +199,12 @@ function update(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
-        res.send(resFormat.rSuccess('Account details successfully updated'))
+        let message = resMessage.data( 607, [{key: '{field}',val: 'Account details'}, {key: '{status}',val: 'updated'}] )
+        res.send(resFormat.rSuccess(message))
       }
     })
   }
 }
-
 
 //function to update customer details 
 function custProfileUpdate(req, res) {
@@ -212,22 +212,26 @@ function custProfileUpdate(req, res) {
   if (query._id) {    
     User.findOne(query, function(err, updatedUser) {
       if (err) {
-         let result = { "message": "Something Wrong! Please signin again." }
-         res.send(resFormat.rError(result));
-       } else {
-     let {proquery} = req.body;
-     let {from} = req.body;
-     User.updateOne({_id: updatedUser._id}, { $set: proquery }, function (err, updatedDetails) {
-       if (err) {
-         res.send(resFormat.rError(err))
-       } else {
-         let result = { "message": "User "+from.fromname+"  have been updated successfully!" }
-         res.status(200).send(resFormat.rSuccess(result))        
-       }
-     })
-     }
+        let message = resMessage.data( 603, [] )
+        let result = { "message": message }
+        res.send(resFormat.rError(result));
+      }
+      else {
+        let {proquery} = req.body;
+        let {from} = req.body;
+        User.updateOne({_id: updatedUser._id}, { $set: proquery }, function (err, updatedDetails) {
+          if (err) {
+            res.send(resFormat.rError(err))
+          } else {
+            let message = resMessage.data( 607, [{key: '{field}',val: 'User'+from.fromname}, {key: '{status}',val: 'updated'}] )
+            let result = { "message": message }
+            res.status(200).send(resFormat.rSuccess(result))        
+          }
+        })
+      }
     })
-  }else{
+  }
+  else{
     let result = { "message": "You have logout! Please signin again." }
     res.send(resFormat.rError(result));
   } 
@@ -281,14 +285,17 @@ const changePassword = function (req, res) {
     } else {
       const user = new User()
       if (req.body.password && !user.validPassword(req.body.password, userDetails)) {
-        res.send(resFormat.rError('Please enter the valid current password'))
-      } else {
+        let message = resMessage.data( 627, [{key: '{field}',val: 'current password'}] )
+        res.send(resFormat.rError(message))
+      }
+      else {
         const { salt, hash } = user.setPassword(req.body.newPassword);
         User.updateOne({ _id: req.body.userId }, { $set: { salt, hash } }, (err, updatedUser) => {
           if (err) {
             res.send({ "message": resFormat.rError(err) })
           } else {
-            let result = { "message": "Your password is updated" }
+            let message = resMessage.data( 607, [{key: '{field}',val: 'Password'}, {key: '{status}',val: 'updated'}] )
+            let result = { "message": message }
             res.status(200).send(resFormat.rSuccess(result))
           }
         })
@@ -311,12 +318,14 @@ const changeEmail = function (req, res) {
         User.updateOne({ _id: req.body._id }, { $set: set }, { runValidators: true, context: 'query' }, (err, updateUser) => {
           if (err) {
             if (err.name == "ValidationError") {
-              res.send(resFormat.rError("Looks like you already have an account registered with this email. Please log in to access your account."))
+              let message = resMessage.data( 624, [] )
+              res.send(resFormat.rError(message))
             } else {
               res.send(resFormat.rError(err))
             }
           } else {
-            res.send(resFormat.rSuccess('Email ID has been updated'))
+            let message = resMessage.data( 607, [{key: '{field}',val: 'Email ID'}, {key: '{status}',val: 'updated'}] )
+            res.send(resFormat.rSuccess(message))
           }
         })
       }
@@ -356,15 +365,23 @@ function forgotPassword(req, res) {
   User.findOne({ "username": req.body.username }, {}, function (err, user) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
-    } else if (!user) {
+    }
+    else if (!user) {
       res.send(resFormat.rError({message: "Looks like your account does not exist. Sign up to create an account."}))
-    } else if (user && user.status == 'Active' && !user.salt) {
-      res.send(resFormat.rError({message: "We have sent you the instructions to set your account password. Please check your mail."}))
-    } else if (user && user.status == 'Inactive') {
-      res.send(resFormat.rError({message: "Your account is inactive."}))
-    } else if (user && user.status == 'Pending') {
-      res.send(resFormat.rError({message:"You can not use this service as your account is under review."}))
-    } else {
+    }
+    else if (user && user.status == 'Active' && !user.salt) {
+      let message = resMessage.data( 616, [] )
+      res.send(resFormat.rError({message: message}))
+    }
+    else if (user && user.status == 'Inactive') {
+      let message = resMessage.data( 609, [{key: '{support_email}',val: 'support@legacylifeplans.com'}] )
+      res.send(resFormat.rError({message: message}))
+    }
+    else if (user && user.status == 'Pending') {
+      let message = resMessage.data( 699, [{key: '{message}',val: 'You can not use this service as your account is under review.'}] )
+      res.send(resFormat.rError({message: message}))
+    }
+    else {
       var tokens = generateToken(85);
       var date = new Date()
       user.resetPasswordExpiry = date.setHours(date.getHours() + 48)
@@ -394,7 +411,8 @@ function forgotPassword(req, res) {
               html: body
             }
             sendEmail(mailOptions)
-            res.send(resFormat.rSuccess('We have sent you reset instructions. Please check your email.'))
+            let message = resMessage.data( 616, [] )
+            res.send(resFormat.rSuccess(message))
           } else {
             res.status(401).send(resFormat.rError('Some error Occured'))
           }
@@ -414,7 +432,8 @@ function s3Upload(params, options, userId) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          res.send(resFormat.rSuccess('Account details successfully updated'))
+          let message = resMessage.data( 607, [{key: '{field}',val: 'Account details'}, {key: '{status}',val: 'updated'}] )
+          res.send(resFormat.rSuccess(message))
         }
       })// user update ends
     } // else loop ends
@@ -447,8 +466,8 @@ router.post('/reset-password-token', function (req, res) {
       else
         res.send(resFormat.rSuccess('Success')) 
     } else {
-      var errMsg = 'Invalid link, Please try again.'
-      res.send(resFormat.rError(errMsg))
+      let message = resMessage.data( 628, [] )
+      res.send(resFormat.rError(message))
     }
   })
 })
@@ -462,16 +481,19 @@ async function checkEmail(req, res) {
         res.status(401).send(resFormat.rError(err))
       } else {
         if (user && user.status == 'Inactive') {
-          res.send(resFormat.rSuccess({ code: "Exist", message: "Your account is inactive. Please connect with the admin at support@legacylifeplans.com for any queries." }))
+          let message = resMessage.data( 609, [{key: '{support_email}',val: 'support@legacylifeplans.com'}] )
+          res.send(resFormat.rSuccess({ code: "Exist", message: message }))
         }
         else if (user && user.status == 'Active') {
           res.send(resFormat.rSuccess({ code: "Exist", message: "Looks like you already have an account registered with this email. Log in to access." }))
         }
         else if (user && user.status == 'Pending') {
-          res.send(resFormat.rSuccess({ code: "Exist", message: "Your account is under review, you will receive the account confirmation email on your registered email id." }))
+          let message = resMessage.data( 608, [] )
+          res.send(resFormat.rSuccess({ code: "Exist", message: message }))
         }
         else if (user && user.status == 'Rejected') {
-          res.send(resFormat.rSuccess({ code: "ExistReject", message: "Your account is rejected by admin. Please connect with the admin at support@legacylifeplans.com for any queries." }))
+          let message = resMessage.data( 610, [{key: '{support_email}',val: 'support@legacylifeplans.com'}] )
+          res.send(resFormat.rSuccess({ code: "ExistReject", message: message}))
         }
         else {
           /**
@@ -481,7 +503,8 @@ async function checkEmail(req, res) {
           if(inviteCode){
             let invitesCodeExists = await Invite.find({ inviteCode: inviteCode, email:username, inviteType: req.body.userType }, function (err, data, index) {});
             if( invitesCodeExists.length < 1 ) {
-              res.send(resFormat.rSuccess({ code: "InviteReject", message: "Please enter a valid Email / Invite link." }))
+              let message = resMessage.data( 627, [{key: '{field}',val: 'Email / Invite Link'}] )
+              res.send(resFormat.rSuccess({ code: "InviteReject", message: message}))
             }
           }
 
@@ -501,7 +524,8 @@ async function checkEmail(req, res) {
                     res.send(resFormat.rError(err))
                   } else {
                     stat = sendOtpMail(req.body.username, otp);
-                    res.send(resFormat.rSuccess({ code: "success", message: 'A new OTP is sent on your email.' }))                    
+                    let message = resMessage.data( 629, [] )
+                    res.send(resFormat.rSuccess({ code: "success", message: message }))                    
                   }
                 })
               } else if(req.body.username){
@@ -522,7 +546,8 @@ async function checkEmail(req, res) {
                     res.status(500).send(resFormat.rError(err));
                   } else {
                     stat = sendOtpMail(req.body.username, otp);
-                    res.send(resFormat.rSuccess({ code: "success", message: 'We have sent you reset instructions. Please check your email.' }))
+                    let message = resMessage.data( 616, [] )
+                    res.send(resFormat.rSuccess({ code: "success", message: message }))
                   }
                 }) //update password reset expiry date for user ends          
               }
@@ -577,9 +602,11 @@ async function checkUserOtp(req, res) {
                 } else {
                   let message = "";
                   if(newUser.userType == 'customer')
-                    message = "Welcome to Legacy Life Plans. Your account credentials are successfully saved.";
+                    message = resMessage.data( 630, [] )
+                    //message = "Welcome to Legacy Life Plans. Your account credentials are successfully saved.";
                   else
-                    message = "You have successfully signup. Please update your profile."; 
+                    message = resMessage.data( 631, [] )
+                    //message = "You have successfully signup. Please update your profile."; 
                     let subscriptionDetails   = newUser.subscriptionDetails ? newUser.subscriptionDetails : null
                     let subscriptionStartDate = "",
                     subscriptionEndDate       = "",
@@ -645,7 +672,8 @@ function sendOtpMail(emailId, otpN) {
       }
       sendEmail(mailOptions)
     } else {
-      res.status(401).send(resFormat.rError('Some error Occured'));
+      let message = resMessage.data( 604, [] )
+      res.status(401).send(resFormat.rError(message));
       return false;
     }
   })

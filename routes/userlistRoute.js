@@ -6,7 +6,6 @@ var jwt = require('express-jwt')
 const mongoose = require('mongoose')
 var objectId = mongoose.Types.ObjectId();
 
-
 var async = require('async')
 var crypto = require('crypto')
 var fs = require('fs')
@@ -29,6 +28,8 @@ var auth = jwt({
 var zipcodes = require('zipcodes');
 const stripe = require("stripe")(constants.stripeSecretKey);
 var moment    = require('moment');
+const resMessage = require('./../helpers/responseMessages')
+
 //function to get list of user as per given criteria
 function list(req, res) {
 
@@ -162,7 +163,8 @@ function updateStatus(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          let result = { userId: updatedUser._id, userType: updatedUser.userType, "message": "Status Updated successfully!" }
+          let message = resMessage.data( 607, [{key: '{field}',val: 'Status'}, {key: '{status}',val: 'updated'}] )
+          let result = { userId: updatedUser._id, userType: updatedUser.userType, "message": message }
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
@@ -251,7 +253,8 @@ function addNewMember(req, res) {
   const { username } = req.body;
   User.findOne({ username: username }, { _id :1, username: 1, status:1, userType : 1,profileSetup:1 }, function (err, user) {
     if(user){
-      res.send(resFormat.rSuccess({ code: "Exist", message: "Looks like email id already have an account registered with this email as '"+user.userType+"'" }))
+      let message = resMessage.data( 625, [{key: '{userType}',val: user.userType}] )
+      res.send(resFormat.rSuccess({ code: "Exist", message: message}))
     }else{
           newMem.save(function (err, newMemRecord) {
             if (err) {
@@ -275,7 +278,8 @@ function addNewMember(req, res) {
                     html: body
                   }
                   sendEmail(mailOptions)
-                  res.send(resFormat.rSuccess({ code: "Exist", message: 'We have sent you set new password instructions. Please check your email.'}))
+                  let message = resMessage.data( 616, [] )
+                  res.send(resFormat.rSuccess({ code: "Exist", message: message}))
                 } else {
                   res.status(401).send(resFormat.rError('Some error Occured'))
                 }
@@ -285,8 +289,8 @@ function addNewMember(req, res) {
               setTimeout(function(){ 
                 var sendMails = sendMailsAdmin(newMemRecord);
               }, 3000);
-
-              res.send(resFormat.rSuccess('Member has been addedd'));
+              let message = resMessage.data( 607, [{key: '{field}',val: 'Member'}, {key: '{status}',val: 'added'}] )
+              res.send(resFormat.rSuccess(message));
             }
           })
       }
@@ -678,39 +682,17 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                                         };
                 userSubscription[userSubscription.length-1] = subscriptionDetails
 
-                /* let subscriptionDetails = {"_id" : objectId,
-                                          "productId" : subscription.items.data[0]['plan']['product'],
-                                          "planId" : planId,
-                                          "subscriptionId" : subscription.id,
-                                          "startDate" : new Date(subscriptionStartDate),
-                                          "endDate" : new Date(subscriptionEndDate),
-                                          "interval" : subscription.items.data[0]['plan']['interval'],
-                                          "currency" : subscription.items.data[0]['plan']['currency'],
-                                          "amount" : subscription.items.data[0]['plan']['amount'] / 100,
-                                          "status" : 'paid',
-                                          "autoRenewal": subscription.collection_method == 'charge_automatically' ? true : false,
-                                          "paymentMode" : 'online',
-                                          "planName" : subscription.items.data[0]['plan']['metadata']['name']+' Plan',
-                                          "defaultSpace" : subscription.items.data[0]['plan']['metadata']['defaultSpace'],
-                                          "spaceDimension" : subscription.items.data[0]['plan']['metadata']['spaceDimension'],
-                                          "paidOn" : new Date(),
-                                          "createdOn" : new Date(),
-                                          "createdBy" : mongoose.Types.ObjectId(requestParam._id)
-                                        }; */
-                //let userSubscription = []
                 let EmailTemplateName = "NewSubscriptionAdviser";
                 if(userDetails.userType == 'customer') {
                   EmailTemplateName = "NewSubscription";
                 }
 
                 if( userDetails.subscriptionDetails && userDetails.subscriptionDetails.length > 0 ) {
-                  //userSubscription = userProfile.subscriptionDetails
                   EmailTemplateName = "AutoRenewalAdviser"
                   if(userDetails.userType == 'customer') {
                     EmailTemplateName = "AutoRenewal"
                   }
                 }
-                //userSubscription.push(subscriptionDetails)
                 //Update user details
                 User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
                   if (err) {
@@ -972,32 +954,14 @@ function chargeForAddon( userProfile, stripeCustomerId, requestParam, res ) {
                                     };
                   latestSubscription['addOnDetails'] = addOnDetails
                   userSubscription[userSubscription.length-1] = latestSubscription
-                  /* let addOnDetails = {"_id" : objectId,
-                                      "chargeId" : charge.id,
-                                      "currency" : charge.currency,
-                                      "amount" : (charge.amount)/100,
-                                      "status" : 'paid',
-                                      "paymentMode" : 'online',
-                                      "spaceAlloted" : requestParam.spaceAlloted,
-                                      "spaceDimension" : 'GB',
-                                      "paidOn" : new Date(),
-                                      "createdOn" : new Date(),
-                                      "createdBy" : mongoose.Types.ObjectId(requestParam._id)
-                                    };
-                                    
-                  let subscriptionDetails = userProfile.subscriptionDetails
-                  if( subscriptionDetails && subscriptionDetails.length > 0 ) {
-                    currentSubscription = subscriptionDetails[(subscriptionDetails.length-1)]
-                    currentSubscription['addOnDetails'] = addOnDetails
-                    subscriptionDetails[(subscriptionDetails.length-1)] = currentSubscription
-                  } */
-
+                  
                   //Update user details
                   User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails: userSubscription } }, function (err, updated) {
                     if (err) {
                       res.send(resFormat.rError(err))
                     }
                     else {
+                      let message = resMessage.data( 607, [{key: '{field}',val: 'Add on plan'}, {key: '{status}',val: 'added'}] )
                       //subscription purchased email template
                       emailTemplatesRoute.getEmailTemplateByCode("AddonSubscription").then((template) => {
                         let subscriptionDetails = userProfile.subscriptionDetails
@@ -1016,12 +980,11 @@ function chargeForAddon( userProfile, stripeCustomerId, requestParam, res ) {
                             html: body
                           }
                           sendEmail(mailOptions)
-                          res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
+                          res.status(200).send(resFormat.rSuccess({ 'message':message }));
                         } else {
-                          res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
+                          res.status(200).send(resFormat.rSuccess({ 'message':message }));
                         }
                       })
-                      //res.status(200).send(resFormat.rSuccess({ 'message':'Done' }));
                     }
                   })
                 }
@@ -1073,12 +1036,14 @@ function autoRenewalUpdate(req, res) {
                 if (err) {
                   res.send(resFormat.rError(err))
                 }
-                res.status(200).send(resFormat.rSuccess({'autoRenewalStatus': autoRenewalStatus, 'message':'Done'}));
+                let message = resMessage.data( 607, [{key: '{field}',val: 'Auto renewal status'}, {key: '{status}',val: 'updated'}] )
+                res.status(200).send(resFormat.rSuccess({'autoRenewalStatus': autoRenewalStatus, 'message':messahe}));
               })
           });
         }
         else{
-          res.status(401).send(resFormat.rError({'message':'Not subscribed any plan yet'}))
+          let message = resMessage.data( 632, [] )
+          res.status(401).send(resFormat.rError({'message':message}))
         }
       }
       else{
@@ -1116,6 +1081,7 @@ function cancelSubscription(req, res) {
 
                   //subscription purchased email template
                   emailTemplatesRoute.getEmailTemplateByCode("SubscriptionCanceled").then((template) => {
+                    let message = resMessage.data( 607, [{key: '{field}',val: 'Subscription'}, {key: '{status}',val: 'canceled'}] )
                     if(template) {
                       template = JSON.parse(JSON.stringify(template));
                       let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
@@ -1127,9 +1093,10 @@ function cancelSubscription(req, res) {
                         html: body
                       }
                       sendEmail(mailOptions)
-                      res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':'Done'}));
+
+                      res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':message}));
                     } else {
-                      res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':'Done'}));
+                      res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':message}));
                     }
                   })
                   
@@ -1137,11 +1104,13 @@ function cancelSubscription(req, res) {
             });
           }
           else{
-            res.status(401).send(resFormat.rError({'message':'You already canceled the subscription.'}))
+            let message = resMessage.data( 633, [] )
+            res.status(401).send(resFormat.rError({'message':message}))
           }
         }
         else{
-          res.status(401).send(resFormat.rError({'message':'Not subscribed any plan yet'}))
+          let message = resMessage.data( 632, [] )
+          res.status(401).send(resFormat.rError({'message':message}))
         }
       }
       else{

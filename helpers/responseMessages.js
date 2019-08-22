@@ -47,7 +47,7 @@ let responseArray = [
     {
         "code":610,
         "type":"account-rejected",
-        "message":"Your account has been rejected by the admin. Please connect with the admin at support@legacylifeplans.com for any queries.",
+        "message":"Your account has been rejected by the admin. Please connect with the admin at {support_email} for any queries.",
     },
     {
         "code":611,
@@ -184,4 +184,29 @@ let responseArray = [
         "type":"user-details-sent",
         "message":"The {field} details are sent on your email.",
     },
-]
+    {
+        "code":699,
+        "type":"custom-message",
+        "message":"{message}",
+    },
+];
+
+var helper = {}
+
+helper.data = function(code = null, data = [] ) {
+    let res = ''
+    if ( code ) {
+        let message = responseArray.find( (x) => { return x.code==code }).message
+        if( data ) {
+            data.forEach(function(element) {
+                if( element.key && element.val ) {
+                    message = message.replace(element.key,element.val)
+                }
+            });
+        }
+        res = message
+    }
+    return res
+}
+
+module.exports = helper

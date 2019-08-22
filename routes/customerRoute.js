@@ -17,6 +17,7 @@ const commonhelper = require('./../helpers/commonhelper')
 const User = require('./../models/Users')
 var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
+const resMessage = require('./../helpers/responseMessages')
 const sendEmail = require('./../helpers/sendEmail')
 const myessentials = require('./../models/myessentials.js')
 const emergencyContacts = require('./../models/EmergencyContacts.js')
@@ -70,7 +71,8 @@ function myEssentialsUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Personal profile details " + from.personalProfileAction + " successfully", "ppID": custData._id }
+              let message = resMessage.data( 607, [{key:'{field}',val:'Personal profile details'},{key:'{status}',val: from.personalProfileAction}] )
+              let result = { "message": message, "ppID": custData._id }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -123,7 +125,8 @@ function myEssentialsUpdate(req, res) {
         logData.customerId = from.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
-        let result = { "message": "Personal profile details added successfully", "ppID": newEntry._id }
+        let message = resMessage.data( 607, [{key:'{field}',val:'Persnal profile details'},{key:'{status}',val:'added'}] )
+        let result = { "message": message, "ppID": newEntry._id }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -267,7 +270,8 @@ function emergencyContactsSubmit(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Emergency contacts details have been updated successfully!" }
+              let message = resMessage.data( 607, [{key:'{field}',val:'Emergency contact details'},{key:'{status}',val:'updated'}] )
+              let result = { "message": message }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -310,7 +314,8 @@ function emergencyContactsSubmit(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Emergency contacts details have been added successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:'Emergency contact details'},{key:'{status}',val:'added'}] )
+        let result = { "message": message}
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -346,7 +351,9 @@ function deleteEcontact(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(profileInfo._id);
-          let result = { "message": "Record deleted successfully!" }
+
+          let message = resMessage.data( 607, [{key:'{field}',val:'Record'},{key:'{status}',val:'deleted'}] )
+          let result = { "message": message }
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
@@ -412,7 +419,8 @@ function personalIdUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "ID box details " + resText + " successfully!" }
+              let message = resMessage.data( 607, [{key:'{field}',val:'ID box details'},{key:'{status}',val: resText}] )
+              let result = { "message": message }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -447,7 +455,8 @@ function personalIdUpdate(req, res) {
         logData.customerId = from.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
-        let result = { "message": "ID box details added successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:'ID box details'},{key:'{status}',val:'added'}] )
+        let result = { "message": message }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -468,7 +477,8 @@ function deleteProfile(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(profileInfo._id);
-          let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:'Record'},{key:'{status}',val:'deleted'}] )
+          let result = { "message": message }
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
@@ -502,7 +512,8 @@ function myProfessionalsUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Professional details updated successfully!", "ppID": custData._id }
+              let message = resMessage.data( 607, [{key:'{field}',val:'Professional details'},{key:'{status}',val:'updated'}] )
+              let result = { "message": message, "ppID": custData._id }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -545,7 +556,8 @@ function myProfessionalsUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Professional details added successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:'Professional details'},{key:'{status}',val:'added'}] )
+        let result = { "message": message }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -567,7 +579,8 @@ function deleteProfessionals(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(profileInfo._id);
-          let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:'Record'},{key:'{status}',val:'deleted'}] )
+          let result = { "message": message }
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
@@ -617,8 +630,8 @@ function legalStuffUpdate(req, res) {
               logData.customerId = custData.customerId;
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
-
-              let result = { "message": message.messageText + " " + resText + " successfully" }
+              let msg = resMessage.data( 607, [{key:'{field}',val:message.messageText},{key:'{status}',val:resText}] )
+              let result = { "message": msg }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -657,8 +670,8 @@ function legalStuffUpdate(req, res) {
         logData.customerId = query.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
-
-        let result = { "message": message.messageText + " added successfully!" }
+        let msg = resMessage.data( 607, [{key:'{field}',val:message.messageText},{key:'{status}',val:'added'}] )
+        let result = { "message": msg }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -671,7 +684,8 @@ function legalStuffUpdate1(req, res) {
   if (query.customerId) {
     LegalStuff.findOne(query, function (err, custData) {
       if (err) {
-        let result = { "message": "Something Wrong! Please signin again." }
+        let msg = resMessage.data( 603, [] )
+        let result = { "message": msg }
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData.customerId) {
@@ -682,7 +696,8 @@ function legalStuffUpdate1(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              let result = { "message": message.messageText + " updated successfully!" }
+              let msg = resMessage.data( 607, [{key:'{field}',val:message.messageText},{key:'{status}',val:'updated'}] )
+              let result = { "message":msg }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -700,7 +715,8 @@ function legalStuffUpdate1(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              let result = { "message": message.messageText + " have been added successfully!" }
+              let msg = resMessage.data( 607, [{key:'{field}',val:message.messageText},{key:'{status}',val:'added'}] )
+              let result = { "message": msg }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -708,7 +724,8 @@ function legalStuffUpdate1(req, res) {
       }
     })
   } else {
-    let result = { "message": "You have logout! Please signin again." }
+    let message = resMessage.data( 626, [] )
+    let result = { "message": message }
     res.send(resFormat.rError(result));
   }
 }
@@ -742,7 +759,8 @@ function deleteIdBox(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(profileInfo._id);
-          let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:'Record'},{key:'{status}',val:'deleted'}] )
+          let result = { "message": message }
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
@@ -834,7 +852,8 @@ function deleteLegalStuff(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(legalInfo._id);
-          let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:'Record'},{key:'{status}',val:'deleted'}] )
+          let result = { "message": message }
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
@@ -925,7 +944,7 @@ async function referAndEarnParticipate(req, res) {
     if (err) {
       res.send(resFormat.rError(err))
     } else {
-      let result = { "message": "Record updated successfully!" }
+      let result = { "message": resMessage.data(607,[{key:'{field}',val:'Record'},{key:'{status}',val:'updated'}])}
       res.status(200).send(resFormat.rSuccess(result))
     }
   })

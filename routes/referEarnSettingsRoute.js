@@ -53,7 +53,8 @@ function update(req, res) {
     if (err) {
       res.send(resFormat.rError(err))
     } else {
-      res.send(resFormat.rSuccess('Refer and Earn settings hase been updated successfully.'))
+      let message = resMessage.data( 607, [{key: '{field}',val: 'Refer and Earn settings'}, {key: '{status}',val: 'updated'}] )
+      res.send(resFormat.rSuccess(message))
     }
   })
 }

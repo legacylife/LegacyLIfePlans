@@ -25,7 +25,7 @@ var zipcodes = require('zipcodes');
 const advisorActivityLog = require('./../helpers/advisorActivityLog')
 const globalSettings = require('./../models/GlobalSettings')
 const referEarnSettings = require('./../models/ReferEarnSettings')
-
+const resMessage = require('./../helpers/responseMessages')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -684,7 +684,8 @@ async function reactivateReferEarn(req, res) {
           if (err) {
             res.send(resFormat.rError(err))
           } else {
-            let result = { userId: updatedUser._id, userType: updatedUser.userType, "message": "Successfully extended the refer and earn program date." }
+            let message = resMessage.data( 607, [{key:'{field}',val:'Refer and earn program'},{key:'{status}',val:'extended'}] )
+            let result = { userId: updatedUser._id, userType: updatedUser.userType, "message": message}
             res.status(200).send(resFormat.rSuccess(result))
           }
         })
