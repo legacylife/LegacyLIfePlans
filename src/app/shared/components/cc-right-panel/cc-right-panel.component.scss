@@ -1,0 +1,76 @@
+@import 'llp-global-styles.scss';
+
+.cc--right--section{
+    width: 285px;
+    border-radius: 2px;
+    border: solid 1px #dadce0;
+    background-color: #fff;
+    flex-shrink: 0;
+    padding-bottom: 20px;
+    height: fit-content;
+
+    header{
+        color: #222324;
+        font-size: 16px;
+        padding: 0 18px;
+        display: flex;
+        height: 52px;    
+        border-bottom: 1px solid #dadce0;    
+        align-items: center;
+        font-family: $font--lato--bold;
+    }
+    section{
+        padding: 0 18px;
+        display: flex;
+        margin-top: 18px;
+        margin-top: 20px;
+
+        .img--box{
+            width: 52px;
+            height: 37px;
+            border: 1px solid #dadce0;
+            margin-top: 6px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .img--desc{
+            margin-left: 15px;  
+            .name{
+                font-size: 16px;
+                color: #222324;
+                margin-bottom: 3px;
+            }
+            .views{
+                font-size: 13px;
+                color: #828385;
+                
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 599px) {
+    .cc--right--section{
+        margin-bottom: 25px;
+        width: 100%;
+    }
+    .cc--right--section header{
+        height: 44px;
+        font-size: 14px;
+    }
+    .cc--right--section section .img--desc .name {
+        font-size: 14px;
+        margin-bottom: 2px;
+    }
+}
+@media only screen and (min-width: 600px) and (max-width: 979px){
+    .cc--right--section{
+        margin-bottom: 25px;
+        width: 100%;
+    }
+}
+@media only screen and (min-width: 980px) and (max-width: 1279px){
+    .cc--right--section{
+        margin-bottom: 25px;
+    }
+}

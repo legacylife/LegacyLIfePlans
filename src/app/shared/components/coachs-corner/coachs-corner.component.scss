@@ -82,56 +82,77 @@
                         font-size: 16px; 
                         color: #222324;
 
+                        span{
+                            color: #c72128;
+                            cursor: pointer;
+                            &:hover{
+                                text-decoration: underline;
+                            }
+                        }
                     }
                 }
             }
         }
-        .right{
-            width: 285px;
-            border-radius: 2px;
-            border: solid 1px #dadce0;
-            background-color: #fff;
-            flex-shrink: 0;
-            padding-bottom: 20px;
-
-            header{
-                color: #222324;
-                font-size: 16px;
-                padding: 0 18px;
-                display: flex;
-                height: 52px;    
-                border-bottom: 1px solid #dadce0;    
-                align-items: center;
-                font-family: $font--lato--bold;
-            }
-            section{
-                padding: 0 18px;
-                display: flex;
-                margin-top: 18px;
-                margin-top: 20px;
-
-                .img--box{
-                    width: 52px;
-                    height: 37px;
-                    border: 1px solid #dadce0;
-                    margin-top: 6px;
-                    flex-shrink: 0;
-                    overflow: hidden;
-                }
-                .img--desc{
-                    margin-left: 15px;  
-                    .name{
-                        font-size: 16px;
-                        color: #222324;
-                        margin-bottom: 3px;
-                    }
-                    .views{
-                        font-size: 13px;
-                        color: #828385;
-                        
-                    }
-                }
-            }
-        }
+       
     }   
 }
+
+
+/*-------------------------------------------------------------------------------------------------------------------------------------------------
+    Media query (start here)
+--------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+@media only screen and (max-width: 599px) {
+    .coachs--corner--wrapper .cc--content{
+        flex-wrap: wrap; 
+        flex-direction: column;
+    }
+    .coachs--corner--wrapper .cc--content .left{
+        margin-right: 0;
+        width: 100%;
+    }
+    .coachs--corner--wrapper .cc--content .left .content--wrapper{
+        flex-direction: column-reverse;
+    }
+    .coachs--corner--wrapper .cc--content .left .content--wrapper .cont--desc{
+        margin: 0;
+    }
+    .coachs--corner--wrapper .cc--content .left ::ng-deep .mat-tab-header .mat-tab-label-container .mat-tab-label{
+        font-size: 14px;
+        padding: 0 10px;
+    }
+    .coachs--corner--wrapper .cc--content .left ::ng-deep .content--wrapper .cont--desc h4 {
+        font-size: 14px;
+        margin: 0 0 10px 0;
+        line-height: 1.4;
+    }
+    .coachs--corner--wrapper .cc--content .left .content--wrapper .cont--desc .details {
+        font-size: 13px;
+    }
+    .coachs--corner--wrapper .cc--header {
+        font-size: 16px;
+        margin: 20px 0;
+    }
+}
+@media only screen and (min-width: 600px) and (max-width: 979px){
+    .coachs--corner--wrapper .cc--content{
+        flex-wrap: wrap; 
+        flex-direction: column;
+    }
+    .coachs--corner--wrapper .cc--content .left{
+        margin-right: 0;
+        width: 100%;
+    }
+    .coachs--corner--wrapper .cc--content .left ::ng-deep .mat-tab-header .mat-tab-label-container .mat-tab-label{
+        font-size: 15px;
+        padding: 0 13px
+    }
+}
+@media only screen and (min-width: 980px) and (max-width: 1279px){ 
+    .coachs--corner--wrapper .cc--content .left ::ng-deep .mat-tab-header .mat-tab-label-container .mat-tab-label{
+        font-size: 15px;
+        padding: 0 10px
+    }
+}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){}
+@media only screen and (min-width: 1441px) and (max-width: 1550px){}
