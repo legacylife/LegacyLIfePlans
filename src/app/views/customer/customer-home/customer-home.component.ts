@@ -8,6 +8,8 @@ import { egretAnimations } from '../../../shared/animations/egret-animations';
 import { UserAPIService } from 'app/userapi.service';
 import { LayoutService } from 'app/shared/services/layout.service';
 import { MarkAsDeceasedComponent } from './../../../views/mark-as-deceased-modal/mark-as-deceased-modal.component';
+import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
+import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './customer-home.component.html',
@@ -15,6 +17,7 @@ import { MarkAsDeceasedComponent } from './../../../views/mark-as-deceased-modal
   animations: [egretAnimations]
 })
 export class CustomerHomeComponent implements OnInit, OnDestroy {
+  userId = localStorage.getItem("endUserId");
   public isSideNavOpen: boolean;
   public viewMode: string = 'grid-view'; 
   public currentPage: any;
@@ -32,12 +35,17 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   public cartData: any;
   customerLegaicesId:string=''
   activeHeading: string = "";
+  documentId: string = "";
   myLegacy:boolean = true
-  sharedLegacies:boolean = false
+  sharedLegacies:boolean = false;
+  markAsDeceased:boolean = false;
+  revokeAsDeceased:boolean = false;
+  datas: any;
   constructor(private layoutServ: LayoutService,
-    private fb: FormBuilder,private snackBar: MatSnackBar,
+    private fb: FormBuilder,private snack: MatSnackBar,
     private userapi:UserAPIService,
-    private dialog: MatDialog
+    private loader: AppLoaderService,
+    private dialog: MatDialog,private confirmService: AppConfirmService,
   ) {
     this.layout = layoutServ.layoutConf
    }
@@ -45,18 +53,19 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
     // this.categories$ = this.shopService.getCategories();
-    this.categories = ["My essentials", "Pets"]
-    this.products = []
-    this.cartData = []
-    this.filterForm = this.fb.group({
-      search: ['']
-    })
+    // this.categories = ["My essentials", "Pets"]
+    // this.products = []
+    // this.cartData = []
+    // this.filterForm = this.fb.group({
+    //   search: ['']
+    // })
     
     let urlData = this.userapi.getURLData();
     if(urlData.lastThird == 'legacies' && urlData.lastOne){
       this.customerLegaicesId = urlData.lastOne
       this.myLegacy= false
       this.sharedLegacies =true 
+      this.checkDeceasedStatus();
     }
 
     const loc = location.href;
@@ -76,6 +85,39 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
       }   
   }
   
+  checkDeceasedStatus(query = {},){
+    let req_vars = {};
+    if(localStorage.getItem("endUserType")=='customer'){
+      req_vars = {
+        query: Object.assign({ customerId: this.customerLegaicesId,trustId:this.userId,status:"Active" })
+      }
+    }else if(localStorage.getItem("endUserType")=='advisor'){
+      req_vars = {
+        query: Object.assign({ customerId: this.customerLegaicesId,advisorId:this.userId,status:"Active" })
+      }
+    }
+   // this.loader.open(); 
+    this.userapi.apiRequest('post', 'deceased/viewDeceaseDetails', req_vars).subscribe(result => {
+   // this.loader.close();
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        this.documentId = '';
+        this.markAsDeceased = true;
+        this.revokeAsDeceased = false;
+        if(result.data){    
+            this.datas = result.data;       
+            this.documentId = this.datas._id;
+            this.markAsDeceased = false;
+            this.revokeAsDeceased = true;
+        }
+      }
+    }, (err) => {
+      console.error(err);
+    })
+
+  }
+
   showSecoDay() {
     this.dayFirst = false;
     this.daySeco = true;
@@ -96,11 +138,48 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
     }  
   }
 
-  markAsDeceasedModal(data: any = {}, isNew?) {
-    let title = isNew ? 'Add new member' : 'Update member';
+  markAsDeceasedModal(data: any = {}) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(MarkAsDeceasedComponent, {
       width: '720px',
       disableClose: true,
+    });
+    dialogRef.afterClosed()
+    .subscribe(res => {
+      this.checkDeceasedStatus();
+      if (!res) {
+        return;
+      }
     })
+  }
+
+  revokeAsDeceasedModal() {
+    if(!this.documentId){
+      this.snack.open("Something wrong, Please try again", 'OK', { duration: 4000 })
+    }else{
+    var statMsg = "Are you sure you want to revoke the deceased request?"
+    this.confirmService.confirm({ message: statMsg })
+      .subscribe(res => {
+        if (res) {
+          this.loader.open();
+          var query = {};var deceasedFromName = {};
+          const req_vars = {
+            query: Object.assign({_id:this.documentId}, query),
+            deceasedFromName:localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName")
+          }
+          this.userapi.apiRequest('post', 'deceased/revokeAsDeceased', req_vars).subscribe(result => {
+            if (result.status == "error") {              
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            } else {
+              this.checkDeceasedStatus();              
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            }
+            this.loader.close();
+          }, (err) => {
+            console.error(err)
+            this.loader.close();
+          })
+        }
+      })
+    }
   }
 }

@@ -14,7 +14,7 @@
                 <mat-icon>access_time</mat-icon> {{datas.time}}
               </p>
               <p class="details">
-                {{datas.info}}<span routerLink="/advisor/coachs-corner-details">(Read more)</span>
+                {{datas.info}}<span (click)="viewDetails(datas._id)" routerLink="/advisor/coachs-corner-details">(Read more)</span>
               </p>
             </div>
           </div>
