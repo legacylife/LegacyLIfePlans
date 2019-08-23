@@ -1229,6 +1229,7 @@ router.post('/deceasedDocuments', cors(), function(req,res){
     const {query:{trustId}} = req;
     const {query:{advisorId}} = req;
     const {query:{ProfileId}} = req;
+    const {query:{userType}} = req;
     
     let q = {customerId: userId}
     if(ProfileId && ProfileId!='' && ProfileId!='undefined'){
@@ -1247,7 +1248,7 @@ router.post('/deceasedDocuments', cors(), function(req,res){
             res.send(resFormat.rSuccess(results))
           } else{
                  
-          if(ProfileId){
+          if(ProfileId && ProfileId!='undefined'){
               const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
               fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
               file.pipe(fstream);
@@ -1263,7 +1264,7 @@ router.post('/deceasedDocuments', cors(), function(req,res){
                     if (err) {
                         res.status(500).send(resFormat.rError(err))
                     } else {       
-                    if (result) {                          
+                    if (result) {   
                         if(result.documents){
                           oldTmpFiles = result.documents;
                         }             
@@ -1272,9 +1273,8 @@ router.post('/deceasedDocuments', cors(), function(req,res){
                           if (err) {
                             res.send(resFormat.rError(err))
                           } else {
-                            getuserFolderSize(userId);
-                            let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
-                            res.send(resFormat.rSuccess(result))
+                            let results = { userId:userId, allDocs:oldTmpFiles, "message": "Document uploaded successfully!" }
+                            res.send(resFormat.rSuccess(results))
                           }
                        })
                       }
@@ -1296,6 +1296,7 @@ router.post('/deceasedDocuments', cors(), function(req,res){
               oldTmpFiles.push(tmpallfiles);  
                 var insert = new MarkDeceased();
                 insert.customerId = userId;
+                insert.userType = userType;
                if(advisorId){    
                 insert.advisorId = ObjectId(advisorId);
                }
@@ -1309,6 +1310,7 @@ router.post('/deceasedDocuments', cors(), function(req,res){
                   if (err) {
                   res.send(resFormat.rError(err))
                    } else {
+                     console.log("newEntry - ",newEntry)
                     let result = { "message": "Document uploaded successfully!" }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
@@ -1322,6 +1324,28 @@ router.post('/deceasedDocuments', cors(), function(req,res){
     })
   }
 })
+
+function deleteDeceasedDoc(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let { fileName } = req.body;
+  let fields = {};
+  MarkDeceased.findOne(query, fields, function (err, fileDetails) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      MarkDeceased.updateOne({ _id: fileDetails._id }, proquery, function (err, updatedUser) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          resMsg = deleteDocumentS3(fileDetails.customerId,deceasedFilessPath,fileName.docName);
+          let result = { userId:fileDetails._id, "message": resMsg }
+          res.send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
 
 
 
@@ -1611,6 +1635,7 @@ router.post("/deleteIdDoc", deleteIdDocument);
 router.post("/deletesubFolderDoc", deletesubFolderDoc);
 router.post("/deletesubFolderWishesDoc", deleteWishessubFolderDoc);
 router.post("/deletePets", deletePetDoc);
+router.post("/deleteDeceased", deleteDeceasedDoc);
 router.post("/deleteTimeCapsuleDoc", deleteTimeCapsuleDoc);
 router.post("/deleteInsuranceDoc", deleteInsuranceDocument);
 router.post("/deleteFinanceDoc", deleteFinanceDocument); 

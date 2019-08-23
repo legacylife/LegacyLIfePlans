@@ -813,6 +813,7 @@ function legalEstateList(req, res) {
         let totalEstateTrusteeRecords = 0; let totalHealthTrusteeRecords = 0; let totalPerAffTrusteeRecords = 0;
         if(totalRecords>0){
             Trustee.find(query, function (err, trusteeList) {          
+              if(trusteeList){          
               const EstateList = trusteeList.filter(dtype => {
                 return dtype.userAccess.EstateManagement == 'now'
               }).map(el => el)
@@ -827,7 +828,7 @@ function legalEstateList(req, res) {
                 return dtype.userAccess.PersonalAffairsManagement == 'now'
               }).map(el => el)
                totalPerAffTrusteeRecords = PersonalAffairsList.length;
-          
+              }
               res.send(resFormat.rSuccess({ legalList,totalRecords,totalEstateTrusteeRecords,totalHealthTrusteeRecords,totalPerAffTrusteeRecords}))      
           })
         }else{

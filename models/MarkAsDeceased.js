@@ -3,8 +3,7 @@ var constants = require("./../config/constants")
 
 var deceasedSchema = new mongoose.Schema({
   userType: String,
-  customerId: String,
-  userType: String,
+  customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   trustId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   advisorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   revokeId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

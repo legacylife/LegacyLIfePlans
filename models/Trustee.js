@@ -2,7 +2,7 @@ var mongoose = require( 'mongoose' )
 var constants = require("../config/constants")
 
 var TrusteeSchema = new mongoose.Schema({
-  customerId: String,
+  customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   firstName: String,
   lastName: String,
   email: {
