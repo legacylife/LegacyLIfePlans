@@ -1,16 +1,17 @@
 <div class="ll--modal--header">
-  Mark Tom as deceased
+    {{customerData?.firstName}} {{customerData?.lastName}} as deceased
   <button class="modal--close" [mat-dialog-close]="">
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
 </div>
 <form class="llp-form-wrapper">
   <div class="ll--modal--body ">
-    <p>When you mark Tom as deceased it will prevent future modifications to his Legacy.</p>
-    <p>It will unlock "After death" files for all appointees who have been granted access.</p>
-
+    <h6>When you {{customerData?.firstName}} {{customerData?.lastName}} as deceased it will prevent future modifications to his Legacy.</h6>
+    <h6>It will unlock "After death" files for all appointees who have been granted access.</h6>
+   
+    <p>&nbsp;</p>
     <div class="upload--buss--docs--sec">
-      <label>Upload your pet documents</label>
+      <label>Upload deceased documents</label>
       <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
         (fileOver)="fileOverBase($event)" [uploader]="uploader">
         <input type="file" name="documents" ng2FileSelect [uploader]="uploader" multiple
@@ -25,7 +26,7 @@
       <h3 class="header--text fnt--16">Uploaded documents </h3>
       <mat-chip-list class="doc--list" *ngFor="let doc of DocumentsList; index as i">
         <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a>
-          <mat-icon matChipRemove (click)="PetDelete(i,doc.title,doc.tmpName)">close</mat-icon>
+          <mat-icon matChipRemove (click)="docDelete(i,doc.title,doc.tmpName)">close</mat-icon>
         </mat-chip>
       </mat-chip-list>
     </div>
@@ -47,6 +48,6 @@
 
   </div>
   <div class="ll--modal--footer text-center">
-    <button mat-raised-button class="llp--primary--btn">Mark as deceased</button>
+    <button mat-raised-button class="llp--primary--btn"  [disabled]="uploadingDocs" (click)="markAsDeceased()">Mark as deceased</button>
   </div>
 </form>
