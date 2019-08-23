@@ -72,7 +72,7 @@ export class DeceasedRequestsComponent implements OnInit {
       }
     });
 
-    this.rows = rows;
+    this.data = rows;
   }
 
 }
