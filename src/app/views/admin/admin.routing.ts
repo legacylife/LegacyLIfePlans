@@ -18,6 +18,7 @@ import { AddManagementComponent } from './ad-management/ad-management.component'
 import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests.component';
 import { ErrorComponent } from './error/error.component';
 import { AuthGuard } from '../../shared/services/auth/auth.guard';
+import { FreeTrialPeriodManagementComponent } from './free-trial-period-management/free-trial-period-management.component';
 
 export const AdminRoutes: Routes = [
   {
@@ -88,6 +89,11 @@ export const AdminRoutes: Routes = [
     path: 'referral-program',
     component: ReferralProgramComponent,
     data: { title: 'Referral Program', breadcrumb: 'Referral Program' },
+    canActivate: [ AuthGuard ],
+  },{
+    path: 'free-trial-period-management',
+    component: FreeTrialPeriodManagementComponent,
+    data: { title: 'Free Trial Period Management', breadcrumb: 'Free Trial Period Management' },
     canActivate: [ AuthGuard ],
   }, {
     path: 'activity-log',
