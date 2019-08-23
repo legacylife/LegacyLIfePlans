@@ -193,7 +193,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   addOnSpace:Number = 0
   addOnCharges:Number = 0
   addOnMaxDurationDay:Number = 0
-
+  fullSpace:Number = 0
 
   customerFreeAccessDays:Number = 0
   customerFreeTrialStatus:Boolean = false
@@ -223,6 +223,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.addOnSpace = Number(obj.metadata.addOnSpace)
             this.addOnCharges = Number(obj.metadata.addOnCharges)
             this.addOnMaxDurationDay = Number(obj.metadata.addOnMaxDurationDay)
+            this.fullSpace = Number(obj.metadata.defaultSpace) + Number(obj.metadata.addOnSpace)
           }
         })
       }

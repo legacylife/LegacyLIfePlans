@@ -14,6 +14,10 @@ export class SubscriptionComponent implements OnInit {
   referEarnTargetCount:Number = 0
   referEarnExtendedDays:Number = 0
   referEarnStatus:Boolean = true
+
+  advisorFreeAccessDays:Number = 0
+  advisorFreeTrialStatus:Boolean = false
+
   constructor(public dialog: MatDialog, public api:APIService, private router: Router) { 
     this.getReferrelSettings()
     this.getFreeTrialSettings()
@@ -34,10 +38,10 @@ export class SubscriptionComponent implements OnInit {
 
   async getFreeTrialSettings(){
     let returnArr = await this.api.apiRequest('get', 'freetrialsettings/getdetails', {}).toPromise(),
-        freeTrialPeriodSettings = returnArr.data,
-        bfrSubAdvPremiumAccess  = Number(freeTrialPeriodSettings.advisorFreeDays),
-        advisorFreeTrialStatus  = freeTrialPeriodSettings.advisorStatus == 'On'? true : false
-        if( !advisorFreeTrialStatus ) {
+        freeTrialPeriodSettings = returnArr.data
+    this.advisorFreeAccessDays  = Number(freeTrialPeriodSettings.advisorFreeDays),
+    this.advisorFreeTrialStatus = freeTrialPeriodSettings.advisorStatus == 'On'? true : false
+        if( !this.advisorFreeTrialStatus ) {
           this.router.navigate(["/advisor/dashboard"])
         }
   }
