@@ -10,8 +10,7 @@
           <div class="con--image" style="background-image: url('assets/images/arkenea/congratulations.png')">
             <span>Congratulations!</span>
           </div>
-          <p>30 days free access to all features has been unlocked for your account!
-          </p>
+          <p *ngIf="customerFreeTrialStatus">{{customerFreeAccessDays}} days free access to all features has been unlocked for your account!</p>
         </div>
         <div class="text-center pb-1">
           <h2 class="login-header-text m-0">Update Your Profile Details </h2>

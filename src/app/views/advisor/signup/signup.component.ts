@@ -37,6 +37,10 @@ export class AdvisorSignupComponent implements OnInit {
   counter = 0;
   tick = 0;
   inviteCode:string = ''
+
+  advisorFreeAccessDays:Number = 0
+  advisorFreeTrialStatus:Boolean = false
+
   constructor(private router: Router, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) { 
     this.activeRoute.params.subscribe(params => {
       this.inviteCode = params['inviteCode'] ? params['inviteCode'] : '';
@@ -52,6 +56,15 @@ export class AdvisorSignupComponent implements OnInit {
     this.llpAdvotpForm = new FormGroup({
       otp: new FormControl('', Validators.required)
     });
+
+    this.getFreeTrialSettings()
+  }
+
+  async getFreeTrialSettings(){
+    let returnArr = await this.userapi.apiRequest('get', 'freetrialsettings/getdetails', {}).toPromise(),
+        freeTrialPeriodSettings = returnArr.data
+    this.advisorFreeAccessDays  = Number(freeTrialPeriodSettings.advisorFreeAccessDays)
+    this.advisorFreeTrialStatus  = freeTrialPeriodSettings.advisorStatus == 'On'? true : false
   }
 
   advProceed() {

@@ -188,7 +188,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   planInterval:string = ""
   planAmount:number = 0
   planCurrency:string = ""
-  
+  defaultSpace:Number = 0
+  spaceDimension:String = "GB"
+  addOnSpace:Number = 0
+  addOnCharges:Number = 0
+  addOnMaxDurationDay:Number = 0
+
+
+  customerFreeAccessDays:Number = 0
+  customerFreeTrialStatus:Boolean = false
+
   constructor(private router: Router, private userapi: UserAPIService) { }
 
   ngOnInit() {
@@ -196,7 +205,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       duration: 2
     };
     window.addEventListener('scroll', this.isScrolledIntoViewOne, true);
-
+    this.getFreeTrialSettings()
     
     this.userapi.apiRequest('post', 'auth/getproductdetails', {}).subscribe(result => {
       const plans = result.data.plans
@@ -209,6 +218,11 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.planInterval = obj.interval
             this.planAmount = ( obj.amount / 100 )
             this.planCurrency = (obj.currency).toLocaleUpperCase()
+            this.defaultSpace = Number(obj.metadata.defaultSpace)
+            this.spaceDimension = obj.metadata.spaceDimension
+            this.addOnSpace = Number(obj.metadata.addOnSpace)
+            this.addOnCharges = Number(obj.metadata.addOnCharges)
+            this.addOnMaxDurationDay = Number(obj.metadata.addOnMaxDurationDay)
           }
         })
       }
@@ -238,5 +252,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.endVal4 = 0;
       this.resetCounter();
     }
+  }
+
+  async getFreeTrialSettings(){
+    let returnArr = await this.userapi.apiRequest('get', 'freetrialsettings/getdetails', {}).toPromise(),
+        freeTrialPeriodSettings = returnArr.data
+    this.customerFreeAccessDays  = Number(freeTrialPeriodSettings.customerFreeAccessDays)
+    this.customerFreeTrialStatus  = freeTrialPeriodSettings.customerStatus == 'On'? true : false
   }
 }

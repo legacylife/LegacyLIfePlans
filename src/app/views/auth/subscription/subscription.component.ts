@@ -16,6 +16,7 @@ export class SubscriptionComponent implements OnInit {
   referEarnStatus:Boolean = true
   constructor(public dialog: MatDialog, public api:APIService, private router: Router) { 
     this.getReferrelSettings()
+    this.getFreeTrialSettings()
   }
 
   ngOnInit() {
@@ -29,6 +30,16 @@ export class SubscriptionComponent implements OnInit {
       this.referEarnTargetCount  = referEarnSettingsArr.targetCount
       this.referEarnExtendedDays = referEarnSettingsArr.extendedDays
     }
+  }
+
+  async getFreeTrialSettings(){
+    let returnArr = await this.api.apiRequest('get', 'freetrialsettings/getdetails', {}).toPromise(),
+        freeTrialPeriodSettings = returnArr.data,
+        bfrSubAdvPremiumAccess  = Number(freeTrialPeriodSettings.advisorFreeDays),
+        advisorFreeTrialStatus  = freeTrialPeriodSettings.advisorStatus == 'On'? true : false
+        if( !advisorFreeTrialStatus ) {
+          this.router.navigate(["/advisor/dashboard"])
+        }
   }
 
   openllpmodal(): void {

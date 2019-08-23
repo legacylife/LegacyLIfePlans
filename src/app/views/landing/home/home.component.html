@@ -188,7 +188,7 @@
             <br> LIFE’S PLANS</h3>
           <h6 class="info">Life is a journey, leave a legacy and a peace of mind
           </h6>
-          <button mat-raised-button class="landing--primary--btn" [routerLink]="['/customer/signup']">Start a Free Trial</button>
+          <button mat-raised-button class="landing--primary--btn" [routerLink]="['/customer/signup']">{{customerFreeTrialStatus ? 'Start a Free Trial' : 'Sign Up'}}</button>
           <button mat-raised-button class="landing--secondary--btn">See How LLP Works</button>
         </div>
       </div>
@@ -383,7 +383,7 @@
                           <span class="duration">a {{planInterval}}</span>
                         </div>
                         <div class="space">
-                          For 7 GB Space
+                          For {{defaultSpace}} {{spaceDimension | uppercase}} Space
                         </div>
                       </div>
                       <div class="plan--body">
@@ -439,16 +439,16 @@
                               </mat-panel-title>
                             </mat-expansion-panel-header>
 
-                            <p>10 gig upgrade $50 per year
-                              All Legacy Life Plans come with 7 gigs memory. If you’re heavy on pictures and video this
-                              upgrade will provide you with 17 gigs. You can upgrade anytime.</p>
+                            <p>{{addOnSpace}} gig upgrade ${{addOnCharges}} per year
+                              All Legacy Life Plans come with {{defaultSpace}} gigs memory. If you’re heavy on pictures and video this
+                              upgrade will provide you with {{addOnSpace + defaultSpace}} gigs. You can upgrade anytime.</p>
                           </mat-expansion-panel>
 
                         </mat-accordion>
                       </div>
 
                       <div class="text-center">
-                        <button mat-raised-button class="llp--primary--btn" [routerLink]="['/customer/signup']">Start your 30 days free trial</button>
+                        <button mat-raised-button class="llp--primary--btn" [routerLink]="['/customer/signup']">{{customerFreeTrialStatus ? 'Start your '+customerFreeAccessDays+' days free trial' : 'Sign Up'}}</button>
                       </div>
                     </div>
                   </div>
@@ -499,11 +499,11 @@
         <div class="llp--container">
           <div fxLayout="row wrap" class="align--items--center">
             <div fxFlex.xs="100" fxFlex.sm="70" fxFlex.md="80" fxFlex.lg="80" fxFlex.xl="80">
-              <h5>Get a Free Trial Account on Legacy Life Plans!</h5>
-              <p>Try it out for 30 days, No risk, No Obligation</p>
+              <h5>Get a {{customerFreeTrialStatus ? 'Free Trial' : ''}} Account on Legacy Life Plans!</h5>
+              <p>Try it out {{customerFreeTrialStatus ? 'for '+customerFreeAccessDays+' days' : ''}}, No risk, No Obligation</p>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="30" fxFlex.md="20" fxFlex.lg="20" fxFlex.xl="20" class="start--free">
-              <button mat-raised-button class="landing--primary--btn" [routerLink]="['/customer/signup']">Start a Free Trial</button>
+              <button mat-raised-button class="landing--primary--btn" [routerLink]="['/customer/signup']">{{customerFreeTrialStatus ? 'Start a Free Trial' : 'Sign Up'}}</button>
             </div>
           </div>
         </div>

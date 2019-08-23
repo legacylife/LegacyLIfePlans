@@ -15,7 +15,7 @@
         <h6>Maximize Your Connections &</h6>
         <h3>BUILD TRANSFORMATIONAL RELATIONSHIPS</h3>
         <h6 class="info">Through Legacy Life Plans</h6>
-        <button mat-raised-button class="landing--primary--btn" [routerLink]="['/advisor/signup']">Start a Free Trial</button>
+        <button mat-raised-button class="landing--primary--btn" [routerLink]="['/advisor/signup']">{{ advisorFreeTrialStatus ? 'Start a Free Trial': 'Sign Up'}}</button>
         <button mat-raised-button class="landing--secondary--btn">See Hire Process</button>
       </div>
     </div>
@@ -270,11 +270,11 @@
       <div class="llp--container">
         <div fxLayout="row wrap" class="align--items--center">
           <div fxFlex.xs="100" fxFlex.sm="70" fxFlex.md="80" fxFlex.lg="80" fxFlex.xl="80">
-            <h5>Test Drive Legacy Life Plans for 90 days, Free!</h5>
+            <h5>Test Drive Legacy Life Plans {{advisorFreeTrialStatus ? 'for '+bfrSubAdvPremiumAccess+' days, Free!' : ''}}</h5>
             <p>Transform your connections by Passing on…Peace of mind</p>
           </div>
           <div fxFlex.xs="100" fxFlex.sm="30" fxFlex.md="20" fxFlex.lg="20" fxFlex.xl="20" class="start--free">
-            <button mat-raised-button class="landing--primary--btn" [routerLink]="['/advisor/signup']">Start a Free Trial</button>
+            <button mat-raised-button class="landing--primary--btn" [routerLink]="['/advisor/signup']">{{advisorFreeTrialStatus ? 'Start a Free Trial' : 'Sign Up'}}</button>
           </div>
         </div>
       </div>

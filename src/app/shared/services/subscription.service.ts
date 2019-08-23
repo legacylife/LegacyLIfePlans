@@ -53,11 +53,18 @@ export class SubscriptionService {
       query: Object.assign({ _id: this.userId, userType: this.usertype }, {})
     }
     
+    let returnArr = await this.userapi.apiRequest('get', 'freetrialsettings/getdetails', {}).toPromise(),
+        freeTrialPeriodSettings = returnArr.data,
+        customerFreeTrialStatus = freeTrialPeriodSettings.customerStatus == 'On'? true : false,
+        advisorFreeTrialStatus  = freeTrialPeriodSettings.advisorStatus == 'On'? true : false
+
     await this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe( async (result) => {
-      let aftRegistrationDaysDiff = 30,
-          bfrSubCustPremiumAccess = 30, // Before subscription customer's premium access days
-          bfrSubCustFreeAccess    = 30, // Before subscription customer's free access days
-          bfrSubAdvPremiumAccess  = 30  // Before subscription adviser's premium access days
+      
+      let bfrSubCustPremiumAccess = Number(freeTrialPeriodSettings.customerFreeAccessDays), // Before subscription customer's premium access days
+          bfrSubCustFreeAccess    = Number(freeTrialPeriodSettings.customerAftrFreeAccessDays), // Before subscription customer's free access days
+          bfrSubAdvPremiumAccess  = Number(freeTrialPeriodSettings.advisorFreeDays)  // Before subscription adviser's premium access days
+
+      let aftRegistrationDaysDiff = this.usertype == 'customer' ? bfrSubCustPremiumAccess : bfrSubAdvPremiumAccess
 
       let userData      = result.data.userProfile
       let defaultSpace  = 1,
@@ -133,8 +140,16 @@ export class SubscriptionService {
               expireDate       = this.userCreateOn.add(extendedDays,"days")
             }
             else{
-              expireDate            = this.userCreateOn.add(bfrSubCustPremiumAccess,"days")
-              isProFreeAdviser = false
+              let isReferEarnExpire = extendedReferEarnDate != '' ? this.getDateDiff( this.today, moment(extendedReferEarnDate).toDate() ) : ''
+                
+              if( extendedReferEarnDate != '' && isReferEarnExpire >= 0 ) {
+                isProFreeAdviser = true
+                expireDate       = moment(extendedReferEarnDate)
+              }
+              else{
+                expireDate            = this.userCreateOn.add(bfrSubAdvPremiumAccess,"days")
+                isProFreeAdviser = false
+              }
             }
           }
           else{
@@ -183,19 +198,6 @@ export class SubscriptionService {
                 expireDate       = this.userCreateOn.add(extendedDays,"days")
               }
               else{
-                expireDate       = this.userCreateOn.add(bfrSubCustPremiumAccess,"days")
-                isProFreeAdviser = false
-              }
-
-              /* let extendedDays = bfrSubAdvPremiumAccess,
-                  result = await this.getInviteMembersCount()
-              
-              if( result.data.count > 5 ) {
-                extendedDays = extendedDays * (result.data.completedMonths > 1 ? result.data.completedMonths : 1)
-                isProFreeAdviser = true
-                expireDate       = this.userCreateOn.add(extendedDays,"days")
-              }
-              else{
                 let isReferEarnExpire = extendedReferEarnDate != '' ? this.getDateDiff( this.today, moment(extendedReferEarnDate).toDate() ) : ''
                 
                 if( extendedReferEarnDate != '' && isReferEarnExpire >= 0 ) {
@@ -203,11 +205,10 @@ export class SubscriptionService {
                   expireDate       = moment(extendedReferEarnDate)
                 }
                 else{
+                  expireDate       = this.userCreateOn.add(bfrSubAdvPremiumAccess,"days")
                   isProFreeAdviser = false
-                  expireDate       = this.userCreateOn.add(extendedDays,"days")
                 }
-              } */
-              
+              }              
               
               if( isProFreeAdviser ) {
                 localStorage.setItem('endUserProFreeSubscription', 'yes');

@@ -42,6 +42,10 @@ export class CustomerSignupComponent implements OnInit {
   counter = 0;
   tick = 0;
   inviteCode:string = ''
+
+  customerFreeAccessDays:Number = 0
+  customerFreeTrialStatus:Boolean = false
+
   constructor(private router: Router,private picService : ProfilePicService, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService) {
     this.activeRoute.params.subscribe(params => {
       this.inviteCode = params['inviteCode'] ? params['inviteCode'] : '';
@@ -56,8 +60,15 @@ export class CustomerSignupComponent implements OnInit {
     this.llpCustotpForm = new FormGroup({
       otp: new FormControl('', Validators.required)// CustomValidators.number({min: 6, max: 6})
     });
+    
+    this.getFreeTrialSettings()
+  }
 
-
+  async getFreeTrialSettings(){
+    let returnArr = await this.userapi.apiRequest('get', 'freetrialsettings/getdetails', {}).toPromise(),
+        freeTrialPeriodSettings = returnArr.data
+    this.customerFreeAccessDays  = Number(freeTrialPeriodSettings.customerFreeAccessDays)
+    this.customerFreeTrialStatus  = freeTrialPeriodSettings.customerStatus == 'On'? true : false
   }
 
   custProceed() {

@@ -3,6 +3,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { CountUp, CountUpOptions } from 'countup.js';
 import * as $ from 'jquery'
 import { debounce } from 'lodash'
+import { APIService } from 'app/api.service';
 @Component({
   selector: 'app-landing-home-page',
   templateUrl: './home.component.html',
@@ -194,13 +195,17 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // autoplay : true, autoplaySpeed: 1000 
 
-  constructor() { }
+  bfrSubAdvPremiumAccess:Number = 0
+  advisorFreeTrialStatus:Boolean = false
+
+  constructor(private api:APIService) { }
 
   ngOnInit() {
     this.opts = {
       duration: 2
     };
     window.addEventListener('scroll', this.isScrolledIntoView, true);
+    this.getFreeTrialSettings()
   }
   ngOnDestroy() {
     window.removeEventListener('scroll', this.isScrolledIntoView, true);
@@ -259,6 +264,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       left: 0,
       behavior: 'smooth'
     });
+  }
+
+  async getFreeTrialSettings(){
+    let returnArr = await this.api.apiRequest('get', 'freetrialsettings/getdetails', {}).toPromise(),
+        freeTrialPeriodSettings = returnArr.data
+    this.bfrSubAdvPremiumAccess  = Number(freeTrialPeriodSettings.advisorFreeDays)
+    this.advisorFreeTrialStatus  = freeTrialPeriodSettings.advisorStatus == 'On'? true : false
   }
 
 }

@@ -57,7 +57,7 @@
               <a target="blank" [routerLink]="'/privacy-policy'">Privacy Policy</a>
             </p>
           </div>
-          <button *ngIf="custFreeTrailBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" [disabled]="llpCustotpForm.invalid"  (click)="OtpProceed()">Sign up</button>
+          <button *ngIf="custFreeTrailBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" [disabled]="llpCustotpForm.invalid"  (click)="OtpProceed()">{{customerFreeTrialStatus ? 'Start your '+customerFreeAccessDays+' days free trial' : 'Sign up'}}</button>
             <div class="text-center bot-txt">
             <p>Already a member?
               <a [routerLink]="'/signin'"> Login</a>

@@ -32,6 +32,9 @@ export class UpdateProfileComponent implements OnInit {
   maxDate = new Date(new Date())
   profilePicture: any = "assets/images/arkenea/default.jpg"
 
+  customerFreeAccessDays:Number = 0
+  customerFreeTrialStatus:Boolean = false
+
   constructor(private router: Router, private activeRoute: ActivatedRoute, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar, private loader: AppLoaderService, public dialog: MatDialog,private picService: ProfilePicService) { }
   ngOnInit() {
     this.picService.itemValue.subscribe((nextValue) => {
@@ -68,6 +71,14 @@ export class UpdateProfileComponent implements OnInit {
     } else {
       this.router.navigate(['/', 'customer', 'signup']);
     }
+    this.getFreeTrialSettings()
+  }
+
+  async getFreeTrialSettings(){
+    let returnArr = await this.userapi.apiRequest('get', 'freetrialsettings/getdetails', {}).toPromise(),
+        freeTrialPeriodSettings = returnArr.data
+    this.customerFreeAccessDays  = Number(freeTrialPeriodSettings.customerFreeAccessDays)
+    this.customerFreeTrialStatus  = freeTrialPeriodSettings.customerStatus == 'On'? true : false
   }
 
   skipSignup() {
