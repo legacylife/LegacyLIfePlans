@@ -9,8 +9,7 @@
       <div class="content--wrapper">
         <header>
           <div class="header--line">
-            <h4>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is
-              simply dummy text of the printing and typesetting industry</h4>
+            <h4>{{currentCoachData.fname}}</h4>
 
             <button class="menu--btn" mat-button [matMenuTriggerFor]="beforeMenu">
               <mat-icon>more_vert</mat-icon>
@@ -23,22 +22,15 @@
             </mat-menu>
           </div>
           <p class="when">
-            <mat-icon>access_time</mat-icon> Today
+            <mat-icon>access_time</mat-icon> {{currentCoachData.time}}
           </p>
         </header>
         <section>
           <div class="cont--img">
-            <img src="../../../../assets/images/arkenea/cc-1-large.png" alt="">
+            <img src="{{currentCoachData.imgPath}}" alt="">
           </div>
           <p class="details">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-            industry's standard dummy text ever since
-            the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It
-            has survived not only five centuries,
-            but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the
-            1960s with the release of Letraset sheets
-            containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker
-            including versions of <span> Lorem Ipsum.</span>
+            {{currentCoachData.info}}
           </p>
           <p class="details mb-0"> <strong>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
               Ipsum has been the industry's standard dummy.</strong> </p>

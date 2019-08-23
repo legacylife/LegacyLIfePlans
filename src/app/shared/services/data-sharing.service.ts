@@ -10,6 +10,9 @@ export class DataSharingService {
   private shareDataSource = new BehaviorSubject("");
   userShareDataSource = this.shareDataSource.asObservable();
 
+  private shareCoachesData = new BehaviorSubject("");
+  userShareCochesSource = this.shareCoachesData.asObservable();
+
   constructor() { }
 
   changeMessage(message: string) {
@@ -18,6 +21,10 @@ export class DataSharingService {
 
   shareLegacyData(data: any) {
     this.shareDataSource.next(data)
+  }
+
+  shareChochesData(data: any) {
+    this.shareCoachesData.next(data)
   }
 
   clearData() {
