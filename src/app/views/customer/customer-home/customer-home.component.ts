@@ -36,10 +36,12 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   customerLegaicesId:string=''
   activeHeading: string = "";
   documentId: string = "";
+  revokeId: string = "";
   myLegacy:boolean = true
   sharedLegacies:boolean = false;
   markAsDeceased:boolean = false;
   revokeAsDeceased:boolean = false;
+  alreadyRevokeAsDeceased:boolean = false;
   datas: any;
   constructor(private layoutServ: LayoutService,
     private fb: FormBuilder,private snack: MatSnackBar,
@@ -96,20 +98,26 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
         query: Object.assign({ customerId: this.customerLegaicesId,advisorId:this.userId,status:"Active" })
       }
     }
-   // this.loader.open(); 
+    //this.loader.open(); 
     this.userapi.apiRequest('post', 'deceased/viewDeceaseDetails', req_vars).subscribe(result => {
-   // this.loader.close();
+    //this.loader.close();
       if (result.status == "error") {
         console.log(result.data)
       } else {
         this.documentId = '';
         this.markAsDeceased = true;
         this.revokeAsDeceased = false;
-        if(result.data){    
-            this.datas = result.data;       
-            this.documentId = this.datas._id;
+        this.revokeId = this.userId;
+        if(result.data.deceasedList){    
+            this.datas = result.data.deceasedList;       
+            this.documentId = this.datas.deceasedList._id;
             this.markAsDeceased = false;
             this.revokeAsDeceased = true;
+        }
+
+        if(result.data.alreadyDeceased){    
+          this.documentId = result.data.alreadyDeceased._id;
+          this.alreadyRevokeAsDeceased = true;
         }
       }
     }, (err) => {
@@ -164,6 +172,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
           var query = {};var deceasedFromName = {};
           const req_vars = {
             query: Object.assign({_id:this.documentId}, query),
+            revokeId:this.revokeId,
             deceasedFromName:localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName")
           }
           this.userapi.apiRequest('post', 'deceased/revokeAsDeceased', req_vars).subscribe(result => {

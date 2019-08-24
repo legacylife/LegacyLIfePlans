@@ -16,6 +16,7 @@ import { ReferralProgramComponent } from './referral-program/referral-program.co
 import { ActivityLogComponent } from './activity-log/activity-log.component';
 import { AddManagementComponent } from './ad-management/ad-management.component';
 import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests.component';
+import { DeceasedRequestsViewComponent } from './deceased-requests/deceased-requests-view.component';
 import { ErrorComponent } from './error/error.component';
 import { AuthGuard } from '../../shared/services/auth/auth.guard';
 import { FreeTrialPeriodManagementComponent } from './free-trial-period-management/free-trial-period-management.component';
@@ -109,6 +110,11 @@ export const AdminRoutes: Routes = [
     path: 'deceased-requests',
     component: DeceasedRequestsComponent,
     data: { title: 'Deceased Requests', breadcrumb: 'Deceased Requests' },
+    canActivate: [ AuthGuard ],
+  }, {
+    path: 'deceased-requests/view/:id',
+    component: DeceasedRequestsViewComponent,
+    data: { title: 'Deceased Requests Details', breadcrumb: 'Deceased Requests Details' },
     canActivate: [ AuthGuard ],
   },
   {

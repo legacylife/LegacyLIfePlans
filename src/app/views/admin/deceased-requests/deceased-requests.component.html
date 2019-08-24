@@ -7,11 +7,16 @@
   <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
     <mat-card-content class="p-0">
       <ngx-datatable class="material ml-0 mr-0" [rows]="data" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
-        <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Email" prop="customerId" [flexGrow]="1">
+        <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Full Name" prop="customerId" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.customerId }}
+            {{row?.customerId?.firstName}} {{row?.customerId?.lastName}}
           </ng-template>
         </ngx-datatable-column>
+        <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Email" prop="customerId" [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row?.customerId?.username}}
+            </ng-template>
+          </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status" (click)="statusChange(row)"
@@ -21,7 +26,7 @@
         <ngx-datatable-column [resizeable]="false" name="Actions" [sortable]="false" [draggable]="false" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <a mat-icon-button mat-sm-button color="primary" class="mb-1" title="View"
-              [routerLink]="['/admin/userview', row._id]">
+              [routerLink]="['/admin/deceased-requests/view', row._id]">
               <mat-icon style="font-size: 27px;">remove_red_eye</mat-icon>
             </a>
           </ng-template>
