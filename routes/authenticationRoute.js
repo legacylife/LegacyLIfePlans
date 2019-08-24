@@ -28,7 +28,8 @@ var auth = jwt({
 })
 const profilePicturesPath = constants.s3Details.profilePicturesPath
 const Invite = require('./../models/Invite.js')
-
+var FreeTrailPeriodSetting = require('./../models/FreeTrialPeriodSettings')
+const resMessage = require('./../helpers/responseMessages')
 //function to check and signin user details
 function signin(req, res) {
   
@@ -565,11 +566,18 @@ async function checkUserOtp(req, res) {
   try {
     //let { query } = req.body;
     let query = {username: req.body.query.username, otpCode:req.body.query.otpCode}
-    OtpCheck.findOne(query, function (err, otpdata) {
+    OtpCheck.findOne(query, async function (err, otpdata) {
       if (err) {
         res.send(resFormat.rSuccess({ code: "error", message: "Invalid OTP" }))
       } else {
         if (otpdata) {
+          let freeTrialPeriodDetails = await FreeTrailPeriodSetting.findOne()
+          let freeTrailPeriodObj = {
+            bfrSubFreePremiumDays : otpdata.userType == 'advisor' ? Number(freeTrialPeriodDetails.advisorFreeDays) : Number(freeTrialPeriodDetails.customerFreeAccessDays),
+            aftrSubFreeDays : otpdata.userType == 'advisor' ? 0 : Number(freeTrialPeriodDetails.customerAftrFreeAccessDays),
+            status : otpdata.userType == 'advisor' ? freeTrialPeriodDetails.advisorStatus : freeTrialPeriodDetails.customerStatus,
+          }
+
           var user = new User()
           user.username = otpdata.username
           user.userType = otpdata.userType
@@ -577,6 +585,7 @@ async function checkUserOtp(req, res) {
           user.lastLoggedInOn = new Date();
           user.emailVerified = true;
           user.invitedBy = req.body.query.invitedBy
+          user.freeTrialPeriod = freeTrailPeriodObj
           user.createdOn = new Date();
           if(user.userType != 'advisor'){
             let userSecurityDetails = user.setPassword(otpdata.password)

@@ -410,7 +410,7 @@ function getPlanDetails(req, res) {
         }
       }
       else{
-        res.status(401).send(resFormat.rError(""))
+        res.status(200).send(resFormat.rSuccess( { plan:'', "message": "No Details"}))
       }
     }
   })
