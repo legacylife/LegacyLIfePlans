@@ -81,7 +81,7 @@ import { FreeTrialPeriodManagementComponent } from './free-trial-period-manageme
     SharedModule,
     QuillModule,
     MatTooltipModule,
-    AgmCoreModule.forRoot({ apiKey: 'AIzaSyBNcjxo_35qnEG17dQvvftWa68eZWepYE0' }),
+    AgmCoreModule.forRoot({ apiKey: 'AIzaSyAliTCNIH4_GcivOc6JvdYm8L5L7lTJJwY' }),
     AgmJsMarkerClustererModule,
     AgmMarkerSpiderModule,
     RichTextEditorAllModule,

@@ -10,7 +10,7 @@ import { Angular5Csv } from '../../../../../node_modules/angular5-csv/dist/Angul
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
-  zoom = 3;
+  zoom = 0;
   /*
     https://sites.google.com/site/gmapsdevelopment/
     'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
@@ -42,11 +42,11 @@ export class MapComponent implements OnInit {
     let req_var, query_var
     if( this.userTypeFilter == 'all' ) {
       //req_var = { query: { status:'Active', zipcode:{$exists:true} } }
-      query_var = { status:'Active', zipcode:{$exists:true} }
+      query_var = { status:'Active', zipcode:{$exists:true, $ne:null} }
     }
     else{
       //req_var = { query: { userType: this.userTypeFilter, /* onBoardBy: this.onBoardByFilter, */ status:'Active', zipcode:{$exists:true} } }
-      query_var = { userType: this.userTypeFilter, status:'Active', zipcode:{$exists:true} }
+      query_var = { userType: this.userTypeFilter, status:'Active', zipcode:{ $exists:true, $ne:null } }
     }
 
     if( this.onBoardByFilter == 'all' ) {
