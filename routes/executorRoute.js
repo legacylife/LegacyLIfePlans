@@ -76,7 +76,7 @@ function addExecutor(req, res) {
                     if (err) {
                         res.send(resFormat.rError(err))
                     } else {
-                        if(oldExecutor.userType){
+                        if(oldExecutor && oldExecutor.userType){
                             if(oldExecutor.userType=='advisor'){        
                                 rmExecuteId = oldExecutor.advisorId;
                             }else{
