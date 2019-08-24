@@ -1143,7 +1143,7 @@ function getUsersListForAdminMap(req, res) {
                               latitude: data.latitude,
                               longitude: data.longitude,
                               email: details.username,
-                              onBoardVia: 'Self',
+                              onBoardVia: details.invitedBy && details.invitedBy != "" ? details.invitedBy : 'Self',
                               lastLogin: moment(details.lastLoggedInOn).format("YYYY-MM-DD hh:mm a")
                             }
               userDetails.push(userData)

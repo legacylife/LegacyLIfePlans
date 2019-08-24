@@ -4,7 +4,7 @@ var ReferEarnSetting = require('./../models/ReferEarnSettings')
 var constants = require('./../config/constants')
 const { isEmpty } = require('lodash')
 const resFormat = require('./../helpers/responseFormat')
-
+const resMessage = require('./../helpers/responseMessages')
 //function to create new record for global settings
 /* function create (req, res) {
   var referEarnSetting = new ReferEarnSetting()
