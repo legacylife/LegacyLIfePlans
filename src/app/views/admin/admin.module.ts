@@ -52,6 +52,7 @@ import { ReferralProgramComponent } from './referral-program/referral-program.co
 import { ActivityLogComponent } from './activity-log/activity-log.component';
 import { AddManagementComponent } from './ad-management/ad-management.component';
 import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests.component';
+import { DeceasedRequestsViewComponent } from './deceased-requests/deceased-requests-view.component';
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { FreeTrialPeriodManagementComponent } from './free-trial-period-management/free-trial-period-management.component';
 
@@ -91,7 +92,7 @@ import { FreeTrialPeriodManagementComponent } from './free-trial-period-manageme
     AppBlankComponent, userlistComponent, userviewComponent, customerlistComponent, advisorlistComponent,
     NgxTablePopupComponent, AdvisorRejectPopupComponent, cmslistComponent, cmseditComponent, ProfileComponent, EmailTemplateComponent,
     EmailTemplateEditComponent, MapComponent, ReferralProgramComponent, ActivityLogComponent, AddManagementComponent,
-    DeceasedRequestsComponent,fileUploadInstructionsListComponent,fileUploadInstructionsEditComponent,FreeTrialPeriodManagementComponent
+    DeceasedRequestsComponent,DeceasedRequestsViewComponent,fileUploadInstructionsListComponent,fileUploadInstructionsEditComponent,FreeTrialPeriodManagementComponent
   ],
   entryComponents: [NgxTablePopupComponent,AdvisorRejectPopupComponent]
 })

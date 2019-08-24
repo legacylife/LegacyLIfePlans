@@ -49,7 +49,7 @@ export class DeceasedRequestsComponent implements OnInit {
     }, (err) => {
       console.error(err);
     })
-}  
+  }  
 
   //table
   updateFilter(event) {
