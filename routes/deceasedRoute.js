@@ -23,9 +23,9 @@ async function viewDeceased(req, res) {
     let deceasedList = await MarkDeceased.findOne(query,fields, {_id:1})
     let findQuery = {}; let alreadyDeceased = '';
     if(query.trustId){
-      findQuery = {customerId:query.customerId,trustId: { $ne: query.trustId }};
+      findQuery = {customerId:query.customerId,trustId: { $ne: query.trustId },status:"Active"};
     }else if(query.advisorId){
-      findQuery = {customerId:query.customerId,advisorId: { $ne: query.advisorId}};
+      findQuery = {customerId:query.customerId,advisorId: { $ne: query.advisorId},status:"Active"};
     } 
     if(!deceasedList){
       alreadyDeceased = await MarkDeceased.findOne(findQuery, {_id:1,trustId:1,advisorId:1})
@@ -265,7 +265,7 @@ async function revokeDeceasedTest(req, res) {
           let finalStatus = 'Pending';
 
           let proquery = {status:"Revoke",revokeId:ObjectId(revokeId)};
-           await MarkDeceased.updateOne(query,{$set: proquery })
+           await MarkDeceased.updateMany({customerId:deceasedDetails.customerId,status: { $ne: 'Revoke' }},{$set: proquery })
 
           let searchQuery = '';
           if(userType=='customer'){
@@ -283,10 +283,10 @@ async function revokeDeceasedTest(req, res) {
           }
 
           //To check how much users say to Deceased confirm
-          let DeceasedCnt = await MarkDeceased.find({customerId:deceasedDetails.customerId,status:"Active"})
-          if(DeceasedCnt>=3){
-          finalStatus = 'Active';
-          }
+          // let DeceasedCnt = await MarkDeceased.find({customerId:deceasedDetails.customerId,status:"Active"})
+          // if(DeceasedCnt>=3){
+          // finalStatus = 'Active';
+          // }
 
           let OldDeceasedinfo = deceasedinfo;
             if(legacyHolderInfo && legacyHolderInfo.deceased.deceasedinfo){
@@ -301,7 +301,7 @@ async function revokeDeceasedTest(req, res) {
                   OldDeceasedinfo =  LegacyUserDataInfo.concat(OldDeceasedinfo);
                 }
             }
-            let deceasedArray = {'status':finalStatus,'trusteeCnt':trustList.length,'advisorCnt':advisorList.length,deceasedinfo:OldDeceasedinfo};
+            let deceasedArray = {'status':'Revoke','trusteeCnt':trustList.length,'advisorCnt':advisorList.length,deceasedinfo:OldDeceasedinfo};
             await User.updateOne({_id:deceasedDetails.customerId},{deceased:deceasedArray});
 
 

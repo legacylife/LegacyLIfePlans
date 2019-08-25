@@ -1295,7 +1295,7 @@ router.post('/deceasedDocuments', cors(), function(req,res){
                   }
               oldTmpFiles.push(tmpallfiles);  
                 var insert = new MarkDeceased();
-                insert.customerId = userId;
+                insert.customerId = ObjectId(userId);
                 insert.userType = userType;
                if(advisorId){    
                 insert.advisorId = ObjectId(advisorId);
@@ -1310,8 +1310,7 @@ router.post('/deceasedDocuments', cors(), function(req,res){
                   if (err) {
                   res.send(resFormat.rError(err))
                    } else {
-                     console.log("newEntry - ",newEntry)
-                    let result = { "message": "Document uploaded successfully!" }
+                     let result = { "message": "Document uploaded successfully!" }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
                  })
