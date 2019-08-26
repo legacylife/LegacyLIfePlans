@@ -110,14 +110,15 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
         this.revokeId = this.userId;
         if(result.data.deceasedList){    
             this.datas = result.data.deceasedList;       
-            this.documentId = this.datas.deceasedList._id;
+            this.documentId = this.datas._id;
             this.markAsDeceased = false;
             this.revokeAsDeceased = true;
         }
 
         if(result.data.alreadyDeceased){    
           this.documentId = result.data.alreadyDeceased._id;
-          this.alreadyRevokeAsDeceased = true;
+          //this.alreadyRevokeAsDeceased = true;
+          this.revokeAsDeceased = true;
         }
       }
     }, (err) => {
