@@ -84,7 +84,6 @@ export const documentTypes = [
     opt_code: "7"
   }
 ];
-
 export const EstateTypeOfDocument = [
   {
     opt_name: "Affidavit of Domicile",
@@ -119,7 +118,6 @@ export const EstateTypeOfDocument = [
     opt_code: "8"
   }
 ];
-
 export const HealthcareTypeOfDocument = [
   {
     opt_name: "Advance Healthcare Directive",
@@ -142,7 +140,6 @@ export const HealthcareTypeOfDocument = [
     opt_code: "5"
   }
 ];
-
 export const PersonalAffairsTypeOfDocument = [
   {
     opt_name: "Durable Power of Attorney",
@@ -157,7 +154,6 @@ export const PersonalAffairsTypeOfDocument = [
     opt_code: "3"
   }
 ];
-
 export const RelationshipType = [
   {
     opt_name: "Co-worker",
@@ -172,7 +168,6 @@ export const RelationshipType = [
     opt_code: "3"
   }
 ];
-
 export const InsurancePolicyType = [
   {
     opt_code: "1",
@@ -195,7 +190,6 @@ export const InsurancePolicyType = [
     opt_code: "5"
   }
 ];
-
 export const FinancePolicyType = [
   {
     opt_name: "401K",
@@ -484,7 +478,20 @@ export const yearsOfService = [
   "20 - 25 years",
   "more than 25 years"
 ];
-
+export const lockLegacyPeriodList = [
+  {
+    opt_name: "24 Hrs",
+    opt_code: "1"
+  },
+  {
+    opt_name: "3 Days",
+    opt_code: "2"
+  },
+  {
+    opt_name: "5 Days",
+    opt_code: "3"
+  }
+];
 export const myProfessionals = [
   "Accountant",
   "Attorney",

@@ -118,6 +118,17 @@
                         [formControl]="ProfileForm.controls['username']">
                     </mat-form-field>
 
+                    <mat-form-field class="full-width">
+                      <mat-select placeholder="Lock period setting" [formControl]="ProfileForm.controls['lockoutLegacyPeriod']">                       
+                        <mat-option *ngFor="let option of lockLegacyList" [value]="option.opt_code">{{option.opt_name}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-icon matTooltip="Please select Lockout Period." matTooltipClass="llp--tooltip error"
+                        *ngIf="ProfileForm.controls['lockoutLegacyPeriod'].hasError('required') && ProfileForm.controls['lockoutLegacyPeriod'].touched"
+                        class="red--alert">help_outline</mat-icon>
+                    </mat-form-field>
+                    
+
                     <div class="full-width text-right">
                       <a class="clr--red fnt--16" (click)="changePasspordModal()">Change password</a>
                     </div>

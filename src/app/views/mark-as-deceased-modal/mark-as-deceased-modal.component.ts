@@ -129,7 +129,7 @@ getLegacyCustomerDetails(query = {}){
 
 
 markAsDeceased() {
-  let profileIds = this.DeceasedForm.controls['profileId'].value;console.log("profileIds -->",profileIds)
+  let profileIds = this.DeceasedForm.controls['profileId'].value;
       if(profileIds){
         this.selectedProfileId = profileIds;
       }
@@ -137,7 +137,8 @@ markAsDeceased() {
       if(this.customerData.firstName && this.customerData.lastName){
         legacyHolderUserName = this.customerData.firstName+' '+this.customerData.lastName;
       }
-      let deceasedFromName = localStorage.getItem("firstName")+' '+localStorage.getItem("lastName");
+      let deceasedFromName = localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName");
+      //localStorage.getItem("firstName")+' '+localStorage.getItem("lastName");
       let req_vars = {_id:this.selectedProfileId,customerId:this.customerLegaciesId,advisorId:this.advisorId,trustId:this.trustId,userType:localStorage.getItem("endUserType"),legacyHolderName:legacyHolderUserName,deceasedFromName:deceasedFromName}
       this.loader.open();   
         this.userapi.apiRequest('post', 'deceased/markAsDeceased', req_vars).subscribe(result => {

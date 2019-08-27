@@ -4,23 +4,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { QuillModule } from 'ngx-quill';
 
-import {
-  MatListModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatMenuModule,
-  MatSlideToggleModule,
-  MatGridListModule,
-  MatChipsModule,
-  MatCheckboxModule,
-  MatRadioModule,
-  MatTabsModule,
-  MatInputModule,
-  MatProgressBarModule,
-  MatTooltipModule,
-  MatSelectModule
+import { MatListModule,MatIconModule,MatButtonModule,MatCardModule,MatMenuModule,MatSlideToggleModule,MatGridListModule,MatChipsModule,MatCheckboxModule,MatRadioModule,MatTabsModule,MatInputModule,MatSelectModule,MatDatepickerModule,
+  MatNativeDateModule,MatFormFieldModule,MatProgressBarModule,MatProgressSpinnerModule,MatTooltipModule,MatExpansionModule,MatSliderModule,MatSnackBarModule,MatSidenavModule,MatDialogModule,MatStepperModule
 } from '@angular/material';
+
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
@@ -55,7 +42,7 @@ import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests
 import { DeceasedRequestsViewComponent } from './deceased-requests/deceased-requests-view.component';
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { FreeTrialPeriodManagementComponent } from './free-trial-period-management/free-trial-period-management.component';
-
+import { AdminHireAdvisorComponent } from './deceased-requests/hire-advisor-modal/hire-advisor-modal.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -75,6 +62,7 @@ import { FreeTrialPeriodManagementComponent } from './free-trial-period-manageme
     MatInputModule,
     MatProgressBarModule,
     MatSelectModule,
+    MatNativeDateModule,MatFormFieldModule,MatProgressSpinnerModule,MatExpansionModule,MatSliderModule,MatSnackBarModule,MatSidenavModule,MatDialogModule,MatStepperModule,
     FlexLayoutModule,
     NgxDatatableModule,
     ChartsModule,
@@ -92,8 +80,8 @@ import { FreeTrialPeriodManagementComponent } from './free-trial-period-manageme
     AppBlankComponent, userlistComponent, userviewComponent, customerlistComponent, advisorlistComponent,
     NgxTablePopupComponent, AdvisorRejectPopupComponent, cmslistComponent, cmseditComponent, ProfileComponent, EmailTemplateComponent,
     EmailTemplateEditComponent, MapComponent, ReferralProgramComponent, ActivityLogComponent, AddManagementComponent,
-    DeceasedRequestsComponent,DeceasedRequestsViewComponent,fileUploadInstructionsListComponent,fileUploadInstructionsEditComponent,FreeTrialPeriodManagementComponent
+    DeceasedRequestsComponent,DeceasedRequestsViewComponent,fileUploadInstructionsListComponent,fileUploadInstructionsEditComponent,FreeTrialPeriodManagementComponent,AdminHireAdvisorComponent
   ],
-  entryComponents: [NgxTablePopupComponent,AdvisorRejectPopupComponent]
+  entryComponents: [NgxTablePopupComponent,AdvisorRejectPopupComponent,AdminHireAdvisorComponent]
 })
 export class AdminModule { }
