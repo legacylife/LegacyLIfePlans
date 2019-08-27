@@ -100,7 +100,6 @@ function create(req, res) {
   user.username = req.body.username
   user.userType = getuserType = req.body.userType ? req.body.userType : "sysadmin"
   user.lastLoggedInOn = new Date();
-
   if (req.body.state == '' || req.body.fullName == '' || req.body.lastName == '') {
     res.status(500).send(resFormat.rError("Please fill all required details."))
   }

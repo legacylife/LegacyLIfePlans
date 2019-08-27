@@ -220,6 +220,7 @@ async function viewDeceased(req, res) {
   }
 
   function sendDeceasedNotifyMails(template,emailId,toFname,toLname,legacyHolderName,deceasedFromName,userType) {
+    
     let serverUrl = constants.clientUrl + "/customer/signin";
       emailTemplatesRoute.getEmailTemplateByCode(template).then((template) => {
         if (template) {
