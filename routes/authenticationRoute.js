@@ -111,6 +111,7 @@ function create(req, res) {
     user.city = req.body.city;
     user.zipcode = req.body.zipcode;
     user.emailVerified = true;
+    user.lockoutLegacyPeriod = '2';
     user.status = 'Active';
     user.createdOn = new Date();
     if (err) {

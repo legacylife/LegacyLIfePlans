@@ -7,6 +7,7 @@ var deceasedSchema = new mongoose.Schema({
   trustId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   advisorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   revokeId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  adminId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   documents:Array,
   status: String,
   createdOn: Date,
