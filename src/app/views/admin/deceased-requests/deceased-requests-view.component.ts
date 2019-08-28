@@ -83,8 +83,9 @@ export class DeceasedRequestsViewComponent implements OnInit {
         this.data = result.data.deceasedData;    
         if(this.data[0]){
           this.row = this.data[0].customerId;
+         
         }else{
-          this.row = this.data.customerId;
+          this.row = this.data.customerId;        
         }
         const adminData = [];
          this.data.forEach((element: any, index) => {          
@@ -92,7 +93,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
             adminData.push(element);
           }
         })
-
+console.log('data--->',this.row)
         if(adminData[0]){
           this.deceasedId = adminData[0]._id;
         }

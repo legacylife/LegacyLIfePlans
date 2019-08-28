@@ -1,0 +1,21 @@
+<div class="ll--modal--header">
+    You are mark as deceased
+</div>
+<div class="ll--modal--body">
+  <h5>The following Trustees have marked you as deceased.</h5>
+      <p *ngIf="deceasedDataFlag">  
+          <mat-list>
+              <mat-list-item *ngFor="let row of deceasedData"> 
+                  {{(row?.trustId!=null) ? row?.trustId.firstName+' '+row?.trustId.lastName:''}}
+                  {{(row?.advisorId!=null) ? row?.advisorId.firstName+' '+row?.advisorId.lastName:''}}
+                  {{(row?.adminId!=null) ? row?.adminId.firstName+' '+row?.adminId.lastName:''}}
+                  &nbsp;({{row.userType=='customer' ? 'Trustee':''}}{{row.userType=='advisor' ? 'Advisor':''}}{{row.userType=='sysadmin' ? 'Admin':''}})
+                   {{(row?.trustId!=null) ? row?.trustId.username:''}}{{(row?.advisorId!=null) ? row?.advisorId.username:''}}{{(row?.adminId!=null) ? row?.adminId.username:''}}
+              </mat-list-item>
+            </mat-list>           
+      </p>    
+  <p>Please revoke the request to start using your legacy again. If no action is taken within the lock out period the account will be closed and the "After death" files will be released on {{lockoutLegacyDate | date: 'yyyy/MM/dd HH:mm'}}.</p>
+</div>
+<div class="ll--modal--footer text-center">
+  <button mat-raised-button class="llp--primary--btn" (click)="revokeAsLegacyHolder()">Mark as deceased</button>
+</div>

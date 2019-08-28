@@ -42,6 +42,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   markAsDeceased:boolean = false;
   revokeAsDeceased:boolean = false;
   alreadyRevokeAsDeceased:boolean = false;
+  finallyDeceased:boolean = false;
   datas: any;
   constructor(private layoutServ: LayoutService,
     private fb: FormBuilder,private snack: MatSnackBar,
@@ -108,17 +109,25 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
         this.markAsDeceased = true;
         this.revokeAsDeceased = false;
         this.revokeId = this.userId;
-        if(result.data.deceasedList){    
-            this.datas = result.data.deceasedList;       
+        if(result.data.deceasedData){    
+            this.datas = result.data.deceasedData;       
             this.documentId = this.datas._id;
             this.markAsDeceased = false;
             this.revokeAsDeceased = true;
+            if(this.datas.customerId.deceased && this.datas.customerId.deceased.status=='Active'){
+              this.revokeAsDeceased = false;
+              this.finallyDeceased = true;
+            }
         }
 
         if(result.data.alreadyDeceased){    
           this.documentId = result.data.alreadyDeceased._id;
           //this.alreadyRevokeAsDeceased = true;
           this.revokeAsDeceased = true;
+          if(result.data.alreadyDeceased.customerId.deceased && result.data.alreadyDeceased.customerId.deceased.status=='Active'){
+            this.revokeAsDeceased = false;
+            this.finallyDeceased = true;
+          }
         }
       }
     }, (err) => {

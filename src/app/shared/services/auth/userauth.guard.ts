@@ -5,7 +5,7 @@ import { MatDialogRef, MatDialog} from '@angular/material';
 import { SubscriptionService } from '../../../shared/services/subscription.service';
 import { UserIdleService } from 'angular-user-idle';
 import { lockscreenModalComponent } from '../../../views/lockscreen-modal/lockscreen-modal.component';
-
+import { DeceasedComponent } from '../../../views/deceased-modal/deceased-modal.component';
 @Injectable()
 export class UserAuthGuard implements CanActivate {
   public authToken;
@@ -19,7 +19,8 @@ export class UserAuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean{
-      this.autologFunction();
+      this.checkDeceased();
+     
       this.userInfo = this.userapi.getUserInfo()
       var pathArray = window.location.pathname.split('/');
       this.userUrlType = pathArray[1];
@@ -48,16 +49,32 @@ export class UserAuthGuard implements CanActivate {
           }
         })
       }
-
       if ((this.userInfo.endUserType != '' && this.userUrlType != ''  && this.userUrlType != 'subscription' && this.userUrlType != 'signin' && this.userInfo.endUserType != this.userUrlType)) {
         this.router.navigateByUrl('/'+this.userInfo.endUserType+'/dashboard');
         return false;
       }
-      
     return true;
   }
 
-  
+  checkDeceased(){ 
+    let DeceasedFlag = localStorage.getItem("endUserDeceased");
+     if(DeceasedFlag=='true'){
+       let dialogRef: MatDialogRef<any> = this.dialog.open(DeceasedComponent, {
+         width: '720px',
+         disableClose: true
+       }) 
+       dialogRef.afterClosed().subscribe(res => {
+        console.log("false")
+         if (!res) {
+           // If user press cancel
+           return;
+         }
+       })
+     }else{
+      this.autologFunction();
+     }
+ }
+
   autologFunction(){ 
      // console.log("LockScreen Here >> ")
      //https://www.npmjs.com/package/angular-user-idle

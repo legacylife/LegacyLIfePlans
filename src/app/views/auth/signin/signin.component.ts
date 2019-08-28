@@ -53,7 +53,6 @@ export class SigninComponent implements OnInit {
       this.loader.close();
       if (result.status=="success") {      
         userData = result.data;
-        //console.log(userData.userType);
         localStorage.setItem("endUserId", userData.userId);
         localStorage.setItem("endUserType", userData.userType);
         localStorage.setItem("endUserFirstName", userData.firstName);
@@ -67,6 +66,12 @@ export class SigninComponent implements OnInit {
         localStorage.setItem("endUserProSubscription", 'no');
         localStorage.setItem("endUserSubscriptionAddon", userData.addOnGiven);
         localStorage.setItem("endisReferAndEarn", userData.isReferAndEarn);
+        localStorage.setItem("endUserDeceased",'');
+        localStorage.setItem("endUserlockoutLegacyDate",'');
+        if(userData.deceased && userData.deceased.status=='Active'){
+          localStorage.setItem("endUserDeceased",'true');
+          localStorage.setItem("endUserlockoutLegacyDate",userData.lockoutLegacyDate);
+        }       
 
         if (userData.profilePicture) {
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + userData.profilePicture;

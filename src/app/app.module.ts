@@ -80,6 +80,7 @@ import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser'
 // AoT requires an exported function for factories
 import { ChangePicComponent } from './views/change-pic/change-pic.component';
 import { MarkAsDeceasedComponent } from './views/mark-as-deceased-modal/mark-as-deceased-modal.component';
+import { DeceasedComponent } from './views/deceased-modal/deceased-modal.component';
 //import { TodosComponent } from './views/todos/todos.component';
 // import { TodosListingComponent } from './views/todos-listing/todos-listing.component';
 import { lockscreenModalComponent } from './views/lockscreen-modal/lockscreen-modal.component';
@@ -158,7 +159,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     { provide: LY_THEME, useClass: MinimaDark, multi: true },// name: `minima-dark`
     { provide: LY_THEME_GLOBAL_VARIABLES,useClass: GlobalVariables    } 
   ],
-  declarations: [AppComponent, ChangePicComponent, InviteComponent, ReferAndEarnModalComponent,lockscreenModalComponent,ExecutorModalComponent,MarkAsDeceasedComponent],
-  entryComponents: [ChangePicComponent,lockscreenModalComponent,ExecutorModalComponent, InviteComponent, ReferAndEarnModalComponent,MarkAsDeceasedComponent],
+  declarations: [AppComponent, ChangePicComponent, InviteComponent, ReferAndEarnModalComponent,lockscreenModalComponent,ExecutorModalComponent,MarkAsDeceasedComponent,DeceasedComponent],
+  entryComponents: [ChangePicComponent,lockscreenModalComponent,ExecutorModalComponent, InviteComponent, ReferAndEarnModalComponent,MarkAsDeceasedComponent,DeceasedComponent],
 })
 export class AppModule { }

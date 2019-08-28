@@ -61,7 +61,7 @@ lockScreenFormSubmit(userData = null) {
         this.dialog.closeAll(); 
     } else {
       if(result.data.message){
-        if(result.data.invalidPassword){        console.log(result.data.message);
+        if(result.data.invalidPassword){       
           this.lockScreenForm.controls['password'].setErrors({'invalid' : true});
           this.lockScreenForm.controls['password'].markAsUntouched();
         }

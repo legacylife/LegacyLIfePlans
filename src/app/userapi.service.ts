@@ -204,6 +204,8 @@ export class UserAPIService {
     this.removeKeyFromStorage('endUserProSubscription')
     this.removeKeyFromStorage('endUserProFreeSubscription')
     this.removeKeyFromStorage('endisReferAndEarn')
+    this.removeKeyFromStorage('endUserDeceased')
+    this.removeKeyFromStorage('endUserlockoutLegacyDate')
     this.router.navigate(["signin"]);
   }
 
@@ -342,7 +344,6 @@ export class UserAPIService {
     await this.apiRequest('post', 'cmsFolderInst/view', params).subscribe( (result) => {
       if(result.data.cmsDetails){
         this.returnData = result.data.cmsDetails.InstuctionBody;
-        console.log("returnData 00 ",returnData)
         callback (this.returnData)
       }
     });

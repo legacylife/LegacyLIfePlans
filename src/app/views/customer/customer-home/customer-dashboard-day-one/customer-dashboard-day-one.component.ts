@@ -29,9 +29,8 @@ export class CustomerDashboardDayOneComponent implements OnInit {
   profileUrl = s3Details.url+'/profilePictures/';
   constructor(private fb: FormBuilder, private dialog: MatDialog,private snackBar: MatSnackBar,private userapi: UserAPIService) { }
   ngOnInit() { 
-    console.log("received redirection"+ (new Date()))
+    //console.log("received redirection"+ (new Date()))
     this.userId = localStorage.getItem("endUserId");
-
     this.getFileActivityLogList();
     this.getTrusteeList();
     this.getAdvisorList();
