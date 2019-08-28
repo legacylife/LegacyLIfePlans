@@ -29,6 +29,7 @@ var zipcodes = require('zipcodes');
 const stripe = require("stripe")(constants.stripeSecretKey);
 var moment    = require('moment');
 const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 
 //function to get list of user as per given criteria
 function list(req, res) {
@@ -147,8 +148,15 @@ function updateStatus(req, res) {
                           html: body
                         }
                         sendEmail(mailOptions)
+                        //Update activity logs
+                        allActivityLog.updateActivityLogs(userList._id, userList._id, 'Subscription', 'Subscription has been canceled successfully.', 'SysAdmin')
+
                         res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':'Done'}));
-                      } else {
+                      }
+                      else {
+                        //Update activity logs
+                        allActivityLog.updateActivityLogs(userList._id, userList._id, 'Login', 'Subscription has been canceled successfully.', 'SysAdmin')
+
                         res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':'Done'}));
                       }
                     })
@@ -199,12 +207,10 @@ function updateAdminProfile(req, res) {
   let fields = { id: 1, username: 1, status: 1 }
   User.findOne(query, function (err, updatedUser) {
     if (err) {
-      console.log("before update error",err)
       res.status(401).send(resFormat.rError(err))
     } else {      
       let  proquery  = req.body;
       User.update({ _id: updatedUser._id }, { $set: proquery }, function (err, updated) {
-        console.log("after update error",err)
         if (err) {
           res.send(resFormat.rError(err))
         } else {
@@ -252,15 +258,16 @@ function addNewMember(req, res) {
 
   const { username } = req.body;
   User.findOne({ username: username }, { _id :1, username: 1, status:1, userType : 1,profileSetup:1 }, function (err, user) {
-    if(user){
+    if(user) {
       let message = resMessage.data( 625, [{key: '{userType}',val: user.userType}] )
       res.send(resFormat.rSuccess({ code: "Exist", message: message}))
-    }else{
+    }
+    else{
           newMem.save(function (err, newMemRecord) {
             if (err) {
-              console.log(err)
               res.status(500).send(resFormat.rError(err))
-            } else {
+            }
+            else {
               let mem = req.body      
 
               let clientUrl = constants.clientUrl
@@ -290,13 +297,14 @@ function addNewMember(req, res) {
                 var sendMails = sendMailsAdmin(newMemRecord);
               }, 3000);
               let message = resMessage.data( 607, [{key: '{field}',val: 'Member'}, {key: '{status}',val: 'added'}] )
+              //Update activity logs
+              allActivityLog.updateActivityLogs(req.body._id, user._id, 'New User', message)
               res.send(resFormat.rSuccess(message));
             }
           })
       }
     }) //end of user find
 }
-
 
 function sendMailsAdmin(newMemRecord){
   let fullName = newMemRecord.firstName+' '+newMemRecord.lastName;
@@ -721,8 +729,12 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                           html: body
                         }
                         sendEmail(mailOptions)
+                        //Update activity logs
+                        allActivityLog.updateActivityLogs(requestParam._id, requestParam._id, 'Subscription', 'Subscription has been updated successfully.')
                         res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
                       } else {
+                        //Update activity logs
+                        allActivityLog.updateActivityLogs(requestParam._id, requestParam._id, 'Subscription', 'Subscription has been updated successfully.')
                         res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
                       }
                     })
@@ -980,8 +992,12 @@ function chargeForAddon( userProfile, stripeCustomerId, requestParam, res ) {
                             html: body
                           }
                           sendEmail(mailOptions)
+                          //Update activity logs
+                          allActivityLog.updateActivityLogs(requestParam._id, requestParam._id, 'Subscription', 'Addon has been added successfully.')
                           res.status(200).send(resFormat.rSuccess({ 'message':message }));
                         } else {
+                          //Update activity logs
+                          allActivityLog.updateActivityLogs(requestParam._id, requestParam._id, 'Subscription', 'Addon has been added successfully.')
                           res.status(200).send(resFormat.rSuccess({ 'message':message }));
                         }
                       })
@@ -1093,9 +1109,12 @@ function cancelSubscription(req, res) {
                         html: body
                       }
                       sendEmail(mailOptions)
-
+                      //Update activity logs
+                      allActivityLog.updateActivityLogs(req.body.query._id, req.body.query._id, 'Subscription', message)
                       res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':message}));
                     } else {
+                      //Update activity logs
+                      allActivityLog.updateActivityLogs(req.body.query._id, req.body.query._id, 'Subscription', message)
                       res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':message}));
                     }
                   })

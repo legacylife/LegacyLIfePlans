@@ -92,7 +92,7 @@ async function inviteMembers(req, res) {
         var InviteObj = new Invite();
         InviteObj.inviteById = inviteById;
         InviteObj.inviteToId = inviteToUserId;
-        InviteObj.inviteType = inviteType;
+        InviteObj.inviteType = members[index].relation=="Advisor" ? "advisor" : "customer";
         InviteObj.name = inviteToName;
         InviteObj.email = emailId;
         InviteObj.relation = members[index].relation;

@@ -1,3 +1,9 @@
+/**
+ * @copyright: Arkenea technology
+ * @author: Nilesh Yadav
+ * @since: 20 Aug 2019 10:00 PM
+ * @description: Dynamic response messages return from array
+ */
 let responseArray = [
     {
         "code":601,

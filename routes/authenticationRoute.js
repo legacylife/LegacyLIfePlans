@@ -30,43 +30,52 @@ const profilePicturesPath = constants.s3Details.profilePicturesPath
 const Invite = require('./../models/Invite.js')
 var FreeTrailPeriodSetting = require('./../models/FreeTrialPeriodSettings')
 const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
+
 //function to check and signin user details
 function signin(req, res) {
-  
   passport.authenticate('local', function (err, user, info) {
     if (err) {
       let result = { "message": err };
       res.status(404).send(resFormat.rError(result));
-    } else if (user && user.message == "WrongMethod") {
-      let result = { "message": "We have sent you the instructions to set your account password. Please check your mail.", "invalidEmail": true, "invalidPassword": false }
+    }
+    else if (user && user.message == "WrongMethod") {
+      let message = resMessage.data( 616, [] )
+      let result = { "message": message, "invalidEmail": true, "invalidPassword": false }
       res.status(200).send(resFormat.rError(result))
-    } else if (info && info.message == "User is not Active") {
-      let result = { "message": "Your account has been deactivated. Please connect with the admin at support@legacylifeplans.com for any queries.", "invalidEmail": true, "invalidPassword": false }
+    }
+    else if (info && info.message == "User is not Active") {
+      let message = resMessage.data( 609, [{key: '{support_email}',val: 'support@legacylifeplans.com'}] )
+      let result = { "message": message, "invalidEmail": true, "invalidPassword": false }
       res.status(200).send(resFormat.rError(result))
     }
     else if (info && info.message == "Password is wrong") {
-      let result = { "message": "Incorrect password. Please try again.", "invalidEmail": false, "invalidPassword": true }
+      let message = resMessage.data( 614, [{key: '{field}',val: 'password'}] )
+      let result = { "message": message, "invalidEmail": false, "invalidPassword": true }
       res.status(200).send(resFormat.rError(result))
     }
     else if (info && info.message == "User not found") {
-      let result = { "message": "Incorrect email or password. Please try again.", "invalidEmail": true, "invalidPassword": false }
+      let message = resMessage.data( 615, [] )
+      let result = { "message": message, "invalidEmail": true, "invalidPassword": false }
       res.status(200).send(resFormat.rError(result))
-    } else if (user) {     
+    }
+    else if (user) {     
         var token = user.generateJwt()
         var params = { lastLoggedInOn: new Date(), loginCount: user.loginCount == undefined ? 1 : user.loginCount + 1 }
         User.updateOne({ _id: user._id }, { $set: params }, function (err, updatedUser) {
           if (err) {
             res.send(resFormat.rError(err))
-          } else {
+          }
+          else {
             let subscriptionDetails = user.subscriptionDetails ? user.subscriptionDetails : null
             let subscriptionStartDate = "",
             subscriptionEndDate = "",
             subscriptionStatus = "",
             autoRenewal = "",
-            //addOnDetails = user.addOnDetails ? user.addOnDetails : null,
+            
             addOnGiven = 'no',
             isReferAndEarn = user.IamIntrested && user.IamIntrested == 'Yes' ? 'Yes' :  'No'
-            //console.log("subscriptionDetailssubscriptionDetails",subscriptionDetails)
+            
             if( subscriptionDetails != null && subscriptionDetails.length >0 ) {
               isReferAndEarn = 'No'
               subscriptionStartDate = subscriptionDetails[(subscriptionDetails.length-1)]['startDate']
@@ -74,20 +83,21 @@ function signin(req, res) {
               subscriptionStatus = subscriptionDetails[(subscriptionDetails.length-1)]['status']
               autoRenewal = subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] ? subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] : false
               //if subscription ends do not sends addon details
-              
               if( new Date(subscriptionEndDate) > new Date() ) {
-                //console.log("asdasdasd",new Date(subscriptionEndDate),new Date())
                 addOnGiven = subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails'] && subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails']['status'] == 'paid' ? 'yes' : 'no'
-                //addOnGiven = addOnDetails[(addOnDetails.length-1)]['status'] && addOnDetails[(addOnDetails.length-1)]['status'] == 'paid' ? 'yes' : 'no'
               }
             }
             
+            //Update activity logs
+            allActivityLog.updateActivityLogs(user._id, user._id,'Login', user.userType+' has been logged in successfully.')
+
             let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, profilePicture : user.profilePicture, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false, "createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate" : subscriptionEndDate, "subscriptionStatus" : subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven, "isReferAndEarn": isReferAndEarn }
             res.status(200).send(resFormat.rSuccess(result))
           }
         })
     } else {
-      let result = { "message": "Invalid login credentials.", "invalidEmail": false, "invalidPassword": true }
+      let message = resMessage.data( 618, [] )
+      let result = { "message": message, "invalidEmail": false, "invalidPassword": true }
       res.status(200).send(resFormat.rError(result))
     }
   })(req, res)
@@ -102,7 +112,8 @@ function create(req, res) {
   user.lastLoggedInOn = new Date();
 
   if (req.body.state == '' || req.body.fullName == '' || req.body.lastName == '') {
-    res.status(500).send(resFormat.rError("Please fill all required details."))
+    let message = resMessage.data( 619, [] )
+    res.status(500).send(resFormat.rError(message))
   }
   User.find({ username: req.body.username }, { userType: getuserType }, function (err, result) {
     user.businessPhoneNumber = req.body.businessPhoneNumber;
@@ -121,22 +132,29 @@ function create(req, res) {
           res.send(resFormat.rError(err))
         } else {
           const { _id, userType, username, firstName, lastName } = user
-          let result = { userId: _id, userType, username, firstName, lastName, "message": "Successfully logged in!" }
+          //Update activity logs
+          allActivityLog.updateActivityLogs(_id, _id, 'Login', userType+' has been logged in successfully.')
+
+          let message = resMessage.data( 621, [] )
+          let result = { userId: _id, userType, username, firstName, lastName, "message": message }
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
-    } else {
-      //var params = {lastLoggedInOn: new Date(), loginCount: user.loginCount == undefined ? 1 : user.loginCount + 1}
-      //,{ $set: params}
+    }
+    else {  
       user.updateOne({ _id: result._id }, function (err, updatedUser) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
           const { _id, userType, username, firstName, lastName } = user
-          let result = { userId: _id, userType, username, firstName, lastName, "message": "Email verification successful. Logging in to your account" }
+          //Update activity logs
+          allActivityLog.updateActivityLogs(_id, _id, 'Login', user.userType+' has been logged in successfully.')
+
+          let message = resMessage.data( 622, [] )
+          let result = { userId: _id, userType, username, firstName, lastName, "message": message }
           res.send(resFormat.rSuccess(result))
         }
-      }); //res.send(resFormat.rError(`You are already registered as ${result[0].userType}` ))
+      });
     }
   });
 }
@@ -169,14 +187,16 @@ ss3.upload(params, options, (err, data) => {
       User.updateOne({ _id: query._id }, { $set: { profilePicture: filename } }, function (err, updatedUser) {
       if (err) {
         res.send(resFormat.rError(err))
-      } else {                     
-        res.send(resFormat.rSuccess({ message: 'Profile picture updated successfully', profilePicture: profilePicturesPath+filename}))
+      } else {
+        let message = resMessage.data( 607, [{key: '{field}',val: 'Profile picture'}, {key: '{status}',val: 'updated'}] )
+        //Update activity logs
+        allActivityLog.updateActivityLogs(query._id, query._id, 'Profile', message)
+        res.send(resFormat.rSuccess({ message: message, profilePicture: profilePicturesPath+filename}))
       }
     })
   }
  })
 })
-
 
 //function to update user details // NOT in use
 function update(req, res) {
@@ -189,7 +209,11 @@ function update(req, res) {
           if (err) {
             res.send(resFormat.rError(err))
           } else {
-            res.send(resFormat.rSuccess('Account details successfully updated'))
+            let message = resMessage.data( 607, [{key: '{field}',val: 'Account'}, {key: '{status}',val: 'updated'}] )
+            //Update activity logs
+            allActivityLog.updateActivityLogs(req.body._id, req.body._id, 'Account', message)
+            
+            res.send(resFormat.rSuccess(message))
           }
         })
       }
@@ -201,6 +225,8 @@ function update(req, res) {
         res.send(resFormat.rError(err))
       } else {
         let message = resMessage.data( 607, [{key: '{field}',val: 'Account details'}, {key: '{status}',val: 'updated'}] )
+        //Update activity logs
+        allActivityLog.updateActivityLogs(req.body._id, req.body._id, 'Account', message)
         res.send(resFormat.rSuccess(message))
       }
     })
@@ -225,6 +251,9 @@ function custProfileUpdate(req, res) {
             res.send(resFormat.rError(err))
           } else {
             let message = resMessage.data( 607, [{key: '{field}',val: 'User'+from.fromname}, {key: '{status}',val: 'updated'}] )
+            
+            //Update activity logs
+            allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Profile', message)
             let result = { "message": message }
             res.status(200).send(resFormat.rSuccess(result))        
           }
@@ -283,7 +312,8 @@ const changePassword = function (req, res) {
   User.findOne({ _id: req.body.userId }, function (err, userDetails) {
     if (err) {
       res.send(resFormat.rError(err))
-    } else {
+    }
+    else {
       const user = new User()
       if (req.body.password && !user.validPassword(req.body.password, userDetails)) {
         let message = resMessage.data( 627, [{key: '{field}',val: 'current password'}] )
@@ -296,6 +326,9 @@ const changePassword = function (req, res) {
             res.send({ "message": resFormat.rError(err) })
           } else {
             let message = resMessage.data( 607, [{key: '{field}',val: 'Password'}, {key: '{status}',val: 'updated'}] )
+            
+            //Update activity logs
+            allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Password', message)
             let result = { "message": message }
             res.status(200).send(resFormat.rSuccess(result))
           }
@@ -326,6 +359,8 @@ const changeEmail = function (req, res) {
             }
           } else {
             let message = resMessage.data( 607, [{key: '{field}',val: 'Email ID'}, {key: '{status}',val: 'updated'}] )
+            //Update activity logs
+            allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Email', message)
             res.send(resFormat.rSuccess(message))
           }
         })
