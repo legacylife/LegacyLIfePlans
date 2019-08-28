@@ -5,7 +5,7 @@ const User = require('./../models/Users')
 
 
 
-const updateActivityLog = (customerId, advisorId, sectionName, hiredAdvisorRefId ="", trusteeName = "") => {
+const updateActivityLog = (customerId, advisorId, sectionName, hiredAdvisorRefId ="", trusteeName = "", adminData = []) => {
   return new Promise(function (resolve, reject) {
 
     User.findOne({ _id: customerId }, { firstName: 1, lastName: 1, profilePicture: 1 }, function (err, userList) {
@@ -21,7 +21,9 @@ const updateActivityLog = (customerId, advisorId, sectionName, hiredAdvisorRefId
         advisorLog.modifiedOn = new Date();
         advisorLog.createdby = customerId;
         advisorLog.modifiedby = customerId;
+        if(userList.profilePicture){
         advisorLog.customerProfileImage = userList.profilePicture;
+        }
         advisorLog.customerFirstName = userList.firstName;
         advisorLog.customerLastName = userList.lastName;
         advisorLog.sectionName = sectionName;
@@ -32,6 +34,13 @@ const updateActivityLog = (customerId, advisorId, sectionName, hiredAdvisorRefId
           advisorLog.activityMessage = " has requested to hire you";
           advisorLog.hiredAdvisorRefId = hiredAdvisorRefId;
         }
+
+        if(adminData && adminData.adminId){
+          advisorLog.actionTaken = "Active";
+          advisorLog.activityMessage = " has been to hired you";
+          advisorLog.hiredAdvisorRefId = hiredAdvisorRefId;
+        }
+
         if (sectionName == 'contact') {
           advisorLog.activityMessage = " contacted you";
         }

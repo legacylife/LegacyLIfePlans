@@ -4,6 +4,7 @@ var constants = require("./../config/constants")
 var hireAdvisorsSchema = new mongoose.Schema({
   customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   advisorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  adminId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   selectAll : String,  
   userAccess:Object,  
   filesCount: String,

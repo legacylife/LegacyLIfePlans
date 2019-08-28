@@ -110,7 +110,6 @@ function create(req, res) {
   user.username = req.body.username
   user.userType = getuserType = req.body.userType ? req.body.userType : "sysadmin"
   user.lastLoggedInOn = new Date();
-
   if (req.body.state == '' || req.body.fullName == '' || req.body.lastName == '') {
     let message = resMessage.data( 619, [] )
     res.status(500).send(resFormat.rError(message))
@@ -122,6 +121,7 @@ function create(req, res) {
     user.city = req.body.city;
     user.zipcode = req.body.zipcode;
     user.emailVerified = true;
+    user.lockoutLegacyPeriod = '2';
     user.status = 'Active';
     user.createdOn = new Date();
     if (err) {

@@ -33,7 +33,6 @@ var auth = jwt({
 
 // Function to activate advisoradvisor
 function activateAdvisor(req, res) {
-  console.log("request body >>>>>>", req.body)
   let { query } = req.body;
   let fields = { id: 1, username: 1, status: 1 }
   User.findOne(query, fields, function (err, userList) {
@@ -99,7 +98,6 @@ function rejectAdvisor(req, res) {
           // Send reset password link to advisor email
           emailTemplatesRoute.getEmailTemplateByCode("RejectAdvisor").then((template) => {
             if (template) {
-              console.log(template)
               template = JSON.parse(JSON.stringify(template));
               let body = template.mailBody;
               const mailOptions = {
@@ -207,7 +205,6 @@ function hireAdvisorOLD(req, res) {
           })
         } else {
           let { proquery } = req.body;
-          console.log(proquery)
           var hireadvisor = new HiredAdvisors();
           hireadvisor.status = 'Pending';
           hireadvisor.customerId = query.customerId;
@@ -384,11 +381,16 @@ function hireAdvisorStatus(req, res) {
     insert.filesCount = proquery.filesCount;
     insert.folderCount = proquery.folderCount;
     insert.advisorId = ObjectId(proquery.advisorId);
-    insert.status = 'Pending';
-    insert.createdOn = new Date();
-    insert.modifiedOn = new Date();
+    insert.status = proquery.hirestatus;
     insert.createdby = query.customerId;
     insert.modifiedby = query.customerId;
+    if(proquery.adminBy){
+      insert.adminId = ObjectId(proquery.adminBy);
+      insert.createdby = proquery.adminBy;
+      insert.modifiedby = proquery.adminBy;
+    }
+    insert.createdOn = new Date();
+    insert.modifiedOn = new Date();
     insert.save({ $set: proquery }, function (err, newEntry) {
       if (err) {
         res.send(resFormat.rError(err))
@@ -398,12 +400,24 @@ function hireAdvisorStatus(req, res) {
             res.status(401).send(resFormat.rError(err))
           } else {
             // Add entry in advisor activity log
-            advisorActivityLog.updateActivityLog(query.customerId, proquery.advisorId, 'hired', newEntry._id);
+            let adminData = [];
+            if(proquery.adminBy){            
+              adminData['adminId'] = proquery.adminBy;
+              adminData['adminName'] = extraFields.inviteByName;
+            }
+            advisorActivityLog.updateActivityLog(query.customerId,proquery.advisorId,'hired',newEntry._id,'',adminData);
 
             let inviteByName = extraFields.inviteByName;
             let toEmail = advisorUser.username;
             let advName = advisorUser.firstName;
             let EmailMesg = inviteByName + " has been send you legacy request";
+            if(proquery.adminBy){            
+              let legacyHolderName = extraFields.legacyHolderName;
+              let legacyHolderFirstName = extraFields.legacyHolderFirstName;
+              let custEmailMsg = inviteByName+" has been hired for your legacy to advisor ("+advisorUser.firstName+" "+advisorUser.lastName+")";
+              stat = sendHireStatusMail(extraFields.legacyCustomerEmail,legacyHolderFirstName,custEmailMsg,'');//admin hired advisor email to cusotmer.
+              EmailMesg = inviteByName + " has been hired you for "+legacyHolderName+" legacy";
+            }
             stat = sendHireStatusMail(toEmail, advName, EmailMesg, '');
           }
         })
@@ -508,7 +522,7 @@ function checkHireAdvisorRequest(req, res) {
       result = { "RequestData": found, code: "Exist", "message": "Request already Sent" }
     }
     res.status(200).send(resFormat.rSuccess(result))
-  })
+  }).populate('advisorId');
 }
 
 function fileupload(req, res) {
@@ -561,7 +575,7 @@ function professionalsListing(req, res) {
         if (err) {
          // res.status(401).send(resFormat.rError(err))
         } else {
-          console.log("contacts",contacts,'totalUsers',totalUsers,'userCount',userCount)
+          
          // res.send(resFormat.rSuccess({ userList: contacts, totalUsers }))
         }
       }) //end of async
@@ -697,6 +711,37 @@ async function reactivateReferEarn(req, res) {
   }
 }
 
+// async function exceptHireAdvisorList(req, res) {
+//       let { query } = req.body;
+//       let fields = {}
+//       let { status } = req.body
+//     User.aggregate([
+//       {
+//         $match: {
+//           userType: 'advisor',
+//         }
+//       },
+//       {
+//         $sort: order
+//       },
+//       {
+//         $lookup:
+//           {
+//             from: "hired_advisors",
+//             localField: "customerId",
+//             foreignField: "_id",
+//             as: "userInfo"
+//           }
+//       }
+//     ], function (err, logList) {      
+//       if (err) {
+//         res.status(401).send(resFormat.rError(err))
+//       } else {
+//         res.send(resFormat.rSuccess({ logList, totalRecords }))
+//       }
+//     }).sort(order).skip(offset).limit(limit)
+// }
+
 router.post("/reactivatereferearn", reactivateReferEarn)
 router.post("/activateadvisor", activateAdvisor)
 router.post("/rejectadvisor", rejectAdvisor)
@@ -709,5 +754,5 @@ router.post("/hireAdvisorListing", hireAdvisorList)
 router.post("/myPeoplesListing", myPeoplesList)
 router.post("/professionalsList", professionalsListing)
 router.post("/view-details", getAdvisorDetails)
-
+//router.post("/exceptHireAdvisorListing", exceptHireAdvisorList)
 module.exports = router

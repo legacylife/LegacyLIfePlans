@@ -64,12 +64,14 @@ var userSchema = new mongoose.Schema({
   managingPrincipleName : String, 
   advisorDocuments : Array,
   folders:Array,
-  s3Size:String,
+  lockoutLegacyPeriod: String,
+  lockoutLegacyDate: Date,
   sponsoredAdvisor:String,
   // Subscription fields
   manageOtherProceducers : String, 
   howManyProducers : String, 
   // System manage fields
+  s3Size:String,
   otpCode : String,
   lastLoggedInOn: {
     type: Date,
