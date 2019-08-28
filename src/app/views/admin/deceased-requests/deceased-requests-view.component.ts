@@ -93,7 +93,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
             adminData.push(element);
           }
         })
-console.log('data--->',this.row)
+
         if(adminData[0]){
           this.deceasedId = adminData[0]._id;
         }
