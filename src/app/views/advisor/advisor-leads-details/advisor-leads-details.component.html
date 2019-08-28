@@ -18,7 +18,7 @@
               <h5><a [routerLink]="['/advisor/leads/profile', row?._id]">{{row?.firstName}} {{row?.lastName}}</a></h5>
               <div class="icon--and--info unique">
                 <mat-icon>star</mat-icon>
-                Free member
+                {{row?.subscriptionDetails.length > 0 ? 'Subscribed ' : 'Free '}}member
               </div>
               <div class="icon--and--info">
                 <mat-icon>markunread</mat-icon>

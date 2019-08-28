@@ -67,25 +67,11 @@ export class NavigationService {
       state: 'admin/free-trial-period-management'
     },
     {
-      name: 'ACTIVITY LOG',
-      type: 'link',
-      tooltip: 'Activity Log',
-      icon: 'pages',
-      state: 'admin/activity-log'
-    },
-    {
       name: 'ADVERTISEMENT MANAGEMENT',
       type: 'link',
       tooltip: 'Advertisement management',
       icon: 'business',
       state: 'admin/ad-management'
-    },
-    {
-      name: 'ZIP CODE MAP',
-      type: 'link',
-      tooltip: 'Zip Code map',
-      icon: 'map',
-      state: 'admin/map'
     },
     {
       name: 'DECEASED REQUESTS',
@@ -100,6 +86,23 @@ export class NavigationService {
       tooltip: 'Email Templates Management System',
       icon: 'email',
       state: 'admin/email-template'
+    },
+    {
+      name: 'ACTIVITY LOG',
+      type: 'link',
+      tooltip: 'Activity Log',
+      icon: 'pages',
+      state: 'admin/activity-log'
+    },
+    {
+      name: 'REPORTS',
+      type: 'dropDown',
+      tooltip: 'Reports',
+      icon: 'list',
+      state: 'admin',
+      sub: [
+        { name: 'ZIP CODE MAP', state: 'map' }
+      ]
     }
   ]
 
