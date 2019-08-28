@@ -1,6 +1,6 @@
 <div class="cc--right--section">
   <header> {{articleTitle}} </header>
-  <section *ngFor="let aInfo of articleInfo">
+  <section *ngFor="let aInfo of articleInfo" routerLink="/advisor/coachs-corner-details">
     <div class="img--box">
       <img src="{{aInfo.articleImg}}" alt="">
     </div>
