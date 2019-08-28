@@ -19,6 +19,13 @@
             <mat-icon class="mr-1">phone</mat-icon> {{row?.businessPhoneNumber}}</mat-list-item>          
         </mat-list>
       </mat-card-content>
+
+      <div class="profile-actions mb-1">
+          <button mat-raised-button class="" color="primary"  (click)="openAdminHireAdvisorModal(selectedUserId,'','',true)">Assign an Advisor</button>
+          <span fxFlex="8px"></span>
+          <button mat-raised-button class="mat-warn" *ngIf="!showDeceased" (click)="markAsDeceased({}, true)">Mark as Deceased</button>
+          <button mat-raised-button class="mat-warn" *ngIf="showDeceased" (click)="revokeAsDeceased({}, true)">Revoke as Deceased</button>
+      </div>
     </mat-card> 
   </div>
 
@@ -123,6 +130,7 @@
 </div>
 <div fxLayout="row wrap" *ngIf="showPage">
    <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+      <mat-card-title class="p-1">Deceased Request Info</mat-card-title>
      <mat-card-content class="p-0">
           <ngx-datatable class="material ml-0 mr-0" [rows]="data" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
             <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Full Name" prop="trustId" [flexGrow]="2">
@@ -172,3 +180,51 @@
         </mat-card-content>
    </mat-card>
 </div>
+
+<div fxLayout="row wrap" *ngIf="showPage">
+  <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+      <mat-card-title class="p-1">Advisors Info</mat-card-title>
+    <mat-card-content class="p-0">
+         <ngx-datatable class="material ml-0 mr-0" [rows]="advisorsData" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
+           <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Full Name" prop="firstName" [flexGrow]="2">
+             <ng-template let-row="row" ngx-datatable-cell-template>
+               {{row?.advisorId?.firstName}} {{row?.advisorId?.lastName}}
+             </ng-template>
+           </ngx-datatable-column>
+           <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Email" prop="username" [flexGrow]="3" >
+               <ng-template let-row="row" ngx-datatable-cell-template>
+                 {{row?.advisorId?.username}}
+               </ng-template>
+           </ngx-datatable-column>
+           <!-- <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Type" prop="userType"  [flexGrow]="1">
+                 <ng-template let-row="row" ngx-datatable-cell-template>
+                   <div class="compact-list" *ngFor="let item of row?.userAccess | keyvalue">
+                        {{item.key}}:{{item.value}}&nbsp;,&nbsp; 
+                   </div>
+                 </ng-template>
+           </ngx-datatable-column> -->
+           <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Folder/Files" prop="folderCount"  [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row?.folderCount}} / {{row?.filesCount}}
+            </ng-template>
+          </ngx-datatable-column>
+           <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Created/Modified Time" prop="createdOn">
+                 <ng-template let-row="row" ngx-datatable-cell-template>
+                   {{row?.createdOn | date: 'yyyy/MM/dd'}} ,  {{row?.modifiedOn | date: 'yyyy/MM/dd'}}
+                 </ng-template>
+           </ngx-datatable-column>
+           <ngx-datatable-column [resizeable]="false" name="Status">
+             <ng-template let-row="row" ngx-datatable-cell-template>
+               <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status" (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
+             </ng-template>
+           </ngx-datatable-column>
+           <ngx-datatable-column [resizeable]="false" name="Actions" [sortable]="false" [draggable]="false" [flexGrow]="1">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <button mat-icon-button mat-sm-button color="primary" class="mr-1 p-0 icon--edit" (click)="openAdminHireAdvisorModal(selectedUserId,row?._id,'update',true)" title="Edit"><mat-icon>edit</mat-icon></button>
+              </ng-template>
+            </ngx-datatable-column>
+         </ngx-datatable>
+       </mat-card-content>
+  </mat-card>
+</div>
+

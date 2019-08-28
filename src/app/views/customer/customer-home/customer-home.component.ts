@@ -174,6 +174,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
           const req_vars = {
             query: Object.assign({_id:this.documentId}, query),
             revokeId:this.revokeId,
+            userType:localStorage.getItem("endUserType"),
             deceasedFromName:localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName")
           }
           this.userapi.apiRequest('post', 'deceased/revokeAsDeceased', req_vars).subscribe(result => {

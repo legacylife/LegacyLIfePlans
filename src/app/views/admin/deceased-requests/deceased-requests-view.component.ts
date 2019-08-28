@@ -11,6 +11,8 @@ import { serverUrl, s3Details } from '../../../config';
 import { SubscriptionService } from 'app/shared/services/subscription.service';
 import { LayoutService } from 'app/shared/services/layout.service';
 import { egretAnimations } from "../../../shared/animations/egret-animations";
+import { AdminHireAdvisorComponent } from './hire-advisor-modal/hire-advisor-modal.component';
+
 const filePath = s3Details.url+'/'+s3Details.profilePicturesPath;
 @Component({
   selector: 'deceaseduserview',
@@ -28,12 +30,17 @@ export class DeceasedRequestsViewComponent implements OnInit {
   dpPath: string = ""
   selectedUserId: string = "";
   docPath:string;
+  legacyCustomerUsername:string;
   adminSections = [];
   data:any;
+  advisorsData:any;
   loggedInUserDetails: any;
   profilePicture: any = "assets/images/arkenea/default.jpg"
   fullname: string = ''
+  deceasedId: string = ''
+  customerFirstName: string = ''
   showPage:boolean = false
+  showDeceased:boolean = false
   my_messages:any;
   executorData:any;
   constructor(
@@ -49,17 +56,17 @@ export class DeceasedRequestsViewComponent implements OnInit {
     this.selectedUserId = locationArray[locationArray.length - 1]
     this.loggedInUserDetails = this.api.getUser()
     this.adminSections = adminSections;
-    this.my_messages = {
-      'emptyMessage': 'No records Found'
-    };
-    this.getDeceasedUser()
+    this.userId = localStorage.getItem("userId");
+    this.my_messages = {'emptyMessage': 'No records Found'};
+    this.getDeceasedUser(true);
   }
 
   //function to get all events
-  getDeceasedUser = (query = {}, search = false) => {
-    
+  getDeceasedUser = (getExecutors) => {
+    let query = {}; let adminQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.selectedUserId }, query),
+      adminQuery: Object.assign({userType:'sysadmin'}, query),
       fields: {},      
       order: { "createdOn": -1 },
     }
@@ -70,30 +77,51 @@ export class DeceasedRequestsViewComponent implements OnInit {
         console.log(result.data)
         this.showPage = true
       } else {
-        this.getExecutorsList();
-        this.data = result.data.deceasedData;
-
+        if(getExecutors){
+          this.getExecutorsList();
+        }
+        this.data = result.data.deceasedData;    
         if(this.data[0]){
           this.row = this.data[0].customerId;
         }else{
           this.row = this.data.customerId;
         }
+        const adminData = [];
+         this.data.forEach((element: any, index) => {          
+          if(element.userType=='sysadmin'){
+            adminData.push(element);
+          }
+        })
+
+        if(adminData[0]){
+          this.deceasedId = adminData[0]._id;
+        }
         
+        if(this.row.deceased.status=='Active'){
+          this.showDeceased = true;
+        }
+
         this.fullname = '';
         if(this.row.firstName && this.row.firstName!=='undefined' && this.row.lastName && this.row.lastName!=='undefined'){
+          this.customerFirstName = this.row.firstName;
           this.fullname = this.row.firstName+' '+this.row.lastName;
         }
+        if(this.row.username){
+          this.legacyCustomerUsername = this.row.username;
+       }
         if(this.row.profilePicture){
            this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + this.row.profilePicture;
         }
         this.showPage = true
+
+        this.advisorsData = result.data.advisorsList;
+
       }
     }, (err) => {
       console.error(err)
       this.showPage = true
     })
   }
-
 
   getExecutorsList = (query = {}, search = false) => { 
     let req_vars = {
@@ -148,4 +176,77 @@ export class DeceasedRequestsViewComponent implements OnInit {
       sidebarStyle: 'closed'
     })
   }
+
+  openAdminHireAdvisorModal(customerId: any = {},profileId: any = {},update: any = {}, isNew?) {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(AdminHireAdvisorComponent, {
+      width: '950px',
+      disableClose: true,
+      data: {
+        customerId: customerId,
+        profileId: profileId,
+        legacyHolderFirstName: this.customerFirstName,
+        legacyHolderName: this.fullname,
+        legacyCustomerEmail: this.legacyCustomerUsername,
+        update: update
+      },
+    }); 
+    dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getDeceasedUser(false);
+      if (!res) {
+        // If user press cancel
+        return;
+      }
+    })
+  }
+
+  markAsDeceased(){
+    let profileIds = '';
+    var statMsg = 'Marking the user as deceased will notify all the user\'s trustees and the users legacy will be locked. Once the legacy is locked it will release "After death" files to the users respective trustees based on the access given. Do you want mark the user as deceased?'
+    this.confirmService.confirm({ message: statMsg })
+      .subscribe(res => {
+        if (res) {
+          let deceasedFromName = localStorage.getItem("firstName")+' '+localStorage.getItem("lastName");
+          let req_vars = {_id:profileIds,adminId:this.userId,customerId:this.selectedUserId,userType:localStorage.getItem("userType"),legacyHolderFirstName:this.customerFirstName,legacyHolderName:this.fullname,deceasedFromName:deceasedFromName}
+          this.loader.open();   
+          this.api.apiRequest('post', 'deceased/markAsDeceased', req_vars).subscribe(result => {
+          this.loader.close();
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          }, (err) => {
+            console.error(err)
+            this.loader.close();
+          })  
+      }
+    })
+  }
+
+  revokeAsDeceased(){
+    if(!this.deceasedId){
+      this.snack.open("Something wrong, Please try again", 'OK', { duration: 4000 })
+    }else{
+    var statMsg = 'Marking the user revoke as deceased will notify all the user\'s trustees and the users legacy will be unlocked. Once the legacy is unlocked it will lock "After death" files to the users respective trustees based on the access given. Do you want revoke the user as deceased?'
+    this.confirmService.confirm({ message: statMsg })
+      .subscribe(res => {
+        if (res) {
+          var query = {};var deceasedFromName = {};
+          const req_vars = {
+            query: Object.assign({_id:this.deceasedId}, query),
+            revokeId:this.userId,
+            userType:localStorage.getItem("userType"),
+            deceasedFromName:localStorage.getItem("firstName") + " " + localStorage.getItem("lastName")
+          }
+      this.loader.open();   
+      this.api.apiRequest('post', 'deceased/revokeAsDeceased', req_vars).subscribe(result => {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        this.router.navigate(['/', 'admin', 'deceased-requests'])
+        }, (err) => {
+          console.error(err)
+          this.loader.close();
+        })  
+      }
+    })
+   }
+  }
+
+
 }

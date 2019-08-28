@@ -1,0 +1,140 @@
+<div class="ll--modal--header">
+  <div *ngIf="headerName">Hire Advisor</div>
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+<div class="ll--modal--body per--profile--wrapper p-0 hire--ad--modal">
+    <h3 *ngIf="SubHeaderName" class="main--head text-center m-0">Assign permission</h3>
+    <p *ngIf="hireFullName" class="sub--head text-center mt-1">for the {{hireFullName}}</p>
+  <div class="stepper--wrapper" id="{{!hideFirstStep ? 'hideStep' : ''}}">
+      <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="onChangeFormIndex($event)">
+      <mat-step *ngIf="hideFirstStep" [stepControl]="hireFormGroup">    
+          <div class="ll--modal--body idbox--modal--hgt">
+                <p class="fnt--16">The advisor will need to confirm this hiring on their part to start appearing in your 'My advisors' list. Clicking on
+                  'Proceed' button will send a confirmation message on the advisor's email.</p>
+                  <form class="llp-form-wrapper">
+                      <mat-form-field class="no-mar full-width">
+                          <input matInput placeholder="Type to search advisor" value="" (keyup)='updateFilter($event)'>
+                      </mat-form-field>
+                    </form>
+                    <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+                      <mat-card-content class="p-0">
+                        <ngx-datatable class="material ml-0 mr-0" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50"
+                          [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
+                          
+                          <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Email" prop="username" [flexGrow]="1.2">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                <a (click)="selectAdvisor(row)"> {{ row?.username }} </a>
+                            </ng-template>
+                          </ngx-datatable-column>
+                          <ngx-datatable-column  [resizeable]="true" name="Name" prop="firstName" [flexGrow]="1">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                <a (click)="selectAdvisor(row)"> {{row?.firstName}} {{row?.lastName}} </a>
+                            </ng-template>
+                          </ngx-datatable-column>
+                          <ngx-datatable-column  [resizeable]="false" name="Business Info" prop="businessName" [flexGrow]="1.2">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                <a (click)="selectAdvisor(row)"> {{ row?.businessName }} <br />
+                              City : {{ row?.city }} <br />
+                              State : {{ row?.state }} <br />
+                              Zipcode : {{ row?.zipcode }} </a>
+                            </ng-template>
+                          </ngx-datatable-column>
+                          <ngx-datatable-column  [resizeable]="false" name="Subscription Status" prop="end_date" [flexGrow]="1">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                <a (click)="selectAdvisor(row)"> Status: {{ row?.subscriptionData ? row?.subscriptionData.status : ""}} <br />
+                              Expiry Date : {{ row?.subscriptionData ? row?.subscriptionData.endDate : ""}} </a>
+                            </ng-template>
+                          </ngx-datatable-column>
+                         
+                        </ngx-datatable>
+                      </mat-card-content>
+                    </mat-card>
+              </div>              
+              <!-- <div class="ll--modal--footer text-center">
+                  <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" *ngIf="alreadyRequestSend">Continue</button>
+                  <button mat-menu-item  class="llp--primary--btn mb-1" *ngIf="!alreadyRequestSend"><mat-icon>check</mat-icon> Request already sent!</button>
+               </div> -->
+      </mat-step>
+      <mat-step [stepControl]="trusteeFormGroup">            
+          <form [formGroup]="trusteeFormGroup" class="llp-form-wrapper" (ngSubmit)="trusteeFormGroupSubmit(trusteeFormGroup.value)">                  
+            <div class="profile--body--scroll">
+              <div class="trust--legacy--wrapper">
+                <div class="cover mt-1">
+                  <div fxLayout="row wrap">
+                    <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
+                      <label class="header bold">Select All</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                      <label class="header">Now</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                      <label class="header">After Death</label>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
+                      <label class="header">Never</label>
+                    </div>
+                  </div>
+                  <div fxLayout="row wrap">
+                  <mat-radio-group class="llp-radio" (change)="onRadioChange($event.value)" name="selectAll" [formControl]="trusteeFormGroup.controls['selectAll']">
+                    <mat-list-item>
+                        <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
+                          <label class="left--header">All 30 sections</label>
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                  
+                            <mat-radio-button value="now">Now</mat-radio-button>                    
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                    
+                            <mat-radio-button value="afterDeath">After Death</mat-radio-button>                    
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                    
+                            <mat-radio-button value="never" [checked]="defaultPermission">Never</mat-radio-button>                    
+                        </div>               
+                    </mat-list-item>
+                  </mat-radio-group>
+                  </div>
+                </div>
+                <div class="cover mt-1">
+                  <div fxLayout="row wrap" *ngFor="let folder of userSections">
+                      <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
+                        <label class="header bold">{{folder.folderName}}</label>
+                      </div>                 
+                       
+                      <mat-radio-group class="llp-radio" *ngFor="let t of folder.fileNames" [formControl]="trusteeFormGroup.controls[t.code]" (change)="onFileChange($event.value)">
+                          <mat-list-item>
+                            <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
+                              <label class="left--header">{{t.name}}*</label>
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                    
+                                <mat-radio-button value="now">Now</mat-radio-button>                
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                     
+                                <mat-radio-button value="afterDeath">After Death</mat-radio-button>                     
+                            </div>
+                            <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">                     
+                                <mat-radio-button value="never" [checked]="defaultPermission">Never</mat-radio-button>                     
+                            </div>
+                          </mat-list-item>
+                      </mat-radio-group>                             
+                    </div>
+                  </div>
+              </div>
+            </div>
+
+            <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
+                <input matInput name="profileId" [formControl]="trusteeFormGroup.controls['profileId']" readonly="readonly">
+              </mat-form-field>
+
+            <div class="mt-1 text-center">
+              <button mat-raised-button matStepperPrevious class="llp--back--btn" *ngIf="hideFirstStep"><mat-icon>arrow_back</mat-icon> Back</button>
+              <button mat-raised-button matStepperNext *ngIf="hideFirstStep"  class="llp--primary--btn mb-1">Send hire request</button>
+              <button mat-raised-button  *ngIf="!hideFirstStep" class="llp--primary--btn mb-1">Submit</button>
+            </div>
+          </form>
+        </mat-step>
+   </mat-horizontal-stepper>
+  </div>
+ </div>       
+
+

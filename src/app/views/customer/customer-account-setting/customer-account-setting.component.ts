@@ -21,7 +21,7 @@ import { SubscriptionService } from '../../../shared/services/subscription.servi
 import  * as moment  from 'moment'
 import { CardDetailsComponent } from 'app/shared/components/card-details-modal/card-details-modal.component';
 import { LocationStrategy } from '@angular/common';
-
+import { lockLegacyPeriodList } from '../../../selectList';
 @Component({
   selector: 'app-customer-account-setting',
   templateUrl: './customer-account-setting.component.html',
@@ -47,7 +47,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   pdisplay: boolean = false
   pcropperDisplay: boolean = false
   profileImage = null
-
+  lockLegacyList: any[] = lockLegacyPeriodList;
   /**
    * Subscription variable declaration
    */
@@ -122,7 +122,8 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
       landlineNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
       dateOfBirth: new FormControl('', ),
-      username: new FormControl('', )
+      username: new FormControl('', ),
+      lockoutLegacyPeriod: new FormControl('', )
     });
 
     this.ProfileForm.valueChanges.subscribe(val => {
@@ -140,7 +141,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     this.AddressForm.valueChanges.subscribe(val => {
       this.modified = true
     })
-
+ 
     this.profile = [];
     this.getProfile();
 
@@ -165,7 +166,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
       this.defaultSpace = returnArr.defaultSpace
       this.addOnSpace = returnArr.addOnSpace
-      console.log("isAccountFree",this.isAccountFree,"isSubscribePlan",this.isSubscribePlan,"isPremiumExpired",this.isPremiumExpired)
+     // console.log("isAccountFree",this.isAccountFree,"isSubscribePlan",this.isSubscribePlan,"isPremiumExpired",this.isPremiumExpired)
       
       let devideAmount = 1048576
       if( ( Number(returnArr.totalUsedSpace) >= 1073741824 ) ) { //If used space is greater or equal to 1 GB
@@ -264,6 +265,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
         this.ProfileForm.controls['username'].setValue(this.profile.username);
         this.ProfileForm.controls['phoneNumber'].setValue(this.profile.phoneNumber);
         this.ProfileForm.controls['landlineNumber'].setValue(this.profile.landlineNumber);
+        this.ProfileForm.controls['lockoutLegacyPeriod'].setValue(this.profile.lockoutLegacyPeriod);
 
         this.AddressForm.controls['addressLine1'].setValue(this.profile.addressLine1);
         this.AddressForm.controls['addressLine2'].setValue(this.profile.addressLine2);
@@ -295,7 +297,8 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       lastName: this.ProfileForm.controls['lastName'].value,
       phoneNumber: this.ProfileForm.controls['phoneNumber'].value,
       landlineNumber: this.ProfileForm.controls['landlineNumber'].value,
-      dateOfBirth: this.ProfileForm.controls['dateOfBirth'].value
+      dateOfBirth: this.ProfileForm.controls['dateOfBirth'].value,
+      lockoutLegacyPeriod: this.ProfileForm.controls['lockoutLegacyPeriod'].value
     }
     var query = {};
     var proquery = {};
