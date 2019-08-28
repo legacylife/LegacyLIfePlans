@@ -26,6 +26,7 @@ const advisorActivityLog = require('./../helpers/advisorActivityLog')
 const globalSettings = require('./../models/GlobalSettings')
 const referEarnSettings = require('./../models/ReferEarnSettings')
 const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -34,6 +35,7 @@ var auth = jwt({
 // Function to activate advisoradvisor
 function activateAdvisor(req, res) {
   let { query } = req.body;
+  let { fromId } = req.body
   let fields = { id: 1, username: 1, status: 1 }
   User.findOne(query, fields, function (err, userList) {
     if (err) {
@@ -63,8 +65,12 @@ function activateAdvisor(req, res) {
                 html: body
               }
               sendEmail(mailOptions)
-              //res.send(resFormat.rSuccess('We have set your password. Please login & use system.'))
-              let result = { userId: updatedUser._id, userType: updatedUser.userType, "message": "We have set your password. Please login & use system." }
+              
+              let message = resMessage.data( 616, [] )
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, updatedUser._id, "Activate User", message, "Admin Panel")
+              
+              let result = { userId: updatedUser._id, userType: updatedUser.userType, "message": message }
               res.status(200).send(resFormat.rSuccess(result))
             } else {
               res.status(401).send(resFormat.rError('Some error Occured'))
@@ -80,6 +86,7 @@ function activateAdvisor(req, res) {
 function rejectAdvisor(req, res) {
 
   let query = { "_id": req.body._id };
+  let fromId = req.body.fromId
   let fields = { id: 1, username: 1, status: 1 }
   User.findOne(query, fields, function (err, userList) {
     if (err) {
@@ -107,7 +114,11 @@ function rejectAdvisor(req, res) {
               }
               sendEmail(mailOptions)
               //res.send(resFormat.rSuccess('We have set your password. Please login & use system.'))
-              let result = { userId: updatedUser._id, userType: updatedUser.userType, "message": "We have set your password. Please login & use system." }
+              let message = resMessage.data( 607, [{key:'{message}',val:"Account"}, {key:'{status}',val:'rejected'}] )
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, updatedUser._id, "Rejected User", message, "Admin Panel")
+              
+              let result = { userId: updatedUser._id, userType: updatedUser.userType, "message": message }
               res.status(200).send(resFormat.rSuccess(result))
             } else {
               res.status(401).send(resFormat.rError('Some error Occured'))
@@ -501,7 +512,11 @@ function contactAdvisor(req, res) {
           // Add entry in advisor activity log
           advisorActivityLog.updateActivityLog(user._id, advisorDetails.advisorId, 'contact');
 
-          let result = { "message": "The advisor's contact details are sent on your email." }
+          let message = resMessage.data( 607, [{key:'{message}',val:"The Advisor's contact details"}, {key:'{status}',val:'sent'}] )
+          //Update activity logs
+          allActivityLog.updateActivityLogs( user._id, user._id, "Contact Advisor", message,'Professional List')
+
+          let result = { "message": message }
           res.status(200).send(resFormat.rSuccess(result))
 
         } else {
@@ -673,7 +688,7 @@ async function reactivateReferEarn(req, res) {
   let { query } = req.body;
   let fields = {}
   let { status } = req.body
-      
+  let { fromId } = req.body    
   if( status == 'activate' ) {
     User.findOne(query, fields, async function (err, userList) {
       if (err) {
@@ -699,6 +714,9 @@ async function reactivateReferEarn(req, res) {
             res.send(resFormat.rError(err))
           } else {
             let message = resMessage.data( 607, [{key:'{field}',val:'Refer and earn program'},{key:'{status}',val:'extended'}] )
+            //Update activity logs
+            allActivityLog.updateActivityLogs( fromId, userList._id, "Referral Program", message, "Admin Panel")
+            
             let result = { userId: updatedUser._id, userType: updatedUser.userType, "message": message}
             res.status(200).send(resFormat.rSuccess(result))
           }

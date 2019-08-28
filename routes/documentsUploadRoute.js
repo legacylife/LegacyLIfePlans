@@ -24,6 +24,9 @@ var archiver = require('archiver');
 var stream =require('stream');
 const AWS = require('aws-sdk')
 var S3Sizer = require('aws-s3-size');
+const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
+
 //const XmlStream = require('xml-stream')
 const docFilePath = constants.s3Details.advisorsDocumentsPath;
 const IDdocFilePath = constants.s3Details.myEssentialsDocumentsPath;
@@ -1089,8 +1092,11 @@ function deleteDocumentS3(customerId,filePaths,fileName){
      try {
          s3.s3.headObject(params).promise()
          try {
-              s3.s3.deleteObject(params).promise()
-              resMsg = "File deleted successfully";
+            s3.s3.deleteObject(params).promise()
+            //resMsg = "File deleted successfully";
+            resMsg = resMessage.data( 607, [{key: '{field}',val: 'File'}, {key: '{status}',val: 'deleted'}] )
+            //Update activity logs
+            allActivityLog.updateActivityLogs( customerId, customerId, "File Delete", message, filePaths, '', filename)
          }
          catch (err) {
            resMsg = "ERROR in file Deleting : " + JSON.stringify(err);
@@ -1352,6 +1358,13 @@ function downloadDocs(req,res) {
   let { query } = req.body; 
   let filePath = query.docPath+query.filename;
   let filename = query.filename;
+
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
+
   var params = {Bucket: constants.s3Details.bucketName,Key:filePath};
   let ext = filename.split('.')
   ext = ext[ext.length - 1];
@@ -1362,6 +1375,9 @@ function downloadDocs(req,res) {
       'Content-Type': 'image/'+ext+'; charset=utf-8'
     });
     stream.pipe(res);
+    let message = resMessage.data( 607, [{key: '{field}',val: 'File'}, {key: '{status}',val: 'downloaded'}] )
+    //Update activity logs
+    allActivityLog.updateActivityLogs( fromId, toId, "File Download", message, folderName, subFolderName, filename)
   } catch (error) {
     res.status(401).send(resFormat.rError({message :error}))  
   }
@@ -1529,7 +1545,12 @@ function downloadZipfilesDinzy(req,res) {
 
 function downloadZipfiles(req,res) {
   let { query } = req.body; 
-  let filesPath = query.docPath;       
+  let filesPath = query.docPath;
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
   //let ext = query.downloadFileName.split('/');
   //let downloadFileName = ext[0]+ '-' + new Date().getTime();     
   
@@ -1581,6 +1602,9 @@ function downloadZipfiles(req,res) {
           // let downloadFilenames = downloadFileName+'.zip';
           // console.log("FINISH re BHO !! ",downloadfilePath,downloadFilenames)
           // downloadZip(downloadfilePath, downloadFilenames,res);           
+          let message = resMessage.data( 607, [{key: '{field}',val: 'Zip'}, {key: '{status}',val: 'downloaded'}] )
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Zip Download", message, folderName, subFolderName, downloadFileName)
         }); 
       } catch (error) {
         res.status(401).send(resFormat.rError({message :error}))  

@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
 const ActivityLogs = require('./../models/ActivityLogs.js')
 const User = require('./../models/Users')
 
-const updateActivityLogs = (fromUserId, toUserId, activity, activityMessage = "", section = null, sectionId = null ) => {
+const updateActivityLogs = (fromUserId, toUserId, activity, activityMessage = "", section = null, subSection = null, fileName = null ) => {
   return new Promise(function (resolve, reject) {
 
     User.findOne({ _id: fromUserId }, { firstName: 1, lastName: 1, profilePicture: 1 }, function (err, userList) {
@@ -20,12 +20,13 @@ const updateActivityLogs = (fromUserId, toUserId, activity, activityMessage = ""
       }
       else {
         var activityLog                 = new ActivityLogs();
-            activityLog.fromUserId      = fromUserId;
-            activityLog.toUserId        = toUserId;
+            activityLog.fromUserId      = typeof fromUserId === 'string' ? mongoose.Types.ObjectId(fromUserId) : fromUserId;
+            activityLog.toUserId        = typeof toUserId === 'string' ? mongoose.Types.ObjectId(toUserId) : toUserId;
             activityLog.activity        = activity;
             activityLog.description     = activityMessage;
             activityLog.section         = section;
-            activityLog.sectionId       = sectionId ? mongoose.Types.ObjectId(sectionId) : '';
+            activityLog.subSection      = subSection;
+            activityLog.fileName        = fileName;
             activityLog.createdOn       = new Date();
             activityLog.modifiedOn      = new Date();
             activityLog.createdBy       = mongoose.Types.ObjectId(fromUserId);
