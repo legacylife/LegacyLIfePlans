@@ -37,6 +37,7 @@ export class AdvisorRejectPopupComponent implements OnInit {
       approveRejectReason: this.itemForm.controls['approveRejectReason'].value
     }
     this.RequestData._id = this.selectedUserId;
+    this.RequestData.fromId = localStorage.getItem('userId')
     this.url = 'advisor/rejectadvisor';
 
     this.api.apiRequest('post', this.url, this.RequestData).subscribe(result => {

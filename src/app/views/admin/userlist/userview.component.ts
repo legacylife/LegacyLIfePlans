@@ -64,6 +64,7 @@ export class userviewComponent implements OnInit {
     private confirmService: AppConfirmService, private loader: AppLoaderService,
     private subscriptionservice:SubscriptionService) { }
   ngOnInit() {
+    this.userId = localStorage.getItem('userId')
     this.layoutConf = this.layout.layoutConf;
     this.dpPath = filePath;
     const locationArray = location.href.split('/')
@@ -97,7 +98,6 @@ export class userviewComponent implements OnInit {
         }
         if(this.row.userType != 'sysAdmin') {
           this.subscriptionservice.checkSubscriptionAdminPanel( this.row, ( returnArr )=> {
-            console.log("returnArr",returnArr)
             this.userCreateOn = returnArr.userCreateOn
             this.isSubscribedBefore = returnArr.isSubscribedBefore
             this.isSubscriptionCanceled = returnArr.isSubscriptionCanceled
@@ -137,7 +137,8 @@ export class userviewComponent implements OnInit {
           var query = {};
           const req_vars = {
             query: Object.assign({ _id: row._id }, query),
-            userType : 'advisor'
+            userType : 'advisor',
+            fromId:this.userId
           }
           this.api.apiRequest('post', 'advisor/activateadvisor', req_vars).subscribe(result => {
             this.loader.close();
@@ -201,29 +202,28 @@ export class userviewComponent implements OnInit {
     
     this.confirmService.reactivateReferEarnPopup({ title: title, message: this.statMsg, status: status }).subscribe(res => {
       if (res) {
-        console.error("res",res)
         this.loader.open();
         var query = {};
         const req_vars = {
           query: Object.assign({ _id: row._id }, query),
           userType : 'advisor',
-          status: status
+          status: status,
+          fromId:this.userId
         }
         this.api.apiRequest('post', 'advisor/reactivatereferearn', req_vars).subscribe(result => {
           this.loader.close();
           if (result.status == "error") {
             this.snack.open(result.data.message, 'OK', { duration: 4000 });
-          } else {
+          }
+          else {
             this.getUser()
             this.snack.open(result.data.message, 'OK', { duration: 4000 });
           }
         }, (err) => {
-          console.error(err);
           this.snack.open(err, 'OK', { duration: 4000 });
         })
       }
     })
-    
   }
 
   downloadFile = (filename) => {   
@@ -231,7 +231,11 @@ export class userviewComponent implements OnInit {
     this.docPath = filePath; 
     let query = {};
     let req_vars = {
-      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:this.userId,
+      toId:this.selectedUserId,
+      folderName:s3Details.advisorsDocumentsPath,
+      subFolderName:''
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.api.download('documents/downloadDocument', req_vars).subscribe(res => {

@@ -28,6 +28,8 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
   documentTypeList: any[] = documentTypes;
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
+  toUserId:string = ''
+
   constructor(  
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
@@ -59,6 +61,7 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
         }
         this.row = result.data;
         if(this.row){
+          this.toUserId = this.row.customerId 
           this.docPath = this.row.customerId+'/'+s3Details.myEssentialsDocumentsPath;
         }
       }
@@ -144,7 +147,11 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
     let query = {};
     var ZipName = "Idbox-"+Math.floor(Math.random() * Math.floor(999999999999999))+".zip"; 
     let req_vars = {
-      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query)
+      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query),
+      fromId:this.userId,
+      toId:this.toUserId,
+      folderName:s3Details.myEssentialsDocumentsPath,
+      subFolderName:'ID Box'
     }
     this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {
@@ -161,7 +168,11 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
   downloadFile = (filename) => {    
     let query = {};
     let req_vars = {
-      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:this.userId,
+      toId:this.toUserId,
+      folderName:s3Details.myEssentialsDocumentsPath,
+      subFolderName:'ID Box'
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {

@@ -150,7 +150,11 @@ export class DeceasedRequestsViewComponent implements OnInit {
     this.docPath = filePath; 
     let query = {};
     let req_vars = {
-      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:this.userId,
+      toId:this.selectedUserId,
+      folderName:s3Details.advisorsDocumentsPath,
+      subFolderName:''
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.api.download('documents/downloadDocument', req_vars).subscribe(res => {
