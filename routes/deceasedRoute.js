@@ -20,33 +20,37 @@ async function viewDeceased(req, res) {
     if (req.body.fields) {
       fields = req.body.fields
     }
-    let deceasedList = await MarkDeceased.findOne(query,fields, {_id:1})
+    let deceasedData = await MarkDeceased.findOne(query,fields, {_id:1}).populate('customerId');
     let findQuery = {}; let alreadyDeceased = '';
+
     if(query.trustId){
       findQuery = {customerId:query.customerId,trustId: { $ne: query.trustId },status:"Active"};
     }else if(query.advisorId){
       findQuery = {customerId:query.customerId,advisorId: { $ne: query.advisorId},status:"Active"};
     } 
-    if(!deceasedList){
-      alreadyDeceased = await MarkDeceased.findOne(findQuery, {_id:1,trustId:1,advisorId:1})
+    if(!deceasedData){
+      alreadyDeceased = await MarkDeceased.findOne(findQuery, {_id:1,trustId:1,advisorId:1}).populate('customerId');
     }
 
-    let result = {'deceasedList':deceasedList,'alreadyDeceased':alreadyDeceased}
+    let result = {'deceasedData':deceasedData,'alreadyDeceased':alreadyDeceased}
     res.status(200).send(resFormat.rSuccess(result));
 
   }
 
-  async function markDeceasedtest(req, res) {
+  async function markDeceasedTest(req, res) {
     let paramData = req.body;
-    console.log("paramData",paramData);
+    
     let legacyHolderInfo = await User.findOne({_id:'5d25d5f2362713b484d2c4e6'},{_id:1,username:1,firstName:1,lastName:1,deceased:1,lockoutLegacyPeriod:1});
     var period = constants.lockLegacyPeriodType[legacyHolderInfo.lockoutLegacyPeriod];
     var today               = new Date();
-    var lockoutLegacyDate   = new Date().setDate(today.getDate()+period);
-    console.log("period===> ",period);
+
+    if(period==1){
+      var lockoutLegacyDate = new Date(new Date().getTime() + (24 * 60 * 60 * 1000));
+    }else{
+      var lockoutLegacyDate   = new Date().setDate(today.getDate()+period);
+    }
+    console.log("period===> ",period,"date ==>",lockoutLegacyDate);
     await User.updateOne({_id:'5d25d5f2362713b484d2c4e6'},{lockoutLegacyDate:lockoutLegacyDate});
-    // console.log("Date",today,' next date -> ',lockoutLegacyDate,' nect -->',ten_days_ago);
-    // console.log("lockoutLegacyPeriod",constants.lockLegacyPeriodType[legacyHolderInfo.lockoutLegacyPeriod]);
     let result = {"message": "Mark as deceased successfully!"}
     res.status(200).send(resFormat.rSuccess(result));
   }
@@ -123,7 +127,7 @@ async function viewDeceased(req, res) {
           searchQuery = {_id:paramData.customerId,'deceased.deceasedinfo.adminId':ObjectId(adminId)};//'deceased.deceasedinfo.status':'Active',
          }
                   
-         let legacyHolderInfo = await User.findOne(searchQuery,{_id:1,username:1,firstName:1,lastName:1,deceased:1});
+         let legacyHolderInfo = await User.findOne(searchQuery,{_id:1,username:1,firstName:1,lastName:1,deceased:1,lockoutLegacyPeriod:1});
          let deceasedinfo = [];
          if(advisorId){
            deceasedinfo = {'status':'Active','userType':userType,'trustId':'','advisorId':mongoose.Types.ObjectId(advisorId),'createdOn':new Date()}
@@ -135,7 +139,7 @@ async function viewDeceased(req, res) {
           deceasedinfo = {'status':'Active','userType':userType,'advisorId':'','trustId':'','createdOn':new Date()}//'adminId':mongoose.Types.ObjectId(adminId),
          }
        
-         let legacyHolderData = await User.findOne({_id:paramData.customerId},{_id:1,username:1,firstName:1,lastName:1,deceased:1});
+         let legacyHolderData = await User.findOne({_id:paramData.customerId},{_id:1,username:1,firstName:1,lastName:1,deceased:1,lockoutLegacyPeriod:1});
 
          let OldDeceasedinfo = deceasedinfo;
          if(legacyHolderInfo && legacyHolderInfo.deceased.deceasedinfo){
@@ -163,14 +167,20 @@ async function viewDeceased(req, res) {
          if(!legacyHolderInfo){
           legacyHolderInfo = legacyHolderData;
          }
+         let lockoutLegacyDate = '';
+         if(finalStatus == 'Active'){
+          lockoutLegacyDate = await getLegacyDate(legacyHolderInfo.lockoutLegacyPeriod);
+          console.log('lockoutLegacyDate:- ',lockoutLegacyDate,'Period:- ',legacyHolderInfo.lockoutLegacyPeriod);
+         }
+         
          //Customer needs to inform he is set mark as deceased now.
-         await sendDeceasedNotifyMails('CustomerMarkAsDeceasedNotificationMail',legacyHolderInfo.username,legacyHolderInfo.firstName,legacyHolderInfo.lastName,legacyHolderName,deceasedFromName,userType);
+         await sendDeceasedNotifyMails('CustomerMarkAsDeceasedNotificationMail',legacyHolderInfo.username,legacyHolderInfo.firstName,legacyHolderInfo.lastName,legacyHolderName,deceasedFromName,userType,lockoutLegacyDate);
          let deceasedArray = {'status':finalStatus,'trusteeCnt':trustList.length,'advisorCnt':advisorList.length,deceasedinfo:OldDeceasedinfo};
-         await User.updateOne({_id:paramData.customerId},{deceased:deceasedArray});
+         await User.updateOne({_id:paramData.customerId},{deceased:deceasedArray,lockoutLegacyDate:lockoutLegacyDate});
            
-        await sendDeceasedNotification('MarkAsDeceasedNotificationMail',trustList,advisorList,legacyHolderName,deceasedFromName,userType,fromUserId);
-        let result = { "message": "Mark as deceased successfully!" }
-        res.status(200).send(resFormat.rSuccess(result));
+         await sendDeceasedNotification('MarkAsDeceasedNotificationMail',trustList,advisorList,legacyHolderName,deceasedFromName,userType,fromUserId);
+         let result = { "message": "Mark as deceased successfully!" }
+         res.status(200).send(resFormat.rSuccess(result));
   }
 
   async function getAllTrustUsers(customerId) {
@@ -182,6 +192,22 @@ async function viewDeceased(req, res) {
     respArray.push({trustList:trustList},{advisorList:advisorList});
 
     return respArray;
+  }
+
+  async function getLegacyDate(lockoutLegacyPeriod) {
+    var lockoutLegacyDate = '';
+    if(lockoutLegacyPeriod){
+      var period = constants.lockLegacyPeriodType[lockoutLegacyPeriod];
+      var today = new Date(); 
+      if(period){
+        if(period==1){
+          lockoutLegacyDate = new Date(new Date().getTime() + (24 * 60 * 60 * 1000));
+        }else{
+          lockoutLegacyDate   = new Date().setDate(today.getDate()+period);
+        }
+      }
+    }
+      return lockoutLegacyDate;
   }
 
 
@@ -219,7 +245,7 @@ async function viewDeceased(req, res) {
     }
   }
 
-  function sendDeceasedNotifyMails(template,emailId,toFname,toLname,legacyHolderName,deceasedFromName,userType) {
+  function sendDeceasedNotifyMails(template,emailId,toFname,toLname,legacyHolderName,deceasedFromName,userType,lockoutLegacyDate='') {
     
     let serverUrl = constants.clientUrl + "/customer/signin";
       emailTemplatesRoute.getEmailTemplateByCode(template).then((template) => {
@@ -229,10 +255,11 @@ async function viewDeceased(req, res) {
           let body = template.mailBody.replace("{ToFname}",toFname);
           body = body.replace("{LegacyHolderName}",legacyHolderName);
           body = body.replace("{deceasedFromName}",deceasedFromName);
+          body = body.replace("{lockoutLegacyDate}",lockoutLegacyDate);
           body = body.replace("{userType}",userType);
           body = body.replace("{SERVER_LINK}",serverUrl);
           const mailOptions = {
-            to: emailId,
+            to: 'pankajk@arkenea.com',
             subject: mailSubject,
             html: body
           }
@@ -257,20 +284,47 @@ function revokeDeceased(req, res) {
           if(!userType){
            userType = deceasedDetails.userType;
           }
+
+          let searchDeceasedQuery = {};  
           if(userType=='customer'){
             trustId = deceasedDetails.trustId;
+            searchQuery = {customerId:deceasedDetails.customerId,'trustId':ObjectId(revokeId)};
           }else if(userType=='advisor'){
             advisorId = deceasedDetails.advisorId;
+            searchQuery = {customerId:deceasedDetails.customerId,'advisorId':ObjectId(revokeId)};
           }else if(userType=='sysadmin'){
             adminId = deceasedDetails.adminId;
+            searchQuery = {customerId:deceasedDetails.customerId,'adminId':ObjectId(revokeId)};
           }
-         
+          let MarkDeceaseddata = '';
+          if(searchDeceasedQuery){
+            MarkDeceaseddata = await MarkDeceased.findOne(searchDeceasedQuery);
+          }
+            if (MarkDeceaseddata == null) {
+              var insert = new MarkDeceased();
+              insert.customerId = revokeId;
+              insert.userType = userType;
+              if(advisorId){    
+                insert.advisorId = ObjectId(advisorId);
+              }
+              if(trustId){    
+                insert.trustId = ObjectId(trustId);
+              }
+              if(adminId){    
+                insert.adminId = ObjectId(adminId);
+              }
+              insert.status = 'Revoke';
+              insert.createdOn = new Date();
+              insert.modifiedOn = new Date();
+              insert.save();
+            }
+
           let AllusersData = await getAllTrustUsers(deceasedDetails.customerId);
           let trustList = AllusersData[0]['trustList'];
           let advisorList = AllusersData[1]['advisorList'];
           var totalCnt = advisorList.length + trustList.length;
           let finalStatus = 'Revoke';
-
+          
           let proquery = {status:"Revoke",revokeId:ObjectId(revokeId),'modifiedOn': new Date()};
            await MarkDeceased.updateMany({customerId:deceasedDetails.customerId,status: { $ne: 'Revoke' }},{$set: proquery })
 
@@ -323,8 +377,8 @@ function revokeDeceased(req, res) {
                 legacyHolderInfo = LegacyUserData;
                 legacyHolderName = legacyHolderInfo.firstName+' '+legacyHolderInfo.lastName;
             }
-            let deceasedArray = {'status':finalStatus,'trusteeCnt':trustList.length,'advisorCnt':advisorList.length,deceasedinfo:OldDeceasedinfo};
-            await User.updateOne({_id:deceasedDetails.customerId},{deceased:deceasedArray});
+            let deceasedArray = {'status':finalStatus,revokeId:ObjectId(revokeId),'trusteeCnt':trustList.length,'advisorCnt':advisorList.length,deceasedinfo:OldDeceasedinfo};
+            await User.updateOne({_id:deceasedDetails.customerId},{deceased:deceasedArray,lockoutLegacyDate:''});
            
             //Customer needs to inform he is set mark as deceased now.
             await sendDeceasedNotifyMails('CustomerRevokeAsDeceasedNotificationMail',legacyHolderInfo.username,legacyHolderInfo.firstName,legacyHolderInfo.lastName,legacyHolderName,deceasedFromName,userType);            
@@ -334,6 +388,82 @@ function revokeDeceased(req, res) {
           }
     })
 }
+
+function revokeOwnerDeceased(req, res) {
+  let {query} = req.body;
+  let {revokeId} = req.body;    
+  let {userType} = req.body;
+ MarkDeceased.findOne(query,async function (err,deceasedDetails){
+     if (err) {
+       res.status(401).send(resFormat.rError(err));
+     } else {
+   if(revokeId==deceasedDetails.customerId){
+      let trustId = advisorId = adminId = '';
+       if(!userType){
+        userType = deceasedDetails.userType;
+       }
+       let searchDeceasedQuery = {};  
+       if(userType=='customer'){
+        trustId = deceasedDetails.trustId;
+        searchDeceasedQuery = {customerId:deceasedDetails.customerId,'trustId':ObjectId(revokeId)};
+       }else if(userType=='advisor'){
+        advisorId = deceasedDetails.advisorId;
+        searchDeceasedQuery = {customerId:deceasedDetails.customerId,'advisorId':ObjectId(revokeId)};
+       }else if(userType=='sysadmin'){
+        adminId = deceasedDetails.adminId;
+        searchDeceasedQuery = {customerId:deceasedDetails.customerId,'adminId':ObjectId(revokeId)};
+       }
+       let MarkDeceaseddata = '';
+       if(searchDeceasedQuery){
+          MarkDeceaseddata = await MarkDeceased.findOne(searchDeceasedQuery);
+       }
+
+       if (MarkDeceaseddata == null) {
+           var insert = new MarkDeceased();
+           insert.customerId = deceasedDetails.customerId;
+           insert.userType = userType;
+           if(advisorId){    
+             insert.advisorId = ObjectId(advisorId);
+           }
+           if(trustId){    
+             insert.trustId = ObjectId(trustId);
+           }
+           if(adminId){    
+             insert.adminId = ObjectId(adminId);
+           }
+           insert.status = 'Revoke';
+           insert.createdOn = new Date();
+           insert.modifiedOn = new Date();
+           insert.save();
+         }
+         let proquery = {status:"Revoke",revokeId:ObjectId(revokeId),'modifiedOn': new Date()};
+         await MarkDeceased.updateMany({customerId:deceasedDetails.customerId,status: { $ne: 'Revoke' }},{$set: proquery })
+
+         let LegacyUserData = await User.findOne({_id:deceasedDetails.customerId},{_id:1,username:1,firstName:1,lastName:1,deceased:1});
+         let updateDeceasedinfo = {'status':'Revoke','userType':userType,trustId:ObjectId(revokeId),'createdOn':new Date()};
+         
+         let LegacyUserDataInfo = LegacyUserData.deceased.deceasedinfo;
+         let OldDeceasedinfo =  LegacyUserDataInfo.concat(updateDeceasedinfo);
+
+         let AllusersData = await getAllTrustUsers(deceasedDetails.customerId);
+         let trustList = AllusersData[0]['trustList'];let advisorList = AllusersData[1]['advisorList'];
+
+         let deceasedArray = {status:'Revoke',revokeId:ObjectId(revokeId),'trusteeCnt':trustList.length,'advisorCnt':advisorList.length,deceasedinfo:OldDeceasedinfo};
+         await User.updateOne({_id:deceasedDetails.customerId},{deceased:deceasedArray,lockoutLegacyDate:''});
+        
+         let legacyHolderName = LegacyUserData.firstName+' '+LegacyUserData.lastName;
+         await sendDeceasedNotification('OwnerRevokeAsDeceasedNotificationMail',trustList,advisorList,legacyHolderName,'',userType,revokeId);
+        
+          let result = { "message": "Revoke deceased successfully!",'result':deceasedDetails }
+          res.status(200).send(resFormat.rSuccess(result));
+        }else{
+            let result = { "message": "Invalid Request!"}
+            res.status(200).send(resFormat.rSuccess(result));
+         }
+    }
+ })
+}
+
 
  async function deceaseListing(req, res) {
     let { query } = req.body
@@ -363,12 +493,10 @@ function revokeDeceased(req, res) {
         res.status(200).send(resFormat.rSuccess(result));
       }
     }).populate('trustId').populate('advisorId');
-
 }
 
  function deceaseViewDetails(req, res) {
   let { query,order } = req.body;
-  
    MarkDeceased.find(query, function (err, deceasedData) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -377,19 +505,19 @@ function revokeDeceased(req, res) {
       HiredAdvisors.find({customerId:query.customerId},function (err, advisorList) {
         if (err) {
           res.status(401).send(resFormat.rError(err))
-        } else {
-         
+        } else {         
           let result = { "message": 'deceased records',deceasedData:deceasedData,advisorsList:advisorList}
           res.status(200).send(resFormat.rSuccess(result));
         }
       }).sort(order).populate('advisorId');
      }
-  }).sort(order).populate('customerId').populate('trustId').populate('advisorId');
+  }).sort(order).populate('customerId').populate('trustId').populate('advisorId').populate('adminId').populate('revokeId')
  }
 
 router.post("/viewDeceaseDetails", viewDeceased)
 router.post("/markAsDeceased", markDeceased)
 router.post("/revokeAsDeceased", revokeDeceased)
+router.post("/revokeOwnDeceased", revokeOwnerDeceased)
 router.post("/deceaseList", deceaseListing)
 router.post("/deceaseView", deceaseViewDetails)
 router.post("/deceaseExecutor", deceaseExecutorsDetails)
