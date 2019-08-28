@@ -132,10 +132,10 @@ export class NavigationService {
       state: '/advisor'
     },
     {
-      name: 'Coachs Corner',
+      name: 'Coach’s Corner',
       type: 'link',
       icon: 'book',
-      state: '/advisor/dashboard'
+      state: '/advisor/coachs-corner'
     },
     {
       name: 'Invite ad',
@@ -180,7 +180,7 @@ export class NavigationService {
       name: 'Coach’s Corner',
       type: 'link',
       icon: 'book',
-      state: '/customer/dashboard'
+      state: '/advisor/coachs-corner'
     },
     {
       name: 'Invite',
