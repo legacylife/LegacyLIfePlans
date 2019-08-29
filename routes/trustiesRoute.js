@@ -227,7 +227,7 @@ function getTrusteeDetails(req, res) {
     } else {
       res.status(200).send(resFormat.rSuccess(trustDetails));
     }
-  })
+  }).populate('customerId')
 }
 
 function getSubSectionsList(req, res){

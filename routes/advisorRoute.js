@@ -680,7 +680,7 @@ function getAdvisorDetails(req, res) {
     } else {
       res.status(200).send(resFormat.rSuccess(advisorDetails));
     }
-  })
+  }).populate('customerId');
 }
 
 // Function to activate advisoradvisor

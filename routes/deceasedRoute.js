@@ -259,7 +259,7 @@ async function viewDeceased(req, res) {
           body = body.replace("{userType}",userType);
           body = body.replace("{SERVER_LINK}",serverUrl);
           const mailOptions = {
-            to: 'pankajk@arkenea.com',
+            to: emailId,//'pankajk@arkenea.com',
             subject: mailSubject,
             html: body
           }
