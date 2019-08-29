@@ -59,9 +59,8 @@
     <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="25" fxFlex.lg="20" fxFlex.xl="20" class="reverse--order--sm">
       <div class="right--panel--wrapper">
         <div fxLayout="row wrap">
-          <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+          <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" *ngIf="invitedMembersCount < targetCount">
             <div class="right--boxes">
-
               <mat-card class="p-0" *ngIf="invitedMembersCount < targetCount">
                 <mat-card-title class="">
                   <div class="card-title-text">Invitation Status</div>
@@ -76,7 +75,6 @@
                   <button mat-raised-button class="llp--primary--btn" (click)="openInviteModal({})">Invite Now</button>
                 </mat-card-content>
               </mat-card>
-
               <mat-card class="p-0 target--completed" *ngIf="invitedMembersCount >= targetCount && !isSubscribedBefore">
                 <mat-card-content class="">
                   <div class="header--wrapper">
@@ -93,8 +91,6 @@
                   </div>
                 </mat-card-content>
               </mat-card>
-
-
             </div>
           </div>
           <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">

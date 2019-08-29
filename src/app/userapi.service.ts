@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable'
 import { map } from 'rxjs/operators/map'
 import { Router } from '@angular/router'
 import { serverUrl } from './config'
+import { forEach } from "lodash";
 interface TokenResponse {
   status: string,
   data: {
@@ -357,7 +358,14 @@ export class UserAPIService {
         query: Object.assign({ customerId: customerId, trustId: loggedinCustomerId,status:"Active" })
       }
      await this.apiRequest('post', 'trustee/view-details', params).subscribe(result => {
-        this.userAccess = result.data.userAccess;
+        this.userAccess = result.data.userAccess; 
+        if(result.data.customerId.deceased.status=='Active'){//When user deceased afterDeath files shoulde be display           
+           Object.keys(this.userAccess).forEach((key,index) => {   
+             if(this.userAccess[key]=='afterDeath'){
+              this.userAccess[key] = 'now';
+             }          
+           });
+        }
         callback(this.userAccess)
       });
     }else{
@@ -366,6 +374,13 @@ export class UserAPIService {
       }
       await this.apiRequest('post', 'advisor/view-details', params).subscribe(result => {
         this.userAccess = result.data.userAccess;
+        if(result.data.customerId.deceased.status=='Active'){//When user deceased afterDeath files shoulde be display
+          Object.keys(this.userAccess).forEach((key,index) => {   
+            if(this.userAccess[key]=='afterDeath'){
+             this.userAccess[key] = 'now';
+            }          
+          });
+        }
         callback(this.userAccess)
       });
     }

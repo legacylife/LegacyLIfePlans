@@ -21,18 +21,10 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   public isSideNavOpen: boolean;
   public viewMode: string = 'grid-view'; 
   public currentPage: any;
-  dayFirst = true;
-  daySeco = false;
   layout = null;
   isProUser: boolean = false
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   
-  public products: any[];
-  public categories: any[];
-  public activeCategory: string = 'all';
-  public filterForm: FormGroup;
-  public cart: any[];
-  public cartData: any;
   customerLegaicesId:string=''
   activeHeading: string = "";
   documentId: string = "";
@@ -55,14 +47,6 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
-    // this.categories$ = this.shopService.getCategories();
-    // this.categories = ["My essentials", "Pets"]
-    // this.products = []
-    // this.cartData = []
-    // this.filterForm = this.fb.group({
-    //   search: ['']
-    // })
-    
     let urlData = this.userapi.getURLData();
     if(urlData.lastThird == 'legacies' && urlData.lastOne){
       this.customerLegaicesId = urlData.lastOne
@@ -88,7 +72,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
       }   
   }
   
-  checkDeceasedStatus(query = {},){
+  checkDeceasedStatus(query = {}){
     let req_vars = {};
     if(localStorage.getItem("endUserType")=='customer'){
       req_vars = {
@@ -125,6 +109,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
           //this.alreadyRevokeAsDeceased = true;
           this.revokeAsDeceased = true;
           if(result.data.alreadyDeceased.customerId.deceased && result.data.alreadyDeceased.customerId.deceased.status=='Active'){
+            this.markAsDeceased = false;
             this.revokeAsDeceased = false;
             this.finallyDeceased = true;
           }
@@ -136,19 +121,11 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
 
   }
 
-  showSecoDay() {
-    this.dayFirst = false;
-    this.daySeco = true;
-  }
-  
   ngOnDestroy() {
 
   }
 
-  setActiveCategory(category) {
-    this.activeCategory = category;
-    this.filterForm.controls['category'].setValue(category)
-  }
+
 
   toggleSideNav() {
     if(this.layout.isMobile){

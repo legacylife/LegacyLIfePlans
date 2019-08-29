@@ -9,7 +9,7 @@ import { DeceasedComponent } from '../../../views/deceased-modal/deceased-modal.
 @Injectable()
 export class UserAuthGuard implements CanActivate {
   public authToken;
-  private isAuthenticated = false; // Set this value dynamically
+  private isAuthenticated = false; //Set this value dynamically
   private userInfo: any
   private urlData: any
   private userUrlType: any
@@ -19,19 +19,18 @@ export class UserAuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean{
-      this.checkDeceased();
+     this.checkDeceased();
      
-      this.userInfo = this.userapi.getUserInfo()
+      this.userInfo = this.userapi.getUserInfo();
       var pathArray = window.location.pathname.split('/');
       this.userUrlType = pathArray[1];
-      let currentUrl = state.url
-      let acceptedUsers = ['advisor','customer']
+      let currentUrl = state.url;
+      let acceptedUsers = ['advisor','customer'];
 
       if((this.userInfo && this.userInfo.endUserType == '')){
         this.router.navigateByUrl('/signin');
         return false;
       }
-      //console.log(acceptedUsers.indexOf(this.userInfo.endUserType))
       if(this.userInfo && this.userInfo.endUserType!= '' && acceptedUsers.indexOf(this.userInfo.endUserType) >= 0 ) {
         this.subscriptionservice.checkSubscription( ( returnArr )=> {
           let isProuser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
@@ -57,6 +56,7 @@ export class UserAuthGuard implements CanActivate {
   }
 
   checkDeceased(){ 
+    if(localStorage.getItem("endUserId")){
     let DeceasedFlag = localStorage.getItem("endUserDeceased");
      if(DeceasedFlag=='true'){
        let dialogRef: MatDialogRef<any> = this.dialog.open(DeceasedComponent, {
@@ -71,11 +71,12 @@ export class UserAuthGuard implements CanActivate {
          }
        })
      }else{
-      this.autologFunction();
+          this.autologFunction();
      }
+    }
  }
 
-  autologFunction(){ 
+autologFunction(){ 
      // console.log("LockScreen Here >> ")
      //https://www.npmjs.com/package/angular-user-idle
      let IdleFlag = localStorage.getItem("setIdleFlag");
@@ -88,7 +89,7 @@ export class UserAuthGuard implements CanActivate {
       // count => console.log("home here",count)
      );    
      this.userIdle.onTimeout().subscribe(() => this.stopWatching());
-  }
+}
 
   stop() {
     this.userIdle.stopTimer();

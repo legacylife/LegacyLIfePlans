@@ -66,6 +66,7 @@ export class SigninComponent implements OnInit {
         localStorage.setItem("endUserProSubscription", 'no');
         localStorage.setItem("endUserSubscriptionAddon", userData.addOnGiven);
         localStorage.setItem("endisReferAndEarn", userData.isReferAndEarn);
+        localStorage.setItem("setIdleFlag",'');
         localStorage.setItem("endUserDeceased",'');
         localStorage.setItem("endUserlockoutLegacyDate",'');
         if(userData.deceased && userData.deceased.status=='Active'){
