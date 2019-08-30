@@ -545,8 +545,9 @@ function revokeOwnerDeceased(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
+      
      // let advisorList =  HiredAdvisors.find({customerId:query.customerId});      //,status:{ $ne: 'Rejected' }
-      HiredAdvisors.find({customerId:query.customerId},function (err, advisorList) {
+      HiredAdvisors.find({customerId:query.customerId,status:"Active"},function (err, advisorList) {
         if (err) {
           res.status(401).send(resFormat.rError(err))
         } else {         
