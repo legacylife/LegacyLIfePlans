@@ -77,7 +77,7 @@ function view(req, res) {
 //function get details of global settings
 function getDetails(req, res) {
   FreeTrailPeriodSetting.findOne( {}, {} , function(err, freeTrialPeriodDetails) {
-    console.log("freeTrialPeriodDetails",freeTrialPeriodDetails)
+    //console.log("freeTrialPeriodDetails",freeTrialPeriodDetails)
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {

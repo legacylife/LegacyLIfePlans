@@ -1061,7 +1061,7 @@ function autoRenewalUpdate(req, res) {
                 }
                 let message = resMessage.data( 607, [{key: '{field}',val: 'Auto renewal status'}, {key: '{status}',val: 'updated'}] )
                 allActivityLog.updateActivityLogs(userProfile._id, userProfile._id, 'Auto Renewal Status', message,'Account settings')
-                res.status(200).send(resFormat.rSuccess({'autoRenewalStatus': autoRenewalStatus, 'message':messahe}));
+                res.status(200).send(resFormat.rSuccess({'autoRenewalStatus': autoRenewalStatus, 'message':message}));
               })
           });
         }
