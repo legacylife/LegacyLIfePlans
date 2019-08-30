@@ -31,6 +31,7 @@ export class UserAPIService {
   private accessSection: any
   private fileAccessInfo:any
   private userAccess:any={}
+  private userDeathFilesCnt:any={}
   private returnData:any;
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -352,38 +353,55 @@ export class UserAPIService {
 
   
  async getUserAccess(customerId, callback){
-    let loggedinCustomerId = localStorage.getItem("endUserId")
+    let loggedinCustomerId = localStorage.getItem("endUserId");
+     let response = [];
     if (localStorage.getItem("endUserType") == "customer") {
       const params = {
         query: Object.assign({ customerId: customerId, trustId: loggedinCustomerId,status:"Active" })
       }
      await this.apiRequest('post', 'trustee/view-details', params).subscribe(result => {
-        this.userAccess = result.data.userAccess; 
-        if(result.data.customerId.deceased.status=='Active'){//When user deceased afterDeath files shoulde be display           
-           Object.keys(this.userAccess).forEach((key,index) => {   
-             if(this.userAccess[key]=='afterDeath'){
-              this.userAccess[key] = 'now';
-             }          
-           });
-        }
-        callback(this.userAccess)
+        //this.userAccess = result.data.userAccess; 
+        response = this.getCustomerUserAccess(result.data);
+        this.userAccess = response['userAccess'];
+        this.userDeathFilesCnt = response['deathFilesCount'];
+        callback(this.userAccess,this.userDeathFilesCnt)
       });
     }else{
       const params = {
         query: Object.assign({ customerId: customerId, advisorId: loggedinCustomerId,status:"Active" })
       }
       await this.apiRequest('post', 'advisor/view-details', params).subscribe(result => {
-        this.userAccess = result.data.userAccess;
-        if(result.data.customerId.deceased.status=='Active'){//When user deceased afterDeath files shoulde be display
-          Object.keys(this.userAccess).forEach((key,index) => {   
-            if(this.userAccess[key]=='afterDeath'){
-             this.userAccess[key] = 'now';
-            }          
-          });
-        }
-        callback(this.userAccess)
+       // this.userAccess = result.data.userAccess;
+       response =  this.getCustomerUserAccess(result.data);
+       this.userAccess = response['userAccess'];
+       this.userDeathFilesCnt = response['deathFilesCount'];
+        callback(this.userAccess,this.userDeathFilesCnt)
       });
     }
+  }
+
+
+  private getCustomerUserAccess(data){
+      let userAccess = data.userAccess;      
+      let response = [];
+      response['userAccess'] = userAccess;
+      let count = 0;
+      Object.keys(userAccess).forEach((key,index) => {//After death files count
+        if(userAccess[key]=='afterDeath'){
+         count++;
+        }          
+        response['deathFilesCount'] = count;
+      });
+      if(data && data.customerId && data.customerId.deceased && data.customerId.deceased.status=='Active'){//When user deceased afterDeath files shoulde be display           
+        Object.keys(userAccess).forEach((key,index) => {   
+          if(userAccess[key]=='afterDeath'){
+           userAccess[key] = 'now';
+          }          
+        });
+        response['userAccess'] = userAccess;
+      }
+
+      return response;
   }
 
 }

@@ -9,6 +9,7 @@ import { MarkAsDeceasedComponent } from './../../../views/mark-as-deceased-modal
 import { Router } from '@angular/router';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-advisor-home',
   templateUrl: './advisor-home.component.html',
@@ -23,6 +24,7 @@ export class AdvisorHomeComponent implements OnInit, OnDestroy {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   customerLegaicesId:string=''
   activeHeading: string = "";
+  shareDeathFileCount: string = "";
   documentId: string = "";
   revokeId: string = "";
   myLegacy:boolean = true
@@ -33,8 +35,8 @@ export class AdvisorHomeComponent implements OnInit, OnDestroy {
   finallyDeceased:boolean = false;
   datas: any;
   constructor(
-    private fb: FormBuilder,private snackBar: MatSnackBar,private userapi: UserAPIService,
-    private router: Router,private loader: AppLoaderService,private dialog: MatDialog,private confirmService: AppConfirmService,
+    private fb: FormBuilder,private snack: MatSnackBar,private userapi: UserAPIService,
+    private router: Router,private loader: AppLoaderService,private dialog: MatDialog,private confirmService: AppConfirmService,private shareData: DataSharingService   
   ) { }
 
   ngOnInit() {
@@ -91,6 +93,9 @@ export class AdvisorHomeComponent implements OnInit, OnDestroy {
             this.finallyDeceased = true;
           }
         }
+        this.shareData.userShareDataDeathFileSource.subscribe((shareDeathFileCount) => {
+          this.shareDeathFileCount = shareDeathFileCount;
+        })
       }
     }, (err) => {
       console.error(err);

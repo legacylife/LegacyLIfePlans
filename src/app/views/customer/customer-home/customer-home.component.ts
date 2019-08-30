@@ -10,6 +10,7 @@ import { LayoutService } from 'app/shared/services/layout.service';
 import { MarkAsDeceasedComponent } from './../../../views/mark-as-deceased-modal/mark-as-deceased-modal.component';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './customer-home.component.html',
@@ -29,6 +30,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   activeHeading: string = "";
   documentId: string = "";
   revokeId: string = "";
+  shareDeathFileCount: string = "";
   myLegacy:boolean = true
   sharedLegacies:boolean = false;
   markAsDeceased:boolean = false;
@@ -41,6 +43,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
     private userapi:UserAPIService,
     private loader: AppLoaderService,
     private dialog: MatDialog,private confirmService: AppConfirmService,
+    private shareData: DataSharingService   
   ) {
     this.layout = layoutServ.layoutConf
    }
@@ -114,6 +117,10 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
             this.finallyDeceased = true;
           }
         }
+
+        this.shareData.userShareDataDeathFileSource.subscribe((shareDeathFileCount) => {
+          this.shareDeathFileCount = shareDeathFileCount;
+        })
       }
     }, (err) => {
       console.error(err);

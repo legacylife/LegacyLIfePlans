@@ -62,7 +62,8 @@ export class CustomerEssentialDayOneComponent implements OnInit {
    
     if (this.urlData.lastThird == "legacies") {
       this.userId = this.urlData.lastOne;
-      this.userapi.getUserAccess(this.userId, (userAccess) => {
+      this.userapi.getUserAccess(this.userId, (userAccess,userDeathFilesCnt) => { 
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         this.PersonalProfileManagementSection = userAccess.PersonalProfileManagement 
         this.IDBoxManagementSection= userAccess.IDBoxManagement 
         this.MyProfessionalsManagementSection= userAccess.MyProfessionalsManagement 

@@ -19,7 +19,7 @@ export class UserAuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean{
-     this.checkDeceased();
+    //8 this.checkDeceased();
      
       this.userInfo = this.userapi.getUserInfo();
       var pathArray = window.location.pathname.split('/');
@@ -64,7 +64,6 @@ export class UserAuthGuard implements CanActivate {
          disableClose: true
        }) 
        dialogRef.afterClosed().subscribe(res => {
-        console.log("false")
          if (!res) {
            // If user press cancel
            return;
