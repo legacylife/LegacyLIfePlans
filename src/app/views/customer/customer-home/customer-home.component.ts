@@ -10,6 +10,7 @@ import { LayoutService } from 'app/shared/services/layout.service';
 import { MarkAsDeceasedComponent } from './../../../views/mark-as-deceased-modal/mark-as-deceased-modal.component';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './customer-home.component.html',
@@ -21,47 +22,34 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   public isSideNavOpen: boolean;
   public viewMode: string = 'grid-view'; 
   public currentPage: any;
-  dayFirst = true;
-  daySeco = false;
   layout = null;
   isProUser: boolean = false
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   
-  public products: any[];
-  public categories: any[];
-  public activeCategory: string = 'all';
-  public filterForm: FormGroup;
-  public cart: any[];
-  public cartData: any;
   customerLegaicesId:string=''
   activeHeading: string = "";
   documentId: string = "";
   revokeId: string = "";
+  shareDeathFileCount: string = "";
   myLegacy:boolean = true
   sharedLegacies:boolean = false;
   markAsDeceased:boolean = false;
   revokeAsDeceased:boolean = false;
   alreadyRevokeAsDeceased:boolean = false;
+  finallyDeceased:boolean = false;
   datas: any;
   constructor(private layoutServ: LayoutService,
     private fb: FormBuilder,private snack: MatSnackBar,
     private userapi:UserAPIService,
     private loader: AppLoaderService,
     private dialog: MatDialog,private confirmService: AppConfirmService,
+    private shareData: DataSharingService   
   ) {
     this.layout = layoutServ.layoutConf
    }
 
   ngOnInit() {
     this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
-    // this.categories$ = this.shopService.getCategories();
-    // this.categories = ["My essentials", "Pets"]
-    // this.products = []
-    // this.cartData = []
-    // this.filterForm = this.fb.group({
-    //   search: ['']
-    // })
-    
     let urlData = this.userapi.getURLData();
     if(urlData.lastThird == 'legacies' && urlData.lastOne){
       this.customerLegaicesId = urlData.lastOne
@@ -87,7 +75,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
       }   
   }
   
-  checkDeceasedStatus(query = {},){
+  checkDeceasedStatus(query = {}){
     let req_vars = {};
     if(localStorage.getItem("endUserType")=='customer'){
       req_vars = {
@@ -108,18 +96,31 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
         this.markAsDeceased = true;
         this.revokeAsDeceased = false;
         this.revokeId = this.userId;
-        if(result.data.deceasedList){    
-            this.datas = result.data.deceasedList;       
+        if(result.data.deceasedData){    
+            this.datas = result.data.deceasedData;       
             this.documentId = this.datas._id;
             this.markAsDeceased = false;
             this.revokeAsDeceased = true;
+            if(this.datas.customerId.deceased && this.datas.customerId.deceased.status=='Active'){
+              this.revokeAsDeceased = false;
+              this.finallyDeceased = true;
+            }
         }
 
         if(result.data.alreadyDeceased){    
           this.documentId = result.data.alreadyDeceased._id;
           //this.alreadyRevokeAsDeceased = true;
           this.revokeAsDeceased = true;
+          if(result.data.alreadyDeceased.customerId.deceased && result.data.alreadyDeceased.customerId.deceased.status=='Active'){
+            this.markAsDeceased = false;
+            this.revokeAsDeceased = false;
+            this.finallyDeceased = true;
+          }
         }
+
+        this.shareData.userShareDataDeathFileSource.subscribe((shareDeathFileCount) => {
+          this.shareDeathFileCount = shareDeathFileCount;
+        })
       }
     }, (err) => {
       console.error(err);
@@ -127,19 +128,11 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
 
   }
 
-  showSecoDay() {
-    this.dayFirst = false;
-    this.daySeco = true;
-  }
-  
   ngOnDestroy() {
 
   }
 
-  setActiveCategory(category) {
-    this.activeCategory = category;
-    this.filterForm.controls['category'].setValue(category)
-  }
+
 
   toggleSideNav() {
     if(this.layout.isMobile){

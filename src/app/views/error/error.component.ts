@@ -17,7 +17,8 @@ export class ErrorComponent implements OnInit {
     this.userType = localStorage.getItem("endUserType");
     if(this.userId){
       this.loginFlag = false;
-      this.link = '/'+this.userType+'/dashbaord';console.log('links=>',this.link);
+      console.log('type',this.userType,'id',this.userId)
+    //  this.link = '/'+this.userType+'/dashbaord';console.log('links=>',this.link);
     }else{
       this.loginFlag = true;
     }    

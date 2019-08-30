@@ -179,14 +179,14 @@
                 <mat-divider></mat-divider>
               </mat-card-title>
               <mat-card-content class="invite--body--section show--rad">
-                <h4 class="count">2
+                <h4 class="count">{{shareDeathFileCount}}
                   <span></span>
                 </h4>
                 <div class="adjust">
                   <p class="invites">Unlocked after death</p>
                   <button mat-raised-button class="llp--primary--btn p-0" *ngIf="markAsDeceased" (click)="markAsDeceasedModal({}, true)">Mark as Deceased</button>
-                  <button mat-raised-button class="llp--primary--btn p-0" *ngIf="revokeAsDeceased" (click)="revokeAsDeceasedModal({}, true)">Revoke as Deceased</button>
-                  <!-- <button *ngIf="alreadyRevokeAsDeceased" mat-raised-button class="llp--primary--btn p-0 mad--btn" (click)="revokeAsDeceasedModal({}, true)">Revoke as Deceased</button> -->
+                  <button mat-raised-button class="llp--primary--btn mt-1 p-0" *ngIf="revokeAsDeceased" (click)="revokeAsDeceasedModal({}, true)">Revoke as Deceased</button>
+                  <button *ngIf="finallyDeceased" mat-raised-button class="llp--primary--btn p-0 mad--btn" disabled="disabled" >Deceased</button>
                 </div>
               </mat-card-content>
             </mat-card>

@@ -89,8 +89,8 @@ export class MarkAsDeceasedComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        if(result.data.deceasedList){    
-          this.datas = result.data.deceasedList;                    
+        if(result.data.deceasedData){    
+          this.datas = result.data.deceasedData;                    
           this.selectedProfileId = this.datas._id;
           this.DeceasedForm.controls['profileId'].setValue(this.selectedProfileId);
           this.DocumentsList = this.datas.documents;                   

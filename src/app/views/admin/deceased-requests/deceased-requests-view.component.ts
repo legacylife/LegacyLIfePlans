@@ -57,15 +57,54 @@ export class DeceasedRequestsViewComponent implements OnInit {
     this.loggedInUserDetails = this.api.getUser()
     this.adminSections = adminSections;
     this.userId = localStorage.getItem("userId");
-    this.my_messages = {'emptyMessage': 'No records Found'};
-    this.getDeceasedUser(true);
+    this.my_messages = {'emptyMessage': 'No records Found'};    
+    this.getCustomerProfile();
+  }
+
+   //function to get all events
+   getCustomerProfile = (query = {}, search = false) => {
+    const req_vars = {
+      query: Object.assign({_id:this.selectedUserId}, query)
+    }
+
+    this.api.apiRequest('post', 'deceased/customerView', req_vars).subscribe(result => {
+      if(result.status == "error"){
+        console.log(result.data)
+        this.loader.close()
+        this.showPage = true
+      } else {
+        this.row = result.data;
+        this.fullname = '';
+        if(this.row.firstName && this.row.firstName!=='undefined' && this.row.lastName && this.row.lastName!=='undefined'){
+          this.customerFirstName = this.row.firstName;
+          this.fullname = this.row.firstName+' '+this.row.lastName;
+        }
+        if(this.row.username){
+          this.legacyCustomerUsername = this.row.username;
+        }
+        if(result.data.profilePicture){
+           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + result.data.profilePicture;
+        }
+        this.showPage = true
+
+        if(this.row.deceased.status=='Active'){
+          this.showDeceased = true;
+        }
+        this.getMarkDeceasedUser(true);
+      }
+    }, (err) => {
+      console.error(err)
+      this.loader.close()
+      this.showPage = true
+      //this.showLoading = false
+    })
   }
 
   //function to get all events
-  getDeceasedUser = (getExecutors) => {
+  getMarkDeceasedUser = (getExecutors) => {
     let query = {}; let adminQuery = {};
     const req_vars = {
-      query: Object.assign({ customerId: this.selectedUserId }, query),
+      query: Object.assign({customerId:this.selectedUserId}, query),
       adminQuery: Object.assign({userType:'sysadmin'}, query),
       fields: {},      
       order: { "createdOn": -1 },
@@ -83,8 +122,9 @@ export class DeceasedRequestsViewComponent implements OnInit {
         this.data = result.data.deceasedData;    
         if(this.data[0]){
           this.row = this.data[0].customerId;
+         
         }else{
-          this.row = this.data.customerId;
+          this.row = this.data.customerId;        
         }
         const adminData = [];
          this.data.forEach((element: any, index) => {          
@@ -97,22 +137,22 @@ export class DeceasedRequestsViewComponent implements OnInit {
           this.deceasedId = adminData[0]._id;
         }
         
-        if(this.row.deceased.status=='Active'){
-          this.showDeceased = true;
-        }
+      //   if(this.row.deceased.status=='Active'){
+      //     this.showDeceased = true;
+      //   }
 
-        this.fullname = '';
-        if(this.row.firstName && this.row.firstName!=='undefined' && this.row.lastName && this.row.lastName!=='undefined'){
-          this.customerFirstName = this.row.firstName;
-          this.fullname = this.row.firstName+' '+this.row.lastName;
-        }
-        if(this.row.username){
-          this.legacyCustomerUsername = this.row.username;
-       }
-        if(this.row.profilePicture){
-           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + this.row.profilePicture;
-        }
-        this.showPage = true
+      //   this.fullname = '';
+      //   if(this.row.firstName && this.row.firstName!=='undefined' && this.row.lastName && this.row.lastName!=='undefined'){
+      //     this.customerFirstName = this.row.firstName;
+      //     this.fullname = this.row.firstName+' '+this.row.lastName;
+      //   }
+      //   if(this.row.username){
+      //     this.legacyCustomerUsername = this.row.username;
+      //  }
+      //   if(this.row.profilePicture){
+      //      this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + this.row.profilePicture;
+      //   }
+      //   this.showPage = true
 
         this.advisorsData = result.data.advisorsList;
 
@@ -196,7 +236,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
     }); 
     dialogRef.afterClosed()
     .subscribe(res => {
-      this.getDeceasedUser(false);
+      this.getCustomerProfile(false);
       if (!res) {
         // If user press cancel
         return;

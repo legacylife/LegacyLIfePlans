@@ -87,6 +87,27 @@
                 </div>
                 </div>
               </mat-list-item>
+              <mat-list-item class="">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Deceased Status</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40" >
+                  <mat-chip  mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{row?.deceased?.status}}</mat-chip>
+                </div>
+                </div>
+              </mat-list-item>
+              <mat-list-item *ngIf='row?.deceased?.lockoutLegacyPeriod'>
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Deceased Status</h6>
+                  <mat-chip  mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{row?.deceased?.lockoutLegacyPeriod}}</mat-chip>
+                </div>
+              </mat-list-item>              
+              <mat-list-item *ngIf='row?.deceased?.lockoutLegacyDate'>
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Deceased Status</h6>
+                  <mat-chip  mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{row?.deceased?.lockoutLegacyDate | date: 'yyyy/MM/dd HH:mm'}}</mat-chip>
+                </div>            
+              </mat-list-item>                            
             </mat-list>
           </mat-card-content>
         </mat-card>
@@ -121,7 +142,16 @@
                     <div *ngIf="!executorData" fxFlex="40">Executor is not assigned.</div>             
                 </div>
                 </div>
-            </mat-list-item> 
+            </mat-list-item>
+            <mat-list-item *ngIf="row.deceased.revokeId">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Revoke by</h6>
+                  <span fxFlex></span>
+                    <div fxFlex="40">
+                       <div *ngIf="" fxFlex="40">{{row.deceased.revokeId.firstName}} {{row.deceased.revokeId.lastName}}</div>             
+                    </div>
+                </div>
+            </mat-list-item>             
           </mat-list>
         </mat-card-content>
       </mat-card>
@@ -135,12 +165,16 @@
           <ngx-datatable class="material ml-0 mr-0" [rows]="data" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
             <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Full Name" prop="trustId" [flexGrow]="2">
               <ng-template let-row="row" ngx-datatable-cell-template>
-                {{row?.trustId?.firstName}} {{row?.trustId?.lastName}}
+                <span *ngIf="row?.trustId">{{row?.trustId?.firstName}} {{row?.trustId?.lastName}}</span>
+                <span *ngIf="row?.advisorId">{{row?.advisorId?.firstName}} {{row?.advisorId?.lastName}}</span>
+                <span *ngIf="row?.adminId">{{row?.adminId?.firstName}} {{row?.adminId?.lastName}}</span>
               </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Email" prop="trustId" [flexGrow]="3" >
                 <ng-template let-row="row" ngx-datatable-cell-template>
-                  {{row?.trustId?.username}}
+                  <span *ngIf="row?.trustId">{{row?.trustId?.username}}</span>
+                  <span *ngIf="row?.advisorId">{{row?.advisorId?.username}}</span>
+                  <span *ngIf="row?.adminId">{{row?.adminId?.username}}</span>
                 </ng-template>
             </ngx-datatable-column>
             <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Type" prop="userType"  [flexGrow]="1">

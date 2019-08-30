@@ -91,7 +91,6 @@
     </div>
     <router-outlet></router-outlet>
   </mat-sidenav-container>
-
   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="20" fxFlex.xl="20" class="reverse--order--sm mt-1">
     <div class="right--panel--wrapper">
       <div fxLayout="row wrap">
@@ -103,20 +102,19 @@
                 <mat-divider></mat-divider>
               </mat-card-title>
               <mat-card-content class="invite--body--section">
-                <h4 class="count">2
+                <h4 class="count">{{shareDeathFileCount}}
                   <span></span>
                 </h4>
                 <div class="adjust">
                   <p class="invites">Unlocked after death
                   </p>
-                  <button mat-raised-button class="llp--primary--btn p-0" (click)="markAsDeceasedModal({}, true)">Mark
-                    as
-                    Deceased</button>
+                    <button mat-raised-button class="llp--primary--btn p-0" *ngIf="markAsDeceased" (click)="markAsDeceasedModal({}, true)">Mark as Deceased</button>
+                    <button mat-raised-button class="llp--primary--btn mt-1 p-0" *ngIf="revokeAsDeceased" (click)="revokeAsDeceasedModal({}, true)">Revoke as Deceased</button>
+                    <button *ngIf="finallyDeceased" mat-raised-button class="llp--primary--btn p-0 mad--btn" disabled="disabled" >Deceased</button>
                 </div>
               </mat-card-content>
             </mat-card>
           </div>
-
           <div class="right--boxes mr-0">
             <mat-card class="p-0 black--header">
               <mat-card-title class="">
