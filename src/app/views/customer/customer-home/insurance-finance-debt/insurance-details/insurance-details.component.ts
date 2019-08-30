@@ -27,6 +27,9 @@ export class InsuranceDetailsComponent implements OnInit {
   re =  "/(?:\.([^.]+))?$/" ;
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
+  toUserId:string = ''
+  subFolderName:string = 'Insurnace'
+
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -39,6 +42,7 @@ export class InsuranceDetailsComponent implements OnInit {
     this.docPath = filePath;
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne
+    this.toUserId = this.userId
     this.getInsuranceView();    
   }
 
@@ -62,6 +66,7 @@ export class InsuranceDetailsComponent implements OnInit {
           }
           this.row = result.data;
           if(this.row){
+            this.toUserId = this.row.customerId 
             this.docPath = this.row.customerId+'/'+s3Details.insuranceFilePath;
           }
         }
@@ -94,7 +99,11 @@ export class InsuranceDetailsComponent implements OnInit {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: this.selectedProfileId }, query)
+            query: Object.assign({ _id: this.selectedProfileId }, query),
+            fromId:this.userId,
+            toId:this.toUserId,
+            folderName:s3Details.insuranceFilePath,
+            subFolderName:this.subFolderName
           }
           this.userapi.apiRequest('post', 'insuranceFinanceDebt/delete-insurance', req_vars).subscribe(result => {
             if (result.status == "error") {
@@ -123,44 +132,50 @@ export class InsuranceDetailsComponent implements OnInit {
       return dtype.opt_code === key
     }).map(el => el.opt_name)[0]
     return filteredTyes
-}
-
-
-downloadFile = (filename) => {    
-  let query = {};
-  let req_vars = {
-    query: Object.assign({ docPath: this.docPath, filename: filename }, query)
   }
-  this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
-  this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
-    var newBlob = new Blob([res])
-    var downloadURL = window.URL.createObjectURL(newBlob);
-    let filePath = downloadURL;
-    var link=document.createElement('a');
-    link.href = filePath;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    this.snack.dismiss();
-  });
-}
 
-DownloadZip = () => {      
-  let query = {};
-  var ZipName = "Insurance-"+Math.floor(Math.random() * Math.floor(999999999999999))+".zip"; 
-  let req_vars = {
-    query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query)
+  downloadFile = (filename) => {
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:this.userId,
+      toId:this.toUserId,
+      folderName:s3Details.insuranceFilePath,
+      subFolderName:this.subFolderName
+    }
+    this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
+    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+      var newBlob = new Blob([res])
+      var downloadURL = window.URL.createObjectURL(newBlob);
+      let filePath = downloadURL;
+      var link=document.createElement('a');
+      link.href = filePath;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      this.snack.dismiss();
+    });
   }
-  this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
-  this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {
-    var downloadURL =window.URL.createObjectURL(res)
-    let filePath = downloadURL;
-    var link=document.createElement('a');
-    link.href = filePath;
-    link.download = ZipName;
-    link.click();
-    this.snack.dismiss();
-  });
-}
 
+  DownloadZip = () => {
+    let query = {};
+    var ZipName = "Insurance-"+Math.floor(Math.random() * Math.floor(999999999999999))+".zip"; 
+    let req_vars = {
+      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query),
+      fromId:this.userId,
+      toId:this.toUserId,
+      folderName:s3Details.insuranceFilePath,
+      subFolderName:this.subFolderName
+    }
+    this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
+    this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {
+      var downloadURL =window.URL.createObjectURL(res)
+      let filePath = downloadURL;
+      var link=document.createElement('a');
+      link.href = filePath;
+      link.download = ZipName;
+      link.click();
+      this.snack.dismiss();
+    });
+  }
 }

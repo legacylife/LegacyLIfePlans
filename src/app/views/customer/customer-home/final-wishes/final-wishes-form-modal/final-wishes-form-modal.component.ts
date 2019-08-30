@@ -35,6 +35,9 @@ export class FinalWishesFormModalComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';
   currentProgessinPercent:number = 0;
+  toUserId:string = ''
+  subFolderName:string = ''
+
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService  ,@Inject(MAT_DIALOG_DATA) public data: any ) 
@@ -43,122 +46,133 @@ export class FinalWishesFormModalComponent implements OnInit {
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
   ngOnInit() {
-     this.userId = localStorage.getItem("endUserId");
-     const filePath = this.userId+'/'+s3Details.finalWishesFilePath;
-     this.docPath = filePath;
-     if(this.newName && this.newName != ''){
+    this.userId = localStorage.getItem("endUserId");
+    const filePath = this.userId+'/'+s3Details.finalWishesFilePath;
+    this.docPath = filePath;
+    if(this.newName && this.newName != ''){
       this.folderName = this.newName
     }
-     this.FinalForm = this.fb.group({
+    this.FinalForm = this.fb.group({
       title: new FormControl('',Validators.required),
       comments: new FormControl(''),
       calendarDate: new FormControl(''),
       profileId: new FormControl('')
-     });
+    });
     
-     this.wishDocumentsList = [];
+    this.wishDocumentsList = [];
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
     if (this.selectedProfileId && this.selectedProfileId == 'final-wishes' && this.urlData.lastThird != "legacies") {
       this.selectedProfileId = "";
     }
     if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'final-wishes') {
-        this.customerLegaciesId = this.userId;
-        this.customerLegacyType =  this.urlData.userType;
-        this.userId = this.urlData.lastOne;          
-        this.selectedProfileId = "";        
+      this.customerLegaciesId = this.userId;
+      this.customerLegacyType =  this.urlData.userType;
+      this.userId = this.urlData.lastOne;          
+      this.selectedProfileId = "";
     }
 
     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
     this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
     this.documentsList = [];
+    this.toUserId = this.userId
     this.getFinalWishesView();
 
     if(this.folderName == 'Celebration of Life'){
-       this.showCalendarField = true;
+      this.showCalendarField = true;
     }
   }
 
-    getFinalWishesView = (query = {}, search = false) => {    
-      let req_vars = {
-        query: Object.assign({ customerId: this.userId,subFolderName:this.folderName,status:"Pending" }, query)
-      }
-  
-      let profileIds = '';
-      if (this.selectedProfileId) {
-        profileIds = this.selectedProfileId;
-        req_vars = {
-          query: Object.assign({ _id: profileIds })
-        }
-      }
-  
-      this.loader.open(); 
-      this.userapi.apiRequest('post', 'finalwish/view-wish-details', req_vars).subscribe(result => {
-        this.loader.close();
-        if (result.status == "error") {
-          console.log(result.data)
-        } else {
-          if(result.data){    
-            this.finalWishList = result.data;   
-            let profileIds = this.finalWishList._id;
-            this.FinalForm.controls['profileId'].setValue(profileIds);
-            
-            this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
-            this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
-            this.documentsList = result.data.documents;
-            
-            this.FinalForm.controls['title'].setValue(this.finalWishList.title); 
-            this.FinalForm.controls['comments'].setValue(this.finalWishList.comments);
-            this.FinalForm.controls['calendarDate'].setValue(this.finalWishList.calendarDate);
-          }       
-        }
-      }, (err) => {
-        console.error(err);
-      })
+  getFinalWishesView = (query = {}, search = false) => {    
+    let req_vars = {
+      query: Object.assign({ customerId: this.userId,subFolderName:this.folderName,status:"Pending" }, query)
     }
 
-    WishesFormSubmit(profileInData = null) {
-      var query = {};
-      var proquery = {};     
-      profileInData.subFolderName = this.folderName;
-      if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'final-wishes') {
-        profileInData.customerLegacyId = this.customerLegaciesId
-        profileInData.customerLegacyType = this.customerLegacyType
+    let profileIds = '';
+    if (this.selectedProfileId) {
+      profileIds = this.selectedProfileId;
+      req_vars = {
+        query: Object.assign({ _id: profileIds })
       }
+    }
 
-      if(!profileInData.profileId || profileInData.profileId ==''){
-        profileInData.customerId = this.userId
+    this.loader.open(); 
+    this.userapi.apiRequest('post', 'finalwish/view-wish-details', req_vars).subscribe(result => {
+      this.loader.close();
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        if(result.data){    
+          this.finalWishList = result.data;   
+          this.subFolderName = this.finalWishList.subFolderName
+          this.toUserId      = this.finalWishList.customerId
+          let profileIds = this.finalWishList._id;
+          this.FinalForm.controls['profileId'].setValue(profileIds);
+          
+          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
+          this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
+          this.documentsList = result.data.documents;
+          
+          this.FinalForm.controls['title'].setValue(this.finalWishList.title); 
+          this.FinalForm.controls['comments'].setValue(this.finalWishList.comments);
+          this.FinalForm.controls['calendarDate'].setValue(this.finalWishList.calendarDate);
+        }       
       }
+    }, (err) => {
+      console.error(err);
+    })
+  }
 
-      let req_vars = {
-        query: Object.assign({subFolderName:this.folderName }),
+  WishesFormSubmit(profileInData = null) {
+    var query = {};
+    var proquery = {};     
+    profileInData.subFolderName = this.folderName;
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'final-wishes') {
+      profileInData.customerLegacyId = this.customerLegaciesId
+      profileInData.customerLegacyType = this.customerLegacyType
+    }
+
+    if(!profileInData.profileId || profileInData.profileId ==''){
+      profileInData.customerId = this.userId
+    }
+
+    let req_vars = {
+      query: Object.assign({subFolderName:this.folderName }),
+      proquery: Object.assign(profileInData),
+      message: Object.assign({ messageText: this.folderName }),
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:s3Details.finalWishesFilePath,
+      subFolderName:this.subFolderName
+    }
+    let profileIds = this.FinalForm.controls['profileId'].value;
+    if(profileIds){
+      req_vars = {
+        query: Object.assign({ _id:profileIds}),
         proquery: Object.assign(profileInData),
-        message: Object.assign({ messageText: this.folderName })
+        message: Object.assign({ messageText: this.folderName }),
+        fromId:localStorage.getItem('endUserId'),
+        toId:this.toUserId,
+        folderName:s3Details.finalWishesFilePath,
+        subFolderName:this.subFolderName
       }
-      let profileIds = this.FinalForm.controls['profileId'].value;
-      if(profileIds){
-        req_vars = {
-          query: Object.assign({ _id:profileIds}),
-          proquery: Object.assign(profileInData),
-          message: Object.assign({ messageText: this.folderName })
-        }
-      }
-
-      this.loader.open();     
-      this.userapi.apiRequest('post', 'finalwish/wishes-form-submit', req_vars).subscribe(result => {
-        this.loader.close();
-        if (result.status == "error") {
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
-        } else {
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
-          this.dialog.closeAll(); 
-        }
-      }, (err) => {
-        console.error(err)
-      })
     }
+
+    this.loader.open();     
+    this.userapi.apiRequest('post', 'finalwish/wishes-form-submit', req_vars).subscribe(result => {
+      this.loader.close();
+      if (result.status == "error") {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      } else {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        this.dialog.closeAll(); 
+      }
+    }, (err) => {
+      console.error(err)
+    })
+  }
   
-    public fileOverBase(e: any): void {
+  public fileOverBase(e: any): void {
       this.hasBaseDropZoneOver = e;
       this.fileErrors = [];
       this.uploader.queue.forEach((fileoOb) => {
@@ -192,16 +206,16 @@ export class FinalWishesFormModalComponent implements OnInit {
            this.getWishesDocuments();
          };
        }
-    }
+  }
 
-    updateProgressBar(){
+  updateProgressBar(){
       let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
       let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
       this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
       this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
-    }
+  }
 
-    uploadRemainingFiles(profileId) {
+  uploadRemainingFiles(profileId) {
       this.uploaderCopy.onBeforeUploadItem = (item) => {
         item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
       }
@@ -215,7 +229,7 @@ export class FinalWishesFormModalComponent implements OnInit {
       };
   }
 
-   getWishesDocuments = (query = {}, search = false, uploadRemained = true) => {    
+  getWishesDocuments = (query = {}, search = false, uploadRemained = true) => {    
     let profileIds = this.FinalForm.controls['profileId'].value;
     let req_vars = {
       query: Object.assign({customerId: this.userId,subFolderName:this.folderName,status:"Pending" }),
@@ -256,7 +270,11 @@ export class FinalWishesFormModalComponent implements OnInit {
           const req_vars = {
             query: Object.assign({ _id: ids }, query),
             proquery: Object.assign({ documents: this.documentsList }, query),
-            fileName: Object.assign({ docName: tmName }, query)
+            fileName: Object.assign({ docName: tmName }, query),
+            fromId:localStorage.getItem('endUserId'),
+            toId:this.toUserId,
+            folderName:s3Details.finalWishesFilePath,
+            subFolderName:this.subFolderName
           }
           this.userapi.apiRequest('post', 'documents/deletesubFolderWishesDoc', req_vars).subscribe(result => {
             if (result.status == "error") {
@@ -273,7 +291,6 @@ export class FinalWishesFormModalComponent implements OnInit {
         }
       })
   }
-
 
   isExtension(ext, extnArray) {
     var result = false;
@@ -305,7 +322,11 @@ export class FinalWishesFormModalComponent implements OnInit {
   downloadFile = (filename) => {    
     let query = {};
     let req_vars = {
-      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:s3Details.finalWishesFilePath,
+      subFolderName:this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {

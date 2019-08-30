@@ -90,7 +90,8 @@ export class customerlistComponent implements OnInit {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: row._id }, query)
+            query: Object.assign({ _id: row._id }, query),
+            fromId:localStorage.getItem('userId')
           }
           this.api.apiRequest('post', 'userlist/updatestatus', req_vars).subscribe(result => {
             if (result.status == "error") {

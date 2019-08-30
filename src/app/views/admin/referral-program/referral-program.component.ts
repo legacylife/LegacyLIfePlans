@@ -14,7 +14,8 @@ import { ToolbarService, LinkService, ImageService, HtmlEditorService, TableServ
 export class ReferralProgramComponent implements OnInit {
   aceessSection : any;
   my_messages:any;
-  
+  userId:String
+  oldStatus:String
   rows : any
   referEarnForm: FormGroup
 
@@ -37,6 +38,7 @@ export class ReferralProgramComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userId = localStorage.getItem('userId')
     this.aceessSection = this.api.getUserAccess('referral')
     this.referEarnForm = new FormGroup({
       title: new FormControl('', [Validators.required]),
@@ -50,6 +52,7 @@ export class ReferralProgramComponent implements OnInit {
   async getReferrelSettings() {
     let returnArr = await this.api.apiRequest('get', 'referearnsettings/getdetails', {}).toPromise()
     this.rows     = returnArr.data
+    this.oldStatus= this.rows.status
     this.referEarnForm.controls['title'].setValue(this.rows.title); 
     this.referEarnForm.controls['description'].setValue(this.rows.description);
     this.referEarnForm.controls['targetCount'].setValue(this.rows.targetCount);
@@ -60,7 +63,7 @@ export class ReferralProgramComponent implements OnInit {
   updateDetails() {    
     let req_vars = this.referEarnForm.value
         delete req_vars.status
-        req_vars = Object.assign( { _id: this.rows._id, status: this.referEarnForm.controls['status'].value ? 'On' : 'Off' }, req_vars )
+        req_vars = Object.assign( { _id: this.rows._id, status: this.referEarnForm.controls['status'].value ? 'On' : 'Off', oldStatus: this.oldStatus, fromId:this.userId }, req_vars )
 
     this.api.apiRequest('post', 'referearnsettings/update', req_vars).subscribe(result => {
       if(result.status == "error") {

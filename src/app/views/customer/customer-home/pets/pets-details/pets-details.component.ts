@@ -9,7 +9,6 @@ import { AppConfirmService } from '../../../../../shared/services/app-confirm/ap
 import { PetsModalComponent } from './../pets-modal/pets-modal.component';
 import { s3Details } from '../../../../../config';
 
-
 @Component({
   selector: 'app-customer-home',
   templateUrl: './pets-details.component.html',
@@ -27,6 +26,9 @@ export class PetsDetailsComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';
   trusteeLegaciesAction:boolean=true;
+  toUserId:string = ''
+  subFolderName:string = ''
+
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -39,7 +41,8 @@ export class PetsDetailsComponent implements OnInit {
     this.docPath = filePath;
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
-    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction    
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    this.toUserId = this.userId
     this.getPetsView();
   }
 
@@ -62,7 +65,8 @@ export class PetsDetailsComponent implements OnInit {
             this.trusteeLegaciesAction = false;
           }
           this.row = result.data;       
-          if(this.row){
+          if(this.row) {
+            this.toUserId = this.row.customerId 
             this.docPath = this.row.customerId+'/'+s3Details.petsFilePath;
           }
         }
@@ -95,7 +99,11 @@ export class PetsDetailsComponent implements OnInit {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: this.selectedProfileId }, query)
+            query: Object.assign({ _id: this.selectedProfileId }, query),
+            fromId:this.userId,
+            toId:this.toUserId,
+            folderName:s3Details.petsFilePath,
+            subFolderName:this.subFolderName
           }
           this.userapi.apiRequest('post', 'pets/delete-pets', req_vars).subscribe(result => {
             if (result.status == "error") {
@@ -119,10 +127,14 @@ export class PetsDetailsComponent implements OnInit {
       })
   }
 
-  downloadFile = (filename) => {    
+  downloadFile = (filename) => {
     let query = {};
     let req_vars = {
-      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:this.userId,
+      toId:this.toUserId,
+      folderName:s3Details.petsFilePath,
+      subFolderName:this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
@@ -138,11 +150,15 @@ export class PetsDetailsComponent implements OnInit {
     });
   }
   
-  DownloadZip = () => {      
+  DownloadZip = () => {
     let query = {};
     var ZipName = "pets-"+Math.floor(Math.random() * Math.floor(999999999999999))+".zip"; 
     let req_vars = {
-      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query)//s3Details.petsFilePath
+      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query),
+      fromId:this.userId,
+      toId:this.toUserId,
+      folderName:s3Details.petsFilePath,
+      subFolderName:this.subFolderName
     }
     this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {
@@ -155,5 +171,4 @@ export class PetsDetailsComponent implements OnInit {
       this.snack.dismiss();
     });
   }
-  
 }

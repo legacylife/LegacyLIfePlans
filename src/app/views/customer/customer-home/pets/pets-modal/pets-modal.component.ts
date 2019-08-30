@@ -34,6 +34,9 @@ export class PetsModalComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';
   currentProgessinPercent: number = 0;
+  toUserId:string = ''
+  subFolderName:string = ''
+
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService) { }
@@ -65,6 +68,7 @@ export class PetsModalComponent implements OnInit {
     
     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
     this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    this.toUserId = this.userId
     this.getPetsView();
   }
 
@@ -85,7 +89,11 @@ export class PetsModalComponent implements OnInit {
       }
       const req_vars = {
         query: Object.assign({ _id: this.selectedProfileId }),
-        proquery: Object.assign(profileInData)
+        proquery: Object.assign(profileInData),
+        fromId:localStorage.getItem('endUserId'),
+        toId:this.toUserId,
+        folderName:s3Details.petsFilePath,
+        subFolderName:this.subFolderName
       }
       this.loader.open();     
       this.userapi.apiRequest('post', 'pets/pets-form-submit', req_vars).subscribe(result => {
@@ -99,9 +107,9 @@ export class PetsModalComponent implements OnInit {
       }, (err) => {
         console.error(err)
       })
-    }
+  }
   
-    getPetsView = (query = {}, search = false) => { 
+  getPetsView = (query = {}, search = false) => { 
       let req_vars = {
         query: Object.assign({ customerId: this.userId,status:"Pending" })
       }
@@ -121,7 +129,8 @@ export class PetsModalComponent implements OnInit {
           console.log(result.data)
         } else {
           if(result.data){    
-            this.petsList = result.data;                    
+            this.petsList = result.data;       
+            this.toUserId      = this.petsList.customerId
             let profileIds = this.petsList._id;
             this.PetForm.controls['profileId'].setValue(profileIds);
             this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
@@ -150,7 +159,11 @@ export class PetsModalComponent implements OnInit {
             const req_vars = {
               query: Object.assign({ _id: ids }, query),
               proquery: Object.assign({ documents: this.petDocumentsList }, query),
-              fileName: Object.assign({ docName: tmName }, query)
+              fileName: Object.assign({ docName: tmName }, query),
+              fromId:localStorage.getItem('endUserId'),
+              toId:this.toUserId,
+              folderName:s3Details.finalWishesFilePath,
+              subFolderName:this.subFolderName
             }
             this.userapi.apiRequest('post', 'documents/deletePets', req_vars).subscribe(result => {
               if (result.status == "error") {
@@ -202,7 +215,7 @@ export class PetsModalComponent implements OnInit {
            this.getPetsDocuments();
          };
        }
-    }
+  }
     
   updateProgressBar(){
     let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
@@ -253,9 +266,9 @@ export class PetsModalComponent implements OnInit {
       }, (err) => {
         console.error(err);
       })
-    }
+  }
   
-   isExtension(ext, extnArray) {
+  isExtension(ext, extnArray) {
     var result = false;
     var i;
     if (ext) {
@@ -283,11 +296,14 @@ export class PetsModalComponent implements OnInit {
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
   }
   
-
   downloadFile = filename => {
     let query = {};
     let req_vars = {
-      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:s3Details.finalWishesFilePath,
+      subFolderName:this.subFolderName
     };
     this.userapi.download("documents/downloadDocument", req_vars).subscribe(res => {
         var downloadURL = window.URL.createObjectURL(res);
@@ -297,6 +313,5 @@ export class PetsModalComponent implements OnInit {
         link.download = filename;
         link.click();
       });
-  };
-
+  }
 }

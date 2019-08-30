@@ -143,7 +143,7 @@ export class SubscriptionService {
               expireDate       = this.userCreateOn.add(extendedDays,"days")
             }
             else{
-              let isReferEarnExpire = extendedReferEarnDate != '' ? this.getDateDiff( this.today, moment(extendedReferEarnDate).toDate() ) : ''
+              let isReferEarnExpire = extendedReferEarnDate != '' ? this.getDateDiff( this.today, moment(extendedReferEarnDate).toDate() ) : 0
                 
               if( extendedReferEarnDate != '' && isReferEarnExpire >= 0 ) {
                 isProFreeAdviser = true
@@ -151,7 +151,8 @@ export class SubscriptionService {
               }
               else{
                 expireDate       = this.userCreateOn.add(bfrSubAdvPremiumAccess,"days")
-                isProFreeAdviser = false
+                let currdiff     = this.getDateDiff( this.userCreateOn.add(bfrSubAdvPremiumAccess,"days").toDate(), this.today )
+                isProFreeAdviser = currdiff <= bfrSubAdvPremiumAccess ? true: false
               }
             }
           }
@@ -201,7 +202,7 @@ export class SubscriptionService {
                 expireDate       = this.userCreateOn.add(extendedDays,"days")
               }
               else{
-                let isReferEarnExpire = extendedReferEarnDate != '' ? this.getDateDiff( this.today, moment(extendedReferEarnDate).toDate() ) : ''
+                let isReferEarnExpire = extendedReferEarnDate != '' ? this.getDateDiff( this.today, moment(extendedReferEarnDate).toDate() ) : 0
                 
                 if( extendedReferEarnDate != '' && isReferEarnExpire >= 0 ) {
                   isProFreeAdviser = true
@@ -209,7 +210,8 @@ export class SubscriptionService {
                 }
                 else{
                   expireDate       = this.userCreateOn.add(bfrSubAdvPremiumAccess,"days")
-                  isProFreeAdviser = false
+                  let currdiff     = this.getDateDiff( this.userCreateOn.add(bfrSubAdvPremiumAccess,"days").toDate(), this.today )
+                  isProFreeAdviser = currdiff <= bfrSubAdvPremiumAccess ? true: false
                 }
               }              
               

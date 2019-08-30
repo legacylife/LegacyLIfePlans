@@ -14,7 +14,10 @@ import { ToolbarService, LinkService, ImageService, HtmlEditorService, TableServ
 export class FreeTrialPeriodManagementComponent implements OnInit {
   aceessSection : any;
   my_messages:any;
-  
+  userId:String
+  oldCStatus:String
+  oldAStatus:String
+
   rows : any
   freeTrialForm: FormGroup
 
@@ -37,6 +40,7 @@ export class FreeTrialPeriodManagementComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userId = localStorage.getItem('userId')
     this.aceessSection = this.api.getUserAccess('referral')
     this.freeTrialForm = new FormGroup({
       title: new FormControl('', [Validators.required]),
@@ -51,6 +55,8 @@ export class FreeTrialPeriodManagementComponent implements OnInit {
   async getFreeTrialPeriodSettings() {
     let returnArr = await this.api.apiRequest('get', 'freetrialsettings/getdetails', {}).toPromise()
     this.rows     = returnArr.data
+    this.oldAStatus= this.rows.advisorStatus
+    this.oldCStatus= this.rows.customerStatus
     this.freeTrialForm.controls['title'].setValue(this.rows.title)
     this.freeTrialForm.controls['customerFreeAccessDays'].setValue(this.rows.customerFreeAccessDays)
     this.freeTrialForm.controls['customerAftrFreeAccessDays'].setValue(this.rows.customerAftrFreeAccessDays)
@@ -63,7 +69,13 @@ export class FreeTrialPeriodManagementComponent implements OnInit {
     let req_vars = this.freeTrialForm.value
         delete req_vars.customerStatus
         delete req_vars.advisorStatus
-        req_vars = Object.assign( { _id: this.rows._id, customerStatus: this.freeTrialForm.controls['customerStatus'].value ? 'On' : 'Off', advisorStatus: this.freeTrialForm.controls['advisorStatus'].value ? 'On' : 'Off' }, req_vars )
+        req_vars = Object.assign( { _id: this.rows._id, 
+                                    customerStatus: this.freeTrialForm.controls['customerStatus'].value ? 'On' : 'Off',
+                                    advisorStatus: this.freeTrialForm.controls['advisorStatus'].value ? 'On' : 'Off',
+                                    fromId: this.userId,
+                                    oldAStatus: this.oldAStatus,
+                                    oldCStatus: this.oldCStatus
+                                  }, req_vars )
 
     this.api.apiRequest('post', 'freetrialsettings/update', req_vars).subscribe(result => {
       if(result.status == "error") {

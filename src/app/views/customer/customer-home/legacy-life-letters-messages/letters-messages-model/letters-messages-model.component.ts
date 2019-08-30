@@ -33,6 +33,10 @@ export class LettersMessagesModelComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';
   currentProgessinPercent:number = 0;
+
+  toUserId:string = ''
+  subFolderName:string = ''
+
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService,private userapi: UserAPIService ) {}
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
@@ -57,15 +61,16 @@ export class LettersMessagesModelComponent implements OnInit {
       letterBox: new FormControl('', Validators.required), 
       subject: new FormControl(''),
       profileId: new FormControl('')
-     });
+    });
 
-     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
-     this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
-     this.documentsList = [];
-     this.getLettersMessagesView();
-   }
+    this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    this.documentsList = [];
+    this.toUserId = this.userId
+    this.getLettersMessagesView();
+  }
 
-   LettersMessagesFormSubmit(profileInData = null) {
+  LettersMessagesFormSubmit(profileInData = null) {
     var query = {};
     var proquery = {};     
     if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'letters-messages') {
@@ -79,14 +84,22 @@ export class LettersMessagesModelComponent implements OnInit {
     let req_vars = {
       query: Object.assign({customerId: this.userId }),
       proquery: Object.assign(profileInData),
-      message: Object.assign({})
+      message: Object.assign({}),
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:s3Details.letterMessageDocumentsPath,
+      subFolderName:this.subFolderName
     }
     let profileIds = this.LettersMessagesForm.controls['profileId'].value;
     if(profileIds){
       req_vars = {
         query: Object.assign({ _id:profileIds }),
         proquery: Object.assign(profileInData),
-        message: Object.assign({})
+        message: Object.assign({}),
+        fromId:localStorage.getItem('endUserId'),
+        toId:this.toUserId,
+        folderName:s3Details.letterMessageDocumentsPath,
+        subFolderName:this.subFolderName
       }
     }
 
@@ -125,6 +138,7 @@ export class LettersMessagesModelComponent implements OnInit {
       } else {
         if(result.data){    
           this.LetterMessageList = result.data;   
+          this.toUserId          = this.LetterMessageList.customerId
           let profileIds = this.LetterMessageList._id;
           this.LettersMessagesForm.controls['profileId'].setValue(profileIds);
           this.LettersMessagesForm.controls['title'].setValue(this.LetterMessageList.title);
@@ -234,7 +248,11 @@ export class LettersMessagesModelComponent implements OnInit {
           const req_vars = {
             query: Object.assign({ _id: ids }, query),
             proquery: Object.assign({ documents: this.documentsList }, query),
-            fileName: Object.assign({ docName: tmName }, query)
+            fileName: Object.assign({ docName: tmName }, query),
+            fromId:localStorage.getItem('endUserId'),
+            toId:this.toUserId,
+            folderName:s3Details.letterMessageDocumentsPath,
+            subFolderName:this.subFolderName
           }
           this.userapi.apiRequest('post', 'documents/deleteletterMessageDoc', req_vars).subscribe(result => {
             if (result.status == "error") {
@@ -250,7 +268,7 @@ export class LettersMessagesModelComponent implements OnInit {
           })
         }
       })
-}
+  }
 
 
   isExtension(ext, extnArray) {
@@ -281,11 +299,14 @@ export class LettersMessagesModelComponent implements OnInit {
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
   }
 
-
   downloadFile = (filename) => {    
     let query = {};
     let req_vars = {
-      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:s3Details.letterMessageDocumentsPath,
+      subFolderName:this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {

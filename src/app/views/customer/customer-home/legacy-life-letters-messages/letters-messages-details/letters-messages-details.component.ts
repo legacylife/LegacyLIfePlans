@@ -21,6 +21,9 @@ export class LettersMessagesDetailsComponent implements OnInit {
   docPath: string; 
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
+  toUserId:string = ''
+  subFolderName:string = ''
+  
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -35,119 +38,133 @@ export class LettersMessagesDetailsComponent implements OnInit {
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
     this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    this.toUserId = this.userId
     this.getLettersMessageView();
   }
 
-//function to get all events
-getLettersMessageView = (query = {}, search = false) => {
-  let profileIds = '';
-  let req_vars = {}
-  if (this.selectedProfileId) {
-    profileIds = this.selectedProfileId;
-    req_vars = {
-      query: Object.assign({ _id: profileIds })
+  //function to get all events
+  getLettersMessageView = (query = {}, search = false) => {
+    let profileIds = '';
+    let req_vars = {}
+    if (this.selectedProfileId) {
+      profileIds = this.selectedProfileId;
+      req_vars = {
+        query: Object.assign({ _id: profileIds })
+      }
     }
-  }
-  this.userapi.apiRequest('post', 'lettersMessages/view-lettersMessages-details', req_vars).subscribe(result => {     
-    if (result.status == "error") {
-      console.log(result.data)
-    } else {
-      if (result.data) {
-        if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
-          this.trusteeLegaciesAction = false;
-        }
-        this.row = result.data;
-        if(this.row){
-          this.docPath = this.row.customerId+'/'+s3Details.letterMessageDocumentsPath;
-        }
-      }
-    }  
-  }, (err) => {
-    console.error(err);
-  })
-}
-
-openLettersMessageModal() {
-  let dialogRef: MatDialogRef<any> = this.dialog.open(LettersMessagesModelComponent, {     
-    width: '720px',
-    disableClose: true,
-  })
-  dialogRef.afterClosed()
-    .subscribe(res => {
-      this.getLettersMessageView();
-      if (!res) {
-        // If user press cancel
-        return;
-      }
-    })
-}
-
-deleteLettersMessage(customerId='') {
-  var statMsg = "Are you sure you want to delete letter and message details?"
-  this.confirmService.confirm({ message: statMsg })
-    .subscribe(res => {
-      if (res) {
-        this.loader.open();
-        var query = {};
-        const req_vars = {
-          query: Object.assign({ _id: this.selectedProfileId }, query)
-        }
-        this.userapi.apiRequest('post', 'lettersMessages/delete-lettersMessages', req_vars).subscribe(result => {
-          if (result.status == "error") {
-            this.loader.close();
-            this.snack.open(result.data.message, 'OK', { duration: 4000 })
-          } else {
-            this.loader.close();
-            if(this.urlData.userType == 'advisor'){
-              this.router.navigate(['/', 'advisor', 'legacies', 'letters-messages', customerId])
-            }else{
-              this.router.navigate(['/', 'customer', 'dashboard', 'letters-messages'])
-            }
-            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+    this.userapi.apiRequest('post', 'lettersMessages/view-lettersMessages-details', req_vars).subscribe(result => {     
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        if (result.data) {
+          if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
+            this.trusteeLegaciesAction = false;
           }
-        }, (err) => {
-          console.error(err)
-          this.loader.close();
-        })
-      }
+          this.row = result.data;
+          if(this.row){
+            this.toUserId = this.row.customerId 
+            this.docPath = this.row.customerId+'/'+s3Details.letterMessageDocumentsPath;
+          }
+        }
+      }  
+    }, (err) => {
+      console.error(err);
     })
-}
-
-downloadFile = (filename) => {    
-  let query = {};
-  let req_vars = {
-    query: Object.assign({ docPath: this.docPath, filename: filename }, query)
   }
-  this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
-  this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
-    var newBlob = new Blob([res])
-    var downloadURL = window.URL.createObjectURL(newBlob);
-    let filePath = downloadURL;
-    var link=document.createElement('a');
-    link.href = filePath;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    this.snack.dismiss();
-  });
-}
 
-DownloadZip = () => {      
-  let query = {};
-  var ZipName = "Insurance-"+Math.floor(Math.random() * Math.floor(999999999999999))+".zip"; 
-  let req_vars = {
-    query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query)
+  openLettersMessageModal() {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(LettersMessagesModelComponent, {     
+      width: '720px',
+      disableClose: true,
+    })
+    dialogRef.afterClosed()
+      .subscribe(res => {
+        this.getLettersMessageView();
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
   }
-  this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
-  this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {
-    var downloadURL =window.URL.createObjectURL(res)
-    let filePath = downloadURL;
-    var link=document.createElement('a');
-    link.href = filePath;
-    link.download = ZipName;
-    link.click();
-    this.snack.dismiss();
-  });
-}
+
+  deleteLettersMessage(customerId='') {
+    var statMsg = "Are you sure you want to delete letter and message details?"
+    this.confirmService.confirm({ message: statMsg })
+      .subscribe(res => {
+        if (res) {
+          this.loader.open();
+          var query = {};
+          const req_vars = {
+            query: Object.assign({ _id: this.selectedProfileId }, query),
+            fromId:this.userId,
+            toId:this.toUserId,
+            folderName:s3Details.letterMessageDocumentsPath,
+            subFolderName:this.subFolderName
+          }
+          this.userapi.apiRequest('post', 'lettersMessages/delete-lettersMessages', req_vars).subscribe(result => {
+            if (result.status == "error") {
+              this.loader.close();
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            } else {
+              this.loader.close();
+              if(this.urlData.userType == 'advisor'){
+                this.router.navigate(['/', 'advisor', 'legacies', 'letters-messages', customerId])
+              }else{
+                this.router.navigate(['/', 'customer', 'dashboard', 'letters-messages'])
+              }
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            }
+          }, (err) => {
+            console.error(err)
+            this.loader.close();
+          })
+        }
+      })
+  }
+
+  downloadFile = (filename) => {    
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:this.userId,
+      toId:this.toUserId,
+      folderName:s3Details.letterMessageDocumentsPath,
+      subFolderName:this.subFolderName
+    }
+    this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
+    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+      var newBlob = new Blob([res])
+      var downloadURL = window.URL.createObjectURL(newBlob);
+      let filePath = downloadURL;
+      var link=document.createElement('a');
+      link.href = filePath;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      this.snack.dismiss();
+    });
+  }
+
+  DownloadZip = () => {      
+    let query = {};
+    var ZipName = "Insurance-"+Math.floor(Math.random() * Math.floor(999999999999999))+".zip"; 
+    let req_vars = {
+      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query),
+      fromId:this.userId,
+      toId:this.toUserId,
+      folderName:s3Details.letterMessageDocumentsPath,
+      subFolderName:this.subFolderName
+    }
+    this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
+    this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {
+      var downloadURL =window.URL.createObjectURL(res)
+      let filePath = downloadURL;
+      var link=document.createElement('a');
+      link.href = filePath;
+      link.download = ZipName;
+      link.click();
+      this.snack.dismiss();
+    });
+  }
 
 }

@@ -39,6 +39,10 @@ export class legalStuffModalComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';
   currentProgessinPercent:Number = 0;
+
+  toUserId:string = ''
+  subFolderName:string = ''
+
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService ,@Inject(MAT_DIALOG_DATA) public data: any ) { this.folderName = data.FolderName;this.newName = data.newName;}
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
@@ -63,7 +67,7 @@ export class legalStuffModalComponent implements OnInit {
         this.selectedProfileId = "";        
     }
  
-   if(this.folderName=='Estate'){
+    if(this.folderName=='Estate'){
       this.typeOfDocumentList = EstateTypeOfDocument;
     }else if(this.folderName=='Healthcare'){
       this.typeOfDocumentList = HealthcareTypeOfDocument;
@@ -75,15 +79,16 @@ export class legalStuffModalComponent implements OnInit {
       documents_temp: new FormControl([], Validators.required),
       comments: new FormControl(''), 
       profileId: new FormControl('')
-     });
+    });
 
-     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
-     this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
-     this.documentsList = [];
-     this.getEssentialLegalView();
-   }
+    this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
+    this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${this.selectedProfileId}` });
+    this.documentsList = [];
+    this.toUserId = this.userId
+    this.getEssentialLegalView();
+  }
 
-   LegalFormSubmit(profileInData = null) {
+  LegalFormSubmit(profileInData = null) {
     var query = {};
     var proquery = {};     
     profileInData.subFolderName = this.folderName;
@@ -100,14 +105,22 @@ export class legalStuffModalComponent implements OnInit {
     let req_vars = {
       query: Object.assign({customerId: this.userId,subFolderName:this.folderName }),
       proquery: Object.assign(profileInData),
-      message: Object.assign({ messageText: this.folderName })
+      message: Object.assign({ messageText: this.folderName }),
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:s3Details.legalStuffDocumentsPath,
+      subFolderName:this.subFolderName
     }
     let profileIds = this.LegalForm.controls['profileId'].value;
     if(profileIds){
       req_vars = {
         query: Object.assign({ _id:profileIds }),
         proquery: Object.assign(profileInData),
-        message: Object.assign({ messageText: this.folderName })
+        message: Object.assign({ messageText: this.folderName }),
+        fromId:localStorage.getItem('endUserId'),
+        toId:this.toUserId,
+        folderName:s3Details.legalStuffDocumentsPath,
+        subFolderName:this.subFolderName
       }
     }
     this.loader.open();     
@@ -123,7 +136,6 @@ export class legalStuffModalComponent implements OnInit {
       console.error(err)
     })
   }
-
 
   getEssentialLegalView = (query = {}, search = false) => {    
     let req_vars = {
@@ -145,7 +157,10 @@ export class legalStuffModalComponent implements OnInit {
         console.log(result.data)
       } else {
         if(result.data){    
-          this.LegalStuffList = result.data;   
+          this.LegalStuffList = result.data;
+          this.subFolderName  = this.LegalStuffList.subFolderName
+          this.toUserId       = this.LegalStuffList.customerId
+
           let profileIds = this.LegalStuffList._id;
           this.LegalForm.controls['profileId'].setValue(profileIds);
           
@@ -185,11 +200,11 @@ export class legalStuffModalComponent implements OnInit {
     });
 
     if(this.uploader.getNotUploadedItems().length){
-     this.uploaderCopy = cloneDeep(this.uploader)
-     this.uploader.queue.splice(1, this.uploader.queue.length - 1)
-     this.uploaderCopy.queue.splice(0, 1)
+      this.uploaderCopy = cloneDeep(this.uploader)
+      this.uploader.queue.splice(1, this.uploader.queue.length - 1)
+      this.uploaderCopy.queue.splice(0, 1)
      
-     this.uploader.queue.forEach((fileoOb, ind) => {
+      this.uploader.queue.forEach((fileoOb, ind) => {
            this.uploader.uploadItem(fileoOb);
       });
 
@@ -263,7 +278,11 @@ export class legalStuffModalComponent implements OnInit {
           const req_vars = {
             query: Object.assign({ _id: ids }, query),
             proquery: Object.assign({ documents: this.documentsList }, query),
-            fileName: Object.assign({ docName: tmName }, query)
+            fileName: Object.assign({ docName: tmName }, query),
+            fromId:localStorage.getItem('endUserId'),
+            toId:this.toUserId,
+            folderName:s3Details.legalStuffDocumentsPath,
+            subFolderName:this.subFolderName
           }
           this.userapi.apiRequest('post', 'documents/deletesubFolderDoc', req_vars).subscribe(result => {
             if (result.status == "error") {
@@ -282,8 +301,7 @@ export class legalStuffModalComponent implements OnInit {
           })
         }
       })
-}
-
+  }
 
   isExtension(ext, extnArray) {
     var result = false;
@@ -316,7 +334,11 @@ export class legalStuffModalComponent implements OnInit {
   downloadFile = (filename) => {    
     let query = {};
     let req_vars = {
-      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:s3Details.legalStuffDocumentsPath,
+      subFolderName:this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
@@ -331,5 +353,4 @@ export class legalStuffModalComponent implements OnInit {
       this.snack.dismiss();
     });
   }
-
 }

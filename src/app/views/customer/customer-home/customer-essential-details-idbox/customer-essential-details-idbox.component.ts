@@ -44,6 +44,7 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
     this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    this.toUserId = this.userId
     this.getEssentialIDDetails();
   }
 
@@ -93,7 +94,11 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: this.selectedProfileId }, query)
+            query: Object.assign({ _id: this.selectedProfileId }, query),
+            fromId:this.userId,
+            toId:this.toUserId,
+            folderName:s3Details.myEssentialsDocumentsPath,
+            subFolderName:'ID Box'
           }
           this.userapi.apiRequest('post', 'customer/delete-id-box', req_vars).subscribe(result => {
             if (result.status == "error") {
@@ -122,26 +127,6 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
     }).map(el => el.opt_name)[0]
     return filteredTyes
   }
-
-  // downloadDocs() {
-  //  var query = {};
-  //   const req_vars = {
-  //     query: Object.assign({ _id: this.selectedProfileId }, query)
-  //   }
-  //   this.userapi.apiRequest('post', 'documents/downloadDocs', req_vars).subscribe(result => {  
-  //     if (result.status == "error") {
-  //       this.loader.close();
-  //       this.snack.open(result.data.message, 'OK', { duration: 4000 })
-  //     } else {
-  //       this.loader.close();
-  //       this.router.navigate(['/', 'customer', 'dashboard', 'essential-day-one'])
-  //       this.snack.open(result.data.message, 'OK', { duration: 4000 })
-  //     }
-  //   }, (err) => {
-  //     console.error(err)
-  //     this.loader.close();
-  //   })
-  // }
 
   DownloadZip = () => {      
     let query = {};
@@ -187,7 +172,4 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
       this.snack.dismiss();
     });
   }
-
-
-
 }

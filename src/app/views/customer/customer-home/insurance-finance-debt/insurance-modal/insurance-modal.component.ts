@@ -34,150 +34,164 @@ export class InsuranceModalComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';
   currentProgessinPercent:number = 0;
+
+  toUserId:string = ''
+  subFolderName:string = 'Insurnace'
+
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,private confirmService: AppConfirmService,private loader: AppLoaderService,private router: Router, private userapi: UserAPIService) { }
 
   ngOnInit() {
-        this.userId = localStorage.getItem("endUserId");
-        const filePath = this.userId+'/'+s3Details.insuranceFilePath;
-        this.policyTypeList = InsurancePolicyType;
-        this.docPath = filePath;
-        this.InsuranceForm = this.fb.group({
-          policyType: new FormControl('',Validators.required),     
-          company: new FormControl(''),
-          policyNumber: new FormControl(''),
-          contactPerson: new FormControl(''),
-          contactEmail: new FormControl('',Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
-          contactPhone: new FormControl('',Validators.pattern(/^[0-9]{7,15}$/)),
-          comments: new FormControl(''),
-          profileId: new FormControl('')
-        });
+    this.userId = localStorage.getItem("endUserId");
+    const filePath = this.userId+'/'+s3Details.insuranceFilePath;
+    this.policyTypeList = InsurancePolicyType;
+    this.docPath = filePath;
+    this.InsuranceForm = this.fb.group({
+      policyType: new FormControl('',Validators.required),     
+      company: new FormControl(''),
+      policyNumber: new FormControl(''),
+      contactPerson: new FormControl(''),
+      contactEmail: new FormControl('',Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
+      contactPhone: new FormControl('',Validators.pattern(/^[0-9]{7,15}$/)),
+      comments: new FormControl(''),
+      profileId: new FormControl('')
+    });
 
-        this.InsuranceDocsList = [];
-   
-        this.urlData = this.userapi.getURLData();
-        this.selectedProfileId = this.urlData.lastOne;
-        if (this.selectedProfileId && this.selectedProfileId == 'insurance-finance-debt' && this.urlData.lastThird != "legacies") {
-          this.selectedProfileId = "";
-        }        
-        if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'insurance-finance-debt') {
-            this.customerLegaciesId = this.userId;
-            this.customerLegacyType =  this.urlData.userType;
-            this.userId = this.urlData.lastOne;
-            this.selectedProfileId = "";        
-        }
-        
-        this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
-        this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
-        this.getInsuranceView();
+    this.InsuranceDocsList = [];
+
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    if (this.selectedProfileId && this.selectedProfileId == 'insurance-finance-debt' && this.urlData.lastThird != "legacies") {
+      this.selectedProfileId = "";
+    }        
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'insurance-finance-debt') {
+        this.customerLegaciesId = this.userId;
+        this.customerLegacyType =  this.urlData.userType;
+        this.userId = this.urlData.lastOne;
+        this.selectedProfileId = "";        
     }
+    
+    this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    this.toUserId = this.userId
+    this.getInsuranceView();
+  }
 
-    InsuranceFormSubmit(profileInData = null) {
-      var query = {};
-      var proquery = {};     
-      let profileIds = this.InsuranceForm.controls['profileId'].value;
-      if(profileIds){
-        this.selectedProfileId = profileIds;
-      }
-      if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'insurance-finance-debt') {
-        profileInData.customerLegacyId = this.customerLegaciesId
-        profileInData.customerLegacyType = this.customerLegacyType
-      }  
-      if(!profileInData.profileId || profileInData.profileId ==''){
-        profileInData.customerId = this.userId
-      }
-  
-      const req_vars = {
-        query: Object.assign({ _id: this.selectedProfileId}),
-        proquery: Object.assign(profileInData)
-      }
-      this.loader.open();     
-      this.userapi.apiRequest('post', 'insuranceFinanceDebt/insurance-form-submit', req_vars).subscribe(result => {
-        this.loader.close();
-        if (result.status == "error") {
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
-        } else {
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
-          this.dialog.closeAll(); 
-        }
-      }, (err) => {
-        console.error(err)
-      })
+  InsuranceFormSubmit(profileInData = null) {
+    var query = {};
+    var proquery = {};     
+    let profileIds = this.InsuranceForm.controls['profileId'].value;
+    if(profileIds){
+      this.selectedProfileId = profileIds;
     }
-
-    getInsuranceView = (query = {}, search = false) => { 
-      let req_vars = {
-        query: Object.assign({ customerId: this.userId,status:"Pending" })
-      }
-     
-      let profileIds = '';
-      if (this.selectedProfileId) {
-        profileIds = this.selectedProfileId;
-        req_vars = {
-          query: Object.assign({ _id:profileIds})
-        }
-      }
-
-      this.loader.open(); 
-      this.userapi.apiRequest('post', 'insuranceFinanceDebt/view-insurance-details', req_vars).subscribe(result => {
-        this.loader.close();
-        if (result.status == "error") {
-          console.log(result.data)
-        } else {
-          if(result.data){    
-            this.insuranceList = result.data;                    
-            let profileIds = this.insuranceList._id;
-            this.InsuranceForm.controls['profileId'].setValue(profileIds);
-            if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'insurance-view') {
-              this.customerLegaciesId = this.insuranceList.customerId;
-              this.customerLegacyType =  this.urlData.userType;
-              this.userId = this.insuranceList.customerId;
-            }
-
-            this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-            this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-            this.InsuranceDocsList = result.data.documents;            
-            this.InsuranceForm.controls['policyType'].setValue(this.insuranceList.policyType);
-            this.InsuranceForm.controls['company'].setValue(this.insuranceList.company);
-            this.InsuranceForm.controls['policyNumber'].setValue(this.insuranceList.policyNumber);
-            this.InsuranceForm.controls['contactPerson'].setValue(this.insuranceList.contactPerson);
-            this.InsuranceForm.controls['contactEmail'].setValue(this.insuranceList.contactEmail);
-            this.InsuranceForm.controls['contactPhone'].setValue(this.insuranceList.contactPhone);
-            this.InsuranceForm.controls['comments'].setValue(this.insuranceList.comments);
-          }       
-        }
-      }, (err) => {
-        console.error(err);
-      })
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'insurance-finance-debt') {
+      profileInData.customerLegacyId = this.customerLegaciesId
+      profileInData.customerLegacyType = this.customerLegacyType
     }  
+    if(!profileInData.profileId || profileInData.profileId ==''){
+      profileInData.customerId = this.userId
+    }
 
-    InsuranceDelete(doc, name, tmName) {
-      let ids = this.InsuranceForm.controls['profileId'].value;
-      var statMsg = "Are you sure you want to delete '" + name + "' file?"
-      this.confirmService.confirm({ message: statMsg })
-        .subscribe(res => {
-          if (res) {
-            this.loader.open();
-            this.InsuranceDocsList.splice(doc, 1)
-            var query = {};
-            const req_vars = {
-              query: Object.assign({ _id: ids }, query),
-              proquery: Object.assign({ documents: this.InsuranceDocsList }, query),
-              fileName: Object.assign({ docName: tmName }, query)
-            }
-            this.userapi.apiRequest('post', 'documents/deleteInsuranceDoc', req_vars).subscribe(result => {
-              if (result.status == "error") {
-                this.loader.close();
-                this.snack.open(result.data.message, 'OK', { duration: 4000 })
-              } else {
-                this.loader.close();
-                this.snack.open(result.data.message, 'OK', { duration: 4000 })
-              }
-            }, (err) => {
-              console.error(err)
-              this.loader.close();
-            })
+    const req_vars = {
+      query: Object.assign({ _id: this.selectedProfileId}),
+      proquery: Object.assign(profileInData),
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:s3Details.finalWishesFilePath,
+      subFolderName:this.subFolderName
+    }
+    this.loader.open();     
+    this.userapi.apiRequest('post', 'insuranceFinanceDebt/insurance-form-submit', req_vars).subscribe(result => {
+      this.loader.close();
+      if (result.status == "error") {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      } else {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        this.dialog.closeAll(); 
+      }
+    }, (err) => {
+      console.error(err)
+    })
+  }
+
+  getInsuranceView = (query = {}, search = false) => { 
+    let req_vars = {
+      query: Object.assign({ customerId: this.userId,status:"Pending" })
+    }
+    
+    let profileIds = '';
+    if (this.selectedProfileId) {
+      profileIds = this.selectedProfileId;
+      req_vars = {
+        query: Object.assign({ _id:profileIds})
+      }
+    }
+
+    this.loader.open(); 
+    this.userapi.apiRequest('post', 'insuranceFinanceDebt/view-insurance-details', req_vars).subscribe(result => {
+      this.loader.close();
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        if(result.data){    
+          this.insuranceList = result.data;     
+          this.toUserId = this.insuranceList.customerId                
+          let profileIds = this.insuranceList._id;
+          this.InsuranceForm.controls['profileId'].setValue(profileIds);
+          if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'insurance-view') {
+            this.customerLegaciesId = this.insuranceList.customerId;
+            this.customerLegacyType =  this.urlData.userType;
+            this.userId = this.insuranceList.customerId;
           }
-        })
+
+          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+          this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+          this.InsuranceDocsList = result.data.documents;            
+          this.InsuranceForm.controls['policyType'].setValue(this.insuranceList.policyType);
+          this.InsuranceForm.controls['company'].setValue(this.insuranceList.company);
+          this.InsuranceForm.controls['policyNumber'].setValue(this.insuranceList.policyNumber);
+          this.InsuranceForm.controls['contactPerson'].setValue(this.insuranceList.contactPerson);
+          this.InsuranceForm.controls['contactEmail'].setValue(this.insuranceList.contactEmail);
+          this.InsuranceForm.controls['contactPhone'].setValue(this.insuranceList.contactPhone);
+          this.InsuranceForm.controls['comments'].setValue(this.insuranceList.comments);
+        }       
+      }
+    }, (err) => {
+      console.error(err);
+    })
+  }  
+
+  InsuranceDelete(doc, name, tmName) {
+    let ids = this.InsuranceForm.controls['profileId'].value;
+    var statMsg = "Are you sure you want to delete '" + name + "' file?"
+    this.confirmService.confirm({ message: statMsg })
+      .subscribe(res => {
+        if (res) {
+          this.loader.open();
+          this.InsuranceDocsList.splice(doc, 1)
+          var query = {};
+          const req_vars = {
+            query: Object.assign({ _id: ids }, query),
+            proquery: Object.assign({ documents: this.InsuranceDocsList }, query),
+            fileName: Object.assign({ docName: tmName }, query),
+            fromId:localStorage.getItem('endUserId'),
+            toId:this.toUserId,
+            folderName:s3Details.finalWishesFilePath,
+            subFolderName:this.subFolderName
+          }
+          this.userapi.apiRequest('post', 'documents/deleteInsuranceDoc', req_vars).subscribe(result => {
+            if (result.status == "error") {
+              this.loader.close();
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            } else {
+              this.loader.close();
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            }
+          }, (err) => {
+            console.error(err)
+            this.loader.close();
+          })
+        }
+      })
   }
 
   public fileOverBase(e: any): void {
@@ -212,59 +226,59 @@ export class InsuranceModalComponent implements OnInit {
            this.getInsuranceDocuments();
          };
        }
-    }
+  }
     
-    updateProgressBar(){
-      let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
-      let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
-      this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
-      this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
-    }
+  updateProgressBar(){
+    let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
+    let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
+    this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+    this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+  }
 
-    uploadRemainingFiles(profileId) {
-      this.uploaderCopy.onBeforeUploadItem = (item) => {
-        item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
-      }
-      this.uploaderCopy.queue.forEach((fileoOb, ind) => {
-          this.uploaderCopy.uploadItem(fileoOb);
-      });
-  
-      this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-        this.updateProgressBar();
-        this.getInsuranceDocuments({}, false, false);      
-      };
+  uploadRemainingFiles(profileId) {
+    this.uploaderCopy.onBeforeUploadItem = (item) => {
+      item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
     }
+    this.uploaderCopy.queue.forEach((fileoOb, ind) => {
+        this.uploaderCopy.uploadItem(fileoOb);
+    });
 
-    getInsuranceDocuments = (query = {}, search = false, uploadRemained = true) => {     
-      let profileIds = this.InsuranceForm.controls['profileId'].value;
-      let req_vars = {
-        query: Object.assign({customerId: this.userId,status:"Pending" }),
+    this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.updateProgressBar();
+      this.getInsuranceDocuments({}, false, false);      
+    };
+  }
+
+  getInsuranceDocuments = (query = {}, search = false, uploadRemained = true) => {     
+    let profileIds = this.InsuranceForm.controls['profileId'].value;
+    let req_vars = {
+      query: Object.assign({customerId: this.userId,status:"Pending" }),
+      fields:{_id:1,documents:1}
+    }
+    if(profileIds){
+        req_vars = {
+        query: Object.assign({ _id:profileIds}),
         fields:{_id:1,documents:1}
       }
-      if(profileIds){
-         req_vars = {
-          query: Object.assign({ _id:profileIds}),
-          fields:{_id:1,documents:1}
+    }    
+    this.userapi.apiRequest('post', 'insuranceFinanceDebt/view-insurance-details', req_vars).subscribe(result => {
+      if (result.status == "error") {
+      } else {
+        profileIds = result.data._id;
+        this.InsuranceForm.controls['profileId'].setValue(profileIds);
+        if(uploadRemained) {
+          this.uploadRemainingFiles(profileIds)
         }
-      }    
-      this.userapi.apiRequest('post', 'insuranceFinanceDebt/view-insurance-details', req_vars).subscribe(result => {
-        if (result.status == "error") {
-        } else {
-          profileIds = result.data._id;
-          this.InsuranceForm.controls['profileId'].setValue(profileIds);
-          if(uploadRemained) {
-            this.uploadRemainingFiles(profileIds)
-          }
-          // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-          // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-          this.InsuranceDocsList = result.data.documents;              
-        }
-      }, (err) => {
-        console.error(err);
-      })
-    }
+        // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+        // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+        this.InsuranceDocsList = result.data.documents;              
+      }
+    }, (err) => {
+      console.error(err);
+    })
+  }
   
-   isExtension(ext, extnArray) {
+  isExtension(ext, extnArray) {
     var result = false;
     var i;
     if (ext) {
@@ -300,11 +314,14 @@ export class InsuranceModalComponent implements OnInit {
     }
   }
 
-
   downloadFile = (filename) => {    
     let query = {};
     let req_vars = {
-      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:s3Details.insuranceFilePath,
+      subFolderName:this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {

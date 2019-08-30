@@ -45,7 +45,8 @@ export class AdvisorLeadsDetailsComponent implements OnInit {
 
   getUserView = (query = {}, search = false) => {
     const req_vars = {
-      query: Object.assign({ _id: this.selectedProfileId }, query)
+      query: Object.assign({ _id: this.selectedProfileId }, query),
+      fromId: this.userId
     }
     this.userapi.apiRequest('post', 'lead/view-details', req_vars).subscribe(result => { 
       if (result.status == "error") {
@@ -59,7 +60,7 @@ export class AdvisorLeadsDetailsComponent implements OnInit {
         }                   
       }
     }, (err) => {
-      console.error(err)      
+      console.error(err)
     })
   }
 

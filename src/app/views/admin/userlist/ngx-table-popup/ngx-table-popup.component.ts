@@ -102,6 +102,7 @@ export class NgxTablePopupComponent implements OnInit {
   submit() {
     let userData = this.data.payload;
     this.RequestData = {
+      fromId : localStorage.getItem('userId'),
       firstName: this.itemForm.controls['firstName'].value,
       lastName: this.itemForm.controls['lastName'].value,
       username: this.itemForm.controls['username'].value,

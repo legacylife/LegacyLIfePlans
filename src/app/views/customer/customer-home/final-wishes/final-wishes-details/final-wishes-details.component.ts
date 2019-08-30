@@ -23,6 +23,9 @@ export class FinalWishesDetailsComponent implements OnInit {
   re =  "/(?:\.([^.]+))?$/" ;
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
+  toUserId:string = ''
+  subFolderName:string = ''
+  
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -36,6 +39,7 @@ export class FinalWishesDetailsComponent implements OnInit {
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
     this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    this.toUserId = this.userId
     this.getFinalWishView();
   }
   //function to get all events
@@ -57,7 +61,9 @@ export class FinalWishesDetailsComponent implements OnInit {
             this.trusteeLegaciesAction = false;
           }          
           this.row = result.data;
+          this.subFolderName = this.row.subFolderName
           if(this.row){
+            this.toUserId = this.row.customerId 
             this.docPath = this.row.customerId+'/'+s3Details.finalWishesFilePath;
           }
         }
@@ -98,7 +104,11 @@ export class FinalWishesDetailsComponent implements OnInit {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: this.selectedProfileId }, query)
+            query: Object.assign({ _id: this.selectedProfileId }, query),
+            fromId:this.userId,
+            toId:this.toUserId,
+            folderName:s3Details.finalWishesFilePath,
+            subFolderName:this.subFolderName
           }
           this.userapi.apiRequest('post', 'finalWish/delete-finalWish', req_vars).subscribe(result => {
             if (result.status == "error") {
@@ -124,7 +134,11 @@ export class FinalWishesDetailsComponent implements OnInit {
   downloadFile = (filename) => {    
     let query = {};
     let req_vars = {
-      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:this.userId,
+      toId:this.toUserId,
+      folderName:s3Details.finalWishesFilePath,
+      subFolderName:this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
@@ -144,7 +158,11 @@ export class FinalWishesDetailsComponent implements OnInit {
     let query = {};
     var ZipName = "final-wishes-"+Math.floor(Math.random() * Math.floor(999999999999999))+".zip"; 
     let req_vars = {
-      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query)
+      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query),
+      fromId:this.userId,
+      toId:this.toUserId,
+      folderName:s3Details.finalWishesFilePath,
+      subFolderName:this.subFolderName
     }
     this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {

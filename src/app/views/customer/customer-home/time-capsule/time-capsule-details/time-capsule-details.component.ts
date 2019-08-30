@@ -24,6 +24,9 @@ export class TimeCapsuleDetailsComponent implements OnInit {
   re =  "/(?:\.([^.]+))?$/" ;
   urlData:any={};
   trusteeLegaciesAction:boolean=true;
+  toUserId:string = ''
+  subFolderName:string = ''
+
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -37,6 +40,7 @@ export class TimeCapsuleDetailsComponent implements OnInit {
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
     this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
+    this.toUserId = this.userId
     this.getTimeCapsuleView();
   }
 
@@ -60,6 +64,7 @@ export class TimeCapsuleDetailsComponent implements OnInit {
           }
           this.row = result.data;
           if(this.row){
+            this.toUserId = this.row.customerId 
             this.docPath = this.row.customerId+'/'+s3Details.timeCapsuleFilePath;
           }
         }
@@ -92,7 +97,11 @@ export class TimeCapsuleDetailsComponent implements OnInit {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: this.selectedProfileId }, query)
+            query: Object.assign({ _id: this.selectedProfileId }, query),
+            fromId:this.userId,
+            toId:this.toUserId,
+            folderName:s3Details.timeCapsuleFilePath,
+            subFolderName:this.subFolderName
           }
           this.userapi.apiRequest('post', 'timeCapsule/delete-timeCapsule', req_vars).subscribe(result => {
             if (result.status == "error") {
@@ -118,7 +127,11 @@ export class TimeCapsuleDetailsComponent implements OnInit {
   downloadFile = (filename) => {    
     let query = {};
     let req_vars = {
-      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:this.userId,
+      toId:this.toUserId,
+      folderName:s3Details.timeCapsuleFilePath,
+      subFolderName:this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
@@ -138,7 +151,11 @@ export class TimeCapsuleDetailsComponent implements OnInit {
     let query = {};
     var ZipName = "pets-"+Math.floor(Math.random() * Math.floor(999999999999999))+".zip"; 
     let req_vars = {
-      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query)
+      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query),
+      fromId:this.userId,
+      toId:this.toUserId,
+      folderName:s3Details.timeCapsuleFilePath,
+      subFolderName:this.subFolderName
     }
     this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {
@@ -151,7 +168,6 @@ export class TimeCapsuleDetailsComponent implements OnInit {
       this.snack.dismiss();
     });
   }
-
 
   checkExt = (ext) => {    
   let extensions  = ['doc','DOC','DOCX','docx','pdf','PDF','jpg','JPG','png','PNG','jpeg','JPEG','txt','TXT','flv','FLV','avi','AVI','wmv','WMV','mpeg','MPEG','webm','WEBM','mov','MOV'];
@@ -177,7 +193,4 @@ export class TimeCapsuleDetailsComponent implements OnInit {
     }
     return result;
   }
-
-
-
 }

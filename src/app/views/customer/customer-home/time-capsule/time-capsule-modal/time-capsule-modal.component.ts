@@ -36,6 +36,9 @@ export class TimeCapsuleMoalComponent implements OnInit {
   trusteeLegaciesAction:boolean=true;
   selectedProfileId: string;
   currentProgessinPercent: number = 0;
+  toUserId:string = ''
+  subFolderName:string = ''
+
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,private confirmService: AppConfirmService,private loader: AppLoaderService,
     private router: Router,
     private userapi: UserAPIService) { }
@@ -60,78 +63,84 @@ export class TimeCapsuleMoalComponent implements OnInit {
         this.userId = this.urlData.lastOne;          
         this.selectedProfileId = "";        
     }
-     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
-     this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
-     this.getTimeCapsuleView();
+    
+    this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    this.toUserId = this.userId
+    this.getTimeCapsuleView();
+  }
+
+  TimeCapsuleFormSubmit(profileInData = null) {
+    var query = {};
+    var proquery = {};     
+    
+    let profileIds = this.TimeCapsuleForm.controls['profileId'].value;
+    if(profileIds){
+      this.selectedProfileId = profileIds;
     }
 
-    TimeCapsuleFormSubmit(profileInData = null) {
-      var query = {};
-      var proquery = {};     
-      
-      let profileIds = this.TimeCapsuleForm.controls['profileId'].value;
-      if(profileIds){
-        this.selectedProfileId = profileIds;
-      }
-
-      if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'time-capsule') {
-        profileInData.customerLegacyId = this.customerLegaciesId
-        profileInData.customerLegacyType = this.customerLegacyType
-      }
-
-      if(!profileInData.profileId || profileInData.profileId ==''){
-        profileInData.customerId = this.userId
-      }
-      const req_vars = {
-        query: Object.assign({ _id: this.selectedProfileId }),
-        proquery: Object.assign(profileInData)
-      }
-      this.loader.open();     
-      this.userapi.apiRequest('post', 'timeCapsule/timeCapsule-form-submit', req_vars).subscribe(result => {
-        this.loader.close();
-        if (result.status == "error") {
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
-        } else {
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
-          this.dialog.closeAll(); 
-        }
-      }, (err) => {
-        console.error(err)
-      })
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'time-capsule') {
+      profileInData.customerLegacyId = this.customerLegaciesId
+      profileInData.customerLegacyType = this.customerLegacyType
     }
 
-    getTimeCapsuleView = (query = {}, search = false) => { 
-      let req_vars = {
-        query: Object.assign({ customerId: this.userId,status:"Pending" })
+    if(!profileInData.profileId || profileInData.profileId ==''){
+      profileInData.customerId = this.userId
+    }
+    const req_vars = {
+      query: Object.assign({ _id: this.selectedProfileId }),
+      proquery: Object.assign(profileInData),
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:s3Details.timeCapsuleFilePath,
+      subFolderName:this.subFolderName
+    }
+    this.loader.open();     
+    this.userapi.apiRequest('post', 'timeCapsule/timeCapsule-form-submit', req_vars).subscribe(result => {
+      this.loader.close();
+      if (result.status == "error") {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      } else {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        this.dialog.closeAll(); 
       }
-     
-      let profileIds = '';
-      if (this.selectedProfileId) {
-        profileIds = this.selectedProfileId;
-        req_vars = {
-          query: Object.assign({ _id:profileIds })
-        }
-      }
+    }, (err) => {
+      console.error(err)
+    })
+  }
 
-      this.loader.open(); 
-      this.userapi.apiRequest('post', 'timeCapsule/view-timeCapsule-details', req_vars).subscribe(result => {
-        this.loader.close();
-        if (result.status == "error") {
-          console.log(result.data)
-        } else {
-          if(result.data){    
-            this.timeCapsuleList = result.data;                    
-            let profileIds = this.timeCapsuleList._id;
-            this.TimeCapsuleForm.controls['profileId'].setValue(profileIds);
-            this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-            this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-            this.timeCapsuleDocsList = result.data.documents;            
-            this.TimeCapsuleForm.controls['name'].setValue(this.timeCapsuleList.name);
-          }       
-        }
-      }, (err) => {
-        console.error(err);
-      })
+  getTimeCapsuleView = (query = {}, search = false) => { 
+    let req_vars = {
+      query: Object.assign({ customerId: this.userId,status:"Pending" })
+    }
+    
+    let profileIds = '';
+    if (this.selectedProfileId) {
+      profileIds = this.selectedProfileId;
+      req_vars = {
+        query: Object.assign({ _id:profileIds })
+      }
+    }
+
+    this.loader.open(); 
+    this.userapi.apiRequest('post', 'timeCapsule/view-timeCapsule-details', req_vars).subscribe(result => {
+      this.loader.close();
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        if(result.data){    
+          this.timeCapsuleList = result.data;                    
+          let profileIds = this.timeCapsuleList._id;
+          this.TimeCapsuleForm.controls['profileId'].setValue(profileIds);
+          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+          this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+          this.timeCapsuleDocsList = result.data.documents;            
+          this.TimeCapsuleForm.controls['name'].setValue(this.timeCapsuleList.name);
+        }       
+      }
+    }, (err) => {
+      console.error(err);
+    })
   }  
 
   timeCapsuleDelete(doc, name, tmName) {
@@ -146,7 +155,11 @@ export class TimeCapsuleMoalComponent implements OnInit {
             const req_vars = {
               query: Object.assign({ _id: ids }, query),
               proquery: Object.assign({ documents: this.timeCapsuleDocsList }, query),
-              fileName: Object.assign({ docName: tmName }, query)
+              fileName: Object.assign({ docName: tmName }, query),
+              fromId:localStorage.getItem('endUserId'),
+              toId:this.toUserId,
+              folderName:s3Details.timeCapsuleFilePath,
+              subFolderName:this.subFolderName
             }
             this.userapi.apiRequest('post', 'documents/deleteTimeCapsuleDoc', req_vars).subscribe(result => {
               if (result.status == "error") {
@@ -279,7 +292,11 @@ export class TimeCapsuleMoalComponent implements OnInit {
   downloadFile = (filename) => {    
     let query = {};
     let req_vars = {
-      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:s3Details.timeCapsuleFilePath,
+      subFolderName:this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
@@ -293,6 +310,4 @@ export class TimeCapsuleMoalComponent implements OnInit {
       link.click();this.snack.dismiss();
     });
   }
-
-
 }
