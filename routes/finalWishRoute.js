@@ -22,8 +22,8 @@ var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
 })
-
-
+const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 function finalList(req, res) {
   let { fields, offset, query, order, limit, search } = req.body
   let totalRecords = 0
@@ -70,11 +70,15 @@ function finalList(req, res) {
   })
 }
 
-
 function wishFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let {message} = req.body;
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
 
   var logData = {}
   logData.fileName = proquery.title;
@@ -88,9 +92,9 @@ function wishFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details added';
+          let resText = 'added';
           if (custData.title){
-            resText = 'details updated';
+            resText = 'updated';
           }
           let { proquery } = req.body;   
           proquery.status = 'Active';   
@@ -104,7 +108,12 @@ function wishFormUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": message.messageText+" "+resText+" successfully" }
+              let rmessage = resMessage.data( 607, [{key:'{field}',val: 'Final Wish'}, {key:'{status}',val: resText}] )
+              let result = { "message": rmessage }
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, 'Final Wish'+resText, rmessage, folderName, subFolderName )
+
+              //let result = { "message": message.messageText+" "+resText+" successfully" }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -144,7 +153,12 @@ function wishFormUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": message.messageText+" details added successfully!" }
+        let rmessage = resMessage.data( 607, [{key:'{field}',val: 'Final Wish'},{key:'{status}',val: 'added'}] )
+        let result = { "message": rmessage }
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, 'Final Wish added', rmessage, folderName, subFolderName )
+
+        //let result = { "message": message.messageText+" details added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -168,7 +182,13 @@ function viewFinalWish(req, res) {
 
 function deleteFinalWish(req, res) {
   let { query } = req.body;
-  let fields = { }
+  let fields    = { }
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
+
   finalWish.findOne(query, fields, function (err, wishInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -180,7 +200,11 @@ function deleteFinalWish(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(wishInfo._id);
-          let result = { "message": "Record deleted successfully!" }
+          
+          let message = resMessage.data( 607, [{key:'{field}',val:'Final wish'},{key:'{status}',val:'deleted'}] )
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Final Wish Delete", message, folderName, subFolderName )
           res.status(200).send(resFormat.rSuccess(result))
         }
       })

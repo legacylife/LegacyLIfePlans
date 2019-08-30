@@ -18,6 +18,8 @@ const actitivityLog = require('./../helpers/fileAccessLog')
 const SendUserEmails = require('./../models/SendUserEmails.js')
 const sendEmail = require('./../helpers/sendEmail')
 const emailTemplates = require('./emailTemplatesRoute.js')
+const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -53,8 +55,11 @@ function FormSubmit(req, res) {
           let inviteToName = userDetails.firstName;
           let AdvisorEmailId = userDetails.username;
 
-          sendAdvisorMail(AdvisorEmailId,emailRef,inviteToName,inviteByName,comment);    
-          let result = { "message":"Email sent successfully!" }
+          sendAdvisorMail(AdvisorEmailId,emailRef,inviteToName,inviteByName,comment);   
+          let message = resMessage.data( 607, [{key:'{field}',val:"Email"}, {key:'{status}',val:'sent'}] )
+          //Update activity logs
+          allActivityLog.updateActivityLogs( query.customerId, query.advisorId, "Email To Advisor", message,'Advisor Details') 
+          let result = { "message":message }
           res.status(200).send(resFormat.rSuccess(result))
         }       
       })

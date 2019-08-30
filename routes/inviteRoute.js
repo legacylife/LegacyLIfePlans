@@ -17,6 +17,8 @@ const sendRawEmail = require('./../helpers/sendRawEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 const Invite = require('./../models/Invite.js')
 const InviteTemp = require('./../models/InviteTemp.js')
+const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 const s3 = require('./../helpers/s3Upload')
 var auth = jwt({
     secret: constants.secret,
@@ -128,8 +130,10 @@ async function inviteMembers(req, res) {
         // delete temp invite files
         await InviteTemp.deleteMany({ inviteById: inviteById });
     }
- 
-    let result = { "message": "Invitations has been sent successfully!" }
+    let message = resMessage.data( 607, [{key:'{field}',val:"Invitation"}, {key:'{status}',val:'sent'}] )
+    //Update activity logs
+    allActivityLog.updateActivityLogs( inviteById, inviteToUserId, "Invite", message,'')
+    let result = { "message": message }
     res.status(200).send(resFormat.rSuccess(result))
 }
 

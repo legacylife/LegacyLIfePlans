@@ -206,7 +206,6 @@ router.post('/myEssentialsID', cors(), function(req,res){
   }
 })
 
-
 router.post('/legalStuff', cors(), function(req,res){
   var fstream;
   let authTokens = { authCode: "" }
@@ -610,7 +609,6 @@ router.post('/timeCapsuledocuments', cors(), function(req,res){
   }
 })
 
-
 router.post('/insuranceDocuments', cors(), function(req,res){
   var fstream;
   let authTokens = { authCode: "" }
@@ -910,7 +908,6 @@ router.post('/letterMessage', cors(), function(req,res){
   }
 })
 
-
 function isExtension(ext, extnArray) {
   var result = false;
   var i;
@@ -954,6 +951,12 @@ function deleteIdDocument(req, res) {
   let { proquery } = req.body;
   let { fileName } = req.body;
   let fields = {};
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
+
   personalIdProof.findOne(query, fields, function (err, fileDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -963,6 +966,9 @@ function deleteIdDocument(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,IDdocFilePath,fileName.docName);
+          let message = resMessage.data( 607, [{key: '{field}',val: 'ID Box documents'}, {key: '{status}',val: 'deleted'}] )
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
           let result = { userId:fileDetails._id, "message": resMsg }
           res.send(resFormat.rSuccess(result))
         }
@@ -970,7 +976,6 @@ function deleteIdDocument(req, res) {
     }
   })
 }
-
 
 function deletesubFolderDoc(req, res) {
   let { query } = req.body;
@@ -994,11 +999,16 @@ function deletesubFolderDoc(req, res) {
   })
 }
 
-
 function deleteWishessubFolderDoc(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let { fileName } = req.body;
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
+
   let fields = {};
   finalWish.findOne(query, fields, function (err, fileDetails) {
     if (err) {
@@ -1009,7 +1019,11 @@ function deleteWishessubFolderDoc(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,finalWishesFilePath,fileName.docName);
-          let result = { userId:fileDetails._id, "message": resMsg }
+          let message = resMessage.data( 607, [{key: '{field}',val: 'Final Wishes documents'}, {key: '{status}',val: 'deleted'}] )
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
+
+          let result = { userId:fileDetails._id, "message": message }
           res.send(resFormat.rSuccess(result))
         }
       })
@@ -1022,6 +1036,11 @@ function deletePetDoc(req, res) {
   let { proquery } = req.body;
   let { fileName } = req.body;
   let fields = {};
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
   pet.findOne(query, fields, function (err, fileDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -1031,7 +1050,10 @@ function deletePetDoc(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,petsFilePath,fileName.docName);
-          let result = { userId:fileDetails._id, "message": resMsg }
+          let message = resMessage.data( 607, [{key: '{field}',val: 'Pets documents'}, {key: '{status}',val: 'deleted'}] )
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
+          let result = { userId:fileDetails._id, "message": message }
           res.send(resFormat.rSuccess(result))
         }
       })
@@ -1039,12 +1061,16 @@ function deletePetDoc(req, res) {
   })
 }
 
-
 function deleteTimeCapsuleDoc(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let { fileName } = req.body;
   let fields = {};
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
   timeCapsule.findOne(query, fields, function (err, fileDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -1054,7 +1080,10 @@ function deleteTimeCapsuleDoc(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,timeCapsuleFilePath,fileName.docName);
-          let result = { userId:fileDetails._id, "message": resMsg }
+          let message = resMessage.data( 607, [{key: '{field}',val: 'Time Capsule documents'}, {key: '{status}',val: 'deleted'}] )
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
+          let result = { userId:fileDetails._id, "message": message }
           res.send(resFormat.rSuccess(result))
         }
       })
@@ -1062,12 +1091,17 @@ function deleteTimeCapsuleDoc(req, res) {
   })
 }
 
-
 function deleteInsuranceDocument(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let { fileName } = req.body;
   let fields = {};
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
+
   insurance.findOne(query, fields, function (err, fileDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -1077,7 +1111,10 @@ function deleteInsuranceDocument(req, res) {
           res.send(resFormat.rError(err))
         } else {
               resMsg = deleteDocumentS3(fileDetails.customerId,insuranceFilePath,fileName.docName);
-              let result = { userId:fileDetails._id, "message": resMsg }
+              let message = resMessage.data( 607, [{key: '{field}',val: 'Insurance documents'}, {key: '{status}',val: 'deleted'}] )
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
+              let result = { userId:fileDetails._id, "message": message }
               res.send(resFormat.rSuccess(result));
         }
       })
@@ -1096,7 +1133,7 @@ function deleteDocumentS3(customerId,filePaths,fileName){
             //resMsg = "File deleted successfully";
             resMsg = resMessage.data( 607, [{key: '{field}',val: 'File'}, {key: '{status}',val: 'deleted'}] )
             //Update activity logs
-            allActivityLog.updateActivityLogs( customerId, customerId, "File Delete", message, filePaths, '', filename)
+            //allActivityLog.updateActivityLogs( customerId, customerId, "File Delete", message, filePaths, '', filename)
          }
          catch (err) {
            resMsg = "ERROR in file Deleting : " + JSON.stringify(err);
@@ -1109,13 +1146,17 @@ function deleteDocumentS3(customerId,filePaths,fileName){
     return resMsg;
 }
 
-
-
 function deleteFinanceDocument(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let { fileName } = req.body;
   let fields = {};
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
+
   Finance.findOne(query, fields, function (err, fileDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -1125,6 +1166,10 @@ function deleteFinanceDocument(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,financeFilePath,fileName.docName);
+          let message = resMessage.data( 607, [{key: '{field}',val: 'Finance documents'}, {key: '{status}',val: 'deleted'}] )
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
+
           let result = { userId:fileDetails._id, "message": resMsg }
           res.send(resFormat.rSuccess(result))
         }
@@ -1133,11 +1178,18 @@ function deleteFinanceDocument(req, res) {
   })
 }
 
-
 function deleteLetterMessageDocument(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+  let { fileName } = req.body;
   let fields = {};
+
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
+
   lettersMessage.findOne(query, fields, function (err, fileDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -1147,14 +1199,16 @@ function deleteLetterMessageDocument(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,letterMessageFilePath,fileName.docName);
-          let result = { userId:fileDetails._id, "message": resMsg }
+          let message = resMessage.data( 607, [{key: '{field}',val: 'Letter and Message documents'}, {key: '{status}',val: 'deleted'}] )
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
+          let result = { userId:fileDetails._id, "message": message }
           res.send(resFormat.rSuccess(result))
         }
       })
     }
   })
 }
-
 
 router.post('/invite', cors(), function(req,res){
   var fstream;
@@ -1213,12 +1267,21 @@ router.post('/invite', cors(), function(req,res){
 function deleteInviteDocument(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
+
    InviteTemp.deleteOne(query, function (err, fileDetails) {   
       if (err) {
         res.send(resFormat.rError(err))
       } else {
         resMsg = deleteDocumentS3(fileDetails.customerId,inviteDocumentsPath,proquery.docName);
-        let result = { userId:fileDetails._id, "message": "File deleted successfully!" }
+        let message = resMessage.data( 607, [{key: '{field}',val: 'Invite documents'}, {key: '{status}',val: 'deleted'}] )
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, proquery.docName)
+        let result = { userId:fileDetails._id, "message": message }
         res.send(resFormat.rSuccess(result))
       }    
   })
@@ -1335,6 +1398,12 @@ function deleteDeceasedDoc(req, res) {
   let { proquery } = req.body;
   let { fileName } = req.body;
   let fields = {};
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
+
   MarkDeceased.findOne(query, fields, function (err, fileDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -1344,15 +1413,16 @@ function deleteDeceasedDoc(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,deceasedFilessPath,fileName.docName);
-          let result = { userId:fileDetails._id, "message": resMsg }
+          let message = resMessage.data( 607, [{key: '{field}',val: 'Deceased documents'}, {key: '{status}',val: 'deleted'}] )
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
+          let result = { userId:fileDetails._id, "message": message }
           res.send(resFormat.rSuccess(result))
         }
       })
     }
   })
 }
-
-
 
 function downloadDocs(req,res) {
   let { query } = req.body; 
@@ -1362,7 +1432,7 @@ function downloadDocs(req,res) {
   let { fromId }        = req.body
   let { toId }          = req.body
   let { folderName }    = req.body
-        folderName      = folderName.replace('/','')
+        folderName      = folderName ? folderName.replace('/','') : ''
   let { subFolderName } = req.body
 
   var params = {Bucket: constants.s3Details.bucketName,Key:filePath};
@@ -1378,48 +1448,6 @@ function downloadDocs(req,res) {
     let message = resMessage.data( 607, [{key: '{field}',val: 'File'}, {key: '{status}',val: 'downloaded'}] )
     //Update activity logs
     allActivityLog.updateActivityLogs( fromId, toId, "File Download", message, folderName, subFolderName, filename)
-  } catch (error) {
-    res.status(401).send(resFormat.rError({message :error}))  
-  }
-}
-
-
-function downloadDocsOLD(req,res) {
-  let { query } = req.body; 
-  let filePath = query.docPath+query.filename;
-  let filename = query.filename;
-  var params = {Bucket: constants.s3Details.bucketName,Key:filePath};
-  let ext = filename.split('.')
-  ext = ext[ext.length - 1];
-  try {
-    console.log("params 00 ->",params)
-      s3.s3.headObject(params, function(err, data) {
-      if(data){
-        const stream = s3.s3.getObject(params).createReadStream();    
-        res.set({
-          'Content-Disposition': 'attachment; filename='+filename,
-          'Content-Type': 'image/'+ext+'; charset=utf-8'
-        });
-        stream.pipe(res);    
-      }else{
-        let files = filePath.split('/');
-        oldFile = files[1]+'/'+files[2];
-        var params = {Bucket: constants.s3Details.bucketName,Key:oldFile};
-        console.log("params 11 ->",params)
-        s3.s3.headObject(params, function(err, data) {
-          if(data){
-            const stream = s3.s3.getObject(params).createReadStream();    
-            res.set({
-              'Content-Disposition': 'attachment; filename='+filename,
-              'Content-Type': 'image/'+ext+'; charset=utf-8'
-            });
-            stream.pipe(res);    
-          }else{    
-            res.status(401).send(resFormat.rError({message :"File Not Found"}))  
-          }
-        });
-      }
-    });
   } catch (error) {
     res.status(401).send(resFormat.rError({message :error}))  
   }
@@ -1481,79 +1509,14 @@ function getuserFolderSize(folder,res) {
    });
 }
 
-function downloadZipfilesDinzy(req,res) {
-  let { query } = req.body; 
-  let { docPath, AllDocuments } = query;
-  let downloadFileName = zipName;
-   
-  if (AllDocuments) {
-    let docList = []
-    AllDocuments.map((row)=>{
-      docList.push(docPath+row.tmpName);
-    });
-    console.log("docList ",docList)
-    const params = {Bucket: constants.s3Details.bucketName,Prefix: docPath};
-    s3.s3.listObjectsV2(params, (err, data)=>{     
-      let files = []
-      data.Contents.map((o)=> {
-        if(docList.indexOf(o.Key)){ 
-          files.push(o.Key)
-        }
-      })//end of files
-      var output = fs.createWriteStream('tmp/' + downloadFileName);
-      var archive = archiver('zip', {});
-      res.attachment(downloadFileName);
-      console.log("files=>", files)
-      async.each(files, (filename, callback)=>{       
-        var getparams = {Bucket: constants.s3Details.bucketName,Key:filename};
-        const stream = s3.s3.getObject(getparams).createReadStream();
-        console.log("attaching file "+ filename)
-        archive.append(stream,{name: filename});
-        callback();
-      }, () => {
-        
-        archive.on('data', () => { })
-        archive.on('error', (err) => {
-          console.log("WError: ",err)
-        })
-        // archive.finalize(); 
-        archive.on('finish', () => {
-          var pass = new stream.PassThrough();
-          var params = {Bucket: constants.s3Details.bucketName, Key: 'downloads/'+downloadFileName, Body:archive};
-          s3.s3.upload(params, function(s3Err, data) {
-           // console.log("s3Err",s3Err)
-            if (s3Err) { 
-              throw s3Err
-            } else {
-              console.log(`File uploaded successfully at ${data.Location}`)
-              //  archive.pipe(output);              
-              //  res.send(archive);
-              //  res.send(output);
-              let downloadfilePath = 'downloads/'+downloadFileName;
-              downloadZip(downloadfilePath, downloadFileName,res);
-            }
-          });
-        });
-        archive.finalize();  
-        // res.send(files)
-      })
-    }) //end of stream
-  } else{
-    res.status(401).send(resFormat.rError({message :"Sorry files not found!"}))  
-  }
-}
-
 function downloadZipfiles(req,res) {
   let { query } = req.body; 
   let filesPath = query.docPath;
   let { fromId }        = req.body
   let { toId }          = req.body
   let { folderName }    = req.body
-        folderName      = folderName.replace('/','')
+        folderName      = folderName ? folderName.replace('/','') : ''
   let { subFolderName } = req.body
-  //let ext = query.downloadFileName.split('/');
-  //let downloadFileName = ext[0]+ '-' + new Date().getTime();     
-  
   let downloadFileName = query.downloadFileName;
 
   if(query.AllDocuments){
@@ -1585,7 +1548,6 @@ function downloadZipfiles(req,res) {
         let s3OutputStream = uploadFromStream(downloadFileName,res);
         archive.pipe(s3OutputStream);
         
-        //console.log("files >>>>>  ",s3OutputStream)
         async.each(files, (folder,callback)=>{
             let filePath = folder;                 
             let filename = folder;
@@ -1598,10 +1560,6 @@ function downloadZipfiles(req,res) {
         archive.finalize();  
 
         archive.on('finish', async () => {
-          // let downloadfilePath = 'downloads/'+downloadFileName+'.zip';
-          // let downloadFilenames = downloadFileName+'.zip';
-          // console.log("FINISH re BHO !! ",downloadfilePath,downloadFilenames)
-          // downloadZip(downloadfilePath, downloadFilenames,res);           
           let message = resMessage.data( 607, [{key: '{field}',val: 'Zip'}, {key: '{status}',val: 'downloaded'}] )
           //Update activity logs
           allActivityLog.updateActivityLogs( fromId, toId, "Zip Download", message, folderName, subFolderName, downloadFileName)
@@ -1637,20 +1595,6 @@ function uploadFromStream(zipfileName,res) {
     }  
   });
   return pass;
-}
-
-function downloadZip(downloadfilePath,downloadFilenames,res) {
-  var downLoadparams = {Bucket: constants.s3Details.bucketName,Key:downloadfilePath};
-  try {
-    const streams = s3.s3.getObject(downLoadparams).createReadStream(); 
-    res.set({
-      'Content-Disposition': 'attachment; filename='+downloadFilenames,
-      'Content-Type': 'image/zip; charset=utf-8'
-    });
-    streams.pipe(res);
-  } catch (error) {
-    res.status(401).send(resFormat.rError({message :error}))  
-  }     
 }
 
 router.post("/deleteAdvDoc", deleteDoc);

@@ -108,15 +108,17 @@ function view(req, res) {
 
 function updateStatus(req, res) {
   let { query } = req.body;
+  let { fromId } = req.body;
   let fields = { id: 1, username: 1, status: 1, stripeCustomerId:1, subscriptionDetails:1, firstName:1, lastName:1 }
   User.findOne(query, fields, function (err, userList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
       var upStatus = 'Active';
+      let subSection = userList.userType == 'customer' ? 'Customers' : (userList.userType == 'advisor' ? 'Advisors' : 'Admin Users')
       if (userList.status == 'Active') {
         upStatus = 'Inactive'; 
-
+        
         if( userList.stripeCustomerId ) {
           let subscriptionDetails = userList.subscriptionDetails ? userList.subscriptionDetails : null
           let subscriptionId = subscriptionDetails != null ? subscriptionDetails[(subscriptionDetails.length-1)]['subscriptionId'] : ""
@@ -149,13 +151,13 @@ function updateStatus(req, res) {
                         }
                         sendEmail(mailOptions)
                         //Update activity logs
-                        allActivityLog.updateActivityLogs(userList._id, userList._id, 'Subscription', 'Subscription has been canceled successfully.', 'SysAdmin')
+                        allActivityLog.updateActivityLogs(fromId, userList._id, 'User '+upStatus, 'Subscription has been canceled successfully.', 'User Management',subSection)
 
                         res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':'Done'}));
                       }
                       else {
                         //Update activity logs
-                        allActivityLog.updateActivityLogs(userList._id, userList._id, 'Login', 'Subscription has been canceled successfully.', 'SysAdmin')
+                        allActivityLog.updateActivityLogs(fromId, userList._id, 'User '+upStatus, 'Subscription has been canceled successfully.', 'User Management',subSection)
 
                         res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':'Done'}));
                       }
@@ -172,6 +174,7 @@ function updateStatus(req, res) {
           res.send(resFormat.rError(err))
         } else {
           let message = resMessage.data( 607, [{key: '{field}',val: 'Status'}, {key: '{status}',val: 'updated'}] )
+          allActivityLog.updateActivityLogs(fromId, userList._id, 'User '+upStatus, message, 'User Management',subSection)
           let result = { userId: updatedUser._id, userType: updatedUser.userType, "message": message }
           res.status(200).send(resFormat.rSuccess(result))
         }
@@ -204,6 +207,7 @@ function updateProfile(req, res) {
 
 function updateAdminProfile(req, res) {
   let  query  = {"_id" : req.body._id};
+  let { fromId } = req.body
   let fields = { id: 1, username: 1, status: 1 }
   User.findOne(query, function (err, updatedUser) {
     if (err) {
@@ -215,6 +219,9 @@ function updateAdminProfile(req, res) {
           res.send(resFormat.rError(err))
         } else {
           User.findOne(query, function (err, updatedUser) {
+            let message = resMessage.data( 607, [{key: '{field}',val: 'Profile'}, {key: '{status}',val: 'updated'}] )
+            //Update activity logs
+            allActivityLog.updateActivityLogs(fromId, updatedUser._id, 'Updated Sub-Admin', message,'Admin Panel','Admin users')
             let result = { "userProfile": { userId: updatedUser._id, userType: updatedUser.userType, firstName: updatedUser.firstName, lastName: updatedUser.lastName, phoneNumber: updatedUser.phoneNumber }, "message": "Profile update successfully!" }
             res.status(200).send(resFormat.rSuccess(result));
           });
@@ -238,6 +245,7 @@ function profile(req, res) {
 }
 
 function addNewMember(req, res) {
+  let  {fromId} = req.body
   let newMem = new User()
   newMem.fullName = req.body.fullName;
   newMem.firstName = req.body.firstName;
@@ -298,7 +306,7 @@ function addNewMember(req, res) {
               }, 3000);
               let message = resMessage.data( 607, [{key: '{field}',val: 'Member'}, {key: '{status}',val: 'added'}] )
               //Update activity logs
-              allActivityLog.updateActivityLogs(req.body._id, user._id, 'New User', message)
+              allActivityLog.updateActivityLogs(fromId, newMemRecord._id, 'Added Sub-Admin', message,'Admin Panel','Admin users')
               res.send(resFormat.rSuccess(message));
             }
           })
@@ -343,8 +351,6 @@ function sendMailsAdmin(newMemRecord){
       }
     })
 }
-
-
 
 function common(req, res) {
   const Models = { 'users': User }
@@ -584,6 +590,7 @@ function getSubscription(req, res) {
  */
 function createSubscription( userProfile, stripeCustomerId, planId, requestParam, res ) {
   let subscriptions = []
+  let subscriptionStatus = 'added'
   let subscriptionDetails = {"_id" : objectId,
                           "productId" : '',
                           "planId" : planId,
@@ -606,6 +613,7 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
 
   if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
     subscriptions = userProfile.subscriptionDetails
+    subscriptionStatus = 'updated'
   }
   subscriptions.push(subscriptionDetails)
   User.updateOne({ _id: userProfile._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : subscriptions } }, function (err, updated) {
@@ -705,6 +713,7 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                     res.send(resFormat.rError(err))
                   }
                   else {
+                    let message = resMessage.data( 607, [{key: '{field}',val: 'Subscription'}, {key: '{status}',val: subscriptionStatus}] )
                     //subscription purchased email template
                     emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
                       if(template) {
@@ -728,12 +737,12 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                         }
                         sendEmail(mailOptions)
                         //Update activity logs
-                        allActivityLog.updateActivityLogs(requestParam._id, requestParam._id, 'Subscription', 'Subscription has been updated successfully.')
-                        res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
+                        allActivityLog.updateActivityLogs(userProfile._id, userProfile._id, 'Subscription', message,'Account Settings')
+                        res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':message}));
                       } else {
                         //Update activity logs
-                        allActivityLog.updateActivityLogs(requestParam._id, requestParam._id, 'Subscription', 'Subscription has been updated successfully.')
-                        res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':'Done'}));
+                        allActivityLog.updateActivityLogs(userProfile._id, userProfile._id, 'Subscription', message,'Account Settings')
+                        res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':message}));
                       }
                     })
                   }
@@ -991,11 +1000,11 @@ function chargeForAddon( userProfile, stripeCustomerId, requestParam, res ) {
                           }
                           sendEmail(mailOptions)
                           //Update activity logs
-                          allActivityLog.updateActivityLogs(requestParam._id, requestParam._id, 'Subscription', 'Addon has been added successfully.')
+                          allActivityLog.updateActivityLogs(userProfile._id, userProfile._id, 'Subscription AddOn', 'Addon has been added successfully.','Account Settings')
                           res.status(200).send(resFormat.rSuccess({ 'message':message }));
                         } else {
                           //Update activity logs
-                          allActivityLog.updateActivityLogs(requestParam._id, requestParam._id, 'Subscription', 'Addon has been added successfully.')
+                          allActivityLog.updateActivityLogs(userProfile._id, userProfile._id, 'Subscription AddOn', 'Addon has been added successfully.','Account Settings')
                           res.status(200).send(resFormat.rSuccess({ 'message':message }));
                         }
                       })
@@ -1051,6 +1060,7 @@ function autoRenewalUpdate(req, res) {
                   res.send(resFormat.rError(err))
                 }
                 let message = resMessage.data( 607, [{key: '{field}',val: 'Auto renewal status'}, {key: '{status}',val: 'updated'}] )
+                allActivityLog.updateActivityLogs(userProfile._id, userProfile._id, 'Auto Renewal Status', message,'Account settings')
                 res.status(200).send(resFormat.rSuccess({'autoRenewalStatus': autoRenewalStatus, 'message':messahe}));
               })
           });
@@ -1108,11 +1118,11 @@ function cancelSubscription(req, res) {
                       }
                       sendEmail(mailOptions)
                       //Update activity logs
-                      allActivityLog.updateActivityLogs(req.body.query._id, req.body.query._id, 'Subscription', message)
+                      allActivityLog.updateActivityLogs(req.body.query._id, req.body.query._id, 'Subscription Canceled', message,'Account settings')
                       res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':message}));
                     } else {
                       //Update activity logs
-                      allActivityLog.updateActivityLogs(req.body.query._id, req.body.query._id, 'Subscription', message)
+                      allActivityLog.updateActivityLogs(req.body.query._id, req.body.query._id, 'Subscription Canceled', message,'Account settings')
                       res.status(200).send(resFormat.rSuccess({'subscriptionStatus': confirmation.status, 'message':message}));
                     }
                   })

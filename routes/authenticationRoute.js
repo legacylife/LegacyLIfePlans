@@ -250,7 +250,7 @@ function custProfileUpdate(req, res) {
           if (err) {
             res.send(resFormat.rError(err))
           } else {
-            let message = resMessage.data( 607, [{key: '{field}',val: 'User'+from.fromname}, {key: '{status}',val: 'updated'}] )
+            let message = resMessage.data( 607, [{key: '{field}',val: 'User '+from.fromname}, {key: '{status}',val: 'updated'}] )
             
             //Update activity logs
             allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Profile', message)
@@ -328,7 +328,7 @@ const changePassword = function (req, res) {
             let message = resMessage.data( 607, [{key: '{field}',val: 'Password'}, {key: '{status}',val: 'updated'}] )
             
             //Update activity logs
-            allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Password', message)
+            allActivityLog.updateActivityLogs(req.body.userId, req.body.userId, 'Password', message)
             let result = { "message": message }
             res.status(200).send(resFormat.rSuccess(result))
           }
@@ -360,7 +360,7 @@ const changeEmail = function (req, res) {
           } else {
             let message = resMessage.data( 607, [{key: '{field}',val: 'Email ID'}, {key: '{status}',val: 'updated'}] )
             //Update activity logs
-            allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Email', message)
+            allActivityLog.updateActivityLogs(req.body._id, req.body._id, 'Email', message)
             res.send(resFormat.rSuccess(message))
           }
         })
@@ -382,8 +382,11 @@ const resetPassword = function (req, res) {
           if (err) {
             res.send(resFormat.rError(err))
           } else {
-            let msg = {username : userDetails.username, msg : 'Your password is updated'}
-            res.send(resFormat.rSuccess(msg))
+            //let msg = {username : userDetails.username, msg : 'Your password is updated'}
+            let message = resMessage.data( 607, [{key: '{field}',val: 'Password'}, {key: '{status}',val: 'updated'}] )
+            //Update activity logs
+            allActivityLog.updateActivityLogs(userDetails._id, userDetails._id, 'Reset Password', message)
+            res.send(resFormat.rSuccess(message))
           }
         })
       }

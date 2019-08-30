@@ -68,7 +68,7 @@ function activateAdvisor(req, res) {
               
               let message = resMessage.data( 616, [] )
               //Update activity logs
-              allActivityLog.updateActivityLogs( fromId, updatedUser._id, "Activate User", message, "Admin Panel")
+              allActivityLog.updateActivityLogs( fromId, updatedUser._id, "Account Approved", message, "Admin Panel", "Advisors")
               
               let result = { userId: updatedUser._id, userType: updatedUser.userType, "message": message }
               res.status(200).send(resFormat.rSuccess(result))
@@ -86,7 +86,7 @@ function activateAdvisor(req, res) {
 function rejectAdvisor(req, res) {
 
   let query = { "_id": req.body._id };
-  let fromId = req.body.fromId
+  let {fromId} = req.body
   let fields = { id: 1, username: 1, status: 1 }
   User.findOne(query, fields, function (err, userList) {
     if (err) {
@@ -116,7 +116,7 @@ function rejectAdvisor(req, res) {
               //res.send(resFormat.rSuccess('We have set your password. Please login & use system.'))
               let message = resMessage.data( 607, [{key:'{message}',val:"Account"}, {key:'{status}',val:'rejected'}] )
               //Update activity logs
-              allActivityLog.updateActivityLogs( fromId, updatedUser._id, "Rejected User", message, "Admin Panel")
+              allActivityLog.updateActivityLogs( fromId, updatedUser._id, "Account Rejected", message, "Admin Panel", 'Advisors')
               
               let result = { userId: updatedUser._id, userType: updatedUser.userType, "message": message }
               res.status(200).send(resFormat.rSuccess(result))
@@ -276,9 +276,11 @@ function hireAdvisorStatus(req, res) {
               let advLname = extraFields.advLname;
               let subStatus = "Legacy request " + MsgText;
               let EmailMesg = advFname + " " + advLname + " has been " + MsgText + " your legacy request";
-              let result = { "message": "Legacy request " + MsgText + " successfully" }
+              //let result = { "message": "Legacy request " + MsgText + " successfully" }
 
-
+              let message = resMessage.data( 607, [{key:'{field}',val:'Legacy request'},{key:'{status}',val: MsgText}] )
+              let result = { "message": message }
+              
               if(!activityLogID && from.hiredAdvisorRefId){
                 AdvisorActivityLog.findOne({ hiredAdvisorRefId: from.hiredAdvisorRefId }, { }, async function (err, ActivityLogData) {
                   if (err) {
@@ -298,11 +300,14 @@ function hireAdvisorStatus(req, res) {
                               custEmail = custData.username;
                               custName = custData.firstName;
                               stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus);
+                              
+                              allActivityLog.updateActivityLogs( HiredData.advisorId, HiredData.customerId, "Hire Advisor Request", message, '', '' )
                               res.status(200).send(resFormat.rSuccess(result))
                             }
                           })
                         } else {
                           stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus);
+                          allActivityLog.updateActivityLogs( HiredData.advisorId, HiredData.customerId, "Hire Advisor Request", message, '', '' )
                           res.status(200).send(resFormat.rSuccess(result))
                         }
                       }
@@ -325,41 +330,18 @@ function hireAdvisorStatus(req, res) {
                           custEmail = custData.username;
                           custName = custData.firstName;
                           stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus);
+                          allActivityLog.updateActivityLogs( HiredData.advisorId, HiredData.customerId, "Hire Advisor Request", message, '', '' )
                           res.status(200).send(resFormat.rSuccess(result))
                         }
                       })
                     } else {
                       stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus);
+                      allActivityLog.updateActivityLogs( HiredData.advisorId, HiredData.customerId, "Hire Advisor Request", message, '', '' )
                       res.status(200).send(resFormat.rSuccess(result))
                     }
                   }
                 })
               }
-              /*console.log("activityLogID >>>>>>>",activityLogID)
-              if (activityLogID) {
-                AdvisorActivityLog.updateOne({ _id: activityLogID }, { $set: { actionTaken: proquery.status } }, function (err, logDetails) {
-                  if (err) {
-                    res.send(resFormat.rError(err))
-                  } else {
-                    // If we don't have customer email & name then we will fetch from user table
-                    if (!extraFields.custEmail) {
-                      User.findOne({ _id: HiredData.customerId }, { firstName: 1, lastName: 1, username: 1 }, function (err, custData) {
-                        if (err) {
-                          res.status(401).send(resFormat.rError(err))
-                        } else {
-                          custEmail = custData.username;
-                          custName = custData.firstName;
-                          stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus);
-                          res.status(200).send(resFormat.rSuccess(result))
-                        }
-                      })
-                    } else {
-                      stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus);
-                      res.status(200).send(resFormat.rSuccess(result))
-                    }
-                  }
-                })
-              }*/
               else {
                 User.findOne({ _id: proquery.advisorId }, { firstName: 1, lastName: 1, username: 1 }, function (err, advisorUser) {
                   if (err) {
@@ -372,7 +354,10 @@ function hireAdvisorStatus(req, res) {
                    // stat = sendHireStatusMail(toEmail, advName, EmailMesg, ''); comment this function as per FS
                   }
                 })
-                let result = { "message": "Advisor details updated successfully" }
+                
+                message = resMessage.data( 607, [{key:'{field}',val:'Advisor folder access'},{key:'{status}',val: 'updated'}] )
+                let result = { "message": message}
+                allActivityLog.updateActivityLogs( HiredData.customerId, HiredData.advisorId, "Hire Advisor Access", message, 'My Peoples', '' )
                 res.status(200).send(resFormat.rSuccess(result))
               }
             }
@@ -432,7 +417,11 @@ function hireAdvisorStatus(req, res) {
             stat = sendHireStatusMail(toEmail, advName, EmailMesg, '');
           }
         })
-        let result = { "message": "Request sent successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:'Hire advisor request'},{key:'{status}',val:'sent'}] )
+        let result = { "message": message }
+        //Update activity logs
+        allActivityLog.updateActivityLogs( query.customerId, proquery.advisorId, "Hire Advisor Request", message, 'Professionals List', '' )
+        //let result = { "message": "Request sent successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -512,9 +501,9 @@ function contactAdvisor(req, res) {
           // Add entry in advisor activity log
           advisorActivityLog.updateActivityLog(user._id, advisorDetails.advisorId, 'contact');
 
-          let message = resMessage.data( 607, [{key:'{message}',val:"The Advisor's contact details"}, {key:'{status}',val:'sent'}] )
+          let message = resMessage.data( 607, [{key:'{field}',val:"The Advisor contact details"}, {key:'{status}',val:'sent'}] )
           //Update activity logs
-          allActivityLog.updateActivityLogs( user._id, user._id, "Contact Advisor", message,'Professional List')
+          allActivityLog.updateActivityLogs( user._id, advisorDetails.advisorId, "Contact Advisor", message,'Professional List')
 
           let result = { "message": message }
           res.status(200).send(resFormat.rSuccess(result))

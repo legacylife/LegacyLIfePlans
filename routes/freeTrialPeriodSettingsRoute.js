@@ -4,6 +4,7 @@ var FreeTrailPeriodSetting = require('./../models/FreeTrialPeriodSettings')
 const { isEmpty } = require('lodash')
 const resFormat = require('./../helpers/responseFormat')
 const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 
 //function to get list of global settings as per given criteria
 function list(req, res) {
@@ -32,11 +33,30 @@ function list(req, res) {
 
 //function to update global settings
 function update(req, res) {
+  let { fromId } = req.body
+  let { oldAStatus } = req.body
+  let { oldCStatus } = req.body
+
   FreeTrailPeriodSetting.updateOne({ _id: req.body._id },{ $set: req.body} ,(err, updateFreeTrailPeriodSetting)=>{
     if (err) {
       res.send(resFormat.rError(err))
     } else {
-      let message = resMessage.data( 607, [{key: '{field}',val: 'Free trial period settings'}, {key: '{status}',val: 'updated'}] )
+      let activity = 'Update Free Trial Status'
+      let message = ''
+      if( oldAStatus != req.body.advisorStatus && oldCStatus != req.body.customerStatus ) {
+        message = resMessage.data( 607, [{key: '{field}',val: 'Free trial period status'}, {key: '{status}',val: 'updated'}] )
+      }
+      else if( oldAStatus != req.body.advisorStatus ) {
+        message = resMessage.data( 607, [{key: '{field}',val: 'Free trial period status for advisor'}, {key: '{status}',val: 'updated'}] )
+      }
+      else if( oldCStatus != req.body.customerStatus ) {
+        message = resMessage.data( 607, [{key: '{field}',val: 'Free trial period status for customer'}, {key: '{status}',val: 'updated'}] )
+      }
+      else{
+        activity = 'Update Free Trial Duration'
+        message = resMessage.data( 607, [{key: '{field}',val: 'Free trial period settings'}, {key: '{status}',val: 'updated'}] )
+      }
+      allActivityLog.updateActivityLogs(fromId, fromId, activity, message, 'Admin Panel', 'Free Trial Period')
       res.send(resFormat.rSuccess(message))
     }
   })

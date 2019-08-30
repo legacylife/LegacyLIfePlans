@@ -20,6 +20,8 @@ const s3 = require('../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
 const Trustee = require('./../models/Trustee.js')
 const commonhelper = require('./../helpers/commonhelper')
+const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -62,6 +64,11 @@ function insuranceList(req, res) {
 function insuranceFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
 
   var logData = {}
   logData.fileName = constants.InsurancePolicyType[proquery.policyType];
@@ -75,9 +82,9 @@ function insuranceFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details added';
+          let resText = 'added';
           if (custData.policyType){
-            resText = 'details updated';
+            resText = 'updated';
           }
           let { proquery } = req.body;   
           proquery.status = 'Active';   
@@ -90,7 +97,11 @@ function insuranceFormUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Insurance "+resText+" successfully" }
+              //let result = { "message": "Insurance "+resText+" successfully" }
+              let message = resMessage.data( 607, [{key:'{field}',val:"Insurance details"},{key:'{status}',val: resText}] )
+              let result = { "message": message }
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, "Insurance details "+resText, message, folderName, subFolderName )
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -140,6 +151,7 @@ function insuranceFormUpdate(req, res) {
     })
   }
 }
+
 function viewInsurance(req, res) {
   let { query } = req.body;
   let fields = {}
@@ -154,29 +166,6 @@ function viewInsurance(req, res) {
     }
   })
 }
-
-function deleteInsurance(req, res) {
-  let { query } = req.body;
-  let fields = { }
-  insurance.findOne(query, fields, function (err, insuranceInfo) {
-    if (err) {
-      res.status(401).send(resFormat.rError(err))
-    } else {
-      var upStatus = 'Delete';
-      var params = { status: upStatus }
-      insurance.update({ _id: insuranceInfo._id }, { $set: params }, function (err, updatedinfo) {
-        if (err) {
-          res.send(resFormat.rError(err))
-        } else {
-          actitivityLog.removeActivityLog(insuranceInfo._id);
-          let result = { "message": "Record deleted successfully!" }
-          res.status(200).send(resFormat.rSuccess(result))
-        }
-      })
-    }
-  })
-}
-
 
 function financeList(req, res) {
   let { fields, offset, query, trusteeQuery,order, limit, search } = req.body
@@ -215,6 +204,11 @@ function financeList(req, res) {
 function financesFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
 
   var logData = {}
   logData.fileName = constants.FinancePolicyType[proquery.financesType];
@@ -229,9 +223,9 @@ function financesFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details added';
+          let resText = 'added';
           if (custData.financesType){
-            resText = 'details updated';
+            resText = 'updated';
           }
           let { proquery } = req.body;   
           proquery.status = 'Active';   
@@ -244,7 +238,11 @@ function financesFormUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Finance "+resText+" successfully" }
+              //let result = { "message": "Finance "+resText+" successfully" }
+              let message = resMessage.data( 607, [{key:'{field}',val:"Finance details"},{key:'{status}',val: resText}] )
+              let result = { "message": message }
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, "Finance details "+resText, message, folderName, subFolderName )
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -289,7 +287,11 @@ function financesFormUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Finance details added successfully!" }
+        //let result = { "message": "Finance details added successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:"Finance details"},{key:'{status}',val: resText}] )
+        let result = { "message": message }
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, "Finacne details "+resText, message, folderName, subFolderName )
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -345,10 +347,14 @@ function debtList(req, res) {
   })
 }
 
-
 function debtFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
 
   var logData = {}
   logData.fileName = constants.DebtType[proquery.debtsType];
@@ -362,9 +368,9 @@ function debtFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details added';
+          let resText = 'added';
           if (custData.debtsType){
-            resText = 'details updated';
+            resText = 'updated';
           }
           let { proquery } = req.body;   
           proquery.status = 'Active';   
@@ -378,7 +384,13 @@ function debtFormUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Debt "+resText+" successfully" }
+              //let result = { "message": "Debt "+resText+" successfully" }
+
+              let message = resMessage.data( 607, [{key:'{field}',val:"Debt details"},{key:'{status}',val: resText}] )
+              let result = { "message": message }
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, "Debt details "+resText, message, folderName, subFolderName )
+
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -388,23 +400,24 @@ function debtFormUpdate(req, res) {
         }
       }
     })
-  } else { 
-            let { proquery } = req.body;
-            var insert = new Debts();
-            insert.customerId = proquery.customerId;
-            insert.customerLegacyId = proquery.customerLegacyId;
-            insert.customerLegacyType = proquery.customerLegacyType;
-            insert.debtsType = proquery.debtsType;  
-            insert.bankLendarName = proquery.bankLendarName; 
-            insert.debtsTypeNew = proquery.debtsTypeNew;  
-            insert.accountNumber = proquery.accountNumber;  
-            insert.contactEmail = proquery.contactEmail;  
-            insert.contactPhone = proquery.contactPhone;  
-            insert.comments = proquery.comments;  
-            insert.status = 'Active';
-            insert.createdOn = new Date();
-            insert.modifiedOn = new Date();
-            insert.save({$set:proquery}, function (err, newEntry) {
+  }
+  else { 
+    let { proquery } = req.body;
+    var insert = new Debts();
+    insert.customerId = proquery.customerId;
+    insert.customerLegacyId = proquery.customerLegacyId;
+    insert.customerLegacyType = proquery.customerLegacyType;
+    insert.debtsType = proquery.debtsType;  
+    insert.bankLendarName = proquery.bankLendarName; 
+    insert.debtsTypeNew = proquery.debtsTypeNew;  
+    insert.accountNumber = proquery.accountNumber;  
+    insert.contactEmail = proquery.contactEmail;  
+    insert.contactPhone = proquery.contactPhone;  
+    insert.comments = proquery.comments;  
+    insert.status = 'Active';
+    insert.createdOn = new Date();
+    insert.modifiedOn = new Date();
+    insert.save({$set:proquery}, function (err, newEntry) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
@@ -422,13 +435,17 @@ function debtFormUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Debt details added successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:'Debt Details'},{key:'{status}',val:'added'}] )
+        let result = { "message": message }
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, "Debt Details Added", message, folderName, subFolderName )
+
+        //let result = { "message": "Debt details added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
   }
 }
-
 
 function viewDebt(req, res) {
   let { query } = req.body;
@@ -445,9 +462,46 @@ function viewDebt(req, res) {
   })
 }
 
+function deleteInsurance(req, res) {
+  let { query } = req.body;
+  let fields = { }
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
+
+  insurance.findOne(query, fields, function (err, insuranceInfo) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      var upStatus = 'Delete';
+      var params = { status: upStatus }
+      insurance.update({ _id: insuranceInfo._id }, { $set: params }, function (err, updatedinfo) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          actitivityLog.removeActivityLog(insuranceInfo._id);
+          //let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:'Insurance'},{key:'{status}',val:'deleted'}] )
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Insurance Deleted", message, folderName, subFolderName )
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
 function debtDebt(req, res) {
   let { query } = req.body;
   let fields = { }
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
   Debts.findOne(query, fields, function (err, debtInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -459,7 +513,11 @@ function debtDebt(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(debtInfo._id);
-          let result = { "message": "Record deleted successfully!" }
+          //let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:'Debt'},{key:'{status}',val:'deleted'}] )
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Debt Deleted", message, folderName, subFolderName )
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
@@ -467,10 +525,14 @@ function debtDebt(req, res) {
   })
 }
 
-
 function deleteFinances(req, res) {
   let { query } = req.body;
   let fields = { }
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
   Finance.findOne(query, fields, function (err, financeInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -482,7 +544,11 @@ function deleteFinances(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(financeInfo._id);
-          let result = { "message": "Record deleted successfully!" }
+          //let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:'Finance'},{key:'{status}',val:'deleted'}] )
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Finance Deleted", message, folderName, subFolderName )
           res.status(200).send(resFormat.rSuccess(result))
         }
       })

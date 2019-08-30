@@ -17,7 +17,6 @@ const commonhelper = require('./../helpers/commonhelper')
 const User = require('./../models/Users')
 var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
-const resMessage = require('./../helpers/responseMessages')
 const sendEmail = require('./../helpers/sendEmail')
 const myessentials = require('./../models/myessentials.js')
 const emergencyContacts = require('./../models/EmergencyContacts.js')
@@ -33,6 +32,8 @@ const HiredAdvisors = require('./../models/HiredAdvisors.js')
 const InviteTemp = require('./../models/InviteTemp.js')
 const referEarnSettings = require('./../models/ReferEarnSettings')
 const executor = require('./../models/MarkAsExecutor.js')
+const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -564,7 +565,6 @@ function myProfessionalsUpdate(req, res) {
   }
 }
 
-
 function deleteProfessionals(req, res) {
   let { query } = req.body;
   let fields = {}
@@ -588,11 +588,16 @@ function deleteProfessionals(req, res) {
   })
 }
 
-
 function legalStuffUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let { message } = req.body;
+
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
 
   var logData = {}
   if (proquery.subFolderName == 'Estate') {
@@ -615,9 +620,9 @@ function legalStuffUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details  added';
+          let resText = 'added';
           if (custData.typeOfDocument) {
-            resText = 'details updated';
+            resText = 'updated';
           }
           let { proquery } = req.body;
           proquery.status = 'Active';
@@ -630,7 +635,9 @@ function legalStuffUpdate(req, res) {
               logData.customerId = custData.customerId;
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
-              let msg = resMessage.data( 607, [{key:'{field}',val:message.messageText},{key:'{status}',val:resText}] )
+              let msg = resMessage.data( 607, [{key:'{field}',val:message.messageText+" details"},{key:'{status}',val:resText}] )
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, message.messageText+" details "+resText, msg, folderName, subFolderName )
               let result = { "message": msg }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -671,6 +678,8 @@ function legalStuffUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
         let msg = resMessage.data( 607, [{key:'{field}',val:message.messageText},{key:'{status}',val:'added'}] )
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, message.messageText+" details added", msg, folderName, subFolderName )
         let result = { "message": msg }
         res.status(200).send(resFormat.rSuccess(result))
       }
@@ -748,6 +757,11 @@ function viewLegalStuffDetails(req, res) {
 function deleteIdBox(req, res) {
   let { query } = req.body;
   let fields = {}
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
   personalIdProof.findOne(query, fields, function (err, profileInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -761,6 +775,8 @@ function deleteIdBox(req, res) {
           actitivityLog.removeActivityLog(profileInfo._id);
           let message = resMessage.data( 607, [{key:'{field}',val:'Record'},{key:'{status}',val:'deleted'}] )
           let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Record Delete", message, folderName, subFolderName )
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
@@ -842,6 +858,12 @@ function legalEstateList(req, res) {
 function deleteLegalStuff(req, res) {
   let { query } = req.body;
   let fields = {}
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
+
   LegalStuff.findOne(query, fields, function (err, legalInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -853,8 +875,10 @@ function deleteLegalStuff(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(legalInfo._id);
-          let message = resMessage.data( 607, [{key:'{field}',val:'Record'},{key:'{status}',val:'deleted'}] )
+          let message = resMessage.data( 607, [{key:'{field}',val:'Legal stuff'},{key:'{status}',val:'deleted'}] )
           let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Record Delete", message, folderName, subFolderName )
           res.status(200).send(resFormat.rSuccess(result))
         }
       })

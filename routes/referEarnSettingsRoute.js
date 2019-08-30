@@ -5,6 +5,7 @@ var constants = require('./../config/constants')
 const { isEmpty } = require('lodash')
 const resFormat = require('./../helpers/responseFormat')
 const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 //function to create new record for global settings
 /* function create (req, res) {
   var referEarnSetting = new ReferEarnSetting()
@@ -49,11 +50,16 @@ function list(req, res) {
 
 //function to update global settings
 function update(req, res) {
+  let {fromId} = req.body
   ReferEarnSetting.updateOne({ _id: req.body._id },{ $set: req.body} ,(err, updateReferEarnSetting)=>{
     if (err) {
       res.send(resFormat.rError(err))
     } else {
       let message = resMessage.data( 607, [{key: '{field}',val: 'Refer and Earn settings'}, {key: '{status}',val: 'updated'}] )
+      //Update activity logs
+      let {oldstatus} = req.body
+      let activity = oldstatus != req.body.status ? 'Update Referral Status' : 'Update Referral Count'
+      allActivityLog.updateActivityLogs(fromId, fromId, activity, message, 'Admin Panel', 'Referral Program')
       res.send(resFormat.rSuccess(message))
     }
   })

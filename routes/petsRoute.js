@@ -18,6 +18,8 @@ const s3 = require('./../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
 const Trustee = require('./../models/Trustee.js')
 const commonhelper = require('./../helpers/commonhelper')
+const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -61,6 +63,12 @@ function PetsList(req, res) {
 function petsFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+  
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
 
   var logData = {}
   logData.fileName = proquery.name;
@@ -74,9 +82,9 @@ function petsFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details  added';
+          let resText = 'added';
           if (custData.name){
-            resText = 'details updated';
+            resText = 'updated';
           }
           let { proquery } = req.body;   
           proquery.status = 'Active';   
@@ -90,7 +98,12 @@ function petsFormUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Pets "+resText+" successfully" }
+              //let result = { "message": "Pets "+resText+" successfully" }
+              let message = resMessage.data( 607, [{key:'{field}',val:'Pets details'},{key:'{status}',val:resText}] )
+              let result = { "message": message }
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, "Pets details"+resText, message, folderName, subFolderName )
+
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -131,7 +144,11 @@ function petsFormUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Pets added successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:'Pets details'},{key:'{status}',val:'added'}] )
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, "Pets details added", message, folderName, subFolderName )
+
+        let result = { "message": message }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -155,6 +172,13 @@ function viewPets(req, res) {
 function deletePets(req, res) {
   let { query } = req.body;
   let fields = { }
+  let { fileName } = req.body;
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
+
   pet.findOne(query, fields, function (err, petInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -166,7 +190,11 @@ function deletePets(req, res) {
           res.send(resFormat.rError(err))
         } else {
            actitivityLog.removeActivityLog(petInfo._id);
-          let result = { "message": "Record deleted successfully!" }
+          //let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:'Pets'},{key:'{status}',val:'deleted'}] )
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Pets deleted", message, folderName, subFolderName )
           res.status(200).send(resFormat.rSuccess(result))
         }
       })

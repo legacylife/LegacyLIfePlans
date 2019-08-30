@@ -18,6 +18,8 @@ const s3 = require('./../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
 const Trustee = require('./../models/Trustee.js')
 const commonhelper = require('./../helpers/commonhelper')
+const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -61,6 +63,11 @@ function LettersMessageList(req, res) {
 function LettersMessageFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
 
   var logData = {}
   logData.fileName = proquery.title;
@@ -74,9 +81,9 @@ function LettersMessageFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details added';
+          let resText = 'added';
           if (custData.title){
-            resText = 'details updated';
+            resText = 'updated';
           }
           let { proquery } = req.body;   
           proquery.status = 'Active';   
@@ -88,7 +95,11 @@ function LettersMessageFormUpdate(req, res) {
               logData.customerId = custData.customerId;
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
-              let result = { "message": "Letter and message "+resText+" successfully" }
+              //let result = { "message": "Letter and message "+resText+" successfully" }
+              let message = resMessage.data( 607, [{key:'{field}',val:"Letter and Message details"},{key:'{status}',val: resText}] )
+              let result = { "message": message }
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, "Letter and Message "+resText, message, folderName, subFolderName )
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -98,39 +109,44 @@ function LettersMessageFormUpdate(req, res) {
         }
       }
     })
-  } else { 
-            let { proquery } = req.body;
-            var insert = new lettersMessage();
-            insert.customerId = proquery.customerId;
-            insert.customerLegacyId = proquery.customerLegacyId;
-            insert.customerLegacyType = proquery.customerLegacyType;
-            insert.title = proquery.title;
-            insert.subject = proquery.subject;            
-            insert.documents = proquery.documents;
-            insert.letterBox = proquery.letterBox;
-            insert.status = 'Active';
-            insert.createdOn = new Date();
-            insert.modifiedOn = new Date();
-            insert.save({$set:proquery}, function (err, newEntry) {
-            if (err) {
-              res.send(resFormat.rError(err))
-            } else {
-              //created helper for customer to send email about files added by advisor
-              if(proquery.customerLegacyType == "advisor"){
-                var sendData = {}
-                sendData.sectionName = "Legacy Life Letters & Messages";  
-                sendData.customerId = proquery.customerId;
-                sendData.customerLegacyId = proquery.customerLegacyId;
-                commonhelper.customerAdvisorLegacyNotifications(sendData)
-              }
+  } 
+  else { 
+    let { proquery } = req.body;
+    var insert = new lettersMessage();
+    insert.customerId = proquery.customerId;
+    insert.customerLegacyId = proquery.customerLegacyId;
+    insert.customerLegacyType = proquery.customerLegacyType;
+    insert.title = proquery.title;
+    insert.subject = proquery.subject;            
+    insert.documents = proquery.documents;
+    insert.letterBox = proquery.letterBox;
+    insert.status = 'Active';
+    insert.createdOn = new Date();
+    insert.modifiedOn = new Date();
+    insert.save({$set:proquery}, function (err, newEntry) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        //created helper for customer to send email about files added by advisor
+        if(proquery.customerLegacyType == "advisor"){
+          var sendData = {}
+          sendData.sectionName = "Legacy Life Letters & Messages";  
+          sendData.customerId = proquery.customerId;
+          sendData.customerLegacyId = proquery.customerLegacyId;
+          commonhelper.customerAdvisorLegacyNotifications(sendData)
+        }
 
-              logData.customerId = query.customerId;
-              logData.fileId = newEntry._id;
-              actitivityLog.updateActivityLog(logData);
+        logData.customerId = query.customerId;
+        logData.fileId = newEntry._id;
+        actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Letter and message details added successfully!" }
-              res.status(200).send(resFormat.rSuccess(result))
-            }
+        //let result = { "message": "Letter and message details added successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:"Letter and message details"},{key:'{status}',val: 'added'}] )
+        let result = { "message": message }
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, "Letter and Message added", message, folderName, subFolderName )
+        res.status(200).send(resFormat.rSuccess(result))
+      }
     })
   }
 }
@@ -153,6 +169,12 @@ function viewLettersMessages(req, res) {
 function deleteLettersMessages(req, res) {
   let { query } = req.body;
   let fields = { }
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
+
   lettersMessage.findOne(query, fields, function (err, Info) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -164,7 +186,11 @@ function deleteLettersMessages(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(Info._id);
-          let result = { "message": "Record deleted successfully!" }
+          //let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:"Letter Messages"},{key:'{status}',val: 'deleted'}] )
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Letter Messages deleted ", message, folderName, subFolderName )
           res.status(200).send(resFormat.rSuccess(result))
         }
       })

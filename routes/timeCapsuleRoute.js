@@ -18,6 +18,8 @@ const s3 = require('./../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
 const Trustee = require('./../models/Trustee.js')
 const commonhelper = require('./../helpers/commonhelper')
+const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 
 var auth = jwt({
   secret: constants.secret,
@@ -62,6 +64,12 @@ function timeCapsulesFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
 
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
+
   var logData = {}
   logData.fileName = proquery.name;
   logData.folderName = 'timecapsule';
@@ -74,9 +82,9 @@ function timeCapsulesFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details  added';
+          let resText = 'added';
           if (custData.name){
-            resText = 'details updated';
+            resText = 'updated';
           }
           let { proquery } = req.body;   
           proquery.status = 'Active';   
@@ -90,7 +98,11 @@ function timeCapsulesFormUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Time capsules "+resText+" successfully" }
+              //let result = { "message": "Time capsules "+resText+" successfully" }
+              let message = resMessage.data( 607, [{key:'{field}',val:'Time capsules details'},{key:'{status}',val:resText}] )
+              let result = { "message": message }
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, "Time capsules "+resText, message, folderName, subFolderName )
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -127,12 +139,17 @@ function timeCapsulesFormUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Time capsules added successfully!" }
+        //let result = { "message": "Time capsules added successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:'Time capsules details'},{key:'{status}',val:'added'}] )
+        let result = { "message": message }
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, "Time capsules added", message, folderName, subFolderName )
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
   }
 }
+
 function viewtimeCapsules(req, res) {
   let { query } = req.body;
   let fields = {}
@@ -151,6 +168,12 @@ function viewtimeCapsules(req, res) {
 function deletetimeCapsules(req, res) {
   let { query } = req.body;
   let fields = { }
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
+
   timeCapsule.findOne(query, fields, function (err, timeCapsuleInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -162,7 +185,11 @@ function deletetimeCapsules(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(timeCapsuleInfo._id);
-          let result = { "message": "Record deleted successfully!" }
+          //let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:'Time capsules details'},{key:'{status}',val:'deleted'}] )
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Time capsules deleted", message, folderName, subFolderName )
           res.status(200).send(resFormat.rSuccess(result))
         }
       })

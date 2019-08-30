@@ -21,6 +21,9 @@ ObjectId = require('mongodb').ObjectID;
 
 const actitivityLog = require('./../helpers/fileAccessLog')
 const sendEmail = require('./../helpers/sendEmail')
+const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
+
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -111,9 +114,9 @@ function trustFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details added';
+          let resText = 'added';
           if (custData.firstName) {
-            resText = 'details updated';
+            resText = 'updated';
           }
           let { proquery } = req.body;
           if (proquery.trustId && proquery.trustId != '0')
@@ -125,7 +128,11 @@ function trustFormUpdate(req, res) {
               res.send(resFormat.rError(err))
             } else {
               //stat = sendTrusteeMail(proquery.email, proquery.messages, proquery.folderCount, extrafields.inviteByName, proquery.firstName, clientUrl, "Reminder: ");
-              let result = { "message": "Trustee " + resText + " successfully" }
+              //let result = { "message": "Trustee " + resText + " successfully" }
+              let message = resMessage.data( 607, [{key:'{field}',val:"Trustee details"}, {key:'{status}',val:resText}] )
+              let result = { "message": message }
+              //Update activity logs
+              allActivityLog.updateActivityLogs( query.customerId, proquery.trustId, "Trustee details "+resText, message,'Dashboard') 
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -171,7 +178,12 @@ function trustFormUpdate(req, res) {
           } 
         })
         stat = sendTrusteeMail(proquery.email, proquery.messages, proquery.folderCount, extrafields.inviteByName, proquery.firstName, clientUrl, "");
-        let result = { "message": "Trustee details added successfully" }
+
+        let message = resMessage.data( 607, [{key:'{field}',val:"Trustee details"}, {key:'{status}',val: 'added'}] )
+        //Update activity logs
+        allActivityLog.updateActivityLogs( query.customerId, proquery.trustId, "Add Trustee", message,'Dashboard') 
+        let result = { "message": message }
+        //let result = { "message": "Trustee details added successfully" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })

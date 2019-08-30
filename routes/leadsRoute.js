@@ -45,6 +45,8 @@ var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
 })
+const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 
 function leadsList(req, res) {
   let { fields, offset, query, order, limit, search } = req.body
@@ -128,6 +130,7 @@ function userDetails(req, res) {
 //function get details of user from url param
 function userView(req, res) {
   let { query } = req.body
+  let { fromId } = req.body
   let fields = {}
   if (req.body.fields) {
     fields = req.body.fields
@@ -154,6 +157,10 @@ function userView(req, res) {
         filesCount = statisticsCounts[0] ? statisticsCounts[0].filesCount : 0;
         folderCount = statisticsCounts[0] ? statisticsCounts[0].folderCount : 0;
         recordCount = statisticsCounts[0] ? statisticsCounts[0].recordCount : 0;
+
+        let message = resMessage.data( 607, [{key:'{field}',val:"Lead Details"}, {key:'{status}',val:'viwed'}] )
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, userDetails._id, "Lead Details", message,'Lead Details')
         let result = { userDetails: userDetails, filesCount: filesCount, folderCount: folderCount, recordCount: recordCount, "message": "Status Updated successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       });
