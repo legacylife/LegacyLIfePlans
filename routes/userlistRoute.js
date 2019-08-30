@@ -1051,7 +1051,7 @@ function autoRenewalUpdate(req, res) {
                   res.send(resFormat.rError(err))
                 }
                 let message = resMessage.data( 607, [{key: '{field}',val: 'Auto renewal status'}, {key: '{status}',val: 'updated'}] )
-                res.status(200).send(resFormat.rSuccess({'autoRenewalStatus': autoRenewalStatus, 'message':messahe}));
+                res.status(200).send(resFormat.rSuccess({'autoRenewalStatus': autoRenewalStatus, 'message':message}));
               })
           });
         }

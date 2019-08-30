@@ -172,11 +172,14 @@ async function viewDeceased(req, res) {
           lockoutLegacyDate = await getLegacyDate(legacyHolderInfo.lockoutLegacyPeriod);
           console.log('lockoutLegacyDate:- ',lockoutLegacyDate,'Period:- ',legacyHolderInfo.lockoutLegacyPeriod);
          }
+
+         let deceasedArray = {'status':finalStatus,'trusteeCnt':trustList.length,'advisorCnt':advisorList.length,deceasedinfo:OldDeceasedinfo};
+         console.log('deceasedArray :----',deceasedArray);
+
+         await User.updateOne({_id:paramData.customerId},{deceased:deceasedArray,lockoutLegacyDate:lockoutLegacyDate});
          
          //Customer needs to inform he is set mark as deceased now.
          await sendDeceasedNotifyMails('CustomerMarkAsDeceasedNotificationMail',legacyHolderInfo.username,legacyHolderInfo.firstName,legacyHolderInfo.lastName,legacyHolderName,deceasedFromName,userType,lockoutLegacyDate);
-         let deceasedArray = {'status':finalStatus,'trusteeCnt':trustList.length,'advisorCnt':advisorList.length,deceasedinfo:OldDeceasedinfo};
-         await User.updateOne({_id:paramData.customerId},{deceased:deceasedArray,lockoutLegacyDate:lockoutLegacyDate});
            
          await sendDeceasedNotification('MarkAsDeceasedNotificationMail',trustList,advisorList,legacyHolderName,deceasedFromName,userType,fromUserId);
          let result = { "message": "Mark as deceased successfully!" }
@@ -514,6 +517,22 @@ function revokeOwnerDeceased(req, res) {
   }).sort(order).populate('customerId').populate('trustId').populate('advisorId').populate('adminId').populate('revokeId')
  }
 
+ //function get details of user from url param
+function customerDetails(req, res) {
+  let { query } = req.body
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  User.findOne(query, fields, function (err, userList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(userList))
+    }
+  }).populate('revokeId')
+}
+
 router.post("/viewDeceaseDetails", viewDeceased)
 router.post("/markAsDeceased", markDeceased)
 router.post("/revokeAsDeceased", revokeDeceased)
@@ -521,4 +540,5 @@ router.post("/revokeOwnDeceased", revokeOwnerDeceased)
 router.post("/deceaseList", deceaseListing)
 router.post("/deceaseView", deceaseViewDetails)
 router.post("/deceaseExecutor", deceaseExecutorsDetails)
+router.post("/customerView", customerDetails)
 module.exports = router
