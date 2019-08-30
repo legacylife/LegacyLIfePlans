@@ -12,6 +12,8 @@ const MarkDeceased = require('../models/MarkAsDeceased.js')
 const trust = require('./../models/Trustee.js')
 const HiredAdvisors = require('./../models/HiredAdvisors.js')
 const executor = require('./../models/MarkAsExecutor.js')
+const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 var async = require('async');
 
 async function viewDeceased(req, res) {
@@ -32,6 +34,8 @@ async function viewDeceased(req, res) {
       alreadyDeceased = await MarkDeceased.findOne(findQuery, {_id:1,trustId:1,advisorId:1}).populate('customerId');
     }
 
+    let message = resMessage.data( 607, [{key: '{field}',val: 'Legacy Details'}, {key: '{status}',val: 'viwed'}] )
+    allActivityLog.updateActivityLogs( query.advisorId, query.customerId, 'Legacy Details', message, 'Legacies')
     let result = {'deceasedData':deceasedData,'alreadyDeceased':alreadyDeceased}
     res.status(200).send(resFormat.rSuccess(result));
 
@@ -65,6 +69,13 @@ async function viewDeceased(req, res) {
       let trustId = paramData.trustId;
       let advisorId = paramData.advisorId;
       let fromUserId = '';let adminId = '';
+
+      let { fromId }        = req.body
+      let { toId }          = req.body
+      let { folderName }    = req.body
+            folderName      = folderName ? folderName.replace('/','') : ''
+      let { subFolderName } = req.body
+
       if(userType=='customer'){
         fromUserId = trustId;
       }
@@ -182,7 +193,10 @@ async function viewDeceased(req, res) {
          await sendDeceasedNotifyMails('CustomerMarkAsDeceasedNotificationMail',legacyHolderInfo.username,legacyHolderInfo.firstName,legacyHolderInfo.lastName,legacyHolderName,deceasedFromName,userType,lockoutLegacyDate);
            
          await sendDeceasedNotification('MarkAsDeceasedNotificationMail',trustList,advisorList,legacyHolderName,deceasedFromName,userType,fromUserId);
-         let result = { "message": "Mark as deceased successfully!" }
+        
+         let message = resMessage.data( 607, [{key: '{field}',val: 'Mark as deceased'}, {key: '{status}',val: 'updated'}] )
+         allActivityLog.updateActivityLogs( fromId, toId, 'Mark As Deceased', message)
+         let result = { "message": message }
          res.status(200).send(resFormat.rSuccess(result));
   }
 
@@ -279,6 +293,12 @@ function revokeDeceased(req, res) {
      let {revokeId} = req.body;    
      let {deceasedFromName} = req.body;
      let {userType} = req.body;
+     let { fromId }        = req.body
+     let { toId }          = req.body
+     let { folderName }    = req.body
+           folderName      = folderName ? folderName.replace('/','') : ''
+     let { subFolderName } = req.body
+
     MarkDeceased.findOne(query,async function (err,deceasedDetails){
         if (err) {
           res.status(401).send(resFormat.rError(err));
@@ -386,7 +406,11 @@ function revokeDeceased(req, res) {
             //Customer needs to inform he is set mark as deceased now.
             await sendDeceasedNotifyMails('CustomerRevokeAsDeceasedNotificationMail',legacyHolderInfo.username,legacyHolderInfo.firstName,legacyHolderInfo.lastName,legacyHolderName,deceasedFromName,userType);            
             await sendDeceasedNotification('RevokeAsDeceasedNotificationMail',trustList,advisorList,legacyHolderName,deceasedFromName,userType,revokeId);
-            let result = { "message": "Revoke deceased successfully!",'result':deceasedDetails }
+
+            let message = resMessage.data( 607, [{key: '{field}',val: 'Revoke deceased request'}, {key: '{status}',val: 'updated'}] )
+            allActivityLog.updateActivityLogs( fromId, toId, 'Revoke Deceased', message)
+
+            let result = { "message": message,'result':deceasedDetails }
             res.status(200).send(resFormat.rSuccess(result));
           }
     })
@@ -396,6 +420,11 @@ function revokeOwnerDeceased(req, res) {
   let {query} = req.body;
   let {revokeId} = req.body;    
   let {userType} = req.body;
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
  MarkDeceased.findOne(query,async function (err,deceasedDetails){
      if (err) {
        res.status(401).send(resFormat.rError(err));
@@ -457,7 +486,10 @@ function revokeOwnerDeceased(req, res) {
          let legacyHolderName = LegacyUserData.firstName+' '+LegacyUserData.lastName;
          await sendDeceasedNotification('OwnerRevokeAsDeceasedNotificationMail',trustList,advisorList,legacyHolderName,'',userType,revokeId);
         
-          let result = { "message": "Revoke deceased successfully!",'result':deceasedDetails }
+          let message = resMessage.data( 607, [{key: '{field}',val: 'Revoke own deceased request'}, {key: '{status}',val: 'updated'}] )
+          allActivityLog.updateActivityLogs( fromId, toId, 'Revoke Deceased', message)
+
+          let result = { "message": message,'result':deceasedDetails }
           res.status(200).send(resFormat.rSuccess(result));
         }else{
             let result = { "message": "Invalid Request!"}
