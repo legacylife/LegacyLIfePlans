@@ -108,7 +108,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
         }
 
         if(result.data.alreadyDeceased){    
-          this.documentId = result.data.alreadyDeceased._id;
+          //this.documentId = result.data.alreadyDeceased._id;
           //this.alreadyRevokeAsDeceased = true;
           this.revokeAsDeceased = true;
           if(result.data.alreadyDeceased.customerId.deceased && result.data.alreadyDeceased.customerId.deceased.status=='Active'){
@@ -155,17 +155,24 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   }
 
   revokeAsDeceasedModal() {
-    if(!this.documentId){
-      this.snack.open("Something wrong, Please try again", 'OK', { duration: 4000 })
-    }else{
+    // if(!this.documentId){
+    //   this.snack.open("Something wrong, Please try again", 'OK', { duration: 4000 })
+    // }else{
     var statMsg = "Are you sure you want to revoke the deceased request?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
         if (res) {
           this.loader.open();
-          var query = {};var deceasedFromName = {};
+          var query = {};
+          let criteria = {};
+          if(this.documentId){
+            criteria = {_id:this.documentId};
+          }else{
+            criteria = {customerId:this.customerLegaicesId,status:'Active'};
+          }
+
           const req_vars = {
-            query: Object.assign({_id:this.documentId}, query),
+            query: Object.assign(criteria, query),
             revokeId:this.revokeId,
             userType:localStorage.getItem("endUserType"),
             deceasedFromName:localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName"),
@@ -174,6 +181,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
             folderName:'',
             subFolderName:''
           }
+
           this.userapi.apiRequest('post', 'deceased/revokeAsDeceased', req_vars).subscribe(result => {
             if (result.status == "error") {              
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
@@ -188,6 +196,6 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
           })
         }
       })
-    }
+   // }
   }
 }

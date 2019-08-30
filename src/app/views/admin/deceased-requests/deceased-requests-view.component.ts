@@ -12,7 +12,7 @@ import { SubscriptionService } from 'app/shared/services/subscription.service';
 import { LayoutService } from 'app/shared/services/layout.service';
 import { egretAnimations } from "../../../shared/animations/egret-animations";
 import { AdminHireAdvisorComponent } from './hire-advisor-modal/hire-advisor-modal.component';
-
+import { lockLegacyPeriodList } from '../../../selectList';
 const filePath = s3Details.url+'/'+s3Details.profilePicturesPath;
 @Component({
   selector: 'deceaseduserview',
@@ -31,6 +31,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
   selectedUserId: string = "";
   docPath:string;
   legacyCustomerUsername:string;
+  lockoutLegacyPeriod:string;
   adminSections = [];
   data:any;
   advisorsData:any;
@@ -43,6 +44,8 @@ export class DeceasedRequestsViewComponent implements OnInit {
   showDeceased:boolean = false
   my_messages:any;
   executorData:any;
+  revokeIdData:any;
+  lockLegacyList: any[] = lockLegacyPeriodList;
   constructor(
     private layout: LayoutService,
     private api: APIService, private route: ActivatedRoute, 
@@ -74,6 +77,14 @@ export class DeceasedRequestsViewComponent implements OnInit {
         this.showPage = true
       } else {
         this.row = result.data;
+        if(this.row.lockoutLegacyPeriod){
+          this.lockLegacyList.forEach((element: any, index) => {          
+            if(element.opt_code==this.row.lockoutLegacyPeriod){
+              this.lockoutLegacyPeriod = element.opt_name;
+            }
+          })
+        }
+    
         this.fullname = '';
         if(this.row.firstName && this.row.firstName!=='undefined' && this.row.lastName && this.row.lastName!=='undefined'){
           this.customerFirstName = this.row.firstName;
@@ -90,6 +101,13 @@ export class DeceasedRequestsViewComponent implements OnInit {
         if(this.row.deceased.status=='Active'){
           this.showDeceased = true;
         }
+
+        if(this.row.deceased && this.row.deceased.revokeId){
+         this.revokeIdData = this.row.deceased.revokeId;
+         console.log('data -->',this.revokeIdData);
+        }
+
+
         this.getMarkDeceasedUser(true);
       }
     }, (err) => {
@@ -155,7 +173,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
       //   this.showPage = true
 
         this.advisorsData = result.data.advisorsList;
-
+        this.loader.close();
       }
     }, (err) => {
       console.error(err)
@@ -264,7 +282,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
                           subFolderName:''
                         }
           this.loader.open();   
-          this.api.apiRequest('post', 'deceased/markAsDeceased', req_vars).subscribe(result => {
+          this.api.apiRequest('post', 'deceased/markAsDeceased', req_vars).subscribe(result => { 
           this.loader.close();
             this.snack.open(result.data.message, 'OK', { duration: 4000 })
           }, (err) => {
@@ -276,16 +294,21 @@ export class DeceasedRequestsViewComponent implements OnInit {
   }
 
   revokeAsDeceased(){
-    if(!this.deceasedId){
-      this.snack.open("Something wrong, Please try again", 'OK', { duration: 4000 })
-    }else{
-    var statMsg = 'Marking the user revoke as deceased will notify all the user\'s trustees and the users legacy will be unlocked. Once the legacy is unlocked it will lock "After death" files to the users respective trustees based on the access given. Do you want revoke the user as deceased?'
+   // if(!this.deceasedId){
+    //  this.snack.open("Something wrong, Please try again", 'OK', { duration: 4000 })
+  //  }else{
+  var statMsg = 'Marking the user revoke as deceased will notify all the user\'s trustees and the users legacy will be unlocked. Once the legacy is unlocked it will lock "After death" files to the users respective trustees based on the access given. Do you want revoke the user as deceased?'
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
         if (res) {
-          var query = {};var deceasedFromName = {};
+          var query = {};var criteria = {};
+          if(this.deceasedId){
+            criteria = {_id:this.deceasedId};
+          }else{
+            criteria = {customerId:this.selectedUserId,status:'Active'};
+          }
           const req_vars = {
-            query: Object.assign({_id:this.deceasedId}, query),
+            query: Object.assign({customerId:this.selectedUserId}, query),
             revokeId:this.userId,
             userType:localStorage.getItem("userType"),
             deceasedFromName:localStorage.getItem("firstName") + " " + localStorage.getItem("lastName"),
@@ -296,6 +319,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
           }
       this.loader.open();   
       this.api.apiRequest('post', 'deceased/revokeAsDeceased', req_vars).subscribe(result => {
+        this.loader.close()
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
         this.router.navigate(['/', 'admin', 'deceased-requests'])
         }, (err) => {
@@ -304,7 +328,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
         })  
       }
     })
-   }
+  // }
   }
 
 

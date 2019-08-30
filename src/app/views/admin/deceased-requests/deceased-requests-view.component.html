@@ -96,16 +96,22 @@
                 </div>
                 </div>
               </mat-list-item>
-              <mat-list-item *ngIf='row?.deceased?.lockoutLegacyPeriod'>
+              <mat-list-item *ngIf='row?.lockoutLegacyPeriod'>
                 <div fxLayout="row" fxFlex="100">
-                  <h6 class="m-0 mr-1">Deceased Status</h6>
-                  <mat-chip  mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{row?.deceased?.lockoutLegacyPeriod}}</mat-chip>
+                  <h6 class="m-0 mr-1">Deceased lockout legacy period</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40" >
+                  <mat-chip  mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{lockoutLegacyPeriod}}</mat-chip>
+                  </div>
                 </div>
               </mat-list-item>              
-              <mat-list-item *ngIf='row?.deceased?.lockoutLegacyDate'>
+              <mat-list-item *ngIf='row?.lockoutLegacyDate'>
                 <div fxLayout="row" fxFlex="100">
-                  <h6 class="m-0 mr-1">Deceased Status</h6>
-                  <mat-chip  mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{row?.deceased?.lockoutLegacyDate | date: 'yyyy/MM/dd HH:mm'}}</mat-chip>
+                  <h6 class="m-0 mr-1">Deceased lockout legacy date</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40" >
+                  <mat-chip  mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{row?.lockoutLegacyDate | date: 'yyyy/MM/dd HH:mm'}}</mat-chip>
+                  </div>
                 </div>            
               </mat-list-item>                            
             </mat-list>
@@ -147,9 +153,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Revoke by</h6>
                   <span fxFlex></span>
-                    <div fxFlex="40">
-                       <div *ngIf="" fxFlex="40">{{row.deceased.revokeId.firstName}} {{row.deceased.revokeId.lastName}}</div>             
-                    </div>
+                    <div fxFlex="40">{{revokeIdData.firstName}} {{revokeIdData.lastName}}</div>
                 </div>
             </mat-list-item>             
           </mat-list>
@@ -202,7 +206,7 @@
               </ngx-datatable-column>
               <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Time" prop="createdOn">
                   <ng-template let-row="row" ngx-datatable-cell-template>
-                    {{row?.createdOn | date: 'yyyy/MM/dd'}}
+                    {{row?.createdOn | date: 'yyyy/MM/dd HH:ii'}}
                   </ng-template>
               </ngx-datatable-column>
             <ngx-datatable-column [resizeable]="false" name="Status">
