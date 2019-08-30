@@ -158,11 +158,15 @@ async function getInviteMembersCount(req, res) {
     if( userDetails && userDetails.length > 0 ) {
         let userCreatedOn   = userDetails[0]['createdOn'],
             today           = moment().toDate(),
-            completedMonths = getDateDiff( today, moment(userCreatedOn).toDate() ),//Math.round( getDateDiff( today, moment(userCreatedOn).toDate() )),
+            completedDays   = getDateDiff( today, moment(userCreatedOn).toDate(), 'asDays' ),
+            completedMonths = getDateDiff( today, moment(userCreatedOn).toDate() ),
             startDate       = new Date(userCreatedOn),
             endDate         = new Date(userCreatedOn)
-
-        if( completedMonths > 1) {
+        
+        /* if( completedDays < userDetails[0]['freeTrialPeriod']['bfrSubFreePremiumDays']) {
+            endDate.setDate( endDate.getDate() + completedDays );
+        }
+        else */ if( completedMonths > 1) {
             startDate.setMonth( startDate.getMonth() + (completedMonths) );
             endDate.setMonth( endDate.getMonth() + (completedMonths + 1) );
         }
@@ -194,7 +198,7 @@ async function getInviteMembersCount(req, res) {
             remainingDays = Math.abs(Math.round(getDateDiff( moment(newDate).toDate(), today, 'asDays' )))//remainingDays + extendedDays
         }
         else{
-            remainingDays = remainingDays + extendedDays
+            remainingDays = resultCount >= targetCount ? remainingDays + extendedDays : remainingDays
         }
         result = { "count": resultCount,"remainingDays":remainingDays, "completedMonths":completedMonths, "targetCount": targetCount, "extendedDays": extendedDays }
         res.status(200).send(resFormat.rSuccess(result))
@@ -228,7 +232,7 @@ async function getLastInviteMembersCount(req, res) {
             extendedDays = userDetails[0]['refereAndEarnSubscriptionDetail']['noOfDaysExtended']
         let data = await Invite.find(paramData)
         
-        console.log("completedMonths ===== ",completedMonths,"\n createdOn ===== ",userDetails[0]['createdOn'],"\n paramData ===== ",paramData.createdOn,"remainingDays",remainingDays,"extendedDays",extendedDays)
+        //console.log("completedMonths ===== ",completedMonths,"\n createdOn ===== ",userDetails[0]['createdOn'],"\n paramData ===== ",paramData.createdOn,"remainingDays",remainingDays,"extendedDays",extendedDays)
 
         if (data != null) {
             resultCount = data.length

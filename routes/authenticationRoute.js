@@ -386,7 +386,8 @@ const resetPassword = function (req, res) {
             let message = resMessage.data( 607, [{key: '{field}',val: 'Password'}, {key: '{status}',val: 'updated'}] )
             //Update activity logs
             allActivityLog.updateActivityLogs(userDetails._id, userDetails._id, 'Reset Password', message)
-            res.send(resFormat.rSuccess(message))
+            let response = {username : userDetails.username, msg : message}
+            res.send(resFormat.rSuccess(response))
           }
         })
       }
