@@ -36,179 +36,192 @@ export class FinanceModalComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';
   currentProgessinPercent:number = 0;
+  toUserId:string = ''
+  subFolderName:string = 'Finance'
+
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,private confirmService: AppConfirmService,private loader: AppLoaderService,private router: Router, private userapi: UserAPIService) { }
 
   ngOnInit() {
-        this.userId = localStorage.getItem("endUserId");
-        const filePath = this.userId+'/'+s3Details.financeFilePath;
-        this.financeTypeList = FinancePolicyType;
-        this.docPath = filePath;
-        this.FinanceForm = this.fb.group({
-          financesType: new FormControl('',Validators.required),  
-          financesTypeNew: new FormControl(''),   
-          administatorName: new FormControl('',Validators.required),
-          branchLocation: new FormControl(''),
-          accountNumber: new FormControl(''),
-          contactEmail: new FormControl('',Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
-          contactPhone: new FormControl('',Validators.pattern(/^[0-9]{7,15}$/)),
-          comments: new FormControl(''),
-          profileId: new FormControl('')
-        });
+    this.userId = localStorage.getItem("endUserId");
+    const filePath = this.userId+'/'+s3Details.financeFilePath;
+    this.financeTypeList = FinancePolicyType;
+    this.docPath = filePath;
+    this.FinanceForm = this.fb.group({
+      financesType: new FormControl('',Validators.required),  
+      financesTypeNew: new FormControl(''),   
+      administatorName: new FormControl('',Validators.required),
+      branchLocation: new FormControl(''),
+      accountNumber: new FormControl(''),
+      contactEmail: new FormControl('',Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
+      contactPhone: new FormControl('',Validators.pattern(/^[0-9]{7,15}$/)),
+      comments: new FormControl(''),
+      profileId: new FormControl('')
+    });
 
-        this.FinanceDocsList = [];
-        this.urlData = this.userapi.getURLData();
-        this.selectedProfileId = this.urlData.lastOne;
-        if (this.selectedProfileId && this.selectedProfileId == 'insurance-finance-debt' && this.urlData.lastThird != "legacies") {
-          this.selectedProfileId = "";
-        }        
-        if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'insurance-finance-debt') {
-            this.customerLegaciesId = this.userId;
-            this.customerLegacyType =  this.urlData.userType;
-            this.userId = this.urlData.lastOne;          
-            this.selectedProfileId = "";        
-        }
-        this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
-        this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
-        this.getFinanceView();
+    this.FinanceDocsList = [];
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    if (this.selectedProfileId && this.selectedProfileId == 'insurance-finance-debt' && this.urlData.lastThird != "legacies") {
+      this.selectedProfileId = "";
+    }        
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'insurance-finance-debt') {
+        this.customerLegaciesId = this.userId;
+        this.customerLegacyType =  this.urlData.userType;
+        this.userId = this.urlData.lastOne;          
+        this.selectedProfileId = "";        
     }
+    this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    this.toUserId = this.userId
+    this.getFinanceView();
+  }
 
-    onChangeType(key) {
-      this.newVal = false;
-      if(key=='10'){
-        this.newVal = true;
-        this.FinanceForm = this.fb.group({
-          financesType: new FormControl(this.FinanceForm.controls['financesType'].value,Validators.required),
-          financesTypeNew: new FormControl(this.FinanceForm.controls['financesTypeNew'].value,Validators.required), 
-          administatorName: new FormControl(this.FinanceForm.controls['administatorName'].value,Validators.required),
-          branchLocation: new FormControl(this.FinanceForm.controls['branchLocation'].value,),
-          accountNumber: new FormControl(this.FinanceForm.controls['accountNumber'].value,),
-          contactEmail: new FormControl(this.FinanceForm.controls['contactEmail'].value, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
-          contactPhone: new FormControl(this.FinanceForm.controls['contactPhone'].value,Validators.pattern(/^[0-9]{7,15}$/)),
-          comments: new FormControl(this.FinanceForm.controls['comments'].value,),
-          profileId: new FormControl(this.FinanceForm.controls['profileId'].value,)
-        });
-      }  
-      else {
-        this.FinanceForm = this.fb.group({
-          financesType: new FormControl(this.FinanceForm.controls['financesType'].value,Validators.required),
-          financesTypeNew: new FormControl(this.FinanceForm.controls['financesTypeNew'].value), 
-          administatorName: new FormControl(this.FinanceForm.controls['administatorName'].value,Validators.required),
-          branchLocation: new FormControl(this.FinanceForm.controls['branchLocation'].value,),
-          accountNumber: new FormControl(this.FinanceForm.controls['accountNumber'].value,),
-          contactEmail: new FormControl(this.FinanceForm.controls['contactEmail'].value,Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
-          contactPhone: new FormControl(this.FinanceForm.controls['contactPhone'].value,Validators.pattern(/^[0-9]{7,15}$/)),
-          comments: new FormControl(this.FinanceForm.controls['comments'].value,),
-          profileId: new FormControl(this.FinanceForm.controls['profileId'].value,)
-        });
-      }    
-    }
-
-    FinanceFormSubmit(profileInData = null) {
-      var query = {};
-      var proquery = {};     
-      
-      let profileIds = this.FinanceForm.controls['profileId'].value;
-      if(profileIds){
-        this.selectedProfileId = profileIds;
-      }
-      if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'insurance-finance-debt') {
-        profileInData.customerLegacyId = this.customerLegaciesId
-        profileInData.customerLegacyType = this.customerLegacyType
-      }
-  
-      if(!profileInData.profileId || profileInData.profileId ==''){
-        profileInData.customerId = this.userId
-      }
-      const req_vars = {
-        query: Object.assign({ _id: this.selectedProfileId}),
-        proquery: Object.assign(profileInData)
-      }
-      this.loader.open();     
-      this.userapi.apiRequest('post', 'insuranceFinanceDebt/finance-form-submit', req_vars).subscribe(result => {
-        this.loader.close();
-        if (result.status == "error") {
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
-        } else {
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
-          this.dialog.closeAll(); 
-        }
-      }, (err) => {
-        console.error(err)
-      })
-    }
-
-    getFinanceView = (query = {}, search = false) => { 
-      let req_vars = {
-        query: Object.assign({ customerId: this.userId,status:"Pending" })
-      }
-     
-      let profileIds = '';
-      if (this.selectedProfileId) {
-        profileIds = this.selectedProfileId;
-        req_vars = {
-          query: Object.assign({ _id:profileIds })
-        }
-      }
-      this.loader.open(); 
-      this.userapi.apiRequest('post', 'insuranceFinanceDebt/view-finance-details', req_vars).subscribe(result => {
-        this.loader.close();
-        if (result.status == "error") {
-          console.log(result.data)
-        } else {
-          if(result.data){    
-            this.newVal = false;
-            this.financeList = result.data;                    
-            let profileIds = this.financeList._id;
-            this.FinanceForm.controls['profileId'].setValue(profileIds);
-            this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-            this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-            this.FinanceDocsList = result.data.documents;            
-            this.FinanceForm.controls['financesType'].setValue(this.financeList.financesType);
-            this.FinanceForm.controls['financesTypeNew'].setValue(this.financeList.financesTypeNew);
-            if(this.financeList.financesType == 10){
-              this.newVal = true;
-            }            
-            this.FinanceForm.controls['administatorName'].setValue(this.financeList.administatorName);
-            this.FinanceForm.controls['accountNumber'].setValue(this.financeList.accountNumber);
-            this.FinanceForm.controls['branchLocation'].setValue(this.financeList.branchLocation);           
-            this.FinanceForm.controls['contactEmail'].setValue(this.financeList.contactEmail);
-            this.FinanceForm.controls['contactPhone'].setValue(this.financeList.contactPhone);
-            this.FinanceForm.controls['comments'].setValue(this.financeList.comments);
-          }       
-        }
-      }, (err) => {
-        console.error(err);
-      })
+  onChangeType(key) {
+    this.newVal = false;
+    if(key=='10'){
+      this.newVal = true;
+      this.FinanceForm = this.fb.group({
+        financesType: new FormControl(this.FinanceForm.controls['financesType'].value,Validators.required),
+        financesTypeNew: new FormControl(this.FinanceForm.controls['financesTypeNew'].value,Validators.required), 
+        administatorName: new FormControl(this.FinanceForm.controls['administatorName'].value,Validators.required),
+        branchLocation: new FormControl(this.FinanceForm.controls['branchLocation'].value,),
+        accountNumber: new FormControl(this.FinanceForm.controls['accountNumber'].value,),
+        contactEmail: new FormControl(this.FinanceForm.controls['contactEmail'].value, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
+        contactPhone: new FormControl(this.FinanceForm.controls['contactPhone'].value,Validators.pattern(/^[0-9]{7,15}$/)),
+        comments: new FormControl(this.FinanceForm.controls['comments'].value,),
+        profileId: new FormControl(this.FinanceForm.controls['profileId'].value,)
+      });
     }  
+    else {
+      this.FinanceForm = this.fb.group({
+        financesType: new FormControl(this.FinanceForm.controls['financesType'].value,Validators.required),
+        financesTypeNew: new FormControl(this.FinanceForm.controls['financesTypeNew'].value), 
+        administatorName: new FormControl(this.FinanceForm.controls['administatorName'].value,Validators.required),
+        branchLocation: new FormControl(this.FinanceForm.controls['branchLocation'].value,),
+        accountNumber: new FormControl(this.FinanceForm.controls['accountNumber'].value,),
+        contactEmail: new FormControl(this.FinanceForm.controls['contactEmail'].value,Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
+        contactPhone: new FormControl(this.FinanceForm.controls['contactPhone'].value,Validators.pattern(/^[0-9]{7,15}$/)),
+        comments: new FormControl(this.FinanceForm.controls['comments'].value,),
+        profileId: new FormControl(this.FinanceForm.controls['profileId'].value,)
+      });
+    }    
+  }
+
+  FinanceFormSubmit(profileInData = null) {
+    var query = {};
+    var proquery = {};     
+    
+    let profileIds = this.FinanceForm.controls['profileId'].value;
+    if(profileIds){
+      this.selectedProfileId = profileIds;
+    }
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'insurance-finance-debt') {
+      profileInData.customerLegacyId = this.customerLegaciesId
+      profileInData.customerLegacyType = this.customerLegacyType
+    }
+
+    if(!profileInData.profileId || profileInData.profileId ==''){
+      profileInData.customerId = this.userId
+    }
+    const req_vars = {
+      query: Object.assign({ _id: this.selectedProfileId}),
+      proquery: Object.assign(profileInData),
+      fromId:localStorage.getItem("endUserId"),
+      toId:this.toUserId,
+      folderName:s3Details.financeFilePath,
+      subFolderName:this.subFolderName
+    }
+    this.loader.open();     
+    this.userapi.apiRequest('post', 'insuranceFinanceDebt/finance-form-submit', req_vars).subscribe(result => {
+      this.loader.close();
+      if (result.status == "error") {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      } else {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        this.dialog.closeAll(); 
+      }
+    }, (err) => {
+      console.error(err)
+    })
+  }
+
+  getFinanceView = (query = {}, search = false) => { 
+    let req_vars = {
+      query: Object.assign({ customerId: this.userId,status:"Pending" })
+    }
+    
+    let profileIds = '';
+    if (this.selectedProfileId) {
+      profileIds = this.selectedProfileId;
+      req_vars = {
+        query: Object.assign({ _id:profileIds })
+      }
+    }
+    this.loader.open(); 
+    this.userapi.apiRequest('post', 'insuranceFinanceDebt/view-finance-details', req_vars).subscribe(result => {
+      this.loader.close();
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        if(result.data){    
+          this.newVal = false;
+          this.financeList = result.data;     
+          this.toUserId = this.financeList.customerId                   
+          let profileIds = this.financeList._id;
+          this.FinanceForm.controls['profileId'].setValue(profileIds);
+          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+          this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+          this.FinanceDocsList = result.data.documents;            
+          this.FinanceForm.controls['financesType'].setValue(this.financeList.financesType);
+          this.FinanceForm.controls['financesTypeNew'].setValue(this.financeList.financesTypeNew);
+          if(this.financeList.financesType == 10){
+            this.newVal = true;
+          }            
+          this.FinanceForm.controls['administatorName'].setValue(this.financeList.administatorName);
+          this.FinanceForm.controls['accountNumber'].setValue(this.financeList.accountNumber);
+          this.FinanceForm.controls['branchLocation'].setValue(this.financeList.branchLocation);           
+          this.FinanceForm.controls['contactEmail'].setValue(this.financeList.contactEmail);
+          this.FinanceForm.controls['contactPhone'].setValue(this.financeList.contactPhone);
+          this.FinanceForm.controls['comments'].setValue(this.financeList.comments);
+        }       
+      }
+    }, (err) => {
+      console.error(err);
+    })
+  }  
 
   FinanceDelete(doc, name, tmName) {
-      let ids = this.FinanceForm.controls['profileId'].value;
-      var statMsg = "Are you sure you want to delete '" + name + "' file?"
-      this.confirmService.confirm({ message: statMsg })
-        .subscribe(res => {
-          if (res) {
-            this.loader.open();
-            this.FinanceDocsList.splice(doc, 1)
-            var query = {};
-            const req_vars = {
-              query: Object.assign({ _id: ids }, query),
-              proquery: Object.assign({ documents: this.FinanceDocsList }, query),
-              fileName: Object.assign({ docName: tmName }, query)
-            }
-            this.userapi.apiRequest('post', 'documents/deleteFinanceDoc', req_vars).subscribe(result => {
-              if (result.status == "error") {
-                this.loader.close();
-                this.snack.open(result.data.message, 'OK', { duration: 4000 })
-              } else {
-                this.loader.close();
-                this.snack.open(result.data.message, 'OK', { duration: 4000 })
-              }
-            }, (err) => {
-              console.error(err)
-              this.loader.close();
-            })
+    let ids = this.FinanceForm.controls['profileId'].value;
+    var statMsg = "Are you sure you want to delete '" + name + "' file?"
+    this.confirmService.confirm({ message: statMsg })
+      .subscribe(res => {
+        if (res) {
+          this.loader.open();
+          this.FinanceDocsList.splice(doc, 1)
+          var query = {};
+          const req_vars = {
+            query: Object.assign({ _id: ids }, query),
+            proquery: Object.assign({ documents: this.FinanceDocsList }, query),
+            fileName: Object.assign({ docName: tmName }, query),
+            fromId:localStorage.getItem("endUserId"),
+            toId:this.toUserId,
+            folderName:s3Details.financeFilePath,
+            subFolderName:this.subFolderName
           }
-        })
+          this.userapi.apiRequest('post', 'documents/deleteFinanceDoc', req_vars).subscribe(result => {
+            if (result.status == "error") {
+              this.loader.close();
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            } else {
+              this.loader.close();
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            }
+          }, (err) => {
+            console.error(err)
+            this.loader.close();
+          })
+        }
+      })
   }
 
   public fileOverBase(e: any): void {
@@ -243,57 +256,57 @@ export class FinanceModalComponent implements OnInit {
            this.getFinanceDocuments();
          };
        }
-    }
+  }
 
-    updateProgressBar(){
-      let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
-      let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
-      this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
-      this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
-    }
+  updateProgressBar(){
+    let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
+    let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
+    this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+    this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+  }
 
-    uploadRemainingFiles(profileId) {
-      this.uploaderCopy.onBeforeUploadItem = (item) => {
-        item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
-      }
-      this.uploaderCopy.queue.forEach((fileoOb, ind) => {
-          this.uploaderCopy.uploadItem(fileoOb);
-      });
-  
-      this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-        this.updateProgressBar();
-        this.getFinanceDocuments({}, false, false);      
-      };
+  uploadRemainingFiles(profileId) {
+    this.uploaderCopy.onBeforeUploadItem = (item) => {
+      item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
     }
+    this.uploaderCopy.queue.forEach((fileoOb, ind) => {
+        this.uploaderCopy.uploadItem(fileoOb);
+    });
 
-    getFinanceDocuments = (query = {}, search = false, uploadRemained = true) => {     
-      let profileIds = this.FinanceForm.controls['profileId'].value;
-      let req_vars = {
-        query: Object.assign({customerId: this.userId,status:"Pending" }),
+    this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.updateProgressBar();
+      this.getFinanceDocuments({}, false, false);      
+    };
+  }
+
+  getFinanceDocuments = (query = {}, search = false, uploadRemained = true) => {     
+    let profileIds = this.FinanceForm.controls['profileId'].value;
+    let req_vars = {
+      query: Object.assign({customerId: this.userId,status:"Pending" }),
+      fields:{_id:1,documents:1}
+    }
+    if(profileIds){
+        req_vars = {
+        query: Object.assign({ _id:profileIds }),
         fields:{_id:1,documents:1}
       }
-      if(profileIds){
-         req_vars = {
-          query: Object.assign({ _id:profileIds }),
-          fields:{_id:1,documents:1}
+    }    
+    this.userapi.apiRequest('post', 'insuranceFinanceDebt/view-finance-details', req_vars).subscribe(result => {
+      if (result.status == "error") {
+      } else {
+        profileIds = result.data._id;
+        this.FinanceForm.controls['profileId'].setValue(profileIds);
+        if(uploadRemained) {
+          this.uploadRemainingFiles(profileIds)
         }
-      }    
-      this.userapi.apiRequest('post', 'insuranceFinanceDebt/view-finance-details', req_vars).subscribe(result => {
-        if (result.status == "error") {
-        } else {
-          profileIds = result.data._id;
-          this.FinanceForm.controls['profileId'].setValue(profileIds);
-          if(uploadRemained) {
-            this.uploadRemainingFiles(profileIds)
-          }
-          this.FinanceDocsList = result.data.documents;              
-        }
-      }, (err) => {
-        console.error(err);
-      })
-    }
+        this.FinanceDocsList = result.data.documents;              
+      }
+    }, (err) => {
+      console.error(err);
+    })
+  }
   
-   isExtension(ext, extnArray) {
+  isExtension(ext, extnArray) {
     var result = false;
     var i;
     if (ext) {
@@ -332,7 +345,11 @@ export class FinanceModalComponent implements OnInit {
   downloadFile = (filename) => {    
     let query = {};
     let req_vars = {
-      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:localStorage.getItem("endUserId"),
+      toId:this.toUserId,
+      folderName:s3Details.financeFilePath,
+      subFolderName:this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {

@@ -19,6 +19,8 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
   userAs:string='Trustee';
   profilePicture: any = "assets/images/arkenea/default.jpg"
   docPath: string; 
+  toUserId:string = ''
+  subFolderName:string = ''
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -52,6 +54,7 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
         console.log(result.data)
       } else {
         this.customerData = result.data;
+        this.toUserId = this.urlData.lastOne
         if(this.customerData && this.customerData.profilePicture){
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + this.customerData.profilePicture;
         }
@@ -134,7 +137,11 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
         let query = {};
         var ZipName = this.urlData.lastTwo+"-"+Math.floor(Math.random() * Math.floor(999999999999999))+".zip"; 
         let req_vars = {
-          query: Object.assign({downloadFileName:ZipName,docPath:folderPath['path'],AllDocuments:totalDocs }, query)
+          query: Object.assign({downloadFileName:ZipName,docPath:folderPath['path'],AllDocuments:totalDocs }, query),
+          fromId:localStorage.getItem("endUserId"),
+          toId:this.toUserId,
+          folderName:this.urlData.lastTwo,
+          subFolderName:this.subFolderName
         }
         this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
         this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {

@@ -35,6 +35,8 @@ export class MarkAsDeceasedComponent implements OnInit {
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';
+  toUserId:string = ''
+  subFolderName:string = 'Finance'
   
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,private confirmService: AppConfirmService,
     private loader: AppLoaderService, private router: Router,private userapi: UserAPIService) { }
@@ -139,7 +141,17 @@ markAsDeceased() {
       }
       let deceasedFromName = localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName");
       //localStorage.getItem("firstName")+' '+localStorage.getItem("lastName");
-      let req_vars = {_id:this.selectedProfileId,customerId:this.customerLegaciesId,advisorId:this.advisorId,trustId:this.trustId,userType:localStorage.getItem("endUserType"),legacyHolderName:legacyHolderUserName,deceasedFromName:deceasedFromName}
+      let req_vars = {_id:this.selectedProfileId,
+                      customerId:this.customerLegaciesId,
+                      advisorId:this.advisorId,trustId:this.trustId,
+                      userType:localStorage.getItem("endUserType"),
+                      legacyHolderName:legacyHolderUserName,
+                      deceasedFromName:deceasedFromName,
+                      fromId:this.userId,
+                      toId:this.customerLegaciesId,
+                      folderName:s3Details.deceasedFilessPath,
+                      subFolderName:this.subFolderName
+                    }
       this.loader.open();   
         this.userapi.apiRequest('post', 'deceased/markAsDeceased', req_vars).subscribe(result => {
           this.loader.close();
@@ -249,7 +261,11 @@ public fileOverBase(e: any): void {
           const req_vars = {
             query: Object.assign({ _id: ids }, query),
             proquery: Object.assign({ documents: this.DocumentsList }, query),
-            fileName: Object.assign({ docName: tmName }, query)
+            fileName: Object.assign({ docName: tmName }, query),
+            fromId:this.userId,
+            toId:this.customerLegaciesId,
+            folderName:s3Details.deceasedFilessPath,
+            subFolderName:this.subFolderName
           }
           this.userapi.apiRequest('post', 'documents/deleteDeceased', req_vars).subscribe(result => {
             if (result.status == "error") {
@@ -270,7 +286,11 @@ public fileOverBase(e: any): void {
   downloadFile = filename => {
     let query = {};
     let req_vars = {
-      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:this.userId,
+      toId:this.customerLegaciesId,
+      folderName:s3Details.deceasedFilessPath,
+      subFolderName:this.subFolderName
     };
     this.userapi.download("documents/downloadDocument", req_vars).subscribe(res => {
         var downloadURL = window.URL.createObjectURL(res);

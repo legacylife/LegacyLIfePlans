@@ -27,6 +27,9 @@ export class FinanceDetailsComponent implements OnInit {
   re =  "/(?:\.([^.]+))?$/" ;
   urlData:any={};
   trusteeLegaciesAction:boolean=true;
+  toUserId:string = ''
+  subFolderName:string = 'Finance'
+
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -63,6 +66,7 @@ export class FinanceDetailsComponent implements OnInit {
           }
           this.row = result.data;
           if(this.row){
+            this.toUserId = this.row.customerId 
             this.docPath = this.row.customerId+'/'+s3Details.financeFilePath;
           }
         }
@@ -95,7 +99,11 @@ export class FinanceDetailsComponent implements OnInit {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: this.selectedProfileId }, query)
+            query: Object.assign({ _id: this.selectedProfileId }, query),
+            fromId:this.userId,
+            toId:this.toUserId,
+            folderName:s3Details.financeFilePath,
+            subFolderName:this.subFolderName
           }
           this.userapi.apiRequest('post', 'insuranceFinanceDebt/delete-finances', req_vars).subscribe(result => {
             if (result.status == "error") {
@@ -129,7 +137,11 @@ export class FinanceDetailsComponent implements OnInit {
 downloadFile = (filename) => {    
   let query = {};
   let req_vars = {
-    query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+    query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+    fromId:this.userId,
+    toId:this.toUserId,
+    folderName:s3Details.financeFilePath,
+    subFolderName:this.subFolderName
   }
   this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
   this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
@@ -148,7 +160,11 @@ DownloadZip = () => {
   let query = {};
   var ZipName = "Finance-"+Math.floor(Math.random() * Math.floor(999999999999999))+".zip"; 
   let req_vars = {
-    query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query)
+    query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query),
+    fromId:this.userId,
+    toId:this.toUserId,
+    folderName:s3Details.financeFilePath,
+    subFolderName:this.subFolderName
   }
   this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
   this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {

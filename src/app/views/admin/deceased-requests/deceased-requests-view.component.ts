@@ -193,7 +193,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
       query: Object.assign({ docPath: this.docPath, filename: filename }, query),
       fromId:this.userId,
       toId:this.selectedUserId,
-      folderName:s3Details.advisorsDocumentsPath,
+      folderName:'',
       subFolderName:''
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
@@ -251,7 +251,18 @@ export class DeceasedRequestsViewComponent implements OnInit {
       .subscribe(res => {
         if (res) {
           let deceasedFromName = localStorage.getItem("firstName")+' '+localStorage.getItem("lastName");
-          let req_vars = {_id:profileIds,adminId:this.userId,customerId:this.selectedUserId,userType:localStorage.getItem("userType"),legacyHolderFirstName:this.customerFirstName,legacyHolderName:this.fullname,deceasedFromName:deceasedFromName}
+          let req_vars = {_id:profileIds,
+                          adminId:this.userId,
+                          customerId:this.selectedUserId,
+                          userType:localStorage.getItem("userType"),
+                          legacyHolderFirstName:this.customerFirstName,
+                          legacyHolderName:this.fullname,
+                          deceasedFromName:deceasedFromName,
+                          fromId:this.userId,
+                          toId:this.selectedUserId,
+                          folderName:'',
+                          subFolderName:''
+                        }
           this.loader.open();   
           this.api.apiRequest('post', 'deceased/markAsDeceased', req_vars).subscribe(result => {
           this.loader.close();
@@ -277,7 +288,11 @@ export class DeceasedRequestsViewComponent implements OnInit {
             query: Object.assign({_id:this.deceasedId}, query),
             revokeId:this.userId,
             userType:localStorage.getItem("userType"),
-            deceasedFromName:localStorage.getItem("firstName") + " " + localStorage.getItem("lastName")
+            deceasedFromName:localStorage.getItem("firstName") + " " + localStorage.getItem("lastName"),
+            fromId:this.userId,
+            toId:this.selectedUserId,
+            folderName:'',
+            subFolderName:''
           }
       this.loader.open();   
       this.api.apiRequest('post', 'deceased/revokeAsDeceased', req_vars).subscribe(result => {

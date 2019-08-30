@@ -135,7 +135,11 @@ export class AdvisorHomeComponent implements OnInit, OnDestroy {
             query: Object.assign({_id:this.documentId}, query),
             revokeId:this.revokeId,
             userType:localStorage.getItem("endUserType"),
-            deceasedFromName:localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName")
+            deceasedFromName:localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName"),
+            fromId:this.userId,
+            toId:this.customerLegaicesId,
+            folderName:'',
+            subFolderName:''
           }
           this.userapi.apiRequest('post', 'deceased/revokeAsDeceased', req_vars).subscribe(result => {
             if (result.status == "error") {              
