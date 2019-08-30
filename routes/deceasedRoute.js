@@ -55,6 +55,17 @@ async function viewDeceased(req, res) {
     res.status(200).send(resFormat.rSuccess(result));
   }
 
+  async function markDeceasedtestss(req, res) {
+    let paramData = req.body;
+    let DeceasedCnt = await MarkDeceased.find({customerId:paramData.customerId,status:"Active"})
+         if(DeceasedCnt>=3){
+             finalStatus = 'Active';
+         }
+        console.log('DeceasedCnt',DeceasedCnt,'Len ->',DeceasedCnt.length);
+         let result = {"message": "Mark as deceased successfully!"}
+         res.status(200).send(resFormat.rSuccess(result));
+ }
+
   async function markDeceased(req, res) {
       let paramData = req.body;
 
@@ -110,7 +121,7 @@ async function viewDeceased(req, res) {
         let finalStatus = 'Pending';
 
          let DeceasedCnt = await MarkDeceased.find({customerId:paramData.customerId,status:"Active"})
-         if(DeceasedCnt>=3){
+         if(DeceasedCnt.length>=3){
           finalStatus = 'Active';
          }
 
@@ -169,18 +180,18 @@ async function viewDeceased(req, res) {
          }
          let lockoutLegacyDate = '';
          if(finalStatus == 'Active'){
-          lockoutLegacyDate = await getLegacyDate(legacyHolderInfo.lockoutLegacyPeriod);
-          console.log('lockoutLegacyDate:- ',lockoutLegacyDate,'Period:- ',legacyHolderInfo.lockoutLegacyPeriod);
+           if(legacyHolderInfo.lockoutLegacyPeriod){
+            lockoutLegacyDate = await getLegacyDate(legacyHolderInfo.lockoutLegacyPeriod);
+           }else{
+            lockoutLegacyDate = await getLegacyDate(2);
+           }
          }
 
          let deceasedArray = {'status':finalStatus,'trusteeCnt':trustList.length,'advisorCnt':advisorList.length,deceasedinfo:OldDeceasedinfo};
-         console.log('deceasedArray :----',deceasedArray);
 
          await User.updateOne({_id:paramData.customerId},{deceased:deceasedArray,lockoutLegacyDate:lockoutLegacyDate});
-         
          //Customer needs to inform he is set mark as deceased now.
          await sendDeceasedNotifyMails('CustomerMarkAsDeceasedNotificationMail',legacyHolderInfo.username,legacyHolderInfo.firstName,legacyHolderInfo.lastName,legacyHolderName,deceasedFromName,userType,lockoutLegacyDate);
-           
          await sendDeceasedNotification('MarkAsDeceasedNotificationMail',trustList,advisorList,legacyHolderName,deceasedFromName,userType,fromUserId);
          let result = { "message": "Mark as deceased successfully!" }
          res.status(200).send(resFormat.rSuccess(result));
@@ -262,11 +273,11 @@ async function viewDeceased(req, res) {
           body = body.replace("{userType}",userType);
           body = body.replace("{SERVER_LINK}",serverUrl);
           const mailOptions = {
-            to: emailId,//'pankajk@arkenea.com',
+            to: emailId,
             subject: mailSubject,
             html: body
           }
-          sendEmail(mailOptions);
+         sendEmail(mailOptions);
           return true;
         } else {
           return false;
@@ -284,28 +295,26 @@ function revokeDeceased(req, res) {
           res.status(401).send(resFormat.rError(err));
         } else {
           let trustId = advisorId = adminId = '';
-          if(!userType){
-           userType = deceasedDetails.userType;
-          }
-
+         
           let searchDeceasedQuery = {};  
           if(userType=='customer'){
-            trustId = deceasedDetails.trustId;
-            searchQuery = {customerId:deceasedDetails.customerId,'trustId':ObjectId(revokeId)};
+            trustId = revokeId;
+            searchDeceasedQuery = {customerId:deceasedDetails.customerId,'trustId':ObjectId(trustId)};
           }else if(userType=='advisor'){
-            advisorId = deceasedDetails.advisorId;
-            searchQuery = {customerId:deceasedDetails.customerId,'advisorId':ObjectId(revokeId)};
+            advisorId = revokeId;
+            searchDeceasedQuery = {customerId:deceasedDetails.customerId,'advisorId':ObjectId(advisorId)};
           }else if(userType=='sysadmin'){
-            adminId = deceasedDetails.adminId;
-            searchQuery = {customerId:deceasedDetails.customerId,'adminId':ObjectId(revokeId)};
+            adminId = revokeId;
+            searchDeceasedQuery = {customerId:deceasedDetails.customerId,'adminId':ObjectId(adminId)};
           }
+       
           let MarkDeceaseddata = '';
-          if(searchDeceasedQuery){
-            MarkDeceaseddata = await MarkDeceased.findOne(searchDeceasedQuery);
-          }
+            if(searchDeceasedQuery){
+              MarkDeceaseddata = await MarkDeceased.findOne(searchDeceasedQuery);
+            }
             if (MarkDeceaseddata == null) {
               var insert = new MarkDeceased();
-              insert.customerId = revokeId;
+              insert.customerId = deceasedDetails.customerId;
               insert.userType = userType;
               if(advisorId){    
                 insert.advisorId = ObjectId(advisorId);
@@ -313,9 +322,10 @@ function revokeDeceased(req, res) {
               if(trustId){    
                 insert.trustId = ObjectId(trustId);
               }
-              if(adminId){    
+              if(adminId){  
                 insert.adminId = ObjectId(adminId);
               }
+              insert.revokeId = ObjectId(revokeId);
               insert.status = 'Revoke';
               insert.createdOn = new Date();
               insert.modifiedOn = new Date();
@@ -329,7 +339,7 @@ function revokeDeceased(req, res) {
           let finalStatus = 'Revoke';
           
           let proquery = {status:"Revoke",revokeId:ObjectId(revokeId),'modifiedOn': new Date()};
-           await MarkDeceased.updateMany({customerId:deceasedDetails.customerId,status: { $ne: 'Revoke' }},{$set: proquery })
+          await MarkDeceased.updateMany({customerId:deceasedDetails.customerId,status: { $ne: 'Revoke' }},{$set: proquery })
 
           let searchQuery = {customerId:deceasedDetails.customerId};
           if(userType=='customer'){
@@ -341,7 +351,7 @@ function revokeDeceased(req, res) {
           }
 
           let legacyHolderInfo = await User.findOne(searchQuery, {_id:1,username:1,firstName:1,lastName:1,deceased:1});
-        
+          let deceasedinfo = '';
           if(advisorId){
               deceasedinfo = {'status':'Revoke','userType':userType,'trustId':'','advisorId':mongoose.Types.ObjectId(advisorId),'createdOn':new Date()};
           }
@@ -469,22 +479,21 @@ function revokeOwnerDeceased(req, res) {
 
 
  async function deceaseListing(req, res) {
-    let { query } = req.body
-    let groupObj = { _id : "$customerId","customerId":{$first: '$customerId'},"advisorId": {$first: '$advisorId'},"trustId": {$first: '$trustId'},"userType": {$first: '$userType'},"documents": {$first: '$documents'},"status": {$first: '$status'}, "createdOn": {$first: '$createdOn'}} 
-    await MarkDeceased.aggregate([ 
-      { $match: query },
-      { $group:  groupObj }
-    ]) .exec(function(err, records) {
-      MarkDeceased.populate(records, {path: 'customerId'}, function(err, deceasedData) {
-        let message = 'Revoke deceased successfully!';
-        if(deceasedData.length==0){
-          message = 'No Records Found!';
-        }
-        let result = { "message": message,deceasedData:deceasedData }
-        res.status(200).send(resFormat.rSuccess(result));
-      });
-  });
- }
+  let { query } = req.body
+  let groupObj = { _id :'$customerId',"customerId":{$first:'$customerId'},"advisorId":{$first: '$advisorId'},"trustId":{$first: '$trustId'},"userType": {$first: '$userType'},"documents": {$first: '$documents'},"status": {$first: '$status'}, "createdOn": {$first: '$createdOn'}} 
+  await MarkDeceased.aggregate([
+    { $match: query }, { $group:  groupObj }
+  ]) .exec(function(err, records) { 
+    MarkDeceased.populate(records, {path: 'customerId'}, function(err, deceasedData) {
+      let message = 'Revoke deceased successfully!';
+      if(deceasedData && deceasedData.length==0){
+        message = 'No Records Found!';
+      }     
+      let result = { "message": message,deceasedData:deceasedData}
+      res.status(200).send(resFormat.rSuccess(result));
+    });
+});
+}
  
  function deceaseExecutorsDetails(req, res) {
     let { query } = req.body;
@@ -530,7 +539,7 @@ function customerDetails(req, res) {
     } else {
       res.send(resFormat.rSuccess(userList))
     }
-  }).populate('revokeId')
+  }).populate('deceased.revokeId')
 }
 
 router.post("/viewDeceaseDetails", viewDeceased)
