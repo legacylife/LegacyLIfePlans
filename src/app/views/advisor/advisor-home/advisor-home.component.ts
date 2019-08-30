@@ -122,18 +122,24 @@ export class AdvisorHomeComponent implements OnInit, OnDestroy {
 
 
   revokeAsDeceasedModal() {
-    if(!this.documentId){
-      this.snack.open("Something wrong, Please try again", 'OK', { duration: 4000 })
-    }else{
+    // if(!this.documentId){
+    //   this.snack.open("Something wrong, Please try again", 'OK', { duration: 4000 })
+    // }else{
     var statMsg = "Are you sure you want to revoke the deceased request?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
         if (res) {
           this.loader.open();
-          var query = {};var deceasedFromName = {};
+          var query = {};
+          let criteria = {};
+          if(this.documentId){
+            criteria = {_id:this.documentId};
+          }else{
+            criteria = {customerId:this.customerLegaicesId,status:'Active'};
+          }
           const req_vars = {
-            query: Object.assign({_id:this.documentId}, query),
-            revokeId:this.revokeId,
+            query: Object.assign(criteria, query),
+            revokeId:this.userId,
             userType:localStorage.getItem("endUserType"),
             deceasedFromName:localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName")
           }
@@ -151,6 +157,8 @@ export class AdvisorHomeComponent implements OnInit, OnDestroy {
           })
         }
       })
-    }
+    //}
   }
+
+  
 }

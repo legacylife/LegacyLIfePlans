@@ -48,11 +48,14 @@ export class SigninComponent implements OnInit {
       userType: {$ne : "sysadmin"}
       //userType: "advisor"
     }
+    // const params = {
+    //   query: Object.assign({ username: this.llpCustsigninForm.controls['username'].value,password:this.llpCustsigninForm.controls['password'].value,userType: { $ne: 'sysadmin'} })
+    // };
     this.loader.open();
     this.userapi.apiRequest('post', 'auth/signin', signInData).subscribe(result => {
       this.loader.close();
       if (result.status=="success") {      
-        userData = result.data;
+        userData = result.data;console.log('Result-->',result.data);
         localStorage.setItem("endUserId", userData.userId);
         localStorage.setItem("endUserType", userData.userType);
         localStorage.setItem("endUserFirstName", userData.firstName);
