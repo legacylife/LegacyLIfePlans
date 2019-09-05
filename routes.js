@@ -28,4 +28,5 @@ router.use("/sendMails", require("./routes/sendUserMailsRoute"))
 router.use("/referearnsettings", require("./routes/referEarnSettingsRoute"))
 router.use("/freetrialsettings", require("./routes/freeTrialPeriodSettingsRoute"))
 router.use("/activity", require("./routes/activityLogRoute"))
+router.use("/advertisement", require("./routes/advertisementRoute"))
 module.exports = router
