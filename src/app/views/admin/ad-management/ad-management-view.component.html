@@ -1,0 +1,241 @@
+<div fxLayout="row wrap" *ngIf="showPage">
+  <div fxFlex="100" fxFlex.gt-md="300px" fxFlex.gt-sm="50">
+    <mat-card class="profile-sidebar admn--user--details--wrapper">
+      <div class="propic text-center" >
+        <img src="{{profilePicture}}" alt="">
+      </div>
+      <div class="profile-title text-center mb-1">         
+        <div class="main-title">{{fullname}}</div>
+        <div class="text-muted">{{row?.bioText}}</div>
+      </div>
+      <mat-card-content class="pt-0 border-0">
+        <mat-list>
+          <mat-list-item>
+            <mat-icon class="mr-1">email</mat-icon> {{row?.username}}</mat-list-item>
+          <mat-list-item *ngIf="row?.userType == 'customer' && row?.phoneNumber!=''">
+            <mat-icon class="mr-1">phone</mat-icon> {{row?.phoneNumber}}</mat-list-item>
+          <mat-list-item *ngIf="row?.userType == 'advisor' && row?.businessPhoneNumber!=''">
+            <mat-icon class="mr-1">phone</mat-icon> {{row?.businessPhoneNumber}}</mat-list-item>          
+        </mat-list>
+      </mat-card-content>
+    </mat-card> 
+  </div>
+
+  <!-- Profile Views -->
+  <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="calc(100% - 300px)">
+    <div fxLayout="row wrap">
+      <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
+        <!-- Basic Info starts -->
+        <mat-card class="default mb-1 basic--info--wrapper">
+          <mat-card-title class="p-1">Basic Info</mat-card-title>
+          <mat-card-content class="p-0 border-t">
+            <mat-list class="compact-list mb-1">
+              <mat-list-item class="" >
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Date Of Birth</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.dateOfBirth  | date: 'yyyy/MM/dd'}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="" >
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Address Line 1</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.addressLine1}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="" >
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Address Line 2</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.addressLine2}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="" >
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">City</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40">{{row?.city}}</div>
+                  </div>
+                </mat-list-item>
+                <mat-list-item class="" >
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">State</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40">{{row?.state}}</div>
+                  </div>
+                </mat-list-item>
+                <mat-list-item class="" >
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">Zipcode</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40">{{row?.zipcode}}</div>
+                  </div>
+                </mat-list-item>
+              <mat-list-item class="">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Status</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40" >
+                  <mat-chip  mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{row?.status}}</mat-chip>
+                </div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="">
+                  <div fxLayout="row" fxFlex="100">
+                    <h6 class="m-0 mr-1">Last log in date and time</h6>
+                    <span fxFlex></span>
+                    <div fxFlex="40">{{row?.lastLoggedInOn  | date: 'yyyy/MM/dd HH:mm:ss'}}</div>
+                  </div>
+                </mat-list-item>                
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+     </div>
+    </div>
+  </div>
+
+
+ <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="calc(100% - 300px)">
+    <div fxLayout="row wrap">
+      <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
+        <mat-card class="default mb-1 basic--info--wrapper">
+          <mat-card-title class="p-1">Enquiry Info</mat-card-title>
+          <mat-card-content class="p-0 border-t">
+            <mat-list class="compact-list mb-1">
+            <mat-list-item class="" >
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Zipcodes</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{data?.zipcodes}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="" >
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">From Date</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{data?.fromDate | date: 'yyyy/MM/dd'}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="" >
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">To Date</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{data?.toDate | date: 'yyyy/MM/dd'}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="" >
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Message</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{data?.message}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Status</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40" >
+                  <mat-chip  mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{data?.status}}</mat-chip>
+                </div>
+                </div>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+     </div>
+    </div>
+  </div>
+
+  <div fxLayout="row wrap" *ngIf="replyData">
+      <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+         <mat-card-title class="p-1">Reply Info</mat-card-title>
+        <mat-card-content class="p-0">
+             <ngx-datatable class="material ml-0 mr-0" [rows]="replyData" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
+               <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Admin Name" prop="trustId" [flexGrow]="2">
+                 <ng-template let-row="row" ngx-datatable-cell-template>
+                   <span>{{row?.adminId?.firstName}} {{row?.adminId?.lastName}}</span>
+                 </ng-template>
+               </ngx-datatable-column>
+               <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Zipcodes" prop="zipcodes"  [flexGrow]="1">
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{arrayToString(row?.zipcodes)}}
+                  </ng-template>
+            </ngx-datatable-column>
+               <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Cost" prop="cost"  [flexGrow]="1">
+                     <ng-template let-row="row" ngx-datatable-cell-template>
+                       {{row?.cost}}
+                     </ng-template>
+               </ngx-datatable-column>
+               <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Message" prop="message"  [flexGrow]="1">
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row?.message}}
+                  </ng-template>
+               </ngx-datatable-column>
+               <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Time" prop="createdOn">
+                     <ng-template let-row="row" ngx-datatable-cell-template>
+                       {{row?.createdOn | date: 'yyyy/MM/dd HH:mm:ss'}}
+                     </ng-template>
+               </ngx-datatable-column>
+               <ngx-datatable-column [resizeable]="false" name="Status">
+                 <ng-template let-row="row" ngx-datatable-cell-template>
+                   <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status" (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
+                 </ng-template>
+               </ngx-datatable-column>
+             </ngx-datatable>
+           </mat-card-content>
+      </mat-card>
+   </div>
+
+
+
+
+  <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="calc(100% - 300px)">
+      <div fxLayout="row wrap">
+          <button mat-raised-button class="llp--primary--btn" (click)="rejectEnquiry()" >Reject</button>
+        <form class="llp-form-wrapper" [formGroup]="enquiryFormReply" (ngSubmit)="enquiryFormReplySubmit(enquiryFormReply.value)">
+            <div class="ll--modal--body idbox--modal--hgt">
+                <h6 class="invite--sub--line">Reply on Enquiry form. </h6>
+                <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+                    <mat-form-field>
+                        <mat-label>Zipcode List*</mat-label>
+                          <mat-select name="zipcodes" placeholder="Zipcode List" multiple [formControl]="enquiryFormReply.controls['zipcodes']">
+                              <mat-option *ngFor="let zips of zipcodeList;" (change)="onChange(zips);" [value]="zips">{{zips}}</mat-option>
+                          </mat-select>
+                          <mat-icon matTooltip="Please select atleast one zipcode from list" matTooltipClass="llp--tooltip error" *ngIf="enquiryFormReply.controls['zipcodes'].hasError('required') && enquiryFormReply.controls['zipcodes'].touched" class="red--alert">help_outline</mat-icon>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+                      <mat-form-field class="full-width">
+                          <mat-label>Payment Cost in $*</mat-label>
+                        <input matInput value="" placeholder="Payment Cost"  [formControl]="enquiryFormReply.controls['cost']">
+                        <mat-icon matTooltip="Please enter payment cost" matTooltipClass="llp--tooltip error" *ngIf="enquiryFormReply.controls['cost'].hasError('required') && enquiryFormReply.controls['cost'].touched" class="red--alert">help_outline</mat-icon>                        
+                        <mat-icon matTooltip="Please enter numeric value." matTooltipClass="llp--tooltip error" *ngIf="enquiryFormReply.controls['cost'].hasError('pattern') && enquiryFormReply.controls['cost'].touched"
+                        class="red--alert">help_outline</mat-icon>
+                      </mat-form-field>
+                  </div> 
+                  
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+                      <mat-form-field class="full-width">
+                          <mat-label>Payment Link*</mat-label>
+                        <input matInput value="" placeholder="Payment Link" [formControl]="enquiryFormReply.controls['stripePaymentLink']" readonly="readonly">                       
+                      </mat-form-field>
+                  </div>             
+                  
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+                    <mat-form-field class="full-width mt-1">
+                        <textarea maxlength="500" matInput placeholder="Reply Message" name="message" [formControl]="enquiryFormReply.controls['message']"></textarea>            
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+             <div class="ll--modal--footer text-center">
+              <a (click)="createPaymentLink()"><mat-icon>attach_money</mat-icon>Generate payment link</a>
+              <button mat-raised-button class="llp--primary--btn" [disabled]="enquiryFormReply.invalid" >Submit</button>
+              <a (click)="rejectEnquiry()">Reject</a>
+            </div>
+          </form>
+        </div>
+  </div>
+</div>

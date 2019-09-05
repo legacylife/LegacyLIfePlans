@@ -5,14 +5,15 @@
   </button>
 </div>
 
-<form class="llp-form-wrapper">
+<form class="llp-form-wrapper" [formGroup]="enquiryForm" (ngSubmit)="enquiryFormSubmit(enquiryForm.value)">
   <div class="ll--modal--body idbox--modal--hgt">
-    <form class="llp-form-wrapper">
       <h6 class="invite--sub--line">Share the following details and we will get back to you within 2 days. </h6>
       <div fxLayout="row wrap">
         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
           <mat-form-field class="full-width">
-            <input matInput value="" placeholder="What location or zip codes are you planning to target?">
+            <input matInput value="" placeholder="What location or zip codes are you planning to target?" [formControl]="enquiryForm.controls['zipcodes']">
+            <mat-icon matTooltip="Please enter zipcodes" matTooltipClass="llp--tooltip error" class="red--alert"
+            *ngIf="enquiryForm.controls['zipcodes'].hasError('required') && enquiryForm.controls['zipcodes'].touched">help_outline</mat-icon>
           </mat-form-field>
         </div>
         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
@@ -22,7 +23,7 @@
         </div>
         <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
           <mat-form-field class="full-width llp-datepicker">
-            <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="From" value="">
+            <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="From" value="" [max]="maxDate" [formControl]="enquiryForm.controls['fromDate']">
             <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
             <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
             </mat-datepicker>
@@ -30,7 +31,7 @@
         </div>
         <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
           <mat-form-field class="full-width llp-datepicker">
-            <input matInput [matDatepicker]="to" (focus)="to.open()" placeholder="To" value="">
+            <input matInput [matDatepicker]="to" (focus)="to.open()" placeholder="To" value="" [max]="maxDate" [formControl]="enquiryForm.controls['toDate']">
             <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
             <mat-datepicker #to startView="multi-year" panelClass="example-month-picker">
             </mat-datepicker>
@@ -38,14 +39,12 @@
         </div>
         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
           <mat-form-field class="full-width">
-            <input matInput value="" placeholder="Any query message for us ">
+            <input matInput value="" placeholder="Any query message for us "  [formControl]="enquiryForm.controls['message']">
           </mat-form-field>
         </div>
       </div>
-    </form>
-
   </div>
   <div class="ll--modal--footer text-center">
-    <button mat-raised-button class="llp--primary--btn">Submit</button>
+    <button mat-raised-button class="llp--primary--btn" [disabled]="enquiryForm.invalid" >Submit</button>
   </div>
 </form>

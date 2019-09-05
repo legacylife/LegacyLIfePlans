@@ -38,6 +38,7 @@ import { MapComponent } from './map/map.component';
 import { ReferralProgramComponent } from './referral-program/referral-program.component';
 import { ActivityLogComponent } from './activity-log/activity-log.component';
 import { AddManagementComponent } from './ad-management/ad-management.component';
+import { AddManagementViewComponent } from './ad-management/ad-management-view.component';
 import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests.component';
 import { DeceasedRequestsViewComponent } from './deceased-requests/deceased-requests-view.component';
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
@@ -79,7 +80,7 @@ import { AdminHireAdvisorComponent } from './deceased-requests/hire-advisor-moda
   declarations: [
     AppBlankComponent, userlistComponent, userviewComponent, customerlistComponent, advisorlistComponent,
     NgxTablePopupComponent, AdvisorRejectPopupComponent, cmslistComponent, cmseditComponent, ProfileComponent, EmailTemplateComponent,
-    EmailTemplateEditComponent, MapComponent, ReferralProgramComponent, ActivityLogComponent, AddManagementComponent,
+    EmailTemplateEditComponent, MapComponent, ReferralProgramComponent, ActivityLogComponent, AddManagementComponent,AddManagementViewComponent,
     DeceasedRequestsComponent,DeceasedRequestsViewComponent,fileUploadInstructionsListComponent,fileUploadInstructionsEditComponent,FreeTrialPeriodManagementComponent,AdminHireAdvisorComponent
   ],
   entryComponents: [NgxTablePopupComponent,AdvisorRejectPopupComponent,AdminHireAdvisorComponent]
