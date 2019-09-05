@@ -166,7 +166,7 @@ function rejectEnquiry(req, res) {
           }else{
             adminReplyData = adminReplyArr;
           }
-          advertisement.updateOne({_id:query._id}, {adminReply:adminReplyData}, function (err, logDetails) {
+          advertisement.updateOne({_id:query._id}, {status:"Reject",adminReply:adminReplyData}, function (err, logDetails) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
@@ -202,7 +202,7 @@ function sendEnquiryReplyMail(templateCode,emailId, toName, replyContnt) {
       }
       body = body.replace("{SERVER_LINK}",serverUrl);
       const mailOptions = {
-        to: 'pankajk@arkenea.com',//emailId,
+        to: emailId,
         subject: template.mailSubject,
         html: body
       }
