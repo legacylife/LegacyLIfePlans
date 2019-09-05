@@ -161,35 +161,43 @@ async function getInviteMembersCount(req, res) {
             completedDays   = getDateDiff( today, moment(userCreatedOn).toDate(), 'asDays' ),
             completedMonths = getDateDiff( today, moment(userCreatedOn).toDate() ),
             startDate       = new Date(userCreatedOn),
-            endDate         = new Date(userCreatedOn)
+            endDate         = new Date(userCreatedOn),
+            freePremiumDays = userDetails[0]['freeTrialPeriod']['bfrSubFreePremiumDays'],
+            targetCount     = userDetails[0]['refereAndEarnSubscriptionDetail']['targetCount'],
+            extendedDays    = userDetails[0]['refereAndEarnSubscriptionDetail']['noOfDaysExtended']
         
-        /* if( completedDays < userDetails[0]['freeTrialPeriod']['bfrSubFreePremiumDays']) {
-            endDate.setDate( endDate.getDate() + completedDays );
+        //console.log("completedDays",completedDays,"freePremiumDays",freePremiumDays)
+        if( completedDays <= freePremiumDays) {
+            endDate.setDate( endDate.getDate() + (freePremiumDays) );
         }
-        else */ if( completedMonths > 1) {
+        else if( completedDays >= freePremiumDays && completedMonths < 1) {
+            startDate.setDate( startDate.getDate() + (freePremiumDays) );
+            endDate.setDate( endDate.getDate() + (completedDays+1) );
+        }
+        else if( completedMonths > 1) {
             startDate.setMonth( startDate.getMonth() + (completedMonths) );
             endDate.setMonth( endDate.getMonth() + (completedMonths + 1) );
         }
         else{
             endDate.setMonth( endDate.getMonth() + (completedMonths + 1) );
         }
-         
+        console.log("startDate",startDate,"endDate",endDate)
         let remainingDays   = Math.abs(Math.round( getDateDiff( today, moment(endDate).toDate(), 'asDays' )))
-        paramData.createdOn = { $gte: new Date(startDate) , $lte: new Date(endDate) }
+        let queryparam = {
+            inviteById: paramData.inviteById,
+            createdOn : { $gte: new Date(startDate) , $lte: new Date(endDate) }
+        }
+        //paramData.createdOn = { $gte: new Date(startDate) , $lte: new Date(endDate) }
 
-        
-        let targetCount  = userDetails[0]['refereAndEarnSubscriptionDetail']['targetCount'],
-            extendedDays = userDetails[0]['refereAndEarnSubscriptionDetail']['noOfDaysExtended']
-        let data = await Invite.find(paramData)
-        
+        let data = await Invite.find(queryparam)
         console.log("completedMonths ===== ",completedMonths,"\n createdOn ===== ",userDetails[0]['createdOn'],"\n paramData ===== ",paramData.createdOn,"remainingDays",remainingDays,"extendedDays",extendedDays)
 
         if (data != null) {
             resultCount = data.length
         }
-        let freePrimiumExpireDays = Math.abs(getDateDiff( today, moment(userCreatedOn).toDate(), 'asDays' ))
-        console.log("\n freePrimiumExpireDays",freePrimiumExpireDays)
-        if( freePrimiumExpireDays > 30 ) {
+        let completedDaysToRegister = Math.abs(getDateDiff( today, moment(userCreatedOn).toDate(), 'asDays' ))
+        //console.log("\n freePrimiumExpireDays",freePrimiumExpireDays)
+        /* if( completedDaysToRegister > 30 ) {
             let newDate = new Date(userCreatedOn)
                 newDate.setMonth( newDate.getMonth() + completedMonths)
                 newDate.setDate( newDate.getDate() + extendedDays)
@@ -197,9 +205,9 @@ async function getInviteMembersCount(req, res) {
             console.log("\n newDate ==== ",newDate)
             remainingDays = Math.abs(Math.round(getDateDiff( moment(newDate).toDate(), today, 'asDays' )))//remainingDays + extendedDays
         }
-        else{
+        else{ */
             remainingDays = resultCount >= targetCount ? remainingDays + extendedDays : remainingDays
-        }
+        //}
         result = { "count": resultCount,"remainingDays":remainingDays, "completedMonths":completedMonths, "targetCount": targetCount, "extendedDays": extendedDays }
         res.status(200).send(resFormat.rSuccess(result))
     }
