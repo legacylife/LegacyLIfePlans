@@ -7,19 +7,14 @@
           <mat-divider></mat-divider>
         </mat-card-title>
         <mat-card-content class="get--featured--section">
-
           <div fxLayout="row wrap">
             <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="60" fxFlex.xl="60">
-
               <div class="left">
                 <h4>Get Featured. Get Discovered.</h4>
                 <p>A standard profile gets you in the LLP Professionals directory
                   <span class="bold"> but a Featured Profile will get you found! </span>
                 </p>
-                <p>As a featured profile, you get listed on top of the non-featured profile which increases your chances to
-                  get noticed
-                </p>
-                <!-- Specialites -->
+                <p>As a featured profile, you get listed on top of the non-featured profile which increases your chances to get noticed</p>
                 <div class="specialites--wrapper">
                   <div class="box--sec">
                     <div class="logo">
@@ -43,10 +38,8 @@
                   </div>
                 </div>
               </div>
-
             </div>
             <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="40" fxFlex.xl="40">
-
               <div class="right">
                 <h5>How can I get my profile featured?</h5>
                 <div class="features">
@@ -61,17 +54,54 @@
                   <mat-icon>star</mat-icon>
                   Get a quote from admin
                 </div>
-
                 <div class="enq--btn text-center">
                   <button mat-raised-button class="llp--primary--green--btn" (click)="openSubmitEnqModal();">Enquire Now</button>
                 </div>
               </div>
-
             </div>
           </div>
-
-        </mat-card-content>
-      </mat-card>
-    </div>
-  </div>
+          <div fxLayout="row wrap" *ngIf="recordsFound">
+            <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="60" fxFlex.xl="60">
+              <div class="left">
+                <mat-card class="p-0 mb--30">
+                  <mat-card-title class="">
+                    <div class="card-title-text">Enquiry's</div>
+                    <mat-divider></mat-divider>
+                  </mat-card-title>
+                  <mat-card-content class="get--featured--section">  
+                    <mat-accordion>
+                      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" *ngFor="let item of rows">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title> 
+                              {{item.status=='Active' ? 'Payment Pending' : ''}}
+                            </mat-panel-title>
+                            <mat-panel-description>
+                              {{item.zipcodes}}
+                            </mat-panel-description>
+                            <mat-panel-description>
+                                {{item.createdOn | date: 'yyyy/MM/dd'}}
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                           <p><b>From date:</b>  {{item.fromDate | date: 'yyyy/MM/dd'}}  <b>To date:</b> {{item.toDate  | date: 'yyyy/MM/dd'}}</p>
+                           <p>Message: {{item.message}}</p>
+                            <div *ngIf="item.status!='Reject'"><div *ngFor="let row of item.adminReply">
+                              <div class="text-center" *ngIf="row.status=='Pending'">
+                                <p><b>Admin Reply</b></p>
+                                <p>Zipcodes: {{arrayToString(row.zipcodes)}}</p>
+                                <p>Payment Cost: ${{row.cost}}  <button mat-raised-button class="llp--primary--green--btn">Payment</button></p>
+                                <p *ngIf="row.message">Reply: {{row.message}}</p>
+                              </div>
+                              </div>
+                            </div>
+                      </mat-expansion-panel>                  
+                    </mat-accordion>
+                  </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+</div>
 </div>

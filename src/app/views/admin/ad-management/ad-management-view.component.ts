@@ -105,11 +105,11 @@ export class AddManagementViewComponent implements OnInit {
       query: Object.assign({_id:this.data._id,adminId:this.userId}),
       proquery: Object.assign(formData)  
     }
-    
     this.loader.open();
     this.api.apiRequest('post', 'advertisement/submitEnquiryReply', enquiryData).subscribe(result => {
     this.loader.close();
-      if (result.status=="success") {      
+      if (result.status=="success") {     
+        this.enquiryFormReply.reset(); 
         this.getUser();
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }     
