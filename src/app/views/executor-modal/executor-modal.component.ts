@@ -49,7 +49,7 @@ export class ExecutorModalComponent implements OnInit {
         if(type == 'advisor'){
           req_vars = {customerId:localStorage.getItem("endUserId"),docId:docId,advisorId:advisorId,userType:type,legacyHolderName:this.userFullName}
         }else{   
-          req_vars = {customerId:localStorage.getItem("endUserId"),docId:docId,trustId:trustId,userType:type}
+          req_vars = {customerId:localStorage.getItem("endUserId"),docId:docId,trustId:trustId,userType:type,legacyHolderName:this.userFullName}
         }
         this.userapi.apiRequest('post', 'executor/addAsExecutor', req_vars).subscribe(result => {
           this.loader.close();
@@ -75,7 +75,7 @@ export class ExecutorModalComponent implements OnInit {
           if(type == 'advisor'){
             req_vars = {customerId:localStorage.getItem("endUserId"),docId:docId,advisorId:advisorId,userType:type,legacyHolderName:this.userFullName}
           }else{   
-            req_vars = {customerId:localStorage.getItem("endUserId"),docId:docId,trustId:trustId,userType:type}
+            req_vars = {customerId:localStorage.getItem("endUserId"),docId:docId,trustId:trustId,userType:type,legacyHolderName:this.userFullName}
           }
           this.userapi.apiRequest('post', 'executor/removeAsExecutor', req_vars).subscribe(result => {
             this.loader.close();

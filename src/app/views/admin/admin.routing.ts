@@ -21,6 +21,7 @@ import { ErrorComponent } from './error/error.component';
 import { AuthGuard } from '../../shared/services/auth/auth.guard';
 import { FreeTrialPeriodManagementComponent } from './free-trial-period-management/free-trial-period-management.component';
 import { CoachCornerCategoryManagementComponent } from './coach-corner-category-management/coach-corner-category-management.component';
+import { AddManagementViewComponent } from './ad-management/ad-management-view.component';
 
 export const AdminRoutes: Routes = [
   {
@@ -111,6 +112,12 @@ export const AdminRoutes: Routes = [
     path: 'ad-management',
     component: AddManagementComponent,
     data: { title: 'Advertisement Management', breadcrumb: 'Advertisement Management' },
+    canActivate: [ AuthGuard ],
+  },
+  {
+    path: 'ad-management/ad-management-view/:id',
+    component: AddManagementViewComponent,
+    data: { title: 'Advertisement Management view', breadcrumb: 'Advertisement Management view' },
     canActivate: [ AuthGuard ],
   }, {
     path: 'deceased-requests',

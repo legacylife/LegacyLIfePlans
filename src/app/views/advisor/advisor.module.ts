@@ -4,7 +4,9 @@ import { CommonModule } from '@angular/common';
 import { MatStepperModule } from '@angular/material/stepper';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { MatListModule,MatIconModule,MatButtonModule,MatCardModule,MatMenuModule,MatSlideToggleModule,MatGridListModule,MatChipsModule,MatCheckboxModule,MatRadioModule,MatTabsModule,MatInputModule,MatProgressBarModule,MatDialogModule,MatSelectModule,MatSliderModule,MatExpansionModule,MatSnackBarModule,MatFormFieldModule,MatSidenavModule,MatRippleModule,MatDatepickerModule,MatNativeDateModule,MatTooltipModule,MatBottomSheetModule} from '@angular/material';
+import { MatListModule,MatIconModule,MatButtonModule,MatCardModule,MatMenuModule,MatSlideToggleModule,MatGridListModule,MatChipsModule,MatCheckboxModule,
+  MatRadioModule,MatTabsModule,MatInputModule,MatProgressBarModule,MatDialogModule,MatSelectModule,MatSliderModule,MatExpansionModule,MatSnackBarModule,
+  MatSidenavModule,MatRippleModule,MatDatepickerModule,MatNativeDateModule,MatTooltipModule,MatBottomSheetModule,MatFormFieldModule} from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
@@ -92,19 +94,18 @@ export class GlobalVariables {
     MatSliderModule,
     MatExpansionModule,
     MatSnackBarModule,
-    MatFormFieldModule,
     MatSidenavModule,
     MatRippleModule,
     MatDatepickerModule,
     ReactiveFormsModule,
     MatNativeDateModule,
     MatDialogModule,
-    MatTooltipModule,
-    MatSelectModule,
+    MatTooltipModule,    
     MatStepperModule,
     HttpModule,
     SlickCarouselModule,
     MatBottomSheetModule,
+    MatFormFieldModule,
     InfiniteScrollModule,
     RouterModule.forChild(AdvisorRoutes),
     CountUpModule,

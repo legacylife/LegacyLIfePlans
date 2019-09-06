@@ -1,5 +1,50 @@
 <div class="row" *ngIf="aceessSection">
-  <p>This is Advertisement management section.</p>
+  <!-- <p>This is Advertisement management section.</p> -->
+  <form class="llp-form-wrapper">
+    <mat-form-field class="no-mar full-width">
+      <input matInput placeholder="Type to filter all columns" value="" (keyup)='updateFilter($event)'>
+    </mat-form-field>
+  </form>
+  <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+    <mat-card-content class="p-0">
+      <ngx-datatable class="material ml-0 mr-0" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50"
+        [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
+        <ngx-datatable-column [resizeable]="false" name="Name" prop="customerId" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.customerId.firstName }} {{ row?.customerId.lastName }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="false" name="Zipcodes" prop="zipcodes" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.zipcodes }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="false" name="From Date" prop="fromDate" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.fromDate | date: 'yyyy/MM/dd'}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="false" name="To Date" prop="toDate" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row?.toDate | date: 'yyyy/MM/dd'}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <mat-chip class="active--status--chip" mat-sm-chip>{{row.status}}</mat-chip>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [resizeable]="false" name="Actions" [flexGrow]="1">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <a mat-icon-button mat-sm-button color="primary" class="mb-1"
+              [routerLink]="['/admin/ad-management/ad-management-view', row._id]" mattooltip="Toggle Collapse" title="Edit">
+              <mat-icon style="font-size: 27px;">edit</mat-icon>
+            </a>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </mat-card-content>
+  </mat-card>
 </div>
 <div class="row" *ngIf="!aceessSection">
   <p>You don't have permission to this section.</p>
