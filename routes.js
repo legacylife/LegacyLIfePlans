@@ -29,4 +29,5 @@ router.use("/referearnsettings", require("./routes/referEarnSettingsRoute"))
 router.use("/freetrialsettings", require("./routes/freeTrialPeriodSettingsRoute"))
 router.use("/activity", require("./routes/activityLogRoute"))
 router.use("/coach-corner-category", require("./routes/coachCornerCategoryRoute"))
+router.use("/advertisement", require("./routes/advertisementRoute"))
 module.exports = router

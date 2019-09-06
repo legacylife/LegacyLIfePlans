@@ -12,11 +12,71 @@ const executor = require('./../models/MarkAsExecutor.js')
 const HiredAdvisors = require('./../models/HiredAdvisors')
 const trust = require('./../models/Trustee.js')
 
-function addExecutor(req, res) {
+
+async function addExecutor(req, res) {
+    let paramData = req.body;
+    let Advproquery = {};let Trusteeproquery = {};Advproquery.executorStatus = '';Trusteeproquery.executorStatus = '';let error = '';
+    await HiredAdvisors.updateMany({customerId:paramData.customerId,'status':'Active' },{$set: {'executorStatus':''} });  
+    await trust.updateMany({customerId:paramData.customerId,'status':'Active' },{$set: {'executorStatus':''} });
+
+    if(paramData.userType=='advisor'){  
+        Advproquery.executorStatus = 'Active';
+        await HiredAdvisors.updateOne({_id:paramData.docId},{$set:Advproquery});
+    }else{
+        Trusteeproquery.executorStatus = 'Active';
+        await trust.updateOne({_id:paramData.docId},{$set:Trusteeproquery});
+    }
+    
+   let oldExecutor = executor.findOne({customerId:paramData.customerId,status:'Active'});
+   if(oldExecutor){
+    let rmExecuteId = '';
+        await executor.updateMany({customerId:paramData.customerId,status:'Active'}, { $set: {'status':'Deleted','modifiedOn':new Date()}});
+        if(oldExecutor.userType=='advisor'){        
+            rmExecuteId = oldExecutor.advisorId;
+        }else{
+            rmExecuteId = oldExecutor.trustId;
+        }
+        if(rmExecuteId){
+            let userDetails = await User.findOne({_id:rmExecuteId},{ username: 1,firstName: 1 });
+            if(userDetails && userDetails.username){
+                await sendExecutorMail(userDetails.username,userDetails.firstName,paramData.legacyHolderName,'removeExecutorNotificationMail');
+            }
+        }
+   }
+
+   let executeId = '';
+   var executer = new executor();   
+   executer.customerId = paramData.customerId;
+   executer.userType = paramData.userType;
+   if(paramData.userType=='advisor'){        
+        executeId =  executer.advisorId = ObjectId(paramData.advisorId);
+   }else{
+        executeId = executer.trustId = ObjectId(paramData.trustId);
+   }
+    executer.createdOn = new Date();
+    executer.modifiedOn = new Date();
+    executer.status = 'Active';
+    executer.save({ $set: {} }, async function (err, newEntry) {
+       if (err) {
+           res.send(resFormat.rError(err))
+       } else {
+         if(executeId){    
+            let userDetails = await User.findOne({_id:executeId},{ username: 1,firstName: 1 });
+            if(userDetails && userDetails.username){
+                await sendExecutorMail(userDetails.username,userDetails.firstName,paramData.legacyHolderName,'markExecutorNotificationMail');
+            }
+            let result = { "message": "User mark as executor successfully!" }
+            res.status(200).send(resFormat.rSuccess(result));
+         }  
+       }
+   })
+}
+
+function addExecutorOld(req, res) {
     let paramData = req.body;
     let Advproquery = {};let Trusteeproquery = {};
     Advproquery.executorStatus = '';Trusteeproquery.executorStatus = '';let error = '';
-    HiredAdvisors.updateMany({ customerId:paramData.customerId,'status':'Active' }, {$set: {'executorStatus':''} }, function (err, updatedDetails) {
+    HiredAdvisors.updateMany({customerId:paramData.customerId,'status':'Active' }, {$set: {'executorStatus':''} }, function (err, updatedDetails) {
         if (err) {
             error = err;
         } else {
@@ -118,8 +178,36 @@ function addExecutor(req, res) {
   }
 }
 
+async function removeExecutor(req, res) {
+    let paramData = req.body;
+    let error = '';let rmExecuteId = '';let proquery = {'executorStatus':''};
+    if(paramData.userType=='advisor') {  
+        await HiredAdvisors.updateOne({ _id:paramData.docId }, {$set: proquery });
+    }else{
+        await trust.updateOne({ _id: paramData.docId }, { $set: proquery });
+    }
 
-function removeExecutor(req, res) {
+    let rmQuery = {};
+    if(paramData.userType == 'advisor'){
+        rmExecuteId = paramData.advisorId;
+        rmQuery = {customerId:paramData.customerId,advisorId:paramData.advisorId,status:'Active'}
+    }else{   
+        rmExecuteId = paramData.trustId;
+        rmQuery = {customerId:paramData.customerId,trustId:paramData.trustId,status:'Active'}
+    }
+
+   await executor.updateOne(rmQuery,{$set:{'status':'Deleted','modifiedOn':new Date()}});
+
+   let userDetails = await User.findOne({_id:rmExecuteId},{ username: 1,firstName: 1 });
+
+   if(userDetails && userDetails.username){
+    await sendExecutorMail(userDetails.username,userDetails.firstName,paramData.legacyHolderName,'removeExecutorNotificationMail');
+   }
+   let result = { "message": "Remove an executor successfully!" }
+   res.status(200).send(resFormat.rSuccess(result))
+}
+
+function removeExecutorOLD(req, res) {
     let paramData = req.body;
     let error = '';let rmExecuteId = '';
     let proquery = {'executorStatus':''};
