@@ -3,6 +3,7 @@
  * @author: Nilesh Yadav
  * @since: 27 Aug 2019 10:00 PM
  * @description: Route for return all activity responses requested by client
+ * @link : /api/activity
  */
 var express = require('express')
 var router = express.Router()

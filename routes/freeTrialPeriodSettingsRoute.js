@@ -1,3 +1,9 @@
+/**
+ * @copyright: Arkenea technology
+ * @author: Nilesh Yadav
+ * @since: 25 Aug 2019 10:00 PM
+ * @description: Route for execute the free trial period management settings
+ */
 var express = require('express')
 var router = express.Router()
 var FreeTrailPeriodSetting = require('./../models/FreeTrialPeriodSettings')
