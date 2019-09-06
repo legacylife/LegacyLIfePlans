@@ -19,7 +19,7 @@ export class UserAuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean{
-    //8 this.checkDeceased();
+    this.checkDeceased();
      
       this.userInfo = this.userapi.getUserInfo();
       var pathArray = window.location.pathname.split('/');

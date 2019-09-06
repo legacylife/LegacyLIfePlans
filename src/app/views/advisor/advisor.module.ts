@@ -49,6 +49,9 @@ import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
 import { OurPlanComponent } from './our-plan/our-plan.component';
 import { AdvisorHomeComponent } from './advisor-home/advisor-home.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
+import { NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
+//import { CheckBoxModule, ButtonModule } from '@syncfusion/ej2-angular-buttons';
 console.log("Advisor Module");
 export class GlobalVariables {
   testVal = '#00bcd4';
@@ -107,6 +110,7 @@ export class GlobalVariables {
     MatBottomSheetModule,
     MatFormFieldModule,
     InfiniteScrollModule,
+    MultiSelectAllModule,NumericTextBoxModule,
     RouterModule.forChild(AdvisorRoutes),
     CountUpModule,
   ],

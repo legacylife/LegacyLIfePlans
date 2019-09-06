@@ -14,6 +14,15 @@
     font-family: $font--lato--regular !important;
 }
 
+#multiselect-diacritics.control-section{
+    width: 80%;
+    margin: 0 auto;
+    min-width: 185px;
+}
+
+.e-bigger #multiselect-diacritics.control-section {
+    width: 100%;
+}
 
 
 @media only screen and (max-width: 599px){
