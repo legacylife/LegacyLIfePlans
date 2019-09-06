@@ -29,6 +29,7 @@ import { fileUploadInstructionsEditComponent } from './file-upload-instructions/
 import { EmailTemplateComponent } from './email-template/email-template.component';
 import { EmailTemplateEditComponent } from './email-template/email-template-edit.component';
 import { NgxTablePopupComponent } from './userlist/ngx-table-popup/ngx-table-popup.component';
+import { CoachCornerPopupComponent } from './coach-corner-category-management/coach-corner-popup/coach-corner-popup.component';
 import { AdvisorRejectPopupComponent } from './userlist/ngx-table-popup/advisor-reject-popup.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AgmCoreModule } from '@agm/core';
@@ -42,6 +43,7 @@ import { DeceasedRequestsComponent } from './deceased-requests/deceased-requests
 import { DeceasedRequestsViewComponent } from './deceased-requests/deceased-requests-view.component';
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { FreeTrialPeriodManagementComponent } from './free-trial-period-management/free-trial-period-management.component';
+import { CoachCornerCategoryManagementComponent } from './coach-corner-category-management/coach-corner-category-management.component';
 import { AdminHireAdvisorComponent } from './deceased-requests/hire-advisor-modal/hire-advisor-modal.component';
 @NgModule({
   imports: [
@@ -78,10 +80,11 @@ import { AdminHireAdvisorComponent } from './deceased-requests/hire-advisor-moda
   ],
   declarations: [
     AppBlankComponent, userlistComponent, userviewComponent, customerlistComponent, advisorlistComponent,
-    NgxTablePopupComponent, AdvisorRejectPopupComponent, cmslistComponent, cmseditComponent, ProfileComponent, EmailTemplateComponent,
+    NgxTablePopupComponent, CoachCornerPopupComponent, AdvisorRejectPopupComponent, cmslistComponent, cmseditComponent, ProfileComponent, EmailTemplateComponent,
     EmailTemplateEditComponent, MapComponent, ReferralProgramComponent, ActivityLogComponent, AddManagementComponent,
-    DeceasedRequestsComponent,DeceasedRequestsViewComponent,fileUploadInstructionsListComponent,fileUploadInstructionsEditComponent,FreeTrialPeriodManagementComponent,AdminHireAdvisorComponent
+    DeceasedRequestsComponent,DeceasedRequestsViewComponent,fileUploadInstructionsListComponent,fileUploadInstructionsEditComponent,
+    FreeTrialPeriodManagementComponent,CoachCornerCategoryManagementComponent,AdminHireAdvisorComponent
   ],
-  entryComponents: [NgxTablePopupComponent,AdvisorRejectPopupComponent,AdminHireAdvisorComponent]
+  entryComponents: [NgxTablePopupComponent, CoachCornerPopupComponent, AdvisorRejectPopupComponent,AdminHireAdvisorComponent]
 })
 export class AdminModule { }

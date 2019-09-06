@@ -20,6 +20,7 @@ import { DeceasedRequestsViewComponent } from './deceased-requests/deceased-requ
 import { ErrorComponent } from './error/error.component';
 import { AuthGuard } from '../../shared/services/auth/auth.guard';
 import { FreeTrialPeriodManagementComponent } from './free-trial-period-management/free-trial-period-management.component';
+import { CoachCornerCategoryManagementComponent } from './coach-corner-category-management/coach-corner-category-management.component';
 
 export const AdminRoutes: Routes = [
   {
@@ -95,6 +96,11 @@ export const AdminRoutes: Routes = [
     path: 'free-trial-period-management',
     component: FreeTrialPeriodManagementComponent,
     data: { title: 'Free Trial Period Management', breadcrumb: 'Free Trial Period Management' },
+    canActivate: [ AuthGuard ],
+  }, {
+    path: 'coach-corner-category-management',
+    component: CoachCornerCategoryManagementComponent,
+    data: { title: 'Coach Corner Category Management', breadcrumb: 'Coach Corner Category Management' },
     canActivate: [ AuthGuard ],
   }, {
     path: 'activity-log',

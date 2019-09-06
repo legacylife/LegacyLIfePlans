@@ -1,3 +1,9 @@
+/**
+ * @copyright: Arkenea technology
+ * @author: Nilesh Yadav
+ * @since: 10 Aug 2019 10:00 PM
+ * @description: Component for payment modal of subscription, addon & renew legacy subscription
+ */
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserAPIService } from './../../../userapi.service';
@@ -44,32 +50,52 @@ export class CardDetailsComponent implements OnInit {
   today: Date = moment().toDate()
   
   isButtonEnabled:boolean = false
+  userName:String = ''
+  forUserType:String = ''
 
   constructor(private stripeService: StripeService, private userapi: UserAPIService, private loader: AppLoaderService, 
     private fb: FormBuilder, private picService: ProfilePicService, private subscriptionservice:SubscriptionService, 
     private router: Router, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private snack: MatSnackBar ) {
+      this.userId = localStorage.getItem("endUserId");
+      this.endUserType = localStorage.getItem("endUserType");
       // get data from popup to check fro which the popup is open i.e for subscription charges or addon payment
       this.for = data.for
     }
 
   ngOnInit() {
-    this.userId = localStorage.getItem("endUserId");
-    this.endUserType = localStorage.getItem("endUserType");
+    
     this.stripePayment = this.fb.group({
       name: ['', [Validators.required,this.picService.noWhitespaceValidator]]
     });
     if( this.for == 'subscription' ) {
       this.getProductDetails()
     }
+    else if( this.for == 'legacyRenew' ) {
+      this.userName = this.data.userName
+      this.forUserType = this.data.endUserType
+      let query = { _id: this.data.userId, userType:this.data.endUserType }
+      this.getLegacyUserProductDetails( query )
+    }
     else{
       this.getPlanDetails()
     }
-    console.log("open modal for",this.for)
   }
 
   // get product plan
   getProductDetails = (query = {}) => {
     this.subscriptionservice.getProductDetails({}, (returnArr)=>{
+      this.productId    = returnArr.productId
+      this.planId       = returnArr.planId
+      this.planInterval = returnArr.planInterval
+      this.planAmount   = returnArr.planAmount
+      this.planCurrency = returnArr.planCurrency
+      this.getCustomerCard()
+    })
+  }
+
+  // get product plan
+  getLegacyUserProductDetails = (query) => {
+    this.subscriptionservice.getLegacyUserProductDetails(query, (returnArr)=>{
       this.productId    = returnArr.productId
       this.planId       = returnArr.planId
       this.planInterval = returnArr.planInterval
@@ -164,6 +190,9 @@ export class CardDetailsComponent implements OnInit {
       if( this.for == 'subscription' ) {
         this.getSubscription();
       }
+      else if( this.for == 'legacyRenew' ) {
+        this.renewLegacyUserSubscription();
+      }
       else{
         this.getAddOn();
       }
@@ -177,6 +206,9 @@ export class CardDetailsComponent implements OnInit {
             //send token to backend to complete transaction
             if( this.for == 'subscription' ) {
               this.getSubscription(result.token.id);
+            }
+            else if( this.for == 'legacyRenew' ) {
+              this.renewLegacyUserSubscription();
             }
             else{
               this.getAddOn(result.token.id);
@@ -244,6 +276,34 @@ export class CardDetailsComponent implements OnInit {
         this.loader.close();
       }
       
+    }, (err) => {  
+      this.snack.open(err, 'OK', { duration: 4000 })    
+      this.loader.close();
+    })
+  }
+
+  /**
+   * @description: method used for renew the legacy owner subscription by the hired user
+   * @access private
+   * @param string $token : card token return by stripe, if user do payment using new card
+   * @returns: success error message
+   */
+  renewLegacyUserSubscription = ( token = null) => {
+    const req_vars = {
+      query: Object.assign({ _id: this.userId, userType: this.endUserType, token:token, planId: this.planId }, {})
+    }
+    this.userapi.apiRequest('post', 'userlist/renewlegacysubscription', req_vars).subscribe(result => {
+      const data = result.data
+      if (result.status == "error") {
+        this.snack.open(result.data, 'OK', { duration: 4000 })
+        this.loader.close();
+      }      
+      if(result.status=='success') {
+        this.dialog.closeAll(); 
+        this.snack.open(result.message, 'OK', { duration: 4000 })
+        //this.snack.open("You have successfully renewed the subscription for this legacy.", 'OK', { duration: 4000 })
+      }
+      this.loader.close();
     }, (err) => {  
       this.snack.open(err, 'OK', { duration: 4000 })    
       this.loader.close();

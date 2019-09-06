@@ -1,0 +1,22 @@
+<div class="ll--modal--header">
+  {{data.title}}  
+  <button class="modal--close" ><mat-icon (click)="dialogRef.close()" class="icon--cross">cancel</mat-icon></button>  
+</div>
+<form [formGroup]="itemForm" class="llp-form-wrapper" (ngSubmit)="submit()">
+  <div class="ll--modal--body modal--body--hgt-upd">
+    <div fxLayout="row wrap">
+      <div fxFlex="100"  class="pr-0">
+        <mat-form-field class="full-width">
+          <input  class="capitalize" matInput name="title" [formControl]="itemForm.controls['title']" placeholder="Category Name *">
+        </mat-form-field>
+      </div>
+      <div fxFlex="100"  class="pr-0">
+        <mat-label>Status</mat-label>
+        <mat-slide-toggle class="llp--slide--toggle full-width" [formControl]="itemForm.controls['status']" [checked]="itemForm.controls['status']">{{itemForm.controls['status'].value ? 'ON' : 'OFF'}}</mat-slide-toggle>
+      </div>
+    </div>
+  </div>
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn" [disabled]="itemForm.invalid">Save</button>
+   </div>
+</form>

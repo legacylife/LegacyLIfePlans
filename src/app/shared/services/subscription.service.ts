@@ -57,7 +57,7 @@ export class SubscriptionService {
       let userData                = result.data.userProfile,
           bfrSubCustPremiumAccess = 0, // Before subscription customer's premium access days
           bfrSubCustFreeAccess    = 0, // Before premium access / subscription customer's free access days
-          bfrSubAdvPremiumAccess  = 0,  // Before subscription adviser's premium access days
+          bfrSubAdvPremiumAccess  = 0, // Before subscription adviser's premium access days
           freeTrialPeriodStatus   = false
 
       if( userData.freeTrialPeriod ) {
@@ -120,7 +120,7 @@ export class SubscriptionService {
       let diff: any
       let expireDate: any
       let subscriptionDate      = localStorage.getItem("endUserSubscriptionStartDate")
-      this.userCreateOn         = moment( localStorage.getItem("endUserCreatedOn") )
+      this.userCreateOn         = moment( new Date(localStorage.getItem("endUserCreatedOn")))
       this.isSubscribedBefore   = ( subscriptionDate !== 'undefined' && subscriptionDate !== null && subscriptionDate !== "") ? true : false
       let isReferAndEarn        = localStorage.getItem("endisReferAndEarn") && localStorage.getItem("endisReferAndEarn") == 'Yes' ? true : false
       let isProFreeAdviser      = true;
@@ -140,24 +140,23 @@ export class SubscriptionService {
             if( result.data.count >= result.data.targetCount ) {
               extendedDays     = bfrSubAdvPremiumAccess + (extendedDays * (result.data.completedMonths > 1 ? result.data.completedMonths : 1))
               isProFreeAdviser = true
-              expireDate       = this.userCreateOn.add(extendedDays,"days")
+              expireDate       = moment( new Date(localStorage.getItem("endUserCreatedOn"))).add(extendedDays,"days")
             }
             else{
               let isReferEarnExpire = extendedReferEarnDate != '' ? this.getDateDiff( this.today, moment(extendedReferEarnDate).toDate() ) : 0
-                
               if( extendedReferEarnDate != '' && isReferEarnExpire >= 0 ) {
                 isProFreeAdviser = true
                 expireDate       = moment(extendedReferEarnDate)
               }
               else{
-                expireDate       = this.userCreateOn.add(bfrSubAdvPremiumAccess,"days")
-                let currdiff     = this.getDateDiff( this.userCreateOn.add(bfrSubAdvPremiumAccess,"days").toDate(), this.today )
-                isProFreeAdviser = currdiff <= bfrSubAdvPremiumAccess ? true: false
+                expireDate       = moment( new Date(localStorage.getItem("endUserCreatedOn"))).add(bfrSubAdvPremiumAccess,"days")
+                let registrationCompleteDays     = this.getDateDiff( moment( new Date(localStorage.getItem("endUserCreatedOn"))).toDate(), this.today )
+                isProFreeAdviser = registrationCompleteDays <= bfrSubAdvPremiumAccess ? true: false
               }
             }
           }
           else{
-            expireDate            = this.userCreateOn.add(bfrSubCustPremiumAccess,"days")
+            expireDate            = moment( new Date(localStorage.getItem("endUserCreatedOn"))).add(bfrSubCustPremiumAccess,"days")
           }
           this.isPremiumExpired = false
 
@@ -181,7 +180,7 @@ export class SubscriptionService {
         else {
           if( this.usertype == 'customer' ) {
             let totalFreeAccessDays = (bfrSubCustFreeAccess+bfrSubCustPremiumAccess)
-                expireDate          = this.userCreateOn.add(totalFreeAccessDays,"days")
+                expireDate          = moment( new Date(localStorage.getItem("endUserCreatedOn"))).add(totalFreeAccessDays,"days")
             if( diff <= totalFreeAccessDays ) {
               localStorage.setItem('endUserProFreeSubscription', 'yes');
               localStorage.setItem('endUserProSubscription', 'no');
@@ -199,19 +198,18 @@ export class SubscriptionService {
               if( result.data.count >= result.data.targetCount ) {
                 extendedDays     = bfrSubAdvPremiumAccess + (extendedDays * (result.data.completedMonths > 1 ? result.data.completedMonths : 1))
                 isProFreeAdviser = true
-                expireDate       = this.userCreateOn.add(extendedDays,"days")
+                expireDate       = moment( new Date(localStorage.getItem("endUserCreatedOn"))).add(extendedDays,"days")
               }
               else{
                 let isReferEarnExpire = extendedReferEarnDate != '' ? this.getDateDiff( this.today, moment(extendedReferEarnDate).toDate() ) : 0
-                
                 if( extendedReferEarnDate != '' && isReferEarnExpire >= 0 ) {
                   isProFreeAdviser = true
                   expireDate       = moment(extendedReferEarnDate)
                 }
                 else{
-                  expireDate       = this.userCreateOn.add(bfrSubAdvPremiumAccess,"days")
-                  let currdiff     = this.getDateDiff( this.userCreateOn.add(bfrSubAdvPremiumAccess,"days").toDate(), this.today )
-                  isProFreeAdviser = currdiff <= bfrSubAdvPremiumAccess ? true: false
+                  expireDate       = moment( new Date(localStorage.getItem("endUserCreatedOn"))).add(bfrSubAdvPremiumAccess,"days")
+                  let registrationCompleteDays = this.getDateDiff( moment( new Date(localStorage.getItem("endUserCreatedOn"))).toDate(), this.today )
+                  isProFreeAdviser = registrationCompleteDays <= bfrSubAdvPremiumAccess ? true: false
                 }
               }              
               
@@ -225,7 +223,7 @@ export class SubscriptionService {
               }
             }
             else{
-              expireDate  = this.userCreateOn.add(bfrSubAdvPremiumAccess,"days")
+              expireDate  = moment( new Date(localStorage.getItem("endUserCreatedOn"))).add(bfrSubAdvPremiumAccess,"days")
               localStorage.setItem('endUserProFreeSubscription', 'no');
               localStorage.setItem('endUserProSubscription', 'no');
             }
@@ -475,6 +473,50 @@ export class SubscriptionService {
       callback(returnArr);
     },
     (err) => { })
+  }
+
+  // get product plan
+  getLegacyUserProductDetails = (query, callback):any => {
+    this.loader.open();
+    const req_vars = {
+      query: Object.assign(query, {})
+    }
+    
+    this.userapi.apiRequest('post', 'userlist/getproductdetails', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        this.loader.close();
+      } else {
+        const plans = result.data.plans
+        let returnArr = {}
+        if( plans && result.status=="success" && plans.data.length>0 ) {
+          
+          plans.data.forEach( obj => {
+            if( query.userType == 'customer' && obj.id == 'C_YEARLY' ) {
+              returnArr = { productId: obj.product,
+                                planId : obj.id,
+                                planInterval : obj.interval,
+                                planAmount : ( obj.amount / 100 ),
+                                planCurrency : (obj.currency).toLocaleUpperCase(),
+                                defaultSpace : obj.metadata.defaultSpace,
+                                spaceDimension : obj.metadata.spaceDimension
+                              }
+            }
+            else if( query.userType == 'advisor' && obj.id == 'A_MONTHLY' ) {
+              returnArr = { productId: obj.product,
+                            planId : obj.id,
+                            planInterval : obj.interval,
+                            planAmount : ( obj.amount / 100 ),
+                            planCurrency : (obj.currency).toLocaleUpperCase()
+                          }
+            }
+          }) 
+        }
+        this.loader.close();
+        callback(returnArr); 
+      }
+    }, (err) => {
+      this.loader.close();
+    })
   }
 
   /**

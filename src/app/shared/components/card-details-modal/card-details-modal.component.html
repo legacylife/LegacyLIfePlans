@@ -8,6 +8,7 @@
 <form class="llp-form-wrapper">
   <div class="ll--modal--body payment--modal--wrapper">
     <div class="plan-details">
+      <h5 class="text-center" *ngIf="userName">Legacy Payment For: <span>{{userName}} ({{forUserType}})</span></h5>
       <h5>Amount to be paid: <span>{{planAmount | currency : planCurrency : 'symbol'}}</span></h5>
     </div>
     <div>

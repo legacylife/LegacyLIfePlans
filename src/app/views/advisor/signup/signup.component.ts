@@ -63,7 +63,7 @@ export class AdvisorSignupComponent implements OnInit {
   async getFreeTrialSettings(){
     let returnArr = await this.userapi.apiRequest('get', 'freetrialsettings/getdetails', {}).toPromise(),
         freeTrialPeriodSettings = returnArr.data
-    this.advisorFreeAccessDays  = Number(freeTrialPeriodSettings.advisorFreeAccessDays)
+    this.advisorFreeAccessDays  = Number(freeTrialPeriodSettings.advisorFreeDays)
     this.advisorFreeTrialStatus  = freeTrialPeriodSettings.advisorStatus == 'On'? true : false
   }
 

@@ -1,12 +1,14 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, HostListener } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UserAPIService } from "app/userapi.service";
 import { s3Details } from "app/config";
 import { AppConfirmService } from "app/shared/services/app-confirm/app-confirm.service";
-import { MatDialog, MatSnackBar } from "@angular/material";
+import { MatDialog, MatSnackBar, MatDialogRef } from "@angular/material";
 import { AppLoaderService } from "app/shared/services/app-loader/app-loader.service";
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
 import { forEach } from "lodash";
+import { LocationStrategy } from "@angular/common";
+import { CardDetailsComponent } from "app/shared/components/card-details-modal/card-details-modal.component";
 @Component({
   selector: "advisor-legacy-details",
   templateUrl: "./advisor-legacy-details.component.html",
@@ -21,6 +23,10 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
   docPath: string; 
   toUserId:string = ''
   subFolderName:string = ''
+
+  isDialogOpen:boolean = false
+  endUserType:string = ''
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -29,9 +35,10 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
     private userapi: UserAPIService, 
     private loader: AppLoaderService, 
     private snack: MatSnackBar,
-    private shareData: DataSharingService    
+    private shareData: DataSharingService,
+    private locationStrategy: LocationStrategy
   ) {
-
+    this.preventBackButton()
   }
 
   ngOnInit() {
@@ -42,9 +49,48 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
       }
       this.getCustomerDetails();
     }
-   
   }
   
+  preventBackButton() {
+    this.locationStrategy.onPopState(() => {
+      if(this.isDialogOpen) {
+        alert("Click on back button will be terminated your transaction. Please wait while completion of the transaction or close the payment popup to proceed.")
+        history.pushState(null, null, location.href);
+      }
+    })
+  }
+
+  @HostListener("window:beforeunload", ["$event"])
+  unloadHandler(event: Event) {
+    if(this.isDialogOpen) {
+      // Do more processing...
+      event.returnValue = false;
+    }
+  }
+
+  openCardDetailsModal() {
+    console.log("asdasd")
+    let dialogRef: MatDialogRef<any> = this.dialog.open(CardDetailsComponent, {
+      width: '500px',
+      disableClose: true,
+      closeOnNavigation:false,
+      data: {
+        for: 'legacyRenew',
+        userId: this.urlData.lastOne,
+        endUserType: this.endUserType,
+        userName: this.customerData.firstName+' '+this.customerData.lastName
+      }
+    })
+    dialogRef.afterOpened().subscribe(result => {
+      this.isDialogOpen = true
+      history.pushState(null, null, location.href);
+    })
+    dialogRef.afterClosed()
+      .subscribe(res => {
+        this.isDialogOpen = false
+      })
+  }
+
   getCustomerDetails(query = {}){
     const req_vars = {
       query: Object.assign({ _id: this.urlData.lastOne }, query)
@@ -55,6 +101,7 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
       } else {
         this.customerData = result.data;
         this.toUserId = this.urlData.lastOne
+        this.endUserType = this.customerData.userType
         if(this.customerData && this.customerData.profilePicture){
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + this.customerData.profilePicture;
         }

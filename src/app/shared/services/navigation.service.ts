@@ -67,6 +67,17 @@ export class NavigationService {
       state: 'admin/free-trial-period-management'
     },
     {
+      name: 'COACH CORNER MANAGEMENT',
+      type: 'dropDown',
+      tooltip: 'Coach Corner Management',
+      icon: 'card_giftcard',
+      state: 'admin',
+      sub: [
+        { name: 'COACH CORNER CATEGORY', state: 'coach-corner-category-management' },
+        { name: 'COACH CORNER DETAILS', state: 'coach-corners' }
+      ]
+    },
+    {
       name: 'ADVERTISEMENT MANAGEMENT',
       type: 'link',
       tooltip: 'Advertisement management',
