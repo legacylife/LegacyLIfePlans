@@ -407,6 +407,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
+@syncfusion/ej2-inputs
+SEE LICENSE IN license
+
+@syncfusion/ej2-popups
+SEE LICENSE IN license
+
+@syncfusion/ej2-buttons
+SEE LICENSE IN license
+
+@syncfusion/ej2-splitbuttons
+SEE LICENSE IN license
+
+@syncfusion/ej2-base
+SEE LICENSE IN license
+
 ngx-slick-carousel
 MIT
 
@@ -1683,28 +1698,28 @@ THE SOFTWARE.
 
 @angular/material/bottom-sheet
 
-@syncfusion/ej2-base
-SEE LICENSE IN license
-
 @syncfusion/ej2-angular-base
 SEE LICENSE IN license
 
-@syncfusion/ej2-popups
+@syncfusion/ej2-dropdowns
+SEE LICENSE IN license
+
+@syncfusion/ej2-data
+SEE LICENSE IN license
+
+@syncfusion/ej2-lists
+SEE LICENSE IN license
+
+@syncfusion/ej2-angular-dropdowns
+SEE LICENSE IN license
+
+@syncfusion/ej2-angular-inputs
 SEE LICENSE IN license
 
 @syncfusion/ej2-richtexteditor
 SEE LICENSE IN license
 
-@syncfusion/ej2-buttons
-SEE LICENSE IN license
-
 @syncfusion/ej2-navigations
-SEE LICENSE IN license
-
-@syncfusion/ej2-splitbuttons
-SEE LICENSE IN license
-
-@syncfusion/ej2-inputs
 SEE LICENSE IN license
 
 @syncfusion/ej2-angular-richtexteditor

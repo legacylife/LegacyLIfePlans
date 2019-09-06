@@ -139,7 +139,7 @@ function view(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      res.send(resFormat.rSuccess(CoachCornerDetails))
+      res.send(resFormat.rSuccess({postDetails: CoachCornerDetails}))
     }
   })
 }
