@@ -3,11 +3,12 @@
  * @author: Nilesh Yadav
  * @since: 05 Sept 2019 04:00 PM
  * @summary: Coach Corner Category Model
- * @description: Model for execute the database coach corner operation
+ * @description: Model to set the collection schema for coach corner operation
  */
+
 var mongoose = require( 'mongoose' )
 var coachCornerCategorySchema = new mongoose.Schema({
-//  aliasName: String,
+  aliasName: String,
   title: String,
   orderNo: Number,
   status: String,
@@ -17,4 +18,4 @@ var coachCornerCategorySchema = new mongoose.Schema({
   modifiedBy: String
 })
 
-module.exports = mongoose.model('coach_corner', coachCornerCategorySchema)
+module.exports = mongoose.model('coach_corner_category', coachCornerCategorySchema)
