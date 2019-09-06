@@ -3,29 +3,28 @@
   <div class="cc--content">
     <div class="left">
       <mat-tab-group>
-        <mat-tab label="Latest Articles">
-          <div class="content--wrapper" *ngFor="let datas of ccData">
+        <mat-tab label="All Events">
+          <div class="content--wrapper" *ngFor="let post of postList">
             <div class="cont--img">
-              <img src="{{datas.imgPath}}" alt="">
+              <img src="../../../../assets/images/arkenea/cc-1.png" alt="">
             </div>
             <div class="cont--desc">
-              <h4>{{datas.fname}}</h4>
+              <h4>{{post.title}}</h4>
               <p class="when">
-                <mat-icon>access_time</mat-icon> {{datas.time}}
+                <mat-icon>access_time</mat-icon> {{post.createdOn | date:'short'}}
               </p>
-              <p class="details">
-                {{datas.info}}<span (click)="viewDetails(datas._id)" routerLink="/advisor/coachs-corner-details">(Read more)</span>
-              </p>
+              <p class="details" [innerHtml]="post.description |  slice:0:300"></p>
+              <span routerLink="/advisor/coach-corner-details/{{post.aliasName}}">(Read more)</span>
             </div>
           </div>
         </mat-tab>
-        <mat-tab label="Advisors"> Content 2 </mat-tab>
+        <mat-tab *ngFor="let category of categoryList" label="{{category.title}}"></mat-tab>
+        <!-- <mat-tab label="Advisors"> Content 2 </mat-tab>
         <mat-tab label="Legacies"> Content 3 </mat-tab>
         <mat-tab label="Professionals"> Professionals 3 </mat-tab>
         <mat-tab label="Leads"> Leads 3 </mat-tab>
         <mat-tab label="Essentials"> Essentials 3 </mat-tab>
-        <mat-tab label="Legal"> Legal 3 </mat-tab>
-        <mat-tab label="All Events"> All Events 3 </mat-tab>
+        <mat-tab label="Legal"> Legal 3 </mat-tab> -->
       </mat-tab-group>
     </div>
     <app-cc-right-panel></app-cc-right-panel>

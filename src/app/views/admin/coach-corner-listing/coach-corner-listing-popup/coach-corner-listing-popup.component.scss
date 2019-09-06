@@ -1,0 +1,43 @@
+@import 'llp-global-styles.scss';
+
+.modal--body--hgt-upd{
+    max-height: 80vh;
+    overflow: auto;
+}
+
+
+/* Media query (start here)*/
+
+@media only screen and (max-width: 599px) {
+    .modal--body--hgt-upd{
+        height: calc(100vh - 240px);
+        overflow: auto;
+    }
+}
+@media only screen and (min-width: 600px) and (max-width: 959px){
+    .modal--body--hgt-upd{
+        height: calc(100vh - 240px);
+        overflow: auto;
+    }
+}
+@media only screen and (min-width: 960px) and (max-width: 979px){
+    .modal--body--hgt-upd{
+        height: calc(100vh - 240px);
+        overflow: auto;
+    }
+}
+@media only screen and (min-width: 980px) and (max-width: 1279px){
+    .modal--body--hgt-upd{
+        height: calc(100vh - 240px);
+        overflow: auto;
+    }
+}
+@media only screen and (min-width: 1280px) and (max-width: 1440px){
+    .modal--body--hgt-upd{
+        height: calc(100vh - 240px);
+        overflow: auto;
+    }
+}
+@media only screen and (min-width: 1441px) and (max-width: 1550px){}
+
+/* Media query (end here)*/

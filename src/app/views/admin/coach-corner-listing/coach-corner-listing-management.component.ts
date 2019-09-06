@@ -2,8 +2,8 @@
  * @copyright: Arkenea technology
  * @author: Nilesh Yadav
  * @since: 05 Sept 2019 04:00 PM
- * @summary: Coach Corner Category Management Component
- * @description: Component for execute the all user operations on coach corner category management
+ * @summary: Coach Corner Post Management Component
+ * @description: Component for execute the all user operations on coach corner post management
  */
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -11,15 +11,15 @@ import { APIService } from './../../../api.service';
 import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
-import { CoachCornerCategoryPopupComponent } from './coach-corner-category-popup/coach-corner-category-popup.component';
+import { CoachCornerPopupComponent } from './coach-corner-listing-popup/coach-corner-listing-popup.component';
 
 @Component({
-  selector: 'coach-corner-category-management',
-  templateUrl: './coach-corner-category-management.component.html',
-  styleUrls: ['./coach-corner-category-management.component.scss'],
+  selector: 'coach-corner-listing-management',
+  templateUrl: './coach-corner-listing-management.component.html',
+  styleUrls: ['./coach-corner-listing-management.component.scss'],
 })
 
-export class CoachCornerCategoryManagementComponent implements OnInit {
+export class CoachCornerListingManagementComponent implements OnInit {
   userId: string
   closeResult: string;
   showOrgSugg: boolean = true
@@ -41,6 +41,7 @@ export class CoachCornerCategoryManagementComponent implements OnInit {
     private router: Router, private dialog: MatDialog, 
     private snack: MatSnackBar, private confirmService: AppConfirmService, 
     private loader: AppLoaderService) { }
+
   ngOnInit() {
     this.aceessSection = this.api.getUserAccess('adminmanagement');
     this.userId = this.api.getUser();
@@ -59,13 +60,13 @@ export class CoachCornerCategoryManagementComponent implements OnInit {
       limit: '',
       order: {"orderNo": -1},
     }
-    this.api.apiRequest('post', 'coach-corner-category/list', req_vars).subscribe(result => {
+    this.api.apiRequest('post', 'coach-corner-post/list', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
         this.items = [];
       }
       else {
-        this.items = this.rows = this.temp = result.data.categoryList
+        this.items = this.rows = this.temp = result.data.postList
       }
     }, (err) => {
       console.error(err)
@@ -92,19 +93,15 @@ export class CoachCornerCategoryManagementComponent implements OnInit {
   }
 
   openPopUp(data: any = {}, isNew?) {
-    let title = isNew ? 'Add new category' : 'Update category';
-    let dialogRef: MatDialogRef<any> = this.dialog.open(CoachCornerCategoryPopupComponent, {
-      width: '720px',
+    let title = isNew ? 'Add Post' : 'Update Post';
+    let dialogRef: MatDialogRef<any> = this.dialog.open(CoachCornerPopupComponent, {
+      width: '1280px',
       disableClose: true,
       data: { title: title, payload: data }
     })
     dialogRef.afterClosed().subscribe(res => {
       if (!res) {
-        // If user press cancel
         return;
-      }
-      if (isNew) {
-        this.snack.open(res, 'OK', { duration: 4000 })
       }
       else{
         this.snack.open(res, 'OK', { duration: 4000 })

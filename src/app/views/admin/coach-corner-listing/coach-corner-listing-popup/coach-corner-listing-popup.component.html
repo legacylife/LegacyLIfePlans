@@ -1,0 +1,44 @@
+<div class="ll--modal--header">
+  {{data.title}}  
+  <button class="modal--close" ><mat-icon (click)="dialogRef.close()" class="icon--cross">cancel</mat-icon></button>  
+</div>
+<div class="mb-1 text-center" *ngIf="categoryList.length === 0">
+  <button mat-raised-button class="llp--primary--btn" (click)="addCategory()">+ Add Category</button>
+</div>
+<form [formGroup]="itemForm" class="llp-form-wrapper" (ngSubmit)="submit()" *ngIf="categoryList.length > 0">
+  <div class="ll--modal--body modal--body--hgt-upd">
+    <div fxLayout="row wrap">
+      <div fxFlex="100"  class="pr-0">
+        <mat-form-field class="full-width">
+          <input class="capitalize" matInput name="title" [formControl]="itemForm.controls['title']" placeholder="Post title *">
+        </mat-form-field>
+      </div>
+      <div fxFlex="100"  class="pr-0">
+        <mat-form-field class="full-width">
+          <!-- <input class="capitalize" matInput name="category" [formControl]="itemForm.controls['category']" placeholder="Select Category *"> -->
+         
+          <mat-select [formControl]="itemForm.controls['category']" placeholder="Select Category *">
+            <mat-option *ngFor="let category of categoryList" [value]="category._id">
+              {{category.title}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxFlex="100"  class="pr-0">
+        <mat-label>Description</mat-label>
+        <mat-card class="p-0">
+          <mat-card-content class="p-0">
+            <ejs-richtexteditor id='defaultRTE' [height]="300" [formControl]="itemForm.controls['description']" [toolbarSettings]='tools' [quickToolbarSettings]='quickTools'></ejs-richtexteditor>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div fxFlex="100"  class="pr-0 mt-1">
+        <mat-label>Status</mat-label>
+        <mat-slide-toggle class="llp--slide--toggle full-width" [formControl]="itemForm.controls['status']" [checked]="itemForm.controls['status']">{{itemForm.controls['status'].value ? 'ON' : 'OFF'}}</mat-slide-toggle>
+      </div>
+    </div>
+  </div>
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn" [disabled]="itemForm.invalid">Save</button>
+   </div>
+</form>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
+import { APIService } from 'app/api.service';
 
 @Component({
   selector: 'app-coachs-corner',
@@ -8,64 +9,73 @@ import { DataSharingService } from 'app/shared/services/data-sharing.service';
 })
 export class CoachsCornerComponent implements OnInit {
 
-  ccData = [];
-  constructor(private sharedata: DataSharingService) { }
+  categoryList = []
+  postList = []
 
-  ngOnInit() {
-    this.ccData = [{
-      _id:1,
-       fname: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-       time: 'Today',
-       imgPath: '../../../../assets/images/arkenea/cc-1.png',
-       info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the lorem is industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type ipsum and crambled it to make a type specimen book. It has survived not only text ever since lorem...'
-    },
-    {
-      _id:2,
-      fname: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-      time: 'Yesterday',
-      imgPath: '../../../../assets/images/arkenea/cc-2.png',
-      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the lorem is industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type ipsum and crambled it to make a type specimen book. It has survived not only text ever since lorem...'
-   },
-   {
-    _id:3,
-    fname: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-    time: '2 days ago',
-    imgPath: '../../../../assets/images/arkenea/cc-3.png',
-    info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the lorem is industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type ipsum and crambled it to make a type specimen book. It has survived not only text ever since lorem...'
-    },
-    {
-      _id:4,
-      fname: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-      time: '16 days ago',
-      imgPath: '../../../../assets/images/arkenea/cc-1.png',
-      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the lorem is industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type ipsum and crambled it to make a type specimen book. It has survived not only text ever since lorem...'
-    },
-    {
-      _id:5,
-      fname: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-      time: 'Yesterday',
-      imgPath: '../../../../assets/images/arkenea/cc-2.png',
-      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the lorem is industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type ipsum and crambled it to make a type specimen book. It has survived not only text ever since lorem...'
-   },
-   {
-    _id:6,
-    fname: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-    time: '2 days ago',
-    imgPath: '../../../../assets/images/arkenea/cc-3.png',
-    info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the lorem is industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type ipsum and crambled it to make a type specimen book. It has survived not only text ever since lorem...'
-    },
-    {
-      _id:7,
-      fname: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry',
-      time: '16 days ago',
-      imgPath: '../../../../assets/images/arkenea/cc-1.png',
-      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the lorem is industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type ipsum and crambled it to make a type specimen book. It has survived not only text ever since lorem...'
-    }]
-    this.sharedata.shareChochesData(this.ccData[0]['_id']);
-}
+  constructor(private sharedata: DataSharingService, private api: APIService) {
+    this.getCategoryLists()
+    this.getPostLists()
+  }
 
-viewDetails(dataId=null) {
-  this.sharedata.shareChochesData(dataId);
-}
+  ngOnInit() {    
+  }
 
+  /**
+   * @description : get all category created by system admin
+   * @param query : filter params for get posts
+   * @param search : search textbox input to search the posts
+   */
+  getCategoryLists(query = {}, search = false) {
+    const req_vars = {
+      query: {},
+      fields: {},
+      offset: '',
+      limit: '',
+      order: {"createdOn": -1},
+    }
+    this.api.apiRequest('post', 'coach-corner-category/list', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        this.categoryList = [];
+      }
+      else {
+        this.categoryList = result.data.categoryList
+      }
+    }, (err) => {
+      console.error(err)
+    })
+  }
+
+  /**
+   * @description : get all posts created by system admin
+   * @param query : filter params for get posts
+   * @param search : search textbox input to search the posts
+   */
+  getPostLists(query = {}, search = false) {
+    const req_vars = {
+      query: {},
+      fields: {},
+      offset: '',
+      limit: '',
+      order: {"createdOn": -1},
+    }
+    this.api.apiRequest('post', 'coach-corner-post/list', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        this.postList = [];
+      }
+      else {
+        this.postList = result.data.postList
+        this.sharedata.shareChochesData(this.postList[0]['_id']);
+      }
+    }, (err) => {
+      console.error(err)
+    })
+  }
+
+  /**
+   * @description : function for view detailed description of the post
+   * @param dataId : post ID to view details
+   */
+  viewDetails(dataId=null) {
+    this.sharedata.shareChochesData(dataId);
+  }
 }

@@ -74,7 +74,7 @@ export class NavigationService {
       state: 'admin',
       sub: [
         { name: 'COACH CORNER CATEGORY', state: 'coach-corner-category-management' },
-        { name: 'COACH CORNER DETAILS', state: 'coach-corners' }
+        { name: 'COACH CORNER POST', state: 'coach-corner-post' }
       ]
     },
     {

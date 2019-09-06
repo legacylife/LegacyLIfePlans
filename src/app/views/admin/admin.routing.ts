@@ -21,6 +21,7 @@ import { ErrorComponent } from './error/error.component';
 import { AuthGuard } from '../../shared/services/auth/auth.guard';
 import { FreeTrialPeriodManagementComponent } from './free-trial-period-management/free-trial-period-management.component';
 import { CoachCornerCategoryManagementComponent } from './coach-corner-category-management/coach-corner-category-management.component';
+import { CoachCornerListingManagementComponent } from './coach-corner-listing/coach-corner-listing-management.component';
 import { AddManagementViewComponent } from './ad-management/ad-management-view.component';
 
 export const AdminRoutes: Routes = [
@@ -102,6 +103,11 @@ export const AdminRoutes: Routes = [
     path: 'coach-corner-category-management',
     component: CoachCornerCategoryManagementComponent,
     data: { title: 'Coach Corner Category Management', breadcrumb: 'Coach Corner Category Management' },
+    canActivate: [ AuthGuard ],
+  },{
+    path: 'coach-corner-post',
+    component: CoachCornerListingManagementComponent,
+    data: { title: 'Coach Corner Post Management', breadcrumb: 'Coach Corner Post Management' },
     canActivate: [ AuthGuard ],
   }, {
     path: 'activity-log',

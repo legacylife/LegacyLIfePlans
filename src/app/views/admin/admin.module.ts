@@ -29,7 +29,8 @@ import { fileUploadInstructionsEditComponent } from './file-upload-instructions/
 import { EmailTemplateComponent } from './email-template/email-template.component';
 import { EmailTemplateEditComponent } from './email-template/email-template-edit.component';
 import { NgxTablePopupComponent } from './userlist/ngx-table-popup/ngx-table-popup.component';
-import { CoachCornerPopupComponent } from './coach-corner-category-management/coach-corner-popup/coach-corner-popup.component';
+import { CoachCornerPopupComponent } from './coach-corner-listing/coach-corner-listing-popup/coach-corner-listing-popup.component';
+import { CoachCornerCategoryPopupComponent } from './coach-corner-category-management/coach-corner-category-popup/coach-corner-category-popup.component';
 import { AdvisorRejectPopupComponent } from './userlist/ngx-table-popup/advisor-reject-popup.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AgmCoreModule } from '@agm/core';
@@ -45,6 +46,7 @@ import { DeceasedRequestsViewComponent } from './deceased-requests/deceased-requ
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { FreeTrialPeriodManagementComponent } from './free-trial-period-management/free-trial-period-management.component';
 import { CoachCornerCategoryManagementComponent } from './coach-corner-category-management/coach-corner-category-management.component';
+import { CoachCornerListingManagementComponent } from './coach-corner-listing/coach-corner-listing-management.component';
 import { AdminHireAdvisorComponent } from './deceased-requests/hire-advisor-modal/hire-advisor-modal.component';
 @NgModule({
   imports: [
@@ -84,8 +86,9 @@ import { AdminHireAdvisorComponent } from './deceased-requests/hire-advisor-moda
     NgxTablePopupComponent, AdvisorRejectPopupComponent, cmslistComponent, cmseditComponent, ProfileComponent, EmailTemplateComponent,
     EmailTemplateEditComponent, MapComponent, ReferralProgramComponent, ActivityLogComponent, AddManagementComponent, AddManagementViewComponent,
     DeceasedRequestsComponent, DeceasedRequestsViewComponent, fileUploadInstructionsListComponent, fileUploadInstructionsEditComponent,
-    FreeTrialPeriodManagementComponent, AdminHireAdvisorComponent, CoachCornerPopupComponent, CoachCornerCategoryManagementComponent
+    FreeTrialPeriodManagementComponent, AdminHireAdvisorComponent, CoachCornerPopupComponent, CoachCornerCategoryPopupComponent,
+    CoachCornerCategoryManagementComponent, CoachCornerListingManagementComponent
   ],
-  entryComponents: [NgxTablePopupComponent, CoachCornerPopupComponent, AdvisorRejectPopupComponent,AdminHireAdvisorComponent]
+  entryComponents: [NgxTablePopupComponent, CoachCornerPopupComponent, CoachCornerCategoryPopupComponent, AdvisorRejectPopupComponent,AdminHireAdvisorComponent]
 })
 export class AdminModule { }

@@ -454,7 +454,7 @@ export const AdvisorRoutes: Routes = [
     ]
   },
   {
-    path: 'coachs-corner-details',
+    path: 'coach-corner-details/:aliasName',
     component: AdvisorLayoutComponent,
     data: { title: 'Coachs Corner' },
     children: [
