@@ -31,4 +31,5 @@ router.use("/activity", require("./routes/activityLogRoute"))
 router.use("/coach-corner-post", require("./routes/coachCornerRoute"))
 router.use("/coach-corner-category", require("./routes/coachCornerCategoryRoute"))
 router.use("/advertisement", require("./routes/advertisementRoute"))
+router.use("/zipcodes", require("./routes/locationRoute"))
 module.exports = router
