@@ -13,6 +13,7 @@ const { isEmpty } = require('lodash')
 const resFormat   = require('./../helpers/responseFormat')
 const resMessage  = require('./../helpers/responseMessages')
 const allActivityLog = require('./../helpers/allActivityLogs')
+let mongoose = require('mongoose')
 
 /**
  * @summary : function to get list of coach corner as per given criteria
@@ -40,7 +41,7 @@ async function list(req, res) {
     } else {
       res.send(resFormat.rSuccess({ postList, totalRecords}))
     }
-  }).sort(order).skip(offset).limit(limit).populate('category','title')
+  }).sort(order).skip(offset).limit(limit).populate('category','title aliasName')
 }
 
 /**
@@ -133,24 +134,83 @@ async function update(req, res) {
  * @param {*} req : request from api
  * @param {*} res : response to api
  */
-function view(req, res) {
+async function view(req, res) {
   const { query, fields } = req.body
-  CoachCorner.findOne(query, fields , function(err, CoachCornerDetails) {
-    if (err) {
-      res.status(401).send(resFormat.rError(err))
-    } else {
-      res.send(resFormat.rSuccess({postDetails: CoachCornerDetails}))
+  let { fromId }          = req.body,
+      { userIpAddress }   = req.body,
+      CoachCornerDetails  = await CoachCorner.findOne(query, fields)
+
+  if ( !CoachCornerDetails ) {
+    res.status(401).send(resFormat.rError(err))
+  } else {
+    let currentViewDetails  = CoachCornerDetails.viewDetails
+        totalViewCount      = currentViewDetails.length
+        //isViewedDetails     = totalViewCount > 0 ? ( fromId ? currentViewDetails.some( obj => { return obj.userId === fromId} ) : currentViewDetails.some( obj => { return obj.userIpAddress === userIpAddress} ) ) : false
+        isViewedDetails     = totalViewCount > 0 ? currentViewDetails.some( obj => { return obj.userIpAddress === userIpAddress} ) : false
+         console.log("isViewedDetails",isViewedDetails)
+    if( !isViewedDetails ) {
+      let updateParam = { "userId" : fromId,
+                          "userIpAddress" : userIpAddress,
+                          "viewedOn" : new Date
+                        },
+          queryParam  = query
+          currentViewDetails.push(updateParam)
+      let updateCount = await updateViewCount( queryParam, { viewDetails: currentViewDetails} )
+      if( updateCount ) {
+        totalViewCount = totalViewCount + 1
+      }
     }
-  })
+
+    if( fromId ) {
+      let message = resMessage.data( 607, [{key: '{field}',val: 'Coach corner post details'}, {key: '{status}',val: 'viewed'}] )
+      allActivityLog.updateActivityLogs(fromId, fromId, 'Viewed Post Details', message, 'Coach Corner', 'Coach Corner Post')
+    }
+    res.send(resFormat.rSuccess( {postDetails: CoachCornerDetails, totalViews: totalViewCount} ))
+  }
+}
+
+async function getMostViewedArticles(req, res) {
+  let articles = await CoachCorner.aggregate([
+                  {
+                    $project: {
+                      _id: 1,
+                      title: 1,
+                      aliasName: 1,
+                      image :1,
+                      totalViews: { $size:"$viewDetails" }
+                    }
+                  },
+                  {
+                    $group: {
+                      _id: "$title",
+                      totalViews: { $first : "$totalViews" },
+                      doc: { $first: "$$ROOT" },
+                    }
+                  },
+                  {
+                    $replaceRoot: { "newRoot":"$doc" }
+                  },
+                  {
+                    $sort: { "totalViews": -1 }
+                  },
+                  { "$limit": 5 }
+                ])
+  
+  res.send(resFormat.rSuccess( {articles: articles } ))
 }
 
 async function getDocumentCount( queryParam = {} ) {
   return await CoachCorner.countDocuments(queryParam)
 }
 
+async function updateViewCount( queryParam, updateParam ) {
+  return await CoachCorner.updateOne( queryParam, {$set: updateParam})
+}
+
 router.post("/create", create)
 router.post("/list", list)
 router.post("/update", update)
 router.post("/view", view)
+router.post("/most-viewed-articles", getMostViewedArticles)
 
 module.exports = router

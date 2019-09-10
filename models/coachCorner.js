@@ -16,7 +16,8 @@ var coachCornerSchema = new mongoose.Schema({
   image: String,
   viewDetails: [{
     userId: { type: mongoose.Types.ObjectId, ref: 'users' },
-    viwedOn: Date,
+    userIpAddress: String,
+    viewedOn: Date,
   }],
   status: String,
   createdBy:String,

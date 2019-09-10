@@ -103,7 +103,7 @@ async function update(req, res) {
     data = Object.assign({ aliasName: aliasName}, data)
   }
 
-  CoachCategory.updateOne({ _id: data._id },{ $set: data} ,(err, updateCoachCategory)=>{
+  CoachCategory.updateOne({ _id: req.body._id },{ $set: data} ,(err, updateCoachCategory)=>{
     if (err) {
       res.send(resFormat.rError(err))
     }
