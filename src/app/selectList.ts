@@ -168,6 +168,25 @@ export const RelationshipType = [
     opt_code: "3"
   }
 ];
+
+export const TrusteeRelationshipType = [
+  {
+    opt_name: "Co-worker",
+    opt_code: "1"
+  },
+  {
+    opt_name: "Family",
+    opt_code: "2"
+  },
+  {
+    opt_name: "Friends",
+    opt_code: "3"
+  },
+  {
+    opt_name: "Advisor",
+    opt_code: "4"
+  }
+];
 export const InsurancePolicyType = [
   {
     opt_code: "1",

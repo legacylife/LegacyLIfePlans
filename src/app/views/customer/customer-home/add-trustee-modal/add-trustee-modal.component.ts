@@ -8,7 +8,7 @@ import { MatDialogRef, MatDialog, MatSnackBar,MAT_DIALOG_DATA } from '@angular/m
 import { MatStepperModule , MatStepper} from '@angular/material/stepper';
 import { Router, ActivatedRoute } from '@angular/router';
 import { forEach, keysIn, flatMap } from "lodash";
-import { RelationshipType } from '../../../../selectList';
+import { TrusteeRelationshipType } from '../../../../selectList';
 import { userSections } from '../../../../config';
 
 @Component({
@@ -22,7 +22,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
   invalidMessage: string;
   EmailExist: boolean;
   Email_USER: string;
-  relationTypeList: any[] = RelationshipType;
+  relationTypeList: any[] = TrusteeRelationshipType;
   trustFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
@@ -32,6 +32,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
   selectedProfileId: string;
   validationEmailVal = false;
   profileIdHiddenVal = false;
+  advisorFlag = false;
   trust_id: any;
   ids: string;
   mainHead: string;
@@ -44,7 +45,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
     private userapi: UserAPIService,@Inject(MAT_DIALOG_DATA) public data: any
   ) { this.ids = data.id; }
  
-  ngOnInit() {
+  ngOnInit() {console.log('event')
     this.buildItemForm();
     this.userSections = userSections;  
     this.mainHead = 'Add a Trustee to your Legacy!';
@@ -122,6 +123,13 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
         element.classList += ' proDone';
         }
     });
+  }
+
+  onRelationshipChange(values){
+      this.advisorFlag = false;
+      if(values=='4'){
+        this.advisorFlag = true;        
+      }
   }
 
   onRadioChange(values){

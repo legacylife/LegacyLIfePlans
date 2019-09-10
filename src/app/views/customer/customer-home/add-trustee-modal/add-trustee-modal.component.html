@@ -27,15 +27,24 @@
             </mat-form-field>
            <mat-form-field class="full-width">
                 <mat-label>Relationship *</mat-label>
-                <mat-select placeholder="Select a relationship type*" name="relation" [formControl]="trustFormGroup.controls['relation']">
+                <mat-select (selectionChange)="onRelationshipChange($event.value);" placeholder="Select a relationship type*" name="relation" [formControl]="trustFormGroup.controls['relation']">
                   <mat-option value="">Select a relationship type</mat-option>
-                  <mat-option *ngFor="let option of relationTypeList"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
+                  <mat-option *ngFor="let option of relationTypeList" [value]="option.opt_code">{{option.opt_name}}</mat-option>
                 </mat-select>
                   <mat-icon matTooltip="Please select relationship" matTooltipClass="llp--tooltip error" *ngIf="trustFormGroup.controls['relation'].hasError('required') && trustFormGroup.controls['relation'].touched" class="red--alert">help_outline</mat-icon>
               </mat-form-field>
               <mat-form-field class="full-width" *ngIf="validationEmailVal">
                   <input matInput name="emailValidation" [formControl]="trustFormGroup.controls['emailValidation']">
               </mat-form-field>
+
+
+              <div class="mt-1 text-center" *ngIf="advisorFlag">
+                <p class="fnt--16">The advisor will need to confirm this hiring on their part to start appearing in your 'My advisors' list. Clicking on
+                  'Proceed' button will send a confirmation message on the advisor's email.</p>
+                <p class="fnt--16">Note that you can anytime remove the advisors from your 'My advisors' list. The removed advisors will not have access
+                  to your profile.</p>
+              </div>  
+
 
               <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
                 <input matInput name="profileId" [formControl]="trustFormGroup.controls['profileId']" readonly="readonly">
