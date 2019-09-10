@@ -1183,6 +1183,35 @@ function getUsersListForAdminMap(req, res) {
   })
 }
 
+function AddLatitudeLongitude(req, res) {
+  let { query } = req.body
+  User.find( query, {}, function (err, userList) {
+    if (err) {
+      res.status(500).send(resFormat.rError(err))
+    }
+    else {
+      if( userList.length > 0 ) {
+        let userDetails = []
+        userList.forEach( (details, index) => {
+          if (details && details.zipcode && details.zipcode != '') {
+            calculateZipcode(details.zipcode,details._id);
+          }
+        })
+        res.send(resFormat.rSuccess({ userDetails }))
+      }
+    }
+  })
+}
+
+async function calculateZipcode(zipcode,id){
+  var data = zipcodes.lookup(zipcode);
+  if( data ) {
+    if(data.latitude && data.longitude){
+      let userData = await User.updateOne({_id:id},{$set:{latitude:data.latitude,longitude:data.longitude}});
+    }
+  }
+}
+
 router.post("/getuserslistforadminmap",getUsersListForAdminMap);
 router.post(["/autorenewalupdate"], autoRenewalUpdate);
 router.post(["/cancelsubscription"], cancelSubscription);
@@ -1200,6 +1229,7 @@ router.post(["/getprofile"], profile);
 router.post(["/view"], details);
 router.post(["/viewall"], view);
 router.post("/common", common);
+router.post("/latitudeLongitude", AddLatitudeLongitude);
 /*router.get(["/view/:id", "/:id"], details)*/
 
 module.exports = router

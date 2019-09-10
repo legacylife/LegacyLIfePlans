@@ -173,7 +173,9 @@ function trustFormUpdate(req, res) {
           if (data.length > 0) {
             for (var i = 0; i < data.length; i++) {
               let trusteeName = proquery.firstName +' ' + proquery.lastName;
-              advisorActivityLog.updateActivityLog(query.customerId, data[i].advisorId, 'trustee','',trusteeName);
+              if(data[i].advisorId){
+                advisorActivityLog.updateActivityLog(query.customerId,data[i].advisorId, 'trustee','',trusteeName);
+              }
             }
           } 
         })
@@ -181,7 +183,7 @@ function trustFormUpdate(req, res) {
 
         let message = resMessage.data( 607, [{key:'{field}',val:"Trustee details"}, {key:'{status}',val: 'added'}] )
         //Update activity logs
-        allActivityLog.updateActivityLogs( query.customerId, proquery.trustId, "Add Trustee", message,'Dashboard') 
+        allActivityLog.updateActivityLogs( query.customerId,proquery.trustId,"Add Trustee",message,'Dashboard') 
         let result = { "message": message }
         //let result = { "message": "Trustee details added successfully" }
         res.status(200).send(resFormat.rSuccess(result))

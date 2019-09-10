@@ -18,6 +18,9 @@ const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 const trust = require('./../models/Trustee.js')
+const HiredAdvisor = require('./../models/HiredAdvisors')
+var zipcodes = require('zipcodes');
+const advisorActivityLog = require('./../helpers/advisorActivityLog')
 ObjectId = require('mongodb').ObjectID;
 const AWS = require('aws-sdk');
 const s3 = require('./../helpers/s3Upload')
@@ -131,10 +134,14 @@ function create(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          const { _id, userType, username, firstName, lastName } = user
+          const { _id, userType, username, firstName, lastName, zipcode } = user
           //Update activity logs
           allActivityLog.updateActivityLogs(_id, _id, 'Login', userType+' has been logged in successfully.')
-
+        
+          //Update latitude longitude
+          if(newUszipcode && _id){
+            calculateZipcode(zipcode,_id);
+          }
           let message = resMessage.data( 621, [] )
           let result = { userId: _id, userType, username, firstName, lastName, "message": message }
           res.status(200).send(resFormat.rSuccess(result))
@@ -150,6 +157,11 @@ function create(req, res) {
           //Update activity logs
           allActivityLog.updateActivityLogs(_id, _id, 'Login', user.userType+' has been logged in successfully.')
 
+          //Update latitude longitude
+          if(result.zipcode && result._id){
+            calculateZipcode(result.zipcode,result._id);
+          }
+
           let message = resMessage.data( 622, [] )
           let result = { userId: _id, userType, username, firstName, lastName, "message": message }
           res.send(resFormat.rSuccess(result))
@@ -157,6 +169,15 @@ function create(req, res) {
       });
     }
   });
+}
+
+async function calculateZipcode(zipcode,id){
+  var data = zipcodes.lookup(zipcode);
+  if( data ) {
+    if(data.latitude && data.longitude){
+      let userData = await User.updateOne({_id:id},{$set:{latitude:data.latitude,longitude:data.longitude}});
+    }
+  }
 }
 
 router.post('/updateProfilePic', function (req, res) {
@@ -254,6 +275,12 @@ function custProfileUpdate(req, res) {
             
             //Update activity logs
             allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Profile', message)
+
+            //Update latitude longitude
+            if(updatedUser.zipcode && updatedUser._id){
+              calculateZipcode(updatedUser.zipcode,updatedUser._id);
+            }
+
             let result = { "message": message }
             res.status(200).send(resFormat.rSuccess(result))        
           }
@@ -686,22 +713,41 @@ async function checkUserOtp(req, res) {
   }
 }
 
-function checkTrustee(userType,trustId,emailId) {
+async function checkTrustee(userType,trustId,emailId) {console.log('userType',userType,'trustId',trustId,'emailId',emailId)
   let status = "";
-  trust.findOne({email:emailId}, function (err, trustDetails) {
+  await trust.findOne({email:emailId}, async function (err, trustDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
       if(trustDetails && trustDetails._id){ 
         status ='Pending';   
-        if(userType == 'customer')status = 'Active';
-          trust.updateOne({ _id: trustDetails._id }, { status:status,trustId:ObjectId(trustId),modifiedOn:new Date() }, function (err, updatedDetails) {
-          if (err) {
-            res.send(resFormat.rError(err))
-          } else {
-            return 'done';
-          }
-        })
+        if(userType == 'customer'){
+          status = 'Active';
+        }else{
+          status = 'Deleted';
+          let FoundAdvDetails = await HiredAdvisor.findOne({ _id: trustId });         
+              if(FoundAdvDetails==null){              
+                  var insert = new HiredAdvisor();
+                  insert.customerId = trustDetails.customerId;
+                  insert.selectAll = trustDetails.selectAll;
+                  insert.userAccess = trustDetails.userAccess;
+                  insert.filesCount = trustDetails.filesCount;
+                  insert.folderCount = trustDetails.folderCount;
+                  insert.advisorId = ObjectId(trustId);
+                  insert.status = 'Pending';
+                  insert.createdby = trustDetails.customerId;
+                  insert.modifiedby = trustDetails.customerId;
+                  insert.createdOn = new Date();
+                  insert.modifiedOn = new Date();
+                  let newEntry = await insert.save();
+                  await advisorActivityLog.updateActivityLog(trustDetails.customerId,trustId,'hired',newEntry._id,'','');
+
+                  let message = resMessage.data( 607, [{key:'{field}',val:'Hire advisor request'},{key:'{status}',val:'sent'}] )
+                  await allActivityLog.updateActivityLogs( trustDetails.customerId, trustId, "Hire Advisor Request", message, 'Professionals List', '' )
+              }        
+        }
+        let updatedDetails = await trust.updateOne({ _id: trustDetails._id }, { status:status,trustId:ObjectId(trustId),modifiedOn:new Date()});
+        return 'done';
       }
     }
    });  
