@@ -6,6 +6,7 @@ import { AdvisorLandingLayoutComponent } from './shared/components/layouts/advis
 import { LandingLayoutComponent } from './shared/components/layouts/landing-layout/landing-layout.component';
 import { ErrorComponent } from 'app/views/error/error.component';
 import { AuthGuard } from './shared/services/auth/auth.guard';
+import { CcDetailedViewComponent } from './shared/components/cc-detailed-view/cc-detailed-view.component';
 console.log('App---routing');
 export const rootRouterConfig: Routes = [
   {
@@ -84,7 +85,19 @@ export const rootRouterConfig: Routes = [
         data: { title: 'Dashboard'}
       }
     ]
-  },{
+  },
+  {
+    path: 'coach-corner-details/:aliasName',
+    component: AdvisorLandingLayoutComponent,
+    data: { title: 'Coachs Corner' },
+    children: [
+      {
+        path: '',
+        component: CcDetailedViewComponent,
+      }
+    ]
+  },
+  {
     path: 'error',
     component: ErrorComponent,
     loadChildren: './views/auth/auth.module#AuthModule',

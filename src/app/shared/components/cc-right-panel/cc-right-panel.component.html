@@ -1,12 +1,13 @@
 <div class="cc--right--section">
   <header> {{articleTitle}} </header>
-  <section *ngFor="let aInfo of articleInfo" routerLink="/advisor/coachs-corner-details">
+  <section *ngFor="let aInfo of articleInfo" routerLink="/{{userType}}/coach-corner-details/{{aInfo.aliasName}}">
     <div class="img--box">
-      <img src="{{aInfo.articleImg}}" alt="">
+      <img src="{{aInfo.image}}" alt="">
     </div>
     <div class="img--desc">
-      <p class="name">{{aInfo.articleName}}</p>
-      <p class="views mb-0">{{aInfo.articleViews}}</p>
+      <p class="name">{{aInfo.title}}</p>
+      <p class="views mb-0">{{aInfo.totalViews | thousandSuff}} views</p>
     </div>
   </section>
+  <div *ngIf="articleInfo.length <= 0 ">No articles available</div>
 </div>

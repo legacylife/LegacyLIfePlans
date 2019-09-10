@@ -5,48 +5,32 @@
   </button>
 </div>
 
-<form class="llp-form-wrapper">
+<form class="llp-form-wrapper" [formGroup]="emailIdForm">
   <div class="ll--modal--body">
-    
-    
-      <div class="ll--modal--body invite--modal--hgt" >
-          <h6 class="invite--sub--line">Share information to your acquaintances</h6>
-          <div fxLayout="row wrap">
-            <div fxFlex.xs="90" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95">
-              <mat-form-field class="full-width">
-                <input class="capitalize" matInput placeholder="Email"  value="ajinkya@gmail.com" >          
-              </mat-form-field>
-            </div>            
-            <div fxFlex.xs="10" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5"class="text-right">
-              <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
-            </div>
-            <div fxFlex.xs="90" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95">
-                <mat-form-field class="full-width">
-                  <input class="capitalize" matInput placeholder="Email"  value="ishan@gmail.com" >          
-                </mat-form-field>
-              </div>            
-              <div fxFlex.xs="10" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5"class="text-right">
-                <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
-              </div>
-          </div>
+    <div class="ll--modal--body invite--modal--hgt" formArrayName="itemRows">
+      <h6 class="invite--sub--line">Share information to your acquaintances</h6>
+      <div fxLayout="row wrap" *ngFor="let itemrow of formArr.controls; let i=index " [formGroupName]="i">
+        <div fxFlex.xs="90" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95">
+          <mat-form-field class="full-width">
+            <input class="capitalize" matInput placeholder="Email" formControlName="itemname" required >          
+          </mat-form-field>
+        </div>            
+        <div fxFlex.xs="10" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5"class="text-right" *ngIf="emailIdForm.controls.itemRows.controls.length > 1" (click)="deleteRow(i)">
+          <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
+        </div>
+      </div>
 
-          <div fxLayout="row wrap">
-            <div fxFlex.xs="100">
-              <div class="add--new">
-                <mat-icon>add_circle</mat-icon>
-                Add New
-              </div>
-            </div>
+      <div fxLayout="row wrap">
+        <div fxFlex.xs="100">
+          <div class="add--new" (click)="addNewRow()">
+            <mat-icon>add_circle</mat-icon>
+            Add New
           </div>
         </div>
-
-
-
-
-
-
+      </div>
+    </div>
   </div>
   <div class="ll--modal--footer text-center">
-    <button mat-raised-button class="llp--primary--btn">Share</button>
+    <button mat-raised-button class="llp--primary--btn" (click)="shareDetails()">Share</button>
   </div>
 </form>

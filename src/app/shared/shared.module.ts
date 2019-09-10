@@ -78,6 +78,7 @@ import { EgretSideNavToggleDirective } from './directives/egret-side-nav-toggle.
 import { RelativeTimePipe } from './pipes/relative-time.pipe';
 import { ExcerptPipe } from './pipes/excerpt.pipe';
 import { GetValueByKeyPipe } from './pipes/get-value-by-key.pipe';
+import { ThousandSuffixesPipe } from './pipes/thousand-suffixes.pipe';
 
 // SERVICES
 import { ThemeService } from './services/theme.service';
@@ -189,6 +190,7 @@ const classesToInclude = [
   RelativeTimePipe,
   ExcerptPipe,
   GetValueByKeyPipe,
+  ThousandSuffixesPipe,
   TodosListingComponent,
   TodosComponent,
   CardDetailsComponent,

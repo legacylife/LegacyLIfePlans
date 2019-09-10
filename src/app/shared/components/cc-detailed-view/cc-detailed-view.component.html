@@ -1,6 +1,5 @@
-<div class="container cc--detailed">
-  <button mat-raised-button class="llp--secondary--btn back--btn tran--bg backBtn--with--icon"
-    routerLink="/advisor/coachs-corner">
+<div class="container cc--detailed" [class.mt-1]="!isLoggedIn">
+  <button mat-raised-button class="llp--secondary--btn back--btn tran--bg backBtn--with--icon" routerLink="/advisor/coachs-corner" *ngIf="isLoggedIn">
     <mat-icon>arrow_back</mat-icon> Back
   </button>
 
@@ -11,7 +10,7 @@
           <div class="header--line">
             <h4>{{postDetails.title}}</h4>
 
-            <button class="menu--btn" mat-button [matMenuTriggerFor]="beforeMenu">
+            <button class="menu--btn" mat-button [matMenuTriggerFor]="beforeMenu" *ngIf="isLoggedIn">
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #beforeMenu="matMenu" xPosition="before" class="llp--menu--droupdown">
@@ -30,24 +29,11 @@
             <img src="../../../../assets/images/arkenea/cc-1.png" alt="">
           </div>
           <p class="details" [innerHTML]="postDetails.description"></p>
-<!--           <p class="details mb-0"> <strong>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-              Ipsum has been the industry's standard dummy.</strong> </p>
-          <p class="details">It has survived not only five centuries, but also the leap into electronic typesetting, remaining
-            essentially unchanged. It was popularised in the
-            1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-            publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.</p>
-          <p class="details">It has survived not only five centuries, but also the leap into electronic typesetting, remaining
-            essentially unchanged. It was popularised in the
-            1960s with the release of <span>Letraset sheets containing Lorem Ipsum passages.</span></p>
-          <p class="details">It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages. Lorem
-            Ipsum is simply dummy text of the
-            printing and typesetting industry. </p> -->
         </section>
 
       </div>
     </div>
-    <app-cc-right-panel></app-cc-right-panel>
+    <app-cc-right-panel [detailsLoaded]="detailsLoaded"></app-cc-right-panel>
 
   </div>
 </div>

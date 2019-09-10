@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
 import { APIService } from 'app/api.service';
 
@@ -11,8 +11,13 @@ export class CoachsCornerComponent implements OnInit {
 
   categoryList = []
   postList = []
+  filteredPostList = []
+  userType = ''
+
+  @Output() detailsLoaded: EventEmitter<boolean> = new EventEmitter();
 
   constructor(private sharedata: DataSharingService, private api: APIService) {
+    this.userType = localStorage.getItem('endUserType')
     this.getCategoryLists()
     this.getPostLists()
   }
@@ -64,7 +69,7 @@ export class CoachsCornerComponent implements OnInit {
       }
       else {
         this.postList = result.data.postList
-        this.sharedata.shareChochesData(this.postList[0]['_id']);
+        this.detailsLoaded.emit(true);
       }
     }, (err) => {
       console.error(err)
@@ -72,10 +77,16 @@ export class CoachsCornerComponent implements OnInit {
   }
 
   /**
-   * @description : function for view detailed description of the post
-   * @param dataId : post ID to view details
+   * @description : function for filter articles based on selection
+   * @param currentTab : articles category name to view details
    */
-  viewDetails(dataId=null) {
-    this.sharedata.shareChochesData(dataId);
+  filterArticles( currentTab = null ) {
+    if( currentTab.index > 0) {
+      let category  = this.categoryList[currentTab.index-1]
+      this.filteredPostList = this.postList.filter((listing: any) => listing.category.aliasName === category.aliasName);
+    }
+    else{
+      this.getPostLists()
+    }
   }
 }

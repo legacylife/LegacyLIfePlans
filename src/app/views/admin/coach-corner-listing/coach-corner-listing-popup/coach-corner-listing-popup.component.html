@@ -24,7 +24,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div fxFlex="100"  class="pr-0">
+      <div fxFlex="100" class="pr-0">
         <mat-label>Description</mat-label>
         <mat-card class="p-0">
           <mat-card-content class="p-0">
@@ -32,6 +32,23 @@
           </mat-card-content>
         </mat-card>
       </div>
+
+<!--       <div fxFlex="100" class="pr-0 upload--buss--docs--sec">
+        <label>Upload Image *</label>
+        <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" [uploader]="uploader">
+          <input type="file" name="documents"  ng2FileSelect [uploader]="uploader" (change)="fileOverBase('')" />  
+          <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+          <div class="select--file">Select file from your computer</div>
+        </div>
+        <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
+      </div>
+      <div fxFlex="100" class="pr-0" *ngIf="imageList" >
+        <h3 class="header--text fnt--16">Uploaded Images</h3>
+        <mat-chip-list class="doc--list" *ngFor="let doc of imageList; index as i">
+          <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove (click)="ImageDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+        </mat-chip-list>
+      </div> -->
+
       <div fxFlex="100"  class="pr-0 mt-1">
         <mat-label>Status</mat-label>
         <mat-slide-toggle class="llp--slide--toggle full-width" [formControl]="itemForm.controls['status']" [checked]="itemForm.controls['status']">{{itemForm.controls['status'].value ? 'ON' : 'OFF'}}</mat-slide-toggle>
