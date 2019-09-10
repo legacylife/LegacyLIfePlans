@@ -9,6 +9,7 @@
 var express       = require('express')
 var router        = express.Router()
 var CoachCorner   = require('./../models/coachCorner')
+var CoachCategory = require('./../models/coachCornerCategory')
 const { isEmpty } = require('lodash')
 const resFormat   = require('./../helpers/responseFormat')
 const resMessage  = require('./../helpers/responseMessages')
@@ -41,7 +42,7 @@ async function list(req, res) {
     } else {
       res.send(resFormat.rSuccess({ postList, totalRecords}))
     }
-  }).sort(order).skip(offset).limit(limit).populate('category','title aliasName')
+  }).sort(order).skip(offset).limit(limit).populate('category','title aliasName status')
 }
 
 /**
@@ -176,6 +177,7 @@ async function getMostViewedArticles(req, res) {
                       _id: 1,
                       title: 1,
                       aliasName: 1,
+                      category:1,
                       image :1,
                       totalViews: { $size:"$viewDetails" }
                     }
@@ -193,10 +195,16 @@ async function getMostViewedArticles(req, res) {
                   {
                     $sort: { "totalViews": -1 }
                   },
-                  { "$limit": 5 }
+                  { $limit: 5 }
                 ])
-  
-  res.send(resFormat.rSuccess( {articles: articles } ))
+
+  let categoryList = await CoachCategory.find( {status: 'On'}, {_id: 1, status: 1})
+
+  let aciveArticles = articles.filter( (val) => {
+    return categoryList.some(item => String(item._id) === String(val.category))
+  })
+
+  res.send(resFormat.rSuccess( {articles: aciveArticles } ))
 }
 
 async function getDocumentCount( queryParam = {} ) {
