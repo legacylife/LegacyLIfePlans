@@ -4,7 +4,7 @@
       <div class="propic text-center" *ngIf="row?.userType != 'sysadmin'">
         <img src="{{profilePicture}}" alt="">
       </div>
-      <div class="profile-title text-center mb-1">         
+      <div class="profile-title text-center mb-1">
         <div class="main-title">{{fullname}}</div>
         <div class="text-muted">{{row?.bioText}}</div>
         <div class="text-muted">Last log in on {{row?.lastLoggedInOn  | date: 'yyyy/MM/dd HH:mm:ss'}}</div>
@@ -12,28 +12,34 @@
       <mat-card-content class="pt-0 border-0">
         <mat-list>
           <mat-list-item>
-            <mat-icon class="mr-1">email</mat-icon> {{row?.username}}</mat-list-item>
+            <mat-icon class="mr-1">email</mat-icon> {{row?.username}}
+          </mat-list-item>
           <mat-list-item *ngIf="row?.userType == 'customer' && row?.phoneNumber!=''">
-            <mat-icon class="mr-1">phone</mat-icon> {{row?.phoneNumber}}</mat-list-item>
+            <mat-icon class="mr-1">phone</mat-icon> {{row?.phoneNumber}}
+          </mat-list-item>
           <mat-list-item *ngIf="row?.userType == 'advisor' && row?.businessPhoneNumber!=''">
-            <mat-icon class="mr-1">phone</mat-icon> {{row?.businessPhoneNumber}}</mat-list-item>          
+            <mat-icon class="mr-1">phone</mat-icon> {{row?.businessPhoneNumber}}
+          </mat-list-item>
         </mat-list>
       </mat-card-content>
 
-      <div class="profile-actions mb-1">
-          <button mat-raised-button class="" color="primary"  (click)="openAdminHireAdvisorModal(selectedUserId,'','',true)">Assign an Advisor</button>
-          <span fxFlex="8px"></span>
-          <button mat-raised-button class="mat-warn" *ngIf="!showDeceased" (click)="markAsDeceased({}, true)">Mark as Deceased</button>
-          <button mat-raised-button class="mat-warn" *ngIf="showDeceased" (click)="revokeAsDeceased({}, true)">Revoke as Deceased</button>
+      <div class="profile-actions flex-d-c mb-1">
+
+        <button mat-raised-button class="llp--primary--btn mb-5p"
+          (click)="openAdminHireAdvisorModal(selectedUserId,'','',true)">Assign an Advisor</button>
+        <button mat-raised-button class="llp--secondary--btn" *ngIf="!showDeceased"
+          (click)="markAsDeceased({}, true)">Mark as Deceased</button>
+        <button mat-raised-button class="llp--secondary--btn" *ngIf="showDeceased"
+          (click)="revokeAsDeceased({}, true)">Revoke as Deceased</button>
       </div>
-    </mat-card> 
+    </mat-card>
   </div>
 
   <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="calc(100% - 300px)">
     <div fxLayout="row wrap">
       <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
         <mat-card class="default mb-1 basic--info--wrapper">
-          <mat-card-title class="p-1">Info</mat-card-title>
+          <mat-card-title class="p-1">Basic Info</mat-card-title>
           <mat-card-content class="p-0 border-t">
             <mat-list class="compact-list mb-1">
               <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
@@ -58,211 +64,245 @@
                 </div>
               </mat-list-item>
               <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
-                  <div fxLayout="row" fxFlex="100">
-                    <h6 class="m-0 mr-1">City</h6>
-                    <span fxFlex></span>
-                    <div fxFlex="40">{{row?.city}}</div>
-                  </div>
-                </mat-list-item>
-                <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
-                  <div fxLayout="row" fxFlex="100">
-                    <h6 class="m-0 mr-1">State</h6>
-                    <span fxFlex></span>
-                    <div fxFlex="40">{{row?.state}}</div>
-                  </div>
-                </mat-list-item>
-                <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
-                  <div fxLayout="row" fxFlex="100">
-                    <h6 class="m-0 mr-1">Zipcode</h6>
-                    <span fxFlex></span>
-                    <div fxFlex="40">{{row?.zipcode}}</div>
-                  </div>
-                </mat-list-item>
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">City</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.city}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">State</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.state}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Zipcode</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.zipcode}}</div>
+                </div>
+              </mat-list-item>
               <mat-list-item class="">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Status</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40" >
-                  <mat-chip  mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{row?.status}}</mat-chip>
-                </div>
+                  <div fxFlex="40">
+                    <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{row?.status}}</mat-chip>
+                  </div>
                 </div>
               </mat-list-item>
               <mat-list-item class="">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Deceased Status</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40" >
-                  <mat-chip  mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{row?.deceased?.status}}</mat-chip>
-                </div>
+                  <div fxFlex="40">
+                    <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{row?.deceased?.status}}
+                    </mat-chip>
+                  </div>
                 </div>
               </mat-list-item>
               <mat-list-item *ngIf='row?.lockoutLegacyPeriod'>
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Deceased lockout legacy period</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40" >
-                  <mat-chip  mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{lockoutLegacyPeriod}}</mat-chip>
+                  <div fxFlex="40">
+                    <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{lockoutLegacyPeriod}}
+                    </mat-chip>
                   </div>
                 </div>
-              </mat-list-item>              
+              </mat-list-item>
               <mat-list-item *ngIf='row?.lockoutLegacyDate'>
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Deceased lockout legacy date</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40" >
-                  <mat-chip  mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{row?.lockoutLegacyDate | date: 'yyyy/MM/dd HH:mm'}}</mat-chip>
+                  <div fxFlex="40">
+                    <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">
+                      {{row?.lockoutLegacyDate | date: 'yyyy/MM/dd HH:mm'}}</mat-chip>
                   </div>
-                </div>            
-              </mat-list-item>                            
+                </div>
+              </mat-list-item>
             </mat-list>
           </mat-card-content>
         </mat-card>
       </div>
-    <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
-      <mat-card class="default mb-1 basic--info--wrapper">
-        <mat-card-title class="p-1">Info</mat-card-title>
-        <mat-card-content class="p-0 border-t">
-          <mat-list class="compact-list mb-1">
-            <mat-list-item class="">
-              <div fxLayout="row" fxFlex="100">
-                <h6 class="m-0 mr-1">Total Trustee Count</h6>
-                <span fxFlex></span>
-                <div fxFlex="40">{{row?.deceased.trusteeCnt}}</div>
-              </div>
-            </mat-list-item>
-            <mat-list-item class="">
-              <div fxLayout="row" fxFlex="100">
-                <h6 class="m-0 mr-1">Total Advisor Count</h6>
-                <span fxFlex></span>
-                <div fxFlex="40">{{row?.deceased.advisorCnt}}</div>
-              </div>
-            </mat-list-item>         
-            <mat-list-item>
+      <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
+        <mat-card class="default mb-1 basic--info--wrapper">
+          <mat-card-title class="p-1">Trustee Info</mat-card-title>
+          <mat-card-content class="p-0 border-t">
+            <mat-list class="compact-list mb-1">
+              <mat-list-item class="">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Total Trustee Count</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.deceased.trusteeCnt}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Total Advisor Count</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.deceased.advisorCnt}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item>
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Executor</h6>
                   <span fxFlex></span>
                   <div fxFlex="40">
                     <a *ngIf="executorData" [routerLink]="['/admin/userview',executorData?._id]" title="View">
-                      {{executorData?.firstName}}  {{executorData?.lastName}}
-                    </a>   
-                    <div *ngIf="!executorData" fxFlex="40">Executor is not assigned.</div>             
+                      {{executorData?.firstName}} {{executorData?.lastName}}
+                    </a>
+                    <div *ngIf="!executorData" fxFlex="40">Executor is not assigned.</div>
+                  </div>
                 </div>
-                </div>
-            </mat-list-item>
-            <mat-list-item *ngIf="row.deceased.revokeId">
+              </mat-list-item>
+              <mat-list-item *ngIf="row.deceased.revokeId">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Revoke by</h6>
                   <span fxFlex></span>
-                    <div fxFlex="40">{{revokeIdData.firstName}} {{revokeIdData.lastName}}</div>
+                  <div fxFlex="40">{{revokeIdData.firstName}} {{revokeIdData.lastName}}</div>
                 </div>
-            </mat-list-item>             
-          </mat-list>
-        </mat-card-content>
-      </mat-card>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
   </div>
-</div>
-<div fxLayout="row wrap" *ngIf="showPage">
-   <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
-      <mat-card-title class="p-1">Deceased Request Info</mat-card-title>
-     <mat-card-content class="p-0">
-          <ngx-datatable class="material ml-0 mr-0" [rows]="data" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
-            <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Full Name" prop="trustId" [flexGrow]="2">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                <span *ngIf="row?.trustId">{{row?.trustId?.firstName}} {{row?.trustId?.lastName}}</span>
-                <span *ngIf="row?.advisorId">{{row?.advisorId?.firstName}} {{row?.advisorId?.lastName}}</span>
-                <span *ngIf="row?.adminId">{{row?.adminId?.firstName}} {{row?.adminId?.lastName}}</span>
-              </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Email" prop="trustId" [flexGrow]="3" >
-                <ng-template let-row="row" ngx-datatable-cell-template>
-                  <span *ngIf="row?.trustId">{{row?.trustId?.username}}</span>
-                  <span *ngIf="row?.advisorId">{{row?.advisorId?.username}}</span>
-                  <span *ngIf="row?.adminId">{{row?.adminId?.username}}</span>
-                </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Type" prop="userType"  [flexGrow]="1">
-                  <ng-template let-row="row" ngx-datatable-cell-template>
-                    {{row?.userType}}
-                  </ng-template>
-            </ngx-datatable-column>
-            <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Proof Documents" prop="documents" [flexGrow]="3">
-                  <ng-template let-row="row" ngx-datatable-cell-template>
-                   <div *ngIf="row?.documents">
-                    <mat-list class="compact-list mb-1" *ngFor="let doc of row?.documents">
-                        <mat-list-item class="">
-                          <div fxLayout="row" fxFlex="100">
-                            <h6 class="m-0 mr-1" (click)="downloadFile(doc.tmpName)"><mat-icon class="mat-icon material-icons" (click)="downloadFile(doc.tmpName)">file_copy</mat-icon>{{doc.title}} 1212</h6>
-                          </div>
-                        </mat-list-item>
-                    </mat-list>
-                  </div>
-                  <mat-list class="compact-list mb-1" *ngIf="!row?.documents">
-                      <mat-list-item class="">
-                          Documents not uploaded.
-                      </mat-list-item>
-                  </mat-list>
-                  </ng-template>
-              </ngx-datatable-column>
-              <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Time" prop="createdOn">
-                  <ng-template let-row="row" ngx-datatable-cell-template>
-                    {{row?.createdOn | date: 'yyyy/MM/dd HH:mm'}}
-                  </ng-template>
-              </ngx-datatable-column>
-            <ngx-datatable-column [resizeable]="false" name="Status">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status" (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
-              </ng-template>
-            </ngx-datatable-column>
-          </ngx-datatable>
-        </mat-card-content>
-   </mat-card>
-</div>
 
-<div fxLayout="row wrap" *ngIf="showPage">
-  <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
-      <mat-card-title class="p-1">Advisors Info</mat-card-title>
-    <mat-card-content class="p-0">
-         <ngx-datatable class="material ml-0 mr-0" [rows]="advisorsData" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
-           <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Full Name" prop="firstName" [flexGrow]="2">
-             <ng-template let-row="row" ngx-datatable-cell-template>
-               {{row?.advisorId?.firstName}} {{row?.advisorId?.lastName}}
-             </ng-template>
-           </ngx-datatable-column>
-           <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Email" prop="username" [flexGrow]="3" >
-               <ng-template let-row="row" ngx-datatable-cell-template>
-                 {{row?.advisorId?.username}}
-               </ng-template>
-           </ngx-datatable-column>
-           <!-- <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Type" prop="userType"  [flexGrow]="1">
+
+  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" *ngIf="showPage" class="mb-1">
+
+    <div class="breadcrumb-title pl-0 mt-1 brdr-t-1">
+      <h1 class="bc-title">Deceased Request Info</h1>
+    </div>
+
+    <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+      <!-- <mat-card-title class="p-1">Deceased Request Info</mat-card-title> -->
+      <mat-card-content class="p-0">
+        <ngx-datatable class="material ml-0 mr-0" [rows]="data" [columnMode]="'flex'" [headerHeight]="50"
+          [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Full Name" prop="trustId"
+            [flexGrow]="2">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <span *ngIf="row?.trustId">{{row?.trustId?.firstName}} {{row?.trustId?.lastName}}</span>
+              <span *ngIf="row?.advisorId">{{row?.advisorId?.firstName}} {{row?.advisorId?.lastName}}</span>
+              <span *ngIf="row?.adminId">{{row?.adminId?.firstName}} {{row?.adminId?.lastName}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Email" prop="trustId"
+            [flexGrow]="3">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <span *ngIf="row?.trustId">{{row?.trustId?.username}}</span>
+              <span *ngIf="row?.advisorId">{{row?.advisorId?.username}}</span>
+              <span *ngIf="row?.adminId">{{row?.adminId?.username}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Type" prop="userType"
+            [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row?.userType}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Proof Documents" prop="documents"
+            [flexGrow]="3">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div *ngIf="row?.documents">
+               
+                <div class="compact-list up--files" *ngFor="let doc of row?.documents">
+                    <p class="m-0" (click)="downloadFile(doc.tmpName)">
+                        <mat-icon class="mat-icon material-icons" (click)="downloadFile(doc.tmpName)">file_copy
+                        </mat-icon>{{doc.title}} 1212
+                      </p>
+                </div>
+                
+              </div>
+              <mat-list class="compact-list mb-1" *ngIf="!row?.documents">
+                <mat-list-item class="">
+                  Documents not uploaded.
+                </mat-list-item>
+              </mat-list>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Time" prop="createdOn">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row?.createdOn | date: 'yyyy/MM/dd HH:mm'}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [resizeable]="false" name="Status">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status"
+                (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+
+  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" *ngIf="showPage" class="mb-1">
+      <div class="breadcrumb-title pl-0 mt-1 brdr-t-1">
+          <h1 class="bc-title">Advisors Info</h1>
+        </div>
+
+    <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+      <!-- <mat-card-title class="p-1">Advisors Info</mat-card-title> -->
+      <mat-card-content class="p-0">
+        <ngx-datatable class="material ml-0 mr-0" [rows]="advisorsData" [columnMode]="'flex'" [headerHeight]="50"
+          [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Full Name" prop="firstName"
+            [flexGrow]="2">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row?.advisorId?.firstName}} {{row?.advisorId?.lastName}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Email" prop="username"
+            [flexGrow]="3">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row?.advisorId?.username}}
+            </ng-template>
+          </ngx-datatable-column>
+          <!-- <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Type" prop="userType"  [flexGrow]="1">
                  <ng-template let-row="row" ngx-datatable-cell-template>
                    <div class="compact-list" *ngFor="let item of row?.userAccess | keyvalue">
                         {{item.key}}:{{item.value}}&nbsp;,&nbsp; 
                    </div>
                  </ng-template>
            </ngx-datatable-column> -->
-           <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Folder/Files" prop="folderCount"  [flexGrow]="1">
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Folder/Files" prop="folderCount"
+            [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{row?.folderCount}} / {{row?.filesCount}}
             </ng-template>
           </ngx-datatable-column>
-           <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Created/Modified Time" prop="createdOn">
-                 <ng-template let-row="row" ngx-datatable-cell-template>
-                   {{row?.createdOn | date: 'yyyy/MM/dd'}} ,  {{row?.modifiedOn | date: 'yyyy/MM/dd'}}
-                 </ng-template>
-           </ngx-datatable-column>
-           <ngx-datatable-column [resizeable]="false" name="Status">
-             <ng-template let-row="row" ngx-datatable-cell-template>
-               <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status" (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
-             </ng-template>
-           </ngx-datatable-column>
-           <ngx-datatable-column [resizeable]="false" name="Actions" [sortable]="false" [draggable]="false" [flexGrow]="1">
-              <ng-template let-row="row" ngx-datatable-cell-template>
-                <button mat-icon-button mat-sm-button color="primary" class="mr-1 p-0 icon--edit" (click)="openAdminHireAdvisorModal(selectedUserId,row?._id,'update',true)" title="Edit"><mat-icon>edit</mat-icon></button>
-              </ng-template>
-            </ngx-datatable-column>
-         </ngx-datatable>
-       </mat-card-content>
-  </mat-card>
-</div>
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Created/Modified Time"
+            prop="createdOn">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row?.createdOn | date: 'yyyy/MM/dd'}} , {{row?.modifiedOn | date: 'yyyy/MM/dd'}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [resizeable]="false" name="Status">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status"
+                (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [resizeable]="false" name="Actions" [sortable]="false" [draggable]="false"
+            [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <button mat-icon-button mat-sm-button color="primary" class="mr-1 p-0 icon--edit"
+                (click)="openAdminHireAdvisorModal(selectedUserId,row?._id,'update',true)" title="Edit">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+      </mat-card-content>
+    </mat-card>
+  </div>
 
+
+</div>

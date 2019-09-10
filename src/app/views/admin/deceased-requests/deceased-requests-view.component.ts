@@ -17,7 +17,7 @@ const filePath = s3Details.url+'/'+s3Details.profilePicturesPath;
 @Component({
   selector: 'deceaseduserview',
   templateUrl: './deceased-requests-view.component.html',
-  styleUrls: ['./deceased-requests-view.component.css'],
+  styleUrls: ['./deceased-requests-view.component.scss'],
   animations: egretAnimations
 })
 export class DeceasedRequestsViewComponent implements OnInit {

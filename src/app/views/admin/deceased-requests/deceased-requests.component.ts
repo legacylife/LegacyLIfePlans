@@ -10,7 +10,7 @@ import { SubscriptionService } from 'app/shared/services/subscription.service';
 @Component({
   selector: 'deceased-requests',
   templateUrl: './deceased-requests.component.html',
-  styleUrls: ['./deceased-requests.component.css'],
+  styleUrls: ['./deceased-requests.component.scss'],
   animations: egretAnimations
 })
 export class DeceasedRequestsComponent implements OnInit {

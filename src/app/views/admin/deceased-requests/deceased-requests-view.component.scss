@@ -1,0 +1,23 @@
+@import "../userlist/userlist.component.scss";
+.flex-d-c{
+    flex-direction: column;     
+}
+.flex-d-c button{
+    width: 100%;
+} 
+.mb-5p{
+    margin-bottom: 5px;
+}
+.up--files{
+    display: flex;
+    align-items: center;
+    .material-icons{
+        color: #727834;
+        font-size: 18px;
+        height: 20px;
+        width: 21px;
+    }
+}
+.brdr-t-1{
+    border-top: 1px solid #ddd;
+}
