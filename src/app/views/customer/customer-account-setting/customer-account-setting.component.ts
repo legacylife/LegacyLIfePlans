@@ -279,6 +279,9 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
           this.picService.setProfilePic = this.profilePicture;
         }
         this.modified = false;
+        if(this.profile.username && this.profile.username=='customer@arkenea.com'){
+          this.getLatitudeLongitude();
+        }
         this.loader.close();
       }
     }, (err) => {
@@ -287,6 +290,22 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     })
   }
 
+    //function to get all events
+    getLatitudeLongitude = (query = {}, search = false) => {
+      const req_vars = {
+        query: Object.assign({}, query)
+      }
+      this.userapi.apiRequest('post', 'userlist/latitudeLongitude', req_vars).subscribe(result => {
+        if (result.status == "error") {
+          this.profile = [];
+        } else {
+          this.profile = result.data.userProfile;
+        }
+      }, (err) => {
+        console.error(err);
+        this.loader.close();
+      })
+    }
 
   ProfileSubmit() {
     this.modified = false;
