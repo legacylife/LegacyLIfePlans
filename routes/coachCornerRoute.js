@@ -245,7 +245,7 @@ async function sharePost(req, res) {
   let isExists = await CoachCorner.findOne(query)
 
   if( isExists ) {
-    let articleLink = constants.clientUrl+'/coach-corner/'+query.aliasName,
+    let articleLink = constants.clientUrl+'/coach-corner-details/'+query.aliasName,
         isSendemail = await emailTemplatesRoute.getEmailTemplateByCode('ShareArticlesViaEmail').then((template) => {
                         template = JSON.parse(JSON.stringify(template));
                         let body = template.mailBody.replace("{link}", articleLink);
