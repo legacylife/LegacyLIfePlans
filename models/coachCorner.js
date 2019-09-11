@@ -20,7 +20,7 @@ var coachCornerSchema = new mongoose.Schema({
     viewedOn: Date,
   }],
   status: String,
-  createdBy:String,
+  createdBy: String,
   createdOn: Date,
   modifiedOn: Date,
   modifiedBy: String

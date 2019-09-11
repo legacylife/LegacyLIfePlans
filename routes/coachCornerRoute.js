@@ -75,9 +75,11 @@ async function create (req, res) {
       viewDetails : [],
       status      : data.status,
       createdBy   : fromId,
-      createdOn   : new Date()
+      createdOn   : new Date(),
+      modifiedBy  : fromId,
+      modifiedOn  : new Date()
   }
-
+  console.log("====insert_obj====",insert_obj)
   let newCoachDetails = new CoachCorner(insert_obj)
       newCoachDetails.save(function(err, newrecord) {
         if (err) {
@@ -100,6 +102,8 @@ async function update(req, res) {
       { data }      = req.body,
       { oldTitle }  = req.body,
       { oldStatus } = req.body
+  
+  data = Object.assign({ modifiedOn: new Date()}, data)
 
   if( oldTitle != data.title ) {
     let aliasName       = data.title.replace(/ /g, '-')
@@ -109,7 +113,6 @@ async function update(req, res) {
     }
     data = Object.assign({ aliasName: aliasName}, data)
   }
-  
   CoachCorner.updateOne({ _id: data._id },{ $set: data} ,(err, updateCoachCorner)=>{
     if (err) {
       res.send(resFormat.rError(err))
@@ -148,7 +151,7 @@ async function view(req, res) {
         totalViewCount      = currentViewDetails.length
         //isViewedDetails     = totalViewCount > 0 ? ( fromId ? currentViewDetails.some( obj => { return obj.userId === fromId} ) : currentViewDetails.some( obj => { return obj.userIpAddress === userIpAddress} ) ) : false
         isViewedDetails     = totalViewCount > 0 ? currentViewDetails.some( obj => { return obj.userIpAddress === userIpAddress} ) : false
-         console.log("isViewedDetails",isViewedDetails)
+         
     if( !isViewedDetails ) {
       let updateParam = { "userId" : fromId,
                           "userIpAddress" : userIpAddress,
@@ -215,9 +218,23 @@ async function updateViewCount( queryParam, updateParam ) {
   return await CoachCorner.updateOne( queryParam, {$set: updateParam})
 }
 
+async function deletePosts(req, res) {
+  let { query }   = req.body
+  let { fromId }  = req.body
+  
+  let deletedRecord = await CoachCorner.remove({_id: ObjectId(query._id)})
+  if( deletedRecord ) {
+    let message = resMessage.data( 607, [{key: '{field}',val: 'Coach corner post'}, {key: '{status}',val: 'deleted'}] )
+    allActivityLog.updateActivityLogs(fromId, fromId, 'Post Details Deleted', message, 'Coach Corner', 'Coach Corner Post')
+    
+    res.send(resFormat.rSuccess({message:message}))
+  }
+}
+
 router.post("/create", create)
 router.post("/list", list)
 router.post("/update", update)
+router.post("/delete", deletePosts)
 router.post("/view", view)
 router.post("/most-viewed-articles", getMostViewedArticles)
 
