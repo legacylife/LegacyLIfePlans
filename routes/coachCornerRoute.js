@@ -10,10 +10,14 @@ var express       = require('express')
 var router        = express.Router()
 var CoachCorner   = require('./../models/coachCorner')
 var CoachCategory = require('./../models/coachCornerCategory')
+var constants     = require('./../config/constants')
+const sendEmail   = require('./../helpers/sendEmail')
 const { isEmpty } = require('lodash')
 const resFormat   = require('./../helpers/responseFormat')
 const resMessage  = require('./../helpers/responseMessages')
 const allActivityLog = require('./../helpers/allActivityLogs')
+const emailTemplatesRoute = require('./emailTemplatesRoute.js')
+
 let mongoose = require('mongoose')
 
 /**
@@ -231,11 +235,46 @@ async function deletePosts(req, res) {
   }
 }
 
+async function sharePost(req, res) {
+  let { query }     = req.body,
+      { fromId }    = req.body,
+      { emailList } = req.body,
+      { userName }  = req.body,
+      { userType }  = req.body
+
+  let isExists = await CoachCorner.findOne(query)
+
+  if( isExists ) {
+    let articleLink = constants.clientUrl+'/coach-corner/'+query.aliasName,
+        isSendemail = await emailTemplatesRoute.getEmailTemplateByCode('ShareArticlesViaEmail').then((template) => {
+                        template = JSON.parse(JSON.stringify(template));
+                        let body = template.mailBody.replace("{link}", articleLink);
+                            body = body.replace("{userType}", userType);
+                            body = body.replace("{userName}", userName);
+
+                        let subject = template.mailSubject.replace("{userName}", userName);
+                        const mailOptions = {
+                            bcc: emailList,
+                            subject: subject,
+                            html: body
+                        }
+                        sendEmail(mailOptions)
+                      })
+    //if( isSendemail ) {
+      let message = resMessage.data( 607, [{key: '{field}',val: 'Coach corner post'}, {key: '{status}',val: 'shared'}] )
+      allActivityLog.updateActivityLogs(fromId, fromId, 'Post Details Shared', message, 'Coach Corner', 'Coach Corner Post')
+    
+      res.send(resFormat.rSuccess({message:message}))
+    //}
+  }
+}
+
 router.post("/create", create)
 router.post("/list", list)
 router.post("/update", update)
 router.post("/delete", deletePosts)
 router.post("/view", view)
 router.post("/most-viewed-articles", getMostViewedArticles)
+router.post("/share-post", sharePost)
 
 module.exports = router
