@@ -1,0 +1,63 @@
+@import "../userlist/userlist.component.scss";
+
+
+
+.enq--form--wrapper{
+    margin: 0 auto;
+    
+   
+    .reply--enquiry--form{
+        flex-direction: column
+    }
+    .generate--payment{
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        background: #f5f5f5;
+        padding: 10px;
+        justify-content: center;
+        font-size: 16px;
+        .mat-icon{
+            font-size: 21px;
+            width: 21px;
+            height: 21px;
+        }
+        &:hover{
+            color: #c72128;
+        }
+    }
+}
+
+// .reply--info--table{
+
+//     ::ng-deep{
+//         .datatable-header-cell:first-child,
+//         .datatable-body-cell:first-child{
+//             width:20% !important;
+//          }
+//         .datatable-header-cell:nth-child(2),
+//         .datatable-body-cell:nth-child(2){
+//             width:130px !important;
+//         } 
+//         .datatable-header-cell:nth-child(3),
+//         .datatable-body-cell:nth-child(3){
+//             width:130px !important;
+//         } 
+//         .datatable-header-cell:nth-child(4),
+//         .datatable-body-cell:nth-child(4){
+//             width:25% !important;
+//         }
+//         .datatable-header-cell:nth-child(5),
+//         .datatable-body-cell:nth-child(5){
+//             width:15% !important;
+//         }
+//         .datatable-header-cell:nth-child(5),
+//         .datatable-body-cell:nth-child(5){
+//             width:15% !important;
+//         }
+//         .datatable-header-cell:last-child,
+//         .datatable-body-cell:last-child{
+//             width: 200px !important
+//           }
+//     }
+//   }

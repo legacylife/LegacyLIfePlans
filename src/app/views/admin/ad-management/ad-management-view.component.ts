@@ -12,13 +12,13 @@ import { ToolbarService, LinkService, ImageService, HtmlEditorService, TableServ
 @Component({
   selector: 'userview',
   templateUrl: './ad-management-view.component.html',
-  styleUrls: ['./ad-management.component.css'],
+  styleUrls: ['./ad-management.component.scss'],
   providers: [ToolbarService, LinkService, ImageService, HtmlEditorService,TableService, QuickToolbarService],
 })
 export class AddManagementViewComponent implements OnInit {
   layoutConf: any;
   userId: string
-  successMessage: string = ""
+  successMessage: string = "" 
   errorMessage: string = ""
   userType: string = ""
   row: any;

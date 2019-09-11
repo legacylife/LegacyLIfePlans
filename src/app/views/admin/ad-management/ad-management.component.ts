@@ -5,7 +5,7 @@ import { APIService } from './../../../api.service';
 @Component({
   selector: 'ad-management',
   templateUrl: './ad-management.component.html',
-  styleUrls: ['./ad-management.component.css']
+  styleUrls: ['./ad-management.component.scss']
 })
 export class AddManagementComponent implements OnInit {
   aceessSection : any;

@@ -11,7 +11,7 @@
         [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
         <ngx-datatable-column [resizeable]="false" name="Name" prop="customerId" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.customerId.firstName }} {{ row?.customerId.lastName }}
+            {{ row?.customerId.firstName }} {{ row?.customerId.lastName }} 
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" name="Zipcodes" prop="zipcodes" [flexGrow]="1">
