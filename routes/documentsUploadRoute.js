@@ -18,6 +18,7 @@ const Finance = require('../models/Finances.js')
 const Invite = require('../models/Invite.js')
 const InviteTemp = require('../models/InviteTemp.js')
 const MarkDeceased = require('../models/MarkAsDeceased.js')
+const coachCorner = require('../models/coachCorner.js')
 var s3Archiver = require('s3-archiver');
 var async = require('async');
 var archiver = require('archiver');
@@ -39,6 +40,7 @@ const financeFilePath = constants.s3Details.financeFilePath;
 const letterMessageFilePath = constants.s3Details.letterMessageFilePath;
 const inviteDocumentsPath = constants.s3Details.inviteDocumentsPath;
 const deceasedFilessPath = constants.s3Details.deceasedFilessPath;
+const coachCornerArticlePath = constants.s3Details.coachCornerArticlePath;
 const lettersMessage = require('./../models/LettersMessages.js')
 var DIR = './uploads/';
 
@@ -86,7 +88,11 @@ router.post('/advisorDocument', cors(), function(req,res){
                     res.send(resFormat.rError(err))
                   } else {
                     getuserFolderSize(userId);
-                    let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
+                    let message = resMessage.data( 607, [{key: '{field}',val: 'Advisor Document'}, {key: '{status}',val: 'uploaded'}] )
+                    //Update activity logs
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, advisorDocuments, '', fileName)
+                    
+                    let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                     res.send(resFormat.rSuccess(result))
                   }
                 })
@@ -160,7 +166,11 @@ router.post('/myEssentialsID', cors(), function(req,res){
                             res.send(resFormat.rError(err))
                           } else {
                             getuserFolderSize(userId);
-                            let result = { userId:userId, allDocs:tmpallfiles, "message": "ID proof uploaded successfully!" }
+                            let message = resMessage.data( 607, [{key: '{field}',val: 'ID proof Document'}, {key: '{status}',val: 'uploaded'}] )
+                            //Update activity logs
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, IDdocFilePath, '', fileName)
+                    
+                            let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                             res.send(resFormat.rSuccess(result))
                           }
                        })
@@ -192,7 +202,11 @@ router.post('/myEssentialsID', cors(), function(req,res){
                   res.send(resFormat.rError(err))
                    } else {
                      getuserFolderSize(userId);
-                     let result = { "message": "ID proof uploaded successfully!" }
+                     let message = resMessage.data( 607, [{key: '{field}',val: 'ID proof Document'}, {key: '{status}',val: 'uploaded'}] )
+                    //Update activity logs
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, IDdocFilePath, '', fileName)
+                    let result = { "message": message }
+                     
                      res.status(200).send(resFormat.rSuccess(result))
                    }
                  })
@@ -260,7 +274,11 @@ router.post('/legalStuff', cors(), function(req,res){
                             res.send(resFormat.rError(err))
                           } else {
                             getuserFolderSize(userId);
-                            let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
+                            let message = resMessage.data( 607, [{key: '{field}',val: 'Legal Stuff Document'}, {key: '{status}',val: 'uploaded'}] )
+                            //Update activity logs
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, legalStuffdocFilePath, '', fileName)
+                            
+                            let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                             res.send(resFormat.rSuccess(result))
                           }
                        })
@@ -292,7 +310,11 @@ router.post('/legalStuff', cors(), function(req,res){
                   res.send(resFormat.rError(err))
                    } else {
                     getuserFolderSize(userId);
-                    let result = { "message": "Document uploaded successfully!" }
+                    let message = resMessage.data( 607, [{key: '{field}',val: 'Legal Stuff Document'}, {key: '{status}',val: 'uploaded'}] )
+                    //Update activity logs
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, legalStuffdocFilePath, '', fileName)
+                    let result = { "message": message }
+                    
                      res.status(200).send(resFormat.rSuccess(result))
                    }
                  })
@@ -361,7 +383,11 @@ router.post('/finalWishes', cors(), function(req,res){
                             res.send(resFormat.rError(err))
                           } else {
                             getuserFolderSize(userId);
-                            let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
+                            let message = resMessage.data( 607, [{key: '{field}',val: 'Final Wishesh Document'}, {key: '{status}',val: 'uploaded'}] )
+                            //Update activity logs
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, finalWishesFilePath, '', fileName)
+                            
+                            let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                             res.send(resFormat.rSuccess(result))
                           }
                        })
@@ -393,7 +419,11 @@ router.post('/finalWishes', cors(), function(req,res){
                   res.send(resFormat.rError(err))
                    } else {
                     getuserFolderSize(userId);
-                    let result = { "message": "Document uploaded successfully!" }
+                    let message = resMessage.data( 607, [{key: '{field}',val: 'Final Wishesh Document'}, {key: '{status}',val: 'uploaded'}] )
+                    //Update activity logs
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, finalWishesFilePath, '', fileName)
+                    let result = { "message": message }
+                    
                      res.status(200).send(resFormat.rSuccess(result))
                    }
                  })
@@ -462,7 +492,11 @@ router.post('/petsdocuments', cors(), function(req,res){
                             res.send(resFormat.rError(err))
                           } else {
                             getuserFolderSize(userId);
-                            let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
+                            let message = resMessage.data( 607, [{key: '{field}',val: 'Pets Document'}, {key: '{status}',val: 'uploaded'}] )
+                            //Update activity logs
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, petsFilePath, '', fileName)
+                            
+                            let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                             res.send(resFormat.rSuccess(result))
                           }
                        })
@@ -493,7 +527,11 @@ router.post('/petsdocuments', cors(), function(req,res){
                   res.send(resFormat.rError(err))
                    } else {
                     getuserFolderSize(userId);
-                    let result = { "message": "Document uploaded successfully!" }
+                    let message = resMessage.data( 607, [{key: '{field}',val: 'Pets Document'}, {key: '{status}',val: 'uploaded'}] )
+                    //Update activity logs
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, petsFilePath, '', fileName)
+                    let result = { "message": message }
+                    
                      res.status(200).send(resFormat.rSuccess(result))
                    }
                  })
@@ -563,6 +601,10 @@ router.post('/timeCapsuledocuments', cors(), function(req,res){
                             res.send(resFormat.rError(err))
                           } else {
                             getuserFolderSize(userId);
+                            let message = resMessage.data( 607, [{key: '{field}',val: 'Time capsule Document'}, {key: '{status}',val: 'uploaded'}] )
+                            //Update activity logs
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, timeCapsuleFilePath, '', fileName)
+                            
                             let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
                             res.send(resFormat.rSuccess(result))
                           }
@@ -594,7 +636,10 @@ router.post('/timeCapsuledocuments', cors(), function(req,res){
                   res.send(resFormat.rError(err))
                    } else {
                     getuserFolderSize(userId);
-                    let result = { "message": "Document uploaded successfully!" }
+                    let message = resMessage.data( 607, [{key: '{field}',val: 'Time capsule Document'}, {key: '{status}',val: 'uploaded'}] )
+                    //Update activity logs
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, timeCapsuleFilePath, '', fileName)
+                    let result = { "message": message }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
                  })
@@ -663,7 +708,10 @@ router.post('/insuranceDocuments', cors(), function(req,res){
                             res.send(resFormat.rError(err))
                           } else {
                             getuserFolderSize(userId);
-                            let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
+                            let message = resMessage.data( 607, [{key: '{field}',val: 'Insurance Document'}, {key: '{status}',val: 'uploaded'}] )
+                            //Update activity logs
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, insuranceFilePath, '', fileName)
+                            let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                             res.send(resFormat.rSuccess(result))
                           }
                        })
@@ -694,7 +742,11 @@ router.post('/insuranceDocuments', cors(), function(req,res){
                   res.send(resFormat.rError(err))
                    } else {
                     getuserFolderSize(userId);
-                    let result = { "message": "Document uploaded successfully!" }
+                    let message = resMessage.data( 607, [{key: '{field}',val: 'Insurance Document'}, {key: '{status}',val: 'uploaded'}] )
+                    //Update activity logs
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, insuranceFilePath, '', fileName)
+                    let result = { "message": message }
+                    //let result = { "message": "Document uploaded successfully!" }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
                  })
@@ -762,7 +814,11 @@ router.post('/financeDocuments', cors(), function(req,res){
                             res.send(resFormat.rError(err))
                           } else {
                             getuserFolderSize(userId);
-                            let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
+                            let message = resMessage.data( 607, [{key: '{field}',val: 'Finance Document'}, {key: '{status}',val: 'uploaded'}] )
+                            //Update activity logs
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, financeFilePath, '', fileName)
+                            //let result = { "message": message }
+                            let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                             res.send(resFormat.rSuccess(result))
                           }
                        })
@@ -793,7 +849,11 @@ router.post('/financeDocuments', cors(), function(req,res){
                   res.send(resFormat.rError(err))
                    } else {
                     getuserFolderSize(userId);
-                    let result = { "message": "Document uploaded successfully!" }
+                    let message = resMessage.data( 607, [{key: '{field}',val: 'Finance Document'}, {key: '{status}',val: 'uploaded'}] )
+                    //Update activity logs
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, financeFilePath, '', fileName)
+                    let result = { "message": message }
+                    
                      res.status(200).send(resFormat.rSuccess(result))
                    }
                  })
@@ -862,7 +922,12 @@ router.post('/letterMessage', cors(), function(req,res){
                             res.send(resFormat.rError(err))
                           } else {
                             getuserFolderSize(userId);
-                            let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
+                            
+                            let message = resMessage.data( 607, [{key: '{field}',val: 'Letter Message Document'}, {key: '{status}',val: 'uploaded'}] )
+                            //Update activity logs
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, letterMessageFilePath, '', fileName)
+                            
+                            let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                             res.send(resFormat.rSuccess(result))
                           }
                        })
@@ -893,7 +958,11 @@ router.post('/letterMessage', cors(), function(req,res){
                   res.send(resFormat.rError(err))
                    } else {
                     getuserFolderSize(userId);
-                    let result = { "message": "Document uploaded successfully!" }
+                    //let result = { "message": "Document uploaded successfully!" }
+                    let message = resMessage.data( 607, [{key: '{field}',val: 'Letter Message Document'}, {key: '{status}',val: 'uploaded'}] )
+                    //Update activity logs
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, letterMessageFilePath, '', fileName)
+                    let result = { "message": message }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
                  })
@@ -1251,7 +1320,11 @@ router.post('/invite', cors(), function(req,res){
                   if (err) {
                   res.send(resFormat.rError(err))
                    } else {
-                    let result = { "message": "Document uploaded successfully!" }
+                    //let result = { "message": "Document uploaded successfully!" }
+                    let message = resMessage.data( 607, [{key: '{field}',val: 'Invite Document'}, {key: '{status}',val: 'uploaded'}] )
+                    //Update activity logs
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, inviteDocumentsPath, '', fileName)
+                    let result = { "message": message }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
                  })
@@ -1342,8 +1415,12 @@ router.post('/deceasedDocuments', cors(), function(req,res){
                           if (err) {
                             res.send(resFormat.rError(err))
                           } else {
-                            let results = { userId:userId, allDocs:oldTmpFiles, "message": "Document uploaded successfully!" }
-                            res.send(resFormat.rSuccess(results))
+                            //let results = { userId:userId, allDocs:oldTmpFiles, "message": "Document uploaded successfully!" }
+                            let message = resMessage.data( 607, [{key: '{field}',val: 'Descreased Document'}, {key: '{status}',val: 'uploaded'}] )
+                            //Update activity logs
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, deceasedFilessPath, '', fileName)
+                            let result = { "message": message }
+                            res.send(resFormat.rSuccess(result))
                           }
                        })
                       }
@@ -1379,9 +1456,13 @@ router.post('/deceasedDocuments', cors(), function(req,res){
                   if (err) {
                   res.send(resFormat.rError(err))
                    } else {
-                     let result = { "message": "Document uploaded successfully!" }
-                     res.status(200).send(resFormat.rSuccess(result))
-                   }
+                     //let result = { "message": "Document uploaded successfully!" }
+                     let message = resMessage.data( 607, [{key: '{field}',val: 'Descreased Document'}, {key: '{status}',val: 'uploaded'}] )
+                    //Update activity logs
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, deceasedFilessPath, '', fileName)
+                    let result = { "message": message }
+                    res.status(200).send(resFormat.rSuccess(result))
+                  }
                  })
               })
            }
@@ -1597,6 +1678,123 @@ function uploadFromStream(zipfileName,res) {
   return pass;
 }
 
+router.post('/coachCornerArticle', cors(), function(req,res){
+  var fstream;
+  let authTokens = { authCode: "" }
+  if (req.busboy) {
+    req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
+      authTokens[fieldname] = val
+    })
+    const {query:{userId}} = req;
+    const {query:{prevImage}} = req;
+    const {query:{ProfileId}} = req;
+    const {query:{folderName}} = req;
+    
+    let q = {customerId: userId}
+    if(ProfileId && ProfileId!='') {
+      q = {_id : ProfileId}
+    }
+    req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+      let tmpallfiles = {};
+      let oldTmpFiles = [];
+      if(userId) {
+        let fileExts = ["jpg", "jpeg", "png"],
+            ext = filename.split('.')
+            ext = ext[ext.length - 1];
+            
+        let resp = isExtension(ext,fileExts);
+        if(!resp) {
+          let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid file extension!" }
+          res.send(resFormat.rSuccess(results))
+        }
+        else{
+          /**** for post update remove previous file *****/
+          
+          if( prevImage ) {
+            let filePath = coachCornerArticlePath + prevImage;
+            const params = { Bucket: constants.s3Details.bucketName, Key: filePath }
+            try {
+              s3.s3.headObject(params).promise()
+              try {
+                s3.s3.deleteObject(params).promise()
+              }
+              catch (err) {
+                let resMsg = "ERROR in file Deleting : " + JSON.stringify(err);
+                res.send(resFormat.rError(resMsg))
+              }
+            }
+            catch (err) {
+              let resMsg = "File not Found ERROR : " + err.code;
+              res.send(resFormat.rSuccess(resMsg))
+            }
+          }
+          /****************************/
+         
+          //Add 
+          const newFilename = filename//new Date().getTime() + `.${ext}`
+                fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+          file.pipe(fstream);
+
+          fstream.on('close', async function () {
+            let uploadImage =  await s3.uploadFile(newFilename,coachCornerArticlePath);  
+            tmpallfiles = {
+              "title" : filename,
+              "size" : encoding,
+              "extention" : mimetype,
+              "tmpName" : newFilename
+            }
+            
+            let message = resMessage.data( 607, [{key: '{field}',val: 'Coach Corner Image'}, {key: '{status}',val: 'uploaded'}] )
+            //Update activity logs
+            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, coachCornerArticlePath, '', fileName)
+
+            return res.send(resFormat.rSuccess(tmpallfiles))
+            //res.status(200).send(resFormat.rSuccess(tmpallfiles))
+          })
+          
+        } 
+      }
+      else {
+        res.status(401).send(resFormat.rError("User token mismatch."))
+      }
+    })
+  }
+})
+
+function deleteCoachCornerImage(req, res) {
+  let { fileName }      = req.body,
+      { fromId }        = req.body,
+      { toId }          = req.body,
+      { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body,
+        filePath        = coachCornerArticlePath+fileName;
+  
+  const params = { Bucket: constants.s3Details.bucketName, Key: filePath }
+  let resMsg    = "";
+  try {
+    s3.s3.headObject(params).promise()
+    try {
+      s3.s3.deleteObject(params).promise()
+    }
+    catch (err) {
+      resMsg = "ERROR in file Deleting : " + JSON.stringify(err);
+      res.send(resFormat.rError(resMsg))
+    }
+  }
+  catch (err) {
+    resMsg = "File not Found ERROR : " + err.code;
+    res.send(resFormat.rSuccess(resMsg))
+  }
+
+  let message = resMessage.data( 607, [{key: '{field}',val: 'Coach Corner Image'}, {key: '{status}',val: 'deleted'}] )
+  //Update activity logs
+  allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
+  let result = { "message": message }
+  res.send(resFormat.rSuccess(result))
+}
+
+router.post("/deleteCoachCornerImage", deleteCoachCornerImage);
 router.post("/deleteAdvDoc", deleteDoc);
 router.post("/deleteIdDoc", deleteIdDocument);
 router.post("/deletesubFolderDoc", deletesubFolderDoc);

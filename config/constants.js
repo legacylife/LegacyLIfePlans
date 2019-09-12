@@ -27,6 +27,7 @@ var constants = {
     inviteDocumentsPath:"invite/",
     letterMessageFilePath:"letterMessage/",
     deceasedFilessPath:"deceased/",
+    coachCornerArticlePath:"coachCorner/",
     serveUrl: "https://llp-staging.s3.amazonaws.com" 
   },
   ses: {
