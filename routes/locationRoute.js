@@ -6,23 +6,27 @@ const resFormat = require('./../helpers/responseFormat')
 
 //function to get list of location zipcodes
 function zipcodesList(req, res) {
-  let {query,search,limit} = req.body;
+  let {query,limit} = req.body;
+  
+  const {query:{$select}} = req;
+  const {query:{$filter}} = req;
+  let search = $filter;
 
-  if (search && !isEmpty(query)) {
-    Object.keys(query).map(function (key, index) {
-        query[key] = new RegExp(query[key], 'i')
-    })
+  if (search) {
+    search = search.split("'");
+    query = {'ZIP':{'$regex':search[1]}};
+    console.log("search....",query)
   } 
-  //console.log('query',query)
+
   location.find(query, {ZIP:1}, function(err, locationList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      res.send(resFormat.rSuccess({ locationList}))
+      res.send(locationList)
     }
-  }).limit(limit)
+  }).limit(100)
 }
 
 
-router.post("/getAllZipcodes", zipcodesList)
+router.get("/getAllZipcodes", zipcodesList)
 module.exports = router
