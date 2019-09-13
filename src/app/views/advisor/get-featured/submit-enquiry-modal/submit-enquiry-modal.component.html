@@ -10,14 +10,22 @@
       <div fxLayout="row wrap">
         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
           
-          <div id="multiselect-sample" class="control-section">
+          <!-- <div id="multiselect-sample" class="control-section">
               <div class="control-styles">
-                    <ejs-multiselect id='multiselectelement' [dataSource]='searchData' [allowFiltering]='true' [mode]='box' #remote [query]='query' sortOrder='Ascending' 
-                    [formControl]="enquiryForm.controls['zipcodes']" [placeholder]='waterMark' [fields]='fields' 
-                     [sortOrder]='sorting' (filtering)='onFiltering($event)'></ejs-multiselect>
+                    <ejs-multiselect id='remoteData' [dataSource]='data' [allowCustomValue]=true [mode]='box' #remote [query]='query' sortOrder='Ascending' 
+                    [formControl]="enquiryForm.controls['zipcodes']" [placeholder]='waterMark' [fields]='fields'  (filtering)='onFiltering($event)'
+                     [sortOrder]='sorting'[query]='query'></ejs-multiselect>
               </div>
-          </div>
+          </div> -->
         
+
+          <div id="multiselect-sample" class="control-section">
+            <div class="control-styles">
+                  <ejs-multiselect id='multiselectelement' [dataSource]='searchData' [allowCustomValue]='true' [allowFiltering]='true' [mode]='box' #remote [query]='query' sortOrder='Ascending' 
+                  [formControl]="enquiryForm.controls['zipcodes']" [placeholder]='waterMark' [fields]='fields' 
+                   [sortOrder]='sorting' (filtering)='onFiltering($event)'></ejs-multiselect>
+            </div>
+        </div>
           <!-- <mat-form-field class="full-width">
             <input matInput value="" placeholder="What location or zip codes are you planning to target?" [formControl]="enquiryForm.controls['zipcodes']">
             <mat-icon matTooltip="Please enter zipcodes" matTooltipClass="llp--tooltip error" class="red--alert"
