@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Output, EventEmitter } from '@angular/core';
+import { serverUrl, s3Details } from '../../../config';
 
 @Component({
   selector: 'app-cc-detailed-view',
@@ -15,12 +16,13 @@ import { Output, EventEmitter } from '@angular/core';
 })
 export class CcDetailedViewComponent {
   aliasName: String = ''
-  postDetails = {title:'',description:'',createdOn:''}
+  postDetails = {title:'',description:'',createdOn:'',image:''}
   userId: String = ''
   userSubscription: Subscription;
   setupMessage = 'not set up yet';
   userIpAddress: any
   isLoggedIn: Boolean = false
+  filePath = s3Details.url+'/'+s3Details.coachCornerArticlePath
 
   @Output() detailsLoaded: EventEmitter<boolean> = new EventEmitter();
 
@@ -46,7 +48,8 @@ export class CcDetailedViewComponent {
 
   openCardDetailsModal() {
     let dialogRef: MatDialogRef<any> = this.dialog.open(CcShareViaEmailModelComponent, {
-      width: '720px',     
+      width: '720px',
+      data: {aliasName: this.aliasName}
     })
   }
 
@@ -67,7 +70,7 @@ export class CcDetailedViewComponent {
     }
     this.api.apiRequest('post', 'coach-corner-post/view', req_vars).subscribe(result => {
       if (result.status == "error") {
-        this.postDetails = {title:'',description:'',createdOn:''}
+        this.postDetails = {title:'',description:'',createdOn:'', image:''}
       }
       else {
         this.postDetails = result.data.postDetails

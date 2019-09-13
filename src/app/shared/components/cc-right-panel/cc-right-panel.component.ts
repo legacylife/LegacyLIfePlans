@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, EventEmitter } from '@angular/core';
 import { APIService } from 'app/api.service';
+import { serverUrl, s3Details } from '../../../config';
 
 @Component({
   selector: 'app-cc-right-panel',
@@ -11,7 +12,9 @@ export class CcRightPanelComponent implements OnInit {
   articleTitle = "Most Viewed Articles";
   articleInfo  = []
   userType: String = ''
-
+  
+  filePath = s3Details.url+'/'+s3Details.coachCornerArticlePath
+  
   @Input() private detailsLoaded: EventEmitter<boolean>;
 
   constructor(private api:APIService) { }
@@ -42,7 +45,8 @@ export class CcRightPanelComponent implements OnInit {
         this.articleInfo = []
       }
       else {
-        this.articleInfo = result.data.articles
+        let articles     = result.data.articles
+        this.articleInfo = articles
       }
     }, (err) => {
       console.error(err)

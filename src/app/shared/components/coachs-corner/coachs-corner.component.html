@@ -7,7 +7,7 @@
         <mat-tab label="All Events">
           <div class="content--wrapper" *ngFor="let post of postList">
             <div class="cont--img">
-              <img src="../../../../assets/images/arkenea/cc-1.png" alt="">
+              <img src="{{articleImagePath}}{{post.image}}" alt="">
             </div>
             <div class="cont--desc">
               <h4>{{post.title}}</h4>
@@ -18,25 +18,28 @@
               <span routerLink="/{{userType}}/coach-corner-details/{{post.aliasName}}">(Read more)</span>
             </div>
           </div>
+          <div class="content--wrapper" *ngIf="postList.length <= 0">
+            No articles available
+          </div>
         </mat-tab>
 
         <mat-tab *ngFor="let category of categoryList" label="{{ category.title | titlecase }}">
           <div class="content--wrapper" *ngFor="let post of filteredPostList">
-              <div class="cont--img">
-                <img src="../../../../assets/images/arkenea/cc-1.png" alt="">
-              </div>
-              <div class="cont--desc">
-                <h4>{{post.title}}</h4>
-                <p class="when">
-                  <mat-icon>access_time</mat-icon> {{post.createdOn | date:'short'}}
-                </p>
-                <p class="details" [innerHtml]="post.description |  slice:0:300"></p>
-                <span routerLink="/{{userType}}/coach-corner-details/{{post.aliasName}}">(Read more)</span>
-              </div>
+            <div class="cont--img">
+              <img src="{{articleImagePath}}/{{post.image}}" alt="">
             </div>
-            <div class="content--wrapper" *ngIf="filteredPostList.length <= 0">
-              No articles available
+            <div class="cont--desc">
+              <h4>{{post.title}}</h4>
+              <p class="when">
+                <mat-icon>access_time</mat-icon> {{post.createdOn | date:'short'}}
+              </p>
+              <p class="details" [innerHtml]="post.description |  slice:0:300"></p>
+              <span routerLink="/{{userType}}/coach-corner-details/{{post.aliasName}}">(Read more)</span>
             </div>
+          </div>
+          <div class="content--wrapper" *ngIf="filteredPostList.length <= 0">
+            No articles available
+          </div>
         </mat-tab>
       </mat-tab-group>
     </div>

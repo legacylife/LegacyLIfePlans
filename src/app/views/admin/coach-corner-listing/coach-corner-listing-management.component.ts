@@ -12,11 +12,13 @@ import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { CoachCornerPopupComponent } from './coach-corner-listing-popup/coach-corner-listing-popup.component';
+import { egretAnimations } from 'app/shared/animations/egret-animations';
 
 @Component({
   selector: 'coach-corner-listing-management',
   templateUrl: './coach-corner-listing-management.component.html',
   styleUrls: ['./coach-corner-listing-management.component.scss'],
+  animations: egretAnimations
 })
 
 export class CoachCornerListingManagementComponent implements OnInit {
@@ -58,7 +60,7 @@ export class CoachCornerListingManagementComponent implements OnInit {
       fields: {},
       offset: '',
       limit: '',
-      order: {"orderNo": -1},
+      order: {"modifiedOn": -1},
     }
     this.api.apiRequest('post', 'coach-corner-post/list', req_vars).subscribe(result => {
       this.loader.close();
@@ -107,6 +109,32 @@ export class CoachCornerListingManagementComponent implements OnInit {
         this.snack.open(res, 'OK', { duration: 4000 })
       }
       this.getLists()
+    })
+  }
+
+  openDeletePopUp(data) {
+    this.confirmService.confirm({ message: 'Are you sure you want to delete this post' }).subscribe(res => {
+      if (res) {
+        this.loader.open();
+        var query = {};
+        const req_vars = {
+          query: Object.assign({ _id: data._id}, query),
+          fromId:localStorage.getItem('userId')
+        }
+        this.api.apiRequest('post', 'coach-corner-post/delete', req_vars).subscribe(result => {
+          if (result.status == "error") {
+            this.loader.close();
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          } else {
+            this.getLists()
+            this.loader.close();
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          }
+        }, (err) => {
+          console.error(err)
+          this.loader.close();
+        })
+      }
     })
   }
 }

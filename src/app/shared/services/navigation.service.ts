@@ -191,7 +191,7 @@ export class NavigationService {
       name: 'Coach’s Corner',
       type: 'link',
       icon: 'book',
-      state: '/advisor/coachs-corner'
+      state: '/customer/coachs-corner'
     },
     {
       name: 'Invite',

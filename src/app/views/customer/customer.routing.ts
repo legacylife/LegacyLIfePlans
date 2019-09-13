@@ -62,6 +62,8 @@ import { ElectronicMediaDetailsComponent } from './customer-home/passwords-digit
 import { TodosListingComponent } from '../todos-listing/todos-listing.component';
 import { ProUserAuthGuard as ProUserGuard } from '../../shared/services/auth/prouserauth.guard';
 import { ErrorComponent } from './../error/error.component';
+import { CoachsCornerComponent } from 'app/shared/components/coachs-corner/coachs-corner.component';
+import { CcDetailedViewComponent } from 'app/shared/components/cc-detailed-view/cc-detailed-view.component';
 console.log("cutostomer routing...")
 export const CustomerRoutes: Routes = [
   {
@@ -560,6 +562,28 @@ export const CustomerRoutes: Routes = [
         component: CustomerSubscriptionComponent,
         canActivate: [UserAuthGuard],
         data: { title: 'Subscription' }
+      }
+    ]
+  },
+  {
+    path: 'coachs-corner',
+    component: CustomerLayoutComponent,
+    data: { title: 'Coachs Corner' },
+    children: [
+      {
+        path: '',
+        component: CoachsCornerComponent,
+      }
+    ]
+  },
+  {
+    path: 'coach-corner-details/:aliasName',
+    component: CustomerLayoutComponent,
+    data: { title: 'Coachs Corner' },
+    children: [
+      {
+        path: '',
+        component: CcDetailedViewComponent,
       }
     ]
   },

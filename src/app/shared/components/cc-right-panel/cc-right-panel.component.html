@@ -2,7 +2,7 @@
   <header> {{articleTitle}} </header>
   <section *ngFor="let aInfo of articleInfo" routerLink="/{{userType}}/coach-corner-details/{{aInfo.aliasName}}">
     <div class="img--box">
-      <img src="{{aInfo.image}}" alt="">
+      <img src="{{filePath}}/{{aInfo.image}}" alt="">
     </div>
     <div class="img--desc">
       <p class="name">{{aInfo.title}}</p>

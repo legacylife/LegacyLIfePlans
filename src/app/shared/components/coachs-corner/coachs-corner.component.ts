@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
 import { APIService } from 'app/api.service';
+import { serverUrl, s3Details } from '../../../config';
 
 @Component({
   selector: 'app-coachs-corner',
@@ -13,6 +14,7 @@ export class CoachsCornerComponent implements OnInit {
   postList = []
   filteredPostList = []
   userType = ''
+  articleImagePath = s3Details.url+'/'+s3Details.coachCornerArticlePath
 
   @Output() detailsLoaded: EventEmitter<boolean> = new EventEmitter();
 
@@ -32,7 +34,7 @@ export class CoachsCornerComponent implements OnInit {
    */
   getCategoryLists(query = {}, search = false) {
     const req_vars = {
-      query: {},
+      query: {status:'On'},
       fields: {},
       offset: '',
       limit: '',
@@ -57,18 +59,18 @@ export class CoachsCornerComponent implements OnInit {
    */
   getPostLists(query = {}, search = false) {
     const req_vars = {
-      query: {},
+      query: {status:'On'},
       fields: {},
       offset: '',
       limit: '',
-      order: {"createdOn": -1},
+      order: {"modifiedOn": -1},
     }
     this.api.apiRequest('post', 'coach-corner-post/list', req_vars).subscribe(result => {
       if (result.status == "error") {
         this.postList = [];
       }
       else {
-        this.postList = result.data.postList
+        this.postList = result.data.postList.filter((listing: any) => listing.category.status === 'On');
         this.detailsLoaded.emit(true);
       }
     }, (err) => {

@@ -14,6 +14,10 @@
     overflow: auto;
 }
 
+.add--new.disabled {
+    pointer-events: none;
+    color: #b1b1b1;
+}
 
 @media screen and (orientation:landscape) and (max-width: 850px){
     .invite--sub--line{
