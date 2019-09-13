@@ -3,8 +3,12 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { UserAPIService } from 'app/userapi.service';
+import { FilteringEventArgs } from '@syncfusion/ej2-angular-dropdowns';
+import { Query, DataManager, WebApiAdaptor, UrlAdaptor, ODataV4Adaptor} from '@syncfusion/ej2-data';
+import { EmitType } from '@syncfusion/ej2-base';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
+import { serverUrl } from '../../../../config';
 //https://ej2.syncfusion.com/angular/demos/#/material/multi-select/custom-value
 @Component({
   selector: 'app-submit-enquiry-modal',
@@ -18,35 +22,46 @@ export class SubmitEnquiryModalComponent implements OnInit {
   endUserType: string
   emailHiddenVal:boolean = false;
   minDate = new Date()
+  zipcode: string;
 
-  public locationList: { [key: string]: Object }[] = []
-
-    // define the JSON of data
-  public locationList1: { [key: string]: Object }[] = [
-      { Id: '', Game: 'Select Zipcodes' }
-  ];
-  // map the appropriate columns to fields property
-  public fields: object = {text: 'ZIP', value: '_id'};
-  // set the placeholder to MultiSelect input element
-  public waterMark: string = 'What location or zip codes are you planning to target?';
-  // set the type of mode for how to visualized the selected items in input element.
-  public box : string = 'Box';
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
     private loader: AppLoaderService, private confirmService: AppConfirmService) {
   }
 
-  ngOnInit() {
-      this.userFullName = localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName");
-      this.userId = localStorage.getItem("endUserId");
-      this.endUserType = localStorage.getItem("endUserType");
-      this.enquiryForm = this.fb.group({
-        zipcodes: new FormControl(''),
-        fromDate: new FormControl(''),
-        toDate: new FormControl(''),
-        message: new FormControl('')
-      });
-      this.getAllZipcodes();
+  public searchData: DataManager = new DataManager({
+    url: serverUrl+'/api/zipcodes/getAllZipcodes',
+    adaptor: new ODataV4Adaptor,
+    crossDomain: true
+  });
+
+  public query: Query  = new Query().select(['ZIP']).take(100);
+  public fields: object = {text: 'ZIP', value: '_id'};
+  public waterMark: string = 'What location or zip codes are you planning to target?';
+  public box : string = 'Box';
+  public sorting: string = 'Ascending';
+
+  public onFiltering: EmitType<any> =  (e: FilteringEventArgs) => {
+    if(e.text == '') e.updateData(this.searchData);
+    else{
+      let query: Query = new Query().select(['_id', 'ZIP']);
+      query = (e.text !== '') ? query.where('ZIP', 'endswith', e.text, true) : query;
+      e.updateData(this.searchData, query);
     }
+  };
+    
+  ngOnInit() {
+        this.userFullName = localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName");
+        this.userId = localStorage.getItem("endUserId");
+        this.endUserType = localStorage.getItem("endUserType");
+        this.enquiryForm = this.fb.group({
+          zipcodes: new FormControl(''),
+          fromDate: new FormControl(''),
+          toDate: new FormControl(''),
+          message: new FormControl('')
+        });
+       // this.getAllZipcodes();
+    }
+
 
     enquiryFormSubmit(formData = null) {
       let enquiryData = {
@@ -65,29 +80,8 @@ export class SubmitEnquiryModalComponent implements OnInit {
       })
     }
 
-    toggleSearchSuggestion(event) {
-      console.log('searchValue here',event)
-      let searchValue = this.enquiryForm.controls['zipcodes'].value;
-      if(searchValue.trim().length > 3){
-        //this.enquiryForm.controls['zipcodes'].setValue(value);
-        console.log('searchValue',searchValue)
-        //this.getAllZipcodes();
-      }
-    }
+    
 
-    getAllZipcodes() {
-      let enquiryData = {
-        query: Object.assign({}),
-        limit: 10,
-      }
-      this.userapi.apiRequest('post', 'zipcodes/getAllZipcodes', enquiryData).subscribe(result => {
-        if (result.status=="success") {      
-          this.locationList = result.data.locationList;
-        }     
-      }, (err) => {
-        this.snack.open(err, 'OK', { duration: 4000 })
-      })
-    }
 
   }
 

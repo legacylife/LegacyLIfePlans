@@ -10,17 +10,19 @@
       <div fxLayout="row wrap">
         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
           
-          <!-- <div id="multiselect-sample" class="control-section">
+          <div id="multiselect-sample" class="control-section">
               <div class="control-styles">
-                    <ejs-multiselect id='custom-list' [dataSource]='locationList' [allowCustomValue]=true [mode]='box' [formControl]="enquiryForm.controls['zipcodes']"  (input)="toggleSearchSuggestion($event.value)" [placeholder]='waterMark' [fields]='fields'></ejs-multiselect>
+                    <ejs-multiselect id='multiselectelement' [dataSource]='searchData' [allowFiltering]='true' [mode]='box' #remote [query]='query' sortOrder='Ascending' 
+                    [formControl]="enquiryForm.controls['zipcodes']" [placeholder]='waterMark' [fields]='fields' 
+                     [sortOrder]='sorting' (filtering)='onFiltering($event)'></ejs-multiselect>
               </div>
-          </div> -->
+          </div>
         
-          <mat-form-field class="full-width">
+          <!-- <mat-form-field class="full-width">
             <input matInput value="" placeholder="What location or zip codes are you planning to target?" [formControl]="enquiryForm.controls['zipcodes']">
             <mat-icon matTooltip="Please enter zipcodes" matTooltipClass="llp--tooltip error" class="red--alert"
             *ngIf="enquiryForm.controls['zipcodes'].hasError('required') && enquiryForm.controls['zipcodes'].touched">help_outline</mat-icon>
-          </mat-form-field>
+          </mat-form-field> -->
 
         </div>
         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
