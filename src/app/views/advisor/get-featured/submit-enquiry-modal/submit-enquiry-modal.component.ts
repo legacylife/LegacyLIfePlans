@@ -34,7 +34,7 @@ export class SubmitEnquiryModalComponent implements OnInit {
     crossDomain: true
   });
 
-  public query: Query  = new Query().select(['ZIP']).take(100);
+  public query: any  = new Query().select(['ZIP']).take(100);
   public fields: object = {text: 'ZIP', value: '_id'};
   public waterMark: string = 'What location or zip codes are you planning to target?';
   public box : string = 'Box';
