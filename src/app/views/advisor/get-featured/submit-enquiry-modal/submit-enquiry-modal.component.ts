@@ -28,7 +28,7 @@ export class SubmitEnquiryModalComponent implements OnInit {
     private loader: AppLoaderService, private confirmService: AppConfirmService) {
   }
 
-  public searchData: DataManager = new DataManager({
+  public searchData: any = new DataManager({
     url: serverUrl+'/api/zipcodes/getAllZipcodes',
     adaptor: new ODataV4Adaptor,
     crossDomain: true
@@ -43,7 +43,7 @@ export class SubmitEnquiryModalComponent implements OnInit {
   public onFiltering: EmitType<any> =  (e: FilteringEventArgs) => {
     if(e.text == '') e.updateData(this.searchData);
     else{
-      let query: Query = new Query().select(['_id', 'ZIP']);
+      let query: any = new Query().select(['_id', 'ZIP']);
       query = (e.text !== '') ? query.where('ZIP', 'endswith', e.text, true) : query;
       e.updateData(this.searchData, query);
     }

@@ -126,12 +126,20 @@ export class AddManagementViewComponent implements OnInit {
       return array.join(", ");
   }
 
-  createPaymentLink() {
+  async createPaymentLink() {
     let cost = this.enquiryFormReply.controls['cost'].value;
     let zipcodeList = this.enquiryFormReply.controls['zipcodes'].value;
-    if(zipcodeList){
-        if(cost){
-          this.enquiryFormReply.controls['stripePaymentLink'].setValue('https://www.google.com/search?stripPaymentLink');
+    if(zipcodeList) {
+        if(cost) {
+          /*
+          let result = await this.api.apiRequest('post', 'advertisement/generate-invoice-link', {query: {customerId : this.data.customerId}}).toPromise()
+          if( result.status == 'error' ) {
+            this.snack.open("Please try again.", 'OK', { duration: 4000 })
+          } */
+          let invoiceId = 'in_1EufANAnNCwnZeR0xpiNhdIH'//result.data.invoiceId
+          let link = serverUrl+'/advertisement-payment/'+btoa(this.data.customerId)+'/'+btoa(invoiceId)
+
+          this.enquiryFormReply.controls['stripePaymentLink'].setValue(link);
         }else{
           this.snack.open("Please enter payment cost first.", 'OK', { duration: 4000 })
         }
