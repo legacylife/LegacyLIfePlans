@@ -34,7 +34,7 @@ export class SubmitEnquiryModalComponent implements OnInit {
     crossDomain: true
   });
 
-  public query: Query  = new Query().select(['ZIP']).take(100);
+  public query: any  = new Query().select(['ZIP']).take(100);
   public fields: object = {text: 'ZIP', value: '_id'};
   public waterMark: string = 'What location or zip codes are you planning to target?';
   public box : string = 'Box';
@@ -43,7 +43,7 @@ export class SubmitEnquiryModalComponent implements OnInit {
   public onFiltering: EmitType<any> =  (e: FilteringEventArgs) => {
     if(e.text == '') e.updateData(this.searchData);
     else{
-      let query: Query = new Query().select(['_id', 'ZIP']);
+      let query: any = new Query().select(['_id', 'ZIP']);
       query = (e.text !== '') ? query.where('ZIP', 'endswith', e.text, true) : query;
       e.updateData(this.searchData, query);
     }
