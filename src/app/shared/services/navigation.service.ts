@@ -56,14 +56,14 @@ export class NavigationService {
       name: 'REFERRAL PROGRAM',
       type: 'link',
       tooltip: 'Referral program',
-      icon: 'card_giftcard',
+      icon: 'nature_people',
       state: 'admin/referral-program'
     },
     {
       name: 'FREE TRIAL PERIOD MANAGEMENT',
       type: 'link',
       tooltip: 'Free Trial Period Management',
-      icon: 'card_giftcard',
+      icon: 'hourglass_empty',
       state: 'admin/free-trial-period-management'
     },
     {
@@ -81,14 +81,14 @@ export class NavigationService {
       name: 'ADVERTISEMENT MANAGEMENT',
       type: 'link',
       tooltip: 'Advertisement management',
-      icon: 'business',
+      icon: 'public',
       state: 'admin/ad-management'
     },
     {
       name: 'DECEASED REQUESTS',
       type: 'link',
       tooltip: 'Deceased requests',
-      icon: 'add_location',
+      icon: 'sports_handball',
       state: 'admin/deceased-requests'
     },
     {
@@ -102,14 +102,14 @@ export class NavigationService {
       name: 'ACTIVITY LOG',
       type: 'link',
       tooltip: 'Activity Log',
-      icon: 'pages',
+      icon: 'insert_chart',
       state: 'admin/activity-log'
     },
     {
       name: 'REPORTS',
       type: 'dropDown',
       tooltip: 'Reports',
-      icon: 'list',
+      icon: 'report',
       state: 'admin',
       sub: [
         { name: 'ZIP CODE MAP', state: 'map' }
