@@ -128,6 +128,32 @@
         }
     }
    
+    .display--data{
+        display: flex;
+        margin-bottom: 15px;
+        .left--label{
+            font-family: $font--lato--bold;
+            font-size: 16px;
+            margin-right: 15px;
+        }
+        .right--label{
+            font-size: 15px;
+        }
+    }
+    .admin--reply{
+        margin-top: 15px;
+        border-top: 1px solid #ddd;
+        padding-top: 20px;
+        h5{
+            font-size: 18px;
+            margin: 0 0 15px 0;
+            color: #727933;
+        }
+    }
+    .min--hgt--auto{
+        min-height: auto !important;
+    }
+    
 }
 
 @media only screen and (max-width: 599px){
@@ -139,5 +165,11 @@
     }
     .get--featured--section .right .features{
         font-size: 16px;
+    }
+    .get--featured--section .display--data {
+        flex-direction: column;
+    }
+    .get--featured--section .display--data .left--label {
+        margin: 0 0 5px 0;
     }
 }
