@@ -88,6 +88,7 @@ import { ExecutorModalComponent } from './views/executor-modal/executor-modal.co
 
 import { NgxStripeModule } from 'ngx-stripe';
 import { UserIdleModule } from 'angular-user-idle';
+
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }

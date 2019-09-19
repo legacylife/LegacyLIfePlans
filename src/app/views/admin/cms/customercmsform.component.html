@@ -1,0 +1,340 @@
+<mat-card class="p-0" *ngIf="aceessSection">
+    <mat-card-title class="">
+        <!--  <div class="card-title-text">Form validation</div>-->
+        <mat-divider></mat-divider>
+    </mat-card-title>
+    <mat-card-content>
+        <form class="llp-form-wrapper pt-1" [formGroup]="customerCmsForm" method="post" (ngSubmit)="updatePage(customerCmsForm.value)">
+            <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0">
+                    <div class="pb-0">
+                        <mat-label>Page Title</mat-label>
+                        <mat-form-field class="full-width">
+                            <input matInput name="pagetitle" [formControl]="customerCmsForm.controls['pageTitle']" value="">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0">
+                    <div class="pb-0">
+                        <mat-label>Page Sub Title</mat-label>
+                        <mat-form-field class="full-width">
+                            <input matInput name="pagesubTitle" [formControl]="customerCmsForm.controls['pagesubTitle']" value="">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="upload--buss--docs--sec">
+                        <label>Top Banner</label>
+                        <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                          (fileOver)="fileOverBase($event)" [uploader]="uploader">
+                          <input type="file" name="documents" ng2FileSelect [uploader]="uploader" (change)="fileOverBase('')" />
+                          <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                          <div class="select--file">Select file from your computer</div>
+                        </div>
+                        <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
+
+                        <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
+                            <mat-chip>
+                              <mat-error>{{err.error}}</mat-error>
+                            </mat-chip>
+                        </mat-chip-list>
+    
+                        <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
+                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
+                            <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
+                        </div>
+               </div>
+
+               <div *ngIf="topBannerPath">
+                    <img src="{{topBannerPath}}"  style="height: 220px;"  name="topBanner" />
+                </div>
+
+                <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0">
+                    <div class="pb-0">
+                        <mat-label>Middle Title</mat-label>
+                        <mat-form-field class="full-width">
+                            <input matInput name="middleTitle" [formControl]="customerCmsForm.controls['middleTitle']" value="">
+                        </mat-form-field>
+                    </div>
+                </div>
+               
+                <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0">
+                    <div class="pb-0">
+                    </div>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0">
+                    <div class="pb-0">
+                            <mat-label>Middle Text</mat-label>
+                        <mat-card class="p-0">
+                            <mat-card-content class="p-0">
+                                <ejs-richtexteditor id='defaultRTE1' [formControl]="customerCmsForm.controls['middleText']" [toolbarSettings]='tools' [quickToolbarSettings]='quickTools'></ejs-richtexteditor>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+
+                <div class="upload--buss--docs--sec">
+                        <label>Middle Banner</label>
+                        <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                          (fileOver)="fileOverMiddleBannerBase($event)" [uploader]="uploaderMiddleBanner">
+                          <input type="file" name="documents" ng2FileSelect [uploader]="uploaderMiddleBanner" (change)="fileOverMiddleBannerBase('')" />
+                          <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                          <div class="select--file">Select file from your computer</div>
+                        </div>
+                        <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
+                    <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrorsMiddile;">
+                            <mat-chip>
+                              <mat-error>{{err.error}}</mat-error>
+                            </mat-chip>
+                    </mat-chip-list>
+    
+                    <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderMiddleBanner.getNotUploadedItems().length">
+                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercentMiddle + '%' }">{{currentProgessinPercentMiddle}}%</div>
+                            <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercentMiddle"></mat-progress-bar>
+                    </div>
+                </div>
+
+                <div *ngIf="middlePath">
+                    <img src="{{middlePath}}"  style="height: 220px;"  name="middleBanner" />
+                </div>
+
+                <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0">
+                    <div class="pb-0">
+                        <mat-label>Lower Title</mat-label>
+                        <mat-form-field class="full-width">
+                            <input matInput name="lowerTitle" [formControl]="customerCmsForm.controls['lowerTitle']" value="">
+                        </mat-form-field>
+                    </div>
+                </div>                
+                <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0">
+                        <div class="pb-0">
+                        </div>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0">
+                    <div class="pb-0">
+                            <mat-label>Lower Text</mat-label>
+                        <mat-card class="p-0">
+                            <mat-card-content class="p-0">
+                                <ejs-richtexteditor id='defaultRTE2' [formControl]="customerCmsForm.controls['lowerText']" [toolbarSettings]='tools' [quickToolbarSettings]='quickTools'></ejs-richtexteditor>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+             </div>
+
+            <div class="upload--buss--docs--sec">
+                    <label>Lower Banner</label>
+                    <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                      (fileOver)="fileOverLowerBannerBase($event)" [uploader]="uploaderLowerBanner">
+                      <input type="file" name="documents" ng2FileSelect [uploader]="uploaderLowerBanner" (change)="fileOverLowerBannerBase('')" />
+                      <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                      <div class="select--file">Select lower banner image from your computer</div>
+                    </div>
+                    <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
+      
+                    <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrorsLower;">
+                        <mat-chip>
+                          <mat-error>{{err.error}}</mat-error>
+                        </mat-chip>
+                </mat-chip-list>
+    
+                <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderLowerBanner.getNotUploadedItems().length">
+                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercentLower + '%' }">{{currentProgessinPercentLower}}%</div>
+                    <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="currentProgessinPercentLower"></mat-progress-bar>
+                </div>
+            </div>
+
+            <div *ngIf="lowerPath">
+                <img src="{{lowerPath}}" style="height: 220px;" name="lowerBanner" />
+            </div>            
+ 
+            <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0" formArrayName="bulletPoints">
+                <div class="pb-0">
+                    <mat-label>Features</mat-label>
+                    <div fxLayout="row wrap" *ngFor="let web of bulletsPointsArray.controls; let i = index" [formGroupName]="i">
+                        <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Name" formControlName="name">
+                        </mat-form-field>
+                        </div>
+                        <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
+                        <mat-icon class="mt-1 clr--red cursor-pointer" *ngIf="i>0" (click)="deleteBulletsPoints(i);">delete</mat-icon>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" *ngIf="bulletsPointsArray.length < 21">
+                        <div fxFlex.xs="100">
+                        <div class="add--new" (click)="addBulletsPoints();">
+                            <mat-icon>add_circle</mat-icon>
+                            Add New
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0" formGroupName="facts">
+                    <h3>Facts</h3>
+                    <div class="pb-0">
+                        <mat-label>Facts</mat-label>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Title" formControlName="title" value="" [formControl]="getFormGroup('facts').controls['title']">
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                                <input matInput placeholder="Sub Title" formControlName="subTitle" value="" [formControl]="getFormGroup('facts').controls['subTitle']">
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                                <input matInput placeholder="Saved File" formControlName="savedFiles" value="" [formControl]="getFormGroup('facts').controls['savedFiles']">
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                                <input matInput placeholder="Trusted Advisors" formControlName="trustedAdvisors" value="" [formControl]="getFormGroup('facts').controls['trustedAdvisors']">
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                                <input matInput placeholder="Success Login" formControlName="successLogin" value="" [formControl]="getFormGroup('facts').controls['successLogin']">
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                                <input matInput placeholder="LLP Members" formControlName="LLPMembers" value="" [formControl]="getFormGroup('facts').controls['LLPMembers']">
+                        </mat-form-field>
+                    </div>
+             </div>
+
+            <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg" formGroupName="quickOverview1">
+                <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0">
+                        <div class="upload--buss--docs--sec">
+                            <label>Quick Overview 1</label>
+                            <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverQOW1Base($event)" [uploader]="uploaderQOW1">
+                            <input type="file" name="documents" ng2FileSelect [uploader]="uploaderQOW1" (change)="fileOverQOW1Base('')" />
+                            <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                            <div class="select--file">Select quick overview video from your computer</div>
+                            </div>
+                            <div class="file--details mb-1">Supported formats mov,mp3,mpeg,wav,ogg,opus,bmp,tiff,svg,webm,mpeg4,3gpp,avi,mpegps,wmv,flv</div>
+
+                            <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrorsQOW1;">
+                                <mat-chip>
+                                <mat-error>{{err.error}}</mat-error>
+                                </mat-chip>
+                            </mat-chip-list>
+
+                            <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderQOW1.getNotUploadedItems().length">
+                                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercentQOW1 + '%' }">{{currentProgessinPercentQOW1}}%</div>
+                                <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="currentProgessinPercentQOW1"></mat-progress-bar>
+                            </div>
+                        </div>
+
+                        <div *ngIf="QOW1Path">
+                            <img src="{{QOW1Path}}" style="height: 220px;" name="QOW1Path" />
+                        </div>  
+                    </div>
+
+                    <mat-form-field class="full-width">
+                    <input matInput formControlName="title" placeholder="title" value="" [formControl]="getFormGroup('quickOverview1').controls['title']">
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                    <input matInput formControlName="subTitle" placeholder="subTitle" value="" [formControl]="getFormGroup('quickOverview1').controls['subTitle']">
+                    </mat-form-field>
+            </div>
+
+            <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg" formGroupName="quickOverview1">
+                    <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0">
+                            <div class="upload--buss--docs--sec">
+                                <label>Quick Overview 2</label>
+                                <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                                (fileOver)="fileOverQOW2Base($event)" [uploader]="uploaderQOW2">
+                                <input type="file" name="documents" ng2FileSelect [uploader]="uploaderQOW2" (change)="fileOverQOW2Base('')" />
+                                <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                                <div class="select--file">Select quick overview video from your computer</div>
+                                </div>
+                                <div class="file--details mb-1">Supported formats mov,mp3,mpeg,wav,ogg,opus,bmp,tiff,svg,webm,mpeg4,3gpp,avi,mpegps,wmv,flv</div>
+            
+                                <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrorsQOW2;">
+                                    <mat-chip>
+                                    <mat-error>{{err.error}}</mat-error>
+                                    </mat-chip>
+                                </mat-chip-list>
+
+                                <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderQOW2.getNotUploadedItems().length">
+                                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercentQOW2 + '%' }">{{currentProgessinPercentQOW2}}%</div>
+                                    <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="currentProgessinPercentQOW2"></mat-progress-bar>
+                                </div>
+                            </div>
+                        </div>  
+                        <div *ngIf="QOW2Path">
+                            <img src="{{QOW2Path}}" style="height: 220px;" name="QOW2Path" />
+                        </div>                       
+    
+                        <mat-form-field class="full-width">
+                        <input matInput formControlName="title" placeholder="title" value="" [formControl]="getFormGroup('quickOverview2').controls['title']">
+                        </mat-form-field>
+                        <mat-form-field class="full-width">
+                        <input matInput formControlName="subTitle" placeholder="subTitle" value="" [formControl]="getFormGroup('quickOverview2').controls['subTitle']">
+                        </mat-form-field>
+               </div>
+
+               <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0" formArrayName="testimonials">
+                    <div class="pb-0">
+                        <mat-label>Testimonials List </mat-label>
+                        <div fxLayout="row wrap" *ngFor="let web of testimonialsArray.controls; let i = index" [formGroupName]="i">
+                                <mat-label>Testimonial {{i+1}} </mat-label>
+                                        <div fxFlex.xs="90" fxFlex.sm="90" fxFlex.md="90" fxFlex.lg="90" fxFlex.xl="90" class="pr-2">
+                                            <mat-form-field class="full-width">
+                                                <input matInput placeholder="Name" formControlName="name">
+                                            </mat-form-field>
+
+                                            <div fxFlex="70" fxFlex.gt-xs="200" class="pr-0">
+                                                    <div class="upload--buss--docs--sec">
+                                                        <label>Profile Photo</label>
+                                                      
+                                                        <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                                                        (fileOver)="onFileSelected($event,i)" [uploader]="uploaderProfilePhoto">
+                                                        <input type="file" name="profilePhoto" ng2FileSelect [uploader]="uploaderProfilePhoto" (change)="onFileSelected($event,i)" />
+                                                        <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                                                        <div class="select--file">Select profile phto from your computer</div>
+                                                        </div>
+                                                        <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
+                                                    </div>                                              
+                                            </div> 
+
+                                            <mat-form-field class="full-width">
+                                                    <input matInput placeholder="Certifications" formControlName="certifications">
+                                            </mat-form-field>
+
+                                            <mat-form-field class="full-width">
+                                                    <input matInput placeholder="Comment" formControlName="comment">
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
+                                            <mat-icon class="mt-1 clr--red cursor-pointer" *ngIf="i>0" (click)="deleteTestimonialsPoints(i);">delete</mat-icon>
+                                        </div>
+                        </div>
+                        <div fxLayout="row wrap" *ngIf="testimonialsArray.length < 10">
+                            <div fxFlex.xs="100">
+                            <div class="add--new" (click)="addTestimonialsPoints();">
+                                <mat-icon>add_circle</mat-icon>
+                                Add New
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderProfilePhoto.getNotUploadedItems().length">
+                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercentProfilePhoto + '%' }">{{currentProgessinPercentProfilePhoto}}%</div>
+                        <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="currentProgessinPercentProfilePhoto"></mat-progress-bar>
+                    </div>
+                </div>
+
+        </div>                       
+                          {{customerCmsForm.invalid}}
+            <!-- [disabled]="customerCmsForm.invalid" -->
+            <button mat-raised-button class="mt-1 llp--primary--btn" >Submit</button>
+        </form>
+    </mat-card-content>
+</mat-card>
+
+<div class="row" *ngIf="!aceessSection">
+    <p>You don't have permission to this section.</p>
+</div>

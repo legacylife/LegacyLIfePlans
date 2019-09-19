@@ -49,7 +49,8 @@ export class NavigationService {
       state: 'admin',
       sub: [
         { name: 'STATIC PAGES PAGES', state: 'cms' },
-        { name: 'FILE UPLOAD INSTRUCTIONS', state: 'file-upload-instructions' }
+        { name: 'FILE UPLOAD INSTRUCTIONS', state: 'file-upload-instructions' },
+        { name: 'CUSTOMER/ADVISOR HOME PAGES', state: 'customerCms' },
       ]
     },
     {
