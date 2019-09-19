@@ -206,7 +206,7 @@ function enquiryListing(req, res) {
                 replyContnt['paymentLink'] = PaymentLink
                 replyContnt['comment'] = proquery.message;
                 console.log("\n****replyContnt****",replyContnt)
-                sendEnquiryReplyMail('AdviserFeturedRequestReply', 'nileshy@arkenea.com', toName, replyContnt);
+                sendEnquiryReplyMail('AdviserFeturedRequestReply', emailId, toName, replyContnt);
                 let result = { "message": "Reply sent successfully!",'logDetails':logDetails }
                 res.status(200).send(resFormat.rSuccess(result))
               }
