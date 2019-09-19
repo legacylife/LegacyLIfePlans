@@ -7,6 +7,7 @@ import { LandingLayoutComponent } from './shared/components/layouts/landing-layo
 import { ErrorComponent } from 'app/views/error/error.component';
 import { AuthGuard } from './shared/services/auth/auth.guard';
 import { CcDetailedViewComponent } from './shared/components/cc-detailed-view/cc-detailed-view.component';
+import { AdvertisementPaymentComponent } from './shared/components/advertisement-payment/advertisement-payment.component';
 console.log('App---routing');
 export const rootRouterConfig: Routes = [
   {
@@ -94,6 +95,17 @@ export const rootRouterConfig: Routes = [
       {
         path: '',
         component: CcDetailedViewComponent,
+      }
+    ]
+  },
+  {
+    path: 'advertisement-payment/:userId/:invoiceId/:uniqueId',
+    component: AdvisorLandingLayoutComponent,
+    data: { title: 'Advertisement Payments' },
+    children: [
+      {
+        path: '',
+        component: AdvertisementPaymentComponent,
       }
     ]
   },

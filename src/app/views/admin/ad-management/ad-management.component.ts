@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
+import { egretAnimations } from 'app/shared/animations/egret-animations';
 
 @Component({
   selector: 'ad-management',
   templateUrl: './ad-management.component.html',
-  styleUrls: ['./ad-management.component.scss']
+  styleUrls: ['./ad-management.component.scss'],
+  animations: egretAnimations
 })
 export class AddManagementComponent implements OnInit {
   aceessSection : any;

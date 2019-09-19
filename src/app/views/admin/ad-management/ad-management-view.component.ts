@@ -9,11 +9,13 @@ import { AppLoaderService } from '../../../shared/services/app-loader/app-loader
 import { serverUrl, s3Details } from '../../../config';
 import { LayoutService } from 'app/shared/services/layout.service';
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, TableService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
+import { egretAnimations } from 'app/shared/animations/egret-animations';
 @Component({
   selector: 'userview',
   templateUrl: './ad-management-view.component.html',
   styleUrls: ['./ad-management.component.scss'],
   providers: [ToolbarService, LinkService, ImageService, HtmlEditorService,TableService, QuickToolbarService],
+  animations: egretAnimations
 })
 export class AddManagementViewComponent implements OnInit {
   layoutConf: any;

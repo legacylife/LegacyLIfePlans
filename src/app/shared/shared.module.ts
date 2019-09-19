@@ -99,6 +99,7 @@ import { TodosListingComponent } from './../views/todos-listing/todos-listing.co
 import { TodosComponent } from './../views/todos/todos.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CardDetailsComponent } from './components/card-details-modal/card-details-modal.component';
+import { AdvertisementPaymentModalComponent } from './components/advertisement-payment-modal/advertisement-payment-modal.component';
 import { InviteComponent } from './components/header-top/invite-modal/invite-modal.component';
 import { SubscriptionService } from './services/subscription.service';
 import { PetsListComponent } from 'app/views/customer/customer-home/pets/pets-list/pets-list.component';
@@ -154,6 +155,7 @@ import { CoachsCornerComponent } from './components/coachs-corner/coachs-corner.
 import { CcRightPanelComponent } from './components/cc-right-panel/cc-right-panel.component';
 import { CcDetailedViewComponent } from './components/cc-detailed-view/cc-detailed-view.component';
 import { CcShareViaEmailModelComponent } from './components/cc-share-via-email-model/cc-share-via-email-model.component';
+import { AdvertisementPaymentComponent } from './components/advertisement-payment/advertisement-payment.component';
 /* 
   Only Required if you want to use Angular Landing
   (https://themeforest.net/item/angular-landing-material-design-angular-app-landing-page/21198258)
@@ -194,6 +196,7 @@ const classesToInclude = [
   TodosListingComponent,
   TodosComponent,
   CardDetailsComponent,
+  AdvertisementPaymentModalComponent,
   InviteComponent,
   PetsListComponent,
   PetsDetailsComponent,
@@ -247,7 +250,8 @@ const classesToInclude = [
   CoachsCornerComponent,
   CcRightPanelComponent,
   CcDetailedViewComponent,
-  CcShareViaEmailModelComponent
+  CcShareViaEmailModelComponent,
+  AdvertisementPaymentComponent
 ]
 
 @NgModule({
@@ -295,7 +299,8 @@ const classesToInclude = [
     PetsModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent,SpecialNeedsModelComponent,
     DevicesModalComponent,ElectronicMediaModalComponent,AssetsModelComponent,
     VehicleModelComponent,RealEstateModelComponent,TimeCapsuleMoalComponent,legalStuffModalComponent,InsuranceModalComponent,
-    FinanceModalComponent,DebtModalComponent,FinalWishesFormModalComponent,LettersMessagesModelComponent, InviteComponent, CcShareViaEmailModelComponent
+    FinanceModalComponent,DebtModalComponent,FinalWishesFormModalComponent,LettersMessagesModelComponent, InviteComponent, CcShareViaEmailModelComponent,
+    AdvertisementPaymentModalComponent
   ],
   providers: [
     ThemeService,
