@@ -148,14 +148,15 @@ function enquiryListing(req, res) {
                * Create stripe user if not exists
                */
               let userDetails = found.customerId,
-                  stripeCustomerId = userDetails.stripeCustomerId
+                  stripeCustomerId = userDetails.stripeCustomerId,
+                  newStripeCustomerId = ''
               /**
                * Add payment link data
                */
               
               await stripeHelper.createInvoice(userData.username, stripeCustomerId, proquery.cost, 'USD', userDetails ).then( response => {
                 invoiceDetails = response
-                stripeCustomerId = response.stripeCustomerId
+                newStripeCustomerId = response.stripeCustomerId
                 let paymentDetails = {
                   invoiceId: invoiceDetails.invoiceId,
                   invoiceItemId: invoiceDetails.invoiceItemId,
@@ -166,7 +167,7 @@ function enquiryListing(req, res) {
                 adminReplyData = Object.assign(adminReplyData,{paymentDetails:paymentDetails})
               })
 
-              if( !stripeCustomerId ) {
+              if( !stripeCustomerId && newStripeCustomerId != "" ) {
                 await User.update({_id: userDetails._id}, {stripeCustomerId:stripeCustomerId})
               }
             }
