@@ -155,16 +155,16 @@
       <mat-card-content class="p-0">
         <ngx-datatable class="material ml-0 mr-0" [rows]="replyData" [columnMode]="'flex'" [headerHeight]="50"
           [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
-          <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Admin Name" prop="trustId"
+          <!-- <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Admin Name" prop="trustId"
             [flexGrow]="2">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <span>{{row?.adminId?.firstName}} {{row?.adminId?.lastName}}</span>
             </ng-template>
-          </ngx-datatable-column>
+          </ngx-datatable-column> -->
           <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Zipcodes" prop="zipcodes"
             [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              <!-- {{arrayToString(row?.zipcodes)}} --> Prashant 4141
+              {{arrayToString(row?.zipcodes)}}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Cost" prop="cost" [flexGrow]="1">
@@ -178,17 +178,29 @@
               {{row?.message}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Time" prop="createdOn">
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Payment Link" prop="Payment Link"
+            [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{row?.createdOn | date: 'yyyy/MM/dd HH:mm:ss'}}
+              {{row?.paymentDetails.status ==='Pending' ? paymentLink : 'Expired'}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column [resizeable]="false" name="Status">
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Time" prop="createdOn">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row?.createdOn | date: 'short'}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Payment Status" prop="Payment Status"
+            [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row?.status}}
+            </ng-template>
+          </ngx-datatable-column>
+          <!-- <ngx-datatable-column [resizeable]="false" name="Status">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status"
                 (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
             </ng-template>
-          </ngx-datatable-column>
+          </ngx-datatable-column> -->
         </ngx-datatable>
       </mat-card-content>
     </mat-card>
@@ -197,7 +209,7 @@
 
 
 
-  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="70" fxFlex.lg="50" fxFlex.xl="50" class="enq--form--wrapper">
+  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="70" fxFlex.lg="50" fxFlex.xl="50" class="enq--form--wrapper" *ngIf="showReplyEnquiryForm">
     <div class="breadcrumb-title pl-0 mt-1 brdr-t-1">
       <h1 class="bc-title">Reply on Enquiry form.</h1>
     </div>

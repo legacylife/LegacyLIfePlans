@@ -10,6 +10,7 @@ import { serverUrl, s3Details } from '../../../config';
 import { LayoutService } from 'app/shared/services/layout.service';
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, TableService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
 import { egretAnimations } from 'app/shared/animations/egret-animations';
+
 @Component({
   selector: 'userview',
   templateUrl: './ad-management-view.component.html',
@@ -43,6 +44,9 @@ export class AddManagementViewComponent implements OnInit {
   isExpired:boolean = false
   enquiryFormReply: FormGroup
   zipcodeList:[];
+  showReplyEnquiryForm:Boolean = false
+  paymentLink:String = ''
+
   constructor(
     private layout: LayoutService,
     private api: APIService, private route: ActivatedRoute, private fb: FormBuilder, 
@@ -82,6 +86,13 @@ export class AddManagementViewComponent implements OnInit {
         this.row = result.data.enquirydata.customerId;
         if(result.data.enquirydata.adminReply){
           this.replyData = result.data.enquirydata.adminReply;
+          let currentRecord = this.replyData.slice(-1)[0]
+          this.showReplyEnquiryForm = currentRecord['status'] === 'Done' ? false : true
+
+          let encryptedCustomerId = btoa(this.data.customerId._id),
+              encryptedInvoiceId  = btoa(currentRecord.paymentDetails.invoiceId)
+
+          this.paymentLink = serverUrl+'/advertisement-payment/'+encryptedCustomerId+'/'+encryptedInvoiceId+'/'+this.data.uniqueId
         }
         
         this.fullname = '';
