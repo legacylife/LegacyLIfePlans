@@ -7,16 +7,19 @@ const User = require('./../models/Users')
 var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
+const stripeHelper = require('./../helpers/stripeInvoiceHelper')
+
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 var EmailTemplate = require('./../models/EmailTemplates.js')
 const advertisement = require('./../models/advertisements.js')
 const { isEmpty, cloneDeep, map, sortBy } = require('lodash')
+var moment    = require('moment');
 
 function addEnquiry(req, res) {
     let { query } = req.body;
     let { proquery } = req.body;
     var insert = new advertisement();
-    insert.zipcodes   = proquery.zipcodes;
+    insert.zipcodes   = proquery.zipcodes.join();
     insert.userType   = query.userType;
     insert.customerId = ObjectId(query.customerId);
     insert.fromDate   = proquery.fromDate;
@@ -67,7 +70,7 @@ function enquiryListing(req, res) {
         if (listCount) {
           totalRecords = listCount
         }
-         advertisement.findOne(query, function (err, enquirydata) {
+         advertisement.findOne({_id: mongoose.Types.ObjectId(query._id)}, function (err, enquirydata) {
           res.send(resFormat.rSuccess({enquirydata,totalRecords}))
        }).populate('customerId').populate("adminReply.adminId");
     })
@@ -76,30 +79,127 @@ function enquiryListing(req, res) {
   function addEnquiryReply(req, res) {
     let { query } = req.body;
     let { proquery } = req.body;
-    advertisement.findOne({_id:query._id}, function (err, found) {
+    advertisement.findOne({_id:query._id}, async function (err, found) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {         
-        if(found){
+        if(found) {
             let adminReplyArr = {'status':'Pending',adminId:ObjectId(query.adminId),'zipcodes':proquery.zipcodes,'cost':proquery.cost,'message':proquery.message,'createdOn':new Date()};
-            let adminReplyData = '';
-            if(found.adminReply){
+            let adminReplyData = '', invoiceDetails = ''
+            let userData = await User.findOne({_id: found.customerId},{})
+            
+            if( !userData ) {
+              res.send(resFormat.rError('Not found'))
+            }
+            console.log("===adminReply===",found.adminReply)
+            if( found.adminReply.length > 0 ) {
               adminReplyData = found.adminReply;
               let newarry = [];  
-              let list = map(adminReplyData, (row, index) => {
-                if(row.status=='Pending'){
-                  let newRow = Object.assign({}, row, { "status": 'Expired' })
-                  newarry.push(newRow);
-                }else{
-                  newarry.push(row);
+              let list = map(adminReplyData, async function (row, index) {
+                console.log("===row.status===",row.status)
+                if(row.status=='Pending') {
+                  let invoiceId = row.paymentDetails.invoiceId
+                  /**
+                   * Delete / expire payment link
+                   * The invoice to be deleted, it must have status=draft else voide with status=open
+                   */
+                  let invoiceStatus = ''
+                  console.log("===invoiceStatus===",invoiceStatus,"////invoiceId///",invoiceId)
+                  await stripeHelper.retriveInvoice( invoiceId ).then( async function (response) {
+                    console.log("===retriveInvoice===",response)
+                    invoiceStatus = response
+                  
+                    if( invoiceStatus == 'draft' ) {
+                      console.log("===draft===",invoiceStatus)
+                      await stripeHelper.deleteDraftInvoice( invoiceId ).then( response => {
+                        console.log("===deleteDraftInvoice===",response)
+                        invoiceDetails = response
+                      })
+                    }
+                    else if( invoiceStatus == 'open' ) {
+                      console.log("===open===",invoiceStatus)
+                      await stripeHelper.deleteInvoice( invoiceId ).then( response => {
+                        console.log("===deleteInvoice===",response)
+                        invoiceDetails = response
+                      })
+                    }
+                    let oldData = row.paymentDetails,
+                        paymentDetails = {
+                          invoiceId: oldData.invoiceId,
+                          invoiceItemId: oldData.invoiceItemId,
+                          status: 'deleted', //pending, done, delete, void
+                          createdOn: oldData.createdOn,
+                          modifiedOn: new Date()
+                        }
+                    
+                    let newRow = Object.assign({}, row, { "status": 'Expired', "paymentDetails": paymentDetails })
+                    newarry.push(newRow);
+                    console.log("===newarry===",newarry)
+                    adminReplyData =  newarry.concat(adminReplyArr);
+                  })
+                }
+                else {
+                  /**
+                   * Add payment link data
+                   */
+                  await stripeHelper.createInvoice(userData.username, found.customerId, proquery.cost, 'USD').then( response => {
+                    invoiceDetails = response
+                  
+                    console.log("invoiceDetails",invoiceDetails)
+                    row.paymentDetails = {
+                      invoiceId: invoiceDetails.invoiceId,
+                      invoiceItemId: invoiceDetails.invoiceItemId,
+                      status: 'pending', //pending, done, delete, void
+                      createdOn: new Date(),
+                      modifiedOn: new Date()
+                    }
+                    newarry.push(row);
+
+                    adminReplyData =  newarry.concat(adminReplyArr);
+                  })
                 }
               });
 
-              adminReplyData =  newarry.concat(adminReplyArr);
-            }else{
-              adminReplyData = adminReplyArr;
+              
             }
-            advertisement.updateOne({_id:query._id}, {adminReply:adminReplyData}, function (err, logDetails) {
+            else {
+              adminReplyData = adminReplyArr;
+              /**
+               * Create stripe user if not exists
+               */
+              let userDetails = found.customerId,
+                  stripeCustomerId = userDetails.stripeCustomerId
+                  
+              /* if( !stripeCustomerId ) {
+                
+                await stripeHelper.createCustomer( found.customerId ).then( response => {
+                  stripeCustomerId = response
+                })
+              } */
+              /**
+               * Add payment link data
+               */
+              
+              await stripeHelper.createInvoice(userData.username, stripeCustomerId, proquery.cost, 'USD', userDetails ).then( response => {
+                invoiceDetails = response
+                stripeCustomerId = response.stripeCustomerId
+                let paymentDetails = {
+                  invoiceId: invoiceDetails.invoiceId,
+                  invoiceItemId: invoiceDetails.invoiceItemId,
+                  status: 'pending', //pending, done, delete, void
+                  createdOn: new Date(),
+                  modifiedOn: new Date()
+                }
+                adminReplyData = Object.assign(adminReplyData,{paymentDetails:paymentDetails})
+              })
+
+              if( !stripeCustomerId ) {
+                User.update({_id: userDetails._id})
+              }
+            }
+            console.log("invoiceDetails",invoiceDetails,"adminReplyData",adminReplyData)
+            let uniqueId = Math.random().toString(36).slice(2)
+            advertisement.updateOne({_id:query._id}, {adminReply:adminReplyData, uniqueId: uniqueId}, function (err, logDetails) {
               if (err) {
                 res.send(resFormat.rError(err))
               } else {
@@ -123,12 +223,15 @@ function enquiryListing(req, res) {
                   toDate1 = toDate[0]+'/'+toDate[1]+'/'+toDate2[0];
                 }
 
+                let encryptedCustomerId = Buffer.from(String(found.customerId._id), 'binary').toString('base64'),
+                    encryptedInvoiceId  = Buffer.from(String(invoiceDetails.invoiceId), 'binary').toString('base64')
+
                 replyContnt['fromDate'] = fromDate1;
                 replyContnt['toDate']   = toDate1;
-                replyContnt['paymentLink'] = proquery.stripePaymentLink;
+                replyContnt['paymentLink'] = constants.clientUrl+'/advertisement-payment/'+encryptedCustomerId+'/'+encryptedInvoiceId+'/'+uniqueId
                 replyContnt['comment'] = proquery.message;
 
-                sendEnquiryReplyMail('AdviserFeturedRequestReply',emailId, toName, replyContnt);
+                sendEnquiryReplyMail('AdviserFeturedRequestReply', 'nileshy@arkenea.com', toName, replyContnt);
                 let result = { "message": "Reply sent successfully!",'logDetails':logDetails }
                 res.status(200).send(resFormat.rSuccess(result))
               }
@@ -214,9 +317,101 @@ function sendEnquiryReplyMail(templateCode,emailId, toName, replyContnt) {
   })
 }
 
+/**
+ * @description return date difference in days
+ * @param startDate 
+ * @param endDate 
+ */
+function getDateDiff( startDate, endDate ) {
+  return moment.duration( 
+      moment(endDate).diff( moment(startDate) ) 
+  ).asDays()
+}
+
+async function getInvoiceDetails( req, res ) {
+  let { userId } = req.body,
+      { invoice } = req.body,
+      { uniqueId } = req.body,
+      customerId = Buffer.from( String(userId),'base64').toString('binary'),
+      invoiceId = Buffer.from( String(invoice),'base64').toString('binary')
+
+  let advertisementData = await advertisement.findOne({customerId: customerId, uniqueId: uniqueId}).populate('customerId','firstName lastName')
+  let adminReply = advertisementData.adminReply.filter( elem => elem.status==='Pending' && elem.paymentDetails.invoiceId === invoiceId )
+  let advertisementDetails = {} 
+  
+  if( adminReply && adminReply.length > 0 ) {
+    let totalDays = getDateDiff( advertisementData.fromDate, advertisementData.toDate)
+    let invoiceSentDays = getDateDiff( adminReply[0]['paymentDetails']['createdOn'], moment() )
+    advertisementDetails = {
+      cost: adminReply[0]['cost'],
+      fromDate: advertisementData.fromDate,
+      toDate: advertisementData.toDate,
+      totalDays: totalDays,
+      status: adminReply[0]['paymentDetails']['status'],
+      invoiceSentDays: invoiceSentDays,
+      userName: advertisementData.customerId.firstName+' '+advertisementData.customerId.lastName
+    }
+  }
+  res.status(200).send(resFormat.rSuccess(advertisementDetails))
+  
+}
+
+async function completeTransaction( req, res ) {
+  let { userId } = req.body.query,
+      { invoice } = req.body.query,
+      { uniqueId } = req.body.query,
+      { token } = req.body.query,
+
+      customerId = Buffer.from( String(userId),'base64').toString('binary'),
+      invoiceId = Buffer.from( String(invoice),'base64').toString('binary')
+
+  let advertisementData = await advertisement.findOne({customerId: customerId, uniqueId: uniqueId}).populate('customerId','firstName lastName stripeCustomerId')
+  let OldAdminReply = advertisementData.adminReply
+  let adminReply = advertisementData.adminReply.filter( elem => elem.status==='Pending' && elem.paymentDetails.invoiceId === invoiceId )
+  let advertisementDetails = {} 
+  if( adminReply ) {
+    /* let totalDays = getDateDiff( advertisementData.fromDate, advertisementData.toDate)
+    let invoiceSentDays = getDateDiff( advertisementData.fromDate, moment() ) */
+    let invoiceStatus = adminReply[0]['paymentDetails']['status']
+    if( invoiceStatus === 'Pending') {
+      stripeHelper.payInvoice( invoiceId, token, advertisementData.customerId.stripeCustomerId ).then(response => {
+        if( response ) {
+          let currentInvoiceIndex = OldAdminReply.findIndex(elem => elem.status==='Pending' && elem.paymentDetails.invoiceId === invoiceId)
+          let oldPaymentDetails   = OldAdminReply[currentInvoiceIndex]['paymentDetails']
+          let newPaymentDetails   = Object.assign({}, oldPaymentDetails, { "status": "Done" })
+          let updatedOldAdminReply= Object.assign({}, OldAdminReply[currentInvoiceIndex], { "status": "Done", "paymentDetails": newPaymentDetails })
+          OldAdminReply[currentInvoiceIndex] = updatedOldAdminReply
+          newAdminReply = OldAdminReply
+          advertisement.updateOne({customerId: customerId, uniqueId: uniqueId},{adminReply: newAdminReply}, function (err, logDetails) {
+            if( err ) {
+              res.send(resFormat.rError(err))
+            }
+            else{
+              res.status(200).send(resFormat.rSuccess({"message":"Payment has been done successfully."}))    
+            }
+          })
+        }
+        else{
+          res.status(200).send(resFormat.rError("Payment not done, please try again later"))
+        }
+      })
+    }
+    else{
+      res.status(200).send(resFormat.rError("Invoice payment link is expired."))
+    }
+  }
+  else{
+    res.status(200).send(resFormat.rError("Incorrect invoice payment link."))
+  }
+  
+  
+}
+
 router.post("/submitEnquiry",addEnquiry)
 router.post("/enquiryList",enquiryListing)
 router.post("/viewEnquiry",viewEnquiryDetails)
 router.post("/submitEnquiryReply",addEnquiryReply)
 router.post("/submitRejectEnquiry",rejectEnquiry)
+router.post("/get-invoice-details",getInvoiceDetails)
+router.post("/complete-transaction",completeTransaction)
 module.exports = router

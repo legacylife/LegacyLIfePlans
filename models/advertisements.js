@@ -9,6 +9,22 @@ var advertisementsSchema = new mongoose.Schema({
   zipcodes: String,
   message: String,
   adminReply:Array,
+/*   adminReply: [{
+    adminId: { type: mongoose.Types.ObjectId, ref: 'users' },
+    status: String,
+    zipcodes: Array,
+    cost: String,
+    message: String,
+    paymentDetails : {
+      inviteId: String,
+      inviteItemId: String,
+      status: String, //pending, done, delete, void
+      createdOn: Date,
+      modifiedOn: Date
+    },
+    createdOn: Date,
+  }], */
+  uniqueId: String,
   status: String,
   createdOn: Date,
   modifiedOn: Date

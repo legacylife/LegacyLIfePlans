@@ -162,9 +162,9 @@ async function getInviteMembersCount(req, res) {
             completedMonths = getDateDiff( today, moment(userCreatedOn).toDate() ),
             startDate       = new Date(userCreatedOn),
             endDate         = new Date(userCreatedOn),
-            freePremiumDays = userDetails[0]['freeTrialPeriod']['bfrSubFreePremiumDays'],
-            targetCount     = userDetails[0]['refereAndEarnSubscriptionDetail']['targetCount'],
-            extendedDays    = userDetails[0]['refereAndEarnSubscriptionDetail']['noOfDaysExtended']
+            freePremiumDays = userDetails[0]['freeTrialPeriod'] ? userDetails[0]['freeTrialPeriod']['bfrSubFreePremiumDays'] : 0,
+            targetCount     = userDetails[0]['refereAndEarnSubscriptionDetail'] ? userDetails[0]['refereAndEarnSubscriptionDetail']['targetCount'] : 0,
+            extendedDays    = userDetails[0]['refereAndEarnSubscriptionDetail'] ? userDetails[0]['refereAndEarnSubscriptionDetail']['noOfDaysExtended'] : 0
         
         //console.log("completedDays",completedDays,"freePremiumDays",freePremiumDays)
         if( completedDays <= freePremiumDays) {
