@@ -236,13 +236,13 @@
                 </mat-form-field>
               </div>
 
-              <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+              <!-- <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
                 <mat-form-field class="full-width">
                   <mat-label>Payment Link*</mat-label>
                   <input matInput value="" placeholder="Payment Link"
                     [formControl]="enquiryFormReply.controls['stripePaymentLink']" readonly="readonly">
                 </mat-form-field>
-              </div>
+              </div> -->
 
               <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
                 <mat-form-field class="full-width mt-1">
@@ -252,11 +252,11 @@
               </div>
             </div>
           </div>
-          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="text-center">
+          <!-- <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="text-center">
             <a (click)="createPaymentLink()" class="generate--payment">
               <mat-icon>attach_money</mat-icon>Generate payment link
             </a>
-          </div>
+          </div> -->
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="text-center" mb-1>
             <button mat-raised-button class="llp--secondary--btn mr-1" (click)="rejectEnquiry()">Reject</button>
             <button mat-raised-button class="llp--primary--btn" [disabled]="enquiryFormReply.invalid">Submit</button>
