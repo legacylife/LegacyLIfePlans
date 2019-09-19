@@ -154,7 +154,7 @@ function enquiryListing(req, res) {
                * Add payment link data
                */
               
-              await stripeHelper.createInvoice(userData.username, stripeCustomerId, proquery.cost, 'USD', userDetails ).then( response => {
+              await stripeHelper.createInvoice(userData.username, stripeCustomerId, proquery.cost, 'USD', userDetails ).then( async(response) => {
                 invoiceDetails = response
                 newStripeCustomerId = invoiceDetails.stripeCustomerId
                 let paymentDetails = {
