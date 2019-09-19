@@ -14,7 +14,7 @@ var EmailTemplate = require('./../models/EmailTemplates.js')
 const advertisement = require('./../models/advertisements.js')
 const { isEmpty, cloneDeep, map, sortBy } = require('lodash')
 var moment    = require('moment');
-
+const stripe        = require("stripe")(constants.stripeSecretKey);
 function addEnquiry(req, res) {
     let { query } = req.body;
     let { proquery } = req.body;
@@ -97,72 +97,50 @@ function enquiryListing(req, res) {
             if( found.adminReply.length > 0 ) {
               adminReplyData = found.adminReply;
               let newarry = [];  
-              let list = map(adminReplyData, async function (row, index) {
-                console.log("===row.status===",row.status)
+              let list = await adminReplyData.map(async function (row, index) {
                 if(row.status=='Pending') {
-                  let invoiceId = row.paymentDetails.invoiceId
-                  /**
-                   * Delete / expire payment link
-                   * The invoice to be deleted, it must have status=draft else voide with status=open
-                   */
-                  let invoiceStatus = ''
-                  console.log("===invoiceStatus===",invoiceStatus,"////invoiceId///",invoiceId)
-                  await stripeHelper.retriveInvoice( invoiceId ).then( async function (response) {
-                    console.log("===retriveInvoice===",response)
-                    invoiceStatus = response
+                  let oldData = row.paymentDetails,
+                      paymentDetails = {
+                        invoiceId: oldData.invoiceId,
+                        invoiceItemId: oldData.invoiceItemId,
+                        status: 'Deleted', //pending, done, delete, void
+                        createdOn: oldData.createdOn,
+                        modifiedOn: new Date()
+                      }
                   
-                    if( invoiceStatus == 'draft' ) {
-                      console.log("===draft===",invoiceStatus)
-                      await stripeHelper.deleteDraftInvoice( invoiceId ).then( response => {
-                        console.log("===deleteDraftInvoice===",response)
-                        invoiceDetails = response
-                      })
-                    }
-                    else if( invoiceStatus == 'open' ) {
-                      console.log("===open===",invoiceStatus)
-                      await stripeHelper.deleteInvoice( invoiceId ).then( response => {
-                        console.log("===deleteInvoice===",response)
-                        invoiceDetails = response
-                      })
-                    }
-                    let oldData = row.paymentDetails,
-                        paymentDetails = {
-                          invoiceId: oldData.invoiceId,
-                          invoiceItemId: oldData.invoiceItemId,
-                          status: 'deleted', //pending, done, delete, void
-                          createdOn: oldData.createdOn,
-                          modifiedOn: new Date()
-                        }
-                    
-                    let newRow = Object.assign({}, row, { "status": 'Expired', "paymentDetails": paymentDetails })
-                    newarry.push(newRow);
-                    console.log("===newarry===",newarry)
-                    adminReplyData =  newarry.concat(adminReplyArr);
-                  })
+                  let newRow = Object.assign({}, row, { "status": 'Expired', "paymentDetails": paymentDetails })
+                  newarry.push(newRow);
                 }
                 else {
-                  /**
-                   * Add payment link data
-                   */
-                  await stripeHelper.createInvoice(userData.username, found.customerId, proquery.cost, 'USD').then( response => {
-                    invoiceDetails = response
-                  
-                    console.log("invoiceDetails",invoiceDetails)
-                    row.paymentDetails = {
-                      invoiceId: invoiceDetails.invoiceId,
-                      invoiceItemId: invoiceDetails.invoiceItemId,
-                      status: 'pending', //pending, done, delete, void
-                      createdOn: new Date(),
-                      modifiedOn: new Date()
-                    }
-                    newarry.push(row);
-
-                    adminReplyData =  newarry.concat(adminReplyArr);
-                  })
+                  newarry.push(row);
                 }
-              });
 
+                adminReplyData =  newarry
+              })
               
+
+              /**
+               * Create stripe user if not exists
+               */
+              let userDetails = found.customerId,
+                  stripeCustomerId = userDetails.stripeCustomerId
+              /**
+               * Add payment link data
+               */
+              await stripeHelper.createInvoice(userData.username, stripeCustomerId, proquery.cost, 'USD', userDetails ).then( response => {
+                invoiceDetails = response
+                stripeCustomerId = response.stripeCustomerId
+                let paymentDetails = {
+                  invoiceId: invoiceDetails.invoiceId,
+                  invoiceItemId: invoiceDetails.invoiceItemId,
+                  status: 'Pending', //pending, done, delete, void
+                  createdOn: new Date(),
+                  modifiedOn: new Date()
+                }
+                adminReplyArr = Object.assign(adminReplyArr,{paymentDetails:paymentDetails})
+              })
+
+              adminReplyData =  adminReplyData.concat(adminReplyArr);
             }
             else {
               adminReplyData = adminReplyArr;
@@ -171,13 +149,6 @@ function enquiryListing(req, res) {
                */
               let userDetails = found.customerId,
                   stripeCustomerId = userDetails.stripeCustomerId
-                  
-              /* if( !stripeCustomerId ) {
-                
-                await stripeHelper.createCustomer( found.customerId ).then( response => {
-                  stripeCustomerId = response
-                })
-              } */
               /**
                * Add payment link data
                */
@@ -188,7 +159,7 @@ function enquiryListing(req, res) {
                 let paymentDetails = {
                   invoiceId: invoiceDetails.invoiceId,
                   invoiceItemId: invoiceDetails.invoiceItemId,
-                  status: 'pending', //pending, done, delete, void
+                  status: 'Pending', //pending, done, delete, void
                   createdOn: new Date(),
                   modifiedOn: new Date()
                 }
@@ -228,11 +199,13 @@ function enquiryListing(req, res) {
                 let encryptedCustomerId = Buffer.from(String(found.customerId._id), 'binary').toString('base64'),
                     encryptedInvoiceId  = Buffer.from(String(invoiceDetails.invoiceId), 'binary').toString('base64')
 
+                let PaymentLink = constants.clientUrl+'/advertisement-payment/'+encryptedCustomerId+'/'+encryptedInvoiceId+'/'+uniqueId
+                console.log("\n****PaymentLink****",PaymentLink)
                 replyContnt['fromDate'] = fromDate1;
                 replyContnt['toDate']   = toDate1;
-                replyContnt['paymentLink'] = constants.clientUrl+'/advertisement-payment/'+encryptedCustomerId+'/'+encryptedInvoiceId+'/'+uniqueId
+                replyContnt['paymentLink'] = PaymentLink
                 replyContnt['comment'] = proquery.message;
-
+                console.log("\n****replyContnt****",replyContnt)
                 sendEnquiryReplyMail('AdviserFeturedRequestReply', 'nileshy@arkenea.com', toName, replyContnt);
                 let result = { "message": "Reply sent successfully!",'logDetails':logDetails }
                 res.status(200).send(resFormat.rSuccess(result))
@@ -407,6 +380,40 @@ async function completeTransaction( req, res ) {
   }
   
   
+}
+
+async function stripeErrors( err ) {
+  switch (err.type) {
+    case 'StripeCardError':
+      // A declined card error
+      //err.message; // => e.g. "Your card's expiration year is invalid."
+      return err.message;
+      break;
+    case 'StripeRateLimitError':
+      // Too many requests made to the API too quickly
+      return err.message;
+      break;
+    case 'StripeInvalidRequestError':
+      // Invalid parameters were supplied to Stripe's API
+      return err.message;
+      break;
+    case 'StripeAPIError':
+      // An error occurred internally with Stripe's API
+      return err.message;
+      break;
+    case 'StripeConnectionError':
+      // Some kind of error occurred during the HTTPS communication
+      return err.message;
+      break;
+    case 'StripeAuthenticationError':
+      // You probably used an incorrect API key
+      return err.message;
+      break;
+    default:
+      // Handle any other types of unexpected errors
+      return "Invalid access. Try again";
+      break;
+  }
 }
 
 router.post("/submitEnquiry",addEnquiry)
