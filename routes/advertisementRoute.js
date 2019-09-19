@@ -167,7 +167,7 @@ function enquiryListing(req, res) {
                 adminReplyData = Object.assign(adminReplyData,{paymentDetails:paymentDetails})
                 console.log("\n********newStripeCustomerId********",newStripeCustomerId)
                 if( !stripeCustomerId && newStripeCustomerId != "" ) {
-                  await User.update({_id: userDetails._id}, {stripeCustomerId:stripeCustomerId})
+                  await User.updateOne({_id: userDetails._id}, {stripeCustomerId:newStripeCustomerId})
                 }
 
               })
