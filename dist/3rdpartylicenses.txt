@@ -1,5 +1,3 @@
-patternlock
-
 @swimlane/ngx-datatable
 MIT
 (The MIT License)
@@ -25,6 +23,8 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+
+patternlock
 
 slick-carousel
 MIT
@@ -376,8 +376,6 @@ SOFTWARE.
 
 @angular/material/tabs
 
-@angular/material/card
-
 @angular/material/slide-toggle
 
 @angular/material/expansion
@@ -406,21 +404,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-
-@syncfusion/ej2-inputs
-SEE LICENSE IN license
-
-@syncfusion/ej2-popups
-SEE LICENSE IN license
-
-@syncfusion/ej2-buttons
-SEE LICENSE IN license
-
-@syncfusion/ej2-splitbuttons
-SEE LICENSE IN license
-
-@syncfusion/ej2-base
-SEE LICENSE IN license
 
 ngx-slick-carousel
 MIT
@@ -1222,6 +1205,8 @@ MIT
 
 @angular/material/sidenav
 
+@angular/material/card
+
 @alyle/ui
 MIT
 
@@ -1324,6 +1309,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
+@angular/material/progress-spinner
+
 ngx-perfect-scrollbar
 MIT
 The MIT License
@@ -1396,8 +1383,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-
-@angular/material/progress-spinner
 
 @angular/material/toolbar
 
@@ -1698,19 +1683,34 @@ THE SOFTWARE.
 
 @angular/material/bottom-sheet
 
-@syncfusion/ej2-angular-base
-SEE LICENSE IN license
-
-@syncfusion/ej2-dropdowns
+@syncfusion/ej2-base
 SEE LICENSE IN license
 
 @syncfusion/ej2-data
 SEE LICENSE IN license
 
+@syncfusion/ej2-angular-base
+SEE LICENSE IN license
+
+@syncfusion/ej2-popups
+SEE LICENSE IN license
+
+@syncfusion/ej2-inputs
+SEE LICENSE IN license
+
+@syncfusion/ej2-dropdowns
+SEE LICENSE IN license
+
 @syncfusion/ej2-lists
 SEE LICENSE IN license
 
+@syncfusion/ej2-buttons
+SEE LICENSE IN license
+
 @syncfusion/ej2-angular-dropdowns
+SEE LICENSE IN license
+
+@syncfusion/ej2-splitbuttons
 SEE LICENSE IN license
 
 @syncfusion/ej2-angular-inputs
