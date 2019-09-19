@@ -165,11 +165,12 @@ function enquiryListing(req, res) {
                   modifiedOn: new Date()
                 }
                 adminReplyData = Object.assign(adminReplyData,{paymentDetails:paymentDetails})
-              })
+                console.log("\n********newStripeCustomerId********",newStripeCustomerId)
+                if( !stripeCustomerId && newStripeCustomerId != "" ) {
+                  await User.update({_id: userDetails._id}, {stripeCustomerId:stripeCustomerId})
+                }
 
-              if( !stripeCustomerId && newStripeCustomerId != "" ) {
-                await User.update({_id: userDetails._id}, {stripeCustomerId:stripeCustomerId})
-              }
+              })
             }
             console.log("invoiceDetails",invoiceDetails,"adminReplyData",adminReplyData)
             let uniqueId = Math.random().toString(36).slice(2)
