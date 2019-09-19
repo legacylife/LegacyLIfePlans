@@ -38,6 +38,7 @@ export const emailLimit = 20
 export const adminWebTitle = "LLP"
 export const s3Details = {
   url : "https://s3.amazonaws.com/"+bucketName,
+  awsserverUrl : "https://"+bucketName+".s3.amazonaws.com/",
   bucketName: bucketName,
   awsKey: "AKIAUPQ3GZ6WDCCRWVY5",
   awsSecret: "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",
@@ -55,6 +56,7 @@ export const s3Details = {
   letterMessageDocumentsPath:"letterMessage/",
   deceasedFilessPath:"deceased/",
   coachCornerArticlePath:"coachCorner/",
+  assetsPath:"assets/",
   apiGatewayUrl: ""
 }
 

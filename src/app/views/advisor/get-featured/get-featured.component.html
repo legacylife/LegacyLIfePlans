@@ -1,6 +1,6 @@
 <div class="container mt-1">
   <div fxLayout="row wrap">
-    <div fxFlex.xs="100" fxFlex.sm="100">
+    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
       <mat-card class="p-0 mb--30">
         <mat-card-title class="">
           <div class="card-title-text">Legacies Feature and Discover</div>
@@ -14,7 +14,8 @@
                 <p>A standard profile gets you in the LLP Professionals directory
                   <span class="bold"> but a Featured Profile will get you found! </span>
                 </p>
-                <p>As a featured profile, you get listed on top of the non-featured profile which increases your chances to get noticed</p>
+                <p>As a featured profile, you get listed on top of the non-featured profile which increases your chances
+                  to get noticed</p>
                 <div class="specialites--wrapper">
                   <div class="box--sec">
                     <div class="logo">
@@ -55,12 +56,115 @@
                   Get a quote from admin
                 </div>
                 <div class="enq--btn text-center">
-                  <button mat-raised-button class="llp--primary--green--btn" (click)="openSubmitEnqModal();">Enquire Now</button>
+                  <button mat-raised-button class="llp--primary--green--btn" (click)="openSubmitEnqModal();">Enquire
+                    Now</button>
                 </div>
               </div>
             </div>
+
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" *ngIf="recordsFound">
+              <div class="left">
+                <mat-card class="p-0 mb--30">
+                  <mat-card-title class="">
+                    <div class="card-title-text">Featured request's</div>
+                  </mat-card-title>
+                  <mat-card-content class="get--featured--section min--hgt--auto">
+                    <mat-accordion>
+                      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                        *ngFor="let item of rows">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                              <div class="display--data m-0">
+                                  <label class="left--label mb-0">Status:</label>
+                                  <label class="right--label">{{item.status=='Active' ? 'Payment Pending' : ''}}</label>
+                                </div>
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div fxLayout="row wrap">
+                          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                            <div class="display--data">
+                              <label class="left--label">Requested Zipcodes:</label>
+                              <label class="right--label">{{item.zipcodes}}</label>
+                            </div>
+                          </div>
+                          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                            <div class="display--data">
+                              <label class="left--label">Created Date:</label>
+                              <label class="right--label">{{item.createdOn | date: 'yyyy/MM/dd'}}</label>
+                            </div>
+                          </div>
+                          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                            <div class="display--data">
+                              <label class="left--label">Start Date:</label>
+                              <label class="right--label">{{item.fromDate | date: 'yyyy/MM/dd'}}</label>
+                            </div>
+                          </div>
+                          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                            <div class="display--data">
+                              <label class="left--label">End Date:</label>
+                              <label class="right--label">{{item.toDate  | date: 'yyyy/MM/dd'}}</label>
+                            </div>
+                          </div>
+                          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+                            <div class="display--data">
+                              <label class="left--label">Message:</label>
+                              <label class="right--label">{{item.message}}</label>
+                            </div>
+                          </div>
+
+                          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+                            <div class="admin--reply" *ngIf="item.status!='Reject'">
+                              <div *ngFor="let row of item.adminReply">
+                                <div class="" *ngIf="row.status=='Pending'">
+                                  <h5>Admin Reply</h5>
+
+                                  <div fxLayout="row wrap">
+                                    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                                      <div class="display--data">
+                                        <label class="left--label">Approved Zipcodes:</label>
+                                        <label class="right--label">{{arrayToString(row.zipcodes)}}</label>
+                                      </div>
+                                    </div>
+                                    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                                      <div class="display--data">
+                                        <label class="left--label">Payment Cost:</label>
+                                        <label class="right--label"> ${{row.cost}}</label>
+                                      </div>
+                                    </div>
+                                    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100"
+                                      fxFlex.xl="100">
+                                      <div class="display--data">
+                                        <label class="left--label">Reply:</label>
+                                        <label class="right--label"> {{row.message}}</label>
+                                      </div>
+                                    </div>
+                                    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100"
+                                      fxFlex.xl="100">
+                                      <button mat-raised-button class="llp--primary--green--btn mt-1 mb-1">Payment</button>
+                                    </div>
+                                  </div>
+
+
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+
+                      </mat-expansion-panel>
+                    </mat-accordion>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+
+
           </div>
-          <div fxLayout="row wrap" *ngIf="recordsFound">
+          <!-- <div fxLayout="row wrap" *ngIf="recordsFound">
             <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="60" fxFlex.xl="60">
               <div class="left">
                 <mat-card class="p-0 mb--30">
@@ -68,40 +172,48 @@
                     <div class="card-title-text">Enquiry's</div>
                     <mat-divider></mat-divider>
                   </mat-card-title>
-                  <mat-card-content class="get--featured--section">  
+                  <mat-card-content class="get--featured--section">
                     <mat-accordion>
-                      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" *ngFor="let item of rows">
+                      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+                        *ngFor="let item of rows">
                         <mat-expansion-panel-header>
-                            <mat-panel-title> 
-                              {{item.status=='Active' ? 'Payment Pending' : ''}}
-                            </mat-panel-title>
-                            <mat-panel-description>
-                              {{item.zipcodes}}
-                            </mat-panel-description>
-                            <mat-panel-description>
-                                {{item.createdOn | date: 'yyyy/MM/dd'}}
-                            </mat-panel-description>
+                          <mat-panel-title>
+                            {{item.status=='Active' ? 'Payment Pending' : ''}}
+                          </mat-panel-title>
+                          <mat-panel-description>
+                            {{item.zipcodes}}
+                          </mat-panel-description>
+                          <mat-panel-description>
+                            {{item.createdOn | date: 'yyyy/MM/dd'}}
+                          </mat-panel-description>
                         </mat-expansion-panel-header>
-                           <p><b>From date:</b>  {{item.fromDate | date: 'yyyy/MM/dd'}}  <b>To date:</b> {{item.toDate  | date: 'yyyy/MM/dd'}}</p>
-                           <p>Message: {{item.message}}</p>
-                            <div *ngIf="item.status!='Reject'"><div *ngFor="let row of item.adminReply">
-                              <div class="text-center" *ngIf="row.status=='Pending'">
-                                <p><b>Admin Reply</b></p>
-                                <p>Zipcodes: {{arrayToString(row.zipcodes)}}</p>
-                                <p>Payment Cost: ${{row.cost}}  <button mat-raised-button class="llp--primary--green--btn">Payment</button></p>
-                                <p *ngIf="row.message">Reply: {{row.message}}</p>
-                              </div>
-                              </div>
+                        <p><b>From date:</b> {{item.fromDate | date: 'yyyy/MM/dd'}} <b>To date:</b>
+                          {{item.toDate  | date: 'yyyy/MM/dd'}}</p>
+                        <p>Message: {{item.message}}</p>
+                        <div *ngIf="item.status!='Reject'">
+                          <div *ngFor="let row of item.adminReply">
+                            <div class="text-center" *ngIf="row.status=='Pending'">
+                              <p><b>Admin Reply</b></p>
+                              <p>Zipcodes: {{arrayToString(row.zipcodes)}}</p>
+                              <p>Payment Cost: ${{row.cost}} <button mat-raised-button
+                                  class="llp--primary--green--btn">Payment</button></p>
+                              <p *ngIf="row.message">Reply: {{row.message}}</p>
                             </div>
-                      </mat-expansion-panel>                  
+                          </div>
+                        </div>
+                      </mat-expansion-panel>
                     </mat-accordion>
                   </mat-card-content>
                 </mat-card>
+              </div>
             </div>
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
-</div>
-</div>
+          </div> -->
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+
+
+
+  </div>
 </div>

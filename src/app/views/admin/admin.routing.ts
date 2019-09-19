@@ -23,7 +23,9 @@ import { FreeTrialPeriodManagementComponent } from './free-trial-period-manageme
 import { CoachCornerCategoryManagementComponent } from './coach-corner-category-management/coach-corner-category-management.component';
 import { CoachCornerListingManagementComponent } from './coach-corner-listing/coach-corner-listing-management.component';
 import { AddManagementViewComponent } from './ad-management/ad-management-view.component';
-
+import { customercmsComponent } from './cms/customercms.component';
+import { customercmsformComponent } from './cms/customercmsform.component';
+import { advisorcmsformComponent } from './cms/advisorcmsform.component';
 export const AdminRoutes: Routes = [
   {
     path: 'dashboard',
@@ -45,30 +47,50 @@ export const AdminRoutes: Routes = [
     component: customerlistComponent,
     data: { title: 'Customers List', breadcrumb: 'Customers List' },
     canActivate: [ AuthGuard ],
-  }, {
+  },{
     path: 'advisorlist',
     component: advisorlistComponent,
     data: { title: 'Advisors List', breadcrumb: 'Advisors List' },
     canActivate: [ AuthGuard ],
-  }, {
+  },{
     path: 'cms',
     component: cmslistComponent,
     data: { title: 'CMS Pages', breadcrumb: 'CMS Pages' },
     canActivate: [ AuthGuard ],
-  }, {
+  },{
     path: 'cmsedit/:id',
     component: cmseditComponent,
     data: { title: 'CMS Pages', breadcrumb: 'CMS Pages' }
-  }, {
+  },{
     path: 'file-upload-instructions',
     component: fileUploadInstructionsListComponent,
     data: { title: 'File Upload Instructions', breadcrumb: 'File Upload Instructions' },
     canActivate: [ AuthGuard ],
-  }, 
-  {
+  },{
     path: 'file-upload-instructions-edit/:id',
     component: fileUploadInstructionsEditComponent,
     data: { title: 'CMS Pages', breadcrumb: 'CMS Pages' }
+  },{
+    path: 'customerCms',
+    component: customercmsComponent,
+    data: { title: 'Customer Home Page', breadcrumb: 'Customer Home Page' },
+    canActivate: [ AuthGuard ],
+  },{
+    path: 'customercmscreate',
+    component: customercmsformComponent,
+    data: { title: 'Customer Create Page', breadcrumb: 'Customer Create Page' }
+  },{
+    path: 'customercmsedit/:id',
+    component: customercmsformComponent,
+    data: { title: 'Customer Home Page', breadcrumb: 'Customer Home Page' }
+  },{
+    path: 'advisorcmscreate',
+    component: advisorcmsformComponent,
+    data: { title: 'Advisor Create Page', breadcrumb: 'Advisor Create Page' }
+  },{
+    path: 'advisorcmsedit/:id',
+    component: advisorcmsformComponent,
+    data: { title: 'Advisor Home Page', breadcrumb: 'Advisor Home Page' }
   },{
     path: 'email-template',
     component: EmailTemplateComponent,

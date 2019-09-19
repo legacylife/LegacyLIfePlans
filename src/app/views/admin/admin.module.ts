@@ -48,6 +48,9 @@ import { FreeTrialPeriodManagementComponent } from './free-trial-period-manageme
 import { CoachCornerCategoryManagementComponent } from './coach-corner-category-management/coach-corner-category-management.component';
 import { CoachCornerListingManagementComponent } from './coach-corner-listing/coach-corner-listing-management.component';
 import { AdminHireAdvisorComponent } from './deceased-requests/hire-advisor-modal/hire-advisor-modal.component';
+import { customercmsComponent } from './cms/customercms.component';
+import { customercmsformComponent } from './cms/customercmsform.component';
+import { advisorcmsformComponent } from './cms/advisorcmsform.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -87,7 +90,7 @@ import { AdminHireAdvisorComponent } from './deceased-requests/hire-advisor-moda
     EmailTemplateEditComponent, MapComponent, ReferralProgramComponent, ActivityLogComponent, AddManagementComponent, AddManagementViewComponent,
     DeceasedRequestsComponent, DeceasedRequestsViewComponent, fileUploadInstructionsListComponent, fileUploadInstructionsEditComponent,
     FreeTrialPeriodManagementComponent, AdminHireAdvisorComponent, CoachCornerPopupComponent, CoachCornerCategoryPopupComponent,
-    CoachCornerCategoryManagementComponent, CoachCornerListingManagementComponent
+    CoachCornerCategoryManagementComponent, CoachCornerListingManagementComponent,customercmsComponent,customercmsformComponent,advisorcmsformComponent
   ],
   entryComponents: [NgxTablePopupComponent, CoachCornerPopupComponent, CoachCornerCategoryPopupComponent, AdvisorRejectPopupComponent,AdminHireAdvisorComponent]
 })
