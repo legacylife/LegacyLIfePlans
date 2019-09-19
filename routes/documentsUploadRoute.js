@@ -27,6 +27,7 @@ const AWS = require('aws-sdk')
 var S3Sizer = require('aws-s3-size');
 const resMessage = require('./../helpers/responseMessages')
 const allActivityLog = require('./../helpers/allActivityLogs')
+var customerCms = require('./../models/CustomerCms.js')
 
 //const XmlStream = require('xml-stream')
 const docFilePath = constants.s3Details.advisorsDocumentsPath;
@@ -41,6 +42,7 @@ const letterMessageFilePath = constants.s3Details.letterMessageFilePath;
 const inviteDocumentsPath = constants.s3Details.inviteDocumentsPath;
 const deceasedFilessPath = constants.s3Details.deceasedFilessPath;
 const coachCornerArticlePath = constants.s3Details.coachCornerArticlePath;
+const assetsPath = constants.s3Details.assetsPath;
 const lettersMessage = require('./../models/LettersMessages.js')
 var DIR = './uploads/';
 
@@ -970,6 +972,107 @@ router.post('/letterMessage', cors(), function(req,res){
               })
            }
          } 
+      } else {
+        res.status(401).send(resFormat.rError("User token mismatch."))
+      }
+    })
+  }
+})
+
+router.post('/customerHomeDocuments', cors(), function(req,res){
+  var fstream;
+  let authTokens = { authCode: "" }
+  if (req.busboy) {
+    req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
+      authTokens[fieldname] = val
+    })
+    const {query:{docId}} = req;
+    const {query:{attrName}} = req;
+    let updateFields = '';
+    req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+      if(docId){
+        customerCms.findOne({ _id: docId},{_id:1}, function (err, result) {
+          if (err) {
+            res.status(500).send(resFormat.rError(err))
+          } else if (result) {                      
+          let ext = filename.split('.')
+          ext = ext[ext.length - 1];
+          var fileExts = ["jpg", "jpeg","png","JPEG","PNG"];
+          if(attrName=='quickOverview1.videoLink' || attrName=='quickOverview2.videoLink'){
+            var fileExts = ["mov","mp3", "mpeg", "wav", "ogg", "opus", "bmp", "tiff", "svg", "webm", "mpeg4", "3gpp", "avi", "mpegps", "wmv", "flv"];
+          }
+          
+          let resp = isExtension(ext,fileExts);
+          if(resp){          
+              const newFilename = new Date().getTime() + `.${ext}`
+              if(attrName=='topBanner'){
+                updateFields = {topBanner:newFilename};
+              }else if(attrName=='middleBanner'){
+                updateFields = {middleBanner:newFilename};
+              }else if(attrName=='lowerBanner'){
+                updateFields = {lowerBanner:newFilename};
+              }else if(attrName=='quickOverview1.videoLink'){
+                updateFields = {"quickOverview1.videoLink":newFilename};
+              }else if(attrName=='quickOverview2.videoLink'){
+                updateFields = {"quickOverview2.videoLink":newFilename};
+              }
+              console.log('updateFields    ',updateFields);
+              fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+              file.pipe(fstream);
+              fstream.on('close', async function () {
+                await s3.uploadFilePublic(newFilename, assetsPath+'customer/');  
+                 customerCms.updateOne({_id:docId}, {$set:updateFields},function (err, updatedUser){
+                  if (err) {
+                    res.send(resFormat.rError(err))
+                  } else {
+                    console.log('updatedUser',updatedUser);
+                    //resMsg = deleteDocumentS3(fileDetails.customerId,docFilePath,fileName.docName);
+                    let message = 'File uploaded successfully!';
+                    let result = { docId:docId,filename:newFilename, "message": message }
+                    res.send(resFormat.rSuccess(result))
+                  }
+                })
+              })
+          }else{
+            let results = { docId:docId, "message": "Invalid file extension!" }
+            res.send(resFormat.rSuccess(results));
+          }
+        }
+      })
+      } else {
+        res.status(401).send(resFormat.rError("User token mismatch."))
+      }
+    })
+  }
+})
+
+router.post('/customerHomeTestimonialsphoto', cors(), function(req,res){
+  var fstream;
+  let authTokens = { authCode: "" }
+  if (req.busboy) {
+    req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
+      authTokens[fieldname] = val
+    })
+    const {query:{filenewName}} = req;
+    req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+      if(filenewName){
+        let ext = filename.split('.')
+        ext = ext[ext.length - 1];
+        var fileExts = ["jpg", "jpeg","png","JPEG","PNG"];
+        let resp = isExtension(ext,fileExts);
+        if(resp){          
+            const newFilename = filenewName;
+            fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+            file.pipe(fstream);
+            fstream.on('close', async function () {
+              await s3.uploadFilePublic(newFilename, assetsPath+'customer/');  
+            })
+
+            return res.send(resFormat.rSuccess({'success':'upload done'}))
+        }else{
+          let results = {  "message": "Invalid file extension!" }
+          res.send(resFormat.rSuccess(results));
+        }
       } else {
         res.status(401).send(resFormat.rError("User token mismatch."))
       }
