@@ -35,7 +35,7 @@ export class SubmitEnquiryModalComponent implements OnInit {
   });
 
   public query: any  = new Query().select(['ZIP']).take(100);
-  public fields: object = {text: 'ZIP', value: '_id'};
+  public fields: object = {text: 'ZIP', value: 'ZIP'};
   public waterMark: string = 'What location or zip codes are you planning to target?'; 
   public box : string = 'Box';
   public sorting: string = 'Ascending';
