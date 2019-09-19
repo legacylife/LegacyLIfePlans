@@ -156,7 +156,7 @@ function enquiryListing(req, res) {
               
               await stripeHelper.createInvoice(userData.username, stripeCustomerId, proquery.cost, 'USD', userDetails ).then( response => {
                 invoiceDetails = response
-                newStripeCustomerId = response.stripeCustomerId
+                newStripeCustomerId = invoiceDetails.stripeCustomerId
                 let paymentDetails = {
                   invoiceId: invoiceDetails.invoiceId,
                   invoiceItemId: invoiceDetails.invoiceItemId,
