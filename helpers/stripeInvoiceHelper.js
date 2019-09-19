@@ -39,7 +39,7 @@ module.exports = {
      *                  The draft invoice created pulls in all pending invoice items on that customer, including prorations.
      */
     createInvoice: async function ( userName, stripeCustomerId, amount, currency, userDetails ) {
-        let result = await new Promise((resolve, reject) => {
+        let result = await new Promise(async (resolve, reject) => {
             if( !stripeCustomerId && userDetails.length > 0 ) {
                 stripeCustomerId = await this.createCustomer( userDetails )
             }
