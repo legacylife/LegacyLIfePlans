@@ -167,7 +167,7 @@ function enquiryListing(req, res) {
               })
 
               if( !stripeCustomerId ) {
-                User.update({_id: userDetails._id})
+                await User.update({_id: userDetails._id}, {stripeCustomerId:stripeCustomerId})
               }
             }
             console.log("invoiceDetails",invoiceDetails,"adminReplyData",adminReplyData)

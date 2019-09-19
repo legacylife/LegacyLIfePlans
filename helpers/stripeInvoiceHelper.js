@@ -41,7 +41,7 @@ module.exports = {
     createInvoice: async function ( userName, stripeCustomerId, amount, currency, userDetails ) {
         let result = await new Promise((resolve, reject) => {
             if( !stripeCustomerId && userDetails.length > 0 ) {
-                stripeCustomerId = this.createCustomer( userDetails )
+                stripeCustomerId = await this.createCustomer( userDetails )
             }
             stripe.invoiceItems.create({
                 customer: stripeCustomerId,
