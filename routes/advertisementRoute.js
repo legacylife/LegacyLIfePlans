@@ -15,8 +15,9 @@ const { isEmpty, cloneDeep, map, sortBy } = require('lodash')
 function addEnquiry(req, res) {
     let { query } = req.body;
     let { proquery } = req.body;
+
     var insert = new advertisement();
-    insert.zipcodes   = proquery.zipcodes;
+    insert.zipcodes   = proquery.zipcodes.join(',');
     insert.userType   = query.userType;
     insert.customerId = ObjectId(query.customerId);
     insert.fromDate   = proquery.fromDate;
@@ -29,6 +30,7 @@ function addEnquiry(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          console.log('newUser',newUser)
          // let message = resMessage.data( 621, [] )
           let result = { "message": "Enquiry submit successfully!" }
           res.status(200).send(resFormat.rSuccess(result))
@@ -105,7 +107,7 @@ function enquiryListing(req, res) {
               } else {
                 let toName = found.customerId.firstName;
                 let emailId = found.customerId.username;
-                let zips = proquery.zipcodes.join(", ")
+                let zips = proquery.zipcodes.join(",")
 
                 let replyContnt = [];
                 replyContnt['zipcodes'] = zips;
