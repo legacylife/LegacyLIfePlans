@@ -111,12 +111,14 @@ function getCmsByCode (code) {
 
 //function to update cms page content for advisor landing
 function advisorUpdate(req, res) {
-  let { query, proquery } = req.body;console.log('query----->>>',query,'proquery----->>>',proquery)
+  let { query, proquery } = req.body;
+  //console.log('------->>>>>>>>>-',req.body)
   if(req.body._id){
-    advisorCms.updateOne({ _id: req.body._id },{ $set: req.body} ,(err, updateCms)=>{
+    advisorCms.updateOne(proquery,{ $set:query} ,(err, updateCms)=>{
       if (err) {
         res.send(resFormat.rError(err))
       } else {
+      //  console.log('----updateCms--->>>>>-',updateCms)
         updateCms = {_id:req.body._id};
         let result = { "message": 'Content page has been updated',"newrecord": updateCms }
         res.send(resFormat.rSuccess(result))
@@ -124,7 +126,7 @@ function advisorUpdate(req, res) {
     })
   }else{
   let insert_obj = query;
-  console.log("insert_obj----->>>",insert_obj);
+ // console.log("insert_obj----->>>",insert_obj);
   let advCmsDetails = new advisorCms(insert_obj)
   advCmsDetails.save(function(err, newrecord) {
       if (err) {
@@ -146,7 +148,7 @@ function viewAdvisordetails (req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      console.log('cmsDetails>>>>>>',cmsDetails)
+      console.log('advisorView>>>>>>',cmsDetails)
       res.send(resFormat.rSuccess(cmsDetails))
     }
   })
