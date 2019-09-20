@@ -28,7 +28,6 @@ export class advisorcmsformComponent implements OnInit {
   middlePath: string
   lowerPath: string
   fileErrorsTop: any;
-
   public uploaderSectionThree: FileUploader = new FileUploader({ url: `${URL}` });
   sectionThreeProgessPer: number = 0;
   sectionThreePath: string
@@ -59,8 +58,12 @@ export class advisorcmsformComponent implements OnInit {
   selectedFile: File = null;
   selectedFileName:any
 
-  // benefitsPoints:any;
-  // testimonials:string;
+  benefitsPoints:any;
+  testimonials:any;
+  sectionTwo:any;
+  sectionFive:any;
+  sectionSix:any;
+  featuredAdvisors:any;
   filePath = s3Details.awsserverUrl+s3Details.assetsPath+'advisor/';
   row : any
   aceessSection : any;
@@ -120,7 +123,7 @@ export class advisorcmsformComponent implements OnInit {
     this.activeRoute.params.subscribe(params => {
       if(params.id){
         this.customercmsPageId = params.id;
-        ///this.getPageDetails()
+        this.getPageDetails()
       }
     });
 }
@@ -138,11 +141,84 @@ getPageDetails = (query = {}, search = false) => {
         this.advisorCmsForm.controls['pagesubTitle'].setValue(this.row.pagesubTitle);
         this.advisorCmsForm.controls['middleText'].setValue(this.row.middleText);
         this.advisorCmsForm.controls['lowerText'].setValue(this.row.lowerText);
-        this.advisorCmsForm.controls['bulletPoints'].setValue(this.row.bulletPoints);
 
-        this.topBannerPath = this.filePath+this.row.topBanner;
-        this.middlePath = this.filePath+this.row.middleBanner;
-        this.lowerPath = this.filePath+this.row.lowerBanner;
+        
+
+        const sectionOnectrl = this.getFormGroup('sectionOne')
+        sectionOnectrl.controls['title'].setValue(this.row.sectionOne.title ? this.row.sectionOne.title : "")
+        sectionOnectrl.controls['middleTitle'].setValue(this.row.sectionOne.middleTitle ? this.row.sectionOne.middleTitle : "")
+        sectionOnectrl.controls['subTitle'].setValue(this.row.sectionOne.subTitle ? this.row.sectionOne.subTitle : "")
+
+        this.sectionTwo = this.row.sectionTwo;
+        const sectionTwoctrls = this.advisorCmsForm.get('sectionTwo') as FormArray;
+        sectionTwoctrls.removeAt(0)
+        this.sectionTwo.forEach((element: any, index) => {
+          sectionTwoctrls.push(this.editTwoPoints(element.title,element.subTitle))
+        })
+
+
+        const sectionThreectrl = this.getFormGroup('sectionThree')
+        sectionThreectrl.controls['title'].setValue(this.row.sectionThree.title ? this.row.sectionThree.title : "")
+        sectionThreectrl.controls['subTitle'].setValue(this.row.sectionThree.subTitle ? this.row.sectionThree.subTitle : "")
+        
+        const sectionFourctrl = this.getFormGroup('sectionFour')
+        sectionFourctrl.controls['title'].setValue(this.row.sectionFour.title ? this.row.sectionFour.title : "")
+        sectionFourctrl.controls['subTitle'].setValue(this.row.sectionFour.subTitle ? this.row.sectionFour.subTitle : "")
+
+        this.sectionFive = this.row.sectionFive;
+        const sectionFivectrls = this.advisorCmsForm.get('sectionFive') as FormArray;
+        sectionFivectrls.removeAt(0)
+        this.sectionFive.forEach((element: any, index) => {
+          sectionFivectrls.push(this.editFivePoints(element.title,element.subTitle))
+        })
+
+
+        const ctrl = this.getFormGroup('facts')
+        ctrl.controls['title'].setValue(this.row.facts.title ? this.row.facts.title : "")
+        ctrl.controls['subTitle'].setValue(this.row.facts.subTitle ? this.row.facts.subTitle : "")
+        ctrl.controls['savedFiles'].setValue(this.row.facts.savedFiles ? this.row.facts.savedFiles : "")
+        ctrl.controls['trustedAdvisors'].setValue(this.row.facts.trustedAdvisors ? this.row.facts.trustedAdvisors : "")
+        ctrl.controls['LLPMembers'].setValue(this.row.facts.LLPMembers ? this.row.facts.LLPMembers : "")
+        ctrl.controls['referralConnection'].setValue(this.row.facts.referralConnection ? this.row.facts.referralConnection : "")
+     
+        this.sectionSix = this.row.sectionSix;
+        const sectionSixctrls = this.advisorCmsForm.get('sectionSix') as FormArray;
+        sectionSixctrls.removeAt(0)
+        this.sectionSix.forEach((element: any, index) => {
+          sectionSixctrls.push(this.editSixPoints(element.title,element.subTitle))
+        })
+        
+        this.testimonials = this.row.testimonials;
+        const testimonialsctrls = this.advisorCmsForm.get('testimonials') as FormArray;
+        testimonialsctrls.removeAt(0)
+        this.testimonials.forEach((element: any, index) => {
+          testimonialsctrls.push(this.editTestimonials(element.name,element.certifications,element.comment))
+        })
+
+        this.benefitsPoints = this.row.sectionEight.benefitsPoints;
+        const bulletPointsctrls = this.advisorCmsForm.get('benefitsPoints') as FormArray;
+        bulletPointsctrls.removeAt(0)
+        this.benefitsPoints.forEach((element: any, index) => {
+          bulletPointsctrls.push(this.editBenefitsPoints(element.name))
+        })
+        
+        this.featuredAdvisors = this.row.featuredAdvisors;
+        const featuredAdvisorsctrls = this.advisorCmsForm.get('featuredAdvisors') as FormArray;
+        featuredAdvisorsctrls.removeAt(0)
+        this.featuredAdvisors.forEach((element: any, index) => {
+          featuredAdvisorsctrls.push(this.editFaturedAdvisorsPoints(element.name,element.certifications))
+        })
+
+        
+        const sectionEightctrl = this.getFormGroup('sectionEight')
+        sectionEightctrl.controls['title'].setValue(this.row.sectionEight.title ? this.row.sectionEight.title : "")
+        sectionEightctrl.controls['subTitle'].setValue(this.row.sectionEight.subTitle ? this.row.sectionEight.subTitle : "")
+        //bannerImage
+
+        this.topBannerPath = this.filePath+this.row.sectionOne.topBanner;
+        this.sectionThreePath = this.filePath+this.row.sectionThree.bannerImage;        
+        this.sectionFourPath = this.filePath+this.row.sectionFour.bannerImage;
+
         console.log("Data",this.row)
       }
     }, (err) => {
@@ -238,6 +314,13 @@ addTwoPoints() {
   }));
 }
 
+editTwoPoints(name,subTitle) {
+  return this.fb.group({
+    name: [name, Validators.required],
+    subTitle: [subTitle, [Validators.required]]
+  });
+}
+
 deleteTwoPoints(i) {
   const control = <FormArray>this.advisorCmsForm.controls['sectionTwo'];
   control.removeAt(i);
@@ -254,14 +337,30 @@ addFivePoints() {
   }));
 }
 
+editFivePoints(name,subTitle) {
+  return this.fb.group({
+    name: [name, Validators.required],
+    subTitle: [subTitle, [Validators.required]]
+  });
+}
+
 deleteFivePoints(i) {
   const control = <FormArray>this.advisorCmsForm.controls['sectionFive'];
   control.removeAt(i);
 }
 
+editSixPoints(name,subTitle) {
+  return this.fb.group({
+    name: [name, Validators.required],
+    subTitle: [subTitle, [Validators.required]]
+  });
+}
+
 get featuredAdvisorsArray() {
   return this.advisorCmsForm.get('featuredAdvisors') as FormArray;
 }
+
+
 
 onFAFileSelected(event,i) {
   this.selectedFAFile = <File>event.target.files[0];
@@ -299,12 +398,17 @@ uploaderFeatureProgressBar(index){
 
 addFaturedAdvisors() {
   this.featuredAdvisorsArray.push(this.fb.group({
-    title: ['', [Validators.required]],
-    subTitle: ['', [Validators.required]],
-    certifications: ['', [Validators.required]],
     name: ['', [Validators.required]],
+    certifications: ['', [Validators.required]],
     profilePhoto: [this.selectedFAFileName],
   }));
+}
+
+editFaturedAdvisorsPoints(name,certifications) {
+  return this.fb.group({
+    name: [name, Validators.required],
+    certifications: [certifications, [Validators.required]]
+  });
 }
 
 deleteFaturedAdvisors(i) {
@@ -312,11 +416,17 @@ deleteFaturedAdvisors(i) {
   control.removeAt(i);
 }
 
-
 get testimonialsArray() {
   return this.advisorCmsForm.get('testimonials') as FormArray;
 }
 
+editTestimonials(name,certifications,comment) {
+  return this.fb.group({
+    name: [name, Validators.required],
+    certifications: [certifications, [Validators.required]],
+    comment: [comment, [Validators.required]],    
+  });
+}
 
 onFileSelected(event,i) {
   this.selectedFile = <File>event.target.files[0];
@@ -375,6 +485,12 @@ addBenefitsPoints() {
   this.benefitsPointsArray.push(this.fb.group({
     name: ['', [Validators.required]]
   }));
+}
+
+editBenefitsPoints(name) {
+  return this.fb.group({
+    name: [name, Validators.required]
+  });
 }
 
 deleteBenefitsPoints(i) {

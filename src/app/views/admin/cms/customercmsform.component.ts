@@ -37,13 +37,15 @@ export class customercmsformComponent implements OnInit {
   middleText: string
   lowerBanner: string
   lowerText: string
-  bulletPoints: string
-  testimonials: string
+  bulletPoints: any
+  testimonials: any;
   selectedFile: File = null;
   selectedFileName:any
   topBannerPath: string
   middlePath: string
   lowerPath: string
+  videoLink1: string
+  videoLink2: string
   QOW1Path: string
   QOW2Path: string
   filePath = s3Details.awsserverUrl+s3Details.assetsPath+'customer/';
@@ -145,11 +147,11 @@ deleteBulletsPoints(i) {
   control.removeAt(i);
 }
 
-editTestimonials(name) {
+editTestimonials(name,certifications,comment) {
   return this.fb.group({
     name: [name, Validators.required],
-    certifications: ['', [Validators.required]],
-    comment: ['', [Validators.required]],    
+    certifications: [certifications, [Validators.required]],
+    comment: [comment, [Validators.required]],    
   });
 }
 
@@ -189,13 +191,52 @@ getPageDetails = (query = {}, search = false) => {
         this.row = result.data;
         this.customerCmsForm.controls['pageTitle'].setValue(this.row.pageTitle); 
         this.customerCmsForm.controls['pagesubTitle'].setValue(this.row.pagesubTitle);
+        this.customerCmsForm.controls['lowerTitle'].setValue(this.row.lowerTitle);
         this.customerCmsForm.controls['middleText'].setValue(this.row.middleText);
         this.customerCmsForm.controls['lowerText'].setValue(this.row.lowerText);
-        //this.customerCmsForm.controls['bulletPoints'].setValue(this.row.bulletPoints);
+
+        const ctrl = this.getFormGroup('facts')
+        ctrl.controls['title'].setValue(this.row.facts.title ? this.row.facts.title : "")
+        ctrl.controls['subTitle'].setValue(this.row.facts.subTitle ? this.row.facts.subTitle : "")
+        ctrl.controls['savedFiles'].setValue(this.row.facts.savedFiles ? this.row.facts.savedFiles : "")
+        ctrl.controls['trustedAdvisors'].setValue(this.row.facts.trustedAdvisors ? this.row.facts.trustedAdvisors : "")
+        ctrl.controls['successLogin'].setValue(this.row.facts.successLogin ? this.row.facts.successLogin : "")
+        ctrl.controls['LLPMembers'].setValue(this.row.facts.LLPMembers ? this.row.facts.LLPMembers : "")
+
+        const ctrl2 = this.getFormGroup('quickOverview1')
+        ctrl2.controls['title'].setValue(this.row.quickOverview1.title ? this.row.quickOverview1.title : "")
+        ctrl2.controls['subTitle'].setValue(this.row.quickOverview1.subTitle ? this.row.quickOverview1.subTitle : "")
+      
+        const ctrl3 = this.getFormGroup('quickOverview2')
+        ctrl3.controls['title'].setValue(this.row.quickOverview2.title ? this.row.quickOverview2.title : "")
+        ctrl3.controls['subTitle'].setValue(this.row.quickOverview2.subTitle ? this.row.quickOverview2.subTitle : "")
+    
+        this.testimonials = this.row.testimonials;
+        const testimonialsctrls = this.customerCmsForm.get('testimonials') as FormArray;
+        testimonialsctrls.removeAt(0)
+        this.testimonials.forEach((element: any, index) => {
+          testimonialsctrls.push(this.editTestimonials(element.name,element.certifications,element.comment))          
+        })
+
+        this.bulletPoints = this.row.bulletPoints;
+        const bulletPointsctrls = this.customerCmsForm.get('bulletPoints') as FormArray;
+        bulletPointsctrls.removeAt(0)
+        this.bulletPoints.forEach((element: any, index) => {
+          bulletPointsctrls.push(this.editGroupPoints(element.name))
+        })
+
 
         this.topBannerPath = this.filePath+this.row.topBanner;
         this.middlePath = this.filePath+this.row.middleBanner;
         this.lowerPath = this.filePath+this.row.lowerBanner;
+
+        if(this.row.quickOverview1.videoLink){
+          this.QOW1Path = this.filePath+this.row.quickOverview1.videoLink;
+        }
+        if(this.row.quickOverview2.videoLink){
+          this.QOW2Path = this.filePath+this.row.quickOverview2.videoLink;
+        }
+
         console.log("Data",this.row)
       }
     }, (err) => {
@@ -207,21 +248,24 @@ getPageDetails = (query = {}, search = false) => {
     var query = {}; var proquery = {};     
  
     let pageData = {
-      pageFor : 'customer',
+      pageFor:'customer',
       pageTitle: this.customerCmsForm.controls['pageTitle'].value,
       pagesubTitle: this.customerCmsForm.controls['pagesubTitle'].value,
       middleText: this.customerCmsForm.controls['middleText'].value,
       lowerText: this.customerCmsForm.controls['lowerText'].value,
+      topBannerPath: this.row.topBanner,
+      middlePath: this.row.middleBanner,
+      lowerPath: this.row.lowerBanner,
       bulletPoints: this.customerCmsForm.controls['bulletPoints'].value,
       quickOverview1: ({
         "title": formData.quickOverview1.title,
         "subTitle": formData.quickOverview1.subTitle,
-        "videoLink": ''
+        "videoLink": this.QOW1Path
       }),
       quickOverview2: ({
         "title": formData.quickOverview2.title,
         "subTitle": formData.quickOverview2.subTitle,
-        "videoLink": ''
+        "videoLink": this.QOW2Path
       }),
       facts: ({
         "title":formData.facts.title,

@@ -175,7 +175,6 @@
             <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0" formGroupName="facts">
                     <h3>Facts</h3>
                     <div class="pb-0">
-                        <mat-label>Facts</mat-label>
                         <mat-form-field class="full-width">
                             <input matInput placeholder="Title" formControlName="title" value="" [formControl]="getFormGroup('facts').controls['title']">
                         </mat-form-field>
@@ -226,7 +225,9 @@
                         </div>
 
                         <div *ngIf="QOW1Path">
-                            <img src="{{QOW1Path}}" style="height: 220px;" name="QOW1Path" />
+                            <video class="library" controls preload="auto" style="height: 220px;" data-config="some-js-object-here">
+                                <source src="{{bucketLink}}{{QOW1Path}}" type='video/mp4'>
+                            </video>
                         </div>  
                     </div>
 
@@ -238,7 +239,14 @@
                     </mat-form-field>
             </div>
 
-            <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg" formGroupName="quickOverview1">
+            <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg" formGroupName="quickOverview2">
+                    <mat-form-field class="full-width">
+                            <input matInput formControlName="title" placeholder="title" value="" [formControl]="getFormGroup('quickOverview2').controls['title']">
+                            </mat-form-field>
+                            <mat-form-field class="full-width">
+                            <input matInput formControlName="subTitle" placeholder="subTitle" value="" [formControl]="getFormGroup('quickOverview2').controls['subTitle']">
+                            </mat-form-field>
+                            
                     <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0">
                             <div class="upload--buss--docs--sec">
                                 <label>Quick Overview 2</label>
@@ -263,15 +271,12 @@
                             </div>
                         </div>  
                         <div *ngIf="QOW2Path">
-                            <img src="{{QOW2Path}}" style="height: 220px;" name="QOW2Path" />
+                            <video class="library" controls preload="auto" style="height: 220px;" data-config="some-js-object-here">
+                                <source src="{{bucketLink}}{{QOW2Path}}" type='video/mp4'>
+                            </video>
                         </div>                       
     
-                        <mat-form-field class="full-width">
-                        <input matInput formControlName="title" placeholder="title" value="" [formControl]="getFormGroup('quickOverview2').controls['title']">
-                        </mat-form-field>
-                        <mat-form-field class="full-width">
-                        <input matInput formControlName="subTitle" placeholder="subTitle" value="" [formControl]="getFormGroup('quickOverview2').controls['subTitle']">
-                        </mat-form-field>
+
                </div>
 
                <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0" formArrayName="testimonials">
