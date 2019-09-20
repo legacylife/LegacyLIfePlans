@@ -69,6 +69,7 @@ function customerUpdate(req, res) {
   }
 }
 
+
 //function to get list of cms pages
 async function list(req, res) {
   let { query } = req.body
