@@ -10,11 +10,11 @@
 
 <div fxLayout="row wrap" class="advisor--landing--wrapper">
   <div fxFlex="100">
-    <div class="get--hired--wrapper ad--first--banner" id="ad-home" style="background-image: url('assets/images/arkenea/get-hired-banner.png')">
+    <div class="get--hired--wrapper ad--first--banner" id="ad-home" [ngStyle]="{ 'backgroundImage': getUrl('topBanner') }">
       <div class="banner--content">
-        <h6>Maximize Your Connections &</h6>
-        <h3>BUILD TRANSFORMATIONAL RELATIONSHIPS</h3>
-        <h6 class="info">Through Legacy Life Plans</h6>
+        <h6>{{pageData?.sectionOne.pageTitle}}</h6>
+        <h3>{{pageData?.sectionOne.middleTitle}}</h3>
+        <h6 class="info">{{pageData?.sectionOne.subTitle}}</h6>
         <button mat-raised-button class="landing--primary--btn" [routerLink]="['/advisor/signup']">{{ advisorFreeTrialStatus ? 'Start a Free Trial': 'Sign Up'}}</button>
         <button mat-raised-button class="landing--secondary--btn">See Hire Process</button>
       </div>
@@ -24,19 +24,20 @@
       <div class="llp--container">
         <div class="hired--steps bottom-space">
           <div fxLayout="row wrap">
-            <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="33.33" fxFlex.lg="33.33" fxFlex.xl="33.33">
+            <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="33.33" fxFlex.lg="33.33" fxFlex.xl="33.33" *ngFor="let item of pageData?.sectionTwo; let i = index">
               <div class="steps--section">
                 <div class="step--header">
-                  <i class="icon icon--create--profile"></i>
-                  <h5>Build Trust</h5>
+                  <i *ngIf="i==0" class="icon icon--create--profile"></i>
+                  <i *ngIf="i==1" class="icon icon--contact-lead"></i>
+                  <i *ngIf="i==2" class="icon icon--get--hired"></i>
+                  <h5>{{item?.title}}</h5>
                 </div>
                 <div class="step--body">
-                  <p>Engage clients through meaningful discussions. Uncover needs & wants clients often hide. Use Holistic planning
-                    to validate integrity,</p>
+                  <p>{{item?.subTitle}}</p>
                 </div>
               </div>
             </div>
-            <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="33.33" fxFlex.lg="33.33" fxFlex.xl="33.33">
+            <!-- <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="33.33" fxFlex.lg="33.33" fxFlex.xl="33.33">
               <div class="steps--section">
                 <div class="step--header">
                   <i class="icon icon--contact-lead"></i>
@@ -57,23 +58,18 @@
                   <p>Put cold calling in your past. End useless lead generation. Build instant rapport.</p>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
 
         <div class="signature--wrapper" id="ad-about-us">
           <div fxLayout="row wrap" fxLayoutGap="10px" class="align--items--center">
             <div fxFlex.xs="100" fxFlex.sm="46" fxFlex.md="46" fxFlex.lg="47" fxFlex.xl="47">
-              <h4>Legacy Life Plans- shifting advisors from being transactional sellers into relationship builders.</h4>
-              <p>Legacy Life Plans is an encrypted, secure, digital safe deposit box where your clients can organize, file,
-                and store their important life documents and information. In the event of a debilitating illness or death,
-                your client’s loved ones will have predetermined managed access and a roadmap to handle your client’s affairs
-                or final wishes.</p>
-              <p>Relieve the stress of heirs, estate executors, and administrators by using this tool to provide a step-by-step
-                blueprint, which your clients can follow to organize end-of-life directives.</p>
+              <h4>{{pageData?.sectionThree.title}}</h4>
+              <p>{{pageData?.sectionThree.subTitle}}</p>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="52" fxFlex.md="52" fxFlex.lg="52" fxFlex.xl="52" class="text-right">
-              <img alt="" class="img-fluid" src="assets/images/arkenea/signature.png">
+              <img alt="" class="img-fluid" src="{{middleBanner}}">
             </div>
           </div>
         </div>
@@ -81,10 +77,10 @@
     </div>
 
 
-    <div class="hire--process--wrapper" id="ad-how-help" style="background-image: url('assets/images/arkenea/hire-process-banner.png')">
+    <div class="hire--process--wrapper" id="ad-how-help" [ngStyle]="{ 'backgroundImage': getUrl('lowerBanner') }">
       <div class="hire--content">
-        <h3>Cross Specialty Referral System </h3>
-        <p>A better way to do business</p>
+        <h3>{{pageData?.sectionFour.title}}</h3>
+        <p>{{pageData?.sectionFour.title}}</p>
       </div>
     </div>
 
@@ -92,20 +88,20 @@
       <div class="llp--container">
         <div class="hired--process--steps">
           <div fxLayout="row wrap" class="justify--content--space--around">
-            <div fxFlex.xs="100" fxFlex.sm="31" fxFlex.md="31" fxFlex.lg="31" fxFlex.xl="31">
-              <div class="steps--section">
+            <div fxFlex.xs="100" fxFlex.sm="31" fxFlex.md="31" fxFlex.lg="31" fxFlex.xl="31" *ngFor="let item of pageData?.sectionFive; let i = index">
+              <div class="steps--section step--{{(i==1) ? '2' : ''}}{{(i==2) ? '3' : ''}}">
                 <div class="step--header">
-                  <i class="icon icon--clients"></i>
-                  <h5>Clients</h5>
+                  <i *ngIf="i==0" class="icon icon--clients"></i>
+                  <i *ngIf="i==1" class="icon icon--leads"></i>
+                  <i *ngIf="i==2" class="icon icon--prospects"></i>
+                  <h5>{{i}} {{item?.title}}</h5>
                 </div>
                 <div class="step--body">
-                  <p>Over 65% of the population has no life planning in place. By opening your client’s minds to handling end
-                    of life decisions, you can introduce your client’s to Holistic life planning. Through Holistic life planning
-                    you build cross-generational relationships with families, beneficiaries, executors, and trustees.</p>
+                  <p>{{item?.subTitle}}</p>
                 </div>
               </div>
             </div>
-            <div fxFlex.xs="100" fxFlex.sm="31" fxFlex.md="31" fxFlex.lg="31" fxFlex.xl="31">
+            <!-- <div fxFlex.xs="100" fxFlex.sm="31" fxFlex.md="31" fxFlex.lg="31" fxFlex.xl="31">
               <div class="steps--section step--2">
                 <div class="step--header">
                   <i class="icon icon--leads"></i>
@@ -128,7 +124,7 @@
                     trust, value, and loyalty with their clients while establishing a virtually endless network of referrals.</p>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -137,50 +133,49 @@
 
       <div class="llp--container" id="leadsNumbers" (document:scroll)="isScrolledIntoView()">
         <div class="llp--hired">
-          <h4>Legacy Life Plans Facts</h4>
-          <p>How we build </p>
+          <h4>{{pageData?.facts.title}}</h4>
+          <p>{{pageData?.facts.subTitle}}</p>
           <div class="history">
-            <div class="sm--mt">
-              <h5 [countUp]="endVal1" [options]="opts"></h5>
-              <h6>Years</h6>
+              <div class="sm--mt">
+                <h5 [countUp]="endVal1" [options]="opts"></h5>
+                <h6>Years</h6>
+              </div>
+              <div class="sm--mt">
+                <h5 [countUp]="endVal2" [options]="opts"></h5>
+                <h6>Life Plans</h6>
+              </div>
+              <div class="sm--mt">
+                <h5 [countUp]="endVal3" [options]="opts"></h5>
+                <h6>Advisors</h6>
+              </div>
+              <div class="sm--mt">
+                <h5 [countUp]="endVal4" [options]="opts"></h5>
+                <h6>Referral Connections</h6>
+              </div>
             </div>
-            <div class="sm--mt">
-              <h5 [countUp]="endVal2" [options]="opts"></h5>
-              <h6>Life Plans</h6>
-            </div>
-            <div class="sm--mt">
-              <h5 [countUp]="endVal3" [options]="opts"></h5>
-              <h6>Advisors</h6>
-            </div>
-            <div class="sm--mt">
-              <h5 [countUp]="endVal4" [options]="opts"></h5>
-              <h6>Referral Connections</h6>
-            </div>
-          </div>
         </div>
       </div>
-
     </div>
+
 
     <div class="white--bg">
       <div class="llp--container" >
         <div class="featured--advisors text-center">
-          <h1 class="landing-main-header">Featured Advisors</h1>
-          <p>Transformational Selling with Legacy Life</p>
+          <h1 class="landing-main-header">{{pageData?.sectionSix.title}}</h1>
+          <p>{{pageData?.sectionSix.subTitle}}</p>
           <div class="fa--slider relative">
             <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" (init)="slickInit($event)" (breakpoint)="breakpoint($event)"
               (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
-              <div ngxSlickItem *ngFor="let slide of slides" class="slide">
-
+              <div ngxSlickItem *ngFor="let slide of pageData?.featuredAdvisors" class="slide">
                 <div class="advisor--details">
                   <div class="advisor--photo">
-                    <img src="{{slide.photo}}" />
+                    <img src="{{bucketLink}}{{slide?.profilePhoto}}" />
                   </div>
                   <div class="advisor--name">
                     {{slide.name}}
                   </div>
                   <div class="advisor--title">
-                    {{slide.title}}
+                    {{slide.certifications}}
                   </div>
                 </div>
               </div>
@@ -199,33 +194,28 @@
     <div class="standard-bg" id="ad-profile">
       <div class="llp--container">
         <div class="profile--highlights">
-          <h1 class="landing-main-header text-center">Legacy Life Plans Highlights</h1>
+          <h1 class="landing-main-header text-center">{{pageData?.sectionEight.title}}</h1>
           <div class="green-divider"></div>
 
           <div class="profile-content">
             <div fxLayout="row wrap" class="align--items--center">
               <div fxFlex.xs="100" fxFlex.sm="58" fxFlex.md="58" fxFlex.lg="58" fxFlex.xl="58">
-                <img alt="" class="img-fluid" src="assets/images/arkenea/profile-highlight.png">
+                <img alt="" class="img-fluid" src="{{sectionEightBanner}}">
               </div>
               <div fxFlex.xs="100" fxFlex.sm="41" fxFlex.md="41" fxFlex.lg="41" fxFlex.xl="41">
                 <!-- <div class="easy-way">Easy Way to highlight your profile</div> -->
-                <p class="info">Holistic advice is comprehensive and takes every aspect of your client’s financial situation and aspirations
-                  into consideration. Holistic advice includes strategies to build wealth, to manage expenses, to protect
-                  your client’s family, lifestyle, and assets. Holistic advice plans for income in the working years and
-                  in retirement, and shows your clients how to pass their wealth onto the next generation, all in a tax effective
-                  manner.</p>
-                <p class="info">Invite your way to success. Build value as a trusted advisor providing a resource for your clients to secure
-                  their legacy and pass on to their families… a peace of mind. </p>
+                <p class="info">{{pageData?.sectionEight.subTitle}}</p>
                 <h5>Benefits</h5>
                 <ul class="profile-steps">
-                  <li>1) Branding opportunity to be a featured advisor</li>
-                  <li>2) Build strategic partnerships with other professionals</li>
+                  <li *ngFor="let row of pageData?.sectionEight.benefitsPoints; let i = index">
+                    {{i}}) {{row.name}}
+                  </li>
+                  <!-- <li>2) Build strategic partnerships with other professionals</li>
                   <li>3) Provide a holistic consultative environment with clients</li>
                   <li>4) Expedite the sales cycle</li>
                   <li>5) Improve your closing ratio</li>
-                  <li>6) Maximize your network, create an endless lead system</li>
+                  <li>6) Maximize your network, create an endless lead system</li> -->
                 </ul>
-
               </div>
             </div>
           </div>
@@ -247,14 +237,14 @@
                 <div class="testimonial--wrapper">
                   <div class="testimonial--header">
                     <i class="icon-quote"></i>
-                    <p>{{testomonial.clientSays}}</p>
+                    <p>{{testomonial.comment}}</p>
                   </div>
                   <div class="testimonial--body">
                     <div class="testmnl--user--pic">
-                      <img src="{{testomonial.clientPic}}">
+                      <img src="{{bucketLink}}{{testomonial.profilePhoto}}">
                     </div>
-                    <h5> {{testomonial.clientName}}</h5>
-                    <h6> {{testomonial.clientDesc}}</h6>
+                    <h5> {{testomonial.name}}</h5>
+                    <h6> {{testomonial.certifications}}</h6>
                   </div>
                 </div>
 

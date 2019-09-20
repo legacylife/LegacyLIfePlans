@@ -42,7 +42,7 @@ export class customercmsComponent implements OnInit {
       if(result.status == "error"){
 		  console.log(result.data)        
       } else {
-		   this.rows = this.temp = result.data.customerCmsList			
+       this.rows = this.temp = result.data.customerCmsList;		
       }
     }, (err) => {
       console.error(err)      

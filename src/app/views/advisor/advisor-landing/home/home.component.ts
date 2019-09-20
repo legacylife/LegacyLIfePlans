@@ -4,26 +4,15 @@ import { CountUp, CountUpOptions } from 'countup.js';
 import * as $ from 'jquery'
 import { debounce } from 'lodash'
 import { APIService } from 'app/api.service';
+import { UserAPIService } from 'app/userapi.service';
+import { serverUrl, s3Details } from '../../../../config';
+const advisorBucketLink = s3Details.awsserverUrl+s3Details.assetsPath+'advisor/';
 @Component({
   selector: 'app-landing-home-page',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-
-  resetCounter = debounce(() => {
-    this.opts = {
-      duration: 1
-    }
-    setTimeout(() => {
-      this.endVal1 = 12;
-      this.endVal2 = 1208;
-      this.endVal3 = 405;
-      this.endVal4 = 320;
-    console.log('call extended');
-    }, 200);
-  }, 100);
-
 
   slides = [
     {
@@ -57,89 +46,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       title: 'CFC, CIF'
     },
   ];
-  testomonials = [
-    {
-      clientSays: 'Lorem Ipsum is simply dummy e industrys Lorem Ipsum is simply dummy text of the printing.',
-      clientPic: "assets/images/arkenea/james.png",
-      clientName: 'John Smith',
-      clientDesc: 'CFC, CIF'
 
-    },
-    {
-      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
-      clientPic: "assets/images/arkenea/user-male.png",
-      clientName: 'John Smith',
-      clientDesc: 'CFC, CIF'
-
-    },
-    {
-      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
-      clientPic: "assets/images/arkenea/john.png",
-      clientName: 'John Smith',
-      clientDesc: 'CFC, CIF'
-
-    }, {
-      clientSays: 'Lorem Ipsum is simply dummy e industrys Lorem Ipsum is simply dummy text of the printing.',
-      clientPic: "assets/images/arkenea/james.png",
-      clientName: 'John Smith',
-      clientDesc: 'CFC, CIF'
-
-    },
-    {
-      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
-      clientPic: "assets/images/arkenea/user-male.png",
-      clientName: 'John Smith',
-      clientDesc: 'CFC, CIF'
-
-    },
-    {
-      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
-      clientPic: "assets/images/arkenea/john.png",
-      clientName: 'John Smith',
-      clientDesc: 'CFC, CIF'
-
-    }, {
-      clientSays: 'Lorem Ipsum is simply dummy e industrys Lorem Ipsum is simply dummy text of the printing.',
-      clientPic: "assets/images/arkenea/james.png",
-      clientName: 'John Smith',
-      clientDesc: 'CFC, CIF'
-
-    },
-    {
-      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
-      clientPic: "assets/images/arkenea/user-male.png",
-      clientName: 'John Smith',
-      clientDesc: 'CFC, CIF'
-
-    },
-    {
-      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
-      clientPic: "assets/images/arkenea/john.png",
-      clientName: 'John Smith',
-      clientDesc: 'CFC, CIF'
-
-    }, {
-      clientSays: 'Lorem Ipsum is simply dummy e industrys Lorem Ipsum is simply dummy text of the printing.',
-      clientPic: "assets/images/arkenea/james.png",
-      clientName: 'John Smith',
-      clientDesc: 'CFC, CIF'
-
-    },
-    {
-      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
-      clientPic: "assets/images/arkenea/user-male.png",
-      clientName: 'John Smith',
-      clientDesc: 'CFC, CIF'
-
-    },
-    {
-      clientSays: 'Lorem Ipsum is simp has been the industrys Lorem Ipsum is simply dummy text of the printing.',
-      clientPic: "assets/images/arkenea/john.png",
-      clientName: 'John Smith',
-      clientDesc: 'CFC, CIF'
-
-    }
-  ];
 
   slideConfig = {
     'slidesToShow': 3, 'slidesToScroll': 1, responsive: [
@@ -198,18 +105,79 @@ export class HomeComponent implements OnInit, OnDestroy {
   bfrSubAdvPremiumAccess:Number = 0
   advisorFreeTrialStatus:Boolean = false
 
-  constructor(private api:APIService) { }
+///
+pageData : any;
+ testomonials : any;
+ resetCounter : any;
+bucketLink : string;
+topBanner : string;
+middleBanner : string;
+lowerBanner : string;
+sectionEightBanner : string;
+userId = localStorage.getItem('endUserId');
+userType = localStorage.getItem('endUserType');
+
+  constructor(private api:APIService, private userapi:UserAPIService) { }
 
   ngOnInit() {
+    this.bucketLink = advisorBucketLink;
+    this.getCMSpageDetails();
     this.opts = {
       duration: 2
     };
     window.addEventListener('scroll', this.isScrolledIntoView, true);
     this.getFreeTrialSettings()
   }
+
+
   ngOnDestroy() {
     window.removeEventListener('scroll', this.isScrolledIntoView, true);
   }
+
+  getCMSpageDetails(query = {}){
+    const req_vars = { status:'Active' }
+    this.userapi.apiRequest('post', 'homecms/advisorView', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        if(result.data){
+          this.pageData = result.data;        
+          this.topBanner = this.bucketLink+this.pageData.sectionOne.topBanner;                 
+          this.middleBanner = this.bucketLink+this.pageData.sectionThree.bannerImage;
+          this.lowerBanner = this.bucketLink+this.pageData.sectionFour.bannerImage;
+          this.sectionEightBanner = this.bucketLink+this.pageData.sectionEight.bannerImage;
+          this.testomonials = this.pageData.testimonials;
+          this.resetCounter = debounce(() => {
+            this.opts = {
+              duration: 1
+            }
+            setTimeout(() => {
+              this.endVal1 = this.pageData.facts.savedFiles;
+              this.endVal2 = this.pageData.facts.trustedAdvisors;
+              this.endVal3 = this.pageData.facts.successLogin;
+              this.endVal4 = this.pageData.facts.LLPMembers;   
+            }, 200);
+          }, 100);
+        }
+      }
+    }, (err) => {
+      console.error(err)
+    })
+  }
+  
+  getUrl(name)
+  {
+    if(name == 'topBanner'){
+      return "url('"+this.topBanner+"')";
+    } else if(name == 'middleBanner'){
+      return "url('"+this.middleBanner+"')";
+    } else if(name == 'lowerBanner'){
+      return "url('"+this.lowerBanner+"')";
+    } 
+  }
+
+
+
 
   isScrolledIntoView = () => {
     const docViewTop = $(window).scrollTop();
@@ -267,7 +235,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   async getFreeTrialSettings(){
-    let returnArr = await this.api.apiRequest('get', 'freetrialsettings/getdetails', {}).toPromise(),
+    let returnArr = await this.userapi.apiRequest('get', 'freetrialsettings/getdetails', {}).toPromise(),
         freeTrialPeriodSettings = returnArr.data
     this.bfrSubAdvPremiumAccess  = Number(freeTrialPeriodSettings.advisorFreeDays)
     this.advisorFreeTrialStatus  = freeTrialPeriodSettings.advisorStatus == 'On'? true : false

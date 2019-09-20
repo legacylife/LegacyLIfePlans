@@ -10,7 +10,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../config';
 
 const URL = serverUrl + '/api/documents/customerHomeDocuments';
-const URLProfilePhoto = serverUrl + '/api/documents/customerHomeTestimonialsphoto';
+const URLProfilePhoto = serverUrl + '/api/documents/landingMutliImages';
 
 @Component({
   selector: 'customercmsform',
@@ -114,49 +114,11 @@ export class customercmsformComponent implements OnInit {
     
     this.activeRoute.params.subscribe(params => {
       if(params.id){
-        this.customercmsPageId = params.id;console.log('param->id',params.id)
+        this.customercmsPageId = params.id;
         this.getPageDetails()
       }
     });
 }
-
-
-
-
-
-
-// onUpload() {
-//   const fd = new FormData();
-//   fd.append('authCode', this.authCode)
-//   fd.append('userId', this.userId)
-//   fd.append('file', this.selectedFile, this.selectedFile.name);
-//   this.http.post(serverUrl + `/api/email/uploadFile`, fd, {
-//     reportProgress: true, observe: 'events'
-//   }).subscribe( (event: HttpEvent<any>) => {
-//     switch (event.type) {
-//       case HttpEventType.Sent:
-//         this.slimLoadingBarService.start()
-//         break;
-//       case HttpEventType.Response:
-//         this.slimLoadingBarService.complete()
-//         const atLength = this.attachments.length - 1
-//         this.attachments[atLength].uploaded = true
-//         break;
-//       case 1: {
-//         if (Math.round(this.uploadedPercentage) !== Math.round(event['loaded'] / event['total'] * 100)){
-//           this.uploadedPercentage = event['loaded'] / event['total'] * 100;
-//           this.slimLoadingBarService.progress = Math.round(this.uploadedPercentage);
-//         }
-//         break;
-//       }
-//     }
-//   },
-//   error => {
-//     console.log(error);
-//     this.slimLoadingBarService.reset()
-//   });
-// }
-
 
 getFormGroup(controlName) {
   return <FormGroup>this.customerCmsForm.get(controlName);
@@ -229,7 +191,7 @@ getPageDetails = (query = {}, search = false) => {
         this.customerCmsForm.controls['pagesubTitle'].setValue(this.row.pagesubTitle);
         this.customerCmsForm.controls['middleText'].setValue(this.row.middleText);
         this.customerCmsForm.controls['lowerText'].setValue(this.row.lowerText);
-        this.customerCmsForm.controls['bulletPoints'].setValue(this.row.bulletPoints);
+        //this.customerCmsForm.controls['bulletPoints'].setValue(this.row.bulletPoints);
 
         this.topBannerPath = this.filePath+this.row.topBanner;
         this.middlePath = this.filePath+this.row.middleBanner;
@@ -270,6 +232,7 @@ getPageDetails = (query = {}, search = false) => {
         "LLPMembers":formData.facts.LLPMembers,
       }),
       testimonials: this.customerCmsForm.controls['testimonials'].value,
+      status:"Active"
     }
 
     if(this.uploaderProfilePhoto.getNotUploadedItems().length){
@@ -486,7 +449,7 @@ uploadQOW2File(id) {
 uploadTestimonialsFile(fileName,index) {
   console.log('fileName--->',fileName)
   this.uploaderProfilePhoto.onBeforeUploadItem = (item) => {
-    item.url = `${URLProfilePhoto}?filenewName=${fileName}`;
+    item.url = `${URLProfilePhoto}?folderName=${'customer'}&filenewName=${fileName}`;
   }
   if(this.uploaderProfilePhoto.getNotUploadedItems().length){
     this.uploaderProfilePhoto.queue.forEach((fileoOb, ind) => {

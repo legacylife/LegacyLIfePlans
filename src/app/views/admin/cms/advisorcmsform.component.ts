@@ -8,10 +8,8 @@ import { AppLoaderService } from '../../../shared/services/app-loader/app-loader
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, TableService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
 import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../config';
-
 const URL = serverUrl + '/api/documents/advisorHomeDocuments';
-const URLProfilePhoto = serverUrl + '/api/documents/advisorHomeTestimonialsphoto';
-
+const URLProfilePhoto = serverUrl + '/api/documents/landingMutliImages';
 @Component({
   selector: 'advisorcmsform',
   templateUrl: './advisorcmsform.component.html',
@@ -21,7 +19,7 @@ export class advisorcmsformComponent implements OnInit {
   userId = localStorage.getItem("userId");
   public hasBaseDropZoneOver: boolean = false;
   invalidMessage: string;
-  customerCmsForm: FormGroup
+  advisorCmsForm: FormGroup
   customercmsPageId: string
 
   public uploaderTopBanner: FileUploader = new FileUploader({ url: `${URL}` });
@@ -55,7 +53,6 @@ export class advisorcmsformComponent implements OnInit {
   currentProgessinPercentProfilePhoto: number = 0;
   fileErrorsProfilePhoto: any;
 
-
   selectedFAFile: File = null;
   selectedFAFileName:any
 
@@ -79,7 +76,7 @@ export class advisorcmsformComponent implements OnInit {
 
   ngOnInit() {
     this.aceessSection = this.api.getUserAccess('cms')
-    this.customerCmsForm = this.fb.group({
+    this.advisorCmsForm = this.fb.group({
       sectionOne: new FormGroup({
         title: new FormControl(''),
         middleTitle: new FormControl(''),
@@ -106,7 +103,11 @@ export class advisorcmsformComponent implements OnInit {
         LLPMembers: new FormControl(''),
         referralConnection: new FormControl(''),
       }),
-      featuredAdvisors:  this.fb.array([this.fb.group({title: [''],subTitle: [''],name: [''],certifications: [''],profilePhoto: ['']})]),
+      sectionSix: new FormGroup({
+        title: new FormControl(''),
+        subTitle: new FormControl('')
+      }),
+      featuredAdvisors:  this.fb.array([this.fb.group({name: [''],certifications: [''],profilePhoto: ['']})]),
       sectionEight: new FormGroup({
         title: new FormControl(''),
         subTitle: new FormControl(''),
@@ -119,7 +120,7 @@ export class advisorcmsformComponent implements OnInit {
     this.activeRoute.params.subscribe(params => {
       if(params.id){
         this.customercmsPageId = params.id;
-        this.getPageDetails()
+        ///this.getPageDetails()
       }
     });
 }
@@ -133,11 +134,11 @@ getPageDetails = (query = {}, search = false) => {
         console.log(result.data)
       } else {
         this.row = result.data;
-        this.customerCmsForm.controls['pageTitle'].setValue(this.row.pageTitle); 
-        this.customerCmsForm.controls['pagesubTitle'].setValue(this.row.pagesubTitle);
-        this.customerCmsForm.controls['middleText'].setValue(this.row.middleText);
-        this.customerCmsForm.controls['lowerText'].setValue(this.row.lowerText);
-        this.customerCmsForm.controls['bulletPoints'].setValue(this.row.bulletPoints);
+        this.advisorCmsForm.controls['pageTitle'].setValue(this.row.pageTitle); 
+        this.advisorCmsForm.controls['pagesubTitle'].setValue(this.row.pagesubTitle);
+        this.advisorCmsForm.controls['middleText'].setValue(this.row.middleText);
+        this.advisorCmsForm.controls['lowerText'].setValue(this.row.lowerText);
+        this.advisorCmsForm.controls['bulletPoints'].setValue(this.row.bulletPoints);
 
         this.topBannerPath = this.filePath+this.row.topBanner;
         this.middlePath = this.filePath+this.row.middleBanner;
@@ -151,54 +152,69 @@ getPageDetails = (query = {}, search = false) => {
 
 updatePage(formData) {
     var query = {}; var proquery = {};     
- 
+    console.log('formData',formData);
     let pageData = {
-      pageFor : 'customer',
-      pageTitle: this.customerCmsForm.controls['pageTitle'].value,
-      pagesubTitle: this.customerCmsForm.controls['pagesubTitle'].value,
-      middleText: this.customerCmsForm.controls['middleText'].value,
-      lowerText: this.customerCmsForm.controls['lowerText'].value,
-      bulletPoints: this.customerCmsForm.controls['bulletPoints'].value,
-      quickOverview1: ({
-        "title": formData.quickOverview1.title,
-        "subTitle": formData.quickOverview1.subTitle,
-        "videoLink": ''
+      pageFor : 'advisor',
+      sectionOne: ({
+        "title": formData.sectionOne.title,
+        "middleTitle": formData.sectionOne.middleTitle,
+        "subTitle": formData.sectionOne.subTitle,
+        "topBanner": ''
       }),
-      quickOverview2: ({
-        "title": formData.quickOverview2.title,
-        "subTitle": formData.quickOverview2.subTitle,
-        "videoLink": ''
+      sectionTwo: this.advisorCmsForm.controls['sectionTwo'].value,
+      sectionThree: ({
+        "title": formData.sectionThree.title,
+        "subTitle": formData.sectionThree.subTitle,
+        "bannerImage": ''
       }),
+      sectionFour: ({
+        "title": formData.sectionFour.title,
+        "subTitle": formData.sectionFour.subTitle,
+        "bannerImage": ''
+      }),
+      sectionFive: this.advisorCmsForm.controls['sectionFive'].value,
       facts: ({
         "title":formData.facts.title,
         "subTitle":formData.facts.subTitle,
         "savedFiles":formData.facts.savedFiles,
-        "trustedAdvisors":formData.facts.trustedAdvisors,
-        "successLogin":formData.facts.successLogin,
+        "trustedAdvisors":formData.facts.trustedAdvisors,       
         "LLPMembers":formData.facts.LLPMembers,
+        "referralConnection":formData.facts.referralConnection,
       }),
-      testimonials: this.customerCmsForm.controls['testimonials'].value,
+      featuredAdvisors: this.advisorCmsForm.controls['featuredAdvisors'].value,
+      sectionEight: ({
+        "title": formData.sectionEight.title,
+        "subTitle": formData.sectionEight.subTitle,
+        "bannerImage": '',
+        "benefitsPoints": formData.sectionEight.benefitsPoints,
+      }),
+      testimonials: this.advisorCmsForm.controls['testimonials'].value,
+      status:"Active"
     }
 
     // if(this.uploaderProfilePhoto.getNotUploadedItems().length){
     //   this.snack.open("Please wait files uploading is in process..."+this.uploaderProfilePhoto.getNotUploadedItems().length, 'OK', { duration: 4000 })
     // }else{
     console.log('pageData',pageData);
-    console.log('formData',formData);
     let profileInData = {userId:this.userId};
     const req_vars = {
       query: pageData,
       proquery: profileInData,
       _id:this.customercmsPageId
     }
-    this.api.apiRequest('post', 'homecms/update', req_vars).subscribe(result => {
+    this.api.apiRequest('post', 'homecms/advisorUpdate', req_vars).subscribe(result => {
       if(result.status == "error"){
         this.snack.open("Something error! Please try again later.", 'OK', { duration: 5000 })
       } else {
         let returnId = result.data.newrecord._id;
-       
+          
+         this.uploadTopBanner(returnId);
+         this.uploadThree(returnId);
+         this.uploaderFour(returnId);
+         this.uploaderEight(returnId);
+
         this.snack.open("Data has been updated successfully", 'OK', { duration: 5000 })
-        this.router.navigateByUrl('/admin/customerCms');
+       //8 this.router.navigateByUrl('/admin/customerCms');
       }      
     }, (err) => {
       console.log("Error in update")
@@ -208,11 +224,11 @@ updatePage(formData) {
 }
 
 getFormGroup(controlName) {
-  return <FormGroup>this.customerCmsForm.get(controlName);
+  return <FormGroup>this.advisorCmsForm.get(controlName);
 }
 
 get sectionTwoArray() {
-  return this.customerCmsForm.get('sectionTwo') as FormArray;
+  return this.advisorCmsForm.get('sectionTwo') as FormArray;
 }
 
 addTwoPoints() {
@@ -223,12 +239,12 @@ addTwoPoints() {
 }
 
 deleteTwoPoints(i) {
-  const control = <FormArray>this.customerCmsForm.controls['sectionTwo'];
+  const control = <FormArray>this.advisorCmsForm.controls['sectionTwo'];
   control.removeAt(i);
 }
 
 get sectionFiveArray() {
-  return this.customerCmsForm.get('sectionFive') as FormArray;
+  return this.advisorCmsForm.get('sectionFive') as FormArray;
 }
 
 addFivePoints() {
@@ -239,20 +255,47 @@ addFivePoints() {
 }
 
 deleteFivePoints(i) {
-  const control = <FormArray>this.customerCmsForm.controls['sectionFive'];
+  const control = <FormArray>this.advisorCmsForm.controls['sectionFive'];
   control.removeAt(i);
 }
 
 get featuredAdvisorsArray() {
-  return this.customerCmsForm.get('featuredAdvisors') as FormArray;
+  return this.advisorCmsForm.get('featuredAdvisors') as FormArray;
 }
 
 onFAFileSelected(event,i) {
   this.selectedFAFile = <File>event.target.files[0];
   this.selectedFAFileName = new Date().getTime()+this.selectedFAFile.name;
-  //this.uploadTestimonialsFile(this.selectedFileName,i);
+  this.uploaderFeature(this.selectedFileName,i);
   console.log('selectedFAFileName,',this.selectedFAFileName)
 }
+
+uploaderFeature(fileName,index) {
+  console.log('fileName--->',fileName)
+  this.uploaderFeaturedAdvisors.onBeforeUploadItem = (item) => {
+    item.url = `${URLProfilePhoto}?folderName=${'advisor'}&filenewName=${fileName}`;
+  }
+  if(this.uploaderFeaturedAdvisors.getNotUploadedItems().length){
+    this.uploaderFeaturedAdvisors.queue.forEach((fileoOb, ind) => {
+          this.uploaderFeaturedAdvisors.uploadItem(fileoOb);
+    });
+    this.uploaderFeaturedAdvisors.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+       this.uploaderFeatureProgressBar(index);
+    };
+
+   if(this.uploaderFeaturedAdvisors.onCompleteAll()){
+      this.uploaderFeaturedAdvisors.clearQueue();
+    }  
+  }
+}
+
+uploaderFeatureProgressBar(index){
+  let totalLength = this.uploaderFeaturedAdvisors.queue.length;console.log('Pro photos',totalLength);
+  let remainingLength =  this.uploaderFeaturedAdvisors.getNotUploadedItems().length;    
+  this.sectionFAPer = 100 - (remainingLength * 100 / totalLength);
+  this.sectionFAPer = Number(this.sectionFAPer.toFixed());
+}
+
 
 addFaturedAdvisors() {
   this.featuredAdvisorsArray.push(this.fb.group({
@@ -265,22 +308,50 @@ addFaturedAdvisors() {
 }
 
 deleteFaturedAdvisors(i) {
-  const control = <FormArray>this.customerCmsForm.controls['featuredAdvisors'];
+  const control = <FormArray>this.advisorCmsForm.controls['featuredAdvisors'];
   control.removeAt(i);
 }
 
 
 get testimonialsArray() {
-  return this.customerCmsForm.get('testimonials') as FormArray;
+  return this.advisorCmsForm.get('testimonials') as FormArray;
 }
 
 
 onFileSelected(event,i) {
   this.selectedFile = <File>event.target.files[0];
   this.selectedFileName = new Date().getTime()+this.selectedFile.name;
- // this.uploadTestimonialsFile(this.selectedFileName,i);
+  this.uploadTestimonialsFile(this.selectedFileName,i);
   console.log('selectedFileName,',this.selectedFileName)
 }
+
+
+uploadTestimonialsFile(fileName,index) {
+  console.log('fileName--->',fileName)
+  this.uploaderProfilePhoto.onBeforeUploadItem = (item) => {
+    item.url = `${URLProfilePhoto}?folderName=${'advisor'}&filenewName=${fileName}`;
+  }
+  if(this.uploaderProfilePhoto.getNotUploadedItems().length){
+    this.uploaderProfilePhoto.queue.forEach((fileoOb, ind) => {
+          this.uploaderProfilePhoto.uploadItem(fileoOb);
+    });
+    this.uploaderProfilePhoto.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+       this.uploaderTestimonialsProgressBar(index);
+    };
+
+   if(this.uploaderProfilePhoto.onCompleteAll()){
+      this.uploaderProfilePhoto.clearQueue();
+    }  
+  }
+}
+
+uploaderTestimonialsProgressBar(index){
+  let totalLength = this.uploaderProfilePhoto.queue.length;console.log('Testimonials -->>> ',totalLength);
+  let remainingLength =  this.uploaderProfilePhoto.getNotUploadedItems().length;    
+  this.currentProgessinPercentProfilePhoto = 100 - (remainingLength * 100 / totalLength);
+  this.currentProgessinPercentProfilePhoto = Number(this.currentProgessinPercentProfilePhoto.toFixed());
+}
+
 
 addTestimonialsPoints() {
   this.testimonialsArray.push(this.fb.group({
@@ -292,12 +363,12 @@ addTestimonialsPoints() {
 }
 
 deleteTestimonialsPoints(i) {
-  const control = <FormArray>this.customerCmsForm.controls['testimonials'];
+  const control = <FormArray>this.advisorCmsForm.controls['testimonials'];
   control.removeAt(i);
 }
 
 get benefitsPointsArray() {
-  return this.customerCmsForm.controls.sectionEight.get('benefitsPoints') as FormArray;
+  return this.advisorCmsForm.controls.sectionEight.get('benefitsPoints') as FormArray;
 }
 
 addBenefitsPoints() {
@@ -307,7 +378,7 @@ addBenefitsPoints() {
 }
 
 deleteBenefitsPoints(i) {
-  const control = <FormArray>this.customerCmsForm.controls['benefitsPoints'];
+  const control = <FormArray>this.advisorCmsForm.controls['benefitsPoints'];
   control.removeAt(i);
 }
 
@@ -393,8 +464,7 @@ public fileOverSectionEightBase(e: any): void {
 }
 
 isExtension(ext, extnArray) {
-  var result = false;
-  var i;
+  var result = false; var i;
   if (ext) {
       ext = ext.toLowerCase();
       for (i = 0; i < extnArray.length; i++) {
@@ -405,6 +475,94 @@ isExtension(ext, extnArray) {
       }
   }
   return result;
+}
+
+uploadTopBanner(id) {
+  this.uploaderTopBanner.onBeforeUploadItem = (item) => {
+    item.url = `${URL}?docId=${id}&attrName=sectionOne.topBanner`;
+  }
+  if(this.uploaderTopBanner.getNotUploadedItems().length){
+    this.uploaderTopBanner.queue.forEach((fileoOb, ind) => {
+          this.uploaderTopBanner.uploadItem(fileoOb);
+    });
+    this.uploaderTopBanner.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.updateProgressBarTopBanner();
+      this.uploaderTopBanner.clearQueue();      
+    };
+  }
+}
+
+updateProgressBarTopBanner(){
+  let totalLength = this.uploaderTopBanner.queue.length;
+  let remainingLength =  this.uploaderTopBanner.getNotUploadedItems().length;    
+  this.topBannerProgessPer = 100 - (remainingLength * 100 / totalLength);
+  this.topBannerProgessPer = Number(this.topBannerProgessPer.toFixed());
+}
+
+uploadThree(id) {
+  this.uploaderSectionThree.onBeforeUploadItem = (item) => {
+    item.url = `${URL}?docId=${id}&attrName=sectionThree.bannerImage`;
+  }
+  if(this.uploaderSectionThree.getNotUploadedItems().length){
+    this.uploaderSectionThree.queue.forEach((fileoOb, ind) => {
+          this.uploaderSectionThree.uploadItem(fileoOb);
+    });
+    this.uploaderSectionThree.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.updateProgressBarSectionThree();
+      this.uploaderSectionThree.clearQueue();      
+    };
+  }
+}
+
+updateProgressBarSectionThree(){
+  let totalLength = this.uploaderSectionThree.queue.length;
+  let remainingLength =  this.uploaderSectionThree.getNotUploadedItems().length;    
+  this.sectionThreeProgessPer = 100 - (remainingLength * 100 / totalLength);
+  this.sectionThreeProgessPer = Number(this.sectionThreeProgessPer.toFixed());
+}
+
+uploaderFour(id) {
+  this.uploaderSectionFour.onBeforeUploadItem = (item) => {
+    item.url = `${URL}?docId=${id}&attrName=sectionFour.bannerImage`;
+  }
+  if(this.uploaderSectionFour.getNotUploadedItems().length){
+    this.uploaderSectionFour.queue.forEach((fileoOb, ind) => {
+          this.uploaderSectionFour.uploadItem(fileoOb);
+    });
+    this.uploaderSectionFour.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.updateProgressBarSectionFour();
+      this.uploaderSectionFour.clearQueue();      
+    };
+  }
+}
+
+updateProgressBarSectionFour(){
+  let totalLength = this.uploaderSectionFour.queue.length;
+  let remainingLength =  this.uploaderSectionFour.getNotUploadedItems().length;    
+  this.sectionFourProgessPer = 100 - (remainingLength * 100 / totalLength);
+  this.sectionFourProgessPer = Number(this.sectionFourProgessPer.toFixed());
+}
+
+uploaderEight(id) {
+  this.uploaderSectionEight.onBeforeUploadItem = (item) => {
+    item.url = `${URL}?docId=${id}&attrName=sectionEight.bannerImage`;
+  }
+  if(this.uploaderSectionEight.getNotUploadedItems().length){
+    this.uploaderSectionEight.queue.forEach((fileoOb, ind) => {
+          this.uploaderSectionEight.uploadItem(fileoOb);
+    });
+    this.uploaderSectionEight.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.updateProgressBarSectionEight();
+      this.uploaderSectionEight.clearQueue();      
+    };
+  }
+}
+
+updateProgressBarSectionEight(){
+  let totalLength = this.uploaderSectionEight.queue.length;
+  let remainingLength =  this.uploaderSectionEight.getNotUploadedItems().length;    
+  this.sectionEightProgessPer = 100 - (remainingLength * 100 / totalLength);
+  this.sectionEightProgessPer = Number(this.sectionEightProgessPer.toFixed());
 }
 
 

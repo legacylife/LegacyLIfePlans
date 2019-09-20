@@ -190,10 +190,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     } else if(name == 'lowerBanner'){
       return "url('"+this.lowerBanner+"')";
     }
-     
-
-
-
   }
 
   isScrolledIntoViewOne = () => {

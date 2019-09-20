@@ -1,14 +1,11 @@
 <div class="row" *ngIf="aceessSection">
-
-  <form class="llp-form-wrapper">
+  <!-- <form class="llp-form-wrapper">
     <mat-form-field class="no-mar full-width">
       <input matInput placeholder="Type to filter all columns" value="" (keyup)='updateFilter($event)'>
     </mat-form-field>
-  </form>
-  <!-- <a mat-icon-button mat-sm-button color="primary" class="mb-1" [routerLink]="['/admin/customercmscreate']"  title="View"><mat-icon class="icon--edit--sm">add</mat-icon></a> -->
-  <button mat-raised-button class="landing--secondary--btn"  [routerLink]="['/admin/customercmscreate']">Customer</button>
-  <button mat-raised-button class="landing--secondary--btn"  [routerLink]="['/admin/advisorcmscreate']">Advisor</button>
- 
+  </form> -->
+  <!-- <button mat-raised-button class="landing--secondary--btn"  [routerLink]="['/admin/customercmscreate']">Customer</button>
+  <button mat-raised-button class="landing--secondary--btn"  [routerLink]="['/admin/advisorcmscreate']">Advisor</button>-->
   <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
     <mat-card-content class="p-0">
       <ngx-datatable class="material ml-0 mr-0" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50"
@@ -18,14 +15,9 @@
             {{ row?.pageFor }}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column [resizeable]="false" name="Page Title" [flexGrow]="1">
+        <ngx-datatable-column [resizeable]="false" name="Last Updated Date" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.pageTitle }}
-          </ng-template>
-        </ngx-datatable-column>
-        <ngx-datatable-column [resizeable]="false" name="Page Code" [flexGrow]="1">
-          <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.pageCode }}
+              {{ row?.modifiedOn | date: 'yyyy/MM/dd HH:mm:ss' }}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">
@@ -35,8 +27,11 @@
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" name="Actions" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            <a mat-icon-button mat-sm-button color="primary" class="mb-1" [routerLink]="['/admin/customercmsedit', row._id]"
-              title="View">
+            <a mat-icon-button mat-sm-button color="primary" class="mb-1" *ngIf="row.pageFor=='customer'" [routerLink]="['/admin/customercmsedit', row._id]" title="View">
+              <mat-icon class="icon--edit--sm">edit</mat-icon>
+            </a>
+
+            <a mat-icon-button mat-sm-button color="primary" class="mb-1" *ngIf="row.pageFor=='advisor'" [routerLink]="['/admin/advisorcmsedit', row._id]" title="View">
               <mat-icon class="icon--edit--sm">edit</mat-icon>
             </a>
           </ng-template>
