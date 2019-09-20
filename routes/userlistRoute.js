@@ -1214,10 +1214,10 @@ async function calculateZipcode(zipcode,id){
 
 function renewlegacysubscription( req, res ) {
   
-  let requestParam = req.body.query
-  let param = {query :{_id:requestParam._id, userType:requestParam.userType }}
-  let { query } = param;
-  let fields = {}
+  let requestParam  = req.body.query
+  let param         = {query :{_id:requestParam._id, userType:requestParam.userType }}
+  let { query }     = param;
+  let fields        = {}
   User.findOne(query, fields, function (err, userProfile) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -1231,70 +1231,207 @@ function renewlegacysubscription( req, res ) {
        */
       if( userProfile.stripeCustomerId ) {
         stripeCustomerId = userProfile.stripeCustomerId;
-        //If user want to pay with new card, update card details against the user in stripe
-        if( requestParam.token != null ) {
-          stripe.customers.update(
-            stripeCustomerId,
-            { source : requestParam.token },
-              function(err, customer) {
-              if ( err ) {
-                switch (err.type) {
-                  case 'StripeCardError':
-                    // A declined card error
-                    //err.message; // => e.g. "Your card's expiration year is invalid."
-                    res.send(resFormat.rError(err.message));
-                    break;
-                  case 'StripeRateLimitError':
-                    // Too many requests made to the API too quickly
-                    res.send(resFormat.rError(err.message));
-                    break;
-                  case 'StripeInvalidRequestError':
-                    // Invalid parameters were supplied to Stripe's API
-                    res.send(resFormat.rError(err.message));
-                    break;
-                  case 'StripeAPIError':
-                    // An error occurred internally with Stripe's API
-                    res.send(resFormat.rError(err.message));
-                    break;
-                  case 'StripeConnectionError':
-                    // Some kind of error occurred during the HTTPS communication
-                    res.send(resFormat.rError(err.message));
-                    break;
-                  case 'StripeAuthenticationError':
-                    // You probably used an incorrect API key
-                    res.send(resFormat.rError(err.message));
-                    break;
-                  default:
-                    // Handle any other types of unexpected errors
-                    res.send(resFormat.rError("Invalid access. Try again"));
-                    break;
-                }
-              }
-              else{
-                createSubscription( userProfile, stripeCustomerId, planId, requestParam, res )
-              }
+        //If user want to pay with new card, add card details against the user in stripe and after subscription delete card
+        stripeCustomerId = customer.id
+        stripe.customers.createSource(
+          stripeCustomerId,
+          {
+            source: requestParam.token,
+          },function(err, card) {
+            if( err ) {
+              stripeErrors( err, res )
             }
-          );
-        }
-        else{
-          createSubscription( userProfile, stripeCustomerId, planId, requestParam, res )
-        }
+            let newStripeCardId = card.id
+            
+            createSubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId )
+        })
       }
       else{
+        /**
+         * create stripe account if not exists
+         */
         stripe.customers.create({
           email:userProfile.username,
           description: 'Customer for '+userProfile.username,
-          source: requestParam.token // obtained with Stripe.js
         }, function(err, customer) {
           if( err ) {
-            
+            stripeErrors( err, res )
           }
           else{
             stripeCustomerId = customer.id
-            createSubscription( userProfile, stripeCustomerId, planId, requestParam, res )
+            /**
+             * add new card to user stripe account
+             */
+            stripe.customers.createSource(
+              stripeCustomerId,
+              {
+                source: requestParam.token,
+              },function(err, card) {
+                if( err ) {
+                  stripeErrors( err, res )
+                }
+                let newStripeCardId = card.id
+                createSubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId )
+            })
           }
         });
       }
+    }
+  })
+}
+
+/**
+ * Apply to subscription and update the object against to user
+ */
+function createSubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId ) {
+  let subscriptions = []
+  let subscriptionStatus = 'added'
+  let subscriptionDetails = {"_id" : objectId,
+                          "productId" : '',
+                          "planId" : planId,
+                          "subscriptionId" : '',
+                          "startDate" : new Date(),
+                          "endDate" : '',
+                          "interval" : '',
+                          "currency" : '',
+                          "amount" : 0,
+                          "status" : 'incomplete',
+                          "autoRenewal": false,
+                          "paymentMode" : '',
+                          "planName" : '',
+                          "defaultSpace" : 0,
+                          "spaceDimension" : '',
+                          "paidOn" : '',
+                          "createdOn" : new Date(),
+                          "createdBy" : mongoose.Types.ObjectId(requestParam._id)
+                        };
+
+  if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
+    subscriptions = userProfile.subscriptionDetails
+    subscriptionStatus = 'updated'
+  }
+  subscriptions.push(subscriptionDetails)
+  User.updateOne({ _id: userProfile._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : subscriptions } }, function (err, updated) {
+    if (err) {
+      res.send(resFormat.rError(err))
+    }
+    else {
+      /**
+       * create new subscription for user
+       */
+      stripe.subscriptions.create({
+        customer: stripeCustomerId,
+        collection_method: 'send_invoice',
+        items: [ 
+          { plan: planId }
+        ]
+      }, function(err, subscription) {
+        if (err) {
+          stripeErrors( err, res )
+        }
+        else {
+          /**
+           * Delete newly added card from customer account once subscription payment done
+           */
+          stripe.customers.deleteSource(
+            stripeCustomerId,
+            newStripeCardId,
+            function(err, confirmation) {
+
+              if(subscription.status == 'active') {
+                let subscriptionStartDate = subscription.current_period_start*1000
+                let subscriptionEndDate = subscription.current_period_end*1000
+
+                User.findOne({_id:userProfile._id,userType:userProfile.userType}, {}, function (err, userDetails) {
+                  if (err) {
+                    res.status(401).send(resFormat.rError(err))
+                  }
+                  else {
+                    
+                    let userSubscription = userDetails.subscriptionDetails
+                    let latestSubscription = userSubscription[userSubscription.length-1]
+                    let subscriptionDetails = {"_id" : latestSubscription._id,
+                                              "productId" : subscription.items.data[0]['plan']['product'],
+                                              "planId" : latestSubscription.planId,
+                                              "subscriptionId" : subscription.id,
+                                              "startDate" : new Date(subscriptionStartDate),
+                                              "endDate" : new Date(subscriptionEndDate),
+                                              "interval" : subscription.items.data[0]['plan']['interval'],
+                                              "currency" : subscription.items.data[0]['plan']['currency'],
+                                              "amount" : subscription.items.data[0]['plan']['amount'] / 100,
+                                              "status" : 'paid',
+                                              "autoRenewal": subscription.collection_method == 'charge_automatically' ? true : false,
+                                              "paymentMode" : 'online',
+                                              "planName" : subscription.items.data[0]['plan']['metadata']['name']+' Plan',
+                                              "defaultSpace" : subscription.items.data[0]['plan']['metadata']['defaultSpace'],
+                                              "spaceDimension" : subscription.items.data[0]['plan']['metadata']['spaceDimension'],
+                                              "paidOn" : new Date(),
+                                              "createdOn" : latestSubscription.createdOn,
+                                              "createdBy" : latestSubscription.createdBy
+                                            };
+                    userSubscription[userSubscription.length-1] = subscriptionDetails
+
+                    let EmailTemplateName = "NewSubscriptionAdviser";
+                    if(userDetails.userType == 'customer') {
+                      EmailTemplateName = "NewSubscription";
+                    }
+
+                    if( userDetails.subscriptionDetails && userDetails.subscriptionDetails.length > 0 ) {
+                      EmailTemplateName = "AutoRenewalAdviser"
+                      if(userDetails.userType == 'customer') {
+                        EmailTemplateName = "AutoRenewal"
+                      }
+                    }
+                    //Update user details
+                    User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
+                      if (err) {
+                        res.send(resFormat.rError(err))
+                      }
+                      else {
+                        let message = resMessage.data( 607, [{key: '{field}',val: 'Subscription'}, {key: '{status}',val: subscriptionStatus}] )
+                        //subscription purchased email template
+                        emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
+                          if(template) {
+                            template = JSON.parse(JSON.stringify(template));
+                            let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
+                            body = body.replace("{plan_name}",subscriptionDetails.planName);
+                            body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
+                            body = body.replace("{duration}",subscriptionDetails.interval);
+                            body = body.replace("{paid_on}",subscriptionDetails.paidOn);
+                            body = body.replace("{start_date}",subscriptionDetails.startDate);
+                            body = body.replace("{end_date}",subscriptionDetails.endDate);
+                            if(userProfile.userType == 'customer') {
+                              body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
+                              body = body.replace("{more_space}", subscription.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
+                            }
+                            body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
+                            const mailOptions = {
+                              to : userProfile.username,
+                              subject : template.mailSubject,
+                              html: body
+                            }
+                            sendEmail(mailOptions)
+                            //Update activity logs
+                            allActivityLog.updateActivityLogs(userProfile._id, userProfile._id, 'Subscription', message,'Account Settings')
+                            res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':message}));
+                          } else {
+                            //Update activity logs
+                            allActivityLog.updateActivityLogs(userProfile._id, userProfile._id, 'Subscription', message,'Account Settings')
+                            res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':message}));
+                          }
+                        })
+                      }
+                    })
+                  }
+                })
+              }
+              else{
+                res.send(resFormat.rError("Transaction could not be completed. Please check the details and try again."));
+              }
+            }//delete card callback function block ends
+          )//delete card block ends
+        }
+      });// create subscription block ends
     }
   })
 }
