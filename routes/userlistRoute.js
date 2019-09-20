@@ -623,6 +623,8 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
     else {
       stripe.subscriptions.create({
         customer: stripeCustomerId,
+        collection_method: 'send_invoice',
+        days_until_due: 30,
         items: [ 
           { plan: planId }
         ]
