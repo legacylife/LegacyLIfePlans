@@ -1094,7 +1094,7 @@ router.post('/advisorHomeDocuments', cors(), function(req,res){
     let updateFields = '';
     req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
       if(docId){
-        advisorCms.findOne({ _id: docId},{_id:1}, function (err, result) {
+        advisorCms.findOne({ _id: docId}, function (err, result) {
           if (err) {
             res.status(500).send(resFormat.rError(err))
           } else if (result) {                      
@@ -1107,22 +1107,32 @@ router.post('/advisorHomeDocuments', cors(), function(req,res){
           
           let resp = isExtension(ext,fileExts);
           if(resp){          
-              const newFilename = new Date().getTime() + `.${ext}`
+              const newFilename = new Date().getTime() + `.${ext}`;
+              let updateFields = '';
+              let updatedFields = {};
               if(attrName=='sectionOne.topBanner'){
-                updateFields = {"sectionOne.topBanner":newFilename};
+                updateFields = result.sectionOne;
+                updateFields.topBanner = newFilename
+                updatedFields = {sectionOne:updateFields}
               }else if(attrName=='sectionThree.bannerImage'){
-                updateFields = {"sectionThree.bannerImage":newFilename};
+                updateFields = result.sectionThree;
+                updateFields.topBanner = newFilename
+                updatedFields = {sectionThree:updateFields}   
               }else if(attrName=='sectionFour.bannerImage'){
-                updateFields = {"sectionFour.bannerImage":newFilename};
+                updateFields = result.sectionFour;
+                updateFields.topBanner = newFilename
+                updatedFields = {sectionFour:updateFields}   
               }else if(attrName=='sectionEight.bannerImage'){
-                updateFields = {"sectionEight.bannerImage":newFilename};
+                updateFields = result.sectionEight;
+                updateFields.topBanner = newFilename
+                updatedFields = {sectionEight:updateFields}   
               }
               console.log('updateFields    ',updateFields);
               fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
               file.pipe(fstream);
               fstream.on('close', async function () {
                 await s3.uploadFilePublic(newFilename, assetsPath+'advisor/');  
-                advisorCms.updateOne({_id:docId}, {$set:updateFields},function (err, updatedUser){
+                advisorCms.updateOne({_id:docId},{ $set: updatedFields},function (err, updatedUser){
                   if (err) {
                     res.send(resFormat.rError(err))
                   } else {
