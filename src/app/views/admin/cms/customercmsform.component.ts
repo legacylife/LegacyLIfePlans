@@ -15,6 +15,7 @@ const URLProfilePhoto = serverUrl + '/api/documents/landingMutliImages';
 @Component({
   selector: 'customercmsform',
   templateUrl: './customercmsform.component.html',
+  styleUrls: ['./cms.component.scss'],
   providers: [ToolbarService, LinkService, ImageService, HtmlEditorService,TableService, QuickToolbarService],
 })
 export class customercmsformComponent implements OnInit {
@@ -25,7 +26,7 @@ export class customercmsformComponent implements OnInit {
   public uploaderQOW1: FileUploader = new FileUploader({ url: `${URL}` });
   public uploaderQOW2: FileUploader = new FileUploader({ url: `${URL}` });
   public uploaderProfilePhoto: FileUploader = new FileUploader({ url: `${URL}` });
- 
+  IsVisible: boolean = false;
   public hasBaseDropZoneOver: boolean = false;
   invalidMessage: string;
   customerCmsForm: FormGroup
@@ -147,11 +148,12 @@ deleteBulletsPoints(i) {
   control.removeAt(i);
 }
 
-editTestimonials(name,certifications,comment) {
+editTestimonials(name,certifications,comment,profilePhoto) {
   return this.fb.group({
     name: [name, Validators.required],
     certifications: [certifications, [Validators.required]],
     comment: [comment, [Validators.required]],    
+    profilePhoto: [profilePhoto],
   });
 }
 
@@ -162,6 +164,7 @@ get testimonialsArray() {
 onFileSelected(event,i) {
   this.selectedFile = <File>event.target.files[0];
   this.selectedFileName = new Date().getTime()+this.selectedFile.name;
+  this.testimonialsArray.at(i).patchValue({profilePhoto:this.selectedFileName});
   this.uploadTestimonialsFile(this.selectedFileName,i);
   console.log('selectedFileName,',this.selectedFileName)
 }
@@ -215,7 +218,7 @@ getPageDetails = (query = {}, search = false) => {
         const testimonialsctrls = this.customerCmsForm.get('testimonials') as FormArray;
         testimonialsctrls.removeAt(0)
         this.testimonials.forEach((element: any, index) => {
-          testimonialsctrls.push(this.editTestimonials(element.name,element.certifications,element.comment))          
+          testimonialsctrls.push(this.editTestimonials(element.name,element.certifications,element.comment,element.profilePhoto))          
         })
 
         this.bulletPoints = this.row.bulletPoints;
@@ -224,7 +227,6 @@ getPageDetails = (query = {}, search = false) => {
         this.bulletPoints.forEach((element: any, index) => {
           bulletPointsctrls.push(this.editGroupPoints(element.name))
         })
-
 
         this.topBannerPath = this.filePath+this.row.topBanner;
         this.middlePath = this.filePath+this.row.middleBanner;

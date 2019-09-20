@@ -12,12 +12,15 @@ const URL = serverUrl + '/api/documents/advisorHomeDocuments';
 const URLProfilePhoto = serverUrl + '/api/documents/landingMutliImages';
 @Component({
   selector: 'advisorcmsform',
+  styleUrls: ['./cms.component.scss'],
   templateUrl: './advisorcmsform.component.html',
   providers: [ToolbarService, LinkService, ImageService, HtmlEditorService,TableService, QuickToolbarService],
 })
 export class advisorcmsformComponent implements OnInit {
   userId = localStorage.getItem("userId");
   public hasBaseDropZoneOver: boolean = false;
+  public profilePhoto: boolean = false;
+  IsVisible: boolean = false;
   invalidMessage: string;
   advisorCmsForm: FormGroup
   customercmsPageId: string
@@ -132,92 +135,102 @@ getPageDetails = (query = {}, search = false) => {
     const req_vars = {
       _id:this.customercmsPageId
     }
-    this.api.apiRequest('post', 'homecms/view', req_vars).subscribe(result => {
+    this.api.apiRequest('post', 'homecms/advisorView', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
         this.row = result.data;
-        this.advisorCmsForm.controls['pageTitle'].setValue(this.row.pageTitle); 
-        this.advisorCmsForm.controls['pagesubTitle'].setValue(this.row.pagesubTitle);
-        this.advisorCmsForm.controls['middleText'].setValue(this.row.middleText);
-        this.advisorCmsForm.controls['lowerText'].setValue(this.row.lowerText);
+        if(this.row && this.row.sectionOne){
+          const sectionOnectrl = this.getFormGroup('sectionOne');
+          sectionOnectrl.controls['title'].setValue(this.row.sectionOne.title ? this.row.sectionOne.title : "")
+          sectionOnectrl.controls['middleTitle'].setValue(this.row.sectionOne.middleTitle ? this.row.sectionOne.middleTitle : "")
+          sectionOnectrl.controls['subTitle'].setValue(this.row.sectionOne.subTitle ? this.row.sectionOne.subTitle : "")
+          if(this.row.sectionOne.topBanner){
+            this.topBannerPath = this.filePath+this.row.sectionOne.topBanner;       
+          }
+        }
+        if(this.row.sectionTwo){
+          this.sectionTwo = this.row.sectionTwo;       
+          const sectionTwoctrls = this.advisorCmsForm.get('sectionTwo') as FormArray;
+          sectionTwoctrls.removeAt(0);
+          this.sectionTwo.forEach((element: any, index) => {
+            sectionTwoctrls.push(this.editTwoPoints(element.title,element.subTitle))
+          })
+        }
+        if(this.row.sectionThree){
+          const sectionThreectrl = this.getFormGroup('sectionThree');
+          sectionThreectrl.controls['title'].setValue(this.row.sectionThree.title ? this.row.sectionThree.title : "")
+          sectionThreectrl.controls['subTitle'].setValue(this.row.sectionThree.subTitle ? this.row.sectionThree.subTitle : "")
+          if(this.row.sectionThree.bannerImage){
+          this.sectionThreePath = this.filePath+this.row.sectionThree.bannerImage; 
+          }  
+        }
+        if(this.row.sectionFour){
+          const sectionFourctrl = this.getFormGroup('sectionFour');
+          sectionFourctrl.controls['title'].setValue(this.row.sectionFour.title ? this.row.sectionFour.title : "")
+          sectionFourctrl.controls['subTitle'].setValue(this.row.sectionFour.subTitle ? this.row.sectionFour.subTitle : "")
+          if(this.row.sectionFour.bannerImage){
+          this.sectionFourPath = this.filePath+this.row.sectionFour.bannerImage;
+          }
+        }
+        if(this.row.sectionFive){
+          this.sectionFive = this.row.sectionFive;
+          const sectionFivectrls = this.advisorCmsForm.get('sectionFive') as FormArray;
+          sectionFivectrls.removeAt(0)
+          this.sectionFive.forEach((element: any, index) => {
+            sectionFivectrls.push(this.editFivePoints(element.title,element.subTitle))
+          })
+        }
 
+        if(this.row.facts){
+          const ctrl = this.getFormGroup('facts')
+          ctrl.controls['title'].setValue(this.row.facts.title ? this.row.facts.title : "")
+          ctrl.controls['subTitle'].setValue(this.row.facts.subTitle ? this.row.facts.subTitle : "")
+          ctrl.controls['savedFiles'].setValue(this.row.facts.savedFiles ? this.row.facts.savedFiles : "")
+          ctrl.controls['trustedAdvisors'].setValue(this.row.facts.trustedAdvisors ? this.row.facts.trustedAdvisors : "")
+          ctrl.controls['LLPMembers'].setValue(this.row.facts.LLPMembers ? this.row.facts.LLPMembers : "")
+          ctrl.controls['referralConnection'].setValue(this.row.facts.referralConnection ? this.row.facts.referralConnection : "")
+        }
+        if(this.row.sectionSix){
+          this.sectionSix = this.row.sectionSix;
+            const sectionSixctrl = this.getFormGroup('sectionSix')
+            sectionSixctrl.controls['title'].setValue(this.sectionSix.title ? this.sectionSix.title : "")
+            sectionSixctrl.controls['subTitle'].setValue(this.sectionSix.subTitle ? this.sectionSix.subTitle : "")
+        }
+
+        if(this.row.testimonials){
+          this.testimonials = this.row.testimonials;
+          const testimonialsctrls = this.advisorCmsForm.get('testimonials') as FormArray;
+          testimonialsctrls.removeAt(0)
+          this.testimonials.forEach((element: any, index) => {
+            testimonialsctrls.push(this.editTestimonials(element.name,element.profilePhoto,element.certifications,element.comment))
+          })
+        }
+       
+        if(this.row.featuredAdvisors){
+          this.featuredAdvisors = this.row.featuredAdvisors;
+          const featuredAdvisorsctrls = this.advisorCmsForm.get('featuredAdvisors') as FormArray;
+          featuredAdvisorsctrls.removeAt(0)
+          this.featuredAdvisors.forEach((element: any, index) => {
+            featuredAdvisorsctrls.push(this.editFaturedAdvisorsPoints(element.name,element.certifications,element.profilePhoto))
+          })
+        }
+        if(this.row.sectionEight){
+          const sectionEightctrl = this.getFormGroup('sectionEight')
+          sectionEightctrl.controls['title'].setValue(this.row.sectionEight.title ? this.row.sectionEight.title : "")
+          sectionEightctrl.controls['subTitle'].setValue(this.row.sectionEight.subTitle ? this.row.sectionEight.subTitle : "")
+
+          if(this.row.sectionEight.benefitsPoints){
+            this.benefitsPoints = this.row.sectionEight.benefitsPoints;
+            const benefitsctrls = this.advisorCmsForm.controls.sectionEight.get('benefitsPoints') as FormArray;
+            benefitsctrls.removeAt(0)
+            this.benefitsPoints.forEach((element: any, index) => {
+              benefitsctrls.push(this.editBenefitsPoints(element.name))
+            })
+          }
         
-
-        const sectionOnectrl = this.getFormGroup('sectionOne')
-        sectionOnectrl.controls['title'].setValue(this.row.sectionOne.title ? this.row.sectionOne.title : "")
-        sectionOnectrl.controls['middleTitle'].setValue(this.row.sectionOne.middleTitle ? this.row.sectionOne.middleTitle : "")
-        sectionOnectrl.controls['subTitle'].setValue(this.row.sectionOne.subTitle ? this.row.sectionOne.subTitle : "")
-
-        this.sectionTwo = this.row.sectionTwo;
-        const sectionTwoctrls = this.advisorCmsForm.get('sectionTwo') as FormArray;
-        sectionTwoctrls.removeAt(0)
-        this.sectionTwo.forEach((element: any, index) => {
-          sectionTwoctrls.push(this.editTwoPoints(element.title,element.subTitle))
-        })
-
-
-        const sectionThreectrl = this.getFormGroup('sectionThree')
-        sectionThreectrl.controls['title'].setValue(this.row.sectionThree.title ? this.row.sectionThree.title : "")
-        sectionThreectrl.controls['subTitle'].setValue(this.row.sectionThree.subTitle ? this.row.sectionThree.subTitle : "")
-        
-        const sectionFourctrl = this.getFormGroup('sectionFour')
-        sectionFourctrl.controls['title'].setValue(this.row.sectionFour.title ? this.row.sectionFour.title : "")
-        sectionFourctrl.controls['subTitle'].setValue(this.row.sectionFour.subTitle ? this.row.sectionFour.subTitle : "")
-
-        this.sectionFive = this.row.sectionFive;
-        const sectionFivectrls = this.advisorCmsForm.get('sectionFive') as FormArray;
-        sectionFivectrls.removeAt(0)
-        this.sectionFive.forEach((element: any, index) => {
-          sectionFivectrls.push(this.editFivePoints(element.title,element.subTitle))
-        })
-
-
-        const ctrl = this.getFormGroup('facts')
-        ctrl.controls['title'].setValue(this.row.facts.title ? this.row.facts.title : "")
-        ctrl.controls['subTitle'].setValue(this.row.facts.subTitle ? this.row.facts.subTitle : "")
-        ctrl.controls['savedFiles'].setValue(this.row.facts.savedFiles ? this.row.facts.savedFiles : "")
-        ctrl.controls['trustedAdvisors'].setValue(this.row.facts.trustedAdvisors ? this.row.facts.trustedAdvisors : "")
-        ctrl.controls['LLPMembers'].setValue(this.row.facts.LLPMembers ? this.row.facts.LLPMembers : "")
-        ctrl.controls['referralConnection'].setValue(this.row.facts.referralConnection ? this.row.facts.referralConnection : "")
-     
-        this.sectionSix = this.row.sectionSix;
-        const sectionSixctrls = this.advisorCmsForm.get('sectionSix') as FormArray;
-        sectionSixctrls.removeAt(0)
-        this.sectionSix.forEach((element: any, index) => {
-          sectionSixctrls.push(this.editSixPoints(element.title,element.subTitle))
-        })
-        
-        this.testimonials = this.row.testimonials;
-        const testimonialsctrls = this.advisorCmsForm.get('testimonials') as FormArray;
-        testimonialsctrls.removeAt(0)
-        this.testimonials.forEach((element: any, index) => {
-          testimonialsctrls.push(this.editTestimonials(element.name,element.certifications,element.comment))
-        })
-
-        this.benefitsPoints = this.row.sectionEight.benefitsPoints;
-        const bulletPointsctrls = this.advisorCmsForm.get('benefitsPoints') as FormArray;
-        bulletPointsctrls.removeAt(0)
-        this.benefitsPoints.forEach((element: any, index) => {
-          bulletPointsctrls.push(this.editBenefitsPoints(element.name))
-        })
-        
-        this.featuredAdvisors = this.row.featuredAdvisors;
-        const featuredAdvisorsctrls = this.advisorCmsForm.get('featuredAdvisors') as FormArray;
-        featuredAdvisorsctrls.removeAt(0)
-        this.featuredAdvisors.forEach((element: any, index) => {
-          featuredAdvisorsctrls.push(this.editFaturedAdvisorsPoints(element.name,element.certifications))
-        })
-
-        
-        const sectionEightctrl = this.getFormGroup('sectionEight')
-        sectionEightctrl.controls['title'].setValue(this.row.sectionEight.title ? this.row.sectionEight.title : "")
-        sectionEightctrl.controls['subTitle'].setValue(this.row.sectionEight.subTitle ? this.row.sectionEight.subTitle : "")
-        //bannerImage
-
-        this.topBannerPath = this.filePath+this.row.sectionOne.topBanner;
-        this.sectionThreePath = this.filePath+this.row.sectionThree.bannerImage;        
-        this.sectionFourPath = this.filePath+this.row.sectionFour.bannerImage;
+          this.sectionEightPath = this.filePath+this.row.sectionEight.bannerImage;
+        }
 
         console.log("Data",this.row)
       }
@@ -229,24 +242,38 @@ getPageDetails = (query = {}, search = false) => {
 updatePage(formData) {
     var query = {}; var proquery = {};     
     console.log('formData',formData);
+    let bannerImage = '';let bannerImageThree = '';let bannerImageFour = '';let bannerImageEight = '';
+    if(this.row.sectionOne && this.row.sectionOne.bannerImage){
+       bannerImage = this.row.sectionOne.bannerImage;
+    }
+    if(this.row.sectionThree && this.row.sectionThree.bannerImage){
+      bannerImageThree = this.row.sectionThree.bannerImage;
+    }
+    if(this.row.sectionFour && this.row.sectionFour.bannerImage){
+      bannerImageFour = this.row.sectionFour.bannerImage;
+    }    
+    if(this.row.sectionEight && this.row.sectionEight.bannerImage){
+      bannerImageEight = this.row.sectionEight.bannerImage;
+    }  
+  
     let pageData = {
       pageFor : 'advisor',
       sectionOne: ({
         "title": formData.sectionOne.title,
         "middleTitle": formData.sectionOne.middleTitle,
         "subTitle": formData.sectionOne.subTitle,
-        "topBanner": ''
+        "topBanner": bannerImage,
       }),
       sectionTwo: this.advisorCmsForm.controls['sectionTwo'].value,
       sectionThree: ({
         "title": formData.sectionThree.title,
         "subTitle": formData.sectionThree.subTitle,
-        "bannerImage": ''
+        "bannerImage": bannerImageThree,
       }),
       sectionFour: ({
         "title": formData.sectionFour.title,
         "subTitle": formData.sectionFour.subTitle,
-        "bannerImage": ''
+        "bannerImage": bannerImageFour,
       }),
       sectionFive: this.advisorCmsForm.controls['sectionFive'].value,
       facts: ({
@@ -261,18 +288,18 @@ updatePage(formData) {
       sectionEight: ({
         "title": formData.sectionEight.title,
         "subTitle": formData.sectionEight.subTitle,
-        "bannerImage": '',
+        "bannerImage": bannerImageEight,
         "benefitsPoints": formData.sectionEight.benefitsPoints,
       }),
       testimonials: this.advisorCmsForm.controls['testimonials'].value,
       status:"Active"
     }
-
+    
     // if(this.uploaderProfilePhoto.getNotUploadedItems().length){
     //   this.snack.open("Please wait files uploading is in process..."+this.uploaderProfilePhoto.getNotUploadedItems().length, 'OK', { duration: 4000 })
     // }else{
     console.log('pageData',pageData);
-    let profileInData = {userId:this.userId};
+    let profileInData = {_id:this.customercmsPageId};
     const req_vars = {
       query: pageData,
       proquery: profileInData,
@@ -314,9 +341,9 @@ addTwoPoints() {
   }));
 }
 
-editTwoPoints(name,subTitle) {
+editTwoPoints(title,subTitle) {
   return this.fb.group({
-    name: [name, Validators.required],
+    title: [title, Validators.required],
     subTitle: [subTitle, [Validators.required]]
   });
 }
@@ -337,9 +364,9 @@ addFivePoints() {
   }));
 }
 
-editFivePoints(name,subTitle) {
+editFivePoints(title,subTitle) {
   return this.fb.group({
-    name: [name, Validators.required],
+    title: [title, Validators.required],
     subTitle: [subTitle, [Validators.required]]
   });
 }
@@ -349,31 +376,22 @@ deleteFivePoints(i) {
   control.removeAt(i);
 }
 
-editSixPoints(name,subTitle) {
-  return this.fb.group({
-    name: [name, Validators.required],
-    subTitle: [subTitle, [Validators.required]]
-  });
-}
-
 get featuredAdvisorsArray() {
   return this.advisorCmsForm.get('featuredAdvisors') as FormArray;
 }
 
-
-
 onFAFileSelected(event,i) {
   this.selectedFAFile = <File>event.target.files[0];
   this.selectedFAFileName = new Date().getTime()+this.selectedFAFile.name;
-  this.uploaderFeature(this.selectedFileName,i);
-  console.log('selectedFAFileName,',this.selectedFAFileName)
+  this.featuredAdvisorsArray.at(i).patchValue({profilePhoto:this.selectedFileName});
+  this.uploaderFeature(this.selectedFAFileName,i);
 }
 
 uploaderFeature(fileName,index) {
-  console.log('fileName--->',fileName)
   this.uploaderFeaturedAdvisors.onBeforeUploadItem = (item) => {
     item.url = `${URLProfilePhoto}?folderName=${'advisor'}&filenewName=${fileName}`;
   }
+  console.log('len FeaturedAdvisors ',this.uploaderFeaturedAdvisors.getNotUploadedItems().length)
   if(this.uploaderFeaturedAdvisors.getNotUploadedItems().length){
     this.uploaderFeaturedAdvisors.queue.forEach((fileoOb, ind) => {
           this.uploaderFeaturedAdvisors.uploadItem(fileoOb);
@@ -395,19 +413,19 @@ uploaderFeatureProgressBar(index){
   this.sectionFAPer = Number(this.sectionFAPer.toFixed());
 }
 
-
 addFaturedAdvisors() {
   this.featuredAdvisorsArray.push(this.fb.group({
     name: ['', [Validators.required]],
     certifications: ['', [Validators.required]],
-    profilePhoto: [this.selectedFAFileName],
+    profilePhoto: [''],
   }));
 }
 
-editFaturedAdvisorsPoints(name,certifications) {
+editFaturedAdvisorsPoints(name,certifications,profilePhoto) {
   return this.fb.group({
     name: [name, Validators.required],
-    certifications: [certifications, [Validators.required]]
+    certifications: [certifications, [Validators.required]],
+    profilePhoto: [profilePhoto],
   });
 }
 
@@ -420,9 +438,10 @@ get testimonialsArray() {
   return this.advisorCmsForm.get('testimonials') as FormArray;
 }
 
-editTestimonials(name,certifications,comment) {
+editTestimonials(name,profilePhoto,certifications,comment) {
   return this.fb.group({
     name: [name, Validators.required],
+    profilePhoto: [profilePhoto],
     certifications: [certifications, [Validators.required]],
     comment: [comment, [Validators.required]],    
   });
@@ -431,24 +450,34 @@ editTestimonials(name,certifications,comment) {
 onFileSelected(event,i) {
   this.selectedFile = <File>event.target.files[0];
   this.selectedFileName = new Date().getTime()+this.selectedFile.name;
+  this.testimonialsArray.at(i).patchValue({profilePhoto:this.selectedFileName});
   this.uploadTestimonialsFile(this.selectedFileName,i);
-  console.log('selectedFileName,',this.selectedFileName)
 }
 
+addTestimonialsPoints() {
+  this.testimonialsArray.push(this.fb.group({
+    name: ['', [Validators.required]],
+    profilePhoto: [''],
+    certifications: ['', [Validators.required]],
+    comment: ['', [Validators.required]]
+  }));
+}
 
 uploadTestimonialsFile(fileName,index) {
   console.log('fileName--->',fileName)
   this.uploaderProfilePhoto.onBeforeUploadItem = (item) => {
     item.url = `${URLProfilePhoto}?folderName=${'advisor'}&filenewName=${fileName}`;
   }
+  console.log('len',this.uploaderProfilePhoto.getNotUploadedItems().length)
   if(this.uploaderProfilePhoto.getNotUploadedItems().length){
     this.uploaderProfilePhoto.queue.forEach((fileoOb, ind) => {
           this.uploaderProfilePhoto.uploadItem(fileoOb);
     });
     this.uploaderProfilePhoto.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      console.log('len 2 ',this.uploaderProfilePhoto.getNotUploadedItems().length)
        this.uploaderTestimonialsProgressBar(index);
     };
-
+    console.log('len 3 ',this.uploaderProfilePhoto.getNotUploadedItems().length)
    if(this.uploaderProfilePhoto.onCompleteAll()){
       this.uploaderProfilePhoto.clearQueue();
     }  
@@ -456,20 +485,10 @@ uploadTestimonialsFile(fileName,index) {
 }
 
 uploaderTestimonialsProgressBar(index){
-  let totalLength = this.uploaderProfilePhoto.queue.length;console.log('Testimonials -->>> ',totalLength);
+  let totalLength = this.uploaderProfilePhoto.queue.length;console.log('Testimonials -->>> ',totalLength,'index',index);
   let remainingLength =  this.uploaderProfilePhoto.getNotUploadedItems().length;    
   this.currentProgessinPercentProfilePhoto = 100 - (remainingLength * 100 / totalLength);
   this.currentProgessinPercentProfilePhoto = Number(this.currentProgessinPercentProfilePhoto.toFixed());
-}
-
-
-addTestimonialsPoints() {
-  this.testimonialsArray.push(this.fb.group({
-    name: ['', [Validators.required]],
-    profilePhoto: [this.selectedFileName],
-    certifications: ['', [Validators.required]],
-    comment: ['', [Validators.required]]
-  }));
 }
 
 deleteTestimonialsPoints(i) {

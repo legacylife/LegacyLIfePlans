@@ -42,12 +42,16 @@
                     <div *ngIf="topBannerPath">
                         <img src="{{topBannerPath}}" style="height: 220px;" name="topBanner" />
                     </div>       
+                    <!-- <mat-form-field class="full-width">
+                            <input matInput name="topBanner" [formControl]="getFormGroup('sectionOne').controls['topBanner']" readonly="readonly">
+                    </mat-form-field> -->
                 </div>
             </div>
   
             <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0" formArrayName="sectionTwo">
                     <h3>Section 2</h3>
                 <div class="pb-0">
+                      
                     <div fxLayout="row wrap" *ngFor="let web of sectionTwoArray.controls; let i = index" [formGroupName]="i">
                             <mat-label> {{i+1}}) </mat-label>
                         <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
@@ -144,6 +148,8 @@
                         <div fxLayout="row wrap" *ngFor="let web of sectionFiveArray.controls; let i = index" [formGroupName]="i">
                                 <mat-label> {{i+1}}) </mat-label>       
                             <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
+
+
                                 <mat-form-field class="full-width"><input matInput placeholder="Title" formControlName="title"></mat-form-field>
                                 <mat-form-field class="full-width"><input matInput placeholder="Sub Title" formControlName="subTitle"></mat-form-field>
                             </div>
@@ -220,7 +226,11 @@
                                     <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
                                 </div>                                              
                             </div> 
-
+                            <div [hidden]="IsVisible" class="{{IsVisible ? 'hidden-div' : ''}}">
+                                <mat-form-field class="full-width">
+                                        <input matInput name="profileId" placeholder="profilePhoto" formControlName="profilePhoto" readonly="readonly">
+                                </mat-form-field>
+                           </div>
                             <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
                                 <mat-icon class="mt-1 clr--red cursor-pointer" *ngIf="i>0" (click)="deleteFaturedAdvisors(i);">delete</mat-icon>
                             </div>
@@ -322,6 +332,13 @@
                                     <mat-form-field class="full-width">
                                             <input matInput placeholder="Comment" formControlName="comment">
                                     </mat-form-field>
+
+                                    <div [hidden]="IsVisible" class="{{IsVisible ? 'hidden-div' : ''}}">
+                                            <mat-form-field class="full-width">
+                                                    <input matInput name="profileId" placeholder="profilePhoto" formControlName="profilePhoto" readonly="readonly">
+                                            </mat-form-field>
+                                       </div>
+
                                 </div>
 
                                 <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">

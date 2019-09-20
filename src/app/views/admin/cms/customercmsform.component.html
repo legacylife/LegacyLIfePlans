@@ -246,7 +246,7 @@
                             <mat-form-field class="full-width">
                             <input matInput formControlName="subTitle" placeholder="subTitle" value="" [formControl]="getFormGroup('quickOverview2').controls['subTitle']">
                             </mat-form-field>
-                            
+
                     <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0">
                             <div class="upload--buss--docs--sec">
                                 <label>Quick Overview 2</label>
@@ -311,7 +311,11 @@
                                                     <input matInput placeholder="Comment" formControlName="comment">
                                             </mat-form-field>
                                         </div>
-
+                                        <div [hidden]="IsVisible" class="{{IsVisible ? 'hidden-div' : ''}}">
+                                                <mat-form-field class="full-width">
+                                                        <input matInput name="profileId" placeholder="profilePhoto" formControlName="profilePhoto" readonly="readonly">
+                                                </mat-form-field>
+                                           </div>
                                         <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
                                             <mat-icon class="mt-1 clr--red cursor-pointer" *ngIf="i>0" (click)="deleteTestimonialsPoints(i);">delete</mat-icon>
                                         </div>
