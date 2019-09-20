@@ -39,7 +39,9 @@ var customerCmsSchema = new mongoose.Schema({
   }],
   status: String,
   createdOn: Date,
-  modifiedOn: Date
+  createdBy: String,
+  modifiedOn: Date,
+  modifiedBy: String,
 })
 
 

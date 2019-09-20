@@ -28,7 +28,7 @@ var S3Sizer = require('aws-s3-size');
 const resMessage = require('./../helpers/responseMessages')
 const allActivityLog = require('./../helpers/allActivityLogs')
 var customerCms = require('./../models/CustomerCms.js')
-
+var advisorCms = require('./../models/advisorCms.js')
 //const XmlStream = require('xml-stream')
 const docFilePath = constants.s3Details.advisorsDocumentsPath;
 const IDdocFilePath = constants.s3Details.myEssentialsDocumentsPath;
@@ -1046,7 +1046,7 @@ router.post('/customerHomeDocuments', cors(), function(req,res){
   }
 })
 
-router.post('/customerHomeTestimonialsphoto', cors(), function(req,res){
+router.post('/landingMutliImages', cors(), function(req,res){
   var fstream;
   let authTokens = { authCode: "" }
   if (req.busboy) {
@@ -1054,6 +1054,7 @@ router.post('/customerHomeTestimonialsphoto', cors(), function(req,res){
       authTokens[fieldname] = val
     })
     const {query:{filenewName}} = req;
+    const {query:{folderName}} = req;
     req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
       if(filenewName){
         let ext = filename.split('.')
@@ -1065,7 +1066,7 @@ router.post('/customerHomeTestimonialsphoto', cors(), function(req,res){
             fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
             file.pipe(fstream);
             fstream.on('close', async function () {
-              await s3.uploadFilePublic(newFilename, assetsPath+'customer/');  
+              await s3.uploadFilePublic(newFilename, assetsPath+folderName+'/');  
             })
 
             return res.send(resFormat.rSuccess({'success':'upload done'}))
@@ -1079,6 +1080,73 @@ router.post('/customerHomeTestimonialsphoto', cors(), function(req,res){
     })
   }
 })
+
+
+router.post('/advisorHomeDocuments', cors(), function(req,res){
+  var fstream;
+  let authTokens = { authCode: "" }
+  if (req.busboy) {
+    req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
+      authTokens[fieldname] = val
+    })
+    const {query:{docId}} = req;
+    const {query:{attrName}} = req;
+    let updateFields = '';
+    req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+      if(docId){
+        advisorCms.findOne({ _id: docId},{_id:1}, function (err, result) {
+          if (err) {
+            res.status(500).send(resFormat.rError(err))
+          } else if (result) {                      
+          let ext = filename.split('.')
+          ext = ext[ext.length - 1];
+          var fileExts = ["jpg", "jpeg","png","JPEG","PNG"];
+          if(attrName=='quickOverview1.videoLink' || attrName=='quickOverview2.videoLink'){
+            var fileExts = ["mov","mp3", "mpeg", "wav", "ogg", "opus", "bmp", "tiff", "svg", "webm", "mpeg4", "3gpp", "avi", "mpegps", "wmv", "flv"];
+          }
+          
+          let resp = isExtension(ext,fileExts);
+          if(resp){          
+              const newFilename = new Date().getTime() + `.${ext}`
+              if(attrName=='sectionOne.topBanner'){
+                updateFields = {"sectionOne.topBanner":newFilename};
+              }else if(attrName=='sectionThree.bannerImage'){
+                updateFields = {"sectionThree.bannerImage":newFilename};
+              }else if(attrName=='sectionFour.bannerImage'){
+                updateFields = {"sectionFour.bannerImage":newFilename};
+              }else if(attrName=='sectionEight.bannerImage'){
+                updateFields = {"sectionEight.bannerImage":newFilename};
+              }
+              console.log('updateFields    ',updateFields);
+              fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+              file.pipe(fstream);
+              fstream.on('close', async function () {
+                await s3.uploadFilePublic(newFilename, assetsPath+'advisor/');  
+                advisorCms.updateOne({_id:docId}, {$set:updateFields},function (err, updatedUser){
+                  if (err) {
+                    res.send(resFormat.rError(err))
+                  } else {
+                    console.log('updatedUser',updatedUser);
+                    //resMsg = deleteDocumentS3(fileDetails.customerId,docFilePath,fileName.docName);
+                    let message = 'File uploaded successfully!';
+                    let result = { docId:docId,filename:newFilename, "message": message }
+                    res.send(resFormat.rSuccess(result))
+                  }
+                })
+              })
+          }else{
+            let results = { docId:docId, "message": "Invalid file extension!" }
+            res.send(resFormat.rSuccess(results));
+          }
+        }
+      })
+      } else {
+        res.status(401).send(resFormat.rError("User token mismatch."))
+      }
+    })
+  }
+})
+
 
 function isExtension(ext, extnArray) {
   var result = false;

@@ -14,7 +14,6 @@ const HiredAdvisors = require('./../models/HiredAdvisors.js')
 const executor = require('./../models/MarkAsExecutor.js')
 const resMessage = require('./../helpers/responseMessages')
 const allActivityLog = require('./../helpers/allActivityLogs')
-var async = require('async');
 
 async function viewDeceased(req, res) {
     let { query } = req.body;

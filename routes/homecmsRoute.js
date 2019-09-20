@@ -2,19 +2,17 @@ var express = require('express')
 var router = express.Router()
 var Cms = require('./../models/Cms.js')
 var customerCms = require('./../models/CustomerCms.js')
+var advisorCms = require('./../models/advisorCms.js')
 var constants = require('./../config/constants')
 var jwt = require('express-jwt')
 var Q = require('q')
 const resFormat = require('./../helpers/responseFormat')
 const { isEmpty } = require('lodash')
 const resMessage  = require('./../helpers/responseMessages')
-var auth = jwt({
-  secret: constants.secret,
-  userProperty: 'payload'
-})
-
+var auth = jwt({secret: constants.secret,userProperty: 'payload'})
+var async = require('async');
 //function to update cms page content
-function addUpdate(req, res) {
+function customerUpdate(req, res) {
 
   let { query, proquery } = req.body;console.log('proquery',proquery)
   if(req.body._id){
@@ -72,28 +70,12 @@ function addUpdate(req, res) {
 }
 
 //function to get list of cms pages
-function list(req, res) {
-  let { fields, offset, query, order, limit, search } = req.body
-  let totalRecords = 0
-  if (search && !isEmpty(query)) {
-    Object.keys(query).map(function(key, index) {
-      if(key !== "status") {
-        query[key] = new RegExp(query[key], 'i')
-      }
-    })
-  }
-  customerCms.countDocuments(query, function(err, customerCmsCount) {
-    if(customerCmsCount) {
-      totalRecords = customerCmsCount
-    }
-    customerCms.find(query, fields, function(err, customerCmsList) {
-      if (err) {
-        res.status(401).send(resFormat.rError(err))
-      } else {
-        res.send(resFormat.rSuccess({ customerCmsList, totalRecords}))
-      }
-    }).sort(order).skip(offset).limit(limit)
-  })
+async function list(req, res) {
+  let { query } = req.body
+  let custCmsList = await customerCms.find(query,{_id:1,pageFor:1,status:1,modifiedOn:1});
+  let advCmsList = await advisorCms.find(query,{_id:1,pageFor:1,status:1,modifiedOn:1});
+  let customerCmsList = custCmsList.concat(advCmsList);
+  res.send(resFormat.rSuccess({ customerCmsList }))
 }
 
 //function get details of page
@@ -126,10 +108,54 @@ function getCmsByCode (code) {
   return deferred.promise;
 }
 
+//function to update cms page content for advisor landing
+function advisorUpdate(req, res) {
+  let { query, proquery } = req.body;console.log('query----->>>',query,'proquery----->>>',proquery)
+  if(req.body._id){
+    advisorCms.updateOne({ _id: req.body._id },{ $set: req.body} ,(err, updateCms)=>{
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        updateCms = {_id:req.body._id};
+        let result = { "message": 'Content page has been updated',"newrecord": updateCms }
+        res.send(resFormat.rSuccess(result))
+      }
+    })
+  }else{
+  let insert_obj = query;
+  console.log("insert_obj----->>>",insert_obj);
+  let advCmsDetails = new advisorCms(insert_obj)
+  advCmsDetails.save(function(err, newrecord) {
+      if (err) {
+        res.status(500).send(resFormat.rError(err))
+      }else{
+        message  = resMessage.data( 607, [{key: '{field}',val: 'Post Details'}, {key: '{status}',val: 'created'}] )
+        let result = { "message": message,"newrecord": newrecord }
+        res.send(resFormat.rSuccess(result))
+      }
+    })
+  }
+}
 
-router.post("/update", addUpdate)
+//function get details of page
+function viewAdvisordetails (req, res) {
+  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>",req.body)
+  const  query  = req.body
+  advisorCms.findOne(query , function(err, cmsDetails) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      console.log('cmsDetails>>>>>>',cmsDetails)
+      res.send(resFormat.rSuccess(cmsDetails))
+    }
+  })
+}
+
+router.post("/update", customerUpdate)
+router.post("/advisorUpdate", advisorUpdate)
 router.post("/list", list)
 router.post("/view", viewdetails)
+router.post("/advisorView", viewAdvisordetails)
 router.getCmsByCode = getCmsByCode
 
 module.exports = router

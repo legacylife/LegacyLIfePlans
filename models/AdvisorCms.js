@@ -35,9 +35,11 @@ var advisorCmsSchema = new mongoose.Schema({
     LLPMembers : String,
     referralConnection : String
   },
-  featuredAdvisors:[{
+  sectionSix: [{
     title:String,
     subTitle:String,
+  }],
+  featuredAdvisors:[{
     name:String,
     certifications:String,
     profilePhoto:String,
@@ -56,7 +58,10 @@ var advisorCmsSchema = new mongoose.Schema({
   }],
   status: String,
   createdOn: Date,
-  modifiedOn: Date
+  createdBy: String,
+  modifiedOn: Date,
+  modifiedBy: String,
+
 })
 
 
