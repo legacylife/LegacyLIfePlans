@@ -16,6 +16,9 @@ const EMedia = require('./../models/ElectronicMedia.js')
 const actitivityLog = require('./../helpers/fileAccessLog')
 const Trustee = require('./../models/Trustee.js')
 const commonhelper = require('./../helpers/commonhelper')
+const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
+
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -24,6 +27,11 @@ function patternUpdate(req, res) {
   
   let { query } = req.body;
   let { proquery } = req.body;
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
 
   if(query._id){
     PDA.findOne(query, function (err, custData) {      
@@ -46,7 +54,11 @@ function patternUpdate(req, res) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
-              let result = { "message": "Password pattren "+resText+" successfully","newEntry":updatedDetails }
+              //let result = { "message": "Password pattren "+resText+" successfully","newEntry":updatedDetails }
+              let message = resMessage.data( 607, [{key:'{field}',val:"Password Pattern Details"},{key:'{status}',val: resText}] )
+              let result = { "message": message, "newEntry":updatedDetails }
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, "Password Details "+resText, message, folderName, subFolderName )
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -68,7 +80,11 @@ function patternUpdate(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
-        let result = { "message": "Password pattren added successfully!","newEntry":newEntry }
+        //let result = { "message": "Password pattren added successfully!","newEntry":newEntry }
+        let message = resMessage.data( 607, [{key:'{field}',val:"Password Pattern Details"},{key:'{status}',val: 'added'}] )
+        let result = { "message": message, "newEntry":newEntry }
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, "Password Details Added", message, folderName, subFolderName )
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -113,6 +129,12 @@ function deviceFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
 
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
+
   var logData = {}
   logData.fileName = proquery.deviceName;
   logData.folderName = 'password-assets';
@@ -141,7 +163,11 @@ function deviceFormUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Device "+resText+" successfully" }
+              //let result = { "message": "Device "+resText+" successfully" }
+              let message = resMessage.data( 607, [{key:'{field}',val:"Device Details"},{key:'{status}',val: resText}] )
+              let result = { "message": message }
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, "Device Details "+resText, message, folderName, subFolderName )
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -185,7 +211,11 @@ function deviceFormUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Device added successfully!" }
+        //let result = { "message": "Device added successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:"Device Details"},{key:'{status}',val: 'added'}] )
+        let result = { "message": message }
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, "Device Details Added", message, folderName, subFolderName )
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -210,6 +240,12 @@ function viewDevice(req, res) {
 function deletedevice(req, res) {
   let { query } = req.body;
   let fields = { }
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
+
   PDA.findOne(query, fields, function (err, deviceInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -221,7 +257,11 @@ function deletedevice(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(deviceInfo._id);
-          let result = { "message": "Record deleted successfully!" }
+          //let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:"Device Details"},{key:'{status}',val: 'deleted'}] )
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Device Details", message, folderName, subFolderName )
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
@@ -229,10 +269,14 @@ function deletedevice(req, res) {
   })
 }
 
-
 function electronicMediaFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
 
   var logData = {}
   logData.fileName = constants.ElectronicMediaLists[proquery.mediaType];
@@ -260,7 +304,12 @@ function electronicMediaFormUpdate(req, res) {
               logData.customerId = custData.customerId;
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
-              let result = { "message": "Electronic media "+resText+" successfully" }
+              //let result = { "message": "Electronic media "+resText+" successfully" }
+              let message = resMessage.data( 607, [{key:'{field}',val:"Electronic Media Details"},{key:'{status}',val: resText}] )
+              let result = { "message": message }
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, "Electronic Media Details "+resText, message, folderName, subFolderName )
+
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -299,13 +348,17 @@ function electronicMediaFormUpdate(req, res) {
         logData.customerId = proquery.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
-        let result = { "message": "Electronic media added successfully!" }
+        //let result = { "message": "Electronic media added successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:"Electronic Media Details"},{key:'{status}',val: 'added'}] )
+        let result = { "message": message }
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, "Electronic Media Details Added", message, folderName, subFolderName )
+
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
   }
 }
-
 
 function electronicMediaList(req, res) {
   let { fields, offset, query,trusteeQuery, order, limit, search } = req.body
@@ -371,10 +424,15 @@ function viewElectronicMedia(req, res) {
   })
 }
 
-
 function deleteElectronicMedia(req, res) {
   let { query } = req.body;
   let fields = { }
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
+
   EMedia.findOne(query, fields, function (err, ElectronicMediaInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -386,7 +444,11 @@ function deleteElectronicMedia(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(ElectronicMediaInfo._id);
-          let result = { "message": "Record deleted successfully!" }
+          //let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:"Electronic Media Details"},{key:'{status}',val: 'deleted'}] )
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Electronic Media Details Deleted", message, folderName, subFolderName )
           res.status(200).send(resFormat.rSuccess(result))
         }
       })

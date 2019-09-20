@@ -21,6 +21,8 @@ const Vehicles = require('./../models/Vehicles.js')
 const Assets = require('./../models/Assets.js')
 const Trustee = require('./../models/Trustee.js')
 const commonhelper = require('./../helpers/commonhelper')
+const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 
 var auth = jwt({
   secret: constants.secret,
@@ -31,6 +33,12 @@ function realEstateSubmit(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let { from } = req.body;
+
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
 
   var logData = {}
   logData.fileName = constants.RealEstateType[proquery.estateType];
@@ -55,7 +63,11 @@ function realEstateSubmit(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Real Estate details have been updated successfully!" }
+              //let result = { "message": "Real Estate details have been updated successfully!" }
+              let message = resMessage.data( 607, [{key:'{field}',val:"Real Estate Details"},{key:'{status}',val: 'updated'}] )
+              let result = { "message": message }
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, "Real Estate Details Updated", message, folderName, subFolderName )
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -99,7 +111,11 @@ function realEstateSubmit(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Real Estate details have been added successfully!" }
+        //let result = { "message": "Real Estate details have been added successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:"Real Estate Details"},{key:'{status}',val: 'added'}] )
+        let result = { "message": message }
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, "Real Estate Details Added", message, folderName, subFolderName )
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -145,6 +161,12 @@ function viewRealEstate(req, res) {
 function deleteRealEstate(req, res) {
   let { query } = req.body;
   let fields = { }
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
+
   RealEstate.findOne(query, fields, function (err, profileInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -156,7 +178,11 @@ function deleteRealEstate(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(profileInfo._id);
-          let result = { "message": "Record deleted successfully!" }
+          //let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:"Real Estate Details"},{key:'{status}',val: 'deleted'}] )
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Real Estate Details Deleted", message, folderName, subFolderName )
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
@@ -168,6 +194,12 @@ function realEstateVehicleSubmit(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let { from } = req.body;
+
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
 
   var logData = {}
   logData.fileName = proquery.model;
@@ -192,7 +224,11 @@ function realEstateVehicleSubmit(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Vehicle details have been updated successfully!" }
+              //let result = { "message": "Vehicle details have been updated successfully!" }
+              let message = resMessage.data( 607, [{key:'{field}',val:"Vehicles Details"},{key:'{status}',val: 'updated'}] )
+              let result = { "message": message }
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, "Vehicles Details Updated", message, folderName, subFolderName )
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -237,7 +273,11 @@ function realEstateVehicleSubmit(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Vehicle details have been added successfully!" }
+        //let result = { "message": "Vehicle details have been added successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:"Vehicles Details"},{key:'{status}',val: 'added'}] )
+        let result = { "message": message }
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, "Vehicles Details Added", message, folderName, subFolderName )
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -283,6 +323,12 @@ function getRealEstateVehiclesList(req, res) {
 function deleteRealEstateVehicle(req, res) {
   let { query } = req.body;
   let fields = { }
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
+
   Vehicles.findOne(query, fields, function (err, profileInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -294,7 +340,11 @@ function deleteRealEstateVehicle(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(profileInfo._id);
-          let result = { "message": "Record deleted successfully!" }
+          //let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:"Vehicles Details"},{key:'{status}',val: 'deleted'}] )
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Vehicles Details Deleted", message, folderName, subFolderName )
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
@@ -306,6 +356,11 @@ function realEstateAssetsSubmit(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let { from } = req.body;
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
 
   var logData = {}
   logData.fileName = constants.RealEstateAssetsType[proquery.asset];
@@ -330,7 +385,11 @@ function realEstateAssetsSubmit(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Assets details have been updated successfully!" }
+              //let result = { "message": "Assets details have been updated successfully!" }
+              let message = resMessage.data( 607, [{key:'{field}',val:"Assets Details"},{key:'{status}',val: 'updated'}] )
+              let result = { "message": message }
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, "Assets Details Updated", message, folderName, subFolderName )
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -372,7 +431,11 @@ function realEstateAssetsSubmit(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Assets details have been added successfully!" }
+        //let result = { "message": "Assets details have been added successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:"Assets Details"},{key:'{status}',val: 'added'}] )
+        let result = { "message": message }
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, "Assets Details Added", message, folderName, subFolderName )
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -418,6 +481,11 @@ function viewRealEstateAsset(req, res) {
 function deleteRealEstateAsset(req, res) {
   let { query } = req.body;
   let fields = { }
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
   Assets.findOne(query, fields, function (err, profileInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -429,7 +497,11 @@ function deleteRealEstateAsset(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(profileInfo._id);
-          let result = { "message": "Record deleted successfully!" }
+          //let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:"Assets Details"},{key:'{status}',val: 'deleted'}] )
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Assets Details Deleted", message, folderName, subFolderName )
           res.status(200).send(resFormat.rSuccess(result))
         }
       })

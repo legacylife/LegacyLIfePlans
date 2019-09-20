@@ -18,6 +18,8 @@ const actitivityLog = require('./../helpers/fileAccessLog')
 const SpecialNeeds = require('./../models/SpecialNeeds.js')
 const Trustee = require('./../models/Trustee.js')
 const commonhelper = require('./../helpers/commonhelper')
+const resMessage = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -27,6 +29,11 @@ function specialNeedsSubmit(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let { from } = req.body;
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
 
   var logData = {}
   logData.fileName = proquery.title;
@@ -51,7 +58,11 @@ function specialNeedsSubmit(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
 
-              let result = { "message": "Special Needs details have been updated successfully!" }
+              //let result = { "message": "Special Needs details have been updated successfully!" }
+              let message = resMessage.data( 607, [{key:'{field}',val:"Special Need Details"},{key:'{status}',val: 'updated'}] )
+              let result = { "message": message }
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, "Special Need Details Updated", message, folderName, subFolderName )
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -91,7 +102,11 @@ function specialNeedsSubmit(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Special Needs details have been added successfully!" }
+        //let result = { "message": "Special Needs details have been added successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:"Special Need Details"},{key:'{status}',val: 'added'}] )
+        let result = { "message": message }
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, "Special Need Details Added", message, folderName, subFolderName )
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
@@ -137,6 +152,11 @@ function viewSpecialNeeds(req, res) {
 function deleteSpecialNeeds(req, res) {
   let { query } = req.body;
   let fields = { }
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
   SpecialNeeds.findOne(query, fields, function (err, profileInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -148,7 +168,11 @@ function deleteSpecialNeeds(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(profileInfo._id);
-          let result = { "message": "Record deleted successfully!" }
+          //let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:"Special Need Details"},{key:'{status}',val: 'deleted'}] )
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Special Needs Details Deleted", message, folderName, subFolderName )
           res.status(200).send(resFormat.rSuccess(result))
         }
       })

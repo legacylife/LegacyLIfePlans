@@ -145,7 +145,12 @@ function insuranceFormUpdate(req, res) {
         logData.fileId = newEntry._id;console.log("logData",logData);
         actitivityLog.updateActivityLog(logData);
 
-        let result = { "message": "Insurance details added successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:"Insurance details"},{key:'{status}',val: 'added'}] )
+        let result = { "message": message }
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, "Insurance details added", message, folderName, subFolderName )
+
+        //let result = { "message": "Insurance details added successfully!" }
         res.status(200).send(resFormat.rSuccess(result))
       }
     })

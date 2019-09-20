@@ -73,6 +73,11 @@ function myEssentialsUpdate(req, res) {
               actitivityLog.updateActivityLog(logData);
 
               let message = resMessage.data( 607, [{key:'{field}',val:'Personal profile details'},{key:'{status}',val: from.personalProfileAction}] )
+              let fromId = from.customerId
+              if( proquery.customerLegacyId ) {
+                fromId = proquery.customerLegacyId
+              }
+              allActivityLog.updateActivityLogs( fromId, from.customerId, 'Personal Profile Details '+from.personalProfileAction, message, 'My Essentials', from.fromname )
               let result = { "message": message, "ppID": custData._id }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -127,6 +132,11 @@ function myEssentialsUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
         let message = resMessage.data( 607, [{key:'{field}',val:'Persnal profile details'},{key:'{status}',val:'added'}] )
+        let fromId = from.customerId
+            if( proquery.customerLegacyId ) {
+              fromId = proquery.customerLegacyId
+            }
+        allActivityLog.updateActivityLogs( fromId, from.customerId, 'Personal Profile Details Added', message, 'My Essentials', from.fromname )
         let result = { "message": message, "ppID": newEntry._id }
         res.status(200).send(resFormat.rSuccess(result))
       }
@@ -248,6 +258,11 @@ function emergencyContactsSubmit(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let { from } = req.body;
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
 
   var logData = {}
   logData.fileName = proquery.name;
@@ -272,6 +287,9 @@ function emergencyContactsSubmit(req, res) {
               actitivityLog.updateActivityLog(logData);
 
               let message = resMessage.data( 607, [{key:'{field}',val:'Emergency contact details'},{key:'{status}',val:'updated'}] )
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, "Emergency contact details", message, folderName, subFolderName )
+
               let result = { "message": message }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -316,6 +334,8 @@ function emergencyContactsSubmit(req, res) {
         actitivityLog.updateActivityLog(logData);
 
         let message = resMessage.data( 607, [{key:'{field}',val:'Emergency contact details'},{key:'{status}',val:'added'}] )
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, "Emergency contact details", message, folderName, subFolderName )
         let result = { "message": message}
         res.status(200).send(resFormat.rSuccess(result))
       }
@@ -341,6 +361,11 @@ function viewEmergencyContacts(req, res) {
 function deleteEcontact(req, res) {
   let { query } = req.body;
   let fields = {}
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
   emergencyContacts.findOne(query, fields, function (err, profileInfo) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -354,6 +379,8 @@ function deleteEcontact(req, res) {
           actitivityLog.removeActivityLog(profileInfo._id);
 
           let message = resMessage.data( 607, [{key:'{field}',val:'Record'},{key:'{status}',val:'deleted'}] )
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Emergency contact details", message, folderName, subFolderName )
           let result = { "message": message }
           res.status(200).send(resFormat.rSuccess(result))
         }
@@ -421,6 +448,12 @@ function personalIdUpdate(req, res) {
               actitivityLog.updateActivityLog(logData);
 
               let message = resMessage.data( 607, [{key:'{field}',val:'ID box details'},{key:'{status}',val: resText}] )
+              //Update activity logs
+              let fromId = from.customerId
+              if( proquery.customerLegacyId ) {
+                fromId = proquery.customerLegacyId
+              }
+              allActivityLog.updateActivityLogs( fromId, from.customerId, "ID Box Details "+resText, message, 'My Essentials', 'ID Box' )
               let result = { "message": message }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -457,6 +490,11 @@ function personalIdUpdate(req, res) {
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
         let message = resMessage.data( 607, [{key:'{field}',val:'ID box details'},{key:'{status}',val:'added'}] )
+        let fromId = from.customerId
+            if( proquery.customerLegacyId ) {
+              fromId = proquery.customerLegacyId
+            }
+        allActivityLog.updateActivityLogs( fromId, from.customerId, "ID Box Details Added", message, 'My Essentials', 'ID Box' )
         let result = { "message": message }
         res.status(200).send(resFormat.rSuccess(result))
       }
@@ -514,6 +552,12 @@ function myProfessionalsUpdate(req, res) {
               actitivityLog.updateActivityLog(logData);
 
               let message = resMessage.data( 607, [{key:'{field}',val:'Professional details'},{key:'{status}',val:'updated'}] )
+              //Update activity logs
+              let fromId = custData.customerId
+              if( proquery.customerLegacyId ) {
+                fromId = proquery.customerLegacyId
+              }
+              allActivityLog.updateActivityLogs( fromId, custData.customerId, 'Professional Details Updated', message, 'My Essentials', 'My Professionals' )
               let result = { "message": message, "ppID": custData._id }
               res.status(200).send(resFormat.rSuccess(result))
             }
@@ -558,6 +602,11 @@ function myProfessionalsUpdate(req, res) {
         actitivityLog.updateActivityLog(logData);
 
         let message = resMessage.data( 607, [{key:'{field}',val:'Professional details'},{key:'{status}',val:'added'}] )
+        let fromId = proquery.customerId
+        if( proquery.customerLegacyId ) {
+          fromId = proquery.customerLegacyId
+        }
+        allActivityLog.updateActivityLogs( fromId, proquery.customerId, 'Professional Details Added', message, 'My Essentials', 'My Professionals' )
         let result = { "message": message }
         res.status(200).send(resFormat.rSuccess(result))
       }

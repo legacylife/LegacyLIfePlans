@@ -92,7 +92,7 @@ router.post('/advisorDocument', cors(), function(req,res){
                     getuserFolderSize(userId);
                     let message = resMessage.data( 607, [{key: '{field}',val: 'Advisor Document'}, {key: '{status}',val: 'uploaded'}] )
                     //Update activity logs
-                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, advisorDocuments, '', fileName)
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, advisorDocuments, '', filename)
                     
                     let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                     res.send(resFormat.rSuccess(result))
@@ -170,7 +170,7 @@ router.post('/myEssentialsID', cors(), function(req,res){
                             getuserFolderSize(userId);
                             let message = resMessage.data( 607, [{key: '{field}',val: 'ID proof Document'}, {key: '{status}',val: 'uploaded'}] )
                             //Update activity logs
-                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, IDdocFilePath, '', fileName)
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, IDdocFilePath, '', filename)
                     
                             let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                             res.send(resFormat.rSuccess(result))
@@ -206,7 +206,7 @@ router.post('/myEssentialsID', cors(), function(req,res){
                      getuserFolderSize(userId);
                      let message = resMessage.data( 607, [{key: '{field}',val: 'ID proof Document'}, {key: '{status}',val: 'uploaded'}] )
                     //Update activity logs
-                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, IDdocFilePath, '', fileName)
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, IDdocFilePath, '', filename)
                     let result = { "message": message }
                      
                      res.status(200).send(resFormat.rSuccess(result))
@@ -278,7 +278,7 @@ router.post('/legalStuff', cors(), function(req,res){
                             getuserFolderSize(userId);
                             let message = resMessage.data( 607, [{key: '{field}',val: 'Legal Stuff Document'}, {key: '{status}',val: 'uploaded'}] )
                             //Update activity logs
-                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, legalStuffdocFilePath, '', fileName)
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, legalStuffdocFilePath, '', filename)
                             
                             let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                             res.send(resFormat.rSuccess(result))
@@ -314,7 +314,7 @@ router.post('/legalStuff', cors(), function(req,res){
                     getuserFolderSize(userId);
                     let message = resMessage.data( 607, [{key: '{field}',val: 'Legal Stuff Document'}, {key: '{status}',val: 'uploaded'}] )
                     //Update activity logs
-                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, legalStuffdocFilePath, '', fileName)
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, legalStuffdocFilePath, '', filename)
                     let result = { "message": message }
                     
                      res.status(200).send(resFormat.rSuccess(result))
@@ -387,7 +387,7 @@ router.post('/finalWishes', cors(), function(req,res){
                             getuserFolderSize(userId);
                             let message = resMessage.data( 607, [{key: '{field}',val: 'Final Wishesh Document'}, {key: '{status}',val: 'uploaded'}] )
                             //Update activity logs
-                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, finalWishesFilePath, '', fileName)
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, finalWishesFilePath, '', filename)
                             
                             let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                             res.send(resFormat.rSuccess(result))
@@ -423,7 +423,7 @@ router.post('/finalWishes', cors(), function(req,res){
                     getuserFolderSize(userId);
                     let message = resMessage.data( 607, [{key: '{field}',val: 'Final Wishesh Document'}, {key: '{status}',val: 'uploaded'}] )
                     //Update activity logs
-                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, finalWishesFilePath, '', fileName)
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, finalWishesFilePath, '', filename)
                     let result = { "message": message }
                     
                      res.status(200).send(resFormat.rSuccess(result))
@@ -496,7 +496,7 @@ router.post('/petsdocuments', cors(), function(req,res){
                             getuserFolderSize(userId);
                             let message = resMessage.data( 607, [{key: '{field}',val: 'Pets Document'}, {key: '{status}',val: 'uploaded'}] )
                             //Update activity logs
-                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, petsFilePath, '', fileName)
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, petsFilePath, '', filename)
                             
                             let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                             res.send(resFormat.rSuccess(result))
@@ -531,7 +531,7 @@ router.post('/petsdocuments', cors(), function(req,res){
                     getuserFolderSize(userId);
                     let message = resMessage.data( 607, [{key: '{field}',val: 'Pets Document'}, {key: '{status}',val: 'uploaded'}] )
                     //Update activity logs
-                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, petsFilePath, '', fileName)
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, petsFilePath, '', filename)
                     let result = { "message": message }
                     
                      res.status(200).send(resFormat.rSuccess(result))
@@ -605,7 +605,7 @@ router.post('/timeCapsuledocuments', cors(), function(req,res){
                             getuserFolderSize(userId);
                             let message = resMessage.data( 607, [{key: '{field}',val: 'Time capsule Document'}, {key: '{status}',val: 'uploaded'}] )
                             //Update activity logs
-                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, timeCapsuleFilePath, '', fileName)
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, timeCapsuleFilePath, '', filename)
                             
                             let result = { userId:userId, allDocs:tmpallfiles, "message": "Document uploaded successfully!" }
                             res.send(resFormat.rSuccess(result))
@@ -640,7 +640,7 @@ router.post('/timeCapsuledocuments', cors(), function(req,res){
                     getuserFolderSize(userId);
                     let message = resMessage.data( 607, [{key: '{field}',val: 'Time capsule Document'}, {key: '{status}',val: 'uploaded'}] )
                     //Update activity logs
-                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, timeCapsuleFilePath, '', fileName)
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, timeCapsuleFilePath, '', filename)
                     let result = { "message": message }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
@@ -712,7 +712,7 @@ router.post('/insuranceDocuments', cors(), function(req,res){
                             getuserFolderSize(userId);
                             let message = resMessage.data( 607, [{key: '{field}',val: 'Insurance Document'}, {key: '{status}',val: 'uploaded'}] )
                             //Update activity logs
-                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, insuranceFilePath, '', fileName)
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, insuranceFilePath, '', filename)
                             let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                             res.send(resFormat.rSuccess(result))
                           }
@@ -746,7 +746,7 @@ router.post('/insuranceDocuments', cors(), function(req,res){
                     getuserFolderSize(userId);
                     let message = resMessage.data( 607, [{key: '{field}',val: 'Insurance Document'}, {key: '{status}',val: 'uploaded'}] )
                     //Update activity logs
-                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, insuranceFilePath, '', fileName)
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, insuranceFilePath, '', filename)
                     let result = { "message": message }
                     //let result = { "message": "Document uploaded successfully!" }
                      res.status(200).send(resFormat.rSuccess(result))
@@ -818,7 +818,7 @@ router.post('/financeDocuments', cors(), function(req,res){
                             getuserFolderSize(userId);
                             let message = resMessage.data( 607, [{key: '{field}',val: 'Finance Document'}, {key: '{status}',val: 'uploaded'}] )
                             //Update activity logs
-                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, financeFilePath, '', fileName)
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, financeFilePath, '', filename)
                             //let result = { "message": message }
                             let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                             res.send(resFormat.rSuccess(result))
@@ -853,7 +853,7 @@ router.post('/financeDocuments', cors(), function(req,res){
                     getuserFolderSize(userId);
                     let message = resMessage.data( 607, [{key: '{field}',val: 'Finance Document'}, {key: '{status}',val: 'uploaded'}] )
                     //Update activity logs
-                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, financeFilePath, '', fileName)
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, financeFilePath, '', filename)
                     let result = { "message": message }
                     
                      res.status(200).send(resFormat.rSuccess(result))
@@ -927,7 +927,7 @@ router.post('/letterMessage', cors(), function(req,res){
                             
                             let message = resMessage.data( 607, [{key: '{field}',val: 'Letter Message Document'}, {key: '{status}',val: 'uploaded'}] )
                             //Update activity logs
-                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, letterMessageFilePath, '', fileName)
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, letterMessageFilePath, '', filename)
                             
                             let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                             res.send(resFormat.rSuccess(result))
@@ -963,7 +963,7 @@ router.post('/letterMessage', cors(), function(req,res){
                     //let result = { "message": "Document uploaded successfully!" }
                     let message = resMessage.data( 607, [{key: '{field}',val: 'Letter Message Document'}, {key: '{status}',val: 'uploaded'}] )
                     //Update activity logs
-                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, letterMessageFilePath, '', fileName)
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, letterMessageFilePath, '', filename)
                     let result = { "message": message }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
@@ -1494,7 +1494,7 @@ router.post('/invite', cors(), function(req,res){
                     //let result = { "message": "Document uploaded successfully!" }
                     let message = resMessage.data( 607, [{key: '{field}',val: 'Invite Document'}, {key: '{status}',val: 'uploaded'}] )
                     //Update activity logs
-                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, inviteDocumentsPath, '', fileName)
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, inviteDocumentsPath, '', filename)
                     let result = { "message": message }
                      res.status(200).send(resFormat.rSuccess(result))
                    }
@@ -1589,7 +1589,7 @@ router.post('/deceasedDocuments', cors(), function(req,res){
                             //let results = { userId:userId, allDocs:oldTmpFiles, "message": "Document uploaded successfully!" }
                             let message = resMessage.data( 607, [{key: '{field}',val: 'Descreased Document'}, {key: '{status}',val: 'uploaded'}] )
                             //Update activity logs
-                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, deceasedFilessPath, '', fileName)
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, deceasedFilessPath, '', filename)
                             let result = { "message": message }
                             res.send(resFormat.rSuccess(result))
                           }
@@ -1630,7 +1630,7 @@ router.post('/deceasedDocuments', cors(), function(req,res){
                      //let result = { "message": "Document uploaded successfully!" }
                      let message = resMessage.data( 607, [{key: '{field}',val: 'Descreased Document'}, {key: '{status}',val: 'uploaded'}] )
                     //Update activity logs
-                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, deceasedFilessPath, '', fileName)
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, deceasedFilessPath, '', filename)
                     let result = { "message": message }
                     res.status(200).send(resFormat.rSuccess(result))
                   }
@@ -1917,7 +1917,7 @@ router.post('/coachCornerArticle', cors(), function(req,res){
             
             let message = resMessage.data( 607, [{key: '{field}',val: 'Coach Corner Image'}, {key: '{status}',val: 'uploaded'}] )
             //Update activity logs
-            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, coachCornerArticlePath, '', fileName)
+            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, coachCornerArticlePath, '', filename)
 
             return res.send(resFormat.rSuccess(tmpallfiles))
             //res.status(200).send(resFormat.rSuccess(tmpallfiles))

@@ -14,7 +14,10 @@ var EmailTemplate = require('./../models/EmailTemplates.js')
 const advertisement = require('./../models/advertisements.js')
 const { isEmpty, cloneDeep, map, sortBy } = require('lodash')
 var moment    = require('moment');
-const stripe        = require("stripe")(constants.stripeSecretKey);
+const stripe          = require("stripe")(constants.stripeSecretKey);
+const resMessage      = require('./../helpers/responseMessages')
+const allActivityLog  = require('./../helpers/allActivityLogs')
+
 function addEnquiry(req, res) {
     let { query } = req.body;
     let { proquery } = req.body;
@@ -34,8 +37,10 @@ function addEnquiry(req, res) {
           res.send(resFormat.rError(err))
         } else {
           console.log('newUser',newUser)
-         // let message = resMessage.data( 621, [] )
-          let result = { "message": "Enquiry submit successfully!" }
+          let message = resMessage.data( 607, [{key: '{field}',val: 'Advertisement Enquiry'}, {key: '{status}',val: 'submitted'}] )
+          //Update activity logs
+          allActivityLog.updateActivityLogs( query.customerId, query.customerId, "Advertisement Enquiry", message, "Get Featured" )
+          let result = { "message": message }
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
@@ -63,9 +68,9 @@ function enquiryListing(req, res) {
         }
       }).sort(order).skip(offset).limit(limit).populate('customerId');
     })
-  }
+}
   
-   function viewEnquiryDetails(req, res) {
+function viewEnquiryDetails(req, res) {
     let { query } = req.body
     let totalRecords = 0
      advertisement.countDocuments(query, function (err, listCount) {
@@ -76,9 +81,9 @@ function enquiryListing(req, res) {
           res.send(resFormat.rSuccess({enquirydata,totalRecords}))
        }).populate('customerId').populate("adminReply.adminId");
     })
-  }  
+}  
 
-  function addEnquiryReply(req, res) {
+function addEnquiryReply(req, res) {
     let { query } = req.body;
     let { proquery } = req.body;
     advertisement.findOne({_id:query._id}, async function (err, found) {
@@ -209,7 +214,12 @@ function enquiryListing(req, res) {
                 replyContnt['comment'] = proquery.message;
                 console.log("\n****replyContnt****",replyContnt)
                 sendEnquiryReplyMail('AdviserFeturedRequestReply', emailId, toName, replyContnt);
-                let result = { "message": "Reply sent successfully!",'logDetails':logDetails }
+                
+                let message = resMessage.data( 607, [{key: '{field}',val: 'Advertisement Enquiry Reply'}, {key: '{status}',val: 'sent'}] )
+                //Update activity logs
+                allActivityLog.updateActivityLogs( query.adminId, found.customerId._id, "Advertisement Enquiry Reply", message, "Admin Panel" )
+                
+                let result = { "message": message,'logDetails':logDetails }
                 res.status(200).send(resFormat.rSuccess(result))
               }
             })
@@ -220,7 +230,6 @@ function enquiryListing(req, res) {
       }
     }).populate('customerId');
 }
-
 
 function rejectEnquiry(req, res) {
   let { query } = req.body;console.log('query',query)
@@ -253,7 +262,12 @@ function rejectEnquiry(req, res) {
               let toName = found.customerId.firstName;
               let emailId = found.customerId.username;
               sendEnquiryReplyMail('AdviserFeturedRequestRejected',emailId,toName,'');
-              let result = { "message": "Enquiry has been rejected!" }
+
+              let message = resMessage.data( 607, [{key: '{field}',val: 'Advertisement Enquiry'}, {key: '{status}',val: 'rejected'}] )
+              //Update activity logs
+              allActivityLog.updateActivityLogs( query.adminId, found.customerId._id, "Advertisement Enquiry", message, "Admin Panel" )
+
+              let result = { "message": message }
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -364,7 +378,10 @@ async function completeTransaction( req, res ) {
               res.send(resFormat.rError(err))
             }
             else{
-              res.status(200).send(resFormat.rSuccess({"message":"Payment has been done successfully."}))    
+              let message = resMessage.data( 607, [{key: '{field}',val: 'Advertisement Payment'}, {key: '{status}',val: 'done'}] )
+              //Update activity logs
+              allActivityLog.updateActivityLogs( customerId, customerId, "Advertisement Enquiry", message, "Payment page" )
+              res.status(200).send(resFormat.rSuccess({"message":message}))    
             }
           })
         }
