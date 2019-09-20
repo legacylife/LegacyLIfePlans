@@ -181,7 +181,7 @@
           <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Payment Link" prop="Payment Link"
             [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{row?.paymentDetails.status ==='Pending' ? paymentLink : 'Expired'}}
+              {{row?.paymentDetails?.status ==='Pending' ? paymentLink : 'Expired'}}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Time" prop="createdOn">

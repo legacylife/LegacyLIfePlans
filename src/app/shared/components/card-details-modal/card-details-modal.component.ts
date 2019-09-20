@@ -101,7 +101,7 @@ export class CardDetailsComponent implements OnInit {
       this.planInterval = returnArr.planInterval
       this.planAmount   = returnArr.planAmount
       this.planCurrency = returnArr.planCurrency
-      this.getCustomerCard()
+      this.mountCard()
     })
   }
 
@@ -290,7 +290,7 @@ export class CardDetailsComponent implements OnInit {
    */
   renewLegacyUserSubscription = ( token = null) => {
     const req_vars = {
-      query: Object.assign({ _id: this.userId, userType: this.endUserType, token:token, planId: this.planId }, {})
+      query: Object.assign({ _id: this.data.userId, userType: this.data.endUserType, token:token, planId: this.planId }, {})
     }
     this.userapi.apiRequest('post', 'userlist/renewlegacysubscription', req_vars).subscribe(result => {
       const data = result.data

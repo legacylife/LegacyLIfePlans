@@ -45,7 +45,7 @@ export class AddManagementViewComponent implements OnInit {
   enquiryFormReply: FormGroup
   zipcodeList:[];
   showReplyEnquiryForm:Boolean = false
-  paymentLink:String = ''
+  paymentLink:String = '-'
 
   constructor(
     private layout: LayoutService,
@@ -86,13 +86,19 @@ export class AddManagementViewComponent implements OnInit {
         this.row = result.data.enquirydata.customerId;
         if(result.data.enquirydata.adminReply){
           this.replyData = result.data.enquirydata.adminReply;
+          if( this.replyData.length < 1 ) {
+            this.showReplyEnquiryForm = true
+          }
           let currentRecord = this.replyData.slice(-1)[0]
-          this.showReplyEnquiryForm = currentRecord['status'] === 'Done' ? false : true
+          if( currentRecord ) {
+          this.showReplyEnquiryForm = currentRecord['status'] === 'Pending' ? true : false
 
-          let encryptedCustomerId = btoa(this.data.customerId._id),
-              encryptedInvoiceId  = btoa(currentRecord.paymentDetails.invoiceId)
+          //if( currentRecord.paymentDetails ) {
+            let encryptedCustomerId = btoa(this.data.customerId._id),
+                encryptedInvoiceId  = btoa(currentRecord.paymentDetails.invoiceId)
 
-          this.paymentLink = serverUrl+'/advertisement-payment/'+encryptedCustomerId+'/'+encryptedInvoiceId+'/'+this.data.uniqueId
+            this.paymentLink = serverUrl+'/advertisement-payment/'+encryptedCustomerId+'/'+encryptedInvoiceId+'/'+this.data.uniqueId
+          }
         }
         
         this.fullname = '';
