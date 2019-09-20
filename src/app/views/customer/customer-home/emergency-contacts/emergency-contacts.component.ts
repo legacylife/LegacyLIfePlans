@@ -33,6 +33,10 @@ export class EmergencyContactsComponent implements OnInit {
   LegacyPermissionError:string="You don't have access to this section";
   instruction_data:any;
   instruction_data_flag:boolean=false;  
+
+  toUserId:string = ''
+  subFolderName:string = 'Contacts'
+
   constructor(private route: ActivatedRoute,
     private snack: MatSnackBar,
     private router: Router,
@@ -79,6 +83,7 @@ export class EmergencyContactsComponent implements OnInit {
           if(this.instruction_data){this.instruction_data_flag = true;}
         });
       } 
+      this.toUserId = this.userId
     this.getEmergencyContacts()
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
@@ -116,7 +121,11 @@ export class EmergencyContactsComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId  }),
       proquery: Object.assign(profileInData),   
-      from: Object.assign({ customerId: this.userId }) 
+      from: Object.assign({ customerId: this.userId }) ,
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:'Emergency Contacts',
+      subFolderName:this.subFolderName
     }
     
     this.loader.open();     

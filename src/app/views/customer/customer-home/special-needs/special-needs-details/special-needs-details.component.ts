@@ -22,6 +22,9 @@ export class SpecialNeedsDetailsComponent implements OnInit {
   title: string;
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
+  toUserId:string = ''
+  subFolderName:string = ''
+
   constructor(
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
     private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router) {
@@ -40,6 +43,7 @@ export class SpecialNeedsDetailsComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }, query)
     }
+    this.toUserId = this.userId
     this.userapi.apiRequest('post', 'specialNeeds/view-special-needs', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
@@ -48,6 +52,7 @@ export class SpecialNeedsDetailsComponent implements OnInit {
           this.trusteeLegaciesAction = false;
         }
         this.row = result.data
+        this.toUserId = this.row.customerLegacyId ? this.row.customerLegacyId : this.row.customerId
         if (result.data.folderName == "Young_Children") {
           this.title = "Young Children"
         } else if (result.data.folderName == "Child_Parent") {
@@ -61,7 +66,7 @@ export class SpecialNeedsDetailsComponent implements OnInit {
     })
   }
 
-  deleteSpecialNeeds(customerId='') {
+  deleteSpecialNeeds(customerId='',folderName) {
     var statMsg = "Are you sure you want to delete this record?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
@@ -69,7 +74,11 @@ export class SpecialNeedsDetailsComponent implements OnInit {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: this.selectedProfileId }, query)
+            query: Object.assign({ _id: this.selectedProfileId }, query),
+            fromId:localStorage.getItem('endUserId'),
+            toId:this.toUserId,
+            folderName:'Special Needs',
+            subFolderName:folderName
           }
           this.userapi.apiRequest('post', 'specialNeeds/delete-special-needs', req_vars).subscribe(result => {
             if (result.status == "error") {

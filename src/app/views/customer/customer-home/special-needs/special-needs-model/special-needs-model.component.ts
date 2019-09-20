@@ -22,6 +22,9 @@ export class SpecialNeedsModelComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer'
   trusteeLegaciesAction:boolean=true;
+  
+  toUserId:string = ''
+  subFolderName:string = ''
 
   constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService,
     private userapi: UserAPIService, @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -34,6 +37,7 @@ export class SpecialNeedsModelComponent implements OnInit {
     } else {
       this.folderName = "Friend/Neighbor you provide or care for";
     }
+    this.subFolderName = this.folderName
   }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -55,6 +59,7 @@ export class SpecialNeedsModelComponent implements OnInit {
       this.userId = this.urlData.lastOne;          
       this.selectedProfileId = "";        
     }
+    this.toUserId = this.userId
     this.getSpecialNeedsDetails();
   }
 
@@ -105,7 +110,11 @@ export class SpecialNeedsModelComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }),
       proquery: Object.assign(newData),
-      from: Object.assign({ customerId: this.userId })
+      from: Object.assign({ customerId: this.userId }),
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:'Special Needs',
+      subFolderName:this.subFolderName
     }
     this.loader.open();
     this.userapi.apiRequest('post', 'specialNeeds/special-needs', req_vars).subscribe(result => {

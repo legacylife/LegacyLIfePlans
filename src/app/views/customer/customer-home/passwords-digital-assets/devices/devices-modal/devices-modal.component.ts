@@ -40,6 +40,9 @@ export class DevicesModalComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';
   
+  toUserId:string = ''
+  subFolderName:string = ''
+
   constructor(private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService, private loader: AppLoaderService,
     private router: Router, private userapi: UserAPIService) { }
 
@@ -113,7 +116,11 @@ export class DevicesModalComponent implements OnInit {
     }
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId, customerId: this.userId }),
-      proquery: Object.assign({ passwordPattern: pattern })
+      proquery: Object.assign({ passwordPattern: pattern }),
+      fromId:localStorage.getItem('endUserId'),
+      toId: this.userId,
+      folderName:'Password & Digital Assets',
+      subFolderName: 'Devices'
     }
     //this.loader.open();     
     this.userapi.apiRequest('post', 'passwordsDigitalAssets/pattern-submit', req_vars).subscribe(result => {
@@ -225,7 +232,11 @@ export class DevicesModalComponent implements OnInit {
 
         const req_vars = {
           query: Object.assign({ _id: this.selectedProfileId}),
-          proquery: Object.assign(profileInData)
+          proquery: Object.assign(profileInData),
+          fromId:localStorage.getItem('endUserId'),
+          toId: this.userId ,
+          folderName:'Password & Digital Assets',
+          subFolderName: 'Devices'
         }
         this.loader.open();
         this.userapi.apiRequest('post', 'passwordsDigitalAssets/device-form-submit', req_vars).subscribe(result => {

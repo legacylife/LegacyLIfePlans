@@ -22,6 +22,8 @@ export class DetailsComponent implements OnInit {
   typeOfRealEstateTypeList: any[];
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
+  toUserId:string = ''
+  subFolderName:string = 'Real Estate'
 
   constructor(
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -42,6 +44,7 @@ export class DetailsComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }, query)
     }
+    this.toUserId = this.userId
     this.userapi.apiRequest('post', 'realEstateAssets/view-real-estate', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
@@ -50,6 +53,7 @@ export class DetailsComponent implements OnInit {
           this.trusteeLegaciesAction = false;
         }
         this.row = result.data
+        this.toUserId = this.row.customerLegacyId ? this.row.customerLegacyId : this.row.customerId
       }
     }, (err) => {
       console.error(err)
@@ -64,7 +68,11 @@ export class DetailsComponent implements OnInit {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: this.selectedProfileId }, query)
+            query: Object.assign({ _id: this.selectedProfileId }, query),
+            fromId:localStorage.getItem('endUserId'),
+            toId:this.toUserId,
+            folderName:'Real Estate & Assets',
+            subFolderName: this.subFolderName
           }
           this.userapi.apiRequest('post', 'realEstateAssets/delete-real-estate', req_vars).subscribe(result => {
             if (result.status == "error") {

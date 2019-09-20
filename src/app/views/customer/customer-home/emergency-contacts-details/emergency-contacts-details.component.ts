@@ -32,6 +32,10 @@ export class EmergencyContactsDetailsComponent implements OnInit {
   eContactFormGroup: FormGroup;
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
+
+  toUserId:string = ''
+  subFolderName:string = 'Contacts'
+
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -62,7 +66,7 @@ export class EmergencyContactsDetailsComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }, query)
     }
-
+    this.toUserId = this.userId
     this.userapi.apiRequest('post', 'customer/view-emergency-contacts', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
@@ -71,6 +75,7 @@ export class EmergencyContactsDetailsComponent implements OnInit {
           this.trusteeLegaciesAction = false;
         }
         this.row = result.data;
+        this.toUserId = this.row.customerLegacyId ? this.row.customerLegacyId : this.row.customerId
         this.eContactFormGroup.controls['name'].setValue(this.row.name);
         this.eContactFormGroup.controls['relationship'].setValue(this.row.relationship);
         this.eContactFormGroup.controls['address'].setValue(this.row.address);
@@ -93,7 +98,11 @@ export class EmergencyContactsDetailsComponent implements OnInit {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: this.selectedProfileId }, query)
+            query: Object.assign({ _id: this.selectedProfileId }, query),
+            fromId:localStorage.getItem('endUserId'),
+            toId:this.toUserId,
+            folderName:'Emergency Contacts',
+            subFolderName:this.subFolderName
           }
           this.userapi.apiRequest('post', 'customer/deletecontact', req_vars).subscribe(result => {
             if (result.status == "error") {
@@ -141,7 +150,11 @@ export class EmergencyContactsDetailsComponent implements OnInit {
       const req_vars = {
       query: Object.assign({ _id: profileIds  }),
       proquery: Object.assign(profileInData),   
-      from: Object.assign({ customerId: this.userId }) 
+      from: Object.assign({ customerId: this.userId }) ,
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:'Emergency Contacts',
+      subFolderName:this.subFolderName
     }
     
     this.loader.open();     

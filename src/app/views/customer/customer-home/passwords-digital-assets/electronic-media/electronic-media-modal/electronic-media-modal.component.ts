@@ -70,7 +70,11 @@ export class ElectronicMediaModalComponent implements OnInit {
       }
       const req_vars = {
         query: Object.assign({ _id: this.selectedProfileId  }),
-        proquery: Object.assign(profileInData)
+        proquery: Object.assign(profileInData),
+        fromId:localStorage.getItem('endUserId'),
+        toId: this.userId,
+        folderName:'Password & Digital Assets',
+        subFolderName: 'Electronic Media'
       }
       this.loader.open();     
       this.userapi.apiRequest('post', 'passwordsDigitalAssets/electronic-media-form-submit', req_vars).subscribe(result => {

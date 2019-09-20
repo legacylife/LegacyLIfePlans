@@ -19,6 +19,10 @@ export class VehicleModelComponent implements OnInit {
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';
+
+  toUserId:string = ''
+  subFolderName:string = 'Vehicles'
+
   constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService, private userapi: UserAPIService, ) {
 
   }
@@ -65,7 +69,11 @@ export class VehicleModelComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }),
       proquery: Object.assign(vehicleData),
-      from: Object.assign({ customerId: this.userId })
+      from: Object.assign({ customerId: this.userId }),
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:'Real Estate & Assets',
+      subFolderName: this.subFolderName
     }
     this.loader.open();
     this.userapi.apiRequest('post', 'realEstateAssets/real-estate-vehicle', req_vars).subscribe(result => {
@@ -86,11 +94,13 @@ export class VehicleModelComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }, query)
     }
+    this.toUserId = this.userId
     this.userapi.apiRequest('post', 'realEstateAssets/view-real-estate-vehicle', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
         this.row = result.data
+        this.toUserId = this.row.customerLegacyId ? this.row.customerLegacyId : this.row.customerId
         this.vehiclesForm.controls['profileId'].setValue(this.row._id);        
         this.vehiclesForm.controls['model'].setValue(this.row.model);
         this.vehiclesForm.controls['year'].setValue(this.row.year);

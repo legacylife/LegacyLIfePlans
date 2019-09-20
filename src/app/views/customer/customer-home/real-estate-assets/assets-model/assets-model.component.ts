@@ -22,6 +22,9 @@ export class AssetsModelComponent implements OnInit {
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';
+
+  toUserId:string = ''
+  subFolderName:string = 'Assets'
   constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService, private userapi: UserAPIService, ) {
 
   }
@@ -67,7 +70,11 @@ export class AssetsModelComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }),
       proquery: Object.assign(assetsData),
-      from: Object.assign({ customerId: this.userId })
+      from: Object.assign({ customerId: this.userId }),
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:'Real Estate & Assets',
+      subFolderName: this.subFolderName
     }
 
     this.loader.open();
@@ -88,11 +95,13 @@ export class AssetsModelComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }, query)
     }
+    this.toUserId = this.userId
     this.userapi.apiRequest('post', 'realEstateAssets/view-real-estate-asset', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
         this.row = result.data
+        this.toUserId = this.row.customerLegacyId ? this.row.customerLegacyId : this.row.customerId
         this.assetsForm.controls['profileId'].setValue(this.row._id);
         this.assetsForm.controls['asset'].setValue(this.row.asset);
         this.assetsForm.controls['assetNew'].setValue(this.row.assetNew);
