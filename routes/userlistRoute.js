@@ -623,8 +623,6 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
     else {
       stripe.subscriptions.create({
         customer: stripeCustomerId,
-        collection_method: 'send_invoice',
-        days_until_due: 30,
         items: [ 
           { plan: planId }
         ]
@@ -1245,7 +1243,7 @@ function renewlegacysubscription( req, res ) {
             }
             let newStripeCardId = card.id
             
-            createSubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId )
+            createLegacySubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId )
         })
       }
       else{
@@ -1273,7 +1271,7 @@ function renewlegacysubscription( req, res ) {
                   stripeErrors( err, res )
                 }
                 let newStripeCardId = card.id
-                createSubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId )
+                createLegacySubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId )
             })
           }
         });
@@ -1285,7 +1283,7 @@ function renewlegacysubscription( req, res ) {
 /**
  * Apply to subscription and update the object against to user
  */
-function createSubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId ) {
+function createLegacySubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId ) {
   let subscriptions = []
   let subscriptionStatus = 'added'
   let subscriptionDetails = {"_id" : objectId,
@@ -1324,6 +1322,7 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
       stripe.subscriptions.create({
         customer: stripeCustomerId,
         collection_method: 'send_invoice',
+        days_until_due: 30,
         items: [ 
           { plan: planId }
         ]
