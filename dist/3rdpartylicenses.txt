@@ -372,13 +372,9 @@ SOFTWARE.
 
 
 
-@angular/material/radio
-
-@angular/material/tabs
-
-@angular/material/slide-toggle
-
 @angular/material/expansion
+
+@angular/material/radio
 
 ngx-infinite-scroll
 MIT
@@ -404,6 +400,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+
+@angular/material/slide-toggle
 
 ngx-slick-carousel
 MIT
@@ -1204,6 +1202,8 @@ MIT
 @angular/material/divider
 
 @angular/material/sidenav
+
+@angular/material/tabs
 
 @angular/material/card
 
