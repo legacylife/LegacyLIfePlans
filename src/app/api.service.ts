@@ -221,6 +221,8 @@ export class APIService {
   //function to make request to server to logout user
   public logout(): void {
     this.token = ''
+    let userId = localStorage.getItem('userId'),
+        userType = localStorage.getItem('userType')
     this.removeKeyFromStorage('userId')
     this.removeKeyFromStorage('userType')
     this.removeKeyFromStorage('username')
@@ -242,7 +244,16 @@ export class APIService {
     this.removeKeyFromStorage('endUserProFreeSubscription')
     this.removeKeyFromStorage('endisReferAndEarn')
     localStorage.clear();
-    this.router.navigate(["llp-admin", "signin"])
+
+    this.apiRequest('post', 'userlist/logout', {fromId: userId, userType: userType}).subscribe(result => {
+      if(result.status == "error") {
+        //this.errorMessage = result.data
+      } else {
+        this.router.navigate(["llp-admin", "signin"])
+      }
+    }, (err) => {
+      console.log("Error in update")
+    })
   }
 
   //function to make request to server

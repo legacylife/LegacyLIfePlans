@@ -208,7 +208,7 @@ export class CardDetailsComponent implements OnInit {
               this.getSubscription(result.token.id);
             }
             else if( this.for == 'legacyRenew' ) {
-              this.renewLegacyUserSubscription();
+              this.renewLegacyUserSubscription(result.token.id);
             }
             else{
               this.getAddOn(result.token.id);

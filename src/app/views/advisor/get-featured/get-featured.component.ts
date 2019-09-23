@@ -5,6 +5,7 @@ import { UserAPIService } from './../../../userapi.service';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { SubmitEnquiryModalComponent } from './submit-enquiry-modal/submit-enquiry-modal.component';
+import { serverUrl, s3Details } from '../../../config';
 @Component({
   selector: 'app-get-featured',
   templateUrl: './get-featured.component.html',
@@ -18,6 +19,7 @@ export class GetFeaturedComponent implements OnInit {
   rows:any = [];
   panelOpenState = true;
   recordsFound = false;
+  serverUrl = serverUrl
   constructor(
     private snack: MatSnackBar,private matInput: MatInputModule,private dialog: MatDialog,private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,private userapi: UserAPIService
   ) { }
@@ -39,6 +41,14 @@ export class GetFeaturedComponent implements OnInit {
       this.rows = result.data.advertisementList;	
         if(this.rows.length>0){
           this.recordsFound = true;
+
+          /* this.rows.forEach(element => {
+            let encryptedCustomerId = btoa(element.customerId._id),
+            encryptedInvoiceId  = btoa(element.adminReply.paymentDetails.invoiceId)
+
+            this.paymentLink = serverUrl+'/advertisement-payment/'+encryptedCustomerId+'/'+encryptedInvoiceId+'/'+element.uniqueId  
+          }); */
+          
         }
       }
     }, (err) => {
@@ -61,6 +71,10 @@ export class GetFeaturedComponent implements OnInit {
 
   arrayToString(array) {
     return array.join(", ");
+  }
+
+  encryptData(string) {
+    return btoa(string)
   }
 
 }

@@ -63,6 +63,8 @@ export class CoachCornerPopupComponent implements OnInit {
           'Replace', 'Align', 'Caption', 'Remove', 'InsertLink', '-', 'Display', 'AltText', 'Dimension']
   };
 
+  alphaNumSpechar = "([A-Za-z0-9!@#$%^&'*)(_+}{/.,><-}]+ )+[A-Za-z0-9!@#$%^&'*)(_+}{/.,><-]+$|^[A-Za-z0-9!@#$%^&'*)(_+}{/.,><-]*$";
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<CoachCornerPopupComponent>,
@@ -98,7 +100,7 @@ export class CoachCornerPopupComponent implements OnInit {
     }
     else{   
       this.itemForm = this.fb.group({
-        title: [item.title || '', [Validators.required,Validators.pattern("([A-Za-z0-9]+ )+[A-Za-z0-9]+$|^[A-Za-z0-9]*$")]],
+        title: [item.title || '', [Validators.required,Validators.pattern(this.alphaNumSpechar)]],
         description: [item.description || '', Validators.required],
         category: [item.category ? item.category._id || '' : '', Validators.required],
         image: [item.image || ''],

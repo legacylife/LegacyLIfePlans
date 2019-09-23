@@ -83,7 +83,8 @@ export class cmseditComponent implements OnInit {
       "_id":this.row._id,
       "pageTitle": this.cmsForm.controls['pageTitle'].value,
       "pageBody": this.cmsForm.controls['pageBody'].value,
-      "pageFor": this.cmsForm.controls['pageFor'].value
+      "pageFor": this.cmsForm.controls['pageFor'].value,
+      fromId: localStorage.getItem('userId')
     }
 
     this.api.apiRequest('post', 'cms/update', req_vars).subscribe(result => {

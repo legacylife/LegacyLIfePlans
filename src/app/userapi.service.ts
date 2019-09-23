@@ -183,7 +183,8 @@ export class UserAPIService {
 
   //function to make request to server to logout user
   public userLogout(): void {
-    let userType = localStorage.getItem("endUserType");
+    let userId = localStorage.getItem('endUserId'),
+        userType = localStorage.getItem("endUserType");
     this.token = ''
     this.removeKeyFromStorage('endUserId')
     this.removeKeyFromStorage('endUserType')
@@ -208,7 +209,16 @@ export class UserAPIService {
     this.removeKeyFromStorage('endisReferAndEarn')
     this.removeKeyFromStorage('endUserDeceased')
     this.removeKeyFromStorage('endUserlockoutLegacyDate')
-    this.router.navigate(["signin"]);
+    this.apiRequest('post', 'userlist/logout', {fromId: userId, userType: userType}).subscribe(result => {
+      if(result.status == "error") {
+        //this.errorMessage = result.data
+      } else {
+        this.router.navigate(["signin"]);
+      }
+    }, (err) => {
+      console.log("Error in update")
+    })
+    
   }
 
   //function to make request to server

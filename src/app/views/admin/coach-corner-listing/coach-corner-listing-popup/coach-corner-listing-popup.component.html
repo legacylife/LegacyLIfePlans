@@ -70,7 +70,7 @@
       </div>
     </div>
   </div>
-  <div class="ll--modal--footer text-center">
-    <button mat-raised-button class="llp--primary--btn" [disabled]="itemForm.invalid">Save</button>
+  <div class="ll--modal--footer text-center">{{imageList.length}}
+    <button mat-raised-button class="llp--primary--btn" [disabled]="itemForm.invalid || imageList.length < 1">Save</button>
    </div>
 </form>
