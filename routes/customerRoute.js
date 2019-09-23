@@ -966,19 +966,25 @@ function getSharedLegaciesList(req,res){
 
 function legacyUserRemove(req,res){
   let query  = req.body;
-  let userstring = ''
+  let userstring = '', toId
   let userData = { status: 'Deleted',executorStatus:'', modifiedOn : new Date() }
    if( query.userType == 'advisor'){
     HiredAdvisors.updateMany({ customerId : query.customerId, advisorId : query.advisorId }, userData , function (err, updatedDetails){ });
     executor.updateOne({'customerId':query.customerId,advisorId:query.advisorId,'status':'Active'}, { $set: {'status':'Deleted','modifiedOn':new Date()} }, function (err, updatedDetails) { })
     userstring = 'Advisor'
+    toId = query.advisorId
   }else{
     Trustee.updateMany({ customerId : query.customerId, trustId : query.trustId }, userData , function (err, updatedDetails){});
     executor.updateOne({'customerId':query.customerId,trustId:query.trustId,'status':'Active'}, { $set: {'status':'Deleted','modifiedOn':new Date()} }, function (err, updatedDetails) { })
     userstring = 'Trustee'    
+    toId = query.trustId
   }
 
-  let result = { "message": userstring + " removed successfully" }
+  let message = resMessage.data( 607, [{key:'{field}',val: userstring},{key:'{status}',val:'removed'}] )
+  //Update activity logs
+  allActivityLog.updateActivityLogs( query.customerId, toId, "Removed Trustee", message )
+
+  let result = { "message": message }
   res.status(200).send(resFormat.rSuccess(result))   
 }
 

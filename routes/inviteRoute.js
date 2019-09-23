@@ -83,7 +83,6 @@ async function inviteMembers(req, res) {
                 subject: template.mailSubject,
                 html: body
             }
-            console.log("*******Invite email******",mailOptions)
             if(advisorInvite){
                 mailOptions['attachments'] = attachmentsImages               
                 sendRawEmail(mailOptions)

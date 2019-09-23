@@ -132,7 +132,7 @@ function trustFormUpdate(req, res) {
               let message = resMessage.data( 607, [{key:'{field}',val:"Trustee details"}, {key:'{status}',val:resText}] )
               let result = { "message": message }
               //Update activity logs
-              allActivityLog.updateActivityLogs( query.customerId, proquery.trustId, "Trustee details "+resText, message,'Dashboard') 
+              allActivityLog.updateActivityLogs( query.customerId, (proquery.trustId ? proquery.trustId : query.customerId), "Trustee details "+resText, message,'Dashboard') 
               res.status(200).send(resFormat.rSuccess(result))
             }
           })
@@ -183,7 +183,7 @@ function trustFormUpdate(req, res) {
 
         let message = resMessage.data( 607, [{key:'{field}',val:"Trustee details"}, {key:'{status}',val: 'added'}] )
         //Update activity logs
-        allActivityLog.updateActivityLogs( query.customerId,proquery.trustId,"Add Trustee",message,'Dashboard') 
+        allActivityLog.updateActivityLogs( query.customerId, (proquery.trustId ? proquery.trustId : query.customerId),"Add Trustee",message,'Dashboard') 
         let result = { "message": message }
         //let result = { "message": "Trustee details added successfully" }
         res.status(200).send(resFormat.rSuccess(result))
