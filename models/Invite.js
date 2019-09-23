@@ -5,6 +5,7 @@ var inviteSchema = new mongoose.Schema({
   inviteById: String,
   inviteToId: String,
   inviteType: String,
+  inviteBy: String,
   name: String,
   email: String,
   relation: String,

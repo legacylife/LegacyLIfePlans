@@ -95,13 +95,14 @@ async function inviteMembers(req, res) {
         InviteObj.inviteById = inviteById;
         InviteObj.inviteToId = inviteToUserId;
         InviteObj.inviteType = members[index].relation=="Advisor" ? "advisor" : "customer";
-        InviteObj.name = inviteToName;
-        InviteObj.email = emailId;
-        InviteObj.relation = members[index].relation;
-        InviteObj.documents = attachmentsImages;
+        InviteObj.inviteBy   = inviteType
+        InviteObj.name       = inviteToName;
+        InviteObj.email      = emailId;
+        InviteObj.relation   = members[index].relation;
+        InviteObj.documents  = attachmentsImages;
         InviteObj.inviteCode = inviteCode;
-        InviteObj.status = 'Active';
-        InviteObj.createdOn = new Date();
+        InviteObj.status     = 'Active';
+        InviteObj.createdOn  = new Date();
         InviteObj.modifiedOn = new Date();
         InviteObj.save({}, function (err, newEntry) {})    
     }
