@@ -83,6 +83,7 @@ async function inviteMembers(req, res) {
                 subject: template.mailSubject,
                 html: body
             }
+            console.log("*******Invite email******",mailOptions)
             if(advisorInvite){
                 mailOptions['attachments'] = attachmentsImages               
                 sendRawEmail(mailOptions)
@@ -132,7 +133,7 @@ async function inviteMembers(req, res) {
     }
     let message = resMessage.data( 607, [{key:'{field}',val:"Invitation"}, {key:'{status}',val:'sent'}] )
     //Update activity logs
-    allActivityLog.updateActivityLogs( inviteById, inviteToUserId, "Invite", message,'')
+    allActivityLog.updateActivityLogs( inviteById, (inviteToUserId ? inviteToUserId : inviteById) , "Invite", message,'')
     let result = { "message": message }
     res.status(200).send(resFormat.rSuccess(result))
 }
