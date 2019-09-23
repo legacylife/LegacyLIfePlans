@@ -291,7 +291,7 @@ async function viewDeceased(req, res) {
             subject: mailSubject,
             html: body
           }
-       //8  sendEmail(mailOptions);
+         sendEmail(mailOptions);
           return true;
         } else {
           return false;
@@ -581,7 +581,14 @@ async function markExpire(req, res){
   if(data){
     OldDeceasedinfo = data.deceased.deceasedinfo;
     let deceasedArray = {'status':'Active','trusteeCnt':data.deceased.trusteeCnt,'advisorCnt':data.deceased.advisorCnt,deceasedinfo:OldDeceasedinfo};
-    const datas =await User.updateOne({_id:query.customerId},{deceased:deceasedArray});
+    const datas = await User.updateOne({_id:query.customerId},{deceased:deceasedArray});
+
+    let AllusersData = await getAllTrustUsers(query.customerId);
+    let trustList = AllusersData[0]['trustList'];
+    let advisorList = AllusersData[1]['advisorList'];
+    let legacyHolderName = data.firstName+' '+data.lastName;
+  // await sendDeceasedNotification('CustomerDeceasedNotificationMail',trustList,advisorList,legacyHolderName,'',userType);
+    
     let result = { "message": 'Customer Expire',custData:datas}
     res.status(200).send(resFormat.rSuccess(result));
   }
