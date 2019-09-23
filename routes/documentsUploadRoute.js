@@ -92,7 +92,7 @@ router.post('/advisorDocument', cors(), function(req,res){
                     getuserFolderSize(userId);
                     let message = resMessage.data( 607, [{key: '{field}',val: 'Advisor Document'}, {key: '{status}',val: 'uploaded'}] )
                     //Update activity logs
-                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, advisorDocuments, '', filename)
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, oldTmpFiles, '', filename)
                     
                     let result = { userId:userId, allDocs:tmpallfiles, "message": message }
                     res.send(resFormat.rSuccess(result))
