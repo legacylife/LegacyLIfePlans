@@ -1917,7 +1917,7 @@ router.post('/coachCornerArticle', cors(), function(req,res){
           file.pipe(fstream);
 
           fstream.on('close', async function () {
-            let uploadImage =  await s3.uploadFile(newFilename,coachCornerArticlePath);  
+            let uploadImage =  await s3.uploadFilePublic(newFilename,coachCornerArticlePath);  
             tmpallfiles = {
               "title" : filename,
               "size" : encoding,

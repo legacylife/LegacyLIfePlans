@@ -6,6 +6,8 @@ var jwt = require('express-jwt')
 var Q = require('q')
 const resFormat = require('./../helpers/responseFormat')
 const { isEmpty } = require('lodash')
+const resMessage  = require('./../helpers/responseMessages')
+const allActivityLog = require('./../helpers/allActivityLogs')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -14,11 +16,15 @@ var auth = jwt({
 //function to update cms page content
 function update(req, res) {
   console.log(req.body)
+  let { fromId } = req.body
   Cms.updateOne({ _id: req.body._id },{ $set: req.body} ,(err, updateCms)=>{
     if (err) {
       res.send(resFormat.rError(err))
     } else {
-      res.send(resFormat.rSuccess('Content page has been updated'))
+      let activity = 'Update CMS Details',
+          message  = resMessage.data( 607, [{key: '{field}',val: 'CMS Details'}, {key: '{status}',val: 'updated'}] )
+      allActivityLog.updateActivityLogs(fromId, fromId, activity, message, 'Admin Panel', 'CMS')
+      res.send(resFormat.rSuccess(message))
     }
   })
 }

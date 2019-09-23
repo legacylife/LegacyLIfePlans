@@ -1471,6 +1471,15 @@ function stripeErrors( err, res ) {
   }
 }
 
+function logout( req, res) {
+  let { fromId } = req.body,
+      { userType } = req.body
+  let activity = 'User Logout',
+      message  = resMessage.data( 607, [{key: '{field}',val: userType.toUpperCase()}, {key: '{status}',val: 'logout'}] )
+  allActivityLog.updateActivityLogs(fromId, fromId, activity, message )
+  res.send(resFormat.rSuccess(message))
+}
+
 router.post("/getuserslistforadminmap",getUsersListForAdminMap);
 router.post(["/autorenewalupdate"], autoRenewalUpdate);
 router.post(["/cancelsubscription"], cancelSubscription);
@@ -1490,6 +1499,7 @@ router.post(["/viewall"], view);
 router.post("/common", common);
 router.post("/latitudeLongitude", AddLatitudeLongitude);
 router.post(["/renewlegacysubscription"], renewlegacysubscription);
+router.post("/logout", logout)
 /*router.get(["/view/:id", "/:id"], details)*/
 
 module.exports = router
