@@ -100,6 +100,12 @@ export class DeceasedRequestsViewComponent implements OnInit {
 
         if(this.row.deceased.status=='Active'){
           this.showDeceased = true;
+        }else{
+          this.row.deceased.deceasedinfo.forEach((element: any, index) => {          
+            if(element.adminId && element.status=='Active'){
+              this.showDeceased = true;
+            }
+          })
         }
 
         if(this.row.deceased && this.row.deceased.revokeId){
@@ -284,6 +290,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
           this.loader.open();   
           this.api.apiRequest('post', 'deceased/markAsDeceased', req_vars).subscribe(result => { 
           this.loader.close();
+          this.getCustomerProfile();
             this.snack.open(result.data.message, 'OK', { duration: 4000 })
           }, (err) => {
             console.error(err)

@@ -17,12 +17,11 @@
               {{row?.customerId?.username}}
             </ng-template>
           </ngx-datatable-column>
-        <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">
-          <ng-template let-row="row" ngx-datatable-cell-template>
-            <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status" (click)="statusChange(row)"
-              title="Status">{{row.status}}</mat-chip>
-          </ng-template>
-        </ngx-datatable-column>
+          <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Date" prop="modifiedOn" [flexGrow]="1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row?.modifiedOn | date: 'yyyy/MM/dd HH:mm:ss'}}
+            </ng-template>
+          </ngx-datatable-column>      
         <ngx-datatable-column [resizeable]="false" name="Actions" [sortable]="false" [draggable]="false" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <a mat-icon-button mat-sm-button color="primary" class="mb-1" title="View"

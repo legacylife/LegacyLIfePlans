@@ -14,7 +14,7 @@
               </mat-list-item>
             </mat-list>           
       </p>    
-  <p>Please revoke the request to start using your legacy again. If no action is taken within the lock out period the account will be closed and the "After death" files will be released on {{lockoutLegacyDate | date: 'yyyy/MM/dd HH:mm'}}.</p>
+  <p *ngIf="lockoutLegacyDateFlag">Please revoke the request to start using your legacy again. If no action is taken within the lock out period the account will be closed and the "After death" files will be released on {{lockoutLegacyDate | date: 'yyyy/MM/dd HH:mm'}}.</p>
 </div>
 <div class="ll--modal--footer text-center">
   <button mat-raised-button class="llp--primary--btn" (click)="revokeAsLegacyHolder()">Revoke as deceased</button>

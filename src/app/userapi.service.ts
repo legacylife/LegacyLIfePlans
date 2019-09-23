@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators/map'
 import { Router } from '@angular/router'
 import { serverUrl } from './config'
 import { forEach } from "lodash";
+import { startOfDay,endOfDay,subDays,addDays,endOfMonth,isSameDay,isSameMonth,addHours} from 'date-fns';
 interface TokenResponse {
   status: string,
   data: {
@@ -207,6 +208,7 @@ export class UserAPIService {
     this.removeKeyFromStorage('endUserProFreeSubscription')
     this.removeKeyFromStorage('endisReferAndEarn')
     this.removeKeyFromStorage('endUserDeceased')
+    this.removeKeyFromStorage('setIdleFlag')
     this.removeKeyFromStorage('endUserlockoutLegacyDate')
     this.router.navigate(["signin"]);
   }
@@ -361,7 +363,7 @@ export class UserAPIService {
       }
      await this.apiRequest('post', 'trustee/view-details', params).subscribe(result => {
         //this.userAccess = result.data.userAccess; 
-        response = this.getCustomerUserAccess(result.data);
+        response = this.getCustomerUserAccess(result.data,customerId);
         this.userAccess = response['userAccess'];
         this.userDeathFilesCnt = response['deathFilesCount'];
         callback(this.userAccess,this.userDeathFilesCnt)
@@ -372,7 +374,7 @@ export class UserAPIService {
       }
       await this.apiRequest('post', 'advisor/view-details', params).subscribe(result => {
        // this.userAccess = result.data.userAccess;
-       response =  this.getCustomerUserAccess(result.data);
+       response =  this.getCustomerUserAccess(result.data,customerId);
        this.userAccess = response['userAccess'];
        this.userDeathFilesCnt = response['deathFilesCount'];
         callback(this.userAccess,this.userDeathFilesCnt)
@@ -381,7 +383,7 @@ export class UserAPIService {
   }
 
 
-  private getCustomerUserAccess(data){
+  private getCustomerUserAccess(data,customerId){
       let userAccess = data.userAccess;      
       let response = [];
       response['userAccess'] = userAccess;
@@ -392,12 +394,29 @@ export class UserAPIService {
         }          
         response['deathFilesCount'] = count;
       });
-      if(data && data.customerId && data.customerId.deceased && data.customerId.deceased.status=='Active'){//When user deceased afterDeath files shoulde be display           
+
+      let lockoutLegacyDateExpire = false;
+      if(data.customerId.lockoutLegacyDate){
+         if(new Date(data.customerId.lockoutLegacyDate) < new Date()) {
+          lockoutLegacyDateExpire = true;
+           if(data.customerId.deceased.status=='Pending'){    
+               const params = { query: Object.assign({customerId: customerId})}
+                this.apiRequest('post', 'deceased/expire', params).subscribe(result => {
+                    this.getUserAccess(customerId, (userAccess) => {
+                      data = result.data.custData;
+                    });
+                });
+           }
+         }
+      }
+    
+      if((data && data.customerId && data.customerId.deceased && data.customerId.deceased.status=='Active') || lockoutLegacyDateExpire){//When user deceased afterDeath files shoulde be display           
         Object.keys(userAccess).forEach((key,index) => {   
           if(userAccess[key]=='afterDeath'){
            userAccess[key] = 'now';
           }          
         });
+
         response['userAccess'] = userAccess;
       }
 
