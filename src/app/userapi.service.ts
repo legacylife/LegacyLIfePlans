@@ -33,6 +33,9 @@ export class UserAPIService {
   private fileAccessInfo:any
   private userAccess:any={}
   private userDeathFilesCnt:any={}
+  userDeceased:boolean=false;  
+  userLockoutPeriod:boolean=false;  
+    
   private returnData:any;
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -338,7 +341,6 @@ export class UserAPIService {
     return returnData;
   }
 
-
   // get url params just like, ID, Module
   async getFolderInstructions(folderCode, callback){
     let returnData  = ''
@@ -352,74 +354,72 @@ export class UserAPIService {
       }
     });
   }
-
   
  async getUserAccess(customerId, callback){
     let loggedinCustomerId = localStorage.getItem("endUserId");
      let response = [];
-    if (localStorage.getItem("endUserType") == "customer") {
+
+     if (localStorage.getItem("endUserType") == "customer") {
       const params = {
         query: Object.assign({ customerId: customerId, trustId: loggedinCustomerId,status:"Active" })
       }
-     await this.apiRequest('post', 'trustee/view-details', params).subscribe(result => {
+     await this.apiRequest('post', 'trustee/view-details', params).subscribe(async result => {
         //this.userAccess = result.data.userAccess; 
-        response = this.getCustomerUserAccess(result.data,customerId);
+        response = await this.getCustomerUserAccess(result.data,customerId);
         this.userAccess = response['userAccess'];
         this.userDeathFilesCnt = response['deathFilesCount'];
-        callback(this.userAccess,this.userDeathFilesCnt)
+        this.userLockoutPeriod = response['userLockoutPeriod'];
+        this.userDeceased = response['userDeceased'];
+        callback(this.userAccess,this.userDeathFilesCnt,this.userLockoutPeriod,this.userDeceased)
       });
     }else{
       const params = {
         query: Object.assign({ customerId: customerId, advisorId: loggedinCustomerId,status:"Active" })
       }
-      await this.apiRequest('post', 'advisor/view-details', params).subscribe(result => {
+      await this.apiRequest('post', 'advisor/view-details', params).subscribe(async result => {
        // this.userAccess = result.data.userAccess;
-       response =  this.getCustomerUserAccess(result.data,customerId);
+       response = await this.getCustomerUserAccess(result.data,customerId);
        this.userAccess = response['userAccess'];
        this.userDeathFilesCnt = response['deathFilesCount'];
-        callback(this.userAccess,this.userDeathFilesCnt)
+       this.userLockoutPeriod = response['userLockoutPeriod'];
+       this.userDeceased = response['userDeceased'];
+        callback(this.userAccess,this.userDeathFilesCnt,this.userLockoutPeriod,this.userDeceased)
       });
     }
   }
 
 
-  private getCustomerUserAccess(data,customerId){
+  async getCustomerUserAccess(data,customerId){
       let userAccess = data.userAccess;      
       let response = [];
       response['userAccess'] = userAccess;
-      let count = 0;
-      Object.keys(userAccess).forEach((key,index) => {//After death files count
-        if(userAccess[key]=='afterDeath'){
-         count++;
-        }          
-        response['deathFilesCount'] = count;
-      });
-
+      response['userDeceased'] = false;
+      response['userLockoutPeriod'] = false;
       let lockoutLegacyDateExpire = false;
-      if(data.customerId.lockoutLegacyDate){
+      if(data.customerId.lockoutLegacyDate && data.customerId.deceased.status=='Pending'){
          if(new Date(data.customerId.lockoutLegacyDate) < new Date()) {
-          lockoutLegacyDateExpire = true;
-           if(data.customerId.deceased.status=='Pending'){    
+               lockoutLegacyDateExpire = true;
                const params = { query: Object.assign({customerId: customerId})}
-                this.apiRequest('post', 'deceased/expire', params).subscribe(result => {
-                    this.getUserAccess(customerId, (userAccess) => {
-                      data = result.data.custData;
-                    });
-                });
-           }
+               await this.apiRequest('post', 'deceased/expire', params).subscribe(result => {
+                    location.reload(true);
+               });
+         }else{
+          response['userLockoutPeriod'] = true;
          }
       }
-    
+
+      if(data && data.customerId && data.customerId.deceased && data.customerId.deceased.status=='Active') {
+        response['userDeceased'] = true;
+      }
+      
       if((data && data.customerId && data.customerId.deceased && data.customerId.deceased.status=='Active') || lockoutLegacyDateExpire){//When user deceased afterDeath files shoulde be display           
         Object.keys(userAccess).forEach((key,index) => {   
           if(userAccess[key]=='afterDeath'){
            userAccess[key] = 'now';
           }          
         });
-
         response['userAccess'] = userAccess;
       }
-
       return response;
   }
 

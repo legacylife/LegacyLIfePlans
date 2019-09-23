@@ -73,7 +73,10 @@ export class EmergencyContactsComponent implements OnInit {
         this.userId = this.urlData.lastOne;          
         this.selectedProfileId = "";
         
-        this.userapi.getUserAccess(this.userId, (userAccess) => {
+        this.userapi.getUserAccess(this.userId, (userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+          if(userLockoutPeriod || userDeceased){
+            this.trusteeLegaciesAction = false;
+          }
           this.emergencyContactsManagementSection = userAccess.emergencyContactsManagement 
         }); 
         this.showTrusteeCnt = false;
