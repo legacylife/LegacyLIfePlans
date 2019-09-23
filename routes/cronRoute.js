@@ -565,10 +565,30 @@ function getDateDiff( startDate, endDate, returnAs=null ) {
   }
 }
 
+
+async function deceasedCustomers(req, res){
+  await User.find({'deceased':{$ne:null},'deceased.status':{$ne:'Active'},'lockoutLegacyDate':{$ne:null}},{}, async function (err, result) {
+    if (err) {
+      res.status(500).send(resFormat.rError(err))
+    } else if (result) {     
+      if(result.length>0){
+         result.forEach( async (key,index) => {   
+        if(new Date(key.lockoutLegacyDate) < new Date()) {
+          let OldDeceasedinfo = key.deceased.deceasedinfo;
+          let deceasedArray = {'status':'Active','trusteeCnt':key.deceased.trusteeCnt,'advisorCnt':key.deceased.advisorCnt,deceasedinfo:OldDeceasedinfo};
+           await User.updateOne({_id:key._id},{deceased:deceasedArray});
+        }
+      });
+     }
+    }
+  })
+}
+
 router.post(["/auto-renewal-on-update-subscription"], autoRenewalOnUpdateSubscription);
 router.post(["/update-subscription-details-if-fails"], updateSubscriptionDetailsIfFails);
 router.get("/auto-renewal-on-reminder-email", autoRenewalOnReminderEmail);
 router.get("/auto-renewal-off-reminder-email", autoRenewalOffReminderEmail);
 router.get("/before-subscription-reminder-email", beforeSubscriptionReminderEmail);
+router.get("/check-deceased-customers", deceasedCustomers);
 
 module.exports = router

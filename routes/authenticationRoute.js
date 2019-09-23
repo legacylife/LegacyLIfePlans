@@ -175,7 +175,8 @@ async function calculateZipcode(zipcode,id){
   var data = zipcodes.lookup(zipcode);
   if( data ) {
     if(data.latitude && data.longitude){
-      let userData = await User.updateOne({_id:id},{$set:{latitude:data.latitude,longitude:data.longitude}});
+      location :({'latitude':data.latitude,'longitude':data.longitude});
+      let userData = await User.updateOne({_id:id},{$set:{location}});
     }
   }
 }
