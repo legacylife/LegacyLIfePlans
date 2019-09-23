@@ -1232,7 +1232,7 @@ function renewlegacysubscription( req, res ) {
       if( userProfile.stripeCustomerId ) {
         stripeCustomerId = userProfile.stripeCustomerId;
         //If user want to pay with new card, add card details against the user in stripe and after subscription delete card
-        stripeCustomerId = customer.id
+        //stripeCustomerId = customer.id
         stripe.customers.createSource(
           stripeCustomerId,
           {
