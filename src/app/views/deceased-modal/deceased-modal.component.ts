@@ -20,6 +20,7 @@ export class DeceasedComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';
   lockoutLegacyDate: string;
+  lockoutLegacyDateFlag:boolean = false;
   DeceasedFlag: string;
   deceasedDataFlag:boolean = false;
   constructor(private snack: MatSnackBar,public dialog: MatDialog,private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
@@ -40,7 +41,10 @@ export class DeceasedComponent implements OnInit {
     }
     
     this.DeceasedFlag = localStorage.getItem("endUserDeceased");
-    this.lockoutLegacyDate = localStorage.getItem("endUserlockoutLegacyDate");
+    if(localStorage.getItem("endUserlockoutLegacyDate")){
+      this.lockoutLegacyDate = localStorage.getItem("endUserlockoutLegacyDate");
+      this.lockoutLegacyDateFlag = true;
+    }    
     if(this.DeceasedFlag=='true'){
       this.getDeceasedView();
       this.getLegacyCustomerDetails();

@@ -142,7 +142,7 @@ userType = localStorage.getItem('endUserType');
       } else {
         if(result.data){
           this.pageData = result.data;        
-          this.topBanner = this.bucketLink+this.pageData.sectionOne.topBanner;                 
+          this.topBanner = this.bucketLink+this.pageData.sectionOne.topBanner;     
           this.middleBanner = this.bucketLink+this.pageData.sectionThree.bannerImage;
           this.lowerBanner = this.bucketLink+this.pageData.sectionFour.bannerImage;
           this.sectionEightBanner = this.bucketLink+this.pageData.sectionEight.bannerImage;

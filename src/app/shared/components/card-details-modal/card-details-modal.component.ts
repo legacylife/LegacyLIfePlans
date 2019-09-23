@@ -126,12 +126,12 @@ export class CardDetailsComponent implements OnInit {
       query: Object.assign({ _id: this.userId, userType: this.endUserType }, query)
     }
     this.userapi.apiRequest('post', 'userlist/getcustomercard', req_vars).subscribe(result => {
-      const data = result.data
-      
+      const data = result.data;
+      this.loader.close();
       if( data && data.message == 'Yes') {
         this.oldCard = data
         this.hideNewCardForm = true
-        this.loader.close();
+        
         this.isButtonEnabled = true
       }
       else{

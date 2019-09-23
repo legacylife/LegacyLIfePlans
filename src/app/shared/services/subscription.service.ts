@@ -414,14 +414,15 @@ export class SubscriptionService {
 
   // get product plan
   getProductDetails = (query = {}, callback):any => {
-    this.loader.open();
+   // this.loader.open();
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: this.usertype }, query)
     }
     
     this.userapi.apiRequest('post', 'userlist/getproductdetails', req_vars).subscribe(result => {
+      this.loader.close();
       if (result.status == "error") {
-        this.loader.close();
+       
       } else {
         const plans = result.data.plans
         let returnArr = {}
