@@ -129,14 +129,15 @@ async function viewDeceased(req, res) {
         var totalCnt = advisorList.length + trustList.length;
 
         let finalStatus = 'Pending';
-
+        let lockoutLegacyPeriodFlag = false;
          let DeceasedCnt = await MarkDeceased.find({customerId:paramData.customerId,status:"Active"})
-         if(DeceasedCnt.length>=3){
-          finalStatus = 'Active';
+         if(DeceasedCnt.length>=3){//When 3 users set mark as Deceased then customer lockout period is start.
+          lockoutLegacyPeriodFlag = true; //finalStatus = 'Active';
          }
+         
 
-         if(adminId){ 
-          finalStatus = 'Active';//When admin mark as Deceased then customer will directly deceased.
+         if(adminId){ //When admin mark as Deceased then customer lockout period is start.
+          lockoutLegacyPeriodFlag = true; //finalStatus = 'Active';
          }
 
          let searchQuery = {customerId:paramData.customerId};
@@ -157,7 +158,7 @@ async function viewDeceased(req, res) {
            deceasedinfo = {'status':'Active','userType':userType,'trustId':mongoose.Types.ObjectId(trustId),'advisorId':'','createdOn':new Date()}
          }
          if(adminId){
-          deceasedinfo = {'status':'Active','userType':userType,'advisorId':'','trustId':'','createdOn':new Date()}//'adminId':mongoose.Types.ObjectId(adminId),
+          deceasedinfo = {'status':'Active','userType':userType,'advisorId':'','trustId':'','adminId':mongoose.Types.ObjectId(adminId),'createdOn':new Date()}
          }
        
          let legacyHolderData = await User.findOne({_id:paramData.customerId},{_id:1,username:1,firstName:1,lastName:1,deceased:1,lockoutLegacyPeriod:1});
@@ -189,7 +190,7 @@ async function viewDeceased(req, res) {
           legacyHolderInfo = legacyHolderData;
          }
          let lockoutLegacyDate = '';
-         if(finalStatus == 'Active'){
+         if(lockoutLegacyPeriodFlag && legacyHolderInfo.lockoutLegacyDate == null){
            if(legacyHolderInfo.lockoutLegacyPeriod){
             lockoutLegacyDate = await getLegacyDate(legacyHolderInfo.lockoutLegacyPeriod);
            }else{
@@ -290,7 +291,7 @@ async function viewDeceased(req, res) {
             subject: mailSubject,
             html: body
           }
-         sendEmail(mailOptions);
+       //8  sendEmail(mailOptions);
           return true;
         } else {
           return false;
@@ -511,7 +512,7 @@ function revokeOwnerDeceased(req, res) {
 
  async function deceaseListing(req, res) {
   let { query } = req.body
-  let groupObj = { _id :'$customerId',"customerId":{$first:'$customerId'},"advisorId":{$first: '$advisorId'},"trustId":{$first: '$trustId'},"userType": {$first: '$userType'},"documents": {$first: '$documents'},"status": {$first: '$status'}, "createdOn": {$first: '$createdOn'}} 
+  let groupObj = { _id :'$customerId',"customerId":{$first:'$customerId'},"advisorId":{$first: '$advisorId'},"trustId":{$first: '$trustId'},"userType": {$first: '$userType'},"documents": {$first: '$documents'},"status": {$first: '$status'}, "createdOn": {$first: '$createdOn'}, "modifiedOn": {$first: '$modifiedOn'}} 
   await MarkDeceased.aggregate([
     { $match: query }, { $group:  groupObj }
   ]) .exec(function(err, records) { 
@@ -574,6 +575,19 @@ function customerDetails(req, res) {
   }).populate('deceased.revokeId')
 }
 
+async function markExpire(req, res){
+  let { query } = req.body;
+  const data = await User.findOne({_id:query.customerId});
+  if(data){
+    OldDeceasedinfo = data.deceased.deceasedinfo;
+    let deceasedArray = {'status':'Active','trusteeCnt':data.deceased.trusteeCnt,'advisorCnt':data.deceased.advisorCnt,deceasedinfo:OldDeceasedinfo};
+    const datas =await User.updateOne({_id:query.customerId},{deceased:deceasedArray});
+    let result = { "message": 'Customer Expire',custData:datas}
+    res.status(200).send(resFormat.rSuccess(result));
+  }
+}
+
+
 router.post("/viewDeceaseDetails", viewDeceased)
 router.post("/markAsDeceased", markDeceased)
 router.post("/revokeAsDeceased", revokeDeceased)
@@ -582,4 +596,5 @@ router.post("/deceaseList", deceaseListing)
 router.post("/deceaseView", deceaseViewDetails)
 router.post("/deceaseExecutor", deceaseExecutorsDetails)
 router.post("/customerView", customerDetails)
+router.post("/expire", markExpire)
 module.exports = router
