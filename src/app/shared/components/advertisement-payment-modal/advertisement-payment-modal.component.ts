@@ -10,7 +10,7 @@ import { UserAPIService } from './../../../userapi.service';
 import { StripeService, Elements, Element as StripeElement, ElementsOptions } from 'ngx-stripe';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
-import { MAT_DIALOG_DATA, MatDialog, MatSnackBar } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialog, MatSnackBar, MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'card-details-modal',
@@ -39,7 +39,7 @@ export class AdvertisementPaymentModalComponent implements OnInit {
   userName:String = ""
   invoiceId:String = ""
 
-  constructor(private stripeService: StripeService, private userapi: UserAPIService, private loader: AppLoaderService, 
+  constructor(private stripeService: StripeService, private userapi: UserAPIService, private loader: AppLoaderService, public dialogRef: MatDialogRef<AdvertisementPaymentModalComponent>,
     private fb: FormBuilder, private picService: ProfilePicService, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private snack: MatSnackBar ) {
       this.userId = data.userId
       this.invoiceId = data.invoiceId
@@ -127,6 +127,7 @@ export class AdvertisementPaymentModalComponent implements OnInit {
       }      
       if(result.status=='success') {
         this.dialog.closeAll(); 
+        this.dialogRef.close(result.status)
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
       this.loader.close();

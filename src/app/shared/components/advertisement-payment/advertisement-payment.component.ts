@@ -2,8 +2,9 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { AdvertisementPaymentModalComponent } from 'app/shared/components/advertisement-payment-modal/advertisement-payment-modal.component';
 import { LocationStrategy } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserAPIService } from 'app/userapi.service';
+import { routerNgProbeToken } from '@angular/router/src/router_module';
 
 @Component({
   selector: 'app-advisor-subscription',
@@ -28,8 +29,10 @@ import { UserAPIService } from 'app/userapi.service';
   activeInvoice:Boolean = false
   isPaymentDone:Boolean = false
   invoiceSentDays = 0
+  invoiceFromDate:String = ''
+  invoiceToDate:String = ''
 
-  constructor( private dialog: MatDialog, private locationStrategy: LocationStrategy, private route: ActivatedRoute, private userApi: UserAPIService ) { 
+  constructor( private dialog: MatDialog, private locationStrategy: LocationStrategy, private route: ActivatedRoute, private userApi: UserAPIService, private router: Router ) { 
     this.preventBackButton()
     
     this.route.parent.params.subscribe(params => {
@@ -78,6 +81,8 @@ import { UserAPIService } from 'app/userapi.service';
           this.activeInvoice = invoiceDetails.data.status === 'Pending' ? true : false
           this.userName = invoiceDetails.data.userName
           this.invoiceSentDays = invoiceDetails.data.invoiceSentDays
+          this.invoiceFromDate = invoiceDetails.data.fromDate
+          this.invoiceToDate = invoiceDetails.data.toDate
         }
         else if(invoiceDetails.data.status === 'Done') {
           this.isPaymentDone = true
@@ -118,6 +123,9 @@ import { UserAPIService } from 'app/userapi.service';
       }
       else{
         this.isPaymentDone = true
+        if( localStorage.getItem('enduserId')) {
+          this.router.navigate(['advisor/get-featured'])
+        }
       }
       
     })

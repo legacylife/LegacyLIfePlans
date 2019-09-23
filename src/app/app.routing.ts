@@ -8,6 +8,7 @@ import { ErrorComponent } from 'app/views/error/error.component';
 import { AuthGuard } from './shared/services/auth/auth.guard';
 import { CcDetailedViewComponent } from './shared/components/cc-detailed-view/cc-detailed-view.component';
 import { AdvertisementPaymentComponent } from './shared/components/advertisement-payment/advertisement-payment.component';
+import { CoachsCornerComponent } from './shared/components/coachs-corner/coachs-corner.component';
 console.log('App---routing');
 export const rootRouterConfig: Routes = [
   {
@@ -84,6 +85,17 @@ export const rootRouterConfig: Routes = [
         path: '',
         loadChildren: './views/admin/admin.module#AdminModule',
         data: { title: 'Dashboard'}
+      }
+    ]
+  },
+  {
+    path: 'coachs-corner',
+    component: AdvisorLandingLayoutComponent,
+    data: { title: 'Coachs Corner' },
+    children: [
+      {
+        path: '',
+        component: CoachsCornerComponent,
       }
     ]
   },

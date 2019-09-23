@@ -76,7 +76,7 @@
                           <mat-panel-title>
                               <div class="display--data m-0">
                                   <label class="left--label mb-0">Status:</label>
-                                  <label class="right--label">{{item.status=='Active' ? 'Payment Pending' : ''}}</label>
+                                  <label class="right--label">{{ item.adminReply.length > 0 ? (item.adminReply[item.adminReply.length-1]['paymentDetails']['status'] != 'Expired' ? 'Payment '+item.adminReply[item.adminReply.length-1]['paymentDetails']['status'] : 'Link Expired') : 'Payment Pending' }}</label>
                                 </div>
                           </mat-panel-title>
                         </mat-expansion-panel-header>
@@ -116,7 +116,7 @@
                           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
                             <div class="admin--reply" *ngIf="item.status!='Reject'">
                               <div *ngFor="let row of item.adminReply">
-                                <div class="" *ngIf="row.status=='Pending'">
+                                <div class="" *ngIf="row.status !='Expired'">
                                   <h5>Admin Reply</h5>
 
                                   <div fxLayout="row wrap">
@@ -140,7 +140,7 @@
                                       </div>
                                     </div>
                                     <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100"
-                                      fxFlex.xl="100">
+                                      fxFlex.xl="100" *ngIf="row.status =='Pending'">
                                       <button mat-raised-button class="llp--primary--green--btn mt-1 mb-1">Payment</button>
                                     </div>
                                   </div>
