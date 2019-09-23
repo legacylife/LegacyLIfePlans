@@ -64,7 +64,7 @@ export class CoachCornerPopupComponent implements OnInit {
   };
 
   alphaNumSpechar = "([A-Za-z0-9!@#$%^&'*)(_+}{/.,><-}]+ )+[A-Za-z0-9!@#$%^&'*)(_+}{/.,><-]+$|^[A-Za-z0-9!@#$%^&'*)(_+}{/.,><-]*$";
-
+  showButton = false
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<CoachCornerPopupComponent>,
@@ -127,6 +127,7 @@ export class CoachCornerPopupComponent implements OnInit {
     }
     else {
       this.categoryList = result.data.categoryList
+      this.showButton = this.categoryList.length > 0 ? true : false
     }
   }
 

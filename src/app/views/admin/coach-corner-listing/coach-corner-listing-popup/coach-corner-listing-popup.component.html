@@ -2,7 +2,7 @@
   {{data.title}}  
   <button class="modal--close" ><mat-icon (click)="dialogRef.close()" class="icon--cross">cancel</mat-icon></button>  
 </div>
-<div class="mb-1 text-center" *ngIf="categoryList.length === 0">
+<div class="mb-1 text-center" *ngIf="showButton && categoryList.length === 0">
   <button mat-raised-button class="llp--primary--btn" (click)="addCategory()">+ Add Category</button>
 </div>
 <form [formGroup]="itemForm" class="llp-form-wrapper" (ngSubmit)="submit()" *ngIf="categoryList.length > 0">
@@ -70,7 +70,7 @@
       </div>
     </div>
   </div>
-  <div class="ll--modal--footer text-center">{{imageList.length}}
+  <div class="ll--modal--footer text-center">
     <button mat-raised-button class="llp--primary--btn" [disabled]="itemForm.invalid || imageList.length < 1">Save</button>
    </div>
 </form>

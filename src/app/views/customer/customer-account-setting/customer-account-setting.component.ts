@@ -475,9 +475,13 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   }
 
   cancelSubscription= (query = {}) => {
-    this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled, (value)=> {
-      this.isSubscriptionCanceled= value;
-      this.checkSubscription()
+    this.confirmService.confirm({ message: 'Are you sure you want to cancel current subscription?' }).subscribe(res => {
+      if (res) {
+        this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled, (value)=> {
+          this.isSubscriptionCanceled= value;
+          this.checkSubscription()
+        })
+      }
     })
     // this.checkSubscription()
   }

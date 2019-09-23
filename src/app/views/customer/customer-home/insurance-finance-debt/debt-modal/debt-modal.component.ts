@@ -34,6 +34,8 @@ export class DebtModalComponent implements OnInit {
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';
+  toUserId:string = ''
+  subFolderName:string = 'Debt'
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,private confirmService: AppConfirmService,private loader: AppLoaderService,private router: Router, private userapi: UserAPIService) { }
 
   ngOnInit() {
@@ -67,6 +69,7 @@ export class DebtModalComponent implements OnInit {
         }
         this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
         this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+        this.toUserId = this.userId
         this.getFinanceView();
     }
 
@@ -116,7 +119,11 @@ export class DebtModalComponent implements OnInit {
       }
       const req_vars = {
         query: Object.assign({ _id: this.selectedProfileId}),
-        proquery: Object.assign(profileInData)
+        proquery: Object.assign(profileInData),
+        fromId:localStorage.getItem("endUserId"),
+        toId:this.toUserId,
+        folderName:s3Details.debtFilePath,
+        subFolderName:this.subFolderName
       }
       this.loader.open();     
       this.userapi.apiRequest('post', 'insuranceFinanceDebt/debt-form-submit', req_vars).subscribe(result => {
@@ -187,7 +194,11 @@ export class DebtModalComponent implements OnInit {
             const req_vars = {
               query: Object.assign({ _id: ids }, query),
               proquery: Object.assign({ documents: this.DebtDocsList }, query),
-              fileName: Object.assign({ docName: tmName }, query)
+              fileName: Object.assign({ docName: tmName }, query),
+              fromId:localStorage.getItem("endUserId"),
+              toId:this.toUserId,
+              folderName:s3Details.debtFilePath,
+              subFolderName:this.subFolderName
             }
             this.userapi.apiRequest('post', 'documents/deleteDebtDoc', req_vars).subscribe(result => {
               if (result.status == "error") {
@@ -229,7 +240,11 @@ export class DebtModalComponent implements OnInit {
   downloadFile = (filename) => {    
     let query = {};
     let req_vars = {
-      query: Object.assign({ docPath: this.docPath, filename: filename }, query)
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId:localStorage.getItem("endUserId"),
+      toId:this.toUserId,
+      folderName:s3Details.debtFilePath,
+      subFolderName:this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {

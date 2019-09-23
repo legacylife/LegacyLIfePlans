@@ -42,7 +42,7 @@ export class CustomerSignupComponent implements OnInit {
   counter = 0;
   tick = 0;
   inviteCode:string = ''
-
+  invitedBy:String = ''
   customerFreeAccessDays:Number = 0
   customerFreeTrialStatus:Boolean = false
 
@@ -95,6 +95,7 @@ export class CustomerSignupComponent implements OnInit {
           this.EmailExist = true;
           this.llpCustsignupForm.controls['username'].setErrors({ 'EmailExist': true })          
         } else {
+          this.invitedBy = result.data.invitedBy
           this.llpCustsignupForm.controls['username'].disable();
           this.llpCustsignupForm.controls['password'].disable();
           this.custFreeTrailBtn = true;
@@ -116,14 +117,14 @@ export class CustomerSignupComponent implements OnInit {
   }
 
   OtpProceed() {
-    let invitedBy = ''
+    /* let invitedBy = ''
     if( this.inviteCode != '') {
       invitedBy = 'customer'
-    }
+    } */
     let req_vars = {
       username: this.llpCustsignupForm.controls['username'].value,
       otpCode: this.llpCustotpForm.controls['otp'].value,
-      invitedBy: invitedBy
+      invitedBy: this.invitedBy
     }
     this.loader.open();
     this.userapi.apiRequest('post', 'auth/checkOtp', { query: req_vars }).subscribe(result => {

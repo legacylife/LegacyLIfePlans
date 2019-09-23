@@ -784,10 +784,14 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   }
 
   cancelSubscription= (query = {}) => {
-    this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled, (value) =>{ 
-      this.isSubscriptionCanceled = value
-      console.log("this.isSubscriptionCanceled",this.isSubscriptionCanceled)
-      this.checkSubscription()
+    this.confirmService.confirm({ message: 'Are you sure you want to cancel current subscription?' }).subscribe(res => {
+      if (res) {
+        this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled, (value) =>{ 
+          this.isSubscriptionCanceled = value
+          console.log("this.isSubscriptionCanceled",this.isSubscriptionCanceled)
+          this.checkSubscription()
+        })
+      }
     })
   }
 
