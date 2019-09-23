@@ -293,10 +293,10 @@ function financesFormUpdate(req, res) {
         actitivityLog.updateActivityLog(logData);
 
         //let result = { "message": "Finance details added successfully!" }
-        let message = resMessage.data( 607, [{key:'{field}',val:"Finance details"},{key:'{status}',val: resText}] )
+        let message = resMessage.data( 607, [{key:'{field}',val:"Finance details"},{key:'{status}',val: 'added'}] )
         let result = { "message": message }
         //Update activity logs
-        allActivityLog.updateActivityLogs( fromId, toId, "Finacne details "+resText, message, folderName, subFolderName )
+        allActivityLog.updateActivityLogs( fromId, toId, "Finacne details added", message, folderName, subFolderName )
         res.status(200).send(resFormat.rSuccess(result))
       }
     })
