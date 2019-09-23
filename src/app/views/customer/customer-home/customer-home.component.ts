@@ -110,6 +110,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
         if(result.data.alreadyDeceased){    
           //this.documentId = result.data.alreadyDeceased._id;
           //this.alreadyRevokeAsDeceased = true;
+          //result.data.alreadyDeceased.customerId.lockoutLegacyDate
           this.revokeAsDeceased = true;
           if(result.data.alreadyDeceased.customerId.deceased && result.data.alreadyDeceased.customerId.deceased.status=='Active'){
             this.markAsDeceased = false;
@@ -117,7 +118,6 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
             this.finallyDeceased = true;
           }
         }
-
         this.shareData.userShareDataDeathFileSource.subscribe((shareDeathFileCount) => {
           this.shareDeathFileCount = shareDeathFileCount;
         })
@@ -125,14 +125,11 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
     }, (err) => {
       console.error(err);
     })
-
   }
 
   ngOnDestroy() {
 
   }
-
-
 
   toggleSideNav() {
     if(this.layout.isMobile){

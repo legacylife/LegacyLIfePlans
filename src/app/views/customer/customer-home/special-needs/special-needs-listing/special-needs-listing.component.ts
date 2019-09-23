@@ -52,7 +52,10 @@ export class SpecialNeedsListingComponent implements OnInit {
 
     if (this.urlData.lastThird == "legacies") {
       this.userId = this.urlData.lastOne;
-      this.userapi.getUserAccess(this.userId, (userAccess) => {
+      this.userapi.getUserAccess(this.userId, (userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
         this.YoungChildrenManagementSection = userAccess.YoungChildrenManagement
         this.ChildParentDisabilityManagementSection= userAccess.ChildParentDisabilityManagement
         this.FriendNeighborCareManagementSection= userAccess.FriendNeighborCareManagement

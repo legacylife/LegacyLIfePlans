@@ -61,7 +61,10 @@ export class CustomerLegalStuffComponent implements OnInit {
     
     if (this.urlData.lastThird == "legacies") {
       this.userId = this.urlData.lastOne;
-      this.userapi.getUserAccess(this.userId, (userAccess) => {
+      this.userapi.getUserAccess(this.userId, (userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
         this.EstateManagementSection = userAccess.EstateManagement 
         this.HealthcareManagementSection= userAccess.HealthcareManagement
         this.PersonalAffairsManagementSection= userAccess.PersonalAffairsManagement

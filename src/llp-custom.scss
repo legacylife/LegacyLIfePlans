@@ -727,6 +727,55 @@ body{
     overflow: auto;
 }
 
+.cust--gapp{
+    padding-right: 30px;
+}
+.sections--label{
+    font-size: 16px;
+    font-family: $font--lato--medium;
+    display: flex;
+}
+.banner--thumbnail{
+    width: 210px;
+    height: 210px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    float: right;
+}
+.free--text{
+    .e-rte-content{
+        height: 175px !important;
+    }
+}
+.features--lists{
+    height: 474px;
+    overflow: auto;
+    padding: 16px;
+}
+.testi--userprofile{
+    width: 125px;
+    height: 125px;
+    float: right;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+.delete--testo--usr{
+    position: absolute;
+    right: 12px;
+    top: 15px;
+}
+.ad--footer{
+    text-align: right;
+    padding: 15px;
+    position: fixed;
+    bottom: 0;
+    right: 21px;
+    z-index: 99999;
+}
+
 
 /* -- 
     Media Query (start here)

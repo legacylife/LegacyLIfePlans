@@ -11,7 +11,7 @@
       </mat-card>
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
-          <mat-card-title class="m-0">Personal Profile</mat-card-title>
+          <mat-card-title class="m-0">Personal Profile {{trusteeLegaciesAction}}</mat-card-title>
          
           <div *ngIf="showProfileListing && trusteeLegaciesAction && PersonalProfileManagementSection=='now'">
               <a class="no--of--trustee" *ngIf="showTrusteeCnt"  (click)="openManageTrusteeModal('Personal Profile','PersonalProfileManagement', true)">{{trusteeProfileCnt}} Trustees</a>   
@@ -68,7 +68,6 @@
           </mat-card-content>
 
           <mat-card-content class="appointees--wrapper" *ngIf="showIdProofListing">
-
             <div class="cust--user--details mt-1" *ngFor="let idData of essentialIDList; let i = index"
               [routerLink]="[dynamicRoute+'essential-detail-idbox', idData._id]">
               <div class="name--letters">{{getDocType(idData.documentType).charAt(0)+getDocType(idData.documentType).charAt(1)}}</div>

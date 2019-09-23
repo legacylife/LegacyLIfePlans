@@ -81,23 +81,25 @@ autologFunction(){
      let IdleFlag = localStorage.getItem("setIdleFlag");
       if(IdleFlag=='true'){
         console.log("LockScreen IdleFlag >> ",IdleFlag)
-        this.stopWatching()
+        this.stopWatching(false);
       }
      this.userIdle.startWatching();    
      this.userIdle.onTimerStart().subscribe(
       // count => console.log("home here",count)
      );    
-     this.userIdle.onTimeout().subscribe(() => this.stopWatching());
+     this.userIdle.onTimeout().subscribe(() => this.stopWatching(true));
 }
 
   stop() {
     this.userIdle.stopTimer();
   }
  
- stopWatching() {
+ stopWatching(flag) {
   console.log("LockScreen Countdown start >> ")
-  localStorage.setItem("setIdleFlag", "true");
-   let dialogRef: MatDialogRef<any> = this.dialog.open(lockscreenModalComponent, {
+  //if(flag){
+    localStorage.setItem("setIdleFlag", "true");
+ // }
+  let dialogRef: MatDialogRef<any> = this.dialog.open(lockscreenModalComponent, {
      width: '720px',
      disableClose: true, 
      panelClass: 'lock--panel',

@@ -46,7 +46,10 @@ export class PetsListComponent implements OnInit {
     if (this.urlData.lastThird == "legacies") {
       this.userId = this.urlData.lastOne;
       this.getCustomerDetails();
-      this.userapi.getUserAccess(this.userId, (userAccess) => {
+      this.userapi.getUserAccess(this.userId, (userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
         this.PetsManagementSection = userAccess.PetsManagement
       });
       this.showTrusteeCnt = false;

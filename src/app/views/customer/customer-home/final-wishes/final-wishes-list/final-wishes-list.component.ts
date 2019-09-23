@@ -51,7 +51,10 @@ export class FinalWishesComponent implements OnInit {
     this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
     if (this.urlData.lastThird == "legacies") {
       this.userId = this.urlData.lastOne;
-      this.userapi.getUserAccess(this.userId, (userAccess) => {
+      this.userapi.getUserAccess(this.userId, (userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
         this.FuneralPlansManagementSection = userAccess.FuneralPlansManagement
         this.ObituaryManagementSection= userAccess.ObituaryManagement
         this.CelebrationLifeManagementSection= userAccess.CelebrationLifeManagement

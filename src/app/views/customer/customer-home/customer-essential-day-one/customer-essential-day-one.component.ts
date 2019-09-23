@@ -47,6 +47,9 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   instruction_data_flag:boolean=false;  
   shareLegacFlag:boolean=false;  
   LegacyPermissionError:string="You don't have access to this section";
+  shareLegacyFlag:boolean=false;  
+  //this.LegacyPermissionError ="You don't have access to this section, Legacy details is in lockout period";
+  //this.LegacyPermissionError ="You don't have access to this section, Legacy owner is Deceased";
   constructor(
     private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService,private sharedata: DataSharingService) { }
 
@@ -59,14 +62,18 @@ export class CustomerEssentialDayOneComponent implements OnInit {
     this.customerLegaciesId = this.urlData.lastOne;
     this.dynamicRoute = this.urlData.dynamicRoute;
     this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
-   
+    
     if (this.urlData.lastThird == "legacies") {
       this.userId = this.urlData.lastOne;
-      this.userapi.getUserAccess(this.userId, (userAccess,userDeathFilesCnt) => { 
-        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
-        this.PersonalProfileManagementSection = userAccess.PersonalProfileManagement 
-        this.IDBoxManagementSection= userAccess.IDBoxManagement 
-        this.MyProfessionalsManagementSection= userAccess.MyProfessionalsManagement 
+      this.userapi.getUserAccess(this.userId, (userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+          if(userLockoutPeriod || userDeceased){
+            this.trusteeLegaciesAction = false;
+          }
+          this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
+          this.PersonalProfileManagementSection = userAccess.PersonalProfileManagement 
+          this.IDBoxManagementSection= userAccess.IDBoxManagement 
+          this.MyProfessionalsManagementSection= userAccess.MyProfessionalsManagement 
+       
       });
       this.showTrusteeCnt = false;this.shareLegacFlag = true;
     }else{      
