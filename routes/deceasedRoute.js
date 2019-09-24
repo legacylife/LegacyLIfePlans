@@ -594,6 +594,28 @@ async function markExpire(req, res){
   }
 }
 
+async function advisorListing(req, res) {
+
+  let { fields, offset, query, order, limit, search } = req.body
+  let totalUsers = 0
+
+    userList = await User.aggregate([
+      {
+        $match: {userType:'advisor',"subscriptionDetails.endDate": {$gte : new Date()}}
+      },
+      {
+        $project: {
+          createdOn: 1, username:1, firstName:1,lastName:1,renewalOnReminderEmailDay:1,userType:1,
+          subscriptionDetails: {$arrayElemAt: ["$subscriptionDetails", -1]},
+        }
+      }
+    ])
+
+    totalUsers = userList.length;
+    res.send(resFormat.rSuccess({ userList, totalUsers }))
+      
+}
+
 
 router.post("/viewDeceaseDetails", viewDeceased)
 router.post("/markAsDeceased", markDeceased)
@@ -603,5 +625,6 @@ router.post("/deceaseList", deceaseListing)
 router.post("/deceaseView", deceaseViewDetails)
 router.post("/deceaseExecutor", deceaseExecutorsDetails)
 router.post("/customerView", customerDetails)
+router.post("/advisorList", advisorListing)
 router.post("/expire", markExpire)
 module.exports = router
