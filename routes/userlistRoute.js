@@ -1415,7 +1415,7 @@ function createLegacySubscription( userProfile, stripeCustomerId, planId, reques
                             sendEmail(mailOptions)
                             
                             //subscription purchased email template for advisor / trustee
-                            let renewalUserDetails = await User.findOne({_id: requestFrom},{username: 1})
+                            let renewalUserDetails = await User.findOne({_id: requestFrom},{firstName:1,lastName:1,username: 1})
                             emailTemplatesRoute.getEmailTemplateByCode('renewalLegacySubscriptionEmail').then( async (template) => {
                               if(template) {
                                 template = JSON.parse(JSON.stringify(template));
@@ -1427,6 +1427,7 @@ function createLegacySubscription( userProfile, stripeCustomerId, planId, reques
                                     body = body.replace("{start_date}",subscriptionDetails.startDate);
                                     body = body.replace("{end_date}",subscriptionDetails.endDate);
                                     body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
+                                    body = body.replace("{renewed_username}",renewalUserDetails.firstName ? renewalUserDetails.firstName+' '+ (renewalUserDetails.lastName ? renewalUserDetails.lastName : '' ) : '');
 
                                 const mailOptions = {
                                   to : renewalUserDetails.username,
