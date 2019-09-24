@@ -1214,10 +1214,11 @@ async function calculateZipcode(zipcode,id){
 
 function renewlegacysubscription( req, res ) {
   
-  let requestParam  = req.body.query
-  let param         = {query :{_id:requestParam._id, userType:requestParam.userType }}
-  let { query }     = param;
-  let fields        = {}
+  let requestParam    = req.body.query,
+      { requestFrom } = requestParam,
+      param           = {query :{_id:requestParam._id, userType:requestParam.userType }},
+      { query }       = param,
+      fields          = {}
   User.findOne(query, fields, function (err, userProfile) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -1243,7 +1244,7 @@ function renewlegacysubscription( req, res ) {
             }
             let newStripeCardId = card.id
             
-            createLegacySubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId )
+            createLegacySubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId, requestFrom )
         })
       }
       else{
@@ -1271,7 +1272,7 @@ function renewlegacysubscription( req, res ) {
                   stripeErrors( err, res )
                 }
                 let newStripeCardId = card.id
-                createLegacySubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId )
+                createLegacySubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId, requestFrom )
             })
           }
         });
@@ -1283,7 +1284,7 @@ function renewlegacysubscription( req, res ) {
 /**
  * Apply to subscription and update the object against to user
  */
-function createLegacySubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId ) {
+function createLegacySubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId, requestFrom ) {
   let subscriptions = []
   let subscriptionStatus = 'added'
   let subscriptionDetails = {"_id" : objectId,
@@ -1391,7 +1392,7 @@ function createLegacySubscription( userProfile, stripeCustomerId, planId, reques
                       else {
                         let message = resMessage.data( 607, [{key: '{field}',val: 'Subscription'}, {key: '{status}',val: subscriptionStatus}] )
                         //subscription purchased email template
-                        emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
+                        emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then( async (template) => {
                           if(template) {
                             template = JSON.parse(JSON.stringify(template));
                             let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
@@ -1412,12 +1413,41 @@ function createLegacySubscription( userProfile, stripeCustomerId, planId, reques
                               html: body
                             }
                             sendEmail(mailOptions)
-                            //Update activity logs
-                            allActivityLog.updateActivityLogs(userProfile._id, userProfile._id, 'Subscription', message,'Account Settings')
-                            res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':message}));
+                            
+                            //subscription purchased email template for advisor / trustee
+                            let renewalUserDetails = await User.findOne({_id: requestFrom},{username: 1})
+                            emailTemplatesRoute.getEmailTemplateByCode('renewalLegacySubscriptionEmail').then( async (template) => {
+                              if(template) {
+                                template = JSON.parse(JSON.stringify(template));
+                                let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
+                                    body = body.replace("{plan_name}",subscriptionDetails.planName);
+                                    body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
+                                    body = body.replace("{duration}",subscriptionDetails.interval);
+                                    body = body.replace("{paid_on}",subscriptionDetails.paidOn);
+                                    body = body.replace("{start_date}",subscriptionDetails.startDate);
+                                    body = body.replace("{end_date}",subscriptionDetails.endDate);
+                                    body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
+
+                                const mailOptions = {
+                                  to : renewalUserDetails.username,
+                                  subject : template.mailSubject,
+                                  html: body
+                                }
+                                sendEmail(mailOptions)
+
+                                //Update activity logs
+                                allActivityLog.updateActivityLogs(requestFrom, userProfile._id, 'Renew Subscription', message,'Legacies Details')
+                                res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':message}));
+                              }
+                              else{
+                                //Update activity logs
+                                allActivityLog.updateActivityLogs(requestFrom, userProfile._id, 'Renew Subscription', message,'Legacies Details')
+                                res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':message}));
+                              }
+                            })
                           } else {
                             //Update activity logs
-                            allActivityLog.updateActivityLogs(userProfile._id, userProfile._id, 'Subscription', message,'Account Settings')
+                            allActivityLog.updateActivityLogs(requestFrom, userProfile._id, 'Renew Subscription', message,'Legacies Details')
                             res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':message}));
                           }
                         })
