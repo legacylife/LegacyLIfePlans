@@ -112,19 +112,11 @@ getAdvisorsLists = (query = {}, search = false) => {
     limit: '',
     order: {"createdOn": -1},
   }
-  this.api.apiRequest('post', 'userlist/list', req_vars).subscribe(result => {
+  this.api.apiRequest('post', 'deceased/advisorList', req_vars).subscribe(result => {
     if (result.status == "error") {
       console.log(result.data)
     } else {
-      this.advisorlistdata = this.rows = this.temp = result.data.userList.map(row=>{
-          let subscriptionData = {}
-          this.subscriptionservice.checkSubscriptionAdminPanel( row, ( returnArr )=> {
-            row['subscriptionData'] = {status : returnArr.isAccountFree && !returnArr.isSubscribePlan ? 'Trial' : ( returnArr.isSubscribePlan && !returnArr.isPremiumExpired ? 'Paid' : 'Expired'),
-                  endDate: returnArr.subscriptionExpireDate
-            }
-          })
-        return row;
-      })
+      this.advisorlistdata = this.rows = this.temp = result.data.userList;
     }
   }, (err) => {
     console.error(err)
@@ -288,6 +280,10 @@ trusteeFormGroupSubmit(insert = null) {
 selectAdvisor(row) {
     this.advisorId = row._id;
     this.hireFullName = row.firstName+' '+row.lastName;
+    if(this.advisorId){
+      this.trusteeFormGroup.controls['selectAll'].setValue('never');
+      this.onRadioChange('never');     
+    }
     this.myStepper.next();
 }
   
@@ -316,12 +312,12 @@ onChangeFormIndex(event){
   });
 }
 
-  onRadioChange(values){
+  onRadioChange(values){  
     if(userSections){      
       for(let row of userSections)
       {
         for(let rows of row.fileNames)
-        {       
+        {     
            this.trusteeFormGroup.controls[rows.code].setValue(values);
         }
       }      

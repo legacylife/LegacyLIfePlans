@@ -71,4 +71,9 @@ lockScreenFormSubmit(userData = null) {
 
   })
 }
+
+  logout = () => {
+    this.dialog.closeAll(); 
+    this.userapi.userLogout();
+  }
 }
