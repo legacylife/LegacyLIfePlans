@@ -1,6 +1,6 @@
 <div class="ll--modal--header">
   Refer & Earn
-  <p class="this--month"><span class="lato--bold">{{invitedMembersCount}}</span>/{{targetCount}} this month</p>
+  <p class="this--month" *ngIf="showTargetDetails"><span class="lato--bold">{{invitedMembersCount}}</span>/{{targetCount}} this month</p>
   <button class="modal--close" [mat-dialog-close]="">
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
@@ -8,7 +8,7 @@
 
 <form class="llp-form-wrapper" [formGroup]="inviteForm" (ngSubmit)="inviteSubmit()">
   <div class="ll--modal--body refer--earn--modal--body" formArrayName="inviteMembers">
-    <h6 class="invite--sub--line">Invite
+    <h6 class="invite--sub--line" *ngIf="showTargetDetails">Invite
       <span class="lato--bold">{{targetCount}} people</span> in a month and get
       <span class="lato--bold">{{extendedDays}} days </span> extended free access to all the features.</h6>
 

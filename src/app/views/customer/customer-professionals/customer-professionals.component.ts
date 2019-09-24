@@ -41,7 +41,9 @@ export class CustomerProfessionalComponent implements OnInit {
 
   getAdvisorView = (query = {}, search = false) => {
     const req_vars = {
-      query: Object.assign({ _id: this.selectedProfileId }, query)
+      query: Object.assign({ _id: this.selectedProfileId }, query),
+      fromId: localStorage.getItem('endUserId'),
+      userType: localStorage.getItem('endUserType')
     }
     this.userapi.apiRequest('post', 'userlist/viewall', req_vars).subscribe(result => {
       if (result.status == "error") {

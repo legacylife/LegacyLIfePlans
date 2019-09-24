@@ -39,6 +39,7 @@ export class ReferAndEarnModalComponent implements OnInit {
 
   targetCount:Number = 0
   extendedDays:Number = 0
+  showTargetDetails:Boolean = true
 
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
     private loader: AppLoaderService, private confirmService: AppConfirmService, @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -61,6 +62,8 @@ export class ReferAndEarnModalComponent implements OnInit {
 
     this.getInviteDocuments()
     this.getInviteMembersCount()    
+
+    this.showTargetDetails = localStorage.getItem('isSubscribedBefore') === 'true' ? false : (localStorage.getItem('endisReferAndEarn') === 'No' ? false : true)
   }
 
   get inviteMembersList() {

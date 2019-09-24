@@ -11,6 +11,9 @@ import { NavigationService } from '../../services/navigation.service';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { ReferAndEarnModalComponent } from '../../../views/refer-and-earn-modal/refer-and-earn-modal.component';
 import { TodosComponent } from '../../../views/todos/todos.component';
+import { Router } from '@angular/router';
+import { SubscriptionService } from 'app/shared/services/subscription.service';
+import * as moment from 'moment'
 @Component({
   selector: 'app-advisor-header-top',
   templateUrl: './advisor-header-top.component.html'
@@ -40,6 +43,8 @@ export class AdvisorHeaderTopComponent implements OnInit, OnDestroy {
     private userapi: UserAPIService,
     private picService : ProfilePicService,
     private dialog: MatDialog,
+    private router: Router,
+    private subscription: SubscriptionService
   ) { }
 
   ngOnInit() {
@@ -107,10 +112,21 @@ export class AdvisorHeaderTopComponent implements OnInit, OnDestroy {
     this.userapi.userLogout();
   }
   openInviteModal(data: any = {}, isNew?) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
-      width: '720px',
-      disableClose: true,
-    })
+    let subscriptionEndDate = localStorage.getItem('endUserSubscriptionEndDate')
+    let getDiff = subscriptionEndDate ? this.subscription.getDateDiff( moment().toDate(), moment(subscriptionEndDate).toDate() ) : 0
+    console.log("getDiff",getDiff)
+    if( localStorage.getItem('endisReferAndEarn') === 'Yes' || localStorage.getItem('isSubscribedBefore') === 'true' ) {
+      let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
+        width: '720px',
+        disableClose: true,
+      })
+    }
+    else if( getDiff <= 0) {
+      return false
+    }
+    else{
+      this.router.navigate(['/subscription'])
+    }
   }
 
   openTodosModal(data: any = {}, isNew?) {

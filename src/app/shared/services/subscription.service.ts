@@ -277,6 +277,7 @@ export class SubscriptionService {
         }
         this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
       }
+      localStorage.setItem("isSubscribedBefore", (this.isSubscribedBefore ? 'true' : 'false'))
       let returnArr = { userCreateOn:  this.userCreateOn,
                         isSubscribedBefore: this.isSubscribedBefore,
                         isSubscriptionCanceled : this.isSubscriptionCanceled,
