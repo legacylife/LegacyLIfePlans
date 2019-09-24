@@ -41,5 +41,7 @@
   </div>
   <div class="ll--modal--footer text-center">
     <button mat-raised-button class="llp--primary--btn" [disabled]="lockScreenForm.invalid">Submit</button>
+    <a  (click)="logout()" [routerLink]="'/customer/signup'"> <mat-icon>exit_to_app</mat-icon>  <span>Log out</span></a>    
   </div>
+
 </form>
