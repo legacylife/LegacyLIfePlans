@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatSnackBar, MatDialog, MatDatepickerInputEvent } from '@angular/material';
 import { UserAPIService } from 'app/userapi.service';
 import { FilteringEventArgs } from '@syncfusion/ej2-angular-dropdowns';
 import { Query, DataManager, WebApiAdaptor, UrlAdaptor, ODataV4Adaptor} from '@syncfusion/ej2-data';
@@ -20,10 +20,12 @@ export class SubmitEnquiryModalComponent implements OnInit {
   enquiryForm: FormGroup
   userFullName: string
   endUserType: string
+  dateError: string = '';
   emailHiddenVal:boolean = false;
-  minDate = new Date()
+  minDate = new Date();
+  minDateTo = new Date();
   zipcode: string;
-
+  events: string[] = [];
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
     private loader: AppLoaderService, private confirmService: AppConfirmService) {
   }
@@ -54,9 +56,9 @@ export class SubmitEnquiryModalComponent implements OnInit {
         this.userId = localStorage.getItem("endUserId");
         this.endUserType = localStorage.getItem("endUserType");
         this.enquiryForm = this.fb.group({
-          zipcodes: new FormControl(''),
-          fromDate: new FormControl(''),
-          toDate: new FormControl(''),
+          zipcodes: new FormControl('', Validators.required),
+          fromDate: new FormControl('', Validators.required),
+          toDate: new FormControl('', Validators.required),
           message: new FormControl('')
         });
        // this.getAllZipcodes();
@@ -64,24 +66,26 @@ export class SubmitEnquiryModalComponent implements OnInit {
 
 
     enquiryFormSubmit(formData = null) {
-      let enquiryData = {
-        query: Object.assign({ userType: this.endUserType,customerId: this.userId }),
-        proquery: Object.assign(formData)  
-      }
-      this.loader.open();
-      this.userapi.apiRequest('post', 'advertisement/submitEnquiry', enquiryData).subscribe(result => {
-      this.loader.close();
-        if (result.status=="success") {      
-          this.dialog.closeAll(); 
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
-        }     
-      }, (err) => {
-        this.snack.open(err, 'OK', { duration: 4000 })
-      })
+      if(new Date(this.enquiryForm.controls['toDate'].value) < new Date(this.enquiryForm.controls['fromDate'].value)) {
+          this.dateError = 'To date should be greater than From date';
+      }else{     
+        this.dateError = '';
+        let enquiryData = {
+          query: Object.assign({ userType: this.endUserType,customerId: this.userId }),
+          proquery: Object.assign(formData)  
+        }
+        this.loader.open();
+        this.userapi.apiRequest('post', 'advertisement/submitEnquiry', enquiryData).subscribe(result => {
+        this.loader.close();
+          if (result.status=="success") {      
+            this.dialog.closeAll(); 
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          }     
+        }, (err) => {
+          this.snack.open(err, 'OK', { duration: 4000 })
+        })
+     }
     }
-
-    
-
 
   }
 

@@ -9,29 +9,21 @@
       <h6 class="invite--sub--line">Share the following details and we will get back to you within 2 days. </h6>
       <div fxLayout="row wrap">
         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
-          
-          <!-- <div id="multiselect-sample" class="control-section">
-              <div class="control-styles">
-                    <ejs-multiselect id='remoteData' [dataSource]='data' [allowCustomValue]=true [mode]='box' #remote [query]='query' sortOrder='Ascending' 
-                    [formControl]="enquiryForm.controls['zipcodes']" [placeholder]='waterMark' [fields]='fields'  (filtering)='onFiltering($event)'
-                     [sortOrder]='sorting'[query]='query'></ejs-multiselect>
-              </div>
-          </div> -->
-        
 
           <div id="multiselect-sample" class="control-section">
             <div class="control-styles">
                   <ejs-multiselect id='multiselectelement' [dataSource]='searchData' [allowCustomValue]='true' [allowFiltering]='true' [mode]='box' #remote [query]='query' sortOrder='Ascending' 
                   [formControl]="enquiryForm.controls['zipcodes']" [placeholder]='waterMark' [fields]='fields' 
                    [sortOrder]='sorting' (filtering)='onFiltering($event)'></ejs-multiselect>
+                   <mat-icon matTooltip="Please enter zipcodes." matTooltipClass="llp--tooltip error" class="red--alert"
+                    *ngIf="enquiryForm.controls['zipcodes'].hasError('required') && enquiryForm.controls['zipcodes'].touched">help_outline</mat-icon>
             </div>
-        </div>
+          </div>
           <!-- <mat-form-field class="full-width">
             <input matInput value="" placeholder="What location or zip codes are you planning to target?" [formControl]="enquiryForm.controls['zipcodes']">
             <mat-icon matTooltip="Please enter zipcodes" matTooltipClass="llp--tooltip error" class="red--alert"
             *ngIf="enquiryForm.controls['zipcodes'].hasError('required') && enquiryForm.controls['zipcodes'].touched">help_outline</mat-icon>
           </mat-form-field> -->
-
         </div>
         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
           <label class="date--label">
@@ -40,23 +32,31 @@
         </div>
         <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
           <mat-form-field class="full-width llp-datepicker">
-            <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="From" value="" [min]="minDate" [formControl]="enquiryForm.controls['fromDate']">
+            <input matInput [matDatepicker]="dp" (focus)="dp.open()" placeholder="From Date" value="" [min]="minDate" [formControl]="enquiryForm.controls['fromDate']">
             <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
             <mat-datepicker #dp startView="multi-year" panelClass="example-month-picker">
             </mat-datepicker>
+            <mat-icon matTooltip="Please enter from date" matTooltipClass="llp--tooltip error"
+            *ngIf="enquiryForm.controls['fromDate'].hasError('required') && enquiryForm.controls['fromDate'].touched"
+            class="red--alert">help_outline</mat-icon>
           </mat-form-field>
         </div>
         <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
           <mat-form-field class="full-width llp-datepicker">
-            <input matInput [matDatepicker]="to" (focus)="to.open()" placeholder="To" value="" [min]="minDate" [formControl]="enquiryForm.controls['toDate']">
+            <input matInput [matDatepicker]="to" (focus)="to.open()" placeholder="To Date" value="" [min]="minDateTo" [formControl]="enquiryForm.controls['toDate']">
             <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
             <mat-datepicker #to startView="multi-year" panelClass="example-month-picker">
             </mat-datepicker>
+            <mat-icon matTooltip="Please enter to date." matTooltipClass="llp--tooltip error" class="red--alert"
+            *ngIf="enquiryForm.controls['toDate'].hasError('required') && enquiryForm.controls['toDate'].touched">help_outline</mat-icon>
           </mat-form-field>
         </div>
+
+        <mat-chip-list class="doc--list error--chip" *ngIf="dateError"><mat-chip><mat-error>{{dateError}}</mat-error></mat-chip></mat-chip-list>
+        
         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
           <mat-form-field class="full-width">
-            <input matInput value="" placeholder="Any query message for us "  [formControl]="enquiryForm.controls['message']">
+            <input matInput value="" placeholder="Any query message for us" [formControl]="enquiryForm.controls['message']">
           </mat-form-field>
         </div>
       </div>

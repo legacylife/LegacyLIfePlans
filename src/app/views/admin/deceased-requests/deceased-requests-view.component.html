@@ -214,7 +214,7 @@
                 <div class="compact-list up--files" *ngFor="let doc of row?.documents">
                     <p class="m-0" (click)="downloadFile(doc.tmpName)">
                         <mat-icon class="mat-icon material-icons" (click)="downloadFile(doc.tmpName)">file_copy
-                        </mat-icon>{{doc.title}} 1212
+                        </mat-icon>{{doc.title}} 
                       </p>
                 </div>
                 
@@ -294,7 +294,7 @@
             [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <button mat-icon-button mat-sm-button color="primary" class="mr-1 p-0 icon--edit"
-                (click)="openAdminHireAdvisorModal(selectedUserId,row?._id,'update',true)" title="Edit">
+                (click)="openAdminHireAdvisorModal(selectedUserId,row?._id,row?.advisorId._id,'update',true)" title="Edit">
                 <mat-icon>edit</mat-icon>
               </button>
             </ng-template>

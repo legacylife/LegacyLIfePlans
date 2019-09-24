@@ -48,7 +48,7 @@ export class AdminHireAdvisorComponent implements OnInit, AfterViewInit  {
     private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private stepper: MatStepperModule,
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router, private subscriptionservice:SubscriptionService,
     private api: APIService,@Inject(MAT_DIALOG_DATA) public data: any
-  ) {this.customerId = data.customerId,this.profileId = data.profileId,this.updates = data.update,this.legacyHolderName = data.legacyHolderName,this.legacyHolderFirstName = data.legacyHolderFirstName,this.legacyCustomerEmail = data.legacyCustomerEmail;}
+  ) {this.customerId = data.customerId,this.profileId = data.profileId,this.advisorId = data.advisorId,this.updates = data.update,this.legacyHolderName = data.legacyHolderName,this.legacyHolderFirstName = data.legacyHolderFirstName,this.legacyCustomerEmail = data.legacyCustomerEmail;}
 
   ngOnInit() {
     this.buildItemForm();
@@ -158,7 +158,7 @@ checkAdvisorView(insert = null) {
           this.row = result.data.RequestData;
           let profileId = result.data.RequestData._id;   
             //if(this.updates=='update')
-            this.alreadyRequestSend = true;
+            this.alreadyRequestSend = true;console.log('here',this.row);
             this.trusteeFormGroup.controls['selectAll'].setValue(this.row.selectAll);
             this.trusteeFormGroup.controls['PersonalProfileManagement'].setValue(this.row.userAccess.PersonalProfileManagement);
             this.trusteeFormGroup.controls['IDBoxManagement'].setValue(this.row.userAccess.IDBoxManagement);
@@ -248,11 +248,6 @@ trusteeFormGroupSubmit(insert = null) {
     }
 
     let profileIds = this.trusteeFormGroup.controls['profileId'].value;
-    
-    if(profileIds){
-        profileIds = '';
-    }        
-
     let inviteByName = localStorage.getItem("firstName") + " " + localStorage.getItem("lastName");
     const req_vars = {
       query: Object.assign({_id:profileIds,customerId:this.customerId,advisorId:this.advisorId}),
@@ -307,8 +302,7 @@ onChangeFormIndex(event){
       }
       if(index < selectedIndex){
       element.classList += ' proDone';
-      }
-      
+      }      
   });
 }
 

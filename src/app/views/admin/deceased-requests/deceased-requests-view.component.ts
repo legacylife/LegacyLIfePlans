@@ -245,13 +245,14 @@ export class DeceasedRequestsViewComponent implements OnInit {
     })
   }
 
-  openAdminHireAdvisorModal(customerId: any = {},profileId: any = {},update: any = {}, isNew?) {
+  openAdminHireAdvisorModal(customerId: any = {},profileId: any = {},advisorId: any = {},update: any = {}, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(AdminHireAdvisorComponent, {
       width: '950px',
       disableClose: true,
       data: {
         customerId: customerId,
         profileId: profileId,
+        advisorId: advisorId,
         legacyHolderFirstName: this.customerFirstName,
         legacyHolderName: this.fullname,
         legacyCustomerEmail: this.legacyCustomerUsername,
