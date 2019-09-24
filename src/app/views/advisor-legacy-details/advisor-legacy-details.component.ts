@@ -9,6 +9,9 @@ import { DataSharingService } from 'app/shared/services/data-sharing.service';
 import { forEach } from "lodash";
 import { LocationStrategy } from "@angular/common";
 import { CardDetailsComponent } from "app/shared/components/card-details-modal/card-details-modal.component";
+import { SubscriptionService } from "app/shared/services/subscription.service";
+import * as moment from 'moment'
+
 @Component({
   selector: "advisor-legacy-details",
   templateUrl: "./advisor-legacy-details.component.html",
@@ -27,6 +30,10 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
   isDialogOpen:boolean = false
   endUserType:string = ''
 
+  activateRenewSubscriptonBtn:Boolean = false
+  subscriptionExpiryDate:String = ''
+  daysRemaining:Number = 0
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -36,7 +43,8 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
     private loader: AppLoaderService, 
     private snack: MatSnackBar,
     private shareData: DataSharingService,
-    private locationStrategy: LocationStrategy
+    private locationStrategy: LocationStrategy,
+    private subscription: SubscriptionService
   ) {
     this.preventBackButton()
   }
@@ -78,7 +86,9 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
         for: 'legacyRenew',
         userId: this.urlData.lastOne,
         endUserType: this.endUserType,
-        userName: this.customerData.firstName+' '+this.customerData.lastName
+        userName: this.customerData.firstName+' '+this.customerData.lastName,
+        expiryDate: this.subscriptionExpiryDate,
+        daysRemaining: this.daysRemaining
       }
     })
     dialogRef.afterOpened().subscribe(result => {
@@ -104,6 +114,26 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
         this.endUserType = this.customerData.userType
         if(this.customerData && this.customerData.profilePicture){
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + this.customerData.profilePicture;
+        }
+        /**
+         * Check the user subscription and sctivate renew subscription buttonfor payment in shared legacy for advisor or trustee
+         */
+        let subscriptionDetails = this.customerData.subscriptionDetails
+        if( subscriptionDetails && subscriptionDetails.length > 0 ) {
+          //get last element from array i.e current subscription details
+          let currentSubscription     = subscriptionDetails.slice(-1)[0]
+          let remainingDays           = this.subscription.getDateDiff( moment().toDate(), moment(currentSubscription.endDate).toDate())
+          this.subscriptionExpiryDate = currentSubscription.endDate
+          this.daysRemaining          = remainingDays
+          if( remainingDays <= 60 ) {
+            this.activateRenewSubscriptonBtn = true
+          }
+          else{
+            this.activateRenewSubscriptonBtn = false
+          }
+        }
+        else{
+          this.activateRenewSubscriptonBtn = true
         }
       }
     }, (err) => {

@@ -57,6 +57,7 @@ import { CustomerProfileComponent } from './customer-profile/customer-profile.co
 import { ErrorComponent } from './../error/error.component';
 import { CoachsCornerComponent } from 'app/shared/components/coachs-corner/coachs-corner.component';
 import { CcDetailedViewComponent } from 'app/shared/components/cc-detailed-view/cc-detailed-view.component';
+import { AdvertisementPaymentComponent } from 'app/shared/components/advertisement-payment/advertisement-payment.component';
 console.log('advisor---routing');
 export const AdvisorRoutes: Routes = [
   {
@@ -474,6 +475,17 @@ export const AdvisorRoutes: Routes = [
         component: AdvisorSubscriptionComponent,
         canActivate: [UserAuthGuard],
         data: { title: 'Subscription' }
+      }
+    ]
+  },
+  {
+    path: 'advertisement-payment/:userId/:invoiceId/:uniqueId',
+    component: AdvisorLayoutComponent,
+    data: { title: 'Advertisement Payments' },
+    children: [
+      {
+        path: '',
+        component: AdvertisementPaymentComponent,
       }
     ]
   },

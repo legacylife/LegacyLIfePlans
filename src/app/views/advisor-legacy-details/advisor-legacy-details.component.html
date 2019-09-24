@@ -29,7 +29,7 @@
           <button (click)="remove()" mat-menu-item class="reject">
             <mat-icon>cancel</mat-icon> Remove Myself as an {{userAs}}
           </button>
-           <button mat-menu-item (click)="openCardDetailsModal()">
+           <button mat-menu-item [disabled]="!activateRenewSubscriptonBtn" (click)="activateRenewSubscriptonBtn && openCardDetailsModal()">
             <mat-icon>monetization_on</mat-icon> Renew Subscription
           </button>
         <!--  <button mat-menu-item>

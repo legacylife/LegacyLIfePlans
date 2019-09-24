@@ -53,6 +53,9 @@ export class CardDetailsComponent implements OnInit {
   userName:String = ''
   forUserType:String = ''
 
+  expiryDate:String = ''
+  isAvailablePayment:Boolean = true
+
   constructor(private stripeService: StripeService, private userapi: UserAPIService, private loader: AppLoaderService, 
     private fb: FormBuilder, private picService: ProfilePicService, private subscriptionservice:SubscriptionService, 
     private router: Router, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private snack: MatSnackBar ) {
@@ -73,6 +76,10 @@ export class CardDetailsComponent implements OnInit {
     else if( this.for == 'legacyRenew' ) {
       this.userName = this.data.userName
       this.forUserType = this.data.endUserType
+      this.expiryDate = this.data.expiryDate
+      let daysRemaining = this.data.daysRemaining
+      console.log("daysRemaining",daysRemaining)
+      this.isAvailablePayment = ( daysRemaining > 30 && daysRemaining < 60 ) ? false : true
       let query = { _id: this.data.userId, userType:this.data.endUserType }
       this.getLegacyUserProductDetails( query )
     }
@@ -290,7 +297,7 @@ export class CardDetailsComponent implements OnInit {
    */
   renewLegacyUserSubscription = ( token = null) => {
     const req_vars = {
-      query: Object.assign({ _id: this.data.userId, userType: this.data.endUserType, token:token, planId: this.planId }, {})
+      query: Object.assign({ _id: this.data.userId, userType: this.data.endUserType, token:token, planId: this.planId, requestFrom: this.userId }, {})
     }
     this.userapi.apiRequest('post', 'userlist/renewlegacysubscription', req_vars).subscribe(result => {
       const data = result.data

@@ -9,10 +9,11 @@
   <div class="ll--modal--body payment--modal--wrapper">
     <div class="plan-details">
       <h5 class="text-center" *ngIf="userName">Legacy Payment For: <span>{{userName}} ({{forUserType}})</span></h5>
+      <h5 *ngIf="expiryDate">Expiry Date: <span>{{expiryDate | date : 'dd/MM/yyyy'}}</span></h5>
       <h5>Amount to be paid: <span>{{planAmount | currency : planCurrency : 'symbol'}}</span></h5>
     </div>
     <div>
-      <div class="new-card-details" [hidden]="hideNewCardForm">
+      <div class="new-card-details" [hidden]="hideNewCardForm && isAvailablePayment">
         <label>New card details:</label>
         <div class="new--card">
             <div id="card-fields"></div>
@@ -42,7 +43,7 @@
       </div>
     </div>
   </div>
-  <div class="ll--modal--footer text-center">
+  <div class="ll--modal--footer text-center" *ngIf="isAvailablePayment">
     <button mat-raised-button class="llp--primary--btn" [disabled]="!isButtonEnabled"
       (click)="completePayment()">Complete Payment</button>
   </div>

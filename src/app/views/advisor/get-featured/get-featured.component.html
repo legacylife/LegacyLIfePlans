@@ -140,7 +140,7 @@
                                       </div>
                                     </div>
                                     <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" *ngIf="row.status =='Pending' && row.paymentDetails && row.paymentDetails.invoiceId && item.uniqueId">
-                                      <button mat-raised-button class="llp--primary--green--btn mt-1 mb-1" routerLink="{{serverUrl}}/{{encryptData(item.customerId._id)}}/{{encryptData(row.paymentDetails.invoiceId)}}/{{item.uniqueId}}">Payment</button>
+                                      <button mat-raised-button class="llp--primary--green--btn mt-1 mb-1" routerLink="/advisor/advertisement-payment/{{encryptData(item.customerId._id)}}/{{encryptData(row.paymentDetails.invoiceId)}}/{{item.uniqueId}}">Payment</button>
                                     </div>
                                   </div>
 

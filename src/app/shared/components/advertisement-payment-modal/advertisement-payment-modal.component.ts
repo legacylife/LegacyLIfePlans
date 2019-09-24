@@ -11,6 +11,7 @@ import { StripeService, Elements, Element as StripeElement, ElementsOptions } fr
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { MAT_DIALOG_DATA, MatDialog, MatSnackBar, MatDialogRef } from '@angular/material';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'card-details-modal',
@@ -39,8 +40,10 @@ export class AdvertisementPaymentModalComponent implements OnInit {
   userName:String = ""
   invoiceId:String = ""
 
-  constructor(private stripeService: StripeService, private userapi: UserAPIService, private loader: AppLoaderService, public dialogRef: MatDialogRef<AdvertisementPaymentModalComponent>,
-    private fb: FormBuilder, private picService: ProfilePicService, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private snack: MatSnackBar ) {
+  constructor(private stripeService: StripeService, private userapi: UserAPIService,
+    private loader: AppLoaderService, public dialogRef: MatDialogRef<AdvertisementPaymentModalComponent>,
+    private fb: FormBuilder, private picService: ProfilePicService, @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialog: MatDialog, private snack: MatSnackBar, private router: Router ) {
       this.userId = data.userId
       this.invoiceId = data.invoiceId
       this.planAmount = data.amount
@@ -129,6 +132,12 @@ export class AdvertisementPaymentModalComponent implements OnInit {
         this.dialog.closeAll(); 
         this.dialogRef.close(result.status)
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        if( localStorage.getItem('endUserId') ) {
+          this.router.navigate(['advisor/get-featured'])
+        }
+        else{
+          this.router.navigate(['signin'])
+        }
       }
       this.loader.close();
     }, (err) => {  
