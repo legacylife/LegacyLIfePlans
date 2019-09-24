@@ -93,6 +93,8 @@ function details(req, res) {
 //function get details of user from url param
 function view(req, res) {
   let { query } = req.body
+  let { fromId } = req.body
+  let { userType } = req.body
   let fields = {}
   if (req.body.fields) {
     fields = req.body.fields
@@ -101,6 +103,8 @@ function view(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
+      //Update activity logs
+      allActivityLog.updateActivityLogs(fromId, query._id, 'Details Viewed', userType+' has been viewed details successfully', 'Professionals')
       res.send(resFormat.rSuccess(userList))
     }
   })
