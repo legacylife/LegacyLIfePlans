@@ -1,369 +1,646 @@
-<mat-card class="p-0" *ngIf="aceessSection">
-    <mat-card-title class="">
-        <!--  <div class="card-title-text">Form validation</div>-->
-        <mat-divider></mat-divider>
-    </mat-card-title>
-    <mat-card-content>
-    <form class="llp-form-wrapper pt-1" [formGroup]="advisorCmsForm" method="post" (ngSubmit)="updatePage(advisorCmsForm.value)">
-         <div fxLayout="row wrap"> 
-            <div fxFlex="300" fxFlex.gt-xs="500" class="pr-0" formGroupName="sectionOne">
-                <h3>Section 1</h3>
-                <div class="pb-0">
-                    <mat-form-field class="full-width">
-                        <input matInput placeholder="Title" formControlName="title" value="" [formControl]="getFormGroup('sectionOne').controls['title']">
-                    </mat-form-field>
+<form class="llp-form-wrapper pt-1" [formGroup]="advisorCmsForm" method="post"
+    (ngSubmit)="updatePage(advisorCmsForm.value)">
+    <div fxLayout="row wrap" *ngIf="aceessSection">
 
-                    <mat-form-field class="full-width">
-                            <input matInput placeholder="Middle Title" formControlName="middleTitle" value="" [formControl]="getFormGroup('sectionOne').controls['middleTitle']">
-                    </mat-form-field>                        
-
-                    <mat-form-field class="full-width">
-                            <input matInput placeholder="Sub Title" formControlName="subTitle" value="" [formControl]="getFormGroup('sectionOne').controls['subTitle']">
-                    </mat-form-field>
-                        
-                    <div class="upload--buss--docs--sec">
-                        <label>Top Banner</label>
-                        <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverTopBannerBase($event)" [uploader]="uploaderTopBanner">
-                                <input type="file" name="topBanner" ng2FileSelect [uploader]="uploaderTopBanner" (change)="fileOverTopBannerBase('')" />
-                                <mat-icon class="cloud-icon">cloud_upload</mat-icon>
-                                <div class="select--file">Select top banner image from your computer</div>
+        <!-- Section 1 -->
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
+            <mat-card class="p-0 mb-1">
+                <mat-card-title class="p-1">Section 01</mat-card-title>
+                <mat-card-content class="p-1">
+                    <div fxLayout="row wrap" formGroupName="sectionOne">
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
+                            class="cust--gapp">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Title" formControlName="title" value=""
+                                    [formControl]="getFormGroup('sectionOne').controls['title']">
+                            </mat-form-field>
                         </div>
-                        <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
-                
-                        <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrorsTop;">
-                                <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
-                        </mat-chip-list>
-            
-                        <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderTopBanner.getNotUploadedItems().length">
-                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': topBannerProgessPer + '%' }">{{topBannerProgessPer}}%</div>
-                            <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="topBannerProgessPer"></mat-progress-bar>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Middle Title" formControlName="middleTitle" value=""
+                                    [formControl]="getFormGroup('sectionOne').controls['middleTitle']">
+                            </mat-form-field>
                         </div>
-                    </div>      
-                    <div *ngIf="topBannerPath">
-                        <img src="{{topBannerPath}}" style="height: 220px;" name="topBanner" />
-                    </div>       
-                    <!-- <mat-form-field class="full-width">
-                            <input matInput name="topBanner" [formControl]="getFormGroup('sectionOne').controls['topBanner']" readonly="readonly">
-                    </mat-form-field> -->
-                </div>
-            </div>
-  
-            <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0" formArrayName="sectionTwo">
-                    <h3>Section 2</h3>
-                <div class="pb-0">
-                      
-                    <div fxLayout="row wrap" *ngFor="let web of sectionTwoArray.controls; let i = index" [formGroupName]="i">
-                            <mat-label> {{i+1}}) </mat-label>
-                        <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
-                            <mat-form-field class="full-width"><input matInput placeholder="Title" formControlName="title"></mat-form-field>
-                            <mat-form-field class="full-width"><input matInput placeholder="Sub Title" formControlName="subTitle"></mat-form-field>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Sub Title" formControlName="subTitle" value=""
+                                    [formControl]="getFormGroup('sectionOne').controls['subTitle']">
+                            </mat-form-field>
                         </div>
-                        <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
-                                <mat-icon class="mt-1 clr--red cursor-pointer" *ngIf="i>0" (click)="deleteTwoPoints(i);">delete</mat-icon>
-                        </div>
-                    </div>
-                    <div fxLayout="row wrap" *ngIf="sectionTwoArray.length < 3">
-                        <div fxFlex.xs="100">
-                            <div class="add--new" (click)="addTwoPoints();"><mat-icon>add_circle</mat-icon>Add New</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0" formGroupName="sectionThree">
-                <h3>Section 3</h3>
-                <div class="pb-0">
-                    <mat-form-field class="full-width">
-                        <input matInput placeholder="Title" formControlName="title" value="" [formControl]="getFormGroup('sectionThree').controls['title']">
-                    </mat-form-field>
-
-                    <mat-form-field class="full-width">
-                            <input matInput placeholder="Sub Title" formControlName="subTitle" value="" [formControl]="getFormGroup('sectionThree').controls['subTitle']">
-                    </mat-form-field>    
-
-                    <div class="upload--buss--docs--sec">
-                            <label>Banner</label>
-                            <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverSectionThreeBase($event)" [uploader]="uploaderTopBanner">
-                                    <input type="file" name="topBanner" ng2FileSelect [uploader]="uploaderSectionThree" (change)="fileOverSectionThreeBase('')" />
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60"
+                            class="cust--gapp">
+                            <div class="upload--buss--docs--sec">
+                                <div class="upload--box fileupload-drop-zone" ng2FileDrop
+                                    [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                                    (fileOver)="fileOverTopBannerBase($event)" [uploader]="uploaderTopBanner">
+                                    <input type="file" name="topBanner" ng2FileSelect [uploader]="uploaderTopBanner"
+                                        (change)="fileOverTopBannerBase('')" />
                                     <mat-icon class="cloud-icon">cloud_upload</mat-icon>
-                                    <div class="select--file">Select banner image from your computer</div>
-                            </div>
-                            <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
-                    
-                            <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrorsSectionThree;">
-                                    <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
-                            </mat-chip-list>
-                
-                            <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderSectionThree.getNotUploadedItems().length">
-                                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': sectionThreeProgessPer + '%' }">{{sectionThreeProgessPer}}%</div>
-                                <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="sectionThreeProgessPer"></mat-progress-bar>
-                            </div>
-                    </div>      
-                    <div *ngIf="sectionThreePath">
-                            <img src="{{sectionThreePath}}" style="height: 220px;" name="topBanner" />
-                    </div>  
-
-                </div>
-            </div>                   
-
-            <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0" formGroupName="sectionFour">
-                    <h3>Section 4</h3>
-                    <div class="pb-0">
-                        <mat-form-field class="full-width">
-                            <input matInput placeholder="Title" formControlName="title" value="" [formControl]="getFormGroup('sectionFour').controls['title']">
-                        </mat-form-field>
-    
-                        <mat-form-field class="full-width">
-                                <input matInput placeholder="Sub Title" formControlName="subTitle" value="" [formControl]="getFormGroup('sectionFour').controls['subTitle']">
-                        </mat-form-field>
-                         
-                        <div class="upload--buss--docs--sec">
-                                <label>Banner</label>
-                                <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverSectionFourBase($event)" [uploader]="uploaderTopBanner">
-                                        <input type="file" name="topBanner" ng2FileSelect [uploader]="uploaderSectionFour" (change)="fileOverSectionFourBase('')" />
-                                        <mat-icon class="cloud-icon">cloud_upload</mat-icon>
-                                        <div class="select--file">Select banner image from your computer</div>
+                                    <div class="select--file">Select top banner image from your computer</div>
                                 </div>
                                 <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
-                        
-                                <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrorsSectionFour;">
-                                        <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
+
+                                <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrorsTop;">
+                                    <mat-chip>
+                                        <mat-error>{{err.error}}</mat-error>
+                                    </mat-chip>
                                 </mat-chip-list>
-                    
-                                <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderSectionFour.getNotUploadedItems().length">
-                                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': sectionFourProgessPer + '%' }">{{sectionFourProgessPer}}%</div>
-                                    <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="sectionFourProgessPer"></mat-progress-bar>
+
+                                <div class="progress" style="margin-bottom: 0;"
+                                    *ngIf="uploaderTopBanner.getNotUploadedItems().length">
+                                    <div class="progress-bar" role="progressbar"
+                                        [ngStyle]="{ 'width': topBannerProgessPer + '%' }">{{topBannerProgessPer}}%
+                                    </div>
+                                    <mat-progress-bar class="" color="primary" mode="Indeterminate"
+                                        [value]="topBannerProgessPer"></mat-progress-bar>
                                 </div>
-                        </div>      
-                        <div *ngIf="sectionFourPath">
-                                <img src="{{sectionFourPath}}" style="height: 220px;" name="topBanner" />
-                        </div>  
-
-                    </div>
-             </div>              
- 
-             <h3>Section 5</h3>
-            <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0" formArrayName="sectionFive">
-                    <div class="pb-0">         
-                        <div fxLayout="row wrap" *ngFor="let web of sectionFiveArray.controls; let i = index" [formGroupName]="i">
-                                <mat-label> {{i+1}}) </mat-label>       
-                            <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
-
-
-                                <mat-form-field class="full-width"><input matInput placeholder="Title" formControlName="title"></mat-form-field>
-                                <mat-form-field class="full-width"><input matInput placeholder="Sub Title" formControlName="subTitle"></mat-form-field>
-                            </div>
-                            <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
-                                 <mat-icon class="mt-1 clr--red cursor-pointer" *ngIf="i>0" (click)="deleteFivePoints(i);">delete</mat-icon>
                             </div>
                         </div>
-                        <div fxLayout="row wrap" *ngIf="sectionFiveArray.length < 3">
-                            <div fxFlex.xs="100">
-                                 <div class="add--new" (click)="addFivePoints();"><mat-icon>add_circle</mat-icon>Add New</div>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
+                            <div *ngIf="topBannerPath" class="testi--userprofile">
+                                <img src="{{topBannerPath}}" style="height: 220px;" name="topBanner" title=""/>
                             </div>
                         </div>
                     </div>
-            </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
 
-            <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0" formGroupName="facts">
-                    <h3>Section 5 Facts</h3>
-                    <div class="pb-0">
-                        <mat-form-field class="full-width">
-                            <input matInput placeholder="Title" formControlName="title" value="" [formControl]="getFormGroup('facts').controls['title']">
-                        </mat-form-field>
+        <!-- Section 2 -->
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+            <mat-card class="p-0 mb-1">
+                <mat-card-title class="p-1">Section 02</mat-card-title>
+                <mat-card-content class="p-1" formArrayName="sectionTwo">
+                    <div fxLayout="row wrap" *ngFor="let web of sectionTwoArray.controls; let i = index"
+                        [formGroupName]="i">
+                        <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95">
+                            <label class="sections--label mb-1">Add Title/Sub Title ({{i+1}}) </label>
+                        </div>
+                        <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
+                            <mat-icon class="mt-1 clr--red cursor-pointer" *ngIf="i>0" (click)="deleteTwoPoints(i);">
+                                delete
+                            </mat-icon>
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
+                            class="cust--gapp">
 
-                        <mat-form-field class="full-width">
-                                <input matInput placeholder="Sub Title" formControlName="subTitle" value="" [formControl]="getFormGroup('facts').controls['subTitle']">
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width">
-                                <input matInput placeholder="Saved File" formControlName="savedFiles" value="" [formControl]="getFormGroup('facts').controls['savedFiles']">
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width">
-                                <input matInput placeholder="Trusted Advisors" formControlName="trustedAdvisors" value="" [formControl]="getFormGroup('facts').controls['trustedAdvisors']">
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width">
-                                <input matInput placeholder="LLP Members" formControlName="LLPMembers" value="" [formControl]="getFormGroup('facts').controls['LLPMembers']">
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width">
-                                <input matInput placeholder="Referral Connection" formControlName="referralConnection" value="" [formControl]="getFormGroup('facts').controls['referralConnection']">
-                        </mat-form-field>
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Title" formControlName="title">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Sub Title" formControlName="subTitle">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+                            <div *ngIf="sectionTwoArray.length < 3">
+                                <div class="add--new" (click)="addTwoPoints();">
+                                    <mat-icon>add_circle</mat-icon>Add New
+                                </div>
+                            </div>
+                        </div>
                     </div>
-             </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
 
-            <h3>Section 6 (Features Advisor)</h3>
-            <div fxFlex="100" fxFlex.gt-xs="100" class="pr-0" formGroupName="sectionSix">
-                <div fxFlex.xs="400" fxFlex.sm="600" fxFlex.md="600" fxFlex.lg="200" fxFlex.xl="600" class="pr-2">
-                    <mat-form-field class="full-width"><input matInput placeholder="Title" formControlName="title" [formControl]="getFormGroup('sectionSix').controls['title']"></mat-form-field>
-                    <mat-form-field class="full-width"><input matInput placeholder="Sub Title" formControlName="subTitle" [formControl]="getFormGroup('sectionSix').controls['subTitle']"></mat-form-field>
+        <!-- Section 3 -->
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
+            <mat-card class="p-0 mb-1">
+                <mat-card-title class="p-1">Section 03</mat-card-title>
+                <mat-card-content class="p-1">
+                    <div fxLayout="row wrap" formGroupName="sectionThree">
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
+                            class="cust--gapp">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Title" formControlName="title" value=""
+                                    [formControl]="getFormGroup('sectionThree').controls['title']">
+                            </mat-form-field>
+
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Sub Title" formControlName="subTitle" value=""
+                                    [formControl]="getFormGroup('sectionThree').controls['subTitle']">
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60"
+                            class="cust--gapp">
+                            <!-- <label class="sections--label">Banner</label> -->
+                            <div class="upload--buss--docs--sec">
+                                <div class="upload--box fileupload-drop-zone" ng2FileDrop
+                                    [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                                    (fileOver)="fileOverSectionThreeBase($event)" [uploader]="uploaderTopBanner">
+                                    <input type="file" name="topBanner" ng2FileSelect [uploader]="uploaderSectionThree"
+                                        (change)="fileOverSectionThreeBase('')" />
+                                    <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                                    <div class="select--file">Select banner image from your computer</div>
+                                </div>
+                                <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
+
+                                <mat-chip-list class="doc--list error--chip"
+                                    *ngFor="let err of fileErrorsSectionThree;">
+                                    <mat-chip>
+                                        <mat-error>{{err.error}}</mat-error>
+                                    </mat-chip>
+                                </mat-chip-list>
+
+                                <div class="progress" style="margin-bottom: 0;"
+                                    *ngIf="uploaderSectionThree.getNotUploadedItems().length">
+                                    <div class="progress-bar" role="progressbar"
+                                        [ngStyle]="{ 'width': sectionThreeProgessPer + '%' }">
+                                        {{sectionThreeProgessPer}}%
+                                    </div>
+                                    <mat-progress-bar class="" color="primary" mode="Indeterminate"
+                                        [value]="sectionThreeProgessPer"></mat-progress-bar>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
+                            <div *ngIf="sectionThreePath" class="testi--userprofile">
+                                <img src="{{sectionThreePath}}" style="height: 220px;" name="topBanner" title="" />
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- Section 4 -->
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+            <mat-card class="p-0 mb-1">
+                <mat-card-title class="p-1">Section 04</mat-card-title>
+                <mat-card-content class="p-1">
+                    <div fxLayout="row wrap" formGroupName="sectionFour">
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
+                            class="cust--gapp">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Title" formControlName="title" value=""
+                                    [formControl]="getFormGroup('sectionFour').controls['title']">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Sub Title" formControlName="subTitle" value=""
+                                    [formControl]="getFormGroup('sectionFour').controls['subTitle']">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60"
+                            class="cust--gapp">
+                            <!-- <label class="sections--label">Banner</label> -->
+                            <div class="upload--buss--docs--sec">
+                                <div class="upload--box fileupload-drop-zone" ng2FileDrop
+                                    [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                                    (fileOver)="fileOverSectionFourBase($event)" [uploader]="uploaderTopBanner">
+                                    <input type="file" name="topBanner" ng2FileSelect [uploader]="uploaderSectionFour"
+                                        (change)="fileOverSectionFourBase('')" />
+                                    <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                                    <div class="select--file">Select banner image from your computer</div>
+                                </div>
+                                <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
+
+                                <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrorsSectionFour;">
+                                    <mat-chip>
+                                        <mat-error>{{err.error}}</mat-error>
+                                    </mat-chip>
+                                </mat-chip-list>
+
+                                <div class="progress" style="margin-bottom: 0;"
+                                    *ngIf="uploaderSectionFour.getNotUploadedItems().length">
+                                    <div class="progress-bar" role="progressbar"
+                                        [ngStyle]="{ 'width': sectionFourProgessPer + '%' }">{{sectionFourProgessPer}}%
+                                    </div>
+                                    <mat-progress-bar class="" color="primary" mode="Indeterminate"
+                                        [value]="sectionFourProgessPer"></mat-progress-bar>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
+                            <div *ngIf="sectionFourPath" class="testi--userprofile">
+                                <img src="{{sectionFourPath}}" style="height: 220px;" name="topBanner" title="" />
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- Section 5 -->
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
+            <mat-card class="p-0 mb-1">
+                <mat-card-title class="p-1">Section 05</mat-card-title>
+                <mat-card-content class="p-1" formArrayName="sectionFive">
+                    <div fxLayout="row wrap" *ngFor="let web of sectionFiveArray.controls; let i = index"
+                        [formGroupName]="i">
+                        <!-- <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95">
+                            <label class="sections--label mb-1">Add Title/Sub Title ({{i+1}}) </label>
+                        </div> -->
+                        <div fxFlex.xs="45" fxFlex.sm="45" fxFlex.md="45" fxFlex.lg="45" fxFlex.xl="45"
+                            class="cust--gapp">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Title" formControlName="title"></mat-form-field>
+                        </div>
+                        <div fxFlex.xs="45" fxFlex.sm="45" fxFlex.md="45" fxFlex.lg="45" fxFlex.xl="45">
+                            <mat-form-field class="full-width"><input matInput placeholder="Sub Title"
+                                    formControlName="subTitle"></mat-form-field>
+                        </div>
+                        <div fxFlex.xs="10" fxFlex.sm="10" fxFlex.md="10" fxFlex.lg="10" fxFlex.xl="10"
+                            class="text-right">
+                            <mat-icon class="mt-1 clr--red cursor-pointer" *ngIf="i>0" (click)="deleteFivePoints(i);">
+                                delete</mat-icon>
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+                            <div *ngIf="sectionFiveArray.length < 3">
+                                <div class="add--new" (click)="addFivePoints();">
+                                    <mat-icon>add_circle</mat-icon>Add New
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- Section 6-->
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+            <mat-card class="p-0 mb-1">
+                <mat-card-title class="p-1">Section 06</mat-card-title>
+                <mat-card-content class="p-1" formGroupName="facts">
+                    <div fxLayout="row wrap">
+
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
+                            class="cust--gapp">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Title" formControlName="title" value=""
+                                    [formControl]="getFormGroup('facts').controls['title']">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Sub Title" formControlName="subTitle" value=""
+                                    [formControl]="getFormGroup('facts').controls['subTitle']">
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
+                            class="cust--gapp">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Saved File" formControlName="savedFiles" value=""
+                                    [formControl]="getFormGroup('facts').controls['savedFiles']">
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Trusted Advisors" formControlName="trustedAdvisors"
+                                    value="" [formControl]="getFormGroup('facts').controls['trustedAdvisors']">
+                            </mat-form-field>
+                        </div>
+
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
+                            class="cust--gapp">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="LLP Members" formControlName="LLPMembers" value=""
+                                    [formControl]="getFormGroup('facts').controls['LLPMembers']">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Referral Connection" formControlName="referralConnection"
+                                    value="" [formControl]="getFormGroup('facts').controls['referralConnection']">
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- Section 7-->
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+            <mat-card class="p-0 mb-1">
+                <mat-card-title class="p-1">Section 07 - Features Advisor</mat-card-title>
+                <mat-card-content class="p-1 mb-1">
+                    <div fxLayout="row wrap" formGroupName="sectionSix">
+                        <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
+                            class="cust--gapp">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Title" formControlName="title"
+                                    [formControl]="getFormGroup('sectionSix').controls['title']">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                            <mat-form-field class="full-width"><input matInput placeholder="Sub Title"
+                                    formControlName="subTitle"
+                                    [formControl]="getFormGroup('sectionSix').controls['subTitle']">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row wrap" formArrayName="featuredAdvisors">
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="33" fxFlex.lg="33" fxFlex.xl="33"
+                            class="cust--gapp" *ngFor="let web of featuredAdvisorsArray.controls; let i = index"
+                            [formGroupName]="i">
+                            <mat-card class="p-0 mb-1">
+                                <mat-card-title class="p-1">Feature Advisor - {{i+1}}
+                                    <mat-icon class="delete--testo--usr clr--red cursor-pointer" *ngIf="i>0"
+                                        (click)="deleteFaturedAdvisors(i);">delete</mat-icon>
+
+                                </mat-card-title>
+                                <mat-card-content class="p-1">
+                                    <div fxLayout="row wrap">
+
+                                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100"
+                                            fxFlex.xl="100">
+                                            <mat-form-field class="full-width">
+                                                <input matInput placeholder="Certifications"
+                                                    formControlName="certifications">
+                                            </mat-form-field>
+
+                                            <mat-form-field class="full-width">
+                                                <input matInput placeholder="Name" formControlName="name">
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60"
+                                            fxFlex.xl="70">
+                                            <div class="upload--buss--docs--sec">
+                                                <div class="upload--box fileupload-drop-zone" ng2FileDrop
+                                                    [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                                                    (fileOver)="onFAFileSelected($event,i)"
+                                                    [uploader]="uploaderFeaturedAdvisors">
+                                                    <input type="file" name="profilePhoto" ng2FileSelect
+                                                        [uploader]="uploaderFeaturedAdvisors"
+                                                        (change)="onFAFileSelected($event,i)" />
+                                                    <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                                                    <div class="select--file">Select profile phto from your computer
+                                                    </div>
+                                                </div>
+                                                <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
+                                            </div>
+                                        </div>
+
+                                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40"
+                                            fxFlex.xl="30">
+                                            <div class="testi--userprofile">
+                                                <img  style="height: 220px;" src="{{filePath}}1568789935173Untitled - Copy.png" title="">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+                            <div *ngIf="featuredAdvisorsArray.length < 20">
+                                <div class="add--new mt-1 mb-1" (click)="addFaturedAdvisors();">
+                                    <mat-icon>add_circle</mat-icon>Add New
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- Section 8-->
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+            <mat-card class="p-0 mb-1">
+                <mat-card-title class="p-1">Section 08 - Benefits</mat-card-title>
+                <mat-card-content class="p-1 mb-1">
+
+                    <div fxLayout="row wrap" formGroupName="sectionEight">
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
+                            class="cust--gapp">
+                            <mat-card class="p-0 mb-1">
+                                <mat-card-title class="p-1">Overview
+                                </mat-card-title>
+                                <mat-card-content class="p-1">
+                                    <div fxLayout="row wrap">
+
+                                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100"
+                                            fxFlex.xl="100">
+                                            <mat-form-field class="full-width">
+                                                <input matInput placeholder="Title" formControlName="title" value=""
+                                                    [formControl]="getFormGroup('sectionEight').controls['title']">
+                                            </mat-form-field>
+                                            <mat-form-field class="full-width">
+                                                <input matInput placeholder="Sub Title" formControlName="subTitle"
+                                                    value=""
+                                                    [formControl]="getFormGroup('sectionEight').controls['subTitle']">
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60"
+                                            fxFlex.xl="70">
+                                            <div class="upload--buss--docs--sec">
+                                                <div class="upload--box fileupload-drop-zone" ng2FileDrop
+                                                    [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                                                    (fileOver)="fileOverSectionEightBase($event)"
+                                                    [uploader]="uploaderTopBanner">
+                                                    <input type="file" name="topBanner" ng2FileSelect
+                                                        [uploader]="uploaderSectionEight"
+                                                        (change)="fileOverSectionEightBase('')" />
+                                                    <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                                                    <div class="select--file">Select banner image from your computer
+                                                    </div>
+                                                </div>
+                                                <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
+                                                <mat-chip-list class="doc--list error--chip"
+                                                    *ngFor="let err of fileErrorsSectionEight;">
+                                                    <mat-chip>
+                                                        <mat-error>{{err.error}}</mat-error>
+                                                    </mat-chip>
+                                                </mat-chip-list>
+                                                <div class="progress" style="margin-bottom: 0;"
+                                                    *ngIf="uploaderSectionEight.getNotUploadedItems().length">
+                                                    <div class="progress-bar" role="progressbar"
+                                                        [ngStyle]="{ 'width': sectionEightProgessPer + '%' }">
+                                                        {{sectionEightProgessPer}}%
+                                                    </div>
+                                                    <mat-progress-bar class="" color="primary" mode="Indeterminate"
+                                                        [value]="sectionEightProgessPer"></mat-progress-bar>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40"
+                                            fxFlex.xl="30">
+                                            <div class="testi--userprofile" *ngIf="sectionEightPath">
+                                                <img  style="height: 220px;" title="" src="{{sectionEightPath}}" name="topBanner" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                            <mat-card class="p-0 mb-1">
+                                <mat-card-title class="p-1">Add Benefits
+                                </mat-card-title>
+                                <mat-card-content class="p-1">
+                                    <div fxLayout="row wrap" formArrayName="benefitsPoints">
+
+                                        <div *ngFor="let web of benefitsPointsArray.controls; let i = index"
+                                            [formGroupName]="i" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100"
+                                            fxFlex.lg="100" fxFlex.xl="100">
+                                            <!-- <mat-label> {{i+1}}) </mat-label> -->
+                                            <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95">
+                                                <mat-form-field class="full-width"><input matInput placeholder="Name"
+                                                        formControlName="name"></mat-form-field>
+                                            </div>
+                                            <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5"
+                                                class="text-right">
+                                                <mat-icon class="mt-1 clr--red cursor-pointer" *ngIf="i>0"
+                                                    (click)="deleteBenefitsPoints(i);">delete</mat-icon>
+                                            </div>
+                                        </div>
+                                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100"
+                                            fxFlex.xl="100">
+                                            <div *ngIf="benefitsPointsArray.length < 21">
+                                                <div class="add--new mt-1 mb-1" (click)="addBenefitsPoints();">
+                                                    <mat-icon>add_circle</mat-icon> Add New
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- Section 9-->
+        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+            <mat-card class="p-0 mb-1">
+                <mat-card-title class="p-1">Section 09 - Testimonials List</mat-card-title>
+                <mat-card-content class="p-1 mb-1" formArrayName="testimonials">
+                    <div fxLayout="row wrap">
+                        <div *ngFor="let web of testimonialsArray.controls; let i = index" [formGroupName]="i"
+                            fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="33" fxFlex.lg="33" fxFlex.xl="33"
+                            class="cust--gapp">
+                            <mat-card class="p-0 mb-1">
+                                <mat-card-title class="p-1">Testimonial - {{i+1}}
+
+                                    <mat-icon class="delete--testo--usr clr--red cursor-pointer" *ngIf="i>0"
+                                        (click)="deleteTestimonialsPoints(i);">delete</mat-icon>
+
+
+                                </mat-card-title>
+                                <mat-card-content class="p-1">
+                                    <div fxLayout="row wrap">
+
+                                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100"
+                                            fxFlex.xl="100">
+                                            <mat-form-field class="full-width">
+                                                <input matInput placeholder="Name" formControlName="name">
+                                            </mat-form-field>
+                                            <mat-form-field class="full-width">
+                                                <input matInput placeholder="Certifications"
+                                                    formControlName="certifications">
+                                            </mat-form-field>
+
+                                            <mat-form-field class="full-width">
+                                                <input matInput placeholder="Comment" formControlName="comment">
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60"
+                                            fxFlex.xl="70">
+                                            <div class="upload--buss--docs--sec">
+                                                <!-- <label>Profile Photo</label> -->
+                                                <div class="upload--box fileupload-drop-zone" ng2FileDrop
+                                                    [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                                                    (fileOver)="onFileSelected($event,i)"
+                                                    [uploader]="uploaderProfilePhoto">
+                                                    <input type="file" name="profilePhoto" ng2FileSelect
+                                                        [uploader]="uploaderProfilePhoto"
+                                                        (change)="onFileSelected($event,i)" />
+                                                    <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                                                    <div class="select--file">Select profile phto from your computer
+                                                    </div>
+                                                </div>
+                                                <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
+                                            </div>
+                                        </div>
+
+                                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40"
+                                            fxFlex.xl="30">
+                                            <div class="testi--userprofile">
+                                                <img  style="height: 220px;" title="" src="{{filePath}}1568789935173Untitled - Copy.png">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+
+                            <div *ngIf="testimonialsArray.length < 9">
+                                <div class="add--new mt-1" (click)="addTestimonialsPoints();">
+                                    <mat-icon>add_circle</mat-icon>Add New
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- Footer -->
+        <div class="ad--footer">
+                <button mat-raised-button class="llp--primary--btn">Submit</button>
+        </div>
+
+    </div>
+    <div fxLayout="row wrap" *ngIf="!aceessSection">
+            <p>You don't have permission to this section.</p>
+    </div>
+</form>
+
+
+
+
+
+
+<!-- =================================================================================================================================================== -->
+
+
+
+
+
+<!-- <mat-card class="p-0" *ngIf="aceessSection">
+
+    <mat-card-content>
+        <form class="llp-form-wrapper pt-1" [formGroup]="advisorCmsForm" method="post"
+            (ngSubmit)="updatePage(advisorCmsForm.value)">
+            <div fxLayout="row wrap">
+
+                <div fxFlex="300" fxFlex.gt-xs="500" class="pr-0">
+                    
+
+                    <div class="progress" style="margin-bottom: 0;"
+                        *ngIf="uploaderProfilePhoto.getNotUploadedItems().length">
+                        <div class="progress-bar" role="progressbar"
+                            [ngStyle]="{ 'width': currentProgessinPercentProfilePhoto + '%' }">
+                            {{currentProgessinPercentProfilePhoto}}%</div>
+                        <mat-progress-bar class="" color="primary" mode="Indeterminate"
+                            [value]="currentProgessinPercentProfilePhoto"></mat-progress-bar>
+                    </div>
                 </div>
             </div>
-
-             <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0" formArrayName="featuredAdvisors">                  
-                    <div class="pb-0">
-                            <div fxLayout="row wrap" *ngFor="let web of featuredAdvisorsArray.controls; let i = index" [formGroupName]="i">
-                                <mat-label> {{i+1}}) </mat-label>                                    
-                                <mat-form-field class="full-width">
-                                        <input matInput placeholder="Certifications" formControlName="certifications">
-                                </mat-form-field>
-
-                                <mat-form-field class="full-width">
-                                        <input matInput placeholder="Name" formControlName="name">
-                                </mat-form-field>                         
-                        
-                            <div fxFlex="300" fxFlex.gt-xs="400" class="pr-0">
-                                <div class="upload--buss--docs--sec">
-                                    <label>Profile Photo</label>                                                      
-                                    <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-                                    (fileOver)="onFAFileSelected($event,i)" [uploader]="uploaderFeaturedAdvisors">
-                                    <input type="file" name="profilePhoto" ng2FileSelect [uploader]="uploaderFeaturedAdvisors" (change)="onFAFileSelected($event,i)" />
-                                    <mat-icon class="cloud-icon">cloud_upload</mat-icon>
-                                    <div class="select--file">Select profile phto from your computer</div>
-                                    </div>
-                                    <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
-                                </div>                                              
-                            </div> 
-                            <div [hidden]="IsVisible" class="{{IsVisible ? 'hidden-div' : ''}}">
-                                <mat-form-field class="full-width">
-                                        <input matInput name="profileId" placeholder="profilePhoto" formControlName="profilePhoto" readonly="readonly">
-                                </mat-form-field>
-                           </div>
-                            <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
-                                <mat-icon class="mt-1 clr--red cursor-pointer" *ngIf="i>0" (click)="deleteFaturedAdvisors(i);">delete</mat-icon>
-                            </div>
-                        </div>
-                    </div>
-                    <div fxLayout="row wrap" *ngIf="featuredAdvisorsArray.length < 20">
-                        <div fxFlex.xs="100">
-                            <div class="add--new" (click)="addFaturedAdvisors();"><mat-icon>add_circle</mat-icon>Add New</div>
-                        </div>
-                    </div>                  
-
-                    <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrorsFA;">
-                            <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
-                    </mat-chip-list>
-                    <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderFeaturedAdvisors.getNotUploadedItems().length">
-                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': sectionFAPer + '%' }">{{sectionFAPer}}%</div>
-                            <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="sectionFAPer"></mat-progress-bar>
-                    </div>
-            </div>
-          
-            <div fxFlex="200" fxFlex.gt-xs="200" class="pr-0" formGroupName="sectionEight">
-                    <h3>Section 7 </h3>
-                    <div class="pb-0">                            
-                        <mat-form-field class="full-width">
-                            <input matInput placeholder="Title" formControlName="title" value="" [formControl]="getFormGroup('sectionEight').controls['title']">
-                        </mat-form-field>    
-                        <mat-form-field class="full-width">
-                                <input matInput placeholder="Sub Title" formControlName="subTitle" value="" [formControl]="getFormGroup('sectionEight').controls['subTitle']">
-                        </mat-form-field>                            
-                        <div class="upload--buss--docs--sec">
-                            <label>Banner</label>
-                            <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverSectionEightBase($event)" [uploader]="uploaderTopBanner">
-                                <input type="file" name="topBanner" ng2FileSelect [uploader]="uploaderSectionEight" (change)="fileOverSectionEightBase('')" />
-                                <mat-icon class="cloud-icon">cloud_upload</mat-icon>
-                                <div class="select--file">Select banner image from your computer</div>
-                            </div>
-                            <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>                    
-                            <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrorsSectionEight;">
-                                    <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
-                            </mat-chip-list>                
-                            <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderSectionEight.getNotUploadedItems().length">
-                                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': sectionEightProgessPer + '%' }">{{sectionEightProgessPer}}%</div>
-                                <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="sectionEightProgessPer"></mat-progress-bar>
-                            </div>
-                        </div>      
-                        <div *ngIf="sectionEightPath">
-                            <img src="{{sectionEightPath}}" style="height: 220px;" name="topBanner" />
-                        </div>                            
-
-                        <div fxFlex="200" fxFlex.gt-xs="400" class="pr-0" formArrayName="benefitsPoints">
-                                <div class="pb-0">
-                                    <mat-label>Benefits Points</mat-label>
-                                    <div fxLayout="row wrap" *ngFor="let web of benefitsPointsArray.controls; let i = index" [formGroupName]="i">
-                                        <mat-label> {{i+1}}) </mat-label>
-                                        <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95" class="pr-2">
-                                            <mat-form-field class="full-width"><input matInput placeholder="Name" formControlName="name"></mat-form-field>            
-                                        </div>
-                                        <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
-                                             <mat-icon class="mt-1 clr--red cursor-pointer" *ngIf="i>0" (click)="deleteBenefitsPoints(i);">delete</mat-icon>
-                                        </div>
-                                    </div>
-                                    <div fxLayout="row wrap" *ngIf="benefitsPointsArray.length < 21">
-                                        <div fxFlex.xs="100">
-                                             <div class="add--new" (click)="addBenefitsPoints();"><mat-icon>add_circle</mat-icon> Add New </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
-                    </div>
-            </div>  
-
-            <div fxFlex="300" fxFlex.gt-xs="500" class="pr-0" formArrayName="testimonials">
-                    <h3>Section 8 (Testimonials List)</h3>
-                <div class="pb-0">
-                        <div fxLayout="row wrap" *ngFor="let web of testimonialsArray.controls; let i = index" [formGroupName]="i">
-                                <mat-label>Testimonial {{i+1}} </mat-label>
-                                <div fxFlex.xs="200" fxFlex.sm="200" fxFlex.md="200" fxFlex.lg="200" fxFlex.xl="200" class="pr-2">
-                                    <mat-form-field class="full-width">
-                                        <input matInput placeholder="Name" formControlName="name">
-                                    </mat-form-field>
-
-                                    <div fxFlex="2000" fxFlex.gt-xs="400" class="pr-0">
-                                        <div class="upload--buss--docs--sec">
-                                            <label>Profile Photo</label>                                                      
-                                            <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-                                            (fileOver)="onFileSelected($event,i)" [uploader]="uploaderProfilePhoto">
-                                            <input type="file" name="profilePhoto" ng2FileSelect [uploader]="uploaderProfilePhoto" (change)="onFileSelected($event,i)" />
-                                            <mat-icon class="cloud-icon">cloud_upload</mat-icon>
-                                            <div class="select--file">Select profile phto from your computer</div>
-                                            </div>
-                                            <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
-                                        </div>                                              
-                                    </div> 
-
-                                    <mat-form-field class="full-width">
-                                            <input matInput placeholder="Certifications" formControlName="certifications">
-                                    </mat-form-field>
-
-                                    <mat-form-field class="full-width">
-                                            <input matInput placeholder="Comment" formControlName="comment">
-                                    </mat-form-field>
-
-                                    <div [hidden]="IsVisible" class="{{IsVisible ? 'hidden-div' : ''}}">
-                                            <mat-form-field class="full-width">
-                                                    <input matInput name="profileId" placeholder="profilePhoto" formControlName="profilePhoto" readonly="readonly">
-                                            </mat-form-field>
-                                       </div>
-
-                                </div>
-
-                                <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
-                                    <mat-icon class="mt-1 clr--red cursor-pointer" *ngIf="i>0" (click)="deleteTestimonialsPoints(i);">delete</mat-icon>
-                                </div>
-                        </div>
-                        <div fxLayout="row wrap" *ngIf="testimonialsArray.length < 9">
-                            <div fxFlex.xs="100">
-                                 <div class="add--new" (click)="addTestimonialsPoints();"><mat-icon>add_circle</mat-icon>Add New</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderProfilePhoto.getNotUploadedItems().length">
-                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercentProfilePhoto + '%' }">{{currentProgessinPercentProfilePhoto}}%</div>
-                        <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="currentProgessinPercentProfilePhoto"></mat-progress-bar>
-                    </div>
-            </div>
-        </div>                                             
-                        <!-- [disabled]="advisorCmsForm.invalid" -->
-        <button mat-raised-button class="mt-1 llp--primary--btn" >Submit</button>
-    </form>
+        </form>
     </mat-card-content>
-</mat-card>
-
-<div class="row" *ngIf="!aceessSection">
-    <p>You don't have permission to this section.</p>
-</div>
+</mat-card> -->
