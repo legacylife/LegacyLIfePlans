@@ -24,7 +24,7 @@ export class advisorcmsformComponent implements OnInit {
   invalidMessage: string;
   advisorCmsForm: FormGroup
   customercmsPageId: string
-
+  profilePhotoHiddenVal:boolean = false;
   public uploaderTopBanner: FileUploader = new FileUploader({ url: `${URL}` });
   topBannerProgessPer: number = 0;
   topBannerPath: string

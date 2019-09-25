@@ -1,7 +1,5 @@
-<form class="llp-form-wrapper pt-1" [formGroup]="customerCmsForm" method="post"
-    (ngSubmit)="updatePage(customerCmsForm.value)">
+<form class="llp-form-wrapper pt-1" [formGroup]="customerCmsForm" method="post"  (ngSubmit)="updatePage(customerCmsForm.value)">
     <div fxLayout="row wrap"  *ngIf="aceessSection">
-
          <!-- Section 1 -->
         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
             <mat-card class="p-0 mb-1">
@@ -452,14 +450,19 @@
                                                 <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
                                             </div>
                                         </div>
-
+                                          <mat-form-field class="full-width" *ngIf="profilePhotoHiddenVal">
+                                            <input matInput name="profilePhoto" placeholder="profilePhoto" formControlName="profilePhoto" readonly="readonly">
+                                        </mat-form-field>
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40"
                                             fxFlex.xl="30">
                                             <div class="testi--userprofile">
-                                                <img src="{{filePath}}1568789935173Untitled - Copy.png">
+                                                <img src="{{filePath}}{{web.get('profilePhoto').value}}">
                                             </div>
                                         </div>
-
+                                    </div>
+                                    <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderProfilePhoto.getNotUploadedItems().length">
+                                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercentProfilePhoto + '%' }">{{currentProgessinPercentProfilePhoto}}%</div>
+                                        <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="currentProgessinPercentProfilePhoto"></mat-progress-bar>
                                     </div>
                                 </mat-card-content>
                             </mat-card>
@@ -488,54 +491,3 @@
             <p>You don't have permission to this section.</p>
     </div>    
 </form>
-
-
-
-
-
-
-
-<!-- =================================================================================================================================================== -->
-
-
-
-
-
-
-
-<!-- <mat-card class="p-0">
-    <mat-card-content>
-        <form class="llp-form-wrapper pt-1" >
-            <div fxLayout="row wrap">
-
-                <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0">
-                    <div class="pb-0">
-                        <div fxLayout="row wrap">
-
-                            <div [hidden]="IsVisible" class="{{IsVisible ? 'hidden-div' : ''}}">
-                                <mat-form-field class="full-width">
-                                    <input matInput name="profileId" placeholder="profilePhoto"
-                                        formControlName="profilePhoto" readonly="readonly">
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        
-                    </div>
-
-                    <div class="progress" style="margin-bottom: 0;"
-                        *ngIf="uploaderProfilePhoto.getNotUploadedItems().length">
-                        <div class="progress-bar" role="progressbar"
-                            [ngStyle]="{ 'width': currentProgessinPercentProfilePhoto + '%' }">
-                            {{currentProgessinPercentProfilePhoto}}%</div>
-                        <mat-progress-bar class="" color="primary" mode="Indeterminate"
-                            [value]="currentProgessinPercentProfilePhoto"></mat-progress-bar>
-                    </div>
-                </div>
-
-            </div>
-            {{customerCmsForm.invalid}}
-            
-        </form>
-    </mat-card-content>
-</mat-card> -->
-

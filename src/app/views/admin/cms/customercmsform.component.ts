@@ -63,6 +63,7 @@ export class customercmsformComponent implements OnInit {
   currentProgessinPercentProfilePhoto: number = 0;
   row : any
   aceessSection : any;
+  profilePhotoHiddenVal:boolean = false;
   public tools: object = {
       items: ['Undo', 'Redo', '|',
           'Bold', 'Italic', 'Underline', 'StrikeThrough', '|',
@@ -220,7 +221,7 @@ getPageDetails = (query = {}, search = false) => {
         this.testimonials.forEach((element: any, index) => {
           testimonialsctrls.push(this.editTestimonials(element.name,element.certifications,element.comment,element.profilePhoto))          
         })
-
+console.log('testimonialsctrls',testimonialsctrls)
         this.bulletPoints = this.row.bulletPoints;
         const bulletPointsctrls = this.customerCmsForm.get('bulletPoints') as FormArray;
         bulletPointsctrls.removeAt(0)

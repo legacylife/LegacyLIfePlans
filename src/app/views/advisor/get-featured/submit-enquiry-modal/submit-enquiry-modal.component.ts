@@ -66,6 +66,9 @@ export class SubmitEnquiryModalComponent implements OnInit {
 
 
     enquiryFormSubmit(formData = null) {
+      var date = new Date(this.enquiryForm.controls['toDate'].value).toDateString();
+
+      console.log('date','----',this.enquiryForm.controls['toDate'].value,'---',this.enquiryForm.controls['fromDate'].value);
       if(new Date(this.enquiryForm.controls['toDate'].value) < new Date(this.enquiryForm.controls['fromDate'].value)) {
           this.dateError = 'To date should be greater than From date';
       }else{     

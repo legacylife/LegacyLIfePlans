@@ -508,10 +508,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
-
-
                                     </div>
                                 </mat-card-content>
                             </mat-card>
@@ -573,14 +569,19 @@
                                                 <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
                                             </div>
                                         </div>
-
+                                        <mat-form-field class="full-width" *ngIf="profilePhotoHiddenVal">
+                                            <input matInput name="profilePhoto" placeholder="profilePhoto" formControlName="profilePhoto" readonly="readonly">
+                                        </mat-form-field>
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40"
                                             fxFlex.xl="30">
                                             <div class="testi--userprofile">
-                                                <img  style="height: 220px;" title="" src="{{filePath}}1568789935173Untitled - Copy.png">
+                                                <img src="{{filePath}}{{web.get('profilePhoto').value}}">
                                             </div>
                                         </div>
-
+                                    </div>
+                                    <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderProfilePhoto.getNotUploadedItems().length">
+                                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercentProfilePhoto + '%' }">{{currentProgessinPercentProfilePhoto}}%</div>
+                                        <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="currentProgessinPercentProfilePhoto"></mat-progress-bar>
                                     </div>
                                 </mat-card-content>
                             </mat-card>
@@ -598,49 +599,12 @@
                 </mat-card-content>
             </mat-card>
         </div>
-
         <!-- Footer -->
         <div class="ad--footer">
                 <button mat-raised-button class="llp--primary--btn">Submit</button>
         </div>
-
     </div>
     <div fxLayout="row wrap" *ngIf="!aceessSection">
             <p>You don't have permission to this section.</p>
     </div>
 </form>
-
-
-
-
-
-
-<!-- =================================================================================================================================================== -->
-
-
-
-
-
-<!-- <mat-card class="p-0" *ngIf="aceessSection">
-
-    <mat-card-content>
-        <form class="llp-form-wrapper pt-1" [formGroup]="advisorCmsForm" method="post"
-            (ngSubmit)="updatePage(advisorCmsForm.value)">
-            <div fxLayout="row wrap">
-
-                <div fxFlex="300" fxFlex.gt-xs="500" class="pr-0">
-                    
-
-                    <div class="progress" style="margin-bottom: 0;"
-                        *ngIf="uploaderProfilePhoto.getNotUploadedItems().length">
-                        <div class="progress-bar" role="progressbar"
-                            [ngStyle]="{ 'width': currentProgessinPercentProfilePhoto + '%' }">
-                            {{currentProgessinPercentProfilePhoto}}%</div>
-                        <mat-progress-bar class="" color="primary" mode="Indeterminate"
-                            [value]="currentProgessinPercentProfilePhoto"></mat-progress-bar>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </mat-card-content>
-</mat-card> -->
