@@ -4,8 +4,8 @@ var constants = require("./../config/constants")
 var advertisementsSchema = new mongoose.Schema({
   customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   userType: String,
-  fromDate: String,
-  toDate: String,
+  fromDate: Date,
+  toDate: Date,
   zipcodes: String,
   message: String,
   adminReply:Array,
@@ -26,6 +26,7 @@ var advertisementsSchema = new mongoose.Schema({
   }], */
   uniqueId: String,
   status: String,
+  sponsoredStatus: String,
   createdOn: Date,
   modifiedOn: Date
 })

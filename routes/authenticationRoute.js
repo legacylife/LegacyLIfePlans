@@ -36,8 +36,8 @@ const resMessage = require('./../helpers/responseMessages')
 const allActivityLog = require('./../helpers/allActivityLogs')
 
 //function to check and signin user details
-function signin(req, res) {console.log('REQ -->',req);
-  passport.authenticate('local', function (err, user, info) {console.log('REQ user -->',user);
+function signin(req, res) {
+  passport.authenticate('local', function (err, user, info) {
     if (err) {
       let result = { "message": err };
       res.status(404).send(resFormat.rError(result));
