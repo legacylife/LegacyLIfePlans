@@ -67,6 +67,7 @@ var userSchema = new mongoose.Schema({
   lockoutLegacyPeriod: String,
   lockoutLegacyDate: Date,
   sponsoredAdvisor:String,
+  sponsoredZipcodes:Array,
   // Subscription fields
   manageOtherProceducers : String, 
   howManyProducers : String, 

@@ -6,10 +6,12 @@ const stripe  = require("stripe")(constants.stripeSecretKey);
 const User    = require('./../models/Users')
 var moment    = require('moment');
 const today   = moment().toDate()
+const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 var currencyFormatter     = require('currency-formatter');
 const mongoose = require('mongoose')
+const advertisement = require('./../models/advertisements.js')
 var objectId = mongoose.Types.ObjectId();
 
 async function getSelectedPlanDetails( planId ) {
@@ -584,11 +586,64 @@ async function deceasedCustomers(req, res){
   })
 }
 
+
+async function featuredAdvisorFromDate(req, res){
+  let AdvData = await advertisement.find({status:"Active",sponsoredStatus:'Pending',"adminReply.status": "Done"},{_id:1,customerId:1,fromDate:1,toDate:1,status:1,zipcodes:1,adminReply:1});
+  if(AdvData.length>0){
+      AdvData.forEach( async (key,index) => {   
+      let dates = key.fromDate.toISOString().substring(0, 10);
+      if(new Date(dates) <= new Date()){      
+        let message = key;
+        let newArray = [];
+        let UserData = await User.findOne({_id:key.customerId},{_id:1,username:1,firstName:1,lastName:1,sponsoredAdvisor:1,status:1,sponsoredZipcodes:1});
+        if(UserData){
+              let replyData = key.adminReply.map(function (keys, index) {
+                if(keys.status=='Done') {
+                  if(UserData.sponsoredZipcodes) {
+                    return keys.zipcodes.concat(UserData.sponsoredZipcodes);
+                  }else{
+                    return keys.zipcodes;
+                  }
+                }
+              });            
+              if(replyData[0]){
+                newArray = replyData[0];
+              }else{
+                newArray = replyData;
+              }
+             await User.updateOne({_id:key.customerId},{sponsoredAdvisor:'yes',sponsoredZipcodes:newArray});
+             await advertisement.updateOne({_id:key._id},{sponsoredStatus:'Active'});
+        }
+        //res.send(resFormat.rSuccess({AdvData,message,UserData,newArray}));
+      }
+    });
+  }
+}
+
+async function featuredAdvisorEndDate(req, res){
+  let AdvData = await advertisement.find({sponsoredStatus:'Active'},{_id:1,customerId:1,fromDate:1,toDate:1,status:1,zipcodes:1,adminReply:1});
+  if(AdvData.length>0){
+      AdvData.forEach( async (key,index) => {   
+      let endDate = key.toDate.toISOString().substring(0, 10);
+      if(new Date(endDate) < new Date()){      
+        let UserData = await User.findOne({_id:key.customerId},{_id:1,username:1,firstName:1,lastName:1,sponsoredAdvisor:1,status:1,sponsoredZipcodes:1});
+        if(UserData){
+             await User.updateOne({_id:key.customerId},{sponsoredAdvisor:'no',sponsoredZipcodes:[]});
+             await advertisement.updateOne({_id:key._id},{sponsoredStatus:'Expired',status:'Expired'});
+            console.log('HereWE Are');
+        }
+      }
+    });
+  }
+}
+
 router.post(["/auto-renewal-on-update-subscription"], autoRenewalOnUpdateSubscription);
 router.post(["/update-subscription-details-if-fails"], updateSubscriptionDetailsIfFails);
 router.get("/auto-renewal-on-reminder-email", autoRenewalOnReminderEmail);
 router.get("/auto-renewal-off-reminder-email", autoRenewalOffReminderEmail);
 router.get("/before-subscription-reminder-email", beforeSubscriptionReminderEmail);
 router.get("/check-deceased-customers", deceasedCustomers);
+router.post("/check-featured-advisor-frmdate", featuredAdvisorFromDate);
+router.get("/check-featured-advisor-enddate", featuredAdvisorEndDate);
 
 module.exports = router

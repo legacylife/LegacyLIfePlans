@@ -11,12 +11,16 @@ const { isEmpty } = require('lodash')
 const resMessage  = require('./../helpers/responseMessages')
 var auth = jwt({secret: constants.secret,userProperty: 'payload'})
 var async = require('async');
+
 //function to update cms page content
 function customerUpdate(req, res) {
 
-  let { query, proquery } = req.body;console.log('proquery',proquery)
+  let { query, proquery } = req.body;
+  console.log('query----',req.body._id);     
+  console.log('query----',query);     
+  console.log('proquery----',proquery);
   if(req.body._id){
-    customerCms.updateOne({ _id: req.body._id },{ $set: req.body} ,(err, updateCms)=>{
+    customerCms.updateOne({ _id: req.body._id },{ $set: query} ,(err, updateCms)=>{
       if (err) {
         res.send(resFormat.rError(err))
       } else {
@@ -126,7 +130,6 @@ function advisorUpdate(req, res) {
     })
   }else{
   let insert_obj = query;
- // console.log("insert_obj----->>>",insert_obj);
   let advCmsDetails = new advisorCms(insert_obj)
   advCmsDetails.save(function(err, newrecord) {
       if (err) {
@@ -142,13 +145,11 @@ function advisorUpdate(req, res) {
 
 //function get details of page
 function viewAdvisordetails (req, res) {
-  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>",req.body)
   const  query  = req.body
   advisorCms.findOne(query , function(err, cmsDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      console.log('advisorView>>>>>>',cmsDetails)
       res.send(resFormat.rSuccess(cmsDetails))
     }
   })

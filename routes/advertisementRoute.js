@@ -30,6 +30,7 @@ function addEnquiry(req, res) {
     insert.toDate     = proquery.toDate;
     insert.message    = proquery.message;
     insert.status     = 'Active';
+    insert.sponsoredStatus = 'Pending';
     insert.createdOn  = new Date();
     insert.modifiedOn = new Date();
     insert.save(function (err, newUser) {
