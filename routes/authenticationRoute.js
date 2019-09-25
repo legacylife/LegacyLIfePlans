@@ -570,9 +570,9 @@ async function checkEmail(req, res) {
           let { inviteCode } = req.body
           let userInvitedBy = ''
           if(inviteCode){
+            userInvitedBy = invitesCodeExists.invitedBy
             let invitesCodeExists = await Invite.find({ inviteCode: inviteCode, email:username, inviteType: req.body.userType }, function (err, data, index) {});
             if( invitesCodeExists.length < 1 ) {
-              userInvitedBy = invitesCodeExists.invitedBy
               let message = resMessage.data( 627, [{key: '{field}',val: 'Email / Invite Link'}] )
               res.send(resFormat.rSuccess({ code: "InviteReject", message: message }))
             }
@@ -617,7 +617,7 @@ async function checkEmail(req, res) {
                   } else {
                     stat = sendOtpMail(req.body.username, otp);
                     let message = resMessage.data( 616, [] )
-                    res.send(resFormat.rSuccess({ code: "success", message: message }))
+                    res.send(resFormat.rSuccess({ code: "success", message: message, invitedBy: userInvitedBy }))
                   }
                 }) //update password reset expiry date for user ends          
               }
