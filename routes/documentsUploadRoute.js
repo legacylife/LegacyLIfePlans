@@ -1484,7 +1484,7 @@ router.post('/invite', cors(), function(req,res){
                 fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
                 file.pipe(fstream);
                 fstream.on('close', async function () {
-                  await s3.uploadFile(newFilename,inviteDocumentsPath);  
+                  await s3.uploadFilePublic(newFilename,inviteDocumentsPath);  
                   tmpallfiles = {
                     "title" : filename,
                     "size" : encoding,
