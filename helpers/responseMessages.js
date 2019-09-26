@@ -195,6 +195,16 @@ let responseArray = [
         "type":"custom-message",
         "message":"{message}",
     },
+    {
+        "code":700,
+        "type":"mark-executor",
+        "message":"User mark as executor successfully!",
+    },
+    {
+        "code":701,
+        "type":"remove-executor",
+        "message":"Remove an executor successfully!",
+    },
 ];
 
 var helper = {}

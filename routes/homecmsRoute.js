@@ -14,11 +14,8 @@ var async = require('async');
 
 //function to update cms page content
 function customerUpdate(req, res) {
-
   let { query, proquery } = req.body;
-  console.log('query----',req.body._id);     
-  console.log('query----',query);     
-  console.log('proquery----',proquery);
+
   if(req.body._id){
     customerCms.updateOne({ _id: req.body._id },{ $set: query} ,(err, updateCms)=>{
       if (err) {
@@ -30,7 +27,7 @@ function customerUpdate(req, res) {
       }
     })
   }else{
-    console.log("testimonials",query.testimonials);
+    // console.log("testimonials",query.testimonials);
     let insert_obj = {
       pageFor       : query.pageFor,
       pageTitle     : query.pageTitle,
@@ -59,7 +56,6 @@ function customerUpdate(req, res) {
       modifiedBy    : proquery.userId,
       modifiedOn    : new Date()
   }
-  console.log("insert_obj",insert_obj);
   let customerCmsDetails = new customerCms(insert_obj)
   customerCmsDetails.save(function(err, newrecord) {
         if (err) {

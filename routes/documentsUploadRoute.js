@@ -1069,7 +1069,7 @@ router.post('/landingMutliImages', cors(), function(req,res){
               await s3.uploadFilePublic(newFilename, assetsPath+folderName+'/');  
             })
 
-            return res.send(resFormat.rSuccess({'success':'upload done'}))
+            return res.send(resFormat.rSuccess({'success':'upload done',filepath:assetsPath+folderName+'/'+newFilename}))
         }else{
           let results = {  "message": "Invalid file extension!" }
           res.send(resFormat.rSuccess(results));
