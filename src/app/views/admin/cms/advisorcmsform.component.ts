@@ -317,7 +317,7 @@ updatePage(formData) {
          this.uploaderEight(returnId);
 
         this.snack.open("Data has been updated successfully", 'OK', { duration: 5000 })
-       //8 this.router.navigateByUrl('/admin/customerCms');
+        this.router.navigateByUrl('/admin/customerCms');
       }      
     }, (err) => {
       console.log("Error in update")
@@ -383,7 +383,6 @@ get featuredAdvisorsArray() {
 onFAFileSelected(event,i) {
   this.selectedFAFile = <File>event.target.files[0];
   this.selectedFAFileName = new Date().getTime()+this.selectedFAFile.name;
-  this.featuredAdvisorsArray.at(i).patchValue({profilePhoto:this.selectedFileName});
   this.uploaderFeature(this.selectedFAFileName,i);
 }
 
@@ -391,13 +390,16 @@ uploaderFeature(fileName,index) {
   this.uploaderFeaturedAdvisors.onBeforeUploadItem = (item) => {
     item.url = `${URLProfilePhoto}?folderName=${'advisor'}&filenewName=${fileName}`;
   }
-  console.log('len FeaturedAdvisors ',this.uploaderFeaturedAdvisors.getNotUploadedItems().length)
   if(this.uploaderFeaturedAdvisors.getNotUploadedItems().length){
     this.uploaderFeaturedAdvisors.queue.forEach((fileoOb, ind) => {
           this.uploaderFeaturedAdvisors.uploadItem(fileoOb);
     });
+
     this.uploaderFeaturedAdvisors.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
        this.uploaderFeatureProgressBar(index);
+       setTimeout(()=>{    
+        this.featuredAdvisorsArray.at(index).patchValue({profilePhoto:fileName});
+      }, 5000);
     };
 
    if(this.uploaderFeaturedAdvisors.onCompleteAll()){
@@ -407,7 +409,7 @@ uploaderFeature(fileName,index) {
 }
 
 uploaderFeatureProgressBar(index){
-  let totalLength = this.uploaderFeaturedAdvisors.queue.length;console.log('Pro photos',totalLength);
+  let totalLength = this.uploaderFeaturedAdvisors.queue.length;
   let remainingLength =  this.uploaderFeaturedAdvisors.getNotUploadedItems().length;    
   this.sectionFAPer = 100 - (remainingLength * 100 / totalLength);
   this.sectionFAPer = Number(this.sectionFAPer.toFixed());
@@ -439,6 +441,7 @@ get testimonialsArray() {
 }
 
 editTestimonials(name,profilePhoto,certifications,comment) {
+  console.log('profilePhoto',profilePhoto);
   return this.fb.group({
     name: [name, Validators.required],
     profilePhoto: [profilePhoto],
@@ -450,8 +453,7 @@ editTestimonials(name,profilePhoto,certifications,comment) {
 onFileSelected(event,i) {
   this.selectedFile = <File>event.target.files[0];
   this.selectedFileName = new Date().getTime()+this.selectedFile.name;
-  this.testimonialsArray.at(i).patchValue({profilePhoto:this.selectedFileName});
-  this.uploadTestimonialsFile(this.selectedFileName,i);
+  this.uploadTestimonialsFile(this.selectedFileName,i);  
 }
 
 addTestimonialsPoints() {
@@ -464,20 +466,22 @@ addTestimonialsPoints() {
 }
 
 uploadTestimonialsFile(fileName,index) {
-  console.log('fileName--->',fileName)
   this.uploaderProfilePhoto.onBeforeUploadItem = (item) => {
     item.url = `${URLProfilePhoto}?folderName=${'advisor'}&filenewName=${fileName}`;
   }
-  console.log('len',this.uploaderProfilePhoto.getNotUploadedItems().length)
+  
   if(this.uploaderProfilePhoto.getNotUploadedItems().length){
     this.uploaderProfilePhoto.queue.forEach((fileoOb, ind) => {
           this.uploaderProfilePhoto.uploadItem(fileoOb);
     });
     this.uploaderProfilePhoto.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      console.log('len 2 ',this.uploaderProfilePhoto.getNotUploadedItems().length)
        this.uploaderTestimonialsProgressBar(index);
+       setTimeout(()=>{    
+        this.testimonialsArray.at(index).patchValue({profilePhoto:fileName});
+      }, 5000);
+
     };
-    console.log('len 3 ',this.uploaderProfilePhoto.getNotUploadedItems().length)
+
    if(this.uploaderProfilePhoto.onCompleteAll()){
       this.uploaderProfilePhoto.clearQueue();
     }  
@@ -485,7 +489,7 @@ uploadTestimonialsFile(fileName,index) {
 }
 
 uploaderTestimonialsProgressBar(index){
-  let totalLength = this.uploaderProfilePhoto.queue.length;console.log('Testimonials -->>> ',totalLength,'index',index);
+  let totalLength = this.uploaderProfilePhoto.queue.length;
   let remainingLength =  this.uploaderProfilePhoto.getNotUploadedItems().length;    
   this.currentProgessinPercentProfilePhoto = 100 - (remainingLength * 100 / totalLength);
   this.currentProgessinPercentProfilePhoto = Number(this.currentProgessinPercentProfilePhoto.toFixed());
