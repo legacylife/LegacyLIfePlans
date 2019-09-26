@@ -382,15 +382,20 @@
                                                 <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
                                             </div>
                                         </div>
-
+                                        <mat-form-field class="full-width" *ngIf="profilePhotoHiddenVal">
+                                            <input matInput name="profilePhoto" placeholder="profilePhoto" formControlName="profilePhoto" readonly="readonly">
+                                        </mat-form-field>
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40"
                                             fxFlex.xl="30">
-                                            <div class="testi--userprofile">
-                                                <img  style="height: 220px;" src="{{filePath}}1568789935173Untitled - Copy.png" title="">
+                                            <div class="testi--userprofile">                                               
+                                                <img style="height: 125px;" src="{{filePath}}{{web.get('profilePhoto').value}}" alt="{{web.get('profilePhoto').value}}">
                                             </div>
                                         </div>
-
                                     </div>
+                                    <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderProfilePhoto.getNotUploadedItems().length">
+                                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercentProfilePhoto + '%' }">{{currentProgessinPercentProfilePhoto}}%</div>
+                                        <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="currentProgessinPercentProfilePhoto"></mat-progress-bar>
+                                    </div>                                    
                                 </mat-card-content>
                             </mat-card>
                         </div>
@@ -528,15 +533,11 @@
                             class="cust--gapp">
                             <mat-card class="p-0 mb-1">
                                 <mat-card-title class="p-1">Testimonial - {{i+1}}
-
                                     <mat-icon class="delete--testo--usr clr--red cursor-pointer" *ngIf="i>0"
                                         (click)="deleteTestimonialsPoints(i);">delete</mat-icon>
-
-
                                 </mat-card-title>
                                 <mat-card-content class="p-1">
                                     <div fxLayout="row wrap">
-
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100"
                                             fxFlex.xl="100">
                                             <mat-form-field class="full-width">
@@ -575,7 +576,7 @@
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40"
                                             fxFlex.xl="30">
                                             <div class="testi--userprofile">
-                                                <img src="{{filePath}}{{web.get('profilePhoto').value}}">
+                                                <img style="height: 125px;" src="{{filePath}}{{web.get('profilePhoto').value}}" alt="{{web.get('profilePhoto').value}}">
                                             </div>
                                         </div>
                                     </div>

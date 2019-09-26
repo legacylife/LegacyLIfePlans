@@ -169,7 +169,7 @@
               <div ngxSlickItem *ngFor="let slide of pageData?.featuredAdvisors" class="slide">
                 <div class="advisor--details">
                   <div class="advisor--photo">
-                    <img src="{{bucketLink}}{{slide?.profilePhoto}}" />
+                    <img src="{{bucketLink}}{{slide?.profilePhoto}}" style="height:100px;" alt="{{slide?.profilePhoto}}"/>
                   </div>
                   <div class="advisor--name">
                     {{slide.name}}
@@ -241,7 +241,7 @@
                   </div>
                   <div class="testimonial--body">
                     <div class="testmnl--user--pic">
-                      <img src="{{bucketLink}}{{testomonial.profilePhoto}}">
+                      <img src="{{bucketLink}}{{testomonial.profilePhoto}}" style="height:100px;" alt="{{testomonial.profilePhoto}}">
                     </div>
                     <h5> {{testomonial.name}}</h5>
                     <h6> {{testomonial.certifications}}</h6>

@@ -164,10 +164,8 @@ get testimonialsArray() {
 
 onFileSelected(event,i) {
   this.selectedFile = <File>event.target.files[0];
-  this.selectedFileName = new Date().getTime()+this.selectedFile.name;
-  this.testimonialsArray.at(i).patchValue({profilePhoto:this.selectedFileName});
-  this.uploadTestimonialsFile(this.selectedFileName,i);
-  console.log('selectedFileName,',this.selectedFileName)
+  this.selectedFileName = new Date().getTime()+this.selectedFile.name;  
+  this.uploadTestimonialsFile(this.selectedFileName,i);  
 }
 
 addTestimonialsPoints() {
@@ -221,7 +219,7 @@ getPageDetails = (query = {}, search = false) => {
         this.testimonials.forEach((element: any, index) => {
           testimonialsctrls.push(this.editTestimonials(element.name,element.certifications,element.comment,element.profilePhoto))          
         })
-console.log('testimonialsctrls',testimonialsctrls)
+
         this.bulletPoints = this.row.bulletPoints;
         const bulletPointsctrls = this.customerCmsForm.get('bulletPoints') as FormArray;
         bulletPointsctrls.removeAt(0)
@@ -239,8 +237,6 @@ console.log('testimonialsctrls',testimonialsctrls)
         if(this.row.quickOverview2.videoLink){
           this.QOW2Path = this.filePath+this.row.quickOverview2.videoLink;
         }
-
-        console.log("Data",this.row)
       }
     }, (err) => {
       console.error(err)
@@ -254,8 +250,10 @@ console.log('testimonialsctrls',testimonialsctrls)
       pageFor:'customer',
       pageTitle: this.customerCmsForm.controls['pageTitle'].value,
       pagesubTitle: this.customerCmsForm.controls['pagesubTitle'].value,
+      middleTitle: this.customerCmsForm.controls['middleTitle'].value,
       middleText: this.customerCmsForm.controls['middleText'].value,
       lowerText: this.customerCmsForm.controls['lowerText'].value,
+      lowerTitle: this.customerCmsForm.controls['lowerTitle'].value,
       topBannerPath: this.row.topBanner,
       middlePath: this.row.middleBanner,
       lowerPath: this.row.lowerBanner,
@@ -286,7 +284,7 @@ console.log('testimonialsctrls',testimonialsctrls)
       this.snack.open("Please wait files uploading is in process..."+this.uploaderProfilePhoto.getNotUploadedItems().length, 'OK', { duration: 4000 })
     }else{
     console.log('pageData',pageData);
-    console.log('formData',formData);
+    console.log('formData',formD  ata);
     let profileInData = {userId:this.userId};
     const req_vars = {
       query: pageData,
@@ -379,7 +377,6 @@ uploadMiddleBannerFile(id) {
     this.uploaderMiddleBanner.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       this.updateProgressBarMiddle();
       this.uploaderMiddleBanner.clearQueue();
-      //this.router.navigateByUrl('/admin/customerCms');
     };
   }
 }
@@ -494,7 +491,6 @@ uploadQOW2File(id) {
 }
 
 uploadTestimonialsFile(fileName,index) {
-  console.log('fileName--->',fileName)
   this.uploaderProfilePhoto.onBeforeUploadItem = (item) => {
     item.url = `${URLProfilePhoto}?folderName=${'customer'}&filenewName=${fileName}`;
   }
@@ -504,11 +500,12 @@ uploadTestimonialsFile(fileName,index) {
     });
     this.uploaderProfilePhoto.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
        this.updateProgressBarProfilePhoto(index);
+       setTimeout(()=>{    
+        this.testimonialsArray.at(index).patchValue({profilePhoto:fileName});
+      }, 5000);
     };
 
-
     if(this.uploaderProfilePhoto.onCompleteAll()){
-      console.log('All Done');
       this.uploaderProfilePhoto.clearQueue();
     }  
   }

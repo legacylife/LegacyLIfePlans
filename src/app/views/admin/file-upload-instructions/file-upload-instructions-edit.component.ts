@@ -1,24 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { MatSnackBar } from '@angular/material';
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
-import { ToolbarService, LinkService, ImageService, HtmlEditorService, TableService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
-
+import { ToolbarService, LinkService, ImageService, HtmlEditorService, TableService, QuickToolbarService,RichTextEditorComponent, CountService } from '@syncfusion/ej2-angular-richtexteditor';
 @Component({
   selector: 'file-upload-instructions-edit',
   templateUrl: './file-upload-instructions-edit.component.html',
   providers: [ToolbarService, LinkService, ImageService, HtmlEditorService,TableService, QuickToolbarService],
 })
 export class fileUploadInstructionsEditComponent implements OnInit {
+  @ViewChild('toolsRTE') public rteObj: RichTextEditorComponent;
   cmsForm: FormGroup
   cmsPageId: string
   InstuctionBody: string
   row : any
   aceessSection : any;
-  
+  public maxLength = 500;
+  public height: number = 300;
+  public textArea: HTMLElement;
   public tools: object = {
     items: ['Undo', 'Redo', '|',
         'Bold', 'Italic', 'Underline', 'StrikeThrough', '|',
@@ -27,7 +29,7 @@ export class fileUploadInstructionsEditComponent implements OnInit {
         'LowerCase', 'UpperCase', '|',
         'Formats', 'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
         'Indent', 'Outdent', '|', 'CreateLink','CreateTable',
-        'Image', '|', 'ClearFormat', 'Print', 'SourceCode', '|', 'FullScreen']
+        'Image', '|', 'ClearFormat', 'Print', 'SourceCode']
   };
   public quickTools: object = {
       image: [
@@ -39,6 +41,10 @@ export class fileUploadInstructionsEditComponent implements OnInit {
      private fb: FormBuilder, private loader: AppLoaderService) { }
 
   ngOnInit() {
+    
+    let rteObj: RichTextEditorComponent = this.rteObj;
+    setTimeout(() => { this.textArea = rteObj.contentModule.getEditPanel() as HTMLElement; }, 600);
+
     this.aceessSection = this.api.getUserAccess('cms');
     this.cmsForm = new FormGroup({
       folderName: new FormControl('', [Validators.required]),

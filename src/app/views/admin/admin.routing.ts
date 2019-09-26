@@ -64,16 +64,16 @@ export const AdminRoutes: Routes = [
   },{
     path: 'file-upload-instructions',
     component: fileUploadInstructionsListComponent,
-    data: { title: 'File Upload Instructions', breadcrumb: 'File Upload Instructions' },
+    data: { title: 'File Instructions', breadcrumb: 'File Instructions' },
     canActivate: [ AuthGuard ],
   },{
     path: 'file-upload-instructions-edit/:id',
     component: fileUploadInstructionsEditComponent,
-    data: { title: 'CMS Pages', breadcrumb: 'CMS Pages' }
+    data: { title: 'File instructions', breadcrumb: 'File instructions' }
   },{
     path: 'customerCms',
     component: customercmsComponent,
-    data: { title: 'Customer Home Page', breadcrumb: 'Customer Home Page' },
+    data: { title: 'Home Pages', breadcrumb: 'Home Pages' },
     canActivate: [ AuthGuard ],
   },{
     path: 'customercmscreate',
