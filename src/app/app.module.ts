@@ -88,6 +88,8 @@ import { ExecutorModalComponent } from './views/executor-modal/executor-modal.co
 
 import { NgxStripeModule } from 'ngx-stripe';
 import { UserIdleModule } from 'angular-user-idle';
+import { LoginGaurd } from './shared/services/auth/login.guard';
+import { GuestGaurd } from './shared/services/auth/guest.guard';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -153,7 +155,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   exports: [ChangePicComponent],
   bootstrap: [AppComponent], 
   providers: [
-    APIService, UserAPIService,
+    APIService, UserAPIService, LoginGaurd, GuestGaurd,
     { provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig },
     { provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG },
     { provide: LY_THEME, useClass: MinimaLight, multi: true }, // name: `minima-light`

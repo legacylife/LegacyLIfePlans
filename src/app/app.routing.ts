@@ -9,6 +9,9 @@ import { AuthGuard } from './shared/services/auth/auth.guard';
 import { CcDetailedViewComponent } from './shared/components/cc-detailed-view/cc-detailed-view.component';
 import { AdvertisementPaymentComponent } from './shared/components/advertisement-payment/advertisement-payment.component';
 import { CoachsCornerComponent } from './shared/components/coachs-corner/coachs-corner.component';
+import { AdvisorLayoutComponent } from './shared/components/layouts/advisor-layout/advisor-layout.component';
+import { LoginGaurd } from './shared/services/auth/login.guard';
+import { GuestGaurd } from './shared/services/auth/guest.guard';
 console.log('App---routing');
 export const rootRouterConfig: Routes = [
   {
@@ -101,6 +104,19 @@ export const rootRouterConfig: Routes = [
   },
   {
     path: 'coach-corner-details/:aliasName',
+    canActivate: [LoginGaurd],
+    component: AdvisorLayoutComponent,
+    data: { title: 'Coachs Corner' },
+    children: [
+      {
+        path: '',
+        component: CcDetailedViewComponent,
+      }
+    ]
+  },
+  {
+    path: 'guest/coach-corner-details/:aliasName',
+    canActivate: [GuestGaurd],
     component: AdvisorLandingLayoutComponent,
     data: { title: 'Coachs Corner' },
     children: [

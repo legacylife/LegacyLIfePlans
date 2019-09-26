@@ -37,7 +37,7 @@ export class AdvisorSignupComponent implements OnInit {
   counter = 0;
   tick = 0;
   inviteCode:string = ''
-
+  invitedBy:String = ''
   advisorFreeAccessDays:Number = 0
   advisorFreeTrialStatus:Boolean = false
 
@@ -99,6 +99,7 @@ export class AdvisorSignupComponent implements OnInit {
           this.EmailExist = true;
           this.llpAdvsignupForm.controls['username'].setErrors({ 'EmailExist': true })          
         }else {
+          this.invitedBy = result.data.invitedBy
           this.llpAdvsignupForm.controls['username'].disable();
           this.freeTrailBtn = true;
           this.proceedBtn = false;
@@ -121,14 +122,14 @@ export class AdvisorSignupComponent implements OnInit {
 
 
   OtpProceed() {
-    let invitedBy = ''
+    /* let invitedBy = ''
     if( this.inviteCode != '') {
       invitedBy = 'advisor'
-    }
+    } */
     let req_vars = {
       username: this.llpAdvsignupForm.controls['username'].value,
       otpCode: this.llpAdvotpForm.controls['otp'].value,
-      invitedBy: invitedBy
+      invitedBy: this.invitedBy
     }
     this.loader.open();
     this.userapi.apiRequest('post', 'auth/checkOtp', { query: req_vars }).subscribe(result => {
