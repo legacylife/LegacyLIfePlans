@@ -35,9 +35,9 @@
           <div class="plan--process--steps bottom-space">
             <div fxLayout="row wrap">
 
-              <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+              <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" *ngFor="let row of pageData?.bulletPoints;">
                 <mat-list class="stepss p-0">
-                  <mat-list-item  *ngFor="let row of pageData?.bulletPoints;">
+                  <mat-list-item >
                     <mat-icon>arrow_forward</mat-icon>{{row.name}}
                   </mat-list-item>
                 </mat-list>
