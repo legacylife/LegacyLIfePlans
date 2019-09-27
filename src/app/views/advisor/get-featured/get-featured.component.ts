@@ -69,21 +69,21 @@ export class GetFeaturedComponent implements OnInit {
     });
   }
 
-  fromdate = (query = {}, search = false) => {
-    const req_vars = {
-      query: Object.assign({customerId:this.userId}, query)
-    }
-    this.userapi.apiRequest('post', 'cronjobs/check-featured-advisor-frmdate', req_vars).subscribe(result => {
-      if(result.status == "error"){
-      console.log(result.data)        
-      this.snack.open(result.data, 'OK', { duration: 4000 })
-      } else {
-        console.log(result.data);	        
-      }
-    }, (err) => {
-      console.error(err)      
-    })
-  }
+  // fromdate = (query = {}, search = false) => {
+  //   const req_vars = {
+  //     query: Object.assign({customerId:this.userId}, query)
+  //   }
+  //   this.userapi.apiRequest('post', 'cronjobs/check-featured-advisor-frmdate', req_vars).subscribe(result => {
+  //     if(result.status == "error"){
+  //     console.log(result.data)        
+  //     this.snack.open(result.data, 'OK', { duration: 4000 })
+  //     } else {
+  //       console.log(result.data);	        
+  //     }
+  //   }, (err) => {
+  //     console.error(err)      
+  //   })
+  // }
 
 
   arrayToString(array) {

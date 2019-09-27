@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MatDialog, MatSnackBar,MatDatepickerInputEvent } from '@angular/material';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
@@ -10,7 +10,6 @@ import { serverUrl, s3Details } from '../../../config';
 import { LayoutService } from 'app/shared/services/layout.service';
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, TableService, QuickToolbarService } from '@syncfusion/ej2-angular-richtexteditor';
 import { egretAnimations } from 'app/shared/animations/egret-animations';
-
 @Component({
   selector: 'userview',
   templateUrl: './ad-management-view.component.html',
@@ -25,7 +24,7 @@ export class AddManagementViewComponent implements OnInit {
   errorMessage: string = ""
   userType: string = ""
   row: any;
-
+  dateError: string = '';
   selectedUserId: string = "";
   docPath:string;
   adminSections = [];
@@ -44,9 +43,10 @@ export class AddManagementViewComponent implements OnInit {
   isExpired:boolean = false
   enquiryFormReply: FormGroup
   zipcodeList:[];
-  showReplyEnquiryForm:Boolean = false
+  showReplyEnquiryForm:Boolean = true
   paymentLink:String = '-'
-
+  minDate = new Date();
+  minDateTo = new Date();
   constructor(
     private layout: LayoutService,
     private api: APIService, private route: ActivatedRoute, private fb: FormBuilder, 
@@ -61,17 +61,19 @@ export class AddManagementViewComponent implements OnInit {
     this.userId = localStorage.getItem("userId");
     this.enquiryFormReply = this.fb.group({
       zipcodes: new FormControl('', Validators.required),
+      fromDate: new FormControl('', Validators.required),
+      toDate: new FormControl('', Validators.required),
       cost: new FormControl('', [Validators.required,Validators.pattern(/^[0-9]*$/)]),
-      message: new FormControl(''),
-      stripePaymentLink: new FormControl('')
+      message: new FormControl(),
+      stripePaymentLink: new FormControl()
     });
+    
     this.my_messages = {'emptyMessage': 'No records Found'};    
     this.getUser()
   }
 
   //function to get all events
-  getUser = (query = {}, search = false) => {
-    
+  getUser = (query = {}, search = false) => {    
     const req_vars = {
       query: Object.assign({_id:this.selectedUserId},query)
     }
@@ -82,21 +84,21 @@ export class AddManagementViewComponent implements OnInit {
         console.log(result.data)
         this.showPage = true
       } else {
-        this.data = result.data.enquirydata;
+      this.data = result.data.enquirydata;    
+      this.showPage = true;
         this.row = result.data.enquirydata.customerId;
         if(result.data.enquirydata.adminReply){
           this.replyData = result.data.enquirydata.adminReply;
-          if( this.replyData.length < 1 ) {
+           if( this.replyData.length < 1 ) {
             this.showReplyEnquiryForm = true
           }
           let currentRecord = this.replyData.slice(-1)[0]
           if( currentRecord ) {
-          this.showReplyEnquiryForm = currentRecord['status'] === 'Pending' ? true : false
+          this.showReplyEnquiryForm = currentRecord['status'] === 'Pending' ? true : false 
 
           //if( currentRecord.paymentDetails ) {
             let encryptedCustomerId = btoa(this.data.customerId._id),
                 encryptedInvoiceId  = btoa(currentRecord.paymentDetails.invoiceId)
-
             this.paymentLink = serverUrl+'/advertisement-payment/'+encryptedCustomerId+'/'+encryptedInvoiceId+'/'+this.data.uniqueId
           }
         }
@@ -110,7 +112,8 @@ export class AddManagementViewComponent implements OnInit {
         }
         var zipcodes = this.data.zipcodes;
         this.zipcodeList = zipcodes.split(',');
-        this.showPage = true;
+       this.enquiryFormReply.controls['fromDate'].setValue(this.data.fromDate);
+       this.enquiryFormReply.controls['toDate'].setValue(this.data.toDate);
       }
     }, (err) => {
       console.error(err)
@@ -120,22 +123,39 @@ export class AddManagementViewComponent implements OnInit {
 
 
   enquiryFormReplySubmit(formData = null) {
-    let enquiryData = {
-      query: Object.assign({_id:this.data._id,adminId:this.userId}),
-      proquery: Object.assign(formData)  
+    if(new Date(this.enquiryFormReply.controls['toDate'].value) < new Date(this.enquiryFormReply.controls['fromDate'].value)) {
+      this.dateError = 'To date should be greater than From date';
+    }else{
+      let enquiryData = {
+        query: Object.assign({_id:this.data._id,adminId:this.userId}),
+        proquery: Object.assign(formData)  
+      }
+      this.loader.open();
+      this.api.apiRequest('post', 'advertisement/submitEnquiryReply', enquiryData).subscribe(result => {
+      this.loader.close();
+        if (result.status=="success") {     
+          this.enquiryFormReply.reset(); 
+          this.getUser();
+          this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        }     
+      }, (err) => {
+        this.snack.open(err, 'OK', { duration: 4000 })
+      })
     }
-    this.loader.open();
-    this.api.apiRequest('post', 'advertisement/submitEnquiryReply', enquiryData).subscribe(result => {
-    this.loader.close();
-      if (result.status=="success") {     
-        this.enquiryFormReply.reset(); 
-        this.getUser();
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
-      }     
-    }, (err) => {
-      this.snack.open(err, 'OK', { duration: 4000 })
-    })
   }
+
+
+  // remiderTesting() {
+  //     let enquiryData = { }
+  //     this.api.apiRequest('post', 'cronjobs/check-featured-advisor-remider-mail', enquiryData).subscribe(result => {
+  //       if (result.status=="success") {     
+  //        console.log(result.data);
+  //       }     
+  //     }, (err) => {
+  //       this.snack.open(err, 'OK', { duration: 4000 })
+  //     })
+   
+  // }
 
   onChange(event) {
     console.log(event)

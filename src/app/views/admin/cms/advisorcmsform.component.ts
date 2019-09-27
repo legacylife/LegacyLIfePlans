@@ -298,7 +298,6 @@ updatePage(formData) {
     // if(this.uploaderProfilePhoto.getNotUploadedItems().length){
     //   this.snack.open("Please wait files uploading is in process..."+this.uploaderProfilePhoto.getNotUploadedItems().length, 'OK', { duration: 4000 })
     // }else{
-    console.log('pageData',pageData);
     let profileInData = {_id:this.customercmsPageId};
     const req_vars = {
       query: pageData,

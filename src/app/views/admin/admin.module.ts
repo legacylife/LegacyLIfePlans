@@ -70,6 +70,7 @@ import { advisorcmsformComponent } from './cms/advisorcmsform.component';
     MatInputModule,
     MatProgressBarModule,
     MatSelectModule,
+    MatDatepickerModule,
     MatNativeDateModule,MatFormFieldModule,MatProgressSpinnerModule,MatExpansionModule,MatSliderModule,MatSnackBarModule,MatSidenavModule,MatDialogModule,MatStepperModule,
     FlexLayoutModule,
     NgxDatatableModule,
