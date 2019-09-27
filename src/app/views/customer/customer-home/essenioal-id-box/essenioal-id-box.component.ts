@@ -13,6 +13,7 @@ import { serverUrl, s3Details } from '../../../../config';
 import { states } from '../../../../state';
 import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
+import { FileHandlingService } from 'app/shared/services/file-handling.service';
 const URL = serverUrl + '/api/documents/myEssentialsID';
 @Component({
   selector: 'app-essenioal-id-box',
@@ -61,7 +62,7 @@ export class EssenioalIdBoxComponent implements OnInit {
 
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
-    private userapi: UserAPIService  ) 
+    private userapi: UserAPIService, private fileHandlingService: FileHandlingService  ) 
   { }
 
   ngOnInit() {
@@ -491,11 +492,19 @@ export class EssenioalIdBoxComponent implements OnInit {
   public fileOverBase(e: any): void {
       this.hasBaseDropZoneOver = e;
       this.fileErrors = [];
+      let totalItemsToBeUpload = this.uploader.queue.length,
+          totalUploderFileSize = 0,
+          remainingSpace = 0,
+          message = ''
+      
       this.uploader.queue.forEach((fileoOb) => {
         let filename = fileoOb.file.name;
         var extension = filename.substring(filename.lastIndexOf('.') + 1);
         var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
         let resp = this.isExtension(extension,fileExts);
+
+        totalUploderFileSize += fileoOb.file.size
+
         if(!resp){
           var FileMsg = "This file '" + filename + "' is not supported";
           this.uploader.removeFromQueue(fileoOb);
@@ -508,18 +517,39 @@ export class EssenioalIdBoxComponent implements OnInit {
         }
       });
 
-      if(this.uploader.getNotUploadedItems().length){
-        this.uploaderCopy = cloneDeep(this.uploader)
-        this.uploader.queue.splice(1, this.uploader.queue.length - 1)
-        this.uploaderCopy.queue.splice(0, 1)        
-        this.uploader.queue.forEach((fileoOb, ind) => {
-              this.uploader.uploadItem(fileoOb);
-        });
-         this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-           this.updateProgressBar();
-           this.getIdDocuments();
-         };
-       }
+      this.fileHandlingService.checkAvailableSpace( async (spaceDetails) => {
+        remainingSpace = Number(spaceDetails.remainingSpace)
+        message = spaceDetails.message
+      
+        if( totalUploderFileSize > remainingSpace) {
+          this.confirmService.reactivateReferEarnPopup({ message: message, status: 'notactivate' }).subscribe(res => {
+            if (res) {
+              console.log("**************",res)
+            }
+          })
+        }
+        else{
+          let proceedToUpload = false
+          if( message != '' ) {
+            let confirmResponse = await this.confirmService.confirm({ message: message }).toPromise()
+            proceedToUpload = true
+          }
+          if( proceedToUpload ) {
+            if(this.uploader.getNotUploadedItems().length) {
+              this.uploaderCopy = cloneDeep(this.uploader)
+              this.uploader.queue.splice(1, this.uploader.queue.length - 1)
+              this.uploaderCopy.queue.splice(0, 1)        
+              this.uploader.queue.forEach((fileoOb, ind) => {
+                    this.uploader.uploadItem(fileoOb);
+              });
+              this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+                this.updateProgressBar();
+                this.getIdDocuments();
+              };
+            }
+          }
+        }
+      })
     }
 
     updateProgressBar(){
@@ -589,6 +619,8 @@ export class EssenioalIdBoxComponent implements OnInit {
     }
     return result;
   }
+
+  checkSize
 
   firstCapitalize(e) {
     let re = /(^|[.!?]\s+)([a-z])/g;

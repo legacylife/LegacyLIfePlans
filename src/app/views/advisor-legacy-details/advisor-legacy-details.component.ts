@@ -98,6 +98,7 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
     dialogRef.afterClosed()
       .subscribe(res => {
         this.isDialogOpen = false
+        this.getCustomerDetails()
       })
   }
 

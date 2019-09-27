@@ -156,6 +156,7 @@ import { CcRightPanelComponent } from './components/cc-right-panel/cc-right-pane
 import { CcDetailedViewComponent } from './components/cc-detailed-view/cc-detailed-view.component';
 import { CcShareViaEmailModelComponent } from './components/cc-share-via-email-model/cc-share-via-email-model.component';
 import { AdvertisementPaymentComponent } from './components/advertisement-payment/advertisement-payment.component';
+import { FileHandlingService } from './services/file-handling.service';
 /* 
   Only Required if you want to use Angular Landing
   (https://themeforest.net/item/angular-landing-material-design-angular-app-landing-page/21198258)
@@ -317,7 +318,8 @@ const classesToInclude = [
     ProfilePicService,
     AppConfirmService,
     AppLoaderService,
-    SubscriptionService
+    SubscriptionService,
+    FileHandlingService
     // LandingPageService    
   ],
   declarations: classesToInclude,
