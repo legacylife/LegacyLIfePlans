@@ -252,7 +252,7 @@ function rejectEnquiry(req, res) {
           }else{
             adminReplyData = adminReplyArr;
           }
-          advertisement.updateOne({_id:query._id}, {status:"Reject",adminReply:adminReplyData}, function (err, logDetails) {
+          advertisement.updateOne({_id:query._id}, {status:"Reject",'sponsoredStatus':'Reject',adminReply:adminReplyData}, function (err, logDetails) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {
@@ -356,21 +356,44 @@ async function completeTransaction( req, res ) {
   let advertisementData = await advertisement.findOne({customerId: customerId, uniqueId: uniqueId}).populate('customerId','firstName lastName stripeCustomerId')
   let OldAdminReply = advertisementData.adminReply
   let adminReply = advertisementData.adminReply.filter( elem => elem.status==='Pending' && elem.paymentDetails.invoiceId === invoiceId )
-  let advertisementDetails = {} 
+  let advertisementDetails = {}; 
   if( adminReply ) {
     /* let totalDays = getDateDiff( advertisementData.fromDate, advertisementData.toDate)
     let invoiceSentDays = getDateDiff( advertisementData.fromDate, moment() ) */
     let invoiceStatus = adminReply[0]['paymentDetails']['status']
     if( invoiceStatus === 'Pending') {
-      stripeHelper.payInvoice( invoiceId, token, advertisementData.customerId.stripeCustomerId ).then(response => {
+      stripeHelper.payInvoice( invoiceId, token, advertisementData.customerId.stripeCustomerId ).then(async(response) => {
         if( response ) {
           let currentInvoiceIndex = OldAdminReply.findIndex(elem => elem.status==='Pending' && elem.paymentDetails.invoiceId === invoiceId)
-          let oldPaymentDetails   = OldAdminReply[currentInvoiceIndex]['paymentDetails']
-          let newPaymentDetails   = Object.assign({}, oldPaymentDetails, { "status": "Done" })
+          let oldPaymentDetails   = OldAdminReply[currentInvoiceIndex]['paymentDetails'];
+          let newPaymentDetails   = Object.assign({}, oldPaymentDetails, { "status": "Done" });
           let updatedOldAdminReply= Object.assign({}, OldAdminReply[currentInvoiceIndex], { "status": "Done", "paymentDetails": newPaymentDetails })
           OldAdminReply[currentInvoiceIndex] = updatedOldAdminReply
-          newAdminReply = OldAdminReply
-          advertisement.updateOne({customerId: customerId, uniqueId: uniqueId},{adminReply: newAdminReply}, function (err, logDetails) {
+          newAdminReply = OldAdminReply;
+
+          /*
+          If advisor from date is today date and complete his payment then he should be directly sponsored advisor
+          */
+         console.log('advertisementData fromDate-=====>',advertisementData.fromDate)
+          let updateStatus = advertisementData.sponsoredStatus;
+          let dates = advertisementData.fromDate.toISOString().substring(0, 10);
+          if(new Date(dates) == new Date()){  
+            console.log('first date ', new Date(dates) ,'======', new Date());
+            updateStatus = 'Active';
+            let newArray = [];
+            let UserData = await User.findOne({_id:advertisementData.customerId},{_id:1,username:1,firstName:1,lastName:1,sponsoredAdvisor:1,status:1,sponsoredZipcodes:1});
+            if(UserData){
+                  console.log('adminReply-=====>',adminReply)
+                  let newArray = adminReply.zipcodes;
+                  if(UserData.sponsoredZipcodes) {
+                    newArray = adminReply.zipcodes.concat(UserData.sponsoredZipcodes);
+                  }
+
+                 await User.updateOne({_id:key.customerId},{sponsoredAdvisor:'yes',sponsoredZipcodes:newArray});
+            }
+          }else{  console.log(' date not match ', new Date(dates) ,'======', new Date());}  
+        
+          advertisement.updateOne({customerId: customerId, uniqueId: uniqueId},{sponsoredStatus:updateStatus,adminReply: newAdminReply}, function (err, logDetails) {
             if( err ) {
               res.send(resFormat.rError(err))
             }
@@ -394,8 +417,46 @@ async function completeTransaction( req, res ) {
   else{
     res.status(200).send(resFormat.rError("Incorrect invoice payment link."))
   }
-  
-  
+}
+
+
+async function manageSponsoredStatus(req, res){
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let AdvData = await advertisement.findOne(query,{});
+  if(AdvData){
+      if(AdvData.sponsoredStatus=='Active'){
+        let UserData = await User.findOne({_id:AdvData.customerId},{_id:1,username:1,firstName:1,lastName:1,sponsoredAdvisor:1,status:1,sponsoredZipcodes:1});
+        if(UserData){
+              let newArray = [];
+              let oldArray = AdvData.adminReply.map(function (keys, index) {
+                if(keys.status=='Done') {
+                    return keys.zipcodes;
+                }
+              });    
+              
+              if(UserData.sponsoredZipcodes) {
+                  UserData.sponsoredZipcodes.forEach((key,index) => {   
+                    var found = oldArray.indexOf(key);
+                    if(!found){         
+                      console.log('------',key)            
+                      //newArray = newArray.concat(key);
+                      newArray = newArray[key];
+                    }else{
+                      console.log('+++++',key)            
+                    }
+                });
+                console.log('------####+++++++++++---',UserData.sponsoredZipcodes,"newArray  ",newArray);
+                //newArray = AdvData.zipcodes.concat(UserData.sponsoredZipcodes);
+              }
+             //await User.updateOne({_id:key.customerId},{sponsoredAdvisor:'no'});
+             //await advertisement.updateOne(query,{sponsoredStatus:'Inactive',status:'Inactive'});
+        }else{
+
+        }
+      }
+  }
+  res.status(200).send(resFormat.rError("Payment not done, please try again later"))
 }
 
 async function stripeErrors( err ) {
@@ -439,4 +500,5 @@ router.post("/submitEnquiryReply",addEnquiryReply)
 router.post("/submitRejectEnquiry",rejectEnquiry)
 router.post("/get-invoice-details",getInvoiceDetails)
 router.post("/complete-transaction",completeTransaction)
+router.post("/manage-sponsored-status",manageSponsoredStatus)
 module.exports = router
