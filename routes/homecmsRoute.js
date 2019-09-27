@@ -26,8 +26,7 @@ function customerUpdate(req, res) {
         res.send(resFormat.rSuccess(result))
       }
     })
-  }else{
-    // console.log("testimonials",query.testimonials);
+  }else{    
     let insert_obj = {
       pageFor       : query.pageFor,
       pageTitle     : query.pageTitle,
@@ -81,13 +80,11 @@ async function list(req, res) {
 
 //function get details of page
 function viewdetails (req, res) {
-  console.log("><><>>>>>>>>",req.body)
   const  query  = req.body
   customerCms.findOne(query , function(err, cmsDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      console.log('cmsDetails>>>>>>',cmsDetails)
       res.send(resFormat.rSuccess(cmsDetails))
     }
   })
@@ -112,13 +109,11 @@ function getCmsByCode (code) {
 //function to update cms page content for advisor landing
 function advisorUpdate(req, res) {
   let { query, proquery } = req.body;
-  //console.log('------->>>>>>>>>-',req.body)
   if(req.body._id){
     advisorCms.updateOne(proquery,{ $set:query} ,(err, updateCms)=>{
       if (err) {
         res.send(resFormat.rError(err))
       } else {
-      //  console.log('----updateCms--->>>>>-',updateCms)
         updateCms = {_id:req.body._id};
         let result = { "message": 'Content page has been updated',"newrecord": updateCms }
         res.send(resFormat.rSuccess(result))

@@ -8,7 +8,6 @@ var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const stripeHelper = require('./../helpers/stripeInvoiceHelper')
-
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
 var EmailTemplate = require('./../models/EmailTemplates.js')
 const advertisement = require('./../models/advertisements.js')
@@ -37,7 +36,6 @@ function addEnquiry(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          console.log('newUser',newUser)
           let message = resMessage.data( 607, [{key: '{field}',val: 'Advertisement Enquiry'}, {key: '{status}',val: 'submitted'}] )
           //Update activity logs
           allActivityLog.updateActivityLogs( query.customerId, query.customerId, "Advertisement Enquiry", message, "Get Featured" )
@@ -99,7 +97,7 @@ function addEnquiryReply(req, res) {
             if( !userData ) {
               res.send(resFormat.rError('Not found'))
             }
-            console.log("===adminReply===",found.adminReply)
+          
             if( found.adminReply.length > 0 ) {
               adminReplyData = found.adminReply;
               let newarry = [];  
@@ -171,16 +169,14 @@ function addEnquiryReply(req, res) {
                   modifiedOn: new Date()
                 }
                 adminReplyData = Object.assign(adminReplyData,{paymentDetails:paymentDetails})
-                console.log("\n********newStripeCustomerId********",newStripeCustomerId)
                 if( !stripeCustomerId && newStripeCustomerId != "" ) {
                   await User.updateOne({_id: userDetails._id}, {stripeCustomerId:newStripeCustomerId})
                 }
 
               })
             }
-            console.log("invoiceDetails",invoiceDetails,"adminReplyData",adminReplyData)
             let uniqueId = Math.random().toString(36).slice(2)
-            advertisement.updateOne({_id:query._id}, {adminReply:adminReplyData, uniqueId: uniqueId}, function (err, logDetails) {
+            advertisement.updateOne({_id:query._id}, {fromDate:proquery.fromDate,toDate:proquery.toDate,adminReply:adminReplyData,uniqueId:uniqueId}, function (err, logDetails) {
               if (err) {
                 res.send(resFormat.rError(err))
               } else {
@@ -193,13 +189,13 @@ function addEnquiryReply(req, res) {
                 replyContnt['cost'] = proquery.cost;
 
                 let fromDate1 = '';let toDate1 = '';
-                if(found.fromDate){
-                  let  fromDate = found.fromDate.split("-");
+                if(proquery.fromDate){
+                  let  fromDate = proquery.fromDate.split("-");
                   let fromDate2 = fromDate[2].split("T");
                   fromDate1 = fromDate[0]+'/'+fromDate[1]+'/'+fromDate2[0];
                 }
-                if(found.toDate){
-                  let toDate = found.toDate.split("-");
+                if(proquery.toDate){
+                  let toDate = proquery.toDate.split("-");
                   let toDate2 = toDate[2].split("T");
                   toDate1 = toDate[0]+'/'+toDate[1]+'/'+toDate2[0];
                 }
@@ -208,12 +204,12 @@ function addEnquiryReply(req, res) {
                     encryptedInvoiceId  = Buffer.from(String(invoiceDetails.invoiceId), 'binary').toString('base64')
 
                 let PaymentLink = constants.clientUrl+'/advertisement-payment/'+encryptedCustomerId+'/'+encryptedInvoiceId+'/'+uniqueId
-                console.log("\n****PaymentLink****",PaymentLink)
+              //  console.log("\n****PaymentLink****",PaymentLink)
                 replyContnt['fromDate'] = fromDate1;
                 replyContnt['toDate']   = toDate1;
                 replyContnt['paymentLink'] = PaymentLink
                 replyContnt['comment'] = proquery.message;
-                console.log("\n****replyContnt****",replyContnt)
+                //console.log("\n****replyContnt****",replyContnt)
                 sendEnquiryReplyMail('AdviserFeturedRequestReply', emailId, toName, replyContnt);
                 
                 let message = resMessage.data( 607, [{key: '{field}',val: 'Advertisement Enquiry Reply'}, {key: '{status}',val: 'sent'}] )
@@ -233,7 +229,7 @@ function addEnquiryReply(req, res) {
 }
 
 function rejectEnquiry(req, res) {
-  let { query } = req.body;console.log('query',query)
+  let { query } = req.body;
   advertisement.findOne({_id:query._id}, function (err, found) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
@@ -282,7 +278,7 @@ function rejectEnquiry(req, res) {
 }
 
 function sendEnquiryReplyMail(templateCode,emailId, toName, replyContnt) {
-  let serverUrl = constants.clientUrl + "/customer/signin";
+  let serverUrl = constants.clientUrl + "/signin";
   emailTemplatesRoute.getEmailTemplateByCode(templateCode).then((template) => {
     if (template) {
       template = JSON.parse(JSON.stringify(template));

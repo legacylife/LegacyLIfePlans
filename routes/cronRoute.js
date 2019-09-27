@@ -630,12 +630,81 @@ async function featuredAdvisorEndDate(req, res){
         if(UserData){
              await User.updateOne({_id:key.customerId},{sponsoredAdvisor:'no',sponsoredZipcodes:[]});
              await advertisement.updateOne({_id:key._id},{sponsoredStatus:'Expired',status:'Expired'});
-            console.log('HereWE Are');
         }
       }
     });
   }
 }
+
+async function featuredAdvisorReminder(req, res){
+  let AdvData = await advertisement.find({sponsoredStatus:'Active'},{_id:1,customerId:1,fromDate:1,toDate:1,status:1,zipcodes:1,adminReply:1,remiderMailstatus:1});
+  if(AdvData.length>0){
+      AdvData.forEach( async (key,index) => {   
+        let daysToExpire =  ''; let mailSentStatus = 'no';var days = '';
+      let userData = await User.findOne({_id:key.customerId,sponsoredAdvisor:'yes'},{username:1,firstName:1,lastName:1});
+      if(userData){
+             daysToExpire = getDateDiff(today, moment(key.toDate).toDate(), 'asDays' );            
+            if((daysToExpire>=3 && daysToExpire<4) || daysToExpire>=7 && daysToExpire<8){
+                days = Math.floor(daysToExpire);
+                let remiderMail = days;
+                
+                if(key.remiderMailstatus && key.remiderMailstatus.length){
+                    var found = key.remiderMailstatus.indexOf(days);
+                    if(!found){
+                      remiderMail = key.remiderMailstatus.concat(days);
+                      mailSentStatus = 'sent';
+                    }
+                }else{
+                    mailSentStatus = 'sent';
+                }  
+                if(mailSentStatus=='sent'){
+                  let zips = key.zipcodes;
+                  let replyContnt = [];
+                  replyContnt['zipcodes'] = zips;
+                  replyContnt['days'] = days;
+                  replyContnt['toDate'] = key.toDate;
+                  // if(key.toDate){
+                  //   console.log('key.toDate',key.toDate)
+                  //   let toDate2 = key.toDate.split("T"); console.log('key.toDate ))))) ',toDate2)
+                  //   toDate1 = toDate2[0];//+'/'+toDate2[1]+'/'+toDate2[0];
+                  //   replyContnt['toDate'] = toDate1;
+                  // }
+                  await sendFeaturedAdvisorMail('AdviserFeturedRemiderEmail',userData.username,userData.firstName,replyContnt);
+                }
+               await advertisement.updateOne({_id:key._id},{remiderMailstatus:remiderMail});
+            }
+      }
+      res.send(resFormat.rSuccess({daysToExpire,mailSentStatus}));
+    });
+  }
+}
+
+
+function sendFeaturedAdvisorMail(templateCode,emailId, toName, replyContnt) {
+  let serverUrl = constants.clientUrl + "/signin";
+  emailTemplatesRoute.getEmailTemplateByCode(templateCode).then((template) => {
+    if (template) {
+      template = JSON.parse(JSON.stringify(template));
+      let body = template.mailBody.replace("{toName}",toName);
+      if(replyContnt){
+      body = body.replace("{zipcodes}",replyContnt['zipcodes']);
+      body = body.replace("{toDate}",replyContnt['toDate']);
+      body = body.replace("{days}",replyContnt['days']);
+      }
+      body = body.replace("{SERVER_LINK}",serverUrl);
+      const mailOptions = {
+        to: emailId,//'pankajk@arkenea.com',//emailId
+        subject: template.mailSubject,
+        html: body
+      }
+      sendEmail(mailOptions);
+     return true;
+    } else {
+      return false;
+    }
+  })
+}
+
 
 router.post(["/auto-renewal-on-update-subscription"], autoRenewalOnUpdateSubscription);
 router.post(["/update-subscription-details-if-fails"], updateSubscriptionDetailsIfFails);
@@ -643,7 +712,8 @@ router.get("/auto-renewal-on-reminder-email", autoRenewalOnReminderEmail);
 router.get("/auto-renewal-off-reminder-email", autoRenewalOffReminderEmail);
 router.get("/before-subscription-reminder-email", beforeSubscriptionReminderEmail);
 router.get("/check-deceased-customers", deceasedCustomers);
-router.post("/check-featured-advisor-frmdate", featuredAdvisorFromDate);
+router.get("/check-featured-advisor-frmdate", featuredAdvisorFromDate);
 router.get("/check-featured-advisor-enddate", featuredAdvisorEndDate);
+router.get("/check-featured-advisor-remider-mail", featuredAdvisorReminder);
 
 module.exports = router
