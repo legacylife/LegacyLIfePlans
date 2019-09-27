@@ -396,9 +396,11 @@ function getProductDetails(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
+      let subscriptionDetails = userProfile.subscriptionDetails,
+          isAddOnPurchase = subscriptionDetails && subscriptionDetails[subscriptionDetails.length - 1] && subscriptionDetails[subscriptionDetails.length - 1]['addOnDetails'] ? true : false
       stripe.plans.list( { limit: 3, active:true }, function(err, plans) {
           // asynchronously called
-          res.status(200).send(resFormat.rSuccess( {plans, "message": "Subscription Plans"}))    
+          res.status(200).send(resFormat.rSuccess( {plans, "message": "Subscription Plans", isAddOnPurchase: isAddOnPurchase}))    
       });
     }
   })
@@ -1133,8 +1135,16 @@ function renewlegacysubscription( req, res ) {
               stripeErrors( err, res )
             }
             let newStripeCardId = card.id
-            
-            createLegacySubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId, requestFrom )
+            //set newly added card for customer as default source for payment
+            stripe.customers.update(
+              stripeCustomerId,
+              {default_source: newStripeCardId},
+              function(err, customer) {
+                if( err ){
+                  stripeErrors( err, res )
+                }
+                createLegacySubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId, requestFrom )
+            })
         })
       }
       else{
@@ -1162,7 +1172,16 @@ function renewlegacysubscription( req, res ) {
                   stripeErrors( err, res )
                 }
                 let newStripeCardId = card.id
-                createLegacySubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId, requestFrom )
+                //set newly added card for customer as default source for payment
+                stripe.customers.update(
+                  stripeCustomerId,
+                  {default_source: newStripeCardId},
+                  function(err, customer) {
+                    if( err ){
+                      stripeErrors( err, res )
+                    }
+                    createLegacySubscription( userProfile, stripeCustomerId, planId, requestParam, res, newStripeCardId, requestFrom )
+                })
             })
           }
         });
@@ -1252,154 +1271,165 @@ function createLegacySubscription( userProfile, stripeCustomerId, planId, reques
                             } : {}
             // get latest updated user details for add addon pack
             let updatedUserDetails = await User.findOne({_id: userProfile._id, userType: userProfile.userType}, {})
-                // charge for addon pack and update in subscription object
-                upgradeAddon = await legacyChargeForAddon( updatedUserDetails, stripeCustomerId, newRequestParam, res )
+
+            // charge for addon pack and update in subscription object
+            var initializePromise  = legacyChargeForAddon( updatedUserDetails, stripeCustomerId, newRequestParam, res)
+                initializePromise.then(function(result) {
+                    upgradeAddon = result;
+                    sendRes(upgradeAddon)
+                  }, function(err) {
+                    res.send(resFormat.rError(err))
+                  }
+                )
           }
           else{
             upgradeAddon = true
+            sendRes(upgradeAddon)
           }
 
-          if( (typeof upgradeAddon === "boolean" && upgradeAddon) || (typeof upgradeAddon === "string" && upgradeAddon == '') ) {
-            /**
-             * Delete newly added card by advisor / trustee from customer account once subscription payment done
-             */
-            stripe.customers.deleteSource(
-              stripeCustomerId,
-              newStripeCardId,
-              function(err, confirmation) {
-                if( err ) {
-                  stripeErrors( err, res )
-                }
+          function sendRes(upgradeAddon) {
+            if( (typeof upgradeAddon === "boolean" && upgradeAddon) || (typeof upgradeAddon === "string" && upgradeAddon == '') ) {
+              /**
+               * Delete newly added card by advisor / trustee from customer account once subscription payment done
+               */
+              stripe.customers.deleteSource(
+                stripeCustomerId,
+                newStripeCardId,
+                function(err, confirmation) {
+                  if( err ) {
+                    stripeErrors( err, res )
+                  }
 
-                if(subscription.status == 'active') {
-                  let subscriptionStartDate = subscription.current_period_start*1000
-                  let subscriptionEndDate = subscription.current_period_end*1000
+                  if(subscription.status == 'active') {
+                    let subscriptionStartDate = subscription.current_period_start*1000
+                    let subscriptionEndDate = subscription.current_period_end*1000
 
-                  User.findOne({_id:userProfile._id,userType:userProfile.userType}, {}, function (err, userDetails) {
-                    if (err) {
-                      res.status(401).send(resFormat.rError(err))
-                    }
-                    else {
-                      
-                      let userSubscription = userDetails.subscriptionDetails
-                      let latestSubscription = userSubscription[userSubscription.length-1]
-                      let subscriptionDetails = {"_id" : latestSubscription._id,
-                                                "productId" : subscription.items.data[0]['plan']['product'],
-                                                "planId" : latestSubscription.planId,
-                                                "subscriptionId" : subscription.id,
-                                                "startDate" : new Date(subscriptionStartDate),
-                                                "endDate" : new Date(subscriptionEndDate),
-                                                "interval" : subscription.items.data[0]['plan']['interval'],
-                                                "currency" : subscription.items.data[0]['plan']['currency'],
-                                                "amount" : subscription.items.data[0]['plan']['amount'] / 100,
-                                                "status" : 'paid',
-                                                "autoRenewal": subscription.collection_method == 'charge_automatically' ? true : false,
-                                                "paymentMode" : 'online',
-                                                "planName" : subscription.items.data[0]['plan']['metadata']['name']+' Plan',
-                                                "defaultSpace" : subscription.items.data[0]['plan']['metadata']['defaultSpace'],
-                                                "spaceDimension" : subscription.items.data[0]['plan']['metadata']['spaceDimension'],
-                                                "paidOn" : new Date(),
-                                                "createdOn" : latestSubscription.createdOn,
-                                                "createdBy" : latestSubscription.createdBy
-                                              };
-                      // add addon object to latest created subscription object
-                      if( checkWhetherAddOn && upgradeAddon ) {
-                        subscriptionDetails = Object.assign(subscriptionDetails, {addOnDetails : latestSubscription.addOnDetails})
+                    User.findOne({_id:userProfile._id,userType:userProfile.userType}, {}, function (err, userDetails) {
+                      if (err) {
+                        res.status(401).send(resFormat.rError(err))
                       }
-                      userSubscription[userSubscription.length-1] = subscriptionDetails
+                      else {
+                        
+                        let userSubscription = userDetails.subscriptionDetails
+                        let latestSubscription = userSubscription[userSubscription.length-1]
+                        let subscriptionDetails = {"_id" : latestSubscription._id,
+                                                  "productId" : subscription.items.data[0]['plan']['product'],
+                                                  "planId" : latestSubscription.planId,
+                                                  "subscriptionId" : subscription.id,
+                                                  "startDate" : new Date(subscriptionStartDate),
+                                                  "endDate" : new Date(subscriptionEndDate),
+                                                  "interval" : subscription.items.data[0]['plan']['interval'],
+                                                  "currency" : subscription.items.data[0]['plan']['currency'],
+                                                  "amount" : subscription.items.data[0]['plan']['amount'] / 100,
+                                                  "status" : 'paid',
+                                                  "autoRenewal": subscription.collection_method == 'charge_automatically' ? true : false,
+                                                  "paymentMode" : 'online',
+                                                  "planName" : subscription.items.data[0]['plan']['metadata']['name']+' Plan',
+                                                  "defaultSpace" : subscription.items.data[0]['plan']['metadata']['defaultSpace'],
+                                                  "spaceDimension" : subscription.items.data[0]['plan']['metadata']['spaceDimension'],
+                                                  "paidOn" : new Date(),
+                                                  "createdOn" : latestSubscription.createdOn,
+                                                  "createdBy" : latestSubscription.createdBy
+                                                };
+                        // add addon object to latest created subscription object
+                        if( checkWhetherAddOn && upgradeAddon ) {
+                          subscriptionDetails = Object.assign(subscriptionDetails, {addOnDetails : latestSubscription.addOnDetails})
+                        }
+                        userSubscription[userSubscription.length-1] = subscriptionDetails
 
-                      let EmailTemplateName = "NewSubscriptionAdviser";
-                      if(userDetails.userType == 'customer') {
-                        EmailTemplateName = "NewSubscription";
-                      }
-
-                      if( userDetails.subscriptionDetails && userDetails.subscriptionDetails.length > 0 ) {
-                        EmailTemplateName = "AutoRenewalAdviser"
+                        let EmailTemplateName = "NewSubscriptionAdviser";
                         if(userDetails.userType == 'customer') {
-                          EmailTemplateName = "AutoRenewal"
+                          EmailTemplateName = "NewSubscription";
                         }
-                      }
-                      //Update user details
-                      User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
-                        if (err) {
-                          res.send(resFormat.rError(err))
-                        }
-                        else {
-                          let message = resMessage.data( 607, [{key: '{field}',val: 'Subscription'}, {key: '{status}',val: subscriptionStatus}] )
-                          //subscription purchased email template
-                          emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then( async (template) => {
-                            if(template) {
-                              template = JSON.parse(JSON.stringify(template));
-                              let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
-                              body = body.replace("{plan_name}",subscriptionDetails.planName);
-                              body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
-                              body = body.replace("{duration}",subscriptionDetails.interval);
-                              body = body.replace("{paid_on}",subscriptionDetails.paidOn);
-                              body = body.replace("{start_date}",subscriptionDetails.startDate);
-                              body = body.replace("{end_date}",subscriptionDetails.endDate);
-                              if(userProfile.userType == 'customer') {
-                                body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
-                                body = body.replace("{more_space}", subscription.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
-                              }
-                              body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
-                              const mailOptions = {
-                                to : userProfile.username,
-                                subject : template.mailSubject,
-                                html: body
-                              }
-                              sendEmail(mailOptions)
-                              
-                              //subscription purchased email template for advisor / trustee
-                              let renewalUserDetails = await User.findOne({_id: requestFrom},{firstName:1,lastName:1,username: 1})
-                              emailTemplatesRoute.getEmailTemplateByCode('renewalLegacySubscriptionEmail').then( async (template) => {
-                                if(template) {
-                                  template = JSON.parse(JSON.stringify(template));
-                                  let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
-                                      body = body.replace("{plan_name}",subscriptionDetails.planName);
-                                      body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
-                                      body = body.replace("{duration}",subscriptionDetails.interval);
-                                      body = body.replace("{paid_on}",subscriptionDetails.paidOn);
-                                      body = body.replace("{start_date}",subscriptionDetails.startDate);
-                                      body = body.replace("{end_date}",subscriptionDetails.endDate);
-                                      body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
-                                      body = body.replace("{renewed_username}",renewalUserDetails.firstName ? renewalUserDetails.firstName+' '+ (renewalUserDetails.lastName ? renewalUserDetails.lastName : '' ) : '');
 
-                                  const mailOptions = {
-                                    to : renewalUserDetails.username,
-                                    subject : template.mailSubject,
-                                    html: body
+                        if( userDetails.subscriptionDetails && userDetails.subscriptionDetails.length > 0 ) {
+                          EmailTemplateName = "AutoRenewalAdviser"
+                          if(userDetails.userType == 'customer') {
+                            EmailTemplateName = "AutoRenewal"
+                          }
+                        }
+                        //Update user details
+                        User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
+                          if (err) {
+                            res.send(resFormat.rError(err))
+                          }
+                          else {
+                            let message = resMessage.data( 607, [{key: '{field}',val: 'Subscription'}, {key: '{status}',val: subscriptionStatus}] )
+                            //subscription purchased email template
+                            emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then( async (template) => {
+                              if(template) {
+                                template = JSON.parse(JSON.stringify(template));
+                                let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
+                                body = body.replace("{plan_name}",subscriptionDetails.planName);
+                                body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
+                                body = body.replace("{duration}",subscriptionDetails.interval);
+                                body = body.replace("{paid_on}",subscriptionDetails.paidOn);
+                                body = body.replace("{start_date}",subscriptionDetails.startDate);
+                                body = body.replace("{end_date}",subscriptionDetails.endDate);
+                                if(userProfile.userType == 'customer') {
+                                  body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
+                                  body = body.replace("{more_space}", subscription.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
+                                }
+                                body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
+                                const mailOptions = {
+                                  to : userProfile.username,
+                                  subject : template.mailSubject,
+                                  html: body
+                                }
+                                sendEmail(mailOptions)
+                                
+                                //subscription purchased email template for advisor / trustee
+                                let renewalUserDetails = await User.findOne({_id: requestFrom},{firstName:1,lastName:1,username: 1})
+                                emailTemplatesRoute.getEmailTemplateByCode('renewalLegacySubscriptionEmail').then( async (template) => {
+                                  if(template) {
+                                    template = JSON.parse(JSON.stringify(template));
+                                    let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
+                                        body = body.replace("{plan_name}",subscriptionDetails.planName);
+                                        body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
+                                        body = body.replace("{duration}",subscriptionDetails.interval);
+                                        body = body.replace("{paid_on}",subscriptionDetails.paidOn);
+                                        body = body.replace("{start_date}",subscriptionDetails.startDate);
+                                        body = body.replace("{end_date}",subscriptionDetails.endDate);
+                                        body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
+                                        body = body.replace("{renewed_username}",renewalUserDetails.firstName ? renewalUserDetails.firstName+' '+ (renewalUserDetails.lastName ? renewalUserDetails.lastName : '' ) : '');
+
+                                    const mailOptions = {
+                                      to : renewalUserDetails.username,
+                                      subject : template.mailSubject,
+                                      html: body
+                                    }
+                                    sendEmail(mailOptions)
+
+                                    //Update activity logs
+                                    allActivityLog.updateActivityLogs(requestFrom, userProfile._id, 'Renew Subscription', message,'Legacies Details')
+                                    res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':message}));
                                   }
-                                  sendEmail(mailOptions)
-
-                                  //Update activity logs
-                                  allActivityLog.updateActivityLogs(requestFrom, userProfile._id, 'Renew Subscription', message,'Legacies Details')
-                                  res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':message}));
-                                }
-                                else{
-                                  //Update activity logs
-                                  allActivityLog.updateActivityLogs(requestFrom, userProfile._id, 'Renew Subscription', message,'Legacies Details')
-                                  res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':message}));
-                                }
-                              })
-                            } else {
-                              //Update activity logs
-                              allActivityLog.updateActivityLogs(requestFrom, userProfile._id, 'Renew Subscription', message,'Legacies Details')
-                              res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':message}));
-                            }
-                          })
-                        }
-                      })
-                    }
-                  })
-                }
-                else{
-                  res.send(resFormat.rError("Transaction could not be completed. Please check the details and try again."));
-                }
-              }//delete card callback function block ends
-            )//delete card block ends
-          }
-          else{
-            res.send(resFormat.rError(upgradeAddon))
+                                  else{
+                                    //Update activity logs
+                                    allActivityLog.updateActivityLogs(requestFrom, userProfile._id, 'Renew Subscription', message,'Legacies Details')
+                                    res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':message}));
+                                  }
+                                })
+                              } else {
+                                //Update activity logs
+                                allActivityLog.updateActivityLogs(requestFrom, userProfile._id, 'Renew Subscription', message,'Legacies Details')
+                                res.status(200).send(resFormat.rSuccess({'subscriptionStartDate':new Date(subscriptionStartDate), 'subscriptionEndDate':new Date(subscriptionEndDate), 'message':message}));
+                              }
+                            })
+                          }
+                        })
+                      }
+                    })
+                  }
+                  else{
+                    res.send(resFormat.rError("Transaction could not be completed. Please check the details and try again."));
+                  }
+                }//delete card callback function block ends
+              )//delete card block ends
+            }
+            else{
+              res.send(resFormat.rError(upgradeAddon))
+            }
           }
         }
       });// create subscription block ends
@@ -1414,7 +1444,8 @@ function createLegacySubscription( userProfile, stripeCustomerId, planId, reques
  * @param {*} requestParam - request parameters for add on pack
  * @param {*} res - response object for api
  */
-async function legacyChargeForAddon( userProfile, stripeCustomerId, requestParam, res ) {
+function legacyChargeForAddon( userProfile, stripeCustomerId, requestParam, res ) {
+  return new Promise(function(resolve, reject) {
   let addOnDetails = {"_id" : objectId,
                       "chargeId" : '',
                       "currency" : '',
@@ -1436,7 +1467,7 @@ async function legacyChargeForAddon( userProfile, stripeCustomerId, requestParam
   
     User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails: subscriptionDetails } }, function (err, updated) {
       if (err) {
-        return err
+        reject(err)
       }
       else {
         stripe.charges.create({
@@ -1448,13 +1479,13 @@ async function legacyChargeForAddon( userProfile, stripeCustomerId, requestParam
           receipt_email: userProfile.username,
         }, function(err, charge) {
           if (err) {
-            return stripeErrorsReturns( err )
+            reject(stripeErrorsReturns( err ))
           }
           else {
             if(charge.status == 'succeeded') {
               User.findOne({_id:userProfile._id,userType:userProfile.userType}, {}, function (err, userDetails) {
                 if (err) {
-                  return err
+                  reject(err)
                 }
                 else {
                   let userSubscription = userDetails.subscriptionDetails
@@ -1477,7 +1508,7 @@ async function legacyChargeForAddon( userProfile, stripeCustomerId, requestParam
                   //Update user details
                   User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails: userSubscription } }, function (err, updated) {
                     if (err) {
-                      return err
+                      reject(err)
                     }
                     else {
                       let message = resMessage.data( 607, [{key: '{field}',val: 'Legacy Add on plan'}, {key: '{status}',val: 'added'}] )
@@ -1501,11 +1532,11 @@ async function legacyChargeForAddon( userProfile, stripeCustomerId, requestParam
                           sendEmail(mailOptions)
                           //Update activity logs
                           allActivityLog.updateActivityLogs(userProfile._id, userProfile._id, 'Renew Subscription AddOn', message,'Legacy Details')
-                          return true
+                          resolve(true)
                         } else {
                           //Update activity logs
                           allActivityLog.updateActivityLogs(userProfile._id, userProfile._id, 'Renew Subscription AddOn', message,'Legacy Details')
-                          return true
+                          resolve(true)
                         }
                       })
                     }
@@ -1514,13 +1545,14 @@ async function legacyChargeForAddon( userProfile, stripeCustomerId, requestParam
               })
             }
             else{
-              return "Transaction could not be completed. Please check the details and try again."
+              reject("Transaction could not be completed. Please check the details and try again.")
             }
           }
         });
       }
     })
   }
+})
 }
 
 /**
