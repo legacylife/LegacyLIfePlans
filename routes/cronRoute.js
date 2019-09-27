@@ -705,7 +705,6 @@ function sendFeaturedAdvisorMail(templateCode,emailId, toName, replyContnt) {
   })
 }
 
-
 router.post(["/auto-renewal-on-update-subscription"], autoRenewalOnUpdateSubscription);
 router.post(["/update-subscription-details-if-fails"], updateSubscriptionDetailsIfFails);
 router.get("/auto-renewal-on-reminder-email", autoRenewalOnReminderEmail);
