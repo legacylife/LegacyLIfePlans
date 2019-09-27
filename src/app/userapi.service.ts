@@ -401,10 +401,16 @@ export class UserAPIService {
 
   async getCustomerUserAccess(data,customerId){
       let userAccess = data.userAccess;      
-      let response = [];
+      let response = []; var count = 0; 
       response['userAccess'] = userAccess;
       response['userDeceased'] = false;
       response['userLockoutPeriod'] = false;
+      Object.keys(userAccess).forEach((key,index) => {   
+        if(userAccess[key]=='afterDeath'){
+          count++;
+        }          
+      });
+      response['deathFilesCount'] = count;
       let lockoutLegacyDateExpire = false;
       if(data.customerId.lockoutLegacyDate && data.customerId.deceased.status=='Pending'){
          if(new Date(data.customerId.lockoutLegacyDate) < new Date()) {
