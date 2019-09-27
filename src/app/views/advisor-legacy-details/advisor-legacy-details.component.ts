@@ -47,9 +47,6 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
     private subscription: SubscriptionService
   ) {
     this.preventBackButton()
-  }
-
-  ngOnInit() {
     this.urlData = this.userapi.getURLData();
     if(this.urlData.lastThird == "legacies"){
       if(this.urlData.userType == "advisor"){
@@ -57,6 +54,10 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
       }
       this.getCustomerDetails();
     }
+  }
+
+  ngOnInit() {
+    
   }
   
   preventBackButton() {
@@ -106,7 +107,7 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.urlData.lastOne }, query)
     }
-    this.userapi.apiRequest('post', 'userlist/viewall', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'userlist/viewall', req_vars).subscribe(async result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
@@ -123,7 +124,7 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
         if( subscriptionDetails && subscriptionDetails.length > 0 ) {
           //get last element from array i.e current subscription details
           let currentSubscription     = subscriptionDetails.slice(-1)[0]
-          let remainingDays           = this.subscription.getDateDiff( moment().toDate(), moment(currentSubscription.endDate).toDate())
+          let remainingDays           = await this.subscription.getDateDiff( moment().toDate(), moment(currentSubscription.endDate).toDate())
           this.subscriptionExpiryDate = currentSubscription.endDate
           this.daysRemaining          = remainingDays
           if( remainingDays <= 60 ) {

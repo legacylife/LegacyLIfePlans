@@ -28,6 +28,9 @@ import { LocationStrategy } from '@angular/common';
 
   isDialogOpen:boolean = false
 
+  addOnSpace:number = 0
+  isAddOnPurchased:boolean = false
+
   constructor(private dialog: MatDialog, private subscriptionservice:SubscriptionService, private locationStrategy: LocationStrategy) { 
     this.premiumExpired = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? false : true
     this.freePremiumExpired = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? false : true
@@ -65,7 +68,9 @@ import { LocationStrategy } from '@angular/common';
       this.planAmount   = returnArr.planAmount
       this.planCurrency = returnArr.planCurrency
       this.defaultSpace = returnArr.defaultSpace
-      this.spaceDimension = returnArr.spaceDimension
+      this.spaceDimension = returnArr.spaceDimension,
+      this.addOnSpace = returnArr.addOnSpace,
+      this.isAddOnPurchased = returnArr.isAddOnPurchased
     })
   }
 

@@ -4,3 +4,7 @@
 ::ng-deep .large--size{
     width: 246px !important;
 }
+::ng-deep .disabled {
+    opacity: 0.2;
+    pointer-events: none;
+}

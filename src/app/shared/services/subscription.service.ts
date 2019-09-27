@@ -428,16 +428,19 @@ export class SubscriptionService {
         const plans = result.data.plans
         let returnArr = {}
         if( plans && result.status=="success" && plans.data.length>0 ) {
-          
+          let isAddOnPurchased = result.data.isAddOnPurchase
           plans.data.forEach( obj => {
             if( this.usertype == 'customer' && obj.id == 'C_YEARLY' ) {
+              let totalPrice = isAddOnPurchased ? (( obj.amount / 100 ) + Number(obj.metadata.addOnCharges)) : ( obj.amount / 100 )
               returnArr = { productId: obj.product,
                                 planId : obj.id,
                                 planInterval : obj.interval,
-                                planAmount : ( obj.amount / 100 ),
+                                planAmount : totalPrice,
                                 planCurrency : (obj.currency).toLocaleUpperCase(),
                                 defaultSpace : obj.metadata.defaultSpace,
-                                spaceDimension : obj.metadata.spaceDimension
+                                spaceDimension : obj.metadata.spaceDimension,
+                                addOnSpace: obj.metadata.addOnSpace,
+                                isAddOnPurchased : isAddOnPurchased
                               }
             }
             else if( this.usertype == 'advisor' && obj.id == 'A_MONTHLY' ) {
@@ -491,13 +494,15 @@ export class SubscriptionService {
         const plans = result.data.plans
         let returnArr = {}
         if( plans && result.status=="success" && plans.data.length>0 ) {
-          
+          let isAddOnPurchased = result.data.isAddOnPurchase
+
           plans.data.forEach( obj => {
             if( query.userType == 'customer' && obj.id == 'C_YEARLY' ) {
+              let totalPrice = isAddOnPurchased ? (( obj.amount / 100 ) + Number(obj.metadata.addOnCharges)) : ( obj.amount / 100 )
               returnArr = { productId: obj.product,
                                 planId : obj.id,
                                 planInterval : obj.interval,
-                                planAmount : ( obj.amount / 100 ),
+                                planAmount : totalPrice,
                                 planCurrency : (obj.currency).toLocaleUpperCase(),
                                 defaultSpace : obj.metadata.defaultSpace,
                                 spaceDimension : obj.metadata.spaceDimension

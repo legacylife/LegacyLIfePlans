@@ -307,8 +307,7 @@ export class CardDetailsComponent implements OnInit {
       }      
       if(result.status=='success') {
         this.dialog.closeAll(); 
-        this.snack.open(result.message, 'OK', { duration: 4000 })
-        //this.snack.open("You have successfully renewed the subscription for this legacy.", 'OK', { duration: 4000 })
+        this.snack.open("You have successfully renewed subscription for this user. Please check email for more info.", 'OK', { duration: 4000 })
       }
       this.loader.close();
     }, (err) => {  
