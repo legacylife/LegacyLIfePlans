@@ -29,13 +29,19 @@
             {{ row?.toDate | date: 'yyyy/MM/dd'}}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">
+        <ngx-datatable-column [resizeable]="false" name="Status"  prop="sponsoredStatus" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            <mat-chip class="active--status--chip" mat-sm-chip>{{row.status}}</mat-chip>
+            <mat-chip class="active--status--chip" mat-sm-chip>{{row.sponsoredStatus}}</mat-chip>
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" name="Actions" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
+           <!-- <a mat-icon-button mat-sm-button color="primary" class="mb-1" mattooltip="Toggle Collapse" title="Remove as sponsored" 
+            *ngIf="row.sponsoredStatus=='Active'"><mat-icon style="font-size: 27px;" (click)="manageSponsored('remove',row._id)">star</mat-icon></a>
+             <a mat-icon-button mat-sm-button color="primary" class="mb-1" mattooltip="Toggle Collapse" title="Set as sponsored" 
+              *ngIf="row.sponsoredStatus=='Pending'">
+              <mat-icon style="font-size: 27px;">star_border</mat-icon>
+            </a> -->
             <a mat-icon-button mat-sm-button color="primary" class="mb-1"
               [routerLink]="['/admin/ad-management/ad-management-view', row._id]" mattooltip="Toggle Collapse" title="Edit">
               <mat-icon style="font-size: 27px;">edit</mat-icon>
