@@ -297,9 +297,9 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       }
       this.userapi.apiRequest('post', 'userlist/latitudeLongitude', req_vars).subscribe(result => {
         if (result.status == "error") {
-          this.profile = [];
+          //this.profile = [];
         } else {
-          this.profile = result.data.userProfile;
+         // this.profile = result.data.userProfile;
         }
       }, (err) => {
         console.error(err);
