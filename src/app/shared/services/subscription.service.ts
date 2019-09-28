@@ -46,9 +46,15 @@ export class SubscriptionService {
   /**
    * Check the user subscription details
    */
-  checkSubscription = async (callback) => {
-    this.userId = localStorage.getItem("endUserId");
-    this.usertype = localStorage.getItem("endUserType");
+  checkSubscription = async (legacyUserData, callback) => {
+    if( legacyUserData == '') {
+      this.userId = localStorage.getItem("endUserId");
+      this.usertype = localStorage.getItem("endUserType");
+    }
+    else{
+      this.userId = legacyUserData.userId
+      this.usertype = legacyUserData.userType
+    }
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: this.usertype }, {})
     }

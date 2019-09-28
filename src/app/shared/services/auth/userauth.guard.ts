@@ -32,7 +32,7 @@ export class UserAuthGuard implements CanActivate {
         return false;
       }
       if(this.userInfo && this.userInfo.endUserType!= '' && acceptedUsers.indexOf(this.userInfo.endUserType) >= 0 ) {
-        this.subscriptionservice.checkSubscription( ( returnArr )=> {
+        this.subscriptionservice.checkSubscription( '', ( returnArr )=> {
           let isProuser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
           let isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
           //let acceptedUrls = ['/'+this.userInfo.endUserType+'/account-setting','/'+this.userInfo.endUserType+'/'+this.userInfo.endUserType+'-subscription']

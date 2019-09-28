@@ -9,6 +9,7 @@ import { UserAPIService } from 'app/userapi.service';
 import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { serverUrl,s3Details } from 'app/config';
+import { FileHandlingService } from 'app/shared/services/file-handling.service';
 const URL = serverUrl + '/api/documents/letterMessage';
 
 @Component({
@@ -37,7 +38,9 @@ export class LettersMessagesModelComponent implements OnInit {
   toUserId:string = ''
   subFolderName:string = ''
 
-  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService,private userapi: UserAPIService ) {}
+  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,
+    private confirmService: AppConfirmService,private loader: AppLoaderService,
+    private userapi: UserAPIService, private fileHandlingService: FileHandlingService ) {}
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
@@ -155,11 +158,18 @@ export class LettersMessagesModelComponent implements OnInit {
   public fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
     this.fileErrors = [];
+    let totalItemsToBeUpload = this.uploader.queue.length,
+        totalUploderFileSize = 0,
+        remainingSpace = 0,
+        message = ''
     this.uploader.queue.forEach((fileoOb) => {
       let filename = fileoOb.file.name;
       var extension = filename.substring(filename.lastIndexOf('.') + 1);
       var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
       let resp = this.isExtension(extension,fileExts);
+
+      totalUploderFileSize += fileoOb.file.size
+
       if(!resp){
         var FileMsg = "This file '" + filename + "' is not supported";
         this.uploader.removeFromQueue(fileoOb);
@@ -168,24 +178,45 @@ export class LettersMessagesModelComponent implements OnInit {
         setTimeout(()=>{    
           this.fileErrors = []
         }, 5000);
-    
       }
     });
 
-    if(this.uploader.getNotUploadedItems().length){
-     this.uploaderCopy = cloneDeep(this.uploader)
-     this.uploader.queue.splice(1, this.uploader.queue.length - 1)
-     this.uploaderCopy.queue.splice(0, 1)
-     
-     this.uploader.queue.forEach((fileoOb, ind) => {
-           this.uploader.uploadItem(fileoOb);
-      });
+    let legacyUserData = {userId: this.toUserId, userType: this.urlData.userType}
+    this.fileHandlingService.checkAvailableSpace( legacyUserData, async (spaceDetails) => {
+      remainingSpace = Number(spaceDetails.remainingSpace)
+      message = spaceDetails.message
+    
+      if( totalUploderFileSize > remainingSpace) {
+        this.confirmService.reactivateReferEarnPopup({ message: message, status: 'notactivate' }).subscribe(res => {
+          if (res) {
+            console.log("**************",res)
+          }
+        })
+      }
+      else{
+        let proceedToUpload = true
+        if( message != '' ) {
+          let confirmResponse = await this.confirmService.confirm({ message: message }).toPromise()
+          proceedToUpload = true
+        }
+        if( proceedToUpload ) {
+          if(this.uploader.getNotUploadedItems().length){
+          this.uploaderCopy = cloneDeep(this.uploader)
+          this.uploader.queue.splice(1, this.uploader.queue.length - 1)
+          this.uploaderCopy.queue.splice(0, 1)
+          
+          this.uploader.queue.forEach((fileoOb, ind) => {
+                this.uploader.uploadItem(fileoOb);
+            });
 
-      this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-        this.updateProgressBar();
-        this.getlettersMessagesDocuments();
-      };
-    }
+            this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+              this.updateProgressBar();
+              this.getlettersMessagesDocuments();
+            };
+          }
+        }
+      }
+    })
   }
 
   updateProgressBar(){

@@ -152,7 +152,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   }
 
   checkSubscription() {
-    this.subscriptionservice.checkSubscription( ( returnArr )=> {
+    this.subscriptionservice.checkSubscription( '',( returnArr )=> {
       this.userCreateOn = returnArr.userCreateOn
       this.isSubscribedBefore = returnArr.isSubscribedBefore
       this.isSubscriptionCanceled = returnArr.isSubscriptionCanceled

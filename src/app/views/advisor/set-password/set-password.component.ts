@@ -69,7 +69,7 @@ export class SetPasswordComponent implements OnInit {
           localStorage.setItem("endUserProSubscription", 'no');
           localStorage.setItem("endUserSubscriptionAddon", userData.addOnGiven);
   
-          this.subscriptionservice.checkSubscription( ( returnArr )=> {})  
+          this.subscriptionservice.checkSubscription( '', ( returnArr )=> {})  
           if (userData.profilePicture) {
             this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + userData.profilePicture;
             localStorage.setItem('endUserProfilePicture', this.profilePicture)

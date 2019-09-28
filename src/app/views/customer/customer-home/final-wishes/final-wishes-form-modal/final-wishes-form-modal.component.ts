@@ -10,6 +10,7 @@ import { serverUrl, s3Details } from '../../../../../config';
 import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 import { NumberValueAccessor } from '@angular/forms/src/directives';
+import { FileHandlingService } from 'app/shared/services/file-handling.service';
 const URL = serverUrl + '/api/documents/finalWishes';
 @Component({
   selector: 'app-essenioal-id-box',
@@ -40,7 +41,8 @@ export class FinalWishesFormModalComponent implements OnInit {
 
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
-    private userapi: UserAPIService  ,@Inject(MAT_DIALOG_DATA) public data: any ) 
+    private userapi: UserAPIService  ,@Inject(MAT_DIALOG_DATA) public data: any,
+    private fileHandlingService: FileHandlingService ) 
   { this.folderName = data.FolderName;this.newName = data.newName;}
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
@@ -173,39 +175,68 @@ export class FinalWishesFormModalComponent implements OnInit {
   }
   
   public fileOverBase(e: any): void {
-      this.hasBaseDropZoneOver = e;
-      this.fileErrors = [];
-      this.uploader.queue.forEach((fileoOb) => {
-        let filename = fileoOb.file.name;
-        var extension = filename.substring(filename.lastIndexOf('.') + 1);
-        var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
-        let resp = this.isExtension(extension,fileExts);
-        if(!resp){
-          var FileMsg = "This file '" + filename + "' is not supported";
-          this.uploader.removeFromQueue(fileoOb);
-          let pushArry = {"error":FileMsg} 
-          this.fileErrors.push(pushArry); 
-          setTimeout(()=>{    
-            this.fileErrors = []
-          }, 5000);
-      
+    this.hasBaseDropZoneOver = e;
+    this.fileErrors = [];
+    let totalItemsToBeUpload = this.uploader.queue.length,
+        totalUploderFileSize = 0,
+        remainingSpace = 0,
+        message = ''
+    this.uploader.queue.forEach((fileoOb) => {
+      let filename = fileoOb.file.name;
+      var extension = filename.substring(filename.lastIndexOf('.') + 1);
+      var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
+      let resp = this.isExtension(extension,fileExts);
+
+      totalUploderFileSize += fileoOb.file.size
+
+      if(!resp){
+        var FileMsg = "This file '" + filename + "' is not supported";
+        this.uploader.removeFromQueue(fileoOb);
+        let pushArry = {"error":FileMsg} 
+        this.fileErrors.push(pushArry); 
+        setTimeout(()=>{    
+          this.fileErrors = []
+        }, 5000);
+    
+      }
+    });
+
+    let legacyUserData = {userId: this.toUserId, userType: this.urlData.userType}
+    this.fileHandlingService.checkAvailableSpace( legacyUserData, async (spaceDetails) => {
+      remainingSpace = Number(spaceDetails.remainingSpace)
+      message = spaceDetails.message
+    
+      if( totalUploderFileSize > remainingSpace) {
+        this.confirmService.reactivateReferEarnPopup({ message: message, status: 'notactivate' }).subscribe(res => {
+          if (res) {
+            console.log("**************",res)
+          }
+        })
+      }
+      else{
+        let proceedToUpload = true
+        if( message != '' ) {
+          let confirmResponse = await this.confirmService.confirm({ message: message }).toPromise()
+          proceedToUpload = true
         }
-      });
-  
-      if(this.uploader.getNotUploadedItems().length){
-        this.uploaderCopy = cloneDeep(this.uploader)
-        this.uploader.queue.splice(1, this.uploader.queue.length - 1)
-        this.uploaderCopy.queue.splice(0, 1)
-        
-        this.uploader.queue.forEach((fileoOb, ind) => {
+        if( proceedToUpload ) {
+          if(this.uploader.getNotUploadedItems().length){
+            this.uploaderCopy = cloneDeep(this.uploader)
+            this.uploader.queue.splice(1, this.uploader.queue.length - 1)
+            this.uploaderCopy.queue.splice(0, 1)
+            
+            this.uploader.queue.forEach((fileoOb, ind) => {
               this.uploader.uploadItem(fileoOb);
-         });
-   
-         this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-           this.updateProgressBar();
-           this.getWishesDocuments();
-         };
-       }
+            });
+        
+            this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+              this.updateProgressBar();
+              this.getWishesDocuments();
+            };
+          }
+        }
+      }
+    })
   }
 
   updateProgressBar(){

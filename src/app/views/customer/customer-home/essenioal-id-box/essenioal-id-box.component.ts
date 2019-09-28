@@ -517,7 +517,9 @@ export class EssenioalIdBoxComponent implements OnInit {
         }
       });
 
-      this.fileHandlingService.checkAvailableSpace( async (spaceDetails) => {
+      let legacyUserData = {userId: this.toUserId, userType: this.urlData.userType}
+      this.fileHandlingService.checkAvailableSpace( legacyUserData, async (spaceDetails) => {
+        console.log("spaceDetails",spaceDetails,"***totalUploderFileSize***",totalUploderFileSize)
         remainingSpace = Number(spaceDetails.remainingSpace)
         message = spaceDetails.message
       
@@ -526,10 +528,11 @@ export class EssenioalIdBoxComponent implements OnInit {
             if (res) {
               console.log("**************",res)
             }
+            this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
           })
         }
         else{
-          let proceedToUpload = false
+          let proceedToUpload = true
           if( message != '' ) {
             let confirmResponse = await this.confirmService.confirm({ message: message }).toPromise()
             proceedToUpload = true
