@@ -26,25 +26,35 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
 
     if( eventType == 'invoice.payment_succeeded' ) {
       let returnData =  requestParam.data.object
-      let customerId = returnData.customer
+      let stripeCustomerId = returnData.customer
       let customer_email = returnData.customer_email
       let autoRenewalUpdate = returnData.collection_method
       
       if( autoRenewalUpdate == 'charge_automatically' ) {
                 
         let subscriptionData = returnData.lines.data
-        User.find( { username: customer_email, stripeCustomerId:customerId }, {}, function (err, userData) {
+        User.find( { username: customer_email, stripeCustomerId:stripeCustomerId }, {}, function (err, userData) {
           
           if( !err && userData.length > 0 ) {
             let userProfile = userData[0]
             
             if( subscriptionData[0]['type'] == 'subscription' ) {
 
+              let checkWhetherAddOn = false,
+                  newRequestParam = {},
+                  isAddOnPurchase
+
               var currentDate  = new Date();
               var currentSubscriptionEndDate = ''//new Date(subscriptionData[0]['period']['start']*1000);
               let updateuser = false
               let subscriptionDetails   = userProfile.subscriptionDetails ? userProfile.subscriptionDetails : null
               if( subscriptionDetails != null && subscriptionDetails.length > 0 ) {
+
+                if( userProfile.userType == 'customer' ) {
+                  isAddOnPurchase    = subscriptionDetails[subscriptionDetails.length - 1]['addOnDetails']
+                  checkWhetherAddOn  = isAddOnPurchase ? true : false
+                }
+
                 subscriptionEndDate   = subscriptionDetails[(subscriptionDetails.length-1)]['endDate']
                 subscriptionStatus    = subscriptionDetails[(subscriptionDetails.length-1)]['status']
                 currentSubscriptionEndDate = new Date(subscriptionEndDate)
@@ -54,6 +64,17 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
               }
               
               if( updateuser ) {
+
+                if( userProfile.userType == 'customer' && checkWhetherAddOn ) {
+                  newRequestParam = isAddOnPurchase ? 
+                                      { _id: userProfile._id,
+                                        userType: userProfile.userType,
+                                        currency: isAddOnPurchase.currency,
+                                        amount: subscriptionData[0]['plan']['metadata']['addOnCharges'],
+                                        spaceAlloted: isAddOnPurchase.spaceAlloted
+                                      } : {}
+                }
+
                 let subscriptionDetails = {"_id" : objectId,
                                             "productId" : subscriptionData[0]['plan']['product'],
                                             "planId" : subscriptionData[0]['plan']['id'],
@@ -89,11 +110,12 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
                 userSubscription.push(subscriptionDetails)
                 //console.log("userFullName",userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '',"email: -",userProfile.username,  "created on :-",userProfile.createdOn);
                 //Update user details
-                User.updateOne({ _id: userProfile._id }, { $set: { subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
+                User.updateOne({ _id: userProfile._id }, { $set: { subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, async function (err, updated) {
                   if (err) {
                     res.send(resFormat.rError(err))
                   }
                   else {
+                    let userDetails = await User.find( { username: customer_email, stripeCustomerId:stripeCustomerId })
                     //subscription purchased email template
                     emailTemplatesRoute.getEmailTemplateByCode(EmailTemplateName).then((template) => {
                       if(template) {
@@ -117,10 +139,20 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
                         }
                         sendEmail(mailOptions)
                         console.log("email sent")
-                        res.json({received: true});
+                        if( userProfile.userType == 'customer' && checkWhetherAddOn ) {
+                          chargeForAddon( userDetails, stripeCustomerId, newRequestParam, res )
+                        }
+                        else{
+                          res.json({received: true});
+                        }
                       } else {
                         console.log("email sent")
-                        res.json({received: true});
+                        if( userProfile.userType == 'customer' && checkWhetherAddOn ) {
+                          chargeForAddon( userDetails, stripeCustomerId, newRequestParam, res )
+                        }
+                        else{
+                          res.json({received: true});
+                        }
                       }
                     })
                   }
@@ -131,6 +163,123 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
         })
       }
     }
+  }
+}
+
+
+/**
+ * Request from customer itself - Apply to addon plan and update the latest subscription object against to user
+ * @param {*} userProfile 
+ * @param {*} stripeCustomerId 
+ * @param {*} requestParam 
+ * @param {*} res 
+ */
+function chargeForAddon( userProfile, stripeCustomerId, requestParam, res ) {
+  let addOnDetails = {"_id" : objectId,
+                      "chargeId" : '',
+                      "currency" : '',
+                      "amount" : 0,
+                      "status" : 'incomplete',
+                      "paymentMode" : 'online',
+                      "spaceAlloted" : requestParam.spaceAlloted,
+                      "spaceDimension" : 'GB',
+                      "paidOn" : '',
+                      "createdOn" : new Date(),
+                      "createdBy" : mongoose.Types.ObjectId(requestParam._id)
+                    };
+
+  let subscriptionDetails = userProfile.subscriptionDetails
+  if( subscriptionDetails && subscriptionDetails.length > 0 ) {
+    currentSubscription = subscriptionDetails[(subscriptionDetails.length-1)]
+    currentSubscription['addOnDetails'] = addOnDetails
+    subscriptionDetails[(subscriptionDetails.length-1)] = currentSubscription
+  
+    User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails: subscriptionDetails } }, function (err, updated) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      }
+      else {
+        stripe.charges.create({
+          customer: stripeCustomerId,
+          amount: (requestParam.amount)*100,
+          currency: requestParam.currency,
+          description: "Addon Charge for "+userProfile.username,
+          capture: true,
+          receipt_email: userProfile.username,
+        }, function(err, charge) {
+          if (err) {
+            stripeErrors( err, res )
+          }
+          else {
+            if(charge.status == 'succeeded') {
+              User.findOne({_id:userProfile._id,userType:userProfile.userType}, {}, function (err, userDetails) {
+                if (err) {
+                  res.status(401).send(resFormat.rError(err))
+                }
+                else {
+                  let userSubscription = userDetails.subscriptionDetails
+                  let latestSubscription = userSubscription[userSubscription.length-1]
+                  let addOnDetails = {"_id" : latestSubscription['addOnDetails']['_id'],
+                                      "chargeId" : charge.id,
+                                      "currency" : charge.currency,
+                                      "amount" : (charge.amount)/100,
+                                      "status" : 'paid',
+                                      "paymentMode" : 'online',
+                                      "spaceAlloted" : requestParam.spaceAlloted,
+                                      "spaceDimension" : 'GB',
+                                      "paidOn" : new Date(),
+                                      "createdOn" : latestSubscription['addOnDetails']['createdOn'],
+                                      "createdBy" : latestSubscription['addOnDetails']['createdBy']
+                                    };
+                  latestSubscription['addOnDetails'] = addOnDetails
+                  userSubscription[userSubscription.length-1] = latestSubscription
+                  
+                  //Update user details
+                  User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails: userSubscription } }, function (err, updated) {
+                    if (err) {
+                      res.send(resFormat.rError(err))
+                    }
+                    else {
+                      let message = resMessage.data( 607, [{key: '{field}',val: 'Add on plan'}, {key: '{status}',val: 'added'}] )
+                      //subscription purchased email template
+                      emailTemplatesRoute.getEmailTemplateByCode("AddonSubscription").then((template) => {
+                        let subscriptionDetails = userProfile.subscriptionDetails
+                        if(template) {
+                          template = JSON.parse(JSON.stringify(template));
+                          let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
+                          body = body.replace("{addon_space}",addOnDetails.spaceAlloted+' '+addOnDetails.spaceDimension);
+                          body = body.replace("{plan_name}",subscriptionDetails[subscriptionDetails.length-1]['planName']);
+                          body = body.replace("{amount}", currencyFormatter.format(addOnDetails.amount, { code: (addOnDetails.currency).toUpperCase() }));
+                          body = body.replace("{duration}",subscriptionDetails[subscriptionDetails.length-1]['interval']);
+                          body = body.replace("{paid_on}",addOnDetails.paidOn);
+                          body = body.replace("{end_date}",subscriptionDetails[subscriptionDetails.length-1]['endDate']);
+                          const mailOptions = {
+                            to : userProfile.username,
+                            subject : template.mailSubject,
+                            html: body
+                          }
+                          sendEmail(mailOptions)
+                          //Update activity logs
+                          //allActivityLog.updateActivityLogs(userProfile._id, userProfile._id, 'Subscription AddOn', 'Addon has been auto renewed successfully.','Account Settings')
+                          res.json({received: true});
+                        } else {
+                          //Update activity logs
+                          //allActivityLog.updateActivityLogs(userProfile._id, userProfile._id, 'Subscription AddOn', 'Addon has been auto renewed successfully.','Account Settings')
+                          res.json({received: true});
+                        }
+                      })
+                    }
+                  })
+                }
+              })
+            }
+            else{
+              res.send(resFormat.rError("Transaction could not be completed. Please check the details and try again."));
+            }
+          }
+        });
+      }
+    })
   }
 }
 
