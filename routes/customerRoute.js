@@ -166,6 +166,7 @@ function essentialProfileList(req, res) {
       } else {
         let totalTrusteeRecords = 0;
         if(essentialList){
+          getuserFolderSize(query.personalProfileQuery.customerId);
           Trustee.count(personalProfileQuery, function (err, TrusteeCount) {
           if (TrusteeCount) {
             totalTrusteeRecords = TrusteeCount
@@ -189,6 +190,7 @@ function essentialIdList(req, res) {
       totalIDRecords = essentialIDList.length;
       let totalTrusteeIDRecords = 0;
     if(totalIDRecords>0){
+      getuserFolderSize(query.idQuery.customerId);
       Trustee.count(idQuery, function (err, TrusteeCount) {
         if (TrusteeCount) {
           totalTrusteeIDRecords = TrusteeCount
@@ -226,6 +228,7 @@ function essentialProfessionalsList(req, res) {
       totalProfessionalRecords = essentialProfessionalList.length;
       let totalTrusteeProfessionalsRecords = 0;
       if(totalProfessionalRecords>0){
+        getuserFolderSize(query.professionalsQuery.customerId);
         Trustee.count(professionalsQuery, function (err, TrusteeCount) {
           if (TrusteeCount) {
             totalTrusteeProfessionalsRecords = TrusteeCount
@@ -1028,6 +1031,25 @@ async function referAndEarnParticipate(req, res) {
       res.status(200).send(resFormat.rSuccess(result))
     }
   })
+}
+
+function getuserFolderSize(folder,res) {
+  const s3Sizer = new S3Sizer({
+      accessKeyId: constants.s3Details.awsKey,
+      secretAccessKey: constants.s3Details.awsSecret,
+      region:"us-east-1"
+  });
+
+  s3Sizer.getFolderSize(constants.s3Details.bucketName, folder, function(err, size) {
+    console.log("**************",size,'****************')
+    User.updateOne({ _id: folder }, { $set: { s3Size: size } }, function (err, updatedUser) {
+      if (err) {
+        return err;
+      } else {
+       return size;
+      }
+    })
+ });
 }
 
 router.post("/my-essentials-req", myEssentialsUpdate)
