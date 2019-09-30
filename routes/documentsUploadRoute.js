@@ -1188,7 +1188,7 @@ function deleteDoc(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,docFilePath,fileName.docName);
-          getuserFolderSize(fileDetails._id);
+          getuserFolderSize(fileDetails.customerId);
           let result = { userId:fileDetails._id, "message": resMsg }
           res.send(resFormat.rSuccess(result))
         }
@@ -1217,7 +1217,7 @@ function deleteIdDocument(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,IDdocFilePath,fileName.docName);
-          getuserFolderSize(fileDetails._id);
+          getuserFolderSize(fileDetails.customerId);
           let message = resMessage.data( 607, [{key: '{field}',val: 'ID Box documents'}, {key: '{status}',val: 'deleted'}] )
           //Update activity logs
           allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
