@@ -34,6 +34,12 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
     code: 'es',
   }]
   @Input() notificPanel;
+
+  userType:string = ''
+  userId:string = ''
+  allowAddTrustee:boolean = false
+  allowAddToDo:boolean = false
+
   constructor(
     private layout: LayoutService,
     private navService: NavigationService,
@@ -46,6 +52,8 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.userId = localStorage.getItem('endUserId')
+    this.userType = localStorage.getItem('endUserType')
     this.picService.itemValue.subscribe((nextValue) => {
       if(nextValue)
         this.profilePicture =  nextValue
@@ -78,6 +86,25 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
       })
       this.menuItems = mainItems
     })
+
+
+    let isProuser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+    let isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
+    if(!isProuser) {
+      if(!isFreeProuser) {
+        this.allowAddTrustee = false
+        this.allowAddToDo = false
+      }
+      else{
+        this.allowAddTrustee = true
+        this.allowAddToDo = true
+      }
+    }
+    else{
+      this.allowAddTrustee = true
+      this.allowAddToDo = true
+    }
+
   }
   ngOnDestroy() {
     this.menuItemSub.unsubscribe()

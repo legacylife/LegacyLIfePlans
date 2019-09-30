@@ -218,6 +218,7 @@ export class PetsModalComponent implements OnInit {
           if (res) {
             console.log("**************",res)
           }
+          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
         })
       }
       else{

@@ -44,11 +44,11 @@
 
             <ul class="menu header--ul m-0 p-0">
               <li class="mat-menu-item">
-                <a matRipple  (click)="openAddTrusteeModal('', true)">
+                <a matRipple  (click)="allowAddTrustee && openAddTrusteeModal('', true)">
                   <mat-icon>group_add</mat-icon> Add Trustees
                 </a>
               </li>
-              <li class="mat-menu-item" (click)="openTodosModal({})">
+              <li class="mat-menu-item" (click)="allowAddToDo && openTodosModal({})">
                 <a matRipple><mat-icon>list</mat-icon> To dos</a>
               </li>
               <li class="mat-menu-item">
