@@ -1212,11 +1212,11 @@ function deleteIdDocument(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      personalIdProof.updateOne({ _id: fileDetails._id }, proquery, function (err, updatedUser) {
+      personalIdProof.updateOne({ _id: fileDetails._id }, proquery, async function (err, updatedUser) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          resMsg = deleteDocumentS3(fileDetails.customerId,IDdocFilePath,fileName.docName);
+          resMsg = await deleteDocumentS3(fileDetails.customerId,IDdocFilePath,fileName.docName);
           getuserFolderSize(toId);
           let message = resMessage.data( 607, [{key: '{field}',val: 'ID Box documents'}, {key: '{status}',val: 'deleted'}] )
           //Update activity logs
