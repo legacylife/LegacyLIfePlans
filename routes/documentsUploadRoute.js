@@ -1772,6 +1772,7 @@ function getuserFolderSize(folder,res) {
     });
 
     s3Sizer.getFolderSize(constants.s3Details.bucketName, folder, function(err, size) {
+      console.log("**************",size,'****************')
       User.updateOne({ _id: folder }, { $set: { s3Size: size } }, function (err, updatedUser) {
         if (err) {
           return err;
