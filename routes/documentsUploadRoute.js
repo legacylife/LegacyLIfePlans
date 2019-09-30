@@ -1217,7 +1217,7 @@ function deleteIdDocument(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,IDdocFilePath,fileName.docName);
-          getuserFolderSize(fileDetails.customerId);
+          getuserFolderSize(toId);
           let message = resMessage.data( 607, [{key: '{field}',val: 'ID Box documents'}, {key: '{status}',val: 'deleted'}] )
           //Update activity logs
           allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
@@ -1272,7 +1272,7 @@ function deleteWishessubFolderDoc(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,finalWishesFilePath,fileName.docName);
-          getuserFolderSize(fileDetails.customerId);
+          getuserFolderSize(toId);
           let message = resMessage.data( 607, [{key: '{field}',val: 'Final Wishes documents'}, {key: '{status}',val: 'deleted'}] )
           //Update activity logs
           allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
@@ -1304,7 +1304,7 @@ function deletePetDoc(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,petsFilePath,fileName.docName);
-          getuserFolderSize(fileDetails.customerId);
+          getuserFolderSize(toId);
           let message = resMessage.data( 607, [{key: '{field}',val: 'Pets documents'}, {key: '{status}',val: 'deleted'}] )
           //Update activity logs
           allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
@@ -1335,7 +1335,7 @@ function deleteTimeCapsuleDoc(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,timeCapsuleFilePath,fileName.docName);
-          getuserFolderSize(fileDetails.customerId);
+          getuserFolderSize(toId);
           let message = resMessage.data( 607, [{key: '{field}',val: 'Time Capsule documents'}, {key: '{status}',val: 'deleted'}] )
           //Update activity logs
           allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
@@ -1367,7 +1367,7 @@ function deleteInsuranceDocument(req, res) {
           res.send(resFormat.rError(err))
         } else {
               resMsg = deleteDocumentS3(fileDetails.customerId,insuranceFilePath,fileName.docName);
-              getuserFolderSize(fileDetails.customerId);
+              getuserFolderSize(toId);
               let message = resMessage.data( 607, [{key: '{field}',val: 'Insurance documents'}, {key: '{status}',val: 'deleted'}] )
               //Update activity logs
               allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
@@ -1423,7 +1423,7 @@ function deleteFinanceDocument(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,financeFilePath,fileName.docName);
-          getuserFolderSize(fileDetails.customerId);
+          getuserFolderSize(toId);
           let message = resMessage.data( 607, [{key: '{field}',val: 'Finance documents'}, {key: '{status}',val: 'deleted'}] )
           //Update activity logs
           allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
@@ -1457,7 +1457,7 @@ function deleteLetterMessageDocument(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,letterMessageFilePath,fileName.docName);
-          getuserFolderSize(fileDetails.customerId);
+          getuserFolderSize(toId);
           let message = resMessage.data( 607, [{key: '{field}',val: 'Letter and Message documents'}, {key: '{status}',val: 'deleted'}] )
           //Update activity logs
           allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
@@ -1541,7 +1541,7 @@ function deleteInviteDocument(req, res) {
         res.send(resFormat.rError(err))
       } else {
         resMsg = deleteDocumentS3(fileDetails.customerId,inviteDocumentsPath,proquery.docName);
-        getuserFolderSize(fileDetails.customerId);
+        getuserFolderSize(toId);
         let message = resMessage.data( 607, [{key: '{field}',val: 'Invite documents'}, {key: '{status}',val: 'deleted'}] )
         //Update activity logs
         allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, proquery.docName)
@@ -1685,7 +1685,7 @@ function deleteDeceasedDoc(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,deceasedFilessPath,fileName.docName);
-          getuserFolderSize(fileDetails.customerId);
+          getuserFolderSize(toId);
           let message = resMessage.data( 607, [{key: '{field}',val: 'Deceased documents'}, {key: '{status}',val: 'deleted'}] )
           //Update activity logs
           allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
