@@ -182,7 +182,11 @@ function addEnquiryReply(req, res) {
               } else {
                 let toName = found.customerId.firstName;
                 let emailId = found.customerId.username;
-                let zips = proquery.zipcodes.join(",")
+                let zips = [];
+                if(proquery.zipcodes){
+                  zips = proquery.zipcodes.join(",")
+                }
+                
 
                 let replyContnt = [];
                 replyContnt['zipcodes'] = zips;
@@ -377,19 +381,17 @@ async function completeTransaction( req, res ) {
          console.log('advertisementData fromDate-=====>',advertisementData.fromDate)
           let updateStatus = advertisementData.sponsoredStatus;
           let dates = advertisementData.fromDate.toISOString().substring(0, 10);
-          if(new Date(dates) == new Date()){  
+          if(new Date(dates) <= new Date()){  
             console.log('first date ', new Date(dates) ,'======', new Date());
             updateStatus = 'Active';
             let newArray = [];
-            let UserData = await User.findOne({_id:advertisementData.customerId},{_id:1,username:1,firstName:1,lastName:1,sponsoredAdvisor:1,status:1,sponsoredZipcodes:1});
+            let UserData = await User.findOne({_id:customerId},{_id:1,username:1,firstName:1,lastName:1,sponsoredAdvisor:1,status:1,sponsoredZipcodes:1});
             if(UserData){
-                  console.log('adminReply-=====>',adminReply)
-                  let newArray = adminReply.zipcodes;
-                  if(UserData.sponsoredZipcodes) {
-                    newArray = adminReply.zipcodes.concat(UserData.sponsoredZipcodes);
+                  console.log('adminReply-=====>',adminReply)                  
+                  if(adminReply[0].zipcodes.length > 0) {
+                    newArray = adminReply[0].zipcodes;
                   }
-
-                 await User.updateOne({_id:key.customerId},{sponsoredAdvisor:'yes',sponsoredZipcodes:newArray});
+                 await User.updateOne({_id:customerId},{sponsoredAdvisor:'yes',sponsoredZipcodes:newArray});
             }
           }else{  console.log(' date not match ', new Date(dates) ,'======', new Date());}  
         
@@ -401,7 +403,7 @@ async function completeTransaction( req, res ) {
               let message = resMessage.data( 607, [{key: '{field}',val: 'Advertisement Payment'}, {key: '{status}',val: 'done'}] )
               //Update activity logs
               allActivityLog.updateActivityLogs( customerId, customerId, "Advertisement Enquiry", message, "Payment page" )
-              res.status(200).send(resFormat.rSuccess({"message":message}))    
+              res.status(200).send(resFormat.rSuccess({"message":message}))   
             }
           })
         }
