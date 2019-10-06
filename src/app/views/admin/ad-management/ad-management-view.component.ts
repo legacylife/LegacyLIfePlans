@@ -189,20 +189,25 @@ export class AddManagementViewComponent implements OnInit {
 
 
   rejectEnquiry() {
-    let enquiryData = {
-      query: Object.assign({_id:this.data._id,adminId:this.userId})
+    let zipcodeList = this.enquiryFormReply.controls['zipcodes'].value;
+    if(zipcodeList) {
+      let enquiryData = {
+        query: Object.assign({_id:this.data._id,adminId:this.userId})
+      }
+      this.loader.open();
+      this.api.apiRequest('post', 'advertisement/submitRejectEnquiry', enquiryData).subscribe(result => {
+      this.loader.close();
+        if (result.status=="success") { 
+          this.getUser()  
+          this.snack.open(result.data.message, 'OK', { duration: 10000 })
+        }     
+      }, (err) => {
+        this.snack.open(err, 'OK', { duration: 10000 })
+      })
     }
-
-    this.loader.open();
-    this.api.apiRequest('post', 'advertisement/submitRejectEnquiry', enquiryData).subscribe(result => {
-    this.loader.close();
-      if (result.status=="success") {    
-        this.getUser()  
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
-      }     
-    }, (err) => {
-      this.snack.open(err, 'OK', { duration: 4000 })
-    })
+    else{
+      this.snack.open("Please select atleast one zipcode.", 'OK', { duration: 10000 })
+    }
   }
   
   toggleSidenav() {

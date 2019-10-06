@@ -166,7 +166,7 @@
           <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Zipcodes" prop="zipcodes"
             [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              <!-- {{arrayToString(row?.zipcodes)}} -->
+              {{row?.zipcodes && row?.zipcodes.length > 0 ? arrayToString(row?.zipcodes) : ""}}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Cost" prop="cost" [flexGrow]="1">
@@ -186,7 +186,7 @@
               {{row?.paymentDetails?.status ==='Pending' ? paymentLink : 'Expired'}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Time" prop="createdOn">
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Time" prop="createdOn" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{row?.createdOn | date: 'short'}}
             </ng-template>
@@ -274,7 +274,7 @@
             </div>
           </div>
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="text-center" mb-1>
-            <button mat-raised-button class="llp--secondary--btn mr-1" (click)="rejectEnquiry()">Reject</button>
+            <button type="button" mat-raised-button class="llp--secondary--btn mr-1" (click)="rejectEnquiry()">Reject</button>
             <button mat-raised-button class="llp--primary--btn" [disabled]="enquiryFormReply.invalid">Submit</button>
           </div>
         </form>
