@@ -53,6 +53,7 @@ export class FinanceModalComponent implements OnInit {
     this.FinanceForm = this.fb.group({
       financesType: new FormControl('',Validators.required),  
       financesTypeNew: new FormControl(''),   
+      nameOnAccount: new FormControl('',Validators.required),
       administatorName: new FormControl('',Validators.required),
       branchLocation: new FormControl(''),
       accountNumber: new FormControl(''),
@@ -82,11 +83,12 @@ export class FinanceModalComponent implements OnInit {
 
   onChangeType(key) {
     this.newVal = false;
-    if(key=='10'){
+    if(key=='16'){
       this.newVal = true;
       this.FinanceForm = this.fb.group({
         financesType: new FormControl(this.FinanceForm.controls['financesType'].value,Validators.required),
         financesTypeNew: new FormControl(this.FinanceForm.controls['financesTypeNew'].value,Validators.required), 
+        nameOnAccount: new FormControl(this.FinanceForm.controls['nameOnAccount'].value,Validators.required),
         administatorName: new FormControl(this.FinanceForm.controls['administatorName'].value,Validators.required),
         branchLocation: new FormControl(this.FinanceForm.controls['branchLocation'].value,),
         accountNumber: new FormControl(this.FinanceForm.controls['accountNumber'].value,),
@@ -101,6 +103,7 @@ export class FinanceModalComponent implements OnInit {
         financesType: new FormControl(this.FinanceForm.controls['financesType'].value,Validators.required),
         financesTypeNew: new FormControl(this.FinanceForm.controls['financesTypeNew'].value), 
         administatorName: new FormControl(this.FinanceForm.controls['administatorName'].value,Validators.required),
+        nameOnAccount: new FormControl(this.FinanceForm.controls['nameOnAccount'].value,Validators.required),
         branchLocation: new FormControl(this.FinanceForm.controls['branchLocation'].value,),
         accountNumber: new FormControl(this.FinanceForm.controls['accountNumber'].value,),
         contactEmail: new FormControl(this.FinanceForm.controls['contactEmail'].value,Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
@@ -178,9 +181,10 @@ export class FinanceModalComponent implements OnInit {
           this.FinanceDocsList = result.data.documents;            
           this.FinanceForm.controls['financesType'].setValue(this.financeList.financesType);
           this.FinanceForm.controls['financesTypeNew'].setValue(this.financeList.financesTypeNew);
-          if(this.financeList.financesType == 10){
+          if(this.financeList.financesType == 16){
             this.newVal = true;
-          }            
+          }  
+          this.FinanceForm.controls['nameOnAccount'].setValue(this.financeList.nameOnAccount);          
           this.FinanceForm.controls['administatorName'].setValue(this.financeList.administatorName);
           this.FinanceForm.controls['accountNumber'].setValue(this.financeList.accountNumber);
           this.FinanceForm.controls['branchLocation'].setValue(this.financeList.branchLocation);           

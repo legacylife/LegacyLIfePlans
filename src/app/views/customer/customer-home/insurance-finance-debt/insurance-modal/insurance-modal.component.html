@@ -19,6 +19,11 @@
         </mat-form-field>
 
         <mat-form-field class="full-width">
+          <input matInput name="nameOfInsured" placeholder="Name of Insured" (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)"
+            [formControl]="InsuranceForm.controls['nameOfInsured']">
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
           <input matInput name="company" placeholder="Company" (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)"
             [formControl]="InsuranceForm.controls['company']">
         </mat-form-field>

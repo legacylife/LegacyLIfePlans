@@ -50,7 +50,8 @@ export class InsuranceModalComponent implements OnInit {
     this.policyTypeList = InsurancePolicyType;
     this.docPath = filePath;
     this.InsuranceForm = this.fb.group({
-      policyType: new FormControl('',Validators.required),     
+      policyType: new FormControl('',Validators.required),  
+      nameOfInsured: new FormControl(''),   
       company: new FormControl(''),
       policyNumber: new FormControl(''),
       contactPerson: new FormControl(''),
@@ -151,6 +152,7 @@ export class InsuranceModalComponent implements OnInit {
           this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           this.InsuranceDocsList = result.data.documents;            
           this.InsuranceForm.controls['policyType'].setValue(this.insuranceList.policyType);
+          this.InsuranceForm.controls['nameOfInsured'].setValue(this.insuranceList.nameOfInsured);
           this.InsuranceForm.controls['company'].setValue(this.insuranceList.company);
           this.InsuranceForm.controls['policyNumber'].setValue(this.insuranceList.policyNumber);
           this.InsuranceForm.controls['contactPerson'].setValue(this.insuranceList.contactPerson);

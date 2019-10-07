@@ -219,36 +219,60 @@ export const FinancePolicyType = [
     opt_code: "2"
   },
   {
-    opt_name: "Bank Accounts",
+    opt_name: "Bank Checking",
     opt_code: "3"
   },
   {
-    opt_name: "Brokerage Accounts",
+    opt_name: "Bank Money Market",
     opt_code: "4"
   },
   {
-    opt_name: "Disability",
+    opt_name: "Bank Savings",
     opt_code: "5"
   },
   {
-    opt_name: "IRA",
+    opt_name: "Brokerage Cash",
     opt_code: "6"
   },
   {
-    opt_name: "Pension",
+    opt_name: "Brokerage Margin",
     opt_code: "7"
   },
   {
-    opt_name: "Roth",
+    opt_name: "Brokerage Option",
     opt_code: "8"
   },
   {
-    opt_name: "Social Security",
+    opt_name: "Business Checking",
     opt_code: "9"
   },
   {
-    opt_name: "New",
+    opt_name: "Business Money Market",
     opt_code: "10"
+  },
+  {
+    opt_name: "Business Savings",
+    opt_code: "11"
+  },
+  {
+    opt_name: "IRA",
+    opt_code: "12"
+  },
+  {
+    opt_name: "Pension",
+    opt_code: "13"
+  },
+  {
+    opt_name: "Roth",
+    opt_code: "14"
+  },
+  {
+    opt_name: "Social Security",
+    opt_code: "15"
+  },
+  {
+    opt_name: "New",
+    opt_code: "16"
   }
 ];
 

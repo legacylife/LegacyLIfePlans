@@ -9,18 +9,23 @@
     <div fxLayout="row wrap" class="pt-1">
       <div fxFlex.xs="100">
        <mat-form-field class="full-width">
-              <mat-label>Policy Type*</mat-label>
-            <mat-select placeholder="Policy Type*" name="financesType" [formControl]="FinanceForm.controls['financesType']" (selectionChange)="onChangeType($event.value)">
-              <mat-option value="">Select Policy Type</mat-option>
+              <mat-label>Account Type*</mat-label>
+            <mat-select placeholder="Account Type*" name="financesType" [formControl]="FinanceForm.controls['financesType']" (selectionChange)="onChangeType($event.value)">
+              <mat-option value="">Select Account Type</mat-option>
               <mat-option *ngFor="let option of financeTypeList"  [value]="option.opt_code">{{option.opt_name}}</mat-option>
             </mat-select>
-              <mat-icon matTooltip="Please select policy type" matTooltipClass="llp--tooltip error" *ngIf="FinanceForm.controls['financesType'].hasError('required') && FinanceForm.controls['financesType'].touched" class="red--alert">help_outline</mat-icon>
+              <mat-icon matTooltip="Please select account type" matTooltipClass="llp--tooltip error" *ngIf="FinanceForm.controls['financesType'].hasError('required') && FinanceForm.controls['financesType'].touched" class="red--alert">help_outline</mat-icon>
        </mat-form-field>
 
        <mat-form-field class="full-width" *ngIf="newVal"> 
-          <input matInput (keyup)="firstCapitalize($event)" name="financesTypeNew" (blur)="onChangeType('10')" placeholder="Finances Type New*"  [formControl]="FinanceForm.controls['financesTypeNew']">
-          <mat-icon matTooltip="Please enter finances type new" matTooltipClass="llp--tooltip error" *ngIf="FinanceForm.controls['financesTypeNew'].hasError('required') && FinanceForm.controls['financesTypeNew'].touched" class="red--alert">help_outline</mat-icon>
+          <input matInput (keyup)="firstCapitalize($event)" name="financesTypeNew" (blur)="onChangeType('16')" placeholder="Account Type New*"  [formControl]="FinanceForm.controls['financesTypeNew']">
+          <mat-icon matTooltip="Please enter account type new" matTooltipClass="llp--tooltip error" *ngIf="FinanceForm.controls['financesTypeNew'].hasError('required') && FinanceForm.controls['financesTypeNew'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <input matInput name="nameOnAccount" placeholder="Name on Account*"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="FinanceForm.controls['nameOnAccount']">
+        <mat-icon matTooltip="Please enter name on account" matTooltipClass="llp--tooltip error" *ngIf="FinanceForm.controls['nameOnAccount'].hasError('required') && FinanceForm.controls['nameOnAccount'].touched" class="red--alert">help_outline</mat-icon>
+     </mat-form-field>
 
       <mat-form-field class="full-width">
           <input matInput name="administatorName" placeholder="Bank/Credit Union/Plan Administrator*"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="FinanceForm.controls['administatorName']">
@@ -36,14 +41,16 @@
       </mat-form-field>
 
       <mat-form-field class="full-width">
+        <input matInput name="contactPhone" placeholder="Personal Contact" maxlength="15" [formControl]="FinanceForm.controls['contactPhone']">
+        <mat-icon matTooltip="Please enter minimum 7 & maximum 15 numbers only" matTooltipClass="llp--tooltip error" *ngIf="FinanceForm.controls['contactPhone'].hasError('pattern') && FinanceForm.controls['contactPhone'].touched" class="red--alert">help_outline</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
           <input matInput name="contactEmail" placeholder="Email" [formControl]="FinanceForm.controls['contactEmail']">
           <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" *ngIf="FinanceForm.controls['contactEmail'].hasError('pattern') && FinanceForm.controls['contactEmail'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
 
-      <mat-form-field class="full-width">
-          <input matInput name="contactPhone" placeholder="Contact Phone" maxlength="15" [formControl]="FinanceForm.controls['contactPhone']">
-          <mat-icon matTooltip="Please enter minimum 7 & maximum 15 numbers only" matTooltipClass="llp--tooltip error" *ngIf="FinanceForm.controls['contactPhone'].hasError('pattern') && FinanceForm.controls['contactPhone'].touched" class="red--alert">help_outline</mat-icon>
-      </mat-form-field>
+      
 
       <div class="upload--buss--docs--sec">
              <label>Upload box to upload the document</label>
