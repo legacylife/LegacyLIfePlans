@@ -85,7 +85,7 @@
                           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                             <div class="display--data">
                               <label class="left--label">Requested Zipcodes:</label>
-                              <label class="right--label">{{item.zipcodes}}</label>
+                              <label class="right--label">{{item.zipcodes ? getStringWithSpace(item.zipcodes) : ""}}</label>
                             </div>
                           </div>
                           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">

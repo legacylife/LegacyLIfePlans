@@ -94,4 +94,11 @@ export class GetFeaturedComponent implements OnInit {
     return btoa(string)
   }
 
+  getStringWithSpace(stringVal){
+    if(stringVal && stringVal.isArray)
+      return stringVal.join(", ")
+    else
+      return stringVal.replace(",",", ")
+  }
+
 }
