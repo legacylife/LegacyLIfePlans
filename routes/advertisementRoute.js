@@ -216,7 +216,7 @@ function addEnquiryReply(req, res) {
                 //console.log("\n****replyContnt****",replyContnt)
                 sendEnquiryReplyMail('AdviserFeturedRequestReply', emailId, toName, replyContnt);
                 
-                let message = resMessage.data( 607, [{key: '{field}',val: 'Advertisement Enquiry Reply'}, {key: '{status}',val: 'sent'}] )
+                let message = resMessage.data( 607, [{key: '{field}',val: 'Payment link'}, {key: '{status}',val: 'sent'}] ) 
                 //Update activity logs
                 allActivityLog.updateActivityLogs( query.adminId, found.customerId._id, "Advertisement Enquiry Reply", message, "Admin Panel" )
                 

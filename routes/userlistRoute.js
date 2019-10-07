@@ -104,7 +104,10 @@ function view(req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {
       //Update activity logs
-      allActivityLog.updateActivityLogs(fromId, query._id, 'Details Viewed', userType+' has been viewed details successfully', 'Professionals')
+      if(userType != 'sysAdmin'){
+        allActivityLog.updateActivityLogs(fromId, query._id, 'Details Viewed', userType+' has been viewed details successfully', 'Professionals')
+      }
+      
       res.send(resFormat.rSuccess(userList))
     }
   })
