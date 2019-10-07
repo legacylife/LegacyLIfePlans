@@ -6,6 +6,7 @@ var financesSchema = new mongoose.Schema({
   customerLegacyId: String,
   customerLegacyType: String,
   financesType: String,
+  nameOnAccount: String,
   administatorName: String,
   branchLocation: String,
   financesTypeNew:String,
