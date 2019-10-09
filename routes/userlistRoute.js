@@ -106,8 +106,7 @@ function view(req, res) {
       //Update activity logs
       if(userType != 'sysAdmin'){
         allActivityLog.updateActivityLogs(fromId, query._id, 'Details Viewed', userType+' has been viewed details successfully', 'Professionals')
-      }
-      
+      }     
       res.send(resFormat.rSuccess(userList))
     }
   })
@@ -1059,6 +1058,7 @@ function getUsersListForAdminMap(req, res) {
                               business: details.businessType && details.businessType.length > 0 ? details.businessType.join(): '',
                               latitude: data.latitude,
                               longitude: data.longitude,
+                              location: data.location,
                               email: details.username,
                               onBoardVia: details.invitedBy && details.invitedBy != "" ? details.invitedBy : 'Self',
                               lastLogin: moment(details.lastLoggedInOn).format("YYYY-MM-DD hh:mm a")
@@ -1097,6 +1097,7 @@ async function calculateZipcode(zipcode,id){
   var data = zipcodes.lookup(zipcode);
   if( data ) {
     if(data.latitude && data.longitude){
+      console.log('Userlist calculateZipcode')
       let userData = await User.updateOne({_id:id},{$set:{location:{latitude:data.latitude,longitude:data.longitude}}});
     }
   }

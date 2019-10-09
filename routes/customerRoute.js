@@ -34,6 +34,7 @@ const referEarnSettings = require('./../models/ReferEarnSettings')
 const executor = require('./../models/MarkAsExecutor.js')
 const resMessage = require('./../helpers/responseMessages')
 const allActivityLog = require('./../helpers/allActivityLogs')
+var S3Sizer = require('aws-s3-size');
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -165,8 +166,10 @@ function essentialProfileList(req, res) {
         res.status(401).send(resFormat.rError(err))
       } else {
         let totalTrusteeRecords = 0;
+        console.log('personalProfileQuery',personalProfileQuery)
+        console.log('essentialList',essentialList)
         if(essentialList){
-          getuserFolderSize(query.personalProfileQuery.customerId);
+          getuserFolderSize(personalProfileQuery.customerId);
           Trustee.count(personalProfileQuery, function (err, TrusteeCount) {
           if (TrusteeCount) {
             totalTrusteeRecords = TrusteeCount
@@ -190,7 +193,7 @@ function essentialIdList(req, res) {
       totalIDRecords = essentialIDList.length;
       let totalTrusteeIDRecords = 0;
     if(totalIDRecords>0){
-      getuserFolderSize(query.idQuery.customerId);
+      getuserFolderSize(idQuery.customerId);
       Trustee.count(idQuery, function (err, TrusteeCount) {
         if (TrusteeCount) {
           totalTrusteeIDRecords = TrusteeCount
@@ -228,7 +231,7 @@ function essentialProfessionalsList(req, res) {
       totalProfessionalRecords = essentialProfessionalList.length;
       let totalTrusteeProfessionalsRecords = 0;
       if(totalProfessionalRecords>0){
-        getuserFolderSize(query.professionalsQuery.customerId);
+        getuserFolderSize(professionalsQuery.customerId);
         Trustee.count(professionalsQuery, function (err, TrusteeCount) {
           if (TrusteeCount) {
             totalTrusteeProfessionalsRecords = TrusteeCount
@@ -1041,7 +1044,7 @@ function getuserFolderSize(folder,res) {
   });
 
   s3Sizer.getFolderSize(constants.s3Details.bucketName, folder, function(err, size) {
-    console.log("**************",size,'****************')
+   // console.log("**************",size,'****************')
     User.updateOne({ _id: folder }, { $set: { s3Size: size } }, function (err, updatedUser) {
       if (err) {
         return err;
