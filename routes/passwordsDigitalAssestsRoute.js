@@ -13,6 +13,7 @@ var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const PDA = require('./../models/PasswordNDigitalAssets.js')
 const EMedia = require('./../models/ElectronicMedia.js')
+const DigitalPublications = require('./../models/DigitalPublications.js')
 const actitivityLog = require('./../helpers/fileAccessLog')
 const Trustee = require('./../models/Trustee.js')
 const commonhelper = require('./../helpers/commonhelper')
@@ -456,14 +457,193 @@ function deleteElectronicMedia(req, res) {
   })
 }
 
+function digitalPublicationFormUpdate(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
+
+  var logData = {}
+  logData.fileName = constants.ElectronicMediaLists[proquery.mediaType];
+  logData.folderName = 'password-assets';
+  logData.subFolderName = 'digital-publication';
+
+  if(query._id){
+    DigitalPublications.findOne(query, function (err, custData) {      
+      if (err) {
+        let result = { "message": "Something Wrong!" }
+        res.send(resFormat.rError(result));
+      } else {
+        if (custData && custData._id) {
+          let resText = 'details  added';
+          if (custData.mediaType){
+            resText = 'details updated';
+          }
+          let { proquery } = req.body;   
+          proquery.status = 'Active';   
+          proquery.modifiedOn = new Date();
+          DigitalPublications.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              logData.customerId = custData.customerId;
+              logData.fileId = custData._id;
+              actitivityLog.updateActivityLog(logData);
+              //let result = { "message": "Electronic media "+resText+" successfully" }
+              let message = resMessage.data( 607, [{key:'{field}',val:"Digital Publication Details"},{key:'{status}',val: resText}] )
+              let result = { "message": message }
+              //Update activity logs
+              allActivityLog.updateActivityLogs( fromId, toId, "Digital Publication Details "+resText, message, folderName, subFolderName )
+
+              res.status(200).send(resFormat.rSuccess(result))
+            }
+          })
+        } else {
+          let result = { "message": "No record found." }
+          res.send(resFormat.rError(result));
+        }
+      }
+    })
+  } else { 
+            let { proquery } = req.body;
+            var insert = new DigitalPublications();
+            insert.customerId = proquery.customerId;
+            insert.customerLegacyId = proquery.customerLegacyId;
+            insert.customerLegacyType = proquery.customerLegacyType;
+            insert.title = proquery.title;
+            insert.username = proquery.username;
+            insert.password = proquery.password;        
+            insert.comments = proquery.comments;    
+            insert.status = 'Active';
+            insert.createdOn = new Date();
+            insert.modifiedOn = new Date();
+            insert.save({$set:proquery}, function (err, newEntry) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        //created helper for customer to send email about files added by advisor
+        if(proquery.customerLegacyType == "advisor"){
+          var sendData = {}
+          sendData.sectionName = "Passwords Digital & Assests";  
+          sendData.customerId = proquery.customerId;
+          sendData.customerLegacyId = proquery.customerLegacyId;
+          commonhelper.customerAdvisorLegacyNotifications(sendData)
+        }
+        
+        logData.customerId = proquery.customerId;
+        logData.fileId = newEntry._id;
+        actitivityLog.updateActivityLog(logData);
+        //let result = { "message": "Electronic media added successfully!" }
+        let message = resMessage.data( 607, [{key:'{field}',val:"Digital Publication Details"},{key:'{status}',val: 'added'}] )
+        let result = { "message": message }
+        //Update activity logs
+        allActivityLog.updateActivityLogs( fromId, toId, "Digital Publication Details Added", message, folderName, subFolderName )
+
+        res.status(200).send(resFormat.rSuccess(result))
+      }
+    })
+  }
+}
+
+function digitalPublicationList(req, res) {
+  let { fields, offset, query,trusteeQuery, order, limit, search } = req.body
+  let totalRecords = 0
+  if (search && !isEmpty(query)) {
+    Object.keys(query).map(function (key, index) {
+      if (key !== "status") {
+        query[key] = new RegExp(query[key], 'i')
+      }
+    })
+  }
+  DigitalPublications.count(query, function (err, listCount) {
+    if (listCount) {
+      totalRecords = listCount
+    }
+    DigitalPublications.find(query, fields, function (err, electronicMediaList) {
+      if (err) {
+        res.status(401).send(resFormat.rError(err))
+      } else {
+        let totalTrusteeRecords = 0;
+        if(totalRecords>0){
+          Trustee.count(trusteeQuery, function (err, TrusteeCount) {
+            if (TrusteeCount) {
+              totalTrusteeRecords = TrusteeCount
+            }
+            res.send(resFormat.rSuccess({ electronicMediaList,totalRecords,totalTrusteeRecords}))
+          })
+        }else{
+          res.send(resFormat.rSuccess({ electronicMediaList,totalRecords,totalTrusteeRecords}))
+        }
+      }
+    }).sort(order).skip(offset).limit(limit)
+  })
+}
+
+function viewDigitalPublication(req, res) {
+  let { query } = req.body;
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  DigitalPublications.findOne(query, fields, function (err, EMList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(EMList))
+    }
+  })
+}
+
+function deleteDigitalPublication(req, res) {
+  let { query } = req.body;
+  let fields = { }
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
+
+  DigitalPublications.findOne(query, fields, function (err, ElectronicMediaInfo) {
+    console.log("asaHDKJhasdkhj >>>>"+ElectronicMediaInfo)
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      var upStatus = 'Delete';
+      var params = { status: upStatus }
+      DigitalPublications.update({ _id: ElectronicMediaInfo._id }, { $set: params }, function (err, updatedinfo) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          actitivityLog.removeActivityLog(ElectronicMediaInfo._id);
+          //let result = { "message": "Record deleted successfully!" }
+          let message = resMessage.data( 607, [{key:'{field}',val:"Digital Publication Details"},{key:'{status}',val: 'deleted'}] )
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Digital Publication Details Deleted", message, folderName, subFolderName )
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
 router.post("/pattern-submit", patternUpdate)
 router.post("/view-device-details", viewDevice)
 router.post("/deviceListing", DeviceList)
 router.post("/device-form-submit",deviceFormUpdate)
 router.post("/delete-device", deletedevice)
+
 router.post("/electronicMediaListing", electronicMediaList)
 router.post("/view-electronicMedia-details", viewElectronicMedia)
 router.post("/electronic-media-form-submit",electronicMediaFormUpdate)
 router.post("/view-electronic-media-details", electronicMediaviewDevice)
 router.post("/delete-electronicMedia", deleteElectronicMedia)
+
+router.post("/digital-publication-listing", digitalPublicationList)
+router.post("/view-digital-publication-details", viewDigitalPublication)
+router.post("/digital-publication-form-submit",digitalPublicationFormUpdate)
+router.post("/delete-digital-publication", deleteDigitalPublication)
 module.exports = router

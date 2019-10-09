@@ -148,12 +148,16 @@ var constants = {
     3 : 5
   },
   RealEstateAssetsType : {
-    1 : "Art", 
-    2 : "Box", 
-    3 : "Jewelry", 
-    4 : "Safe", 
-    5 : "Safe Deposit Box", 
-    6 : "New"
+    1 : "Antiques", 
+    2 : "Art", 
+    3 : "Collectibles", 
+    4 : "Equipment", 
+    5 : "Guns", 
+    6 : "Jewelry",
+    7 : "Safe", 
+    8 : "Safe Deposit Box", 
+    9 : "Tools", 
+    10 : "New"
   },
 
   ElectronicMediaLists : { 
