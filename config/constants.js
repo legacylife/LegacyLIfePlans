@@ -100,16 +100,22 @@ var constants = {
     5 : "Umbrella"
   },  
   FinancePolicyType : { 
-    7 : "401K", 
-    1 : "Annuity", 
-    2 : "Bank Accounts", 
-    8 : "Brokerage Accounts", 
-    3 : "Disability", 
-    6 : "IRA", 
-    4 : "Pension", 
-    5 : "Roth", 
-    9 : "Social Security", 
-    10 : "New"
+    1 : "401K", 
+    2 : "Annuity", 
+    3 : "Bank Checking", 
+    4 : "Bank Money Market", 
+    5 : "Bank Savings", 
+    6 : "Brokerage Cash", 
+    7 : "Brokerage Margin", 
+    8 : "Brokerage Option", 
+    9 : "Business Checking", 
+    10 : "Business Money Market",
+    11 : "Business Savings", 
+    12 : "IRA", 
+    13 : "Pension", 
+    14 : "Roth", 
+    15 : "Social Security", 
+    16 : "New"
   }, 
   
   DebtType : { 
