@@ -21,8 +21,8 @@
                 <img src="{{profileUrl}}{{(row?.trustId!=null && row?.trustId.profilePicture!=null) ? row?.trustId.profilePicture : 'default.jpg'}}" />                
               </div>   
               <div class="appointees--desc">
-                <h5>{{(row?.trustId!=null && row?.trustId.firstName!=null) ? row?.trustId.firstName : row?.firstName}} {{(row?.trustId!=null && row?.trustId.lastName!=null) ? row?.trustId.lastName : row?.lastName}}</h5>
-                <p class="m-0">{{row?.email}}</p>
+                <h5>{{(row?.trustId!=null && row?.trustId.firstName!=null) ? row?.trustId.firstName : row?.firstName}} {{(row?.trustId!=null && row?.trustId.lastName!=null) ? row?.trustId.lastName : row?.lastName}} </h5>
+                <p class="m-0">{{row?.email}} <span *ngIf="row?.status === 'Active' && row?.executorStatus==='Active'">(Executor)</span></p>
               </div>
               <div class="cursor-pointer">
                   <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>

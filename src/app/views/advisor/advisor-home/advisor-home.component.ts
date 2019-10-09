@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { MatSnackBar, MatSidenav, MatDialogRef, MatDialog } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms'
 import { Subscription, Observable } from 'rxjs';
@@ -55,6 +55,15 @@ export class AdvisorHomeComponent implements OnInit, OnDestroy {
       this.activeHeading = locArray[5];
     }  
   }
+
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    const loc = location.href;
+    const locArray = loc.split('/')
+    this.activeHeading = '';
+    if(locArray && locArray[5]){
+      this.activeHeading = locArray[5];
+    }   
+}
 
   ngOnDestroy() {
 

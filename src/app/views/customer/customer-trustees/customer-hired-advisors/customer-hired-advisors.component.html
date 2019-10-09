@@ -21,8 +21,8 @@
                       <img src="{{getProfileImage(row.advisorId?.profilePicture)}}" />
                   </div>
                   <div class="appointees--desc">
-                    <h5>{{row.advisorId?.firstName}} {{row.advisorId?.lastName}}</h5>
-                    <p class="position m-0" >{{row.advisorId?.businessName}}</p>
+                    <h5>{{row.advisorId?.firstName}} {{row.advisorId?.lastName}} <mat-icon *ngIf="row?.advisorId.sponsoredAdvisor === 'yes'" class="mat-icon material-icons yellow-material-icons" role="img">star</mat-icon></h5>
+                    <p class="position m-0" >{{row.advisorId?.businessName}} <span  *ngIf="row?.advisorId.status === 'Active' && row?.executorStatus==='Active'">(Executor)</span></p>
                   </div>
                   <div class="cursor-pointer">
                       <mat-icon [matMenuTriggerFor]="beforeMenu">more_vert</mat-icon>

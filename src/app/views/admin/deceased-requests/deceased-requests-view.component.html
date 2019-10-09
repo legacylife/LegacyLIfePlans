@@ -182,56 +182,47 @@
     <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
       <!-- <mat-card-title class="p-1">Deceased Request Info</mat-card-title> -->
       <mat-card-content class="p-0">
-        <ngx-datatable class="material ml-0 mr-0" [rows]="data" [columnMode]="'flex'" [headerHeight]="50"
+        <ngx-datatable class="material ml-0 mr-0" [rows]="data" [columnMode]="'flex'" [headerHeight]="50" 
           [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
-          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Full Name" prop="trustId"
-            [flexGrow]="2">
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Full Name" prop="trustId" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <span *ngIf="row?.trustId">{{row?.trustId?.firstName}} {{row?.trustId?.lastName}}</span>
               <span *ngIf="row?.advisorId">{{row?.advisorId?.firstName}} {{row?.advisorId?.lastName}}</span>
               <span *ngIf="row?.adminId">{{row?.adminId?.firstName}} {{row?.adminId?.lastName}}</span>
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Email" prop="trustId"
-            [flexGrow]="3">
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Email" prop="trustId" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <span *ngIf="row?.trustId">{{row?.trustId?.username}}</span>
               <span *ngIf="row?.advisorId">{{row?.advisorId?.username}}</span>
               <span *ngIf="row?.adminId">{{row?.adminId?.username}}</span>
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Type" prop="userType"
-            [flexGrow]="1">
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Type" prop="userType" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{row?.userType}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Proof Documents" prop="documents"
-            [flexGrow]="3">
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Proof Documents" prop="documents" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              <div *ngIf="row?.documents">
-               
-                <div class="compact-list up--files" *ngFor="let doc of row?.documents">
+              <span *ngIf="!row?.documents.length > 0">Documents not uploaded.</span>
+              <span *ngIf="row?.documents.length > 0" >
+                <span class="compact-list up--files" *ngFor="let doc of row?.documents">
                     <p class="m-0" (click)="downloadFile(doc.tmpName)">
                         <mat-icon class="mat-icon material-icons" (click)="downloadFile(doc.tmpName)">file_copy
                         </mat-icon>{{doc.title}} 
                       </p>
-                </div>
-                
-              </div>
-              <mat-list class="compact-list mb-1" *ngIf="!row?.documents">
-                <mat-list-item class="">
-                  Documents not uploaded.
-                </mat-list-item>
-              </mat-list>
+                </span>
+              </span>
+            
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Time" prop="createdOn">
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Time" prop="createdOn" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{row?.createdOn | date: 'yyyy/MM/dd HH:mm'}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column [resizeable]="false" name="Status">
+          <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status"
                 (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
@@ -279,12 +270,12 @@
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Created/Modified Time"
-            prop="createdOn">
+            prop="createdOn" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{row?.createdOn | date: 'yyyy/MM/dd'}} , {{row?.modifiedOn | date: 'yyyy/MM/dd'}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column [resizeable]="false" name="Status">
+          <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status"
                 (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
