@@ -1,0 +1,44 @@
+<div class="ll--modal--header">
+  Digital Publications
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+<form class="llp-form-wrapper" (ngSubmit)="digitalPublicationFormSubmit(digitalPublicationForm.value)">
+  <div class="ll--modal--body idbox--modal--hgt">
+    <div fxLayout="row wrap" class="pt-1">
+      <div fxFlex.xs="100">
+
+        <mat-form-field class="full-width">
+          <input matInput name="title"  placeholder="Title of Publication *" [formControl]="digitalPublicationForm.controls['title']">
+          <mat-icon matTooltip="Please enter title of publication" matTooltipClass="llp--tooltip error" *ngIf="digitalPublicationForm.controls['title'].hasError('required') && digitalPublicationForm.controls['title'].touched"
+          class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+        
+        <mat-form-field class="full-width">
+          <input matInput name="username"  placeholder="Username*" [formControl]="digitalPublicationForm.controls['username']">
+          <mat-icon matTooltip="Please enter username" matTooltipClass="llp--tooltip error" *ngIf="digitalPublicationForm.controls['username'].hasError('required') && digitalPublicationForm.controls['username'].touched"
+          class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <input matInput type="password" name="password"  placeholder="Password*" [formControl]="digitalPublicationForm.controls['password']">
+          <mat-icon matTooltip="Please enter password" matTooltipClass="llp--tooltip error" *ngIf="digitalPublicationForm.controls['password'].hasError('required') && digitalPublicationForm.controls['password'].touched"
+          class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field class="full-width mt-1">
+            <textarea (keyup)="firstCapitalize($event)" maxlength="500" matInput placeholder="Comments" name="comments" [formControl]="digitalPublicationForm.controls['comments']"></textarea>
+            <div class="char--limit" style="float: right;">{{ 500 - digitalPublicationForm.controls['comments'].value?.length }}</div>
+        </mat-form-field>
+
+          <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
+            <input matInput name="profileId" [formControl]="digitalPublicationForm.controls['profileId']" readonly="readonly">
+          </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn" [disabled]="!digitalPublicationForm.valid">Save</button>
+  </div>
+</form>

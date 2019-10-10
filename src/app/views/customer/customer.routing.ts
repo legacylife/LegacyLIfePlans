@@ -59,6 +59,7 @@ import { DeviceDetailsComponent } from './customer-home/passwords-digital-assets
 import { LettersMessagesListingComponent } from './customer-home/legacy-life-letters-messages/letters-messages-listing/letters-messages-listing.component';
 import { LettersMessagesDetailsComponent } from './customer-home/legacy-life-letters-messages/letters-messages-details/letters-messages-details.component';
 import { ElectronicMediaDetailsComponent } from './customer-home/passwords-digital-assets/electronic-media/electronic-media-details/electronic-media-details.component';
+import { DigitalPublicationsDetailsComponent } from './customer-home/passwords-digital-assets/digital-publications/digital-publications-details/digital-publications-details.component';
 import { TodosListingComponent } from '../todos-listing/todos-listing.component';
 import { ProUserAuthGuard as ProUserGuard } from '../../shared/services/auth/prouserauth.guard';
 import { ErrorComponent } from './../error/error.component';
@@ -295,6 +296,12 @@ export const CustomerRoutes: Routes = [
             canActivate: [ProUserGuard],
             data: { title: 'Electronic Media Details' }
           },
+          {
+            path: 'digital-publication-view/:id',
+            component: DigitalPublicationsDetailsComponent,
+            canActivate: [ProUserGuard],
+            data: { title: 'Digital Publication Details' }
+          },
         ]
       },
     ]
@@ -442,7 +449,11 @@ export const CustomerRoutes: Routes = [
           {
             path: 'electronic-media-view/:id',
             component: ElectronicMediaDetailsComponent
-          }
+          },
+          {
+            path: 'digital-publication-view/:id',
+            component: DigitalPublicationsDetailsComponent
+          },
         ]
       },
     ]

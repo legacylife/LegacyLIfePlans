@@ -138,6 +138,7 @@ export class EmergencyContactsComponent implements OnInit {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        this.eContactFormGroup.reset();
         this.dialog.closeAll(); 
       }
     }, (err) => {

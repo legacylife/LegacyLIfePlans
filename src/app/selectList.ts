@@ -563,27 +563,43 @@ export const RealEstateType = [
 
 export const RealEstateAssetsType = [
   {
-    opt_name: "Art",
+    opt_name: "Antiques",
     opt_code: "1"
   },
   {
-    opt_name: "Box",
+    opt_name: "Art",
     opt_code: "2"
   },
   {
-    opt_name: "Jewelry",
+    opt_name: "Collectibles",
     opt_code: "3"
   },
   {
-    opt_name: "Safe",
+    opt_name: "Equipment",
     opt_code: "4"
   },
   {
-    opt_name: "Safe Deposit Box",
+    opt_name: "Guns",
     opt_code: "5"
   },
   {
-    opt_name: "New",
+    opt_name: "Jewelry",
     opt_code: "6"
+  },  
+  {
+    opt_name: "Safe",
+    opt_code: "7"
+  },
+  {
+    opt_name: "Safe Deposit Box",
+    opt_code: "8"
+  },
+  {
+    opt_name: "Tools",
+    opt_code: "9"
+  },
+  {
+    opt_name: "New",
+    opt_code: "10"
   }
 ];
