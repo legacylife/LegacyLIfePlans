@@ -250,6 +250,10 @@ function profile(req, res) {
   })
 }
 
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
 function addNewMember(req, res) {
   let  {fromId} = req.body
   let newMem = new User()
@@ -271,7 +275,7 @@ function addNewMember(req, res) {
   newMem.token = tokens
 
   const { username } = req.body;
-  User.findOne({ username: username }, { _id :1, username: 1, status:1, userType : 1,profileSetup:1 }, function (err, user) {
+  User.findOne({ username: {'$regex' : new RegExp(escapeRegExp(username)), '$options' : 'i'} }, { _id :1, username: 1, status:1, userType : 1,profileSetup:1 }, function (err, user) {
     if(user) {
       let message = resMessage.data( 625, [{key: '{userType}',val: user.userType}] )
       res.send(resFormat.rSuccess({ code: "Exist", message: message}))

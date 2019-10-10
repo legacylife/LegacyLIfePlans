@@ -542,11 +542,15 @@ router.post('/reset-password-token', function (req, res) {
   })
 })
 
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
 //function to check if email present for any user
 async function checkEmail(req, res) {
   try {
     const { username } = req.body;
-    User.findOne({ username: username }, { _id :1, username: 1, status:1, userType : 1,profileSetup:1 }, async function (err, user) {
+    User.findOne({ username: {'$regex' : new RegExp(escapeRegExp(username)), '$options' : 'i'} }, { _id :1, username: 1, status:1, userType : 1,profileSetup:1 }, async function (err, user) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
@@ -580,7 +584,7 @@ async function checkEmail(req, res) {
             }
           }
 
-          OtpCheck.findOne({ username: username }, { username: 1 }, function (err, found) {
+          OtpCheck.findOne({ "username": { $regex: new RegExp("^" + username.toLowerCase(), "i") } }, { username: 1 }, function (err, found) {
             if (err) {
               res.status(401).send(resFormat.rError(err))
             } else {
