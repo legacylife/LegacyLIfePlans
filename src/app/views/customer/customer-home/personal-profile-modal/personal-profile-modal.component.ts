@@ -24,6 +24,7 @@ export class PersonalProfileModalComponent implements OnInit {
   step: string;
   country_name: string;
   short_code: string;
+  maxDate = new Date(new Date());
   ppemails: any;
   ppLandlineNumbers: any;
   wpLandlineNumbers: any;
