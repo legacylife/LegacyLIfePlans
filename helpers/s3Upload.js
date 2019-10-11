@@ -91,5 +91,41 @@ const uploadFilePublic = (filename, path) => {
   })
 }
 
+//Delete Multiple files
+const deleteFiles = (filearray, path) => {
+  let fileObject = [];
+  fileObject["Objects"] = filearray;
+  const params = {Bucket: constants.s3Details.bucketName,Delete:fileObject}
+  let resMsg = false;
+         try {
+            s3.deleteObjects(params).promise()
+            resMsg = true;     
+         } catch (err) {
+           resMsg = false;//"ERROR in file Deleting : " + JSON.stringify(err);
+           console.log("0","ERROR in file Deleting : " +path+filename+ JSON.stringify(err))
+         }
+     return resMsg;
+}
 
-module.exports = { uploadFile,uploadFilePublic,s3 }
+//Delete single file
+const deleteFile = (filename, path) => {
+  let filePath = path+filename;
+  const params = {Bucket: constants.s3Details.bucketName,Key:filePath}
+  let resMsg = false;
+     try {
+         s3.headObject(params).promise()
+         try {
+            s3.deleteObject(params).promise()
+            resMsg = true;     
+         } catch (err) {
+           resMsg = false;//"ERROR in file Deleting : " + JSON.stringify(err);
+           console.log("0","ERROR in file Deleting : " +path+filename+ JSON.stringify(err))
+         }
+     } catch (err) {
+             resMsg = false;
+             console.log("00","File not Found ERROR : " +path+filename+ err.code)
+     }
+     return resMsg;
+}
+
+module.exports = { uploadFile,uploadFilePublic,s3,deleteFiles }

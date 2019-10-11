@@ -179,11 +179,19 @@ function deletetimeCapsules(req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {
       var upStatus = 'Delete';
-      var params = { status: upStatus }
+      var params = {status: upStatus,documents:[]}
       timeCapsule.update({ _id: timeCapsuleInfo._id }, { $set: params }, function (err, updatedinfo) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          if(timeCapsuleInfo.documents.length>0){
+            var fileArray = []; 
+            let filePath = timeCapsuleInfo.customerId+'/'+constants.s3Details.timeCapsuleFilePath;
+              async.each(timeCapsuleInfo.documents, async (val) => {
+              await fileArray.push({"Key":filePath+val.tmpName});
+            })
+            s3.deleteFiles(fileArray,filePath);   
+          } 
           actitivityLog.removeActivityLog(timeCapsuleInfo._id);
           //let result = { "message": "Record deleted successfully!" }
           let message = resMessage.data( 607, [{key:'{field}',val:'Time capsules details'},{key:'{status}',val:'deleted'}] )

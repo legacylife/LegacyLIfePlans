@@ -305,11 +305,19 @@ function deleteLettersMessages(req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {
       var upStatus = 'Delete';
-      var params = { status: upStatus }
+      var params = { status: upStatus,documents:[] }
       lettersMessage.update({ _id: Info._id }, { $set: params }, function (err, updatedinfo) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          if(Info.documents.length>0){
+            var fileArray = []; 
+            let letterMessageFilePath = Info.customerId+'/'+constants.s3Details.letterMessageFilePath;
+              async.each(Info.documents, async (val) => {
+              await fileArray.push({"Key":letterMessageFilePath+val.tmpName});
+            })
+            s3.deleteFiles(fileArray,letterMessageFilePath);   
+          }
           actitivityLog.removeActivityLog(Info._id);
           //let result = { "message": "Record deleted successfully!" }
           let message = resMessage.data( 607, [{key:'{field}',val:"Letter Messages"},{key:'{status}',val: 'deleted'}] )

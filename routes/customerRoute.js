@@ -822,11 +822,19 @@ function deleteIdBox(req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {
       var upStatus = 'Delete';
-      var params = { status: upStatus }
+      var params = { status: upStatus,documents:[]}
       personalIdProof.update({ _id: profileInfo._id }, { $set: params }, function (err, updatedinfo) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          if(profileInfo.documents.length>0){
+            var fileArray = []; 
+            let myEssentialsDocumentsPath = profileInfo.customerId+'/'+constants.s3Details.myEssentialsDocumentsPath;
+              async.each(profileInfo.documents, async (val) => {
+              await fileArray.push({"Key":myEssentialsDocumentsPath+val.tmpName});
+            })
+            s3.deleteFiles(fileArray,myEssentialsDocumentsPath);   
+          }
           actitivityLog.removeActivityLog(profileInfo._id);
           let message = resMessage.data( 607, [{key:'{field}',val:'Record'},{key:'{status}',val:'deleted'}] )
           let result = { "message": message }
@@ -924,11 +932,19 @@ function deleteLegalStuff(req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {
       var upStatus = 'Delete';
-      var params = { status: upStatus }
+      var params = { status: upStatus,documents:[]}
       LegalStuff.update({ _id: legalInfo._id }, { $set: params }, function (err, updatedinfo) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          if(legalInfo.documents.length>0){
+            var fileArray = []; 
+            let legalStuffDocumentsPath = legalInfo.customerId+'/'+constants.s3Details.legalStuffDocumentsPath;
+              async.each(legalInfo.documents, async (val) => {
+              await fileArray.push({"Key":legalStuffDocumentsPath+val.tmpName});
+            })
+            s3.deleteFiles(fileArray,legalStuffDocumentsPath);   
+          }
           actitivityLog.removeActivityLog(legalInfo._id);
           let message = resMessage.data( 607, [{key:'{field}',val:'Legal stuff'},{key:'{status}',val:'deleted'}] )
           let result = { "message": message }

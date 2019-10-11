@@ -194,13 +194,20 @@ function deleteFinalWish(req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {
       var upStatus = 'Delete';
-      var params = { status: upStatus }
+      var params = { status: upStatus,documents:[]}
       finalWish.update({ _id: wishInfo._id }, { $set: params }, function (err, updatedinfo) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          actitivityLog.removeActivityLog(wishInfo._id);
-          
+          if(wishInfo.documents.length>0){
+            var fileArray = []; 
+            let filePath = wishInfo.customerId+'/'+constants.s3Details.finalWishesFilePath;
+              async.each(wishInfo.documents, async (val) => {
+              await fileArray.push({"Key":filePath+val.tmpName});
+            })
+            s3.deleteFiles(fileArray,filePath);   
+          } 
+          actitivityLog.removeActivityLog(wishInfo._id);          
           let message = resMessage.data( 607, [{key:'{field}',val:'Final wish'},{key:'{status}',val:'deleted'}] )
           let result = { "message": message }
           //Update activity logs

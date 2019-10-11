@@ -184,13 +184,20 @@ function deletePets(req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {
       var upStatus = 'Delete';
-      var params = { status: upStatus }
+      var params = { status:upStatus,documents:[]}
       pet.update({ _id: petInfo._id }, { $set: params }, function (err, updatedinfo) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-           actitivityLog.removeActivityLog(petInfo._id);
-          //let result = { "message": "Record deleted successfully!" }
+          if(petInfo.documents.length>0){
+            var fileArray = []; 
+            let petsFilePath = petInfo.customerId+'/'+constants.s3Details.petsFilePath;
+              async.each(petInfo.documents, async (val) => {
+              await fileArray.push({"Key":petsFilePath+val.tmpName});
+            })
+            s3.deleteFiles(fileArray,petsFilePath);   
+          }
+          actitivityLog.removeActivityLog(petInfo._id);
           let message = resMessage.data( 607, [{key:'{field}',val:'Pets'},{key:'{status}',val:'deleted'}] )
           let result = { "message": message }
           //Update activity logs

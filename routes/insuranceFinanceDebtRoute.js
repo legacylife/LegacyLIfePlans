@@ -481,11 +481,19 @@ function deleteInsurance(req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {
       var upStatus = 'Delete';
-      var params = { status: upStatus }
+      var params = { status: upStatus,documents:[] }
       insurance.update({ _id: insuranceInfo._id }, { $set: params }, function (err, updatedinfo) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          if(insuranceInfo.documents.length>0){
+            var fileArray = []; 
+            let filePath = insuranceInfo.customerId+'/'+constants.s3Details.insuranceFilePath;
+              async.each(insuranceInfo.documents, async (val) => {
+              await fileArray.push({"Key":filePath+val.tmpName});
+            })
+            s3.deleteFiles(fileArray,filePath);   
+          }  
           actitivityLog.removeActivityLog(insuranceInfo._id);
           //let result = { "message": "Record deleted successfully!" }
           let message = resMessage.data( 607, [{key:'{field}',val:'Insurance'},{key:'{status}',val:'deleted'}] )
@@ -543,11 +551,19 @@ function deleteFinances(req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {
       var upStatus = 'Delete';
-      var params = { status: upStatus }
+      var params = { status: upStatus,documents:[] }
       Finance.update({ _id: financeInfo._id }, { $set: params }, function (err, updatedinfo) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          if(financeInfo.documents.length>0){
+            var fileArray = []; 
+            let filePath = financeInfo.customerId+'/'+constants.s3Details.financeFilePath;
+              async.each(financeInfo.documents, async (val) => {
+              await fileArray.push({"Key":filePath+val.tmpName});
+            })
+            s3.deleteFiles(fileArray,filePath);   
+          }  
           actitivityLog.removeActivityLog(financeInfo._id);
           //let result = { "message": "Record deleted successfully!" }
           let message = resMessage.data( 607, [{key:'{field}',val:'Finance'},{key:'{status}',val:'deleted'}] )
