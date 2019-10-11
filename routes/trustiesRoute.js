@@ -8,7 +8,7 @@ var async = require('async')
 var crypto = require('crypto')
 var fs = require('fs')
 var nodemailer = require('nodemailer')
-const { isEmpty, cloneDeep } = require('lodash')
+const { isEmpty, cloneDeep, _ } = require('lodash')
 const Busboy = require('busboy')
 const User = require('./../models/Users')
 var constants = require('./../config/constants')
@@ -268,35 +268,65 @@ function getSubSectionsList(req, res){
 
 function trusteePermissionsUpdate(req, res){
     let { query } = req.body;
+    let { updateExtra } = req.body;
     let key = query.insertArray.code;
     let list = query.insertArray.accessManagement;
     
     async.each(list, (contact,callback) => {
       let newContact = JSON.parse(JSON.stringify(contact))
       let ext = newContact.ids.split('##');
-      
+     
       if (ext[0]) {
         let documentId = ext[0];
         let value = ext[1];
         let fields = { filesCount: 1, folderCount: 1 ,userAccess:1}
         trust.findOne({ _id: documentId},fields, function (err, trustDetails) {
-          var filescnt = parseInt(trustDetails.filesCount);
-          if(newContact.oldValue=='now' && value!='now'){
-            filescnt = parseInt(filescnt)-1;
-            
-          }else if(newContact.oldValue!='now' && value=='now'){
-            filescnt = parseInt(filescnt)+1;
+         
+          let updateData = {};
+          if(key=='LegacyLifeLettersMessagesManagement' && updateExtra.letterId){
+            var oldvalues = trustDetails.userAccess.LegacyLifeLettersMessagesManagement;
+            let updateArray = oldvalues;let updateObj = {};
+          if(oldvalues.length>0){
+            let updateVl =  _.findIndex(oldvalues, function(o) { return o.letterId == updateExtra.letterId; });
+            if(updateVl>=0){
+              oldvalues[updateVl] = {"letterId" : mongoose.Types.ObjectId(updateExtra.letterId),
+                                    "access" : value,
+                                    "updatedOn" : new Date(),
+                                    };
+                          updateArray = oldvalues;
+            }else{
+              updateArray = oldvalues;
+              updateObj = {"letterId" : mongoose.Types.ObjectId(updateExtra.letterId),
+                            "access" : value,
+                            "updatedOn" : new Date(),
+                          };
+                          updateArray.push(updateObj);
+                          updateArray.concat(oldvalues);
+            }
+          }else{
+              updateObj =  {"letterId" : mongoose.Types.ObjectId(updateExtra.letterId),
+                  "access" : value,
+                  "updatedOn" : new Date(),
+                };
+                updateArray.push(updateObj);
           }
 
-          let updateData = {}
-          updateData[`userAccess.${key}`] = value;
-          updateData['filesCount'] = filescnt;
+            updateData[`userAccess.${key}`] = updateArray;
+          }else{
+            var filescnt = parseInt(trustDetails.filesCount);
+            if(newContact.oldValue=='now' && value!='now'){
+              filescnt = parseInt(filescnt)-1;
+            }else if(newContact.oldValue!='now' && value=='now'){
+              filescnt = parseInt(filescnt)+1;
+            }
 
+            updateData[`userAccess.${key}`] = value;
+            updateData['filesCount'] = filescnt;
+          }
           trust.updateOne({ _id: documentId},{ $set:  updateData }, function (err, updatedDetails) {
             if (err) {
               res.status(401).send(resFormat.rError(err))
-            }
-            else {
+            } else {
               callback()
             }
           })

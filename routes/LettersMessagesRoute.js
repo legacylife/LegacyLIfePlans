@@ -8,7 +8,7 @@ var async = require('async')
 var crypto = require('crypto')
 var fs = require('fs')
 var nodemailer = require('nodemailer')
-const { isEmpty, cloneDeep } = require('lodash')
+const { isEmpty, cloneDeep,map, _,forEach } = require('lodash')
 const Busboy = require('busboy')
 const User = require('./../models/Users')
 var constants = require('./../config/constants')
@@ -26,7 +26,7 @@ var auth = jwt({
 })
 
 
-function LettersMessageList(req, res) {
+function LettersMessageList12(req, res) {
   let { fields, offset, query, trusteeQuery, order, limit, search } = req.body
   let totalRecords = 0
   if (search && !isEmpty(query)) {
@@ -40,24 +40,149 @@ function LettersMessageList(req, res) {
     if (listCount) {
       totalRecords = listCount
     }
-    lettersMessage.find(query, fields, function (err, lettersMessagesList) {
+    lettersMessage.find(query, fields, async function (err, lettersMessagesList) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-        let totalTrusteeRecords = 0;
-        if(totalRecords){
-          Trustee.count(trusteeQuery, function (err, TrusteeCount) {
-          if (TrusteeCount) {
-            totalTrusteeRecords = TrusteeCount
+          Trustee.find(trusteeQuery,{userAccess:1}, function(err, trusteeRecords) {
+          
+          let accessCount = []; let accessCounts = [];
+          let totalTrusteeRecords = 0;
+          let index = 0
+          if(trusteeRecords.length>0){
+            totalTrusteeRecords = trusteeRecords.length;
+
+            async.each(trusteeRecords, (val, callback) => {
+              if(val.userAccess.LegacyLifeLettersMessagesManagement.length>0){
+                let cnt = 1;let index = 0;
+//console.log("var->",val.userAccess.LegacyLifeLettersMessagesManagement)
+
+                // const found = val.userAccess.LegacyLifeLettersMessagesManagement.filter((o) => o.access == "now")
+                // console.log('found',found)
+                // if(found.length > 0) {
+                //   //accessCount[found[0].letterId] = cnt++;
+                //   accessCount =  found[0].letterId+'_'+cnt++;
+               
+                //   index++;
+                // }
+                // accessCounts.push(accessCount); 
+                // callback()
+                async.each(val.userAccess.LegacyLifeLettersMessagesManagement, (row, done) => {
+                  if(row.access ===  "now") {
+                   if(accessCount[row.letterId]){
+                    accessCount[row.letterId] =  accessCount[row.letterId];
+                   }else{
+                    accessCount[row.letterId] =  cnt++;
+                  }
+                  //  accessCount =  row.letterId+'_'+cnt++;
+                  
+                    done()
+                  } else {
+                   // accessCount[row.letterId] = 0;
+                    //accessCounts.push(accessCount); 
+                    done()
+                  }
+                 
+                }, () => {
+                  callback()
+                  console.log("iterate1 complete")
+                })
+                accessCounts.push(accessCount); 
+              } else {
+                callback()
+                console.log("iterate2")
+              }
+              
+            }, function(err) {
+              console.log(err)
+              console.log("result")
+             // console.log("--accessCounts--####->",Object.assign([], accessCount))
+             // console.log("--accessCounts--####->",accessCounts)
+
+              // forEach(accessCount, (user) => {
+              //   console.log(user);
+              // });
+            
+            
+              // accessCount.forEach( ( val, index ) => {
+              //   console.log("====>",index,val);
+              //  })
+
+
+             // let accessCounts = {accessCount:'123',accessCount2:'234'};
+            //  res.send(resFormat.rSuccess({lettersMessagesList,totalRecords,totalTrusteeRecords,accessCounts}));
+            })
+            console.log("--accessCounts--####->",accessCounts)
+            res.send(resFormat.rSuccess({lettersMessagesList,totalRecords,totalTrusteeRecords,accessCounts}));
+          }else{
+            console.log("--accessCount---==----->",accessCount)
+             
           }
-          res.send(resFormat.rSuccess({lettersMessagesList,totalRecords,totalTrusteeRecords }))
         })
-       }else{
-        res.send(resFormat.rSuccess({lettersMessagesList,totalRecords,totalTrusteeRecords }))
-       }
+
+          // let lettersMessagesListTemp = map(lettersMessagesList, (row, index) => {
+          //   let updateVl =  _.findIndex(accessCount, function(o) { if( o == row._id) {return o[row._id]}else{ return 0}});
+          //   let newRow = Object.assign({}, row, { "count": `${updateVl}` })
+          //   return newRow
+          // });
+          //console.log('lettersMessagesList---',lettersMessagesListTemp);         
       }
     }).sort(order).skip(offset).limit(limit)
   })
+}
+
+function LettersMessageList(req, res) {
+  let { fields, offset, query, trusteeQuery, order, limit, search,  } = req.body;
+  // loginUserId
+  let totalRecords = 0
+  if (search && !isEmpty(query)) {
+    Object.keys(query).map(function (key, index) {
+      if (key !== "status") {
+        query[key] = new RegExp(query[key], 'i')
+      }
+    })
+  }
+  lettersMessage.count(query, function (err, listCount) {
+    if (listCount) {
+      totalRecords = listCount
+    }
+    lettersMessage.find(query, fields, async function (err, lettersMessagesListTemp) {
+      if (err) {
+        res.status(401).send(resFormat.rError(err))
+      } else {
+         // Trustee.find(trusteeQuery,{userAccess:1}, function(err, trusteeRecords) {
+          let totalTrusteeRecords = 0;
+          let lettersMessagesList = lettersMessagesListTemp;
+          //  let lettersMessagesList = map(lettersMessagesListTemp,  (row, index) => {
+          //   //  let updateVl = '5';_.findIndex(accessCount, function(o) { if( o == row._id) {return o[row._id]}else{ return 0}});
+          //    let updateVl =  getTrusteeFlag(row._id,trusteeQuery,loginUserId);
+          //    let newRow = Object.assign({}, row._doc, { "accessFlag": `${updateVl}` })
+          //    return newRow
+          //  });
+            res.send(resFormat.rSuccess({lettersMessagesList,totalRecords,totalTrusteeRecords}));
+       // })
+     }
+    }).sort(order).skip(offset).limit(limit)
+  })
+}
+
+async function getTrusteeFlag(id,trusteeQuery,trustId) {
+  //console.log("===>",id);
+  let trusteeRecords = await Trustee.findOne({"userAccess.LegacyLifeLettersMessagesManagement.letterId":id,"trustId":trustId,status:"Active"},{});
+//  console.log("trusteeRecords===>",trusteeRecords);
+  if(trusteeRecords){
+    trusteeRecords.userAccess.LegacyLifeLettersMessagesManagement.filter(dtype => {
+     // console.log("@@@@@@@@@@@@@@@@@@@@@@@===>",dtype.access)
+      return dtype.access;
+    });//.map(el => el)
+    //  async.each(trusteeRecords, (val, callback) => {
+    //     console.log("===>",val.userAccess.LegacyLifeLettersMessagesManagement);
+    //     return
+    //   })
+  }else{
+    return 'never';
+  }
+  
 }
 
 function LettersMessageFormUpdate(req, res) {
@@ -88,7 +213,7 @@ function LettersMessageFormUpdate(req, res) {
           let { proquery } = req.body;   
           proquery.status = 'Active';   
           proquery.modifiedOn = new Date();
-          lettersMessage.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
+          lettersMessage.updateOne({ _id: custData._id }, { $set: proquery }, async function (err, updatedDetails) {
             if (err) {
               res.send(resFormat.rError(err))
             } else {

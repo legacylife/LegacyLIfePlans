@@ -90,23 +90,19 @@ function addEnquiryReply(req, res) {
         res.status(401).send(resFormat.rError(err))
       } else {         
         if(found) {
-          console.log("1 >>>>>>>>>>>>");
             let adminReplyArr = {'status':'Pending',adminId:ObjectId(query.adminId),'zipcodes':proquery.zipcodes,'cost':proquery.cost,'message':proquery.message,'createdOn':new Date()};
             let adminReplyData = '', invoiceDetails = ''
             let userData = await User.findOne({_id: found.customerId},{})
             
             if( !userData ) {
-              console.log("2 >>>>>>>>>>>>");
               res.send(resFormat.rError('Not found'))
             }
           
             if( found.adminReply.length > 0 ) {
-              console.log("3 >>>>>>>>>>>>");
               adminReplyData = found.adminReply;
               let newarry = [];  
               let list = await adminReplyData.map(async function (row, index) {
                 if(row.status=='Pending') {
-                  console.log("4 >>>>>>>>>>>>");
                   let oldData = row.paymentDetails,
                       paymentDetails = {
                         invoiceId: oldData.invoiceId,
@@ -120,7 +116,6 @@ function addEnquiryReply(req, res) {
                   newarry.push(newRow);
                 }
                 else {
-                  console.log("5 >>>>>>>>>>>>");
                   newarry.push(row);
                 }
 
@@ -137,7 +132,6 @@ function addEnquiryReply(req, res) {
                * Add payment link data
                */
               await stripeHelper.createInvoice(userData.username, stripeCustomerId, proquery.cost, 'USD', userDetails ).then( response => {
-                console.log("6 >>>>>>>>>>>>");
                 invoiceDetails = response
                 stripeCustomerId = response.stripeCustomerId
                 let paymentDetails = {
@@ -153,7 +147,6 @@ function addEnquiryReply(req, res) {
               adminReplyData =  adminReplyData.concat(adminReplyArr);
             }
             else {
-              console.log("7 >>>>>>>>>>>>");
               adminReplyData = adminReplyArr;
               /**
                * Create stripe user if not exists
@@ -166,7 +159,6 @@ function addEnquiryReply(req, res) {
                */
               
               await stripeHelper.createInvoice(userData.username, stripeCustomerId, proquery.cost, 'USD', userDetails ).then( async(response) => {
-                console.log("8 >>>>>>>>>>>>");
                 invoiceDetails = response
                 newStripeCustomerId = invoiceDetails.stripeCustomerId
                 let paymentDetails = {
@@ -178,7 +170,6 @@ function addEnquiryReply(req, res) {
                 }
                 adminReplyData = Object.assign(adminReplyData,{paymentDetails:paymentDetails})
                 if( !stripeCustomerId && newStripeCustomerId != "" ) {
-                  console.log("9 >>>>>>>>>>>>");
                   await User.updateOne({_id: userDetails._id}, {stripeCustomerId:newStripeCustomerId})
                 }
 
@@ -189,7 +180,6 @@ function addEnquiryReply(req, res) {
               if (err) {
                 res.send(resFormat.rError(err))
               } else {
-                console.log("10 >>>>>>>>>>>>");
                 let toName = found.customerId.firstName;
                 let emailId = found.customerId.username;
                 let zips = [];
@@ -236,7 +226,6 @@ function addEnquiryReply(req, res) {
               }
             })
        }else{
-        console.log("11 >>>>>>>>>>>>");
         let result = { "message": "Something wrong, Please try again later!" }
         res.status(200).send(resFormat.rSuccess(result))
        }
