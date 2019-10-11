@@ -58,6 +58,8 @@ export class UserAuthGuard implements CanActivate {
   checkDeceased(){ 
     if(localStorage.getItem("endUserId")){
     let DeceasedFlag = localStorage.getItem("endUserDeceased");
+    var pathArray = window.location.pathname.split('/'); 
+    console.log('HERE I AM 111--- ',DeceasedFlag,pathArray)
      if(DeceasedFlag=='true'){
        let dialogRef: MatDialogRef<any> = this.dialog.open(DeceasedComponent, {
          width: '720px',
@@ -70,6 +72,7 @@ export class UserAuthGuard implements CanActivate {
          }
        })
      }else{
+      console.log('HERE I AM 2222 --- ',DeceasedFlag)
           this.autologFunction();
      }
     }
@@ -79,6 +82,8 @@ autologFunction(){
      // console.log("LockScreen Here >> ")
      //https://www.npmjs.com/package/angular-user-idle
      let IdleFlag = localStorage.getItem("setIdleFlag");
+     var pathArray = window.location.pathname.split('/'); 
+     console.log('HERE I AM IdleFlag --- ',IdleFlag,pathArray)
       if(IdleFlag=='true'){
         console.log("LockScreen IdleFlag >> ",IdleFlag)
         this.stopWatching(false);
