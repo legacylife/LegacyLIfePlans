@@ -232,14 +232,14 @@
 
           <div class="profile--body--scroll">
 
-            <h3 class="sec--header">Civic Group/Club</h3>
+            <h3 class="sec--header">Civic Group/Club</h3>            
 
             <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
               <input matInput name="profileId" [formControl]="thirdFormGroup.controls['profileId']" readonly="readonly">
             </mat-form-field>
 
             <mat-form-field class="full-width">
-              <input  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="ccName" placeholder="Address Line 1" value="" [formControl]="thirdFormGroup.controls['ccName']">
+              <input  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="ccName" placeholder="Name" value="" [formControl]="thirdFormGroup.controls['ccName']">
               <mat-icon matTooltip="Please enter name." matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['ccName'].hasError('required') && thirdFormGroup.controls['ccName'].touched"
                 class="red--alert">help_outline</mat-icon>
             </mat-form-field>
