@@ -22,10 +22,12 @@ export class LettersMessagesListingComponent implements OnInit {
   selectedProfileId:string = "";
   showListingCnt: any;
   trusteeLettersMessagesCnt: any;
+  accessCount: any;
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
   showTrusteeCnt:boolean=true;
   urlData:any={};
+  fileLevelAccess:any;
   LegacyLifeLettersMessagesManagementSection:string='now';
   LegacyPermissionError:string="You don't have access to this section";
   instruction_data:any;
@@ -44,7 +46,9 @@ export class LettersMessagesListingComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
-        this.LegacyLifeLettersMessagesManagementSection = userAccess.LegacyLifeLettersMessagesManagement
+       // this.LegacyLifeLettersMessagesManagementSection = userAccess.LegacyLifeLettersMessagesManagement
+        this.fileLevelAccess = userAccess.LegacyLifeLettersMessagesManagement;
+        console.log("Here111",this.fileLevelAccess)
       });
       this.showTrusteeCnt = false;this.shareLegacFlag = true;
     }else{      
@@ -67,7 +71,8 @@ export class LettersMessagesListingComponent implements OnInit {
     let trusteeQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active" }, query),
-      trusteeQuery: Object.assign({ customerId: this.userId,"userAccess.LegacyLifeLettersMessagesManagement" : "now", status:"Active" }, trusteeQuery),
+      trusteeQuery: Object.assign({ customerId: this.userId,status:"Active"}, trusteeQuery),
+      //loginUserId: localStorage.getItem("endUserId"),
       fields: {},
       order: {"createdOn": -1},
     }
@@ -86,6 +91,8 @@ export class LettersMessagesListingComponent implements OnInit {
         }
         this.showListingCnt = this.lettersMessagesList.length;  
         this.trusteeLettersMessagesCnt = result.data.totalTrusteeRecords;
+       // this.accessCount = result.data.accessCount;
+  
         if (this.showListingCnt>0) {
           this.showListing = true;
         }
@@ -98,6 +105,22 @@ export class LettersMessagesListingComponent implements OnInit {
     })
   }
   
+  checkAccess(id) {
+    //console.log("Here",id,this.fileLevelAccess)
+    this.fileLevelAccess.filter(dtype => {
+      if(dtype.letterId==id){
+      console.log(id,'===',dtype.access)
+        if(dtype.access=='now'){
+          return true  
+        }else{
+          return false  
+        }      
+      }
+    });//.map(el => el)
+    //return 'now';
+  }
+
+
   openLettersMessagesModal() {
     let dialogRef: MatDialogRef<any> = this.dialog.open(LettersMessagesModelComponent, {
       width: '720px',
@@ -113,13 +136,15 @@ export class LettersMessagesListingComponent implements OnInit {
     })
   }
  
-  openManageTrusteeModal(title,code,isNew?) {
+  openManageTrusteeModal(title,code,letterId,letterTitle,isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(ManageTrusteeModalComponent, {
       width: '720px',
-      disableClose: true, 
+      disableClose: true,
       data: {
         title: title,
-        code:code
+        code:code,
+        letterId:letterId,
+        letterTitle:letterTitle
       }
     }) 
     dialogRef.afterClosed()
