@@ -149,7 +149,7 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
     }
 
     if(loader){ 
-      //this.loader.open();
+      this.loader.open();
     }
     this.userapi.apiRequest('post', 'advisor/professionalsList', req_vars).subscribe(result => {
          this.loader.close();

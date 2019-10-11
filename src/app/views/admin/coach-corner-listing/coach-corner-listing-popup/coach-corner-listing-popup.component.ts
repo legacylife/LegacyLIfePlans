@@ -144,11 +144,13 @@ export class CoachCornerPopupComponent implements OnInit {
    */
   submit() {
     let postData = this.data.payload;
+    let description = this.itemForm.controls['description'].value.replace(/\&nbsp;/g, '')
+    alert(description)
     this.RequestData = {
       fromId : localStorage.getItem('userId'),
       data: {
         title: this.itemForm.controls['title'].value,
-        description: this.itemForm.controls['description'].value,
+        description: description,
         category: this.itemForm.controls['category'].value,
         image: this.uploadedImage,
         status: this.itemForm.controls['status'].value ? 'On' : 'Off'

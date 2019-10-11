@@ -98,7 +98,7 @@ export class GetFeaturedComponent implements OnInit {
     if(stringVal && stringVal.isArray)
       return stringVal.join(", ")
     else
-      return stringVal.replace(",",", ")
+      return stringVal.replace(/,/g,', ')
   }
 
 }

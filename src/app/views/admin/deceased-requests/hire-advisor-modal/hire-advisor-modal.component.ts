@@ -83,6 +83,7 @@ export class AdminHireAdvisorComponent implements OnInit, AfterViewInit  {
       PersonalAffairsManagement: new FormControl(''), 
       DevicesManagement: new FormControl(''), 
       ElectronicMediaManagement: new FormControl(''), 
+      DigitalPublicationManagement: new FormControl(''),  
       RealEstateManagement: new FormControl(''), 
       emergencyContactsManagement: new FormControl(''), 
       VehiclesManagement: new FormControl(''), 
@@ -168,6 +169,7 @@ checkAdvisorView(insert = null) {
             this.trusteeFormGroup.controls['PersonalAffairsManagement'].setValue(this.row.userAccess.PersonalAffairsManagement);
             this.trusteeFormGroup.controls['DevicesManagement'].setValue(this.row.userAccess.DevicesManagement);
             this.trusteeFormGroup.controls['ElectronicMediaManagement'].setValue(this.row.userAccess.ElectronicMediaManagement);
+            this.trusteeFormGroup.controls['DigitalPublicationManagement'].setValue(this.row.userAccess.DigitalPublicationManagement);           
             this.trusteeFormGroup.controls['RealEstateManagement'].setValue(this.row.userAccess.RealEstateManagement);
             this.trusteeFormGroup.controls['emergencyContactsManagement'].setValue(this.row.userAccess.emergencyContactsManagement);
             this.trusteeFormGroup.controls['VehiclesManagement'].setValue(this.row.userAccess.VehiclesManagement);
@@ -215,7 +217,8 @@ trusteeFormGroupSubmit(insert = null) {
         "HealthcareManagement": this.trusteeFormGroup.controls['HealthcareManagement'].value,
         "PersonalAffairsManagement": this.trusteeFormGroup.controls['PersonalAffairsManagement'].value,
         "DevicesManagement": this.trusteeFormGroup.controls['DevicesManagement'].value,
-        "ElectronicMediaManagement": this.trusteeFormGroup.controls['ElectronicMediaManagement'].value,  
+        "ElectronicMediaManagement": this.trusteeFormGroup.controls['ElectronicMediaManagement'].value,
+        "DigitalPublicationManagement": this.trusteeFormGroup.controls['DigitalPublicationManagement'].value,  
         "emergencyContactsManagement": this.trusteeFormGroup.controls['emergencyContactsManagement'].value,
         "RealEstateManagement": this.trusteeFormGroup.controls['RealEstateManagement'].value,
         "VehiclesManagement": this.trusteeFormGroup.controls['VehiclesManagement'].value,

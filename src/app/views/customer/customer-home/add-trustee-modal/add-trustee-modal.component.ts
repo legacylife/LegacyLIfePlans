@@ -78,7 +78,8 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
         HealthcareManagement: new FormControl(''), 
         PersonalAffairsManagement: new FormControl(''), 
         DevicesManagement: new FormControl(''), 
-        ElectronicMediaManagement: new FormControl(''), 
+        ElectronicMediaManagement: new FormControl(''),
+        DigitalPublicationManagement: new FormControl(''), 
         RealEstateManagement: new FormControl(''), 
         emergencyContactsManagement: new FormControl(''), 
         VehiclesManagement: new FormControl(''), 
@@ -213,7 +214,8 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
         "HealthcareManagement": this.secondFormGroup.controls['HealthcareManagement'].value,
         "PersonalAffairsManagement": this.secondFormGroup.controls['PersonalAffairsManagement'].value,
         "DevicesManagement": this.secondFormGroup.controls['DevicesManagement'].value,
-        "ElectronicMediaManagement": this.secondFormGroup.controls['ElectronicMediaManagement'].value,  
+        "ElectronicMediaManagement": this.secondFormGroup.controls['ElectronicMediaManagement'].value,
+        "DigitalPublicationManagement": this.secondFormGroup.controls['DigitalPublicationManagement'].value,  
         "emergencyContactsManagement": this.secondFormGroup.controls['emergencyContactsManagement'].value,
         "RealEstateManagement": this.secondFormGroup.controls['RealEstateManagement'].value,
         "VehiclesManagement": this.secondFormGroup.controls['VehiclesManagement'].value,
@@ -291,6 +293,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
           "PersonalAffairsManagement": this.secondFormGroup.controls['PersonalAffairsManagement'].value,
           "DevicesManagement": this.secondFormGroup.controls['DevicesManagement'].value,
           "ElectronicMediaManagement": this.secondFormGroup.controls['ElectronicMediaManagement'].value,  
+          "DigitalPublicationManagement": this.secondFormGroup.controls['DigitalPublicationManagement'].value,
           "emergencyContactsManagement": this.secondFormGroup.controls['emergencyContactsManagement'].value,
           "RealEstateManagement": this.secondFormGroup.controls['RealEstateManagement'].value,
           "VehiclesManagement": this.secondFormGroup.controls['VehiclesManagement'].value,
@@ -385,6 +388,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
           this.secondFormGroup.controls['PersonalAffairsManagement'].setValue(this.row.userAccess.PersonalAffairsManagement);
           this.secondFormGroup.controls['DevicesManagement'].setValue(this.row.userAccess.DevicesManagement);
           this.secondFormGroup.controls['ElectronicMediaManagement'].setValue(this.row.userAccess.ElectronicMediaManagement);
+          this.secondFormGroup.controls['DigitalPublicationManagement'].setValue(this.row.userAccess.DigitalPublicationManagement);
           this.secondFormGroup.controls['RealEstateManagement'].setValue(this.row.userAccess.RealEstateManagement);
           this.secondFormGroup.controls['emergencyContactsManagement'].setValue(this.row.userAccess.emergencyContactsManagement);
           this.secondFormGroup.controls['VehiclesManagement'].setValue(this.row.userAccess.VehiclesManagement);
