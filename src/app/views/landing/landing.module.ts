@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { 
   MatListModule,
   MatIconModule,
@@ -15,7 +15,9 @@ import {
   MatRadioModule,
   MatTabsModule,
   MatInputModule,
-  MatProgressBarModule
+  MatFormFieldModule,
+  MatProgressBarModule,
+  MatTooltipModule
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -36,6 +38,7 @@ console.log('Landing Module..')
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     SlickCarouselModule,
     MatListModule,
     MatIconModule,
@@ -49,6 +52,7 @@ console.log('Landing Module..')
     MatRadioModule,
     MatTabsModule,
     MatInputModule,
+    MatFormFieldModule,
     MatProgressBarModule,
     FlexLayoutModule,
     NgxDatatableModule,
@@ -57,6 +61,7 @@ console.log('Landing Module..')
     SharedModule,
     CountUpModule,
     MatExpansionModule,
+    MatTooltipModule,
     RouterModule.forChild(LandingRoutes)
   ],
   declarations: [
