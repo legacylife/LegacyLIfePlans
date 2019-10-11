@@ -122,9 +122,6 @@ manageTrusteeSubmit(insert = null) {
     //return Object.keys(sectionName);
     //  console.log('value',this.letterId,'sectionName',sectionName)
     if(sectionName=='LegacyLifeLettersMessagesManagement'){
-      
-      
-
         let filteredTyes = accessArray.LegacyLifeLettersMessagesManagement.filter(dtype =>{
           return dtype.letterId === this.letterId
         }).map(el => el.access)[0]
