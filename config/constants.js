@@ -95,9 +95,14 @@ var constants = {
   InsurancePolicyType : { 
     1 : "Auto",   
     2 : "Business",
-    3 : "Home Owners", 
-    4 : "Life",
-    5 : "Umbrella"
+    3 : "Disability", 
+    4 : "Errors & Omissions",
+    5 : "Health",
+    6 : "Home Owners",   
+    7 : "Life",
+    8 : "Long Term Care", 
+    9 : "Travel",
+    10 : "Umbrella"
   },  
   FinancePolicyType : { 
     1 : "401K", 
