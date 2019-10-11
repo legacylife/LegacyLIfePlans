@@ -90,5 +90,31 @@ function sendAdvisorMail(emailId,emailRef,inviteToName,inviteByName,comment) {
   })
 }
 
+function contactUs(req, res){
+  let { query } = req.body;
+  console.log("query data >>>>>>> ",query)
+
+  let fromEmail = query.email;
+  let message = query.message;
+
+  emailTemplates.getEmailTemplateByCode("SendContactQuery").then((template) => {
+    if (template) {
+      template = JSON.parse(JSON.stringify(template));
+      let body = template.mailBody.replace("{email}",fromEmail);
+      body = body.replace("{message}",message);
+      const mailOptions = {
+        to: "subodh@arkenea.com",
+        subject: template.mailSubject,
+        html: body
+      }
+      sendEmail(mailOptions);
+    } 
+  })
+  
+  let result = { "message":"Your query has been sent successfully." }
+  res.status(200).send(resFormat.rSuccess(result))
+}
+
 router.post("/form-submit", FormSubmit)
+router.post("/contact-us", contactUs)
 module.exports = router
