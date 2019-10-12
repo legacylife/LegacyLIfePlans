@@ -198,12 +198,12 @@ let responseArray = [
     {
         "code":700,
         "type":"mark-executor",
-        "message":"User mark as executor successfully!",
+        "message":"Trustee has been marked as an executor successfully",
     },
     {
         "code":701,
         "type":"remove-executor",
-        "message":"Remove an executor successfully!",
+        "message":"Trustee has been removed as an executor successfully",
     },
 ];
 
