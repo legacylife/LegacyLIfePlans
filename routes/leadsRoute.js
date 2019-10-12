@@ -369,11 +369,25 @@ async function getMutualFriend(req, res){
   })
 }
 
+function getCustomerWithAdvisor(req,res){  
+  let { query } = req.body
+  
+  HiredAdvisors.find(query, {customerId:1},  function (err, list) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      let customerLength = list.length;
+      res.send(resFormat.rSuccess({ list }))
+    }    
+  })
+}
+
 router.post("/listing", leadsList)
 router.post("/lead-submit", leadUpdate)
 router.post("/view-details", userView)
 router.post("/get-own-legacy-files-count", getOwnLegacyFilesCount)
 router.post("/get-leads-count", getLeadsCount)
 router.post("/get-mutual-friend", getMutualFriend)
+router.post("/get-customer-list", getCustomerWithAdvisor)
 
 module.exports = router

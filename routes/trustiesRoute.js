@@ -103,6 +103,9 @@ function trustFormUpdate(req, res) {
   let { proquery } = req.body;
   let { extrafields } = req.body;
   clientUrl = constants.clientUrl + "/customer/signup";
+  if(proquery.relation == 4){
+    clientUrl = constants.clientUrl + "/advisor/signup";
+  }  
   var logData = {}
   logData.fileName = proquery.firstName;
   logData.folderName = 'Trustee';
@@ -226,6 +229,9 @@ function trustResendInvitation(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
+      if(trustDetails.relation == 4){
+        clientUrl = constants.clientUrl + "/advisor/signup";
+      }  
       stat = sendTrusteeMail(trustDetails.email, trustDetails.messages, trustDetails.folderCount, extrafields.inviteByName, trustDetails.firstName, clientUrl, "Reminder: ");
       let result = { "message": "Trustee invitation sent successfully!" }
       res.status(200).send(resFormat.rSuccess(result))
