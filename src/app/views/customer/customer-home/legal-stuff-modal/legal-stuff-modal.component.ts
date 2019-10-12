@@ -248,6 +248,12 @@ export class legalStuffModalComponent implements OnInit {
               this.updateProgressBar();
               this.getLegalDocuments();
             };
+            this.uploader.onCompleteAll=()=>{
+              this.uploader.clearQueue();
+              if(!this.uploaderCopy.queue.length){
+                this.currentProgessinPercent = 0;
+              }
+            }
           }
         }
       }
@@ -277,6 +283,10 @@ export class legalStuffModalComponent implements OnInit {
       this.updateProgressBar();
       this.getLegalDocuments({}, false, false);    
     };
+    this.uploaderCopy.onCompleteAll=()=>{
+      this.uploaderCopy.clearQueue();
+      this.currentProgessinPercent = 0;
+    }
   }
 
   getLegalDocuments = (query = {}, search = false, uploadRemained = true) => {    

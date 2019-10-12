@@ -13,25 +13,34 @@ export class UserAuthGuard implements CanActivate {
   private userInfo: any
   private urlData: any
   private userUrlType: any
-  
+  private freeSignup: boolean = false;
+  private pageUrl: any
   constructor(private router: Router, private userapi: UserAPIService,private route: ActivatedRoute, private subscriptionservice:SubscriptionService, private userIdle: UserIdleService,private dialog: MatDialog) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean{
-    this.checkDeceased();
-     
       this.userInfo = this.userapi.getUserInfo();
+      if(this.userInfo){
+        console.log('userInfo==>',this.userInfo);
+        this.userIdle.startWatching();
+        this.checkDeceased();
+      }
       var pathArray = window.location.pathname.split('/');
       this.userUrlType = pathArray[1];
+      if(pathArray[2]){
+        this.pageUrl = pathArray[2];
+      }
+      if(localStorage.getItem('endUserProFreeSubscription')=='yes'){
+        this.freeSignup = true;
+      }
       let currentUrl = state.url;
       let acceptedUsers = ['advisor','customer'];
-
       if((this.userInfo && this.userInfo.endUserType == '')){
         this.router.navigateByUrl('/signin');
         return false;
       }
-      if(this.userInfo && this.userInfo.endUserType!= '' && acceptedUsers.indexOf(this.userInfo.endUserType) >= 0 ) {
+      if(this.userInfo && this.userInfo.endUserType!= '' && acceptedUsers.indexOf(this.userInfo.endUserType) >= 0  && !this.freeSignup) {
         this.subscriptionservice.checkSubscription( '', ( returnArr )=> {
           let isProuser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
           let isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
@@ -48,7 +57,8 @@ export class UserAuthGuard implements CanActivate {
           }
         })
       }
-      if ((this.userInfo.endUserType != '' && this.userUrlType != ''  && this.userUrlType != 'subscription' && this.userUrlType != 'signin' && this.userInfo.endUserType != this.userUrlType)) {
+        console.log("URL ,",this.pageUrl)
+      if ((this.userInfo.endUserType != '' && this.userUrlType != ''  && this.userUrlType != 'subscription' && this.userUrlType != 'signin' && this.userInfo.endUserType != this.userUrlType)) {// && this.pageUrl != 'update-profile'
         this.router.navigateByUrl('/'+this.userInfo.endUserType+'/dashboard');
         return false;
       }
@@ -59,8 +69,8 @@ export class UserAuthGuard implements CanActivate {
     if(localStorage.getItem("endUserId")){
     let DeceasedFlag = localStorage.getItem("endUserDeceased");
     var pathArray = window.location.pathname.split('/'); 
-    console.log('HERE I AM 111--- ',DeceasedFlag,pathArray)
-     if(DeceasedFlag=='true'){
+    console.log('checkDeceased user auth--- ',DeceasedFlag,pathArray)
+     if(DeceasedFlag!='' && DeceasedFlag=='true'){
        let dialogRef: MatDialogRef<any> = this.dialog.open(DeceasedComponent, {
          width: '720px',
          disableClose: true
@@ -72,8 +82,12 @@ export class UserAuthGuard implements CanActivate {
          }
        })
      }else{
-      console.log('HERE I AM 2222 --- ',DeceasedFlag)
+      console.log('checkDeceased user auth 2 --- ',DeceasedFlag)
+        if(localStorage.getItem("setIdleFlag")!=''){
           this.autologFunction();
+        }else{
+          return;
+        }
      }
     }
  }
@@ -84,7 +98,7 @@ autologFunction(){
      let IdleFlag = localStorage.getItem("setIdleFlag");
      var pathArray = window.location.pathname.split('/'); 
      console.log('HERE I AM IdleFlag --- ',IdleFlag,pathArray)
-      if(IdleFlag=='true'){
+      if(IdleFlag!='' && IdleFlag=='true' && pathArray[1]!='signin'){
         console.log("LockScreen IdleFlag >> ",IdleFlag)
         this.stopWatching(false);
       }

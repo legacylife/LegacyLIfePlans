@@ -55,7 +55,7 @@ export class SigninComponent implements OnInit {
     this.userapi.apiRequest('post', 'auth/signin', signInData).subscribe(result => {
       this.loader.close();
       if (result.status=="success") {      
-        userData = result.data;console.log('Result-->',result.data);
+        userData = result.data;
         localStorage.setItem("endUserId", userData.userId);
         localStorage.setItem("endUserType", userData.userType);
         localStorage.setItem("endUserFirstName", userData.firstName);
@@ -69,8 +69,8 @@ export class SigninComponent implements OnInit {
         localStorage.setItem("endUserProSubscription", 'no');
         localStorage.setItem("endUserSubscriptionAddon", userData.addOnGiven);
         localStorage.setItem("endisReferAndEarn", userData.isReferAndEarn);
-        localStorage.setItem("setIdleFlag",'');
-        localStorage.setItem("endUserDeceased",'');
+        localStorage.setItem("setIdleFlag",'false');
+        localStorage.setItem("endUserDeceased",'false');
         localStorage.setItem("endUserlockoutLegacyDate",'');
         if(userData.deceased && userData.deceased.status=='Active'){
           localStorage.setItem("endUserDeceased",'true');

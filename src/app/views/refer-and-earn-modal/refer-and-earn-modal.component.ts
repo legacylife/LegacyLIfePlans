@@ -184,12 +184,17 @@ export class ReferAndEarnModalComponent implements OnInit {
         this.uploader.clearQueue();
        // }
       };
+      this.uploader.onCompleteAll=()=>{
+        this.uploader.clearQueue();
+        if(!this.uploaderCopy.queue.length){
+          this.currentProgessinPercent = 0;
+        }
+      }
     }
   }
 
   updateProgressBar(){
     let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
-    //console.log(" 4 ==> ",this.uploader.queue.length,"===",this.uploaderCopy.queue.length)
     let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
     this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
     this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
@@ -206,12 +211,12 @@ export class ReferAndEarnModalComponent implements OnInit {
     this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       this.updateProgressBar();
       this.getInviteDocuments({}, false, false);   
-     // console.log("uploaderCopy item ",response,item);
       if(this.uploaderCopy.onCompleteAll()){
-        //console.log("CLear 2")
+        this.currentProgessinPercent = 0;
         this.uploaderCopy.clearQueue();
       }              
     };
+    
   }
 
   getInviteDocuments = (query = {}, search = false, uploadRemained = true) => {

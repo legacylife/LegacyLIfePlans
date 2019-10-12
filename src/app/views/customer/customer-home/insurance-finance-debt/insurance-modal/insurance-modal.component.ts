@@ -271,6 +271,12 @@ export class InsuranceModalComponent implements OnInit {
               this.updateProgressBar();
               this.getInsuranceDocuments();
             };
+            this.uploader.onCompleteAll=()=>{
+              this.uploader.clearQueue();
+              if(!this.uploaderCopy.queue.length){
+                this.currentProgessinPercent = 0;
+              }
+            }
           }
         }
       }
@@ -300,6 +306,10 @@ export class InsuranceModalComponent implements OnInit {
       this.updateProgressBar();
       this.getInsuranceDocuments({}, false, false);      
     };
+    this.uploaderCopy.onCompleteAll=()=>{
+      this.uploaderCopy.clearQueue();
+      this.currentProgessinPercent = 0;
+    }
   }
 
   getInsuranceDocuments = (query = {}, search = false, uploadRemained = true) => {     

@@ -87,7 +87,7 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
       this.menuItems = mainItems
     })
 
-
+console.log('header Customer',localStorage.getItem('endUserProFreeSubscription'))
     let isProuser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
     let isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
     if(!isProuser) {

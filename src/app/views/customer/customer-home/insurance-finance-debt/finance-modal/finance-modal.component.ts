@@ -303,6 +303,12 @@ export class FinanceModalComponent implements OnInit {
                 this.updateProgressBar();
                 this.getFinanceDocuments();
               };
+              this.uploader.onCompleteAll=()=>{
+                this.uploader.clearQueue();
+                if(!this.uploaderCopy.queue.length){
+                  this.currentProgessinPercent = 0;
+                }
+              }
           }
         }
       }
@@ -332,6 +338,10 @@ export class FinanceModalComponent implements OnInit {
       this.updateProgressBar();
       this.getFinanceDocuments({}, false, false);      
     };
+    this.uploaderCopy.onCompleteAll=()=>{
+      this.uploaderCopy.clearQueue();
+      this.currentProgessinPercent = 0;
+    }
   }
 
   getFinanceDocuments = (query = {}, search = false, uploadRemained = true) => {     

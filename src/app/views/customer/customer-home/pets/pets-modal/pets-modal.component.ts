@@ -257,6 +257,12 @@ export class PetsModalComponent implements OnInit {
               this.updateProgressBar();
               this.getPetsDocuments();
             };
+            this.uploader.onCompleteAll=()=>{
+              this.uploader.clearQueue();
+              if(!this.uploaderCopy.queue.length){
+                this.currentProgessinPercent = 0;
+              }
+            }
           }
         }
       }
@@ -287,6 +293,10 @@ export class PetsModalComponent implements OnInit {
         this.updateProgressBar()
         this.getPetsDocuments({}, false, false);      
       };
+      this.uploaderCopy.onCompleteAll=()=>{
+        this.uploaderCopy.clearQueue();
+        this.currentProgessinPercent = 0;
+      }
   }
 
   getPetsDocuments = (query = {}, search = false, uploadRemained = true) => {     

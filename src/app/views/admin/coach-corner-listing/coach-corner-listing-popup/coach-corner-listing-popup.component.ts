@@ -211,6 +211,10 @@ export class CoachCornerPopupComponent implements OnInit {
             this.uploadedImage = item.file.name
           }
         }
+        this.uploader.onCompleteAll=()=>{
+          this.uploader.clearQueue();
+            this.currentProgessinPercent = 0;
+        }
       }
     });
   }

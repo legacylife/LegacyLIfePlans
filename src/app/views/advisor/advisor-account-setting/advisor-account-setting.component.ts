@@ -498,8 +498,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.fileErrors.push(pushArry); 
         setTimeout(()=>{    
           this.fileErrors = []
-        }, 5000);
-    
+        }, 5000);    
       }
     });
 
@@ -510,6 +509,10 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.updateProgressBar();
         this.getProfileField();
       };
+      this.uploader.onCompleteAll=()=>{
+        this.uploader.clearQueue();
+        this.currentProgessinPercent = 0;
+      }
     }
   }
 

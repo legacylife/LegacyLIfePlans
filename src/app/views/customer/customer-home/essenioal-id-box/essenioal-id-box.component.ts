@@ -160,7 +160,7 @@ export class EssenioalIdBoxComponent implements OnInit {
      if(documents_tempss=='1'){
       this.IDForm.controls['documents_temp'].setValue('1');
       }
-
+console.log("key",key)
       if(key==3){  
         this.typeOne = true;      
         this.typeOneTwo = true;      
@@ -552,6 +552,12 @@ export class EssenioalIdBoxComponent implements OnInit {
                 this.updateProgressBar();
                 this.getIdDocuments();
               };
+              this.uploader.onCompleteAll=()=>{
+                this.uploader.clearQueue();
+                if(!this.uploaderCopy.queue.length){
+                  this.currentProgessinPercent = 0;
+                }
+              }
             }
           }
         }
@@ -581,6 +587,10 @@ export class EssenioalIdBoxComponent implements OnInit {
         this.updateProgressBar();
         this.getIdDocuments({}, false, false);      
       };
+      this.uploaderCopy.onCompleteAll=()=>{
+        this.uploaderCopy.clearQueue();
+        this.currentProgessinPercent = 0;
+      }
     }
 
     getIdDocuments = (query = {}, search = false, uploadRemained = true) => {     

@@ -221,6 +221,12 @@ export class LettersMessagesModelComponent implements OnInit {
               this.updateProgressBar();
               this.getlettersMessagesDocuments();
             };
+            this.uploader.onCompleteAll=()=>{
+              this.uploader.clearQueue();
+              if(!this.uploaderCopy.queue.length){
+                this.currentProgessinPercent = 0;
+              }
+            }
           }
         }
       }
@@ -250,6 +256,10 @@ export class LettersMessagesModelComponent implements OnInit {
       this.updateProgressBar();
       this.getlettersMessagesDocuments({}, false, false);
     };
+    this.uploaderCopy.onCompleteAll=()=>{
+      this.uploaderCopy.clearQueue();
+      this.currentProgessinPercent = 0;
+    }
   }
 
   getlettersMessagesDocuments = (query = {}, search = false, uploadRemained = true) => {    

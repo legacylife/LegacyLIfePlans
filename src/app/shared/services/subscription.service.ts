@@ -63,7 +63,7 @@ export class SubscriptionService {
     }
     
     await this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe( async (result) => {
-      console.log('data',result.data.userProfile)
+      console.log('data subscription service',result.data.userProfile)
       let userData                = result.data.userProfile,
           bfrSubCustPremiumAccess = 0, // Before subscription customer's premium access days
           bfrSubCustFreeAccess    = 0, // Before premium access / subscription customer's free access days
