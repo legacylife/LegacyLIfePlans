@@ -27,7 +27,7 @@
       </div>
       <p class="pep">{{userFullName}} <br> You are locked. Please enter password to unlock! </p>
       <mat-form-field class="enterpass">
-        <input type="password" name="password" matInput [formControl]="lockScreenForm.controls['password']"  placeholder="Password" value="" required>
+        <input type="password" name="password" matInput [formControl]="lockScreenForm.controls['password']"  placeholder="Password" value="" required autocomplete="off">
         <mat-icon matTooltip="Please enter password" matTooltipClass="llp--tooltip error" class="red--alert"
         *ngIf="lockScreenForm.controls['password'].hasError('required') && lockScreenForm.controls['password'].touched">help_outline</mat-icon>
 
@@ -40,7 +40,7 @@
 
   </div>
   <div class="ll--modal--footer text-center">
-      <button mat-raised-button class="llp--secondary--btn"  (click)="logout()" [routerLink]="'/customer/signup'">Log out</button>
+    <button type="button" mat-raised-button class="llp--secondary--btn"  (click)="logout()" [routerLink]="'/signin'">Log out</button>
     <button mat-raised-button class="llp--primary--btn" [disabled]="lockScreenForm.invalid">Submit</button>
   
     <!-- <a  (click)="logout()" [routerLink]="'/customer/signup'"> <mat-icon>exit_to_app</mat-icon>  <span>Log out</span></a>     -->

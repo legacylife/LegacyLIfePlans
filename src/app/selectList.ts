@@ -187,7 +187,7 @@ export const TrusteeRelationshipType = [
     opt_code: "4"
   }
 ];
-export const InsurancePolicyType = [
+export const InsurancePolicyType = [  
   {
     opt_code: "1",
     opt_name: "Auto"
@@ -197,16 +197,36 @@ export const InsurancePolicyType = [
     opt_code: "2"
   },
   {
-    opt_name: "Home Owners",
+    opt_name: "Disability",
     opt_code: "3"
   },
   {
-    opt_name: "Life",
+    opt_name: "Errors & Omissions",
     opt_code: "4"
+  },  
+  {
+    opt_name: "Health",
+    opt_code: "5"
+  },
+  {
+    opt_name: "Home Owners",
+    opt_code: "6"
+  },
+  {
+    opt_name: "Life",
+    opt_code: "7"
+  },
+  {
+    opt_name: "Long Term Care",
+    opt_code: "8"
+  },
+  {
+    opt_name: "Travel",
+    opt_code: "9"
   },
   {
     opt_name: "Umbrella",
-    opt_code: "5"
+    opt_code: "10"
   }
 ];
 export const FinancePolicyType = [
