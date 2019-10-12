@@ -95,7 +95,7 @@ export class BusinessInfoComponent implements OnInit {
       agencyOversees: new FormControl(''),
       managingPrincipleName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
       manageOtherProceducers: new FormControl('', Validators.required),
-      howManyProducers: new FormControl('',Validators.compose([ Validators.required, this.noWhitespaceValidator,Validators.pattern(/^[0-9]*$/), Validators.minLength(1), Validators.maxLength(50)])),
+      howManyProducers: new FormControl('',[Validators.pattern(/^[0-9]*$/),Validators.maxLength(12)]),
     });
     this.forthFormGroup = this.fb.group({
       advisorDocuments_temp: new FormControl([], Validators.required)
