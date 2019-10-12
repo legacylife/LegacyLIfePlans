@@ -21,8 +21,9 @@ export class LettersMessagesModelComponent implements OnInit {
   userId = localStorage.getItem("endUserId"); 
   public hasBaseDropZoneOver: boolean = false;
   invalidMessage: string;
-  LettersMessagesForm: FormGroup;
   documentsMissing = false;
+  documents_temps = false;
+  LettersMessagesForm: FormGroup;
   fileErrors: any;
   profileIdHiddenVal:boolean = false;
   documentsList: any;
@@ -63,7 +64,8 @@ export class LettersMessagesModelComponent implements OnInit {
       title: new FormControl('', Validators.required),
       letterBox: new FormControl('', Validators.required), 
       subject: new FormControl(''),
-      profileId: new FormControl('')
+      profileId: new FormControl(''),
+      documents_temp: new FormControl([], Validators.required),
     });
 
     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
@@ -148,6 +150,10 @@ export class LettersMessagesModelComponent implements OnInit {
           this.LettersMessagesForm.controls['letterBox'].setValue(this.LetterMessageList.letterBox);
           this.LettersMessagesForm.controls['subject'].setValue(this.LetterMessageList.subject);
           this.documentsList = result.data.documents;       
+          if(this.documentsList.length>0){
+            this.LettersMessagesForm.controls['documents_temp'].setValue('1');
+            this.documentsMissing = false;
+          } 
         }       
       }
     }, (err) => {
@@ -181,7 +187,7 @@ export class LettersMessagesModelComponent implements OnInit {
       }
     });
 
-    let legacyUserData = {userId: this.toUserId, userType: this.urlData.userType}
+    let legacyUserData = {userId: this.toUserId, userType:'customer'}
     this.fileHandlingService.checkAvailableSpace( legacyUserData, async (spaceDetails) => {
       remainingSpace = Number(spaceDetails.remainingSpace)
       message = spaceDetails.message
@@ -207,6 +213,7 @@ export class LettersMessagesModelComponent implements OnInit {
           this.uploaderCopy.queue.splice(0, 1)
           
           this.uploader.queue.forEach((fileoOb, ind) => {
+            this.LettersMessagesForm.controls['documents_temp'].setValue('');
                 this.uploader.uploadItem(fileoOb);
             });
 
@@ -225,10 +232,14 @@ export class LettersMessagesModelComponent implements OnInit {
     let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
     this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
     this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+    if(this.uploader.queue.length>0){
+      this.uploader.clearQueue();
+    }
   }
 
   uploadRemainingFiles(profileId) {
     this.uploaderCopy.onBeforeUploadItem = (item) => {
+      this.LettersMessagesForm.controls['documents_temp'].setValue('');        
       item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
     }
     this.uploaderCopy.queue.forEach((fileoOb, ind) => {
@@ -261,7 +272,12 @@ export class LettersMessagesModelComponent implements OnInit {
         if(uploadRemained) {
           this.uploadRemainingFiles(result.data._id)
         }
-        this.documentsList = result.data.documents;                    
+        this.documentsList = result.data.documents;  
+        this.LettersMessagesForm.controls['documents_temp'].setValue('');        
+        if(this.documentsList.length>0){
+          this.LettersMessagesForm.controls['documents_temp'].setValue('1');
+          this.documentsMissing = false;
+        }                      
       }
     }, (err) => {
       console.error(err);
@@ -293,6 +309,11 @@ export class LettersMessagesModelComponent implements OnInit {
             } else {              
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            }
+            if (this.documentsList.length < 1) {
+              this.LettersMessagesForm.controls['documents_temp'].setValue('');
+              this.documentsMissing = true;
+              this.invalidMessage = "Please drag your document.";
             }
           }, (err) => {
             console.error(err)

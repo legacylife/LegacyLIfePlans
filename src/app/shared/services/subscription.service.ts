@@ -47,6 +47,7 @@ export class SubscriptionService {
    * Check the user subscription details
    */
   checkSubscription = async (legacyUserData, callback) => {
+    console.log('legacyUserData',legacyUserData)
     if( legacyUserData == '') {
       this.userId = localStorage.getItem("endUserId");
       this.usertype = localStorage.getItem("endUserType");
@@ -55,11 +56,14 @@ export class SubscriptionService {
       this.userId = legacyUserData.userId
       this.usertype = legacyUserData.userType
     }
+
+    console.log('userId',this.userId,'usertype',this.usertype)
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: this.usertype }, {})
     }
     
     await this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe( async (result) => {
+      console.log('data',result.data.userProfile)
       let userData                = result.data.userProfile,
           bfrSubCustPremiumAccess = 0, // Before subscription customer's premium access days
           bfrSubCustFreeAccess    = 0, // Before premium access / subscription customer's free access days

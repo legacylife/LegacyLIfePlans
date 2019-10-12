@@ -214,7 +214,7 @@ export class legalStuffModalComponent implements OnInit {
       }
     });
 
-    let legacyUserData = {userId: this.toUserId, userType: this.urlData.userType}
+    let legacyUserData = {userId: this.toUserId, userType:'customer'}
     this.fileHandlingService.checkAvailableSpace( legacyUserData, async (spaceDetails) => {
       remainingSpace = Number(spaceDetails.remainingSpace)
       message = spaceDetails.message
@@ -240,6 +240,7 @@ export class legalStuffModalComponent implements OnInit {
             this.uploaderCopy.queue.splice(0, 1)
           
             this.uploader.queue.forEach((fileoOb, ind) => {
+              this.LegalForm.controls['documents_temp'].setValue('');
                 this.uploader.uploadItem(fileoOb);
             });
 

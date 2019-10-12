@@ -271,7 +271,7 @@ export class FinanceModalComponent implements OnInit {
       }
     });
 
-    let legacyUserData = {userId: this.toUserId, userType: this.urlData.userType}
+    let legacyUserData = {userId: this.toUserId, userType:'customer'}
     this.fileHandlingService.checkAvailableSpace( legacyUserData, async (spaceDetails) => {
       remainingSpace = Number(spaceDetails.remainingSpace)
       message = spaceDetails.message
@@ -296,6 +296,7 @@ export class FinanceModalComponent implements OnInit {
               this.uploader.queue.splice(1, this.uploader.queue.length - 1)
               this.uploaderCopy.queue.splice(0, 1)
               this.uploader.queue.forEach((fileoOb, ind) => {
+                  this.FinanceForm.controls['documents_temp'].setValue('');    
                   this.uploader.uploadItem(fileoOb);
               });
               this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {

@@ -519,9 +519,9 @@ export class EssenioalIdBoxComponent implements OnInit {
         }
       });
 
-      let legacyUserData = {userId: this.toUserId, userType: this.urlData.userType}
+      let legacyUserData = {userId: this.toUserId, userType: 'customer'}
       this.fileHandlingService.checkAvailableSpace( legacyUserData, async (spaceDetails) => {
-        console.log("spaceDetails",spaceDetails,"***totalUploderFileSize***",totalUploderFileSize)
+      //  console.log("spaceDetails",spaceDetails,"***totalUploderFileSize***",totalUploderFileSize)
         remainingSpace = Number(spaceDetails.remainingSpace)
         message = spaceDetails.message
       
@@ -545,6 +545,7 @@ export class EssenioalIdBoxComponent implements OnInit {
               this.uploader.queue.splice(1, this.uploader.queue.length - 1)
               this.uploaderCopy.queue.splice(0, 1)        
               this.uploader.queue.forEach((fileoOb, ind) => {
+                    this.IDForm.controls['documents_temp'].setValue('');
                     this.uploader.uploadItem(fileoOb);
               });
               this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
@@ -562,6 +563,9 @@ export class EssenioalIdBoxComponent implements OnInit {
       let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
       this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
       this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+      if(this.uploader.queue.length>0){
+        this.uploader.clearQueue();
+      }
     }
   
     uploadRemainingFiles(profileId) {

@@ -16,6 +16,7 @@ export class FileHandlingService {
   constructor(private router: Router, private subscription: SubscriptionService) {}
 
   checkAvailableSpace = (userData={}, callback) => {
+    console.log("here124234234",userData)
     this.subscription.checkSubscription( userData, ( returnArr )=> {
       console.log("returnArr",returnArr)
 

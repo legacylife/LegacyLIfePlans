@@ -223,7 +223,7 @@ export class PetsModalComponent implements OnInit {
       }
     });
 
-    let legacyUserData = {userId: this.toUserId, userType: this.urlData.userType}
+    let legacyUserData = {userId: this.toUserId,userType: 'customer'}
     this.fileHandlingService.checkAvailableSpace( legacyUserData, async (spaceDetails) => {
       remainingSpace = Number(spaceDetails.remainingSpace)
       message = spaceDetails.message
@@ -249,6 +249,7 @@ export class PetsModalComponent implements OnInit {
             this.uploader.queue.splice(1, this.uploader.queue.length - 1)
             this.uploaderCopy.queue.splice(0, 1)
             this.uploader.queue.forEach((fileoOb, ind) => {
+              this.PetForm.controls['documents_temp'].setValue('');
                   this.uploader.uploadItem(fileoOb);
             });
             
@@ -276,10 +277,10 @@ export class PetsModalComponent implements OnInit {
   uploadRemainingFiles(profileId) {
       this.uploaderCopy.onBeforeUploadItem = (item) => {
         item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
-        this.PetForm.controls['documents_temp'].setValue('');
       }
       this.uploaderCopy.queue.forEach((fileoOb, ind) => {
-          this.uploaderCopy.uploadItem(fileoOb);
+        this.PetForm.controls['documents_temp'].setValue('');
+        this.uploaderCopy.uploadItem(fileoOb);
       });
   
       this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
