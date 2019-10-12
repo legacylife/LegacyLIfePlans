@@ -24,6 +24,8 @@ export class FinanceModalComponent implements OnInit {
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public hasBaseDropZoneOver: boolean = false;
   invalidMessage: string;
+  documentsMissing = false;
+  documents_temps = false;
   FinanceForm: FormGroup;  
   FinanceDocsList: any;
   fileErrors: any;
@@ -60,7 +62,8 @@ export class FinanceModalComponent implements OnInit {
       contactEmail: new FormControl('',Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
       contactPhone: new FormControl('',Validators.pattern(/^[0-9]{7,15}$/)),
       comments: new FormControl(''),
-      profileId: new FormControl('')
+      profileId: new FormControl(''),
+      documents_temp: new FormControl([], Validators.required),
     });
 
     this.FinanceDocsList = [];
@@ -178,7 +181,11 @@ export class FinanceModalComponent implements OnInit {
           this.FinanceForm.controls['profileId'].setValue(profileIds);
           this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-          this.FinanceDocsList = result.data.documents;            
+          this.FinanceDocsList = result.data.documents;     
+          if(this.FinanceDocsList.length>0){
+            this.FinanceForm.controls['documents_temp'].setValue('1');
+            this.documentsMissing = false;
+          }       
           this.FinanceForm.controls['financesType'].setValue(this.financeList.financesType);
           this.FinanceForm.controls['financesTypeNew'].setValue(this.financeList.financesTypeNew);
           if(this.financeList.financesType == 16){
@@ -223,6 +230,11 @@ export class FinanceModalComponent implements OnInit {
             } else {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            }
+            if (this.FinanceDocsList.length < 1) {
+              this.FinanceForm.controls['documents_temp'].setValue('');
+              this.documentsMissing = true;
+              this.invalidMessage = "Please drag your document.";
             }
           }, (err) => {
             console.error(err)
@@ -301,11 +313,15 @@ export class FinanceModalComponent implements OnInit {
     let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
     this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
     this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+    if(this.uploader.queue.length>0){
+      this.uploader.clearQueue();
+    }
   }
 
   uploadRemainingFiles(profileId) {
     this.uploaderCopy.onBeforeUploadItem = (item) => {
       item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
+      this.FinanceForm.controls['documents_temp'].setValue('');        
     }
     this.uploaderCopy.queue.forEach((fileoOb, ind) => {
         this.uploaderCopy.uploadItem(fileoOb);
@@ -337,7 +353,12 @@ export class FinanceModalComponent implements OnInit {
         if(uploadRemained) {
           this.uploadRemainingFiles(profileIds)
         }
-        this.FinanceDocsList = result.data.documents;              
+        this.FinanceDocsList = result.data.documents;    
+        this.FinanceForm.controls['documents_temp'].setValue('');
+        if(this.FinanceDocsList.length>0){
+          this.FinanceForm.controls['documents_temp'].setValue('1');
+          this.documentsMissing = false;
+        }               
       }
     }, (err) => {
       console.error(err);

@@ -475,9 +475,11 @@ export class EssenioalIdBoxComponent implements OnInit {
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
               } else {
-                if(this.documentsList.length<1){
+                if (this.documentsList.length < 1) {
                   this.IDForm.controls['documents_temp'].setValue('');
-                }  
+                  this.documentsMissing = true;
+                  this.invalidMessage = "Please drag your document.";
+                }
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
               }
@@ -565,6 +567,7 @@ export class EssenioalIdBoxComponent implements OnInit {
     uploadRemainingFiles(profileId) {
       this.uploaderCopy.onBeforeUploadItem = (item) => {
         item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
+        this.IDForm.controls['documents_temp'].setValue('');
       }
       this.uploaderCopy.queue.forEach((fileoOb, ind) => {
           this.uploaderCopy.uploadItem(fileoOb);
@@ -596,12 +599,15 @@ export class EssenioalIdBoxComponent implements OnInit {
           if(uploadRemained) {
             this.uploadRemainingFiles(profileIds)
           }
+
           // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           this.documentsList = result.data.documents;
-          if(result.data.documents.length>0){
+          this.IDForm.controls['documents_temp'].setValue('');
+          if(this.documentsList.length>0){
             this.IDForm.controls['documents_temp'].setValue('1');
-          }         
+            this.documentsMissing = false;
+          }                  
         }
       }, (err) => {
         console.error(err);

@@ -22,12 +22,14 @@ export class PetsModalComponent implements OnInit {
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public hasBaseDropZoneOver: boolean = false;
+  documentsMissing = false;
   invalidMessage: string;
   PetForm: FormGroup;
   documentTypeList: any[] = documentTypes;
   petDocumentsList: any;
   fileErrors: any;
   petsList:any;
+  documents_temps = false;
   profileIdHiddenVal:boolean = false;
   selectedProfileId: string;
   docPath: string;
@@ -51,9 +53,10 @@ export class PetsModalComponent implements OnInit {
       petType: new FormControl(''),
       veterinarian: new FormControl(''),
       dietaryConcerns: new FormControl(''),
-      profileId: new FormControl('')
+      profileId: new FormControl(''),
+      documents_temp: new FormControl([], Validators.required)
      });
-    this.petDocumentsList = [];
+    //this.petDocumentsList = [];
 
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
@@ -141,6 +144,11 @@ export class PetsModalComponent implements OnInit {
             this.PetForm.controls['petType'].setValue(this.petsList.petType);
             this.PetForm.controls['veterinarian'].setValue(this.petsList.veterinarian);
             this.PetForm.controls['dietaryConcerns'].setValue(this.petsList.dietaryConcerns);
+            this.PetForm.controls['documents_temp'].setValue('');
+            if(this.petDocumentsList.length>0){
+              this.PetForm.controls['documents_temp'].setValue('1');
+              this.documentsMissing = false;
+            }
           }       
         }
       }, (err) => {
@@ -174,6 +182,13 @@ export class PetsModalComponent implements OnInit {
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
               }
+
+              if (this.petDocumentsList.length < 1) {
+                this.PetForm.controls['documents_temp'].setValue('');
+                this.documentsMissing = true;
+                this.invalidMessage = "Please drag your document.";
+              }
+
             }, (err) => {
               console.error(err)
               this.loader.close();
@@ -229,14 +244,14 @@ export class PetsModalComponent implements OnInit {
         }
         if( proceedToUpload ) {
           if(this.uploader.getNotUploadedItems().length){
-            this.uploaderCopy = cloneDeep(this.uploader);console.log(" 2 ==> ",this.uploader.queue.length)
+            //this.PetForm.controls['documents_temp'].setValue('');
+            this.uploaderCopy = cloneDeep(this.uploader);
             this.uploader.queue.splice(1, this.uploader.queue.length - 1)
             this.uploaderCopy.queue.splice(0, 1)
-            console.log(" 3 ==> ",this.uploader.queue.length,'==',this.uploaderCopy.queue.length)
             this.uploader.queue.forEach((fileoOb, ind) => {
                   this.uploader.uploadItem(fileoOb);
             });
-      
+            
             this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
               this.updateProgressBar();
               this.getPetsDocuments();
@@ -249,8 +264,11 @@ export class PetsModalComponent implements OnInit {
     
   updateProgressBar(){
     let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
-    console.log(" 4 ==> ",this.uploaderCopy.queue.length,"===",this.uploader.queue.length)
-    let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;    
+    //console.log(" 4 ==> ",this.uploaderCopy.queue.length,"===",this.uploader.queue.length,'===',this.uploader.getNotUploadedItems().length);
+    let remainingLength = this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
+    if(this.uploader.queue.length>0){
+      this.uploader.clearQueue();
+    }
     this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
     this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
   }
@@ -258,6 +276,7 @@ export class PetsModalComponent implements OnInit {
   uploadRemainingFiles(profileId) {
       this.uploaderCopy.onBeforeUploadItem = (item) => {
         item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
+        this.PetForm.controls['documents_temp'].setValue('');
       }
       this.uploaderCopy.queue.forEach((fileoOb, ind) => {
           this.uploaderCopy.uploadItem(fileoOb);
@@ -286,6 +305,8 @@ export class PetsModalComponent implements OnInit {
         } else {
           profileIds = result.data._id;
           this.PetForm.controls['profileId'].setValue(profileIds);
+          this.PetForm.controls['documents_temp'].setValue('1');
+          this.documentsMissing = false;
           if(uploadRemained) {
             this.uploadRemainingFiles(profileIds)
           }

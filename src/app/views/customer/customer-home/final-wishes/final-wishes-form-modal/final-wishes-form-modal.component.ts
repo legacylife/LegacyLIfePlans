@@ -22,7 +22,9 @@ export class FinalWishesFormModalComponent implements OnInit {
   public hasBaseDropZoneOver: boolean = false;
   FinalForm: FormGroup;
   selectedProfileId: string;
-  
+  invalidMessage: string;
+  documentsMissing = false;
+  documents_temps = false;
   wishDocumentsList:any = [];
   profileIdHiddenVal:boolean = false;
   folderName: string;
@@ -58,7 +60,8 @@ export class FinalWishesFormModalComponent implements OnInit {
       title: new FormControl('',Validators.required),
       comments: new FormControl(''),
       calendarDate: new FormControl(''),
-      profileId: new FormControl('')
+      profileId: new FormControl(''),
+      documents_temp: new FormControl([], Validators.required),
     });
     
     this.wishDocumentsList = [];
@@ -114,7 +117,10 @@ export class FinalWishesFormModalComponent implements OnInit {
           this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
           this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
           this.documentsList = result.data.documents;
-          
+          if(this.documentsList.length>0){
+            this.FinalForm.controls['documents_temp'].setValue('1');
+            this.documentsMissing = false;
+          }
           this.FinalForm.controls['title'].setValue(this.finalWishList.title); 
           this.FinalForm.controls['comments'].setValue(this.finalWishList.comments);
           this.FinalForm.controls['calendarDate'].setValue(this.finalWishList.calendarDate);
@@ -244,12 +250,16 @@ export class FinalWishesFormModalComponent implements OnInit {
       let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
       let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
       this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+      if(this.uploader.queue.length>0){
+        this.uploader.clearQueue();
+      }
       this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
   }
 
   uploadRemainingFiles(profileId) {
       this.uploaderCopy.onBeforeUploadItem = (item) => {
         item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
+        this.FinalForm.controls['documents_temp'].setValue('');
       }
       this.uploaderCopy.queue.forEach((fileoOb, ind) => {
           this.uploaderCopy.uploadItem(fileoOb);
@@ -283,7 +293,12 @@ export class FinalWishesFormModalComponent implements OnInit {
         }
         // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
         // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-        this.documentsList = result.data.documents;                       
+        this.documentsList = result.data.documents;      
+        this.FinalForm.controls['documents_temp'].setValue('');
+        if(this.documentsList.length>0){
+          this.FinalForm.controls['documents_temp'].setValue('1');
+          this.documentsMissing = false;
+        }                        
       }
     }, (err) => {
       console.error(err);
@@ -315,6 +330,12 @@ export class FinalWishesFormModalComponent implements OnInit {
             } else {           
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            }
+       
+            if (this.documentsList.length < 1) {
+              this.FinalForm.controls['documents_temp'].setValue('');
+              this.documentsMissing = true;
+              this.invalidMessage = "Please drag your document.";
             }
           }, (err) => {
             console.error(err)

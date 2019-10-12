@@ -129,7 +129,9 @@
                 <input matInput name="documents_temp" [formControl]="IDForm.controls['documents_temp']">
                 <small *ngIf="IDForm.controls['documents_temp'].hasError('required') && IDForm.controls['documents_temp'].touched" class="form-error-msg"> Please drag your document. </small>
             </mat-form-field>
-      
+
+         <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small>
+
          <div *ngIf="documentsList" >
           <h3 class="header--text fnt--16">Uploaded ID proof</h3>
           <mat-chip-list class="doc--list" *ngFor="let doc of documentsList; index as i">
@@ -145,7 +147,7 @@
             <input matInput name="documents" [formControl]="IDForm.controls['documents']" >
           </mat-form-field> -->
 
-          <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small>
+          
 
           <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderCopy.getNotUploadedItems().length || uploader.getNotUploadedItems().length">
             <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>

@@ -23,6 +23,8 @@ export class InsuranceModalComponent implements OnInit {
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public hasBaseDropZoneOver: boolean = false;
   invalidMessage: string;
+  documentsMissing = false;
+  documents_temps = false;
   InsuranceForm: FormGroup;  
   InsuranceDocsList: any;
   fileErrors: any;
@@ -58,7 +60,8 @@ export class InsuranceModalComponent implements OnInit {
       contactEmail: new FormControl('',Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
       contactPhone: new FormControl('',Validators.pattern(/^[0-9]{7,15}$/)),
       comments: new FormControl(''),
-      profileId: new FormControl('')
+      profileId: new FormControl(''),
+      documents_temp: new FormControl([], Validators.required),
     });
 
     this.InsuranceDocsList = [];
@@ -150,7 +153,11 @@ export class InsuranceModalComponent implements OnInit {
 
           this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-          this.InsuranceDocsList = result.data.documents;            
+          this.InsuranceDocsList = result.data.documents;           
+          if(this.InsuranceDocsList.length>0){
+            this.InsuranceForm.controls['documents_temp'].setValue('1');
+            this.documentsMissing = false;
+          }        
           this.InsuranceForm.controls['policyType'].setValue(this.insuranceList.policyType);
           this.InsuranceForm.controls['nameOfInsured'].setValue(this.insuranceList.nameOfInsured);
           this.InsuranceForm.controls['company'].setValue(this.insuranceList.company);
@@ -191,6 +198,11 @@ export class InsuranceModalComponent implements OnInit {
             } else {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            }
+            if (this.InsuranceDocsList.length < 1) {
+              this.InsuranceForm.controls['documents_temp'].setValue('');
+              this.documentsMissing = true;
+              this.invalidMessage = "Please drag your document.";
             }
           }, (err) => {
             console.error(err)
@@ -269,11 +281,15 @@ export class InsuranceModalComponent implements OnInit {
     let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
     this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
     this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+    if(this.uploader.queue.length>0){
+      this.uploader.clearQueue();
+    }
   }
 
   uploadRemainingFiles(profileId) {
     this.uploaderCopy.onBeforeUploadItem = (item) => {
       item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
+      this.InsuranceForm.controls['documents_temp'].setValue('');        
     }
     this.uploaderCopy.queue.forEach((fileoOb, ind) => {
         this.uploaderCopy.uploadItem(fileoOb);
@@ -307,7 +323,12 @@ export class InsuranceModalComponent implements OnInit {
         }
         // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
         // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-        this.InsuranceDocsList = result.data.documents;              
+        this.InsuranceDocsList = result.data.documents;   
+        this.InsuranceForm.controls['documents_temp'].setValue('');
+        if(this.InsuranceDocsList.length>0){
+          this.InsuranceForm.controls['documents_temp'].setValue('1');
+          this.documentsMissing = false;
+        }                      
       }
     }, (err) => {
       console.error(err);

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router } from '@angular/router';
-import { FormBuilder } from '@angular/forms'
+import { FormBuilder } from '@angular/forms';
 import { egretAnimations } from '../../../../../shared/animations/egret-animations';
 import { UserAPIService } from './../../../../../userapi.service';
 import { AppLoaderService } from '../../../../../shared/services/app-loader/app-loader.service';

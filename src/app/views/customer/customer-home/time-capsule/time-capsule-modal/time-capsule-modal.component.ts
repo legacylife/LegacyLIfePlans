@@ -24,6 +24,8 @@ export class TimeCapsuleMoalComponent implements OnInit {
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public hasBaseDropZoneOver: boolean = false;
   invalidMessage: string;
+  documentsMissing = false;
+  documents_temps = false;
   TimeCapsuleForm: FormGroup;  
   timeCapsuleDocsList: any;
   fileErrors: any;
@@ -51,7 +53,8 @@ export class TimeCapsuleMoalComponent implements OnInit {
     this.docPath = filePath;
     this.TimeCapsuleForm = this.fb.group({
       name: new FormControl('',Validators.required),     
-      profileId: new FormControl('')
+      profileId: new FormControl(''),
+      documents_temp: new FormControl([], Validators.required),
      });
     this.timeCapsuleDocsList = [];
     this.urlData = this.userapi.getURLData();
@@ -137,6 +140,10 @@ export class TimeCapsuleMoalComponent implements OnInit {
           this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           this.timeCapsuleDocsList = result.data.documents;            
+          if(this.timeCapsuleDocsList.length>0){
+            this.TimeCapsuleForm.controls['documents_temp'].setValue('1');
+            this.documentsMissing = false;
+          }
           this.TimeCapsuleForm.controls['name'].setValue(this.timeCapsuleList.name);
         }       
       }
@@ -170,6 +177,11 @@ export class TimeCapsuleMoalComponent implements OnInit {
               } else {
                 this.loader.close();
                 this.snack.open(result.data.message, 'OK', { duration: 4000 })
+              }
+              if (this.timeCapsuleDocsList.length < 1) {
+                this.TimeCapsuleForm.controls['documents_temp'].setValue('');
+                this.documentsMissing = true;
+                this.invalidMessage = "Please drag your document.";
               }
             }, (err) => {
               console.error(err)
@@ -248,12 +260,16 @@ export class TimeCapsuleMoalComponent implements OnInit {
     let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
     this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
     this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+    if(this.uploader.queue.length>0){
+      this.uploader.clearQueue();
+    }
     //console.log(this.currentProgessinPercent, remainingLength, totalLength);
   }
 
   uploadRemainingFiles(profileId) {
       this.uploaderCopy.onBeforeUploadItem = (item) => {
         item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
+        this.TimeCapsuleForm.controls['documents_temp'].setValue('');         
       }
       this.uploaderCopy.queue.forEach((fileoOb, ind) => {
           this.uploaderCopy.uploadItem(fileoOb);
@@ -286,7 +302,12 @@ export class TimeCapsuleMoalComponent implements OnInit {
           }
          // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
          // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-          this.timeCapsuleDocsList = result.data.documents;              
+          this.timeCapsuleDocsList = result.data.documents;    
+          this.TimeCapsuleForm.controls['documents_temp'].setValue('');
+          if(this.timeCapsuleDocsList.length>0){
+            this.TimeCapsuleForm.controls['documents_temp'].setValue('1');
+            this.documentsMissing = false;
+          }                 
         }
       }, (err) => {
         console.error(err);

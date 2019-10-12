@@ -174,8 +174,9 @@ export class legalStuffModalComponent implements OnInit {
           this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
           this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
           this.documentsList = result.data.documents;
-          if(this.LegalStuffList.documents.length>0){
+          if(this.documentsList.length>0){
             this.LegalForm.controls['documents_temp'].setValue('1');
+            this.documentsMissing = false;
           }
           this.LegalForm.controls['typeOfDocument'].setValue(this.LegalStuffList.typeOfDocument); 
           this.LegalForm.controls['comments'].setValue(this.LegalStuffList.comments);
@@ -256,12 +257,16 @@ export class legalStuffModalComponent implements OnInit {
     let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
     let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
     this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+    if(this.uploader.queue.length>0){
+      this.uploader.clearQueue();
+    }
     this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
   }
 
   uploadRemainingFiles(profileId) {
     this.uploaderCopy.onBeforeUploadItem = (item) => {
       item.url = `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileId}`;
+      this.LegalForm.controls['documents_temp'].setValue('');
     }
     this.uploaderCopy.queue.forEach((fileoOb, ind) => {
         this.uploaderCopy.uploadItem(fileoOb);
@@ -294,8 +299,10 @@ export class legalStuffModalComponent implements OnInit {
           this.uploadRemainingFiles(result.data._id)
         }
         this.documentsList = result.data.documents;        
-        if(result.data.documents.length>0){
+        this.LegalForm.controls['documents_temp'].setValue('');
+        if(this.documentsList.length>0){
           this.LegalForm.controls['documents_temp'].setValue('1');
+          this.documentsMissing = false;
         }         
       }
     }, (err) => {
@@ -326,11 +333,14 @@ export class legalStuffModalComponent implements OnInit {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
-              if(this.documentsList.length<1){
-                this.LegalForm.controls['documents_temp'].setValue('');
-              }  
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            }
+
+            if (this.documentsList.length < 1) {
+              this.LegalForm.controls['documents_temp'].setValue('');
+              this.documentsMissing = true;
+              this.invalidMessage = "Please drag your document.";
             }
           }, (err) => {
             console.error(err)

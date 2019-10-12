@@ -50,8 +50,6 @@
           <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" *ngIf="FinanceForm.controls['contactEmail'].hasError('pattern') && FinanceForm.controls['contactEmail'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
 
-      
-
       <div class="upload--buss--docs--sec">
              <label>Upload box to upload the document</label>
              <div class="upload--box fileupload-drop-zone"
@@ -65,7 +63,14 @@
               </div>
               <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
       </div>            
-         <div *ngIf="FinanceDocsList" >
+      
+      <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small>
+      <mat-form-field class="full-width" *ngIf="documents_temps">
+          <input matInput name="documents_temp" [formControl]="FinanceForm.controls['documents_temp']">
+          <small *ngIf="FinanceForm.controls['documents_temp'].hasError('required') && FinanceForm.controls['documents_temp'].touched" class="form-error-msg"> Please drag your document. </small>
+      </mat-form-field>
+      
+      <div *ngIf="FinanceDocsList" >
           <h3 class="header--text fnt--16">Uploaded file documents </h3>
           <mat-chip-list class="doc--list" *ngFor="let doc of FinanceDocsList; index as i">
               <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove (click)="FinanceDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
