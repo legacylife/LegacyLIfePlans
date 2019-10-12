@@ -82,7 +82,7 @@ export class CoachCornerPopupComponent implements OnInit {
     console.log("item",item)
     if(this.data.title=='Update Post') {
       this.itemForm = this.fb.group({
-        title: ['', [Validators.required, Validators.pattern("([A-Za-z0-9]+ )+[A-Za-z0-9]+$|^[A-Za-z0-9]*$")]],
+        title: ['', [Validators.required]], // Validators.pattern("([A-Za-z0-9]+ )+[A-Za-z0-9]+$|^[A-Za-z0-9]*$")
         description: ['',Validators.required],
         category: ['',Validators.required],
         image: [''],
