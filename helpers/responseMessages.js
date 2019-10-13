@@ -194,7 +194,7 @@ let responseArray = [
         "code":699,
         "type":"custom-message",
         "message":"{message}",
-    },
+    },    
     {
         "code":700,
         "type":"mark-executor",
@@ -205,6 +205,23 @@ let responseArray = [
         "type":"remove-executor",
         "message":"Trustee has been removed as an executor successfully",
     },
+    {
+        "code":703,
+        "type":"mark-trustee",
+        "message":"Trustee invitation sent successfully",
+    },
+    {
+        "code":704,
+        "type":"mark-trustee",
+        "message":"Trustee permissions updated successfully",
+    },
+    {
+        "code":705,
+        "type":"trustee-access",
+        "message":"You don't have access to this customer legacy",
+    },
+
+    
 ];
 
 var helper = {}

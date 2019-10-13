@@ -667,7 +667,12 @@ function getAdvisorDetails(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      res.status(200).send(resFormat.rSuccess(advisorDetails));
+      if(advisorDetails){
+        res.status(200).send(resFormat.rSuccess(advisorDetails));
+      }else{
+        let result = {"message": resMessage.data(705)}//705 same used for trustee function getTrusteeDetails
+        res.status(200).send(resFormat.rError(result));
+      }   
     }
   }).populate('customerId');
 }

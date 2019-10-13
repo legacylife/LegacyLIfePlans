@@ -661,6 +661,7 @@ async function checkUserOtp(req, res) {
           user.emailVerified = true;
           user.invitedBy = req.body.query.invitedBy
           user.freeTrialPeriod = freeTrailPeriodObj
+          user.lockoutLegacyPeriod = '2';
           user.createdOn = new Date();
           if(user.userType != 'advisor'){
             let userSecurityDetails = user.setPassword(otpdata.password)

@@ -166,8 +166,8 @@ function essentialProfileList(req, res) {
         res.status(401).send(resFormat.rError(err))
       } else {
         let totalTrusteeRecords = 0;
-        console.log('personalProfileQuery',personalProfileQuery)
-        console.log('essentialList',essentialList)
+       // console.log('personalProfileQuery',personalProfileQuery)
+       // console.log('essentialList',essentialList)
         if(essentialList){
           getuserFolderSize(personalProfileQuery.customerId);
           Trustee.count(personalProfileQuery, function (err, TrusteeCount) {

@@ -233,7 +233,7 @@ function trustResendInvitation(req, res) {
         clientUrl = constants.clientUrl + "/advisor/signup";
       }  
       stat = sendTrusteeMail(trustDetails.email, trustDetails.messages, trustDetails.folderCount, extrafields.inviteByName, trustDetails.firstName, clientUrl, "Reminder: ");
-      let result = { "message": "Trustee invitation sent successfully!" }
+      let result = { "message": resMessage.data(703)}
       res.status(200).send(resFormat.rSuccess(result))
     }
   })
@@ -245,7 +245,12 @@ function getTrusteeDetails(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      res.status(200).send(resFormat.rSuccess(trustDetails));
+      if(trustDetails){
+        res.status(200).send(resFormat.rSuccess(trustDetails));
+      }else{
+        let result = {"message": resMessage.data(705)}//705 same used for advisor function getAdvisorDetails
+        res.status(200).send(resFormat.rError(result));
+      }     
     }
   }).populate('customerId')
 }
