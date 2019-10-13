@@ -37,6 +37,7 @@ export class CustomerEssentialDetailsComponent implements OnInit {
   ppaddressData: string = "";
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
+  LegacyPermissionError:string="You don't have access to this section";
   constructor(
     // private shopService: ShopService,
     private fb: FormBuilder,
@@ -66,7 +67,7 @@ export class CustomerEssentialDetailsComponent implements OnInit {
         }
         this.row = result.data
         this.ppaddressData = (this.row.ppAddressLine1 ? this.row.ppAddressLine1 : '') + " " + (this.row.ppAddressLine2 ? this.row.ppAddressLine2 : '') + " " + (this.row.ppCity ? this.row.ppCity : '') + " " + (this.row.ppState ?this.row.ppState : '') +"  "+ (this.row.ppZipCode ? this.row.ppZipCode :'')  +" "+ (this.row.ppCountry ? this.row.ppCountry : '')
-       console.log("---",this.ppaddressData);
+       
         this.createdOn = this.row.createdOn ? this.row.createdOn : "";
         this.pplandLineNumberList = this.row.ppLandlineNumbers && this.row.ppLandlineNumbers.map(function (item) { return item.phone; }).join(", ");
         this.ppEmailsList = this.row.ppEmails.map(function (item) { return item.email; }).join(", ");
@@ -74,12 +75,33 @@ export class CustomerEssentialDetailsComponent implements OnInit {
         this.ccWorkLandlineNumbersList = this.row.ccWorkLandlineNumbers && this.row.ccWorkLandlineNumbers.map(function (item) { return item.phone; }).join(", ");
         this.ccContactLandlineNumbersList = this.row.cclandlineNumbers && this.row.cclandlineNumbers.map(function (item) { return item.phone; }).join(", ");
         this.ccChurchLandlineNumbersList = this.row.ccChurchLandlineNumbers && this.row.ccChurchLandlineNumbers.map(function (item) { return item.phone; }).join(", ");
+     
+        this.customerisValid(this.row);
       }
     }, (err) => {
       console.error(err)
       //this.showLoading = false
     })
+  }
 
+  customerisValid(data){
+    if (this.urlData.lastThird == "legacies") {
+      this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
+       if(userAccess.PersonalProfileManagement!='now'){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        console.log("Need to check userAccess for this")
+          //this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+       }          
+      });    
+    }else{      
+      if(data.customerId!=this.userId){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+      }
+    } 
   }
 
   deleteProfile(customerId='') {

@@ -29,7 +29,7 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
   toUserId:string = ''
-
+  LegacyPermissionError:string="You don't have access to this section";
   constructor(  
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
@@ -44,7 +44,7 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
     this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
-    this.toUserId = this.userId
+    this.toUserId = this.userId;
     this.getEssentialIDDetails();
   }
 
@@ -64,11 +64,31 @@ export class CustomerEssentialDetailsIdboxComponent implements OnInit {
         if(this.row){
           this.toUserId = this.row.customerId 
           this.docPath = this.row.customerId+'/'+s3Details.myEssentialsDocumentsPath;
+          this.customerisValid(this.row);
         }
       }
     }, (err) => {
       console.error(err)
     })
+  }
+
+  customerisValid(data){
+    if (this.urlData.lastThird == "legacies") {
+      this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
+       if(userAccess.IDBoxManagement!='now'){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+       }          
+      });    
+    }else{      
+      if(data.customerId!=this.userId){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+      }
+    } 
   }
 
   openIdBoxModal(data: any = {}, isNew?) {

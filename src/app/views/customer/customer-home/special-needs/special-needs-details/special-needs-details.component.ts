@@ -24,7 +24,7 @@ export class SpecialNeedsDetailsComponent implements OnInit {
   urlData:any={};
   toUserId:string = ''
   subFolderName:string = ''
-
+  LegacyPermissionError:string="You don't have access to this section";
   constructor(
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
     private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router) {
@@ -60,11 +60,34 @@ export class SpecialNeedsDetailsComponent implements OnInit {
         } else {
           this.title = "Friend/Neighbor you provide or care for"
         }
+        if(this.row){
+        this.customerisValid(this.row);
+        }
       }
     }, (err) => {
       console.error(err)
     })
   }
+
+  customerisValid(data){
+    if (this.urlData.lastThird == "legacies") {
+      this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
+        if((data.subFolderName=='Young_Children' && userAccess.YoungChildrenManagement!='now') || (data.subFolderName=='Child_Parent' && userAccess.ChildParentDisabilityManagement!='now') || (data.subFolderName=='Friend_Neighbor' && userAccess.FriendNeighborCareManagement!='now')){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+       }          
+      });    
+    }else{      
+      if(data.customerId!=this.userId){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+      }
+    } 
+  }
+
 
   deleteSpecialNeeds(customerId='',folderName) {
     var statMsg = "Are you sure you want to delete this record?"

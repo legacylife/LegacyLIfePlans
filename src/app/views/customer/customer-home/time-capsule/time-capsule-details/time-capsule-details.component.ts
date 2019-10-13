@@ -26,7 +26,7 @@ export class TimeCapsuleDetailsComponent implements OnInit {
   trusteeLegaciesAction:boolean=true;
   toUserId:string = ''
   subFolderName:string = ''
-
+  LegacyPermissionError:string="You don't have access to this section";
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -66,12 +66,32 @@ export class TimeCapsuleDetailsComponent implements OnInit {
           if(this.row){
             this.toUserId = this.row.customerId 
             this.docPath = this.row.customerId+'/'+s3Details.timeCapsuleFilePath;
+            this.customerisValid(this.row);    
           }
         }
       }  
     }, (err) => {
       console.error(err);
     })
+  }
+
+  customerisValid(data){
+    if (this.urlData.lastThird == "legacies") {
+      this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
+        if((data.subFolderName=='Young_Children' && userAccess.YoungChildrenManagement!='now') || (data.subFolderName=='Child_Parent' && userAccess.ChildParentDisabilityManagement!='now') || (data.subFolderName=='Friend_Neighbor' && userAccess.FriendNeighborCareManagement!='now')){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+       }          
+      });    
+    }else{      
+      if(data.customerId!=this.userId){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+      }
+    } 
   }
 
   openTimeCapsuleModal(FolderNames, isNew?) {

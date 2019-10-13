@@ -26,6 +26,7 @@ export class DebtDetailsComponent implements OnInit {
   policyTypeList:any[];
   re =  "/(?:\.([^.]+))?$/" ;
   trusteeLegaciesAction:boolean=true;
+  LegacyPermissionError:string="You don't have access to this section";
   urlData:any={};
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
@@ -64,12 +65,32 @@ export class DebtDetailsComponent implements OnInit {
           this.row = result.data;
           if(this.row){
             this.docPath = this.row.customerId+'/'+s3Details.debtFilePath;
+            this.customerisValid(this.row);
           }
         }
       }  
     }, (err) => {
       console.error(err);
     })
+  }
+
+  customerisValid(data){
+    if (this.urlData.lastThird == "legacies") {
+      this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
+       if(userAccess.DebtManagement!='now'){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+       }          
+      });    
+    }else{      
+      if(data.customerId!=this.userId){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+      }
+    } 
   }
 
   openDebtModal() {
