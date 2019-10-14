@@ -7,6 +7,7 @@ import { egretAnimations } from '../../../../shared/animations/egret-animations'
 import { UserAPIService } from './../../../../userapi.service';
 import { addTrusteeModalComponent } from '../add-trustee-modal/add-trustee-modal.component';
 import { serverUrl, s3Details } from '../../../../config';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-customer-home',
@@ -25,9 +26,10 @@ export class CustomerDashboardDayOneComponent implements OnInit {
   advisorListing:any = [];
   showAdvisorListing= true;
   showAdvisorListingCnt: any;
+  isProUser = false;
 
   profileUrl = s3Details.url+'/profilePictures/';
-  constructor(private fb: FormBuilder, private dialog: MatDialog,private snackBar: MatSnackBar,private userapi: UserAPIService) { }
+  constructor(private router: Router,private fb: FormBuilder, private dialog: MatDialog,private snackBar: MatSnackBar,private userapi: UserAPIService) { }
   ngOnInit() { 
     //console.log("received redirection"+ (new Date()))
     this.userId = localStorage.getItem("endUserId");
@@ -146,6 +148,13 @@ export class CustomerDashboardDayOneComponent implements OnInit {
     this.sideNav.opened = !this.sideNav.opened;
   }
 
+  viewDetailsPage(pageUrl){    
+    this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+    if(this.isProUser)
+      this.router.navigate(pageUrl)
+    else
+      this.snackBar.open("You don't have access to this section.", 'OK', { duration: 4000 })
+  }
 
   openAddTrusteeModal(id, isNew?) {  
     let dialogRef: MatDialogRef<any> = this.dialog.open(addTrusteeModalComponent, {     

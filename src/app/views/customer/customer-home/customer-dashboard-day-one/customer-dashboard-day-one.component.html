@@ -16,7 +16,7 @@
           </div>
         </mat-card-content>
         <mat-card-content class="files--wrapper pr-0" *ngIf="recentlyAccessedFiles">
-          <div class="recent--acc--files" *ngFor="let logData of fileActivityLogList; let i = index" [routerLink]="getIconNUrl(logData).fileUrl">
+          <div class="recent--acc--files" *ngFor="let logData of fileActivityLogList; let i = index" (click)="viewDetailsPage(getIconNUrl(logData).fileUrl)">
             <mat-icon>{{getIconNUrl(logData).fileIcon}}</mat-icon>
             <p class="m-0 file--name">{{logData.fileName}}</p>
           </div>
