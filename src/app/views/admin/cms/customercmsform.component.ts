@@ -284,7 +284,7 @@ getPageDetails = (query = {}, search = false) => {
       this.snack.open("Please wait files uploading is in process..."+this.uploaderProfilePhoto.getNotUploadedItems().length, 'OK', { duration: 4000 })
     }else{
     console.log('pageData',pageData);
-    console.log('formData',formD  ata);
+    // console.log('formData',formD  ata);
     let profileInData = {userId:this.userId};
     const req_vars = {
       query: pageData,
