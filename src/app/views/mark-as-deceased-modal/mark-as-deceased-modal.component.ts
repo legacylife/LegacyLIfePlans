@@ -178,7 +178,8 @@ public fileOverBase(e: any): void {
           this.uploader.removeFromQueue(fileoOb);
           let pushArry = {"error":FileMsg} 
           this.fileErrors.push(pushArry); 
-          setTimeout(()=>{    
+          setTimeout(()=>{
+            this.uploadingDocs = false;    
             this.fileErrors = []
           }, 5000);      
         }
@@ -207,6 +208,7 @@ public fileOverBase(e: any): void {
          };
          this.uploader.onCompleteAll=()=>{
           this.uploader.clearQueue();
+          this.uploadingDocs = false;    
           if(!this.uploaderCopy.queue.length){
             this.currentProgessinPercent = 0;
           }
@@ -235,9 +237,7 @@ public fileOverBase(e: any): void {
       };
 
       this.uploaderCopy.onCompleteAll=()=>{
-        this.uploadingDocs = false;
-      };
-      this.uploaderCopy.onCompleteAll=()=>{
+        this.uploadingDocs = false;    
         this.uploaderCopy.clearQueue();
         this.currentProgessinPercent = 0;
       }

@@ -11,11 +11,13 @@
 .up--files{
     display: flex;
     align-items: center;
+    cursor: pointer;
     .material-icons{
         color: #727834;
         font-size: 18px;
         height: 20px;
         width: 21px;
+        cursor: pointer;
     }
 }
 .brdr-t-1{

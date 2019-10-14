@@ -210,7 +210,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
 
  
   downloadFile = (filename) => {   
-    const filePath = this.selectedUserId+'/'+s3Details.advisorsDocumentsPath;
+    const filePath = s3Details.deceasedFilessPath+this.selectedUserId+'/';
     this.docPath = filePath; 
     let query = {};
     let req_vars = {
@@ -338,6 +338,16 @@ export class DeceasedRequestsViewComponent implements OnInit {
     })
   // }
   }
+
+  executorCron(){
+    const req_vars = {};
+    this.api.apiRequest('post', 'cronjobs/deceased-customers-reminders', req_vars).subscribe(result => {
+      this.snack.open("DONE DONA DONE", 'OK', { duration: 4000 })
+      }, (err) => {
+        console.error(err)
+        this.loader.close();
+      })  
+   }
 
 
 }
