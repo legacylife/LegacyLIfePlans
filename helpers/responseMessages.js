@@ -219,9 +219,7 @@ let responseArray = [
         "code":705,
         "type":"trustee-access",
         "message":"You don't have access to this customer legacy",
-    },
-
-    
+    },   
 ];
 
 var helper = {}

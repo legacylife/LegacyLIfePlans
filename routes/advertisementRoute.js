@@ -20,13 +20,15 @@ const allActivityLog  = require('./../helpers/allActivityLogs')
 function addEnquiry(req, res) {
     let { query } = req.body;
     let { proquery } = req.body;
+    let { fromDate } = req.body;
+    let { toDate } = req.body;
 
     var insert = new advertisement();
     insert.zipcodes   = proquery.zipcodes.join(',');
     insert.userType   = query.userType;
     insert.customerId = ObjectId(query.customerId);
-    insert.fromDate   = proquery.fromDate;
-    insert.toDate     = proquery.toDate;
+    insert.fromDate   = fromDate;
+    insert.toDate     = toDate;
     insert.message    = proquery.message;
     insert.status     = 'Active';
     insert.sponsoredStatus = 'Pending';
@@ -85,6 +87,9 @@ function viewEnquiryDetails(req, res) {
 function addEnquiryReply(req, res) {
     let { query } = req.body;
     let { proquery } = req.body;
+    let { fromDate } = req.body;
+    let { toDate } = req.body;
+
     advertisement.findOne({_id:query._id}, async function (err, found) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
@@ -176,7 +181,7 @@ function addEnquiryReply(req, res) {
               })
             }
             let uniqueId = Math.random().toString(36).slice(2)
-            advertisement.updateOne({_id:query._id}, {fromDate:proquery.fromDate,toDate:proquery.toDate,adminReply:adminReplyData,uniqueId:uniqueId}, function (err, logDetails) {
+            advertisement.updateOne({_id:query._id}, {fromDate:fromDate,toDate:toDate,adminReply:adminReplyData,uniqueId:uniqueId}, function (err, logDetails) {
               if (err) {
                 res.send(resFormat.rError(err))
               } else {
