@@ -253,7 +253,15 @@
   
     .llp--content--wrapper .empty--section .mat-card-header.header--with--sort .mat-select {
         width: 100px;
-
+    }
+    .llp--content--wrapper .empty--section .mat-card-header.header--with--sort.res--header{
+        flex-direction: column;
+        height: 68px;
+        justify-content: center;
+    }
+    .llp--content--wrapper .empty--section .mat-card-header.header--with--sort.res--header .search--box input{
+        width: 220px;
+        font-size: 12px;
     }
 }
 @media only screen and (min-width: 600px) and (max-width: 959px){

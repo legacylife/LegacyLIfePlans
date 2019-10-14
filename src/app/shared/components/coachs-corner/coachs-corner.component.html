@@ -14,12 +14,15 @@
               <p class="when">
                 <mat-icon>access_time</mat-icon> {{post.createdOn | date:'short'}}
               </p>
-              <p class="details" [innerHtml]="post.description |  slice:0:300"></p>
-              <span routerLink="/{{userType}}/coach-corner-details/{{post.aliasName}}">(Read more)</span>
+              <div class="details" [innerHtml]="post.description |  slice:0:300">
+               
+              </div>
+              <span class="read--more--txt" routerLink="/{{userType}}/coach-corner-details/{{post.aliasName}}">(Read more)</span>
+              
             </div>
           </div>
           <div class="content--wrapper" *ngIf="postList.length <= 0">
-            No articles available
+            <p class="m-0">No articles available</p>
           </div>
         </mat-tab>
 
@@ -33,12 +36,12 @@
               <p class="when">
                 <mat-icon>access_time</mat-icon> {{post.createdOn | date:'short'}}
               </p>
-              <p class="details" [innerHtml]="post.description |  slice:0:300"></p>
-              <span routerLink="/{{userType}}/coach-corner-details/{{post.aliasName}}">(Read more)</span>
+              <div class="details" [innerHtml]="post.description |  slice:0:300"></div>
+              <span class="read--more--txt" routerLink="/{{userType}}/coach-corner-details/{{post.aliasName}}">(Read more)</span>
             </div>
           </div>
-          <div class="content--wrapper" *ngIf="filteredPostList.length <= 0">
-            No articles available
+          <div class="content--wrapper " *ngIf="filteredPostList.length <= 0">
+            <p class="m-0">No articles available</p>
           </div>
         </mat-tab>
       </mat-tab-group>

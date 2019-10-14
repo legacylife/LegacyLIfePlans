@@ -9,5 +9,7 @@
       <p class="views mb-0">{{aInfo.totalViews | thousandSuff}} views</p>
     </div>
   </section>
-  <div *ngIf="articleInfo.length <= 0 ">No articles available</div>
+  <div class="text-center" *ngIf="articleInfo.length <= 0 ">
+    <p class="mb-0 mt-1">No articles available</p>
+  </div>
 </div>
