@@ -467,7 +467,7 @@ function digitalPublicationFormUpdate(req, res) {
   let { subFolderName } = req.body
 
   var logData = {}
-  logData.fileName = constants.ElectronicMediaLists[proquery.mediaType];
+  logData.fileName = proquery.title;
   logData.folderName = 'password-assets';
   logData.subFolderName = 'digital-publication';
 
