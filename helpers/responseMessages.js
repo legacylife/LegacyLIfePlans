@@ -51,6 +51,11 @@ let responseArray = [
         "message":"Your account has been deactivated. Please connect with the admin at {support_email} for any queries.",
     },
     {
+        "code":6099,
+        "type":"account-deactivate",
+        "message":"This user has been marked as deceased, Please connect with the admin at {support_email} for any queries.",
+    },    
+    {
         "code":610,
         "type":"account-rejected",
         "message":"Your account has been rejected by the admin. Please connect with the admin at {support_email} for any queries.",

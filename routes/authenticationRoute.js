@@ -52,6 +52,11 @@ function signin(req, res) {
       let result = { "message": message, "invalidEmail": true, "invalidPassword": false }
       res.status(200).send(resFormat.rError(result))
     }
+    else if (info && info.message == "User is deceased") {
+      let message = resMessage.data( 6099, [{key: '{support_email}',val: 'support@legacylifeplans.com'}] )
+      let result = { "message": message, "invalidEmail": true, "invalidPassword": false }
+      res.status(200).send(resFormat.rError(result))
+    }
     else if (info && info.message == "Password is wrong") {
       let message = resMessage.data( 614, [{key: '{field}',val: 'password'}] )
       let result = { "message": message, "invalidEmail": false, "invalidPassword": true }
