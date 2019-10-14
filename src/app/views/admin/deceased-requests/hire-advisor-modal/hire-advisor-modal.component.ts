@@ -54,9 +54,9 @@ export class AdminHireAdvisorComponent implements OnInit, AfterViewInit  {
     this.buildItemForm();
     this.userSections = userSections;  
     this.SubHeaderName = false;
-    if(this.profileId){     
+    if(this.profileId){
       this.checkAdvisorView();
-    }   
+    }
     if(this.updates=='update'){
       this.hideFirstStep = false;
       this.defaultPermission = false;
@@ -102,15 +102,16 @@ export class AdminHireAdvisorComponent implements OnInit, AfterViewInit  {
       CelebrationLifeManagement: new FormControl(''), 
       profileId: new FormControl(''), 
      });
-}
+  }
 
-//function to get all events
-getAdvisorsLists = (query = {}, search = false) => {
+ //function to get all events
+  getAdvisorsLists = (query = {}, search = false) => {
   const req_vars = {
     query: Object.assign({ userType: "advisor",status:"Active" }, query),
     fields: {},
     offset: '',
     limit: '',
+    customerId: this.customerId,
     order: {"createdOn": -1},
   }
   this.api.apiRequest('post', 'deceased/advisorList', req_vars).subscribe(result => {
@@ -122,7 +123,7 @@ getAdvisorsLists = (query = {}, search = false) => {
   }, (err) => {
     console.error(err)
   })
-}
+  }
 
   //table
   updateFilter(event) {
@@ -146,9 +147,16 @@ getAdvisorsLists = (query = {}, search = false) => {
 
 
 checkAdvisorView(insert = null) {
-  const req_vars = {
-      query: Object.assign({_id:this.profileId}),
-    }    
+    let req_vars = {};
+    if(this.profileId){
+       req_vars = {
+        query: Object.assign({_id:this.profileId}),
+      }    
+    }else{
+       req_vars = {
+        query: Object.assign({customerId:this.customerId,advisorId:this.advisorId,status:'Active'}),
+      }    
+    }
     this.loader.open();
     this.api.apiRequest('post', 'advisor/checkHireAdvisor', req_vars).subscribe(result => {
     this.loader.close();
@@ -279,6 +287,7 @@ selectAdvisor(row) {
     this.advisorId = row._id;
     this.hireFullName = row.firstName+' '+row.lastName;
     if(this.advisorId){
+      this.checkAdvisorView();
       this.trusteeFormGroup.controls['selectAll'].setValue('never');
       this.onRadioChange('never');     
     }
@@ -309,7 +318,7 @@ onChangeFormIndex(event){
   });
 }
 
-  onRadioChange(values){  
+onRadioChange(values){  
     if(userSections){      
       for(let row of userSections)
       {
@@ -319,10 +328,10 @@ onChangeFormIndex(event){
         }
       }      
     }
-  }
+}
 
-  onFileChange(values){
+onFileChange(values){
     this.trusteeFormGroup.controls['selectAll'].setValue('');
-  }
+}
 }
 

@@ -13,11 +13,14 @@
           <div class="ll--modal--body idbox--modal--hgt">
                 <p class="fnt--16">The advisor will need to confirm this hiring on their part to start appearing in your 'My advisors' list. Clicking on
                   'Proceed' button will send a confirmation message on the advisor's email.</p>
-                  <form class="llp-form-wrapper">
+                    <form class="llp-form-wrapper">
                       <mat-form-field class="no-mar full-width">
                           <input matInput placeholder="Type to search advisor" value="" (keyup)='updateFilter($event)'>
                       </mat-form-field>
                     </form>
+                    <!-- display: flex;
+                    height: 100%;
+                    padding: 0.9rem 1.2rem; -->
                     <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
                       <mat-card-content class="p-0">
                         <ngx-datatable class="material ml-0 mr-0" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50"
@@ -41,21 +44,21 @@
                               Zipcode : {{ row?.zipcode }} </a>
                             </ng-template>
                           </ngx-datatable-column>
-                          <ngx-datatable-column  [resizeable]="false" name="Subscription Status" prop="end_date" [flexGrow]="2">
+                          <ngx-datatable-column  [resizeable]="false" name="Subscription Status" prop="end_date" [flexGrow]="1.5">
                             <ng-template let-row="row" ngx-datatable-cell-template>
                                 <a (click)="selectAdvisor(row)"> Status: Paid <br />
-                              Expiry Date : {{ row?.subscriptionDetails ? row?.subscriptionDetails.endDate : ""}} </a>
+                              Expiry Date : {{ row?.subscriptionDetails ? (row?.subscriptionDetails.endDate | date: 'yyyy/MM/dd') : ""}}</a>
                             </ng-template>
                           </ngx-datatable-column>
-                         
+                          <ngx-datatable-column  [resizeable]="false" name="Select Advisor" [flexGrow]="1">
+                            <ng-template let-row="row" ngx-datatable-cell-template>                                
+                                  <button class="llp--primary--btn mat-raised-button" (click)="selectAdvisor(row)">Continue</button>
+                            </ng-template>
+                          </ngx-datatable-column>                          
                         </ngx-datatable>
                       </mat-card-content>
                     </mat-card>
               </div>              
-              <!-- <div class="ll--modal--footer text-center">
-                  <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" *ngIf="alreadyRequestSend">Continue</button>
-                  <button mat-menu-item  class="llp--primary--btn mb-1" *ngIf="!alreadyRequestSend"><mat-icon>check</mat-icon> Request already sent!</button>
-               </div> -->
       </mat-step>
       <mat-step [stepControl]="trusteeFormGroup">            
           <form [formGroup]="trusteeFormGroup" class="llp-form-wrapper" (ngSubmit)="trusteeFormGroupSubmit(trusteeFormGroup.value)">                  

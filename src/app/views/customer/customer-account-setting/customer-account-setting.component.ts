@@ -293,7 +293,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     //function to get all events
     getLatitudeLongitude = (query = {}, search = false) => {
       const req_vars = {
-        query: Object.assign({}, query)
+        query: Object.assign({_id: this.userId}, query)
       }
       this.userapi.apiRequest('post', 'userlist/latitudeLongitude', req_vars).subscribe(result => {
         if (result.status == "error") {
@@ -311,7 +311,6 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     this.modified = false;
     this.isUpdating = true;  
     if(this.ProfileForm.dirty){        }
-    console.log("data",this.ProfileForm.controls['dateOfBirth'].value)
     let profileInData = {
       firstName: this.ProfileForm.controls['firstName'].value,
       lastName: this.ProfileForm.controls['lastName'].value,
@@ -327,7 +326,6 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       proquery: Object.assign(profileInData),
       from: Object.assign({ fromname: "account details" })
     }
-    console.log("total data",proquery)
     this.loader.open();
     this.userapi.apiRequest('post', 'auth/cust-profile-update', req_vars).subscribe(result => {
       this.loader.close();
