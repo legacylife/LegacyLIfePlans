@@ -308,6 +308,10 @@ export class UserAPIService {
       this.fileAccessInfo.fileIcon = "lock";
       this.fileAccessInfo.fileUrl = ['/customer/dashboard/electronic-media-view', logData.fileId];
     }
+    if(logData.folderName == 'password-assets' && logData.subFolderName == 'digital-publication'){ 
+      this.fileAccessInfo.fileIcon = "lock";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/digital-publication-view', logData.fileId];
+    }
     return this.fileAccessInfo;
   }
 

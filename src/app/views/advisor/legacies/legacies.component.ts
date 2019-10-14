@@ -40,9 +40,12 @@ export class LegaciesComponent implements OnInit {
         } else {
           this.advisorListing = result.data.advisorList;     
           this.showAdvisorListingCnt = this.advisorListing.length;  
-          if (this.showAdvisorListingCnt>0) {
+          if (this.showAdvisorListingCnt >0 ) {
             this.showAdvisorListing = true;
-          }     
+          }   
+          else {
+            this.showAdvisorListing = false;
+          }  
         }
       }, (err) => {
         console.error(err)

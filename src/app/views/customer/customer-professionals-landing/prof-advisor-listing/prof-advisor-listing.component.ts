@@ -102,7 +102,8 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
 
   clearSearch() {
     this.searchingFlag = true;
-    this.searchForm.reset();      
+    this.searchForm.reset(); 
+    this.getAdvisorLists('','',this.resultLimit,0,false,false,false);     
   }
 
   toggleSearchSuggestion() {
