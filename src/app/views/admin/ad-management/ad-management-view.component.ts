@@ -123,12 +123,17 @@ export class AddManagementViewComponent implements OnInit {
 
 
   enquiryFormReplySubmit(formData = null) {
+
     if(new Date(this.enquiryFormReply.controls['toDate'].value) < new Date(this.enquiryFormReply.controls['fromDate'].value)) {
       this.dateError = 'To date should be greater than From date';
     }else{
+      let FromD = this.enquiryFormReply.controls['fromDate'].value.toString().split('00:00:00');
+      let toDate = this.enquiryFormReply.controls['toDate'].value.toString().split('00:00:00');
       let enquiryData = {
         query: Object.assign({_id:this.data._id,adminId:this.userId}),
-        proquery: Object.assign(formData)  
+        proquery: Object.assign(formData),
+        fromDate:new Date(FromD[0]+'00:00:00 UTC'),
+        toDate:new Date(toDate[0]+'00:00:00 UTC'),    
       }
       this.loader.open();
       this.api.apiRequest('post', 'advertisement/submitEnquiryReply', enquiryData).subscribe(result => {

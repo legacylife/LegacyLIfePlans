@@ -64,16 +64,26 @@ export class SubmitEnquiryModalComponent implements OnInit {
        // this.getAllZipcodes();
     }
 
-
     enquiryFormSubmit(formData = null) {
       var date = new Date(this.enquiryForm.controls['toDate'].value).toDateString();
+      let FromD = this.enquiryForm.controls['fromDate'].value.toString().split('00:00:00');
+      let toDate = this.enquiryForm.controls['toDate'].value.toString().split('00:00:00');
       if(new Date(this.enquiryForm.controls['toDate'].value) < new Date(this.enquiryForm.controls['fromDate'].value)) {
           this.dateError = 'To date should be greater than From date';
       }else{     
+        // let formData = [];
+        // formData = [{
+        //     "zipcodes":this.enquiryForm.controls['zipcodes'].value,
+        //     "fromDate":new Date(FromD[0]+'00:00:00 UTC'),
+        //     "toDate":new Date(toDate[0]+'00:00:00 UTC'),
+        //     "message": this.enquiryForm.controls['message'].value,            
+        // }];
         this.dateError = '';
         let enquiryData = {
           query: Object.assign({ userType: this.endUserType,customerId: this.userId }),
-          proquery: Object.assign(formData)  
+          proquery: Object.assign(formData),
+          fromDate:new Date(FromD[0]+'00:00:00 UTC'),
+          toDate:new Date(toDate[0]+'00:00:00 UTC'),  
         }
         this.loader.open();
         this.userapi.apiRequest('post', 'advertisement/submitEnquiry', enquiryData).subscribe(result => {
