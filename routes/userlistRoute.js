@@ -1101,8 +1101,11 @@ async function calculateZipcode(zipcode,id){
   var data = zipcodes.lookup(zipcode);
   if( data ) {
     if(data.latitude && data.longitude){
-      console.log('Userlist calculateZipcode')
-      let userData = await User.updateOne({_id:id},{$set:{location:{latitude:data.latitude,longitude:data.longitude}}});
+      let setLocation = {latitude:data.latitude,longitude:data.longitude};
+      await User.updateOne({_id:id},{$set:{location:setLocation}});
+      return true;
+    }else{
+      return false;
     }
   }
 }

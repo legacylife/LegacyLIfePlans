@@ -274,7 +274,7 @@ function hireAdvisorStatus(req, res) {
 
               let advFname = extraFields.advFname;
               let advLname = extraFields.advLname;
-              let subStatus = "Legacy request " + MsgText;
+              let subStatus = "Legacy request " + MsgText+' ';
               let EmailMesg = advFname + " " + advLname + " has been " + MsgText + " your legacy request";
               //let result = { "message": "Legacy request " + MsgText + " successfully" }
 
@@ -299,14 +299,14 @@ function hireAdvisorStatus(req, res) {
                             } else {
                               custEmail = custData.username;
                               custName = custData.firstName;
-                              stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus);
+                              stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus,'HireAdvisorStatus');
                               
                               allActivityLog.updateActivityLogs( HiredData.advisorId, HiredData.customerId, "Hire Advisor Request", message, '', '' )
                               res.status(200).send(resFormat.rSuccess(result))
                             }
                           })
                         } else {
-                          stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus);
+                          stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus,'HireAdvisorStatus');
                           allActivityLog.updateActivityLogs( HiredData.advisorId, HiredData.customerId, "Hire Advisor Request", message, '', '' )
                           res.status(200).send(resFormat.rSuccess(result))
                         }
@@ -329,13 +329,13 @@ function hireAdvisorStatus(req, res) {
                         } else {
                           custEmail = custData.username;
                           custName = custData.firstName;
-                          stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus);
+                          stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus,'HireAdvisorStatus');
                           allActivityLog.updateActivityLogs( HiredData.advisorId, HiredData.customerId, "Hire Advisor Request", message, '', '' )
                           res.status(200).send(resFormat.rSuccess(result))
                         }
                       })
                     } else {
-                      stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus);
+                      stat = sendHireStatusMail(custEmail, custName, EmailMesg, subStatus,'HireAdvisorStatus');
                       allActivityLog.updateActivityLogs( HiredData.advisorId, HiredData.customerId, "Hire Advisor Request", message, '', '' )
                       res.status(200).send(resFormat.rSuccess(result))
                     }
@@ -351,7 +351,7 @@ function hireAdvisorStatus(req, res) {
                     let toEmail = advisorUser.username;
                     let advName = advisorUser.firstName;
                     let EmailMesg = inviteByName + " has been update and send you legacy request";
-                   // stat = sendHireStatusMail(toEmail, advName, EmailMesg, ''); comment this function as per FS
+                   // stat = sendHireStatusMail(toEmail, advName, EmailMesg, '','HireAdvisorStatus'); comment this function as per FS
                   }
                 })
                 
@@ -411,10 +411,11 @@ function hireAdvisorStatus(req, res) {
               let legacyHolderName = extraFields.legacyHolderName;
               let legacyHolderFirstName = extraFields.legacyHolderFirstName;
               let custEmailMsg = inviteByName+" has been hired for your legacy to advisor ("+advisorUser.firstName+" "+advisorUser.lastName+")";
-              stat = sendHireStatusMail(extraFields.legacyCustomerEmail,legacyHolderFirstName,custEmailMsg,'');//admin hired advisor email to cusotmer.
+              stat = sendHireStatusMail(extraFields.legacyCustomerEmail,legacyHolderFirstName,custEmailMsg,'','HireAdvisorStatus');//admin hired advisor email to legacy owner.
               EmailMesg = inviteByName + " has been hired you for "+legacyHolderName+" legacy";
-            }
-            stat = sendHireStatusMail(toEmail, advName, EmailMesg, '');
+              stat = sendHireStatusMailToTrustees(proquery.advisorId,advisorUser.firstName+' '+advisorUser.lastName,query.customerId,'AdminHireAdvisorStatusForTrustees',legacyHolderName)
+            }           
+            stat = sendHireStatusMail(toEmail, advName, EmailMesg, '','HireAdvisorStatus');
           }
         })
         let message = resMessage.data( 607, [{key:'{field}',val:'Hire advisor request'},{key:'{status}',val:'sent'}] )
@@ -428,24 +429,62 @@ function hireAdvisorStatus(req, res) {
   }
 }
 
-function sendHireStatusMail(emailId, toName, comment, subStatus) {
-  emailTemplatesRoute.getEmailTemplateByCode("HireAdvisorStatus").then((template) => {
+function sendHireStatusMail(emailId, toName, comment, subStatus,template) {
+  emailTemplatesRoute.getEmailTemplateByCode(template).then((template) => {
     if (template) {
       template = JSON.parse(JSON.stringify(template));
       let body = template.mailBody.replace("{toName}", toName);
       body = body.replace("{comment}", comment);
       const mailOptions = {
-        to: emailId,//'pankajk@arkenea.com',
-        subject: subStatus + ' ' + template.mailSubject,
+        to: emailId,
+        subject: subStatus + '' + template.mailSubject,
         html: body
       }
-      sendEmail(mailOptions);
+     //8  sendEmail(mailOptions);
       return true;
     } else {
       return false;
     }
   })
 }
+
+async function sendHireStatusMailToTrustees(advisorId,inviteByName,customerId,template,legacyHolderName) {
+  let EmailMesg = inviteByName + " has been hired for "+legacyHolderName+" legacy";
+  let AllusersData = await getAllTrustUsers(customerId);
+  let trustList = AllusersData[0]['trustList'];
+  let advisorList = AllusersData[1]['advisorList'];
+  
+    if(trustList.length>0){
+      trustList.forEach( async( val, index )  =>  {
+        if(val.trustId!=advisorId){
+           let userDetails = await User.findOne({_id:val.trustId},{_id:1,username:1,firstName:1,lastName:1});    
+           await sendHireStatusMail(userDetails.username,userDetails.firstName,EmailMesg,'',template);
+        }
+      })
+    }
+
+    if(advisorList.length>0){
+      advisorList.forEach( async( val, index ) => {
+        if(val.advisorId!=advisorId){
+          let userDetails = await User.findOne({_id:val.advisorId},{_id:1,username:1,firstName:1,lastName:1});
+          await sendHireStatusMail(userDetails.username,userDetails.firstName,EmailMesg,'',template);
+        }
+      })
+    }
+}
+
+async function getAllTrustUsers(customerId) {
+  let respArray = [];
+  let deceasedUser = await User.find({_id:ObjectId(customerId),'deceased.status':'Active'}, {_id:1,usernmae:1})
+  if(deceasedUser){
+    let findQuery = {customerId:ObjectId(customerId),status:'Active'};
+    let trustList = await trust.find(findQuery, {_id:1,trustId:1})
+    let advisorList = await HiredAdvisors.find(findQuery, {_id:1,advisorId:1})
+    respArray.push({trustList:trustList},{advisorList:advisorList});
+  }
+  return respArray;
+}
+
 
 function hireAdvisorList(req, res) {
   let { fields, offset, query, order, limit, search } = req.body

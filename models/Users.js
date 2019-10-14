@@ -89,10 +89,10 @@ var userSchema = new mongoose.Schema({
     required: true
   },  
   ipAddress : String, 
-  latitude : String, 
-  longitude : String,  
+  // latitude : String, 
+  // longitude : String,  
   location: {
-    longitude: String,
+    latitude: String,
     longitude: String,
   }, 
   signupApprovalDate : Date, 

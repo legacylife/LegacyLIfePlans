@@ -64,7 +64,7 @@ function view (req, res) {
 // Function to get emailTemplate by code
 function getEmailTemplateByCode (code) {
   var deferred = Q.defer()
-  EmailTemplate.findOne({code: code}, (err, emailTemplate) => {
+  EmailTemplate.findOne({code: code,status:'active'}, (err, emailTemplate) => {
     if (err) {
       deferred.reject(err);
     }

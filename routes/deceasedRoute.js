@@ -595,25 +595,27 @@ async function markExpire(req, res){
 }
 
 async function advisorListing(req, res) {
-
-  let { fields, offset, query, order, limit, search } = req.body
+let { fields, offset, query, order, limit, search,customerId } = req.body
+ var existingAdv=[];
+ await  HiredAdvisors.find({customerId:customerId,status:'Active'},{'advisorId': 1}).then(advisorLit => {
+    advisorLit.forEach(async function(doc){
+      existingAdv.push(doc.advisorId)
+    });
+  })
   let totalUsers = 0
-
     userList = await User.aggregate([
       {
-        $match: {userType:'advisor',"subscriptionDetails.endDate": {$gte : new Date()}}
+        $match: {userType:'advisor',"subscriptionDetails.endDate": {$gte : new Date()},_id:{'$nin':existingAdv}}
       },
       {
         $project: {
-          createdOn: 1, username:1, firstName:1,lastName:1,renewalOnReminderEmailDay:1,userType:1,
+          createdOn: 1, username:1, firstName:1,lastName:1,renewalOnReminderEmailDay:1,userType:1,zipcode:1,city:1,state:1,
           subscriptionDetails: {$arrayElemAt: ["$subscriptionDetails", -1]},
         }
       }
     ])
-
     totalUsers = userList.length;
-    res.send(resFormat.rSuccess({ userList, totalUsers }))
-      
+    res.send(resFormat.rSuccess({ userList, totalUsers }));     
 }
 
 
