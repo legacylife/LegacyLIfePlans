@@ -1586,7 +1586,7 @@ router.post('/deceasedDocuments', cors(), function(req,res){
               fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
               file.pipe(fstream);
               fstream.on('close', async function () {
-                await s3.uploadFile(newFilename,deceasedFilessPath+userId+'/');                  
+                await s3.uploadFile(newFilename,deceasedFilessPath+userId+'/');                                  
                 tmpallfiles = {
                   "title" : filename,
                   "size" : encoding,

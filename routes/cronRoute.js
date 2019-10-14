@@ -735,6 +735,29 @@ async function deceasedCustomers(req, res){
   })
 }
 
+async function deceasedCustomersReminders(req, res){
+  await User.find({'deceased':{$ne:null},'deceased.status':{$ne:'Active'},'lockoutLegacyDate':{$ne:null}},{}, async function (err, result) {
+    if (err) {
+      res.status(500).send(resFormat.rError(err))
+    } else if (result) {     
+      if(result.length>0){
+         result.forEach( async (key,index) => {   
+        if(new Date(key.lockoutLegacyDate) < new Date()) {
+          let OldDeceasedinfo = key.deceased.deceasedinfo;
+
+          console.log('OldDeceasedinfo--->',OldDeceasedinfo);
+
+
+          //let deceasedArray = {'status':'Active','trusteeCnt':key.deceased.trusteeCnt,'advisorCnt':key.deceased.advisorCnt,deceasedinfo:OldDeceasedinfo};
+          // await User.updateOne({_id:key._id},{deceased:deceasedArray});
+        }
+      });
+     }
+    }
+  })
+}
+
+
 
 async function featuredAdvisorFromDate(req, res){
   let AdvData = await advertisement.find({status:"Active",sponsoredStatus:'Pending',"adminReply.status": "Done"},{_id:1,customerId:1,fromDate:1,toDate:1,status:1,zipcodes:1,adminReply:1});
@@ -860,6 +883,7 @@ router.get("/auto-renewal-on-reminder-email", autoRenewalOnReminderEmail);
 router.get("/auto-renewal-off-reminder-email", autoRenewalOffReminderEmail);
 router.get("/before-subscription-reminder-email", beforeSubscriptionReminderEmail);
 router.get("/check-deceased-customers", deceasedCustomers);
+router.post("/deceased-customers-reminders", deceasedCustomersReminders);
 router.get("/check-featured-advisor-frmdate", featuredAdvisorFromDate);
 router.get("/check-featured-advisor-enddate", featuredAdvisorEndDate);
 router.get("/check-featured-advisor-remider-mail", featuredAdvisorReminder);
