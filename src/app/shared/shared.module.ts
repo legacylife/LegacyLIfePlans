@@ -118,9 +118,11 @@ import { SpecialNeedsListingComponent } from 'app/views/customer/customer-home/s
 import { SpecialNeedsDetailsComponent } from 'app/views/customer/customer-home/special-needs/special-needs-details/special-needs-details.component';
 import { DeviceDetailsComponent } from 'app/views/customer/customer-home/passwords-digital-assets/devices/device-details/device-details.component';
 import { ElectronicMediaDetailsComponent } from 'app/views/customer/customer-home/passwords-digital-assets/electronic-media/electronic-media-details/electronic-media-details.component';
+import { DigitalPublicationsDetailsComponent } from 'app/views/customer/customer-home/passwords-digital-assets/digital-publications/digital-publications-details/digital-publications-details.component';
 import { PasswordsDigitalAssetsListComponent } from 'app/views/customer/customer-home/passwords-digital-assets/passwords-digital-assets-list/passwords-digital-assets-list.component';
 import { DevicesModalComponent } from 'app/views/customer/customer-home/passwords-digital-assets/devices/devices-modal/devices-modal.component';
 import { ElectronicMediaModalComponent } from 'app/views/customer/customer-home/passwords-digital-assets/electronic-media/electronic-media-modal/electronic-media-modal.component';
+import { DigitalPublicationsModalComponent } from 'app/views/customer/customer-home/passwords-digital-assets/digital-publications/digital-publications-modal/digital-publications-modal.component';
 import { DebtDetailsComponent } from 'app/views/customer/customer-home/insurance-finance-debt/debt-details/debt-details.component';
 import { EmergencyContactsComponent } from 'app/views/customer/customer-home/emergency-contacts/emergency-contacts.component';
 import { EmergencyContactsDetailsComponent } from 'app/views/customer/customer-home/emergency-contacts-details/emergency-contacts-details.component';
@@ -156,6 +158,7 @@ import { CcRightPanelComponent } from './components/cc-right-panel/cc-right-pane
 import { CcDetailedViewComponent } from './components/cc-detailed-view/cc-detailed-view.component';
 import { CcShareViaEmailModelComponent } from './components/cc-share-via-email-model/cc-share-via-email-model.component';
 import { AdvertisementPaymentComponent } from './components/advertisement-payment/advertisement-payment.component';
+import { FileHandlingService } from './services/file-handling.service';
 /* 
   Only Required if you want to use Angular Landing
   (https://themeforest.net/item/angular-landing-material-design-angular-app-landing-page/21198258)
@@ -213,9 +216,11 @@ const classesToInclude = [
   SpecialNeedsModelComponent,
   DeviceDetailsComponent,
   ElectronicMediaDetailsComponent,
+  DigitalPublicationsDetailsComponent,
   PasswordsDigitalAssetsListComponent,
   DevicesModalComponent,
   ElectronicMediaModalComponent,
+  DigitalPublicationsModalComponent,
   DebtDetailsComponent,
   EmergencyContactsComponent,
   EmergencyContactsDetailsComponent,
@@ -297,7 +302,7 @@ const classesToInclude = [
   entryComponents: [
     AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,ReferNEarnPopUpComponent,
     PetsModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent,SpecialNeedsModelComponent,
-    DevicesModalComponent,ElectronicMediaModalComponent,AssetsModelComponent,
+    DevicesModalComponent,ElectronicMediaModalComponent,DigitalPublicationsModalComponent,AssetsModelComponent,
     VehicleModelComponent,RealEstateModelComponent,TimeCapsuleMoalComponent,legalStuffModalComponent,InsuranceModalComponent,
     FinanceModalComponent,DebtModalComponent,FinalWishesFormModalComponent,LettersMessagesModelComponent, InviteComponent, CcShareViaEmailModelComponent,
     AdvertisementPaymentModalComponent
@@ -317,7 +322,8 @@ const classesToInclude = [
     ProfilePicService,
     AppConfirmService,
     AppLoaderService,
-    SubscriptionService
+    SubscriptionService,
+    FileHandlingService
     // LandingPageService    
   ],
   declarations: classesToInclude,

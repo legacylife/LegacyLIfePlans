@@ -47,9 +47,6 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
     private subscription: SubscriptionService
   ) {
     this.preventBackButton()
-  }
-
-  ngOnInit() {
     this.urlData = this.userapi.getURLData();
     if(this.urlData.lastThird == "legacies"){
       if(this.urlData.userType == "advisor"){
@@ -57,6 +54,10 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
       }
       this.getCustomerDetails();
     }
+  }
+
+  ngOnInit() {
+    
   }
   
   preventBackButton() {
@@ -98,18 +99,22 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
     dialogRef.afterClosed()
       .subscribe(res => {
         this.isDialogOpen = false
+        this.getCustomerDetails()
       })
   }
 
   getCustomerDetails(query = {}){
     const req_vars = {
-      query: Object.assign({ _id: this.urlData.lastOne }, query)
+      query: Object.assign({ _id: this.urlData.lastOne }, query),
+      fromId: localStorage.getItem('endUserId'),
+      userType: localStorage.getItem('endUserType')
     }
-    this.userapi.apiRequest('post', 'userlist/viewall', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'userlist/viewall', req_vars).subscribe(async result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
         this.customerData = result.data;
+        if(this.customerData){
         this.toUserId = this.urlData.lastOne
         this.endUserType = this.customerData.userType
         if(this.customerData && this.customerData.profilePicture){
@@ -122,7 +127,7 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
         if( subscriptionDetails && subscriptionDetails.length > 0 ) {
           //get last element from array i.e current subscription details
           let currentSubscription     = subscriptionDetails.slice(-1)[0]
-          let remainingDays           = this.subscription.getDateDiff( moment().toDate(), moment(currentSubscription.endDate).toDate())
+          let remainingDays           = await this.subscription.getDateDiff( moment().toDate(), moment(currentSubscription.endDate).toDate())
           this.subscriptionExpiryDate = currentSubscription.endDate
           this.daysRemaining          = remainingDays
           if( remainingDays <= 60 ) {
@@ -135,6 +140,7 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
         else{
           this.activateRenewSubscriptonBtn = true
         }
+       }else{this.router.navigateByUrl('/'+localStorage.getItem('endUserType')+'/dashboard/shared-legacies');}
       }
     }, (err) => {
       console.error(err)
@@ -170,7 +176,7 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
   }
 
   DownloadZip = () => {  
-
+   // console.log("DownloadZip")   
     // this.shareData.userShareDataSource.subscribe((shareFolderData) => {
     //   console.log("shareFolderData --->",shareFolderData)   
     // })
@@ -209,7 +215,7 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
          })
         })
       })
-      console.log("folderPath --->",folderPath,"totalDocs --->",totalDocs)   
+    
      if(totalDocs.length>0){        
         let query = {};
         var ZipName = this.urlData.lastTwo+"-"+Math.floor(Math.random() * Math.floor(999999999999999))+".zip"; 
@@ -222,13 +228,22 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
         }
         this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
         this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {
-          var downloadURL =window.URL.createObjectURL(res)
-          let filePath = downloadURL;
-          var link=document.createElement('a');
+          var newBlob = new Blob([res])
+          var downloadURL = window.URL.createObjectURL(newBlob);
+          let filePath = downloadURL;                       
+          var link= document.createElement('a');
           link.href = filePath;
           link.download = ZipName;
+          document.body.appendChild(link);
           link.click();
           this.snack.dismiss();
+          // var downloadURL =window.URL.createObjectURL(res)
+          // let filePath = downloadURL;
+          // var link=document.createElement('a');
+          // link.href = filePath;
+          // link.download = ZipName;
+          // link.click();
+          // this.snack.dismiss();
         });
      }else{
       this.snack.open("Document records not found", 'OK', { duration: 4000 })   

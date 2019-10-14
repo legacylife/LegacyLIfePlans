@@ -33,7 +33,16 @@
               </span>
             </div>
             <div class="details--body">
-              <h3>{{getType(row?.financesType)}} {{row?.financesType && row?.financesType == '10' ? " - " +row?.financesTypeNew : ""}}</h3>   
+              <h3>{{getType(row?.financesType)}} {{row?.financesType && row?.financesType == '16' ? " - " +row?.financesTypeNew : ""}}</h3> 
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">Name on Account:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{row?.nameOnAccount}}</label>
+                </div>
+              </div>
+              
               <div fxLayout="row wrap" class="mb--10">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                     <label class="strong--label">Bank/Credit Union/Plan Administrator:</label>
@@ -68,7 +77,16 @@
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
                       <label class="normal--label">{{row?.accountNumber}}</label>
                     </div>
-              </div>
+                </div>
+
+                <div fxLayout="row wrap" class="mb--10">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                    <label class="strong--label">Personal Contact:</label>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                    <label class="normal--label">{{row?.contactPhone}}</label>
+                  </div>
+                </div>
                 
                 <div fxLayout="row wrap" class="mb--10">
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
@@ -77,16 +95,7 @@
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
                       <label class="normal--label">{{row?.contactEmail}}</label>
                     </div>
-                </div>
-
-                <div fxLayout="row wrap" class="mb--10">
-                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
-                    <label class="strong--label">Contact Phone:</label>
-                  </div>
-                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.contactPhone}}</label>
-                  </div>
-                </div>
+                </div>                
 
                 <div fxLayout="row wrap" class="mb--10">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">

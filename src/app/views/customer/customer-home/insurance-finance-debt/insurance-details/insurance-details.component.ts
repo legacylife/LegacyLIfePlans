@@ -29,7 +29,7 @@ export class InsuranceDetailsComponent implements OnInit {
   urlData:any={};
   toUserId:string = ''
   subFolderName:string = 'Insurnace'
-
+  LegacyPermissionError:string="You don't have access to this section";
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -42,7 +42,7 @@ export class InsuranceDetailsComponent implements OnInit {
     this.docPath = filePath;
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne
-    this.toUserId = this.userId
+    this.toUserId = this.userId;
     this.getInsuranceView();    
   }
 
@@ -68,12 +68,32 @@ export class InsuranceDetailsComponent implements OnInit {
           if(this.row){
             this.toUserId = this.row.customerId 
             this.docPath = this.row.customerId+'/'+s3Details.insuranceFilePath;
-          }
+            this.customerisValid(this.row);
+          }         
         }
       }  
     }, (err) => {
       console.error(err);
     })
+  }
+
+  customerisValid(data){
+    if (this.urlData.lastThird == "legacies") {
+      this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
+       if(userAccess.InsuranceManagement!='now'){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+       }          
+      });    
+    }else{      
+      if(data.customerId!=this.userId){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+      }
+    } 
   }
 
   openInsuranceModal(FolderNames, isNew?) {

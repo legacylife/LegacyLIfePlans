@@ -35,7 +35,7 @@ export class EmergencyContactsDetailsComponent implements OnInit {
 
   toUserId:string = ''
   subFolderName:string = 'Contacts'
-
+  LegacyPermissionError:string="You don't have access to this section";
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -84,10 +84,30 @@ export class EmergencyContactsDetailsComponent implements OnInit {
         this.eContactFormGroup.controls['emailAddress'].setValue(this.row.emailAddress);
         this.eContactFormGroup.controls['name'].setValue(this.row.name);
         this.eContactFormGroup.controls['profileId'].setValue(this.row._id);
+        this.customerisValid(this.row);
       }
     }, (err) => {
       console.error(err)      
     })
+  }
+
+  customerisValid(data){
+    if (this.urlData.lastThird == "legacies") {
+      this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
+       if(userAccess.emergencyContactsManagement!='now'){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+       }          
+      });    
+    }else{      
+      if(data.customerId!=this.userId){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+      }
+    } 
   }
 
   deleteProfile(customerId) {

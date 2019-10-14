@@ -79,7 +79,8 @@ export class userviewComponent implements OnInit {
   getUser = (query = {}, search = false) => {
     this.loader.open()
     const req_vars = {
-      query: Object.assign({ _id: this.selectedUserId }, query)
+      query: Object.assign({ _id: this.selectedUserId }, query),
+      userType:'sysAdmin'
     }
 
     this.api.apiRequest('post', 'userlist/viewall', req_vars).subscribe(result => {

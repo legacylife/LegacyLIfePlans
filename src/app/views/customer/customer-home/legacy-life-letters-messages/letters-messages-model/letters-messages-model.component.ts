@@ -9,6 +9,7 @@ import { UserAPIService } from 'app/userapi.service';
 import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { serverUrl,s3Details } from 'app/config';
+import { FileHandlingService } from 'app/shared/services/file-handling.service';
 const URL = serverUrl + '/api/documents/letterMessage';
 
 @Component({
@@ -20,8 +21,9 @@ export class LettersMessagesModelComponent implements OnInit {
   userId = localStorage.getItem("endUserId"); 
   public hasBaseDropZoneOver: boolean = false;
   invalidMessage: string;
-  LettersMessagesForm: FormGroup;
   documentsMissing = false;
+  documents_temps = false;
+  LettersMessagesForm: FormGroup;
   fileErrors: any;
   profileIdHiddenVal:boolean = false;
   documentsList: any;
@@ -37,7 +39,9 @@ export class LettersMessagesModelComponent implements OnInit {
   toUserId:string = ''
   subFolderName:string = ''
 
-  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService,private userapi: UserAPIService ) {}
+  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,
+    private confirmService: AppConfirmService,private loader: AppLoaderService,
+    private userapi: UserAPIService, private fileHandlingService: FileHandlingService ) {}
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
@@ -60,7 +64,8 @@ export class LettersMessagesModelComponent implements OnInit {
       title: new FormControl('', Validators.required),
       letterBox: new FormControl('', Validators.required), 
       subject: new FormControl(''),
-      profileId: new FormControl('')
+      profileId: new FormControl(''),
+      documents_temp: new FormControl([], Validators.required),
     });
 
     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
@@ -145,6 +150,10 @@ export class LettersMessagesModelComponent implements OnInit {
           this.LettersMessagesForm.controls['letterBox'].setValue(this.LetterMessageList.letterBox);
           this.LettersMessagesForm.controls['subject'].setValue(this.LetterMessageList.subject);
           this.documentsList = result.data.documents;       
+          if(this.documentsList.length>0){
+            this.LettersMessagesForm.controls['documents_temp'].setValue('1');
+            this.documentsMissing = false;
+          } 
         }       
       }
     }, (err) => {
@@ -155,11 +164,18 @@ export class LettersMessagesModelComponent implements OnInit {
   public fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
     this.fileErrors = [];
+    let totalItemsToBeUpload = this.uploader.queue.length,
+        totalUploderFileSize = 0,
+        remainingSpace = 0,
+        message = ''
     this.uploader.queue.forEach((fileoOb) => {
       let filename = fileoOb.file.name;
       var extension = filename.substring(filename.lastIndexOf('.') + 1);
       var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
       let resp = this.isExtension(extension,fileExts);
+
+      totalUploderFileSize += fileoOb.file.size
+
       if(!resp){
         var FileMsg = "This file '" + filename + "' is not supported";
         this.uploader.removeFromQueue(fileoOb);
@@ -168,24 +184,53 @@ export class LettersMessagesModelComponent implements OnInit {
         setTimeout(()=>{    
           this.fileErrors = []
         }, 5000);
-    
       }
     });
 
-    if(this.uploader.getNotUploadedItems().length){
-     this.uploaderCopy = cloneDeep(this.uploader)
-     this.uploader.queue.splice(1, this.uploader.queue.length - 1)
-     this.uploaderCopy.queue.splice(0, 1)
-     
-     this.uploader.queue.forEach((fileoOb, ind) => {
-           this.uploader.uploadItem(fileoOb);
-      });
+    let legacyUserData = {userId: this.toUserId, userType:'customer'}
+    this.fileHandlingService.checkAvailableSpace( legacyUserData, async (spaceDetails) => {
+      remainingSpace = Number(spaceDetails.remainingSpace)
+      message = spaceDetails.message
+    
+      if( totalUploderFileSize > remainingSpace) {
+        this.confirmService.reactivateReferEarnPopup({ message: message, status: 'notactivate' }).subscribe(res => {
+          if (res) {
+            console.log("**************",res)
+          }
+          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+        })
+      }
+      else{
+        let proceedToUpload = true
+        if( message != '' ) {
+          let confirmResponse = await this.confirmService.confirm({ message: message }).toPromise()
+          proceedToUpload = true
+        }
+        if( proceedToUpload ) {
+          if(this.uploader.getNotUploadedItems().length){
+          this.uploaderCopy = cloneDeep(this.uploader)
+          this.uploader.queue.splice(1, this.uploader.queue.length - 1)
+          this.uploaderCopy.queue.splice(0, 1)
+          
+          this.uploader.queue.forEach((fileoOb, ind) => {
+            this.LettersMessagesForm.controls['documents_temp'].setValue('');
+                this.uploader.uploadItem(fileoOb);
+            });
 
-      this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-        this.updateProgressBar();
-        this.getlettersMessagesDocuments();
-      };
-    }
+            this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+              this.updateProgressBar();
+              this.getlettersMessagesDocuments();
+            };
+            this.uploader.onCompleteAll=()=>{
+              this.uploader.clearQueue();
+              if(!this.uploaderCopy.queue.length){
+                this.currentProgessinPercent = 0;
+              }
+            }
+          }
+        }
+      }
+    })
   }
 
   updateProgressBar(){
@@ -193,10 +238,14 @@ export class LettersMessagesModelComponent implements OnInit {
     let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
     this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
     this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+    if(this.uploader.queue.length>0){
+      this.uploader.clearQueue();
+    }
   }
 
   uploadRemainingFiles(profileId) {
     this.uploaderCopy.onBeforeUploadItem = (item) => {
+      this.LettersMessagesForm.controls['documents_temp'].setValue('');        
       item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
     }
     this.uploaderCopy.queue.forEach((fileoOb, ind) => {
@@ -207,6 +256,10 @@ export class LettersMessagesModelComponent implements OnInit {
       this.updateProgressBar();
       this.getlettersMessagesDocuments({}, false, false);
     };
+    this.uploaderCopy.onCompleteAll=()=>{
+      this.uploaderCopy.clearQueue();
+      this.currentProgessinPercent = 0;
+    }
   }
 
   getlettersMessagesDocuments = (query = {}, search = false, uploadRemained = true) => {    
@@ -229,7 +282,12 @@ export class LettersMessagesModelComponent implements OnInit {
         if(uploadRemained) {
           this.uploadRemainingFiles(result.data._id)
         }
-        this.documentsList = result.data.documents;                    
+        this.documentsList = result.data.documents;  
+        this.LettersMessagesForm.controls['documents_temp'].setValue('');        
+        if(this.documentsList.length>0){
+          this.LettersMessagesForm.controls['documents_temp'].setValue('1');
+          this.documentsMissing = false;
+        }                      
       }
     }, (err) => {
       console.error(err);
@@ -261,6 +319,11 @@ export class LettersMessagesModelComponent implements OnInit {
             } else {              
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            }
+            if (this.documentsList.length < 1) {
+              this.LettersMessagesForm.controls['documents_temp'].setValue('');
+              this.documentsMissing = true;
+              this.invalidMessage = "Please drag your document.";
             }
           }, (err) => {
             console.error(err)

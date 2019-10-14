@@ -41,7 +41,7 @@
                               Zipcode : {{ row?.zipcode }} </a>
                             </ng-template>
                           </ngx-datatable-column>
-                          <ngx-datatable-column  [resizeable]="false" name="Subscription Status" prop="end_date" [flexGrow]="1">
+                          <ngx-datatable-column  [resizeable]="false" name="Subscription Status" prop="end_date" [flexGrow]="2">
                             <ng-template let-row="row" ngx-datatable-cell-template>
                                 <a (click)="selectAdvisor(row)"> Status: Paid <br />
                               Expiry Date : {{ row?.subscriptionDetails ? row?.subscriptionDetails.endDate : ""}} </a>

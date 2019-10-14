@@ -4,10 +4,11 @@
       <mat-card-header class="m-0 header--with--sort">
         <mat-card-title class="m-0">Advisor Listing</mat-card-title>
         <form [formGroup]="searchForm" class="llp-form-wrapper" (ngSubmit)="searching()">             
-        <div class="search--box">          
-          <input matInput name="search" placeholder="Search by name or zip code" [formControl]="searchForm.controls['search']"  (input)="toggleSearchSuggestion()">
+        <div class="search--box">    
+          <input matInput name="search" placeholder="Search by first name, last name or zipcode" [formControl]="searchForm.controls['search']"  (input)="toggleSearchSuggestion()">
           <!-- <input type="text" class="" placeholder="Search by name or zip code"> -->
-          <mat-icon (click)="searching()">search</mat-icon>
+          <mat-icon *ngIf="searchingFlag" (click)="searching()">search</mat-icon>
+          <mat-icon *ngIf="!searchingFlag" (click)="clearSearch()">clear</mat-icon>
         </div>
         </form>
       </mat-card-header>      
@@ -102,7 +103,8 @@
                 
               </div>
               <div class="appointees--desc">
-                <h5>{{qualityAd.firstName + ' ' + qualityAd.lastName}}</h5>
+                <h5>{{qualityAd.firstName + ' ' + qualityAd.lastName}}</h5> 
+                    
                 <p class="position m-0">{{qualityAd.businessName}}</p>
               </div>
               <!-- <div class="sponsored--patch">
@@ -121,10 +123,10 @@
               <p>{{qualityAd.yearsOfService}}</p>
             </div>
             <div class="action--wrapp">
-                <div class="action" [routerLink]="['/customer/professionals/prof-details', qualityAd._id]">
+                <!-- <div class="action" [routerLink]="['/customer/professionals/prof-details', qualityAd._id]">
                 <mat-icon>remove_red_eye</mat-icon>
                 <a [routerLink]="['/customer/professionals/prof-details', qualityAd._id]">View</a>
-              </div>
+              </div> -->
               <div class="action" (click)="sendContactDetails(qualityAd)">
                 <mat-icon>local_phone</mat-icon>
                 <a>Contact</a>

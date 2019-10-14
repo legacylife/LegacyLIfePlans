@@ -13,7 +13,7 @@
       <h5>Amount to be paid: <span>{{planAmount | currency : planCurrency : 'symbol'}}</span></h5>
     </div>
     <div>
-      <div class="new-card-details" [hidden]="hideNewCardForm && isAvailablePayment">
+      <div class="new-card-details" *ngIf="isAvailablePayment" [hidden]="hideNewCardForm">
         <label>New card details:</label>
         <div class="new--card">
             <div id="card-fields"></div>
@@ -40,6 +40,9 @@
       <div class="mt-1" *ngIf="oldCard != ''">
         <mat-checkbox class="example-margin" (click)="payUsingNewCard()">Pay using new card</mat-checkbox>
         <p class="paying--text">*Paying with new card will replace the existing card</p>
+      </div>
+      <div class="mt-1" *ngIf="!isAvailablePayment">
+        <p class="paying--text">*You will able to make payment before 30 days remainig to subscription end.</p>
       </div>
     </div>
   </div>

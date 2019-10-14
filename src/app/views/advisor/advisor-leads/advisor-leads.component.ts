@@ -20,6 +20,7 @@ export class AdvisorLeadsComponent implements OnInit {
   userId: string;
   ProfilePic: string = profileFilePath;
   profilePicture: any = "assets/images/arkenea/default.jpg";
+  advisorWithCustomer:any;
 
   searchKey = 'All'
   nextOffset = 0;
@@ -36,6 +37,7 @@ export class AdvisorLeadsComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.getLeadsLists();
+    this.getCustomerLists();
   }
 
   filterResult( filterVal ) {
@@ -45,6 +47,23 @@ export class AdvisorLeadsComponent implements OnInit {
     this.leadsListings = []
     this.getLeadsLists( {}, this.searchKey, (this.nextOffset*this.resultLimit), this.resultLimit)
   }
+
+  getCustomerLists(query = {}){
+    const req_vars = { 
+      query: Object.assign({ advisorId: this.userId, status: "Active" }, query) 
+    }
+    this.userapi.apiRequest('post', 'lead/get-customer-list', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        this.advisorWithCustomer = result.data.list;        
+      }
+    }, (err) => {
+      console.error(err)
+    })
+  }
+
+
 
   //function to get all events
   getLeadsLists = (query = {}, search = this.searchKey, offset = this.nextOffset, limit= this.resultLimit) => {
@@ -68,7 +87,6 @@ export class AdvisorLeadsComponent implements OnInit {
       
       query = Object.assign( {createdOn: { $gte: new Date(startOfMonth) , $lte: new Date(endOfMonth) } })
     }
-    console.log("queryqueryquery",query,"offsetoffset",offset,"limitlimit",limit)
     const req_vars = {
       query: Object.assign({ advisorId: this.userId, status: "Active" }, query),
       fields: {},
@@ -99,6 +117,18 @@ export class AdvisorLeadsComponent implements OnInit {
     }, (err) => {
       console.error(err)
     })
+  }
+
+  checkCustomerRelation(customerId){
+    let returnVal = false;
+    if(this.advisorWithCustomer.length > 0){
+      let filteredTyes = this.advisorWithCustomer.filter(dtype =>{
+        return dtype.customerId == customerId
+      }).map(el => el._id)
+      if(filteredTyes.length > 0)
+      returnVal = true;
+    }
+      return returnVal;
   }
 
   onScrollDown (ev) {

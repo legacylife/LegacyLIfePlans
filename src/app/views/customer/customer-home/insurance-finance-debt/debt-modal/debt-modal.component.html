@@ -32,7 +32,7 @@
       </mat-form-field>
    
       <mat-form-field class="full-width">
-          <input matInput name="contactEmail" placeholder="Personal Contact" [formControl]="DebtForm.controls['contactEmail']">          
+          <input matInput name="contactEmail" placeholder="Contact Email" [formControl]="DebtForm.controls['contactEmail']">          
           <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" *ngIf="DebtForm.controls['contactEmail'].hasError('pattern') && DebtForm.controls['contactEmail'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
 
@@ -42,7 +42,7 @@
       </mat-form-field>
 
       <mat-form-field class="full-width mt-1">
-              <textarea (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" maxlength="500" matInput placeholder="Comments" name="comments" [formControl]="DebtForm.controls['comments']"></textarea>
+              <textarea (keyup)="firstCapitalize($event)" maxlength="500" matInput placeholder="Comments" name="comments" [formControl]="DebtForm.controls['comments']"></textarea>
               <div class="char--limit" style="float: right;">{{ 500 - DebtForm.controls['comments'].value?.length }}</div>
       </mat-form-field>
 

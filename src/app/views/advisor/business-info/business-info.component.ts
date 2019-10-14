@@ -27,6 +27,8 @@ export class BusinessInfoComponent implements OnInit {
   userId = localStorage.getItem("endUserId");
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public hasBaseDropZoneOver: boolean = false;
+  documentsMissing = false;
+  invalidMessage: string;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
@@ -71,30 +73,29 @@ export class BusinessInfoComponent implements OnInit {
     }
 
     this.firstFormGroup = new FormGroup({
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
+      firstName: new FormControl('',Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
+      lastName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
       yearsOfService: new FormControl('', Validators.required),
-      businessName: new FormControl('', Validators.required),
+      businessName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
       businessType: new FormControl([], Validators.required),
       industryDomain: new FormControl([], Validators.required)
     });
 
     this.secondFormGroup = this.fb.group({
-      addressLine1: new FormControl('', Validators.required),
+      addressLine1: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
       addressLine2: new FormControl(''),
-      city: new FormControl('', Validators.required),
+      city: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
       state: new FormControl('', Validators.required),
-      zipcode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
+      zipcode: new FormControl('', [Validators.required,Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
       businessPhoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)])
     });
 
     this.thirdFormGroup = this.fb.group({
       activeLicenceHeld: new FormControl([], Validators.required),
       agencyOversees: new FormControl(''),
-      managingPrincipleName: new FormControl('', Validators.required),
+      managingPrincipleName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
       manageOtherProceducers: new FormControl('', Validators.required),
-      howManyProducers: new FormControl('', [Validators.pattern(/^[0-9]*$/)]),
-
+      howManyProducers: new FormControl('',[Validators.pattern(/^[0-9]*$/),Validators.maxLength(12)]),
     });
     this.forthFormGroup = this.fb.group({
       advisorDocuments_temp: new FormControl([], Validators.required)
@@ -104,34 +105,11 @@ export class BusinessInfoComponent implements OnInit {
     }
   }
 
-  /*  goBack(myStepper: MatStepper){
-     console.log('asdasd')
-      myStepper.previous();
-   }
- /*
-   uploadAll() {
-     let inputEl: HTMLInputElement = this.el.nativeElement.querySelector('#advisorDocs');
-     console.log("iam+ "+inputEl);
-     let fileCount: number = inputEl.files.length;
-     let formData = new FormData();
- 
-     console.log(fileCount,formData)
-     if (fileCount > 0) { // a file was selected
-       formData.append('userId', this.userId);
-         for (let i = 0; i < fileCount; i++) {
-             formData.append('advisorDocuments', inputEl.files.item(i));
-         }
-         this.userapi.apiRequest('post', 'documents/advisorDocument', formData).map((res:any) => res).subscribe(//this.http.post(URL, formData).map((res:any) => res).subscribe(
-                 (success) => {
-                  alert(success._body);
-               },
-                 (error) => alert(error)
-             );
-           
-     }
-    }
- */
-
+  public noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
+  }
 
   docDelete(doc, name, tmName) {
     var statMsg = "Are you sure you want to delete '" + name + "' file name?"
@@ -153,7 +131,10 @@ export class BusinessInfoComponent implements OnInit {
             } else {
               if (this.advisorDocumentsList.length < 1) {
                 this.forthFormGroup.controls['advisorDocuments_temp'].setValue('');
+                this.documentsMissing = true;
+                this.invalidMessage = "Please drag your document.";
               }
+             
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
@@ -239,6 +220,7 @@ export class BusinessInfoComponent implements OnInit {
           this.advisorDocumentsList = this.profile.advisorDocuments;
           if(this.profile.advisorDocuments.length>0){
             this.forthFormGroup.controls['advisorDocuments_temp'].setValue('1');
+            this.documentsMissing = false;
           }
           
           this.loader.close();
@@ -276,9 +258,14 @@ export class BusinessInfoComponent implements OnInit {
     if(this.uploader.getNotUploadedItems().length){
         this.uploader.uploadAll(); 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => { 
+          this.forthFormGroup.controls['advisorDocuments_temp'].setValue('');
         this.updateProgressBar();
         this.getProfileField();
       };
+      this.uploader.onCompleteAll=()=>{
+        this.uploader.clearQueue();
+        this.currentProgessinPercent = 0;
+      }
     }
   }
 
@@ -315,8 +302,8 @@ getProfileField = (query = {}, search = false) => {
         this.advisorDocumentsList = this.profile.advisorDocuments;
         if (this.profile.advisorDocuments.length > 0) {
           this.forthFormGroup.controls['advisorDocuments_temp'].setValue('1');
+          this.documentsMissing = false;
         }
-
       }
     }, (err) => {
       console.error(err);

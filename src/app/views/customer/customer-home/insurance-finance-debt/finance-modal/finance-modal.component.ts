@@ -10,6 +10,7 @@ import { serverUrl, s3Details } from '../../../../../config';
 import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 import { FinancePolicyType } from '../../../../../selectList';
+import { FileHandlingService } from 'app/shared/services/file-handling.service';
 const URL = serverUrl + '/api/documents/financeDocuments';
 
 @Component({
@@ -23,6 +24,8 @@ export class FinanceModalComponent implements OnInit {
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public hasBaseDropZoneOver: boolean = false;
   invalidMessage: string;
+  documentsMissing = false;
+  documents_temps = false;
   FinanceForm: FormGroup;  
   FinanceDocsList: any;
   fileErrors: any;
@@ -39,7 +42,10 @@ export class FinanceModalComponent implements OnInit {
   toUserId:string = ''
   subFolderName:string = 'Finance'
 
-  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,private confirmService: AppConfirmService,private loader: AppLoaderService,private router: Router, private userapi: UserAPIService) { }
+  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,
+    private confirmService: AppConfirmService,private loader: AppLoaderService,
+    private router: Router, private userapi: UserAPIService,
+    private fileHandlingService: FileHandlingService) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -49,13 +55,15 @@ export class FinanceModalComponent implements OnInit {
     this.FinanceForm = this.fb.group({
       financesType: new FormControl('',Validators.required),  
       financesTypeNew: new FormControl(''),   
+      nameOnAccount: new FormControl('',Validators.required),
       administatorName: new FormControl('',Validators.required),
       branchLocation: new FormControl(''),
       accountNumber: new FormControl(''),
       contactEmail: new FormControl('',Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
       contactPhone: new FormControl('',Validators.pattern(/^[0-9]{7,15}$/)),
       comments: new FormControl(''),
-      profileId: new FormControl('')
+      profileId: new FormControl(''),
+      documents_temp: new FormControl([], Validators.required),
     });
 
     this.FinanceDocsList = [];
@@ -78,11 +86,12 @@ export class FinanceModalComponent implements OnInit {
 
   onChangeType(key) {
     this.newVal = false;
-    if(key=='10'){
+    if(key=='16'){
       this.newVal = true;
       this.FinanceForm = this.fb.group({
         financesType: new FormControl(this.FinanceForm.controls['financesType'].value,Validators.required),
         financesTypeNew: new FormControl(this.FinanceForm.controls['financesTypeNew'].value,Validators.required), 
+        nameOnAccount: new FormControl(this.FinanceForm.controls['nameOnAccount'].value,Validators.required),
         administatorName: new FormControl(this.FinanceForm.controls['administatorName'].value,Validators.required),
         branchLocation: new FormControl(this.FinanceForm.controls['branchLocation'].value,),
         accountNumber: new FormControl(this.FinanceForm.controls['accountNumber'].value,),
@@ -97,6 +106,7 @@ export class FinanceModalComponent implements OnInit {
         financesType: new FormControl(this.FinanceForm.controls['financesType'].value,Validators.required),
         financesTypeNew: new FormControl(this.FinanceForm.controls['financesTypeNew'].value), 
         administatorName: new FormControl(this.FinanceForm.controls['administatorName'].value,Validators.required),
+        nameOnAccount: new FormControl(this.FinanceForm.controls['nameOnAccount'].value,Validators.required),
         branchLocation: new FormControl(this.FinanceForm.controls['branchLocation'].value,),
         accountNumber: new FormControl(this.FinanceForm.controls['accountNumber'].value,),
         contactEmail: new FormControl(this.FinanceForm.controls['contactEmail'].value,Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
@@ -171,12 +181,17 @@ export class FinanceModalComponent implements OnInit {
           this.FinanceForm.controls['profileId'].setValue(profileIds);
           this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-          this.FinanceDocsList = result.data.documents;            
+          this.FinanceDocsList = result.data.documents;     
+          if(this.FinanceDocsList.length>0){
+            this.FinanceForm.controls['documents_temp'].setValue('1');
+            this.documentsMissing = false;
+          }       
           this.FinanceForm.controls['financesType'].setValue(this.financeList.financesType);
           this.FinanceForm.controls['financesTypeNew'].setValue(this.financeList.financesTypeNew);
-          if(this.financeList.financesType == 10){
+          if(this.financeList.financesType == 16){
             this.newVal = true;
-          }            
+          }  
+          this.FinanceForm.controls['nameOnAccount'].setValue(this.financeList.nameOnAccount);          
           this.FinanceForm.controls['administatorName'].setValue(this.financeList.administatorName);
           this.FinanceForm.controls['accountNumber'].setValue(this.financeList.accountNumber);
           this.FinanceForm.controls['branchLocation'].setValue(this.financeList.branchLocation);           
@@ -216,6 +231,11 @@ export class FinanceModalComponent implements OnInit {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
+            if (this.FinanceDocsList.length < 1) {
+              this.FinanceForm.controls['documents_temp'].setValue('');
+              this.documentsMissing = true;
+              this.invalidMessage = "Please drag your document.";
+            }
           }, (err) => {
             console.error(err)
             this.loader.close();
@@ -225,37 +245,74 @@ export class FinanceModalComponent implements OnInit {
   }
 
   public fileOverBase(e: any): void {
-      this.hasBaseDropZoneOver = e;
-      this.fileErrors = [];
-      this.uploader.queue.forEach((fileoOb) => {
-        let filename = fileoOb.file.name;
-        var extension = filename.substring(filename.lastIndexOf('.') + 1);
-        var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
-        let resp = this.isExtension(extension,fileExts);
-        if(!resp){
-          var FileMsg = "This file '" + filename + "' is not supported";
-          this.uploader.removeFromQueue(fileoOb);
-          let pushArry = {"error":FileMsg} 
-          this.fileErrors.push(pushArry); 
-          setTimeout(()=>{    
-            this.fileErrors = []
-          }, 5000);
+    this.hasBaseDropZoneOver = e;
+    this.fileErrors = [];
+    let totalItemsToBeUpload = this.uploader.queue.length,
+        totalUploderFileSize = 0,
+        remainingSpace = 0,
+        message = ''
+    this.uploader.queue.forEach((fileoOb) => {
+      let filename = fileoOb.file.name;
+      var extension = filename.substring(filename.lastIndexOf('.') + 1);
+      var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
+      let resp = this.isExtension(extension,fileExts);
       
-        }
-      });
+      totalUploderFileSize += fileoOb.file.size
 
-     if(this.uploader.getNotUploadedItems().length){
-        this.uploaderCopy = cloneDeep(this.uploader)
-        this.uploader.queue.splice(1, this.uploader.queue.length - 1)
-        this.uploaderCopy.queue.splice(0, 1)
-        this.uploader.queue.forEach((fileoOb, ind) => {
-            this.uploader.uploadItem(fileoOb);
-         });
-         this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-           this.updateProgressBar();
-           this.getFinanceDocuments();
-         };
-       }
+      if(!resp){
+        var FileMsg = "This file '" + filename + "' is not supported";
+        this.uploader.removeFromQueue(fileoOb);
+        let pushArry = {"error":FileMsg} 
+        this.fileErrors.push(pushArry); 
+        setTimeout(()=>{    
+          this.fileErrors = []
+        }, 5000);
+    
+      }
+    });
+
+    let legacyUserData = {userId: this.toUserId, userType:'customer'}
+    this.fileHandlingService.checkAvailableSpace( legacyUserData, async (spaceDetails) => {
+      remainingSpace = Number(spaceDetails.remainingSpace)
+      message = spaceDetails.message
+    
+      if( totalUploderFileSize > remainingSpace) {
+        this.confirmService.reactivateReferEarnPopup({ message: message, status: 'notactivate' }).subscribe(res => {
+          if (res) {
+            console.log("**************",res)
+          }
+          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+        })
+      }
+      else{
+        let proceedToUpload = true
+        if( message != '' ) {
+          let confirmResponse = await this.confirmService.confirm({ message: message }).toPromise()
+          proceedToUpload = true
+        }
+        if( proceedToUpload ) {
+          if(this.uploader.getNotUploadedItems().length){
+              this.uploaderCopy = cloneDeep(this.uploader)
+              this.uploader.queue.splice(1, this.uploader.queue.length - 1)
+              this.uploaderCopy.queue.splice(0, 1)
+              this.uploader.queue.forEach((fileoOb, ind) => {
+                  this.FinanceForm.controls['documents_temp'].setValue('');    
+                  this.uploader.uploadItem(fileoOb);
+              });
+              this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+                this.updateProgressBar();
+                this.getFinanceDocuments();
+              };
+              this.uploader.onCompleteAll=()=>{
+                this.uploader.clearQueue();
+                if(!this.uploaderCopy.queue.length){
+                  this.currentProgessinPercent = 0;
+                }
+              }
+          }
+        }
+      }
+    })
   }
 
   updateProgressBar(){
@@ -263,11 +320,15 @@ export class FinanceModalComponent implements OnInit {
     let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
     this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
     this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+    if(this.uploader.queue.length>0){
+      this.uploader.clearQueue();
+    }
   }
 
   uploadRemainingFiles(profileId) {
     this.uploaderCopy.onBeforeUploadItem = (item) => {
       item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
+      this.FinanceForm.controls['documents_temp'].setValue('');        
     }
     this.uploaderCopy.queue.forEach((fileoOb, ind) => {
         this.uploaderCopy.uploadItem(fileoOb);
@@ -277,6 +338,10 @@ export class FinanceModalComponent implements OnInit {
       this.updateProgressBar();
       this.getFinanceDocuments({}, false, false);      
     };
+    this.uploaderCopy.onCompleteAll=()=>{
+      this.uploaderCopy.clearQueue();
+      this.currentProgessinPercent = 0;
+    }
   }
 
   getFinanceDocuments = (query = {}, search = false, uploadRemained = true) => {     
@@ -299,7 +364,12 @@ export class FinanceModalComponent implements OnInit {
         if(uploadRemained) {
           this.uploadRemainingFiles(profileIds)
         }
-        this.FinanceDocsList = result.data.documents;              
+        this.FinanceDocsList = result.data.documents;    
+        this.FinanceForm.controls['documents_temp'].setValue('');
+        if(this.FinanceDocsList.length>0){
+          this.FinanceForm.controls['documents_temp'].setValue('1');
+          this.documentsMissing = false;
+        }               
       }
     }, (err) => {
       console.error(err);

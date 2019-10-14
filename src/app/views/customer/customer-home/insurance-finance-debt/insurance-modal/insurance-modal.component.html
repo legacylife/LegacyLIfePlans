@@ -19,6 +19,11 @@
         </mat-form-field>
 
         <mat-form-field class="full-width">
+          <input matInput name="nameOfInsured" placeholder="Name of Insured" (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)"
+            [formControl]="InsuranceForm.controls['nameOfInsured']">
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
           <input matInput name="company" placeholder="Company" (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)"
             [formControl]="InsuranceForm.controls['company']">
         </mat-form-field>
@@ -44,7 +49,7 @@
         </mat-form-field>
 
         <div class="upload--buss--docs--sec">
-          <label>Upload your files/documents</label>
+          <label>Upload your files/documents*</label>
           <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
             [uploader]="uploader">
             <input type="file" name="documents" ng2FileSelect [uploader]="uploader" multiple (change)="fileOverBase('')" />
@@ -53,6 +58,12 @@
           </div>
           <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
         </div>
+        <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small>
+        <mat-form-field class="full-width" *ngIf="documents_temps">
+            <input matInput name="documents_temp" [formControl]="InsuranceForm.controls['documents_temp']">
+            <small *ngIf="InsuranceForm.controls['documents_temp'].hasError('required') && InsuranceForm.controls['documents_temp'].touched" class="form-error-msg"> Please drag your document. </small>
+        </mat-form-field>
+
         <div *ngIf="InsuranceDocsList">
           <h3 class="header--text fnt--16">Uploaded file/documents </h3>
           <mat-chip-list class="doc--list" *ngFor="let doc of InsuranceDocsList; index as i">
@@ -73,7 +84,7 @@
         </div>
 
         <mat-form-field class="full-width mt-1">
-          <textarea (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" maxlength="500" matInput placeholder="Comments"
+          <textarea (keyup)="firstCapitalize($event)" maxlength="500" matInput placeholder="Comments"
             name="comments" [formControl]="InsuranceForm.controls['comments']"></textarea>
           <div class="char--limit" style="float: right;">{{ 500 - InsuranceForm.controls['comments'].value?.length }}</div>
         </mat-form-field>

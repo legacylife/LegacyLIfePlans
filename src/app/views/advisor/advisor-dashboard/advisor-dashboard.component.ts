@@ -65,7 +65,7 @@ export class AdvisorDashboardComponent implements OnInit {
   }
 
   checkSubscription() {
-    this.subscriptionservice.checkSubscription( ( returnArr )=> {
+    this.subscriptionservice.checkSubscription( '', ( returnArr )=> {
       this.userCreateOn = returnArr.userCreateOn
       this.isSubscribedBefore = returnArr.isSubscribedBefore
       this.isSubscriptionCanceled = returnArr.isSubscriptionCanceled

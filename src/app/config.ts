@@ -161,6 +161,9 @@ export const userSections = [
     }, {
       name: 'Electronic Media',
       code: "ElectronicMediaManagement"
+    }, {
+      name: 'Digital Publications',
+      code: "DigitalPublicationManagement"
     }],
   }, {
     "id" : "7",

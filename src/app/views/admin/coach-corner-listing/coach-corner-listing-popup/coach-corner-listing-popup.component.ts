@@ -82,7 +82,7 @@ export class CoachCornerPopupComponent implements OnInit {
     console.log("item",item)
     if(this.data.title=='Update Post') {
       this.itemForm = this.fb.group({
-        title: ['', [Validators.required, Validators.pattern("([A-Za-z0-9]+ )+[A-Za-z0-9]+$|^[A-Za-z0-9]*$")]],
+        title: ['', [Validators.required]], // Validators.pattern("([A-Za-z0-9]+ )+[A-Za-z0-9]+$|^[A-Za-z0-9]*$")
         description: ['',Validators.required],
         category: ['',Validators.required],
         image: [''],
@@ -144,11 +144,12 @@ export class CoachCornerPopupComponent implements OnInit {
    */
   submit() {
     let postData = this.data.payload;
+    let description = this.itemForm.controls['description'].value.replace(/\&nbsp;/g, '')    
     this.RequestData = {
       fromId : localStorage.getItem('userId'),
       data: {
         title: this.itemForm.controls['title'].value,
-        description: this.itemForm.controls['description'].value,
+        description: description,
         category: this.itemForm.controls['category'].value,
         image: this.uploadedImage,
         status: this.itemForm.controls['status'].value ? 'On' : 'Off'
@@ -209,6 +210,10 @@ export class CoachCornerPopupComponent implements OnInit {
             this.imageList.push(item.file)
             this.uploadedImage = item.file.name
           }
+        }
+        this.uploader.onCompleteAll=()=>{
+          this.uploader.clearQueue();
+            this.currentProgessinPercent = 0;
         }
       }
     });

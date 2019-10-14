@@ -26,7 +26,12 @@
               </div>
               <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG, MOV</div>
             </div>            
-         <div *ngIf="timeCapsuleDocsList" >
+            <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small>
+            <mat-form-field class="full-width" *ngIf="documents_temps">
+                <input matInput name="documents_temp" [formControl]="TimeCapsuleForm.controls['documents_temp']">
+                <small *ngIf="TimeCapsuleForm.controls['documents_temp'].hasError('required') && TimeCapsuleForm.controls['documents_temp'].touched" class="form-error-msg"> Please drag your document. </small>
+            </mat-form-field>
+          <div *ngIf="timeCapsuleDocsList" >
           <h3 class="header--text fnt--16">Uploaded file/pictures/videos documents </h3>
           <mat-chip-list class="doc--list" *ngFor="let doc of timeCapsuleDocsList; index as i">
               <mat-chip><a  (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove (click)="timeCapsuleDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>

@@ -25,6 +25,8 @@ export class ManageTrusteeModalComponent implements OnInit, AfterViewInit {
   listLength: any;
   hdtitle: string;
   code: string;
+  letterId: string = null;
+  letterTitle: string = null;
   rows: any = [];
   accessManagement: any;
   rowUserAccess: any;
@@ -32,9 +34,13 @@ export class ManageTrusteeModalComponent implements OnInit, AfterViewInit {
   constructor(
     private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService,
     private router: Router,private dialogRef2: MatDialogRef<ManageTrusteeModalComponent>, private userapi: UserAPIService,@Inject(MAT_DIALOG_DATA) public data: any
-  ) { this.hdtitle = data.title;this.code = data.code; }
+  ) { this.hdtitle = data.title;this.code = data.code;this.letterId = data.letterId;this.letterTitle = data.letterTitle;  }
  
 ngOnInit() {
+    if(this.letterTitle){
+      this.letterTitle = " for '"+this.letterTitle+"'";
+    }
+ 
     this.buildItemForm();
     this.userSections = userSections;  
     if(this.hdtitle && this.hdtitle!=='undefined'){
@@ -52,9 +58,10 @@ buildItemForm() {
 ngAfterViewInit(){ 
 }
  
-manageTrusteeSubmit(insert = null) {console.log("insert",insert)
+manageTrusteeSubmit(insert = null) {
     const  req_vars = {
-      query: Object.assign({ insertArray: insert,customerId: this.userId  })
+      query: Object.assign({ insertArray: insert,customerId: this.userId  }),
+      updateExtra: {letterId:this.letterId},
     } 
     this.userapi.apiRequest('post', 'trustee/subSections-form-submit', req_vars).subscribe(result => {
       if (result.status == "success") {
@@ -111,9 +118,17 @@ manageTrusteeSubmit(insert = null) {console.log("insert",insert)
 
   getAccessVal(accessArray,sectionName,value){
     //let keys = this.accessManagement
-    //console.log("access key>>>>>",Object.keys(sectionName))
+   // console.log("access key>>>>>",Object.keys(sectionName))
     //return Object.keys(sectionName);
-    return accessArray[sectionName];
+    //  console.log('value',this.letterId,'sectionName',sectionName)
+    if(sectionName=='LegacyLifeLettersMessagesManagement'){
+        let filteredTyes = accessArray.LegacyLifeLettersMessagesManagement.filter(dtype =>{
+          return dtype.letterId === this.letterId
+        }).map(el => el.access)[0]
+        return filteredTyes;
+    }else{
+      return accessArray[sectionName];
+    }
  }
 
  openAddTrusteeModal(id, isNew?) {

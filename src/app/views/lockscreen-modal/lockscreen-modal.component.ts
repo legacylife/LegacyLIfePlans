@@ -17,12 +17,22 @@ export class lockscreenModalComponent implements OnInit {
   userFullName: string
   endUserType: string
   emailHiddenVal:boolean = false;
+  profilePicture: any = "assets/images/arkenea/default.jpg"
+  lockscreenModalFlag:boolean = false;
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
     private loader: AppLoaderService, private confirmService: AppConfirmService) {
   }
 
   ngOnInit() {
-    this.userFullName = localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName");
+    this.userFullName = '';
+    this.lockscreenModalFlag = true;
+    if (localStorage.getItem('endUserFirstName') != "undefined" && localStorage.getItem('endUserLastName') != "undefined"){
+      this.userFullName = localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName");
+    }
+    
+    if (localStorage.getItem('endUserProfilePicture') != "undefined" && localStorage.getItem('endUserProfilePicture') != 'assets/images/arkenea/default.jpg') {
+      this.profilePicture = localStorage.getItem('endUserProfilePicture') 
+    } 
     this.userId = localStorage.getItem("endUserId");
     this.endUserType = localStorage.getItem("endUserType");
     this.lockScreenForm = this.fb.group({

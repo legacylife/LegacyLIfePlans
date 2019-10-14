@@ -25,7 +25,7 @@ export class FinalWishesDetailsComponent implements OnInit {
   urlData:any={};
   toUserId:string = ''
   subFolderName:string = ''
-  
+  LegacyPermissionError:string="You don't have access to this section";
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -72,6 +72,27 @@ export class FinalWishesDetailsComponent implements OnInit {
       console.error(err);
     })
   }
+
+  customerisValid(data){
+    if (this.urlData.lastThird == "legacies") {
+      this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
+        
+        if((data.subFolderName=='Funeral Plans' && userAccess.FuneralPlansManagement!='now') || (data.subFolderName=='Celebration of Life' && userAccess.ObituaryManagement!='now') || (data.subFolderName=='Obituary' && userAccess.CelebrationLifeManagement!='now')){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+       }          
+      });    
+    }else{      
+      if(data.customerId!=this.userId){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+      }
+    } 
+  }
+
 
   openFinalWishModal(FolderNames, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(FinalWishesFormModalComponent, {

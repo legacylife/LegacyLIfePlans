@@ -35,6 +35,7 @@ import { PasswordsDigitalAssetsListComponent } from '../customer/customer-home/p
 import { DeviceDetailsComponent } from '../customer/customer-home/passwords-digital-assets/devices/device-details/device-details.component';
 import { DebtDetailsComponent } from '../customer/customer-home/insurance-finance-debt/debt-details/debt-details.component';
 import { ElectronicMediaDetailsComponent } from '../customer/customer-home/passwords-digital-assets/electronic-media/electronic-media-details/electronic-media-details.component';
+import { DigitalPublicationsDetailsComponent } from '../customer/customer-home/passwords-digital-assets/digital-publications/digital-publications-details/digital-publications-details.component';
 import { EmergencyContactsComponent } from '../customer/customer-home/emergency-contacts/emergency-contacts.component';
 import { EmergencyContactsDetailsComponent } from '../customer/customer-home/emergency-contacts-details/emergency-contacts-details.component';
 import { ListingComponent } from '../customer/customer-home/real-estate-assets/listing/listing.component';
@@ -355,7 +356,11 @@ export const AdvisorRoutes: Routes = [
           {
             path: 'electronic-media-view/:id',
             component: ElectronicMediaDetailsComponent
-          }
+          },
+          {
+            path: 'digital-publication-view/:id',
+            component: DigitalPublicationsDetailsComponent
+          },
         ]
       },
     ]

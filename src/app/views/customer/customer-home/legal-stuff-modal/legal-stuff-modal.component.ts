@@ -12,6 +12,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { cloneDeep } from 'lodash'
 import { serverUrl, s3Details } from '../../../../config';
 import { NumberValueAccessor } from '@angular/forms/src/directives';
+import { FileHandlingService } from 'app/shared/services/file-handling.service';
 const URL = serverUrl + '/api/documents/legalStuff';
 @Component({
   selector: 'app-legal-stuff-modal',
@@ -43,7 +44,13 @@ export class legalStuffModalComponent implements OnInit {
   toUserId:string = ''
   subFolderName:string = ''
 
-  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService ,@Inject(MAT_DIALOG_DATA) public data: any ) { this.folderName = data.FolderName;this.newName = data.newName;}
+  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,
+    private confirmService: AppConfirmService,private loader: AppLoaderService,
+    private userapi: UserAPIService ,@Inject(MAT_DIALOG_DATA) public data: any,
+    private fileHandlingService: FileHandlingService )
+  { 
+      this.folderName = data.FolderName;this.newName = data.newName;
+  }
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
@@ -167,8 +174,9 @@ export class legalStuffModalComponent implements OnInit {
           this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
           this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
           this.documentsList = result.data.documents;
-          if(this.LegalStuffList.documents.length>0){
+          if(this.documentsList.length>0){
             this.LegalForm.controls['documents_temp'].setValue('1');
+            this.documentsMissing = false;
           }
           this.LegalForm.controls['typeOfDocument'].setValue(this.LegalStuffList.typeOfDocument); 
           this.LegalForm.controls['comments'].setValue(this.LegalStuffList.comments);
@@ -182,11 +190,18 @@ export class legalStuffModalComponent implements OnInit {
   public fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
     this.fileErrors = [];
+    let totalItemsToBeUpload = this.uploader.queue.length,
+        totalUploderFileSize = 0,
+        remainingSpace = 0,
+        message = ''
     this.uploader.queue.forEach((fileoOb) => {
       let filename = fileoOb.file.name;
       var extension = filename.substring(filename.lastIndexOf('.') + 1);
       var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
       let resp = this.isExtension(extension,fileExts);
+
+      totalUploderFileSize += fileoOb.file.size
+
       if(!resp){
         var FileMsg = "This file '" + filename + "' is not supported";
         this.uploader.removeFromQueue(fileoOb);
@@ -199,32 +214,66 @@ export class legalStuffModalComponent implements OnInit {
       }
     });
 
-    if(this.uploader.getNotUploadedItems().length){
-      this.uploaderCopy = cloneDeep(this.uploader)
-      this.uploader.queue.splice(1, this.uploader.queue.length - 1)
-      this.uploaderCopy.queue.splice(0, 1)
-     
-      this.uploader.queue.forEach((fileoOb, ind) => {
-           this.uploader.uploadItem(fileoOb);
-      });
+    let legacyUserData = {userId: this.toUserId, userType:'customer'}
+    this.fileHandlingService.checkAvailableSpace( legacyUserData, async (spaceDetails) => {
+      remainingSpace = Number(spaceDetails.remainingSpace)
+      message = spaceDetails.message
+    
+      if( totalUploderFileSize > remainingSpace) {
+        this.confirmService.reactivateReferEarnPopup({ message: message, status: 'notactivate' }).subscribe(res => {
+          if (res) {
+            console.log("**************",res)
+          }
+          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+        })
+      }
+      else{
+        let proceedToUpload = true
+        if( message != '' ) {
+          let confirmResponse = await this.confirmService.confirm({ message: message }).toPromise()
+          proceedToUpload = true
+        }
+        if( proceedToUpload ) {
+          if(this.uploader.getNotUploadedItems().length){
+            this.uploaderCopy = cloneDeep(this.uploader)
+            this.uploader.queue.splice(1, this.uploader.queue.length - 1)
+            this.uploaderCopy.queue.splice(0, 1)
+          
+            this.uploader.queue.forEach((fileoOb, ind) => {
+              this.LegalForm.controls['documents_temp'].setValue('');
+                this.uploader.uploadItem(fileoOb);
+            });
 
-      this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-        this.updateProgressBar();
-        this.getLegalDocuments();
-      };
-    }
+            this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+              this.updateProgressBar();
+              this.getLegalDocuments();
+            };
+            this.uploader.onCompleteAll=()=>{
+              this.uploader.clearQueue();
+              if(!this.uploaderCopy.queue.length){
+                this.currentProgessinPercent = 0;
+              }
+            }
+          }
+        }
+      }
+    })
   }
 
   updateProgressBar(){
     let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
     let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
     this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+    if(this.uploader.queue.length>0){
+      this.uploader.clearQueue();
+    }
     this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
   }
 
   uploadRemainingFiles(profileId) {
     this.uploaderCopy.onBeforeUploadItem = (item) => {
       item.url = `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileId}`;
+      this.LegalForm.controls['documents_temp'].setValue('');
     }
     this.uploaderCopy.queue.forEach((fileoOb, ind) => {
         this.uploaderCopy.uploadItem(fileoOb);
@@ -234,6 +283,10 @@ export class legalStuffModalComponent implements OnInit {
       this.updateProgressBar();
       this.getLegalDocuments({}, false, false);    
     };
+    this.uploaderCopy.onCompleteAll=()=>{
+      this.uploaderCopy.clearQueue();
+      this.currentProgessinPercent = 0;
+    }
   }
 
   getLegalDocuments = (query = {}, search = false, uploadRemained = true) => {    
@@ -257,8 +310,10 @@ export class legalStuffModalComponent implements OnInit {
           this.uploadRemainingFiles(result.data._id)
         }
         this.documentsList = result.data.documents;        
-        if(result.data.documents.length>0){
+        this.LegalForm.controls['documents_temp'].setValue('');
+        if(this.documentsList.length>0){
           this.LegalForm.controls['documents_temp'].setValue('1');
+          this.documentsMissing = false;
         }         
       }
     }, (err) => {
@@ -289,11 +344,14 @@ export class legalStuffModalComponent implements OnInit {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
-              if(this.documentsList.length<1){
-                this.LegalForm.controls['documents_temp'].setValue('');
-              }  
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            }
+
+            if (this.documentsList.length < 1) {
+              this.LegalForm.controls['documents_temp'].setValue('');
+              this.documentsMissing = true;
+              this.invalidMessage = "Please drag your document.";
             }
           }, (err) => {
             console.error(err)

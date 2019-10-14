@@ -6,6 +6,8 @@ import { debounce } from 'lodash'
 import { APIService } from 'app/api.service';
 import { UserAPIService } from 'app/userapi.service';
 import { serverUrl, s3Details } from '../../../../config';
+import { FormBuilder, FormGroup, Validators, FormControl, FormArray} from "@angular/forms";
+import { MatSnackBar, MatDialog } from "@angular/material";
 const advisorBucketLink = s3Details.awsserverUrl+s3Details.assetsPath+'advisor/';
 @Component({
   selector: 'app-landing-home-page',
@@ -13,7 +15,7 @@ const advisorBucketLink = s3Details.awsserverUrl+s3Details.assetsPath+'advisor/'
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-
+  contactForm: FormGroup;
   slides = [
     {
       name: 'John Smith',
@@ -117,7 +119,7 @@ sectionEightBanner : string;
 userId = localStorage.getItem('endUserId');
 userType = localStorage.getItem('endUserType');
 
-  constructor(private api:APIService, private userapi:UserAPIService) { }
+  constructor(private api:APIService, private userapi:UserAPIService, private fb: FormBuilder, private snack: MatSnackBar) { }
 
   ngOnInit() {
     this.bucketLink = advisorBucketLink;
@@ -125,6 +127,11 @@ userType = localStorage.getItem('endUserType');
     this.opts = {
       duration: 2
     };
+    this.contactForm = this.fb.group({
+      email: new FormControl("", [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
+      message: new FormControl("", Validators.required)
+    });
+
     window.addEventListener('scroll', this.isScrolledIntoView, true);
     this.getFreeTrialSettings()
   }
@@ -174,6 +181,35 @@ userType = localStorage.getItem('endUserType');
     } else if(name == 'lowerBanner'){
       return "url('"+this.lowerBanner+"')";
     } 
+  }
+
+  contactFormSubmit() {
+    let query = {};
+    let data = {
+      query: Object.assign({ email: this.contactForm.value.email, message: this.contactForm.value.message }, query)
+    };
+    if(this.contactForm.controls['email'].valid && this.contactForm.controls['message'].valid){
+      this.userapi.apiRequest("post", "sendMails/contact-us", data).subscribe(
+        result => {
+          if (result.status == "error") {
+            this.snack.open(result.data.message, "OK", { duration: 4000 });
+          } else {
+            this.snack.open(result.data.message, "OK", { duration: 4000 });
+            this.contactForm.reset();
+          }
+        },
+        err => {
+          console.error(err);
+        }
+      );
+    }  
+    else {
+      if(this.contactForm.controls['email'].invalid)
+        this.contactForm.controls['email'].markAsTouched();
+      if(this.contactForm.controls['message'].invalid)
+        this.contactForm.controls['message'].markAsTouched();
+    }
+      
   }
 
 

@@ -6,6 +6,8 @@ import * as $ from 'jquery';
 import { debounce } from 'lodash';
 import { UserAPIService } from 'app/userapi.service';
 import { serverUrl, s3Details } from '../../../config';
+import { FormBuilder, FormGroup, Validators, FormControl, FormArray} from "@angular/forms";
+import { MatSnackBar, MatDialog } from "@angular/material";
 const customerBucketLink = s3Details.awsserverUrl+s3Details.assetsPath+'customer/';
 @Component({
   selector: 'app-landing-home-page',
@@ -13,6 +15,7 @@ const customerBucketLink = s3Details.awsserverUrl+s3Details.assetsPath+'customer
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  contactForm: FormGroup;
   panelOpenState = false;
   pageData : any;
   testomonials : any;
@@ -106,7 +109,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   customerFreeAccessDays:Number = 0
   customerFreeTrialStatus:Boolean = false
 
-  constructor(private router: Router, private userapi: UserAPIService) { }
+  constructor(private router: Router, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar) { }
 
   ngOnInit() {
     this.bucketLink = customerBucketLink;
@@ -114,6 +117,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.opts = {
       duration: 2
     };
+
+    this.contactForm = this.fb.group({
+      email: new FormControl("", [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
+      message: new FormControl("", Validators.required)
+    });
+
     window.addEventListener('scroll', this.isScrolledIntoViewOne, true);
     this.getFreeTrialSettings()
     
@@ -145,6 +154,35 @@ export class HomeComponent implements OnInit, OnDestroy {
   
   ngOnDestroy() {
     window.removeEventListener('scroll', this.isScrolledIntoViewOne, true);
+  }
+
+  contactFormSubmit() {
+    let query = {};
+    let data = {
+      query: Object.assign({ email: this.contactForm.value.email, message: this.contactForm.value.message }, query)
+    };
+    if(this.contactForm.controls['email'].valid && this.contactForm.controls['message'].valid){
+      this.userapi.apiRequest("post", "sendMails/contact-us", data).subscribe(
+        result => {
+          if (result.status == "error") {
+            this.snack.open(result.data.message, "OK", { duration: 4000 });
+          } else {
+            this.snack.open(result.data.message, "OK", { duration: 4000 });
+            this.contactForm.reset();
+          }
+        },
+        err => {
+          console.error(err);
+        }
+      );
+    }  
+    else {
+      if(this.contactForm.controls['email'].invalid)
+        this.contactForm.controls['email'].markAsTouched();
+      if(this.contactForm.controls['message'].invalid)
+        this.contactForm.controls['message'].markAsTouched();
+    }
+      
   }
 
   getCMSpageDetails(query = {}){

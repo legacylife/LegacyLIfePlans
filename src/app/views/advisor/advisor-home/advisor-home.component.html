@@ -11,67 +11,67 @@
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <ul class="legacy--list m-0 p-0">
-                <li>
+                <li class="{{activeHeading=='essential-day-one' || activeHeading=='essential-detail-view' || activeHeading=='essential-detail-idbox' || activeHeading=='essential-professionals-detail' ? 'active' : ''}}">
                   <a [routerLink]="['/advisor/legacies/essential-day-one', customerLegaicesId]">
                     <mat-icon class="icon-file">insert_drive_file</mat-icon> My Essentials
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
                   </a>
                 </li>
-                <li>
+                <li class="{{activeHeading=='insurance-finance-debt' || activeHeading=='insurance-view' || activeHeading=='finance-view' || activeHeading=='debt-view' ? 'active' : ''}}">
                   <a [routerLink]="['/advisor/legacies/insurance-finance-debt', customerLegaicesId]">
                     <mat-icon class="icon-file">monetization_on</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Insurance Finance & Debt
                   </a>
                 </li>
-                <li>
+                <li class="{{activeHeading=='pets' || activeHeading=='pets-view' ? 'active' : ''}}">
                   <a [routerLink]="['/advisor/legacies/pets', customerLegaicesId]">
                     <mat-icon class="icon-file">pets</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Pets
                   </a>
                 </li>
-                <li>
+                <li class="{{activeHeading=='special-needs' || activeHeading=='special-needs-view' ? 'active' : ''}}">
                   <a [routerLink]="['/advisor/legacies/special-needs', customerLegaicesId]">
                     <mat-icon class="icon-file">help</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Special Needs
                   </a>
                 </li>
-                <li>
+                <li class="{{activeHeading=='legal-stuff' || activeHeading=='legal-detail-view' ? 'active' : ''}}">
                   <a [routerLink]="['/advisor/legacies/legal-stuff', customerLegaicesId]">
                     <mat-icon class="icon-file">gavel</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Legal Stuff
                   </a>
                 </li>
-                <li>
+                <li class="{{activeHeading=='passwords-digital-assests' || activeHeading=='device-view' || activeHeading=='electronic-media-view' ? 'active' : ''}}">
                   <a [routerLink]="['/advisor/legacies/passwords-digital-assests', customerLegaicesId]">
                     <mat-icon class="icon-file">lock</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Passwords & Digital Assests
                   </a>
                 </li>
-                <li>
+                <li class="{{activeHeading=='emergency-contacts' || activeHeading=='emergency-contacts-details' ? 'active' : ''}}">
                   <a [routerLink]="['/advisor/legacies/emergency-contacts', customerLegaicesId]">
                     <mat-icon class="icon-file">contact_phone</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Emergency Contacts
                   </a>
                 </li>
-                <li>
+                <li class="{{activeHeading==='real-estate-assets' || activeHeading==='real-estate-vehicle-detail-view' || activeHeading=='real-estate-detail-view' || activeHeading=='real-estate-assets-detail-view' ? 'active' : ''}}">
                   <a [routerLink]="['/advisor/legacies/real-estate-assets', customerLegaicesId]">
                     <mat-icon class="icon-file">business</mat-icon>
-                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Real Estates & Assets
+                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Real Estates Vehicles & Assets
                   </a>
                 </li>
-                <li>
+                <li class="{{activeHeading==='time-capsule' || activeHeading==='time-capsule-view' ? 'active' : ''}}">
                   <a [routerLink]="['/advisor/legacies/time-capsule', customerLegaicesId]">
                     <mat-icon class="icon-file">access_time</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Time Capsule
                   </a>
                 </li>
-                <li>
+                <li class="{{activeHeading==='letters-messages' || activeHeading==='letters-messages-view' ? 'active' : ''}}">
                   <a [routerLink]="['/advisor/legacies/letters-messages', customerLegaicesId]">
                     <mat-icon class="icon-file">markunread</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Legacy Life Letters & Messages
                   </a>
                 </li>
-                <li>
+                <li class="{{activeHeading==='final-wishes' || activeHeading==='final-wishes-view' ? 'active' : ''}}">
                   <a [routerLink]="['/advisor/legacies/final-wishes', customerLegaicesId]">
                     <mat-icon class="icon-file">date_range</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Final Wishes

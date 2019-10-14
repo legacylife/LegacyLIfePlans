@@ -19,7 +19,7 @@
         </mat-form-field>
         
         <mat-form-field class="full-width">
-          <input matInput name="username"  placeholder="Username*" [formControl]="ElectronicMediaForm.controls['username']">
+          <input matInput name="username"  placeholder="Username*" [formControl]="ElectronicMediaForm.controls['username']" autocomplete="off">
           <mat-icon matTooltip="Please enter username" matTooltipClass="llp--tooltip error" *ngIf="ElectronicMediaForm.controls['username'].hasError('required') && ElectronicMediaForm.controls['username'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
@@ -31,7 +31,7 @@
         </mat-form-field>
 
         <mat-form-field class="full-width mt-1">
-            <textarea (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" maxlength="500" matInput placeholder="Comments" name="comments" [formControl]="ElectronicMediaForm.controls['comments']"></textarea>
+            <textarea (keyup)="firstCapitalize($event)" maxlength="500" matInput placeholder="Comments" name="comments" [formControl]="ElectronicMediaForm.controls['comments']"></textarea>
             <div class="char--limit" style="float: right;">{{ 500 - ElectronicMediaForm.controls['comments'].value?.length }}</div>
         </mat-form-field>
 

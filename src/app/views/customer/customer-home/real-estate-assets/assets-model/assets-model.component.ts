@@ -109,7 +109,7 @@ export class AssetsModelComponent implements OnInit {
         this.assetsForm.controls['assetValue'].setValue(this.row.assetValue);
         this.assetsForm.controls['location'].setValue(this.row.location);
         this.assetsForm.controls['comments'].setValue(this.row.comments);
-        if (this.row.asset == 6) {
+        if (this.row.asset == 10) {
           this.assetNewToggle = true
         } else {
           this.assetNewToggle = false
@@ -133,7 +133,7 @@ export class AssetsModelComponent implements OnInit {
   }
 
   assetChange(event) {
-    if (event.value == 6) {
+    if (event.value == 10) {
       this.assetNewToggle = true
       this.assetsForm.get('assetNew').setValidators(Validators.required);      
     } else {

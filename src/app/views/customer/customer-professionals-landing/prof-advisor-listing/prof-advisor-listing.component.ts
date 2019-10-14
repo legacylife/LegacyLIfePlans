@@ -28,6 +28,7 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
   nextOffset = 1;
   resultLimit = 20;
   showAdvisorListing: boolean = true;
+  searchingFlag: boolean = true;
   showQualityListing: boolean = false;
   showAdvisorListingCnt: any;
   showQualityAdvisorListing: boolean = false;
@@ -71,7 +72,7 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
   }
 
   onScrollDown (ev) {
-    console.log('scrolled down!!', ev,this.searchVal);
+    //console.log('scrolled down!!', ev,this.searchVal);
     this.nextOffset++;
     this.data.currentMessage.subscribe((searchKey) => { 
       this.searchVal = searchKey; 
@@ -80,10 +81,8 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
         this.searchStatus = true;
       }
       if(this.searchVal && this.searchVal!=='All'){
-        console.log("here 2 ",this.searchVal);
         this.getAdvisorLists('',this.searchVal,this.resultLimit,(this.nextOffset*this.resultLimit),this.searchStatus,searchString,false)
       }else{
-        console.log("here 3 ",this.searchVal);
         this.getAdvisorLists('','',this.resultLimit,(this.nextOffset*this.resultLimit),this.searchStatus,searchString,false);
       }
     })
@@ -91,11 +90,19 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
   
   searching() {
     let searchString = this.searchForm.controls['search'].value.trim();
-     console.log("searchValue ->",searchString);
+    // console.log("searchValue ->",searchString);
     if(searchString){
+      this.searchingFlag = false;
       this.advisorData = [];
       this.getAdvisorLists('','',this.resultLimit,0,true,searchString,true);
+    }else{
+      this.searchingFlag = true;
     }
+  }
+
+  clearSearch() {
+    this.searchingFlag = true;
+    this.searchForm.reset();      
   }
 
   toggleSearchSuggestion() {
@@ -142,7 +149,7 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
     }
 
     if(loader){ 
-      //this.loader.open();
+      this.loader.open();
     }
     this.userapi.apiRequest('post', 'advisor/professionalsList', req_vars).subscribe(result => {
          this.loader.close();

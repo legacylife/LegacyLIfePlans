@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators/map'
 import { Router } from '@angular/router'
 import { serverUrl } from './config'
 import { forEach } from "lodash";
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { startOfDay,endOfDay,subDays,addDays,endOfMonth,isSameDay,isSameMonth,addHours} from 'date-fns';
 interface TokenResponse {
   status: string,
@@ -37,7 +38,7 @@ export class UserAPIService {
   userLockoutPeriod:boolean=false;  
     
   private returnData:any;
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient,private snack: MatSnackBar, private router: Router) { }
 
   //function to save token and user id
   private saveToken(token: string, userId: string, userType: string, username: string, authCode: string, expiryDate: string, emailApiType: string = '', userHeaderDetails: any, mainUserId: any = "", req: any): void {
@@ -367,26 +368,35 @@ export class UserAPIService {
   
  async getUserAccess(customerId, callback){
     let loggedinCustomerId = localStorage.getItem("endUserId");
+    if(loggedinCustomerId!=customerId){
      let response = [];
-
      if (localStorage.getItem("endUserType") == "customer") {
       const params = {
         query: Object.assign({ customerId: customerId, trustId: loggedinCustomerId,status:"Active" })
       }
      await this.apiRequest('post', 'trustee/view-details', params).subscribe(async result => {
+      if (result.status == "error") {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/customer/dashboard');
+      } else {
         //this.userAccess = result.data.userAccess; 
         response = await this.getCustomerUserAccess(result.data,customerId);
         this.userAccess = response['userAccess'];
         this.userDeathFilesCnt = response['deathFilesCount'];
         this.userLockoutPeriod = response['userLockoutPeriod'];
         this.userDeceased = response['userDeceased'];
-        callback(this.userAccess,this.userDeathFilesCnt,this.userLockoutPeriod,this.userDeceased)
+        callback(this.userAccess,this.userDeathFilesCnt,this.userLockoutPeriod,this.userDeceased);
+      }
       });
     }else{
       const params = {
         query: Object.assign({ customerId: customerId, advisorId: loggedinCustomerId,status:"Active" })
       }
       await this.apiRequest('post', 'advisor/view-details', params).subscribe(async result => {
+        if (result.status == "error") {
+          this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          this.router.navigateByUrl('/advisor/dashboard');
+        } else {
        // this.userAccess = result.data.userAccess;
        response = await this.getCustomerUserAccess(result.data,customerId);
        this.userAccess = response['userAccess'];
@@ -394,17 +404,28 @@ export class UserAPIService {
        this.userLockoutPeriod = response['userLockoutPeriod'];
        this.userDeceased = response['userDeceased'];
         callback(this.userAccess,this.userDeathFilesCnt,this.userLockoutPeriod,this.userDeceased)
+      }
       });
-    }
+     }
+   }else{
+      this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+      return false;
+   }
   }
 
 
   async getCustomerUserAccess(data,customerId){
       let userAccess = data.userAccess;      
-      let response = [];
+      let response = []; var count = 0; 
       response['userAccess'] = userAccess;
       response['userDeceased'] = false;
       response['userLockoutPeriod'] = false;
+      Object.keys(userAccess).forEach((key,index) => {   
+        if(userAccess[key]=='afterDeath'){
+          count++;
+        }          
+      });
+      response['deathFilesCount'] = count;
       let lockoutLegacyDateExpire = false;
       if(data.customerId.lockoutLegacyDate && data.customerId.deceased.status=='Pending'){
          if(new Date(data.customerId.lockoutLegacyDate) < new Date()) {

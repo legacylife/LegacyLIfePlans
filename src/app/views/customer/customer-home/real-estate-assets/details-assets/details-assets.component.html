@@ -3,7 +3,7 @@
     <div class="">
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
-          <mat-card-title class="m-0">Real Estates & Assets</mat-card-title>
+          <mat-card-title class="m-0">Real Estates Vehicles & Assets</mat-card-title>
           <div class="right--actions" *ngIf="trusteeLegaciesAction">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn"
               (click)="openModal('Assets', false)">
@@ -34,7 +34,7 @@
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
                   <label class="normal--label">
-                    {{ row?.asset ==6 ? row?.assetNew : getType(row?.asset,'Assets') }}
+                    {{ row?.asset ==10 ? row?.assetNew : getType(row?.asset,'Assets') }}
                   </label>
                 </div>
               </div>   

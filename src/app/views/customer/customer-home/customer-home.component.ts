@@ -64,6 +64,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
     if(locArray && locArray[5]){
       this.activeHeading = locArray[5];
     }   
+    console.log('here customer->',this.activeHeading)
   }
 
   @HostListener('document:click', ['$event']) clickedOutside(event){

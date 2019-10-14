@@ -29,7 +29,7 @@
               <div class="appointees--desc">
                 <h5 *ngIf="peoples.type === 'trustee'">{{(peoples?.trustId!=null && peoples?.trustId.firstName!=null) ? peoples?.trustId.firstName : peoples?.firstName}}
                   {{(peoples?.trustId!=null && peoples?.trustId.lastName!=null) ? peoples?.trustId.lastName : peoples?.lastName}}</h5>
-                <h5 *ngIf="peoples.type === 'advisor'">{{peoples?.advisorId.firstName}} {{peoples?.advisorId.lastName}}</h5>
+                <h5 *ngIf="peoples.type === 'advisor'">{{peoples?.advisorId.firstName}} {{peoples?.advisorId.lastName}} <mat-icon *ngIf="peoples?.advisorId.sponsoredAdvisor === 'yes'" class="mat-icon material-icons yellow-material-icons" role="img">star</mat-icon></h5>
                 <p class="position m-0" *ngIf="peoples.type === 'advisor'">{{peoples?.advisorId ? peoples?.advisorId.businessName : "" }}</p>
                 <p class="m-0" *ngIf="peoples.type === 'trustee'">
                   {{(peoples?.trustId!=null && peoples?.trustId.username!=null) ? peoples?.trustId.username : ''}}

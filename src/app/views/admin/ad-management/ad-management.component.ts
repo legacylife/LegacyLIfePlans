@@ -18,19 +18,17 @@ export class AddManagementComponent implements OnInit {
   columns = [];
   temp = [];
   constructor(private api: APIService, private route: ActivatedRoute, private router:Router) { }
-
-  ngOnInit() {
+ngOnInit() {
     this.aceessSection = this.api.getUserAccess('addmanagement');
     this.userId = localStorage.getItem("userId");
     this.userType = localStorage.getItem("userType");
     this.my_messages = {
       'emptyMessage': 'No records Found'
     };
-    this.enquiryList();
-    
-  }
+    this.enquiryList();    
+}
 
-  enquiryList = (query = {}, search = false) => {
+enquiryList = (query = {}, search = false) => {
     const req_vars = {
       query: Object.assign({ }, query),
       order: {"createdOn": -1}	  
@@ -44,10 +42,29 @@ export class AddManagementComponent implements OnInit {
     }, (err) => {
       console.error(err)      
     })
-  }
+}
 
+manageSponsored(status,id) {
+    const query = {};const proquery = {};
+    const req_vars = {
+      query: Object.assign({_id:id}, query),
+      proquery: Object.assign({status:status}, proquery)
+    }
 
-    
+    if(status=='remove'){ 
+    }
+
+    this.api.apiRequest('post', 'advertisement/manage-sponsored-status', req_vars).subscribe(result => {
+      if(result.status == "error"){
+        console.log(result.data)        
+      } else {
+        console.log('status',result.data);
+      }
+    }, (err) => {
+       console.error(err)      
+    })
+}
+   
 //table
 updateFilter(event) {
   const val = event.target.value.toLowerCase();

@@ -21,15 +21,23 @@ export class fileUploadInstructionsEditComponent implements OnInit {
   public maxLength = 500;
   public height: number = 300;
   public textArea: HTMLElement;
+  // public tools: object = {
+  //   items: ['Undo', 'Redo', '|',
+  //       'Bold', 'Italic', 'Underline', 'StrikeThrough', '|',
+  //       'FontName', 'FontSize', 'FontColor', 'BackgroundColor', '|',
+  //       'SubScript', 'SuperScript', '|',
+  //       'LowerCase', 'UpperCase', '|',
+  //       'Formats', 'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
+  //       'Indent', 'Outdent', '|', 'CreateLink','CreateTable',
+  //       'Image', '|', 'ClearFormat', 'Print', 'SourceCode']
+  // };
   public tools: object = {
     items: ['Undo', 'Redo', '|',
-        'Bold', 'Italic', 'Underline', 'StrikeThrough', '|',
-        'FontName', 'FontSize', 'FontColor', 'BackgroundColor', '|',
-        'SubScript', 'SuperScript', '|',
+        'Bold', 'Italic', 'Underline', '|',
+        'FontName', 'FontSize', '|',
         'LowerCase', 'UpperCase', '|',
         'Formats', 'Alignments', '|', 'OrderedList', 'UnorderedList', '|',
-        'Indent', 'Outdent', '|', 'CreateLink','CreateTable',
-        'Image', '|', 'ClearFormat', 'Print', 'SourceCode']
+        'SourceCode']
   };
   public quickTools: object = {
       image: [

@@ -22,6 +22,7 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
   row: any;
   urlData:any={};
   trusteeLegaciesAction:boolean=true;
+  LegacyPermissionError:string="You don't have access to this section";
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -49,10 +50,32 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
           this.trusteeLegaciesAction = false;
         }
         this.row = result.data;
+        if(this.row){
+          this.customerisValid(this.row);
+        }        
       }
     }, (err) => {
       console.error(err)
     })
+  }
+
+  customerisValid(data){
+    if (this.urlData.lastThird == "legacies") {
+      this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
+       if(userAccess.MyProfessionalsManagement!='now'){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+       }          
+      });    
+    }else{      
+      if(data.customerId!=this.userId){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+      }
+    } 
   }
 
   openProfessionalsModal(data: any = {}, isNew?) {

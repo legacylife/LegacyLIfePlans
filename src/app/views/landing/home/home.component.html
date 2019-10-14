@@ -373,19 +373,28 @@
               <p class="mb-1">We’d love to hear from you! </p>
             </div>
             <div class="contact--us--form">
-              <form>
+              <form [formGroup]="contactForm" (ngSubmit)="contactFormSubmit()">
                 <!-- <mat-form-field appearance="outline">
                   <mat-label>Full Name*</mat-label>
                   <input matInput placeholder="John Smith ">
                 </mat-form-field> -->
                 <mat-form-field appearance="outline">
                   <mat-label>Email Address *</mat-label>
-                  <input matInput placeholder="abc@gmail.com ">
+                  <input matInput placeholder="john@gmail.com" autocomplete="off" name="email" [formControl]="contactForm.controls['email']">
+                  <mat-icon matTooltip="Please enter your email" matTooltipClass="llp--tooltip error" 
+                  *ngIf="contactForm.controls['email'].hasError('required') && contactForm.controls['email'].touched"                  
+                  class="red--alert">help_outline</mat-icon>
+                  <mat-icon matTooltip="Please enter valid email" matTooltipClass="llp--tooltip error" 
+                  *ngIf="contactForm.controls['email'].hasError('pattern')"                  
+                  class="red--alert">help_outline</mat-icon>                  
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
                   <mat-label>Your Message*</mat-label>
-                  <textarea matInput placeholder="Droup your message or query"></textarea>
+                  <textarea matInput placeholder="Droup your message or query" name="message" [formControl]="contactForm.controls['message']"></textarea>
+                  <mat-icon matTooltip="Please enter your message" matTooltipClass="llp--tooltip error" 
+                  *ngIf="contactForm.controls['message'].hasError('required') && contactForm.controls['message'].touched"                  
+                  class="red--alert">help_outline</mat-icon> 
                 </mat-form-field>
                 <div>
                   <button mat-raised-button class="landing--primary--btn w161">Contact Us</button>

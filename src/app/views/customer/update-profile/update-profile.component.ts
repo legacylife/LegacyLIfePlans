@@ -45,11 +45,11 @@ export class UpdateProfileComponent implements OnInit {
     this.userType = localStorage.getItem("endUserType");
     this.stateList = states;
     this.llpCustsignupProfileForm = new FormGroup({
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
+      firstName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
+      lastName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
       phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
       dateOfBirth: new FormControl('', Validators.required),
-      city: new FormControl('', Validators.required),
+      city: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
       state: new FormControl('', Validators.required),
       zipcode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
     });
@@ -72,6 +72,12 @@ export class UpdateProfileComponent implements OnInit {
       this.router.navigate(['/', 'customer', 'signup']);
     }
     this.getFreeTrialSettings()
+  }
+
+  public noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
   }
 
   async getFreeTrialSettings(){

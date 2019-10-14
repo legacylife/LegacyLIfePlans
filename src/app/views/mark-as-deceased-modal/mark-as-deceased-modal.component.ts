@@ -205,6 +205,12 @@ public fileOverBase(e: any): void {
             this.uploadingDocs = false;
           }
          };
+         this.uploader.onCompleteAll=()=>{
+          this.uploader.clearQueue();
+          if(!this.uploaderCopy.queue.length){
+            this.currentProgessinPercent = 0;
+          }
+        }
        }
     }
     
@@ -231,6 +237,10 @@ public fileOverBase(e: any): void {
       this.uploaderCopy.onCompleteAll=()=>{
         this.uploadingDocs = false;
       };
+      this.uploaderCopy.onCompleteAll=()=>{
+        this.uploaderCopy.clearQueue();
+        this.currentProgessinPercent = 0;
+      }
     }
   }
 
