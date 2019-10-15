@@ -986,28 +986,41 @@ function getSharedLegaciesList(req,res){
   })
 }
 
-function legacyUserRemove(req,res){
+ function legacyUserRemove(req,res){
   let query  = req.body;
   let userstring = '', toId
   let userData = { status: 'Deleted',executorStatus:'', modifiedOn : new Date() }
    if( query.userType == 'advisor'){
-    HiredAdvisors.updateMany({ customerId : query.customerId, advisorId : query.advisorId }, userData , function (err, updatedDetails){ });
+    HiredAdvisors.updateMany({ customerId : query.customerId, advisorId : query.advisorId }, userData ,  function (err, updatedDetails){ });
     executor.updateOne({'customerId':query.customerId,advisorId:query.advisorId,'status':'Active'}, { $set: {'status':'Deleted','modifiedOn':new Date()} }, function (err, updatedDetails) { })
     userstring = 'Advisor'
-    toId = query.advisorId
+    toId = query.advisorId;
+    recalculateCount(query.customerId);
   }else{
-    Trustee.updateMany({ customerId : query.customerId, trustId : query.trustId }, userData , function (err, updatedDetails){});
-    executor.updateOne({'customerId':query.customerId,trustId:query.trustId,'status':'Active'}, { $set: {'status':'Deleted','modifiedOn':new Date()} }, function (err, updatedDetails) { })
+    Trustee.updateMany({ customerId : query.customerId, trustId : query.trustId }, userData ,  function (err, updatedDetails){});
+    executor.updateOne({'customerId':query.customerId,trustId:query.trustId,'status':'Active'}, { $set: {'status':'Deleted','modifiedOn':new Date()} },  function (err, updatedDetails) { })
     userstring = 'Trustee'    
-    toId = query.trustId
+    toId = query.trustId;
+    recalculateCount(query.customerId);
   }
-
   let message = resMessage.data( 607, [{key:'{field}',val: userstring},{key:'{status}',val:'removed'}] )
   //Update activity logs
   allActivityLog.updateActivityLogs( query.customerId, toId, "Removed Trustee", message )
 
   let result = { "message": message }
   res.status(200).send(resFormat.rSuccess(result))   
+}
+
+async function recalculateCount(customerId) {
+  const data = await User.findOne({_id:customerId});
+  if(data.deceased){
+    let advData = await HiredAdvisors.find({ customerId :customerId, status:'Active' });
+    let trustData = await Trustee.find({ customerId :customerId, status:'Active' });
+    OldDeceasedinfo = data.deceased.deceasedinfo;
+    let deceasedArray = {'status':data.deceased.status,'trusteeCnt':advData.length,'advisorCnt':trustData.length,deceasedinfo:OldDeceasedinfo};
+    await User.updateOne({_id:customerId},{deceased:deceasedArray});    
+  }
+  return true;
 }
 
 function viewInviteDetails(req, res) {
