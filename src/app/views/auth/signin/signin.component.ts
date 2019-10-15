@@ -86,9 +86,14 @@ export class SigninComponent implements OnInit {
         this.subscriptionservice.checkSubscription( '',( returnArr )=> {}) // IMP for subscription
         //this.snack.open(result.data.message, 'OK', { duration: 4000 })
         if(userData.userType=='customer'){
-          this.router.navigate(['/', 'customer', 'dashboard']);
+          setTimeout(() => {
+            this.router.navigate(['/', 'customer', 'dashboard']);
+          }, 2500);  //5s
+          
         }else{
-          this.router.navigate(['/', 'advisor', 'dashboard'])
+          setTimeout(() => {
+            this.router.navigate(['/', 'advisor', 'dashboard'])
+          }, 2500);  //5s          
         }  
 
         

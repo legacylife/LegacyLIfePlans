@@ -40,7 +40,7 @@
                   <label class="strong--label">Date of Birth:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.ppDateOfBirth  | date: 'yyyy/MM/dd'}}</label>
+                  <label class="normal--label">{{row?.ppDateOfBirth ? (row?.ppDateOfBirth  | date: 'yyyy/MM/dd') : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -48,7 +48,7 @@
                   <label class="strong--label">Email Address:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{ppEmailsList}}</label>
+                  <label class="normal--label">{{ppEmailsList ? ppEmailsList : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -56,7 +56,7 @@
                   <label class="strong--label">Phone:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label" *ngIf="pplandLineNumberList">+1 {{pplandLineNumberList}}</label>
+                  <label class="normal--label"> {{pplandLineNumberList ? "+1 "+pplandLineNumberList : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -64,7 +64,7 @@
                   <label class="strong--label">Address:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{ppaddressData}}</label>
+                  <label class="normal--label">{{ppaddressData ? ppaddressData : "-"}}</label>
                 </div>
               </div>              
             </div>
@@ -77,8 +77,8 @@
                       <mat-icon>description</mat-icon>Work Profile
                     </div>
                     <span class="last--modified--by">Last modified:
-                        <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                        <span *ngIf="!row?.modifiedOn">{{row?.createdOn | date: 'yyyy/MM/dd'}}</span>
+                        <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn ? (row?.modifiedOn | date: 'yyyy/MM/dd') : "-"}}</span>
+                        <span *ngIf="!row?.modifiedOn">{{row?.createdOn ? (row?.createdOn | date: 'yyyy/MM/dd') : "-"}}</span>
                     </span>
                 </div>
 
@@ -90,7 +90,7 @@
                   <label class="strong--label">Work/Business:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.wpWorkBusiness}}</label>
+                  <label class="normal--label">{{row?.wpWorkBusiness ? row?.wpWorkBusiness : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -98,7 +98,7 @@
                   <label class="strong--label">Company Name:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.wpCompanyName}}</label>
+                  <label class="normal--label">{{row?.wpCompanyName ? row?.wpCompanyName : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -106,7 +106,7 @@
                   <label class="strong--label">Title/Position:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.wpTitlePosition}}</label>
+                  <label class="normal--label">{{row?.wpTitlePosition ? row?.wpTitlePosition : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -114,7 +114,7 @@
                   <label class="strong--label">Work Number:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label" *ngIf="wpLandlineNumbersList">+1 {{wpLandlineNumbersList}}</label>
+                  <label class="normal--label" > {{wpLandlineNumbersList ? "+1 "+wpLandlineNumbersList : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -122,7 +122,7 @@
                   <label class="strong--label">Department:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.wpDepartment}}</label>
+                  <label class="normal--label">{{row?.wpDepartment ? row?.wpDepartment : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -130,7 +130,7 @@
                   <label class="strong--label">Contact Persons Name:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.wpContactPersonName}}</label>
+                  <label class="normal--label">{{row?.wpContactPersonName ? row?.wpContactPersonName : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -138,7 +138,7 @@
                   <label class="strong--label">Address:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.wpAddressLine1 +" "+ row?.wpAddressLine2 +" "+row?.wpCity +" "+row?.wpState +" "+row?.wpZipCode +" "+row?.wpCountry}}</label>
+                  <label class="normal--label">{{wpaddressData ? wpaddressData : "-"}}</label>
                 </div>
               </div>
             </div>
@@ -163,7 +163,7 @@
                   <label class="strong--label">Name:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.ccName}}</label>
+                  <label class="normal--label">{{row?.ccName ? row?.ccName : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -171,7 +171,7 @@
                   <label class="strong--label">Address 1:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.ccAddressLine1}}</label>
+                  <label class="normal--label">{{row?.ccAddressLine1 ? row?.ccAddressLine1 : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -179,7 +179,7 @@
                   <label class="strong--label">Address 2:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.ccAddressLine2}}</label>
+                  <label class="normal--label">{{row?.ccAddressLine2 ? row?.ccAddressLine2 : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -187,7 +187,7 @@
                   <label class="strong--label">Zip code:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.ccZipCode}}</label>
+                  <label class="normal--label">{{row?.ccZipCode ? row?.ccZipCode : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -195,7 +195,7 @@
                   <label class="strong--label">Phone:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label" *ngIf="ccWorkLandlineNumbersList">+1 {{ccWorkLandlineNumbersList}}</label>
+                  <label class="normal--label" > {{ccWorkLandlineNumbersList ? "+1 "+ccWorkLandlineNumbersList : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -203,7 +203,7 @@
                   <label class="strong--label">Contact person name:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.ccContactPersonName}}</label>
+                  <label class="normal--label">{{row?.ccContactPersonName ? row?.ccContactPersonName : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -211,7 +211,7 @@
                   <label class="strong--label">Contact person phone:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label" *ngIf="ccContactLandlineNumbersList">+1 {{ccContactLandlineNumbersList}}</label>
+                  <label class="normal--label" >{{ccContactLandlineNumbersList ? "+1 "+ccContactLandlineNumbersList : "-"}}</label>
                 </div>
               </div>
               <h3 class="mt--30">Church/Synagogue/Religious Connection</h3>
@@ -220,7 +220,7 @@
                   <label class="strong--label">Name:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.ccChurchName}}</label>
+                  <label class="normal--label">{{row?.ccChurchName ? row?.ccChurchName : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -228,7 +228,7 @@
                   <label class="strong--label">Address 1:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.ccChurchAddressLine1}}</label>
+                  <label class="normal--label">{{row?.ccChurchAddressLine1 ? row?.ccChurchAddressLine1 : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -236,7 +236,7 @@
                   <label class="strong--label">Address 2:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.ccChurchAddressLine2}}</label>
+                  <label class="normal--label">{{row?.ccChurchAddressLine2 ? row?.ccChurchAddressLine2 : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -244,7 +244,7 @@
                   <label class="strong--label">Zip code:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.ccChurchZipCode}}</label>
+                  <label class="normal--label">{{row?.ccChurchZipCode ? row?.ccChurchZipCode : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -252,7 +252,7 @@
                   <label class="strong--label">Contact person name:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.ccChurchContactPersonName}}</label>
+                  <label class="normal--label">{{row?.ccChurchContactPersonName ? row?.ccChurchContactPersonName : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap">
@@ -260,7 +260,7 @@
                   <label class="strong--label">Phone:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label" *ngIf="ccChurchLandlineNumbersList">+1 {{ccChurchLandlineNumbersList}}</label>
+                  <label class="normal--label" > {{ccChurchLandlineNumbersList ? "+1 "+ccChurchLandlineNumbersList : "-"}}</label>
                 </div>
               </div>
 
