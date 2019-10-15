@@ -440,7 +440,7 @@ function sendHireStatusMail(emailId, toName, comment, subStatus,template) {
         subject: subStatus + '' + template.mailSubject,
         html: body
       }
-     //8  sendEmail(mailOptions);
+       sendEmail(mailOptions);
       return true;
     } else {
       return false;
