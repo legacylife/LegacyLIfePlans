@@ -522,6 +522,7 @@ function deleteProfile(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(profileInfo._id);
+          //allActivityLog.updateActivityLogs( fromId, custData.customerId, 'Professional Details Deleted', message, 'My Essentials', 'My Professionals' )
           let message = resMessage.data( 607, [{key:'{field}',val:'Record'},{key:'{status}',val:'deleted'}] )
           let result = { "message": message }
           res.status(200).send(resFormat.rSuccess(result))
@@ -1017,7 +1018,7 @@ async function recalculateCount(customerId) {
     let advData = await HiredAdvisors.find({ customerId :customerId, status:'Active' });
     let trustData = await Trustee.find({ customerId :customerId, status:'Active' });
     OldDeceasedinfo = data.deceased.deceasedinfo;
-    let deceasedArray = {'status':data.deceased.status,'trusteeCnt':advData.length,'advisorCnt':trustData.length,deceasedinfo:OldDeceasedinfo};
+    let deceasedArray = {'status':data.deceased.status,'trusteeCnt':trustData.length,'advisorCnt':advData.length,deceasedinfo:OldDeceasedinfo};
     await User.updateOne({_id:customerId},{deceased:deceasedArray});    
   }
   return true;
