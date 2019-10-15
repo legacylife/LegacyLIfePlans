@@ -264,6 +264,7 @@ function financesFormUpdate(req, res) {
             insert.customerLegacyId = proquery.customerLegacyId;
             insert.customerLegacyType = proquery.customerLegacyType;
             insert.financesType = proquery.financesType;  
+            insert.nameOnAccount = proquery.nameOnAccount; 
             insert.administatorName = proquery.administatorName; 
             insert.financesTypeNew = proquery.financesTypeNew;  
             insert.branchLocation = proquery.branchLocation;  

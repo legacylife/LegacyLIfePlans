@@ -196,6 +196,8 @@ async function viewDeceased(req, res) {
            }else{
             lockoutLegacyDate = await getLegacyDate(2);
            }
+         }else{
+            lockoutLegacyDate = legacyHolderInfo.lockoutLegacyDate;
          }
 
          let deceasedArray = {'status':finalStatus,'trusteeCnt':trustList.length,'advisorCnt':advisorList.length,deceasedinfo:OldDeceasedinfo};
