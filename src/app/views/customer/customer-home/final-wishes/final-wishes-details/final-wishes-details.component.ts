@@ -65,6 +65,7 @@ export class FinalWishesDetailsComponent implements OnInit {
           if(this.row){
             this.toUserId = this.row.customerId 
             this.docPath = this.row.customerId+'/'+s3Details.finalWishesFilePath;
+            this.customerisValid(this.row);    
           }
         }
       }  
@@ -85,14 +86,13 @@ export class FinalWishesDetailsComponent implements OnInit {
         this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
        }          
       });    
-    }else{      
+    } else {      
       if(data.customerId!=this.userId){
         this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
         this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
       }
     } 
   }
-
 
   openFinalWishModal(FolderNames, isNew?) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(FinalWishesFormModalComponent, {

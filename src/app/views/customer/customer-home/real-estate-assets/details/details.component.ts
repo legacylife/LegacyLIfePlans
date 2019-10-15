@@ -24,7 +24,7 @@ export class DetailsComponent implements OnInit {
   urlData:any={};
   toUserId:string = ''
   subFolderName:string = 'Real Estate'
-
+  LegacyPermissionError:string="You don't have access to this section";
   constructor(
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
     private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router) {
@@ -53,13 +53,37 @@ export class DetailsComponent implements OnInit {
           this.trusteeLegaciesAction = false;
         }
         this.row = result.data
-        this.toUserId = this.row.customerLegacyId ? this.row.customerLegacyId : this.row.customerId
+        this.toUserId = this.row.customerLegacyId ? this.row.customerLegacyId : this.row.customerId;
+        if(this.row){
+          this.customerisValid(this.row);
+        }
       }
     }, (err) => {
       console.error(err)
     })
   }
 
+  customerisValid(data){
+    if (this.urlData.lastThird == "legacies") {
+      this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
+  
+        if(userAccess.RealEstateManagement!='now'){
+          this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+          this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+        }          
+      });    
+    }else{      
+      if(data.customerId!=this.userId){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+      }
+    } 
+  }
+
+  
   deleteRealEstate(customerId='') {
     var statMsg = "Are you sure you want to delete this record?"
     this.confirmService.confirm({ message: statMsg })

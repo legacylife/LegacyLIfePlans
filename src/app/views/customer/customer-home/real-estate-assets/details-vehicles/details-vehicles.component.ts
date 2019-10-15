@@ -21,7 +21,7 @@ export class DetailsVehiclesComponent implements OnInit {
   row: any;
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
-
+  LegacyPermissionError:string="You don't have access to this section";
   toUserId:string = ''
   subFolderName:string = 'Vehicles'
   constructor(
@@ -50,11 +50,34 @@ export class DetailsVehiclesComponent implements OnInit {
           this.trusteeLegaciesAction = false;
         }
         this.row = result.data
-        this.toUserId = this.row.customerLegacyId ? this.row.customerLegacyId : this.row.customerId
+        this.toUserId = this.row.customerLegacyId ? this.row.customerLegacyId : this.row.customerId;
+        if(this.row){
+          this.customerisValid(this.row);
+        }
       }
     }, (err) => {
       console.error(err)
     })
+  }
+
+  customerisValid(data){
+    if (this.urlData.lastThird == "legacies") {
+      this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
+  
+        if(userAccess.VehiclesManagement!='now'){
+          this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+          this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+        }          
+      });    
+    }else{      
+      if(data.customerId!=this.userId){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+      }
+    } 
   }
 
   openModal(data: any = {}, isNew?) {

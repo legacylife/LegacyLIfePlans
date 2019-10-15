@@ -81,7 +81,7 @@ export class TimeCapsuleDetailsComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
-        if((data.subFolderName=='Young_Children' && userAccess.YoungChildrenManagement!='now') || (data.subFolderName=='Child_Parent' && userAccess.ChildParentDisabilityManagement!='now') || (data.subFolderName=='Friend_Neighbor' && userAccess.FriendNeighborCareManagement!='now')){
+        if(userAccess.TimeCapsuleManagement!='now'){
         this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
         this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
        }          

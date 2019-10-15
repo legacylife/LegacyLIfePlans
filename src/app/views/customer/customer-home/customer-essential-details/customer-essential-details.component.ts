@@ -91,9 +91,8 @@ export class CustomerEssentialDetailsComponent implements OnInit {
           this.trusteeLegaciesAction = false;
         }
        if(userAccess.PersonalProfileManagement!='now'){
-        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
-        console.log("Need to check userAccess for this")
-          //this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+          this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+         this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
        }          
       });    
     }else{      
