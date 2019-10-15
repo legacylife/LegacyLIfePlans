@@ -44,6 +44,9 @@ export class UserAuthGuard implements CanActivate {
         this.subscriptionservice.checkSubscription( '', ( returnArr )=> {
           let isProuser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
           let isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
+      
+          if(localStorage.getItem("endUserDeceased")=='true'){isProuser = true;}//If user mark as deceased then deceased popup will be shown, No need to redirect on subscription
+
           //let acceptedUrls = ['/'+this.userInfo.endUserType+'/account-setting','/'+this.userInfo.endUserType+'/'+this.userInfo.endUserType+'-subscription']
           let acceptedUrls = ['/'+this.userInfo.endUserType+'/'+this.userInfo.endUserType+'-subscription']
           if(!isProuser) {

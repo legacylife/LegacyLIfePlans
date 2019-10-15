@@ -547,6 +547,7 @@ export class SubscriptionService {
     }
     
     this.userapi.apiRequest('post', 'userlist/autorenewalupdate', req_vars).subscribe(result => {
+      this.loader.close();
       if (result.status == "error") {
         this.loader.close();
         return false

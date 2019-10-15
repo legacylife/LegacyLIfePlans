@@ -55,10 +55,9 @@ getLegacyCustomerDetails(query = {}){
   const req_vars = {
     query: Object.assign({ _id: this.userId }, query),
     fields:{_id:1,firstName:1,lastName:1}
-  }
-  this.loader.open(); 
+  } 
+
   this.userapi.apiRequest('post', 'userlist/viewall', req_vars).subscribe(result => {
-    this.loader.close();
     if (result.status == "error") {
       console.log(result.data)
     } else {
@@ -99,8 +98,8 @@ revokeAsLegacyHolder() {
       }
       this.loader.open();   
       this.userapi.apiRequest('post', 'deceased/revokeOwnDeceased', req_vars).subscribe(result => {
-        localStorage.setItem("endUserDeceased",'');
-        localStorage.setItem("endUserlockoutLegacyDate",'');
+        localStorage.setItem("endUserDeceased",'false');
+        localStorage.setItem("endUserlockoutLegacyDate",'false');
         this.loader.close();
         this.dialog.closeAll(); 
         this.snack.open(result.data.message, 'OK', { duration: 4000 })

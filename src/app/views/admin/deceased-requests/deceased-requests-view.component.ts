@@ -326,7 +326,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
           }
       this.loader.open();   
       this.api.apiRequest('post', 'deceased/revokeAsDeceased', req_vars).subscribe(result => {
-        this.loader.close()
+        this.loader.close();
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
         this.router.navigate(['/', 'admin', 'deceased-requests'])
         }, (err) => {

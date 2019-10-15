@@ -35,7 +35,7 @@
           <ng-template let-row="row" ngx-datatable-cell-template>
             Section: {{ row?.activity == 'Profile' || row?.activity == 'Login' || row?.activity == 'User Logout' ? "n/a" : row?.section }} <br>
             Sub Section: {{ row?.activity == 'Profile' || row?.activity == 'Login' || row?.activity == 'User Logout' ? "n/a" : row?.subSection }}<br>
-            File Name: {{ row?.activity == 'Profile' || row?.activity == 'Login' || row?.activity == 'User Logout' ? "n/a" : row?.fileName }}
+            File Name: {{ row?.activity == 'Profile' || row?.activity == 'Login' || row?.activity == 'User Logout' || row?.fileName == null ? "n/a" : row?.fileName }}
          </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column  [resizeable]="false" prop="Created Date" name="Created Date" [flexGrow]="1">

@@ -281,7 +281,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
         this.modified = false;
         if(this.profile.username && this.profile.username=='customer@arkenea.com'){
           this.getLatitudeLongitude();
-        }
+        }    
         this.loader.close();
       }
     }, (err) => {
