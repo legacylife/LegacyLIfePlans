@@ -122,7 +122,7 @@ export class InsuranceDetailsComponent implements OnInit {
             query: Object.assign({ _id: this.selectedProfileId }, query),
             fromId:this.userId,
             toId:this.toUserId,
-            folderName:s3Details.insuranceFilePath,
+            folderName:'Insurance Finance & Debt',
             subFolderName:this.subFolderName
           }
           this.userapi.apiRequest('post', 'insuranceFinanceDebt/delete-insurance', req_vars).subscribe(result => {
@@ -154,13 +154,13 @@ export class InsuranceDetailsComponent implements OnInit {
     return filteredTyes
   }
 
-  downloadFile = (filename) => {
+  downloadFile = (filename,fileTitle) => {
     let query = {};
     let req_vars = {
       query: Object.assign({ docPath: this.docPath, filename: filename }, query),
       fromId:this.userId,
       toId:this.toUserId,
-      folderName:s3Details.insuranceFilePath,
+      folderName:fileTitle,
       subFolderName:this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');

@@ -24,6 +24,7 @@ export class DigitalPublicationsDetailsComponent implements OnInit {
   typeOfList:any[];
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
+  toUserId:string = '';
   LegacyPermissionError:string="You don't have access to this section";
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
@@ -58,6 +59,7 @@ export class DigitalPublicationsDetailsComponent implements OnInit {
             this.trusteeLegaciesAction = false;
           }
           this.row = result.data;      
+          this.toUserId =  this.row.customerId
           this.customerisValid(this.row);      
         }
       }  
@@ -110,6 +112,8 @@ export class DigitalPublicationsDetailsComponent implements OnInit {
           var query = {};
           const req_vars = {
             query: Object.assign({ _id: this.selectedProfileId }, query),
+            fromId:localStorage.getItem('endUserId'),
+            toId:this.toUserId,
             folderName:'Passwords Digital & Assests',
             subFolderName:'Digital Publication'
           }

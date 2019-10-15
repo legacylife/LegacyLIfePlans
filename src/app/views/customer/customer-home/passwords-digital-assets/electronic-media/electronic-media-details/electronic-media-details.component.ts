@@ -24,6 +24,7 @@ export class ElectronicMediaDetailsComponent implements OnInit {
   typeOfList:any[];
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
+  toUserId:string = '';
   LegacyPermissionError:string="You don't have access to this section";
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
@@ -58,6 +59,7 @@ export class ElectronicMediaDetailsComponent implements OnInit {
             this.trusteeLegaciesAction = false;
           }
           this.row = result.data;        
+          this.toUserId =  this.row.customerId;
           this.customerisValid(this.row);      
         }
       }  
@@ -109,7 +111,10 @@ export class ElectronicMediaDetailsComponent implements OnInit {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: this.selectedProfileId }, query)
+            query: Object.assign({ _id: this.selectedProfileId }, query),
+            toId:this.toUserId,
+            folderName:'Passwords & Digital Assets',
+            subFolderName:'Electronic media'
           }
           this.userapi.apiRequest('post', 'passwordsDigitalAssets/delete-electronicMedia', req_vars).subscribe(result => {
             if (result.status == "error") {

@@ -90,7 +90,7 @@ export class SpecialNeedsDetailsComponent implements OnInit {
   }
 
 
-  deleteSpecialNeeds(customerId='',folderName) {
+  deleteSpecialNeeds(customerId='',subfolder) {
     var statMsg = "Are you sure you want to delete this record?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
@@ -102,7 +102,7 @@ export class SpecialNeedsDetailsComponent implements OnInit {
             fromId:localStorage.getItem('endUserId'),
             toId:this.toUserId,
             folderName:'Special Needs',
-            subFolderName:folderName
+            subFolderName:subfolder
           }
           this.userapi.apiRequest('post', 'specialNeeds/delete-special-needs', req_vars).subscribe(result => {
             if (result.status == "error") {

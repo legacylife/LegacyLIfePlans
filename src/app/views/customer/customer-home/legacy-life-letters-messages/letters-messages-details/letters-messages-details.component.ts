@@ -98,7 +98,7 @@ export class LettersMessagesDetailsComponent implements OnInit {
             query: Object.assign({ _id: this.selectedProfileId }, query),
             fromId:this.userId,
             toId:this.toUserId,
-            folderName:s3Details.letterMessageDocumentsPath,
+            folderName:'Emergency Contacts',
             subFolderName:this.subFolderName
           }
           this.userapi.apiRequest('post', 'lettersMessages/delete-lettersMessages', req_vars).subscribe(result => {
@@ -122,13 +122,13 @@ export class LettersMessagesDetailsComponent implements OnInit {
       })
   }
 
-  downloadFile = (filename) => {    
+  downloadFile = (filename,fileTitle) => {    
     let query = {};
     let req_vars = {
       query: Object.assign({ docPath: this.docPath, filename: filename }, query),
       fromId:this.userId,
       toId:this.toUserId,
-      folderName:s3Details.letterMessageDocumentsPath,
+      folderName:fileTitle,
       subFolderName:this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');

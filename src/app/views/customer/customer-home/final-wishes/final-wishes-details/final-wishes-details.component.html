@@ -41,7 +41,7 @@
                   <label class="normal--label">{{row?.comments}}</label>
                 </div>
               </div>
-              <div fxLayout="row wrap" class="mb--10">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.subFolderName=='Celebration of Life'">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Calendar:</label>
                 </div>

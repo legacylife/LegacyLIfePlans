@@ -122,7 +122,7 @@ export class PetsDetailsComponent implements OnInit {
             query: Object.assign({ _id: this.selectedProfileId }, query),
             fromId:this.userId,
             toId:this.toUserId,
-            folderName:s3Details.petsFilePath,
+            folderName:'Pets',
             subFolderName:this.subFolderName
           }
           this.userapi.apiRequest('post', 'pets/delete-pets', req_vars).subscribe(result => {
@@ -147,13 +147,13 @@ export class PetsDetailsComponent implements OnInit {
       })
   }
 
-  downloadFile = (filename) => {
+  downloadFile = (filename,fileTitle) => {
     let query = {};
     let req_vars = {
       query: Object.assign({ docPath: this.docPath, filename: filename }, query),
       fromId:this.userId,
       toId:this.toUserId,
-      folderName:s3Details.petsFilePath,
+      folderName:fileTitle,
       subFolderName:this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');

@@ -111,7 +111,7 @@ export class DetailsAssetsComponent implements OnInit {
             query: Object.assign({ _id: this.selectedProfileId }, query),
             fromId:localStorage.getItem('endUserId'),
             toId:this.toUserId,
-            folderName:'Real Estate & Assets',
+            folderName:'Real Estates Vehicles & Assets',
             subFolderName: this.subFolderName
           }
           this.userapi.apiRequest('post', 'realEstateAssets/delete-real-estate-asset', req_vars).subscribe(result => {

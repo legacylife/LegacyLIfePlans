@@ -121,7 +121,7 @@ export class EmergencyContactsDetailsComponent implements OnInit {
             query: Object.assign({ _id: this.selectedProfileId }, query),
             fromId:localStorage.getItem('endUserId'),
             toId:this.toUserId,
-            folderName:'Emergency Contacts',
+            folderName:'Legacy Life Letters & Messages',
             subFolderName:this.subFolderName
           }
           this.userapi.apiRequest('post', 'customer/deletecontact', req_vars).subscribe(result => {

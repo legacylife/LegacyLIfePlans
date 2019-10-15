@@ -32,6 +32,7 @@ export class DeviceDetailsComponent implements OnInit {
   IsVisibleBoolean:boolean=true;
   urlData:any={};
   LegacyPermissionError:string="You don't have access to this section";
+  toUserId:string = '';
   constructor( 
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -76,6 +77,7 @@ export class DeviceDetailsComponent implements OnInit {
             this.trusteeLegaciesAction = false;
           }
           this.row = result.data;
+          this.toUserId =  this.row.customerId;
           //this.IsVisible = true;
           if(this.row.passwordPattern && typeof this.row.passwordPattern!=='undefined' && this.row.passwordPattern!==''){
             this.IsVisible = false;
@@ -134,7 +136,10 @@ export class DeviceDetailsComponent implements OnInit {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: this.selectedProfileId }, query)
+            query: Object.assign({ _id: this.selectedProfileId }, query),
+            toId:this.toUserId,
+            folderName:'Passwords & Digital Assets',
+            subFolderName:'Electronic media'
           }
           this.userapi.apiRequest('post', 'passwordsDigitalAssets/delete-device', req_vars).subscribe(result => {
             if (result.status == "error") {

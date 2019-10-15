@@ -99,7 +99,7 @@ export class RealEstateModelComponent implements OnInit {
       from: Object.assign({ customerId: this.userId }),
       fromId:localStorage.getItem('endUserId'),
       toId:this.toUserId,
-      folderName:'Real Estate & Assets',
+      folderName:'Real Estates Vehicles & Assets',
       subFolderName: this.subFolderName
     }
     this.loader.open();

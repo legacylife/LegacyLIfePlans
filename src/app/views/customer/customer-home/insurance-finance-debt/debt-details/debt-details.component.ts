@@ -28,6 +28,8 @@ export class DebtDetailsComponent implements OnInit {
   trusteeLegaciesAction:boolean=true;
   LegacyPermissionError:string="You don't have access to this section";
   urlData:any={};
+  toUserId:string = ''
+  subFolderName:string = 'Debt'
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -65,6 +67,7 @@ export class DebtDetailsComponent implements OnInit {
           this.row = result.data;
           if(this.row){
             this.docPath = this.row.customerId+'/'+s3Details.debtFilePath;
+            this.toUserId = this.row.customerId;
             this.customerisValid(this.row);
           }
         }
@@ -116,7 +119,11 @@ export class DebtDetailsComponent implements OnInit {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: this.selectedProfileId }, query)
+            query: Object.assign({ _id: this.selectedProfileId }, query),
+            fromId:localStorage.getItem('endUserId'),
+            toId:this.toUserId,
+            folderName:'Insurance Finance & Debt',
+            subFolderName: this.subFolderName
           }
           this.userapi.apiRequest('post', 'insuranceFinanceDebt/delete-debt', req_vars).subscribe(result => {
             if (result.status == "error") {
