@@ -35,20 +35,22 @@
 
         <mat-form-field class="full-width">
           <input matInput name="username"  placeholder="Username*" [formControl]="DevicesForm.controls['username']" autocomplete="off">
-          <mat-icon matTooltip="Please enter username" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['username'].hasError('required') && DevicesForm.controls['username'].touched"
-          class="red--alert">help_outline</mat-icon>
+          <!-- <mat-icon matTooltip="Please enter username" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['username'].hasError('required') && DevicesForm.controls['username'].touched"
+          class="red--alert">help_outline</mat-icon> -->
         </mat-form-field>
 
         <mat-form-field class="full-width" *ngIf="typeOne">
             <input  type="password" matInput name="password"  placeholder="Password*" [formControl]="DevicesForm.controls['password']" >
-            <mat-icon matTooltip="Please enter password" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['password'].hasError('required') && DevicesForm.controls['password'].touched"
-            class="red--alert">help_outline</mat-icon>
+            <!-- <mat-icon matTooltip="Please enter password" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['password'].hasError('required') && DevicesForm.controls['password'].touched"
+            class="red--alert">help_outline</mat-icon> -->
+            <small *ngIf="usernamePasswordMissing" class="form-error-msg form-error-msg-general">{{invalidMessage}}</small>
         </mat-form-field>
 
         <mat-form-field class="full-width" *ngIf="typeTwo">
             <input  type="password" matInput name="pin"  placeholder="Pin*" [formControl]="DevicesForm.controls['pin']" >
-            <mat-icon matTooltip="Please enter pin" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['pin'].hasError('required') && DevicesForm.controls['pin'].touched" class="red--alert">help_outline</mat-icon>
+            <!-- <mat-icon matTooltip="Please enter pin" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['pin'].hasError('required') && DevicesForm.controls['pin'].touched" class="red--alert">help_outline</mat-icon> -->
             <mat-icon matTooltip="Please enter numbers only" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['pin'].hasError('pattern') && DevicesForm.controls['pin'].touched" class="red--alert">help_outline</mat-icon>
+            <small *ngIf="usernamePinMissing" class="form-error-msg form-error-msg-general">{{invalidMessage}}</small>
         </mat-form-field>
 
         <div class="relative" [hidden]=IsVisible>

@@ -33,6 +33,8 @@ export class DevicesModalComponent implements OnInit {
   pattrenTemp = false;
   IsVisible: boolean = true;
   pattrenTempMissing: boolean = false;
+  usernamePinMissing:boolean = false;
+  usernamePasswordMissing : boolean = false;
   invalidMessage: string;
   DisplayPatternHolder = { 'visibility': 'hidden' };
 
@@ -156,9 +158,9 @@ export class DevicesModalComponent implements OnInit {
         this.DevicesForm = this.fb.group({
           deviceList: new FormControl(this.DevicesForm.controls['deviceList'].value, Validators.required),
           deviceName: new FormControl(this.DevicesForm.controls['deviceName'].value, Validators.required),
-          username: new FormControl(this.DevicesForm.controls['username'].value,Validators.required),
+          username: new FormControl(this.DevicesForm.controls['username'].value),
           passwordType: new FormControl(this.DevicesForm.controls['passwordType'].value, Validators.required),
-          password: new FormControl('', Validators.required),
+          password: new FormControl(''),
           pin: new FormControl('',Validators.pattern(/^[0-9]*$/)),
           pattrenTemp: new FormControl(''),
           profileId: new FormControl(this.DevicesForm.controls['profileId'].value,)
@@ -168,10 +170,10 @@ export class DevicesModalComponent implements OnInit {
         this.DevicesForm = this.fb.group({
           deviceList: new FormControl(this.DevicesForm.controls['deviceList'].value, Validators.required),
           deviceName: new FormControl(this.DevicesForm.controls['deviceName'].value, Validators.required),
-          username: new FormControl(this.DevicesForm.controls['username'].value,Validators.required),
+          username: new FormControl(this.DevicesForm.controls['username'].value),
           passwordType: new FormControl(this.DevicesForm.controls['passwordType'].value, Validators.required),
           password: new FormControl(''),
-          pin: new FormControl('',[Validators.required,Validators.pattern(/^[0-9]*$/)]),
+          pin: new FormControl('',[Validators.pattern(/^[0-9]*$/)]),
           pattrenTemp: new FormControl(''),
           profileId: new FormControl(this.DevicesForm.controls['profileId'].value,)
         });        
@@ -180,7 +182,7 @@ export class DevicesModalComponent implements OnInit {
         this.DevicesForm = this.fb.group({
           deviceList: new FormControl(this.DevicesForm.controls['deviceList'].value,Validators.required),
           deviceName: new FormControl(this.DevicesForm.controls['deviceName'].value,Validators.required),
-          username: new FormControl(this.DevicesForm.controls['username'].value,Validators.required),
+          username: new FormControl(this.DevicesForm.controls['username'].value),
           passwordType: new FormControl(this.DevicesForm.controls['passwordType'].value,Validators.required),
           password: new FormControl(''),
           pin: new FormControl('',Validators.pattern(/^[0-9]*$/)),
@@ -205,7 +207,16 @@ export class DevicesModalComponent implements OnInit {
         this.IsVisible= false;
         this.pattrenTempMissing = true;
         this.invalidMessage = "Please draw your device pattern.";
-    }else{
+    }
+    else if(this.DevicesForm.controls['passwordType'].value==1 && this.DevicesForm.controls['username'].value.trim()=='' && this.DevicesForm.controls['password'].value.trim()==''){
+      this.usernamePasswordMissing = true;
+      this.invalidMessage = "Please enter username or password.";
+    }
+    else if(this.DevicesForm.controls['passwordType'].value==2 && this.DevicesForm.controls['username'].value.trim()=='' && this.DevicesForm.controls['pin'].value.trim()==''){
+      this.usernamePinMissing = true;
+      this.invalidMessage = "Please enter username or pin.";
+    }
+    else{
         let profileIds = this.DevicesForm.controls['profileId'].value;
         if (profileIds) {
           this.selectedProfileId = profileIds;

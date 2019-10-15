@@ -153,7 +153,7 @@ export class CustomerDashboardDayOneComponent implements OnInit {
     if(this.isProUser)
       this.router.navigate(pageUrl)
     else
-      this.snackBar.open("You don't have access to this section.", 'OK', { duration: 4000 })
+      this.snackBar.open("Currently you don't have access to this folder you have been downgraded to a free account.", 'OK', { duration: 4000 })
   }
 
   openAddTrusteeModal(id, isNew?) {  
