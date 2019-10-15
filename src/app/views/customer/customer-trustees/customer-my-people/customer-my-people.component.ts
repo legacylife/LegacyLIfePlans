@@ -158,7 +158,6 @@ export class CustomerMyPeopleComponent implements OnInit {
   }
 
   removeTrusteeAdvisor(peopleObj){
-    console.log("peopleObj : " , peopleObj);
     var statMsg = "Are you sure you want remove?"
     var userType = peopleObj.type
     this.confirmService.confirm({ message: statMsg })
