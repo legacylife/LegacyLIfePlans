@@ -18,6 +18,10 @@ passport.use(new LocalStrategy({
         return done(null, false, {
           message: 'User is not Active'
         })
+      }else if (user.deceased != null && user.deceased.status=="Active") {
+        return done(null, false, {
+          message: 'User is deceased'
+        })
       }
 
       const validator = user.validPassword(password, user)
