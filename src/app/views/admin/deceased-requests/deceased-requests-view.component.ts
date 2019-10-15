@@ -110,7 +110,6 @@ export class DeceasedRequestsViewComponent implements OnInit {
 
         if(this.row.deceased && this.row.deceased.revokeId){
          this.revokeIdData = this.row.deceased.revokeId;
-         console.log('data -->',this.revokeIdData);
         }
 
 
@@ -348,6 +347,27 @@ export class DeceasedRequestsViewComponent implements OnInit {
         this.loader.close();
       })  
    }
+
+   removeAdvisor(customerId,id,advisorId){
+      var statMsg = "Are you sure you want remove?";
+    this.confirmService.confirm({ message: statMsg })
+      .subscribe(res => {
+        if (res) {
+          this.loader.open();
+          let req_vars = {};
+          req_vars = {customerId:customerId, advisorId:advisorId, userType : 'advisor'}
+          this.api.apiRequest('post', 'customer/legacy-user-remove', req_vars).subscribe(result => {
+            this.loader.close();
+            this.getCustomerProfile();
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          }, (err) => {
+            console.error(err)
+            this.loader.close();
+          })
+           
+        }
+      })       
+  }
 
 
 }
