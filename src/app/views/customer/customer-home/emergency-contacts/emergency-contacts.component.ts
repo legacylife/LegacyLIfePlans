@@ -66,7 +66,9 @@ export class EmergencyContactsComponent implements OnInit {
 
     if (this.selectedProfileId && this.selectedProfileId == 'emergency-contacts' && this.urlData.lastThird != "legacies") {
       this.selectedProfileId = "";
-    }    
+    }     
+     
+   
     if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'emergency-contacts') {
         this.customerLegaciesId = this.userId;
         this.customerLegacyType =  this.urlData.userType;
@@ -78,6 +80,9 @@ export class EmergencyContactsComponent implements OnInit {
             this.trusteeLegaciesAction = false;
           }
           this.emergencyContactsManagementSection = userAccess.emergencyContactsManagement 
+          if(userAccess.emergencyContactsManagement!='now'){        
+            this.trusteeLegaciesAction = false;
+          }   
         }); 
         this.showTrusteeCnt = false;
       }else{      
@@ -85,7 +90,7 @@ export class EmergencyContactsComponent implements OnInit {
           this.instruction_data = returnData;
           if(this.instruction_data){this.instruction_data_flag = true;}
         });
-      } 
+      }    
       this.toUserId = this.userId
     this.getEmergencyContacts()
   }

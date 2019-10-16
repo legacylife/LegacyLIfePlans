@@ -81,7 +81,7 @@ export class FinalWishesDetailsComponent implements OnInit {
           this.trusteeLegaciesAction = false;
         }
         
-        if((data.subFolderName=='Funeral Plans' && userAccess.FuneralPlansManagement!='now') || (data.subFolderName=='Celebration of Life' && userAccess.ObituaryManagement!='now') || (data.subFolderName=='Obituary' && userAccess.CelebrationLifeManagement!='now')){
+        if((data.subFolderName=='Funeral Plans' && userAccess.FuneralPlansManagement!='now') || (data.subFolderName=='Celebration of Life' && userAccess.CelebrationLifeManagement!='now') || (data.subFolderName=='Obituary' && userAccess.ObituaryManagement!='now')){
         this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
         this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
        }          

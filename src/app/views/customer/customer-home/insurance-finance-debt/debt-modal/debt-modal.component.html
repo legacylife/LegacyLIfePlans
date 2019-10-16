@@ -4,12 +4,14 @@
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
 </div>
-<form class="llp-form-wrapper" (ngSubmit)="DebtFormSubmit(DebtForm.value)">
+<div class="llp--modal--body" *ngIf="!trusteeLegaciesAction">
+  <h6 class="access--error" >{{LegacyPermissionError}}</h6>
+</div>
+<form class="llp-form-wrapper" (ngSubmit)="DebtFormSubmit(DebtForm.value)" *ngIf="trusteeLegaciesAction">
   <div class="ll--modal--body idbox--modal--hgt">
     <div fxLayout="row wrap" class="pt-1">
       <div fxFlex.xs="100">
-       <mat-form-field class="full-width">
-              
+       <mat-form-field class="full-width">              
             <mat-select placeholder="Debt Type*" name="debtsType" [formControl]="DebtForm.controls['debtsType']" (selectionChange)="onChangeType($event.value)">
               <mat-option value="">Select Debt Type</mat-option>
               <mat-option *ngFor="let option of debtsTypeList"  [value]="option.opt_code">{{option.opt_name}}</mat-option>

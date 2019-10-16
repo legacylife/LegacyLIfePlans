@@ -151,11 +151,11 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Executor</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">
+                  <div>
                     <a *ngIf="executorData" [routerLink]="['/admin/userview',executorData?._id]" title="View">
                       {{executorData?.firstName}} {{executorData?.lastName}}
                     </a>
-                    <div *ngIf="!executorData" fxFlex="40">Executor is not assigned.</div>
+                    <div *ngIf="!executorData">Executor is not assigned.</div>
                   </div>
                 </div>
               </mat-list-item>

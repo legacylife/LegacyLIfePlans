@@ -754,6 +754,13 @@ body{
 .capitalize{text-transform: capitalize;}
 .cursor--pointer{cursor: pointer;}
 .clr--black{color: $clr--10 !important}
+.access--error {
+    font-size: 20px;
+    color: #000;
+    font-family: $font--lato--regular!important;
+    margin: 0 0 30px;
+    text-align: center;
+}
 
 //PK
 #hideStep .mat-horizontal-stepper-header-container{

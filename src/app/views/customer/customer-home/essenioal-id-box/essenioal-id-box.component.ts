@@ -56,10 +56,10 @@ export class EssenioalIdBoxComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';
   currentProgessinPercent: number = 0;
-
   toUserId:string = ''
   subFolderName:string = 'ID Box'
-
+  LegacyPermissionError:string="You don't have access to this section";
+  trusteeLegaciesAction:boolean=true;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService, private fileHandlingService: FileHandlingService  ) 
@@ -103,7 +103,15 @@ export class EssenioalIdBoxComponent implements OnInit {
       if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'essential-day-one') {
           this.customerLegaciesId = this.userId;
           this.customerLegacyType =  this.urlData.userType;
-          this.userId = this.urlData.lastOne;          
+          this.userId = this.urlData.lastOne;        
+          this.userapi.getUserAccess(this.userId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+            if(userLockoutPeriod || userDeceased){
+              this.trusteeLegaciesAction = false;
+            }
+            if(userAccess.IDBoxManagement!='now'){        
+              this.trusteeLegaciesAction = false;
+            }           
+          });             
           this.selectedProfileId = "";                  
       }
       this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
@@ -160,7 +168,7 @@ export class EssenioalIdBoxComponent implements OnInit {
      if(documents_tempss=='1'){
       this.IDForm.controls['documents_temp'].setValue('1');
       }
-console.log("key",key)
+
       if(key==3){  
         this.typeOne = true;      
         this.typeOneTwo = true;      

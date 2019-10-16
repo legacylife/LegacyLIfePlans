@@ -37,23 +37,20 @@ export class DevicesModalComponent implements OnInit {
   usernamePasswordMissing : boolean = false;
   invalidMessage: string;
   DisplayPatternHolder = { 'visibility': 'hidden' };
-
   urlData:any={};	  
   customerLegaciesId: string;
   customerLegacyType:string='customer';
-  
   toUserId:string = ''
   subFolderName:string = ''
-
+  LegacyPermissionError:string="You don't have access to this section";
+  trusteeLegaciesAction:boolean=true;
   constructor(private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService, private loader: AppLoaderService,
     private router: Router, private userapi: UserAPIService) { }
 
-  ngOnInit() {
-    
+  ngOnInit() {    
     this.userId = localStorage.getItem("endUserId");
     this.deviceListing = DevicesList;
     this.passwordType = PasswordType;
-
     this.DevicesForm = this.fb.group({
       deviceList: new FormControl('', Validators.required),
       deviceName: new FormControl('', Validators.required),
@@ -66,7 +63,6 @@ export class DevicesModalComponent implements OnInit {
     });
 
     this.petDocumentsList = [];
-
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
     if (this.selectedProfileId && this.selectedProfileId == 'passwords-digital-assests' && this.urlData.lastThird != "legacies") {
@@ -77,6 +73,14 @@ export class DevicesModalComponent implements OnInit {
       this.customerLegaciesId = this.userId;
       this.customerLegacyType =  this.urlData.userType;
       this.userId = this.urlData.lastOne;          
+      this.userapi.getUserAccess(this.userId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
+       if(userAccess.DevicesManagement!='now'){
+        this.trusteeLegaciesAction = false;
+       }           
+       });   
       this.selectedProfileId = "";        
     }
 

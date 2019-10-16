@@ -23,6 +23,8 @@ export class essentialsMyProfessionalsComponent implements OnInit {
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';
+  LegacyPermissionError:string="You don't have access to this section";
+  trusteeLegaciesAction:boolean=true;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService  ) { }
 
   ngOnInit() {
@@ -47,6 +49,14 @@ export class essentialsMyProfessionalsComponent implements OnInit {
         this.customerLegaciesId = this.userId;
         this.customerLegacyType =  this.urlData.userType;
         this.userId = this.urlData.lastOne;          
+        this.userapi.getUserAccess(this.userId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+          if(userLockoutPeriod || userDeceased){
+            this.trusteeLegaciesAction = false;
+          }
+         if(userAccess.MyProfessionalsManagement!='now'){
+          this.trusteeLegaciesAction = false;
+         }           
+    });    
         this.selectedProfileId = "";        
       }
 
@@ -56,8 +66,6 @@ export class essentialsMyProfessionalsComponent implements OnInit {
       }
     }
    
-
-        
     getProfessionalDetails = (query = {}, search = false) => {
       const req_vars = {
         query: Object.assign({ _id: this.selectedProfileId }, query)

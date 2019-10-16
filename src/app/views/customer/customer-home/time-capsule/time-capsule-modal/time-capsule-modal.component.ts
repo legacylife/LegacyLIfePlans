@@ -37,6 +37,7 @@ export class TimeCapsuleMoalComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';														
   trusteeLegaciesAction:boolean=true;
+  LegacyPermissionError:string="You don't have access to this section";
   selectedProfileId: string;
   currentProgessinPercent: number = 0;
   toUserId:string = ''
@@ -66,6 +67,14 @@ export class TimeCapsuleMoalComponent implements OnInit {
         this.customerLegaciesId = this.userId;
         this.customerLegacyType =  this.urlData.userType;
         this.userId = this.urlData.lastOne;          
+        this.userapi.getUserAccess(this.userId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+          if(userLockoutPeriod || userDeceased){
+            this.trusteeLegaciesAction = false;
+          }
+         if(userAccess.TimeCapsuleManagement!='now'){
+          this.trusteeLegaciesAction = false;
+         }           
+        }); 
         this.selectedProfileId = "";        
     }
     

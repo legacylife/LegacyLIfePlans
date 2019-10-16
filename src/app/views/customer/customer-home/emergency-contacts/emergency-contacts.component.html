@@ -58,7 +58,10 @@
       <mat-icon class="icon--cross">cancel</mat-icon>
     </button>
   </div>
-  <form [formGroup]="eContactFormGroup" class="llp-form-wrapper" (ngSubmit)="eContactFormSubmit(eContactFormGroup.value)">
+  <div class="llp--modal--body" *ngIf="!trusteeLegaciesAction">
+    <h6 class="access--error" >{{LegacyPermissionError}}</h6>
+  </div>
+  <form [formGroup]="eContactFormGroup" class="llp-form-wrapper" (ngSubmit)="eContactFormSubmit(eContactFormGroup.value)" *ngIf="emergencyContactsManagementSection=='now'">
     <div class="ll--modal--body modal--body--hgt-upd ">
 
       <mat-form-field class="full-width">

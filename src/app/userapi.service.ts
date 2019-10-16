@@ -381,6 +381,7 @@ export class UserAPIService {
      await this.apiRequest('post', 'trustee/view-details', params).subscribe(async result => {
       if (result.status == "error") {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        console.log('1')
         this.router.navigateByUrl('/customer/dashboard');
       } else {
         //this.userAccess = result.data.userAccess; 
@@ -399,6 +400,7 @@ export class UserAPIService {
       await this.apiRequest('post', 'advisor/view-details', params).subscribe(async result => {
         if (result.status == "error") {
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          console.log('2')
           this.router.navigateByUrl('/advisor/dashboard');
         } else {
        // this.userAccess = result.data.userAccess;
@@ -412,6 +414,7 @@ export class UserAPIService {
       });
      }
    }else{
+    console.log('3')
       this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
       return false;
    }

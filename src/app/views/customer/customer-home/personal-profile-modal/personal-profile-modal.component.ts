@@ -45,6 +45,8 @@ export class PersonalProfileModalComponent implements OnInit {
   customerLegaciesId:string='';
   customerLegacyType:string='customer';
   urlData:any={};
+  trusteeLegaciesAction:boolean=true;
+  LegacyPermissionError:string="You don't have access to this section";
   constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService, private userapi: UserAPIService, ) { }
 
   ngOnInit() {
@@ -61,6 +63,14 @@ export class PersonalProfileModalComponent implements OnInit {
         this.customerLegaciesId = this.userId;
         this.customerLegacyType =  this.urlData.userType;
         this.userId = this.urlData.lastOne;          
+        this.userapi.getUserAccess(this.userId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+          if(userLockoutPeriod || userDeceased){
+            this.trusteeLegaciesAction = false;
+          }
+         if(userAccess.PersonalProfileManagement!='now'){
+          this.trusteeLegaciesAction = false;
+         }           
+        }); 
         this.selectedProfileId = "";        
     }
 

@@ -4,7 +4,10 @@
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
 </div>
-<form class="llp-form-wrapper" (ngSubmit)="vehiclesFormSubmit(vehiclesForm.value)">
+<div class="llp--modal--body" *ngIf="!trusteeLegaciesAction">
+  <h6 class="access--error" >{{LegacyPermissionError}}</h6>
+</div>
+<form class="llp-form-wrapper" (ngSubmit)="vehiclesFormSubmit(vehiclesForm.value)" *ngIf="trusteeLegaciesAction">
   <div class="ll--modal--body idbox--modal--hgt">
     <div fxLayout="row wrap">
       <div fxFlex.xs="100">

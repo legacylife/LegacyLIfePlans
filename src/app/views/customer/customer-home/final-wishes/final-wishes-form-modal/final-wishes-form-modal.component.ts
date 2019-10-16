@@ -40,7 +40,8 @@ export class FinalWishesFormModalComponent implements OnInit {
   currentProgessinPercent:number = 0;
   toUserId:string = ''
   subFolderName:string = ''
-
+  LegacyPermissionError:string="You don't have access to this section";
+  trusteeLegaciesAction:boolean=true;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService  ,@Inject(MAT_DIALOG_DATA) public data: any,
@@ -73,7 +74,15 @@ export class FinalWishesFormModalComponent implements OnInit {
     if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'final-wishes') {
       this.customerLegaciesId = this.userId;
       this.customerLegacyType =  this.urlData.userType;
-      this.userId = this.urlData.lastOne;          
+      this.userId = this.urlData.lastOne;     
+      this.userapi.getUserAccess(this.userId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
+        if((this.folderName=='Funeral Plans' && userAccess.FuneralPlansManagement!='now') || (this.folderName=='Celebration of Life' && userAccess.CelebrationLifeManagement!='now') || (this.folderName=='Obituary' && userAccess.ObituaryManagement!='now')){        
+          this.trusteeLegaciesAction = false;
+        }           
+      });         
       this.selectedProfileId = "";
     }
 

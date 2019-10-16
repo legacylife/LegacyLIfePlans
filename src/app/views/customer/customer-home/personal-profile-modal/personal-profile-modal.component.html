@@ -3,17 +3,17 @@
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
 </div>
-<div class="ll--modal--body per--profile--wrapper p-0">
+<div class="llp--modal--body" *ngIf="!trusteeLegaciesAction">
+  <h6 class="access--error" >{{LegacyPermissionError}}</h6>
+</div>
+<div class="ll--modal--body per--profile--wrapper p-0" *ngIf="trusteeLegaciesAction">
   <div class="stepper--wrapper">
     <mat-horizontal-stepper [linear]="isLinear" #stepper (selectionChange)="onChangeFormIndex($event)">
-
       <mat-step [stepControl]="firstFormGroup">
         <form [formGroup]="firstFormGroup" class="llp-form-wrapper" (ngSubmit)="FormSubmit(1,firstFormGroup.value)">
           <h3 class="main--head text-center">Personal Profile</h3>
           <p class="sub--head text-center">Add Personal Details</p>
-
           <div class="profile--body--scroll">
-
             <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
               <input matInput name="profileId" [formControl]="firstFormGroup.controls['profileId']" readonly="readonly">
             </mat-form-field>

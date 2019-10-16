@@ -40,10 +40,10 @@ export class legalStuffModalComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer';
   currentProgessinPercent:Number = 0;
-
   toUserId:string = ''
   subFolderName:string = ''
-
+  LegacyPermissionError:string="You don't have access to this section";
+  trusteeLegaciesAction:boolean=true;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,
     private confirmService: AppConfirmService,private loader: AppLoaderService,
     private userapi: UserAPIService ,@Inject(MAT_DIALOG_DATA) public data: any,
@@ -71,6 +71,14 @@ export class legalStuffModalComponent implements OnInit {
         this.customerLegaciesId = this.userId;
         this.customerLegacyType =  this.urlData.userType;
         this.userId = this.urlData.lastOne;          
+        this.userapi.getUserAccess(this.userId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+          if(userLockoutPeriod || userDeceased){
+            this.trusteeLegaciesAction = false;
+          }
+         if((this.folderName=='Estate' && userAccess.EstateManagement!='now') || (this.folderName=='Healthcare' && userAccess.HealthcareManagement!='now') || (this.folderName=='Personal Affairs' && userAccess.PersonalAffairsManagement!='now')){         
+          this.trusteeLegaciesAction = false;
+         }           
+         }); 
         this.selectedProfileId = "";        
     }
  

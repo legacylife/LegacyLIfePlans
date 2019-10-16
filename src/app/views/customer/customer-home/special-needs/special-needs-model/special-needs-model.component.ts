@@ -22,10 +22,9 @@ export class SpecialNeedsModelComponent implements OnInit {
   customerLegaciesId: string;
   customerLegacyType:string='customer'
   trusteeLegaciesAction:boolean=true;
-  
   toUserId:string = ''
   subFolderName:string = ''
-
+  LegacyPermissionError:string="You don't have access to this section";
   constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService,
     private userapi: UserAPIService, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.folderNameHidden = data.folderName;
@@ -57,6 +56,14 @@ export class SpecialNeedsModelComponent implements OnInit {
       this.customerLegaciesId = this.userId;
       this.customerLegacyType =  this.urlData.userType;
       this.userId = this.urlData.lastOne;          
+      this.userapi.getUserAccess(this.userId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
+        if((this.folderName=='Young_Children' && (userAccess.YoungChildrenManagement!='now' || userAccess.YoungChildrenManagement!='')) || (this.folderName=='Child_Parent' && userAccess.ChildParentDisabilityManagement!='now') || (this.folderName=='Friend_Neighbor' && userAccess.FriendNeighborCareManagement!='now')){
+        this.trusteeLegaciesAction = false;
+       }           
+       }); 
       this.selectedProfileId = "";        
     }
     this.toUserId = this.userId

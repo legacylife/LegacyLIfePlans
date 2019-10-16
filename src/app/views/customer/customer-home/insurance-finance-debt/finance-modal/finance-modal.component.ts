@@ -41,7 +41,8 @@ export class FinanceModalComponent implements OnInit {
   currentProgessinPercent:number = 0;
   toUserId:string = ''
   subFolderName:string = 'Finance'
-
+  LegacyPermissionError:string="You don't have access to this section";
+  trusteeLegaciesAction:boolean=true;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,
     private confirmService: AppConfirmService,private loader: AppLoaderService,
     private router: Router, private userapi: UserAPIService,
@@ -75,7 +76,15 @@ export class FinanceModalComponent implements OnInit {
     if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'insurance-finance-debt') {
         this.customerLegaciesId = this.userId;
         this.customerLegacyType =  this.urlData.userType;
-        this.userId = this.urlData.lastOne;          
+        this.userId = this.urlData.lastOne; 
+        this.userapi.getUserAccess(this.userId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+          if(userLockoutPeriod || userDeceased){
+            this.trusteeLegaciesAction = false;
+          }
+         if(userAccess.FinancesManagement!='now'){
+          this.trusteeLegaciesAction = false;
+         }           
+         });           
         this.selectedProfileId = "";        
     }
     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });

@@ -21,11 +21,11 @@ export class RealEstateModelComponent implements OnInit {
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';
-
   toUserId:string = ''
   subFolderName:string = 'Real Estate'
+  LegacyPermissionError:string="You don't have access to this section";
+  trusteeLegaciesAction:boolean=true;
   constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService, private userapi: UserAPIService, ) {
-
   }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -48,10 +48,17 @@ export class RealEstateModelComponent implements OnInit {
     if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'real-estate-assets') {
         this.customerLegaciesId = this.userId;
         this.customerLegacyType =  this.urlData.userType;
-        this.userId = this.urlData.lastOne;          
+        this.userId = this.urlData.lastOne; 
+        this.userapi.getUserAccess(this.userId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+          if(userLockoutPeriod || userDeceased){
+            this.trusteeLegaciesAction = false;
+          }
+         if(userAccess.RealEstateManagement!='now'){
+          this.trusteeLegaciesAction = false;
+         }           
+        });             
         this.selectedProfileId = "";        
     }
-
     this.getRealEstateDetails();
     this.typeOfRealEstateType = RealEstateType;
   }

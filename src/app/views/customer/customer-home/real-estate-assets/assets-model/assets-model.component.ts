@@ -22,9 +22,10 @@ export class AssetsModelComponent implements OnInit {
   urlData:any={};
   customerLegaciesId: string;
   customerLegacyType:string='customer';
-
   toUserId:string = ''
   subFolderName:string = 'Assets'
+  LegacyPermissionError:string="You don't have access to this section";
+  trusteeLegaciesAction:boolean=true;
   constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService, private userapi: UserAPIService, ) {
 
   }
@@ -50,6 +51,14 @@ export class AssetsModelComponent implements OnInit {
         this.customerLegaciesId = this.userId;
         this.customerLegacyType =  this.urlData.userType;
         this.userId = this.urlData.lastOne;          
+        this.userapi.getUserAccess(this.userId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+          if(userLockoutPeriod || userDeceased){
+            this.trusteeLegaciesAction = false;
+          }
+         if(userAccess.AssetsManagement!='now'){
+          this.trusteeLegaciesAction = false;
+         }           
+        });    
         this.selectedProfileId = "";        
     }
     this.typeOfRealEstateAssetsType = RealEstateAssetsType
