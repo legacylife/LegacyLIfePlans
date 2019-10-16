@@ -11,7 +11,7 @@
       </div>
       <mat-card-content class="pt-0 border-0">
         <mat-list>
-          <mat-list-item>
+          <mat-list-item class="word--wrapp">
             <mat-icon class="mr-1">email</mat-icon> {{row?.username}}
           </mat-list-item>
           <mat-list-item *ngIf="row?.userType == 'customer' && row?.phoneNumber!=''">

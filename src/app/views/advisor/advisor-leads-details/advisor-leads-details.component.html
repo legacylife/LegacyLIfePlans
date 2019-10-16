@@ -20,15 +20,15 @@
                 <mat-icon>star</mat-icon>
                 {{row?.subscriptionDetails.length > 0 ? 'Subscribed ' : 'Free '}}member
               </div>
-              <div class="icon--and--info">
+              <div class="icon--and--info" *ngIf="row?.username">
                 <mat-icon>markunread</mat-icon>
                 {{row?.username}}
               </div>
-              <div class="icon--and--info">
+              <div class="icon--and--info" *ngIf="city || state || zipcode">
                 <mat-icon>location_on</mat-icon>
-                {{row?.city}}, {{row?.state}} - {{row?.zipcode}}
+                {{city}}{{state}} {{zipcode}}
               </div>
-              <div class="icon--and--info">
+              <div class="icon--and--info" *ngIf="row?.phoneNumber">
                 <mat-icon>local_phone</mat-icon>
                 +1 {{row?.phoneNumber}}
               </div>

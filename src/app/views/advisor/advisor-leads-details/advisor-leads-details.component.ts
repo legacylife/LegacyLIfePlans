@@ -5,6 +5,7 @@ import {MatBottomSheet, MatBottomSheetRef} from '@angular/material/bottom-sheet'
 import { ProspectPeoplesModalComponent } from './prospect-peoples-modal/prospect-peoples-modal.component';
 import { UserAPIService } from './../../../userapi.service';
 import { s3Details } from '../../../config';
+import { MatSnackBar } from '@angular/material';
 import { egretAnimations } from "../../../shared/animations/egret-animations";
 const filePath = s3Details.url+'/'+s3Details.profilePicturesPath;
 @Component({
@@ -28,11 +29,14 @@ export class AdvisorLeadsDetailsComponent implements OnInit {
   ownLegacyFilesCountEnable:boolean= false;
 
   mutualFriendList: string;
+  city: string;
+  state: string;
+  zipcode: string;
   firstMutualFriend:string='';
   mutualFriendCount:number=0
   mutualFriendAvailable = false
   @ViewChild(MatBottomSheet) private sideNav: MatBottomSheet;
-  constructor(private _bottomSheet: MatBottomSheet, _elementRef: ElementRef, private route: ActivatedRoute,private userapi: UserAPIService,private router: Router) { }
+  constructor(private _bottomSheet: MatBottomSheet, _elementRef: ElementRef, private route: ActivatedRoute,private snack: MatSnackBar,private userapi: UserAPIService,private router: Router) { }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId"); 
     this.urlData = this.userapi.getURLData();
@@ -51,8 +55,14 @@ export class AdvisorLeadsDetailsComponent implements OnInit {
     this.userapi.apiRequest('post', 'lead/view-details', req_vars).subscribe(result => { 
       if (result.status == "error") {
         console.log(result.data)
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
         this.row = result.data.userDetails;  
+        if(this.row){
+          this.city = this.row.city!='' ? this.row.city : '';
+          this.state = this.row.state!='' ? ', '+this.row.state : '';
+          this.zipcode = this.row.zipcode!='' ? '- '+this.row.zipcode : '';
+        }
         this.filesCount = result.data.filesCount;  
         this.recordCount = result.data.recordCount;  
         if(result.data.userDetails.profilePicture){

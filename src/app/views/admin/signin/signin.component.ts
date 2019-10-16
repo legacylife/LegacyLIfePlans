@@ -53,7 +53,7 @@ export class signinComponent implements OnInit {
         localStorage.setItem("sectionAccess", JSON.stringify(userData.sectionAccess))
 
         //this.snack.open(result.data.message, 'OK', { duration: 4000 })
-        this.router.navigate(['/', 'admin', 'userlist'])
+        this.router.navigate(['/', 'admin', 'dashboard'])
 
       } else {
       //  this.llpsigninForm.controls['username'].enable();

@@ -49,10 +49,9 @@ export class fileUploadInstructionsEditComponent implements OnInit {
      private fb: FormBuilder, private loader: AppLoaderService) { }
 
   ngOnInit() {
-    
     let rteObj: RichTextEditorComponent = this.rteObj;
     setTimeout(() => { this.textArea = rteObj.contentModule.getEditPanel() as HTMLElement; }, 600);
-
+    
     this.aceessSection = this.api.getUserAccess('cms');
     this.cmsForm = new FormGroup({
       folderName: new FormControl('', [Validators.required]),

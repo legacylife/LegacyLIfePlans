@@ -46,10 +46,21 @@ export class BreadcrumbComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.UserType = localStorage.getItem("endUserType");
-   const locationArray = location.href.split('/')
-   if(locationArray[locationArray.length - 2]=='admin'){
-    this.urlVal = true;
-   }
+    const locationArray = location.href.split('/');
+    const foundAdmin = locationArray.find(item => {
+      if (item!='' && item !== undefined && item=='admin') {
+        return true;
+      }
+      return false;
+    });
+
+    if (foundAdmin) {
+      console.log('UserType',this.UserType);
+      this.urlVal = true;
+    }
+    //  if(locationArray[locationArray.length - 2]=='admin'){
+    //   this.urlVal = true;
+    //  }
   }
   ngOnDestroy() {
     if(this.routerEventSub) {
