@@ -7,15 +7,6 @@ var executorSchema = new mongoose.Schema({
   userType: String,
   trustId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   advisorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  deceased : {
-    status: String,
-    lockoutLegacyDate: String,
-    reminderCount:String,
-    reminders:[{      
-      reminderDate:Date,
-      mailStatus: String
-    }]
-  },
   status: String,
   createdOn: Date,
   modifiedOn: Date

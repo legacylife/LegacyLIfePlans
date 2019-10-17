@@ -514,12 +514,12 @@ function revokeOwnerDeceased(req, res) {
 
  async function deceaseListing(req, res) {
   let { query } = req.body
-  let groupObj = { _id :'$customerId',"customerId":{$first:'$customerId'},"advisorId":{$first: '$advisorId'},"trustId":{$first: '$trustId'},"userType": {$first: '$userType'},"documents": {$first: '$documents'},"status": {$first: '$status'}, "createdOn": {$first: '$createdOn'}, "modifiedOn": {$first: '$modifiedOn'}} 
+  let groupObj = { _id:'$customerId',"customerId":{$first:'$customerId'},"advisorId":{$first: '$advisorId'},"trustId":{$first: '$trustId'},"userType": {$first: '$userType'},"documents": {$first: '$documents'},"status": {$first: '$status'}, "createdOn": {$first: '$createdOn'}, "modifiedOn": {$first: '$modifiedOn'}} 
   await MarkDeceased.aggregate([
     { $match: query }, { $group:  groupObj }
   ]) .exec(function(err, records) { 
     MarkDeceased.populate(records, {path: 'customerId'}, function(err, deceasedData) {
-      let message = 'Revoke deceased successfully!';
+      let message = 'Deceased customer List!';
       if(deceasedData && deceasedData.length==0){
         message = 'No Records Found!';
       }     

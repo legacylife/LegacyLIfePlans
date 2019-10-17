@@ -98,7 +98,7 @@ function getUserDetails(req, res) {
   }
 }
 
-function trustFormUpdate(req, res) {
+async function trustFormUpdate(req, res) {
   let { query } = req.body;
   let { proquery } = req.body;
   let { extrafields } = req.body;
@@ -147,6 +147,12 @@ function trustFormUpdate(req, res) {
     })
   } else {
     let { proquery } = req.body;
+    let inviteByName = extrafields.inviteByName;
+    if(extrafields.inviteByName==' '){
+      let userData =  await User.findOne({ _id:query.customerId}, {username:1});
+      inviteByName = userData.username;
+    }
+
     var insert = new trust();
     insert.customerId = query.customerId;
     insert.firstName = proquery.firstName;
@@ -172,7 +178,7 @@ function trustFormUpdate(req, res) {
       } else {
 
         // Get all advisor of current logged in customers
-        HiredAdvisors.find({ customerId: query.customerId }, function (err, data) {
+        HiredAdvisors.find({ customerId: query.customerId,status:"Active" }, function (err, data) {
           if (data.length > 0) {
             for (var i = 0; i < data.length; i++) {
               let trusteeName = proquery.firstName +' ' + proquery.lastName;
@@ -182,7 +188,7 @@ function trustFormUpdate(req, res) {
             }
           } 
         })
-        stat = sendTrusteeMail(proquery.email, proquery.messages, proquery.folderCount, extrafields.inviteByName, proquery.firstName, clientUrl, "");
+        stat = sendTrusteeMail(proquery.email, proquery.messages, proquery.folderCount, inviteByName, proquery.firstName, clientUrl, "");
 
         let message = resMessage.data( 607, [{key:'{field}',val:"Trustee details"}, {key:'{status}',val: 'added'}] )
         //Update activity logs

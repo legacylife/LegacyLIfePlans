@@ -15,6 +15,11 @@ const resMessage = require('./../helpers/responseMessages')
 
 async function addExecutor(req, res) {
     let paramData = req.body;
+    let legacyHolderName = paramData.legacyHolderName;
+    if(paramData.legacyHolderName==' '){
+      let userData =  await User.findOne({ _id:paramData.customerId}, {username:1});
+      legacyHolderName = userData.username;
+    }
     let Advproquery = {};let Trusteeproquery = {};Advproquery.executorStatus = '';Trusteeproquery.executorStatus = '';let error = '';
     await HiredAdvisors.updateMany({customerId:paramData.customerId,'status':'Active' },{$set: {'executorStatus':''} });  
     await trust.updateMany({customerId:paramData.customerId,'status':'Active' },{$set: {'executorStatus':''} });
@@ -39,7 +44,7 @@ async function addExecutor(req, res) {
         if(rmExecuteId){
             let userDetails = await User.findOne({_id:rmExecuteId},{ username: 1,firstName: 1 });
             if(userDetails && userDetails.username){
-                await sendExecutorMail(userDetails.username,userDetails.firstName,paramData.legacyHolderName,'removeExecutorNotificationMail');
+                await sendExecutorMail(userDetails.username,userDetails.firstName,legacyHolderName,'removeExecutorNotificationMail');
             }
         }
    }
@@ -63,7 +68,7 @@ async function addExecutor(req, res) {
          if(executeId){    
             let userDetails = await User.findOne({_id:executeId},{ username: 1,firstName: 1 });
             if(userDetails && userDetails.username){
-                await sendExecutorMail(userDetails.username,userDetails.firstName,paramData.legacyHolderName,'markExecutorNotificationMail');
+                await sendExecutorMail(userDetails.username,userDetails.firstName,legacyHolderName,'markExecutorNotificationMail');
             }
             
             let result = { "message": resMessage.data(700)}

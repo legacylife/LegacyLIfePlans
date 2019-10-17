@@ -13,7 +13,9 @@ var currencyFormatter     = require('currency-formatter');
 const mongoose = require('mongoose')
 const advertisement = require('./../models/advertisements.js')
 var objectId = mongoose.Types.ObjectId();
-
+const HiredAdvisors = require('./../models/HiredAdvisors')
+const trust = require('./../models/Trustee.js')
+var FreeTrailPeriodSetting = require('./../models/FreeTrialPeriodSettings')
 async function getSelectedPlanDetails( planId ) {
   return await stripe.plans.retrieve( planId );
 }
@@ -735,29 +737,117 @@ async function deceasedCustomers(req, res){
   })
 }
 
-// async function deceasedCustomersReminders(req, res){
-//   await User.find({'deceased':{$ne:null},'deceased.status':{$ne:'Active'},'lockoutLegacyDate':{$ne:null}},{}, async function (err, result) {
-//     if (err) {
-//       res.status(500).send(resFormat.rError(err))
-//     } else if (result) {     
-//       if(result.length>0){
-//          result.forEach( async (key,index) => {   
-//           console.log('key--->',key);
+/*
+After customer deceased and subscription expire 90 free access for trustee, advisors then system sent and email to executor.
+*/
+async function deceasedCustomersReminders(req, res){
+  await User.find({'userType':"customer",'deceased':{$ne:null},'deceased.status':'Active',status:'Active'},{_id:1,username:1,firstName:1,lastName:1,subscriptionDetails:1,createdOn:1}, async function (err, result) {
+    if (err) {
+      res.status(500).send(resFormat.rError(err))
+    } else if (result) {     
+     if(result.length>0){
+         result.forEach( async (key,index) => {   
+          let deceasedEmail = key.username;let deceasedFullName = key.firstName+' '+key.lastName;
+          var currentDate  = new Date();
+          var currentSubscriptionEndDate = '';
+          let updateuser = false
+          let subscriptionDetails   = key.subscriptionDetails ? key.subscriptionDetails : null;
+       
+          if( subscriptionDetails != null && subscriptionDetails.length > 0 ) {
+              isAddOnPurchase    = subscriptionDetails[subscriptionDetails.length - 1]['addOnDetails']
+              checkWhetherAddOn  = isAddOnPurchase ? true : false
+              subscriptionEndDate   = subscriptionDetails[(subscriptionDetails.length-1)]['endDate'];
+              subscriptionStatus    = subscriptionDetails[(subscriptionDetails.length-1)]['status']
+              currentSubscriptionEndDate = new Date(subscriptionEndDate)
+              if( subscriptionStatus != 'canceled' && currentSubscriptionEndDate < currentDate ) {
+                updateuser = true
+              }
+          }else{  //Never subscribe
+            updateuser = true;                           
+            let FreeTrail = await FreeTrailPeriodSetting.findOne({}, {});
+            let start = moment(key.createdOn, 'YYYY-MM-DD');         
+            var timestamp = start.add(FreeTrail.customerFreeAccessDays, 'days');
+            currentSubscriptionEndDate = new Date(timestamp);    
+            if(currentSubscriptionEndDate < currentDate){
+              updateuser = true
+            }        
+          }
+         
+        if(updateuser){
+            let exAccDays = 90;
+            let start = moment(currentSubscriptionEndDate,'YYYY-MM-DD');
+            var timestamp = start.add(exAccDays, 'days');
+            var AfterExAccDays = new Date(timestamp); //After  90 days date
+            if(AfterExAccDays > currentDate) {
+             for(var i=0;i<=12;i++) {
+              if ((i % 2) === 0) {
+                if(i>0) {
+                  m = moment(currentSubscriptionEndDate,'YYYY-MM-DD');
+                  var timestamp2 = m.add(i, 'week');
+                  var weekDate = new Date(timestamp2,'YYYY-MM-DD');
+                  let todayDate = new Date('','YYYY-MM-DD');
+                  if(AfterExAccDays>weekDate && todayDate==weekDate) {
+                    let subscriptionEndDate =  moment(currentSubscriptionEndDate);
+                    let AfterExAccDate = moment(AfterExAccDays);
+                      let executor = await HiredAdvisors.findOne({_id:ObjectId(key._id),'executorStatus':'Active'},{_id:1,username:1,firstName:1,lastName:1});  
+                    // testing  let executor = await User.findOne({_id:ObjectId("5cf60d6525b0a12c70d8bae5")},{_id:1,username:1,firstName:1,lastName:1});  
+                      if(!executor){
+                        executor = await trust.findOne({_id:ObjectId(key._id),'executorStatus':'Active'},{_id:1,username:1,firstName:1,lastName:1});
+                      }
+                      if(executor){
+                        console.log('executor',executor)
+                        await sendingMail('DeceasedRemiderEmailToExecutor',executor.username,executor.firstName,deceasedEmail,deceasedFullName,subscriptionEndDate,AfterExAccDate);
+                      }else{//send mail to admin to inform deceased user scrscription date and deceased user didn't have any executor
+                        let adminUSer = await User.find({userType:"sysadmin","sectionAccess.deceasedrequest":"fullaccess"},{_id:1,firstName:1,lastName:1,username:1});
+                          adminUSer.forEach( async (row,index) => {   
+                            await sendingMail('DeceasedRemiderEmailToAdmin',row.username,row.firstName,deceasedEmail,deceasedFullName,subscriptionEndDate,AfterExAccDate);
+                          });
+                      }
+                      //res.send(resFormat.rSuccess({"Meesage":"123","Executor":executor,"EndDate":currentSubscriptionEndDate}))
+                  }
+                }
+              }               
+            }//weekly For loop
+          }//Accound should be close for these customers.          
+          //   res.send(resFormat.rSuccess({"Meesage":"1234566768"}))
+          }     
+        });
+      }else{
+        console.log('Record not found')  
+      }
+    }
+  })
 
-//           //if(new Date(key.lockoutLegacyDate) < new Date()) {
-//               //let OldDeceasedinfo = key.deceased.deceasedinfo;
+  res.send(resFormat.rSuccess({"Meesage":""}))
+}
 
-//               //console.log('OldDeceasedinfo--->',OldDeceasedinfo);
 
-//               //let deceasedArray = {'status':'Active','trusteeCnt':key.deceased.trusteeCnt,'advisorCnt':key.deceased.advisorCnt,deceasedinfo:OldDeceasedinfo};
-//               // await User.updateOne({_id:key._id},{deceased:deceasedArray});
-//           //}
-//       });
-//      }
-//      res.send(resFormat.rSuccess({"Meesage":"123"}))
-//     }
-//   })
-// }
+function sendingMail(templateCode,emailId,toName,deceasedEmail,deceasedFullName,currentSubscriptionEndDate,AfterExAccDays) {
+  let serverUrl = constants.clientUrl + "/signin";
+  let adminEmail = 'support@legacylifeplans.com';
+ 
+  emailTemplatesRoute.getEmailTemplateByCode(templateCode).then((template) => {
+    if (template) {
+      template = JSON.parse(JSON.stringify(template));
+      let body = template.mailBody.replace("{ToFname}",toName);
+      body = body.replace("{LegacyHolderName}",deceasedFullName);
+      body = body.replace("{SubscriptionExpireDate}",currentSubscriptionEndDate);
+      body = body.replace("{CloseAccountDate}",AfterExAccDays);
+      body = body.replace("{adminEmail}",adminEmail);
+      body = body.replace("{deceasedEmail}",deceasedEmail);
+      body = body.replace("{SERVER_LINK}",serverUrl);
+      const mailOptions = {
+        to: emailId,
+        subject: template.mailSubject,
+        html: body
+      }
+      sendEmail(mailOptions);
+     return true;
+    } else {
+      return false;
+    }
+  })
+}
 
 async function featuredAdvisorFromDate(req, res){
   let AdvData = await advertisement.find({status:"Active",sponsoredStatus:'Pending',"adminReply.status": "Done"},{_id:1,customerId:1,fromDate:1,toDate:1,status:1,zipcodes:1,adminReply:1});
@@ -883,7 +973,7 @@ router.get("/auto-renewal-on-reminder-email", autoRenewalOnReminderEmail);
 router.get("/auto-renewal-off-reminder-email", autoRenewalOffReminderEmail);
 router.get("/before-subscription-reminder-email", beforeSubscriptionReminderEmail);
 router.get("/check-deceased-customers", deceasedCustomers);
-//router.post("/deceased-customers-reminders", deceasedCustomersReminders);
+router.post("/deceased-customers-reminders", deceasedCustomersReminders);
 router.get("/check-featured-advisor-frmdate", featuredAdvisorFromDate);
 router.get("/check-featured-advisor-enddate", featuredAdvisorEndDate);
 router.get("/check-featured-advisor-remider-mail", featuredAdvisorReminder);

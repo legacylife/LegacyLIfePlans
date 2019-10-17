@@ -13,5 +13,4 @@ var deceasedSchema = new mongoose.Schema({
   createdOn: Date,
   modifiedOn: Date
 })
-
 module.exports = mongoose.model('mark_deceased',deceasedSchema)
