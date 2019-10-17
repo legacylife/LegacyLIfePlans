@@ -153,7 +153,7 @@
                   <span fxFlex></span>
                   <div>
                     <a *ngIf="executorData" [routerLink]="['/admin/userview',executorData?._id]" title="View">
-                      {{executorData?.firstName}} {{executorData?.lastName}}
+                      {{executorData?.firstName}} {{executorData?.lastName}} {{executorData?.username}}
                     </a>
                     <div *ngIf="!executorData">Executor is not assigned.</div>
                   </div>
