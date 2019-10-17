@@ -20,7 +20,12 @@ export class UserPreAuthGuard implements CanActivate {
       this.userapi.apiRequest('post', 'auth/view', req_vars).subscribe(result => { 
         let userData = result.data;   
         if(userData && userData.userType == 'customer' && userData.status == 'Active'){
-          this.router.navigateByUrl('/customer/dashboard'); 
+          if(userData.profileSetup == 'yes'){
+            this.router.navigateByUrl('/customer/dashboard');
+          }
+          else {
+            this.router.navigateByUrl('/customer/update-profile');
+          } 
           return false;
         } 
         if(userData && (userData.userType == 'customer' || userData.userType == 'advisor') && userData.status == 'Inactive'){

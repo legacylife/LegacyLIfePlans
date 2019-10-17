@@ -545,7 +545,7 @@ export const CustomerRoutes: Routes = [
       {
         path: '',
         component: UpdateProfileComponent,
-        canActivate: [UserAuthGuard],
+        canActivate: [UserPreAuthGuard],
         data: { title: 'Update Profile' }
       }
     ]

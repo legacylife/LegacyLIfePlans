@@ -126,7 +126,9 @@ export class UpdateProfileComponent implements OnInit {
         }
 
         this.snack.open('Your profile information has been updated successfully.', 'OK', { duration: 4000 })
-        this.router.navigate(['/', 'customer', 'dashboard']);
+        setTimeout(() => {
+          this.router.navigate(['/', 'customer', 'dashboard']);
+        }, 2000);  
       } else {
         this.loader.close();
         this.snack.open(result.data, 'OK', { duration: 4000 })

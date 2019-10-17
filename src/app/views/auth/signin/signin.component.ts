@@ -88,12 +88,12 @@ export class SigninComponent implements OnInit {
         if(userData.userType=='customer'){
           setTimeout(() => {
             this.router.navigate(['/', 'customer', 'dashboard']);
-          }, 2500);  //5s
+          }, 2000);  //5s
           
         }else{
           setTimeout(() => {
             this.router.navigate(['/', 'advisor', 'dashboard'])
-          }, 2500);  //5s          
+          }, 2000);  //5s          
         }  
 
         

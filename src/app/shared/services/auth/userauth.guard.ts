@@ -40,7 +40,7 @@ export class UserAuthGuard implements CanActivate {
         this.router.navigateByUrl('/signin');
         return false;
       }
-      if(this.userInfo && this.userInfo.endUserType!= '' && acceptedUsers.indexOf(this.userInfo.endUserType) >= 0  && !this.freeSignup) {
+      if(this.userInfo && this.userInfo.endUserType!= '' && acceptedUsers.indexOf(this.userInfo.endUserType) >= 0) {
         this.subscriptionservice.checkSubscription( '', ( returnArr )=> {
           let isProuser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
           let isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
