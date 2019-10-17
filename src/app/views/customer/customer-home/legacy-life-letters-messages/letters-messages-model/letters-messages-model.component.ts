@@ -57,7 +57,9 @@ export class LettersMessagesModelComponent implements OnInit {
         this.customerLegaciesId = this.userId;
         this.customerLegacyType =  this.urlData.userType;
         this.userId = this.urlData.lastOne;          
+
         this.userapi.getUserAccess(this.userId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+          console.log('userAccess====',userAccess)
           if(userLockoutPeriod || userDeceased){
             this.trusteeLegaciesAction = false;
           }

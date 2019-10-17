@@ -23,7 +23,8 @@ export class LettersMessagesDetailsComponent implements OnInit {
   urlData:any={};
   toUserId:string = ''
   subFolderName:string = ''
-  
+  fileLevelAccess:any;
+  LegacyPermissionError:string="You don't have access to this section";
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -61,6 +62,7 @@ export class LettersMessagesDetailsComponent implements OnInit {
             this.trusteeLegaciesAction = false;
           }
           this.row = result.data;
+          this.customerisValid(this.row);
           if(this.row){
             this.toUserId = this.row.customerId 
             this.docPath = this.row.customerId+'/'+s3Details.letterMessageDocumentsPath;
@@ -70,6 +72,31 @@ export class LettersMessagesDetailsComponent implements OnInit {
     }, (err) => {
       console.error(err);
     })
+  }
+
+  
+  customerisValid(data){
+    if (this.urlData.lastThird == "legacies") {
+      this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
+          this.trusteeLegaciesAction = false;
+        }
+        this.fileLevelAccess = userAccess.LegacyLifeLettersMessagesManagement;
+       // data._id = this.fileLevelAccess[1].llerId;
+        // this.fileLevelAccess[1].customerId
+
+        console.log("letter details",this.fileLevelAccess)
+      //  if(userAccess.LegacyLifeLettersMessagesManagement!='now'){
+      //   this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+      //   this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+      //  }          
+      });    
+    }else{      
+      if(data.customerId!=this.userId){
+        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+      }
+    } 
   }
 
   openLettersMessageModal() {

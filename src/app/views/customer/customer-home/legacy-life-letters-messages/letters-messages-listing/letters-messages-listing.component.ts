@@ -48,7 +48,7 @@ export class LettersMessagesListingComponent implements OnInit {
         }
        // this.LegacyLifeLettersMessagesManagementSection = userAccess.LegacyLifeLettersMessagesManagement
         this.fileLevelAccess = userAccess.LegacyLifeLettersMessagesManagement;
-        console.log("Here111",this.fileLevelAccess)
+        console.log("letter listing",this.fileLevelAccess)
       });
       this.showTrusteeCnt = false;this.shareLegacFlag = true;
     }else{      
