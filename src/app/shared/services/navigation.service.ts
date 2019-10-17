@@ -30,15 +30,15 @@ export class NavigationService {
 
   adminMenu: IMenuItem[] = [
     {
-      name: 'USER MANAGEMENT',
+      name: 'User Management',
       type: 'dropDown',
       tooltip: 'Profile',
       icon: 'person',
       state: 'admin',
       sub: [
-        { name: 'ADMIN USERS', state: 'userlist' },
-        { name: 'ADVISORS', state: 'advisorlist' },
-        { name: 'CUSTOMERS', state: 'customerlist' },
+        { name: 'Admin User', state: 'userlist' },
+        { name: 'Advisors', state: 'advisorlist' },
+        { name: 'Customers', state: 'customerlist' },
       ]
     },
     {
@@ -48,72 +48,72 @@ export class NavigationService {
       icon: 'pages',
       state: 'admin',
       sub: [
-        { name: 'STATIC PAGES PAGES', state: 'cms' },
-        { name: 'FILE UPLOAD INSTRUCTIONS', state: 'file-upload-instructions' },
-        { name: 'CUSTOMER/ADVISOR HOME PAGES', state: 'customerCms' },
+        { name: 'Static Pages', state: 'cms' },
+        { name: 'File Upload Instruction', state: 'file-upload-instructions' },
+        { name: 'Customer/Advisor Home Pages', state: 'customerCms' },
       ]
     },
     {
-      name: 'REFERRAL PROGRAM',
+      name: 'Referral Program',
       type: 'link',
       tooltip: 'Referral program',
       icon: 'nature_people',
       state: 'admin/referral-program'
     },
     {
-      name: 'FREE TRIAL PERIOD MANAGEMENT',
+      name: 'Free Trial Period Management',
       type: 'link',
       tooltip: 'Free Trial Period Management',
       icon: 'hourglass_empty',
       state: 'admin/free-trial-period-management'
     },
     {
-      name: 'COACH CORNER MANAGEMENT',
+      name: 'Coach Corner Management',
       type: 'dropDown',
       tooltip: 'Coach Corner Management',
       icon: 'card_giftcard',
       state: 'admin',
       sub: [
-        { name: 'COACH CORNER CATEGORY', state: 'coach-corner-category-management' },
-        { name: 'COACH CORNER POST', state: 'coach-corner-post' }
+        { name: 'CC Category', state: 'coach-corner-category-management' },
+        { name: 'CC Post', state: 'coach-corner-post' }
       ]
     },
     {
-      name: 'ADVERTISEMENT MANAGEMENT',
+      name: 'Advertisement Management',
       type: 'link',
       tooltip: 'Advertisement management',
       icon: 'public',
       state: 'admin/ad-management'
     },
     {
-      name: 'DECEASED REQUESTS',
+      name: 'Deceased Requests',
       type: 'link',
       tooltip: 'Deceased requests',
       icon: 'sports_handball',
       state: 'admin/deceased-requests'
     },
     {
-      name: 'EMAIL TEMPLATES',
+      name: 'Email Templates',
       type: 'link',
       tooltip: 'Email Templates Management System',
       icon: 'email',
       state: 'admin/email-template'
     },
     {
-      name: 'ACTIVITY LOG',
+      name: 'Activity Log',
       type: 'link',
       tooltip: 'Activity Log',
       icon: 'insert_chart',
       state: 'admin/activity-log'
     },
     {
-      name: 'REPORTS',
+      name: 'Reports',
       type: 'dropDown',
       tooltip: 'Reports',
       icon: 'report',
       state: 'admin',
       sub: [
-        { name: 'ZIP CODE MAP', state: 'map' }
+        { name: 'Zip Code Map', state: 'map' }
       ]
     }
   ]

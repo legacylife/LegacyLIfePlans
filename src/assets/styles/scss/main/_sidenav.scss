@@ -49,10 +49,10 @@
           height: 44px;
         }
         &.lvl2 a {
-          padding: 0 16px 0 55px;
+          padding: 0 15px 0 25px;
         }
         &.lvl3 a {
-          padding: 0 16px 0 64px;
+          padding: 0 16px 0 35px;
         }
       }
     }
@@ -71,11 +71,13 @@
       .mat-icon:not(.menu-caret) {
         text-align: center;
         margin-right: 3px;
-        height: 48px;
-        width: 48px;
-        line-height: 48px;
+        height: 35px;
+        width: 35px;
+        line-height: 35px;
         border-left: 3px solid;
         border-color: transparent;
+        flex-shrink: 0;
+        font-size: 20px;
       }
       .menu-caret {
         font-size: 1rem;
