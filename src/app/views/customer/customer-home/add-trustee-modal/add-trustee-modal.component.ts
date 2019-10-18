@@ -254,6 +254,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
     if(profileIds){
         this.selectedProfileId = profileIds;
     }        
+
     const req_vars = {
       query: Object.assign({_id: this.selectedProfileId,customerId: this.userId}),
       proquery: Object.assign(this.RequestData),
