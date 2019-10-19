@@ -121,9 +121,11 @@ export class CustomerSignupComponent implements OnInit {
     if( this.inviteCode != '') {
       invitedBy = 'customer'
     } */
+    console.log('invitedBy',this.invitedBy,'code ',this.inviteCode)
     let req_vars = {
       username: this.llpCustsignupForm.controls['username'].value,
       otpCode: this.llpCustotpForm.controls['otp'].value,
+      inviteCode: this.inviteCode,
       invitedBy: this.invitedBy
     }
     this.loader.open();
