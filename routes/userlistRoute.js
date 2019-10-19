@@ -562,13 +562,22 @@ function getSubscription(req, res) {
  * @param {*} res 
  */
 function createSubscription( userProfile, stripeCustomerId, planId, requestParam, res ) {
+
+  let startDate = new Date();
+  let today = new Date();
+  if(userProfile.userSubscriptionEnddate && userProfile.userSubscriptionEnddate != ""){
+    startDate = userProfile.userSubscriptionEnddate;
+    let start = moment(userProfile.userSubscriptionEnddate, 'YYYY-MM-DD');
+    startDate = new Date(start);
+  }
+  console.log("start date>>>>",startDate)
   let subscriptions = []
   let subscriptionStatus = 'added'
   let subscriptionDetails = {"_id" : objectId,
                           "productId" : '',
                           "planId" : planId,
                           "subscriptionId" : '',
-                          "startDate" : new Date(),
+                          "startDate" : '',
                           "endDate" : '',
                           "interval" : '',
                           "currency" : '',
@@ -601,17 +610,29 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
       res.send(resFormat.rError(err))
     }
     else {
-      stripe.subscriptions.create({
-        customer: stripeCustomerId,
-        items: [ 
+      let stripeObj = {};
+      if((userProfile.userSubscriptionEnddate && today < userProfile.userSubscriptionEnddate)){
+        stripeObj.customer = stripeCustomerId;
+        stripeObj.items = [ 
           { plan: planId }
-        ]
-      }, function(err, subscription) {
+        ];
+        stripeObj.trial_end = startDate;               
+      }
+      else {
+        stripeObj.customer = stripeCustomerId;
+        stripeObj.items = [ 
+          { plan: planId }
+        ];
+      }
+
+
+      stripe.subscriptions.create(stripeObj, function(err, subscription) {
+        console.log("subscription >> ",subscription)
         if (err) {
           stripeErrors( err, res )          
         }
         else {
-          if(subscription.status == 'active') {
+          if(subscription.status == 'active' || subscription.status == 'trialing') {
             if( userProfile.userType == 'customer' && checkWhetherAddOn ) {
               newRequestParam = isAddOnPurchase ? 
                                   { _id: userProfile._id,

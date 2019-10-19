@@ -117,7 +117,8 @@ var userSchema = new mongoose.Schema({
   renewalOnReminderEmailDay:Array,
   renewalOffReminderEmailDay:Array,
   invitedBy:String,
-  IamIntrested: { type: String, default:'No' }, 
+  IamIntrested: { type: String, default:'No' },
+  userSubscriptionEnddate: Date, 
   freeTrialPeriod:Object
 })
 

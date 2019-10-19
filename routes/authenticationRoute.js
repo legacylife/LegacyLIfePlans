@@ -649,10 +649,19 @@ async function checkUserOtp(req, res) {
       } else {
         if (otpdata) {
           let freeTrialPeriodDetails = await FreeTrailPeriodSetting.findOne()
+          var newDt = new Date()
+          let freeDays = 0;
+          var freeStatus = otpdata.userType == 'advisor' ? freeTrialPeriodDetails.advisorStatus : freeTrialPeriodDetails.customerStatus
+          if(freeStatus == 'On'){
+            freeDays = otpdata.userType == 'advisor' ? Number(freeTrialPeriodDetails.advisorFreeDays) : Number(freeTrialPeriodDetails.customerFreeAccessDays);
+          }          
+          newDt.setDate(newDt.getDate() + freeDays)
+
           let freeTrailPeriodObj = {
             bfrSubFreePremiumDays : otpdata.userType == 'advisor' ? Number(freeTrialPeriodDetails.advisorFreeDays) : Number(freeTrialPeriodDetails.customerFreeAccessDays),
             aftrSubFreeDays : otpdata.userType == 'advisor' ? 0 : Number(freeTrialPeriodDetails.customerAftrFreeAccessDays),
-            status : otpdata.userType == 'advisor' ? freeTrialPeriodDetails.advisorStatus : freeTrialPeriodDetails.customerStatus,
+            status : freeStatus,
+            endDate : newDt
           }
 
           var user = new User()
@@ -664,6 +673,7 @@ async function checkUserOtp(req, res) {
           user.invitedBy = req.body.query.invitedBy
           user.freeTrialPeriod = freeTrailPeriodObj
           user.lockoutLegacyPeriod = '2';
+          user.userSubscriptionEnddate = newDt;
           user.createdOn = new Date();
           if(user.userType != 'advisor'){
             let userSecurityDetails = user.setPassword(otpdata.password)
