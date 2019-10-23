@@ -57,7 +57,7 @@ export class UpdateProfileComponent implements OnInit {
     if(this.userId){
       const req_vars = { userId: this.userId }
       this.userapi.apiRequest('post', 'auth/view', req_vars).subscribe(result => {  
-        if (result.data.profilePicture) {
+        if (result.data && result.data.profilePicture) {
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + result.data.profilePicture;
           localStorage.setItem('endUserProfilePicture', this.profilePicture)
           this.picService.setProfilePic = this.profilePicture;

@@ -23,7 +23,7 @@
             <mat-icon class="mr-1">phone</mat-icon> {{row?.businessPhoneNumber}}</mat-list-item>          
         </mat-list>
       </mat-card-content>
-      <div class="profile-actions mb-1" fxLayoutAlign="center center" *ngIf="row?.userType == 'advisor' && row?.status == 'Active'">
+      <div class="profile-actions mb-1" fxLayoutAlign="center center" *ngIf="row?.userType == 'advisor' && row?.status == 'Active' && (row?.IamIntrested && row?.IamIntrested != 'Yes')">
         <button mat-raised-button class="" color="primary" (click)="reactivateReferEarn(row)">Reactivate Refer N Earn</button>
       </div>
     </mat-card> 
