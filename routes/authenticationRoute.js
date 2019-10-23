@@ -663,15 +663,22 @@ async function checkUserOtp(req, res) {
             status : freeStatus,
             endDate : newDt
           }
-
+  
+          let userInvitedById = '';
+          if(req.body.query.inviteCode){
+            let invitesCodeExists = await Invite.findOne({ inviteCode: req.body.query.inviteCode, email:otpdata.username, inviteType: otpdata.userType });
+            if( invitesCodeExists ) {
+              userInvitedById = invitesCodeExists.inviteById;
+            }     
+          }
           var user = new User()
           user.username = otpdata.username
           user.userType = otpdata.userType
           user.status = otpdata.status
           user.lastLoggedInOn = new Date();
           user.emailVerified = true;
-          user.invitedBy = req.body.query.invitedBy
-          user.freeTrialPeriod = freeTrailPeriodObj
+          user.invitedBy = ObjectId(userInvitedById);
+          user.freeTrialPeriod = freeTrailPeriodObj;
           user.lockoutLegacyPeriod = '2';
           user.userSubscriptionEnddate = newDt;
           user.createdOn = new Date();
