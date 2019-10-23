@@ -1,0 +1,42 @@
+<div class="ll--modal--header">
+  Funeral or Memorial Service Arrangements
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+
+<form class="llp-form-wrapper" [formGroup]="selectAnyOneFormGroup" *ngIf="firstServicesSec" [@animate]="{value:'*',params:{delay:'100ms',scale:'.8', y:'-100px'}}">
+  <div class="ll--modal--body">
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="any--option--sec">
+        <mat-radio-group aria-label="Select an option" class="llp-radio" (change)="onChange($event.value)">
+          <div class="checkbox-label fnt--18 mb-1">Select any one</div>
+          <mat-radio-button class="mb-1" *ngFor="let foptions of funeralOptions" [value]="foptions">
+            {{foptions}}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+  </div>
+  <div class="ll--modal--footer text-center">
+      <button mat-raised-button class="llp--primary--btn">Save</button>        
+    </div>
+</form>
+
+<form class="llp-form-wrapper" [formGroup]="selectAllFormGroup" *ngIf="allServicesSec" [@animate]="{value:'*',params:{delay:'100ms',scale:'.8', y:'-100px'}}">
+    <div class="ll--modal--body idbox--modal--hgt">
+        <div fxLayout="row wrap">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="">
+              <mat-radio-group aria-label="Select an option" class="llp-radio" (change)="onChange($event.value)">
+                <div class="checkbox-label fnt--18 mb-1">The service will be for:</div>
+                
+              </mat-radio-group>
+            </div>
+          </div>
+      </div>
+  
+      <div class="ll--modal--footer text-center">
+        <button mat-raised-button class="llp--secondary--btn ml-1" (click)="backToFirst()">Back</button>
+        <button mat-raised-button class="llp--primary--btn">Save</button>        
+      </div>
+</form>
