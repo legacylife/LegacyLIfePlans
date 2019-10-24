@@ -548,6 +548,11 @@ router.post('/petsdocuments', cors(), function(req,res){
   }
 })
 
+
+function yourFunction() {
+  console.log("asgdjhsdahsdg >>>>>> 11111");
+  return "hi";
+}
 router.post('/timeCapsuledocuments', cors(), function(req,res){
   var fstream;
   let authTokens = { authCode: "" }
@@ -563,13 +568,13 @@ router.post('/timeCapsuledocuments', cors(), function(req,res){
     if(ProfileId && ProfileId!=''){
       q = {_id : ProfileId}
     }
-    req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+    req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype ) {
       let tmpallfiles = {};
       let oldTmpFiles = [];
       if(userId){
           let ext = filename.split('.')
           ext = ext[ext.length - 1];
-          var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc","mov","mp3", "mpeg", "wav", "ogg", "opus", "bmp", "tiff", "svg", "webm", "mpeg4", "3gpp", "avi", "mpegps", "wmv", "flv"];
+          var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc","mov","mp3","mp4","mkv","mpeg", "wav", "ogg", "opus", "bmp", "tiff", "svg", "webm", "mpeg4", "3gpp", "avi", "mpegps", "wmv", "flv"];
           
           let resp = isExtension(ext,fileExts);
           if(!resp){
@@ -582,18 +587,18 @@ router.post('/timeCapsuledocuments', cors(), function(req,res){
               fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
               file.pipe(fstream);
               fstream.on('close', async function () {
-                await s3.uploadFile(newFilename,userId+'/'+timeCapsuleFilePath);                  
+             await s3.uploadFile(newFilename,userId+'/'+timeCapsuleFilePath);
                 tmpallfiles = {
                   "title" : filename,
                   "size" : encoding,
                   "extention" : mimetype,
                   "tmpName" : newFilename
                 }
-                timeCapsule.findOne(q,{documents:1,_id:1}, function (err, result) {
+              await timeCapsule.findOne(q,{documents:1,_id:1}, function (err, result) {
                     if (err) {
                         res.status(500).send(resFormat.rError(err))
                     } else {       
-                    if (result) {                          
+                    if (result) {                    
                         if(result.documents){
                           oldTmpFiles = result.documents;
                         }             
@@ -614,7 +619,7 @@ router.post('/timeCapsuledocuments', cors(), function(req,res){
                       }
                     } 
                     })
-                 })
+                 })       
               }else{
                 const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
                 fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
@@ -645,7 +650,6 @@ router.post('/timeCapsuledocuments', cors(), function(req,res){
                      res.status(200).send(resFormat.rSuccess(result))
                    }
                  })
-
               })
            }
          } 
@@ -1110,21 +1114,25 @@ router.post('/advisorHomeDocuments', cors(), function(req,res){
               const newFilename = new Date().getTime() + `.${ext}`;
               let updateFields = '';
               let updatedFields = {};
+              console.log('attrName    ',attrName);
               if(attrName=='sectionOne.topBanner'){
                 updateFields = result.sectionOne;
                 updateFields.topBanner = newFilename
                 updatedFields = {sectionOne:updateFields}
               }else if(attrName=='sectionThree.bannerImage'){
                 updateFields = result.sectionThree;
-                updateFields.topBanner = newFilename
+                updateFields.bannerImage = newFilename
                 updatedFields = {sectionThree:updateFields}   
+                console.log('sectionThree  #####################    ',newFilename,' updateFields ', updateFields);
               }else if(attrName=='sectionFour.bannerImage'){
                 updateFields = result.sectionFour;
-                updateFields.topBanner = newFilename
+                updateFields.bannerImage = newFilename;
                 updatedFields = {sectionFour:updateFields}   
+                console.log('sectionFour  #####################    ',newFilename,' updateFields ', updateFields);
               }else if(attrName=='sectionEight.bannerImage'){
                 updateFields = result.sectionEight;
-                updateFields.topBanner = newFilename
+                updateFields.bannerImage = newFilename;
+                console.log('sectionEight  #####################    ',newFilename,' updateFields ', updateFields);
                 updatedFields = {sectionEight:updateFields}   
               }
               console.log('updateFields    ',updateFields);
