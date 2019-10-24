@@ -10,3 +10,45 @@
         }
     }
 }
+
+.stepper--wrapper {
+    &.funeral--wrapper{
+        ::ng-deep {
+            .mat-stepper-horizontal{
+                .mat-horizontal-stepper-header-container{
+                    width: 65%;
+                    margin: 5px auto 40px auto;
+                    .mat-stepper-horizontal-line{
+                        top: 12px;
+                    }
+                }
+            }
+        }
+        .checkbox-label{
+            margin-bottom: 8px !important;
+            font-family: $font--lato--bold;
+            font-size: 16px;
+            color: #222324;
+
+        }
+       ::ng-deep{
+        .mat-checkbox {
+            .mat-checkbox-layout {
+                .mat-checkbox-inner-container{
+                    margin-right: 10px;
+                    color: #222425;
+                }                
+            }
+            .mat-checkbox-label{
+                margin-right: 30px;  
+                font-family: $font--lato--regular;  
+            }
+        }
+       }
+       
+    }
+    .mb--5{
+        margin-bottom: 5px;
+    }
+}
+
