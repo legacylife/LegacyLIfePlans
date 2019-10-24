@@ -191,11 +191,12 @@ getPageDetails = (query = {}, search = false) => {
           ctrl.controls['LLPMembers'].setValue(this.row.facts.LLPMembers ? this.row.facts.LLPMembers : "")
           ctrl.controls['referralConnection'].setValue(this.row.facts.referralConnection ? this.row.facts.referralConnection : "")
         }
+        console.log('Six',this.row.sectionSix,'row',this.row)
         if(this.row.sectionSix){
-          this.sectionSix = this.row.sectionSix;
+         // this.sectionSix = this.row.sectionSix;
             const sectionSixctrl = this.getFormGroup('sectionSix')
-            sectionSixctrl.controls['title'].setValue(this.sectionSix.title ? this.sectionSix.title : "")
-            sectionSixctrl.controls['subTitle'].setValue(this.sectionSix.subTitle ? this.sectionSix.subTitle : "")
+            sectionSixctrl.controls['title'].setValue(this.row.sectionSix.title ? this.row.sectionSix.title : "")
+            sectionSixctrl.controls['subTitle'].setValue(this.row.sectionSix.subTitle ? this.row.sectionSix.subTitle : "")
         }
 
         if(this.row.testimonials){
@@ -228,7 +229,7 @@ getPageDetails = (query = {}, search = false) => {
               benefitsctrls.push(this.editBenefitsPoints(element.name))
             })
           }
-        
+          
           this.sectionEightPath = this.filePath+this.row.sectionEight.bannerImage;
         }
 
@@ -242,40 +243,31 @@ getPageDetails = (query = {}, search = false) => {
 updatePage(formData) {
     var query = {}; var proquery = {};     
     console.log('formData',formData);
-    let bannerImage = '';let bannerImageThree = '';let bannerImageFour = '';let bannerImageEight = '';
-    if(this.row.sectionOne && this.row.sectionOne.bannerImage){
-       bannerImage = this.row.sectionOne.bannerImage;
-    }
-    if(this.row.sectionThree && this.row.sectionThree.bannerImage){
-      bannerImageThree = this.row.sectionThree.bannerImage;
-    }
-    if(this.row.sectionFour && this.row.sectionFour.bannerImage){
-      bannerImageFour = this.row.sectionFour.bannerImage;
-    }    
-    if(this.row.sectionEight && this.row.sectionEight.bannerImage){
-      bannerImageEight = this.row.sectionEight.bannerImage;
-    }  
-  
+              
     let pageData = {
       pageFor : 'advisor',
       sectionOne: ({
         "title": formData.sectionOne.title,
         "middleTitle": formData.sectionOne.middleTitle,
         "subTitle": formData.sectionOne.subTitle,
-        "topBanner": bannerImage,
+        "topBanner": this.row.sectionOne.topBanner,
       }),
       sectionTwo: this.advisorCmsForm.controls['sectionTwo'].value,
       sectionThree: ({
         "title": formData.sectionThree.title,
         "subTitle": formData.sectionThree.subTitle,
-        "bannerImage": bannerImageThree,
+        "bannerImage": this.row.sectionThree.bannerImage,
       }),
       sectionFour: ({
         "title": formData.sectionFour.title,
         "subTitle": formData.sectionFour.subTitle,
-        "bannerImage": bannerImageFour,
+        "bannerImage": this.row.sectionFour.bannerImage,
       }),
       sectionFive: this.advisorCmsForm.controls['sectionFive'].value,
+      sectionSix: ({
+        "title":formData.sectionSix.title,
+        "subTitle":formData.sectionSix.subTitle,
+      }),
       facts: ({
         "title":formData.facts.title,
         "subTitle":formData.facts.subTitle,
@@ -288,13 +280,13 @@ updatePage(formData) {
       sectionEight: ({
         "title": formData.sectionEight.title,
         "subTitle": formData.sectionEight.subTitle,
-        "bannerImage": bannerImageEight,
+        "bannerImage":this.row.sectionEight.bannerImage,
         "benefitsPoints": formData.sectionEight.benefitsPoints,
       }),
       testimonials: this.advisorCmsForm.controls['testimonials'].value,
       status:"Active"
     }
-    
+    console.log('pageData',pageData);
     // if(this.uploaderProfilePhoto.getNotUploadedItems().length){
     //   this.snack.open("Please wait files uploading is in process..."+this.uploaderProfilePhoto.getNotUploadedItems().length, 'OK', { duration: 4000 })
     // }else{
@@ -440,7 +432,6 @@ get testimonialsArray() {
 }
 
 editTestimonials(name,profilePhoto,certifications,comment) {
-  console.log('profilePhoto',profilePhoto);
   return this.fb.group({
     name: [name, Validators.required],
     profilePhoto: [profilePhoto],
