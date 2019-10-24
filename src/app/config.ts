@@ -14,7 +14,7 @@ if(window.location.hostname.indexOf("localhost") > -1){ // local server
 }
 else if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") > -1 || window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com:8080") > -1){ // client server
   serverUrlEnv = "http://ec2-3-212-172-15.compute-1.amazonaws.com:8080"  
-  stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
+  stripeSecretKey = "sk_test_ni2JhTNSaNPgEZVHeiciAVVs00YF0EGLTR"
 }
 else if(window.location.hostname.indexOf("ec2-3-209-230-58.compute-1.amazonaws.com") > -1){ // test server
   serverUrlEnv = "http://ec2-3-209-230-58.compute-1.amazonaws.com"  
@@ -22,7 +22,7 @@ else if(window.location.hostname.indexOf("ec2-3-209-230-58.compute-1.amazonaws.c
 }
 else {  //dev server
   serverUrlEnv = "http://ec2-3-212-172-15.compute-1.amazonaws.com:8080" 
-  stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
+  stripeSecretKey = "sk_test_ni2JhTNSaNPgEZVHeiciAVVs00YF0EGLTR"
 }
 
 if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") > -1 || window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com:8080") > -1 )
