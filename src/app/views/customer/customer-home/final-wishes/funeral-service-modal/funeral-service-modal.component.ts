@@ -11,6 +11,7 @@ import { egretAnimations } from 'app/shared/animations/egret-animations';
 export class FuneralServiceModalComponent implements OnInit {
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
+  thirdFormGroup: FormGroup;
   firstServicesSec = true;
   allServicesSec = false;
   serviceOther = false;
@@ -20,6 +21,8 @@ export class FuneralServiceModalComponent implements OnInit {
   readingsSec = false;
   musiciansSec = false;
   pallbearersSec = false;
+  visualTribute = false;
+  uploadDocAndLoc = false;
 
 
 
@@ -50,6 +53,9 @@ export class FuneralServiceModalComponent implements OnInit {
     });
     this.secondFormGroup = this._formBuilder.group({
       secondCtrl: ['', Validators.required]
+    });
+    this.thirdFormGroup = this._formBuilder.group({
+      thirdCtrl: ['', Validators.required]
     });
 
   }
@@ -131,6 +137,28 @@ pallbearersChange(field) {
     this.pallbearersSec = false;
   }
 }
+
+
+vtChange(eve) {
+  let getVtVal = eve.value;
+  if (getVtVal == 'yes'){
+    this.visualTribute = true;
+  }else{
+    this.visualTribute = false;
+  }
+  
+}
+
+prepareVtChange(selectedval) {
+  let getVtVal = selectedval.value;
+  if (getVtVal == 'yes'){
+    this.uploadDocAndLoc = true;
+  }else{
+    this.uploadDocAndLoc = false;
+  }
+  
+}
+
 
 
 

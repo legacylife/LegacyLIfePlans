@@ -5,6 +5,9 @@
   </button>
 </div>
 
+
+<!-- First form -->
+
 <form class="llp-form-wrapper" [formGroup]="selectAnyOneFormGroup" *ngIf="firstServicesSec"
   [@animate]="{value:'*',params:{delay:'100ms',scale:'.8', y:'-100px'}}">
   <div class="ll--modal--body">
@@ -24,6 +27,9 @@
   </div>
 </form>
 
+
+<!-- Stepper start  here -->
+
 <div *ngIf="allServicesSec" [@animate]="{value:'*',params:{delay:'100ms',scale:'.8', x:'-100px'}}">
   <div class="ll--modal--body idbox--modal--hgt">
     <div fxLayout="row wrap">
@@ -33,7 +39,7 @@
           <mat-horizontal-stepper labelPosition="bottom" #stepper>
             <mat-step [stepControl]="firstFormGroup">
 
-              <!-- step - 1 -->
+            <!-- step - 1 -->
               <form [formGroup]="firstFormGroup" class="llp-form-wrapper">
                 <div fxLayout="row wrap">
 
@@ -61,7 +67,7 @@
                   </div>
 
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
-                    <mat-radio-group class="llp-radio" aria-label="Select an option">
+                    <mat-radio-group class="llp-radio mb-0" aria-label="Select an option">
                       <div class="checkbox-label">The casket will be:</div>
                       <mat-radio-button value="1">Closed </mat-radio-button>
                       <mat-radio-button value="2">Open</mat-radio-button>
@@ -69,18 +75,13 @@
                   </div>
 
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
-                    <mat-radio-group class="llp-radio" aria-label="Select an option">
-                      <div class="checkbox-label">The deceased will wear:</div>
+                    <mat-radio-group class="llp-radio mb-0 mt-1" aria-label="Select an option">
                       <mat-form-field class="full-width no-mar">
-                        <textarea matInput placeholder="Wear description"></textarea>
+                        <textarea matInput placeholder="The deceased will wear:"></textarea>
                       </mat-form-field>
-
                     </mat-radio-group>
                   </div>
-
-
                 </div>
-
                 <div class="ll--modal--footer text-center">
                   <button mat-raised-button class="llp--secondary--btn mr-1" (click)="backToFirst()">Back</button>
                   <button mat-raised-button class="llp--primary--btn" matStepperNext>Next</button>
@@ -89,13 +90,13 @@
             </mat-step>
 
 
-
+            <!-- step - 2 -->
             <mat-step [stepControl]="secondFormGroup" optional>
               <form [formGroup]="secondFormGroup" class="llp-form-wrapper">
                 <div fxLayout="row wrap">
 
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
-                    <mat-radio-group class="llp-radio" aria-label="Select an option">
+                    <mat-radio-group class="llp-radio mb-0" aria-label="Select an option">
                       <div class="checkbox-label">Service participants:</div>
 
                       <div fxLayout="row wrap">
@@ -151,6 +152,23 @@
                             <textarea matInput placeholder="Pallbearers"></textarea>
                           </mat-form-field>
                         </div>
+
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
+                          class="mt-1">
+                          <mat-form-field class="full-width no-mar ">
+                            <textarea matInput
+                              placeholder="The following readings, poems, hymns, and music will be used during the service:"></textarea>
+                          </mat-form-field>
+                        </div>
+
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
+                          class="mt-1">
+                          <mat-form-field class="full-width no-mar ">
+                            <textarea matInput
+                              placeholder="The following flowers will be used for the service:"></textarea>
+                          </mat-form-field>
+                        </div>
+
                       </div>
 
                     </mat-radio-group>
@@ -159,16 +177,80 @@
                 </div>
 
                 <div class="ll--modal--footer text-center">
-                  <button mat-raised-button class="llp--secondary--btn ml-1" matStepperPrevious>Back</button>
+                  <button mat-raised-button class="llp--secondary--btn" matStepperPrevious>Back</button>
                   <button mat-raised-button class="llp--primary--btn" matStepperNext>Next</button>
                 </div>
               </form>
             </mat-step>
-            <mat-step>
-              You are now done.
-              <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button (click)="stepper.reset()">Reset</button>
+
+
+
+            <!-- step - 3 -->
+            <mat-step [stepControl]="thirdFormGroup">
+              <form [formGroup]="thirdFormGroup" class="llp-form-wrapper">
+
+                <div fxLayout="row wrap">
+
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+                    <mat-radio-group class="llp-radio" aria-label="Select an option">
+                      <div class="checkbox-label">Use floral arrangements service?:</div>
+                      <mat-radio-button value="1">Yes </mat-radio-button>
+                      <mat-radio-button value="2">No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+                    <mat-radio-group class="llp-radio" aria-label="Select an option">
+                      <div class="checkbox-label">I would like a visual tribute:</div>
+                      <mat-radio-button (change)="vtChange($event)" value="yes">Yes </mat-radio-button>
+                      <mat-radio-button (change)="vtChange($event)" value="no">No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
+                    *ngIf="visualTribute">
+                    <mat-form-field class="full-width no-mar ">
+                      <textarea matInput
+                        placeholder="The following people will help prepare the visual tribute:"></textarea>
+                    </mat-form-field>
+                  </div>
+
+
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+                    <mat-radio-group class="llp-radio" aria-label="Select an option">
+                      <div class="checkbox-label">I have prepared a visual tribute:</div>
+                      <mat-radio-button (change)="prepareVtChange($event)" value="yes">Yes </mat-radio-button>
+                      <mat-radio-button (change)="prepareVtChange($event)" value="no">No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
+                    *ngIf="uploadDocAndLoc">
+                    <div class="upload--buss--docs--sec">
+                      <label>Upload your pet documents *</label>
+                      <div class="upload--box ">
+                        <input type="file">
+                        <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                        <div class="select--file">Select file from your computer</div>
+                      </div>
+                      <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+                    </div>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
+                    *ngIf="uploadDocAndLoc">
+                    <mat-form-field class="full-width no-mar pl-1">
+                      <textarea matInput placeholder="Location of the document:"></textarea>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+                    <mat-form-field class="full-width no-mar ">
+                      <textarea matInput placeholder="Additional plans and arrangements:"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </form>
+              <div class="ll--modal--footer text-center">
+                <button class="llp--secondary--btn" mat-button matStepperPrevious>Back</button>
+                <button class="llp--primary--btn" mat-button>Submit</button>
               </div>
             </mat-step>
           </mat-horizontal-stepper>
@@ -177,9 +259,4 @@
       </div>
     </div>
   </div>
-
-  <!-- <div class="ll--modal--footer text-center">
-        <button mat-raised-button class="llp--secondary--btn ml-1" (click)="backToFirst()">Back</button>
-        <button mat-raised-button class="llp--primary--btn">Save</button>        
-      </div> -->
 </div>
