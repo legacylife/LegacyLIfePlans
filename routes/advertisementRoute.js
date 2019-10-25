@@ -181,7 +181,7 @@ function addEnquiryReply(req, res) {
               })
             }
             let uniqueId = Math.random().toString(36).slice(2)
-            advertisement.updateOne({_id:query._id}, {fromDate:fromDate,toDate:toDate,adminReply:adminReplyData,uniqueId:uniqueId}, function (err, logDetails) {
+            advertisement.updateOne({_id:query._id}, {fromDate:proquery.fromDate,toDate:proquery.toDate,adminReply:adminReplyData,uniqueId:uniqueId}, function (err, logDetails) {
               if (err) {
                 res.send(resFormat.rError(err))
               } else {
