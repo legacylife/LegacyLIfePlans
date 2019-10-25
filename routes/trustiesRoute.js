@@ -300,9 +300,11 @@ function trusteePermissionsUpdate(req, res){
         trust.findOne({ _id: documentId},fields, function (err, trustDetails) {
          
           let updateData = {};
+          let updateArray = [];
+          let oldvalues = [];
           if(key=='LegacyLifeLettersMessagesManagement' && updateExtra.letterId){
-            var oldvalues = trustDetails.userAccess.LegacyLifeLettersMessagesManagement;
-            let updateArray = oldvalues;let updateObj = {};
+            oldvalues = trustDetails.userAccess.LegacyLifeLettersMessagesManagement;
+            updateArray = oldvalues;let updateObj = {};
           if(oldvalues.length>0){
             let updateVl =  _.findIndex(oldvalues, function(o) { return o.letterId == updateExtra.letterId; });
             if(updateVl>=0){
@@ -313,6 +315,7 @@ function trusteePermissionsUpdate(req, res){
                           updateArray = oldvalues;
             }else{
               updateArray = oldvalues;
+              console.log("updated>>>>>>>>>>>>>",updateArray)
               updateObj = {"letterId" : mongoose.Types.ObjectId(updateExtra.letterId),
                             "access" : value,
                             "updatedOn" : new Date(),

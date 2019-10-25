@@ -150,17 +150,45 @@ function LettersMessageList(req, res) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-         // Trustee.find(trusteeQuery,{userAccess:1}, function(err, trusteeRecords) {
-          let totalTrusteeRecords = 0;
-          let lettersMessagesList = lettersMessagesListTemp;
-          //  let lettersMessagesList = map(lettersMessagesListTemp,  (row, index) => {
-          //   //  let updateVl = '5';_.findIndex(accessCount, function(o) { if( o == row._id) {return o[row._id]}else{ return 0}});
-          //    let updateVl =  getTrusteeFlag(row._id,trusteeQuery,loginUserId);
-          //    let newRow = Object.assign({}, row._doc, { "accessFlag": `${updateVl}` })
-          //    return newRow
-          //  });
-            res.send(resFormat.rSuccess({lettersMessagesList,totalRecords,totalTrusteeRecords}));
-       // })
+          console.log("trusteeQuery >>>>>>>>>>",trusteeQuery)
+
+         /*Trustee.aggregate([
+            { $match : trusteeQuery},
+            { $unwind :'$userAccess'},
+            { $project : { _id:0, LegacyLifeLettersMessagesManagement : '$userAccess.LegacyLifeLettersMessagesManagement' } }
+          ])*/
+
+          trusteeQuery.customerId = ObjectId(trusteeQuery.customerId)
+
+          Trustee.aggregate( [
+            { $match : trusteeQuery},
+            { $unwind :'$userAccess'},
+            { $project : { _id:0, LegacyLifeLettersMessagesManagement : '$userAccess.LegacyLifeLettersMessagesManagement' } }
+          ], function (err, trusteeRecords) {
+
+            let totalTrusteeRecords = 0;
+            let lettersMessagesList = lettersMessagesListTemp;
+            console.log("Trustee records >>>>>>>>>>",trusteeRecords)
+            res.send(resFormat.rSuccess({lettersMessagesList,totalRecords,totalTrusteeRecords,trusteeRecords}));
+            
+          })
+
+
+
+          /*Trustee.find(trusteeQuery,{userAccess:1,trustId:1}, function(err, trusteeRecords) {
+
+            console.log("Trustee records >>>>>>>>>>",trusteeRecords)
+
+            let totalTrusteeRecords = 0;
+            let lettersMessagesList = lettersMessagesListTemp;
+            /*let lettersMessagesList = map(lettersMessagesListTemp,  (row, index) => {
+            let updateVl = '5';_.findIndex(accessCount, function(o) { if( o == row._id) {return o[row._id]}else{ return 0}});
+              let updateVl =  getTrusteeFlag(row._id,trusteeQuery,loginUserId);
+              let newRow = Object.assign({}, row._doc, { "accessFlag": `${updateVl}` })
+              return newRow
+            });*/
+            //res.send(resFormat.rSuccess({lettersMessagesList,totalRecords,totalTrusteeRecords,trusteeRecords}));
+        //})
      }
     }).sort(order).skip(offset).limit(limit)
   })
