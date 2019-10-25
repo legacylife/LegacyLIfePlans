@@ -46,7 +46,7 @@ var constants = {
       clientId: ''
     }
   },
-  stripeSecretKey: "sk_test_ni2JhTNSaNPgEZVHeiciAVVs00YF0EGLTR",//sk_test_eXXvQMZIUrR3N1IEAqRQVTlw test server // sk_test_ni2JhTNSaNPgEZVHeiciAVVs00YF0EGLTR // client server
+  stripeSecretKey: "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk",//sk_test_eXXvQMZIUrR3N1IEAqRQVTlw test server // sk_test_ni2JhTNSaNPgEZVHeiciAVVs00YF0EGLTR // client server
 
   basicFolders: [
    "advisorDocs",
