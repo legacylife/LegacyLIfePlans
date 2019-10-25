@@ -32,7 +32,8 @@ export class LettersMessagesListingComponent implements OnInit {
   LegacyPermissionError:string="You don't have access to this section";
   instruction_data:any;
   instruction_data_flag:boolean=false;  
-  shareLegacFlag:boolean=false;  
+  shareLegacFlag:boolean=false;
+  trusteeLettersMessageRecords:any;  
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService,private sharedata: DataSharingService) {  }
 
   ngOnInit() {
@@ -81,6 +82,8 @@ export class LettersMessagesListingComponent implements OnInit {
         console.log(result.data)
       } else {
         this.lettersMessagesList = result.data.lettersMessagesList;
+        this.trusteeLettersMessageRecords = result.data.trusteeRecords;
+        console.log("lettersMessagesList >>>>>>>>",this.lettersMessagesList)
         if(this.shareLegacFlag){
           let lettersMessagesList = '';
           if(this.LegacyLifeLettersMessagesManagementSection=='now'){
@@ -118,6 +121,46 @@ export class LettersMessagesListingComponent implements OnInit {
       }
     });//.map(el => el)
     //return 'now';
+  }
+
+  getTrusteeCount(letterId){
+    
+
+    let abc = this.trusteeLettersMessageRecords;
+    let trusteeCount = 0;
+    var rebels = [];
+    //console.log("Trustee >>",abc)
+    /*if(abc && abc.length > 0){
+      rebels = abc.filter(function (val) {
+        console.log("Trustee count >>",val)
+        return val.letterId == letterId;
+      });
+    }*/
+    let count = 0;
+    const s =  this.trusteeLettersMessageRecords.map(f=>{
+      //console.log("new values22288888888 >>>>>>",f)  
+      
+      let abc = f.LegacyLifeLettersMessagesManagement.filter(
+        book => book.letterId == letterId && book.access == "now");
+        return abc.length;
+      /*f.LegacyLifeLettersMessagesManagement = f.LegacyLifeLettersMessagesManagement.filter(r=>{
+        console.log("new values2228 YYYYYYYYYYYYYY 8 >>>>>>",r)   
+        
+          return r.filter(m=> m.letterId == letterId)
+          
+        
+      })*/
+    })
+    
+    
+    let totalCount=0;
+    for (let i = 0; i > s.Length; i++)
+    {
+      console.log("asdlhfiasdyhfuiyasdefydasyfui>>>>>>>>>>",s[i])
+      totalCount += parseInt(s[i]);
+    }
+
+    return totalCount;
   }
 
 

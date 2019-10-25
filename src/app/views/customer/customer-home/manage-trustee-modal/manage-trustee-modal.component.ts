@@ -122,9 +122,13 @@ manageTrusteeSubmit(insert = null) {
     //return Object.keys(sectionName);
     //  console.log('value',this.letterId,'sectionName',sectionName)
     if(sectionName=='LegacyLifeLettersMessagesManagement'){
-        let filteredTyes = accessArray.LegacyLifeLettersMessagesManagement.filter(dtype =>{
+      let filteredTyes = [];
+      //alert(accessArray.LegacyLifeLettersMessagesManagement.length)
+      if(accessArray.LegacyLifeLettersMessagesManagement && accessArray.LegacyLifeLettersMessagesManagement.length > 0){
+        filteredTyes = accessArray.LegacyLifeLettersMessagesManagement.filter(dtype =>{
           return dtype.letterId === this.letterId
         }).map(el => el.access)[0]
+      }        
         return filteredTyes;
     }else{
       return accessArray[sectionName];
