@@ -668,7 +668,7 @@ async function checkUserOtp(req, res) {
           if(req.body.query.inviteCode){
             let invitesCodeExists = await Invite.findOne({ inviteCode: req.body.query.inviteCode, email:otpdata.username, inviteType: otpdata.userType });
             if( invitesCodeExists ) {
-              userInvitedById = invitesCodeExists.inviteById;
+              userInvitedById = ObjectId(invitesCodeExists.inviteById);
             }     
           }
           var user = new User()
@@ -677,7 +677,7 @@ async function checkUserOtp(req, res) {
           user.status = otpdata.status
           user.lastLoggedInOn = new Date();
           user.emailVerified = true;
-          user.invitedBy = ObjectId(userInvitedById);
+          user.invitedBy = userInvitedById;
           user.freeTrialPeriod = freeTrailPeriodObj;
           user.lockoutLegacyPeriod = '2';
           user.userSubscriptionEnddate = newDt;
