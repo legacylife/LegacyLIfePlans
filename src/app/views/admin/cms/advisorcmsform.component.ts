@@ -432,6 +432,7 @@ get testimonialsArray() {
 }
 
 editTestimonials(name,profilePhoto,certifications,comment) {
+  console.log('profilePhoto',profilePhoto);
   return this.fb.group({
     name: [name, Validators.required],
     profilePhoto: [profilePhoto],
