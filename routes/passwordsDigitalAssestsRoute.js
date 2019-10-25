@@ -478,8 +478,8 @@ function digitalPublicationFormUpdate(req, res) {
         res.send(resFormat.rError(result));
       } else {
         if (custData && custData._id) {
-          let resText = 'details  added';
-          if (custData.mediaType){
+          let resText = 'details added';
+          if (custData.title){
             resText = 'details updated';
           }
           let { proquery } = req.body;   
@@ -493,10 +493,10 @@ function digitalPublicationFormUpdate(req, res) {
               logData.fileId = custData._id;
               actitivityLog.updateActivityLog(logData);
               //let result = { "message": "Electronic media "+resText+" successfully" }
-              let message = resMessage.data( 607, [{key:'{field}',val:"Digital Publication Details"},{key:'{status}',val: resText}] )
+              let message = resMessage.data( 607, [{key:'{field}',val:"Digital Publication details"},{key:'{status}',val: resText}] )
               let result = { "message": message }
               //Update activity logs
-              allActivityLog.updateActivityLogs( fromId, toId, "Digital Publication Details "+resText, message, folderName, subFolderName )
+              allActivityLog.updateActivityLogs( fromId, toId, "Digital Publication details "+resText, message, folderName, subFolderName )
 
               res.status(200).send(resFormat.rSuccess(result))
             }
