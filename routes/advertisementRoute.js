@@ -364,6 +364,7 @@ async function completeTransaction( req, res ) {
       invoiceId = Buffer.from( String(invoice),'base64').toString('binary')
 
   let advertisementData = await advertisement.findOne({customerId: customerId, uniqueId: uniqueId}).populate('customerId','firstName lastName stripeCustomerId')
+  
   let OldAdminReply = advertisementData.adminReply
   let adminReply = advertisementData.adminReply.filter( elem => elem.status==='Pending' && elem.paymentDetails.invoiceId === invoiceId )
   let advertisementDetails = {}; 
@@ -384,6 +385,7 @@ async function completeTransaction( req, res ) {
           /*
           If advisor from date is today date and complete his payment then he should be directly sponsored advisor
           */
+          console.log("add data >>>>",advertisementData)
          console.log('advertisementData fromDate-=====>',advertisementData.fromDate)
           let updateStatus = advertisementData.sponsoredStatus;
           let dates = advertisementData.fromDate.toISOString().substring(0, 10);
