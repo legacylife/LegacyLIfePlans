@@ -88,12 +88,19 @@
         </mat-card-header>
         <div *ngIf="CelebrationLifeManagementSection=='now'">
         <mat-card-content *ngIf="!showCelebrationLifesListing && trusteeLegaciesAction">
-          <div class="build--ur--legacy" (click)="openFinalWishModal('Celebration of Life', true)">
+          <!-- <div class="build--ur--legacy" (click)="openFinalWishModal('Celebration of Life', true)">
+            <mat-icon>people</mat-icon>
+            <p>
+              <a>Add Celebration of Life</a>
+            </p>
+          </div> -->
+          <div class="build--ur--legacy" (click)="openCelebrationOfLifeModal()">
             <mat-icon>people</mat-icon>
             <p>
               <a>Add Celebration of Life</a>
             </p>
           </div>
+
         </mat-card-content>
         <mat-card-content class="appointees--wrapper" *ngIf="showCelebrationLifesListing">
           <div class="cust--user--details mt-1" *ngFor="let profileData of CelebrationLifesList; let i = index" [routerLink]="[dynamicRoute+'final-wishes-view', profileData._id]">

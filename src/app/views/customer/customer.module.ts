@@ -48,6 +48,7 @@ console.log("Customer module .....");
 /** Import themes */
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
 import { FuneralServiceModalComponent } from './customer-home/final-wishes/funeral-service-modal/funeral-service-modal.component';
+import { CelebrationofLifeComponent } from './customer-home/final-wishes/celebrationof-life/celebrationof-life.component';
   export class GlobalVariables {
   testVal = '#00bcd4';
   Quepal = {
@@ -110,12 +111,12 @@ import { FuneralServiceModalComponent } from './customer-home/final-wishes/funer
     CustomerSharedLegaciesComponent,CustomerLegaciesDetailsComponent,CustomerMyPeopleComponent,addTrusteeModalComponent,
     CustomerMyTrusteeComponent,CustomerHiredAdvisorComponent,CustomerProfDetailsComponent, SendAnEmailComponent,HireAdvisorComponent, 
     ProfAddTrusteeModalComponent,CustomerProfessionalsLandingComponent,ProfAdvisorListingComponent,ManageTrusteeModalComponent, 
-    FuneralServiceModalComponent
+    FuneralServiceModalComponent, CelebrationofLifeComponent
   ], providers: [
     MatDatepickerModule,UserAuthGuard,UserPreAuthGuard, CanDeactivateGuard,ProUserAuthGuard
   ], bootstrap: [CustomerSignupComponent],
   entryComponents: [ChangePassComponent,addTrusteeModalComponent, SendAnEmailComponent, 
-    HireAdvisorComponent,ProfAddTrusteeModalComponent,ManageTrusteeModalComponent, FuneralServiceModalComponent
+    HireAdvisorComponent,ProfAddTrusteeModalComponent,ManageTrusteeModalComponent, FuneralServiceModalComponent, CelebrationofLifeComponent
   ]
 })
 export class CustomerModule { }

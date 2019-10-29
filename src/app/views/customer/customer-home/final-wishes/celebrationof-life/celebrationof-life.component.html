@@ -1,0 +1,139 @@
+<div class="ll--modal--header">
+  Celebration of Life
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+
+<form [formGroup]="colFormGroup" class="llp-form-wrapper">
+  <div class="ll--modal--body idbox--modal--hgt">
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+        <div fxLayout="row wrap">
+
+          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+            <mat-radio-group class="llp-radio mb-0 mt-1">
+              <mat-form-field class="full-width no-mar">
+                <textarea matInput placeholder="Who will orchestrate or conduct the event?"></textarea>
+              </mat-form-field>
+            </mat-radio-group>
+          </div>
+          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+            <mat-radio-group class="llp-radio mb-0 mt-1">
+              <mat-form-field class="full-width no-mar">
+                <textarea matInput placeholder="Where should the event take place?"></textarea>
+              </mat-form-field>
+            </mat-radio-group>
+          </div>
+
+          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+            <mat-radio-group class="llp-radio mb-0 mt-1">
+              <div class="checkbox-label">Will there be a speaker?</div>
+              <mat-radio-button value="1">Yes </mat-radio-button>
+              <mat-radio-button value="2">No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+            <mat-radio-group class="llp-radio mb-0 mt-1">
+              <mat-form-field class="full-width no-mar">
+                <textarea matInput placeholder="Who?"></textarea>
+              </mat-form-field>
+            </mat-radio-group>
+          </div>
+
+          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+            <mat-radio-group class="llp-radio mb-0 mt-1">
+              <mat-form-field class="full-width no-mar">
+                <textarea matInput
+                  placeholder="Food and Beverages to be served (catered, potluck, menu items)"></textarea>
+              </mat-form-field>
+            </mat-radio-group>
+          </div>
+
+          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+            <mat-radio-group class="llp-radio mb-0 mt-1">
+              <mat-form-field class="full-width no-mar">
+                <textarea matInput placeholder="Music to be played"></textarea>
+              </mat-form-field>
+            </mat-radio-group>
+          </div>
+
+          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+            <mat-radio-group class="llp-radio mb-0 mt-1">
+              <mat-form-field class="full-width no-mar">
+                <textarea matInput
+                  placeholder="What group activities would be appropriate? Open reflections/tributes, readings, any highlights, games"></textarea>
+              </mat-form-field>
+            </mat-radio-group>
+          </div>
+
+
+          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
+            <div class="upload--buss--docs--sec">
+              <label>Upload your documents</label>
+              <div class="upload--box ">
+                <input type="file">
+                <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                <div class="select--file">Select file from your computer</div>
+              </div>
+              <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+            </div>
+          </div>
+          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+            <mat-form-field class="full-width no-mar ">
+              <textarea matInput placeholder="Location of the document:"></textarea>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+              <mat-radio-group class="llp-radio mb-0 mt-1">
+                <mat-form-field class="full-width no-mar">
+                  <textarea matInput
+                    placeholder="Mementos or keepsakes to be provided"></textarea>
+                </mat-form-field>
+              </mat-radio-group>
+            </div>
+
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+                <mat-radio-group class="llp-radio mb-0 mt-1">
+                    <div class="checkbox-label">People to invite</div>                  
+                  </mat-radio-group>               
+              </div>
+              <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
+                  <mat-form-field class="full-width">
+                      <input matInput type="text" placeholder="Name">
+                </mat-form-field> 
+              </div>
+              <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="">
+                  <mat-form-field class="full-width">
+                      <input matInput type="text" placeholder="Phone number">
+                </mat-form-field>
+              </div>
+              <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="100" fxFlex.xl="100" class="">
+                  <mat-form-field class="full-width">
+                      <input matInput type="text" placeholder="Email">
+                </mat-form-field>
+              </div>
+              <div fxFlex.xs="100">
+                  <div class="add--new">
+                    <mat-icon>add_circle</mat-icon>
+                    Add New
+                  </div>
+                </div>
+
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn">Save</button>
+  </div>
+</form>
