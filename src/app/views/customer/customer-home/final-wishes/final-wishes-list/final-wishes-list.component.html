@@ -53,7 +53,13 @@
         </mat-card-header>
         <div *ngIf="ObituaryManagementSection=='now'">
         <mat-card-content *ngIf="!showObituaryListing && trusteeLegaciesAction">
-          <div class="build--ur--legacy" (click)="openFinalWishModal('Obituary', true)">
+          <!-- <div class="build--ur--legacy" (click)="openFinalWishModal('Obituary', true)">
+            <mat-icon>library_add</mat-icon>
+            <p>
+              <a>Add Obituary</a>
+            </p>
+          </div> -->
+          <div class="build--ur--legacy" (click)="openObituaryModal()">
             <mat-icon>library_add</mat-icon>
             <p>
               <a>Add Obituary</a>
