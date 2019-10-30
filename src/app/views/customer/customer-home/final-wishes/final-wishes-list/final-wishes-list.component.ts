@@ -12,6 +12,7 @@ import { DataSharingService } from 'app/shared/services/data-sharing.service';
 import { FuneralServiceModalComponent } from '../funeral-service-modal/funeral-service-modal.component';
 import { CelebrationofLifeComponent } from '../celebrationof-life/celebrationof-life.component';
 import { ObituaryModalComponent } from '../obituary-modal/obituary-modal.component';
+import { FuneralExpensesModalComponent } from '../funeral-expenses-modal/funeral-expenses-modal.component';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './final-wishes-list.component.html',
@@ -201,6 +202,13 @@ openCelebrationOfLifeModal() {
 
 openObituaryModal() {
   let dialogRef: MatDialogRef<any> = this.dialog.open(ObituaryModalComponent, {
+    width: '720px',
+    disableClose: true, 
+  }) 
+}
+
+openFuneralExpensesModal() {
+  let dialogRef: MatDialogRef<any> = this.dialog.open(FuneralExpensesModalComponent, {
     width: '720px',
     disableClose: true, 
   }) 

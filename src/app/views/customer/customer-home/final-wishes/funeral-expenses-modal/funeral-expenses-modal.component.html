@@ -1,0 +1,175 @@
+<div class="ll--modal--header">
+  Funeral Expenses
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+
+<form [formGroup]="colFormGroup" class="llp-form-wrapper">
+  <div class="ll--modal--body idbox--modal--hgt">
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+        <mat-radio-group class="llp-radio mb-0" aria-label="Select an option">
+          <div class="checkbox-label">Select any one:</div>
+
+          <div fxLayout="row wrap">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
+              <mat-checkbox> I have made prearrangements with the funeral home. </mat-checkbox>
+            </div>
+          </div>
+          <div fxLayout="row wrap">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
+              <mat-form-field class="full-width">
+                <textarea matInput placeholder="Funeral home"></textarea>
+              </mat-form-field>
+            </div>
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+              <mat-form-field class="full-width">
+                <textarea matInput placeholder="Funeral director"></textarea>
+              </mat-form-field>
+            </div>
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
+              <mat-form-field class="full-width">
+                <textarea matInput placeholder="Address"></textarea>
+              </mat-form-field>
+            </div>
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+              <mat-form-field class="full-width">
+                <textarea matInput placeholder="Phone"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row wrap">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
+              <mat-checkbox> I have a preneed contract </mat-checkbox>
+            </div>
+          </div>
+          <div fxLayout="row wrap">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
+              <mat-form-field class="full-width">
+                <textarea matInput placeholder="The preneed contract is located:"></textarea>
+              </mat-form-field>
+            </div>
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+              <mat-radio-group class="llp-radio mb-0" aria-label="Select an option">
+                <div class="checkbox-label">Does the preneed contract guarantee the price of stated goods and services?:
+                </div>
+                <mat-checkbox class="mr-1"> Yes </mat-checkbox>
+                <mat-checkbox> No </mat-checkbox>
+              </mat-radio-group>
+            </div>
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+              <mat-form-field class="full-width mt-1">
+                <mat-label>The following funeral services have been prepaid</mat-label>
+                <mat-select [formControl]="toppings" multiple>
+                  <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <div fxLayout="row wrap">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
+              <mat-checkbox> I have a price list for all funeral goods and services provided by the funeral home.
+              </mat-checkbox>
+            </div>
+          </div>
+          <div fxLayout="row wrap">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Total Amount">
+              </mat-form-field>
+            </div>
+          </div>
+
+
+          <div fxLayout="row wrap">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
+              <mat-checkbox> I have to pay on death (POD) account to be used to pay for funeral expenses.
+              </mat-checkbox>
+            </div>
+          </div>
+          <div fxLayout="row wrap">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Total Amount:">
+              </mat-form-field>
+            </div>
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Amount in the account:">
+              </mat-form-field>
+            </div>
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+              <mat-form-field class="full-width">
+                <textarea matInput placeholder="Financial Institution"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div fxLayout="row wrap">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
+              <mat-checkbox> I have pooled funeral trust or funeral insurance policy
+              </mat-checkbox>
+            </div>
+          </div>
+          <div fxLayout="row wrap">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Account/Policy:">
+              </mat-form-field>
+            </div>
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Amount in the trust or policy:">
+              </mat-form-field>
+            </div>
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Insurance company:">
+              </mat-form-field>
+            </div>
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Contact info:">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div fxLayout="row wrap">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="cust--gapp">
+              <div class="upload--buss--docs--sec">
+                <label>Please upload any relatives documents, policies, and files to this section to further help your
+                  executor and trustees</label>
+                <div class="upload--box ">
+                  <input type="file">
+                  <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                  <div class="select--file">Select file from your computer</div>
+                </div>
+                <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+              </div>
+            </div>
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+              <mat-form-field class="full-width no-mar ">
+                <textarea matInput placeholder=" comment:"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div fxLayout="row wrap">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
+              <mat-checkbox> I do not have any funeral pre-arrangements
+              </mat-checkbox>
+            </div>
+          </div>
+
+        </mat-radio-group>
+      </div>
+    </div>
+  </div>
+
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn">Save</button>
+  </div>
+</form>
