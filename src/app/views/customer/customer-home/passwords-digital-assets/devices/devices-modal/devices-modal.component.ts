@@ -48,6 +48,7 @@ export class DevicesModalComponent implements OnInit {
     private router: Router, private userapi: UserAPIService) { }
 
   ngOnInit() {    
+
     this.userId = localStorage.getItem("endUserId");
     this.deviceListing = DevicesList;
     this.passwordType = PasswordType;
@@ -83,19 +84,31 @@ export class DevicesModalComponent implements OnInit {
        });   
       this.selectedProfileId = "";        
     }
-
-    this.lock = new PatternLock('#patternHolder', {
-      allowRepeat: false,
-      radius: 22, margin: 12,
-      //  onDraw:this.savePattren
-      onDraw: (pattern) => {
-        document.getElementById('patternHolder').className = 'hides';
-        this.setPattern(pattern, '#patternHolder7');
-       // this.savePattren(pattern);
-      }
-    });
    
+   // this.lock = new PatternLock('#patternHolder', {
+    //   allowRepeat: false,
+    //   radius: 22, margin: 12,
+    //   //  onDraw:this.savePattren
+    //   onDraw: (pattern) => {
+    //     document.getElementById('patternHolder').className = 'hides1';
+    //     this.setPattern(pattern, '#patternHolder7');
+    //    // this.savePattren(pattern);
+    //   }
+    // });
+  
     this.getDeviceView();
+  }
+
+   ngAfterViewInit(){
+     //http://ignitersworld.com/lab/patternLock.html
+      this.lock = new PatternLock('#patternHolder',{
+            allowRepeat : false,
+            radius: 22, margin: 12,
+            onDraw: (pattern) => {
+              document.getElementById('patternHolder').className = 'hides';
+              this.setPattern(pattern, '#patternHolder7');
+            }
+        });
   }
 
   //  ngAfterViewInit(){
@@ -299,10 +312,10 @@ export class DevicesModalComponent implements OnInit {
           if(this.deviceList.passwordPattern!='' && this.deviceList.passwordType=='3'){
             this.DevicesForm.controls['pattrenTemp'].setValue('');
            //If we need to show edit the popup pattern this.setPattern(this.deviceList.passwordPattern, '#patternHolder7');
-            this.IsVisible= false;
+            //8this.IsVisible= false;
           }
           else {
-            this.IsVisible= true;
+           //8 this.IsVisible= true;
           }
         }
       }
