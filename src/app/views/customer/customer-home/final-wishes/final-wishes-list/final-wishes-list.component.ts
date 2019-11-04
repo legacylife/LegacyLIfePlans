@@ -10,6 +10,9 @@ import { FinalWishesFormModalComponent } from './../final-wishes-form-modal/fina
 import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-trustee-modal.component';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
 import { FuneralServiceModalComponent } from '../funeral-service-modal/funeral-service-modal.component';
+import { CelebrationofLifeComponent } from '../celebrationof-life/celebrationof-life.component';
+import { ObituaryModalComponent } from '../obituary-modal/obituary-modal.component';
+import { FuneralExpensesModalComponent } from '../funeral-expenses-modal/funeral-expenses-modal.component';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './final-wishes-list.component.html',
@@ -184,13 +187,34 @@ export class FinalWishesComponent implements OnInit {
 
 // New final wishes (start here - 23 Oct 2019)
 
-openFuneralServiceModal(title,code,isNew?) {
+openFuneralServiceModal() {
   let dialogRef: MatDialogRef<any> = this.dialog.open(FuneralServiceModalComponent, {
     width: '720px',
     disableClose: true, 
   }) 
-
 }
+openCelebrationOfLifeModal() {
+  let dialogRef: MatDialogRef<any> = this.dialog.open(CelebrationofLifeComponent, {
+    width: '720px',
+    disableClose: true, 
+  }) 
+}
+
+openObituaryModal() {
+  let dialogRef: MatDialogRef<any> = this.dialog.open(ObituaryModalComponent, {
+    width: '720px',
+    disableClose: true, 
+  }) 
+}
+
+openFuneralExpensesModal() {
+  let dialogRef: MatDialogRef<any> = this.dialog.open(FuneralExpensesModalComponent, {
+    width: '720px',
+    disableClose: true, 
+  }) 
+}
+
+
 
 
 

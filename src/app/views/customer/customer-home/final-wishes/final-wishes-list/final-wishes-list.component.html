@@ -10,7 +10,7 @@
       </mat-card>
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
-          <mat-card-title class="m-0">Funeral Plans</mat-card-title>
+          <mat-card-title class="m-0" (click)="openFuneralExpensesModal()">Funeral Plans</mat-card-title>
           <div *ngIf="showFuneralPlansListing && trusteeLegaciesAction && FuneralPlansManagementSection=='now'">
               <a class="no--of--trustee" *ngIf="showTrusteeCnt"  (click)="openManageTrusteeModal('Funeral Plans','FuneralPlansManagement', true)">{{trusteeFuneralCnt}} Trustees</a>   
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openFinalWishModal('Funeral Plans', true)">+ Add</button>
@@ -42,6 +42,24 @@
           <div>{{LegacyPermissionError}}</div>
       </mat-card-content>
       </mat-card>
+
+
+      <mat-card class="empty--section p-0">
+          <mat-card-header class="m-0">
+            <mat-card-title class="m-0" >Funeral Expenses</mat-card-title>
+            <div>
+              <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openFuneralExpensesModal()">+ Add</button>
+            </div>
+          </mat-card-header>
+          <mat-card-content>
+              <div class="build--ur--legacy" (click)="openFuneralExpensesModal()">
+                <mat-icon>person_pin</mat-icon>
+                <p>
+                  <a>Add Funeral Expenses </a>
+                </p>
+              </div>
+            </mat-card-content>
+        </mat-card>
           
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
@@ -53,7 +71,13 @@
         </mat-card-header>
         <div *ngIf="ObituaryManagementSection=='now'">
         <mat-card-content *ngIf="!showObituaryListing && trusteeLegaciesAction">
-          <div class="build--ur--legacy" (click)="openFinalWishModal('Obituary', true)">
+          <!-- <div class="build--ur--legacy" (click)="openFinalWishModal('Obituary', true)">
+            <mat-icon>library_add</mat-icon>
+            <p>
+              <a>Add Obituary</a>
+            </p>
+          </div> -->
+          <div class="build--ur--legacy" (click)="openObituaryModal()">
             <mat-icon>library_add</mat-icon>
             <p>
               <a>Add Obituary</a>
@@ -88,12 +112,19 @@
         </mat-card-header>
         <div *ngIf="CelebrationLifeManagementSection=='now'">
         <mat-card-content *ngIf="!showCelebrationLifesListing && trusteeLegaciesAction">
-          <div class="build--ur--legacy" (click)="openFinalWishModal('Celebration of Life', true)">
+          <!-- <div class="build--ur--legacy" (click)="openFinalWishModal('Celebration of Life', true)">
+            <mat-icon>people</mat-icon>
+            <p>
+              <a>Add Celebration of Life</a>
+            </p>
+          </div> -->
+          <div class="build--ur--legacy" (click)="openCelebrationOfLifeModal()">
             <mat-icon>people</mat-icon>
             <p>
               <a>Add Celebration of Life</a>
             </p>
           </div>
+
         </mat-card-content>
         <mat-card-content class="appointees--wrapper" *ngIf="showCelebrationLifesListing">
           <div class="cust--user--details mt-1" *ngFor="let profileData of CelebrationLifesList; let i = index" [routerLink]="[dynamicRoute+'final-wishes-view', profileData._id]">

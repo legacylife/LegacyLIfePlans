@@ -1,0 +1,76 @@
+<div class="ll--modal--header">
+  Obituary
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+
+<form [formGroup]="colFormGroup" class="llp-form-wrapper">
+  <div class="ll--modal--body idbox--modal--hgt">
+    <div fxLayout="row wrap">
+
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+        <mat-radio-group class="llp-radio" aria-label="Select an option">
+          <div class="checkbox-label">Label:</div>
+          <mat-checkbox class="mr-1">I don’t have an obituary
+          </mat-checkbox>
+          <mat-checkbox>I have prepared an obituary.
+          </mat-checkbox>
+          <mat-form-field class="full-width mt-1 no-mar">
+            <textarea matInput placeholder="Who should help prepare the obituary"></textarea>
+          </mat-form-field>
+        </mat-radio-group>
+      </div>
+
+
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+        <mat-radio-group class="llp-radio">
+          <div class="checkbox-label">Is there a photo(s) included with the obituary?
+          </div>
+          <mat-radio-button value="1">Yes </mat-radio-button>
+          <mat-radio-button value="2">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+        <div class="upload--buss--docs--sec">
+          <label>Upload your documents</label>
+          <div class="upload--box ">
+            <input type="file">
+            <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+            <div class="select--file">Select file from your computer</div>
+          </div>
+          <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+        </div>
+      </div>
+
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+        <mat-radio-group class="llp-radio mb-0 mt-1">
+          <mat-form-field class="full-width no-mar">
+            <textarea matInput placeholder="The obituary should appear in the following newspapers:"></textarea>
+          </mat-form-field>
+        </mat-radio-group>
+      </div>
+
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+        <mat-radio-group class="llp-radio mb-0 mt-1">
+          <mat-form-field class="full-width no-mar">
+            <textarea matInput placeholder="Electronic copy of the obituary should be sent to:"></textarea>
+          </mat-form-field>
+        </mat-radio-group>
+      </div>
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+        <mat-radio-group class="llp-radio mb-0 mt-1">
+          <mat-form-field class="full-width no-mar">
+            <textarea matInput placeholder="The following information is to be included in the obituary:"></textarea>
+          </mat-form-field>
+        </mat-radio-group>
+      </div>
+
+
+
+    </div>
+  </div>
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn">Save</button>
+  </div>
+</form>
