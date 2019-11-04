@@ -6,7 +6,6 @@ let officeConnectionLinkEnv = ""
 let mailchimpLinkEnv = ""
 let bucketName = ""
 let stripeSecretKey= ""
-
 //localhost
 if(window.location.hostname.indexOf("localhost") > -1){ // local server
   serverUrlEnv = "http://localhost:8080"  
