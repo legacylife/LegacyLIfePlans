@@ -1,0 +1,262 @@
+<div class="ll--modal--header">
+  Funeral or Memorial Service Arrangements
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+
+
+<!-- First form -->
+
+<form class="llp-form-wrapper" [formGroup]="selectAnyOneFormGroup" *ngIf="firstServicesSec"
+  [@animate]="{value:'*',params:{delay:'100ms',scale:'.8', y:'-100px'}}">
+  <div class="ll--modal--body">
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="any--option--sec">
+        <mat-radio-group aria-label="Select an option" class="llp-radio" (change)="onChange($event.value)">
+          <div class="checkbox-label fnt--18 mb-1">Select any one</div>
+          <mat-radio-button class="mb-1" *ngFor="let foptions of funeralOptions" [value]="foptions">
+            {{foptions}}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+  </div>
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn">Save</button>
+  </div>
+</form>
+
+
+<!-- Stepper start  here -->
+
+<div *ngIf="allServicesSec" [@animate]="{value:'*',params:{delay:'100ms',scale:'.8', x:'-100px'}}">
+  <div class="ll--modal--body idbox--modal--hgt">
+    <div fxLayout="row wrap">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+
+        <div class="stepper--wrapper funeral--wrapper">
+          <mat-horizontal-stepper labelPosition="bottom" #stepper>
+            <mat-step [stepControl]="firstFormGroup">
+
+            <!-- step - 1 -->
+              <form [formGroup]="firstFormGroup" class="llp-form-wrapper">
+                <div fxLayout="row wrap">
+
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+                    <mat-radio-group class="llp-radio" aria-label="Select an option">
+                      <div class="checkbox-label">The service will be for:</div>
+                      <mat-checkbox>Friends and family </mat-checkbox>
+                      <mat-checkbox>Private</mat-checkbox>
+                      <mat-checkbox (change)="otherChange('otherChecked')" formcontrolName="otherChecked">Other
+                      </mat-checkbox>
+
+                      <mat-form-field class="full-width mt-1 no-mar" *ngIf="serviceOther">
+                        <textarea matInput placeholder="Other"></textarea>
+                      </mat-form-field>
+
+                    </mat-radio-group>
+                  </div>
+
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+                    <mat-radio-group class="llp-radio" aria-label="Select an option">
+                      <div class="checkbox-label">The body:</div>
+                      <mat-radio-button value="1">Will be present </mat-radio-button>
+                      <mat-radio-button value="2">Will not be present</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+                    <mat-radio-group class="llp-radio mb-0" aria-label="Select an option">
+                      <div class="checkbox-label">The casket will be:</div>
+                      <mat-radio-button value="1">Closed </mat-radio-button>
+                      <mat-radio-button value="2">Open</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+                    <mat-radio-group class="llp-radio mb-0 mt-1" aria-label="Select an option">
+                      <mat-form-field class="full-width no-mar">
+                        <textarea matInput placeholder="The deceased will wear:"></textarea>
+                      </mat-form-field>
+                    </mat-radio-group>
+                  </div>
+                </div>
+                <div class="ll--modal--footer text-center">
+                  <button mat-raised-button class="llp--secondary--btn mr-1" (click)="backToFirst()">Back</button>
+                  <button mat-raised-button class="llp--primary--btn" matStepperNext>Next</button>
+                </div>
+              </form>
+            </mat-step>
+
+
+            <!-- step - 2 -->
+            <mat-step [stepControl]="secondFormGroup" optional>
+              <form [formGroup]="secondFormGroup" class="llp-form-wrapper">
+                <div fxLayout="row wrap">
+
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+                    <mat-radio-group class="llp-radio mb-0" aria-label="Select an option">
+                      <div class="checkbox-label">Service participants:</div>
+
+                      <div fxLayout="row wrap">
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
+                          class="mb--5">
+                          <mat-checkbox (change)="leaderChange('leaderChecked')" formcontrolName="leaderChecked">
+                            Ceremony leader </mat-checkbox>
+                          <mat-form-field class="full-width mt-1 no-mar" *ngIf="ceremonySec">
+                            <textarea matInput placeholder="Ceremony leader"></textarea>
+                          </mat-form-field>
+                        </div>
+
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
+                          class="mb--5">
+                          <mat-checkbox (change)="eulogistChange('eulogistChecked')" formcontrolName="eulogistChecked">
+                            Eulogist </mat-checkbox>
+                          <mat-form-field class="full-width mt-1 no-mar" *ngIf="eulogistSec">
+                            <textarea matInput placeholder="Eulogist"></textarea>
+                          </mat-form-field>
+                        </div>
+
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
+                          class="mb--5">
+                          <mat-checkbox (change)="reflectionsChange('reflectionsChecked')"
+                            formcontrolName="reflectionsChecked">Reflections </mat-checkbox>
+                          <mat-form-field class="full-width mt-1 no-mar" *ngIf="reflectionsSec">
+                            <textarea matInput placeholder="Reflections"></textarea>
+                          </mat-form-field>
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
+                          class="mb--5">
+                          <mat-checkbox (change)="readingsChange('readingsChecked')" formcontrolName="readingsChecked">
+                            Readings </mat-checkbox>
+                          <mat-form-field class="full-width mt-1 no-mar" *ngIf="readingsSec">
+                            <textarea matInput placeholder="Readings"></textarea>
+                          </mat-form-field>
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
+                          class="mb--5">
+                          <mat-checkbox (change)="musiciansChange('musiciansChecked')"
+                            formcontrolName="musiciansChecked">Musicians </mat-checkbox>
+                          <mat-form-field class="full-width mt-1 no-mar" *ngIf="musiciansSec">
+                            <textarea matInput placeholder="Musicians"></textarea>
+                          </mat-form-field>
+                        </div>
+
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
+                          class="mb--5">
+                          <mat-checkbox (change)="pallbearersChange('pallbearersChecked')"
+                            formcontrolName="pallbearersChecked">Pallbearers
+                          </mat-checkbox>
+                          <mat-form-field class="full-width mt-1 no-mar" *ngIf="pallbearersSec">
+                            <textarea matInput placeholder="Pallbearers"></textarea>
+                          </mat-form-field>
+                        </div>
+
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
+                          class="mt-1">
+                          <mat-form-field class="full-width no-mar ">
+                            <textarea matInput
+                              placeholder="The following readings, poems, hymns, and music will be used during the service:"></textarea>
+                          </mat-form-field>
+                        </div>
+
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
+                          class="mt-1">
+                          <mat-form-field class="full-width no-mar ">
+                            <textarea matInput
+                              placeholder="The following flowers will be used for the service:"></textarea>
+                          </mat-form-field>
+                        </div>
+
+                      </div>
+
+                    </mat-radio-group>
+                  </div>
+
+                </div>
+
+                <div class="ll--modal--footer text-center">
+                  <button mat-raised-button class="llp--secondary--btn" matStepperPrevious>Back</button>
+                  <button mat-raised-button class="llp--primary--btn" matStepperNext>Next</button>
+                </div>
+              </form>
+            </mat-step>
+
+
+
+            <!-- step - 3 -->
+            <mat-step [stepControl]="thirdFormGroup">
+              <form [formGroup]="thirdFormGroup" class="llp-form-wrapper">
+
+                <div fxLayout="row wrap">
+
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+                    <mat-radio-group class="llp-radio" aria-label="Select an option">
+                      <div class="checkbox-label">Use floral arrangements service?:</div>
+                      <mat-radio-button value="1">Yes </mat-radio-button>
+                      <mat-radio-button value="2">No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+                    <mat-radio-group class="llp-radio" aria-label="Select an option">
+                      <div class="checkbox-label">I would like a visual tribute:</div>
+                      <mat-radio-button (change)="vtChange($event)" value="yes">Yes </mat-radio-button>
+                      <mat-radio-button (change)="vtChange($event)" value="no">No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
+                    *ngIf="visualTribute">
+                    <mat-form-field class="full-width no-mar ">
+                      <textarea matInput
+                        placeholder="The following people will help prepare the visual tribute:"></textarea>
+                    </mat-form-field>
+                  </div>
+
+
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+                    <mat-radio-group class="llp-radio" aria-label="Select an option">
+                      <div class="checkbox-label">I have prepared a visual tribute:</div>
+                      <mat-radio-button (change)="prepareVtChange($event)" value="yes">Yes </mat-radio-button>
+                      <mat-radio-button (change)="prepareVtChange($event)" value="no">No</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
+                    *ngIf="uploadDocAndLoc">
+                    <div class="upload--buss--docs--sec">
+                      <label>Upload your documents</label>
+                      <div class="upload--box ">
+                        <input type="file">
+                        <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                        <div class="select--file">Select file from your computer</div>
+                      </div>
+                      <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
+                    </div>
+                  </div>
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
+                    *ngIf="uploadDocAndLoc">
+                    <mat-form-field class="full-width no-mar pl-1">
+                      <textarea matInput placeholder="Location of the document:"></textarea>
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+                    <mat-form-field class="full-width no-mar ">
+                      <textarea matInput placeholder="Additional plans and arrangements:"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </form>
+              <div class="ll--modal--footer text-center">
+                <button class="llp--secondary--btn" mat-button matStepperPrevious>Back</button>
+                <button class="llp--primary--btn" mat-button>Submit</button>
+              </div>
+            </mat-step>
+          </mat-horizontal-stepper>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

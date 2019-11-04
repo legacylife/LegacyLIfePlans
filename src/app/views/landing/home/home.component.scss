@@ -116,11 +116,11 @@
         background-color: rgba(20,20,20, 0.60);
         z-index: 1;
     }
-    // &:hover{
-    //     .play--video--icon{
-    //         display: block
-    //     }
-    // }
+    &:hover{
+        .play--video--icon{
+            display: block
+        }
+    }
     .play--video--icon{
         color: $clr--1;
         height: 75px;

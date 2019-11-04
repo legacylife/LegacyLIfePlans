@@ -47,6 +47,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 console.log("Customer module .....");
 /** Import themes */
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
+import { FuneralServiceModalComponent } from './customer-home/final-wishes/funeral-service-modal/funeral-service-modal.component';
   export class GlobalVariables {
   testVal = '#00bcd4';
   Quepal = {
@@ -103,11 +104,18 @@ import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
     RouterModule.forChild(CustomerRoutes)
   ],
   declarations: [
-    CustomerSignupComponent,UpdateProfileComponent,CustomerHomeComponent,FormatTimePipe,CustomerAccountSettingComponent,ChangePassComponent,CustomerSubscriptionComponent,CustomerTrusteesComponent,CustomerProfessionalComponent,CustomerHomeEssentialComponent,CustomerDashboardComponent,CustomerDashboardDayOneComponent,CustomerSharedLegaciesComponent,CustomerLegaciesDetailsComponent,CustomerMyPeopleComponent,addTrusteeModalComponent,CustomerMyTrusteeComponent,CustomerHiredAdvisorComponent,CustomerProfDetailsComponent, SendAnEmailComponent,HireAdvisorComponent, ProfAddTrusteeModalComponent,CustomerProfessionalsLandingComponent,ProfAdvisorListingComponent,ManageTrusteeModalComponent
+    CustomerSignupComponent,UpdateProfileComponent,CustomerHomeComponent,FormatTimePipe,
+    CustomerAccountSettingComponent,ChangePassComponent,CustomerSubscriptionComponent,CustomerTrusteesComponent,
+    CustomerProfessionalComponent,CustomerHomeEssentialComponent,CustomerDashboardComponent,CustomerDashboardDayOneComponent,
+    CustomerSharedLegaciesComponent,CustomerLegaciesDetailsComponent,CustomerMyPeopleComponent,addTrusteeModalComponent,
+    CustomerMyTrusteeComponent,CustomerHiredAdvisorComponent,CustomerProfDetailsComponent, SendAnEmailComponent,HireAdvisorComponent, 
+    ProfAddTrusteeModalComponent,CustomerProfessionalsLandingComponent,ProfAdvisorListingComponent,ManageTrusteeModalComponent, 
+    FuneralServiceModalComponent
   ], providers: [
     MatDatepickerModule,UserAuthGuard,UserPreAuthGuard, CanDeactivateGuard,ProUserAuthGuard
   ], bootstrap: [CustomerSignupComponent],
-  entryComponents: [ChangePassComponent,addTrusteeModalComponent, SendAnEmailComponent, HireAdvisorComponent,ProfAddTrusteeModalComponent,ManageTrusteeModalComponent
+  entryComponents: [ChangePassComponent,addTrusteeModalComponent, SendAnEmailComponent, 
+    HireAdvisorComponent,ProfAddTrusteeModalComponent,ManageTrusteeModalComponent, FuneralServiceModalComponent
   ]
 })
 export class CustomerModule { }

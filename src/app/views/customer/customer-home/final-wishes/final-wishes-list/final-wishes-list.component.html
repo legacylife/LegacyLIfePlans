@@ -18,7 +18,7 @@
         </mat-card-header>
         <div *ngIf="FuneralPlansManagementSection=='now'">
         <mat-card-content *ngIf="!showFuneralPlansListing && trusteeLegaciesAction">
-          <div class="build--ur--legacy" (click)="openFinalWishModal('Funeral Plans', true)">
+          <div class="build--ur--legacy" (click)="openFuneralServiceModal()">
             <mat-icon>person_pin</mat-icon>
             <p>
               <a>Add Funeral Plans</a>

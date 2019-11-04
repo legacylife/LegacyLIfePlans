@@ -114,10 +114,11 @@
             <div class="llp--container">
               <div fxLayout="row wrap" class="justify--content--space--between">
                 <div fxFlex.xs="100" fxFlex.sm="49" fxFlex.md="49" fxFlex.lg="49" fxFlex.xl="49">
-                  <div class="overview--wrapper">
-                      <video class="library video--sec" controls preload="auto" data-config="some-js-object-here">
+                  <div class="overview--wrapper" style="background-image: url('assets/images/arkenea/quickoverview-1-without-overlay.png')">
+                    <mat-icon class="play--video--icon">play_circle_outline</mat-icon>
+                      <!-- <video class="library video--sec" controls preload="auto" data-config="some-js-object-here">
                           <source src="{{bucketLink}}{{pageData?.quickOverview1.videoLink}}" type='video/mp4'>
-                      </video>
+                      </video> -->
                       <div class="video--details">
                         <h5>{{pageData?.quickOverview1.title}}</h5>
                         <p>{{pageData?.quickOverview1.subTitle}}</p>
@@ -126,10 +127,10 @@
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="49" fxFlex.md="49" fxFlex.lg="49" fxFlex.xl="49">
                   <div class="overview--wrapper" style="background-image: url('assets/images/arkenea/quickoverview-2-without-overlay.png')">
-                    <!-- <mat-icon class="play--video--icon">play_circle_outline</mat-icon> -->
-                    <video class="library video--sec" controls preload="auto" data-config="some-js-object-here">
+                    <mat-icon class="play--video--icon">play_circle_outline</mat-icon>
+                    <!-- <video class="library video--sec" controls preload="auto" data-config="some-js-object-here">
                         <source src="{{bucketLink}}{{pageData?.quickOverview2.videoLink}}" type='video/mp4'>
-                    </video>
+                    </video> -->
                     <div class="video--details">
                       <h5>{{pageData?.quickOverview2.title}}</h5>
                       <p>{{pageData?.quickOverview2.subTitle}}</p>
