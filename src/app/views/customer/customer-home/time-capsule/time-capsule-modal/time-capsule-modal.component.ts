@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ChangeDetectorRef } from '@angular/core';
 import { UserAPIService } from './../../../../../userapi.service';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { AppConfirmService } from '../../../../../shared/services/app-confirm/app-confirm.service';
@@ -46,7 +46,7 @@ export class TimeCapsuleMoalComponent implements OnInit {
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,
     private confirmService: AppConfirmService,private loader: AppLoaderService,
     private router: Router, private userapi: UserAPIService,
-    private fileHandlingService: FileHandlingService) { }
+    private fileHandlingService: FileHandlingService,private detector: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -201,6 +201,7 @@ export class TimeCapsuleMoalComponent implements OnInit {
   }
 
   public fileOverBase(e: any): void {
+    this.currentProgessinPercent = 0;
     this.hasBaseDropZoneOver = e;
     this.fileErrors = [];
     let totalItemsToBeUpload = this.uploader.queue.length,
@@ -210,7 +211,7 @@ export class TimeCapsuleMoalComponent implements OnInit {
     this.uploader.queue.forEach((fileoOb) => {
       let filename = fileoOb.file.name;
       var extension = filename.substring(filename.lastIndexOf('.') + 1);
-      var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc","mov","mp3", "mpeg", "wav", "ogg", "opus", "bmp", "tiff", "svg", "webm", "mpeg4", "3gpp", "avi", "mpegps", "wmv", "flv"];
+      var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc","mov","mp3","mp4","mkv", "mpeg", "wav", "ogg", "opus", "bmp", "tiff", "svg", "webm", "mpeg4", "3gpp", "avi", "mpegps", "wmv", "flv"];
       let resp = this.isExtension(extension,fileExts);
       
       totalUploderFileSize += fileoOb.file.size
@@ -250,13 +251,19 @@ export class TimeCapsuleMoalComponent implements OnInit {
           if(this.uploader.getNotUploadedItems().length){
             this.uploaderCopy = cloneDeep(this.uploader)
             this.uploader.queue.splice(1, this.uploader.queue.length - 1)
-            this.uploaderCopy.queue.splice(0, 1)
+            this.uploaderCopy.queue.splice(0, 1);
+          
             this.uploader.queue.forEach((fileoOb, ind) => {
                 this.TimeCapsuleForm.controls['documents_temp'].setValue('');         
-                this.uploader.uploadItem(fileoOb);
+                this.uploader.uploadItem(fileoOb);  
+                if(ind==0){
+                  this.uploader.onProgressItem = (progress:any) => {
+                    this.updateProgressBar();
+                  }
+                } 
             });
+            
             this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-              this.updateProgressBar();
               this.getTimeCapsuleDocuments();
             };
           }
@@ -266,14 +273,26 @@ export class TimeCapsuleMoalComponent implements OnInit {
   }
 
   updateProgressBar(){
-    let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
-    let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
-    this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
-    this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+    // let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
+    // let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
+    // this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+    // this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+    let uploaderLength = 0;  let uploaderCopyLength = 0;
+    this.uploader.onProgressAll = (progress:any) => {
+      uploaderLength = progress;
+      if(this.uploaderCopy.queue.length==0){
+        this.currentProgessinPercent = uploaderLength;
+      }
+      this.uploaderCopy.onProgressAll = ( progress: any) => {
+        uploaderCopyLength = progress;
+        this.currentProgessinPercent = (uploaderLength + uploaderCopyLength)/100;
+        let totalLength = uploaderLength + uploaderCopyLength;
+        this.currentProgessinPercent = totalLength - 100;
+      }
+    }
     if(this.uploader.queue.length>0){
       this.uploader.clearQueue();
     }
-    //console.log(this.currentProgessinPercent, remainingLength, totalLength);
   }
 
   uploadRemainingFiles(profileId) {
@@ -283,9 +302,12 @@ export class TimeCapsuleMoalComponent implements OnInit {
       }
       this.uploaderCopy.queue.forEach((fileoOb, ind) => {
           this.uploaderCopy.uploadItem(fileoOb);
+          if(ind==0){
+            this.updateProgressBar();            
+          }
       });
+
       this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.updateProgressBar()
       this.getTimeCapsuleDocuments({}, false, false);   
       };
   }
@@ -318,6 +340,10 @@ export class TimeCapsuleMoalComponent implements OnInit {
             this.TimeCapsuleForm.controls['documents_temp'].setValue('1');
             this.documentsMissing = false;
           }                 
+
+          if(this.currentProgessinPercent==100){
+            this.currentProgessinPercent = 0;
+          }
         }
       }, (err) => {
         console.error(err);
