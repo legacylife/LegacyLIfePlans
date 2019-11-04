@@ -83,7 +83,7 @@ export class LettersMessagesListingComponent implements OnInit {
       } else {
         this.lettersMessagesList = result.data.lettersMessagesList;
         this.trusteeLettersMessageRecords = result.data.trusteeRecords;
-        console.log("lettersMessagesList >>>>>>>>",this.lettersMessagesList)
+        //console.log("lettersMessagesList >>>>>>>>",this.lettersMessagesList)
         if(this.shareLegacFlag){
           let lettersMessagesList = '';
           if(this.LegacyLifeLettersMessagesManagementSection=='now'){
@@ -123,43 +123,14 @@ export class LettersMessagesListingComponent implements OnInit {
     //return 'now';
   }
 
-  getTrusteeCount(letterId){
-    
-
-    let abc = this.trusteeLettersMessageRecords;
-    let trusteeCount = 0;
-    var rebels = [];
-    //console.log("Trustee >>",abc)
-    /*if(abc && abc.length > 0){
-      rebels = abc.filter(function (val) {
-        console.log("Trustee count >>",val)
-        return val.letterId == letterId;
-      });
-    }*/
-    let count = 0;
-    const s =  this.trusteeLettersMessageRecords.map(f=>{
-      //console.log("new values22288888888 >>>>>>",f)  
-      
-      let abc = f.LegacyLifeLettersMessagesManagement.filter(
-        book => book.letterId == letterId && book.access == "now");
-        return abc.length;
-      /*f.LegacyLifeLettersMessagesManagement = f.LegacyLifeLettersMessagesManagement.filter(r=>{
-        console.log("new values2228 YYYYYYYYYYYYYY 8 >>>>>>",r)   
-        
-          return r.filter(m=> m.letterId == letterId)
-          
-        
-      })*/
+  getTrusteeCount(letterId){ 
+    const nowRecords =  this.trusteeLettersMessageRecords.map(f=>{      
+      let filterRecord = f.LegacyLifeLettersMessagesManagement.filter(        
+        book => book.letterId == letterId && book.access == "now");        
+        return filterRecord.length;
     })
-    
-    
     let totalCount=0;
-    for (let i = 0; i > s.Length; i++)
-    {
-      console.log("asdlhfiasdyhfuiyasdefydasyfui>>>>>>>>>>",s[i])
-      totalCount += parseInt(s[i]);
-    }
-
+    totalCount = nowRecords.reduce((a, b) => a + b, 0)
     return totalCount;
   }
 
