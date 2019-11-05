@@ -264,6 +264,7 @@ export class TimeCapsuleMoalComponent implements OnInit {
             });
             
             this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+              console.log('here uploader ...')
               this.getTimeCapsuleDocuments();
             };
           }
@@ -308,7 +309,8 @@ export class TimeCapsuleMoalComponent implements OnInit {
       });
 
       this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.getTimeCapsuleDocuments({}, false, false);   
+        console.log('here uploadercopy ...')
+        this.getTimeCapsuleDocuments({}, false, false);   
       };
   }
 
@@ -327,22 +329,27 @@ export class TimeCapsuleMoalComponent implements OnInit {
       this.userapi.apiRequest('post', 'timeCapsule/view-timeCapsule-details', req_vars).subscribe(result => {
         if (result.status == "error") {
         } else {
-          profileIds = result.data._id;
-          this.TimeCapsuleForm.controls['profileId'].setValue(profileIds);
-          if(uploadRemained) {
-            this.uploadRemainingFiles(profileIds)
-          }
-         // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-         // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-          this.timeCapsuleDocsList = result.data.documents;    
-          this.TimeCapsuleForm.controls['documents_temp'].setValue('');
-          if(this.timeCapsuleDocsList.length>0){
-            this.TimeCapsuleForm.controls['documents_temp'].setValue('1');
-            this.documentsMissing = false;
-          }                 
-
-          if(this.currentProgessinPercent==100){
-            this.currentProgessinPercent = 0;
+          if(result.data){
+            profileIds = result.data._id;
+            this.TimeCapsuleForm.controls['profileId'].setValue(profileIds);
+            if(uploadRemained) {
+              this.uploadRemainingFiles(profileIds)
+            }
+            // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+            // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+            this.timeCapsuleDocsList = result.data.documents;    
+            this.TimeCapsuleForm.controls['documents_temp'].setValue('');
+            if(this.timeCapsuleDocsList.length>0){
+              this.TimeCapsuleForm.controls['documents_temp'].setValue('1');
+              this.documentsMissing = false;
+            }     
+            if(this.currentProgessinPercent==100){
+              this.currentProgessinPercent = 0;
+            }            
+          } else {
+              setTimeout(()=>{    
+                this.getTimeCapsuleDocuments();
+              },3000);
           }
         }
       }, (err) => {
