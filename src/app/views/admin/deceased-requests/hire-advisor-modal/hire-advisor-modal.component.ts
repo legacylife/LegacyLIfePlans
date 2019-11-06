@@ -96,7 +96,7 @@ export class AdminHireAdvisorComponent implements OnInit, AfterViewInit  {
       ChildParentDisabilityManagement: new FormControl(''), 
       FriendNeighborCareManagement: new FormControl(''), 
       TimeCapsuleManagement: new FormControl(''), 
-      LegacyLifeLettersMessagesManagement: new FormControl(''), 
+      LegacyLifeLettersMessagesManagement: new FormControl(''),       
       FuneralPlansManagement: new FormControl(''), 
       ObituaryManagement: new FormControl(''), 
       CelebrationLifeManagement: new FormControl(''), 
@@ -189,8 +189,7 @@ checkAdvisorView(insert = null) {
             this.trusteeFormGroup.controls['YoungChildrenManagement'].setValue(this.row.userAccess.YoungChildrenManagement);
             this.trusteeFormGroup.controls['ChildParentDisabilityManagement'].setValue(this.row.userAccess.ChildParentDisabilityManagement);
             this.trusteeFormGroup.controls['FriendNeighborCareManagement'].setValue(this.row.userAccess.FriendNeighborCareManagement);
-            this.trusteeFormGroup.controls['TimeCapsuleManagement'].setValue(this.row.userAccess.TimeCapsuleManagement);
-            this.trusteeFormGroup.controls['LegacyLifeLettersMessagesManagement'].setValue(this.row.userAccess.LegacyLifeLettersMessagesManagement);
+            this.trusteeFormGroup.controls['TimeCapsuleManagement'].setValue(this.row.userAccess.TimeCapsuleManagement);            
             this.trusteeFormGroup.controls['FuneralPlansManagement'].setValue(this.row.userAccess.FuneralPlansManagement);
             this.trusteeFormGroup.controls['ObituaryManagement'].setValue(this.row.userAccess.ObituaryManagement);
             this.trusteeFormGroup.controls['CelebrationLifeManagement'].setValue(this.row.userAccess.CelebrationLifeManagement);
@@ -232,7 +231,7 @@ trusteeFormGroupSubmit(insert = null) {
         "VehiclesManagement": this.trusteeFormGroup.controls['VehiclesManagement'].value,
         "AssetsManagement": this.trusteeFormGroup.controls['AssetsManagement'].value,
         "TimeCapsuleManagement": this.trusteeFormGroup.controls['TimeCapsuleManagement'].value,
-        "LegacyLifeLettersMessagesManagement": this.trusteeFormGroup.controls['LegacyLifeLettersMessagesManagement'].value,
+        "LegacyLifeLettersMessagesManagement": [],
         "FuneralPlansManagement": this.trusteeFormGroup.controls['FuneralPlansManagement'].value,
         "ObituaryManagement": this.trusteeFormGroup.controls['ObituaryManagement'].value,
         "CelebrationLifeManagement": this.trusteeFormGroup.controls['CelebrationLifeManagement'].value,

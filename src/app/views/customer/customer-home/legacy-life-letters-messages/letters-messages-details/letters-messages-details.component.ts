@@ -82,14 +82,13 @@ export class LettersMessagesDetailsComponent implements OnInit {
           this.trusteeLegaciesAction = false;
         }
         this.fileLevelAccess = userAccess.LegacyLifeLettersMessagesManagement;
-       // data._id = this.fileLevelAccess[1].llerId;
-        // this.fileLevelAccess[1].customerId
 
-        console.log("letter details",this.fileLevelAccess)
-      //  if(userAccess.LegacyLifeLettersMessagesManagement!='now'){
-      //   this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
-      //   this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
-      //  }          
+        this.fileLevelAccess.forEach(function(item, index, array) {  
+          if(data._id == item.letterId && item.access != 'now'){
+            this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+            this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+          }
+        });
       });    
     }else{      
       if(data.customerId!=this.userId){

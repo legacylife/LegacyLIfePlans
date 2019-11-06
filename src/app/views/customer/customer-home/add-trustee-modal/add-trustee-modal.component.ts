@@ -92,7 +92,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
         ChildParentDisabilityManagement: new FormControl(''), 
         FriendNeighborCareManagement: new FormControl(''), 
         TimeCapsuleManagement: new FormControl(''), 
-        LegacyLifeLettersMessagesManagement: new FormControl(''), 
+        LegacyLifeLettersMessagesManagement: new FormControl(''),         
         FuneralPlansManagement: new FormControl(''), 
         ObituaryManagement: new FormControl(''), 
         CelebrationLifeManagement: new FormControl(''), 
@@ -221,7 +221,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
         "VehiclesManagement": this.secondFormGroup.controls['VehiclesManagement'].value,
         "AssetsManagement": this.secondFormGroup.controls['AssetsManagement'].value,
         "TimeCapsuleManagement": this.secondFormGroup.controls['TimeCapsuleManagement'].value,
-        "LegacyLifeLettersMessagesManagement": this.secondFormGroup.controls['LegacyLifeLettersMessagesManagement'].value,
+        "LegacyLifeLettersMessagesManagement": [],
         "FuneralPlansManagement": this.secondFormGroup.controls['FuneralPlansManagement'].value,
         "ObituaryManagement": this.secondFormGroup.controls['ObituaryManagement'].value,
         "CelebrationLifeManagement": this.secondFormGroup.controls['CelebrationLifeManagement'].value,
@@ -300,7 +300,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
           "VehiclesManagement": this.secondFormGroup.controls['VehiclesManagement'].value,
           "AssetsManagement": this.secondFormGroup.controls['AssetsManagement'].value,
           "TimeCapsuleManagement": this.secondFormGroup.controls['TimeCapsuleManagement'].value,
-          "LegacyLifeLettersMessagesManagement": this.secondFormGroup.controls['LegacyLifeLettersMessagesManagement'].value,
+          "LegacyLifeLettersMessagesManagement": [],
           "FuneralPlansManagement": this.secondFormGroup.controls['FuneralPlansManagement'].value,
           "ObituaryManagement": this.secondFormGroup.controls['ObituaryManagement'].value,
           "CelebrationLifeManagement": this.secondFormGroup.controls['CelebrationLifeManagement'].value,
@@ -401,8 +401,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
           this.secondFormGroup.controls['YoungChildrenManagement'].setValue(this.row.userAccess.YoungChildrenManagement);
           this.secondFormGroup.controls['ChildParentDisabilityManagement'].setValue(this.row.userAccess.ChildParentDisabilityManagement);
           this.secondFormGroup.controls['FriendNeighborCareManagement'].setValue(this.row.userAccess.FriendNeighborCareManagement);
-          this.secondFormGroup.controls['TimeCapsuleManagement'].setValue(this.row.userAccess.TimeCapsuleManagement);
-          this.secondFormGroup.controls['LegacyLifeLettersMessagesManagement'].setValue(this.row.userAccess.LegacyLifeLettersMessagesManagement);
+          this.secondFormGroup.controls['TimeCapsuleManagement'].setValue(this.row.userAccess.TimeCapsuleManagement);          
           this.secondFormGroup.controls['FuneralPlansManagement'].setValue(this.row.userAccess.FuneralPlansManagement);
           this.secondFormGroup.controls['ObituaryManagement'].setValue(this.row.userAccess.ObituaryManagement);
           this.secondFormGroup.controls['CelebrationLifeManagement'].setValue(this.row.userAccess.CelebrationLifeManagement);

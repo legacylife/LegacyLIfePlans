@@ -47,28 +47,32 @@ export class LettersMessagesListingComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
+        let array = '';// ['letter_id':"asdasdasdasd"];
        // this.LegacyLifeLettersMessagesManagementSection = userAccess.LegacyLifeLettersMessagesManagement
         this.fileLevelAccess = userAccess.LegacyLifeLettersMessagesManagement;
         console.log("letter listing",this.fileLevelAccess)
+        this.getLetterMessageList('',this.fileLevelAccess);
       });
       this.showTrusteeCnt = false;this.shareLegacFlag = true;
-    }else{      
+    }else{ 
       this.userapi.getFolderInstructions('legacy_life_letters_messages', (returnData) => {
         this.instruction_data = returnData;
         if(this.instruction_data){this.instruction_data_flag = true;}
       });
+      this.getLetterMessageList('','');
     } 
-    this.getLetterMessageList();
+   
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
     if(event.srcElement.outerText=='Send an Invite'){
       setTimeout(()=>{
-        this.getLetterMessageList();    
+        this.getLetterMessageList('','');    
       },2000);   
     }
   }
 
-  getLetterMessageList = (query = {}) => {
+  getLetterMessageList = (query = {},fileLevelAccess) => {
+    console.log("getLetterMessageList")
     let trusteeQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active" }, query),
@@ -82,8 +86,22 @@ export class LettersMessagesListingComponent implements OnInit {
         console.log(result.data)
       } else {
         this.lettersMessagesList = result.data.lettersMessagesList;
+        let accessFiles = [];
+
+        if(!this.showTrusteeCnt){
+          this.lettersMessagesList.forEach(function(item, index, array) {
+            fileLevelAccess.forEach(function(item2, index2, array2) {  
+              if(item._id == item2.letterId && item2.access == 'now'){
+                accessFiles.push(item)
+              }
+            });
+          });
+          this.lettersMessagesList = accessFiles;
+        }
+
+
+
         this.trusteeLettersMessageRecords = result.data.trusteeRecords;
-        //console.log("lettersMessagesList >>>>>>>>",this.lettersMessagesList)
         if(this.shareLegacFlag){
           let lettersMessagesList = '';
           if(this.LegacyLifeLettersMessagesManagementSection=='now'){
@@ -124,13 +142,17 @@ export class LettersMessagesListingComponent implements OnInit {
   }
 
   getTrusteeCount(letterId){ 
-    const nowRecords =  this.trusteeLettersMessageRecords.map(f=>{      
-      let filterRecord = f.LegacyLifeLettersMessagesManagement.filter(        
-        book => book.letterId == letterId && book.access == "now");        
-        return filterRecord.length;
-    })
     let totalCount=0;
-    totalCount = nowRecords.reduce((a, b) => a + b, 0)
+    if(this.trusteeLettersMessageRecords && this.trusteeLettersMessageRecords.length > 0){
+      const nowRecords =  this.trusteeLettersMessageRecords.map(f=>{ 
+        
+        let filterRecord = f.LegacyLifeLettersMessagesManagement.filter(        
+          book => book.letterId == letterId && book.access == "now"); 
+            
+        return filterRecord.length;
+      })
+      totalCount = nowRecords.reduce((a, b) => a + b, 0)
+    }    
     return totalCount;
   }
 
@@ -142,7 +164,7 @@ export class LettersMessagesListingComponent implements OnInit {
     });
     dialogRef.afterClosed()
     .subscribe(res => {
-      this.getLetterMessageList();
+      this.getLetterMessageList('','');
       if (!res) {
         // If user press cancel
         return;
@@ -163,7 +185,7 @@ export class LettersMessagesListingComponent implements OnInit {
     }) 
     dialogRef.afterClosed()
     .subscribe(res => {
-      this.getLetterMessageList();
+      this.getLetterMessageList('','');
       if (!res) {
         // If user press cancel
         return;
