@@ -147,6 +147,7 @@ import { FinanceModalComponent } from 'app/views/customer/customer-home/insuranc
 import { DebtModalComponent } from 'app/views/customer/customer-home/insurance-finance-debt/debt-modal/debt-modal.component';
 import { FinalWishesComponent } from 'app/views/customer/customer-home/final-wishes/final-wishes-list/final-wishes-list.component';
 import { FinalWishesDetailsComponent } from 'app/views/customer/customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
+import { ObituaryDetailsComponent } from 'app/views/customer/customer-home/final-wishes/final-wishes-details/obituary-details.component';
 import { FinalWishesFormModalComponent } from 'app/views/customer/customer-home/final-wishes/final-wishes-form-modal/final-wishes-form-modal.component';
 import { LettersMessagesListingComponent } from 'app/views/customer/customer-home/legacy-life-letters-messages/letters-messages-listing/letters-messages-listing.component';
 import { LettersMessagesDetailsComponent } from 'app/views/customer/customer-home/legacy-life-letters-messages/letters-messages-details/letters-messages-details.component';
@@ -246,6 +247,7 @@ const classesToInclude = [
   DebtModalComponent,
   FinalWishesComponent,
   FinalWishesDetailsComponent,
+  ObituaryDetailsComponent,
   FinalWishesFormModalComponent,
   LettersMessagesListingComponent,
   LettersMessagesDetailsComponent,

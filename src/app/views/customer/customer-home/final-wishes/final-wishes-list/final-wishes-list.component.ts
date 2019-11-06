@@ -46,7 +46,8 @@ export class FinalWishesComponent implements OnInit {
   LegacyPermissionError:string="You don't have access to this section";
   instruction_data:any;
   instruction_data_flag:boolean=false;  
-  shareLegacFlag:boolean=false;  
+  shareLegacFlag:boolean=false; 
+
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService,private sharedata: DataSharingService) { }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -81,6 +82,32 @@ export class FinalWishesComponent implements OnInit {
   }
 
   getWishList = (query = {}) => {
+    const req_vars = {
+      query: Object.assign({ customerId: this.userId, status: "Active" }, query),
+      fields: {},
+      order: {"createdOn": -1},
+    }
+    this.userapi.apiRequest('post', 'finalwishes/finalListing', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        this.ObituaryList = result.data.obituaryData;
+        this.showObituaryListingCnt = this.ObituaryList.length
+        if (this.showObituaryListingCnt > 0) {
+          this.showObituaryListing = true;
+        } else {
+          this.showObituaryListing = false;
+        }
+
+      }
+    }, (err) => {
+      console.error(err);
+    })
+  }
+
+
+
+  getWishListold = (query = {}) => {
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active" }, query),
       fields: {},
