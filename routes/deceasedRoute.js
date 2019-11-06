@@ -58,17 +58,6 @@ async function viewDeceased(req, res) {
     res.status(200).send(resFormat.rSuccess(result));
   }
 
-  async function markDeceasedtestss(req, res) {
-    let paramData = req.body;
-    let DeceasedCnt = await MarkDeceased.find({customerId:paramData.customerId,status:"Active"})
-         if(DeceasedCnt>=3){
-             finalStatus = 'Active';
-         }
-        console.log('DeceasedCnt',DeceasedCnt,'Len ->',DeceasedCnt.length);
-         let result = {"message": "Mark as deceased successfully!"}
-         res.status(200).send(resFormat.rSuccess(result));
- }
-
   async function markDeceased(req, res) {
       let paramData = req.body;
 
@@ -95,34 +84,42 @@ async function viewDeceased(req, res) {
       if(userType=='sysadmin'){
         adminId = fromUserId = paramData.adminId;
       }
-
+      let alreadyMDeceased = '';
       if(paramData._id){
         let findQuery = {_id:paramData._id};
 
         let deceasedList = await MarkDeceased.findOne(findQuery, {_id:1})
-        if (deceasedList._id) {
+        if (deceasedList != null) {
             let proquery = {'status':'Active','modifiedOn': new Date()};
             await MarkDeceased.updateOne(findQuery,{$set: proquery })
           } 
       }else{
             var insert = new MarkDeceased();
+            let findQuery = {};
             insert.customerId = paramData.customerId;
             insert.userType = userType;
             if(advisorId){    
               insert.advisorId = ObjectId(advisorId);
+              findQuery = {customerId:paramData.customerId,advisorId:advisorId};
             }
             if(trustId){    
               insert.trustId = ObjectId(trustId);
+              findQuery = {customerId:paramData.customerId,trustId:trustId};
             }
             if(adminId){    
               insert.adminId = ObjectId(adminId);
+              findQuery = {customerId:paramData.customerId,adminId:adminId};
             }
-            insert.status = 'Active';
-            insert.createdOn = new Date();
-            insert.modifiedOn = new Date();
-            insert.save();
+            alreadyMDeceased = await MarkDeceased.findOne(findQuery, {_id:1})
+            if (alreadyMDeceased == null) {
+              insert.status = 'Active';
+              insert.createdOn = new Date();
+              insert.modifiedOn = new Date();
+              insert.save();
+            }
       }
-
+    
+      if (alreadyMDeceased == null) {
         let AllusersData = await getAllTrustUsers(paramData.customerId);
         let trustList = AllusersData[0]['trustList'];
         let advisorList = AllusersData[1]['advisorList'];
@@ -211,6 +208,12 @@ async function viewDeceased(req, res) {
          allActivityLog.updateActivityLogs( fromId, toId, 'Mark As Deceased', message)
          let result = { "message": message }
          res.status(200).send(resFormat.rSuccess(result));
+   
+        }else{
+          let message = resMessage.data( 607, [{key: '{field}',val: 'Mark as deceased'}, {key: '{status}',val: 'updated'}] )
+          let result = { "message": message }
+          res.status(200).send(resFormat.rSuccess(result));
+        }        
   }
 
   async function getAllTrustUsers(customerId) {
@@ -513,10 +516,11 @@ function revokeOwnerDeceased(req, res) {
 
 
  async function deceaseListing(req, res) {
-  let { query } = req.body
+  let { query } = req.body;
+  let { order } = req.body;
   let groupObj = { _id:'$customerId',"customerId":{$first:'$customerId'},"advisorId":{$first: '$advisorId'},"trustId":{$first: '$trustId'},"userType": {$first: '$userType'},"documents": {$first: '$documents'},"status": {$first: '$status'}, "createdOn": {$first: '$createdOn'}, "modifiedOn": {$first: '$modifiedOn'}} 
   await MarkDeceased.aggregate([
-    { $match: query }, { $group:  groupObj }
+   { $match: query }, { $sort : order }, { $group:  groupObj }
   ]) .exec(function(err, records) { 
     MarkDeceased.populate(records, {path: 'customerId'}, function(err, deceasedData) {
       let message = 'Deceased customer List!';

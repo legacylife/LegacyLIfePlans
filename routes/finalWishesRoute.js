@@ -48,7 +48,6 @@ function obituaryFormUpdate(req, res) {
   logData.folderName = 'finalwishes obituary';
   logData.subFolderName = '';
 
-    console.log(query,'======',query,proquery);
   if(query._id){
     obituary.findOne(query, function (err, custData) {      
       if (err) {
@@ -136,9 +135,7 @@ function viewObituaryWish(req, res) {
   if (req.body.fields) {
     fields = req.body.fields
   }
-  console.log('query',query)
   obituary.findOne(query, fields, function (err, wishList) {
-  console.log('wishList',wishList)
   if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {

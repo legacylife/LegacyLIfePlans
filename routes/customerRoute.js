@@ -510,6 +510,7 @@ function personalIdUpdate(req, res) {
 
 function deleteProfile(req, res) {
   let { query } = req.body;
+  let { fromId } = req.body;
   let fields = {}
   myessentials.findOne(query, fields, function (err, profileInfo) {
     if (err) {
@@ -521,8 +522,8 @@ function deleteProfile(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          actitivityLog.removeActivityLog(profileInfo._id);
-          //allActivityLog.updateActivityLogs( fromId, custData.customerId, 'Professional Details Deleted', message, 'My Essentials', 'My Professionals' )
+          actitivityLog.removeActivityLog(profileInfo._id);         
+          allActivityLog.updateActivityLogs( fromId, updatedinfo.customerId, 'Personal Profile Details Deleted', message, 'My Essentials', 'Personal Profile' )
           let message = resMessage.data( 607, [{key:'{field}',val:'Record'},{key:'{status}',val:'deleted'}] )
           let result = { "message": message }
           res.status(200).send(resFormat.rSuccess(result))
@@ -623,6 +624,7 @@ function myProfessionalsUpdate(req, res) {
 
 function deleteProfessionals(req, res) {
   let { query } = req.body;
+  let { fromId } = req.body;
   let fields = {}
   MyProfessional.findOne(query, fields, function (err, profileInfo) {
     if (err) {
@@ -635,6 +637,8 @@ function deleteProfessionals(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(profileInfo._id);
+        
+          allActivityLog.updateActivityLogs( fromId, updatedinfo.customerId, 'My Professional Details Deleted', message, 'My Essentials', 'My Professionals' )
           let message = resMessage.data( 607, [{key:'{field}',val:'Record'},{key:'{status}',val:'deleted'}] )
           let result = { "message": message }
           res.status(200).send(resFormat.rSuccess(result))
