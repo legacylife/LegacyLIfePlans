@@ -56,6 +56,7 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
+      //  console.log('userAccess====',userLockoutPeriod,userAccess.DevicesManagement);
         this.DevicesManagementSection = userAccess.DevicesManagement
         this.ElectronicMediaManagementSection= userAccess.ElectronicMediaManagement
         this.DigitalPublicationManagementSection= userAccess.DigitalPublicationManagement

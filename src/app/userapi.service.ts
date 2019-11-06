@@ -386,6 +386,7 @@ export class UserAPIService {
       } else {
         //this.userAccess = result.data.userAccess; 
         response = await this.getCustomerUserAccess(result.data,customerId);
+       // console.log('response',response)
         this.userAccess = response['userAccess'];
         this.userDeathFilesCnt = response['deathFilesCount'];
         this.userLockoutPeriod = response['userLockoutPeriod'];

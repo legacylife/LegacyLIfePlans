@@ -12,7 +12,7 @@
   <div fxFlex="100">
     <div class="get--hired--wrapper ad--first--banner" id="ad-home" [ngStyle]="{ 'backgroundImage': getUrl('topBanner') }">
       <div class="banner--content">
-        <h6>{{pageData?.sectionOne.pageTitle}}</h6>
+        <h6>{{pageData?.sectionOne.title}}</h6>
         <h3>{{pageData?.sectionOne.middleTitle}}</h3>
         <h6 class="info">{{pageData?.sectionOne.subTitle}}</h6>
         <button mat-raised-button class="landing--primary--btn" [routerLink]="['/advisor/signup']">{{ advisorFreeTrialStatus ? 'Start a Free Trial': 'Sign Up'}}</button>
