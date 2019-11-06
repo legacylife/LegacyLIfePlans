@@ -11,6 +11,7 @@ const User = require('./../models/Users')
 const personalIdProof = require('./../models/personalIdProof.js')
 const LegalStuff = require('./../models/LegalStuff.js')
 const finalWish = require('./../models/FinalWishes.js')
+const obituary = require('./../models/Obituary.js')
 const pet = require('./../models/Pets.js')
 const timeCapsule = require('./../models/TimeCapsule.js')
 const insurance = require('../models/Insurance.js')
@@ -34,6 +35,9 @@ const docFilePath = constants.s3Details.advisorsDocumentsPath;
 const IDdocFilePath = constants.s3Details.myEssentialsDocumentsPath;
 const legalStuffdocFilePath = constants.s3Details.legalStuffDocumentsPath;
 const finalWishesFilePath = constants.s3Details.finalWishesFilePath;
+const obituaryFilePath = constants.s3Details.obituaryFilePath;
+const funeralExpensesFilePath = constants.s3Details.funeralExpensesFilePath;
+const celebrationofLifeFilePath = constants.s3Details.celebrationofLifeFilePath;
 const petsFilePath = constants.s3Details.petsFilePath;
 const timeCapsuleFilePath = constants.s3Details.timeCapsuleFilePath;
 const insuranceFilePath = constants.s3Details.insuranceFilePath;
@@ -331,6 +335,115 @@ router.post('/legalStuff', cors(), function(req,res){
   }
 })
 
+router.post('/obituary', cors(), function(req,res){
+  var fstream;
+  let authTokens = { authCode: "" }
+  if (req.busboy) {
+    req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
+      authTokens[fieldname] = val
+    })
+    const {query:{userId}} = req;
+    const {query:{ProfileId}} = req;
+    const {query:{folderName}} = req;
+    
+    let q = {customerId: userId}
+    if(ProfileId && ProfileId!=''){
+      q = {_id : ProfileId}
+    }
+    req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+      let tmpallfiles = {};
+      let oldTmpFiles = [];
+      if(userId){
+          let ext = filename.split('.')
+          ext = ext[ext.length - 1];
+          var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
+          let resp = isExtension(ext,fileExts);
+          if(!resp){
+            let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid file extension!" }
+            res.send(resFormat.rSuccess(results))
+          } else{
+                 
+          if(ProfileId){
+              const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+              fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+              file.pipe(fstream);
+              fstream.on('close', async function () {
+                await s3.uploadFile(newFilename,userId+'/'+obituaryFilePath);                  
+                tmpallfiles = {
+                  "title" : filename,
+                  "size" : encoding,
+                  "extention" : mimetype,
+                  "tmpName" : newFilename
+                }
+                obituary.findOne(q,{documents:1,_id:1}, function (err, result) {
+                    if (err) {
+                        res.status(500).send(resFormat.rError(err))
+                    } else {       
+                    if (result) {                          
+                        if(result.documents){
+                          oldTmpFiles = result.documents;
+                        }             
+                        oldTmpFiles.push(tmpallfiles);  
+                        obituary.updateOne(q, { $set: { documents: oldTmpFiles } }, function (err, updatedUser) {
+                          if (err) {
+                            res.send(resFormat.rError(err))
+                          } else {
+                            getuserFolderSize(userId);
+                            let message = resMessage.data( 607, [{key: '{field}',val: 'Final Wish - Obituary Document'}, {key: '{status}',val: 'uploaded'}] )
+                            //Update activity logs
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, obituaryFilePath, '', filename)
+                            
+                            let result = { userId:userId, allDocs:tmpallfiles, "message": message }
+                            res.send(resFormat.rSuccess(result))
+                          }
+                       })
+                      }
+                    } 
+                    })
+                 })
+              }else{
+                const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+                fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+                file.pipe(fstream);
+                fstream.on('close', async function () {
+                  await s3.uploadFile(newFilename,userId+'/'+obituaryFilePath);  
+                  tmpallfiles = {
+                    "title" : filename,
+                    "size" : encoding,
+                    "extention" : mimetype,
+                    "tmpName" : newFilename
+                  }
+              oldTmpFiles.push(tmpallfiles);  
+                var insert = new obituary();
+                insert.customerId = userId;
+                insert.documents = oldTmpFiles;
+                insert.status = 'Pending';
+                insert.createdOn = new Date();
+                insert.save({}, function (err, newEntry) {
+                  if (err) {
+                  res.send(resFormat.rError(err))
+                   } else {
+                    getuserFolderSize(userId);
+                    let message = resMessage.data( 607, [{key: '{field}',val: 'Final Wish - Obituary Document'}, {key: '{status}',val: 'uploaded'}] )
+                    //Update activity logs
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, obituaryFilePath, '', filename)
+                    let result = { "message": message }
+                    
+                     res.status(200).send(resFormat.rSuccess(result))
+                   }
+                 })
+
+              })
+           }
+         } 
+      } else {
+        res.status(401).send(resFormat.rError("User token mismatch."))
+      }
+    })
+  }
+})
+
+
 router.post('/finalWishes', cors(), function(req,res){
   var fstream;
   let authTokens = { authCode: "" }
@@ -549,10 +662,6 @@ router.post('/petsdocuments', cors(), function(req,res){
 })
 
 
-function yourFunction() {
-  console.log("asgdjhsdahsdg >>>>>> 11111");
-  return "hi";
-}
 router.post('/timeCapsuledocuments', cors(), function(req,res){
   var fstream;
   let authTokens = { authCode: "" }
