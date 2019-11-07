@@ -110,7 +110,7 @@ export const CustomerRoutes: Routes = [
           },
           {
             path: 'chat', 
-            loadChildren: './views/app-chats/app-chats.module#AppChatsModule', 
+            loadChildren: '../app-chats/app-chats.module#AppChatsModule', 
             data: { title: 'Chat', breadcrumb: 'CHAT'}
           },
           {
