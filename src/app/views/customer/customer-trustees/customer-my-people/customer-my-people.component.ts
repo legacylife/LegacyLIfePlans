@@ -23,6 +23,7 @@ export class CustomerMyPeopleComponent implements OnInit {
   allPeoples: any[];
   advisorListing: any[];
   showallPeoplesListing: boolean = true;
+  executorAssigned: boolean = false;
   showallPeoplesListingCnt: any;
   userId: string;
   listingAsc: boolean = true;
@@ -54,6 +55,8 @@ export class CustomerMyPeopleComponent implements OnInit {
         //query: Object.assign({ customerId: this.userId, status: "Active" }, query),status: { $nin:['Deleted'] }  //'Rejected',
         trustquery: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted'] } }, trustquery),
         advquery: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted', 'Rejected'] } }, advquery),
+        trustExecutorquery: Object.assign({ customerId: this.userId, executorStatus:"Active",status: { $nin: ['Deleted'] } }, trustquery),
+        advExecutorquery: Object.assign({ customerId: this.userId, executorStatus:"Active", status: { $nin: ['Deleted', 'Rejected'] } }, advquery),
         fields: {},
         order: { "modifiedOn": -1 },
       }
@@ -84,6 +87,7 @@ export class CustomerMyPeopleComponent implements OnInit {
           this.listingAsc = true;
         }
         this.allPeoples = result.data.myPeoples;
+        this.executorAssigned = result.data.executorAssgined;
         this.showallPeoplesListingCnt = result.data.totalPeoplesRecords;
         if (result.data.totalPeoplesRecords > 0) {
           this.showallPeoplesListing = true;

@@ -306,7 +306,7 @@ export class TimeCapsuleMoalComponent implements OnInit {
         this.getTimeCapsuleDocuments({}, false, false);   
       };
 
-      this.uploader.onCompleteAll = () => {
+      this.uploaderCopy.onCompleteAll = () => {
         this.getTimeCapsuleDocuments();
       }
   }
