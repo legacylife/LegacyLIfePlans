@@ -1,7 +1,7 @@
 <!-- <div class="ll--modal--header">
   Lockscreen 
 </div> -->
-<form class="llp-form-wrapper" autocomplete="off" [formGroup]="lockScreenForm" (ngSubmit)="lockScreenFormSubmit()">
+<form class="llp-form-wrapper" [formGroup]="lockScreenForm" (ngSubmit)="lockScreenFormSubmit()" autocomplete="off">
   <div class="ll--modal--body lock--screen--wrapper">
     <!-- <h6 class="invite--sub--line"> </h6> -->
       <!-- <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30" class="pad--r--lg">
@@ -30,7 +30,7 @@
       </div>
       <p class="pep">{{userFullName}} <br> You are locked. Please enter password to unlock! </p>
       <mat-form-field class="enterpass">
-        <input type="password" name="password" autocomplete="off" autocorrect="off"  matInput [formControl]="lockScreenForm.controls['password']"  placeholder="Password" value="" required autocomplete="off">
+        <input type="password" name="password" autocorrect="off"  matInput [formControl]="lockScreenForm.controls['password']"  placeholder="Password" required autocomplete="new-password">       
         <mat-icon matTooltip="Please enter password" matTooltipClass="llp--tooltip error" class="red--alert"
         *ngIf="lockScreenForm.controls['password'].hasError('required') && lockScreenForm.controls['password'].touched">help_outline</mat-icon>
 
