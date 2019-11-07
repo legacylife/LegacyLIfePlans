@@ -234,6 +234,18 @@
             }
         }
     }
+
+    .havent--assign{        
+        border: 1px solid #e1e6c7;
+        text-align: center;
+        box-shadow: 0 0 5px #ddd;        
+        padding: 14px;        
+        p{
+            margin: 0;
+            font-size: 17px;
+            color: #c72128;
+        }
+    }
 }
 
 body .llp--menu--droupdown ::ng-deep .mat-menu-content .mat-menu-item:hover span{

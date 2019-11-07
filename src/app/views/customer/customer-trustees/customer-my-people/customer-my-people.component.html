@@ -16,7 +16,9 @@
           </mat-select>
         </div>
       </mat-card-header>
+      <div class="havent--assign"><p>You haven't assigned any executor yet, please assign an executor.  </p></div>
       <mat-card-content class="appointees--wrapper box--scroll" *ngIf="this.showallPeoplesListing">
+      
         <mat-card class="appointees--section p-0 {{peoples.status === 'Pending' ? 'pending' : ''}}" *ngFor="let peoples of allPeoples">
           <mat-card-header class="m-0">
             <mat-card-title class="m-0">
