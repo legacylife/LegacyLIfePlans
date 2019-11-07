@@ -659,7 +659,7 @@ function professionalsListing(req, res) {
   })
 }
 
-function myPeoplesList(req, res) {
+function myPeoplesListOLD(req, res) {
   let { fields, offset, advquery, trustquery, order, limit, search } = req.body;
 
   let totalRecords = 0
@@ -671,9 +671,7 @@ function myPeoplesList(req, res) {
         if (err) {
           res.status(401).send(resFormat.rError(err))
         } else {
-
           //console.log("trustList:- ",trustList,"advisorList :- ",advisorList);
-
           totalTrustRecords = trustList.length;
           totalAdvRecords = advisorList.length;
 
@@ -699,6 +697,46 @@ function myPeoplesList(req, res) {
   }).sort(order).skip(offset).limit(limit).populate('advisorId');
 }
 
+async function myPeoplesList(req, res) {
+  let { fields, offset, advquery, trustquery, trustExecutorquery, advExecutorquery, order, limit, search } = req.body;
+
+  let totalRecords = 0
+  let advisorList = await HiredAdvisors.find(advquery, fields).sort(order).skip(offset).limit(limit).populate('advisorId');
+  let trustList = await trust.find(trustquery, fields).sort(order).skip(offset).limit(limit).populate('trustId')
+   
+  let advisorExecutor = await HiredAdvisors.findOne(advExecutorquery, {_id:1});
+  let trustExecutor = await trust.findOne(trustExecutorquery, {_id:1});
+
+  let trustListing = [];  let advisorListing = [];
+  let totalTrustRecords = 0;let totalAdvRecords = 0; 
+    
+    if(trustList.length>0){
+      totalTrustRecords = trustList.length;
+      trustListing = map(trustList, (user, index) => {
+        var type = "trustee";
+        let newRow = Object.assign({}, user._doc, { "type": `${type}` })
+        return newRow
+      });
+    }
+    if(advisorList.length>0){
+      totalAdvRecords = advisorList.length;
+      advisorListing = map(advisorList, (user, index) => {
+        var types = "advisor";
+        let newRows = Object.assign({}, user._doc, { "type": `${types}` })
+        return newRows
+      });
+    }
+    myPeoplesList = trustListing.concat(advisorListing);
+    totalPeoplesRecords = myPeoplesList.length;
+
+    let executorAssgined = false;
+    if(advisorExecutor==null && trustExecutor==null){
+      executorAssgined = true;
+    }
+    
+    myPeoples = myPeoplesList;//sortBy(myPeoplesList, 'modifiedOn');
+    res.send(resFormat.rSuccess({ myPeoples, totalPeoplesRecords, trustList, totalTrustRecords, advisorList, totalAdvRecords,executorAssgined }))
+}
 
 function getAdvisorDetails(req, res) {
   let { query } = req.body;
