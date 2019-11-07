@@ -7,7 +7,24 @@
       <mat-icon>settings</mat-icon>
     </button>
   </div>
+
   <mat-card class="p-0" *ngIf="isCustomizerOpen">
+    <app-chats></app-chats>
+    <mat-card-title class="mat-bg-warn">
+      <div class="card-title-text">
+        <span>Settings</span>
+        <span fxFlex></span>
+        <button 
+        class="card-control" 
+        mat-icon-button
+        (click)="isCustomizerOpen = false">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mat-card-title>
+  </mat-card>
+
+  <!-- <mat-card class="p-0" *ngIf="isCustomizerOpen">
     <mat-card-title class="mat-bg-warn">
       <div class="card-title-text">
         <span>Settings</span>
@@ -61,5 +78,5 @@
         <mat-checkbox [(ngModel)]="isRTL" (change)="toggleDir($event)">RTL</mat-checkbox>
       </div>
     </mat-card-content>
-  </mat-card>
+  </mat-card> -->
 </div>

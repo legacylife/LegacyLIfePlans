@@ -2,9 +2,9 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, BehaviorSubject, Subject, of, combineLatest } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
-console.log('chat Service')
+import * as io from 'socket.io-client';
+import { serverUrl } from '../../../config'
 import 'rxjs/add/operator/switchMap';
-
 export interface Chat {
   text: string;
   time: Date | string;
@@ -37,14 +37,14 @@ export class ChatService {
   public contacts: User[];
   public chats: ChatCollection[];
   public user: User;
-
+  private socket;    
   onContactSelected = new BehaviorSubject<any>(null);
   onUserUpdated = new Subject<User>();
 
   onChatSelected = new BehaviorSubject<any>(null);
   onChatsUpdated = new Subject<any>();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,socket = io(serverUrl)) {
     // console.log('from service');
     // this.loadChatData()
   }
