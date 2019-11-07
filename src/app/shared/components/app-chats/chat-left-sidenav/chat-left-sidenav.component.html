@@ -12,13 +12,13 @@
     <mat-list-item
     *ngFor="let info of currentUser?.chatInfo"
     (click)="getChatByContact(info.contactId)">
-      <a 
+      <!-- <a 
       mat-list-avatar 
       [ngClass]="{online: (contacts | getValueByKey:info.contactId:'status') === 'online'}"
       class="toolbar-avatar">
         <img [src]="contacts | getValueByKey:info.contactId:'avatar'" alt="">
         <span class="status-dot"></span>
-      </a>
+      </a> -->
       <h6 matLine>{{info.contactName}}</h6>
       <p matLine class="text-muted">{{info.lastChatTime  | date}}</p>
     </mat-list-item>

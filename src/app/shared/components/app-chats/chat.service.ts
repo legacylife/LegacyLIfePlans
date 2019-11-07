@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, BehaviorSubject, Subject, of, combineLatest } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
-
+console.log('chat Service')
 import 'rxjs/add/operator/switchMap';
 
 export interface Chat {

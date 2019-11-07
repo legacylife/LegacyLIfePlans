@@ -11,6 +11,8 @@ import { MarkAsDeceasedComponent } from './../../../views/mark-as-deceased-modal
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
+//import { ChatService } from 'app/shared/components/app-chats/chat.service';
+//import { AppChatsModule } from '../../../shared/components/app-chats/app-chats.module';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './customer-home.component.html',

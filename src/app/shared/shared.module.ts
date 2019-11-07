@@ -160,6 +160,11 @@ import { CcDetailedViewComponent } from './components/cc-detailed-view/cc-detail
 import { CcShareViaEmailModelComponent } from './components/cc-share-via-email-model/cc-share-via-email-model.component';
 import { AdvertisementPaymentComponent } from './components/advertisement-payment/advertisement-payment.component';
 import { FileHandlingService } from './services/file-handling.service';
+import { ChatService } from './components/app-chats/chat.service';
+//import { AppChatsModule } from './components/app-chats/app-chats.module';
+import { AppChatsComponent } from './components/app-chats/app-chats.component';
+import { ChatLeftSidenavComponent } from './components/app-chats/chat-left-sidenav/chat-left-sidenav.component';
+import { ChatContentsComponent } from './components/app-chats/chat-contents/chat-contents.component';
 /* 
   Only Required if you want to use Angular Landing
   (https://themeforest.net/item/angular-landing-material-design-angular-app-landing-page/21198258)
@@ -258,7 +263,7 @@ const classesToInclude = [
   CcRightPanelComponent,
   CcDetailedViewComponent,
   CcShareViaEmailModelComponent,
-  AdvertisementPaymentComponent
+  AdvertisementPaymentComponent,AppChatsComponent,ChatLeftSidenavComponent,ChatContentsComponent
 ]
 
 @NgModule({
@@ -299,7 +304,8 @@ const classesToInclude = [
     MatSliderModule,
     DragDropModule,
     FileUploadModule,
-    MatStepperModule
+    MatStepperModule,
+    //AppChatsModule
   ],
   entryComponents: [
     AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,ReferNEarnPopUpComponent,
@@ -307,7 +313,7 @@ const classesToInclude = [
     DevicesModalComponent,ElectronicMediaModalComponent,DigitalPublicationsModalComponent,AssetsModelComponent,
     VehicleModelComponent,RealEstateModelComponent,TimeCapsuleMoalComponent,legalStuffModalComponent,InsuranceModalComponent,
     FinanceModalComponent,DebtModalComponent,FinalWishesFormModalComponent,LettersMessagesModelComponent, InviteComponent, CcShareViaEmailModelComponent,
-    AdvertisementPaymentModalComponent
+    AdvertisementPaymentModalComponent,AppChatsComponent,ChatLeftSidenavComponent,ChatContentsComponent
   ],
   providers: [
     ThemeService,
@@ -325,7 +331,8 @@ const classesToInclude = [
     AppConfirmService,
     AppLoaderService,
     SubscriptionService,
-    FileHandlingService
+    FileHandlingService,
+    ChatService
     // LandingPageService    
   ],
   declarations: classesToInclude,

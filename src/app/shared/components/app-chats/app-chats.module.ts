@@ -1,3 +1,4 @@
+console.log('chatModule -----')
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -13,7 +14,8 @@ import {
   MatCardModule
  } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { SharedModule } from '../../shared/shared.module'
+
+//import { SharedModule } from '../../shared.module'
 import { AppChatsComponent } from './app-chats.component';
 import { ChatsRoutes } from './app-chats.routing';
 import { ChatLeftSidenavComponent } from './chat-left-sidenav/chat-left-sidenav.component';
@@ -25,7 +27,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
   imports: [
     CommonModule,
     FormsModule,
-    SharedModule,
+   // SharedModule,
     MatSidenavModule,
     MatMenuModule,
     MatInputModule,
