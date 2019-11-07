@@ -38,7 +38,7 @@ export class CustomerDashboardDayOneComponent implements OnInit {
     this.getAdvisorList();
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
-    if(event.srcElement.outerText=='Send an Invite'){
+    if(event.srcElement.textContent=='Send an Invite'){
       setTimeout(()=>{
       this.getFileActivityLogList();
       this.getTrusteeList();

@@ -56,7 +56,6 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
-      //  console.log('userAccess====',userLockoutPeriod,userAccess.DevicesManagement);
         this.DevicesManagementSection = userAccess.DevicesManagement
         this.ElectronicMediaManagementSection= userAccess.ElectronicMediaManagement
         this.DigitalPublicationManagementSection= userAccess.DigitalPublicationManagement
@@ -73,7 +72,7 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
     this.getDigitalPublicationList();
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
-    if(event.srcElement.outerText=='Send an Invite'){
+    if(event.srcElement.textContent=='Send an Invite'){
       setTimeout(()=>{
         this.getDevicesList();
         this.getElectronicMediaList();

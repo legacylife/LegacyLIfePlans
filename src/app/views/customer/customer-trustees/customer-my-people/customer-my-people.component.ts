@@ -40,7 +40,7 @@ export class CustomerMyPeopleComponent implements OnInit {
     this.getMyPeoplesList('All', -1);
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
-    if(event.srcElement.outerText=='Send an Invite'){
+    if(event.srcElement.textContent=='Send an Invite'){
       setTimeout(()=>{
         this.getMyPeoplesList('All', -1);
       },2000);           

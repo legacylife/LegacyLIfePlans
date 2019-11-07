@@ -74,7 +74,7 @@ export class FinalWishesComponent implements OnInit {
     this.getWishList();
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
-    if(event.srcElement.outerText=='Send an Invite'){
+    if(event.srcElement.textContent=='Send an Invite'){
      setTimeout(()=>{
         this.getWishList();
       },2000);  

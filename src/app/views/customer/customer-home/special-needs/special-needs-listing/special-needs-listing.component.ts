@@ -72,7 +72,7 @@ export class SpecialNeedsListingComponent implements OnInit {
     this.getfriendNeighborList();
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
-    if(event.srcElement.outerText=='Send an Invite'){
+    if(event.srcElement.textContent=='Send an Invite'){
       setTimeout(()=>{
         this.getyoungChildrenList();
         this.getcPDisabilityList();

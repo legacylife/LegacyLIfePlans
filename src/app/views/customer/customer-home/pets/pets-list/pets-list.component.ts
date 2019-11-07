@@ -42,7 +42,7 @@ export class PetsListComponent implements OnInit {
     this.urlData = this.userapi.getURLData();
     this.customerLegaciesId = this.urlData.lastOne;
     this.dynamicRoute = this.urlData.dynamicRoute;
-    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction    
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction;    
     if (this.urlData.lastThird == "legacies") {
       this.userId = this.urlData.lastOne;
       this.getCustomerDetails();
@@ -63,7 +63,7 @@ export class PetsListComponent implements OnInit {
     this.getPetsList();
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
-    if(event.srcElement.outerText=='Send an Invite'){
+    if(event.srcElement.textContent=='Send an Invite'){
       setTimeout(()=>{
         this.getPetsList();    
       },2000);     
