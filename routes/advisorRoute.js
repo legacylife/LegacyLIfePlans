@@ -728,12 +728,11 @@ async function myPeoplesList(req, res) {
     }
     myPeoplesList = trustListing.concat(advisorListing);
     totalPeoplesRecords = myPeoplesList.length;
-
     let executorAssgined = false;
     if(advisorExecutor==null && trustExecutor==null){
       executorAssgined = true;
     }
-    
+    console.log('');
     myPeoples = myPeoplesList;//sortBy(myPeoplesList, 'modifiedOn');
     res.send(resFormat.rSuccess({ myPeoples, totalPeoplesRecords, trustList, totalTrustRecords, advisorList, totalAdvRecords,executorAssgined }))
 }
