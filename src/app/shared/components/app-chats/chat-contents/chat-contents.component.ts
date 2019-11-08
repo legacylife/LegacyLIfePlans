@@ -69,11 +69,11 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
       });
     
     // Only for demo purpose
-    this.chatService.autoReply({
-      contactId: this.activeContact.id,
-      text: `Hi, I\'m ${this.activeContact.name}. Your imaginary friend.`,
-      time: new Date().toISOString()
-    })
+    // this.chatService.autoReply({
+    //   contactId: this.activeContact.id,
+    //   text: `Hi, I\'m ${this.activeContact.name}. Your imaginary friend.`,
+    //   time: new Date().toISOString()
+    // })
     
   }
 

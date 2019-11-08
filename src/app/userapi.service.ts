@@ -138,6 +138,10 @@ export class UserAPIService {
     }    
     return this.userInfo
   }  
+
+  public chatApi(path: string, params: any): Observable<any> {
+    return this.http.post(serverUrl + `/api/${path}`, params);
+  }
   
   public download(path: string, params: any): Observable<any> {
     return this.http.post(serverUrl + `/api/${path}`, params, { responseType: 'blob'});
