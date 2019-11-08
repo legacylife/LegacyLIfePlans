@@ -1,25 +1,17 @@
 <div id="app-customizer">
   <div class="handle" *ngIf="!isCustomizerOpen">
-    <button 
-    mat-fab
-    color="warn" 
+    <button  mat-fab color="warn" class="message--trriger--btn" 
     (click)="isCustomizerOpen = true">
-      <mat-icon>settings</mat-icon>
+      <mat-icon>message</mat-icon>
     </button>
   </div>
 
-  <mat-card class="p-0" *ngIf="isCustomizerOpen">
+  <mat-card class="p-0 chat--wrapper" *ngIf="isCustomizerOpen">
     <app-chats></app-chats>
-    <mat-card-title class="mat-bg-warn">
+    <mat-card-title class="close--msg--sec">
       <div class="card-title-text">
-        <span>Settings</span>
-        <span fxFlex></span>
-        <button 
-        class="card-control" 
-        mat-icon-button
-        (click)="isCustomizerOpen = false">
-          <mat-icon>close</mat-icon>
-        </button>
+        <span>Close message</span>
+        <mat-icon class="canClose" (click)="isCustomizerOpen = false">close</mat-icon>
       </div>
     </mat-card-title>
   </mat-card>

@@ -3,7 +3,7 @@
     <button 
     mat-icon-button
     [style.alignSelf]="'center'"
-    class="mr-1" 
+    class="mr-1 p-0 " 
     (click)="matSidenav.toggle()"><mat-icon>short_text</mat-icon>
     </button>
     
@@ -32,7 +32,7 @@
     [style.alignSelf]="'center'" 
     mat-icon-button 
     [matMenuTriggerFor]="toolbarDDMenu" 
-    class="topbar-button-right hidden-on-open">
+    class="topbar-button-right hidden-on-open p-0">
         <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #toolbarDDMenu="matMenu">
@@ -92,7 +92,7 @@
     <div class="chat-input-actions">
       <form 
         #msgForm="ngForm" 
-        class="inputForm" 
+        class="inputForm llp-form-wrapper" 
         (ngSubmit)="sendMessage($event)" 
         (keyup.enter)="sendMessage($event)"
         fxLayout="row"
@@ -107,7 +107,7 @@
           class="inputText"
           value=""></textarea>
         </mat-form-field>
-        <button mat-fab color="primary" type="submit"><mat-icon>send</mat-icon></button>
+        <button mat-fab color="primary" type="submit"  class="send--trriger--btn" ><mat-icon>send</mat-icon></button>
       </form>
     </div>
 </div>
