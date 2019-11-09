@@ -81,14 +81,14 @@
           </div>
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
             <mat-form-field class="full-width no-mar ">
-              <textarea matInput placeholder="Location of the document:" [formControl]="celebrationFormGroup.controls['documentLocation']"></textarea>
+              <textarea matInput (keyup)="firstCapitalize($event)" placeholder="Location of the document:" [formControl]="celebrationFormGroup.controls['documentLocation']"></textarea>
             </mat-form-field>
           </div>
 
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
               <mat-radio-group class="llp-radio mb-0 mt-1">
                 <mat-form-field class="full-width no-mar">
-                  <textarea matInput [formControl]="celebrationFormGroup.controls['mementos']"
+                  <textarea matInput [formControl]="celebrationFormGroup.controls['mementos']" (keyup)="firstCapitalize($event)"
                     placeholder="Mementos or keepsakes to be provided"></textarea>
                 </mat-form-field>
               </mat-radio-group>
@@ -97,7 +97,7 @@
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
               <mat-radio-group class="llp-radio mb-0 mt-1">
                 <mat-form-field class="full-width no-mar">
-                  <textarea matInput [formControl]="celebrationFormGroup.controls['paymentOptions']"
+                  <textarea matInput [formControl]="celebrationFormGroup.controls['paymentOptions']" (keyup)="firstCapitalize($event)"
                     placeholder="How will the event be paid for?  Please provide details and payment options such as viatical insurance settlement, life insurance, savings, sock/mattress money, etc. and location."></textarea>
                 </mat-form-field>
               </mat-radio-group>
