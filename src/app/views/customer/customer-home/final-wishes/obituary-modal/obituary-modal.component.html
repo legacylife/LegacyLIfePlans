@@ -10,13 +10,13 @@
     <div fxLayout="row wrap">
       <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
         <mat-radio-group class="llp-radio" (change)="onCheckType($event.value)" [formControl]="ObituaryFormGroup.controls['check']">
-          <div class="checkbox-label">Label
+          <div class="checkbox-label">
           </div>
           <mat-radio-button value="yes" [checked]="ObituaryFormGroup.controls['check'].value=='yes'">I have prepared an obituary</mat-radio-button>
           <mat-radio-button value="no" [checked]="ObituaryFormGroup.controls['check'].value=='no'">I don’t have an obituary.</mat-radio-button>
         </mat-radio-group>    
             <mat-form-field class="full-width mt-1 no-mar">
-            <textarea matInput placeholder="Who should help prepare the obituary" [formControl]="ObituaryFormGroup.controls['prepareTo']"></textarea>
+            <textarea matInput placeholder="Who should help prepare the obituary?" [formControl]="ObituaryFormGroup.controls['prepareTo']"></textarea>
           </mat-form-field>
       </div>
    

@@ -41,6 +41,7 @@ import { DetailsVehiclesComponent } from './customer-home/real-estate-assets/det
 import { FinalWishesComponent } from './customer-home/final-wishes/final-wishes-list/final-wishes-list.component';
 import { FinalWishesDetailsComponent } from './customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
 import { ObituaryDetailsComponent } from './customer-home/final-wishes/final-wishes-details/obituary-details.component';
+import { CelebrationDetailsComponent } from './customer-home/final-wishes/final-wishes-details/celebration-details.component';
 
 //Pets
 import { PetsListComponent } from './customer-home/pets/pets-list/pets-list.component';
@@ -213,6 +214,12 @@ export const CustomerRoutes: Routes = [
             component: ObituaryDetailsComponent,
             canActivate: [ProUserGuard],
             data: { title: 'Final Wishes Obituary Details' }
+          },
+          {
+            path: 'final-wishes-celebration-of-life-view/:id',
+            component: CelebrationDetailsComponent,
+            canActivate: [ProUserGuard],
+            data: { title: 'Final Wishes Celebration Of Life Details' }
           },
           {
             path: 'pets',

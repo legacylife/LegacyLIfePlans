@@ -77,7 +77,7 @@ export class ObituaryModalComponent implements OnInit {
     this.getobituaryView();
   }
 
-  getobituaryView = (query = {}, search = false) => {    
+  getobituaryView = (query = {}, search = false) => {  
     let req_vars = {
       query: Object.assign({ customerId: this.userId,status:"Pending" }, query)
     }
@@ -108,6 +108,14 @@ export class ObituaryModalComponent implements OnInit {
             this.ObituaryFormGroup.controls['documents_temp'].setValue('1');
             this.documentsMissing = false;
           }
+          if(this.obituaryList.check && this.obituaryList.check == 'yes'){
+            this.obituaryCheck = true;
+          } 
+
+          if(this.obituaryList.check == 'yes' && this.obituaryList.photos == 'yes'){
+            this.obituaryCheckPhotos = true;
+          }
+
           this.ObituaryFormGroup.controls['profileId'].setValue(profileIds);
           this.ObituaryFormGroup.controls['check'].setValue(this.obituaryList.check); 
           this.ObituaryFormGroup.controls['prepareTo'].setValue(this.obituaryList.prepareTo);
@@ -147,7 +155,7 @@ export class ObituaryModalComponent implements OnInit {
         check: new FormControl(this.ObituaryFormGroup.controls['check'].value,Validators.required),
         prepareTo: new FormControl(this.ObituaryFormGroup.controls['prepareTo'].value),
         photos: new FormControl(this.ObituaryFormGroup.controls['photos'].value),
-        documents_temp: new FormControl(this.ObituaryFormGroup.controls['documents_temp'].value, Validators.required),
+        documents_temp: new FormControl(this.ObituaryFormGroup.controls['documents_temp'].value), // , Validators.required
         media: new FormControl(this.ObituaryFormGroup.controls['media'].value),
         sentTo: new FormControl(this.ObituaryFormGroup.controls['sentTo'].value),
         information: new FormControl(this.ObituaryFormGroup.controls['information'].value),
@@ -170,36 +178,27 @@ export class ObituaryModalComponent implements OnInit {
 
   ObituaryFormSubmit(profileInData = null) {
     var query = {};
-    var proquery = {};     
-  
-    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'final-wishes') {
-      profileInData.customerLegacyId = this.customerLegaciesId
-      profileInData.customerLegacyType = this.customerLegacyType
-    }
+    var proquery = {};  
 
     let profileIds = this.ObituaryFormGroup.controls['profileId'].value;
     if(profileIds){
       this.selectedProfileId = profileIds;
+    }
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'final-wishes') {
+      profileInData.customerLegacyId = this.customerLegaciesId
+      profileInData.customerLegacyType = this.customerLegacyType
+    }        
+    if(!profileInData.profileId || profileInData.profileId ==''){
       profileInData.customerId = this.userId
     }
-
-    let req_vars = {
-      query: Object.assign({_id: this.selectedProfileId}),
-      proquery: Object.assign(profileInData),   
+    const req_vars = {
+      query: Object.assign({ _id: this.selectedProfileId }),
+      proquery: Object.assign(profileInData),
       fromId:localStorage.getItem('endUserId'),
       toId:this.toUserId,
-      folderName:s3Details.obituaryFilePath,
+      folderName:s3Details.obituaryFilePath
     }
 
-    if(profileIds){
-      req_vars = {
-        query: Object.assign({_id:profileIds}),
-        proquery: Object.assign(profileInData),
-        fromId:localStorage.getItem('endUserId'),
-        toId:this.toUserId,
-        folderName:s3Details.obituaryFilePath,
-      }
-    }
 
     //this.loader.open();     
     this.userapi.apiRequest('post', 'finalwishes/obituary-form-submit', req_vars).subscribe(result => {
