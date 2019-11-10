@@ -13,10 +13,14 @@ var port = normalizePort(process.env.PORT || '8080')
  let io = socketIO(server);
 
  io.on('connection', (socket) => {
-    socket.on('new-message', (message) => {
-    console.log("app js message",message);
+  //console.log('user connected');
+  socket.on('new-message', (message) => {
+  //  console.log(`started on port: ${port}`);
+  //    console.log(message);
+    io.emit(message);
   });
-}); 
+});
+
 
 function normalizePort(val) {
   var port = parseInt(val, 10)
