@@ -29,11 +29,13 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Listen for user update
     this.userUpdateSub = this.chatService.onUserUpdated.subscribe(user => {
+      console.log('ngOnInit chat user',user)
       this.user = user;
     });
 
     // Listen for contact change
     this.chatSelectSub = this.chatService.onChatSelected.subscribe(res => {
+      console.log('ngOnInit chat res',res)
       if (res) {
         this.chatCollection = res.chatCollection;
         this.activeContact = res.contact;
@@ -57,13 +59,13 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   sendMessage(e) {
 
     const chat: Chat = {
-      contactId: this.chatService.user.id,
+      contactId: this.chatService.user._id,
       text: this.msgForm.form.value.message,
       time: new Date().toISOString()
     };
     this.chatCollection.chats.push(chat);
     this.chatService
-      .updateChats(this.chatCollection.id, [...this.chatCollection.chats])
+      .updateChats(this.chatCollection._id, [...this.chatCollection.chats])
       .subscribe(res => {
         this.initMsgForm();
       });

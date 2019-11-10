@@ -12,7 +12,7 @@
       class="active-chat-user" 
       fxLayout="row" 
       fxLayoutAlign="start center"
-      *ngIf="activeContact.id"
+      *ngIf="activeContact._id"
     >
       <a 
         [ngClass]="{online: activeContact.status === 'online'}" 
@@ -28,7 +28,7 @@
 
     <!-- Right side top menu -->
     <span fxFlex></span>
-    <button 
+    <!-- <button 
     [style.alignSelf]="'center'" 
     mat-icon-button 
     [matMenuTriggerFor]="toolbarDDMenu" 
@@ -39,7 +39,7 @@
         <button mat-menu-item><mat-icon>account_circle</mat-icon>Contact info</button>
         <button mat-menu-item><mat-icon>volume_mute</mat-icon>Mute</button>
         <button mat-menu-item><mat-icon>delete</mat-icon>Clear chat</button>
-    </mat-menu>
+    </mat-menu> -->
 </mat-toolbar>
 
 <div *ngIf="chatCollection">
@@ -50,11 +50,11 @@
       <div class="single-conversation" 
         fxLayout="row" 
         *ngFor="let chat of chatCollection?.chats"
-        [ngClass]="{sender: chat.contactId === activeContact.id, me: chat.contactId !== activeContact.id}"
+        [ngClass]="{sender: chat.contactId === activeContact._id, me: chat.contactId !== activeContact._id}"
       >
 
         <a 
-          *ngIf="chat.contactId !== activeContact.id" 
+          *ngIf="chat.contactId !== activeContact._id" 
           href="" 
           class="toolbar-avatar"
           [ngClass]="{online: user.status === 'online'}"
@@ -64,7 +64,7 @@
         </a>
 
         <a 
-          *ngIf="chat.contactId === activeContact.id" 
+          *ngIf="chat.contactId === activeContact._id" 
           href="" 
           class="toolbar-avatar"
           [ngClass]="{online: activeContact.status === 'online'}"
@@ -74,8 +74,8 @@
         </a>
 
         <div>
-          <h5 *ngIf="chat.contactId === activeContact.id" class="chat-username text-muted">{{activeContact?.name}}</h5>
-          <h5 *ngIf="chat.contactId !== activeContact.id" class="chat-username text-muted">{{user?.name}}</h5>
+          <h5 *ngIf="chat.contactId === activeContact._id" class="chat-username text-muted">{{activeContact?.name}}</h5>
+          <h5 *ngIf="chat.contactId !== activeContact._id" class="chat-username text-muted">{{user?.name}}</h5>
 
           <div class="conversation-msg">
             {{chat.text}}

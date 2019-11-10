@@ -42,9 +42,10 @@ export class ChatLeftSidenavComponent implements OnInit {
   }
 
   getChatByContact(contactId) { 
+    console.log(' left side bar getChatByContact ',contactId);
     this.chatService.getChatByContact(contactId)
       .subscribe(res => {
-        // console.log('from sub',res);
+        console.log('from sub',res);
       }, err => {
         console.log(err)
       })

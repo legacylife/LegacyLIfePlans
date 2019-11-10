@@ -28,7 +28,7 @@
   <mat-nav-list class="inbox-nav-list" role="list">
     <mat-list-item
     *ngFor="let contact of contacts"
-    (click)="getChatByContact(contact.id)">
+    (click)="getChatByContact(contact._id)">
       <a 
       mat-list-avatar 
       [ngClass]="{online: contact.status === 'online'}"
