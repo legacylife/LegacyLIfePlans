@@ -11,7 +11,8 @@ var chatSchema = new mongoose.Schema({
     time:Date
     }], 
   status: String,
-  createdOn: Date
+  createdOn: Date,
+  modifiedOn: Date
 })
 
 module.exports = mongoose.model('chat', chatSchema)

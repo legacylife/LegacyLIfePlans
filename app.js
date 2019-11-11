@@ -4,21 +4,51 @@ const fs = require('fs')
 const http = require('http')
 const https = require('https')
 var port = normalizePort(process.env.PORT || '8080')
-
+var express = require('express')
+var router = express.Router()
+const apps = express()
  const server = http.createServer(app).listen(8080, () => {
    console.log('http server running at ' + 8080)
  })
-
+ var chats = require('./routes/chatcontrollerRoute')
+ 
  let socketIO = require('socket.io');
  let io = socketIO(server);
 
+ var users = {};
  io.on('connection', (socket) => {
-  //console.log('user connected');
-  socket.on('new-message', (message) => {
-  //  console.log(`started on port: ${port}`);
-  //    console.log(message);
-    io.emit(message);
+   console.log('user connected...');  
+   // var clients = io.sockets.clients();
+   // var clients = io.sockets.clients('new-message'); 
+   socket.on('loginforonline', function(data){
+     //saving userId to array with socket ID
+     users[socket.id] = data.userId;
+     console.log('a user ' + data.userId +'---' + data.userType + ' connected');
+     chats.userStatus(data,'online');
   });
+  
+  socket.on('new-message', (message) => {
+    // console.log(`started on port: ${port}`);
+     console.log('new-message-'+message.chatwithid, message);
+    io.emit('new-message-'+message.chatwithid, message);
+  });
+
+  socket.on('get-chat-rrom', (chatId) => {
+     console.log('get-chat-rrom-'+chatId);
+     chats.chatRoom(chatId,'offline');
+   // io.emit('get-chat-rrom'+contactId);
+  });
+ 
+  
+  socket.on('disconnect', function(){
+    if(users[socket.id]!=='undefined'){
+      console.log('user ' + users[socket.id] + ' disconnected');
+      chats.userStatus({userId:socket.id},'offline');
+    }else{
+      console.log('user ' + users[socket.id] + ' disconnected here',users.socket);
+    }
+  });
+
 });
 
 

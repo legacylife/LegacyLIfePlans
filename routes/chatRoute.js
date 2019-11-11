@@ -10,20 +10,16 @@ var Q = require('q')
 const resFormat = require('./../helpers/responseFormat')
 const { isEmpty } = require('lodash')
 const resMessage  = require('./../helpers/responseMessages')
-//let app = express();
 let http = require('http');
+
+
 let server = http.Server(express);
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
 })
-
 let socketIO = require('socket.io');
 let io = socketIO(server);
-
-// io.on('connection', (socket) => {
-//   console.log('user connected');
-// });
 
 function loginUser(req, res) {
   let { fields, query } = req.body;
@@ -37,7 +33,7 @@ function loginUser(req, res) {
     //{ $or: [ {chatfromid:ObjectId("5d369411e485cd5cd96bdaf6")}, { chatwithid:ObjectId("5d369411e485cd5cd96bdaf6")}] }
     //let chatingData = await chat.find({chatfromid:query._id},{}).populate('chatwithid');
 
-   let chatingData = await chat.find({$or:[{chatfromid:query._id},{ chatwithid:query._id}]},{}).populate('chatfromid').populate('chatwithid');
+   let chatingData = await chat.find({$or:[{chatfromid:query._id},{ chatwithid:query._id}]}).populate('chatfromid').populate('chatwithid');
    let chatInfolist = [];
    
    chatingData.forEach( ( val, index ) => {
@@ -57,9 +53,11 @@ function loginUser(req, res) {
       contactId:info._id,
       contactName: info.firstName+' '+info.lastName,
       avatar: userPicture,
-      unread: 0,      
-      lastChatTime: val.time,
+      unread: 6,      
+      status: info.loginStatus,
+      lastChatTime: val.modifiedOn,
     }
+   // console.log('makeArray',makeArray)
     chatInfolist.push(makeArray);
    })
 
@@ -68,8 +66,7 @@ function loginUser(req, res) {
         _id: userInfo._id,
         name: userInfo.firstName+' '+userInfo.lastName,
         avatar: userPicture,
-        status: "online",
-       // chatInfo: []
+        status: userInfo.loginStatus,
         chatInfo: chatInfolist
       }
     ];
@@ -96,16 +93,13 @@ async function contactList(req, res) {
            _id: info._id,
            name: info.firstName+' '+info.lastName,
            avatar: userPicture,
-           status: "online",
+           status: info.loginStatus,
            mood: ""
          }
          contactlist.push(makeArray);  
      })
   }else{
-      let AllusersData = await getAllTrustUsers(query._id);
-      
-      let trustList = AllusersData[0]['trustList'];
-       advisorList = AllusersData[1]['advisorList'];
+      let advisorList = await HiredAdvisors.find({customerId:ObjectId(query._id),status:'Active'}, {_id:1,advisorId:1}).populate('advisorId');
       advisorList.forEach( ( val, index ) => {
         let info = val.advisorId;
         let userPicture = "assets/images/arkenea/default.jpg";
@@ -114,50 +108,18 @@ async function contactList(req, res) {
             userPicture = profilePicturePath+info.profilePicture;
           }
 
-          
           let makeArray = {
             _id: info._id,
             name: info.firstName+' '+info.lastName,
             avatar: userPicture,
-            status: "online",
+            status: info.loginStatus,
             mood: ""
           }
           contactlist.push(makeArray);  
       })
-
-      trustList.forEach( ( val, index ) => {
-          let info = val.trustId;
-          let userPicture = "assets/images/arkenea/default.jpg";
-
-          if(info.profilePicture!=null){
-            let profilePicturePath = constants.s3Details.url + "/" + constants.s3Details.profilePicturesPath;
-            userPicture = profilePicturePath+info.profilePicture;
-          }
-
-          let makeArray = {
-            _id: info._id,
-            name: info.firstName+' '+info.lastName,
-            avatar: userPicture,
-            status: "online",
-            mood: ""
-          }
-          contactlist.push(makeArray);
-      })
   }
     //console.log(" contactlist ",contactlist);
     res.send(contactlist) 
-}
-
-async function getAllTrustUsers(customerId) {
-  let respArray = [];
-  let findQuery = {customerId:ObjectId(customerId),status:'Active'};
-
-  let trustList = await trust.find(findQuery, {_id:1,trustId:1}).populate('trustId');
-  let advisorList = await HiredAdvisors.find(findQuery, {_id:1,advisorId:1}).populate('advisorId');
-  
-  respArray.push({trustList:trustList},{advisorList:advisorList});
-
-  return respArray;
 }
 
 async function chatCollection(req, res) {
@@ -167,13 +129,13 @@ async function chatCollection(req, res) {
 
   let chating = await chat.find({$or:[{chatfromid:query._id},{ chatwithid:query._id}]},{}).populate('chatfromid').populate('chatwithid');
 
-
   if(chatCreate=='create') {
     var chatInsert = new chat();     
     chatInsert.chatfromid = query._id;
     chatInsert.chatwithid = query.contactId;
     chatInsert.status = 'Active';
-
+    chatInsert.createdOn = new Date();
+    chatInsert.modifiedOn = new Date();
     chating = await chatInsert.save();
     let chatingdata = await chat.findOne({_id:chating._id},{}).populate('chatwithid');
 
@@ -190,13 +152,14 @@ async function chatCollection(req, res) {
       chatwithid: info._id,
       name: info.firstName+' '+info.lastName,
       avatar: userPicture,
-      unread:0,
-      status: "online",
+      unread:3,
+      lastChatTime: chating.time,
+      status: info.loginStatus,
       mood: ""
     }
    // console.log('Populate >>>>>>>>>>>>>>>>',chatCollection);
-   
   } else {
+  //  chating = await chat.updateOne({_id:chating._id},{modifiedOn:new Date()});
     chatCollection = chating;
   }    
 

@@ -1666,7 +1666,8 @@ function stripeErrorsReturns( err ) {
 function logout( req, res) {
   let { fromId } = req.body,
       { userType } = req.body
-  let activity = 'User Logout',
+      User.updateOne({_id:fromId},{loginStatus:'offline'});
+  let activity = 'User Logout',     
       message  = resMessage.data( 607, [{key: '{field}',val: userType.toUpperCase()}, {key: '{status}',val: 'logout'}] )
   allActivityLog.updateActivityLogs(fromId, fromId, activity, message )
   res.send(resFormat.rSuccess(message))
