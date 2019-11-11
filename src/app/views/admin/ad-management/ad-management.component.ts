@@ -13,6 +13,7 @@ export class AddManagementComponent implements OnInit {
   aceessSection : any;
   rows : any;
   userId : string;
+  zipcodeList : any;
   my_messages : any;
   userType : string;
   columns = [];
@@ -37,11 +38,15 @@ enquiryList = (query = {}, search = false) => {
       if(result.status == "error"){
 		  console.log(result.data)        
       } else {
-		  this.rows = result.data.advertisementList			
+      this.rows = result.data.advertisementList;
       }
     }, (err) => {
       console.error(err)      
     })
+}
+
+getzipcodes(stringVal){
+  return stringVal.replace(/,/g,', ');     
 }
 
 manageSponsored(status,id) {

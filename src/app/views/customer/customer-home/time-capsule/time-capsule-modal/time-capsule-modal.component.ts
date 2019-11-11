@@ -256,17 +256,14 @@ export class TimeCapsuleMoalComponent implements OnInit {
             this.uploader.queue.forEach((fileoOb, ind) => {
                 this.TimeCapsuleForm.controls['documents_temp'].setValue('');         
                 this.uploader.uploadItem(fileoOb);  
-                if(ind==0){
-                  this.uploader.onProgressItem = (progress:any) => {
-                    this.updateProgressBar();
-                  }
-                } 
             });
-            
-            this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-              console.log('here uploader ...')
+            this.updateProgressBar();        
+            this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {              
               this.getTimeCapsuleDocuments();
             };
+            this.uploader.onCompleteAll = () => {
+              this.getTimeCapsuleDocuments();
+            }
           }
         }
       }
@@ -303,15 +300,15 @@ export class TimeCapsuleMoalComponent implements OnInit {
       }
       this.uploaderCopy.queue.forEach((fileoOb, ind) => {
           this.uploaderCopy.uploadItem(fileoOb);
-          if(ind==0){
-            this.updateProgressBar();            
-          }
       });
-
+      this.updateProgressBar();
       this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-        console.log('here uploadercopy ...')
         this.getTimeCapsuleDocuments({}, false, false);   
       };
+
+      this.uploaderCopy.onCompleteAll = () => {
+        this.getTimeCapsuleDocuments();
+      }
   }
 
   getTimeCapsuleDocuments = (query = {}, search = false, uploadRemained = true) => {     
@@ -348,8 +345,10 @@ export class TimeCapsuleMoalComponent implements OnInit {
             }            
           } else {
               setTimeout(()=>{    
-               // this.getTimeCapsuleDocuments();
-              },3000);
+
+              //    this.getTimeCapsuleDocuments();
+              },5000);
+
           }
         }
       }, (err) => {

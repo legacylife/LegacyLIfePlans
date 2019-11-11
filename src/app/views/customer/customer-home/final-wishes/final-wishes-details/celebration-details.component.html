@@ -3,14 +3,14 @@
     <div class="">
       <mat-card class="empty--section p-0">
         <mat-card-header class="m-0">
-          <mat-card-title class="m-0">Final Wishes - Obituary</mat-card-title>
+          <mat-card-title class="m-0">Final Wishes - Celebration Of Life</mat-card-title>
           <div class="right--actions">
             <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" *ngIf="row?.photos=='yes' && row?.documents.length>0" (click)="DownloadZip()">
                   <mat-icon>file_download</mat-icon>
                   <span class="hide--sm--txt">Download</span>
             </button>
             <div *ngIf="trusteeLegaciesAction">
-              <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openObituaryModal()">
+              <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openCelebrationOfLifeModal()">
                 <mat-icon>edit</mat-icon>
                 <span class="hide--sm--txt">Edit</span>
               </button>
@@ -25,53 +25,68 @@
           <div class="details--wrapper mb-1">
             <div class="details--header">
               <div class="d-flex align--items--center">
-                <mat-icon>library_add</mat-icon>Obituary
+                <mat-icon>library_add</mat-icon>Celebration Of Life
               </div>
               <span class="last--modified--by">Last modified:
                 <span>{{row?.createdOn | date: 'MMM dd, yyyy'}}</span>
               </span>
             </div>
             <div class="details--body">
-              <h3>{{row?.check=='yes' ? "Prepared an obituary" : "Don’t have an obituary"}}</h3>
+              <h3>{{row?.eventByName != '' ? row?.eventByName : "-"}}</h3>
               <div fxLayout="row wrap" class="mb--10">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
-                  <label class="strong--label">Who should help prepare the obituary?:</label>
+                  <label class="strong--label">Who will orchestrate or conduct the event?:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.prepareTo}}</label>
+                  <label class="normal--label">{{row?.eventByName != '' ? row?.eventByName : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
-                  <label class="strong--label">Is there a photo(s) included with the obituary?:</label>
+                  <label class="strong--label">Where should the event take place?:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.photos == 'yes'? "Yes" : "No" }}</label>
-                </div>
-              </div>
-
-              <div fxLayout="row wrap" class="mb--10">
-                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
-                  <label class="strong--label">The obituary should appear in the following newspapers:</label>
-                </div>
-                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.media}}</label>
+                  <label class="normal--label">{{row?.eventPlace != '' ? row?.eventPlace : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
-                  <label class="strong--label">Electronic copy of the obituary should be sent to:</label>
+                  <label class="strong--label">Will there be a speaker?:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.sentTo}}</label>
+                  <label class="normal--label">{{row?.speakerAvailable == "yes" ? "Yes" : "No"}}</label>
                 </div>
               </div>   
-              <div fxLayout="row wrap" class="mb--10">
+              <div fxLayout="row wrap" class="mb--10"  *ngIf="row?.speakerAvailable && row?.speakerAvailable == 'yes'">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
-                  <label class="strong--label">The following information is to be included in the obituary:</label>
+                  <label class="strong--label">Speaker Name (Who?):</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.information}}</label>
+                  <label class="normal--label">{{row?.speakerName != '' ? row?.speakerName : "-"}}</label>
+                </div>
+              </div>
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">Food and Beverages to be served (catered, potluck, menu items):</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{row?.foodNMenuItems != '' ? row?.foodNMenuItems : "-"}}</label>
+                </div>
+              </div> 
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">Music to be played:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{row?.musicNames != '' ? row?.musicNames : "-"}}</label>
+                </div>
+              </div> 
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">What group activities would be appropriate? Open reflections/tributes, readings, any highlights, games:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{row?.groupActivities != '' ? row?.groupActivities : "-"}}</label>
                 </div>
               </div>                 
               <div fxLayout="row wrap" class="mb--10">

@@ -58,7 +58,7 @@ export class TimeCapsuleListComponent implements OnInit {
     this.getTimecapsuleList();
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
-    if(event.srcElement.outerText=='Send an Invite'){
+    if(event.srcElement.textContent=='Send an Invite'){
       console.log("TimeCapsuleList here !!! ")     
       setTimeout(()=>{
         this.getTimecapsuleList();

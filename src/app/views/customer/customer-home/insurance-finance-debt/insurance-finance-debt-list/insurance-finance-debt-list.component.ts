@@ -76,7 +76,7 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
     this.getDebtList();    
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
-    if(event.srcElement.outerText=='Send an Invite'){
+    if(event.srcElement.textContent=='Send an Invite'){
       setTimeout(()=>{
         this.getInsuranceList();
         this.getFinanceList();

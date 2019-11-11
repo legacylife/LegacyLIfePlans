@@ -72,7 +72,7 @@ export class ListingComponent implements OnInit {
     this.getRealEstateAssetsList();
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
-    if(event.srcElement.outerText=='Send an Invite'){
+    if(event.srcElement.textContent=='Send an Invite'){
       setTimeout(()=>{
         this.getRealEstateList();
         this.getRealEstateVehiclesList();

@@ -103,12 +103,18 @@ export class AdvisorLeadsDetailsComponent implements OnInit {
           for(var index = 1;index<fData.length;index++){
             namesData.push(fData[index].firstName + " " + fData[index].lastName)
           }
-          this.mutualFriendList = namesData.join(",")
+          this.mutualFriendList = namesData.join(", ")
           this.mutualFriendAvailable = true
         }
     }, (err) => {
       console.error("error : ", err)
     })
+  }
+
+
+  firstCapitalize(value) {
+    let re = /(^|[.!?]\s+)([a-z])/g;
+    return value.replace(re, (m, $1, $2) => $1 + $2.toUpperCase());
   }
 
 }

@@ -44,7 +44,7 @@ export class CustomerMyTrusteeComponent implements OnInit {
     this.urlData = this.userapi.getURLData();
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
-    if(event.srcElement.outerText=='Send an Invite'){
+    if(event.srcElement.textContent=='Send an Invite'){
       setTimeout(()=>{
         this.getTrusteeList('All','-1');
       },2000);           

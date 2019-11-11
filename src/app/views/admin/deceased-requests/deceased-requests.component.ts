@@ -33,7 +33,8 @@ export class DeceasedRequestsComponent implements OnInit {
 
   getDeceasedList = (query = {}, search = false) => { 
     let req_vars = {
-      query: Object.assign({ status:{$ne : "Pending"} })
+      query: Object.assign({ status:{$ne : "Pending"} }),
+      order: { "modifiedOn": 1 },
     }    
      this.loader.open(); 
     this.api.apiRequest('post', 'deceased/deceaseList', req_vars).subscribe(result => {

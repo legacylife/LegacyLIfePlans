@@ -115,7 +115,8 @@ export class CustomerEssentialDetailsComponent implements OnInit {
           this.loader.open();
           var query = {};
           const req_vars = {
-            query: Object.assign({ _id: this.selectedProfileId }, query)
+            query: Object.assign({ _id: this.selectedProfileId }, query),
+            fromId:this.userId,
           }
           this.userapi.apiRequest('post', 'customer/deleteprofile', req_vars).subscribe(result => {
             if (result.status == "error") {

@@ -14,6 +14,9 @@ import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.s
 export class lockscreenModalComponent implements OnInit {
   lockScreenForm: FormGroup
   userId: string
+  lockscreenData = {
+    password: ''
+  }
   userFullName: string
   endUserType: string
   emailHiddenVal:boolean = false;

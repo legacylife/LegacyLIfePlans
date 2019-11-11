@@ -81,7 +81,7 @@ export class CustomerLegalStuffComponent implements OnInit {
     this.getEstateList();
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
-    if(event.srcElement.outerText=='Send an Invite'){
+    if(event.srcElement.textContent=='Send an Invite'){
       setTimeout(()=>{
         this.getEstateList();
       },2000);     

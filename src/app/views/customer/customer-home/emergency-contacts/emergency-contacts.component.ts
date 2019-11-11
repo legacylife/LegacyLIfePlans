@@ -95,7 +95,7 @@ export class EmergencyContactsComponent implements OnInit {
     this.getEmergencyContacts()
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
-    if(event.srcElement.outerText=='Send an Invite'){
+    if(event.srcElement.textContent=='Send an Invite'){
       this.getEmergencyContacts();
     }
   }

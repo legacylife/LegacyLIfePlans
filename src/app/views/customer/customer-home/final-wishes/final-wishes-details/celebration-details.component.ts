@@ -6,15 +6,15 @@ import { egretAnimations } from '../../../../../shared/animations/egret-animatio
 import { UserAPIService } from './../../../../../userapi.service';
 import { AppLoaderService } from '../../../../../shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from '../../../../../shared/services/app-confirm/app-confirm.service';
-import { ObituaryModalComponent } from '../obituary-modal/obituary-modal.component';
+import { CelebrationofLifeComponent } from '../celebrationof-life/celebrationof-life.component';
 import { s3Details } from '../../../../../config';
 @Component({
   selector: 'app-customer-home',
-  templateUrl: './obituary-details.component.html',
-  styleUrls: ['./obituary-details.component.scss'],
+  templateUrl: './celebration-details.component.html',
+  styleUrls: ['./celebration-details.component.scss'],
   animations: [egretAnimations]
 })
-export class ObituaryDetailsComponent implements OnInit {
+export class CelebrationDetailsComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   userId: string;
   selectedProfileId: string = "";
@@ -52,7 +52,7 @@ export class ObituaryDetailsComponent implements OnInit {
         query: Object.assign({ _id: profileIds })
       }
     }
-    this.userapi.apiRequest('post', 'finalWishes/view-obituary-details', req_vars).subscribe(result => {     
+    this.userapi.apiRequest('post', 'finalWishes/view-celebration-details', req_vars).subscribe(result => {     
       if (result.status == "error") {
         console.log(result.data)
       } else {
@@ -92,20 +92,19 @@ export class ObituaryDetailsComponent implements OnInit {
       }
     } 
   }
-  openObituaryModal() {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(ObituaryModalComponent, {
+  openCelebrationOfLifeModal() {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(CelebrationofLifeComponent, {
       width: '720px',
-      disableClose: true, 
+      disableClose: true,
     });
-
     dialogRef.afterClosed()
-    .subscribe(res => {
-      this.getFinalWishView();
-      if (!res) {
-        // If user press cancel
-        return;
-      }
-    })
+      .subscribe(res => {
+        this.getFinalWishView();
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
   }
 
 

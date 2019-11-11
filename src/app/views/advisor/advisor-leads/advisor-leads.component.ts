@@ -119,6 +119,15 @@ export class AdvisorLeadsComponent implements OnInit {
     })
   }
 
+  getCheckEmpty(city,state,zipcode){
+    let cit = city!='' ? city : '';
+    let stat = state!='' ? ', '+state : '';
+    let zipcod = zipcode!='' ? '- '+zipcode : '';
+
+    return cit+''+stat+' '+zipcod;
+  }
+
+
   checkCustomerRelation(customerId){
     let returnVal = false;
     if(this.advisorWithCustomer.length > 0){

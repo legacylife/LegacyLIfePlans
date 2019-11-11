@@ -133,11 +133,11 @@ export class CustomerProfessionalComponent implements OnInit {
 
   checkAdvisorView(advisorId='') {
     const req_vars = {
-      query: Object.assign({customerId:this.userId,advisorId:advisorId})
+      query: Object.assign({customerId:this.userId,advisorId:advisorId, status: { $ne: 'Deleted'}})
     }
     this.userapi.apiRequest('post', 'advisor/checkHireAdvisor', req_vars).subscribe(result => {
         if(result.status == "success" && result.data.RequestData){
-          this.advisorStatus  = result.data.RequestData.status
+          this.advisorStatus  = result.data.RequestData.status;
           console.log("advisorStatus :", this.advisorStatus);
         }
       }, (err) => {

@@ -88,7 +88,7 @@ export class CustomerEssentialDayOneComponent implements OnInit {
 
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
-    if(event.srcElement.outerText=='Send an Invite'){
+    if(event.srcElement.textContent=='Send an Invite'){
       setTimeout(()=>{
         this.getEssentialProfileList();
         this.getEssentialIdList();

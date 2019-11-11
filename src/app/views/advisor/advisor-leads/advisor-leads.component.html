@@ -55,9 +55,9 @@
                 </mat-card-header>
                 <mat-card-content>
                   <h4>Details</h4>
-                  <div class="files--folder">
+                  <div class="files--folder" *ngIf="rows?.customerId.city || rows?.customerId.state || rows?.customerId.zipcode">
                     <mat-icon>location_on</mat-icon>
-                    {{rows?.customerId.city }}, {{rows?.customerId.state}} - {{rows?.customerId.zipcode}}
+                    {{getCheckEmpty(rows?.customerId.city,rows?.customerId.state,rows?.customerId.zipcode)}}
                   </div>
                   <div class="files--folder mb-0">
                     <mat-icon>local_phone</mat-icon>
