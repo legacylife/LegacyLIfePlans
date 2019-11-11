@@ -13,6 +13,7 @@ const Busboy = require('busboy')
 const User = require('./../models/Users')
 var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
+const finalwishes = require('./../models/FinalWishes.js')
 const obituary = require('./../models/Obituary.js')
 const celebration = require('./../models/CelebrationOfLife.js')
 const s3 = require('./../helpers/s3Upload')
@@ -28,11 +29,11 @@ const allActivityLog = require('./../helpers/allActivityLogs')
 
 async function finalList(req, res) {
   let { fields, query } = req.body
-
+    let funeralPlanData = await finalwishes.find(query);
     let obituaryData =  await obituary.find(query);
     let celebrationData =  await celebration.find(query);
 
-  res.send(resFormat.rSuccess({ obituaryData, celebrationData }))      
+  res.send(resFormat.rSuccess({ obituaryData, celebrationData, funeralPlanData }))      
 }
 
 /**
@@ -48,9 +49,9 @@ function obituaryFormUpdate(req, res) {
         folderName      = folderName.replace('/','');
   let subFolderName = '';
   var logData = {}
-  logData.fileName = proquery.title;
-  logData.folderName = 'finalwishes obituary';
-  logData.subFolderName = '';
+  logData.fileName = proquery.check;
+  logData.folderName = 'finalwishes';
+  logData.subFolderName = 'obituary';
 
   if(query._id){
     obituary.findOne(query, function (err, custData) {      
@@ -165,8 +166,8 @@ function celebrationFormUpdate(req, res) {
   let subFolderName = '';
   var logData = {}
   logData.fileName = proquery.eventByName;
-  logData.folderName = 'finalwishes celebration of life';
-  logData.subFolderName = '';
+  logData.folderName = 'finalwishes';
+  logData.subFolderName = 'celebration';
 
   if(query._id){
     celebration.findOne(query, function (err, custData) {      
