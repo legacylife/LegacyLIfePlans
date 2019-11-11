@@ -91,6 +91,16 @@ export class FinalWishesComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
+        
+        this.FuneralPlansList = result.data.funeralPlanData;
+        this.showFuneralPlansCnt = this.FuneralPlansList.length
+        if (this.showFuneralPlansCnt > 0) {
+          this.showFuneralPlansListing = true;
+        } else {
+          this.showFuneralPlansListing = false;
+        }
+  
+
         this.ObituaryList = result.data.obituaryData;
         this.showObituaryListingCnt = this.ObituaryList.length
         if (this.showObituaryListingCnt > 0) {

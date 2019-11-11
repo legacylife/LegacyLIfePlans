@@ -623,3 +623,22 @@ export const RealEstateAssetsType = [
     opt_code: "10"
   }
 ];
+
+export const funeralOptions = [
+  {
+    opt_name: "I would prefer a traditional funeral",
+    opt_code: "1"
+  },
+  {
+    opt_name: "I would prefer a memorial service",
+    opt_code: "2"
+  },
+  {
+    opt_name: "I would prefer cremation",
+    opt_code: "3"
+  },
+  {
+    opt_name: "I do not want a funeral or memorial service",
+    opt_code: "4"
+  }
+];

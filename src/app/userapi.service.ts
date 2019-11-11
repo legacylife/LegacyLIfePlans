@@ -283,9 +283,13 @@ export class UserAPIService {
       this.fileAccessInfo.fileIcon = "help";
       this.fileAccessInfo.fileUrl = ['/customer/dashboard/special-needs-view', logData.fileId];
     }
-    if(logData.folderName == 'finalwishes'){
+    if(logData.folderName == 'finalwishes' && logData.subFolderName == 'obituary'){
       this.fileAccessInfo.fileIcon = "date_range";
-      this.fileAccessInfo.fileUrl = ['/customer/dashboard/final-wishes-view', logData.fileId];
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/final-wishes-obituary-view', logData.fileId];
+    }
+    if(logData.folderName == 'finalwishes' && logData.subFolderName == 'celebration'){
+      this.fileAccessInfo.fileIcon = "date_range";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/final-wishes-celebration-of-life-view', logData.fileId];
     }
 
     if(logData.folderName == 'realestateassets' && logData.subFolderName == 'real-estate'){ 

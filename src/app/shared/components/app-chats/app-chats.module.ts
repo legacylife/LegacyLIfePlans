@@ -40,7 +40,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
     PerfectScrollbarModule,
     RouterModule.forChild(ChatsRoutes)
   ],
-  declarations: [AppChatsComponent, ChatLeftSidenavComponent, ChatContentsComponent],
+  declarations: [],
   providers: [ ChatService ]
 })
 export class AppChatsModule {}

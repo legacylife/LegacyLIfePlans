@@ -115,7 +115,7 @@ export class CelebrationofLifeComponent implements OnInit {
           this.documentsList = this.celebrationList.documents;
           if(this.documentsList.length>0){
             this.celebrationFormGroup.controls['documents_temp'].setValue('1');
-            this.documentsMissing = false;
+            this.documentsMissing = false; 
           }
 
           if(this.celebrationList.speakerAvailable && this.celebrationList.speakerAvailable == 'yes'){
