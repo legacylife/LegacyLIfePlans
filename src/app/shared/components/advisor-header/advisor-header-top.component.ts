@@ -12,14 +12,18 @@ import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/mater
 import { ReferAndEarnModalComponent } from '../../../views/refer-and-earn-modal/refer-and-earn-modal.component';
 import { TodosComponent } from '../../../views/todos/todos.component';
 import { Router } from '@angular/router';
+import { serverUrl, s3Details } from '../../../config';
 import { SubscriptionService } from 'app/shared/services/subscription.service';
 import * as moment from 'moment'
+import * as io from 'socket.io-client';
 @Component({
   selector: 'app-advisor-header-top',
   templateUrl: './advisor-header-top.component.html'
 })
 export class AdvisorHeaderTopComponent implements OnInit, OnDestroy {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
+  userId:string;
+  userType:string;
   layoutConf: any;
   menuItems:any;
   menuItemSub: Subscription;
@@ -48,7 +52,10 @@ export class AdvisorHeaderTopComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    
+    this.userId = localStorage.getItem('endUserId');
+    this.userType = localStorage.getItem('endUserType');
+    var socket = io(serverUrl);
+    socket.emit('loginforonline',{userId: this.userId,userType:this.userType});
     this.picService.itemValue.subscribe((nextValue) => {
       this.profilePicture =  nextValue
     })

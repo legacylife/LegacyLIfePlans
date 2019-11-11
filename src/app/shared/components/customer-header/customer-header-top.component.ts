@@ -14,6 +14,7 @@ import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { serverUrl, s3Details } from '../../../config';
 import { TodosComponent } from 'app/views/todos/todos.component';
 import { addTrusteeModalComponent } from 'app/views/customer/customer-home/add-trustee-modal/add-trustee-modal.component';
+import * as io from 'socket.io-client';
 @Component({
   selector: 'app-customer-header-top',
   templateUrl: './customer-header-top.component.html'
@@ -52,8 +53,11 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.userId = localStorage.getItem('endUserId')
-    this.userType = localStorage.getItem('endUserType')
+    this.userId = localStorage.getItem('endUserId');
+    this.userType = localStorage.getItem('endUserType');
+    var socket = io(serverUrl);
+    socket.emit('loginforonline',{userId:this.userId,userType:this.userType});
+
     this.picService.itemValue.subscribe((nextValue) => {
       if(nextValue)
         this.profilePicture =  nextValue

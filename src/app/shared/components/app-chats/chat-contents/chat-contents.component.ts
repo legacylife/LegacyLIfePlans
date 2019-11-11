@@ -17,6 +17,7 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   userUpdateSub: Subscription;
   chatUpdateSub: Subscription;
   chatSelectSub: Subscription;
+  messages: any[] = []
 
   @Input('matSidenav') matSidenav;
   @ViewChild(PerfectScrollbarDirective) psContainer: PerfectScrollbarDirective;
@@ -29,13 +30,19 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Listen for user update
     this.userUpdateSub = this.chatService.onUserUpdated.subscribe(user => {
-      console.log('ngOnInit chat user',user)
+      //console.log('ngOnInit chat user',user)
       this.user = user;
+    });
+
+   
+    this.chatService.getMessages().subscribe((message: string) => {
+        this.messages.push(message);
+        console.log("thismessages", this.messages)
     });
 
     // Listen for contact change
     this.chatSelectSub = this.chatService.onChatSelected.subscribe(res => {
-      console.log('ngOnInit chat res',res)
+     // console.log('ngOnInit chat res',res)
       if (res) {
         this.chatCollection = res.chatCollection;
         this.activeContact = res.contact;
@@ -45,8 +52,8 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
 
     // Listen for chat update
     this.chatUpdateSub = this.chatService.onChatsUpdated.subscribe(chat => {
-      this.chatCollection.chats.push(chat);
-      this.scrollToBottom();
+        this.chatCollection.chats.push(chat);
+        this.scrollToBottom();
     })
   }
   
@@ -57,9 +64,10 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   }
 
   sendMessage(e) {
-
+    ////chatwithid: this.activeContact._id,   
     const chat: Chat = {
       contactId: this.chatService.user._id,
+      chatwithid: this.activeContact._id,
       text: this.msgForm.form.value.message,
       time: new Date().toISOString()
     };

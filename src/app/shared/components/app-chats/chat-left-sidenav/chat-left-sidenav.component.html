@@ -9,16 +9,12 @@
 <div [perfectScrollbar] class="chat-sidebar-scroll">
   <!-- Left side contact list -->
   <mat-nav-list class="inbox-nav-list" role="list">
-    <mat-list-item
-    *ngFor="let info of currentUser?.chatInfo"
-    (click)="getChatByContact(info.contactId)">
-      <!-- <a 
-      mat-list-avatar 
-      [ngClass]="{online: (contacts | getValueByKey:info.contactId:'status') === 'online'}"
-      class="toolbar-avatar">
-        <img [src]="contacts | getValueByKey:info.contactId:'avatar'" alt="">
+    <mat-list-item *ngFor="let info of currentUser?.chatInfo" (click)="getChatByContact(info.contactId)">
+      <a mat-list-avatar [ngClass]="{online: (info.status) === 'online'}" class="toolbar-avatar">
+        <img [src]="info.avatar" alt="">
         <span class="status-dot"></span>
-      </a> -->
+      </a>
+      <!-- <span class="menuitem-badge mat-bg-warn ng-star-inserted">{{info.unread}}</span> -->
       <h6 matLine>{{info.contactName}}</h6>
       <p matLine class="text-muted">{{info.lastChatTime  | date}}</p>
     </mat-list-item>

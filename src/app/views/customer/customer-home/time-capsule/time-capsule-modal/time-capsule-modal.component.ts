@@ -136,15 +136,15 @@ export class TimeCapsuleMoalComponent implements OnInit {
       }
     }
 
-    this.loader.open(); 
+    this.loader.open();
     this.userapi.apiRequest('post', 'timeCapsule/view-timeCapsule-details', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        if(result.data){    
-          this.timeCapsuleList = result.data;                    
-          let profileIds = this.timeCapsuleList._id;
+        if(result.data){
+          this.timeCapsuleList = result.data;
+          let profileIds = this.selectedProfileId = this.timeCapsuleList._id;          
           this.TimeCapsuleForm.controls['profileId'].setValue(profileIds);
           this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
@@ -208,15 +208,14 @@ export class TimeCapsuleMoalComponent implements OnInit {
         totalUploderFileSize = 0,
         remainingSpace = 0,
         message = ''
+   
     this.uploader.queue.forEach((fileoOb) => {
       let filename = fileoOb.file.name;
       var extension = filename.substring(filename.lastIndexOf('.') + 1);
       var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc","mov","mp3","mp4","mkv", "mpeg", "wav", "ogg", "opus", "bmp", "tiff", "svg", "webm", "mpeg4", "3gpp", "avi", "mpegps", "wmv", "flv"];
       let resp = this.isExtension(extension,fileExts);
-      
       totalUploderFileSize += fileoOb.file.size
-
-      if(!resp){
+     if(!resp){
         var FileMsg = "This file '" + filename + "' is not supported";
         this.uploader.removeFromQueue(fileoOb);
         let pushArry = {"error":FileMsg} 
@@ -228,41 +227,52 @@ export class TimeCapsuleMoalComponent implements OnInit {
       }
     });
 
-    let legacyUserData = {userId: this.toUserId, userType:'customer'}
+    let legacyUserData = {userId: this.toUserId, userType:'customer'};
     this.fileHandlingService.checkAvailableSpace( legacyUserData, async (spaceDetails) => {
-      remainingSpace = Number(spaceDetails.remainingSpace)
-      message = spaceDetails.message
-    
+      remainingSpace = Number(spaceDetails.remainingSpace);
+      message = spaceDetails.message;
       if( totalUploderFileSize > remainingSpace) {
         this.confirmService.reactivateReferEarnPopup({ message: message, status: 'notactivate' }).subscribe(res => {
-          if (res) {
-            console.log("**************",res)
-          }
-          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+          if (res) {  
+          }        
         })
-      }
-      else{
-        let proceedToUpload = true
+      } else {
+        let proceedToUpload = true;
         if( message != '' ) {
           let confirmResponse = await this.confirmService.confirm({ message: message }).toPromise()
           proceedToUpload = true
         }
-        if( proceedToUpload ) {
-          if(this.uploader.getNotUploadedItems().length){
+        if( proceedToUpload ) {         
+          if(this.selectedProfileId){
+            this.uploader.onBeforeUploadItem = (item) => {
+              item.url = `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}`;
+            }
+          }
+          if(this.uploader.getNotUploadedItems().length) {
             this.uploaderCopy = cloneDeep(this.uploader)
             this.uploader.queue.splice(1, this.uploader.queue.length - 1)
             this.uploaderCopy.queue.splice(0, 1);
           
             this.uploader.queue.forEach((fileoOb, ind) => {
-                this.TimeCapsuleForm.controls['documents_temp'].setValue('');         
+              if(this.timeCapsuleDocsList.length < 1){  this.TimeCapsuleForm.controls['documents_temp'].setValue(''); }
                 this.uploader.uploadItem(fileoOb);  
             });
-            this.updateProgressBar();        
+
+            this.uploader.onProgressItem = (item: any, response: any) => {       
+              this.updateProgressBar();    
+            };
+           
             this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {              
               this.getTimeCapsuleDocuments();
+              setTimeout(()=>{    
+                this.uploader.clearQueue();
+                },800);
             };
+
             this.uploader.onCompleteAll = () => {
-              this.getTimeCapsuleDocuments();
+              setTimeout(()=>{    
+                this.getTimeCapsuleDocuments();
+                },5000);
             }
           }
         }
@@ -271,11 +281,10 @@ export class TimeCapsuleMoalComponent implements OnInit {
   }
 
   updateProgressBar(){
-    // let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
-    // let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
-    // this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
-    // this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
     let uploaderLength = 0;  let uploaderCopyLength = 0;
+    this.uploader.onProgressItem = (progress:any) => {
+      this.currentProgessinPercent = progress;
+    }
     this.uploader.onProgressAll = (progress:any) => {
       uploaderLength = progress;
       if(this.uploaderCopy.queue.length==0){
@@ -288,26 +297,28 @@ export class TimeCapsuleMoalComponent implements OnInit {
         this.currentProgessinPercent = totalLength - 100;
       }
     }
-    if(this.uploader.queue.length>0){
-      this.uploader.clearQueue();
-    }
+    //console.log('len 1# ',this.uploader.queue.length,'len 2# ',this.uploaderCopy.queue.length,' Processs',this.currentProgessinPercent)
   }
 
-  uploadRemainingFiles(profileId) {
+  uploadRemainingFiles(profileId) {    
       this.uploaderCopy.onBeforeUploadItem = (item) => {
         item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
         this.TimeCapsuleForm.controls['documents_temp'].setValue('');         
       }
       this.uploaderCopy.queue.forEach((fileoOb, ind) => {
           this.uploaderCopy.uploadItem(fileoOb);
+          
       });
       this.updateProgressBar();
       this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+        this.uploaderCopy.removeFromQueue(item);
         this.getTimeCapsuleDocuments({}, false, false);   
       };
 
       this.uploaderCopy.onCompleteAll = () => {
-        this.getTimeCapsuleDocuments();
+        setTimeout(()=>{    
+          this.getTimeCapsuleDocuments();
+          },5000);
       }
   }
 
@@ -327,13 +338,12 @@ export class TimeCapsuleMoalComponent implements OnInit {
         if (result.status == "error") {
         } else {
           if(result.data){
-            profileIds = result.data._id;
+            profileIds = this.selectedProfileId = result.data._id;
             this.TimeCapsuleForm.controls['profileId'].setValue(profileIds);
             if(uploadRemained) {
               this.uploadRemainingFiles(profileIds)
             }
-            // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-            // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+
             this.timeCapsuleDocsList = result.data.documents;    
             this.TimeCapsuleForm.controls['documents_temp'].setValue('');
             if(this.timeCapsuleDocsList.length>0){
@@ -343,13 +353,7 @@ export class TimeCapsuleMoalComponent implements OnInit {
             if(this.currentProgessinPercent==100){
               this.currentProgessinPercent = 0;
             }            
-          } else {
-              setTimeout(()=>{    
-
-              //    this.getTimeCapsuleDocuments();
-              },5000);
-
-          }
+          } 
         }
       }, (err) => {
         console.error(err);

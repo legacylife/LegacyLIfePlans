@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NavigationService } from "../../../shared/services/navigation.service";
 import { LayoutService } from '../../../shared/services/layout.service';
 import PerfectScrollbar from 'perfect-scrollbar';
-console.log('Welcome to CustomizerComponent<<<<');
 @Component({
   selector: 'app-customizer',
   templateUrl: './customizer.component.html',
@@ -31,7 +30,6 @@ export class CustomizerComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('Welcome to CustomizerComponent===>',this.isCustomizerOpen);
     this.layoutConf = this.layout.layoutConf;
     this.selectedLayout = this.layoutConf.navigationPos;
     this.isTopbarFixed = this.layoutConf.topbarFixed;

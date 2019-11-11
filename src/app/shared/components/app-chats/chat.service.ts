@@ -1,4 +1,4 @@
-import { Injectable,OnInit } from "@angular/core";
+import { Injectable,OnInit, OnDestroy } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, BehaviorSubject, Subject, of, combineLatest } from "rxjs";
 import { map, switchMap, catchError } from "rxjs/operators";
@@ -10,6 +10,7 @@ export interface Chat {
   text: string;
   time: Date | string;
   contactId: User["_id"];
+  chatwithid: User["chatwithid"];
 }
 
 export interface ChatCollection {
@@ -30,6 +31,7 @@ export class User {
   avatar: string;
   name: string;
   status: string;
+  chatwithid:string;
   chatInfo?: UserChatInfo[];
 }
 
@@ -49,12 +51,22 @@ export class ChatService {
   onChatsUpdated = new Subject<any>();
 
   constructor(private userapi: UserAPIService,private http: HttpClient) {
-    // console.log('from service');
+    //console.log('serverUrl', serverUrl);
     // this.loadChatData()
     this.socket = io(serverUrl)
+    this.socket.on('connect', function(){
+     // console.log("socket connected")
+    });
+    this.socket.on('disconnect', function(){
+     // console.log("socket disconnected")
+    });
   }
   ngOnInit() {
-      console.log('Welcome to chat ===> ',this.userId,'type',this.userType)
+     // console.log('Welcome to chat ===> ',this.userId,'type',this.userType)
+  }
+
+  ngOnDestroy() {
+    this.socket.disconnect() 
   }
   loadChatData(): Observable<any> {
     return combineLatest(
@@ -65,27 +77,24 @@ export class ChatService {
         this.contacts = contacts;
         this.chats = chats;
         this.user = user;
-        console.log('next.willCall')
+       // console.log('next.willCall')
         this.onUserUpdated.next(user);
-        console.log('next.called')
-        console.log(
-          "contacts:",
-          contacts,
-          "\n chats:",
-          chats,
-          "\n currUser:",
-          user
-        );
+        // console.log('next.called')
+        // console.log(
+        //   "contacts:",
+        //   contacts,
+        //   "\n chats:",
+        //   chats,
+        //   "\n currUser:",
+        //   user
+        // );
       }
     );
   }
   
   public getChatByContact(contactId): Observable<ChatCollection> {
-    console.log('getChatByContact contactId',contactId)
     let chatInfo = this.user.chatInfo.find(chat => chat.contactId === contactId);
-    console.log('getChatByContact chatInfo ',chatInfo)
     if (!chatInfo) {
-      console.log('createChatCollection with contactId ',contactId)
       return this.createChatCollection(contactId)
         .switchMap(chatColl => {
           return this.getChatByContact(contactId)
@@ -94,20 +103,15 @@ export class ChatService {
 
     return this.getAllChats()
       .switchMap(chats => {
-        console.log('getAllChats chats ',chats)
      let chatCollection = chats.find(chat => chat._id === chatInfo._id);
-        console.log('getAllChats chatCollection',chatCollection)
         let contact = this.contacts.find(
           contact => contact._id === contactId
         );
-    
+        this.socket.emit('get-chat-rrom',chatInfo._id);
         this.onChatSelected.next({
           chatCollection: chatCollection,
           contact: contact
         });
-
-        console.log('onChatSelected------',this.onChatSelected);
-
         return of(chatCollection);
       });
   }
@@ -127,7 +131,6 @@ export class ChatService {
       contactName: contact.name,
       unread: null
     };
-    //console.log('createChatCollection -- chatInfo',chatInfo)
     let req_vars = {
     query: Object.assign({_id:this.userId,userType:this.userType,contactId:contactId}),
     chatCreate: 'create',
@@ -144,24 +147,19 @@ export class ChatService {
           contactName: resdata.name,
           unread: null
         };
-       console.log('updatedChatCollection---',resdata,'User====',chatInfo);
        
        const  updatedChatCollection = {
         _id: resdata._id,
         chats: []
       };
      
-      console.log("updatedChatCollection:",resdata,"\n chatInfo:",chatInfo);
-
-
+    //  console.log("updatedChatCollection:",resdata,"\n chatInfo:",chatInfo);
        this.user.chatInfo.push(chatInfo);
         //this.user.chatInfo.push(chatInfo);
          return this.updateUser(this.user)
            .pipe(switchMap((res) => {
-             console.log('res after chat collection ',res)
             return this.getCurrentUser().pipe(map(user => {
                 this.user = user;
-                 console.log('get user 142 line ',user)
                 this.onUserUpdated.next(user)
               }))
             // return updatedChatCollection
@@ -178,19 +176,6 @@ export class ChatService {
     let contacts =  this.userapi.chatApi(`chatting/getContacts`, req_vars);
     console.log(contacts)
     return contacts;
-    
-    // return this.http.get<User[]>(serverUrl + `chatting/getContacts`).pipe(
-    //   map(model => {
-    //     console.log(model)
-    //     // const items = model.data.items.filter(item => item.type === 'video');
-    //     // model.data.items = items;
-    //     return model
-    //   }),
-    //   catchError((error) => {
-    //     return error
-    //     console.error(error) 
-    //   })
-    // );
   }
 
   getAllChats(): Observable<ChatCollection[]> {
@@ -198,9 +183,7 @@ export class ChatService {
     let req_vars = {
       query: Object.assign({_id:this.userId,userType:this.userType}),
     }
-    //,contactId:contactId
     let chatCollectiondata =  this.userapi.chatApi(`chatting/getchatCollection`,req_vars);
-    console.log('getAllChats chatCollectiondata===>',chatCollectiondata)
     return chatCollectiondata;
   }
 
@@ -226,6 +209,15 @@ export class ChatService {
    //  return this.http.put<User>(`api/chat-user/${user._id}`, {...user})
   }
 
+  public getMessages = () => {
+    return Observable.create((observer) => {
+        this.socket.on('new-message-'+this.userId, (message) => {//
+            console.log("received message")
+            observer.next(message);
+            this.onChatsUpdated.next(message);
+        });
+    });
+  }
   
   updateChats(chatid: string, chats:Chat[]): Observable<ChatCollection> {
     let message = chats[0];
@@ -236,7 +228,7 @@ export class ChatService {
       _id: chatid,
       chats: chats
     }
-
+    console.log('message >>> ',message)
     this.socket.emit('new-message', message);
     //return this.http.put<ChatCollection>('api/chat-collections', chatCollection)
     let req_vars = {
