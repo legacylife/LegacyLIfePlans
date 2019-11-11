@@ -1,3 +1,5 @@
+@import 'llp-global-styles.scss';
+
 #app-customizer {
   position: fixed;
   z-index: 100;
@@ -9,7 +11,105 @@
   .mat-card-content  {
     padding: 1rem 1.5rem 2rem;
   }
+  .close--msg--sec{
+    background-color: #c72128;
+    .card-title-text{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #fff;
+      .canClose{
+        cursor: pointer;
+      }
+    }
+  }
+
+  .chat--wrapper{
+    width: 900px;
+    box-shadow: 0 0 5px #000 !important;
+    ::ng-deep{
+      .chat-sidenav{
+        width: 300px;
+        .chat-sidebar-toolbar{
+          background: #6e7734;
+          display: flex;
+          .toolbar-avatar{
+            flex-shrink: 0;           
+          }
+          h6{
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-family: $font--lato--medium;
+          }
+        }
+        .chat-sidebar-scroll{
+          .inbox-nav-list{
+            .mat-list-item{
+              height: 57px;
+            }
+          }
+        }
+      }
+
+      .mat-list-item{
+        font-family: $font--lato--regular !important;
+      }
+
+      .chat--window{
+        .chat-toolbar{
+          background: #6e7734;
+          .active-chat-user{
+            h6{
+              font-family: $font--lato--medium;
+              width: 200px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+        .conversations-hold{
+          .single-conversation{
+            .toolbar-avatar{
+              flex-shrink: 0;
+            }
+            .conversation-msg{
+              font-family: $font--lato--regular !important;
+              color: #222324 !important;
+              padding: 0;
+            }
+          }          
+        }
+        .chat-input-actions{
+          .mat-button-wrapper{
+            padding: 0 !important;
+          }
+        }
+      }
+
+
+    }
+
+  }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .pos-rel {
   position: relative;
   z-index: 99;
@@ -20,4 +120,16 @@
     background: rgba(255, 255, 255, .5);
     z-index: 100;
   }
+}
+.message--trriger--btn{
+    margin: 0 !important;
+    background-color: #c72128 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    ::ng-deep{
+      .mat-button-wrapper{
+        padding: 0 !important;
+      }
+    }
 }

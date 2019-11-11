@@ -1,0 +1,12 @@
+.send--trriger--btn{
+    margin: 0 !important;
+    background-color: #c72128 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    ::ng-deep{
+      .mat-button-wrapper{
+        padding: 0 !important;
+      }
+    }
+}

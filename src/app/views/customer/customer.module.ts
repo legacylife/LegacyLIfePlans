@@ -7,6 +7,7 @@ import { MatListModule,MatIconModule,MatButtonModule,MatCardModule,MatMenuModule
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SharedModule } from './../../shared/shared.module';
+//import { AppChatsModule } from '../../shared/components/app-chats/app-chats.module';
 import { CustomerRoutes } from './customer.routing';
 import { CustomerSignupComponent, FormatTimePipe } from './signup/signup.component';
 import { CustomerHomeComponent } from './customer-home/customer-home.component';
@@ -20,7 +21,6 @@ import { CustomerDashboardDayOneComponent } from './customer-home/customer-dashb
 import { CustomerSharedLegaciesComponent } from './customer-home/customer-shared-legacies/customer-shared-legacies.component';
 import { CustomerLegaciesDetailsComponent } from './customer-home/customer-legacies-details/customer-legacies-details.component';
 import { ProUserAuthGuard } from '../../shared/services/auth/prouserauth.guard';
-
 
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
@@ -90,6 +90,7 @@ import { FuneralExpensesModalComponent } from './customer-home/final-wishes/fune
     FlexLayoutModule,
     NgxDatatableModule,
     ChartsModule,
+    //AppChatsModule,
     FileUploadModule,
     SharedModule,
     MatFormFieldModule,

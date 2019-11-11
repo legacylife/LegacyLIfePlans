@@ -26,14 +26,14 @@ export class ChatDB {
   public static contacts = [
     {
       id: "323sa680b3249760ea21rt47",
-      name: "Frank Powell",
+      name: "Pankaj",
       avatar: "assets/images/faces/13.jpg",
       status: "online",
       mood: ""
     },
     {
       id: "14663a3406eb47ffa63d4fec9429cb71",
-      name: "Betty Diaz",
+      name: "Dinesh",
       avatar: "assets/images/faces/12.jpg",
       status: "online",
       mood: ""

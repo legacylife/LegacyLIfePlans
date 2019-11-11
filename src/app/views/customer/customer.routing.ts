@@ -109,6 +109,11 @@ export const CustomerRoutes: Routes = [
             // component: CustomerDashboardComponent
             component: CustomerDashboardDayOneComponent
           },
+          // {
+          //   path: 'chat', 
+          //   loadChildren: '../../shared/components/app-chats/app-chats.module#AppChatsModule', 
+          //   data: { title: 'Chat', breadcrumb: 'CHAT'}
+          // },
           {
             path: 'customer-day-one',
             component: CustomerDashboardDayOneComponent,

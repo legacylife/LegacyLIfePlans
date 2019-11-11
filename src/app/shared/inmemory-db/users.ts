@@ -7,7 +7,7 @@ export class UserDB {
       'isActive': false,
       'balance': 2838.08,
       'age': 30,
-      'name': 'Stefanie Marsh',
+      'name': 'Dinesh Marsh',
       'gender': 'female',
       'company': 'ACIUM',
       'email': 'stefaniemarsh@acium.com',

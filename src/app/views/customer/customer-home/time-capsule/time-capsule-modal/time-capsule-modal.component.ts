@@ -345,8 +345,10 @@ export class TimeCapsuleMoalComponent implements OnInit {
             }            
           } else {
               setTimeout(()=>{    
+
               //    this.getTimeCapsuleDocuments();
               },5000);
+
           }
         }
       }, (err) => {
