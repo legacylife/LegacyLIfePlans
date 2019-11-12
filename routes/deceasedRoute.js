@@ -200,8 +200,13 @@ async function viewDeceased(req, res) {
          let deceasedArray = {'status':finalStatus,'trusteeCnt':trustList.length,'advisorCnt':advisorList.length,deceasedinfo:OldDeceasedinfo};
 
          await User.updateOne({_id:paramData.customerId},{deceased:deceasedArray,lockoutLegacyDate:lockoutLegacyDate});
+        
+         let lockoutLegacyDateWithLabel = '';
+         if(lockoutLegacyDate){
+          lockoutLegacyDateWithLabel = '<br />Lockout Legacy Date: '.lockoutLegacyDate
+         }
          //Customer needs to inform he is set mark as deceased now.
-         await sendDeceasedNotifyMails('CustomerMarkAsDeceasedNotificationMail',legacyHolderInfo.username,legacyHolderInfo.firstName,legacyHolderInfo.lastName,legacyHolderName,deceasedFromName,userType,lockoutLegacyDate);
+         await sendDeceasedNotifyMails('CustomerMarkAsDeceasedNotificationMail',legacyHolderInfo.username,legacyHolderInfo.firstName,legacyHolderInfo.lastName,legacyHolderName,deceasedFromName,userType,lockoutLegacyDateWithLabel);
          await sendDeceasedNotification('MarkAsDeceasedNotificationMail',trustList,advisorList,legacyHolderName,deceasedFromName,userType,fromUserId);
         
          let message = resMessage.data( 607, [{key: '{field}',val: 'Mark as deceased'}, {key: '{status}',val: 'updated'}] )

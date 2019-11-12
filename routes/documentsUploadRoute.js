@@ -12,6 +12,7 @@ const personalIdProof = require('./../models/personalIdProof.js')
 const LegalStuff = require('./../models/LegalStuff.js')
 const finalWish = require('./../models/FinalWishes.js')
 const obituary = require('./../models/Obituary.js')
+const celebrationOfLife = require('./../models/CelebrationOfLife.js')
 const pet = require('./../models/Pets.js')
 const timeCapsule = require('./../models/TimeCapsule.js')
 const insurance = require('../models/Insurance.js')
@@ -319,6 +320,114 @@ router.post('/legalStuff', cors(), function(req,res){
                     let message = resMessage.data( 607, [{key: '{field}',val: 'Legal Stuff Document'}, {key: '{status}',val: 'uploaded'}] )
                     //Update activity logs
                     allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, legalStuffdocFilePath, '', filename)
+                    let result = { "message": message }
+                    
+                     res.status(200).send(resFormat.rSuccess(result))
+                   }
+                 })
+
+              })
+           }
+         } 
+      } else {
+        res.status(401).send(resFormat.rError("User token mismatch."))
+      }
+    })
+  }
+})
+
+router.post('/celebrationofLife', cors(), function(req,res){
+  var fstream;
+  let authTokens = { authCode: "" }
+  if (req.busboy) {
+    req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
+      authTokens[fieldname] = val
+    })
+    const {query:{userId}} = req;
+    const {query:{ProfileId}} = req;
+    const {query:{folderName}} = req;
+    
+    let q = {customerId: userId}
+    if(ProfileId && ProfileId!=''){
+      q = {_id : ProfileId}
+    }
+    req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+      let tmpallfiles = {};
+      let oldTmpFiles = [];
+      if(userId){
+          let ext = filename.split('.')
+          ext = ext[ext.length - 1];
+          var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
+          let resp = isExtension(ext,fileExts);
+          if(!resp){
+            let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid file extension!" }
+            res.send(resFormat.rSuccess(results))
+          } else{
+                 
+          if(ProfileId){
+              const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+              fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+              file.pipe(fstream);
+              fstream.on('close', async function () {
+                await s3.uploadFile(newFilename,userId+'/'+celebrationofLifeFilePath);                  
+                tmpallfiles = {
+                  "title" : filename,
+                  "size" : encoding,
+                  "extention" : mimetype,
+                  "tmpName" : newFilename
+                }
+                celebrationOfLife.findOne(q,{documents:1,_id:1}, function (err, result) {
+                    if (err) {
+                        res.status(500).send(resFormat.rError(err))
+                    } else {       
+                    if (result) {                          
+                        if(result.documents){
+                          oldTmpFiles = result.documents;
+                        }             
+                        oldTmpFiles.push(tmpallfiles);  
+                        celebrationOfLife.updateOne(q, { $set: { documents: oldTmpFiles } }, function (err, updatedUser) {
+                          if (err) {
+                            res.send(resFormat.rError(err))
+                          } else {
+                            getuserFolderSize(userId);
+                            let message = resMessage.data( 607, [{key: '{field}',val: 'Final Wish - celebration Of Life Document'}, {key: '{status}',val: 'uploaded'}] )
+                            //Update activity logs
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, celebrationofLifeFilePath, '', filename)
+                            
+                            let result = { userId:userId, allDocs:tmpallfiles, "message": message }
+                            res.send(resFormat.rSuccess(result))
+                          }
+                       })
+                      }
+                    } 
+                    })
+                 })
+              }else{
+                const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+                fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+                file.pipe(fstream);
+                fstream.on('close', async function () {
+                  await s3.uploadFile(newFilename,userId+'/'+celebrationofLifeFilePath);  
+                  tmpallfiles = {
+                    "title" : filename,
+                    "size" : encoding,
+                    "extention" : mimetype,
+                    "tmpName" : newFilename
+                  }
+              oldTmpFiles.push(tmpallfiles);  
+                var insert = new celebrationOfLife();
+                insert.customerId = userId;
+                insert.documents = oldTmpFiles;
+                insert.status = 'Pending';
+                insert.createdOn = new Date();
+                insert.save({}, function (err, newEntry) {
+                  if (err) {
+                  res.send(resFormat.rError(err))
+                   } else {
+                    getuserFolderSize(userId);
+                    let message = resMessage.data( 607, [{key: '{field}',val: 'Final Wish - celebration Of Life Document'}, {key: '{status}',val: 'uploaded'}] )
+                    //Update activity logs
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, celebrationofLifeFilePath, '', filename)
                     let result = { "message": message }
                     
                      res.status(200).send(resFormat.rSuccess(result))
@@ -1668,6 +1777,72 @@ function deleteInviteDocument(req, res) {
   })
 }
 
+function deleteFinalwishesCelebrationDocument(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let { fileName } = req.body;
+  let fields = {};
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
+
+  celebrationOfLife.findOne(query, fields, function (err, fileDetails) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      celebrationOfLife.updateOne({ _id: fileDetails._id }, proquery, async function (err, updatedUser) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          resMsg = await deleteDocumentS3(fileDetails.customerId,celebrationofLifeFilePath,fileName.docName);
+          getuserFolderSize(toId);
+          let message = resMessage.data( 607, [{key: '{field}',val: 'Final Wishes celebration Of Life documents'}, {key: '{status}',val: 'deleted'}] )
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
+
+          let result = { userId:fileDetails._id, "message": resMsg }
+          res.send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
+function deleteFinalwishesObituaryDocument(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let { fileName } = req.body;
+  let fields = {};
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
+
+  obituary.findOne(query, fields, function (err, fileDetails) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      obituary.updateOne({ _id: fileDetails._id }, proquery, async function (err, updatedUser) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          resMsg = await deleteDocumentS3(fileDetails.customerId,obituaryFilePath,fileName.docName);
+          getuserFolderSize(toId);
+          let message = resMessage.data( 607, [{key: '{field}',val: 'Final Wishes Obituary documents'}, {key: '{status}',val: 'deleted'}] )
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
+
+          let result = { userId:fileDetails._id, "message": resMsg }
+          res.send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
 router.post('/deceasedDocuments', cors(), function(req,res){
   var fstream;
   let authTokens = { authCode: "" }
@@ -2116,6 +2291,8 @@ router.post("/deleteInsuranceDoc", deleteInsuranceDocument);
 router.post("/deleteFinanceDoc", deleteFinanceDocument); 
 router.post("/deleteletterMessageDoc", deleteLetterMessageDocument);
 router.post("/deleteInviteDocument", deleteInviteDocument);
+router.post("/deletefinalwishesCelebrationDoc", deleteFinalwishesCelebrationDocument);
+router.post("/deletefinalwishesObituaryDoc", deleteFinalwishesObituaryDocument);
 router.post("/createUserDir", createDirectory);
 router.post("/downloadDocument", downloadDocs);
 router.post("/downloadZip",downloadZipfiles);
