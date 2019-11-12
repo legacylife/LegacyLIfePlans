@@ -65,16 +65,20 @@ export class FuneralServiceModalComponent implements OnInit {
 
   ngOnInit() {
     this.selectAnyOneFormGroup = this._formBuilder.group({
-      funaralServiceType: new FormControl(''),
+      funaralServiceType: [''],
+      profileId:['']
     });
 
     this.firstFormGroup = this._formBuilder.group({
-      serviceFor: ['', Validators.required],
-      otherChecked: [''],
+      serviceFor: [''],
+      otherChecked:[],
+      serviceForOther:[''],
       isBodyPresent: [''],
       isCasket:[''],
-      deceasedWear:[''],
+      deceasedWear:['']      
+    });
 
+    this.secondFormGroup = this._formBuilder.group({
       serviceParticipants:[''],
       leaderChecked: [''],
       leaderDescrption:[''],
@@ -97,13 +101,17 @@ export class FuneralServiceModalComponent implements OnInit {
       additionalParticipants:[''],
       servicesUsed:[''],
       flowersUsed:['']
-    });
-    /*this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required]
+
     });
     this.thirdFormGroup = this._formBuilder.group({
-      thirdCtrl: ['', Validators.required]
-    });*/
+      isFloralArrangements:[''],
+      needVisualTribute:[''],
+      peopleInVisualTribute:[''],
+      havePreparedVisualTribute:[''],
+      documents:[''],
+      locationOfDocuments:[''],
+      additionalPlans:['']
+    });
 
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
@@ -133,6 +141,61 @@ export class FuneralServiceModalComponent implements OnInit {
 
   }
 
+  PlanFormSubmit(selectAnyOneData,stepOneData,stepTwoData,stepThreeData){
+
+
+    const profileInData = {};
+    Object.keys(selectAnyOneData)
+    .forEach(key => profileInData[key] = selectAnyOneData[key]);
+
+    Object.keys(stepOneData)
+      .forEach(key => profileInData[key] = stepOneData[key]);
+    
+    Object.keys(stepTwoData)
+      .forEach(key => profileInData[key] = stepTwoData[key]);
+
+    Object.keys(stepThreeData)
+      .forEach(key => profileInData[key] = stepThreeData[key]);
+
+    console.log("result >>>>>",profileInData)
+
+    var query = {};
+    var proquery = {};     
+  
+    let profileIds = this.selectAnyOneFormGroup.controls['profileId'].value;
+    if(profileIds){
+      this.selectedProfileId = profileIds;
+    }
+    /*if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'final-wishes') {
+      profileInData.customerLegacyId = this.customerLegaciesId
+      profileInData.customerLegacyType = this.customerLegacyType
+    }        
+    if(!profileInData.profileId || profileInData.profileId ==''){
+      profileInData.customerId = this.userId
+    }
+    const req_vars = {
+      query: Object.assign({ _id: this.selectedProfileId }),
+      proquery: Object.assign(profileInData),
+      fromId:localStorage.getItem('endUserId'),
+      toId:this.toUserId,
+      folderName:s3Details.obituaryFilePath
+    }
+
+    //this.loader.open();     
+    this.userapi.apiRequest('post', 'finalwishes/funeral-plans-form-submit', req_vars).subscribe(result => {
+      this.loader.close();
+      if (result.status == "error") {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      } else {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        this.dialog.closeAll(); 
+      }
+    }, (err) => {
+      console.error(err)
+    })*/
+
+  }
+
   onChange(value) {
     if (value == "4") {
       this.firstServicesSec = true;
@@ -147,9 +210,9 @@ export class FuneralServiceModalComponent implements OnInit {
     this.allServicesSec = false;
   }
 
-  otherChange(field) {
-    this.firstFormGroup.get(field).setValue(!this.firstFormGroup.get(field).value)
-    let getOtheVal = this.firstFormGroup.get(field).value;
+  otherChange(field) {   
+
+    let getOtheVal = this.firstFormGroup.controls['serviceFor'].value;    
     if (getOtheVal == true) {
       this.serviceOther = true;
     } else {
@@ -158,7 +221,7 @@ export class FuneralServiceModalComponent implements OnInit {
   }
   
   leaderChange(field) {
-    let leaderCheckedVal = this.firstFormGroup.controls['leaderChecked'].value;    
+    let leaderCheckedVal = this.secondFormGroup.controls['leaderChecked'].value;    
     if (leaderCheckedVal == true) {
       this.ceremonySec = true;
     } else {
@@ -167,7 +230,7 @@ export class FuneralServiceModalComponent implements OnInit {
   }
 
   eulogistChange(field) {
-    let eulogistCheckedVal = this.firstFormGroup.controls['eulogistChecked'].value;    
+    let eulogistCheckedVal = this.secondFormGroup.controls['eulogistChecked'].value;    
     if (eulogistCheckedVal == true) {
       this.eulogistSec = true;
     } else {
@@ -176,7 +239,7 @@ export class FuneralServiceModalComponent implements OnInit {
   }
 
   reflectionsChange(field) {
-    let reflectionsCheckedVal = this.firstFormGroup.controls['reflectionsChecked'].value;    
+    let reflectionsCheckedVal = this.secondFormGroup.controls['reflectionsChecked'].value;    
     if (reflectionsCheckedVal == true) {
       this.reflectionsSec = true;
     } else {
@@ -186,7 +249,7 @@ export class FuneralServiceModalComponent implements OnInit {
 
   readingsChange(field) {  
 
-    let reflectionsCheckedVal = this.firstFormGroup.controls['readingsChecked'].value;    
+    let reflectionsCheckedVal = this.secondFormGroup.controls['readingsChecked'].value;    
     if (reflectionsCheckedVal == true) {
       this.readingsSec = true;
     } else {
@@ -194,7 +257,7 @@ export class FuneralServiceModalComponent implements OnInit {
     }
   }
   musiciansChange(field) {  
-    let reflectionsCheckedVal = this.firstFormGroup.controls['musiciansChecked'].value;    
+    let reflectionsCheckedVal = this.secondFormGroup.controls['musiciansChecked'].value;    
     if (reflectionsCheckedVal == true) {
       this.musiciansSec = true;
     } else {
@@ -203,7 +266,7 @@ export class FuneralServiceModalComponent implements OnInit {
   }
   pallbearersChange(field) {   
 
-    let reflectionsCheckedVal = this.firstFormGroup.controls['pallbearersChecked'].value;    
+    let reflectionsCheckedVal = this.secondFormGroup.controls['pallbearersChecked'].value;    
     if (reflectionsCheckedVal == true) {
       this.pallbearersSec = true;
     } else {
