@@ -75,11 +75,10 @@ export class SpecialNeedsDetailsComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
-  
-        if((data.folderName=='Young_Children' && (userAccess.YoungChildrenManagement!='now' || userAccess.YoungChildrenManagement!='')) || (data.folderName=='Child_Parent' && userAccess.ChildParentDisabilityManagement!='now' || userAccess.ChildParentDisabilityManagement!='') || (data.folderName=='Friend_Neighbor' && userAccess.FriendNeighborCareManagement!='now' || userAccess.FriendNeighborCareManagement!='')){
-      console.log('SpecialNeeds details',data.folderName,'userAccess===>',userAccess);
+              
+        if((data.folderName=='Young_Children' && userAccess.YoungChildrenManagement!='now') || (data.folderName=='Child_Parent' && userAccess.ChildParentDisabilityManagement!='now') || (data.folderName=='Friend_Neighbor' && userAccess.FriendNeighborCareManagement!='now')){       
           this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
-        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+         this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
        }          
       });    
     }else{      
