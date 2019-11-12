@@ -37,8 +37,8 @@ export class User {
 
 @Injectable()
 export class ChatService {
-  userId = localStorage.getItem("endUserId");
-  userType = localStorage.getItem("endUserType");
+  userId: string
+  userType: string
   public contacts: User[];
   public chats: ChatCollection[];
   public user: any;
@@ -51,7 +51,6 @@ export class ChatService {
   onChatsUpdated = new Subject<any>();
 
   constructor(private userapi: UserAPIService,private http: HttpClient) {
-    //console.log('serverUrl', serverUrl);
     // this.loadChatData()
     this.socket = io(serverUrl)
     this.socket.on('connect', function(){
@@ -60,6 +59,8 @@ export class ChatService {
     this.socket.on('disconnect', function(){
      // console.log("socket disconnected")
     });
+    this.userId = localStorage.getItem("endUserId");
+    this.userType = localStorage.getItem("endUserType");
   }
   ngOnInit() {
      // console.log('Welcome to chat ===> ',this.userId,'type',this.userType)
