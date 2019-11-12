@@ -24,7 +24,7 @@ export class AdvisorHomeComponent implements OnInit, OnDestroy {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   customerLegaicesId:string=''
   activeHeading: string = "";
-  shareDeathFileCount: string = "";
+  shareDeathFileCount: string = "0";
   documentId: string = "";
   revokeId: string = "";
   myLegacy:boolean = true

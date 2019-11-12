@@ -134,7 +134,7 @@ export class APIService {
   //function to get user id from localStorage
   public getUserInfo(): string {    
     this.userId = this.getKeyFromStorage('userId')
-    //console.log("AFter Login",this.userId)
+    console.log("AFter Login",this.userId)
     this.userType = this.getKeyFromStorage('userType')
    // this.sectionAccess = this.getKeyFromStorage('sectionAccess')
     this.userInfo = {

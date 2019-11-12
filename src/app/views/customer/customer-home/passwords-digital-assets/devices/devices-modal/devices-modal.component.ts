@@ -5,6 +5,7 @@ import { AppConfirmService } from '../../../../../../shared/services/app-confirm
 import { AppLoaderService } from '../../../../../../shared/services/app-loader/app-loader.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 import PatternLock from 'patternlock';
 import 'patternlock/dist/patternlock.css';
 //import * as html2canvas from 'html2canvas/dist/html2canvas';
@@ -45,7 +46,7 @@ export class DevicesModalComponent implements OnInit {
   LegacyPermissionError:string="You don't have access to this section";
   trusteeLegaciesAction:boolean=true;
   constructor(private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService, private loader: AppLoaderService,
-    private router: Router, private userapi: UserAPIService) { }
+    private router: Router, private userapi: UserAPIService,private sharedata: DataSharingService) { }
 
   ngOnInit() {    
 
@@ -78,6 +79,7 @@ export class DevicesModalComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
        if(userAccess.DevicesManagement!='now'){
         this.trusteeLegaciesAction = false;
        }           

@@ -32,7 +32,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   activeHeading: string = "";
   documentId: string = "";
   revokeId: string = "";
-  shareDeathFileCount: string = "";
+  shareDeathFileCount: string = "0";
   myLegacy:boolean = true
   sharedLegacies:boolean = false;
   markAsDeceased:boolean = false;
@@ -57,6 +57,14 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
       this.customerLegaicesId = urlData.lastOne
       this.myLegacy= false
       this.sharedLegacies =true 
+
+      // this.userapi.getUserAccess(this.userId, (userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+       
+      //   console.log('cusomer home====',userDeathFilesCnt)
+      //   this.shareDeathFileCount = userDeathFilesCnt;
+      
+      // });
+
       this.checkDeceasedStatus();
     }
 
@@ -122,8 +130,10 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
             this.finallyDeceased = true;
           }
         }
+        console.log('Here I am 1st ')
         this.shareData.userShareDataDeathFileSource.subscribe((shareDeathFileCount) => {
           this.shareDeathFileCount = shareDeathFileCount;
+          console.log('Here I am 2nd',this.shareDeathFileCount)
         })
       }
     }, (err) => {

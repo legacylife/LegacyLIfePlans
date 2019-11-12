@@ -114,6 +114,7 @@ export class SigninComponent implements OnInit {
           //this.llpCustsigninForm.controls['username'].markAsTouched();
           this.llpCustsigninForm.controls['password'].setErrors({'invalid' : true});
           //this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false});
+          this.llpCustsigninForm.controls['password'].setValue('');
           this.llpCustsigninForm.controls['password'].markAsUntouched();
           this.invalidEmail = false;
         }else{

@@ -15,6 +15,7 @@ import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 import { FileHandlingService } from 'app/shared/services/file-handling.service';
 const URL = serverUrl + '/api/documents/myEssentialsID';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-essenioal-id-box',
   templateUrl: './essenioal-id-box.component.html',
@@ -62,7 +63,7 @@ export class EssenioalIdBoxComponent implements OnInit {
   trusteeLegaciesAction:boolean=true;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
-    private userapi: UserAPIService, private fileHandlingService: FileHandlingService  ) 
+    private userapi: UserAPIService, private fileHandlingService: FileHandlingService,private sharedata: DataSharingService  ) 
   { }
 
   ngOnInit() {
@@ -108,6 +109,7 @@ export class EssenioalIdBoxComponent implements OnInit {
             if(userLockoutPeriod || userDeceased){
               this.trusteeLegaciesAction = false;
             }
+            this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
             if(userAccess.IDBoxManagement!='now'){        
               this.trusteeLegaciesAction = false;
             }           

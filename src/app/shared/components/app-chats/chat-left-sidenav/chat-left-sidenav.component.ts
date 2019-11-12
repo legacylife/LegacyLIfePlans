@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ChatService, User } from "../chat.service";
+import { ChatService, User } from "../../../services/chat.service";
 import { Subscription } from "rxjs";
 @Component({
   selector: "app-chat-left-sidenav",

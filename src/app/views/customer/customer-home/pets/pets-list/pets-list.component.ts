@@ -17,10 +17,8 @@ export class PetsListComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   showPetsListing = true;
   showPetsListingCnt: any;
-  
   userId: string;
   petsListing:any = [];
- 
   modifiedDate:any;
   PetList:any = [];
   customerData:any = [];
@@ -50,6 +48,7 @@ export class PetsListComponent implements OnInit {
           if(userLockoutPeriod || userDeceased){
             this.trusteeLegaciesAction = false;
           }
+          this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
           this.PetsManagementSection = userAccess.PetsManagement
         });
       this.showTrusteeCnt = false;

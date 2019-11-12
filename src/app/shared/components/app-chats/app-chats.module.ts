@@ -18,9 +18,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 //import { SharedModule } from '../../shared.module'
 import { AppChatsComponent } from './app-chats.component';
 import { ChatsRoutes } from './app-chats.routing';
-import { ChatLeftSidenavComponent } from './chat-left-sidenav/chat-left-sidenav.component';
-import { ChatContentsComponent } from './chat-contents/chat-contents.component';
-import { ChatService } from './chat.service';
+import { ChatService } from '../../services/chat.service';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 @NgModule({

@@ -47,6 +47,7 @@ export class ChangePassComponent implements OnInit {
       this.loader.close();
       if (result.status == "error") {
         this.resetForm.controls['password'].setErrors({ 'invalid': true });
+        this.resetForm.controls['password'].setValue('');
       } else {
         this.dialog.closeAll();
         this.snack.open(result.data.message, 'OK', { duration: 4000 })

@@ -333,8 +333,8 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
         //this.rows = result.data.userProfile;
-        // localStorage.setItem("firstName", this.rows.firstName)
-        // localStorage.setItem("lastName", this.rows.lastName)  
+         localStorage.setItem("endUserFirstName", this.ProfileForm.controls['firstName'].value);
+         localStorage.setItem("endUserLastName", this.ProfileForm.controls['lastName'].value);  
         this.getProfile();     		
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }

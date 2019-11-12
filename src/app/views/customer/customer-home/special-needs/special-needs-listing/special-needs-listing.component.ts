@@ -6,6 +6,7 @@ import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.serv
 import { UserAPIService } from 'app/userapi.service';
 import { SpecialNeedsModelComponent } from '../special-needs-model/special-needs-model.component';
 import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-trustee-modal.component';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-special-needs-listing',
   templateUrl: './special-needs-listing.component.html',
@@ -40,7 +41,7 @@ export class SpecialNeedsListingComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
-    private userapi: UserAPIService, private loader: AppLoaderService
+    private userapi: UserAPIService, private loader: AppLoaderService,private sharedata: DataSharingService
   ) {
   }
 
@@ -55,7 +56,7 @@ export class SpecialNeedsListingComponent implements OnInit {
       this.userapi.getUserAccess(this.userId, (userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
-        }
+        }this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         this.YoungChildrenManagementSection = userAccess.YoungChildrenManagement
         this.ChildParentDisabilityManagementSection= userAccess.ChildParentDisabilityManagement
         this.FriendNeighborCareManagementSection= userAccess.FriendNeighborCareManagement

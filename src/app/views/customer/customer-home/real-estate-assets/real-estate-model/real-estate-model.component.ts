@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { UserAPIService } from 'app/userapi.service';
 import { RealEstateType } from 'app/selectList';
-
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-real-estate-model',
   templateUrl: './real-estate-model.component.html',
@@ -25,7 +25,7 @@ export class RealEstateModelComponent implements OnInit {
   subFolderName:string = 'Real Estate'
   LegacyPermissionError:string="You don't have access to this section";
   trusteeLegaciesAction:boolean=true;
-  constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService, private userapi: UserAPIService, ) {
+  constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService, private userapi: UserAPIService,private sharedata: DataSharingService ) {
   }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -53,6 +53,7 @@ export class RealEstateModelComponent implements OnInit {
           if(userLockoutPeriod || userDeceased){
             this.trusteeLegaciesAction = false;
           }
+          this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
          if(userAccess.RealEstateManagement!='now'){
           this.trusteeLegaciesAction = false;
          }           

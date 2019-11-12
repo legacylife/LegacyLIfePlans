@@ -11,6 +11,7 @@ import { serverUrl, s3Details } from '../../../../../config';
 import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 import { FileHandlingService } from 'app/shared/services/file-handling.service';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 const URL = serverUrl + '/api/documents/petsdocuments';
 @Component({
   selector: 'app-essenioal-id-box',
@@ -43,7 +44,7 @@ export class PetsModalComponent implements OnInit {
   trusteeLegaciesAction:boolean=true;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
-    private userapi: UserAPIService, private fileHandlingService: FileHandlingService) { }
+    private userapi: UserAPIService, private fileHandlingService: FileHandlingService,private sharedata: DataSharingService) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -64,7 +65,7 @@ export class PetsModalComponent implements OnInit {
     if (this.selectedProfileId && this.selectedProfileId == 'pets' && this.urlData.lastThird != "legacies") {
       this.selectedProfileId = "";
     }
-    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'pets') {
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'pets') { 
         this.customerLegaciesId = this.userId;
         this.customerLegacyType =  this.urlData.userType;
         this.userId = this.urlData.lastOne;       
@@ -72,13 +73,13 @@ export class PetsModalComponent implements OnInit {
               if(userLockoutPeriod || userDeceased){
                 this.trusteeLegaciesAction = false;
               }
+              this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
              if(userAccess.PetsManagement!='now'){
               this.trusteeLegaciesAction = false;
-             }           
+             }                      
         });    
         this.selectedProfileId = "";        
-    }
-    
+    }  
     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
     this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
     this.toUserId = this.userId

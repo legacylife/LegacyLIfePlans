@@ -65,6 +65,7 @@ export class CustomerLegalStuffComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         this.EstateManagementSection = userAccess.EstateManagement 
         this.HealthcareManagementSection= userAccess.HealthcareManagement
         this.PersonalAffairsManagementSection= userAccess.PersonalAffairsManagement

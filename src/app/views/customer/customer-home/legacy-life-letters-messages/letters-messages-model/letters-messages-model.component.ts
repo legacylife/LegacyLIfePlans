@@ -10,6 +10,7 @@ import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.s
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { serverUrl,s3Details } from 'app/config';
 import { FileHandlingService } from 'app/shared/services/file-handling.service';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 const URL = serverUrl + '/api/documents/letterMessage';
 
 @Component({
@@ -41,7 +42,7 @@ export class LettersMessagesModelComponent implements OnInit {
   trusteeLegaciesAction:boolean=true;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,
     private confirmService: AppConfirmService,private loader: AppLoaderService,
-    private userapi: UserAPIService, private fileHandlingService: FileHandlingService ) {}
+    private userapi: UserAPIService, private fileHandlingService: FileHandlingService,private sharedata: DataSharingService ) {}
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
@@ -63,6 +64,7 @@ export class LettersMessagesModelComponent implements OnInit {
           if(userLockoutPeriod || userDeceased){
             this.trusteeLegaciesAction = false;
           }
+          this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
           if(userAccess.LegacyLifeLettersMessagesManagement!='now'){        
             this.trusteeLegaciesAction = false;
           }           

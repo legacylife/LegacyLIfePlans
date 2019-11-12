@@ -7,12 +7,12 @@
   <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
     <mat-card-content class="p-0">
       <ngx-datatable class="material ml-0 mr-0" [rows]="data" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
-        <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Full Name" prop="customerId" [flexGrow]="1">
+        <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Full Name" prop="firstName" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             {{row?.customerId?.firstName}} {{row?.customerId?.lastName}}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Email" prop="customerId" [flexGrow]="1">
+        <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Email" prop="username" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{row?.customerId?.username}}
             </ng-template>
@@ -22,7 +22,7 @@
               {{row?.modifiedOn | date: 'yyyy/MM/dd HH:mm:ss'}}
             </ng-template>
           </ngx-datatable-column>      
-          <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Date" prop="status" [flexGrow]="1">
+          <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Date" prop="row?.status" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{row?.status=='Active' ? 'Deceased' : row?.status}}
             </ng-template>

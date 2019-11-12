@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { MediaChange, ObservableMedia } from '@angular/flex-layout';
 import { MatSidenav, MatDialog } from '@angular/material';
-import { ChatService } from './chat.service';
+import { ChatService } from '../../services/chat.service';
 
 @Component({
   selector: 'app-chats',

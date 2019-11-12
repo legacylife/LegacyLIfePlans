@@ -46,6 +46,7 @@ export class TimeCapsuleListComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         this.TimeCapsuleManagementSection = userAccess.TimeCapsuleManagement 
       });
       this.showTrusteeCnt = false; this.shareLegacFlag = true;

@@ -14,11 +14,8 @@ interface IRoutePart {
 export class FileHandlingService {
 
   constructor(private router: Router, private subscription: SubscriptionService) {}
-
   checkAvailableSpace = (userData={}, callback) => {
-    console.log("here124234234",userData)
     this.subscription.checkSubscription( userData, ( returnArr )=> {
-      console.log("returnArr",returnArr)
 
       let isPremiumExpired  = returnArr.isPremiumExpired,
           isSubscribePlan   = returnArr.isSubscribePlan,
@@ -46,7 +43,7 @@ export class FileHandlingService {
       if( totalUsedSpace < totalSpaceAlloted ) {
         // for - If remaining space less than equal to 500 MB
         let remainingSpaceInMB = (remainingSpace / 1048576).toFixed(2)
-        if( remainingSpace >= 0 && remainingSpace <= 524288000 ) {
+        if( remainingSpace >= 0 && remainingSpace <= 524288000 ) { // 107374182
           message = 'Warning! Available space '+remainingSpaceInMB+' MB. Please upgrade your account from account settings by purchasing an add-on.'
         }
         callback( { remainingSpace: remainingSpace, message: message, totalUsedSpace: totalUsedSpace, totalSpaceAlloted: totalSpaceAlloted} )

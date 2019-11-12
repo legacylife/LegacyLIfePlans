@@ -58,6 +58,7 @@ export class InsuranceFinanceDebtListComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         this.InsuranceManagementSection = userAccess.InsuranceManagement 
         this.FinancesManagementSection= userAccess.FinancesManagement 
         this.DebtManagementSection= userAccess.DebtManagement

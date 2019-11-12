@@ -9,6 +9,7 @@ import { VehicleModelComponent } from '../vehicle-model/vehicle-model.component'
 import { AssetsModelComponent } from '../assets-model/assets-model.component';
 import { RealEstateType, RealEstateAssetsType } from 'app/selectList';
 import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-trustee-modal.component';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.component.html',
@@ -40,7 +41,7 @@ export class ListingComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
-    private userapi: UserAPIService, private loader: AppLoaderService
+    private userapi: UserAPIService, private loader: AppLoaderService,private sharedata: DataSharingService
   ) {
 
   }
@@ -56,6 +57,7 @@ export class ListingComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         this.RealEstateManagementSection = userAccess.RealEstateManagement
         this.VehiclesManagementSection= userAccess.VehiclesManagement
         this.AssetsManagementSection= userAccess.AssetsManagement

@@ -47,6 +47,7 @@ export class LettersMessagesListingComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         let array = '';// ['letter_id':"asdasdasdasd"];
        // this.LegacyLifeLettersMessagesManagementSection = userAccess.LegacyLifeLettersMessagesManagement
         this.fileLevelAccess = userAccess.LegacyLifeLettersMessagesManagement;

@@ -16,10 +16,9 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot): boolean {
 
       this.userInfo = this.api.getUserInfo();
-
-      if (!this.userInfo && this.userInfo.userType == '') {
+      if (this.userInfo.userType == '') {
         //this.router.navigateByUrl('/llp-admin/signin');
-       // console.log("Logout >> ",this.userInfo)
+        console.log("Logout >> ",this.userInfo)
         this.api.logout();
         return false;
       }

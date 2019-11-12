@@ -408,8 +408,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
         //this.prodata = result.data.userProfile;
-        // localStorage.setItem("firstName", this.rows.firstName)
-        // localStorage.setItem("lastName", this.rows.lastName) 
+        localStorage.setItem("endUserFirstName", this.ProfileForm.controls['firstName'].value);
+         localStorage.setItem("endUserLastName", this.ProfileForm.controls['lastName'].value);  
         //this.getProfile();
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
@@ -433,7 +433,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     const hobbiesGroupArr = <FormArray>this.AddressForm.get('hobbies')
     this.hobbies = hobbiesGroupArr.controls.map(o => { return o.value })
 
-    console.log(this.AddressForm.value)
+
     let AddressInData = {
       addressLine1: this.AddressForm.controls['addressLine1'].value,
       addressLine2: this.AddressForm.controls['addressLine2'].value,

@@ -2,9 +2,9 @@ import { Injectable,OnInit, OnDestroy } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, BehaviorSubject, Subject, of, combineLatest } from "rxjs";
 import { map, switchMap, catchError } from "rxjs/operators";
-import { UserAPIService } from './../../../userapi.service';
+import { UserAPIService } from './../../userapi.service';
 import * as io from 'socket.io-client';
-import { serverUrl } from '../../../config'
+import { serverUrl } from '../../config'
 import 'rxjs/add/operator/switchMap';
 export interface Chat {
   text: string;
@@ -59,11 +59,12 @@ export class ChatService {
     this.socket.on('disconnect', function(){
      // console.log("socket disconnected")
     });
-    this.userId = localStorage.getItem("endUserId");
-    this.userType = localStorage.getItem("endUserType");
+    
   }
   ngOnInit() {
-     // console.log('Welcome to chat ===> ',this.userId,'type',this.userType)
+    this.userId = localStorage.getItem("endUserId");
+    this.userType = localStorage.getItem("endUserType");
+     console.log('Welcome to chat  User Id ===> ',this.userId,' USer Type',this.userType)
   }
 
   ngOnDestroy() {

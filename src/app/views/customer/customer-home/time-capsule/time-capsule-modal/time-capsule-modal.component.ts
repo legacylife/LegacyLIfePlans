@@ -11,8 +11,8 @@ import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { FileHandlingService } from 'app/shared/services/file-handling.service';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 const URL = serverUrl + '/api/documents/timeCapsuledocuments';
-
 @Component({
   selector: 'app-essenioal-id-box',
   templateUrl: './time-capsule-modal.component.html',
@@ -44,9 +44,8 @@ export class TimeCapsuleMoalComponent implements OnInit {
   subFolderName:string = ''
 
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,
-    private confirmService: AppConfirmService,private loader: AppLoaderService,
-    private router: Router, private userapi: UserAPIService,
-    private fileHandlingService: FileHandlingService,private detector: ChangeDetectorRef) { }
+    private confirmService: AppConfirmService,private loader: AppLoaderService,private router: Router, private userapi: UserAPIService,
+    private fileHandlingService: FileHandlingService,private detector: ChangeDetectorRef,private sharedata: DataSharingService) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -71,6 +70,7 @@ export class TimeCapsuleMoalComponent implements OnInit {
           if(userLockoutPeriod || userDeceased){
             this.trusteeLegaciesAction = false;
           }
+          this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
          if(userAccess.TimeCapsuleManagement!='now'){
           this.trusteeLegaciesAction = false;
          }           

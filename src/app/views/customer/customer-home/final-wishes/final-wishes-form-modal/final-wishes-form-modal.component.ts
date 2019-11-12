@@ -11,6 +11,7 @@ import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 import { NumberValueAccessor } from '@angular/forms/src/directives';
 import { FileHandlingService } from 'app/shared/services/file-handling.service';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 const URL = serverUrl + '/api/documents/finalWishes';
 @Component({
   selector: 'app-essenioal-id-box',
@@ -45,7 +46,7 @@ export class FinalWishesFormModalComponent implements OnInit {
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService  ,@Inject(MAT_DIALOG_DATA) public data: any,
-    private fileHandlingService: FileHandlingService ) 
+    private fileHandlingService: FileHandlingService,private sharedata: DataSharingService ) 
   { this.folderName = data.FolderName;this.newName = data.newName;}
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
@@ -79,6 +80,7 @@ export class FinalWishesFormModalComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         if((this.folderName=='Funeral Plans' && userAccess.FuneralPlansManagement!='now') || (this.folderName=='Celebration of Life' && userAccess.CelebrationLifeManagement!='now') || (this.folderName=='Obituary' && userAccess.ObituaryManagement!='now')){        
           this.trusteeLegaciesAction = false;
         }           

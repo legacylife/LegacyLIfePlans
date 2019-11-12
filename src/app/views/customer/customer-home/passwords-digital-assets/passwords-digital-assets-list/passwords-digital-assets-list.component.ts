@@ -9,6 +9,7 @@ import { ElectronicMediaModalComponent } from './../electronic-media/electronic-
 import { DigitalPublicationsModalComponent } from './../digital-publications/digital-publications-modal/digital-publications-modal.component';
 import { ElectronicMediaLists } from '../../../../../selectList';
 import { ManageTrusteeModalComponent } from '../../manage-trustee-modal/manage-trustee-modal.component';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './passwords-digital-assets-list.component.html',
@@ -44,7 +45,8 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
   LegacyPermissionError:string="You don't have access to this section";
   instruction_data:any;
   instruction_data_flag:boolean=false;  
-  constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService) { }
+  constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService,private sharedata: DataSharingService
+    ) { }
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.urlData = this.userapi.getURLData();
@@ -56,6 +58,7 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         this.DevicesManagementSection = userAccess.DevicesManagement
         this.ElectronicMediaManagementSection= userAccess.ElectronicMediaManagement
         this.DigitalPublicationManagementSection= userAccess.DigitalPublicationManagement

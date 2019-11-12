@@ -6,6 +6,7 @@ import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.serv
 import { UserAPIService } from 'app/userapi.service';
 import { RelationshipType } from '../../../../selectList';
 import { ManageTrusteeModalComponent } from '../manage-trustee-modal/manage-trustee-modal.component';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-emergency-contacts',
   templateUrl: './emergency-contacts.component.html',
@@ -43,7 +44,8 @@ export class EmergencyContactsComponent implements OnInit {
     private dialog: MatDialog,
     private fb: FormBuilder,
     private loader: AppLoaderService,
-    private userapi: UserAPIService) {
+    private userapi: UserAPIService,
+    private sharedata: DataSharingService) {
   }
 
   ngOnInit() {
@@ -79,6 +81,7 @@ export class EmergencyContactsComponent implements OnInit {
           if(userLockoutPeriod || userDeceased){
             this.trusteeLegaciesAction = false;
           }
+          this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
           this.emergencyContactsManagementSection = userAccess.emergencyContactsManagement 
           if(userAccess.emergencyContactsManagement!='now'){        
             this.trusteeLegaciesAction = false;

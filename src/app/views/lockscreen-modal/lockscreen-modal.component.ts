@@ -78,6 +78,7 @@ lockScreenFormSubmit(userData = null) {
       if(result.data.message){
         if(result.data.invalidPassword){       
           this.lockScreenForm.controls['password'].setErrors({'invalid' : true});
+          this.lockScreenForm.controls['password'].setValue('');
           this.lockScreenForm.controls['password'].markAsUntouched();
         }
       }      

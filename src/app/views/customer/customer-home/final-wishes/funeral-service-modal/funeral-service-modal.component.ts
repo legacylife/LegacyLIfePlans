@@ -12,7 +12,7 @@ import { cloneDeep } from 'lodash';
 import { FileHandlingService } from 'app/shared/services/file-handling.service';
 import { funeralOptions } from '../../../../../selectList';
 const URL = serverUrl + '/api/documents/obituary';
-
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-funeral-service-modal',
   templateUrl: './funeral-service-modal.component.html',
@@ -59,7 +59,7 @@ export class FuneralServiceModalComponent implements OnInit {
 
   selectAnyOneFormGroup: FormGroup;
 
-  constructor(private _formBuilder: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private confirmService: AppConfirmService, private loader: AppLoaderService, private router: Router, private userapi: UserAPIService, private fileHandlingService: FileHandlingService) { }
+  constructor(private _formBuilder: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private confirmService: AppConfirmService, private loader: AppLoaderService, private router: Router, private userapi: UserAPIService, private fileHandlingService: FileHandlingService,private sharedata: DataSharingService) { }
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
@@ -127,6 +127,7 @@ export class FuneralServiceModalComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
        if(userAccess.DevicesManagement!='now'){
         this.trusteeLegaciesAction = false;
        }           

@@ -11,6 +11,7 @@ import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 import { FinancePolicyType } from '../../../../../selectList';
 import { FileHandlingService } from 'app/shared/services/file-handling.service';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 const URL = serverUrl + '/api/documents/financeDocuments';
 
 @Component({
@@ -46,7 +47,7 @@ export class FinanceModalComponent implements OnInit {
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,
     private confirmService: AppConfirmService,private loader: AppLoaderService,
     private router: Router, private userapi: UserAPIService,
-    private fileHandlingService: FileHandlingService) { }
+    private fileHandlingService: FileHandlingService,private sharedata: DataSharingService) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -81,6 +82,7 @@ export class FinanceModalComponent implements OnInit {
           if(userLockoutPeriod || userDeceased){
             this.trusteeLegaciesAction = false;
           }
+          this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
          if(userAccess.FinancesManagement!='now'){
           this.trusteeLegaciesAction = false;
          }           

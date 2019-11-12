@@ -162,7 +162,7 @@ import { CcDetailedViewComponent } from './components/cc-detailed-view/cc-detail
 import { CcShareViaEmailModelComponent } from './components/cc-share-via-email-model/cc-share-via-email-model.component';
 import { AdvertisementPaymentComponent } from './components/advertisement-payment/advertisement-payment.component';
 import { FileHandlingService } from './services/file-handling.service';
-import { ChatService } from './components/app-chats/chat.service';
+import { ChatService } from './services/chat.service';
 //import { AppChatsModule } from './components/app-chats/app-chats.module';
 import { AppChatsComponent } from './components/app-chats/app-chats.component';
 import { ChatLeftSidenavComponent } from './components/app-chats/chat-left-sidenav/chat-left-sidenav.component';

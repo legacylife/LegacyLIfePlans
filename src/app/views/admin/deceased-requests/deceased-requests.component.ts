@@ -34,7 +34,7 @@ export class DeceasedRequestsComponent implements OnInit {
   getDeceasedList = (query = {}, search = false) => { 
     let req_vars = {
       query: Object.assign({ status:{$ne : "Pending"} }),
-      order: { "modifiedOn": 1 },
+      order: { "modifiedOn": -1 },
     }    
      this.loader.open(); 
     this.api.apiRequest('post', 'deceased/deceaseList', req_vars).subscribe(result => {
@@ -55,17 +55,19 @@ export class DeceasedRequestsComponent implements OnInit {
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
     var columns = Object.keys(this.temp[0]);
-    // Removes last "$$index" from "column"
+    if(this.temp[0].customerId){
+       columns = Object.keys(this.temp[0].customerId);  
+    }
+   // Removes last "$$index" from "column"
     columns.splice(columns.length - 1);
 
-    // console.log(columns);
     if (!columns.length)
       return;
 
     const rows = this.temp.filter(function (d) {
       for (let i = 0; i <= columns.length; i++) {
         let column = columns[i];
-        // console.log(d[column]);
+        // console.log('-->',column,'--->',d[column]);
         if (d[column] && d[column].toString().toLowerCase().indexOf(val) > -1) {
           return true;
         }

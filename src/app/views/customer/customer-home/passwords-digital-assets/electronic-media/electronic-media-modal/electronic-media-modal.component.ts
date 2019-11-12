@@ -6,6 +6,7 @@ import { AppLoaderService } from '../../../../../../shared/services/app-loader/a
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { ElectronicMediaLists } from '../../../../../../selectList';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-essenioal-id-box',
   templateUrl: './electronic-media-modal.component.html',
@@ -25,7 +26,7 @@ export class ElectronicMediaModalComponent implements OnInit {
   trusteeLegaciesAction:boolean=true;
   LegacyPermissionError:string="You don't have access to this section";
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
-    private userapi: UserAPIService){ }
+    private userapi: UserAPIService,private sharedata: DataSharingService){ }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
@@ -52,6 +53,7 @@ export class ElectronicMediaModalComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
        if(userAccess.ElectronicMediaManagement!='now'){
         this.trusteeLegaciesAction = false;
        }           

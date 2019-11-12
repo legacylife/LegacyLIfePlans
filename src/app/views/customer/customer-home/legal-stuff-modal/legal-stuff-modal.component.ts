@@ -13,6 +13,7 @@ import { cloneDeep } from 'lodash'
 import { serverUrl, s3Details } from '../../../../config';
 import { NumberValueAccessor } from '@angular/forms/src/directives';
 import { FileHandlingService } from 'app/shared/services/file-handling.service';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 const URL = serverUrl + '/api/documents/legalStuff';
 @Component({
   selector: 'app-legal-stuff-modal',
@@ -47,7 +48,7 @@ export class legalStuffModalComponent implements OnInit {
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,
     private confirmService: AppConfirmService,private loader: AppLoaderService,
     private userapi: UserAPIService ,@Inject(MAT_DIALOG_DATA) public data: any,
-    private fileHandlingService: FileHandlingService )
+    private fileHandlingService: FileHandlingService,private sharedata: DataSharingService )
   { 
       this.folderName = data.FolderName;this.newName = data.newName;
   }
@@ -75,6 +76,7 @@ export class legalStuffModalComponent implements OnInit {
           if(userLockoutPeriod || userDeceased){
             this.trusteeLegaciesAction = false;
           }
+          this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
          if((this.folderName=='Estate' && userAccess.EstateManagement!='now') || (this.folderName=='Healthcare' && userAccess.HealthcareManagement!='now') || (this.folderName=='Personal Affairs' && userAccess.PersonalAffairsManagement!='now')){         
           this.trusteeLegaciesAction = false;
          }           

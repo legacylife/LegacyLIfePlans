@@ -4,6 +4,7 @@ import { MatDialog, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { UserAPIService } from 'app/userapi.service';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 
 @Component({
   selector: 'app-special-needs-model',
@@ -26,7 +27,7 @@ export class SpecialNeedsModelComponent implements OnInit {
   subFolderName:string = ''
   LegacyPermissionError:string="You don't have access to this section";
   constructor(private router: Router, private snack: MatSnackBar, public dialog: MatDialog, private fb: FormBuilder, private loader: AppLoaderService,
-    private userapi: UserAPIService, @Inject(MAT_DIALOG_DATA) public data: any) {
+    private userapi: UserAPIService,private sharedata: DataSharingService, @Inject(MAT_DIALOG_DATA) public data: any) {
     this.folderNameHidden = data.folderName;
 
     if (data.folderName == "Young_Children") {
@@ -59,7 +60,7 @@ export class SpecialNeedsModelComponent implements OnInit {
       this.userapi.getUserAccess(this.userId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
-        }
+        }this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         if((this.folderName=='Young_Children' && (userAccess.YoungChildrenManagement!='now' || userAccess.YoungChildrenManagement!='')) || (this.folderName=='Child_Parent' && userAccess.ChildParentDisabilityManagement!='now') || (this.folderName=='Friend_Neighbor' && userAccess.FriendNeighborCareManagement!='now')){
         this.trusteeLegaciesAction = false;
        }           

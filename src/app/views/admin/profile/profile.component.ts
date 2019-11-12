@@ -118,6 +118,7 @@ export class ProfileComponent implements OnInit {
       this.loader.close();
       if (result.status == "error") {
         this.llpPasswordForm.controls['password'].setErrors({ 'invalid': true });
+        this.llpPasswordForm.controls['password'].setValue('');
       } else {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }

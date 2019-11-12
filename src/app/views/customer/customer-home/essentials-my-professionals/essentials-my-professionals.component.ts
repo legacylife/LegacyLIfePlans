@@ -7,7 +7,7 @@ import { AppLoaderService } from '../../../../shared/services/app-loader/app-loa
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { myProfessionals } from '../../../../selectList';
-
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-essentials-id-box',
   templateUrl: './essentials-my-professionals.component.html',
@@ -25,7 +25,7 @@ export class essentialsMyProfessionalsComponent implements OnInit {
   customerLegacyType:string='customer';
   LegacyPermissionError:string="You don't have access to this section";
   trusteeLegaciesAction:boolean=true;
-  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService  ) { }
+  constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private confirmService: AppConfirmService,private loader: AppLoaderService, private userapi: UserAPIService,private sharedata: DataSharingService  ) { }
 
   ngOnInit() {
       this.userId = localStorage.getItem("endUserId");    
@@ -53,6 +53,7 @@ export class essentialsMyProfessionalsComponent implements OnInit {
           if(userLockoutPeriod || userDeceased){
             this.trusteeLegaciesAction = false;
           }
+          this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
          if(userAccess.MyProfessionalsManagement!='now'){
           this.trusteeLegaciesAction = false;
          }           
