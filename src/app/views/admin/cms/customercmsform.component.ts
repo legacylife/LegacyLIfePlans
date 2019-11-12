@@ -348,6 +348,7 @@ public fileOverBase(e: any): void {
         this.getDocument()      
         setTimeout(()=>{    
             this.getDocument()   
+            this.currentProgessinPercent = 0;
         },5000);
       };
     }
@@ -379,7 +380,6 @@ getDocument() {
     console.error(err)
   })
 }
-
 
 public fileOverMiddleBannerBase(e: any): void {
   this.hasBaseDropZoneOver = e;
@@ -416,6 +416,7 @@ public fileOverMiddleBannerBase(e: any): void {
       this.getDocument()      
       setTimeout(()=>{    
           this.getDocument()   
+          this.currentProgessinPercentMiddle = 0;
       },5000);
     };
   }
@@ -457,6 +458,7 @@ public fileOverLowerBannerBase(e: any): void {
       this.getDocument()      
       setTimeout(()=>{    
           this.getDocument()   
+          this.currentProgessinPercentLower = 0;
       },5000);
     };
   }
@@ -497,7 +499,8 @@ public fileOverQOW1Base(e: any): void {
       this.uploaderQOW1.clearQueue();
       this.getDocument()      
       setTimeout(()=>{    
-          this.getDocument()   
+          this.getDocument();   
+          this.currentProgessinPercentQOW1 = 0;
       },5000);
     };
   }
@@ -540,6 +543,7 @@ public fileOverQOW2Base(e: any): void {
       this.getDocument()      
       setTimeout(()=>{    
           this.getDocument()   
+          this.currentProgessinPercentQOW2 = 0;
       },5000);
     };
   }
@@ -566,6 +570,7 @@ uploadTestimonialsFile(fileName,index) {
       this.getDocument()      
       setTimeout(()=>{    
           this.getDocument()   
+          this.currentProgessinPercentProfilePhoto = 0;
       },5000);
     }  
   }
@@ -585,11 +590,6 @@ updateProgressBarProfilePhoto(index){
 
     this.uploaderProfilePhoto.onProgressAll = (progress:any) => {
       this.currentProgessinPercentProfilePhoto = progress;
-      if(progress==100){
-        setTimeout(()=>{    
-          this.currentProgessinPercent = 0;
-        },5000);
-      }
     }
 }
 
@@ -605,11 +605,6 @@ updateProgressBar(){
   }
   this.uploader.onProgressAll = (progress:any) => {
     this.currentProgessinPercent = progress;
-    if(progress==100){
-      setTimeout(()=>{    
-        this.currentProgessinPercent = 0;
-      },5000);
-    }
   }
 }
 
@@ -624,12 +619,7 @@ updateProgressBarMiddle(){
     }
   }
   this.uploaderMiddleBanner.onProgressAll = (progress:any) => {
-    this.currentProgessinPercentMiddle = progress;
-    if(progress==100){
-      setTimeout(()=>{    
-        this.currentProgessinPercent = 0;
-      },5000);
-    }
+    this.currentProgessinPercentMiddle = progress;  
   }
 }
 
@@ -644,12 +634,7 @@ updateProgressBarLower(){
     }
   }
   this.uploaderLowerBanner.onProgressAll = (progress:any) => {
-    this.currentProgessinPercentLower = progress;
-    if(progress==100){
-      setTimeout(()=>{    
-        this.currentProgessinPercent = 0;
-      },5000);
-    }
+    this.currentProgessinPercentLower = progress;    
   }
 }
 
@@ -665,11 +650,6 @@ updateProgressBarQOW1(){
   }
   this.uploaderQOW1.onProgressAll = (progress:any) => {
     this.currentProgessinPercentQOW1 = progress;
-    if(progress==100){
-      setTimeout(()=>{    
-        this.currentProgessinPercent = 0;
-      },5000);
-    }
   }
 }
 
