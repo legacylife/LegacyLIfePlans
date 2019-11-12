@@ -127,9 +127,29 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 50%;
+    height: 65px;
+    width: 65px !important;
+    padding: 0 !important;
     ::ng-deep{
       .mat-button-wrapper{
         padding: 0 !important;
       }
+    }
+    .total--msgs{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 25px;
+      height: 25px;
+      background-color: #727933;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 14px;
+      font-family: $font--lato--regular !important;
+      position: absolute;
+      right: 0;
+      top: -5px;
+      box-shadow: 0 0 5px #ddd;
     }
 }
