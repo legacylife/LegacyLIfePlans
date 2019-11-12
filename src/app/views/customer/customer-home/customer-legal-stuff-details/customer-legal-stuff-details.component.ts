@@ -8,6 +8,7 @@ import { AppLoaderService } from '../../../../shared/services/app-loader/app-loa
 import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
 import { legalStuffModalComponent } from './../legal-stuff-modal/legal-stuff-modal.component';
 import { EstateTypeOfDocument,HealthcareTypeOfDocument,PersonalAffairsTypeOfDocument } from '../../../../selectList';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 import { s3Details } from '../../../../config';
 
 @Component({
@@ -32,7 +33,7 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
-    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router
+    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router,private sharedata: DataSharingService
   ) { }
 
   ngOnInit() {
@@ -85,6 +86,7 @@ export class CustomerLegalStuffDetailsComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         if((data.subFolderName=='Estate' && userAccess.EstateManagement!='now') || (data.subFolderName=='Healthcare' && userAccess.HealthcareManagement!='now') || (data.subFolderName=='Personal Affairs' && userAccess.PersonalAffairsManagement!='now')){
         this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
         this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
