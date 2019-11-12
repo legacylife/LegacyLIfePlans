@@ -25,6 +25,7 @@ export class ObituaryDetailsComponent implements OnInit {
   urlData:any={};
   toUserId:string = ''
   subFolderName:string = ''
+  displayData:boolean=false;
   LegacyPermissionError:string="You don't have access to this section";
   constructor(
     private fb: FormBuilder,
@@ -62,6 +63,7 @@ export class ObituaryDetailsComponent implements OnInit {
           }          
           this.row = result.data;      
           if(this.row){
+
             this.toUserId = this.row.customerId 
             this.docPath = this.row.customerId+'/'+s3Details.obituaryFilePath;
             this.customerisValid(this.row);    
@@ -126,7 +128,7 @@ export class ObituaryDetailsComponent implements OnInit {
             toId:this.toUserId,
             folderName:s3Details.obituaryFilePath
           }
-          this.userapi.apiRequest('post', 'finalWish/delete-finalWish', req_vars).subscribe(result => {
+          this.userapi.apiRequest('post', 'finalWishes/delete-celebration-finalWish', req_vars).subscribe(result => {
             if (result.status == "error") {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })

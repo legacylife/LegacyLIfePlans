@@ -8,8 +8,7 @@
 
 <!-- First form -->
 
-<form class="llp-form-wrapper" [formGroup]="selectAnyOneFormGroup" *ngIf="firstServicesSec"
-  [@animate]="{value:'*',params:{delay:'100ms',scale:'.8', y:'-100px'}}">
+<form class="llp-form-wrapper" [formGroup]="selectAnyOneFormGroup" *ngIf="firstServicesSec" [@animate]="{value:'*',params:{delay:'100ms',scale:'.8', y:'-100px'}}">
   <div class="ll--modal--body">
     <div fxLayout="row wrap">
       <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="any--option--sec">
@@ -25,9 +24,9 @@
       </div>
     </div>
   </div>
-  <div class="ll--modal--footer text-center">
+  <!-- <div class="ll--modal--footer text-center">
     <button mat-raised-button class="llp--primary--btn">Save</button>
-  </div>
+  </div> -->
 </form>
 
 
@@ -40,14 +39,27 @@
 
         <div class="stepper--wrapper funeral--wrapper">
           <mat-horizontal-stepper labelPosition="bottom" #stepper>
-            <mat-step [stepControl]="firstFormGroup">
+            <mat-step [stepControl]="firstFormGroup1">
 
-            <!-- step - 1 -->
+              <!-- step - 1 -->
               <form [formGroup]="firstFormGroup" class="llp-form-wrapper">
                 <div fxLayout="row wrap">
 
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
-                    <mat-radio-group class="llp-radio" aria-label="Select an option" [formControl]="firstFormGroup.controls['serviceFor']">
+
+                    <mat-radio-group class="llp-radio mb-0" aria-label="Select an option" [formControl]="firstFormGroup.controls['serviceFor']">
+                      <div class="checkbox-label">The service will be for:</div>
+                      <mat-radio-button value="Friends and family">Friends and family </mat-radio-button>
+                      <mat-radio-button value="Private">Private</mat-radio-button>
+                      <mat-radio-button value="Other" (change)="otherChange('otherChecked')">Other</mat-radio-button>
+                    </mat-radio-group>
+
+                    <mat-form-field class="full-width mt-1 no-mar" *ngIf="serviceOther">
+                      <textarea matInput placeholder="Other" [formControl]="firstFormGroup.controls['serviceForOther']"></textarea>
+                    </mat-form-field>
+
+
+                    <!-- <mat-radio-group class="llp-radio" aria-label="Select an option" [formControl]="firstFormGroup.controls['serviceFor']">
                       <div class="checkbox-label">The service will be for:</div>
                       <mat-checkbox>Friends and family </mat-checkbox>
                       <mat-checkbox>Private</mat-checkbox>
@@ -58,7 +70,7 @@
                         <textarea matInput placeholder="Other" [formControl]="firstFormGroup.controls['serviceForOther']"></textarea>
                       </mat-form-field>
 
-                    </mat-radio-group>
+                    </mat-radio-group> -->
                   </div>
 
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
@@ -94,88 +106,75 @@
 
 
             <!-- step - 2 -->
-            <mat-step [stepControl]="secondFormGroup" optional>
-              <form [formGroup]="" class="llp-form-wrapper">
+            <mat-step [stepControl]="secondFormGroup1" optional>
+              <form [formGroup]="secondFormGroup" class="llp-form-wrapper">
                 <div fxLayout="row wrap">
 
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
-                    <mat-radio-group class="llp-radio mb-0" aria-label="Select an option" [formControl]="firstFormGroup.controls['serviceParticipants']">
+                    <mat-radio-group class="llp-radio mb-0" aria-label="Select an option" [formControl]="secondFormGroup.controls['serviceParticipants']">
                       <div class="checkbox-label">Service participants:</div>
 
                       <div fxLayout="row wrap">
-                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
-                          class="mb--5">
-                          <mat-checkbox (change)="leaderChange($event.value)" [formControl]="firstFormGroup.controls['leaderChecked']" value="1">
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
+                          <mat-checkbox (change)="leaderChange($event.value)" [formControl]="secondFormGroup.controls['leaderChecked']" value="1">
                             Ceremony leader </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="ceremonySec">
-                            <textarea matInput placeholder="Ceremony leader" [formControl]="firstFormGroup.controls['leaderDescrption']"></textarea>
+                            <textarea matInput placeholder="Ceremony leader" [formControl]="secondFormGroup.controls['leaderDescrption']"></textarea>
                           </mat-form-field>
                         </div>
 
-                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
-                          class="mb--5">
-                          <mat-checkbox (change)="eulogistChange($event.value)" [formControl]="firstFormGroup.controls['eulogistChecked']" value="1">
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
+                          <mat-checkbox (change)="eulogistChange($event.value)" [formControl]="secondFormGroup.controls['eulogistChecked']" value="1">
                             Eulogist </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="eulogistSec">
-                            <textarea matInput placeholder="Eulogist" [formControl]="firstFormGroup.controls['eulogistdescription']"></textarea>
+                            <textarea matInput placeholder="Eulogist" [formControl]="secondFormGroup.controls['eulogistdescription']"></textarea>
                           </mat-form-field>
                         </div>
 
-                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
-                          class="mb--5">
-                          <mat-checkbox (change)="reflectionsChange($event.value)" [formControl]="firstFormGroup.controls['reflectionsChecked']" value="1">Reflections </mat-checkbox>                            
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
+                          <mat-checkbox (change)="reflectionsChange($event.value)" [formControl]="secondFormGroup.controls['reflectionsChecked']" value="1">Reflections </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="reflectionsSec">
-                            <textarea matInput placeholder="Reflections" [formControl]="firstFormGroup.controls['reflectionsDescription']"></textarea>
+                            <textarea matInput placeholder="Reflections" [formControl]="secondFormGroup.controls['reflectionsDescription']"></textarea>
                           </mat-form-field>
                         </div>
-                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
-                          class="mb--5">
-                          <mat-checkbox (change)="readingsChange($event.value)" [formControl]="firstFormGroup.controls['readingsChecked']" value="1">
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
+                          <mat-checkbox (change)="readingsChange($event.value)" [formControl]="secondFormGroup.controls['readingsChecked']" value="1">
                             Readings </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="readingsSec">
-                            <textarea matInput placeholder="Readings" [formControl]="firstFormGroup.controls['readingsDescription']"></textarea>
+                            <textarea matInput placeholder="Readings" [formControl]="secondFormGroup.controls['readingsDescription']"></textarea>
                           </mat-form-field>
                         </div>
-                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
-                          class="mb--5">
-                          <mat-checkbox (change)="musiciansChange($event.value)" [formControl]="firstFormGroup.controls['musiciansChecked']" value="1"
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
+                          <mat-checkbox (change)="musiciansChange($event.value)" [formControl]="secondFormGroup.controls['musiciansChecked']" value="1"
                             formcontrolName="musiciansChecked">Musicians </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="musiciansSec">
-                            <textarea matInput placeholder="Musicians" [formControl]="firstFormGroup.controls['musiciansDescription']"></textarea>
+                            <textarea matInput placeholder="Musicians" [formControl]="secondFormGroup.controls['musiciansDescription']"></textarea>
                           </mat-form-field>
                         </div>
 
-                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
-                          class="mb--5">
-                          <mat-checkbox (change)="pallbearersChange($event.value)" value="1"
-                            [formControl]="firstFormGroup.controls['pallbearersChecked']">Pallbearers
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
+                          <mat-checkbox (change)="pallbearersChange($event.value)" value="1" [formControl]="secondFormGroup.controls['pallbearersChecked']">Pallbearers
                           </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="pallbearersSec">
-                            <textarea matInput placeholder="Pallbearers" [formControl]="firstFormGroup.controls['pallbearersDescription']"></textarea>
+                            <textarea matInput placeholder="Pallbearers" [formControl]="secondFormGroup.controls['pallbearersDescription']"></textarea>
                           </mat-form-field>
                         </div>
 
-                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
-                          class="mt-1">
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mt-1">
                           <mat-form-field class="full-width no-mar ">
-                            <textarea matInput  [formControl]="firstFormGroup.controls['additionalParticipants']"
-                              placeholder="Additional participants:"></textarea>
+                            <textarea matInput [formControl]="secondFormGroup.controls['additionalParticipants']" placeholder="Additional participants:"></textarea>
                           </mat-form-field>
                         </div>
 
-                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
-                          class="mt-1">
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mt-1">
                           <mat-form-field class="full-width no-mar ">
-                            <textarea matInput  [formControl]="firstFormGroup.controls['servicesUsed']"
-                              placeholder="The following readings, poems, hymns, and music will be used during the service:"></textarea>
+                            <textarea matInput [formControl]="secondFormGroup.controls['servicesUsed']" placeholder="The following readings, poems, hymns, and music will be used during the service:"></textarea>
                           </mat-form-field>
                         </div>
 
-                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
-                          class="mt-1">
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mt-1">
                           <mat-form-field class="full-width no-mar ">
-                            <textarea matInput  [formControl]="firstFormGroup.controls['flowersUsed']"
-                              placeholder="The following flowers will be used for the service:"></textarea>
+                            <textarea matInput [formControl]="secondFormGroup.controls['flowersUsed']" placeholder="The following flowers will be used for the service:"></textarea>
                           </mat-form-field>
                         </div>
 
@@ -196,44 +195,41 @@
 
 
             <!-- step - 3 -->
-            <mat-step [stepControl]="thirdFormGroup">
-              <form [formGroup]="" class="llp-form-wrapper">
+            <mat-step [stepControl]="thirdFormGroup1">
+              <form [formGroup]="thirdFormGroup" class="llp-form-wrapper" (ngSubmit)="PlanFormSubmit(selectAnyOneFormGroup.value,firstFormGroup.value,secondFormGroup.value,thirdFormGroup.value)">
 
                 <div fxLayout="row wrap">
 
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
-                    <mat-radio-group class="llp-radio" aria-label="Select an option" [formControl]="firstFormGroup.controls['speakerAvailable']">
+                    <mat-radio-group class="llp-radio" aria-label="Select an option" [formControl]="thirdFormGroup.controls['isFloralArrangements']">
                       <div class="checkbox-label">Use floral arrangements service?:</div>
                       <mat-radio-button value="1">Yes </mat-radio-button>
                       <mat-radio-button value="2">No</mat-radio-button>
                     </mat-radio-group>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
-                    <mat-radio-group class="llp-radio" aria-label="Select an option" [formControl]="firstFormGroup.controls['speakerAvailable']">
+                    <mat-radio-group class="llp-radio" aria-label="Select an option" [formControl]="thirdFormGroup.controls['needVisualTribute']">
                       <div class="checkbox-label">I would like a visual tribute:</div>
                       <mat-radio-button (change)="vtChange($event)" value="yes">Yes </mat-radio-button>
                       <mat-radio-button (change)="vtChange($event)" value="no">No</mat-radio-button>
                     </mat-radio-group>
                   </div>
-                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
-                    *ngIf="visualTribute">
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" *ngIf="visualTribute">
                     <mat-form-field class="full-width no-mar ">
-                      <textarea matInput
-                        placeholder="The following people will help prepare the visual tribute:"></textarea>
+                      <textarea matInput [formControl]="thirdFormGroup.controls['peopleInVisualTribute']" placeholder="The following people will help prepare the visual tribute:"></textarea>
                     </mat-form-field>
                   </div>
 
 
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
-                    <mat-radio-group class="llp-radio" aria-label="Select an option" [formControl]="firstFormGroup.controls['speakerAvailable']">
+                    <mat-radio-group class="llp-radio" aria-label="Select an option" [formControl]="thirdFormGroup.controls['havePreparedVisualTribute']">
                       <div class="checkbox-label">I have prepared a visual tribute:</div>
                       <mat-radio-button (change)="prepareVtChange($event)" value="yes">Yes </mat-radio-button>
                       <mat-radio-button (change)="prepareVtChange($event)" value="no">No</mat-radio-button>
                     </mat-radio-group>
                   </div>
 
-                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp"
-                    *ngIf="uploadDocAndLoc">
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp" *ngIf="uploadDocAndLoc">
                     <div class="upload--buss--docs--sec">
                       <label>Upload your documents</label>
                       <div class="upload--box ">
@@ -244,24 +240,24 @@
                       <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
                     </div>
                   </div>
-                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
-                    *ngIf="uploadDocAndLoc">
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" *ngIf="uploadDocAndLoc">
                     <mat-form-field class="full-width no-mar ">
-                      <textarea matInput placeholder="Location of the document:"></textarea>
+                      <textarea matInput placeholder="Location of the document:" [formControl]="thirdFormGroup.controls['locationOfDocuments']"></textarea>
                     </mat-form-field>
                   </div>
 
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
                     <mat-form-field class="full-width no-mar ">
-                      <textarea matInput placeholder="Additional plans and arrangements:"></textarea>
+                      <textarea matInput placeholder="Additional plans and arrangements:" [formControl]="thirdFormGroup.controls['additionalPlans']"></textarea>
                     </mat-form-field>
                   </div>
                 </div>
+                <div class="ll--modal--footer text-center">
+                  <button class="llp--secondary--btn" mat-button matStepperPrevious>Back</button>
+                  <button mat-raised-button class="llp--primary--btn" mat-button>Submit</button>
+                </div>
               </form>
-              <div class="ll--modal--footer text-center">
-                <button class="llp--secondary--btn" mat-button matStepperPrevious>Back</button>
-                <button class="llp--primary--btn" mat-button>Submit</button>
-              </div>
+
             </mat-step>
           </mat-horizontal-stepper>
         </div>
