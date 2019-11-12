@@ -180,7 +180,7 @@ export class PetsModalComponent implements OnInit {
               fileName: Object.assign({ docName: tmName }, query),
               fromId:localStorage.getItem('endUserId'),
               toId:this.toUserId,
-              folderName:s3Details.finalWishesFilePath,
+              folderName:s3Details.petsFilePath,
               subFolderName:this.subFolderName
             }
             this.userapi.apiRequest('post', 'documents/deletePets', req_vars).subscribe(result => {
@@ -373,7 +373,7 @@ export class PetsModalComponent implements OnInit {
       query: Object.assign({ docPath: this.docPath, filename: filename }, query),
       fromId:localStorage.getItem('endUserId'),
       toId:this.toUserId,
-      folderName:s3Details.finalWishesFilePath,
+      folderName:s3Details.petsFilePath,
       subFolderName:this.subFolderName
     };
     this.userapi.download("documents/downloadDocument", req_vars).subscribe(res => {

@@ -71,14 +71,41 @@
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
             <div class="upload--buss--docs--sec">
               <label>Upload your documents</label>
-              <div class="upload--box ">
-                <input type="file">
+              <div class="upload--box fileupload-drop-zone"
+              ng2FileDrop
+              [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+              (fileOver)="fileOverBase($event)"
+              [uploader]="uploader">
+              <input type="file" name="documents"  ng2FileSelect [uploader]="uploader" multiple  (change)="fileOverBase('')" />  
                 <mat-icon class="cloud-icon">cloud_upload</mat-icon>
                 <div class="select--file">Select file from your computer</div>
               </div>
               <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
             </div>
           </div>
+
+          <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small>
+          <mat-form-field class="full-width" *ngIf="documents_temps">
+              <input matInput name="documents_temp" [formControl]="celebrationFormGroup.controls['documents_temp']">
+              <small *ngIf="celebrationFormGroup.controls['documents_temp'].hasError('required') && celebrationFormGroup.controls['documents_temp'].touched" class="form-error-msg"> Please drag your document. </small>
+          </mat-form-field>
+    
+          <div *ngIf="documentsList" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" >
+            <h3 class="header--text fnt--16">Uploaded document</h3>
+            <mat-chip-list class="doc--list" *ngFor="let doc of documentsList; index as i">
+                <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove  (click)="documentDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+            </mat-chip-list>
+    
+            <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
+                <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
+            </mat-chip-list>  
+          </div>
+    
+          <div class="progress" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" style="margin-bottom: 0;" *ngIf="currentProgessinPercent>0">
+            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
+            <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
+          </div>
+
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
             <mat-form-field class="full-width no-mar ">
               <textarea matInput (keyup)="firstCapitalize($event)" placeholder="Location of the document:" [formControl]="celebrationFormGroup.controls['documentLocation']"></textarea>

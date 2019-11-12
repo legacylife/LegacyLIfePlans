@@ -56,13 +56,12 @@
         <mat-chip-list class="doc--list" *ngFor="let doc of documentsList; index as i">
             <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove  (click)="documentDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
         </mat-chip-list>
-
-        <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
-            <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
-        </mat-chip-list>  
       </div>
+      <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
+        <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
+      </mat-chip-list>  
 
-      <div class="progress" style="margin-bottom: 0;" *ngIf="obituaryCheckPhotos && currentProgessinPercent>0">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="progress"style="margin-bottom: 0;" *ngIf="obituaryCheckPhotos && currentProgessinPercent>0">
         <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
         <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
       </div>
