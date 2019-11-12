@@ -83,7 +83,7 @@ async function viewDeceased(req, res) {
       }
       if(userType=='sysadmin'){
         adminId = fromUserId = paramData.adminId;
-        let found = await MarkDeceased.findOne({customerId:paramData.customerId,adminId:paramData.adminId},{_id:1})
+        let found = await MarkDeceased.findOne({customerId:paramData.customerId,adminId:paramData.adminId,status:"Active"},{_id:1})
         if(found){
           paramData._id = found._id;
         }
