@@ -83,6 +83,10 @@ async function viewDeceased(req, res) {
       }
       if(userType=='sysadmin'){
         adminId = fromUserId = paramData.adminId;
+        let found = await MarkDeceased.findOne({customerId:paramData.customerId,adminId:paramData.adminId},{_id:1})
+        if(found){
+          paramData._id = found._id;
+        }
       }
       let alreadyMDeceased = '';
       if(paramData._id){
@@ -110,7 +114,7 @@ async function viewDeceased(req, res) {
               insert.adminId = ObjectId(adminId);
               findQuery = {customerId:paramData.customerId,adminId:adminId};
             }
-            alreadyMDeceased = await MarkDeceased.findOne(findQuery, {_id:1})
+            alreadyMDeceased = await MarkDeceased.findOne(findQuery, {_id:1,deceased:1})
             if (alreadyMDeceased == null) {
               insert.status = 'Active';
               insert.createdOn = new Date();
