@@ -9,7 +9,7 @@ import { AppConfirmService } from '../../../../../shared/services/app-confirm/ap
 import { FinanceModalComponent } from './../finance-modal/finance-modal.component';
 import { FinancePolicyType } from '../../../../../selectList';  
 import { s3Details } from '../../../../../config';
-
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './finance-details.component.html',
@@ -34,6 +34,7 @@ export class FinanceDetailsComponent implements OnInit {
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
     private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router
+    ,private sharedata: DataSharingService
   ) { }
 
   ngOnInit() {  
@@ -83,6 +84,7 @@ export class FinanceDetailsComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
        if(userAccess.FinancesManagement!='now'){
         this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
         this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');

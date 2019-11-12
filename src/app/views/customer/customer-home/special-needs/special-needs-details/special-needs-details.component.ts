@@ -5,8 +5,7 @@ import { UserAPIService } from 'app/userapi.service';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
 import { SpecialNeedsModelComponent } from '../special-needs-model/special-needs-model.component';
-
-
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-special-needs-details',
   templateUrl: './special-needs-details.component.html',
@@ -27,7 +26,7 @@ export class SpecialNeedsDetailsComponent implements OnInit {
   LegacyPermissionError:string="You don't have access to this section";
   constructor(
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
-    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router) {
+    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router,private sharedata: DataSharingService) {
   }
 
   ngOnInit() {
@@ -75,7 +74,7 @@ export class SpecialNeedsDetailsComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
-              
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         if((data.folderName=='Young_Children' && userAccess.YoungChildrenManagement!='now') || (data.folderName=='Child_Parent' && userAccess.ChildParentDisabilityManagement!='now') || (data.folderName=='Friend_Neighbor' && userAccess.FriendNeighborCareManagement!='now')){       
           this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
          this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');

@@ -7,6 +7,8 @@ import { AppLoaderService } from '../../../../../shared/services/app-loader/app-
 import { AppConfirmService } from '../../../../../shared/services/app-confirm/app-confirm.service';
 import { LettersMessagesModelComponent } from '../letters-messages-model/letters-messages-model.component';
 import { s3Details } from '../../../../../config';
+
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-letters-messages-details',
   templateUrl: './letters-messages-details.component.html',
@@ -28,7 +30,7 @@ export class LettersMessagesDetailsComponent implements OnInit {
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
-    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router
+    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router,private sharedata: DataSharingService
   ) { }
 
   ngOnInit() {  
@@ -82,7 +84,7 @@ export class LettersMessagesDetailsComponent implements OnInit {
           this.trusteeLegaciesAction = false;
         }
         this.fileLevelAccess = userAccess.LegacyLifeLettersMessagesManagement;
-
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         this.fileLevelAccess.forEach(function(item, index, array) {  
           if(data._id == item.letterId && item.access != 'now'){
             this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })

@@ -7,6 +7,7 @@ import { UserAPIService } from './../../../../userapi.service';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
 import { essentialsMyProfessionalsComponent } from './../essentials-my-professionals/essentials-my-professionals.component';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './essentials-my-professionals-details.component.html',
@@ -26,7 +27,7 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
-    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router
+    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router,private sharedata: DataSharingService
   ) { }
 
   ngOnInit() {
@@ -65,6 +66,7 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
        if(userAccess.MyProfessionalsManagement!='now'){
         this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
         this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');

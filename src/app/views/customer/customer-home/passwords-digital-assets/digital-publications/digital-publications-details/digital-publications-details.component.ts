@@ -8,6 +8,7 @@ import { AppLoaderService } from '../../../../../../shared/services/app-loader/a
 import { AppConfirmService } from '../../../../../../shared/services/app-confirm/app-confirm.service';
 import { DigitalPublicationsModalComponent } from './../digital-publications-modal/digital-publications-modal.component';
 import { ElectronicMediaLists } from '../../../../../../selectList';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './digital-publications-details.component.html',
@@ -29,7 +30,7 @@ export class DigitalPublicationsDetailsComponent implements OnInit {
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
-    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router
+    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router,private sharedata: DataSharingService
   ) { }
 
   ngOnInit() {  
@@ -74,7 +75,7 @@ export class DigitalPublicationsDetailsComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
-        
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         if(userAccess.DigitalPublicationManagement!='now'){
           this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
           this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');

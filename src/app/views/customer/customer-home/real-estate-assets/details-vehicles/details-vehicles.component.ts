@@ -5,8 +5,7 @@ import { UserAPIService } from 'app/userapi.service';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
 import { VehicleModelComponent } from '../vehicle-model/vehicle-model.component';
-
-
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-details-vehicles',
   templateUrl: './details-vehicles.component.html',
@@ -26,7 +25,7 @@ export class DetailsVehiclesComponent implements OnInit {
   subFolderName:string = 'Vehicles'
   constructor(
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
-    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router) {
+    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router,private sharedata: DataSharingService) {
   }
 
   ngOnInit() {
@@ -66,7 +65,7 @@ export class DetailsVehiclesComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
-  
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         if(userAccess.VehiclesManagement!='now'){
           this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
           this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');

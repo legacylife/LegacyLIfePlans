@@ -8,6 +8,7 @@ import { AppLoaderService } from '../../../../../../shared/services/app-loader/a
 import { AppConfirmService } from '../../../../../../shared/services/app-confirm/app-confirm.service';
 import { ElectronicMediaModalComponent } from './../electronic-media-modal/electronic-media-modal.component';
 import { ElectronicMediaLists } from '../../../../../../selectList';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './electronic-media-details.component.html',
@@ -29,7 +30,8 @@ export class ElectronicMediaDetailsComponent implements OnInit {
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
-    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router
+    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router,private sharedata: DataSharingService
+
   ) { }
 
   ngOnInit() {  
@@ -74,7 +76,7 @@ export class ElectronicMediaDetailsComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
-        
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         if(userAccess.ElectronicMediaManagement!='now'){
           this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
           this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');

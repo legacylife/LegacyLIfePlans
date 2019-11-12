@@ -8,6 +8,7 @@ import { AppLoaderService } from '../../../../../shared/services/app-loader/app-
 import { AppConfirmService } from '../../../../../shared/services/app-confirm/app-confirm.service';
 import { ObituaryModalComponent } from '../obituary-modal/obituary-modal.component';
 import { s3Details } from '../../../../../config';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './obituary-details.component.html',
@@ -30,7 +31,7 @@ export class ObituaryDetailsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
-    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router
+    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router,private sharedata: DataSharingService
   ) { }
 
   ngOnInit() {
@@ -81,7 +82,7 @@ export class ObituaryDetailsComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
-        
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         if((data.subFolderName=='Funeral Plans' && userAccess.FuneralPlansManagement!='now') || (data.subFolderName=='Celebration of Life' && userAccess.CelebrationLifeManagement!='now') || (data.subFolderName=='Obituary' && userAccess.ObituaryManagement!='now')){
         this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
         this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');

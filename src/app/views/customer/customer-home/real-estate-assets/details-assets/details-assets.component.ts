@@ -6,7 +6,7 @@ import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.serv
 import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
 import { AssetsModelComponent } from '../assets-model/assets-model.component';
 import { RealEstateAssetsType } from 'app/selectList';
-
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-details-assets',
   templateUrl: './details-assets.component.html',
@@ -28,7 +28,8 @@ export class DetailsAssetsComponent implements OnInit {
   LegacyPermissionError:string="You don't have access to this section";
   constructor(
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
-    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router) {
+    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router,private sharedata: DataSharingService
+    ) {
   }
 
   ngOnInit() {
@@ -70,7 +71,7 @@ export class DetailsAssetsComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
-  
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         if(userAccess.AssetsManagement!='now'){
           this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
           this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');

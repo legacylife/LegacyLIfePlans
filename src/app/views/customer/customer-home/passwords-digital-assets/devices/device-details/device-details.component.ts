@@ -10,6 +10,7 @@ import { DevicesModalComponent } from './../devices-modal/devices-modal.componen
 import PatternLock from 'patternlock';
 import 'patternlock/dist/patternlock.css';
 import { DevicesList,PasswordType } from '../../../../../../selectList';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './device-details.component.html',
@@ -36,7 +37,7 @@ export class DeviceDetailsComponent implements OnInit {
   constructor( 
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
-    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router
+    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router,private sharedata: DataSharingService
   ) { }
 
   ngOnInit() {  
@@ -99,7 +100,7 @@ export class DeviceDetailsComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
-        
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         if(userAccess.DevicesManagement!='now'){
           this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
           this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');

@@ -9,6 +9,7 @@ import { AppConfirmService } from '../../../../../shared/services/app-confirm/ap
 import { InsuranceModalComponent } from './../insurance-modal/insurance-modal.component';
 import { InsurancePolicyType } from '../../../../../selectList';  
 import { s3Details } from '../../../../../config';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 import 'rxjs/Rx' ;
 @Component({
   selector: 'app-customer-home',
@@ -33,7 +34,7 @@ export class InsuranceDetailsComponent implements OnInit {
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
-    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router
+    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router,private sharedata: DataSharingService
   ) { }
 
   ngOnInit() {  
@@ -83,6 +84,7 @@ export class InsuranceDetailsComponent implements OnInit {
         if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
        if(userAccess.InsuranceManagement!='now'){
         this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
         this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
