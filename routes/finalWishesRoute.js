@@ -20,6 +20,7 @@ const s3 = require('./../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
 //const Trustee = require('./../models/Trustee.js')
 const commonhelper = require('./../helpers/commonhelper')
+const Trustee = require('./../models/Trustee.js')
 var auth = jwt({
   secret: constants.secret,
   userProperty: 'payload'
@@ -32,8 +33,24 @@ async function finalList(req, res) {
     let funeralPlanData = await finalwishes.find(query);
     let obituaryData =  await obituary.find(query);
     let celebrationData =  await celebration.find(query);
+    let trusteeList =  await Trustee.find(query);
 
-  res.send(resFormat.rSuccess({ obituaryData, celebrationData, funeralPlanData }))      
+    const FuneralPlansList = trusteeList.filter(dtype => {
+      return dtype.userAccess.FuneralPlansManagement == 'now'
+    }).map(el => el)
+     totalFuneralTrusteeRecords = FuneralPlansList.length;
+
+    const ObituaryList = trusteeList.filter(dtype => {
+      return dtype.userAccess.ObituaryManagement == 'now'
+    }).map(el => el)
+     totalObituaryTrusteeRecords = ObituaryList.length;
+
+    const CelebrationList = trusteeList.filter(dtype => {
+      return dtype.userAccess.CelebrationLifeManagement == 'now'
+    }).map(el => el)
+     totalCelebrTrusteeRecords = CelebrationList.length;
+
+  res.send(resFormat.rSuccess({ obituaryData, celebrationData, funeralPlanData,totalFuneralTrusteeRecords,totalObituaryTrusteeRecords,totalCelebrTrusteeRecords }))      
 }
 
 /**
@@ -275,14 +292,94 @@ function viewcelebrationOfLife(req, res) {
   })
 }
 
+function deleteObituary(req, res) {
+  let { query } = req.body;
+  let fields    = { }
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
+
+  obituary.findOne(query, fields, function (err, wishInfo) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      var upStatus = 'Delete';
+      var params = { status: upStatus,documents:[]}
+      obituary.update({ _id: wishInfo._id }, { $set: params }, function (err, updatedinfo) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          if(wishInfo.documents.length>0){
+            var fileArray = []; 
+            let filePath = wishInfo.customerId+'/'+constants.s3Details.obituaryFilePath;
+              async.each(wishInfo.documents, async (val) => {
+              await fileArray.push({"Key":filePath+val.tmpName});
+            })
+            s3.deleteFiles(fileArray,filePath);   
+          } 
+          actitivityLog.removeActivityLog(wishInfo._id);          
+          let message = resMessage.data( 607, [{key:'{field}',val:'Final wish'},{key:'{status}',val:'deleted'}] )
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Final Wish Delete", message, folderName, subFolderName )
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
+function deleteCelebration(req, res) {
+  let { query } = req.body;
+  let fields    = { }
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName.replace('/','')
+  let { subFolderName } = req.body
+
+  celebration.findOne(query, fields, function (err, wishInfo) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      var upStatus = 'Delete';
+      var params = { status: upStatus,documents:[]}
+      celebration.update({ _id: wishInfo._id }, { $set: params }, function (err, updatedinfo) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          if(wishInfo.documents.length>0){
+            var fileArray = []; 
+            let filePath = wishInfo.customerId+'/'+constants.s3Details.celebrationofLifeFilePath;
+              async.each(wishInfo.documents, async (val) => {
+              await fileArray.push({"Key":filePath+val.tmpName});
+            })
+            s3.deleteFiles(fileArray,filePath);   
+          } 
+          actitivityLog.removeActivityLog(wishInfo._id);          
+          let message = resMessage.data( 607, [{key:'{field}',val:'Final wish'},{key:'{status}',val:'deleted'}] )
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "Final Wish Delete", message, folderName, subFolderName )
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
 
 
 router.post("/finalListing", finalList)
 router.post("/obituary-form-submit", obituaryFormUpdate);
 router.post("/view-obituary-details", viewObituaryWish);
+router.post("/delete-obituary-finalWish", deleteObituary);
 
 router.post("/celebration-form-submit", celebrationFormUpdate);
 router.post("/view-celebration-details", viewcelebrationOfLife);
+router.post("/delete-celebration-finalWish", deleteCelebration);
 
 //router.post("/delete-finalWish", deleteFinalWish)
 module.exports = router

@@ -12,25 +12,30 @@ var finalWishesPlansSchema = new mongoose.Schema({
   isBodyPresent:{ type: String, default:'No' },
   isCasket : Array,
   deceasedWear: String,
+
   serviceParticipants:String,
   leaderChecked:String,
-  eulogistdescription:String,
-
-
-
-
-
-
-
-
-
+  leaderDescrption:String,
+  eulogistChecked:String,
+  eulogistdescription:String,   
+  reflectionsChecked:String,
+  reflectionsDescription:String,
+  readingsChecked:String,
+  readingsDescription:String,
+  musiciansChecked:String,
+  musiciansDescription:String,  
+  pallbearersChecked:String,
+  pallbearersDescription:String,
   additionalParticipants:String,
   servicesUsed:String,
   flowersUsed:String,
-  
+
   isFloralArrangements:{ type: String, default:'No' },
   needVisualTribute:{ type: String, default:'No' },
+  peopleInVisualTribute:String,
   havePreparedVisualTribute:{ type: String, default:'No' },
+  documents: Array,
+  locationOfDocuments:String,
   additionalPlans:String,
 
   status: String,
