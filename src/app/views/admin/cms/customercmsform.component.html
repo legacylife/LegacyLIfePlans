@@ -42,7 +42,7 @@
                                 </mat-chip-list>
 
                                 <div class="progress" style="margin-bottom: 0;"
-                                    *ngIf="uploader.getNotUploadedItems().length">
+                                    *ngIf="currentProgessinPercent>0">
                                     <div class="progress-bar" role="progressbar"
                                         [ngStyle]="{ 'width': currentProgessinPercent + '%' }">
                                         {{currentProgessinPercent}}%</div>
@@ -105,7 +105,7 @@
                                 </mat-chip-list>
 
                                 <div class="progress" style="margin-bottom: 0;"
-                                    *ngIf="uploaderMiddleBanner.getNotUploadedItems().length">
+                                    *ngIf="currentProgessinPercentMiddle>0">
                                     <div class="progress-bar" role="progressbar"
                                         [ngStyle]="{ 'width': currentProgessinPercentMiddle + '%' }">
                                         {{currentProgessinPercentMiddle}}%</div>
@@ -174,7 +174,7 @@
                                 </mat-chip-list>
 
                                 <div class="progress" style="margin-bottom: 0;"
-                                    *ngIf="uploaderLowerBanner.getNotUploadedItems().length">
+                                    *ngIf="currentProgessinPercentLower>0">
                                     <div class="progress-bar" role="progressbar"
                                         [ngStyle]="{ 'width': currentProgessinPercentLower + '%' }">
                                         {{currentProgessinPercentLower}}%</div>
@@ -317,7 +317,7 @@
                                 </mat-chip-list>
 
                                 <div class="progress" style="margin-bottom: 0;"
-                                    *ngIf="uploaderQOW1.getNotUploadedItems().length">
+                                    *ngIf="currentProgessinPercentQOW1>0">
                                     <div class="progress-bar" role="progressbar"
                                         [ngStyle]="{ 'width': currentProgessinPercentQOW1 + '%' }">
                                         {{currentProgessinPercentQOW1}}%</div>
@@ -331,7 +331,7 @@
                                 <div *ngIf="QOW1Path">
                                     <video class="library" controls preload="auto" style="height: 220px;"
                                         data-config="some-js-object-here">
-                                        <source src="{{bucketLink}}{{QOW1Path}}" type='video/mp4'>
+                                        <source src="{{QOW1Path}}" type='video/mp4'>
                                     </video>
                                 </div>
                             </div>
@@ -380,7 +380,7 @@
                                 </mat-chip-list>
 
                                 <div class="progress" style="margin-bottom: 0;"
-                                    *ngIf="uploaderQOW2.getNotUploadedItems().length">
+                                    *ngIf="currentProgessinPercentQOW2>0">
                                     <div class="progress-bar" role="progressbar"
                                         [ngStyle]="{ 'width': currentProgessinPercentQOW2 + '%' }">
                                         {{currentProgessinPercentQOW2}}%</div>
@@ -394,7 +394,7 @@
                                 <div *ngIf="QOW2Path">
                                     <video class="library" controls preload="auto" style="height: 220px;"
                                         data-config="some-js-object-here">
-                                        <source src="{{bucketLink}}{{QOW2Path}}" type='video/mp4'>
+                                        <source src="{{QOW2Path}}" type='video/mp4'>
                                     </video>
                                 </div>
                             </div>
@@ -460,7 +460,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderProfilePhoto.getNotUploadedItems().length">
+                                    <div class="progress" style="margin-bottom: 0;" *ngIf="currentProgessinPercentProfilePhoto>0">
                                         <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercentProfilePhoto + '%' }">{{currentProgessinPercentProfilePhoto}}%</div>
                                         <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="currentProgessinPercentProfilePhoto"></mat-progress-bar>
                                     </div>

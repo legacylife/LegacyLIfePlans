@@ -61,6 +61,7 @@ export class customercmsformComponent implements OnInit {
   currentProgessinPercentQOW1: number = 0;
   currentProgessinPercentQOW2: number = 0;
   currentProgessinPercentProfilePhoto: number = 0;
+  profileId: string;
   row : any
   aceessSection : any;
   profilePhotoHiddenVal:boolean = false;
@@ -191,6 +192,7 @@ getPageDetails = (query = {}, search = false) => {
         console.log(result.data)
       } else {
         this.row = result.data;
+        this.profileId = this.row._id;
         this.customerCmsForm.controls['pageTitle'].setValue(this.row.pageTitle); 
         this.customerCmsForm.controls['pagesubTitle'].setValue(this.row.pagesubTitle);
         this.customerCmsForm.controls['lowerTitle'].setValue(this.row.lowerTitle);
@@ -232,10 +234,10 @@ getPageDetails = (query = {}, search = false) => {
         this.lowerPath = this.filePath+this.row.lowerBanner;
 
         if(this.row.quickOverview1.videoLink){
-          this.QOW1Path = this.filePath+this.row.quickOverview1.videoLink;
+          this.QOW1Path = this.row.quickOverview1.videoLink;
         }
         if(this.row.quickOverview2.videoLink){
-          this.QOW2Path = this.filePath+this.row.quickOverview2.videoLink;
+          this.QOW2Path = this.row.quickOverview2.videoLink;
         }
       }
     }, (err) => {
@@ -293,12 +295,12 @@ getPageDetails = (query = {}, search = false) => {
       if(result.status == "error"){
         this.snack.open("Something error! Please try again later.", 'OK', { duration: 5000 })
       } else {
-        let returnId = result.data.newrecord._id;
-        this.uploadFile(returnId);
-        this.uploadMiddleBannerFile(returnId);
-        this.uploadLowerBannerFile(returnId);
-        this.uploadQOW1File(returnId);
-        this.uploadQOW2File(returnId);
+        this.profileId = result.data.newrecord._id;
+        // this.uploadFile(returnId);
+        // this.uploadMiddleBannerFile(returnId);
+        // this.uploadLowerBannerFile(returnId);
+        // this.uploadQOW1File(returnId);
+        // this.uploadQOW2File(returnId);
         this.snack.open("Data has been updated successfully", 'OK', { duration: 5000 })
         this.router.navigateByUrl('/admin/customerCms');
       }      
@@ -312,6 +314,11 @@ getPageDetails = (query = {}, search = false) => {
 public fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
     this.fileErrors = [];
+    
+    if(this.uploader.isUploading){
+      this.snack.open('Please wait! Uploading is in process...', 'OK', { duration: 4000 })
+    }else{
+
     this.uploader.queue.forEach((fileoOb) => {
       let filename = fileoOb.file.name;
       var extension = filename.substring(filename.lastIndexOf('.') + 1);
@@ -327,26 +334,59 @@ public fileOverBase(e: any): void {
         }, 5000);
       }
     });
-}
-  
-uploadFile(id) {
-  this.uploader.onBeforeUploadItem = (item) => {
-    item.url = `${URL}?docId=${id}&attrName=topBanner`;
-  }
-  if(this.uploader.getNotUploadedItems().length){
-    this.uploader.queue.forEach((fileoOb, ind) => {
-          this.uploader.uploadItem(fileoOb);
-    });
-    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+
+    this.uploader.onBeforeUploadItem = (item) => {
+      item.url = `${URL}?docId=${this.profileId}&attrName=topBanner`;
+    }
+    if(this.uploader.getNotUploadedItems().length){
+      this.uploader.queue.forEach((fileoOb, ind) => {
+            this.uploader.uploadItem(fileoOb);
+      });
       this.updateProgressBar();
-      this.uploader.clearQueue();      
-    };
+      this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+        this.uploader.clearQueue();   
+        this.getDocument()      
+        setTimeout(()=>{    
+            this.getDocument()   
+        },5000);
+      };
+    }
   }
 }
+
+getDocument() {  
+  let query = {}
+  const req_vars = {
+    _id:this.profileId
+  }
+  this.api.apiRequest('post', 'homecms/view', req_vars).subscribe(result => {
+    if (result.status == "error") {
+      console.log(result.data)
+    } else {
+        this.row = result.data;
+        this.topBannerPath = this.filePath+this.row.topBanner;
+        this.middlePath = this.filePath+this.row.middleBanner;
+        this.lowerPath = this.filePath+this.row.lowerBanner;
+
+        if(this.row.quickOverview1.videoLink){
+          this.QOW1Path = this.row.quickOverview1.videoLink;
+        }
+        if(this.row.quickOverview2.videoLink){
+          this.QOW2Path = this.row.quickOverview2.videoLink;
+        }
+    }
+  }, (err) => {
+    console.error(err)
+  })
+}
+
 
 public fileOverMiddleBannerBase(e: any): void {
   this.hasBaseDropZoneOver = e;
   this.fileErrorsMiddile = [];
+  if(this.uploaderMiddleBanner.isUploading){
+    this.snack.open('Please wait! Uploading is in process...', 'OK', { duration: 4000 })
+  }else{
   this.uploaderMiddleBanner.queue.forEach((fileoOb) => {
     let filename = fileoOb.file.name;
     var extension = filename.substring(filename.lastIndexOf('.') + 1);
@@ -362,26 +402,32 @@ public fileOverMiddleBannerBase(e: any): void {
       }, 5000);
     }
   });
-}
 
-uploadMiddleBannerFile(id) {
   this.uploaderMiddleBanner.onBeforeUploadItem = (item) => {
-    item.url = `${URL}?docId=${id}&attrName=middleBanner`;
+    item.url = `${URL}?docId=${this.profileId}&attrName=middleBanner`;
   }
   if(this.uploaderMiddleBanner.getNotUploadedItems().length){
     this.uploaderMiddleBanner.queue.forEach((fileoOb, ind) => {
           this.uploaderMiddleBanner.uploadItem(fileoOb);
     });
-    this.uploaderMiddleBanner.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.updateProgressBarMiddle();
+    this.updateProgressBarMiddle();
+    this.uploaderMiddleBanner.onCompleteItem = (item: any, response: any, status: any, headers: any) => {      
       this.uploaderMiddleBanner.clearQueue();
+      this.getDocument()      
+      setTimeout(()=>{    
+          this.getDocument()   
+      },5000);
     };
   }
+ }
 }
 
 public fileOverLowerBannerBase(e: any): void {
   this.hasBaseDropZoneOver = e;
   this.fileErrorsLower = [];
+  if(this.uploaderLowerBanner.isUploading){
+    this.snack.open('Please wait! Uploading is in process...', 'OK', { duration: 4000 })
+  }else{
   this.uploaderLowerBanner.queue.forEach((fileoOb) => {
     let filename = fileoOb.file.name;
     var extension = filename.substring(filename.lastIndexOf('.') + 1);
@@ -397,27 +443,32 @@ public fileOverLowerBannerBase(e: any): void {
       }, 5000);
     }
   });
-}
 
-uploadLowerBannerFile(id) {
   this.uploaderLowerBanner.onBeforeUploadItem = (item) => {
-    item.url = `${URL}?docId=${id}&attrName=lowerBanner`;
+    item.url = `${URL}?docId=${this.profileId}&attrName=lowerBanner`;
   }
   if(this.uploaderLowerBanner.getNotUploadedItems().length){
     this.uploaderLowerBanner.queue.forEach((fileoOb, ind) => {
           this.uploaderLowerBanner.uploadItem(fileoOb);
     });
+    this.updateProgressBarLower();
     this.uploaderLowerBanner.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.updateProgressBarLower();
       this.uploaderLowerBanner.clearQueue();
-      //this.router.navigateByUrl('/admin/customerCms');
+      this.getDocument()      
+      setTimeout(()=>{    
+          this.getDocument()   
+      },5000);
     };
   }
+ }
 }
 
 public fileOverQOW1Base(e: any): void {
   this.hasBaseDropZoneOver = e;
   this.fileErrorsQOW1 = [];
+  if(this.uploaderQOW1.isUploading){
+    this.snack.open('Please wait! Uploading is in process...', 'OK', { duration: 4000 })
+  }else{
   this.uploaderQOW1.queue.forEach((fileoOb) => {
     let filename = fileoOb.file.name;
     var extension = filename.substring(filename.lastIndexOf('.') + 1);
@@ -433,28 +484,33 @@ public fileOverQOW1Base(e: any): void {
       }, 5000);
     }
   });
-}
 
-uploadQOW1File(id) {
   this.uploaderQOW1.onBeforeUploadItem = (item) => {
-    item.url = `${URL}?docId=${id}&attrName=quickOverview1.videoLink`;
+    item.url = `${URL}?docId=${this.profileId}&attrName=quickOverview1.videoLink`;
   }
   if(this.uploaderQOW1.getNotUploadedItems().length){
     this.uploaderQOW1.queue.forEach((fileoOb, ind) => {
           this.uploaderQOW1.uploadItem(fileoOb);
     });
-    this.uploaderQOW1.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.updateProgressBarQOW1();
+    this.updateProgressBarQOW1();
+    this.uploaderQOW1.onCompleteItem = (item: any, response: any, status: any, headers: any) => {     
       this.uploaderQOW1.clearQueue();
-      //this.router.navigateByUrl('/admin/customerCms');
+      this.getDocument()      
+      setTimeout(()=>{    
+          this.getDocument()   
+      },5000);
     };
   }
+ }
 }
 
 
 public fileOverQOW2Base(e: any): void {
   this.hasBaseDropZoneOver = e;
   this.fileErrorsQOW2 = [];
+  if(this.uploaderQOW2.isUploading){
+    this.snack.open('Please wait! Uploading is in process...', 'OK', { duration: 4000 })
+  }else{
   this.uploaderQOW2.queue.forEach((fileoOb) => {
     let filename = fileoOb.file.name;
     var extension = filename.substring(filename.lastIndexOf('.') + 1);
@@ -470,22 +526,24 @@ public fileOverQOW2Base(e: any): void {
       }, 5000);
     }
   });
-}
 
-uploadQOW2File(id) {
   this.uploaderQOW2.onBeforeUploadItem = (item) => {
-    item.url = `${URL}?docId=${id}&attrName=quickOverview2.videoLink`;
+    item.url = `${URL}?docId=${this.profileId}&attrName=quickOverview2.videoLink`;
   }
   if(this.uploaderQOW2.getNotUploadedItems().length){
     this.uploaderQOW2.queue.forEach((fileoOb, ind) => {
           this.uploaderQOW2.uploadItem(fileoOb);
     });
+    this.updateProgressBarQOW2();
     this.uploaderQOW2.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.updateProgressBarQOW2();
       this.uploaderQOW2.clearQueue();
-      //this.router.navigateByUrl('/admin/customerCms');
+      this.getDocument()      
+      setTimeout(()=>{    
+          this.getDocument()   
+      },5000);
     };
   }
+ }
 }
 
 uploadTestimonialsFile(fileName,index) {
@@ -495,9 +553,9 @@ uploadTestimonialsFile(fileName,index) {
   if(this.uploaderProfilePhoto.getNotUploadedItems().length){
     this.uploaderProfilePhoto.queue.forEach((fileoOb, ind) => {
           this.uploaderProfilePhoto.uploadItem(fileoOb);
-    });
-    this.uploaderProfilePhoto.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-       this.updateProgressBarProfilePhoto(index);
+    }); 
+    this.updateProgressBarProfilePhoto(index);
+    this.uploaderProfilePhoto.onCompleteItem = (item: any, response: any, status: any, headers: any) => {      
        setTimeout(()=>{    
         this.testimonialsArray.at(index).patchValue({profilePhoto:fileName});
       }, 5000);
@@ -505,51 +563,134 @@ uploadTestimonialsFile(fileName,index) {
 
     if(this.uploaderProfilePhoto.onCompleteAll()){
       this.uploaderProfilePhoto.clearQueue();
+      this.getDocument()      
+      setTimeout(()=>{    
+          this.getDocument()   
+      },5000);
     }  
   }
 }
 
 
 updateProgressBarProfilePhoto(index){
-  let totalLength = this.uploaderProfilePhoto.queue.length;console.log('Pro photos',totalLength);
-  let remainingLength =  this.uploaderProfilePhoto.getNotUploadedItems().length;    
-  this.currentProgessinPercentProfilePhoto = 100 - (remainingLength * 100 / totalLength);
-  this.currentProgessinPercentProfilePhoto = Number(this.currentProgessinPercentProfilePhoto.toFixed());
+  // let totalLength = this.uploaderProfilePhoto.queue.length;console.log('Pro photos',totalLength);
+  // let remainingLength =  this.uploaderProfilePhoto.getNotUploadedItems().length;    
+  // this.currentProgessinPercentProfilePhoto = 100 - (remainingLength * 100 / totalLength);
+  // this.currentProgessinPercentProfilePhoto = Number(this.currentProgessinPercentProfilePhoto.toFixed());
+    if(this.currentProgessinPercentProfilePhoto==0){
+      this.uploaderProfilePhoto.onProgressItem = (progress:any) => {
+        this.currentProgessinPercentProfilePhoto = progress;
+      }
+    }
+
+    this.uploaderProfilePhoto.onProgressAll = (progress:any) => {
+      this.currentProgessinPercentProfilePhoto = progress;
+      if(progress==100){
+        setTimeout(()=>{    
+          this.currentProgessinPercent = 0;
+        },5000);
+      }
+    }
 }
 
 updateProgressBar(){
-  let totalLength = this.uploader.queue.length;
-  let remainingLength =  this.uploader.getNotUploadedItems().length;    
-  this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
-  this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+  // let totalLength = this.uploader.queue.length;
+  // let remainingLength =  this.uploader.getNotUploadedItems().length;    
+  // this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
+  // this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+  if(this.currentProgessinPercent==0){
+    this.uploader.onProgressItem = (progress:any) => {
+      this.currentProgessinPercent = progress;
+    }
+  }
+  this.uploader.onProgressAll = (progress:any) => {
+    this.currentProgessinPercent = progress;
+    if(progress==100){
+      setTimeout(()=>{    
+        this.currentProgessinPercent = 0;
+      },5000);
+    }
+  }
 }
 
 updateProgressBarMiddle(){
-  let totalLength = this.uploaderMiddleBanner.queue.length;
-  let remainingLength =  this.uploaderMiddleBanner.getNotUploadedItems().length;    
-  this.currentProgessinPercentMiddle = 100 - (remainingLength * 100 / totalLength);
-  this.currentProgessinPercentMiddle = Number(this.currentProgessinPercentMiddle.toFixed());
+  // let totalLength = this.uploaderMiddleBanner.queue.length;
+  // let remainingLength =  this.uploaderMiddleBanner.getNotUploadedItems().length;    
+  // this.currentProgessinPercentMiddle = 100 - (remainingLength * 100 / totalLength);
+  // this.currentProgessinPercentMiddle = Number(this.currentProgessinPercentMiddle.toFixed());
+  if(this.currentProgessinPercentMiddle==0){
+    this.uploaderMiddleBanner.onProgressItem = (progress:any) => {
+      this.currentProgessinPercentMiddle = progress;
+    }
+  }
+  this.uploaderMiddleBanner.onProgressAll = (progress:any) => {
+    this.currentProgessinPercentMiddle = progress;
+    if(progress==100){
+      setTimeout(()=>{    
+        this.currentProgessinPercent = 0;
+      },5000);
+    }
+  }
 }
 
 updateProgressBarLower(){
-  let totalLength = this.uploaderLowerBanner.queue.length;
-  let remainingLength =  this.uploaderLowerBanner.getNotUploadedItems().length;    
-  this.currentProgessinPercentLower = 100 - (remainingLength * 100 / totalLength);
-  this.currentProgessinPercentLower = Number(this.currentProgessinPercentLower.toFixed());
+  // let totalLength = this.uploaderLowerBanner.queue.length;
+  // let remainingLength =  this.uploaderLowerBanner.getNotUploadedItems().length;    
+  // this.currentProgessinPercentLower = 100 - (remainingLength * 100 / totalLength);
+  // this.currentProgessinPercentLower = Number(this.currentProgessinPercentLower.toFixed());
+  if(this.currentProgessinPercentLower==0){
+    this.uploaderLowerBanner.onProgressItem = (progress:any) => {
+      this.currentProgessinPercentLower = progress;
+    }
+  }
+  this.uploaderLowerBanner.onProgressAll = (progress:any) => {
+    this.currentProgessinPercentLower = progress;
+    if(progress==100){
+      setTimeout(()=>{    
+        this.currentProgessinPercent = 0;
+      },5000);
+    }
+  }
 }
 
 updateProgressBarQOW1(){
-  let totalLength = this.uploaderQOW1.queue.length;
-  let remainingLength =  this.uploaderQOW1.getNotUploadedItems().length;    
-  this.currentProgessinPercentQOW1 = 100 - (remainingLength * 100 / totalLength);
-  this.currentProgessinPercentQOW1 = Number(this.currentProgessinPercentQOW1.toFixed());
+  // let totalLength = this.uploaderQOW1.queue.length;
+  // let remainingLength =  this.uploaderQOW1.getNotUploadedItems().length;    
+  // this.currentProgessinPercentQOW1 = 100 - (remainingLength * 100 / totalLength);
+  // this.currentProgessinPercentQOW1 = Number(this.currentProgessinPercentQOW1.toFixed());
+  if(this.currentProgessinPercentQOW1==0){
+    this.uploaderQOW1.onProgressItem = (progress:any) => {
+      this.currentProgessinPercentQOW1 = progress;
+    }
+  }
+  this.uploaderQOW1.onProgressAll = (progress:any) => {
+    this.currentProgessinPercentQOW1 = progress;
+    if(progress==100){
+      setTimeout(()=>{    
+        this.currentProgessinPercent = 0;
+      },5000);
+    }
+  }
 }
 
 updateProgressBarQOW2(){
-  let totalLength = this.uploaderQOW2.queue.length;
-  let remainingLength =  this.uploaderQOW2.getNotUploadedItems().length;    
-  this.currentProgessinPercentQOW2 = 100 - (remainingLength * 100 / totalLength);
-  this.currentProgessinPercentQOW2 = Number(this.currentProgessinPercentQOW2.toFixed());
+  // let totalLength = this.uploaderQOW2.queue.length;
+  // let remainingLength =  this.uploaderQOW2.getNotUploadedItems().length;    
+  // this.currentProgessinPercentQOW2 = 100 - (remainingLength * 100 / totalLength);
+  // this.currentProgessinPercentQOW2 = Number(this.currentProgessinPercentQOW2.toFixed());
+  if(this.currentProgessinPercentQOW2==0){
+    this.uploaderQOW2.onProgressItem = (progress:any) => {
+      this.currentProgessinPercentQOW2 = progress;
+    }
+  }
+  this.uploaderQOW1.onProgressAll = (progress:any) => {
+    this.currentProgessinPercentQOW2 = progress;
+    if(progress==100){
+      setTimeout(()=>{    
+        this.currentProgessinPercent = 0;
+      },5000);
+    }
+  }
 }
   
 isExtension(ext, extnArray) {
@@ -566,6 +707,5 @@ isExtension(ext, extnArray) {
   }
   return result;
 }
-
 
 }
