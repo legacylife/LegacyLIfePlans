@@ -208,7 +208,10 @@ export class TimeCapsuleMoalComponent implements OnInit {
         totalUploderFileSize = 0,
         remainingSpace = 0,
         message = ''
-   
+
+    if(this.uploader.isUploading || this.uploaderCopy.isUploading){
+      this.snack.open('Please wait! Uploading is in process...', 'OK', { duration: 4000 })
+    }else{
     this.uploader.queue.forEach((fileoOb) => {
       let filename = fileoOb.file.name;
       var extension = filename.substring(filename.lastIndexOf('.') + 1);
@@ -258,9 +261,10 @@ export class TimeCapsuleMoalComponent implements OnInit {
                 this.uploader.uploadItem(fileoOb);  
             });
 
-            this.uploader.onProgressItem = (item: any, response: any) => {       
-              this.updateProgressBar();    
-            };
+            this.updateProgressBar();
+            // this.uploader.onProgressAll = (item: any, response: any) => {       
+            //   this.updateProgressBar();    
+            // };
            
             this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {              
               this.getTimeCapsuleDocuments();
@@ -278,13 +282,20 @@ export class TimeCapsuleMoalComponent implements OnInit {
         }
       }
     })
+
+
+  }
   }
 
   updateProgressBar(){
     let uploaderLength = 0;  let uploaderCopyLength = 0;
-    this.uploader.onProgressItem = (progress:any) => {
-      this.currentProgessinPercent = progress;
+    
+    if(this.currentProgessinPercent==0){
+      this.uploader.onProgressItem = (progress:any) => {
+        this.currentProgessinPercent = progress;
+      }
     }
+
     this.uploader.onProgressAll = (progress:any) => {
       uploaderLength = progress;
       if(this.uploaderCopy.queue.length==0){

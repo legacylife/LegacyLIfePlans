@@ -37,11 +37,15 @@ export class ObituaryModalComponent implements OnInit {
   fileErrors: any;
   documentsList: any;
   docPath: string;  
+  subFolderName:string = ''
   constructor(private _formBuilder: FormBuilder,private snack: MatSnackBar,public dialog: MatDialog,  private confirmService: AppConfirmService, private loader: AppLoaderService, private router: Router, private userapi: UserAPIService,private fileHandlingService: FileHandlingService,) { }
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
   ngOnInit() {
+    const filePath = this.userId+'/'+s3Details.obituaryFilePath;
+    this.docPath = filePath;
+    this.documentsList = [];
     this.ObituaryFormGroup = this._formBuilder.group({
       check: new FormControl('no',Validators.required),
       prepareTo: new FormControl(''),
@@ -74,6 +78,8 @@ export class ObituaryModalComponent implements OnInit {
       this.selectedProfileId = "";        
     }
     this.toUserId = this.userId;
+    this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
     this.getobituaryView();
   }
 
@@ -237,6 +243,9 @@ export class ObituaryModalComponent implements OnInit {
         totalUploderFileSize = 0,
         remainingSpace = 0,
         message = ''
+        if(this.uploader.isUploading || this.uploaderCopy.isUploading){
+          this.snack.open('Please wait! Uploading is in process...', 'OK', { duration: 4000 })
+        }else{        
     this.uploader.queue.forEach((fileoOb) => {
       let filename = fileoOb.file.name;
       var extension = filename.substring(filename.lastIndexOf('.') + 1);
@@ -264,8 +273,7 @@ export class ObituaryModalComponent implements OnInit {
         this.confirmService.reactivateReferEarnPopup({ message: message, status: 'notactivate' }).subscribe(res => {
           if (res) {
             console.log("**************",res)
-          }
-          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+          }         
         })
       }
       else{
@@ -282,31 +290,36 @@ export class ObituaryModalComponent implements OnInit {
             
             this.uploader.queue.forEach((fileoOb, ind) => {
               this.ObituaryFormGroup.controls['documents_temp'].setValue('');
-              this.uploader.uploadItem(fileoOb);
-              if(ind==0){
-                this.uploader.onProgressItem = (progress:any) => {
-                  this.updateProgressBar();
-                }
-              } 
+              this.uploader.uploadItem(fileoOb);             
             });
-        
+
+            this.updateProgressBar();
             this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
               this.getObituaryDocuments();
+              setTimeout(()=>{    
+                this.uploader.clearQueue();
+                },800);
             };
-            this.uploader.onCompleteAll=()=>{
-              this.uploader.clearQueue();
-              if(!this.uploaderCopy.queue.length){
-                this.currentProgessinPercent = 0;
-              }
+            this.uploader.onCompleteAll = () => {
+              setTimeout(()=>{    
+                this.getObituaryDocuments();
+                },5000);
             }
           }
         }
       }
     })
+   }
   }
 
   updateProgressBar(){
     let uploaderLength = 0;  let uploaderCopyLength = 0;
+
+    if(this.currentProgessinPercent==0){
+      this.uploader.onProgressItem = (progress:any) => {
+        this.currentProgessinPercent = progress;
+      }
+    }
     this.uploader.onProgressAll = (progress:any) => {
       uploaderLength = progress;
       if(this.uploaderCopy.queue.length==0){
@@ -319,33 +332,29 @@ export class ObituaryModalComponent implements OnInit {
         this.currentProgessinPercent = totalLength - 100;
       }
     }
-    if(this.uploader.queue.length>0){
-      this.uploader.clearQueue();
-    } 
-
-      this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
   }
 
-  uploadRemainingFiles(profileId) {
-      this.uploaderCopy.onBeforeUploadItem = (item) => {
-        item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
-        this.ObituaryFormGroup.controls['documents_temp'].setValue('');
-      }
-      this.uploaderCopy.queue.forEach((fileoOb, ind) => {
-          this.uploaderCopy.uploadItem(fileoOb);
-          if(ind==0){
-            this.updateProgressBar();            
-          }
-      });
-  
-      this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-        this.getObituaryDocuments({},false, false);      
-      };
-      this.uploaderCopy.onCompleteAll=()=>{
-        this.uploaderCopy.clearQueue();
-        this.currentProgessinPercent = 0;
-      }
-  }
+  uploadRemainingFiles(profileId) {    
+    this.uploaderCopy.onBeforeUploadItem = (item) => {
+      item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
+      this.ObituaryFormGroup.controls['documents_temp'].setValue('');         
+    }
+    this.uploaderCopy.queue.forEach((fileoOb, ind) => {
+        this.uploaderCopy.uploadItem(fileoOb);
+        
+    });
+    this.updateProgressBar();
+    this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.uploaderCopy.removeFromQueue(item);
+      this.getObituaryDocuments({}, false, false);   
+    };
+
+    this.uploaderCopy.onCompleteAll = () => {
+      setTimeout(()=>{    
+        this.getObituaryDocuments();
+        },5000);
+    }
+}
 
   getObituaryDocuments = (query = {}, search = false, uploadRemained = true) => {    
     let profileIds = this.ObituaryFormGroup.controls['profileId'].value;
@@ -355,26 +364,31 @@ export class ObituaryModalComponent implements OnInit {
     }
     if(profileIds){
        req_vars = {
-        query: Object.assign({ _id:profileIds }),
+        query: Object.assign({_id:profileIds }),
         fields:{_id:1,documents:1}
       }
     }
     this.userapi.apiRequest('post', 'finalwishes/view-obituary-details', req_vars).subscribe(result => {
       if (result.status == "error") {
       } else {
-        profileIds = result.data._id;
-        this.ObituaryFormGroup.controls['profileId'].setValue(profileIds);
-        if(uploadRemained) {
-          this.uploadRemainingFiles(result.data._id)
-        }
+        if(result.data){
+          profileIds = this.selectedProfileId = result.data._id;
+          this.ObituaryFormGroup.controls['profileId'].setValue(profileIds);
+          if(uploadRemained) {
+            this.uploadRemainingFiles(result.data._id)
+          }
 
-        this.documentsList = result.data.documents;      
-        this.ObituaryFormGroup.controls['documents_temp'].setValue('');
-        if(this.documentsList.length>0){
-          this.ObituaryFormGroup.controls['documents_temp'].setValue('1');
-          this.documentsMissing = false;
-        }                        
+          this.documentsList = result.data.documents;      
+          this.ObituaryFormGroup.controls['documents_temp'].setValue('');
+          if(this.documentsList.length>0){
+            this.ObituaryFormGroup.controls['documents_temp'].setValue('1');
+            this.documentsMissing = false;
+          }    
+          if(this.currentProgessinPercent==100){
+            this.currentProgessinPercent = 0;
+          }                      
       }
+    }
     }, (err) => {
       console.error(err);
     })
@@ -397,7 +411,7 @@ export class ObituaryModalComponent implements OnInit {
             toId:this.toUserId,
             folderName:s3Details.obituaryFilePath,
           }
-          this.userapi.apiRequest('post', 'documents/deletesubFolderWishesDoc', req_vars).subscribe(result => {
+          this.userapi.apiRequest('post', 'documents/deletefinalwishesObituaryDoc', req_vars).subscribe(result => {
             if (result.status == "error") {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
@@ -426,7 +440,7 @@ export class ObituaryModalComponent implements OnInit {
       fromId:localStorage.getItem('endUserId'),
       toId:this.toUserId,
       folderName:s3Details.obituaryFilePath,
-      //subFolderName:this.subFolderName
+      subFolderName:this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
