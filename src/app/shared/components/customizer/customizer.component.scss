@@ -16,10 +16,20 @@
     .card-title-text{
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       color: #fff;
+      position: absolute;
+      top: -15px;
+      right: -11px;
+      z-index: 99999999999;
+      width: 35px;
+      height: 35px;
+      padding: 0;
+      background: #c72128;
+      border-radius: 50%;
       .canClose{
         cursor: pointer;
+        margin: 0 auto;
       }
     }
   }
@@ -27,6 +37,7 @@
   .chat--wrapper{
     width: 900px;
     box-shadow: 0 0 5px #000 !important;
+    overflow: inherit;
     ::ng-deep{
       .chat-sidenav{
         width: 300px;
