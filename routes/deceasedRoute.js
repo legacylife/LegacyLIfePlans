@@ -128,6 +128,7 @@ async function viewDeceased(req, res) {
         let trustList = AllusersData[0]['trustList'];
         let advisorList = AllusersData[1]['advisorList'];
         var totalCnt = advisorList.length + trustList.length;
+        let counterLabel = '';         
 
         let finalStatus = 'Pending';
         let lockoutLegacyPeriodFlag = false;
@@ -209,9 +210,14 @@ async function viewDeceased(req, res) {
          if(lockoutLegacyDate){
           lockoutLegacyDateWithLabel = '<br />Lockout Legacy Date: '.lockoutLegacyDate
          }
+
+         if(totalCnt>2 && DeceasedCnt && DeceasedCnt.length>0){
+          counterLabel = '<br>'+DeceasedCnt.length+" Trustee mark as deceased out of "+totalCnt;
+         }
+
          //Customer needs to inform he is set mark as deceased now.
-         await sendDeceasedNotifyMails('CustomerMarkAsDeceasedNotificationMail',legacyHolderInfo.username,legacyHolderInfo.firstName,legacyHolderInfo.lastName,legacyHolderName,deceasedFromName,userType,lockoutLegacyDateWithLabel);
-         await sendDeceasedNotification('MarkAsDeceasedNotificationMail',trustList,advisorList,legacyHolderName,deceasedFromName,userType,fromUserId);
+         await sendDeceasedNotifyMails('CustomerMarkAsDeceasedNotificationMail',legacyHolderInfo.username,legacyHolderInfo.firstName,legacyHolderInfo.lastName,legacyHolderName,deceasedFromName,userType,lockoutLegacyDateWithLabel,counterLabel);
+         await sendDeceasedNotification('MarkAsDeceasedNotificationMail',trustList,advisorList,legacyHolderName,deceasedFromName,userType,fromUserId,counterLabel);
         
          let message = resMessage.data( 607, [{key: '{field}',val: 'Mark as deceased'}, {key: '{status}',val: 'updated'}] )
          allActivityLog.updateActivityLogs( fromId, toId, 'Mark As Deceased', message)
@@ -253,7 +259,7 @@ async function viewDeceased(req, res) {
   }
 
 
-  function sendDeceasedNotification(template,trustList,advisorList,legacyHolderName,deceasedFromName,userType,fromUserId) {
+  function sendDeceasedNotification(template,trustList,advisorList,legacyHolderName,deceasedFromName,userType,fromUserId,counterLabel) {
     if(trustList.length>0){
       trustList.forEach( ( val, index ) => {
        if(val.trustId!=fromUserId){
@@ -262,7 +268,7 @@ async function viewDeceased(req, res) {
                   res.status(401).send(resFormat.rError(err));
                 } else {
                   if(userDetails){
-                    sendDeceasedNotifyMails(template,userDetails.username,userDetails.firstName,userDetails.lastName,legacyHolderName,deceasedFromName,userType);
+                    sendDeceasedNotifyMails(template,userDetails.username,userDetails.firstName,userDetails.lastName,legacyHolderName,deceasedFromName,userType,'',counterLabel);
                   }
                 }
             })
@@ -278,7 +284,7 @@ async function viewDeceased(req, res) {
             res.status(401).send(resFormat.rError(err));
           } else {
              if(userDetails){
-              sendDeceasedNotifyMails(template,userDetails.username,userDetails.firstName,userDetails.lastName,legacyHolderName,deceasedFromName,userType);
+              sendDeceasedNotifyMails(template,userDetails.username,userDetails.firstName,userDetails.lastName,legacyHolderName,deceasedFromName,userType,'',counterLabel);
              }
           }
         })
@@ -287,7 +293,7 @@ async function viewDeceased(req, res) {
     }
   }
 
-  function sendDeceasedNotifyMails(template,emailId,toFname,toLname,legacyHolderName,deceasedFromName,userType,lockoutLegacyDate='') {
+  function sendDeceasedNotifyMails(template,emailId,toFname,toLname,legacyHolderName,deceasedFromName,userType,lockoutLegacyDate='',counterLabel='') {
     
     let serverUrl = constants.clientUrl + "/customer/signin";
       emailTemplatesRoute.getEmailTemplateByCode(template).then((template) => {
@@ -298,6 +304,7 @@ async function viewDeceased(req, res) {
           body = body.replace("{LegacyHolderName}",legacyHolderName);
           body = body.replace("{deceasedFromName}",deceasedFromName);
           body = body.replace("{lockoutLegacyDate}",lockoutLegacyDate);
+          body = body.replace("{counterLabel}",counterLabel);
           body = body.replace("{userType}",userType);
           body = body.replace("{SERVER_LINK}",serverUrl);
           const mailOptions = {
