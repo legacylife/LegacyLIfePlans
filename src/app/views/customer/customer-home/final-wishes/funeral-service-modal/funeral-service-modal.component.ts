@@ -65,8 +65,7 @@ export class FuneralServiceModalComponent implements OnInit {
 
   ngOnInit() {
     this.selectAnyOneFormGroup = this._formBuilder.group({
-      funaralServiceType: [''],
-      profileId:['']
+      funaralServiceType: ['']
     });
 
     this.firstFormGroup = this._formBuilder.group({
@@ -110,39 +109,52 @@ export class FuneralServiceModalComponent implements OnInit {
       havePreparedVisualTribute:[''],
       documents:[''],
       locationOfDocuments:[''],
-      additionalPlans:['']
+      additionalPlans:[''],
+      profileId:['']
     });
 
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
-    if (this.selectedProfileId && this.selectedProfileId == 'essential-day-one' && this.urlData.lastThird != "legacies") {
+    if (this.selectedProfileId && this.selectedProfileId == 'final-wishes' && this.urlData.lastThird != "legacies") {
       this.selectedProfileId = "";
     }
 
-    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'essential-day-one') {
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'final-wishes') {
       this.customerLegaciesId = this.userId;
-      this.customerLegacyType = this.urlData.userType;
-      this.userId = this.urlData.lastOne;
-      this.userapi.getUserAccess(this.userId, (userAccess, userDeathFilesCnt, userLockoutPeriod, userDeceased) => {
-        if (userLockoutPeriod || userDeceased) {
+      this.customerLegacyType =  this.urlData.userType;
+      this.userId = this.urlData.lastOne;          
+      this.userapi.getUserAccess(this.userId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
+        if(userLockoutPeriod || userDeceased){
           this.trusteeLegaciesAction = false;
         }
-        if (userAccess.MyProfessionalsManagement != 'now') {
-          this.trusteeLegaciesAction = false;
-        }
-      });
-      this.selectedProfileId = "";
+       if(userAccess.DevicesManagement!='now'){
+        this.trusteeLegaciesAction = false;
+       }           
+       });   
+      this.selectedProfileId = "";        
     }
-
-    if (this.selectedProfileId) {
-      this.selectAnyOneFormGroup.controls['profileId'].setValue(this.selectedProfileId);
-      //this.getProfessionalDetails();
-    }
-
+    this.toUserId = this.userId;
+    this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
   }
 
   PlanFormSubmit(selectAnyOneData,stepOneData,stepTwoData,stepThreeData){
 
+
+    var query = {};
+    var proquery = {};  
+
+    let profileIds = this.thirdFormGroup.controls['profileId'].value;
+    if(profileIds){
+      this.selectedProfileId = profileIds;
+    }
+    if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'final-wishes') {
+      stepThreeData.customerLegacyId = this.customerLegaciesId
+      stepThreeData.customerLegacyType = this.customerLegacyType
+    }        
+    if(!stepThreeData.profileId || stepThreeData.profileId ==''){
+      stepThreeData.customerId = this.userId
+    }
 
     const profileInData = {};
     Object.keys(selectAnyOneData)
@@ -159,20 +171,6 @@ export class FuneralServiceModalComponent implements OnInit {
 
     console.log("result >>>>>",profileInData)
 
-    var query = {};
-    var proquery = {};     
-  
-    let profileIds = this.selectAnyOneFormGroup.controls['profileId'].value;
-    if(profileIds){
-      this.selectedProfileId = profileIds;
-    }
-    /*if (this.urlData.lastThird == "legacies" && this.urlData.lastTwo == 'final-wishes') {
-      profileInData.customerLegacyId = this.customerLegaciesId
-      profileInData.customerLegacyType = this.customerLegacyType
-    }        
-    if(!profileInData.profileId || profileInData.profileId ==''){
-      profileInData.customerId = this.userId
-    }
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }),
       proquery: Object.assign(profileInData),
@@ -182,7 +180,7 @@ export class FuneralServiceModalComponent implements OnInit {
     }
 
     //this.loader.open();     
-    this.userapi.apiRequest('post', 'finalwishes/funeral-plans-form-submit', req_vars).subscribe(result => {
+    this.userapi.apiRequest('post', 'finalwishes/funeral-plan-form-submit', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
@@ -192,7 +190,7 @@ export class FuneralServiceModalComponent implements OnInit {
       }
     }, (err) => {
       console.error(err)
-    })*/
+    })
 
   }
 

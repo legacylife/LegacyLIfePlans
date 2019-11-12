@@ -17,10 +17,7 @@
           <mat-radio-button class="mb-1" *ngFor="let foptions of funeralOptions" [value]="foptions.opt_code">
             {{foptions.opt_name}}
           </mat-radio-button>
-        </mat-radio-group>
-        <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
-          <input matInput name="profileId" [formControl]="selectAnyOneFormGroup.controls['profileId']" readonly="readonly">
-        </mat-form-field>
+        </mat-radio-group>        
       </div>
     </div>
   </div>
@@ -256,6 +253,9 @@
                   <button class="llp--secondary--btn" mat-button matStepperPrevious>Back</button>
                   <button mat-raised-button class="llp--primary--btn" mat-button>Submit</button>
                 </div>
+                <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
+                    <input matInput name="profileId" [formControl]="thirdFormGroup.controls['profileId']" readonly="readonly">
+                  </mat-form-field>
               </form>
 
             </mat-step>
