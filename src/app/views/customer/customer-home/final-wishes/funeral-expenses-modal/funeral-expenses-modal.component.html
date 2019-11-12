@@ -10,14 +10,21 @@
     <div fxLayout="row wrap">
       <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
         <mat-radio-group class="llp-radio mb-0" aria-label="Select an option">
-          <div class="checkbox-label">Select any one:</div>
 
           <div fxLayout="row wrap">
-            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
-              <mat-checkbox> I have made prearrangements with the funeral home. </mat-checkbox>
-            </div>
+
+            <mat-radio-group class="llp-radio mt-1" formControlName="funeralExpensesOptions"  (change)="onChange($event.value)">
+              <div class="checkbox-label">Select any one</div>
+              <mat-radio-button value="opt1">I have made prearrangements with the funeral home.</mat-radio-button>
+              <mat-radio-button value="opt2"> I have a preneed contract</mat-radio-button>
+              <mat-radio-button value="opt3"> I do not have any funeral pre-arrangements</mat-radio-button>
+            </mat-radio-group>
+
+
           </div>
-          <div fxLayout="row wrap">
+
+          <!-- 1st -->   
+          <div fxLayout="row wrap" *ngIf="madePrearrangment">
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
                 <textarea matInput placeholder="Funeral home"></textarea>
@@ -39,12 +46,9 @@
               </mat-form-field>
             </div>
           </div>
-          <div fxLayout="row wrap">
-            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
-              <mat-checkbox> I have a preneed contract </mat-checkbox>
-            </div>
-          </div>
-          <div fxLayout="row wrap">
+
+          <!-- 2nd -->       
+          <div fxLayout="row wrap" *ngIf="preneedContract">
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
                 <textarea matInput placeholder="The preneed contract is located:"></textarea>
@@ -66,31 +70,19 @@
                 </mat-select>
               </mat-form-field>
             </div>
-
-          </div>
-
-          <div fxLayout="row wrap">
-            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb-1">
               <mat-checkbox> I have a price list for all funeral goods and services provided by the funeral home.
               </mat-checkbox>
             </div>
-          </div>
-          <div fxLayout="row wrap">
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
               <mat-form-field class="full-width">
                 <input matInput placeholder="Total Amount">
               </mat-form-field>
             </div>
-          </div>
-
-
-          <div fxLayout="row wrap">
-            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb-1">
               <mat-checkbox> I have to pay on death (POD) account to be used to pay for funeral expenses.
               </mat-checkbox>
             </div>
-          </div>
-          <div fxLayout="row wrap">
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
                 <input matInput placeholder="Total Amount:">
@@ -106,15 +98,10 @@
                 <textarea matInput placeholder="Financial Institution"></textarea>
               </mat-form-field>
             </div>
-          </div>
-
-          <div fxLayout="row wrap">
-            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb-1">
               <mat-checkbox> I have pooled funeral trust or funeral insurance policy
               </mat-checkbox>
             </div>
-          </div>
-          <div fxLayout="row wrap">
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
                 <input matInput placeholder="Account/Policy:">
@@ -135,9 +122,6 @@
                 <input matInput placeholder="Contact info:">
               </mat-form-field>
             </div>
-          </div>
-
-          <div fxLayout="row wrap">
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="cust--gapp">
               <div class="upload--buss--docs--sec">
                 <label>Please upload any relatives documents, policies, and files to this section to further help your
@@ -155,9 +139,6 @@
                 <textarea matInput placeholder=" comment:"></textarea>
               </mat-form-field>
             </div>
-          </div>
-
-          <div class="row wrap">
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
               <mat-radio-group class="llp-radio mb-0 mt-1">
                 <mat-form-field class="full-width no-mar">
@@ -166,14 +147,8 @@
                 </mat-form-field>
               </mat-radio-group>
             </div>
-          </div>
 
-          <div fxLayout="row wrap">
-            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
-              <mat-checkbox> I do not have any funeral pre-arrangements
-              </mat-checkbox>
-            </div>
-          </div>
+          </div>         
 
         </mat-radio-group>
       </div>

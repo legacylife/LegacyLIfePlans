@@ -1,6 +1,12 @@
 .mb--5{
     margin-bottom: 5px;
 }
+::ng-deep{
+    .mat-radio-button{
+        display: block !important;
+        margin-bottom: 10px;
+    }
+}
 
 /*-------------------------------------------------------------------------------------------------------------------------------------------------
     Media query (start here)

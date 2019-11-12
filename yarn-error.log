@@ -1,20 +1,20 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\ADMIN\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js
+  /usr/bin/node /usr/bin/yarn
 
 PATH: 
-  C:\Users\ADMIN\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\ADMIN\bin;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files\Git\cmd;C:\Program Files (x86)\Brackets\command;C:\composer;C:\Program Files\Amazon\AWSCLI\bin;C:\Program Files\nodejs;C:\Users\ADMIN\AppData\Local\Programs\Python\Python36\Scripts;C:\Users\ADMIN\AppData\Local\Programs\Python\Python36;D:\Microsoft VS Code\bin;C:\Program Files\Heroku\bin;C:\Program Files\nodejs;C:\Program Files\MongoDB\Server\3.4\bin;D:\zend\bin;C:\Users\admin\AppData\Roaming\Composer\vendor\bin;C:\ProgramData\ComposerSetup\bin;C:\Users\ADMIN\AppData\Roaming\Python\36\Scripts;C:\Python27;E:\xampp7.0\php;C:\composer;C:\wkhtmltopdf\bin;C:\Users\ADMIN\AppData\roaming\Python\Python36\scripts;C:\Users\ADMIN\AppData\Roaming\ScanApp2;C:\Users\ADMIN\AppData\Roaming\npm;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
 
 Yarn version: 
-  1.13.0
+  1.16.0
 
 Node version: 
-  10.16.1
+  10.16.0
 
 Platform: 
-  win32 x64
+  linux x64
 
 Trace: 
-  Error: EPERM: operation not permitted, unlink 'D:\nodes\git\llp\frontend-html\node_modules\engine.io-parser\node_modules\base64-arraybuffer\lib'
+  Error: EACCES: permission denied, unlink '/home/prashant/Arkenea_Workspace/LLP/frontend/node_modules/@syncfusion/ej2-angular-grids/CHANGELOG.md'
 
 npm manifest: 
   {
@@ -25,8 +25,8 @@ npm manifest:
       "ng": "ng",
       "start": "ng serve",
       "serveProd": "ng serve --environment=prod",
-      "build": "node --max_old_space_size=8194 ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer --extract-css --output-path=../backend/LegacyLIfePlans/dist/ --output-hashing all",
-      "build-aot": "ng build --aot=true --prod=true --build-optimizer=true --extract-css=true --output-path=../backend/LegacyLIfePlans/dist/ --output-hashing=all",
+      "build": "node --max_old_space_size=8194 ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer --extract-css --output-path=../backend/dist/ --output-hashing all",
+      "build-aot": "ng build --aot=true --prod=true --build-optimizer=true --extract-css=true --output-path=../backend/dist/ --output-hashing=all",
       "test": "ng test",
       "lint": "ng lint",
       "e2e": "ng e2e",

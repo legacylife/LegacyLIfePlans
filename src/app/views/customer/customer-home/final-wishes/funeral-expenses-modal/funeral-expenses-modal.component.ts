@@ -8,6 +8,9 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 })
 export class FuneralExpensesModalComponent implements OnInit {
   colFormGroup: FormGroup;
+  preneedContract = false;
+  madePrearrangment = false;
+
   toppings = new FormControl();
   toppingList: string[] = [
     'Basic professional services',
@@ -40,6 +43,18 @@ export class FuneralExpensesModalComponent implements OnInit {
     this.colFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required],
     });
+  }
+  onChange(value){
+    if (value == "opt1") {
+      this.madePrearrangment = true;
+      this.preneedContract = false;
+    } else  if (value == "opt2") {
+      this.madePrearrangment = false;
+      this.preneedContract = true;
+    } else {
+      this.preneedContract = false;
+      this.preneedContract = false;
+    }
   }
 
 }
