@@ -5,8 +5,7 @@
   </button>
 </div>
 <div class="ll--modal--body manage--permission p-0">
-  <form class="llp-form-wrapper" [formGroup]="trusteeFormGroup"
-    (ngSubmit)="manageTrusteeSubmit(trusteeFormGroup.value)">
+  <form class="llp-form-wrapper" [formGroup]="trusteeFormGroup"  (ngSubmit)="manageTrusteeSubmit(trusteeFormGroup.value)">
     <p class="invite--sub--line">Manage Trustee Permissions {{letterTitle}}</p>
     <div class="profile--body--scroll">
       <div class="trust--legacy--wrapper">
@@ -33,11 +32,8 @@
                   <mat-radio-group class="llp-radio" formControlName="ids">
                     <div fxLayout="row wrap">
                       <div fxFlex.xs="100" fxFlex.sm="55" fxFlex.md="55" fxFlex.lg="55" fxFlex.xl="55">
-                        <label class="left--header">
-{{(row?.trustId) ? ((row?.trustId.firstName && row?.trustId.firstName!='') ? row?.trustId.firstName : row.firstName) : row?.advisorId.firstName}}
-{{(row?.trustId) ? ((row?.trustId.lastName && row?.trustId.lastName!='') ? row?.trustId.lastName : row.lastName) :  row?.advisorId.lastName}}
-
-</label>
+                        <label class="left--header">{{(row?.trustId) ? ((row?.trustId.firstName && row?.trustId.firstName!='') ? row?.trustId.firstName : row.firstName) : row?.advisorId.firstName}}
+{{(row?.trustId) ? ((row?.trustId.lastName && row?.trustId.lastName!='') ? row?.trustId.lastName : row.lastName) :  row?.advisorId.lastName}} </label>
                       </div>
                       <div fxFlex.xs="100" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15" class="center--txt">
                         <mat-list-item>
@@ -75,12 +71,10 @@
     <mat-form-field class="full-width" *ngIf="HiddenVal">
       <input matInput name="code" [formControl]="trusteeFormGroup.controls['code']" readonly="readonly">
     </mat-form-field>
-
     <div class="ll--modal--footer text-center">
       <!--button mat-raised-button type="button" class="llp--secondary--btn" [mat-dialog-close]="">Cancel</button-->
       <button mat-raised-button class="llp--primary--btn">Save</button>
     </div>
-
 </div>
 </form>
 </div>
