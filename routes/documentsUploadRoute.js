@@ -31,6 +31,7 @@ const resMessage = require('./../helpers/responseMessages')
 const allActivityLog = require('./../helpers/allActivityLogs')
 var customerCms = require('./../models/CustomerCms.js')
 var advisorCms = require('./../models/AdvisorCms.js')
+const funeralplan = require('./../models/FinalWishesPlans.js')
 //const XmlStream = require('xml-stream')
 const docFilePath = constants.s3Details.advisorsDocumentsPath;
 const IDdocFilePath = constants.s3Details.myEssentialsDocumentsPath;
@@ -38,6 +39,7 @@ const legalStuffdocFilePath = constants.s3Details.legalStuffDocumentsPath;
 const finalWishesFilePath = constants.s3Details.finalWishesFilePath;
 const obituaryFilePath = constants.s3Details.obituaryFilePath;
 const funeralExpensesFilePath = constants.s3Details.funeralExpensesFilePath;
+const funeralServicesFilePath = constants.s3Details.funeralServicesFilePath;
 const celebrationofLifeFilePath = constants.s3Details.celebrationofLifeFilePath;
 const petsFilePath = constants.s3Details.petsFilePath;
 const timeCapsuleFilePath = constants.s3Details.timeCapsuleFilePath;
@@ -552,6 +554,114 @@ router.post('/obituary', cors(), function(req,res){
   }
 })
 
+
+router.post('/funeralServices', cors(), function(req,res){
+  var fstream;
+  let authTokens = { authCode: "" }
+  if (req.busboy) {
+    req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
+      authTokens[fieldname] = val
+    })
+    const {query:{userId}} = req;
+    const {query:{ProfileId}} = req;
+    const {query:{folderName}} = req;
+    
+    let q = {customerId: userId}
+    if(ProfileId && ProfileId!=''){
+      q = {_id : ProfileId}
+    }
+    req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+      let tmpallfiles = {};
+      let oldTmpFiles = [];
+      if(userId){
+          let ext = filename.split('.')
+          ext = ext[ext.length - 1];
+          var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
+          let resp = isExtension(ext,fileExts);
+          if(!resp){
+            let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid file extension!" }
+            res.send(resFormat.rSuccess(results))
+          } else{
+                 
+          if(ProfileId){
+              const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+              fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+              file.pipe(fstream);
+              fstream.on('close', async function () {
+                await s3.uploadFile(newFilename,userId+'/'+funeralServicesFilePath);                  
+                tmpallfiles = {
+                  "title" : filename,
+                  "size" : encoding,
+                  "extention" : mimetype,
+                  "tmpName" : newFilename
+                }
+                funeralplan.findOne(q,{documents:1,_id:1}, function (err, result) {
+                    if (err) {
+                        res.status(500).send(resFormat.rError(err))
+                    } else {       
+                    if (result) {                          
+                        if(result.documents){
+                          oldTmpFiles = result.documents;
+                        }             
+                        oldTmpFiles.push(tmpallfiles);  
+                        funeralplan.updateOne(q, { $set: { documents: oldTmpFiles } }, function (err, updatedUser) {
+                          if (err) {
+                            res.send(resFormat.rError(err))
+                          } else {
+                            getuserFolderSize(userId);
+                            let message = resMessage.data( 607, [{key: '{field}',val: 'Final Wish - Funeral Service Document'}, {key: '{status}',val: 'uploaded'}] )
+                            //Update activity logs
+                            allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, funeralServicesFilePath, '', filename)
+                            
+                            let result = { userId:userId, allDocs:tmpallfiles, "message": message }
+                            res.send(resFormat.rSuccess(result))
+                          }
+                       })
+                      }
+                    } 
+                    })
+                 })
+              }else{
+                const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+                fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+                file.pipe(fstream);
+                fstream.on('close', async function () {
+                  await s3.uploadFile(newFilename,userId+'/'+funeralServicesFilePath);  
+                  tmpallfiles = {
+                    "title" : filename,
+                    "size" : encoding,
+                    "extention" : mimetype,
+                    "tmpName" : newFilename
+                  }
+              oldTmpFiles.push(tmpallfiles);  
+                var insert = new funeralplan();
+                insert.customerId = userId;
+                insert.documents = oldTmpFiles;
+                insert.status = 'Pending';
+                insert.createdOn = new Date();
+                insert.save({}, function (err, newEntry) {
+                  if (err) {
+                  res.send(resFormat.rError(err))
+                   } else {
+                    getuserFolderSize(userId);
+                    let message = resMessage.data( 607, [{key: '{field}',val: 'Final Wish - Funeral Service Document'}, {key: '{status}',val: 'uploaded'}] )
+                    //Update activity logs
+                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, funeralServicesFilePath, '', filename)
+                    let result = { "message": message }
+                    
+                     res.status(200).send(resFormat.rSuccess(result))
+                   }
+                 })
+
+              })
+           }
+         } 
+      } else {
+        res.status(401).send(resFormat.rError("User token mismatch."))
+      }
+    })
+  }
+})
 
 router.post('/finalWishes', cors(), function(req,res){
   var fstream;
@@ -1843,6 +1953,39 @@ function deleteFinalwishesObituaryDocument(req, res) {
   })
 }
 
+function deleteFinalwishesfuneralServicesDocument(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let { fileName } = req.body;
+  let fields = {};
+  let { fromId }        = req.body
+  let { toId }          = req.body
+  let { folderName }    = req.body
+        folderName      = folderName ? folderName.replace('/','') : ''
+  let { subFolderName } = req.body
+
+  funeralplan.findOne(query, fields, function (err, fileDetails) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      funeralplan.updateOne({ _id: fileDetails._id }, proquery, async function (err, updatedUser) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          resMsg = await deleteDocumentS3(fileDetails.customerId,obituaryFilePath,fileName.docName);
+          getuserFolderSize(toId);
+          let message = resMessage.data( 607, [{key: '{field}',val: 'Final Wishes funeral service documents'}, {key: '{status}',val: 'deleted'}] )
+          //Update activity logs
+          allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
+
+          let result = { userId:fileDetails._id, "message": resMsg }
+          res.send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
 router.post('/deceasedDocuments', cors(), function(req,res){
   var fstream;
   let authTokens = { authCode: "" }
@@ -2293,6 +2436,7 @@ router.post("/deleteletterMessageDoc", deleteLetterMessageDocument);
 router.post("/deleteInviteDocument", deleteInviteDocument);
 router.post("/deletefinalwishesCelebrationDoc", deleteFinalwishesCelebrationDocument);
 router.post("/deletefinalwishesObituaryDoc", deleteFinalwishesObituaryDocument);
+router.post("/deletefinalwishesfuneralServicesDoc", deleteFinalwishesfuneralServicesDocument);
 router.post("/createUserDir", createDirectory);
 router.post("/downloadDocument", downloadDocs);
 router.post("/downloadZip",downloadZipfiles);
