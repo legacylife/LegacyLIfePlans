@@ -3,6 +3,8 @@ const mongoose = require('mongoose')
 const User = require('./../models/Users')
 const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('../routes/emailTemplatesRoute.js')
+const Trustee = require('./../models/Trustee.js')
+const HiredAdvisors = require('./../models/HiredAdvisors.js')
 
 const customerAdvisorLegacyNotifications = (sendData) => {
   return new Promise(function() {
@@ -34,4 +36,24 @@ const customerAdvisorLegacyNotifications = (sendData) => {
     })
   })
 }
-module.exports = { customerAdvisorLegacyNotifications }
+
+const customerTrustees = (trusteeQuery) => {
+  return new Promise(async function(resolve, reject) {
+        let advCnt = 0;
+        let trusteeCnt = 0;
+        await Trustee.countDocuments(trusteeQuery, async function(err, c) {
+          trusteeCnt = c;
+        });
+
+        await HiredAdvisors.countDocuments(trusteeQuery, async function(err, c) {
+          advCnt = c;
+        });
+
+        let totalTrusteeRecords = parseInt(trusteeCnt) + parseInt(advCnt);
+
+        resolve(totalTrusteeRecords);
+  })
+}
+
+
+module.exports = { customerAdvisorLegacyNotifications,customerTrustees }

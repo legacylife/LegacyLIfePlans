@@ -106,21 +106,15 @@ function DeviceList(req, res) {
     if (listCount) {
       totalRecords = listCount
     }
-    PDA.find(query, fields, function (err, deviceList) {
+    PDA.find(query, fields, async function (err, deviceList) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
         let totalTrusteeRecords = 0;
         if(totalRecords>0){
-          Trustee.count(trusteeQuery, function (err, TrusteeCount) {
-            if (TrusteeCount) {
-              totalTrusteeRecords = TrusteeCount
-            }
-            res.send(resFormat.rSuccess({ deviceList,totalRecords,totalTrusteeRecords}))
-          })
-        }else{
-          res.send(resFormat.rSuccess({ deviceList,totalRecords,totalTrusteeRecords}))
+          totalTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
         }
+         res.send(resFormat.rSuccess({ deviceList,totalRecords,totalTrusteeRecords}))
       }
     }).sort(order).skip(offset).limit(limit)
   })
@@ -375,21 +369,15 @@ function electronicMediaList(req, res) {
     if (listCount) {
       totalRecords = listCount
     }
-    EMedia.find(query, fields, function (err, electronicMediaList) {
+    EMedia.find(query, fields, async function (err, electronicMediaList) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
         let totalTrusteeRecords = 0;
         if(totalRecords>0){
-          Trustee.count(trusteeQuery, function (err, TrusteeCount) {
-            if (TrusteeCount) {
-              totalTrusteeRecords = TrusteeCount
-            }
-            res.send(resFormat.rSuccess({ electronicMediaList,totalRecords,totalTrusteeRecords}))
-          })
-        }else{
-          res.send(resFormat.rSuccess({ electronicMediaList,totalRecords,totalTrusteeRecords}))
+          totalTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
         }
+        res.send(resFormat.rSuccess({ electronicMediaList,totalRecords,totalTrusteeRecords}))
       }
     }).sort(order).skip(offset).limit(limit)
   })
@@ -562,21 +550,15 @@ function digitalPublicationList(req, res) {
     if (listCount) {
       totalRecords = listCount
     }
-    DigitalPublications.find(query, fields, function (err, electronicMediaList) {
+    DigitalPublications.find(query, fields,async function (err, electronicMediaList) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
         let totalTrusteeRecords = 0;
         if(totalRecords>0){
-          Trustee.count(trusteeQuery, function (err, TrusteeCount) {
-            if (TrusteeCount) {
-              totalTrusteeRecords = TrusteeCount
-            }
-            res.send(resFormat.rSuccess({ electronicMediaList,totalRecords,totalTrusteeRecords}))
-          })
-        }else{
-          res.send(resFormat.rSuccess({ electronicMediaList,totalRecords,totalTrusteeRecords}))
+          totalTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
         }
+        res.send(resFormat.rSuccess({ electronicMediaList,totalRecords,totalTrusteeRecords}))
       }
     }).sort(order).skip(offset).limit(limit)
   })

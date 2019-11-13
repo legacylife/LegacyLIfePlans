@@ -124,21 +124,15 @@ function realEstateSubmit(req, res) {
 
 function getRealEstateList(req, res) {
   let { fields, offset, query, trusteeQuery, order, limit, search } = req.body
-  RealEstate.find(query, function (err, realEstateList) {
+  RealEstate.find(query, async function (err, realEstateList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
       let totalTrusteeRecords = 0;
       if(realEstateList.length>0){
-        Trustee.count(trusteeQuery, function (err, TrusteeCount) {
-          if (TrusteeCount) {
-            totalTrusteeRecords = TrusteeCount
-          }
-          res.send(resFormat.rSuccess({realEstateList,totalTrusteeRecords}))
-        })
-      }else{
-        res.send(resFormat.rSuccess({realEstateList,totalTrusteeRecords}))
+        totalTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
       }
+      res.send(resFormat.rSuccess({realEstateList,totalTrusteeRecords}))
     }
   }).sort(order).skip(offset).limit(limit)
 }
@@ -301,21 +295,15 @@ function viewRealEstateVehicle(req, res) {
 
 function getRealEstateVehiclesList(req, res) {
   let { fields, offset, query, trusteeQuery, order, limit, search } = req.body
-  Vehicles.find(query, function (err, realEstateVehiclesList) {
+  Vehicles.find(query, async function (err, realEstateVehiclesList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
       let totalTrusteeRecords = 0;
       if(realEstateVehiclesList.length>0){
-        Trustee.count(trusteeQuery, function (err, TrusteeCount) {
-          if (TrusteeCount) {
-            totalTrusteeRecords = TrusteeCount
-          }
-          res.send(resFormat.rSuccess({realEstateVehiclesList,totalTrusteeRecords}))
-        })
-      }else{
-        res.send(resFormat.rSuccess({realEstateVehiclesList,totalTrusteeRecords}))
+        totalTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
       }
+      res.send(resFormat.rSuccess({realEstateVehiclesList,totalTrusteeRecords}))
     }
   }).sort(order).skip(offset).limit(limit)
 }
@@ -444,21 +432,15 @@ function realEstateAssetsSubmit(req, res) {
 
 function getRealEstateAssetsList(req, res) {
   let { fields, offset, query, trusteeQuery, order, limit, search } = req.body
-  Assets.find(query, function (err, realEstateAssetsList) {
+  Assets.find(query, async function (err, realEstateAssetsList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
       let totalTrusteeRecords = 0;
       if(realEstateAssetsList.length>0){
-        Trustee.count(trusteeQuery, function (err, TrusteeCount) {
-          if (TrusteeCount) {
-            totalTrusteeRecords = TrusteeCount
-          }
-          res.send(resFormat.rSuccess({realEstateAssetsList,totalTrusteeRecords}))
-        })
-      }else{
-        res.send(resFormat.rSuccess({realEstateAssetsList,totalTrusteeRecords}))
+        totalTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
       }
+      res.send(resFormat.rSuccess({realEstateAssetsList,totalTrusteeRecords}))
     }
   }).sort(order).skip(offset).limit(limit)
 }

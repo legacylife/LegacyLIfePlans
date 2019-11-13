@@ -115,21 +115,15 @@ function specialNeedsSubmit(req, res) {
 
 function getSpecialNeedsList(req, res) {
   let { fields, offset, query,trusteeQuery, order, limit, search } = req.body
-  SpecialNeeds.find(query, function (err, specialNeedsList) {
+  SpecialNeeds.find(query, async function (err, specialNeedsList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
       let totalTrusteeRecords = 0;
       if(specialNeedsList.length>0){
-        Trustee.count(trusteeQuery, function (err, TrusteeCount) {
-          if (TrusteeCount) {
-            totalTrusteeRecords = TrusteeCount
-          }
-          res.send(resFormat.rSuccess({specialNeedsList,totalTrusteeRecords }))
-        })
-      }else{
-        res.send(resFormat.rSuccess({specialNeedsList,totalTrusteeRecords }))
-      } 
+        totalTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
+      }
+      res.send(resFormat.rSuccess({specialNeedsList,totalTrusteeRecords }))
     }
   }).sort(order).skip(offset).limit(limit)
 }

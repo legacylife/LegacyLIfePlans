@@ -40,21 +40,15 @@ function timeCapsulesList(req, res) {
     if (listCount) {
       totalRecords = listCount
     }
-    timeCapsule.find(query, fields, function (err, timeCapsuleList) {
+    timeCapsule.find(query, fields, async function (err, timeCapsuleList) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
         let totalTrusteeRecords = 0;
-        if(totalRecords){
-          Trustee.count(trusteeQuery, function (err, TrusteeCount) {
-          if (TrusteeCount) {
-            totalTrusteeRecords = TrusteeCount
-          }
-          res.send(resFormat.rSuccess({timeCapsuleList,totalRecords,totalTrusteeRecords }))
-        })
-       }else{
+        if(totalRecords>0){
+          totalTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
+        }
         res.send(resFormat.rSuccess({timeCapsuleList,totalRecords,totalTrusteeRecords }))
-       }
       }
     }).sort(order).skip(offset).limit(limit)
   })

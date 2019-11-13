@@ -261,11 +261,23 @@ function getTrusteeDetails(req, res) {
   }).populate('customerId')
 }
 
-function getSubSectionsList(req, res){
+async function getSubSectionsList(req, res){
+    let { fields, offset, query, order, limit, search } = req.body;
+
+    let trusteeUsersList = await trust.find(query, fields).populate('trustId');
+    let advisorsList = await HiredAdvisors.find(query, fields).populate('advisorId');
+    
+    trusteeUsersList = trusteeUsersList.concat(advisorsList);
+    
+    let trusteeCount = trusteeUsersList.length;
+    res.status(200).send(resFormat.rSuccess({trusteeUsersList,advisorsList,trusteeCount}));
+}
+
+function getSubSectionsListOLD(req, res){
   let { fields, offset, query, order, limit, search } = req.body
-  trust.countDocuments(query, function (err, userCount){
+  trust.countDocuments(query, async function (err, userCount){
     if(userCount){
-      totalUsers = userCount
+      totalUsers = userCount;
       trust.find(query, fields, function (err, trusteeUsersList) {
         if (err) {
           res.status(401).send(resFormat.rError(err))
@@ -283,7 +295,7 @@ function getSubSectionsList(req, res){
   })
 }
 
-function trusteePermissionsUpdate(req, res){
+function trusteePermissionsUpdateOLD(req, res){
     let { query } = req.body;
     let { updateExtra } = req.body;
     let key = query.insertArray.code;
@@ -356,6 +368,90 @@ function trusteePermissionsUpdate(req, res){
         let result = { "message": "Trustee permissions updated successfully" }
         res.status(200).send(resFormat.rSuccess(result));
     })
+}
+
+
+
+ function trusteePermissionsUpdate(req, res){
+  let { query } = req.body;
+  let { updateExtra } = req.body;
+  let key = query.insertArray.code;
+  let list = query.insertArray.accessManagement;
+
+  async.each(list, async (contact,callback) =>  {
+    let newContact = JSON.parse(JSON.stringify(contact))
+    let ext = newContact.ids.split('##');
+   
+    if (ext[0]) {
+      let documentId = ext[0];
+      let value = ext[1];
+      let fields = { filesCount: 1, folderCount: 1 ,userAccess:1}
+      let tableFlag = 'trust';
+      let trustDetails = await trust.findOne({ _id: documentId},fields);
+
+      if(!trustDetails){
+         tableFlag = 'advistor';
+         trustDetails = await HiredAdvisors.findOne({ _id: documentId},fields);
+      }
+     
+      if(trustDetails){
+            let updateData = {};
+            let updateArray = [];
+            let oldvalues = [];
+            if(key=='LegacyLifeLettersMessagesManagement' && updateExtra.letterId){
+              oldvalues = trustDetails.userAccess.LegacyLifeLettersMessagesManagement;
+              updateArray = oldvalues;let updateObj = {};
+            if(oldvalues.length>0){
+              let updateVl =  _.findIndex(oldvalues, function(o) { return o.letterId == updateExtra.letterId; });
+              if(updateVl>=0){
+                oldvalues[updateVl] = {"letterId" : mongoose.Types.ObjectId(updateExtra.letterId),
+                                      "access" : value,
+                                      "updatedOn" : new Date(),
+                                      };
+                            updateArray = oldvalues;
+              }else{
+                updateArray = oldvalues;
+                console.log("updated>>>>>>>>>>>>>",updateArray)
+                updateObj = {"letterId" : mongoose.Types.ObjectId(updateExtra.letterId),
+                              "access" : value,
+                              "updatedOn" : new Date(),
+                            };
+                            updateArray.push(updateObj);
+                            updateArray.concat(oldvalues);
+              }
+            }else{
+                updateObj =  {"letterId" : mongoose.Types.ObjectId(updateExtra.letterId),
+                    "access" : value,
+                    "updatedOn" : new Date(),
+                  };
+                  updateArray.push(updateObj);
+            }
+
+              updateData[`userAccess.${key}`] = updateArray;
+            }else{
+              var filescnt = parseInt(trustDetails.filesCount);
+              if(newContact.oldValue=='now' && value!='now'){
+                filescnt = parseInt(filescnt)-1;
+              }else if(newContact.oldValue!='now' && value=='now'){
+                filescnt = parseInt(filescnt)+1;
+              }
+
+              updateData[`userAccess.${key}`] = value;
+              updateData['filesCount'] = filescnt;
+            }
+
+          if(tableFlag=='trust'){
+            await trust.updateOne({ _id: documentId},{ $set:  updateData});
+          }else{
+            await  HiredAdvisors.updateOne({ _id: documentId},{ $set:  updateData });
+          }
+          callback()
+       }
+     } 
+    }, (err) => {
+      let result = { "message": "Trustee permissions updated successfully" }
+      res.status(200).send(resFormat.rSuccess(result));
+  })
 }
 
 router.post("/listing", trustsList)

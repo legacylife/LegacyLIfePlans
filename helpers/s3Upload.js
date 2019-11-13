@@ -1,7 +1,6 @@
 const fs = require('fs')
 const AWS = require('aws-sdk')
 const constants =  require('./../config/constants')
-
 const s3 = new AWS.S3({
     accessKeyId: constants.s3Details.awsKey,
     secretAccessKey: constants.s3Details.awsSecret
@@ -9,8 +8,9 @@ const s3 = new AWS.S3({
 
 const uploadFile = (filename, path) => {
   return new Promise(function(resolve, reject) {
+    let per = 0;
     if (fs.existsSync(__dirname + '/../tmp/'+filename)) {
-      console.log("File exists")
+      //console.log("File exists")
      fs.readFile(__dirname + '/../tmp/' + filename, (err, data) => {
        if (err){
          console.log(err)
@@ -23,8 +23,8 @@ const uploadFile = (filename, path) => {
           //ACL: "public-read"
           ACL: "bucket-owner-full-control"
        }
-       console.log("Reading file")
-       s3.upload(params, function(s3Err, data) {
+      console.log("Reading file")
+      var upload =  s3.upload(params, function(s3Err, data,) {
          if (s3Err) {
            console.log(s3Err)
            return s3Err
@@ -40,13 +40,21 @@ const uploadFile = (filename, path) => {
              resolve(data);
            })
          }
-       })
+        }).on('httpUploadProgress', function(evt) {  
+        let per = Math.round((evt.loaded * 100) / evt.total); 
+         resolve(per);
+        //Emit Here your events 
+      }).send(function(err, data) {
+        // console.log('send data finally===> ',data);
+        // return data;        
+      });
      })
-    }
-    else {
+    } else {
       reject("Some error occured.")
     }
+   // return per;
   })
+
 }
 
 

@@ -3,12 +3,12 @@ var debug = require('debug')('LLP:server')
 const fs = require('fs')
 const http = require('http')
 const https = require('https')
-var port = normalizePort(process.env.PORT || '80')
+var port = normalizePort(process.env.PORT || '8080')
 var express = require('express')
 var router = express.Router()
 const apps = express()
- const server = http.createServer(app).listen(80, () => {
-   console.log('http server running at ' + 80)
+ const server = http.createServer(app).listen(8080, () => {
+   console.log('http server running at ' + 8080)
  })
  var chats = require('./routes/chatcontrollerRoute')
  
@@ -25,6 +25,8 @@ const apps = express()
      users[socket.id] = data.userId;
      console.log('a user ' + data.userId +'---' + data.userType + ' connected');
      chats.userStatus(data,'online');
+     var unreadCnt = chats.userMessagesStatus(data,'online');
+     io.emit('message-unread-count-'+data.userId, unreadCnt);
   });
   
   socket.on('new-message', (message) => {
@@ -35,7 +37,7 @@ const apps = express()
 
   socket.on('get-chat-rrom', (chatId) => {
      console.log('get-chat-rrom-'+chatId);
-     chats.chatRoom(chatId,'offline');
+     chats.chatRoom(chatId);
    // io.emit('get-chat-rrom'+contactId);
   });
  

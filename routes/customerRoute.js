@@ -856,21 +856,15 @@ function deleteIdBox(req, res) {
 // get emergency Contacts of customer
 function getEmergencyContacts(req, res) {
   let { fields, offset, query,trusteeQuery, order, limit, search } = req.body
-  emergencyContacts.find(query, function (err, eContactsList) {
+  emergencyContacts.find(query, async function (err, eContactsList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
       let totalTrusteeRecords = 0;
       if(eContactsList.length>0){
-        Trustee.count(trusteeQuery, function (err, TrusteeCount) {
-          if (TrusteeCount) {
-            totalTrusteeRecords = TrusteeCount
-          }
-          res.send(resFormat.rSuccess({ eContactsList,totalTrusteeRecords}))
-        })
-      }else{
-        res.send(resFormat.rSuccess({ eContactsList,totalTrusteeRecords}))
+        totalTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery);
       }
+     res.send(resFormat.rSuccess({ eContactsList,totalTrusteeRecords}))
     }
   }).sort(order).skip(offset).limit(limit)
 }

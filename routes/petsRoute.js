@@ -16,7 +16,8 @@ const resFormat = require('./../helpers/responseFormat')
 const pet = require('./../models/Pets.js')
 const s3 = require('./../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
-const Trustee = require('./../models/Trustee.js')
+// const Trustee = require('./../models/Trustee.js')
+// const HiredAdvisors = require('./../models/HiredAdvisors.js')
 const commonhelper = require('./../helpers/commonhelper')
 const resMessage = require('./../helpers/responseMessages')
 const allActivityLog = require('./../helpers/allActivityLogs')
@@ -26,7 +27,7 @@ var auth = jwt({
 })
 
 
-function PetsList(req, res) {
+async function PetsList(req, res) {
   let { fields, offset, query, trusteeQuery, order, limit, search } = req.body
   let totalRecords = 0
   if (search && !isEmpty(query)) {
@@ -36,25 +37,19 @@ function PetsList(req, res) {
       }
     })
   }
-  pet.countDocuments(query, function (err, listCount) {
+  pet.countDocuments(query, async function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
     }
-    pet.find(query, fields, function (err, petList) {
+    pet.find(query, fields, async function (err, petList) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
         let totalTrusteeRecords = 0;
-        if(totalRecords){
-          Trustee.countDocuments(trusteeQuery, function (err, TrusteeCount) {
-          if (TrusteeCount) {
-            totalTrusteeRecords = TrusteeCount
-          }
-          res.send(resFormat.rSuccess({petList,totalRecords,totalTrusteeRecords }))
-        })
-       }else{
-        res.send(resFormat.rSuccess({petList,totalRecords,totalTrusteeRecords }))
-       }
+        if(petList.length>0){
+           totalTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
+        }
+        res.send(resFormat.rSuccess({petList,totalRecords,totalTrusteeRecords }))       
       }
     }).sort(order).skip(offset).limit(limit)
   })

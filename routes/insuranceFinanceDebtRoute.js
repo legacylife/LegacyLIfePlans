@@ -41,21 +41,15 @@ function insuranceList(req, res) {
     if (listCount) {
       totalRecords = listCount
     }
-    insurance.find(query, fields, function (err, insuranceList) {
+    insurance.find(query, fields, async function (err, insuranceList) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
         let totalTrusteeRecords = 0;
-        if(totalRecords>0){
-          Trustee.count(trusteeQuery, function (err, TrusteeCount) {
-            if (TrusteeCount) {
-              totalTrusteeRecords = TrusteeCount
-            }
-            res.send(resFormat.rSuccess({ insuranceList, totalRecords,totalTrusteeRecords }))
-          })
-        }else{
-          res.send(resFormat.rSuccess({ insuranceList, totalRecords,totalTrusteeRecords }))
-        }     
+        if(insuranceList.length>0){
+         totalTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
+        }
+        res.send(resFormat.rSuccess({ insuranceList,totalRecords,totalTrusteeRecords}))   
       }
     }).sort(order).skip(offset).limit(limit)
   })
@@ -186,21 +180,15 @@ function financeList(req, res) {
     if (listCount) {
       totalRecords = listCount
     }
-    Finance.find(query, fields, function (err, financeList) {
+    Finance.find(query, fields, async function (err, financeList) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
         let totalTrusteeRecords = 0;
-        if(totalRecords>0){
-          Trustee.count(trusteeQuery, function (err, TrusteeCount) {
-            if (TrusteeCount) {
-              totalTrusteeRecords = TrusteeCount
-            }
-            res.send(resFormat.rSuccess({ financeList, totalRecords,totalTrusteeRecords }))
-          })
-        }else{
-          res.send(resFormat.rSuccess({ financeList, totalRecords,totalTrusteeRecords }))
-        } 
+        if(financeList.length>0){
+         totalTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
+        }
+        res.send(resFormat.rSuccess({ financeList, totalRecords,totalTrusteeRecords }))
       }
     }).sort(order).skip(offset).limit(limit)
   })
@@ -333,21 +321,15 @@ function debtList(req, res) {
     if (listCount) {
       totalRecords = listCount
     }
-    Debts.find(query, fields, function (err, debtList) {
+    Debts.find(query, fields, async function (err, debtList) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-        let totalTrusteeRecords = 0;
-        if(totalRecords>0){
-          Trustee.count(trusteeQuery, function (err, TrusteeCount) {
-            if (TrusteeCount) {
-              totalTrusteeRecords = TrusteeCount
-            }
-            res.send(resFormat.rSuccess({ debtList, totalRecords,totalTrusteeRecords }))
-          })
-        }else{
-          res.send(resFormat.rSuccess({ debtList, totalRecords,totalTrusteeRecords }))
-        } 
+         let totalTrusteeRecords = 0;
+         if(totalRecords>0){
+          totalTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
+         }
+         res.send(resFormat.rSuccess({ debtList, totalRecords,totalTrusteeRecords }))
       }
     }).sort(order).skip(offset).limit(limit)
   })
