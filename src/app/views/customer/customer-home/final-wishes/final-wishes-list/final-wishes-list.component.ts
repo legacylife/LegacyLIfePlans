@@ -22,8 +22,8 @@ import { funeralOptions } from '../../../../../selectList';
 })
 export class FinalWishesComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  showFuneralPlansListing = true;
   funeralOptions = funeralOptions;
+  showFuneralPlansListing = true;
   showFuneralPlansCnt: any;
   showObituaryListing = true;
   showObituaryListingCnt: any;
@@ -49,6 +49,10 @@ export class FinalWishesComponent implements OnInit {
   instruction_data: any;
   instruction_data_flag: boolean = false;
   shareLegacFlag: boolean = false;
+
+  ExpenseList: any;
+  showExpenseCnt: any;
+  showExpenseListing: boolean = true;
 
   constructor(private route: ActivatedRoute, private router: Router, private dialog: MatDialog, private userapi: UserAPIService, private loader: AppLoaderService, private sharedata: DataSharingService) { }
   ngOnInit() {
@@ -83,8 +87,8 @@ export class FinalWishesComponent implements OnInit {
     }
   }
 
-  getServiceName(key){
-    let filteredTyes =this.funeralOptions.filter(dtype =>{
+  getServiceName(key) {
+    let filteredTyes = this.funeralOptions.filter(dtype => {
       return dtype.opt_code === key
     }).map(el => el.opt_name)[0]
     return filteredTyes
@@ -104,7 +108,7 @@ export class FinalWishesComponent implements OnInit {
         this.trusteeFuneralCnt = result.data.totalFuneralTrusteeRecords;
         this.trusteeObituaryCnt = result.data.totalObituaryTrusteeRecords
         this.trusteeCelebrationCnt = result.data.totalCelebrTrusteeRecords;
-        
+
         this.FuneralPlansList = result.data.funeralPlanData;
         this.showFuneralPlansCnt = this.FuneralPlansList.length
         if (this.showFuneralPlansCnt > 0) {
@@ -112,7 +116,15 @@ export class FinalWishesComponent implements OnInit {
         } else {
           this.showFuneralPlansListing = false;
         }
-  
+
+        this.ExpenseList = result.data.funeralExpenseData;
+        this.showExpenseCnt = this.ExpenseList.length
+        if (this.showExpenseCnt > 0) {
+          this.showExpenseListing = true;
+        } else {
+          this.showExpenseListing = false;
+        }
+
 
         this.ObituaryList = result.data.obituaryData;
         this.showObituaryListingCnt = this.ObituaryList.length
@@ -129,6 +141,18 @@ export class FinalWishesComponent implements OnInit {
         } else {
           this.showCelebrationLifesListing = false;
         }
+
+        this.CelebrationLifesList = result.data.celebrationData;
+        this.showCelebrationLifesListingCnt = this.CelebrationLifesList.length
+        if (this.showCelebrationLifesListingCnt > 0) {
+          this.showCelebrationLifesListing = true;
+        } else {
+          this.showCelebrationLifesListing = false;
+        }
+
+
+
+
       }
     }, (err) => {
       console.error(err);
@@ -248,7 +272,15 @@ export class FinalWishesComponent implements OnInit {
     let dialogRef: MatDialogRef<any> = this.dialog.open(FuneralServiceModalComponent, {
       width: '720px',
       disableClose: true,
-    })
+    });
+    dialogRef.afterClosed()
+      .subscribe(res => {
+        this.getWishList();
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
   }
   openCelebrationOfLifeModal() {
 
@@ -268,11 +300,6 @@ export class FinalWishesComponent implements OnInit {
   }
 
   openObituaryModal() {
-    // let dialogRef: MatDialogRef<any> = this.dialog.open(ObituaryModalComponent, {
-    //   width: '720px',
-    //   disableClose: true, 
-    // }) 
-
     let dialogRef: MatDialogRef<any> = this.dialog.open(ObituaryModalComponent, {
       width: '720px',
       disableClose: true,
@@ -292,7 +319,15 @@ export class FinalWishesComponent implements OnInit {
     let dialogRef: MatDialogRef<any> = this.dialog.open(FuneralExpensesModalComponent, {
       width: '720px',
       disableClose: true,
-    })
+    });
+    dialogRef.afterClosed()
+      .subscribe(res => {
+        this.getWishList();
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
   }
 
 

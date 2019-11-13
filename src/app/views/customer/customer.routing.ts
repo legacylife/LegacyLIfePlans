@@ -43,7 +43,7 @@ import { FinalWishesDetailsComponent } from './customer-home/final-wishes/final-
 import { ObituaryDetailsComponent } from './customer-home/final-wishes/final-wishes-details/obituary-details.component';
 import { CelebrationDetailsComponent } from './customer-home/final-wishes/final-wishes-details/celebration-details.component';
 import { FuneralPlansDetailsComponent } from './customer-home/final-wishes/final-wishes-details/funeral-plans-details.component';
-
+import { ExpenseDetailsComponent } from './customer-home/final-wishes/final-wishes-details/expense-details.component';
 //Pets
 import { PetsListComponent } from './customer-home/pets/pets-list/pets-list.component';
 import { PetsDetailsComponent } from './customer-home/pets/pets-details/pets-details.component';
@@ -232,6 +232,12 @@ export const CustomerRoutes: Routes = [
             component: FuneralPlansDetailsComponent,
             canActivate: [ProUserGuard],
             data: { title: 'Final Wishes Funeral Plans' }             
+          },
+          {
+            path: 'final-wishes-expense-view/:id',
+            component: ExpenseDetailsComponent,
+            canActivate: [ProUserGuard],
+            data: { title: 'Final Wishes Funeral Expenses' }             
           },
           {
             path: 'pets',

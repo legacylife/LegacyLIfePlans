@@ -5,7 +5,7 @@
   </button>
 </div>
 
-<form [formGroup]="colFormGroup" class="llp-form-wrapper">
+<form [formGroup]="expensesFormGroup" class="llp-form-wrapper" (ngSubmit)="ExpenseFormSubmit(expensesFormGroup.value)">
   <div class="ll--modal--body idbox--modal--hgt">
     <div fxLayout="row wrap">
       <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
@@ -13,13 +13,12 @@
 
           <div fxLayout="row wrap">
 
-            <mat-radio-group class="llp-radio mt-1" formControlName="funeralExpensesOptions"  (change)="onChange($event.value)">
+            <mat-radio-group class="llp-radio mt-1" [formControl]="expensesFormGroup.controls['haveFuneralArrangement']"  (change)="onChange($event.value)">
               <div class="checkbox-label">Select any one</div>
-              <mat-radio-button value="opt1">I have made prearrangements with the funeral home.</mat-radio-button>
-              <mat-radio-button value="opt2"> I have a preneed contract</mat-radio-button>
-              <mat-radio-button value="opt3"> I do not have any funeral pre-arrangements</mat-radio-button>
+              <mat-radio-button value="1">I have made prearrangements with the funeral home.</mat-radio-button>
+              <mat-radio-button value="2"> I have a preneed contract</mat-radio-button>
+              <mat-radio-button value="3"> I do not have any funeral pre-arrangements</mat-radio-button>
             </mat-radio-group>
-
 
           </div>
 
@@ -27,22 +26,22 @@
           <div fxLayout="row wrap" *ngIf="madePrearrangment">
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
-                <textarea matInput placeholder="Funeral home"></textarea>
+                <textarea matInput placeholder="Funeral home" [formControl]="expensesFormGroup.controls['funeralHome']"></textarea>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
               <mat-form-field class="full-width">
-                <textarea matInput placeholder="Funeral director"></textarea>
+                <textarea matInput placeholder="Funeral director" [formControl]="expensesFormGroup.controls['funeralDirector']"></textarea>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
-                <textarea matInput placeholder="Address"></textarea>
+                <textarea matInput placeholder="Address" [formControl]="expensesFormGroup.controls['address']"></textarea>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
               <mat-form-field class="full-width">
-                <textarea matInput placeholder="Phone"></textarea>
+                <textarea matInput placeholder="Phone" [formControl]="expensesFormGroup.controls['phoneNumber']"></textarea>
               </mat-form-field>
             </div>
           </div>
@@ -51,99 +50,124 @@
           <div fxLayout="row wrap" *ngIf="preneedContract">
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
-                <textarea matInput placeholder="The preneed contract is located:"></textarea>
+                <textarea matInput placeholder="The preneed contract is located:" [formControl]="expensesFormGroup.controls['preneedContractLocation']"></textarea>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
-              <mat-radio-group class="llp-radio mb-0" aria-label="Select an option">
-                <div class="checkbox-label">Does the preneed contract guarantee the price of stated goods and services?:
-                </div>
-                <mat-checkbox class="mr-1"> Yes </mat-checkbox>
-                <mat-checkbox> No </mat-checkbox>
-              </mat-radio-group>
+                <mat-radio-group class="llp-radio mb-0" aria-label="Select an option" [formControl]="expensesFormGroup.controls['haveGuarantee']">
+                    <div class="checkbox-label">Does the preneed contract guarantee the price of stated goods and services?:</div>
+                    <mat-radio-button value="Yes">Yes </mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                  </mat-radio-group>              
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
               <mat-form-field class="full-width mt-1">
                 <mat-label>The following funeral services have been prepaid</mat-label>
-                <mat-select [formControl]="toppings" multiple>
-                  <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+                <mat-select [formControl]="toppings" multiple [formControl]="expensesFormGroup.controls['prepaidFuneralServices']">
+                  <mat-option *ngFor="let topping of toppingList" [value]="topping.opt_code">{{topping.opt_name}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb-1">
-              <mat-checkbox> I have a price list for all funeral goods and services provided by the funeral home.
+              <mat-checkbox [formControl]="expensesFormGroup.controls['havePriceList']" value="1"> I have a price list for all funeral goods and services provided by the funeral home.
               </mat-checkbox>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
               <mat-form-field class="full-width">
-                <input matInput placeholder="Total Amount">
+                <input matInput placeholder="Total Amount" [formControl]="expensesFormGroup.controls['totalAmountPay']">
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb-1">
-              <mat-checkbox> I have to pay on death (POD) account to be used to pay for funeral expenses.
+              <mat-checkbox [formControl]="expensesFormGroup.controls['haveToPayOnDeath']" value="1"> I have to pay on death (POD) account to be used to pay for funeral expenses.
               </mat-checkbox>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
-                <input matInput placeholder="Total Amount:">
+                <input matInput placeholder="Account:" [formControl]="expensesFormGroup.controls['account']">
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
               <mat-form-field class="full-width">
-                <input matInput placeholder="Amount in the account:">
+                <input matInput placeholder="Amount in the account:" [formControl]="expensesFormGroup.controls['amountInAccount']">
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
               <mat-form-field class="full-width">
-                <textarea matInput placeholder="Financial Institution"></textarea>
+                <textarea matInput placeholder="Financial Institution" [formControl]="expensesFormGroup.controls['financialInstitution']"></textarea>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb-1">
-              <mat-checkbox> I have pooled funeral trust or funeral insurance policy
+              <mat-checkbox [formControl]="expensesFormGroup.controls['havePooled']" value="1"> I have pooled funeral trust or funeral insurance policy
               </mat-checkbox>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
-                <input matInput placeholder="Account/Policy:">
+                <input matInput placeholder="Account/Policy:" [formControl]="expensesFormGroup.controls['pooledAccount']">
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
               <mat-form-field class="full-width">
-                <input matInput placeholder="Amount in the trust or policy:">
+                <input matInput placeholder="Amount in the trust or policy:" [formControl]="expensesFormGroup.controls['pooledAmount']">
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
-                <input matInput placeholder="Insurance company:">
+                <input matInput placeholder="Insurance company:" [formControl]="expensesFormGroup.controls['pooledInsuranceCompany']">
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
               <mat-form-field class="full-width">
-                <input matInput placeholder="Contact info:">
+                <input matInput placeholder="Contact info:" [formControl]="expensesFormGroup.controls['ContactInfo']">
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="cust--gapp">
               <div class="upload--buss--docs--sec">
-                <label>Please upload any relatives documents, policies, and files to this section to further help your
-                  executor and trustees</label>
-                <div class="upload--box ">
-                  <input type="file">
-                  <mat-icon class="cloud-icon">cloud_upload</mat-icon>
-                  <div class="select--file">Select file from your computer</div>
+                  <label>Upload your documents*</label>
+                <div class="upload--box fileupload-drop-zone"
+                    ng2FileDrop
+                    [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+                    (fileOver)="fileOverBase($event)"
+                    [uploader]="uploader">
+                    <input type="file" name="documents"  ng2FileSelect [uploader]="uploader" multiple  (change)="fileOverBase('')" />  
+                    <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                    <div class="select--file">Select file from your computer</div>
+                  </div>
+                  <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
                 </div>
-                <div class="file--details mb-1">Supported formats Doc, PDF, txt, JPEG, JPG, PNG</div>
-              </div>
             </div>
+
+            <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small>
+            <mat-form-field class="full-width" *ngIf="documents_temps">
+                <input matInput name="documents_temp" [formControl]="expensesFormGroup.controls['documents_temp']">
+                <small *ngIf="expensesFormGroup.controls['documents_temp'].hasError('required') && expensesFormGroup.controls['documents_temp'].touched" class="form-error-msg"> Please drag your document. </small>
+            </mat-form-field>
+      
+            <div *ngIf="documentsList" >
+              <h3 class="header--text fnt--16">Uploaded document</h3>
+              <mat-chip-list class="doc--list" *ngFor="let doc of documentsList; index as i">
+                  <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove  (click)="documentDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+              </mat-chip-list>
+            </div>
+            <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
+              <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
+            </mat-chip-list>  
+      
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="progress"style="margin-bottom: 0;" *ngIf="currentProgessinPercent>0">
+              <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
+              <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
+            </div>
+
+
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
               <mat-form-field class="full-width no-mar ">
-                <textarea matInput placeholder=" comment:"></textarea>
+                <textarea matInput placeholder="Comment:" [formControl]="expensesFormGroup.controls['comments']"></textarea>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
               <mat-radio-group class="llp-radio mb-0 mt-1">
                 <mat-form-field class="full-width no-mar">
                   <textarea matInput
-                    placeholder="Provide any additional written instructions or thoughts in the comment section."></textarea>
+                    placeholder="Provide any additional written instructions or thoughts in the comment section." [formControl]="expensesFormGroup.controls['additionalInstructions']"></textarea>
                 </mat-form-field>
               </mat-radio-group>
             </div>
@@ -151,6 +175,10 @@
           </div>         
 
         </mat-radio-group>
+
+        <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
+            <input matInput name="profileId" [formControl]="expensesFormGroup.controls['profileId']" readonly="readonly">
+          </mat-form-field>
       </div>
     </div>
   </div>

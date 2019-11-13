@@ -73,7 +73,7 @@
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon>Legacy Life Letters & Messages
                   </a>
                 </li>
-                <li (click)="toggleSideNav()" *ngIf="isProUser" class="{{activeHeading==='final-wishes' || activeHeading==='final-wishes-view' || activeHeading==='final-wishes-obituary-view' || activeHeading==='final-wishes-celebration-of-life-view' ? 'active' : ''}}">
+                <li (click)="toggleSideNav()" *ngIf="isProUser" class="{{activeHeading==='final-wishes' || activeHeading==='final-wishes-view' || activeHeading==='final-wishes-obituary-view' || activeHeading==='final-wishes-celebration-of-life-view' || activeHeading==='final-wishes-expense-view'  ? 'active' : ''}}">
                   <a [routerLink]="['/customer/dashboard/final-wishes']">
                     <mat-icon class="icon-file">date_range</mat-icon>
                     <mat-icon class="active--right">keyboard_arrow_right</mat-icon> Final Wishes

@@ -150,6 +150,7 @@ import { FinalWishesDetailsComponent } from 'app/views/customer/customer-home/fi
 import { ObituaryDetailsComponent } from 'app/views/customer/customer-home/final-wishes/final-wishes-details/obituary-details.component';
 import { CelebrationDetailsComponent } from 'app/views/customer/customer-home/final-wishes/final-wishes-details/celebration-details.component';
 import { FuneralPlansDetailsComponent } from 'app/views/customer/customer-home/final-wishes/final-wishes-details/funeral-plans-details.component';
+import { ExpenseDetailsComponent } from 'app/views/customer/customer-home/final-wishes/final-wishes-details/expense-details.component';
 import { FinalWishesFormModalComponent } from 'app/views/customer/customer-home/final-wishes/final-wishes-form-modal/final-wishes-form-modal.component';
 import { LettersMessagesListingComponent } from 'app/views/customer/customer-home/legacy-life-letters-messages/letters-messages-listing/letters-messages-listing.component';
 import { LettersMessagesDetailsComponent } from 'app/views/customer/customer-home/legacy-life-letters-messages/letters-messages-details/letters-messages-details.component';
@@ -257,6 +258,7 @@ const classesToInclude = [
   ObituaryDetailsComponent,
   CelebrationDetailsComponent,
   FuneralPlansDetailsComponent,
+  ExpenseDetailsComponent,
   FinalWishesFormModalComponent,
   LettersMessagesListingComponent,
   LettersMessagesDetailsComponent,
