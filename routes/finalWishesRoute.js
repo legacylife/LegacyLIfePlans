@@ -17,8 +17,10 @@ const finalwishes = require('./../models/FinalWishes.js')
 const obituary = require('./../models/Obituary.js')
 const celebration = require('./../models/CelebrationOfLife.js')
 const funeralplan = require('./../models/FinalWishesPlans.js')
+const expenses = require('./../models/FinalWishesExpenses.js')
 const s3 = require('./../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
+const HiredAdvisors = require('./../models/HiredAdvisors')
 //const Trustee = require('./../models/Trustee.js')
 const commonhelper = require('./../helpers/commonhelper')
 const Trustee = require('./../models/Trustee.js')
@@ -32,9 +34,13 @@ const allActivityLog = require('./../helpers/allActivityLogs')
 async function finalList(req, res) {
   let { fields, query } = req.body
   let funeralPlanData = await funeralplan.find(query);
+  let funeralExpenseData = await expenses.find(query);
   let obituaryData = await obituary.find(query);
   let celebrationData = await celebration.find(query);
   let trusteeList = await Trustee.find(query);
+  let advList = await HiredAdvisors.find(query);
+
+  trusteeList.concat(advList)
 
   const FuneralPlansList = trusteeList.filter(dtype => {
     return dtype.userAccess.FuneralPlansManagement == 'now'
@@ -51,7 +57,7 @@ async function finalList(req, res) {
   }).map(el => el)
   totalCelebrTrusteeRecords = CelebrationList.length;
 
-  res.send(resFormat.rSuccess({ obituaryData, celebrationData, funeralPlanData, totalFuneralTrusteeRecords, totalObituaryTrusteeRecords, totalCelebrTrusteeRecords }))
+  res.send(resFormat.rSuccess({ obituaryData, funeralExpenseData, celebrationData, funeralPlanData, totalFuneralTrusteeRecords, totalObituaryTrusteeRecords, totalCelebrTrusteeRecords }))
 }
 
 /**
@@ -556,6 +562,182 @@ function deleteFuneralPlan(req, res) {
 }
 
 
+/**
+ * Add / edit function for obituary form
+ */
+function expensesFormUpdate(req, res) {
+  let { query } = req.body;
+  let { proquery } = req.body;
+  let { fromId } = req.body;
+  let { toId } = req.body;
+
+  let { folderName } = req.body
+  folderName = folderName.replace('/', '');
+  let subFolderName = '';
+  var logData = {}
+  logData.fileName = proquery.check;
+  logData.folderName = 'finalwishes';
+  logData.subFolderName = 'expenses';
+
+  if (query._id) {
+    expenses.findOne(query, function (err, custData) {
+      if (err) {
+        let result = { "message": "Something Wrong!" }
+        res.send(resFormat.rError(result));
+      } else {
+        if (custData && custData._id) {
+          let resText = 'added';
+          if (custData.check) {
+            resText = 'updated';
+          }
+          let { proquery } = req.body;
+          proquery.status = 'Active';
+          proquery.modifiedOn = new Date();
+          expenses.updateOne({ _id: custData._id }, { $set: proquery }, function (err, updatedDetails) {
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              logData.customerId = custData.customerId;
+              logData.fileId = custData._id;
+              actitivityLog.updateActivityLog(logData);
+
+              let rmessage = resMessage.data(607, [{ key: '{field}', val: 'Final Wish' }, { key: '{status}', val: resText }])
+              let result = { "message": rmessage }
+              //Update activity logs
+              allActivityLog.updateActivityLogs(fromId, toId, 'Final Wish' + resText, rmessage, folderName, subFolderName)
+
+              //let result = { "message": message.messageText+" "+resText+" successfully" }
+              res.status(200).send(resFormat.rSuccess(result))
+            }
+          })
+        } else {
+          let result = { "message": "No record found." }
+          res.send(resFormat.rError(result));
+        }
+      }
+    })
+  } else {
+    let { proquery } = req.body;
+    var insert = new expenses();
+    insert.customerId = proquery.customerId;
+    insert.customerLegacyId = proquery.customerLegacyId;
+    insert.customerLegacyType = proquery.customerLegacyType;
+
+    insert.status = 'Active';
+    insert.createdOn = new Date();
+    insert.modifiedOn = new Date();
+
+    insert.haveFuneralArrangement = proquery.haveFuneralArrangement;
+    insert.funeralHome = proquery.funeralHome;
+    insert.funeralDirector = proquery.funeralDirector;
+    insert.address = proquery.address;
+    insert.phoneNumber = proquery.phoneNumber;
+
+    insert.preneedContractLocation = proquery.preneedContractLocation;
+    insert.haveGuarantee = proquery.haveGuarantee;
+    insert.prepaidFuneralServices = proquery.prepaidFuneralServices;
+    insert.havePriceList = proquery.havePriceList;
+    insert.totalAmountPay = proquery.totalAmountPay;
+    insert.haveToPayOnDeath = proquery.haveToPayOnDeath;
+    insert.account = proquery.account;
+    insert.amountInAccount = proquery.amountInAccount;
+    insert.financialInstitution = proquery.financialInstitution;
+
+    insert.havePooled = proquery.havePooled;
+    insert.pooledAccount = proquery.pooledAccount;
+    insert.pooledAmount = proquery.pooledAmount;
+    insert.pooledInsuranceCompany = proquery.pooledInsuranceCompany;
+    insert.ContactInfo = proquery.ContactInfo;
+    insert.comments = proquery.comments;
+    insert.additionalInstructions = proquery.additionalInstructions;
+    
+    insert.save({ $set: proquery }, function (err, newEntry) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        //created helper for customer to send email about files added by advisor
+        if (proquery.customerLegacyType == "advisor") {
+          var sendData = {}
+          sendData.sectionName = "Final Wishes expenses";
+          sendData.customerId = proquery.customerId;
+          sendData.customerLegacyId = proquery.customerLegacyId;
+          commonhelper.customerAdvisorLegacyNotifications(sendData)
+        }
+
+        logData.customerId = query.customerId;
+        logData.fileId = newEntry._id;
+        actitivityLog.updateActivityLog(logData);
+
+        let rmessage = resMessage.data(607, [{ key: '{field}', val: 'Final Wishes expense' }, { key: '{status}', val: 'added' }])
+        let result = { "message": rmessage }
+        //Update activity logs
+        allActivityLog.updateActivityLogs(fromId, toId, 'Final Wish obituary added', rmessage, folderName, subFolderName)
+
+        //let result = { "message": message.messageText+" details added successfully!" }
+        res.status(200).send(resFormat.rSuccess(result))
+      }
+    })
+  }
+}
+
+/**
+ * view details function for expense form
+ */
+function viewExpenses(req, res) {
+  let { query } = req.body;
+  let fields = {}
+  if (req.body.fields) {
+    fields = req.body.fields
+  }
+  expenses.findOne(query, fields, function (err, wishList) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      res.send(resFormat.rSuccess(wishList))
+    }
+  })
+}
+
+function deleteExpenses(req, res) {
+  let { query } = req.body;
+  let fields = {}
+  let { fromId } = req.body
+  let { toId } = req.body
+  let { folderName } = req.body
+  folderName = folderName.replace('/', '')
+  let { subFolderName } = req.body
+
+  expenses.findOne(query, fields, function (err, wishInfo) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      var upStatus = 'Delete';
+      var params = { status: upStatus, documents: [] }
+      expenses.update({ _id: wishInfo._id }, { $set: params }, function (err, updatedinfo) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          if (wishInfo.documents.length > 0) {
+            var fileArray = [];
+            let filePath = wishInfo.customerId + '/' + constants.s3Details.funeralExpensesFilePath;
+            async.each(wishInfo.documents, async (val) => {
+              await fileArray.push({ "Key": filePath + val.tmpName });
+            })
+            s3.deleteFiles(fileArray, filePath);
+          }
+          actitivityLog.removeActivityLog(wishInfo._id);
+          let message = resMessage.data(607, [{ key: '{field}', val: 'Final wish' }, { key: '{status}', val: 'deleted' }])
+          let result = { "message": message }
+          //Update activity logs
+          allActivityLog.updateActivityLogs(fromId, toId, "Final Wish Delete", message, folderName, subFolderName)
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
+    }
+  })
+}
+
+
 
 router.post("/finalListing", finalList)
 router.post("/obituary-form-submit", obituaryFormUpdate);
@@ -569,6 +751,10 @@ router.post("/delete-celebration-finalWish", deleteCelebration);
 router.post("/funeral-plan-form-submit", funeralPlanFormUpdate);
 router.post("/view-funeral-plan-details", viewFuneralPlan);
 router.post("/delete-funeral-plan-finalwish", deleteFuneralPlan);
+
+router.post("/funeral-expense-form-submit", expensesFormUpdate);
+router.post("/view-funeral-expense-details", viewExpenses);
+router.post("/delete-funeral-expense-finalwish", deleteExpenses);
 
 //router.post("/delete-finalWish", deleteFinalWish)
 module.exports = router
