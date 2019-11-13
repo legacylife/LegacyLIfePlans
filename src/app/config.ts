@@ -47,6 +47,7 @@ export const s3Details = {
   legalStuffDocumentsPath:"legalStuff/",
   finalWishesFilePath:"finalWishes/",
   obituaryFilePath:"obituary/",
+  funeralServicesFilePath:"funeralServices/",
   funeralExpensesFilePath:"funeralExpenses/",
   celebrationofLifeFilePath:"celebrationofLife/",
   timeCapsuleFilePath:"timeCapsule/",

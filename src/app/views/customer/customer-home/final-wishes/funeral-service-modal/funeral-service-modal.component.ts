@@ -11,8 +11,8 @@ import { serverUrl, s3Details } from '../../../../../config';
 import { cloneDeep } from 'lodash';
 import { FileHandlingService } from 'app/shared/services/file-handling.service';
 import { funeralOptions } from '../../../../../selectList';
-const URL = serverUrl + '/api/documents/obituary';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
+const URL = serverUrl + '/api/documents/funeralServices';
 @Component({
   selector: 'app-funeral-service-modal',
   templateUrl: './funeral-service-modal.component.html',
@@ -40,7 +40,7 @@ export class FuneralServiceModalComponent implements OnInit {
   fileErrors: any;
   documentsList: any;
   docPath: string;
-
+  subFolderName:string = ''
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
@@ -57,7 +57,6 @@ export class FuneralServiceModalComponent implements OnInit {
   visualTribute = false;
   uploadDocAndLoc = false;
   funeralData : any;
-
   selectAnyOneFormGroup: FormGroup;
 
   constructor(private _formBuilder: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private confirmService: AppConfirmService, private loader: AppLoaderService, private router: Router, private userapi: UserAPIService, private fileHandlingService: FileHandlingService,private sharedata: DataSharingService) { }
@@ -65,6 +64,10 @@ export class FuneralServiceModalComponent implements OnInit {
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
 
   ngOnInit() {
+    this.userId = localStorage.getItem("endUserId");
+    const filePath = this.userId+'/'+s3Details.funeralServicesFilePath;
+    this.docPath = filePath;
+    this.documentsList = [];
     this.selectAnyOneFormGroup = this._formBuilder.group({
       funaralServiceType: new FormControl(''),
     });
@@ -164,7 +167,7 @@ export class FuneralServiceModalComponent implements OnInit {
         if(result.data){    
           this.funeralData = result.data;   
           this.toUserId     = this.funeralData.customerId;
-          let profileIds    = this.funeralData._id;
+          let profileIds    = this.selectedProfileId = this.funeralData._id;
         
           this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
           this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
@@ -241,7 +244,6 @@ export class FuneralServiceModalComponent implements OnInit {
           this.thirdFormGroup.controls['documents'].setValue(this.funeralData.documents);
           this.thirdFormGroup.controls['locationOfDocuments'].setValue(this.funeralData.locationOfDocuments);
           this.thirdFormGroup.controls['additionalPlans'].setValue(this.funeralData.additionalPlans);
-
         }       
       }
     }, (err) => {
@@ -250,8 +252,6 @@ export class FuneralServiceModalComponent implements OnInit {
   }
 
   PlanFormSubmit(selectAnyOneData,stepOneData,stepTwoData,stepThreeData){
-
-
     var query = {};
     var proquery = {};  
 
@@ -287,7 +287,7 @@ export class FuneralServiceModalComponent implements OnInit {
       proquery: Object.assign(profileInData),
       fromId:localStorage.getItem('endUserId'),
       toId:this.toUserId,
-      folderName:s3Details.obituaryFilePath
+      folderName:s3Details.funeralServicesFilePath
     }
 
     //this.loader.open();     
@@ -305,6 +305,247 @@ export class FuneralServiceModalComponent implements OnInit {
 
   }
 
+  FuneralServiceDelete(doc, name, tmName) {
+    let ids = this.thirdFormGroup.controls['profileId'].value;
+    var statMsg = "Are you sure you want to delete '" + name + "' file?"
+    this.confirmService.confirm({ message: statMsg })
+      .subscribe(res => {
+        if (res) {
+          this.loader.open();
+          this.documentsList.splice(doc, 1)
+          var query = {};
+          const req_vars = {
+            query: Object.assign({ _id: ids }, query),
+            proquery: Object.assign({ documents: this.documentsList }, query),
+            fileName: Object.assign({ docName: tmName }, query),
+            fromId:localStorage.getItem('endUserId'),
+            toId:this.toUserId,
+            folderName:s3Details.funeralServicesFilePath,
+            subFolderName:this.subFolderName
+          }
+          this.userapi.apiRequest('post', 'documents/deletefinalwishesfuneralServicesDoc', req_vars).subscribe(result => {
+            if (result.status == "error") {
+              this.loader.close();
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            } else {
+              this.loader.close();
+              this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            }
+            if (this.documentsList.length < 1) {
+              this.thirdFormGroup.controls['documents_temp'].setValue('');
+              this.documentsMissing = true;
+              this.invalidMessage = "Please drag your document.";
+            }
+          }, (err) => {
+            console.error(err)
+            this.loader.close();
+          })
+        }
+      })
+}
+
+public fileOverBase(e: any): void {
+  this.currentProgessinPercent = 0;
+  this.hasBaseDropZoneOver = e;
+  this.fileErrors = [];
+  let totalItemsToBeUpload = this.uploader.queue.length,
+      totalUploderFileSize = 0,
+      remainingSpace = 0,
+      message = ''
+
+  if(this.uploader.isUploading || this.uploaderCopy.isUploading){
+    this.snack.open('Please wait! Uploading is in process...', 'OK', { duration: 4000 })
+  }else{
+  this.uploader.queue.forEach((fileoOb) => {
+    let filename = fileoOb.file.name;
+    var extension = filename.substring(filename.lastIndexOf('.') + 1);
+    var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
+    let resp = this.isExtension(extension,fileExts);
+    totalUploderFileSize += fileoOb.file.size
+   if(!resp){
+      var FileMsg = "This file '" + filename + "' is not supported";
+      this.uploader.removeFromQueue(fileoOb);
+      let pushArry = {"error":FileMsg} 
+      this.fileErrors.push(pushArry); 
+      setTimeout(()=>{    
+        this.fileErrors = []
+      }, 3500);
+    }
+  });
+
+  let legacyUserData = {userId: this.toUserId, userType:'customer'};
+  this.fileHandlingService.checkAvailableSpace( legacyUserData, async (spaceDetails) => {
+    remainingSpace = Number(spaceDetails.remainingSpace);
+    message = spaceDetails.message;
+    if( totalUploderFileSize > remainingSpace) {
+      this.confirmService.reactivateReferEarnPopup({ message: message, status: 'notactivate' }).subscribe(res => {
+        if (res) {  
+        }        
+      })
+    } else {
+      let proceedToUpload = true;
+      if( message != '' ) {
+        let confirmResponse = await this.confirmService.confirm({ message: message }).toPromise()
+        proceedToUpload = true
+      }
+      if( proceedToUpload ) {         
+        if(this.selectedProfileId){
+          this.uploader.onBeforeUploadItem = (item) => {
+            item.url = `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}`;
+          }
+        }
+        if(this.uploader.getNotUploadedItems().length) {
+          this.uploaderCopy = cloneDeep(this.uploader)
+          this.uploader.queue.splice(1, this.uploader.queue.length - 1)
+          this.uploaderCopy.queue.splice(0, 1);
+        
+          this.uploader.queue.forEach((fileoOb, ind) => {
+            if(this.documentsList.length < 1){  this.thirdFormGroup.controls['documents_temp'].setValue(''); }
+              this.uploader.uploadItem(fileoOb);  
+          });
+          this.updateProgressBar();         
+          this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {              
+            this.getFuneralServiceDocuments();
+            setTimeout(()=>{    
+              this.uploader.clearQueue();
+              },800);
+          };
+          this.uploader.onCompleteAll = () => {
+            setTimeout(()=>{    
+              this.getFuneralServiceDocuments();
+              },5000);
+          }
+        }
+      }
+    }
+  })
+
+
+}
+}
+
+updateProgressBar(){
+  let uploaderLength = 0;  let uploaderCopyLength = 0;
+  
+  if(this.currentProgessinPercent==0){
+    this.uploader.onProgressItem = (progress:any) => {
+      this.currentProgessinPercent = progress;
+    }
+  }
+
+  this.uploader.onProgressAll = (progress:any) => {
+    uploaderLength = progress;
+    if(this.uploaderCopy.queue.length==0){
+      this.currentProgessinPercent = uploaderLength;
+    }
+    this.uploaderCopy.onProgressAll = ( progress: any) => {
+      uploaderCopyLength = progress;
+      this.currentProgessinPercent = (uploaderLength + uploaderCopyLength)/100;
+      let totalLength = uploaderLength + uploaderCopyLength;
+      this.currentProgessinPercent = totalLength - 100;
+    }
+  }
+  //console.log('len 1# ',this.uploader.queue.length,'len 2# ',this.uploaderCopy.queue.length,' Processs',this.currentProgessinPercent)
+}
+
+uploadRemainingFiles(profileId) {    
+    this.uploaderCopy.onBeforeUploadItem = (item) => {
+      item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
+      this.thirdFormGroup.controls['documents_temp'].setValue('');         
+    }
+    this.uploaderCopy.queue.forEach((fileoOb, ind) => {
+        this.uploaderCopy.uploadItem(fileoOb);
+        
+    });
+    this.updateProgressBar();
+    this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+      this.uploaderCopy.removeFromQueue(item);
+      this.getFuneralServiceDocuments({}, false, false);   
+    };
+
+    this.uploaderCopy.onCompleteAll = () => {
+      setTimeout(()=>{    
+        this.getFuneralServiceDocuments();
+        },5000);
+    }
+}
+
+getFuneralServiceDocuments = (query = {}, search = false, uploadRemained = true) => {     
+    let profileIds = this.thirdFormGroup.controls['profileId'].value;
+    let req_vars = {
+      query: Object.assign({customerId: this.userId,status:"Pending" }),
+      fields:{_id:1,documents:1}
+    }
+    if(profileIds){
+       req_vars = {
+        query: Object.assign({ _id:profileIds }),
+        fields:{_id:1,documents:1}
+      }
+    }    
+    this.userapi.apiRequest('post', 'finalwishes/view-funeral-plan-details', req_vars).subscribe(result => {
+      if (result.status == "error") {
+      } else {
+        if(result.data){
+          profileIds = this.selectedProfileId = result.data._id;
+          this.thirdFormGroup.controls['profileId'].setValue(profileIds);
+          if(uploadRemained) {
+            this.uploadRemainingFiles(profileIds)
+          }
+
+          this.documentsList = result.data.documents;    
+          this.thirdFormGroup.controls['documents_temp'].setValue('');
+          if(this.documentsList.length>0){
+            this.thirdFormGroup.controls['documents_temp'].setValue('1');
+            this.documentsMissing = false;
+          }     
+          if(this.currentProgessinPercent==100){
+            this.currentProgessinPercent = 0;
+          }            
+        } 
+      }
+    }, (err) => {
+      console.error(err);
+    })
+}
+
+isExtension(ext, extnArray) {
+  var result = false;
+  var i;
+  if (ext) {
+      ext = ext.toLowerCase();
+      for (i = 0; i < extnArray.length; i++) {
+          if (extnArray[i].toLowerCase() === ext) {
+              result = true;
+              break;
+          }
+      }
+  }
+  return result;
+}
+
+downloadFile = (filename) => {    
+  let query = {};
+  let req_vars = {
+    query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+    fromId:localStorage.getItem('endUserId'),
+    toId:this.toUserId,
+    folderName:s3Details.funeralServicesFilePath,
+    subFolderName:this.subFolderName
+  }
+  this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
+  this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+    var newBlob = new Blob([res])
+    var downloadURL = window.URL.createObjectURL(newBlob);
+    let filePath = downloadURL;
+    var link=document.createElement('a');
+    link.href = filePath;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();this.snack.dismiss();
+  });
+}
+
+
   onChange(value) {
     if (value == "4") {
       this.firstServicesSec = true;
@@ -316,6 +557,7 @@ export class FuneralServiceModalComponent implements OnInit {
   }
 
   changeSelection() {
+    console.log('value')
     let value = this.selectAnyOneFormGroup.controls['funaralServiceType'].value
     if (value == "4") {
       this.firstServicesSec = true;
