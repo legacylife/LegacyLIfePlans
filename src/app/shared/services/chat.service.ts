@@ -1,4 +1,4 @@
-import { Injectable,OnInit, OnDestroy } from "@angular/core";
+import { Injectable, OnInit , OnDestroy } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, BehaviorSubject, Subject, of, combineLatest } from "rxjs";
 import { map, switchMap, catchError } from "rxjs/operators";
@@ -49,22 +49,29 @@ export class ChatService {
 
   onChatSelected = new BehaviorSubject<any>(null);
   onChatsUpdated = new Subject<any>();
-
+  private userInfo: any
   constructor(private userapi: UserAPIService,private http: HttpClient) {
     // this.loadChatData()
     this.socket = io(serverUrl)
     this.socket.on('connect', function(){
-     // console.log("socket connected")
+       console.log("socket connected")
     });
     this.socket.on('disconnect', function(){
-     // console.log("socket disconnected")
+     // console.log("socket disconnected",)
     });
-    
-  }
-  ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.userType = localStorage.getItem("endUserType");
-     console.log('Welcome to chat  User Id ===> ',this.userId,' USer Type',this.userType)
+    this.userInfo = this.userapi.getUserInfo();
+    console.log("userInfo ",this.userInfo);
+    if (this.userInfo.endUserType !== '') {
+      this.userId = this.userInfo.endUserId;
+      this.userType = this.userInfo.endUserType;
+    }
+    console.log('Welcome to chat  User Id ===> ',this.userId,' USer Type',this.userType)
+  }
+
+  ngOnInit() {
+
   }
 
   ngOnDestroy() {
@@ -209,6 +216,16 @@ export class ChatService {
    
     return contacts;
    //  return this.http.put<User>(`api/chat-user/${user._id}`, {...user})
+  }
+
+  public getMessagesUnreadCnt = () => {
+    return Observable.create((observer) => {
+        this.socket.on('message-unread-count-'+this.userId, (message) => {//
+            console.log("received message unread count :-",message)
+           // observer.next(message);
+           // this.onChatsUpdated.next(message);
+        });
+    });
   }
 
   public getMessages = () => {

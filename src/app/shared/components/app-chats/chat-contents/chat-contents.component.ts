@@ -34,6 +34,9 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
       this.user = user;
     });
 
+    this.chatService.getMessagesUnreadCnt().subscribe((count: string) => {
+      console.log("getMessagesUnreadCnt ", count)
+    });
    
     this.chatService.getMessages().subscribe((message: string) => {
         this.messages.push(message);

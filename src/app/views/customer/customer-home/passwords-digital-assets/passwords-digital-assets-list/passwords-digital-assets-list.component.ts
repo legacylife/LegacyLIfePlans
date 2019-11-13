@@ -32,7 +32,9 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
 
   typeOfList:any = [];
   modifiedDate:any;
-  trusteeDeviceCnt:any;  trusteeElectonicCnt:any;
+  trusteeDeviceCnt:any;  
+  trusteeElectonicCnt:any;
+  trusteeDigitalCnt:any;
   dynamicRoute:string;
   trusteeLegaciesAction:boolean=true;
   urlData:any={};
@@ -155,7 +157,7 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
         console.log(result.data.electronicMediaList);
         this.digitalPublicationListing = result.data.electronicMediaList;
         this.showDigitalPublicationListingCnt = this.digitalPublicationListing.length;  
-        this.trusteeElectonicCnt = result.data.totalTrusteeRecords; 
+        this.trusteeDigitalCnt = result.data.totalTrusteeRecords; 
         if (this.showDigitalPublicationListingCnt>0) {
           this.showDigitalPublicationListing = true;
         }

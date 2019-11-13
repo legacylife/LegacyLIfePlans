@@ -57,14 +57,6 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
       this.customerLegaicesId = urlData.lastOne
       this.myLegacy= false
       this.sharedLegacies =true 
-
-      // this.userapi.getUserAccess(this.userId, (userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
-       
-      //   console.log('cusomer home====',userDeathFilesCnt)
-      //   this.shareDeathFileCount = userDeathFilesCnt;
-      
-      // });
-
       this.checkDeceasedStatus();
     }
 
@@ -74,7 +66,6 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
     if(locArray && locArray[5]){
       this.activeHeading = locArray[5];
     }   
-    console.log('here ngOnInit customer home->',this.activeHeading,' PRoUser',this.isProUser)
   }
 
   @HostListener('document:click', ['$event']) clickedOutside(event){
@@ -84,7 +75,6 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
       if(locArray && locArray[5]){
         this.activeHeading = locArray[5];
       }   
-      console.log('here HostListener customer home->',this.activeHeading,' PRoUser',this.isProUser)
   }
   
   checkDeceasedStatus(query = {}){
