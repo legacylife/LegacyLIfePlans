@@ -56,6 +56,7 @@ export class FuneralServiceModalComponent implements OnInit {
   pallbearersSec = false;
   visualTribute = false;
   uploadDocAndLoc = false;
+  funeralData : any;
 
   selectAnyOneFormGroup: FormGroup;
 
@@ -65,52 +66,53 @@ export class FuneralServiceModalComponent implements OnInit {
 
   ngOnInit() {
     this.selectAnyOneFormGroup = this._formBuilder.group({
-      funaralServiceType: ['']
+      funaralServiceType: new FormControl(''),
     });
 
     this.firstFormGroup = this._formBuilder.group({
-      serviceFor: [''],
-      otherChecked:[],
-      serviceForOther:[''],
-      isBodyPresent: [''],
-      isCasket:[''],
-      deceasedWear:['']      
+      serviceFor: new FormControl(''),
+      otherChecked:new FormControl(''),
+      serviceForOther:new FormControl(''),
+      isBodyPresent: new FormControl(''),
+      isCasket:new FormControl(''),
+      deceasedWear:new FormControl(''),      
     });
 
     this.secondFormGroup = this._formBuilder.group({
-      serviceParticipants:[''],
-      leaderChecked: [''],
-      leaderDescrption:[''],
+      serviceParticipants:new FormControl(''),
+      leaderChecked: new FormControl(''),
+      leaderDescrption:new FormControl(''),
 
-      eulogistChecked: [''],
-      eulogistdescription:[''],      
+      eulogistChecked: new FormControl(''),
+      eulogistdescription:new FormControl(''),     
       
-      reflectionsChecked: [''],
-      reflectionsDescription: [''],
+      reflectionsChecked: new FormControl(''),
+      reflectionsDescription: new FormControl(''),
 
-      readingsChecked:[''],
-      readingsDescription: [''],
+      readingsChecked:new FormControl(''),
+      readingsDescription: new FormControl(''),
 
-      musiciansChecked:[''],
-      musiciansDescription:[''],      
+      musiciansChecked:new FormControl(''),
+      musiciansDescription:new FormControl(''),    
       
-      pallbearersChecked: [''],
-      pallbearersDescription:[''],
+      pallbearersChecked: new FormControl(''),
+      pallbearersDescription:new FormControl(''),
 
-      additionalParticipants:[''],
-      servicesUsed:[''],
-      flowersUsed:['']
+      additionalParticipants:new FormControl(''),
+      servicesUsed:new FormControl(''),
+      flowersUsed:new FormControl(''),
 
     });
     this.thirdFormGroup = this._formBuilder.group({
-      isFloralArrangements:[''],
-      needVisualTribute:[''],
-      peopleInVisualTribute:[''],
-      havePreparedVisualTribute:[''],
-      documents:[''],
-      locationOfDocuments:[''],
-      additionalPlans:[''],
-      profileId:['']
+      isFloralArrangements:new FormControl(''),
+      needVisualTribute:new FormControl(''),
+      peopleInVisualTribute:new FormControl(''),
+      havePreparedVisualTribute:new FormControl(''),
+      documents:new FormControl(''),
+      locationOfDocuments:new FormControl(''),
+      additionalPlans:new FormControl(''),
+      profileId:new FormControl(''),
+      documents_temp: new FormControl('')
     });
 
     this.urlData = this.userapi.getURLData();
@@ -137,6 +139,114 @@ export class FuneralServiceModalComponent implements OnInit {
     this.toUserId = this.userId;
     this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
     this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
+    this.getFuneralPlanView();
+  }
+
+  getFuneralPlanView = (query = {}, search = false) => {  
+    let req_vars = {
+      query: Object.assign({ customerId: this.userId,status:"Pending" }, query)
+    }
+
+    let profileIds = '';
+    if (this.selectedProfileId) {
+      profileIds = this.selectedProfileId;
+      req_vars = {
+        query: Object.assign({ _id: profileIds })
+      }
+    }
+
+    this.loader.open(); 
+    this.userapi.apiRequest('post', 'finalwishes/view-funeral-plan-details', req_vars).subscribe(result => {
+      this.loader.close();
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        if(result.data){    
+          this.funeralData = result.data;   
+          this.toUserId     = this.funeralData.customerId;
+          let profileIds    = this.funeralData._id;
+        
+          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+          this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
+          this.documentsList = this.funeralData.documents;
+          if(this.documentsList.length>0){
+            this.thirdFormGroup.controls['documents_temp'].setValue('1');
+            this.documentsMissing = false; 
+          }
+
+          if(this.funeralData.leaderChecked){
+            this.ceremonySec = true
+          }
+          if(this.funeralData.eulogistChecked){
+            this.eulogistSec = true
+          }
+
+          if(this.funeralData.reflectionsChecked){
+            this.reflectionsSec = true
+          }
+
+          if(this.funeralData.readingsChecked){
+            this.readingsSec = true
+          }
+
+          if(this.funeralData.musiciansChecked){
+            this.musiciansSec = true
+          }
+
+          if(this.funeralData.pallbearersChecked){
+            this.pallbearersSec = true
+          }
+
+          if(this.funeralData.needVisualTribute == 'Yes'){
+            this.visualTribute = true
+          }
+
+          if(this.funeralData.havePreparedVisualTribute == 'Yes'){
+            this.uploadDocAndLoc = true
+          }
+
+
+          this.thirdFormGroup.controls['profileId'].setValue(profileIds);
+          this.selectAnyOneFormGroup.controls['funaralServiceType'].setValue(this.funeralData.funaralServiceType);
+          this.firstFormGroup.controls['serviceFor'].setValue(this.funeralData.serviceFor);
+          this.firstFormGroup.controls['otherChecked'].setValue(this.funeralData.otherChecked);
+          this.firstFormGroup.controls['serviceForOther'].setValue(this.funeralData.serviceForOther);
+          this.firstFormGroup.controls['isBodyPresent'].setValue(this.funeralData.isBodyPresent);
+          this.firstFormGroup.controls['isCasket'].setValue(this.funeralData.isCasket);
+          this.firstFormGroup.controls['deceasedWear'].setValue(this.funeralData.deceasedWear);   
+          
+          this.secondFormGroup.controls['serviceParticipants'].setValue(this.funeralData.serviceParticipants);
+          this.secondFormGroup.controls['leaderChecked'].setValue(this.funeralData.leaderChecked);
+          this.secondFormGroup.controls['leaderDescrption'].setValue(this.funeralData.leaderDescrption);
+          this.secondFormGroup.controls['eulogistChecked'].setValue(this.funeralData.eulogistChecked);
+          this.secondFormGroup.controls['eulogistdescription'].setValue(this.funeralData.eulogistdescription);
+          this.secondFormGroup.controls['reflectionsChecked'].setValue(this.funeralData.reflectionsChecked);
+          this.secondFormGroup.controls['reflectionsDescription'].setValue(this.funeralData.reflectionsDescription);
+
+          this.secondFormGroup.controls['readingsChecked'].setValue(this.funeralData.readingsChecked);
+          this.secondFormGroup.controls['readingsDescription'].setValue(this.funeralData.readingsDescription);
+          this.secondFormGroup.controls['musiciansChecked'].setValue(this.funeralData.musiciansChecked);
+          this.secondFormGroup.controls['musiciansDescription'].setValue(this.funeralData.musiciansDescription);
+          this.secondFormGroup.controls['pallbearersChecked'].setValue(this.funeralData.pallbearersChecked);
+          this.secondFormGroup.controls['pallbearersDescription'].setValue(this.funeralData.pallbearersDescription);
+          this.secondFormGroup.controls['additionalParticipants'].setValue(this.funeralData.additionalParticipants);
+
+          this.secondFormGroup.controls['servicesUsed'].setValue(this.funeralData.servicesUsed);
+          this.secondFormGroup.controls['flowersUsed'].setValue(this.funeralData.flowersUsed);
+
+          this.thirdFormGroup.controls['isFloralArrangements'].setValue(this.funeralData.isFloralArrangements);
+          this.thirdFormGroup.controls['needVisualTribute'].setValue(this.funeralData.needVisualTribute);
+          this.thirdFormGroup.controls['peopleInVisualTribute'].setValue(this.funeralData.peopleInVisualTribute);
+          this.thirdFormGroup.controls['havePreparedVisualTribute'].setValue(this.funeralData.havePreparedVisualTribute);
+          this.thirdFormGroup.controls['documents'].setValue(this.funeralData.documents);
+          this.thirdFormGroup.controls['locationOfDocuments'].setValue(this.funeralData.locationOfDocuments);
+          this.thirdFormGroup.controls['additionalPlans'].setValue(this.funeralData.additionalPlans);
+
+        }       
+      }
+    }, (err) => {
+      console.error(err);
+    })
   }
 
   PlanFormSubmit(selectAnyOneData,stepOneData,stepTwoData,stepThreeData){
@@ -204,6 +314,18 @@ export class FuneralServiceModalComponent implements OnInit {
       this.allServicesSec = true;
     }
   }
+
+  changeSelection() {
+    let value = this.selectAnyOneFormGroup.controls['funaralServiceType'].value
+    if (value == "4") {
+      this.firstServicesSec = true;
+      this.allServicesSec = false;
+    } else {
+      this.firstServicesSec = false;
+      this.allServicesSec = true;
+    }
+  }
+
   backToFirst() {
     this.firstServicesSec = true;
     this.allServicesSec = false;

@@ -291,6 +291,10 @@ export class UserAPIService {
       this.fileAccessInfo.fileIcon = "date_range";
       this.fileAccessInfo.fileUrl = ['/customer/dashboard/final-wishes-celebration-of-life-view', logData.fileId];
     }
+    if(logData.folderName == 'finalwishes' && logData.subFolderName == 'funeral-plans'){
+      this.fileAccessInfo.fileIcon = "date_range";
+      this.fileAccessInfo.fileUrl = ['/customer/dashboard/final-wishes-funeral-plans-view', logData.fileId];
+    }
 
     if(logData.folderName == 'realestateassets' && logData.subFolderName == 'real-estate'){ 
       this.fileAccessInfo.fileIcon = "business";

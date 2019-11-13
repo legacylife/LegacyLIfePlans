@@ -21,9 +21,9 @@
       </div>
     </div>
   </div>
-  <!-- <div class="ll--modal--footer text-center">
-    <button mat-raised-button class="llp--primary--btn">Save</button>
-  </div> -->
+  <div class="ll--modal--footer text-center">
+    <button mat-raised-button class="llp--primary--btn" onclick="changeSelection()">Save</button>
+  </div>
 </form>
 
 
@@ -46,43 +46,29 @@
 
                     <mat-radio-group class="llp-radio mb-0" aria-label="Select an option" [formControl]="firstFormGroup.controls['serviceFor']">
                       <div class="checkbox-label">The service will be for:</div>
-                      <mat-radio-button value="Friends and family">Friends and family </mat-radio-button>
-                      <mat-radio-button value="Private">Private</mat-radio-button>
-                      <mat-radio-button value="Other" (change)="otherChange('otherChecked')">Other</mat-radio-button>
+                      <mat-radio-button value="Friends and family" [checked]="firstFormGroup.controls['serviceFor'].value=='Friends and family'">Friends and family </mat-radio-button>
+                      <mat-radio-button value="Private" [checked]="firstFormGroup.controls['serviceFor'].value=='Private'">Private</mat-radio-button>
+                      <mat-radio-button value="Other" [checked]="firstFormGroup.controls['serviceFor'].value=='Other'" (change)="otherChange('otherChecked')">Other</mat-radio-button>
                     </mat-radio-group>
 
                     <mat-form-field class="full-width mt-1 no-mar" *ngIf="serviceOther">
                       <textarea matInput placeholder="Other" [formControl]="firstFormGroup.controls['serviceForOther']"></textarea>
                     </mat-form-field>
-
-
-                    <!-- <mat-radio-group class="llp-radio" aria-label="Select an option" [formControl]="firstFormGroup.controls['serviceFor']">
-                      <div class="checkbox-label">The service will be for:</div>
-                      <mat-checkbox>Friends and family </mat-checkbox>
-                      <mat-checkbox>Private</mat-checkbox>
-                      <mat-checkbox (change)="otherChange('otherChecked')">Other
-                      </mat-checkbox>
-
-                      <mat-form-field class="full-width mt-1 no-mar" *ngIf="serviceOther">
-                        <textarea matInput placeholder="Other" [formControl]="firstFormGroup.controls['serviceForOther']"></textarea>
-                      </mat-form-field>
-
-                    </mat-radio-group> -->
                   </div>
 
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
                     <mat-radio-group class="llp-radio" aria-label="Select an option" [formControl]="firstFormGroup.controls['isBodyPresent']">
                       <div class="checkbox-label">The body:</div>
-                      <mat-radio-button value="1">Will be present </mat-radio-button>
-                      <mat-radio-button value="2">Will not be present</mat-radio-button>
+                      <mat-radio-button value="Will be present" [checked]="firstFormGroup.controls['isBodyPresent'].value=='Will be present'">Will be present </mat-radio-button>
+                      <mat-radio-button value="Will not be present" [checked]="firstFormGroup.controls['isBodyPresent'].value=='Will not be present'">Will not be present</mat-radio-button>
                     </mat-radio-group>
                   </div>
 
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
                     <mat-radio-group class="llp-radio mb-0" aria-label="Select an option" [formControl]="firstFormGroup.controls['isCasket']">
                       <div class="checkbox-label">The casket will be:</div>
-                      <mat-radio-button value="1">Closed </mat-radio-button>
-                      <mat-radio-button value="2">Open</mat-radio-button>
+                      <mat-radio-button value="Closed" [checked]="firstFormGroup.controls['isCasket'].value=='Closed'">Closed </mat-radio-button>
+                      <mat-radio-button value="Open" [checked]="firstFormGroup.controls['isCasket'].value=='Open'">Open</mat-radio-button>
                     </mat-radio-group>
                   </div>
 
@@ -200,15 +186,15 @@
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
                     <mat-radio-group class="llp-radio" aria-label="Select an option" [formControl]="thirdFormGroup.controls['isFloralArrangements']">
                       <div class="checkbox-label">Use floral arrangements service?:</div>
-                      <mat-radio-button value="1">Yes </mat-radio-button>
-                      <mat-radio-button value="2">No</mat-radio-button>
+                      <mat-radio-button value="Yes" [checked]="thirdFormGroup.controls['isFloralArrangements'].value=='Yes'">Yes </mat-radio-button>
+                      <mat-radio-button value="No" [checked]="thirdFormGroup.controls['isFloralArrangements'].value=='No'">No</mat-radio-button>
                     </mat-radio-group>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
                     <mat-radio-group class="llp-radio" aria-label="Select an option" [formControl]="thirdFormGroup.controls['needVisualTribute']">
                       <div class="checkbox-label">I would like a visual tribute:</div>
-                      <mat-radio-button (change)="vtChange($event)" value="yes">Yes </mat-radio-button>
-                      <mat-radio-button (change)="vtChange($event)" value="no">No</mat-radio-button>
+                      <mat-radio-button (change)="vtChange($event)" value="Yes" [checked]="thirdFormGroup.controls['needVisualTribute'].value=='Yes'">Yes </mat-radio-button>
+                      <mat-radio-button (change)="vtChange($event)" value="No" [checked]="thirdFormGroup.controls['needVisualTribute'].value=='No'">No</mat-radio-button>
                     </mat-radio-group>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" *ngIf="visualTribute">
@@ -221,8 +207,8 @@
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
                     <mat-radio-group class="llp-radio" aria-label="Select an option" [formControl]="thirdFormGroup.controls['havePreparedVisualTribute']">
                       <div class="checkbox-label">I have prepared a visual tribute:</div>
-                      <mat-radio-button (change)="prepareVtChange($event)" value="yes">Yes </mat-radio-button>
-                      <mat-radio-button (change)="prepareVtChange($event)" value="no">No</mat-radio-button>
+                      <mat-radio-button (change)="prepareVtChange($event)" value="Yes" [checked]="thirdFormGroup.controls['havePreparedVisualTribute'].value=='Yes'">Yes</mat-radio-button>
+                      <mat-radio-button (change)="prepareVtChange($event)" value="No" [checked]="thirdFormGroup.controls['havePreparedVisualTribute'].value=='No'">No</mat-radio-button>
                     </mat-radio-group>
                   </div>
 

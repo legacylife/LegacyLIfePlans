@@ -5,12 +5,12 @@
         <mat-card-header class="m-0">
           <mat-card-title class="m-0">Final Wishes</mat-card-title>
           <div class="right--actions">
-            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="DownloadZip()">
+            <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" *ngIf="row?.documents.length>0" (click)="DownloadZip()">
                   <mat-icon>file_download</mat-icon>
                   <span class="hide--sm--txt">Download</span>
             </button>
             <div *ngIf="trusteeLegaciesAction">
-              <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openFinalWishModal(row?.subFolderName, true)">
+              <button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openFuneralServiceModal()">
                 <mat-icon>edit</mat-icon>
                 <span class="hide--sm--txt">Edit</span>
               </button>
@@ -32,12 +32,7 @@
               </span>
             </div>
             <div class="details--body">
-              <h3>{{row?.title}}</h3>
-
-
-
-
-
+              <h3>{{getServiceName(row?.funaralServiceType)}}</h3>
 
               <div fxLayout="row wrap" class="mb--10">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
@@ -52,7 +47,7 @@
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">The service for other:</label>
                 </div>
-                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70" *ngIf="row?.subFolderName == 'Celebration of Life'">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
                   <label class="normal--label">{{row?.serviceForOther}}</label>
                 </div>
               </div>
@@ -70,7 +65,7 @@
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">The casket will be:</label>
                 </div>
-                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70" *ngIf="row?.subFolderName == 'Celebration of Life'">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
                   <label class="normal--label">{{row?.isCasket}}</label>
                 </div>
               </div>
@@ -79,7 +74,7 @@
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">The deceased will wear:</label>
                 </div>
-                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70" *ngIf="row?.subFolderName == 'Celebration of Life'">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
                   <label class="normal--label">{{row?.deceasedWear}}</label>
                 </div>
               </div>
@@ -150,7 +145,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.readingsChecked">
+              <div fxLayout="row wrap" class="mb--10">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Additional participants:</label>
                 </div>
@@ -159,7 +154,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.musiciansChecked">
+              <div fxLayout="row wrap" class="mb--10">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">The following readings, poems, hymns, and music will be used during the service:</label>
                 </div>
@@ -168,7 +163,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.pallbearersChecked">
+              <div fxLayout="row wrap" class="mb--10">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">The following flowers will be used for the service:</label>
                 </div>
@@ -177,8 +172,62 @@
                 </div>
               </div>
 
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">Use floral arrangements service?:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{row?.isFloralArrangements}}</label>
+                </div>
+              </div>
 
               <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">I would like a visual tribute:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{row?.needVisualTribute}}</label>
+                </div>
+              </div>
+
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.needVisualTribute == 'Yes'">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">The following people will help prepare the visual tribute:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{row?.peopleInVisualTribute}}</label>
+                </div>
+              </div>
+
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">I have prepared a visual tribute:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{row?.havePreparedVisualTribute}}</label>
+                </div>
+              </div>
+
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">Additional plans and arrangements:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{row?.additionalPlans}}</label>
+                </div>
+              </div>
+
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">Location of the document:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{row?.locationOfDocuments}}</label>
+                </div>
+              </div>
+
+
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.havePreparedVisualTribute == 'Yes'">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Uploaded files:</label>
                 </div>

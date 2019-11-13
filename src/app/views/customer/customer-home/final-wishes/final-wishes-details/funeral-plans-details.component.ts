@@ -7,6 +7,8 @@ import { UserAPIService } from './../../../../../userapi.service';
 import { AppLoaderService } from '../../../../../shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from '../../../../../shared/services/app-confirm/app-confirm.service';
 import { FinalWishesFormModalComponent } from './../final-wishes-form-modal/final-wishes-form-modal.component';
+import { FuneralServiceModalComponent } from '../funeral-service-modal/funeral-service-modal.component';
+import { funeralOptions } from '../../../../../selectList';
 import { s3Details } from '../../../../../config';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
@@ -18,6 +20,7 @@ import { DataSharingService } from 'app/shared/services/data-sharing.service';
 export class FuneralPlansDetailsComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   userId: string;
+  funeralOptions = funeralOptions;
   selectedProfileId: string = "";
   row: any;
   docPath: string;
@@ -75,6 +78,13 @@ export class FuneralPlansDetailsComponent implements OnInit {
     })
   }
 
+  getServiceName(key){
+    let filteredTyes =this.funeralOptions.filter(dtype =>{
+      return dtype.opt_code === key
+    }).map(el => el.opt_name)[0]
+    return filteredTyes
+  }
+
   customerisValid(data){
     if (this.urlData.lastThird == "legacies") {
       this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
@@ -95,12 +105,8 @@ export class FuneralPlansDetailsComponent implements OnInit {
     } 
   }
 
-  openFinalWishModal(FolderNames, isNew?) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(FinalWishesFormModalComponent, {
-      data: {
-        FolderName: FolderNames,
-        newName: FolderNames,
-      },
+  openFuneralServiceModal() {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(FuneralServiceModalComponent, {
       width: '720px',
       disableClose: true,
     })
