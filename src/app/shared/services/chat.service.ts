@@ -126,6 +126,12 @@ export class ChatService {
   }
  
   createChatCollection(contactId) {
+    this.userInfo = this.userapi.getUserInfo();
+    this.userId = '';
+    if (this.userInfo.endUserType !== '') {
+      this.userId = this.userInfo.endUserId;
+      this.userType = this.userInfo.endUserType;
+    }
     let contact = this.contacts.find(contact => contact._id === contactId);
     const _id = '';//(Math.random() * 1000000000).toString();
     const chatCollection: ChatCollection = {
@@ -179,6 +185,12 @@ export class ChatService {
   
   getAllContacts(): Observable<User[]> {
     // return this.http.get<User[]>('api/contacts');
+    this.userInfo = this.userapi.getUserInfo();
+    this.userId = '';
+    if (this.userInfo.endUserType !== '') {
+      this.userId = this.userInfo.endUserId;
+      this.userType = this.userInfo.endUserType;
+    }
     let req_vars = {
       query: Object.assign({_id:this.userId,userType:this.userType}),
     }
@@ -189,6 +201,12 @@ export class ChatService {
 
   getAllChats(): Observable<ChatCollection[]> {
    // return this.http.get<ChatCollection[]>('api/chat-collections');
+    this.userInfo = this.userapi.getUserInfo();
+    this.userId = '';
+    if (this.userInfo.endUserType !== '') {
+      this.userId = this.userInfo.endUserId;
+      this.userType = this.userInfo.endUserType;
+    }
     let req_vars = {
       query: Object.assign({_id:this.userId,userType:this.userType}),
     }
@@ -197,6 +215,12 @@ export class ChatService {
   }
 
   getCurrentUser(): Observable<User> {
+    this.userInfo = this.userapi.getUserInfo();
+    this.userId = '';
+    if (this.userInfo.endUserType !== '') {
+      this.userId = this.userInfo.endUserId;
+      this.userType = this.userInfo.endUserType;
+    }
     let req_vars = {
       query: Object.assign({_id:this.userId,userType:this.userType}),
     }
@@ -208,6 +232,12 @@ export class ChatService {
   }
 
   updateUser(user: User): Observable<User> {
+    this.userInfo = this.userapi.getUserInfo();
+    this.userId = '';
+    if (this.userInfo.endUserType !== '') {
+      this.userId = this.userInfo.endUserId;
+      this.userType = this.userInfo.endUserType;
+    }
     let req_vars = {
       query: Object.assign({_id:this.userId,userType:this.userType}),
     }
@@ -219,6 +249,12 @@ export class ChatService {
   }
 
   public getMessagesUnreadCnt = () => {
+    this.userInfo = this.userapi.getUserInfo();
+    this.userId = '';
+    if (this.userInfo.endUserType !== '') {
+      this.userId = this.userInfo.endUserId;
+      this.userType = this.userInfo.endUserType;
+    }
     return Observable.create((observer) => {
         this.socket.on('message-unread-count-'+this.userId, (message) => {//
             console.log("received message unread count :-",message)
@@ -229,6 +265,12 @@ export class ChatService {
   }
 
   public getMessages = () => {
+    this.userInfo = this.userapi.getUserInfo();
+    this.userId = '';
+    if (this.userInfo.endUserType !== '') {
+      this.userId = this.userInfo.endUserId;
+      this.userType = this.userInfo.endUserType;
+    }
     return Observable.create((observer) => {
         this.socket.on('new-message-'+this.userId, (message) => {//
             console.log("received message")
@@ -239,6 +281,12 @@ export class ChatService {
   }
   
   updateChats(chatid: string, chats:Chat[]): Observable<ChatCollection> {
+    this.userInfo = this.userapi.getUserInfo();
+    this.userId = '';
+    if (this.userInfo.endUserType !== '') {
+      this.userId = this.userInfo.endUserId;
+      this.userType = this.userInfo.endUserType;
+    }
     let message = chats[0];
     if(chats.length>0){
       message =  chats[(chats.length-1)];

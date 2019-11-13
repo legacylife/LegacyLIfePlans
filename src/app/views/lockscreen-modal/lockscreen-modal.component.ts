@@ -30,9 +30,11 @@ export class lockscreenModalComponent implements OnInit {
     this.userFullName = '';
     this.lockscreenModalFlag = true;
     if (localStorage.getItem('endUserFirstName') != "undefined" && localStorage.getItem('endUserLastName') != "undefined"){
+      if (localStorage.getItem('endUserFirstName') != null && localStorage.getItem('endUserLastName') != null){
       if(localStorage.getItem("endUserFirstName")!=='' && localStorage.getItem("endUserLastName")!=''){
       this.userFullName = localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName");
       }
+     }
     }
     
     if (localStorage.getItem('endUserProfilePicture') != "undefined" && localStorage.getItem('endUserProfilePicture') != 'assets/images/arkenea/default.jpg') {
