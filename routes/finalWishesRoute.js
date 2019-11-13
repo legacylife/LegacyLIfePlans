@@ -385,9 +385,9 @@ function funeralPlanFormUpdate(req, res) {
   folderName = folderName.replace('/', '');
   let subFolderName = '';
   var logData = {}
-  logData.fileName = proquery.eventByName;
+  logData.fileName = constants.funeralOptions[proquery.funaralServiceType];
   logData.folderName = 'finalwishes';
-  logData.subFolderName = 'funeral plans';
+  logData.subFolderName = 'funeral-plans';
 
   if (query._id) {
     funeralplan.findOne(query, function (err, custData) {
@@ -397,7 +397,7 @@ function funeralPlanFormUpdate(req, res) {
       } else {
         if (custData && custData._id) {
           let resText = 'added';
-          if (custData.eventByName) {
+          if (custData.funaralServiceType) {
             resText = 'updated';
           }
           let { proquery } = req.body;

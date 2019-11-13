@@ -193,7 +193,14 @@ var constants = {
     22 : "Vimeo",
     23 : "Yahoo",
     24 : "YouTube"
-  }
+  },
+
+  funeralOptions : {
+    1:"I would prefer a traditional funeral",
+    2:"I would prefer a memorial service",
+    3:"I would prefer cremation",
+    4:"I do not want a funeral or memorial service"
+  } 
   
 
 }
