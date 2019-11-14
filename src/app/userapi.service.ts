@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators/map'
 import { Router } from '@angular/router'
 import { serverUrl } from './config'
 import { forEach } from "lodash";
+import * as io from 'socket.io-client';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { startOfDay,endOfDay,subDays,addDays,endOfMonth,isSameDay,isSameMonth,addHours} from 'date-fns';
 interface TokenResponse {
@@ -36,7 +37,6 @@ export class UserAPIService {
   private userDeathFilesCnt:any={}
   userDeceased:boolean=false;  
   userLockoutPeriod:boolean=false;  
-    
   private returnData:any;
   constructor(private http: HttpClient,private snack: MatSnackBar, private router: Router) { }
 
@@ -194,7 +194,10 @@ export class UserAPIService {
   public userLogout(): void {
     let userId = localStorage.getItem('endUserId'),
         userType = localStorage.getItem("endUserType");
-    this.token = ''
+    this.token = ''    
+    var socket = io(serverUrl);
+    console.log('offline socket call')
+    socket.emit('offline',{userId:userId,userType:userType});
     this.removeKeyFromStorage('endUserId')
     this.removeKeyFromStorage('endUserType')
     this.removeKeyFromStorage('endUsername')
@@ -218,7 +221,8 @@ export class UserAPIService {
     this.removeKeyFromStorage('endisReferAndEarn')
     this.removeKeyFromStorage('endUserDeceased')
     this.removeKeyFromStorage('setIdleFlag')
-    this.removeKeyFromStorage('endUserlockoutLegacyDate')
+    this.removeKeyFromStorage('endUserlockoutLegacyDate');
+
     this.apiRequest('post', 'userlist/logout', {fromId: userId, userType: userType}).subscribe(result => {
       if(result.status == "error") {
         //this.errorMessage = result.data

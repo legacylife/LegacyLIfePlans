@@ -31,25 +31,16 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   constructor(private chatService: ChatService, private picService : ProfilePicService) {}
 
   ngOnInit() {
-
     this.picService.itemValue.subscribe((nextValue) => {
       if(nextValue)
         this.profilePicture =  nextValue
     })
-
     if(localStorage.getItem('endUserProfilePicture') != "undefined" && localStorage.getItem('endUserProfilePicture') != 'assets/images/arkenea/default.jpg'){
       this.profilePicture = localStorage.getItem('endUserProfilePicture') 
     }
-    else {
-      this.profilePicture = 'assets/images/arkenea/default.jpg' 
-    }
-
     if(localStorage.getItem('endUserFirstName') != "undefined" && localStorage.getItem('endUserFirstName') != null && localStorage.getItem('endUserLastName') != "undefined"){
-      this.fullName = localStorage.getItem('endUserFirstName')+' '+localStorage.getItem('endUserLastName');
+       this.fullName = localStorage.getItem('endUserFirstName')+' '+localStorage.getItem('endUserLastName');
     }
-
-   
-
    
     // Listen for user update
    this.userUpdateSub = this.chatService.onUserUpdated.subscribe(user => {

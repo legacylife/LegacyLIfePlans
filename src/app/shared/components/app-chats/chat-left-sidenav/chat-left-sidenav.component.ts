@@ -49,7 +49,7 @@ export class ChatLeftSidenavComponent implements OnInit {
     this.chatWindowToggle.emit(this.chatWindow)
     this.chatService.getChatByContact(contactId)
       .subscribe(res => {
-        console.log('from sub',res);
+        //console.log('from sub',res);
       }, err => {
         console.log(err)
       })

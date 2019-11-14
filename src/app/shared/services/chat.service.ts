@@ -265,11 +265,17 @@ export class ChatService {
       this.userType = this.userInfo.endUserType;
     }
     return Observable.create((observer) => {
-        this.socket.on('message-unread-count-'+this.userId, (message) => {//
-            console.log("received message unread count :-",message)
+        this.socket.on('message-unread-count-'+this.userId, (message) => {
+            console.log("received message unread count :-",this.userId,message)
            // observer.next(message);
            // this.onChatsUpdated.next(message);
         });
+
+        this.socket.on('message-unread-count'+this.userId, (message) => {
+          console.log("****** received message unread count :-",message)
+         // observer.next(message);
+         // this.onChatsUpdated.next(message);
+      });
     });
   }
 
@@ -282,10 +288,20 @@ export class ChatService {
     }
     return Observable.create((observer) => {
         this.socket.on('new-message-'+this.userId, (message) => {
-            console.log("received message")
+            console.log("received message");
             observer.next(message);
             this.onChatsUpdated.next(message);
         });
+
+        this.socket.on('message-unread-count-'+this.userId, (unreadCnt) => {
+          console.log("getMessages  #@#@#  message-unread-count",this.userId,unreadCnt)        
+        });
+ 
+       this.socket.on('offlineContact', (offlineId) => {
+        console.log("getMessages  #@#@#   offlineContact----",offlineId)      
+       });
+
+
     });
   }
   
