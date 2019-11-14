@@ -127,7 +127,7 @@
 
                     <mat-form-field class="full-width no-mar">
                       <input matInput name="username" placeholder="Email Address" value="" aria-readonly="true" readonly
-                        [formControl]="ProfileForm.controls['username']">
+                        [formControl]="ProfileForm.controls['username']" maxlength="100">
                     </mat-form-field>
 
                     <div class="full-width text-right">
@@ -233,7 +233,7 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
                       <input class="capitalize" matInput name="businessName" placeholder="Business Name*" value=""
-                        [formControl]="AddressForm.controls['businessName']">
+                        [formControl]="AddressForm.controls['businessName']" maxlength="100">
                       <mat-icon matTooltip="Please enter business name" matTooltipClass="llp--tooltip error"
                         *ngIf="AddressForm.controls['businessName'].hasError('required') && AddressForm.controls['businessName'].touched"
                         class="red--alert">help_outline</mat-icon>
@@ -280,7 +280,7 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
                       <input class="capitalize" matInput name="addressLine1" placeholder="Address Line 1*" value=""
-                        [formControl]="AddressForm.controls['addressLine1']">
+                        [formControl]="AddressForm.controls['addressLine1']" maxlength="100">
                       <mat-icon matTooltip="Please enter address line 1" matTooltipClass="llp--tooltip error"
                         *ngIf="AddressForm.controls['addressLine1'].hasError('required') && AddressForm.controls['addressLine1'].touched"
                         class="red--alert">help_outline</mat-icon>

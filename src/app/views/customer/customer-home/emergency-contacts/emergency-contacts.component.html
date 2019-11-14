@@ -81,7 +81,7 @@
       </mat-form-field>
       <mat-form-field class="full-width">
         <input (keyup)="firstCapitalize($event)" matInput name="address" placeholder="Address" [formControl]="eContactFormGroup.controls['address']"
-          (keypress)="checkSpecialChar($event)">
+          (keypress)="checkSpecialChar($event)" maxlength="100">
       </mat-form-field>
       <mat-form-field class="full-width">
         <input maxlength="15" (keypress)="onlyNumbers($event)" (keyup)="firstCapitalize($event)" matInput name="phone" placeholder="Phone"

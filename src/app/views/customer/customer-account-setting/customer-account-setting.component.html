@@ -200,7 +200,7 @@
                     <mat-form-field class="full-width">
                       <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput
                         name="addressLine1" placeholder="Address Line 1*" value=""
-                        [formControl]="AddressForm.controls['addressLine1']">
+                        [formControl]="AddressForm.controls['addressLine1']" maxlength="100">
                       <mat-icon matTooltip="Please enter address in line 1." matTooltipClass="llp--tooltip error"
                         *ngIf="AddressForm.controls['addressLine1'].hasError('required') && AddressForm.controls['addressLine1'].touched"
                         class="red--alert">help_outline</mat-icon>
@@ -210,7 +210,7 @@
                     <mat-form-field class="full-width">
                       <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput
                         name="addressLine2" placeholder="Address Line 2 (optional)" value=""
-                        [formControl]="AddressForm.controls['addressLine2']">
+                        [formControl]="AddressForm.controls['addressLine2']" maxlength="100">
                     </mat-form-field>
                   </div>
                 </div>
