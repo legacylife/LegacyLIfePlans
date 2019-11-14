@@ -755,12 +755,20 @@ body{
 .capitalize{text-transform: capitalize;}
 .cursor--pointer{cursor: pointer;}
 .clr--black{color: $clr--10 !important}
+.word--break--break--all {word-break: break-all !important}
+.hgt--auto{height: auto !important;}
 .access--error {
     font-size: 20px;
     color: #000;
     font-family: $font--lato--regular!important;
     margin: 0 0 30px;
     text-align: center;
+}
+.mat-card{
+    font-family: $font--lato--medium !important;
+}
+.mat-list-item{
+    font-family: $font--lato--regular !important;
 }
 
 //PK
@@ -846,7 +854,7 @@ body{
     body .mat-dialog-container .ll--modal--footer, 
     body .mat-dialog-container .ll--modal--header{
         height: auto;
-        font-size: 22px;
+        font-size: 220x;
     }   
     body .mat-dialog-container .ll--modal--footer .llp--secondary--btn{
         margin-right: 10px;

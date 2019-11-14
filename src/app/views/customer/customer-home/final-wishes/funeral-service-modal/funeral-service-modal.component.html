@@ -44,7 +44,7 @@
 
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
 
-                    <mat-radio-group class="llp-radio mb-0" aria-label="Select an option" [formControl]="firstFormGroup.controls['serviceFor']">
+                    <mat-radio-group class="llp-radio " aria-label="Select an option" [formControl]="firstFormGroup.controls['serviceFor']">
                       <div class="checkbox-label">The service will be for:</div>
                       <mat-radio-button value="Friends and family"  (change)="otherChange('')" [checked]="firstFormGroup.controls['serviceFor'].value=='Friends and family'">Friends and family </mat-radio-button>
                       <mat-radio-button value="Private"  (change)="otherChange('')" [checked]="firstFormGroup.controls['serviceFor'].value=='Private'">Private</mat-radio-button>
@@ -212,7 +212,7 @@
                     </mat-radio-group>
                   </div>
 
-                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp" *ngIf="uploadDocAndLoc">
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" *ngIf="uploadDocAndLoc">
                     <div class="upload--buss--docs--sec">
                       <label>Upload your documents</label>
                           <div class="upload--box fileupload-drop-zone"
@@ -232,7 +232,7 @@
                               <input matInput name="documents_temp" [formControl]="thirdFormGroup.controls['documents_temp']">
                               <small *ngIf="thirdFormGroup.controls['documents_temp'].hasError('required') && thirdFormGroup.controls['documents_temp'].touched" class="form-error-msg"> Please drag your document. </small>
                         </mat-form-field>
-                        <div *ngIf="documentsList" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" >
+                        <div *ngIf="documentsList" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" >
                           <h3 class="header--text fnt--16">Uploaded file/pictures/videos documents </h3>
                           <mat-chip-list class="doc--list" *ngFor="let doc of documentsList; index as i">
                             <mat-chip><a  (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove (click)="FuneralServiceDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
@@ -246,7 +246,7 @@
                           <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
                           <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
                         </div>           
-                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" *ngIf="uploadDocAndLoc">
+                  <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" *ngIf="uploadDocAndLoc">
                     <mat-form-field class="full-width no-mar ">
                       <textarea matInput placeholder="Location of the document:" [formControl]="thirdFormGroup.controls['locationOfDocuments']"></textarea>
                     </mat-form-field>

@@ -133,6 +133,7 @@
           <mat-card-title class="p-1">Trustee Info</mat-card-title>
           <mat-card-content class="p-0 border-t">
             <mat-list class="compact-list mb-1">
+              
               <mat-list-item class="">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Total Trustee Count</h6>
@@ -140,6 +141,7 @@
                   <div fxFlex="40">{{row?.deceased.trusteeCnt}}</div>
                 </div>
               </mat-list-item>
+
               <mat-list-item class="">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Total Advisor Count</h6>
@@ -147,11 +149,12 @@
                   <div fxFlex="40">{{row?.deceased.advisorCnt}}</div>
                 </div>
               </mat-list-item>
+
               <mat-list-item>
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Executor</h6>
                   <span fxFlex></span>
-                  <div>
+                  <div fxFlex="40">
                     <a *ngIf="executorData" [routerLink]="['/admin/userview',executorData?._id]" title="View">
                       {{executorData?.firstName}} {{executorData?.lastName}} {{executorData?.username}}
                     </a>
@@ -159,6 +162,7 @@
                   </div>
                 </div>
               </mat-list-item>
+
               <mat-list-item *ngIf="row.deceased.revokeId">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Revoke by</h6>

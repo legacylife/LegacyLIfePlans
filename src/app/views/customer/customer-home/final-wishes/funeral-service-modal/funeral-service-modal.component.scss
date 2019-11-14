@@ -55,3 +55,18 @@
     }
 }
 
+@media only screen and (max-width: 599px) {
+    .any--option--sec{
+        padding: 20px 0 0 5px;
+        border-top: 1px solid #c72128;
+        ::ng-deep{
+            .mat-radio-label{
+                white-space: normal;
+            }
+        }       
+    }
+    .ll--modal--footer .llp--secondary--btn{
+        margin: 10px 0 0 0 !important;
+   }
+}
+@media only screen and (min-width: 600px) and (max-width: 979px){}

@@ -10,7 +10,7 @@
       </div>
       <mat-card-content class="pt-0 border-0">
         <mat-list>
-          <mat-list-item>
+          <mat-list-item class="word--break--break--all hgt--auto">
             <mat-icon class="mr-1">email</mat-icon> {{row?.username}}
           </mat-list-item>
           <mat-list-item *ngIf="row?.userType == 'customer' && row?.phoneNumber!=''">
@@ -39,18 +39,18 @@
               <div fxFlex="40">{{row?.dateOfBirth  | date: 'yyyy/MM/dd'}}</div>
             </div>
           </mat-list-item>
-          <mat-list-item class="">
+          <mat-list-item class="msg--hgt--sec">
             <div fxLayout="row" fxFlex="100">
               <h6 class="m-0 mr-1">Address Line 1</h6>
               <span fxFlex></span>
-              <div fxFlex="40">{{row?.addressLine1}}</div>
+              <div class="line--hgt--20" fxFlex="40">{{row?.addressLine1}}</div>
             </div>
           </mat-list-item>
-          <mat-list-item class="">
+          <mat-list-item class="msg--hgt--sec">
             <div fxLayout="row" fxFlex="100">
               <h6 class="m-0 mr-1">Address Line 2</h6>
               <span fxFlex></span>
-              <div fxFlex="40">{{row?.addressLine2}}</div>
+              <div class="line--hgt--20" fxFlex="40">{{row?.addressLine2}}</div>
             </div>
           </mat-list-item>
           <mat-list-item class="">
@@ -103,11 +103,11 @@
       <mat-card-title class="p-1">Enquiry Info</mat-card-title>
       <mat-card-content class="p-0 border-t">
         <mat-list class="compact-list mb-1">
-          <mat-list-item class="">
+          <mat-list-item class="msg--hgt--sec">
             <div fxLayout="row" fxFlex="100">
               <h6 class="m-0 mr-1">Zipcodes</h6>
               <span fxFlex></span>
-              <div fxFlex="40">{{data?.zipcodes}}</div>
+              <div class="line--hgt--20 word--break--break--all" fxFlex="40">{{data?.zipcodes}}</div>
             </div>
           </mat-list-item>
           <mat-list-item class="">
@@ -126,11 +126,11 @@
               <div fxFlex="40">{{data?.toDate | date: 'yyyy/MM/dd'}}</div>
             </div>
           </mat-list-item>
-          <mat-list-item class="">
+          <mat-list-item class="msg--hgt--sec">
             <div fxLayout="row" fxFlex="100">
               <h6 class="m-0 mr-1">Message</h6>
               <span fxFlex></span>
-              <div fxFlex="40">{{data?.message}}</div>
+              <div class="line--hgt--20" fxFlex="40">{{data?.message}}</div>
             </div>
           </mat-list-item>
           <mat-list-item class="">
