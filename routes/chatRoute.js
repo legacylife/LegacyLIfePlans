@@ -118,51 +118,54 @@ async function contactList(req, res) {
           contactlist.push(makeArray);  
       })
   }
-    //console.log(" contactlist ",contactlist);
+  
     res.send(contactlist) 
 }
 
 async function chatCollection(req, res) {
-  let { query, chatCreate } = req.body;
+  let { query,chatCreate } = req.body;
   let chatCollection = [];
-  //if(query.userType=='advisor'){
-
   let chating = await chat.find({$or:[{chatfromid:query._id},{ chatwithid:query._id}]},{}).populate('chatfromid').populate('chatwithid');
 
   if(chatCreate=='create') {
-    var chatInsert = new chat();     
-    chatInsert.chatfromid = query._id;
-    chatInsert.chatwithid = query.contactId;
-    chatInsert.status = 'Active';
-    chatInsert.createdOn = new Date();
-    chatInsert.modifiedOn = new Date();
-    chating = await chatInsert.save();
-    let chatingdata = await chat.findOne({_id:chating._id},{}).populate('chatwithid');
-
-    let info = chatingdata.chatwithid;
-    let userPicture = "assets/images/arkenea/default.jpg";
-
-    if(info.profilePicture!=null){
-       let profilePicturePath = constants.s3Details.url + "/" + constants.s3Details.profilePicturesPath;
-       userPicture = profilePicturePath+info.profilePicture;
+    let chatCollectionCreate = [];
+    if(query.contactId!='undefined'){
+      chatCollectionCreate = await chat.find({$or:[{chatfromid:query._id, chatwithid:query.contactId},{ chatfromid:query.contactId, chatwithid:query._id}]},{});
     }
 
-    chatCollection = {
-      _id: chating._id,
-      chatwithid: info._id,
-      name: info.firstName+' '+info.lastName,
-      avatar: userPicture,
-      unread:3,
-      lastChatTime: chating.time,
-      status: info.loginStatus,
-      mood: ""
-    }
-   // console.log('Populate >>>>>>>>>>>>>>>>',chatCollection);
+    if(chatCollectionCreate.length==0){
+        var chatInsert = new chat();     
+        chatInsert.chatfromid = query._id;
+        chatInsert.chatwithid = query.contactId;
+        chatInsert.status = 'Active';
+        chatInsert.createdOn = new Date();
+        chatInsert.modifiedOn = new Date();
+        chating = await chatInsert.save();
+        let chatingdata = await chat.findOne({_id:chating._id},{}).populate('chatwithid');
+
+        let info = chatingdata.chatwithid;
+        let userPicture = "assets/images/arkenea/default.jpg";
+
+        if(info.profilePicture!=null){
+          let profilePicturePath = constants.s3Details.url + "/" + constants.s3Details.profilePicturesPath;
+          userPicture = profilePicturePath+info.profilePicture;
+        }
+
+        chatCollection = {
+          _id: chating._id,
+          chatwithid: info._id,
+          name: info.firstName+' '+info.lastName,
+          avatar: userPicture,
+          unread:3,
+          lastChatTime: chating.time,
+          status: info.loginStatus,
+          mood: ""
+        }
+      }
   } else {
   //  chating = await chat.updateOne({_id:chating._id},{modifiedOn:new Date()});
     chatCollection = chating;
   }    
-
   //console.log('chatCollection',chatCollection)
   res.send(chatCollection);
 }

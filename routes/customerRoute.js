@@ -166,19 +166,11 @@ function essentialProfileList(req, res) {
         res.status(401).send(resFormat.rError(err))
       } else {
         let totalTrusteeRecords = 0;
-       // console.log('personalProfileQuery',personalProfileQuery)
-       // console.log('essentialList',essentialList)
-        if(essentialList){
-          getuserFolderSize(personalProfileQuery.customerId);
-          Trustee.count(personalProfileQuery, function (err, TrusteeCount) {
-          if (TrusteeCount) {
-            totalTrusteeRecords = TrusteeCount
-          }
-          res.send(resFormat.rSuccess({ essentialList, totalRecords,totalTrusteeRecords }))
-        })
-       }else{
+        getuserFolderSize(personalProfileQuery.customerId);
+        if(essentialList.length>0){
+           totalTrusteeRecords = await commonhelper.customerTrustees(personalProfileQuery)
+        }
         res.send(resFormat.rSuccess({ essentialList, totalRecords,totalTrusteeRecords }))
-       }
       }
     }).sort(order).skip(offset).limit(limit)
   })
@@ -190,19 +182,13 @@ function essentialIdList(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
+      getuserFolderSize(idQuery.customerId);
       totalIDRecords = essentialIDList.length;
       let totalTrusteeIDRecords = 0;
-    if(totalIDRecords>0){
-      getuserFolderSize(idQuery.customerId);
-      Trustee.count(idQuery, function (err, TrusteeCount) {
-        if (TrusteeCount) {
-          totalTrusteeIDRecords = TrusteeCount
-        }
-        res.send(resFormat.rSuccess({ essentialIDList, totalIDRecords, totalTrusteeIDRecords }))
-      })
-    }else{
+      if(totalIDRecords>0){
+        totalTrusteeIDRecords = await commonhelper.customerTrustees(idQuery)
+      }
       res.send(resFormat.rSuccess({ essentialIDList, totalIDRecords, totalTrusteeIDRecords }))
-    }
     }
   }).sort(order).skip(offset).limit(limit)
 }
@@ -230,17 +216,11 @@ function essentialProfessionalsList(req, res) {
     } else {
       totalProfessionalRecords = essentialProfessionalList.length;
       let totalTrusteeProfessionalsRecords = 0;
-      if(totalProfessionalRecords>0){
-        getuserFolderSize(professionalsQuery.customerId);
-        Trustee.count(professionalsQuery, function (err, TrusteeCount) {
-          if (TrusteeCount) {
-            totalTrusteeProfessionalsRecords = TrusteeCount
-          }
-          res.send(resFormat.rSuccess({ essentialProfessionalList, totalProfessionalRecords ,totalTrusteeProfessionalsRecords}))
-        })
-      }else{
-        res.send(resFormat.rSuccess({ essentialProfessionalList, totalProfessionalRecords, totalTrusteeProfessionalsRecords }))
+      getuserFolderSize(professionalsQuery.customerId);
+      if(totalIDRecords>0){
+        totalTrusteeProfessionalsRecords = await commonhelper.customerTrustees(idQuery)
       }
+      res.send(resFormat.rSuccess({ essentialProfessionalList, totalProfessionalRecords,totalTrusteeProfessionalsRecords }))
     }
   }).sort(order).skip(offset).limit(limit)
 }
@@ -890,28 +870,40 @@ function legalEstateList(req, res) {
       } else {
         let totalEstateTrusteeRecords = 0; let totalHealthTrusteeRecords = 0; let totalPerAffTrusteeRecords = 0;
         if(totalRecords>0){
-            Trustee.find(query, function (err, trusteeList) {          
-              if(trusteeList){          
-              const EstateList = trusteeList.filter(dtype => {
-                return dtype.userAccess.EstateManagement == 'now'
-              }).map(el => el)
-               totalEstateTrusteeRecords = EstateList.length;
+          
+          if(EstateList.length>0){
+            trusteeQuery = {customerId: query.customerId,"userAccess.EstateManagement" : "now", status:"Active"};
+            totalEstateTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
+          }
+          if(HealthList.length>0){
+            trusteeQuery = {customerId: query.customerId,"userAccess.HealthcareManagement" : "now", status:"Active"};
+            totalHealthTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
+          }
+          if(PersonalAffairsList.length>0){
+            trusteeQuery = {customerId: query.customerId,"userAccess.PersonalAffairsList" : "now", status:"Active"};
+            totalPerAffTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
+          }
+          // Trustee.find(query, function (err, trusteeList) {          
+          //     if(trusteeList){          
+          //     const EstateList = trusteeList.filter(dtype => {
+          //       return dtype.userAccess.EstateManagement == 'now'
+          //     }).map(el => el)
+          //      totalEstateTrusteeRecords = EstateList.length;
 
-              const HealthList = trusteeList.filter(dtype => {
-                return dtype.userAccess.HealthcareManagement == 'now'
-              }).map(el => el)
-               totalHealthTrusteeRecords = HealthList.length;
+          //     const HealthList = trusteeList.filter(dtype => {
+          //       return dtype.userAccess.HealthcareManagement == 'now'
+          //     }).map(el => el)
+          //      totalHealthTrusteeRecords = HealthList.length;
 
-              const PersonalAffairsList = trusteeList.filter(dtype => {
-                return dtype.userAccess.PersonalAffairsManagement == 'now'
-              }).map(el => el)
-               totalPerAffTrusteeRecords = PersonalAffairsList.length;
-              }
-              res.send(resFormat.rSuccess({ legalList,totalRecords,totalEstateTrusteeRecords,totalHealthTrusteeRecords,totalPerAffTrusteeRecords}))      
-          })
-        }else{
-          res.send(resFormat.rSuccess({ legalList,totalRecords,totalEstateTrusteeRecords,totalHealthTrusteeRecords,totalPerAffTrusteeRecords}))
+          //     const PersonalAffairsList = trusteeList.filter(dtype => {
+          //       return dtype.userAccess.PersonalAffairsManagement == 'now'
+          //     }).map(el => el)
+          //      totalPerAffTrusteeRecords = PersonalAffairsList.length;
+          //     }
+          //     res.send(resFormat.rSuccess({ legalList,totalRecords,totalEstateTrusteeRecords,totalHealthTrusteeRecords,totalPerAffTrusteeRecords}))      
+          // })
         }
+        res.send(resFormat.rSuccess({ legalList,totalRecords,totalEstateTrusteeRecords,totalHealthTrusteeRecords,totalPerAffTrusteeRecords}))
       }
     }).sort(order).skip(offset).limit(limit)
   })

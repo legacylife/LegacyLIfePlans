@@ -34,17 +34,20 @@ async function chatRoom(chatId) {
         let proquery = {chats:{status:"Active"}};
       //  db.chats.update({  'chats.status': 'read' }, { $set: { 'chats.$.status': 'unread' } })
         await chat.updateOne({_id:found._id,'chats.status': 'read'},{$set : {'chats.$.status': 'read'}});
-       console.log('Chat ID --- '+chatId,'found-->',found);
+      // console.log('Chat ID --- '+chatId,'found-->',found);
     }
   return true;
 }
 
 async function userMessagesStatus(data,status) {
+  console.log('******************************************userMessagesStatus --- '+data,'-----*****************--',status);
+  let unreadCount = 0;
   if(data.userId!=='undefined'){
-      let unreadCount = await chat.count({$or:[{chatfromid:data.userId},{ chatwithid:data.userId}],"chats.status":'unread'});
+       unreadCount = await chat.count({$or:[{chatfromid:data.userId},{ chatwithid:data.userId}],"chats.status":'unread'});
+      console.log('****************userMessage***************sStatus --- '+unreadCount);
       return unreadCount;
   }
-return 0;
+  return unreadCount;
 }
 
 module.exports = { "userStatus": userStatus,"chatRoom":chatRoom,"userMessagesStatus":userMessagesStatus }
