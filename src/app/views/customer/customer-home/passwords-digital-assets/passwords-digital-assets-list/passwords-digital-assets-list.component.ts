@@ -238,6 +238,8 @@ export class PasswordsDigitalAssetsListComponent implements OnInit {
           this.getDevicesList();
         }else if(code=='ElectronicMediaManagement'){
           this.getElectronicMediaList();
+        }else if(code=='DigitalPublicationManagement'){
+          this.getDigitalPublicationList();
         }
       if (!res) {
         // If user press cancel

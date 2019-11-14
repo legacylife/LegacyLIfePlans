@@ -73,8 +73,8 @@ export class BusinessInfoComponent implements OnInit {
     }
 
     this.firstFormGroup = new FormGroup({
-      firstName: new FormControl('',Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
-      lastName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
+      firstName: new FormControl('',Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1)])),//, Validators.maxLength(50)
+      lastName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1)])),//, Validators.maxLength(50)
       yearsOfService: new FormControl('', Validators.required),
       businessName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
       businessType: new FormControl([], Validators.required),
@@ -82,9 +82,9 @@ export class BusinessInfoComponent implements OnInit {
     });
 
     this.secondFormGroup = this.fb.group({
-      addressLine1: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
+      addressLine1: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1)])),//, Validators.maxLength(50)
       addressLine2: new FormControl(''),
-      city: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
+      city: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1)])),//, Validators.maxLength(50)
       state: new FormControl('', Validators.required),
       zipcode: new FormControl('', [Validators.required,Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
       businessPhoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)])

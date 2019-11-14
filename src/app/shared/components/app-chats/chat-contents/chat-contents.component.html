@@ -72,7 +72,7 @@
       (keyup.enter)="sendMessage($event)" fxLayout="row">
       <mat-form-field class="full-width mr-1">
         <textarea matInput #msgInput ngModel placeholder="Type your message" name="message" class="inputText"
-          value=""></textarea>
+          value="" (keyup)="checkSend($event)" (keypress)="checkSend($event)"></textarea>
       </mat-form-field>
       <button mat-fab color="primary" type="submit" class="send--trriger--btn">
         <mat-icon>send</mat-icon>

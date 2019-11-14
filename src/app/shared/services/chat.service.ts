@@ -116,7 +116,16 @@ export class ChatService {
         let contact = this.contacts.find(
           contact => contact._id === contactId
         );
-        this.socket.emit('get-chat-rrom',chatInfo._id);
+        this.userInfo = this.userapi.getUserInfo();
+        this.userId = '';
+        if (this.userInfo.endUserType !== '') {
+          this.userId = this.userInfo.endUserId;
+          this.userType = this.userInfo.endUserType;
+        }
+        this.socket.emit('get-chat-rrom',chatInfo._id,this.userId);
+       // this.socket.emit('message-unread-count-',this.userId);
+       this.getMessagesUnreadCnt()
+
         this.onChatSelected.next({
           chatCollection: chatCollection,
           contact: contact
@@ -195,7 +204,7 @@ export class ChatService {
       query: Object.assign({_id:this.userId,userType:this.userType}),
     }
     let contacts =  this.userapi.chatApi(`chatting/getContacts`, req_vars);
-    console.log(contacts)
+   // console.log(contacts)
     return contacts;
   }
 
@@ -248,7 +257,7 @@ export class ChatService {
    //  return this.http.put<User>(`api/chat-user/${user._id}`, {...user})
   }
 
-  public getMessagesUnreadCnt = () => {
+  public getMessagesUnreadCnt(){
     this.userInfo = this.userapi.getUserInfo();
     this.userId = '';
     if (this.userInfo.endUserType !== '') {
@@ -272,7 +281,7 @@ export class ChatService {
       this.userType = this.userInfo.endUserType;
     }
     return Observable.create((observer) => {
-        this.socket.on('new-message-'+this.userId, (message) => {//
+        this.socket.on('new-message-'+this.userId, (message) => {
             console.log("received message")
             observer.next(message);
             this.onChatsUpdated.next(message);
@@ -295,8 +304,9 @@ export class ChatService {
       _id: chatid,
       chats: chats
     }
-    console.log('message >>> ',message)
+   // console.log('message >>> ',message)
     this.socket.emit('new-message', message);
+    this.socket.emit('message-unread-count', this.userId);
     //return this.http.put<ChatCollection>('api/chat-collections', chatCollection)
     let req_vars = {
       query: Object.assign({_id:chatid,userType:this.userType}),
