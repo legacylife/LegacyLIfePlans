@@ -147,7 +147,6 @@ function myEssentialsUpdate(req, res) {
 }
 //function to get list of essential profile details as per given criteria
 function essentialProfileList(req, res) {
-
   let { fields, offset, query,personalProfileQuery, order, limit, search } = req.body
   let totalRecords = 0
   if (search && !isEmpty(query)) {
@@ -166,10 +165,10 @@ function essentialProfileList(req, res) {
         res.status(401).send(resFormat.rError(err))
       } else {
         let totalTrusteeRecords = 0;
-        getuserFolderSize(personalProfileQuery.customerId);
         if(essentialList.length>0){
            totalTrusteeRecords = await commonhelper.customerTrustees(personalProfileQuery)
         }
+        getuserFolderSize(personalProfileQuery.customerId);
         res.send(resFormat.rSuccess({ essentialList, totalRecords,totalTrusteeRecords }))
       }
     }).sort(order).skip(offset).limit(limit)
@@ -182,12 +181,12 @@ function essentialIdList(req, res) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      getuserFolderSize(idQuery.customerId);
       totalIDRecords = essentialIDList.length;
       let totalTrusteeIDRecords = 0;
-      if(totalIDRecords>0){
+      if(essentialIDList.length>0){
         totalTrusteeIDRecords = await commonhelper.customerTrustees(idQuery)
       }
+      getuserFolderSize(idQuery.customerId);
       res.send(resFormat.rSuccess({ essentialIDList, totalIDRecords, totalTrusteeIDRecords }))
     }
   }).sort(order).skip(offset).limit(limit)
@@ -215,11 +214,11 @@ function essentialProfessionalsList(req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {
       totalProfessionalRecords = essentialProfessionalList.length;
-      let totalTrusteeProfessionalsRecords = 0;
-      getuserFolderSize(professionalsQuery.customerId);
-      if(totalIDRecords>0){
+      let totalTrusteeProfessionalsRecords = 0;     
+      if(essentialProfessionalList.length>0){
         totalTrusteeProfessionalsRecords = await commonhelper.customerTrustees(professionalsQuery)
       }
+      getuserFolderSize(professionalsQuery.customerId);
       res.send(resFormat.rSuccess({ essentialProfessionalList, totalProfessionalRecords,totalTrusteeProfessionalsRecords }))
     }
   }).sort(order).skip(offset).limit(limit)
