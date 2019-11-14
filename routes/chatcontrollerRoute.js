@@ -17,7 +17,7 @@ var auth = jwt({
 })
 
 async function userStatus(data,status) {
-    if(data.userId!='undefined'){
+    if(data.userId!=undefined){
       let found = await User.findOne({_id:data.userId},{_id:1});
       if(found){
          await User.updateOne({_id:found._id},{loginStatus:status});
@@ -40,9 +40,9 @@ async function chatRoom(chatId) {
 }
 
 async function userMessagesStatus(data,status) {
-  console.log('******************************************userMessagesStatus --- '+data,'-----*****************--',status);
+  console.log('******************************************userMessagesStatus --- '+data.userId,'-----*****************--',status);
   let unreadCount = 0;
-  if(data.userId!=='undefined'){
+  if(data.userId!==undefined){
        unreadCount = await chat.count({$or:[{chatfromid:data.userId},{ chatwithid:data.userId}],"chats.status":'unread'});
       console.log('****************userMessage***************sStatus --- '+unreadCount);
       return unreadCount;

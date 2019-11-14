@@ -1663,12 +1663,12 @@ function stripeErrorsReturns( err ) {
  * @param {*} req 
  * @param {*} res 
  */
-function logout( req, res) {
+async function logout( req, res) {
   let { fromId } = req.body,
       { userType } = req.body
     let message = '';
   if(userType){
-      User.updateOne({_id:fromId},{loginStatus:'offline'});
+      await User.updateOne({_id:fromId},{$set:{loginStatus:'offline'}});
       let activity = 'User Logout',     
       message  = resMessage.data( 607, [{key: '{field}',val: userType.toUpperCase()}, {key: '{status}',val: 'logout'}] )
     allActivityLog.updateActivityLogs(fromId, fromId, activity, message )

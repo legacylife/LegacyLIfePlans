@@ -92,8 +92,6 @@ function sendAdvisorMail(emailId,emailRef,inviteToName,inviteByName,comment) {
 
 function contactUs(req, res){
   let { query } = req.body;
-  console.log("query data >>>>>>> ",query)
-
   let fromEmail = query.email;
   let message = query.message;
 
@@ -111,7 +109,7 @@ function contactUs(req, res){
     } 
   })
   
-  let result = { "message":"Your query has been sent successfully." }
+  let result = { "message":"Your query has been submitted successfully, we will contact you shortly" }
   res.status(200).send(resFormat.rSuccess(result))
 }
 

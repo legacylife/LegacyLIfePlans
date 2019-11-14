@@ -26,8 +26,16 @@ const apps = express()
     // console.log('a user ' + data.userId +'---' + data.userType + ' connected');
      chats.userStatus(data,'online');
      var unreadCnt = chats.userMessagesStatus(data,'online');
+     console.log(`loginforonline message-unread-count`);
      io.emit('message-unread-count-'+data.userId, unreadCnt);
   });
+
+
+  socket.on('offline', function(data){
+    console.log('offline zala re--',data.userId);
+    io.emit('offlineContact'+data.userId,data.userId);
+    chats.userStatus({userId:data.userId},'offline');
+ });
   
   socket.on('new-message', (message) => {
     // console.log(`started on port: ${port}`);
@@ -50,6 +58,7 @@ const apps = express()
   socket.on('disconnect', function(){
     if(users[socket.id]!=='undefined'){
       console.log('user ' + users[socket.id] + ' disconnected');
+      io.emit('offlineContact', users[socket.id]);
       chats.userStatus({userId:users[socket.id]},'offline');
     }else{
       console.log('user ' + users[socket.id] + ' disconnected here');
