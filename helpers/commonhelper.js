@@ -51,7 +51,7 @@ const customerTrustees = (trusteeQuery) => {
         });
       
         let totalTrusteeRecords = parseInt(trusteeCnt) + parseInt(advCnt);
-        console.log(' TOTAL ********',totalTrusteeRecords,'**********customerTrustees trusteeCnt***********',trusteeCnt,'**********customerTrustees advCnt***********',advCnt)
+        console.log(' TOTAL ****************',totalTrusteeRecords,'**********customerTrustees trusteeCnt***********',trusteeCnt,'**********customerTrustees advCnt***********',advCnt)
         resolve(totalTrusteeRecords);
   })
 }
