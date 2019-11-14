@@ -161,7 +161,7 @@ function essentialProfileList(req, res) {
     if (listCount) {
       totalRecords = listCount
     }
-    myessentials.find(query, fields, function (err, essentialList) {
+    myessentials.find(query, fields,async function (err, essentialList) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
@@ -178,7 +178,7 @@ function essentialProfileList(req, res) {
 
 function essentialIdList(req, res) {
   let { fields, offset, query, idQuery, order, limit, search } = req.body
-  personalIdProof.find(query, fields, function (err, essentialIDList) {
+  personalIdProof.find(query, fields,async function (err, essentialIDList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
@@ -210,7 +210,7 @@ function viewEssentialID(req, res) {
 
 function essentialProfessionalsList(req, res) {
   let { fields, offset, query,professionalsQuery, order, limit, search } = req.body
-  MyProfessional.find(query, fields, function (err, essentialProfessionalList) {
+  MyProfessional.find(query, fields,async function (err, essentialProfessionalList) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
@@ -864,7 +864,7 @@ function legalEstateList(req, res) {
     if (listCount) {
       totalRecords = listCount
     }
-    LegalStuff.find(query, fields, function (err, legalList) {
+    LegalStuff.find(query, fields, async function (err, legalList) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {

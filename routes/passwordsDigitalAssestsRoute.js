@@ -111,7 +111,7 @@ function DeviceList(req, res) {
         res.status(401).send(resFormat.rError(err))
       } else {
         let totalTrusteeRecords = 0;
-        if(totalRecords>0){
+        if(deviceList.length>0){
           totalTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
         }
          res.send(resFormat.rSuccess({ deviceList,totalRecords,totalTrusteeRecords}))
@@ -555,7 +555,7 @@ function digitalPublicationList(req, res) {
         res.status(401).send(resFormat.rError(err))
       } else {
         let totalTrusteeRecords = 0;
-        if(totalRecords>0){
+        if(electronicMediaList.length>0){
           totalTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
         }
         res.send(resFormat.rSuccess({ electronicMediaList,totalRecords,totalTrusteeRecords}))
