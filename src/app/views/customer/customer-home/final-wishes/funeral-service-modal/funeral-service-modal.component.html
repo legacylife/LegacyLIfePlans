@@ -52,7 +52,7 @@
                     </mat-radio-group>
 
                     <mat-form-field class="full-width mt-1 no-mar" *ngIf="serviceOther">
-                      <textarea matInput placeholder="Other" [formControl]="firstFormGroup.controls['serviceForOther']"></textarea>
+                      <textarea matInput placeholder="Other" [formControl]="firstFormGroup.controls['serviceForOther']" maxlength="500"></textarea>
                     </mat-form-field>
                   </div>
 
@@ -75,7 +75,7 @@
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
                     <mat-radio-group class="llp-radio mb-0 mt-1" aria-label="Select an option">
                       <mat-form-field class="full-width no-mar">
-                        <textarea matInput placeholder="The deceased will wear:" [formControl]="firstFormGroup.controls['deceasedWear']"></textarea>
+                        <textarea matInput placeholder="The deceased will wear:" [formControl]="firstFormGroup.controls['deceasedWear']" maxlength="500"></textarea>
                       </mat-form-field>
                     </mat-radio-group>
                   </div>
@@ -102,7 +102,7 @@
                           <mat-checkbox (change)="leaderChange($event.value)" [formControl]="secondFormGroup.controls['leaderChecked']" value="1">
                             Ceremony leader </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="ceremonySec">
-                            <textarea matInput placeholder="Ceremony leader" [formControl]="secondFormGroup.controls['leaderDescrption']"></textarea>
+                            <textarea matInput placeholder="Ceremony leader" [formControl]="secondFormGroup.controls['leaderDescrption']" maxlength="500"></textarea>
                           </mat-form-field>
                         </div>
 
@@ -110,28 +110,28 @@
                           <mat-checkbox (change)="eulogistChange($event.value)" [formControl]="secondFormGroup.controls['eulogistChecked']" value="1">
                             Eulogist </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="eulogistSec">
-                            <textarea matInput placeholder="Eulogist" [formControl]="secondFormGroup.controls['eulogistdescription']"></textarea>
+                            <textarea matInput placeholder="Eulogist" [formControl]="secondFormGroup.controls['eulogistdescription']" maxlength="500"></textarea>
                           </mat-form-field>
                         </div>
 
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
                           <mat-checkbox (change)="reflectionsChange($event.value)" [formControl]="secondFormGroup.controls['reflectionsChecked']" value="1">Reflections </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="reflectionsSec">
-                            <textarea matInput placeholder="Reflections" [formControl]="secondFormGroup.controls['reflectionsDescription']"></textarea>
+                            <textarea matInput placeholder="Reflections" [formControl]="secondFormGroup.controls['reflectionsDescription']" maxlength="500"></textarea>
                           </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
                           <mat-checkbox (change)="readingsChange($event.value)" [formControl]="secondFormGroup.controls['readingsChecked']" value="1">
                             Readings </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="readingsSec">
-                            <textarea matInput placeholder="Readings" [formControl]="secondFormGroup.controls['readingsDescription']"></textarea>
+                            <textarea matInput placeholder="Readings" [formControl]="secondFormGroup.controls['readingsDescription']" maxlength="500"></textarea>
                           </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
                           <mat-checkbox (change)="musiciansChange($event.value)" [formControl]="secondFormGroup.controls['musiciansChecked']" value="1"
                             formcontrolName="musiciansChecked">Musicians </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="musiciansSec">
-                            <textarea matInput placeholder="Musicians" [formControl]="secondFormGroup.controls['musiciansDescription']"></textarea>
+                            <textarea matInput placeholder="Musicians" [formControl]="secondFormGroup.controls['musiciansDescription']" maxlength="500"></textarea>
                           </mat-form-field>
                         </div>
 
@@ -139,7 +139,7 @@
                           <mat-checkbox (change)="pallbearersChange($event.value)" value="1" [formControl]="secondFormGroup.controls['pallbearersChecked']">Pallbearers
                           </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="pallbearersSec">
-                            <textarea matInput placeholder="Pallbearers" [formControl]="secondFormGroup.controls['pallbearersDescription']"></textarea>
+                            <textarea matInput placeholder="Pallbearers" [formControl]="secondFormGroup.controls['pallbearersDescription']" maxlength="500"></textarea>
                           </mat-form-field>
                         </div>
 
@@ -199,7 +199,7 @@
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" *ngIf="visualTribute">
                     <mat-form-field class="full-width no-mar ">
-                      <textarea matInput [formControl]="thirdFormGroup.controls['peopleInVisualTribute']" placeholder="The following people will help prepare the visual tribute:"></textarea>
+                      <textarea matInput maxlength="500" [formControl]="thirdFormGroup.controls['peopleInVisualTribute']" placeholder="The following people will help prepare the visual tribute:"></textarea>
                     </mat-form-field>
                   </div>
 

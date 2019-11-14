@@ -14,14 +14,14 @@
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
             <mat-radio-group class="llp-radio mb-0 mt-1">
               <mat-form-field class="full-width no-mar">
-                <textarea matInput (keyup)="firstCapitalize($event)" placeholder="Who will orchestrate or conduct the event?" [formControl]="celebrationFormGroup.controls['eventByName']"></textarea>
+                <textarea matInput (keyup)="firstCapitalize($event)" maxlength="500" placeholder="Who will orchestrate or conduct the event?" [formControl]="celebrationFormGroup.controls['eventByName']"></textarea>
               </mat-form-field>
             </mat-radio-group>
           </div>
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
             <mat-radio-group class="llp-radio mb-0 mt-1">
               <mat-form-field class="full-width no-mar">
-                <textarea matInput (keyup)="firstCapitalize($event)" placeholder="Where should the event take place?" [formControl]="celebrationFormGroup.controls['eventPlace']"></textarea>
+                <textarea matInput (keyup)="firstCapitalize($event)" maxlength="500" placeholder="Where should the event take place?" [formControl]="celebrationFormGroup.controls['eventPlace']"></textarea>
               </mat-form-field>
             </mat-radio-group>
           </div>
@@ -36,7 +36,7 @@
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="" *ngIf="isSpeaker">
             <mat-radio-group class="llp-radio mb-0 mt-1">
               <mat-form-field class="full-width no-mar">
-                <textarea matInput (keyup)="firstCapitalize($event)" placeholder="Who?" [formControl]="celebrationFormGroup.controls['speakerName']"></textarea>
+                <textarea matInput (keyup)="firstCapitalize($event)" maxlength="100" placeholder="Who?" [formControl]="celebrationFormGroup.controls['speakerName']"></textarea>
               </mat-form-field>
             </mat-radio-group>
           </div>
@@ -45,7 +45,7 @@
             <mat-radio-group class="llp-radio mb-0 mt-1">
               <mat-form-field class="full-width no-mar">
                 <textarea matInput (keyup)="firstCapitalize($event)" 
-                  placeholder="Food and Beverages to be served (catered, potluck, menu items)" [formControl]="celebrationFormGroup.controls['foodNMenuItems']"></textarea>
+                  placeholder="Food and Beverages to be served (catered, potluck, menu items)" maxlength="500" [formControl]="celebrationFormGroup.controls['foodNMenuItems']"></textarea>
               </mat-form-field>
             </mat-radio-group>
           </div>
@@ -53,7 +53,7 @@
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
             <mat-radio-group class="llp-radio mb-0 mt-1">
               <mat-form-field class="full-width no-mar">
-                <textarea matInput (keyup)="firstCapitalize($event)" placeholder="Music to be played" [formControl]="celebrationFormGroup.controls['musicNames']"></textarea>
+                <textarea matInput (keyup)="firstCapitalize($event)" placeholder="Music to be played" maxlength="500" [formControl]="celebrationFormGroup.controls['musicNames']"></textarea>
               </mat-form-field>
             </mat-radio-group>
           </div>
@@ -62,7 +62,7 @@
             <mat-radio-group class="llp-radio mb-0 mt-1">
               <mat-form-field class="full-width no-mar">
                 <textarea matInput  [formControl]="celebrationFormGroup.controls['groupActivities']" (keyup)="firstCapitalize($event)"
-                  placeholder="What group activities would be appropriate? Open reflections/tributes, readings, any highlights, games"></textarea>
+                  placeholder="What group activities would be appropriate? Open reflections/tributes, readings, any highlights, games" maxlength="500"></textarea>
               </mat-form-field>
             </mat-radio-group>
           </div>
@@ -108,14 +108,14 @@
 
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
             <mat-form-field class="full-width no-mar ">
-              <textarea matInput (keyup)="firstCapitalize($event)" placeholder="Location of the document:" [formControl]="celebrationFormGroup.controls['documentLocation']"></textarea>
+              <textarea matInput (keyup)="firstCapitalize($event)" maxlength="500" placeholder="Location of the document:" [formControl]="celebrationFormGroup.controls['documentLocation']"></textarea>
             </mat-form-field>
           </div>
 
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
               <mat-radio-group class="llp-radio mb-0 mt-1">
                 <mat-form-field class="full-width no-mar">
-                  <textarea matInput [formControl]="celebrationFormGroup.controls['mementos']" (keyup)="firstCapitalize($event)"
+                  <textarea matInput [formControl]="celebrationFormGroup.controls['mementos']" (keyup)="firstCapitalize($event)" maxlength="500"
                     placeholder="Mementos or keepsakes to be provided"></textarea>
                 </mat-form-field>
               </mat-radio-group>

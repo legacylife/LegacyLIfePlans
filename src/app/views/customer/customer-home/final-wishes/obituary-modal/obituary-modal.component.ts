@@ -48,7 +48,7 @@ export class ObituaryModalComponent implements OnInit {
     this.docPath = filePath;
     this.documentsList = [];
     this.ObituaryFormGroup = this._formBuilder.group({
-      check: new FormControl('no',Validators.required),
+      check: new FormControl('yes',Validators.required),
       prepareTo: new FormControl(''),
       photos: new FormControl('no'),
       documents_temp: new FormControl(''),

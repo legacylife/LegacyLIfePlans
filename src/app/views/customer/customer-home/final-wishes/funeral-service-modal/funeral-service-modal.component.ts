@@ -69,11 +69,11 @@ export class FuneralServiceModalComponent implements OnInit {
     this.docPath = filePath;
     this.documentsList = [];
     this.selectAnyOneFormGroup = this._formBuilder.group({
-      funaralServiceType: new FormControl(''),
+      funaralServiceType: new FormControl('1'),
     });
 
     this.firstFormGroup = this._formBuilder.group({
-      serviceFor: new FormControl(''),
+      serviceFor: new FormControl('Friends and family'),
       otherChecked:new FormControl(''),
       serviceForOther:new FormControl(''),
       isBodyPresent: new FormControl(''),

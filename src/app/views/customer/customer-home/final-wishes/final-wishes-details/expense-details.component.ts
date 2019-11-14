@@ -8,6 +8,7 @@ import { AppLoaderService } from '../../../../../shared/services/app-loader/app-
 import { AppConfirmService } from '../../../../../shared/services/app-confirm/app-confirm.service';
 import { FuneralExpensesModalComponent } from '../funeral-expenses-modal/funeral-expenses-modal.component';
 import { s3Details } from '../../../../../config';
+import { funeralArrangementOptions } from '../../../../../selectList';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
 @Component({
   selector: 'app-customer-home',
@@ -17,6 +18,7 @@ import { DataSharingService } from 'app/shared/services/data-sharing.service';
 })
 export class ExpenseDetailsComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
+  funeralArrangementOptions:any = funeralArrangementOptions;
   userId: string;
   selectedProfileId: string = "";
   row: any;
@@ -44,6 +46,14 @@ export class ExpenseDetailsComponent implements OnInit {
     this.toUserId = this.userId
     this.getFinalWishView();
   }
+
+  getArrangementName(key){
+    let filteredTyes =this.funeralArrangementOptions.filter(dtype =>{
+      return dtype.opt_code === key
+    }).map(el => el.opt_name)[0]
+    return filteredTyes
+  }
+
   //function to get all events
   getFinalWishView = (query = {}, search = false) => {
     let profileIds = '';

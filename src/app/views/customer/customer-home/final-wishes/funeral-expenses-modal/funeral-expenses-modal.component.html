@@ -26,17 +26,17 @@
           <div fxLayout="row wrap" *ngIf="madePrearrangment">
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
-                <textarea matInput placeholder="Funeral home" [formControl]="expensesFormGroup.controls['funeralHome']"></textarea>
+                <textarea matInput placeholder="Funeral home" [formControl]="expensesFormGroup.controls['funeralHome']" maxlength="500"></textarea>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
               <mat-form-field class="full-width">
-                <textarea matInput placeholder="Funeral director" [formControl]="expensesFormGroup.controls['funeralDirector']"></textarea>
+                <textarea matInput placeholder="Funeral director" [formControl]="expensesFormGroup.controls['funeralDirector']" maxlength="500"></textarea>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
-                <textarea matInput placeholder="Address" [formControl]="expensesFormGroup.controls['address']"></textarea>
+                <textarea matInput placeholder="Address" [formControl]="expensesFormGroup.controls['address']" maxlength="500"></textarea>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
@@ -50,7 +50,7 @@
           <div fxLayout="row wrap" *ngIf="preneedContract">
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
-                <textarea matInput placeholder="The preneed contract is located:" [formControl]="expensesFormGroup.controls['preneedContractLocation']"></textarea>
+                <textarea matInput placeholder="The preneed contract is located:" [formControl]="expensesFormGroup.controls['preneedContractLocation']" maxlength="500"></textarea>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">

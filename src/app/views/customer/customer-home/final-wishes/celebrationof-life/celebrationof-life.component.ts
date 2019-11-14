@@ -53,7 +53,7 @@ export class CelebrationofLifeComponent implements OnInit {
     this.documentsList = [];
     this.celebrationFormGroup = this._formBuilder.group({
       eventByName: new FormControl('',Validators.required),
-      eventPlace: new FormControl(''),
+      eventPlace: new FormControl('',Validators.required),
       speakerAvailable: new FormControl('no'),
       speakerName: new FormControl(''),
       foodNMenuItems: new FormControl(''),

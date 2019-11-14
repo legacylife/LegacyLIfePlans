@@ -730,3 +730,18 @@ export const toppingList = [
     opt_code: "21"
   }
 ];
+
+export const funeralArrangementOptions = [
+  {
+    opt_name: "I have made prearrangements with the funeral home",
+    opt_code: "1"
+  },
+  {
+    opt_name: "I have a preneed contract",
+    opt_code: "2"
+  },
+  {
+    opt_name: "I do not have any funeral pre-arrangements",
+    opt_code: "3"
+  }
+];
