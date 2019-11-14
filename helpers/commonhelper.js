@@ -41,7 +41,7 @@ const customerTrustees = (trusteeQuery) => {
   return new Promise(async function(resolve, reject) {
         let advCnt = 0;
         let trusteeCnt = 0;
-        console.log('**********customerTrustees trusteeQuery***********',trusteeQuery)
+        //console.log('**********customerTrustees trusteeQuery***********',trusteeQuery)
         await Trustee.countDocuments(trusteeQuery, async function(err, c) {
           trusteeCnt = c;
         });
@@ -51,7 +51,7 @@ const customerTrustees = (trusteeQuery) => {
         });
       
         let totalTrusteeRecords = parseInt(trusteeCnt) + parseInt(advCnt);
-        console.log(' TOTAL ****************',totalTrusteeRecords,'**********customerTrustees trusteeCnt***********',trusteeCnt,'**********customerTrustees advCnt***********',advCnt)
+//        console.log(' TOTAL ****************',totalTrusteeRecords,'**********customerTrustees trusteeCnt***********',trusteeCnt,'**********customerTrustees advCnt***********',advCnt)
         resolve(totalTrusteeRecords);
   })
 }

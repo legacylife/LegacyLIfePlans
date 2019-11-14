@@ -17,13 +17,13 @@ const apps = express()
 
  var users = {};
  io.on('connection', (socket) => {
-   console.log('user connected...');  
+   //console.log('user connected...');  
    // var clients = io.sockets.clients();
    // var clients = io.sockets.clients('new-message'); 
    socket.on('loginforonline', function(data){
      //saving userId to array with socket ID
      users[socket.id] = data.userId;
-     console.log('a user ' + data.userId +'---' + data.userType + ' connected');
+    // console.log('a user ' + data.userId +'---' + data.userType + ' connected');
      chats.userStatus(data,'online');
      var unreadCnt = chats.userMessagesStatus(data,'online');
      io.emit('message-unread-count-'+data.userId, unreadCnt);
@@ -31,12 +31,17 @@ const apps = express()
   
   socket.on('new-message', (message) => {
     // console.log(`started on port: ${port}`);
-     console.log('new-message-'+message.chatwithid, message);
+     //console.log('new-message-'+message.chatwithid, message);
     io.emit('new-message-'+message.chatwithid, message);
   });
 
-  socket.on('get-chat-rrom', (chatId) => {
-     console.log('get-chat-rrom-'+chatId);
+  socket.on('message-unread-count', (data) => {
+  console.log(`message-unread-count`);
+  var unreadCnt = chats.userMessagesStatus(data,'online');
+     io.emit('message-unread-count-'+data.userId, unreadCnt);
+  });
+
+  socket.on('get-chat-rrom', (chatId,userId) => {
      chats.chatRoom(chatId);
    // io.emit('get-chat-rrom'+contactId);
   });
@@ -45,9 +50,9 @@ const apps = express()
   socket.on('disconnect', function(){
     if(users[socket.id]!=='undefined'){
       console.log('user ' + users[socket.id] + ' disconnected');
-      chats.userStatus({userId:socket.id},'offline');
+      chats.userStatus({userId:users[socket.id]},'offline');
     }else{
-      console.log('user ' + users[socket.id] + ' disconnected here',users.socket);
+      console.log('user ' + users[socket.id] + ' disconnected here');
     }
   });
 
