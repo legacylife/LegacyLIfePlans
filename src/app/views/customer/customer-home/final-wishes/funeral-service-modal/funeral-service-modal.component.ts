@@ -111,7 +111,7 @@ export class FuneralServiceModalComponent implements OnInit {
       needVisualTribute:new FormControl(''),
       peopleInVisualTribute:new FormControl(''),
       havePreparedVisualTribute:new FormControl(''),
-      documents:new FormControl(''),
+      
       locationOfDocuments:new FormControl(''),
       additionalPlans:new FormControl(''),
       profileId:new FormControl(''),
@@ -175,6 +175,12 @@ export class FuneralServiceModalComponent implements OnInit {
           if(this.documentsList.length>0){
             this.thirdFormGroup.controls['documents_temp'].setValue('1');
             this.documentsMissing = false; 
+          }
+
+          if (this.funeralData.serviceFor == "Other") {
+            this.serviceOther = true;
+          } else {
+            this.serviceOther = false;
           }
 
           if(this.funeralData.leaderChecked){
@@ -241,7 +247,7 @@ export class FuneralServiceModalComponent implements OnInit {
           this.thirdFormGroup.controls['needVisualTribute'].setValue(this.funeralData.needVisualTribute);
           this.thirdFormGroup.controls['peopleInVisualTribute'].setValue(this.funeralData.peopleInVisualTribute);
           this.thirdFormGroup.controls['havePreparedVisualTribute'].setValue(this.funeralData.havePreparedVisualTribute);
-          this.thirdFormGroup.controls['documents'].setValue(this.funeralData.documents);
+          
           this.thirdFormGroup.controls['locationOfDocuments'].setValue(this.funeralData.locationOfDocuments);
           this.thirdFormGroup.controls['additionalPlans'].setValue(this.funeralData.additionalPlans);
         }       
@@ -557,11 +563,12 @@ downloadFile = (filename) => {
   }
 
   changeSelection() {
-    console.log('value')
+    
     let value = this.selectAnyOneFormGroup.controls['funaralServiceType'].value
     if (value == "4") {
       this.firstServicesSec = true;
       this.allServicesSec = false;
+      this.PlanFormSubmit(this.selectAnyOneFormGroup.value,this.firstFormGroup.value,this.secondFormGroup.value,this.thirdFormGroup.value)
     } else {
       this.firstServicesSec = false;
       this.allServicesSec = true;
@@ -575,8 +582,7 @@ downloadFile = (filename) => {
 
   otherChange(field) {   
 
-    let getOtheVal = this.firstFormGroup.controls['serviceFor'].value;    
-    if (getOtheVal == true) {
+    if (field == "otherChecked") {
       this.serviceOther = true;
     } else {
       this.serviceOther = false;
@@ -640,7 +646,7 @@ downloadFile = (filename) => {
 
   vtChange(eve) {
     let getVtVal = eve.value;
-    if (getVtVal == 'yes') {
+    if (getVtVal == 'Yes') {
       this.visualTribute = true;
     } else {
       this.visualTribute = false;
@@ -650,7 +656,7 @@ downloadFile = (filename) => {
 
   prepareVtChange(selectedval) {
     let getVtVal = selectedval.value;
-    if (getVtVal == 'yes') {
+    if (getVtVal == 'Yes') {
       this.uploadDocAndLoc = true;
     } else {
       this.uploadDocAndLoc = false;

@@ -34,7 +34,7 @@
             <div class="details--body">
               <h3>{{getServiceName(row?.funaralServiceType)}}</h3>
 
-              <div fxLayout="row wrap" class="mb--10">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">The service will be for:</label>
                 </div>
@@ -43,7 +43,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">The service for other:</label>
                 </div>
@@ -52,7 +52,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">The body:</label>
                 </div>
@@ -61,7 +61,7 @@
                 </div>
               </div>
               
-              <div fxLayout="row wrap" class="mb--10">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">The casket will be:</label>
                 </div>
@@ -70,7 +70,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">The deceased will wear:</label>
                 </div>
@@ -82,7 +82,7 @@
 
 
 
-              <div fxLayout="row wrap" class="mb--10">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Service participants:</label>
                 </div>
@@ -91,7 +91,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.leaderChecked">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.leaderChecked && row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Ceremony leader:</label>
                 </div>
@@ -100,7 +100,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.eulogistChecked">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.eulogistChecked && row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Eulogist:</label>
                 </div>
@@ -109,7 +109,7 @@
                 </div>
               </div>
               
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.reflectionsChecked">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.reflectionsChecked && row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Reflections:</label>
                 </div>
@@ -118,7 +118,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.readingsChecked">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.readingsChecked && row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Readings:</label>
                 </div>
@@ -127,7 +127,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.musiciansChecked">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.musiciansChecked && row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Musicians:</label>
                 </div>
@@ -136,7 +136,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.pallbearersChecked">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.pallbearersChecked  && row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Pallbearers:</label>
                 </div>
@@ -145,7 +145,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Additional participants:</label>
                 </div>
@@ -154,7 +154,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">The following readings, poems, hymns, and music will be used during the service:</label>
                 </div>
@@ -163,7 +163,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">The following flowers will be used for the service:</label>
                 </div>
@@ -172,7 +172,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Use floral arrangements service?:</label>
                 </div>
@@ -181,7 +181,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">I would like a visual tribute:</label>
                 </div>
@@ -190,7 +190,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.needVisualTribute == 'Yes'">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.needVisualTribute == 'Yes' && row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">The following people will help prepare the visual tribute:</label>
                 </div>
@@ -199,7 +199,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">I have prepared a visual tribute:</label>
                 </div>
@@ -208,7 +208,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Additional plans and arrangements:</label>
                 </div>
@@ -217,7 +217,7 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Location of the document:</label>
                 </div>
@@ -227,7 +227,7 @@
               </div>
 
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.havePreparedVisualTribute == 'Yes'">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.havePreparedVisualTribute == 'Yes' && row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Uploaded files:</label>
                 </div>
