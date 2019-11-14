@@ -37,27 +37,33 @@ async function finalList(req, res) {
   let funeralExpenseData = await expenses.find(query);
   let obituaryData = await obituary.find(query);
   let celebrationData = await celebration.find(query);
-  let trusteeList = await Trustee.find(query);
-  let advList = await HiredAdvisors.find(query);
+  let trusteeQuery ={}
+  let totalFuneralTrusteeRecords = 0;
+  
+  if(funeralPlanData.length>0){
+    trusteeQuery = {customerId: query.customerId,"userAccess.FuneralPlansManagement" : "now", status:"Active"};
+    totalFuneralTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
+  }
 
-  trusteeList.concat(advList)
+  let totalObituaryTrusteeRecords = 0;
+  if(funeralPlanData.length>0){
+    trusteeQuery = {customerId: query.customerId,"userAccess.ObituaryManagement" : "now", status:"Active"};
+    totalObituaryTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
+  }
 
-  const FuneralPlansList = trusteeList.filter(dtype => {
-    return dtype.userAccess.FuneralPlansManagement == 'now'
-  }).map(el => el)
-  totalFuneralTrusteeRecords = FuneralPlansList.length;
+  let totalCelebrTrusteeRecords = 0;
+  if(funeralPlanData.length>0){
+    trusteeQuery = {customerId: query.customerId,"userAccess.CelebrationLifeManagement" : "now", status:"Active"};
+    totalCelebrTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
+  }
 
-  const ObituaryList = trusteeList.filter(dtype => {
-    return dtype.userAccess.ObituaryManagement == 'now'
-  }).map(el => el)
-  totalObituaryTrusteeRecords = ObituaryList.length;
-
-  const CelebrationList = trusteeList.filter(dtype => {
-    return dtype.userAccess.CelebrationLifeManagement == 'now'
-  }).map(el => el)
-  totalCelebrTrusteeRecords = CelebrationList.length;
-
-  res.send(resFormat.rSuccess({ obituaryData, funeralExpenseData, celebrationData, funeralPlanData, totalFuneralTrusteeRecords, totalObituaryTrusteeRecords, totalCelebrTrusteeRecords }))
+  let totalExpenseTrusteeRecords = 0;
+  if(funeralPlanData.length>0){
+    trusteeQuery = {customerId: query.customerId,"userAccess.FuneralExpenseManagement" : "now", status:"Active"};
+    totalExpenseTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
+  }
+  
+  res.send(resFormat.rSuccess({ obituaryData, funeralExpenseData, celebrationData, funeralPlanData, totalFuneralTrusteeRecords, totalObituaryTrusteeRecords, totalCelebrTrusteeRecords, totalExpenseTrusteeRecords }))
 }
 
 /**
