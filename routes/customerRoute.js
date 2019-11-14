@@ -875,7 +875,7 @@ function legalEstateList(req, res) {
             trusteeQuery = {customerId: query.customerId,"userAccess.HealthcareManagement" : "now", status:"Active"};
             totalHealthTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
 
-            trusteeQuery = {customerId: query.customerId,"userAccess.PersonalAffairsList" : "now", status:"Active"};
+            trusteeQuery = {customerId: query.customerId,"userAccess.PersonalAffairsManagement" : "now", status:"Active"};
             totalPerAffTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
          
           // Trustee.find(query, function (err, trusteeList) {          
