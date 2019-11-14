@@ -100,6 +100,7 @@ export class SigninComponent implements OnInit {
 
         
       } else {
+        this.loader.close();
        // this.llpCustsigninForm.controls['username'].enable();
         var emails = this.llpCustsigninForm.controls['username'].value
         //console.log('0000000000')
@@ -127,7 +128,7 @@ export class SigninComponent implements OnInit {
         }
       }      
     }, (err) => {
-
+      this.loader.close();
     })
   }
 
