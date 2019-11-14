@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewChildren, Input, OnDestroy } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewChildren, Input, OnDestroy, EventEmitter, Output } from "@angular/core";
 import { PerfectScrollbarDirective } from "ngx-perfect-scrollbar";
 import { ChatService, ChatCollection, User, Chat } from "../../../services/chat.service";
 import { NgForm } from "@angular/forms";
@@ -21,6 +21,7 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
 
   @Input('matSidenav') matSidenav;
   @ViewChild(PerfectScrollbarDirective) psContainer: PerfectScrollbarDirective;
+  @Output() hideWindowToggle = new EventEmitter();
 
   @ViewChildren("msgInput") msgInput;
   @ViewChild("msgForm") msgForm: NgForm;
@@ -103,5 +104,9 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
       this.psContainer.update();
       this.psContainer.scrollToBottom(0, 400);
     })
+  }
+
+  hideWindow() {
+    this.hideWindowToggle.emit(true)
   }
 }

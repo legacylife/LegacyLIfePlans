@@ -13,6 +13,8 @@ export class AppChatsComponent implements OnInit, OnDestroy {
   isMobile;
   screenSizeWatcher: Subscription;
   isSidenavOpen: Boolean = true;
+  chattingWindow = false;
+
   @ViewChild(MatSidenav) public sideNav: MatSidenav;
 
   activeChatUser = {
@@ -43,12 +45,13 @@ export class AppChatsComponent implements OnInit, OnDestroy {
   changeActiveUser(user) {
     this.activeChatUser = user;
   }
+  
   updateSidenav() {
-    var self = this;
     setTimeout(() => {
-      self.isSidenavOpen = !self.isMobile;
-      self.sideNav.mode = self.isMobile ? 'over' : 'side';
-    });
+      this.isSidenavOpen = !this.isMobile;
+      if(this.sideNav)
+        this.sideNav.mode = this.isMobile ? 'over' : 'side';
+    }, 100);
   }
   chatSideBarInit() {
     this.isMobile = this.media.isActive('xs') || this.media.isActive('sm');
@@ -58,4 +61,19 @@ export class AppChatsComponent implements OnInit, OnDestroy {
       this.updateSidenav();
     });
   }
+
+  chatWindowLeft(chatWindowLeftVar){
+    console.log("chatWindowLeftVar => ", chatWindowLeftVar)
+    console.log()
+    this.chattingWindow = true
+
+  }
+  chatWindowMain(chatWindowMainVar){
+    console.log("chatWindowMain => ", chatWindowMainVar)
+    console.log()
+    this.chattingWindow = false
+
+  }
+
+  
 }

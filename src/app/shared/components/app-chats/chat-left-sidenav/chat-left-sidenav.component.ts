@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, EventEmitter, Output } from "@angular/core";
 import { ChatService, User } from "../../../services/chat.service";
 import { Subscription } from "rxjs";
 @Component({
@@ -13,6 +13,9 @@ export class ChatLeftSidenavComponent implements OnInit {
   isSidenavOpen = true;
   currentUser: User = new User();
   contacts: any[];
+  chatWindow: boolean = false
+
+  @Output() chatWindowToggle = new EventEmitter();
 
   constructor(private chatService: ChatService) {}
 
@@ -42,7 +45,8 @@ export class ChatLeftSidenavComponent implements OnInit {
   }
 
   getChatByContact(contactId) { 
-    console.log(' left side bar getChatByContact ',contactId);
+    this.chatWindow = true
+    this.chatWindowToggle.emit(this.chatWindow)
     this.chatService.getChatByContact(contactId)
       .subscribe(res => {
         console.log('from sub',res);

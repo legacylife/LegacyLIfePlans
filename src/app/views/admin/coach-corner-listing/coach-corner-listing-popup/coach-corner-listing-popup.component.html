@@ -6,17 +6,17 @@
   <button mat-raised-button class="llp--primary--btn" (click)="addCategory()">+ Add Category</button>
 </div>
 <form [formGroup]="itemForm" class="llp-form-wrapper" (ngSubmit)="submit()" *ngIf="categoryList.length > 0">
-  <div class="ll--modal--body modal--body--hgt-upd">
+  <div class="ll--modal--body modal--body--hgt-upd pt-1">
     <div fxLayout="row wrap">
-      <div fxFlex="100"  class="pr-0">
+
+      <div  fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
         <mat-form-field class="full-width">
           <input class="capitalize" matInput name="title" [formControl]="itemForm.controls['title']" placeholder="Post title *">
         </mat-form-field>
       </div>
-      <div fxFlex="100"  class="pr-0">
-        <mat-form-field class="full-width">
-          <!-- <input class="capitalize" matInput name="category" [formControl]="itemForm.controls['category']" placeholder="Select Category *"> -->
-         
+
+      <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+        <mat-form-field class="full-width">         
           <mat-select [formControl]="itemForm.controls['category']" placeholder="Select Category *">
             <mat-option *ngFor="let category of categoryList" [value]="category._id">
               {{category.title}}
@@ -24,8 +24,10 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div fxFlex="100" class="pr-0">
-        <mat-label>Description</mat-label>
+      
+      <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
+        <!-- <mat-label>Description</mat-label> -->
+        <h3 class="header--text fnt--16">Description</h3>
         <mat-card class="p-0">
           <mat-card-content class="p-0">
             <ejs-richtexteditor id='defaultRTE' [height]="300" [formControl]="itemForm.controls['description']" [toolbarSettings]='tools' [quickToolbarSettings]='quickTools'></ejs-richtexteditor>
@@ -33,7 +35,7 @@
         </mat-card>
       </div>
 
-      <div fxFlex="100" class="pr-0 upload--buss--docs--sec">
+      <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="mt-1 upload--buss--docs--sec">
         <label>Upload Image *</label>
         <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" [uploader]="uploader">
           <input type="file" name="documents"  ng2FileSelect [uploader]="uploader" (change)="fileOverBase('')" />  
@@ -43,7 +45,7 @@
         <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
       </div>
 
-      <div fxFlex="100" class="pr-0" *ngIf="imageList.length" >
+      <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="mt-1" *ngIf="imageList.length" >
         <h3 class="header--text fnt--16">Uploaded Images</h3>
         <mat-chip-list class="doc--list" *ngFor="let doc of imageList; index as i">
           <mat-chip>
@@ -59,17 +61,20 @@
         </mat-chip>
       </mat-chip-list>
 
-      <div fxFlex="100" class="pr-0 progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
+      <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="mt-1 progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
         <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
         <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
       </div>
 
       <div fxFlex="100"  class="pr-0 mt-1">
-        <mat-label>Status</mat-label>
+        <h3 class="header--text fnt--16">Status</h3>
         <mat-slide-toggle class="llp--slide--toggle full-width" [formControl]="itemForm.controls['status']" [checked]="itemForm.controls['status']">{{itemForm.controls['status'].value ? 'ON' : 'OFF'}}</mat-slide-toggle>
       </div>
     </div>
+
   </div>
+
+
   <div class="ll--modal--footer text-center">
     <button mat-raised-button class="llp--primary--btn" [disabled]="itemForm.invalid || imageList.length < 1">Save</button>
    </div>

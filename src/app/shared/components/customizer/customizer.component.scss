@@ -35,7 +35,7 @@
   }
 
   .chat--wrapper{
-    width: 900px;
+    width: 300px;
     box-shadow: 0 0 5px #000 !important;
     overflow: inherit;
     ::ng-deep{
@@ -54,6 +54,8 @@
           }
         }
         .chat-sidebar-scroll{
+          position: relative;
+          height: calc(100vh - 145px);
           .inbox-nav-list{
             .mat-list-item{
               height: 57px;
@@ -67,18 +69,20 @@
       }
 
       .chat--window{
+        width: 300px;
         .chat-toolbar{
           background: #6e7734;
           .active-chat-user{
             h6{
               font-family: $font--lato--medium;
-              width: 200px;
+              width: 150px;
               overflow: hidden;
               text-overflow: ellipsis;
             }
           }
         }
         .conversations-hold{
+          height: calc(100vh - 257px);
           .single-conversation{
             .toolbar-avatar{
               flex-shrink: 0;
