@@ -43,9 +43,11 @@ export class FinalWishesComponent implements OnInit {
   trusteeFuneralCnt: any;
   trusteeObituaryCnt: any;
   trusteeCelebrationCnt: any;
+  trusteeExpenseCnt:any;
   FuneralPlansManagementSection: string = 'now';
   ObituaryManagementSection: string = 'now';
   CelebrationLifeManagementSection: string = 'now';
+  FuneralExpenseManagementSection: string = 'now';
   LegacyPermissionError: string = "You don't have access to this section";
   instruction_data: any;
   instruction_data_flag: boolean = false;
@@ -67,9 +69,11 @@ export class FinalWishesComponent implements OnInit {
         if (userLockoutPeriod || userDeceased) {
           this.trusteeLegaciesAction = false;
         }
+        this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
         this.FuneralPlansManagementSection = userAccess.FuneralPlansManagement
         this.ObituaryManagementSection = userAccess.ObituaryManagement
         this.CelebrationLifeManagementSection = userAccess.CelebrationLifeManagement
+        this.FuneralExpenseManagementSection = userAccess.FuneralExpenseManagement
       });
       this.showTrusteeCnt = false; this.shareLegacFlag = true;
     } else {
@@ -79,6 +83,7 @@ export class FinalWishesComponent implements OnInit {
       });
     }
     this.getWishList();
+
   }
   @HostListener('document:click', ['$event']) clickedOutside(event) {
     if (event.srcElement.textContent == 'Send an Invite') {
@@ -116,6 +121,7 @@ export class FinalWishesComponent implements OnInit {
         this.trusteeFuneralCnt = result.data.totalFuneralTrusteeRecords;
         this.trusteeObituaryCnt = result.data.totalObituaryTrusteeRecords
         this.trusteeCelebrationCnt = result.data.totalCelebrTrusteeRecords;
+        this.trusteeExpenseCnt = result.data.totalExpenseTrusteeRecords;
 
         this.FuneralPlansList = result.data.funeralPlanData;
         this.showFuneralPlansCnt = this.FuneralPlansList.length
@@ -149,16 +155,6 @@ export class FinalWishesComponent implements OnInit {
         } else {
           this.showCelebrationLifesListing = false;
         }
-
-        this.CelebrationLifesList = result.data.celebrationData;
-        this.showCelebrationLifesListingCnt = this.CelebrationLifesList.length
-        if (this.showCelebrationLifesListingCnt > 0) {
-          this.showCelebrationLifesListing = true;
-        } else {
-          this.showCelebrationLifesListing = false;
-        }
-
-
 
 
       }
@@ -216,6 +212,7 @@ export class FinalWishesComponent implements OnInit {
           if (this.CelebrationLifeManagementSection == 'now') {
             celebrationLifes = this.CelebrationLifesList;
           }
+          
           let shareFinalWishes = { funeralPlans: funeralPlans, obituary: obituary, celebrationLifes: celebrationLifes };
           this.sharedata.shareLegacyData(shareFinalWishes);
         }

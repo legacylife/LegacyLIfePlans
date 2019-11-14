@@ -139,6 +139,9 @@ export class ChangePicComponent implements OnInit,AfterViewInit {
   constructor( private fb: FormBuilder, private userapi: UserAPIService,private router: Router,private snack: MatSnackBar,public dialog: MatDialog,
     private confirmService: AppConfirmService,private loader: AppLoaderService, private picService: ProfilePicService,private theme: LyTheme2) { }    
   ngAfterViewInit() {
+    // if(localStorage.getItem("endUserProfilePicture")!=''){
+    //   this.profilePicture = localStorage.getItem("endUserProfilePicture");
+    // }
     // demo: Load image from URL and update position, scale, rotate
     // this is supported only for browsers
     if (Platform.isBrowser) {
@@ -171,7 +174,6 @@ export class ChangePicComponent implements OnInit,AfterViewInit {
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
-
   }
 
   onCropped(e: ImgCropperEvent) {

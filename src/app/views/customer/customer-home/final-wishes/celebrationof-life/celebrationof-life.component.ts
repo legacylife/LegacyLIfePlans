@@ -81,7 +81,7 @@ export class CelebrationofLifeComponent implements OnInit {
           this.trusteeLegaciesAction = false;
         }
         this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
-       if(userAccess.DevicesManagement!='now'){
+       if(userAccess.CelebrationLifeManagement!='now'){
         this.trusteeLegaciesAction = false;
        }           
        });   

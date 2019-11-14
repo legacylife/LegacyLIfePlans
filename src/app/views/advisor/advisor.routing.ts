@@ -51,6 +51,10 @@ import { InsuranceDetailsComponent } from '../customer/customer-home/insurance-f
 import { FinanceDetailsComponent } from '../customer/customer-home/insurance-finance-debt/finance-details/finance-details.component';
 import { FinalWishesComponent } from '../customer/customer-home/final-wishes/final-wishes-list/final-wishes-list.component';
 import { FinalWishesDetailsComponent } from '../customer/customer-home/final-wishes/final-wishes-details/final-wishes-details.component';
+import { ObituaryDetailsComponent } from '../customer/customer-home/final-wishes/final-wishes-details/obituary-details.component';
+import { CelebrationDetailsComponent } from '../customer/customer-home/final-wishes/final-wishes-details/celebration-details.component';
+import { FuneralPlansDetailsComponent } from '../customer/customer-home/final-wishes/final-wishes-details/funeral-plans-details.component';
+import { ExpenseDetailsComponent } from '../customer/customer-home/final-wishes/final-wishes-details/expense-details.component';
 import { LettersMessagesListingComponent } from '../customer/customer-home/legacy-life-letters-messages/letters-messages-listing/letters-messages-listing.component';
 import { LettersMessagesDetailsComponent } from '../customer/customer-home/legacy-life-letters-messages/letters-messages-details/letters-messages-details.component';
 import { CustomerProfileComponent } from './customer-profile/customer-profile.component';
@@ -293,10 +297,29 @@ export const AdvisorRoutes: Routes = [
             path: 'final-wishes/:id',
             component: FinalWishesComponent
           },
+
           {
             path: 'final-wishes-view/:id',
             component: FinalWishesDetailsComponent
           },
+          {
+            path: 'final-wishes-obituary-view/:id',
+            component: ObituaryDetailsComponent
+          },
+          {
+            path: 'final-wishes-celebration-of-life-view/:id',
+            component: CelebrationDetailsComponent
+          },
+          {
+            path: 'final-wishes-funeral-plans-view/:id',
+            component: FuneralPlansDetailsComponent            
+          },
+          {
+            path: 'final-wishes-expense-view/:id',
+            component: ExpenseDetailsComponent             
+          },
+
+
           {
             path: 'pets/:id',
             component: PetsListComponent

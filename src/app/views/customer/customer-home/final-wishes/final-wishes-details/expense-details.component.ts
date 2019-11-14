@@ -93,12 +93,12 @@ export class ExpenseDetailsComponent implements OnInit {
           this.trusteeLegaciesAction = false;
         }
         this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
-        if((data.subFolderName=='Funeral Plans' && userAccess.FuneralPlansManagement!='now') || (data.subFolderName=='Celebration of Life' && userAccess.CelebrationLifeManagement!='now') || (data.subFolderName=='Obituary' && userAccess.ObituaryManagement!='now')){
+       if(userAccess.FuneralExpenseManagement!='now'){
         this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
         this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
        }          
       });    
-    } else {      
+    }else{      
       if(data.customerId!=this.userId){
         this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
         this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');

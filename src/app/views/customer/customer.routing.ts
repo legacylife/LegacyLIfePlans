@@ -423,6 +423,24 @@ export const CustomerRoutes: Routes = [
             path: 'final-wishes-view/:id',
             component: FinalWishesDetailsComponent
           },
+
+          {
+            path: 'final-wishes-obituary-view/:id',
+            component: ObituaryDetailsComponent
+          },
+          {
+            path: 'final-wishes-celebration-of-life-view/:id',
+            component: CelebrationDetailsComponent
+          },
+          {
+            path: 'final-wishes-funeral-plans-view/:id',
+            component: FuneralPlansDetailsComponent            
+          },
+          {
+            path: 'final-wishes-expense-view/:id',
+            component: ExpenseDetailsComponent             
+          },
+
           {
             path: 'pets/:id',
             component: PetsListComponent

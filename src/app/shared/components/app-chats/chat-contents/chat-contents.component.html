@@ -15,6 +15,9 @@
     </div>
   </div>
 
+
+  
+
   <!-- Right side top menu -->
   <span fxFlex></span>
   <!-- <button 
@@ -34,27 +37,21 @@
 <div *ngIf="chatCollection">
   <!-- Main chat body -->
   <div class="conversations-hold" [perfectScrollbar]>
-
     <!-- single chat item -->
-    <div class="single-conversation" fxLayout="row" *ngFor="let chat of chatCollection?.chats"
-      [ngClass]="{sender: chat.contactId === activeContact._id, me: chat.contactId !== activeContact._id}">
-
-      <a *ngIf="chat.contactId !== activeContact._id" href="" class="toolbar-avatar"
-        [ngClass]="{online: user.status === 'online'}">
-        <img [src]="user?.avatar" [alt]="user?.name">
+    <div class="single-conversation" fxLayout="row" *ngFor="let chat of chatCollection?.chats" [ngClass]="{sender: chat.contactId === activeContact._id, me: chat.contactId !== activeContact._id}">
+      <a *ngIf="chat.contactId !== activeContact._id" href="" class="toolbar-avatar online"  [ngClass]="{online: user.status === 'online'}">
+        <img [src]="profilePicture" [alt]="fullName">
         <span class="status-dot"></span>
       </a>
 
-      <a *ngIf="chat.contactId === activeContact._id" href="" class="toolbar-avatar"
-        [ngClass]="{online: activeContact.status === 'online'}">
+      <a *ngIf="chat.contactId === activeContact._id" href="" class="toolbar-avatar" [ngClass]="{online: activeContact.status === 'online'}">
         <img [src]="activeContact?.avatar" [alt]="activeContact?.name">
         <span class="status-dot"></span>
       </a>
 
       <div>
         <h5 *ngIf="chat.contactId === activeContact._id" class="chat-username text-muted">{{activeContact?.name}}</h5>
-        <h5 *ngIf="chat.contactId !== activeContact._id" class="chat-username text-muted">{{user?.name}}</h5>
-
+        <h5 *ngIf="chat.contactId !== activeContact._id" class="chat-username text-muted">{{fullName}}</h5>
         <div class="conversation-msg">
           {{chat.text}}
         </div>
@@ -62,7 +59,6 @@
         <p class="chat-date text-muted">{{chat.time}}</p>
       </div>
     </div>
-
   </div>
   <mat-divider></mat-divider>
 
@@ -72,9 +68,9 @@
       (keyup.enter)="sendMessage($event)" fxLayout="row">
       <mat-form-field class="full-width mr-1">
         <textarea matInput #msgInput ngModel placeholder="Type your message" name="message" class="inputText"
-          value=""></textarea>
+          value="" (keyup)="checkSend($event)" (keypress)="checkSend($event)"></textarea>
       </mat-form-field>
-      <button mat-fab color="primary" type="submit" class="send--trriger--btn">
+      <button mat-fab color="primary" type="submit" class="send--trriger--btn" [disabled]="!isButtonEnabled">
         <mat-icon>send</mat-icon>
       </button>
     </form>

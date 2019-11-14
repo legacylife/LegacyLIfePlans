@@ -133,7 +133,7 @@ export class FuneralServiceModalComponent implements OnInit {
           this.trusteeLegaciesAction = false;
         }
         this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
-       if(userAccess.DevicesManagement!='now'){
+       if(userAccess.FuneralPlansManagement!='now'){
         this.trusteeLegaciesAction = false;
        }           
        });   

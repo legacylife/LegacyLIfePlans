@@ -214,6 +214,9 @@ export const userSections = [
     }, {
       name: 'Celebration of Life',
       code: "CelebrationLifeManagement"
+    }, {
+      name: 'Funeral Expenses',
+      code: "FuneralExpenseManagement"
     }],
   }
 ]

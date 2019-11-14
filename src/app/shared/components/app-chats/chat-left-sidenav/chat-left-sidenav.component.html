@@ -20,7 +20,7 @@
     
   </mat-nav-list>
   <mat-divider></mat-divider>
-  <mat-nav-list class="inbox-nav-list" role="list">
+  <mat-nav-list class="inbox-nav-list" role="list" *ngIf='contacts'>
     <mat-list-item
     *ngFor="let contact of contacts"
     (click)="getChatByContact(contact._id)">
@@ -35,6 +35,9 @@
       <!-- <p matLine class="text-muted">{{contact.lastChatTime  | date}}</p> -->
     </mat-list-item>
     
+  </mat-nav-list>
+    <mat-nav-list class="inbox-nav-list" role="list" *ngIf='!contacts'>
+      <mat-list-item>Contacts records Not Found!</mat-list-item>
   </mat-nav-list>
 </div>
   

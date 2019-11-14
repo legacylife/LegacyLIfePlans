@@ -96,6 +96,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
         FuneralPlansManagement: new FormControl(''), 
         ObituaryManagement: new FormControl(''), 
         CelebrationLifeManagement: new FormControl(''), 
+        FuneralExpenseManagement: new FormControl(''),
        });
 
      
@@ -225,6 +226,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
         "FuneralPlansManagement": this.secondFormGroup.controls['FuneralPlansManagement'].value,
         "ObituaryManagement": this.secondFormGroup.controls['ObituaryManagement'].value,
         "CelebrationLifeManagement": this.secondFormGroup.controls['CelebrationLifeManagement'].value,
+        "FuneralExpenseManagement": this.secondFormGroup.controls['FuneralExpenseManagement'].value,
     }];
     userAccessDatas = userAccessDatas[0];    
 
@@ -304,6 +306,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
           "FuneralPlansManagement": this.secondFormGroup.controls['FuneralPlansManagement'].value,
           "ObituaryManagement": this.secondFormGroup.controls['ObituaryManagement'].value,
           "CelebrationLifeManagement": this.secondFormGroup.controls['CelebrationLifeManagement'].value,
+          "FuneralExpenseManagement": this.secondFormGroup.controls['FuneralExpenseManagement'].value,
       }];
       userAccessDatas = userAccessDatas[0];    
 
@@ -405,6 +408,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
           this.secondFormGroup.controls['FuneralPlansManagement'].setValue(this.row.userAccess.FuneralPlansManagement);
           this.secondFormGroup.controls['ObituaryManagement'].setValue(this.row.userAccess.ObituaryManagement);
           this.secondFormGroup.controls['CelebrationLifeManagement'].setValue(this.row.userAccess.CelebrationLifeManagement);
+          this.secondFormGroup.controls['FuneralExpenseManagement'].setValue(this.row.userAccess.FuneralExpenseManagement);
   
           this.thirdFormGroup.controls['messages'].setValue(this.row.messages);
 
