@@ -21,22 +21,22 @@ export class ObituaryDetailsComponent implements OnInit {
   selectedProfileId: string = "";
   row: any;
   docPath: string;
-  re =  "/(?:\.([^.]+))?$/" ;
-  trusteeLegaciesAction:boolean=true;
-  urlData:any={};
-  toUserId:string = ''
-  subFolderName:string = ''
-  displayData:boolean=false;
-  LegacyPermissionError:string="You don't have access to this section";
+  re = "/(?:\.([^.]+))?$/";
+  trusteeLegaciesAction: boolean = true;
+  urlData: any = {};
+  toUserId: string = ''
+  subFolderName: string = ''
+  displayData: boolean = false;
+  LegacyPermissionError: string = "You don't have access to this section";
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
-    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router,private sharedata: DataSharingService
+    private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router, private sharedata: DataSharingService
   ) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
-    const filePath = this.userId+'/'+s3Details.obituaryFilePath;
+    const filePath = this.userId + '/' + s3Details.obituaryFilePath;
     this.docPath = filePath;
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
@@ -54,70 +54,72 @@ export class ObituaryDetailsComponent implements OnInit {
         query: Object.assign({ _id: profileIds })
       }
     }
-    this.userapi.apiRequest('post', 'finalWishes/view-obituary-details', req_vars).subscribe(result => {     
+    this.userapi.apiRequest('post', 'finalWishes/view-obituary-details', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
         if (result.data) {
-          if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
+          if (this.urlData.userType == 'advisor' && !result.data.customerLegacyType) {
             this.trusteeLegaciesAction = false;
-          }          
-          this.row = result.data;      
-          if(this.row){
+          }
+          this.row = result.data;
+          if (this.row) {
 
-            this.toUserId = this.row.customerId 
-            this.docPath = this.row.customerId+'/'+s3Details.obituaryFilePath;
-            this.customerisValid(this.row);    
+            this.toUserId = this.row.customerId
+            this.docPath = this.row.customerId + '/' + s3Details.obituaryFilePath;
+            this.customerisValid(this.row);
           }
         }
-      }  
+      }
     }, (err) => {
       console.error(err);
     })
   }
 
-  customerisValid(data){
+  customerisValid(data) {
+
     if (this.urlData.lastThird == "legacies") {
-      this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
-        if(userLockoutPeriod || userDeceased){
+      this.userapi.getUserAccess(data.customerId, (userAccess, userDeathFilesCnt, userLockoutPeriod, userDeceased) => {
+        if (userLockoutPeriod || userDeceased) {
           this.trusteeLegaciesAction = false;
         }
         this.sharedata.shareLegacyDeathfileCountData(userDeathFilesCnt);
-        if((data.subFolderName=='Funeral Plans' && userAccess.FuneralPlansManagement!='now') || (data.subFolderName=='Celebration of Life' && userAccess.CelebrationLifeManagement!='now') || (data.subFolderName=='Obituary' && userAccess.ObituaryManagement!='now')){
+        if (userAccess.ObituaryManagement != 'now') {
+          this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
+          this.router.navigateByUrl('/' + localStorage.getItem("endUserType") + '/dashboard');
+        }
+      });
+    } else {
+      if (data.customerId != this.userId) {
         this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
-        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
-       }          
-      });    
-    } else {      
-      if(data.customerId!=this.userId){
-        this.snack.open(this.LegacyPermissionError, 'OK', { duration: 4000 })
-        this.router.navigateByUrl('/'+localStorage.getItem("endUserType")+'/dashboard');
+        this.router.navigateByUrl('/' + localStorage.getItem("endUserType") + '/dashboard');
       }
-    } 
+    }
   }
+
   openObituaryModal() {
     let dialogRef: MatDialogRef<any> = this.dialog.open(ObituaryModalComponent, {
       width: '720px',
-      disableClose: true, 
+      disableClose: true,
     });
 
     dialogRef.afterClosed()
-    .subscribe(res => {
-      this.getFinalWishView();
-      if (!res) {
-        // If user press cancel
-        return;
-      }
-    })
+      .subscribe(res => {
+        this.getFinalWishView();
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
   }
 
 
-  deleteFinalWish(FolderNames, customerId='') {
+  deleteFinalWish(FolderNames, customerId = '') {
     let folder = "";
-    if(FolderNames == 'Funeral Plans'){ folder = 'funeral plan details'}
-    if(FolderNames == 'Obituary'){ folder = 'obituary details'}
-    if(FolderNames == 'Celebration of Life'){ folder = 'celebration of life details'}
-    var statMsg = "Are you sure you want to delete "+folder+"?"
+    if (FolderNames == 'Funeral Plans') { folder = 'funeral plan details' }
+    if (FolderNames == 'Obituary') { folder = 'obituary details' }
+    if (FolderNames == 'Celebration of Life') { folder = 'celebration of life details' }
+    var statMsg = "Are you sure you want to delete " + folder + "?"
     this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
         if (res) {
@@ -125,9 +127,9 @@ export class ObituaryDetailsComponent implements OnInit {
           var query = {};
           const req_vars = {
             query: Object.assign({ _id: this.selectedProfileId }, query),
-            fromId:this.userId,
-            toId:this.toUserId,
-            folderName:s3Details.obituaryFilePath
+            fromId: this.userId,
+            toId: this.toUserId,
+            folderName: s3Details.obituaryFilePath
           }
           this.userapi.apiRequest('post', 'finalWishes/delete-celebration-finalWish', req_vars).subscribe(result => {
             if (result.status == "error") {
@@ -135,9 +137,9 @@ export class ObituaryDetailsComponent implements OnInit {
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.loader.close();
-              if(this.urlData.userType == 'advisor'){
+              if (this.urlData.userType == 'advisor') {
                 this.router.navigate(['/', 'advisor', 'legacies', 'final-wishes', customerId])
-              }else{
+              } else {
                 this.router.navigate(['/', 'customer', 'dashboard', 'final-wishes'])
               }
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
@@ -150,44 +152,44 @@ export class ObituaryDetailsComponent implements OnInit {
       })
   }
 
-  downloadFile = (filename) => {    
+  downloadFile = (filename) => {
     let query = {};
     let req_vars = {
       query: Object.assign({ docPath: this.docPath, filename: filename }, query),
-      fromId:this.userId,
-      toId:this.toUserId,
-      folderName:s3Details.obituaryFilePath,
-      subFolderName:this.subFolderName
+      fromId: this.userId,
+      toId: this.toUserId,
+      folderName: s3Details.obituaryFilePath,
+      subFolderName: this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
       var newBlob = new Blob([res])
       var downloadURL = window.URL.createObjectURL(newBlob);
       let filePath = downloadURL;
-      var link=document.createElement('a');
+      var link = document.createElement('a');
       link.href = filePath;
       link.download = filename;
       document.body.appendChild(link);
-      link.click(); 
+      link.click();
       this.snack.dismiss();
     });
   }
 
-  DownloadZip = () => {      
+  DownloadZip = () => {
     let query = {};
-    var ZipName = "final-wishes-"+Math.floor(Math.random() * Math.floor(999999999999999))+".zip"; 
+    var ZipName = "final-wishes-" + Math.floor(Math.random() * Math.floor(999999999999999)) + ".zip";
     let req_vars = {
-      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query),
-      fromId:this.userId,
-      toId:this.toUserId,
-      folderName:s3Details.obituaryFilePath,
-      subFolderName:this.subFolderName
+      query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath, downloadFileName: ZipName, AllDocuments: this.row.documents }, query),
+      fromId: this.userId,
+      toId: this.toUserId,
+      folderName: s3Details.obituaryFilePath,
+      subFolderName: this.subFolderName
     }
     this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');
     this.userapi.download('documents/downloadZip', req_vars).subscribe(res => {
-      var downloadURL =window.URL.createObjectURL(res)
+      var downloadURL = window.URL.createObjectURL(res)
       let filePath = downloadURL;
-      var link=document.createElement('a');
+      var link = document.createElement('a');
       link.href = filePath;
       link.download = ZipName;
       link.click();

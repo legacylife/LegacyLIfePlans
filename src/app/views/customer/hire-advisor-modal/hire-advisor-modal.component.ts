@@ -90,7 +90,8 @@ export class HireAdvisorComponent implements OnInit, AfterViewInit  {
       LegacyLifeLettersMessagesManagement: new FormControl(''), 
       FuneralPlansManagement: new FormControl(''), 
       ObituaryManagement: new FormControl(''), 
-      CelebrationLifeManagement: new FormControl(''), 
+      CelebrationLifeManagement: new FormControl(''),
+      FuneralExpenseManagement: new FormControl(''), 
       profileId: new FormControl(''), 
      });
 }
@@ -135,6 +136,7 @@ checkAdvisorView(insert = null) {
             this.trusteeFormGroup.controls['FuneralPlansManagement'].setValue(this.row.userAccess.FuneralPlansManagement);
             this.trusteeFormGroup.controls['ObituaryManagement'].setValue(this.row.userAccess.ObituaryManagement);
             this.trusteeFormGroup.controls['CelebrationLifeManagement'].setValue(this.row.userAccess.CelebrationLifeManagement);
+            this.trusteeFormGroup.controls['FuneralExpenseManagement'].setValue(this.row.userAccess.FuneralExpenseManagement);
             this.trusteeFormGroup.controls['profileId'].setValue(this.selectedProfileId);
           }else{
             this.alreadyRequestSend = false;
@@ -177,6 +179,7 @@ trusteeFormGroupSubmit(insert = null) {
         "FuneralPlansManagement": this.trusteeFormGroup.controls['FuneralPlansManagement'].value,
         "ObituaryManagement": this.trusteeFormGroup.controls['ObituaryManagement'].value,
         "CelebrationLifeManagement": this.trusteeFormGroup.controls['CelebrationLifeManagement'].value,
+        "FuneralExpenseManagement": this.trusteeFormGroup.controls['FuneralExpenseManagement'].value,
     }];
     userAccessDatas = userAccessDatas[0];    
    // console.log("userAccessDatas",userAccessDatas)

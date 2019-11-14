@@ -168,6 +168,11 @@ import { ChatService } from './services/chat.service';
 import { AppChatsComponent } from './components/app-chats/app-chats.component';
 import { ChatLeftSidenavComponent } from './components/app-chats/chat-left-sidenav/chat-left-sidenav.component';
 import { ChatContentsComponent } from './components/app-chats/chat-contents/chat-contents.component';
+
+import { FuneralServiceModalComponent } from 'app/views/customer/customer-home/final-wishes/funeral-service-modal/funeral-service-modal.component';  
+import { CelebrationofLifeComponent } from 'app/views/customer/customer-home/final-wishes/celebrationof-life/celebrationof-life.component';
+import { ObituaryModalComponent } from 'app/views/customer/customer-home/final-wishes/obituary-modal/obituary-modal.component';
+import { FuneralExpensesModalComponent } from 'app/views/customer/customer-home/final-wishes/funeral-expenses-modal/funeral-expenses-modal.component';
 /* 
   Only Required if you want to use Angular Landing
   (https://themeforest.net/item/angular-landing-material-design-angular-app-landing-page/21198258)
@@ -253,6 +258,10 @@ const classesToInclude = [
   InsuranceModalComponent,
   FinanceModalComponent,
   DebtModalComponent,
+  FuneralServiceModalComponent, 
+  CelebrationofLifeComponent,
+  ObituaryModalComponent, 
+  FuneralExpensesModalComponent,
   FinalWishesComponent,
   FinalWishesDetailsComponent,
   ObituaryDetailsComponent,
@@ -319,7 +328,8 @@ const classesToInclude = [
     DevicesModalComponent,ElectronicMediaModalComponent,DigitalPublicationsModalComponent,AssetsModelComponent,
     VehicleModelComponent,RealEstateModelComponent,TimeCapsuleMoalComponent,legalStuffModalComponent,InsuranceModalComponent,
     FinanceModalComponent,DebtModalComponent,FinalWishesFormModalComponent,LettersMessagesModelComponent, InviteComponent, CcShareViaEmailModelComponent,
-    AdvertisementPaymentModalComponent,AppChatsComponent,ChatLeftSidenavComponent,ChatContentsComponent
+    AdvertisementPaymentModalComponent,AppChatsComponent,ChatLeftSidenavComponent, ChatContentsComponent, FuneralServiceModalComponent, CelebrationofLifeComponent,
+    ObituaryModalComponent, FuneralExpensesModalComponent
   ],
   providers: [
     ThemeService,
