@@ -869,19 +869,15 @@ function legalEstateList(req, res) {
       } else {
         let totalEstateTrusteeRecords = 0; let totalHealthTrusteeRecords = 0; let totalPerAffTrusteeRecords = 0;
         if(totalRecords>0){
-          
-          if(EstateList.length>0){
             trusteeQuery = {customerId: query.customerId,"userAccess.EstateManagement" : "now", status:"Active"};
             totalEstateTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
-          }
-          if(HealthList.length>0){
+   
             trusteeQuery = {customerId: query.customerId,"userAccess.HealthcareManagement" : "now", status:"Active"};
             totalHealthTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
-          }
-          if(PersonalAffairsList.length>0){
+
             trusteeQuery = {customerId: query.customerId,"userAccess.PersonalAffairsList" : "now", status:"Active"};
             totalPerAffTrusteeRecords = await commonhelper.customerTrustees(trusteeQuery)
-          }
+         
           // Trustee.find(query, function (err, trusteeList) {          
           //     if(trusteeList){          
           //     const EstateList = trusteeList.filter(dtype => {
