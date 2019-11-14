@@ -65,12 +65,9 @@
                 <mat-label>The following funeral services have been prepaid</mat-label>
 
                 <mat-select multiple [formControl]="expensesFormGroup.controls['prepaidFuneralServices']">
-                  <mat-option *ngFor="let topping of toppingList" [value]="topping.opt_code">{{topping.opt_name}}</mat-option>
+                  <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
                 </mat-select>
 
-                <mat-select name="businessType" [formControl]="AddressForm.controls['businessType']" multiple>
-                  <mat-option *ngFor="let btl of businessTypeList" [value]="btl">{{btl}}</mat-option>
-                </mat-select>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb-1">

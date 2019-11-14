@@ -643,92 +643,11 @@ export const funeralOptions = [
   }
 ];
 
-export const toppingList = [ 
-  
-  {
-    opt_name: "Basic professional services",
-    opt_code: "1"
-  },
-  {
-    opt_name: "Casket",
-    opt_code: "2"
-  },
-  {
-    opt_name: "Alternative Container",
-    opt_code: "3"
-  },
-  {
-    opt_name: "Urn for cremains",
-    opt_code: "4"
-  },
-  {
-    opt_name: "Body preparation",
-    opt_code: "5"
-  },
-  {
-    opt_name: "Embalming",
-    opt_code: "6"
-  },
-  {
-    opt_name: "Public or family viewing or visitation",
-    opt_code: "7"
-  },
-  {
-    opt_name: "Service at the mortuary",
-    opt_code: "8"
-  },
-  {
-    opt_name: "Crematory fee",
-    opt_code: "9"
-  },
-  {
-    opt_name: "Transportation of the body",
-    opt_code: "10"
-  },
-  {
-    opt_name: "Graveside service",
-    opt_code: "11"
-  },
-  {
-    opt_name: "Obituary preparation",
-    opt_code: "12"
-  },
-  {
-    opt_name: "Copies of death certificate",
-    opt_code: "13"
-  },
-  {
-    opt_name: "Burial clothing",
-    opt_code: "14"
-  },
-  {
-    opt_name: "Recording of service",
-    opt_code: "15"
-  },
-  {
-    opt_name: "Preparation of the photo DVD or CD",
-    opt_code: "16"
-  },
-  {
-    opt_name: "Memorial book",
-    opt_code: "17"
-  },
-  {
-    opt_name: "Memorial folders or service bulletin",
-    opt_code: "18"
-  },
-  {
-    opt_name: "Limousine for family members",
-    opt_code: "19"
-  },
-  {
-    opt_name: "Outer burial vault or grave liner",
-    opt_code: "20"
-  },
-  {
-    opt_name: "Grave plot",
-    opt_code: "21"
-  }
+export const toppingList = [   
+  "Basic professional services","Casket","Alternative Container","Urn for cremains","Body preparation","Embalming","Public or family viewing or visitation","Service at the mortuary",
+  "Crematory fee","Transportation of the body","Graveside service","Obituary preparation","Copies of death certificate","Burial clothing","Recording of service",
+  "Preparation of the photo DVD or CD","Memorial book","Memorial folders or service bulletin","Limousine for family members","Outer burial vault or grave liner",
+  "Grave plot"
 ];
 
 export const funeralArrangementOptions = [
