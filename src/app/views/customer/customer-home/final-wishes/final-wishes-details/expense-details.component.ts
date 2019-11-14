@@ -205,4 +205,8 @@ export class ExpenseDetailsComponent implements OnInit {
       this.snack.dismiss();
     });
   }
+
+  getStringWithSpace(stringVal){
+    return stringVal.join(", ")
+  }
 }

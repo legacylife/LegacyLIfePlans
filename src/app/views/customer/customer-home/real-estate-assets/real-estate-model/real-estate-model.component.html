@@ -22,7 +22,7 @@
 
         <mat-form-field class="full-width">
           <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="address" placeholder="Address"
-            [formControl]="realEstateForm.controls['address']">
+            [formControl]="realEstateForm.controls['address']" maxlength="100">
         </mat-form-field>
 
         <mat-form-field class="full-width">

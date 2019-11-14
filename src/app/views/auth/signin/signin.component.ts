@@ -53,7 +53,7 @@ export class SigninComponent implements OnInit {
     // };
     this.loader.open();
     this.userapi.apiRequest('post', 'auth/signin', signInData).subscribe(result => {
-      this.loader.close();
+    
       if (result.status=="success") {      
         userData = result.data;
         localStorage.setItem("endUserId", userData.userId);
@@ -87,17 +87,20 @@ export class SigninComponent implements OnInit {
         //this.snack.open(result.data.message, 'OK', { duration: 4000 })
         if(userData.userType=='customer'){
           setTimeout(() => {
+            this.loader.close();
             this.router.navigate(['/', 'customer', 'dashboard']);
           }, 2000);  //5s
           
         }else{
           setTimeout(() => {
+            this.loader.close();
             this.router.navigate(['/', 'advisor', 'dashboard'])
           }, 2000);  //5s          
         }  
 
         
       } else {
+        this.loader.close();
        // this.llpCustsigninForm.controls['username'].enable();
         var emails = this.llpCustsigninForm.controls['username'].value
         //console.log('0000000000')
@@ -125,7 +128,7 @@ export class SigninComponent implements OnInit {
         }
       }      
     }, (err) => {
-
+      this.loader.close();
     })
   }
 

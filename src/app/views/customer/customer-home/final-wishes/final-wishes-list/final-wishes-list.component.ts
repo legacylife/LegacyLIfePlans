@@ -13,7 +13,7 @@ import { FuneralServiceModalComponent } from '../funeral-service-modal/funeral-s
 import { CelebrationofLifeComponent } from '../celebrationof-life/celebrationof-life.component';
 import { ObituaryModalComponent } from '../obituary-modal/obituary-modal.component';
 import { FuneralExpensesModalComponent } from '../funeral-expenses-modal/funeral-expenses-modal.component';
-import { funeralOptions } from '../../../../../selectList';
+import { funeralOptions, funeralArrangementOptions } from '../../../../../selectList';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './final-wishes-list.component.html',
@@ -23,6 +23,7 @@ import { funeralOptions } from '../../../../../selectList';
 export class FinalWishesComponent implements OnInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   funeralOptions = funeralOptions;
+  funeralArrangementOptions:any = funeralArrangementOptions;
   showFuneralPlansListing = true;
   showFuneralPlansCnt: any;
   showObituaryListing = true;
@@ -85,6 +86,13 @@ export class FinalWishesComponent implements OnInit {
         this.getWishList();
       }, 2000);
     }
+  }
+
+  getArrangementName(key){
+    let filteredTyes =this.funeralArrangementOptions.filter(dtype =>{
+      return dtype.opt_code === key
+    }).map(el => el.opt_name)[0]
+    return filteredTyes
   }
 
   getServiceName(key) {

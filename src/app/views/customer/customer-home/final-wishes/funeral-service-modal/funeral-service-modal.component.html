@@ -46,8 +46,8 @@
 
                     <mat-radio-group class="llp-radio mb-0" aria-label="Select an option" [formControl]="firstFormGroup.controls['serviceFor']">
                       <div class="checkbox-label">The service will be for:</div>
-                      <mat-radio-button value="Friends and family" [checked]="firstFormGroup.controls['serviceFor'].value=='Friends and family'">Friends and family </mat-radio-button>
-                      <mat-radio-button value="Private" [checked]="firstFormGroup.controls['serviceFor'].value=='Private'">Private</mat-radio-button>
+                      <mat-radio-button value="Friends and family"  (change)="otherChange('')" [checked]="firstFormGroup.controls['serviceFor'].value=='Friends and family'">Friends and family </mat-radio-button>
+                      <mat-radio-button value="Private"  (change)="otherChange('')" [checked]="firstFormGroup.controls['serviceFor'].value=='Private'">Private</mat-radio-button>
                       <mat-radio-button value="Other" [checked]="firstFormGroup.controls['serviceFor'].value=='Other'" (change)="otherChange('otherChecked')">Other</mat-radio-button>
                     </mat-radio-group>
 

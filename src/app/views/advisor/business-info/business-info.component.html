@@ -80,7 +80,7 @@
                   <p class="login-header-desc">Enter the same address as shown on your business certificate</p>
                 </div>
                 <mat-form-field class="full-width">
-                  <input  (keyup)="firstCapitalize($event)" matInput name="addressLine1" placeholder="Address Line 1*" value="" [formControl]="secondFormGroup.controls['addressLine1']">
+                  <input  (keyup)="firstCapitalize($event)" matInput name="addressLine1" placeholder="Address Line 1*" value="" [formControl]="secondFormGroup.controls['addressLine1']" maxlength="100">
                   <mat-icon matTooltip="Please enter your address" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['addressLine1'].hasError('required') && secondFormGroup.controls['addressLine1'].touched"
                     class="red--alert">help_outline</mat-icon>
                     <mat-icon matTooltip="Please enter valid address." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['addressLine1'].invalid && secondFormGroup.controls['addressLine1'].touched"
@@ -88,7 +88,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input (keyup)="firstCapitalize($event)" matInput name="addressLine2" placeholder="Address Line 2 (optional)" value="" [formControl]="secondFormGroup.controls['addressLine2']">
+                  <input (keyup)="firstCapitalize($event)" matInput name="addressLine2" placeholder="Address Line 2 (optional)" value="" [formControl]="secondFormGroup.controls['addressLine2']" maxlength="100">
                   <mat-icon matTooltip="Please enter valid address Line 2." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['addressLine2'].invalid && secondFormGroup.controls['addressLine2'].touched"
                   class="red--alert">help_outline</mat-icon>   
                 </mat-form-field>
