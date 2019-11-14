@@ -169,7 +169,7 @@ function essentialProfileList(req, res) {
            totalTrusteeRecords = await commonhelper.customerTrustees(personalProfileQuery)
         }
         console.log(trusteeQuery,'**********customerTrustees trusteeQuery***********',totalTrusteeRecords)
-        getuserFolderSize(personalProfileQuery.customerId);
+       // getuserFolderSize(personalProfileQuery.customerId);
         res.send(resFormat.rSuccess({ essentialList, totalRecords,totalTrusteeRecords }))
       }
     }).sort(order).skip(offset).limit(limit)
@@ -188,7 +188,7 @@ function essentialIdList(req, res) {
         totalTrusteeIDRecords = await commonhelper.customerTrustees(idQuery)
       }
       console.log(idQuery,'**********customerTrustees trusteeQuery***********',totalTrusteeIDRecords)
-      getuserFolderSize(idQuery.customerId);
+    //  getuserFolderSize(idQuery.customerId);
       res.send(resFormat.rSuccess({ essentialIDList, totalIDRecords, totalTrusteeIDRecords }))
     }
   }).sort(order).skip(offset).limit(limit)
@@ -221,7 +221,7 @@ function essentialProfessionalsList(req, res) {
         totalTrusteeProfessionalsRecords = await commonhelper.customerTrustees(professionalsQuery)
       }
       console.log(professionalsQuery,'**********customerTrustees trusteeQuery***********',totalTrusteeProfessionalsRecords)
-      getuserFolderSize(professionalsQuery.customerId);
+     // getuserFolderSize(professionalsQuery.customerId);
       res.send(resFormat.rSuccess({ essentialProfessionalList, totalProfessionalRecords,totalTrusteeProfessionalsRecords }))
     }
   }).sort(order).skip(offset).limit(limit)
