@@ -218,7 +218,7 @@ function essentialProfessionalsList(req, res) {
       let totalTrusteeProfessionalsRecords = 0;
       getuserFolderSize(professionalsQuery.customerId);
       if(totalIDRecords>0){
-        totalTrusteeProfessionalsRecords = await commonhelper.customerTrustees(idQuery)
+        totalTrusteeProfessionalsRecords = await commonhelper.customerTrustees(professionalsQuery)
       }
       res.send(resFormat.rSuccess({ essentialProfessionalList, totalProfessionalRecords,totalTrusteeProfessionalsRecords }))
     }
