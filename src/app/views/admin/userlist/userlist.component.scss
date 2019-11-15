@@ -69,3 +69,24 @@
     margin-bottom: 0 !important;
     color: #808271 !important;
 }
+.msg--hgt--sec{
+    margin: 12px 0px;
+    height: auto !important;
+}
+.line--hgt--20{
+    line-height: 20px;
+}
+.dowloaded--names{
+    display: flex;
+    align-items: center;
+    margin: 0;
+
+    .mat-icon{
+        color: #626a38;
+        margin-right: 10px;
+    }
+
+    &:hover{
+        color: #626a38;
+    }
+}

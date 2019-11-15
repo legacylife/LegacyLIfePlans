@@ -196,7 +196,7 @@
         }
         .doc--list{
             .mat-chip{
-                height: 33px;
+                height: auto;
                 border-radius: 4px;
                 font-size: 16px;
                 color: #000000;
@@ -205,7 +205,7 @@
                 background-color: #f6f7f7;
                 display: flex;
                 width: 100%;
-                margin: 0 0 10px 0;
+                margin: 0 10px 10px 0;
                 justify-content: space-between;
 
                 a{
@@ -289,6 +289,10 @@
     }
 }
 
+.white--space--normal{
+    white-space: normal !important;
+    word-break: break-all;
+}
 
 
 

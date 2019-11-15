@@ -45,18 +45,18 @@
                   <div fxFlex="40">{{row?.dateOfBirth  | date: 'yyyy/MM/dd'}}</div>
                 </div>
               </mat-list-item>
-              <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
+              <mat-list-item  class="msg--hgt--sec" *ngIf="row?.userType != 'sysadmin'">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Address Line 1</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.addressLine1}}</div>
+                  <div fxFlex="40" class="line--hgt--20">{{row?.addressLine1}}</div>
                 </div>
               </mat-list-item>
-              <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
-                <div fxLayout="row" fxFlex="100">
+              <mat-list-item class="msg--hgt--sec" *ngIf="row?.userType != 'sysadmin'">
+                <div fxLayout="row" fxFlex="100" >
                   <h6 class="m-0 mr-1">Address Line 2</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.addressLine2}}</div>
+                  <div fxFlex="40" class="line--hgt--20">{{row?.addressLine2}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
@@ -89,11 +89,11 @@
                 </div>
                 </div>
               </mat-list-item>
-              <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
+              <mat-list-item class="msg--hgt--sec" *ngIf="row?.userType != 'sysadmin'">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Rejected Reason</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.approveRejectReason}}</div>
+                  <div fxFlex="40" class="line--hgt--20">{{row?.approveRejectReason}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
@@ -205,11 +205,10 @@
               <mat-card-title class="p-1">Uploaded documents</mat-card-title>
               <mat-card-content class="p-0 border-t">
                 <mat-list class="compact-list mb-1" *ngFor="let doc of row.advisorDocuments">
-                  <mat-list-item class="">
+                  <mat-list-item  class="msg--hgt--sec">
                     <div fxLayout="row" fxFlex="100">
-                      <h6 class="m-0 mr-1" (click)="downloadFile(doc.tmpName)"><mat-icon class="mat-icon material-icons" (click)="downloadFile(doc.tmpName)">file_copy</mat-icon>{{doc.title}} 1212</h6>
-                         <!-- <a href="{{dpPath}}{{doc.tmpName}}" target="_blank"></a></a> -->
-                      <span fxFlex></span>                      
+                      <p class="dowloaded--names" (click)="downloadFile(doc.tmpName)"><mat-icon class="mat-icon material-icons" (click)="downloadFile(doc.tmpName)">file_copy</mat-icon>{{doc.title}}</p>
+                     
                     </div>
                   </mat-list-item>
                 </mat-list>
