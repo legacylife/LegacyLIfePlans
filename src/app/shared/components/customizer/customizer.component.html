@@ -1,9 +1,9 @@
-<div id="app-customizer">
+<div id="app-customizer" *ngIf="invalidPage">
   <div class="handle" *ngIf="!isCustomizerOpen">
     <button  mat-fab color="warn" class="message--trriger--btn" 
     (click)="isCustomizerOpen = true">
       <mat-icon>message</mat-icon>
-      <div class="total--msgs"> 99+ </div>
+      <div class="total--msgs" *ngIf="unreadCount"> {{unreadCount}} </div>
     </button>
   </div>
 

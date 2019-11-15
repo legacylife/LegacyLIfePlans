@@ -7,19 +7,18 @@
 </mat-toolbar>
 <div [perfectScrollbar] class="chat-sidebar-scroll">
   <!-- Left side contact list -->
-  <mat-nav-list class="inbox-nav-list" role="list">
+  <mat-nav-list class="inbox-nav-list" role="list" style="display:none;">
     <mat-list-item *ngFor="let info of currentUser?.chatInfo" (click)="getChatByContact(info.contactId)">
       <a mat-list-avatar [ngClass]="{online: (info.status) === 'online'}" class="toolbar-avatar">
         <img [src]="info.avatar" alt="">
         <span class="status-dot"></span>
       </a>
-      <!-- <span class="menuitem-badge mat-bg-warn ng-star-inserted">{{info.unread}}</span> -->
+      <span class="menuitem-badge mat-bg-warn ng-star-inserted">{{info.unread}}</span>
       <h6 matLine>{{info.contactName}}</h6>
       <p matLine class="text-muted">{{info.lastChatTime  | date}}</p>
-    </mat-list-item>
-    
+    </mat-list-item>    
   </mat-nav-list>
-  <mat-divider></mat-divider>
+  <!-- <mat-divider></mat-divider> -->
   <mat-nav-list class="inbox-nav-list" role="list" *ngIf='contacts'>
     <mat-list-item
     *ngFor="let contact of contacts"
@@ -31,6 +30,7 @@
         <img [src]="contact.avatar" alt="">
         <span class="status-dot"></span>
       </a>
+      <span class="menuitem-badge mat-bg-warn ng-star-inserted">{{contact.unread}}</span>
       <h6 matLine>{{contact.name}}</h6>
       <!-- <p matLine class="text-muted">{{contact.lastChatTime  | date}}</p> -->
     </mat-list-item>

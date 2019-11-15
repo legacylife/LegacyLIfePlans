@@ -11,6 +11,7 @@ export interface Chat {
   time: Date | string;
   contactId: User["_id"];
   chatwithid: User["chatwithid"];
+  status: string;
 }
 
 export interface ChatCollection {
@@ -46,7 +47,7 @@ export class ChatService {
   private socket;    
   onContactSelected = new BehaviorSubject<any>(null);
   onUserUpdated = new Subject<User>();
-
+  chatwindow:string;
   onChatSelected = new BehaviorSubject<any>(null);
   onChatsUpdated = new Subject<any>();
   private userInfo: any
@@ -71,7 +72,7 @@ export class ChatService {
   }
 
   ngOnInit() {
-
+   
   }
 
   ngOnDestroy() {
@@ -122,9 +123,10 @@ export class ChatService {
           this.userId = this.userInfo.endUserId;
           this.userType = this.userInfo.endUserType;
         }
-        this.socket.emit('get-chat-rrom',chatInfo._id,this.userId);
+        this.chatwindow = chatInfo._id;
+        this.socket.emit('get-chat-room',chatInfo._id,this.userId);
        // this.socket.emit('message-unread-count-',this.userId);
-       this.getMessagesUnreadCnt()
+      
 
         this.onChatSelected.next({
           chatCollection: chatCollection,
@@ -265,19 +267,38 @@ export class ChatService {
       this.userType = this.userInfo.endUserType;
     }
     return Observable.create((observer) => {
-        this.socket.on('message-unread-count-'+this.userId, (message) => {
-            console.log("received message unread count :-",this.userId,message)
-           // observer.next(message);
+        this.socket.on('message-unread-count-'+this.userId, (count) => {
+            console.log("get message unread count :-",this.userId,'getMessagesUnreadCnt',count)
+            observer.next(count);
            // this.onChatsUpdated.next(message);
         });
-
-        this.socket.on('message-unread-count'+this.userId, (message) => {
+       
+        this.socket.on('message-unread-count', (message) => {
           console.log("****** received message unread count :-",message)
-         // observer.next(message);
+          observer.next(message);
          // this.onChatsUpdated.next(message);
-      });
+        });
     });
   }
+
+
+  // public putMessagesUnreadCnt(contactId){
+  //   console.log('Put',contactId)
+  //   this.userInfo = this.userapi.getUserInfo();
+  //   this.userId = '';
+  //   if (this.userInfo.endUserType !== '') {
+  //     this.userId = this.userInfo.endUserId;
+  //     this.userType = this.userInfo.endUserType;
+  //   }
+  //   return Observable.create((observer) => {
+  //       this.socket.on('message-unread-count-'+contactId, (count) => {
+  //           console.log("put  message unread count :-",this.userId,'countcountcount',count)
+  //           observer.next(count);
+  //          // this.onChatsUpdated.next(message);
+  //       });        
+  //   });
+  // }
+  // this.putMessagesUnreadCnt(message.contactId);
 
   public getMessages = () => {
     this.userInfo = this.userapi.getUserInfo();
@@ -288,14 +309,22 @@ export class ChatService {
     }
     return Observable.create((observer) => {
         this.socket.on('new-message-'+this.userId, (message) => {
-            console.log("received message");
+            console.log("received message****",message,'****chatWindow******',this.chatwindow);
+            // this.socket.on('message-unread-count-'+this.userId, (unreadCnt) => {
+            //   console.log(" here I am getMessages  #@#@#  message-unread-count",this.userId,unreadCnt)        
+            // });
             observer.next(message);
             this.onChatsUpdated.next(message);
         });
-
+       
         this.socket.on('message-unread-count-'+this.userId, (unreadCnt) => {
-          console.log("getMessages  #@#@#  message-unread-count",this.userId,unreadCnt)        
+          this.getMessagesUnreadCnt();
+          //console.log("getMessages  #@#@#  message-unread-count",this.userId,unreadCnt)        
         });
+
+        // this.socket.on('message-unread-count', (unreadCnt) => {
+        //   console.log("here getMessages message-unread-count",this.userId,unreadCnt)        
+        // });
  
        this.socket.on('offlineContact', (offlineId) => {
         console.log("getMessages  #@#@#   offlineContact----",offlineId)      
@@ -313,8 +342,10 @@ export class ChatService {
       this.userType = this.userInfo.endUserType;
     }
     let message = chats[0];
+  
     if(chats.length>0){
       message =  chats[(chats.length-1)];
+      //message.status = this.userId
     }
     const chatCollection: ChatCollection = {
       _id: chatid,
@@ -324,6 +355,7 @@ export class ChatService {
     this.socket.emit('new-message', message);
     this.socket.emit('message-unread-count', this.userId);
     //return this.http.put<ChatCollection>('api/chat-collections', chatCollection)
+    
     let req_vars = {
       query: Object.assign({_id:chatid,userType:this.userType}),
       message:message,

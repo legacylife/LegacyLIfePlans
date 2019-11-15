@@ -3,7 +3,9 @@ import { PerfectScrollbarDirective } from "ngx-perfect-scrollbar";
 import { ChatService, ChatCollection, User, Chat } from "../../../services/chat.service";
 import { NgForm } from "@angular/forms";
 import { Subscription } from 'rxjs';
+import { serverUrl } from './../../../../config'
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
+import * as io from 'socket.io-client';
 @Component({
   selector: "app-chat-contents",
   templateUrl: "./chat-contents.component.html",
@@ -20,7 +22,8 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   messages: any[] = []
   isButtonEnabled:boolean = false;
   fullName : string = '';
-
+  userId : string;
+  userType : string;
   @Input('matSidenav') matSidenav;
   @ViewChild(PerfectScrollbarDirective) psContainer: PerfectScrollbarDirective;
   @Output() hideWindowToggle = new EventEmitter();
@@ -41,7 +44,12 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
     if(localStorage.getItem('endUserFirstName') != "undefined" && localStorage.getItem('endUserFirstName') != null && localStorage.getItem('endUserLastName') != "undefined"){
        this.fullName = localStorage.getItem('endUserFirstName')+' '+localStorage.getItem('endUserLastName');
     }
-   
+    this.userId = localStorage.getItem("endUserId");
+    this.userType = localStorage.getItem("endUserType");
+
+    // var socket = io(serverUrl);
+    // console.log('message-unread-count call from chat content')
+    // socket.emit('message-unread-count',{userId:this.userId,userType:this.userType});
     // Listen for user update
    this.userUpdateSub = this.chatService.onUserUpdated.subscribe(user => {
       //console.log('ngOnInit chat user',user)
@@ -92,11 +100,12 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   }
 
   sendMessage(e) {
-    ////chatwithid: this.activeContact._id,   
+    if(this.msgForm.form.value.message.trim()!=''){
     const chat: Chat = {
       contactId: this.chatService.user._id,
       chatwithid: this.activeContact._id,
       text: this.msgForm.form.value.message,
+      status:'unread',
       time: new Date().toISOString()
     };
     this.chatCollection.chats.push(chat);
@@ -112,7 +121,7 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
     //   text: `Hi, I\'m ${this.activeContact.name}. Your imaginary friend.`,
     //   time: new Date().toISOString()
     // })
-    
+   }
   }
 
   initMsgForm() {

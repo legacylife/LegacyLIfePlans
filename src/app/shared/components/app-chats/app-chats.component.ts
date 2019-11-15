@@ -63,16 +63,10 @@ export class AppChatsComponent implements OnInit, OnDestroy {
   }
 
   chatWindowLeft(chatWindowLeftVar){
-    console.log("chatWindowLeftVar => ", chatWindowLeftVar)
-    console.log()
     this.chattingWindow = true
-
   }
   chatWindowMain(chatWindowMainVar){
-    console.log("chatWindowMain => ", chatWindowMainVar)
-    console.log()
     this.chattingWindow = false
-
   }
 
   

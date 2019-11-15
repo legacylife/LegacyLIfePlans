@@ -14,10 +14,6 @@
       <h6 class="m-0 font-normal fz-1">{{activeContact.name}}</h6>
     </div>
   </div>
-
-
-  
-
   <!-- Right side top menu -->
   <span fxFlex></span>
   <!-- <button 
@@ -39,7 +35,7 @@
   <div class="conversations-hold" [perfectScrollbar]>
     <!-- single chat item -->
     <div class="single-conversation" fxLayout="row" *ngFor="let chat of chatCollection?.chats" [ngClass]="{sender: chat.contactId === activeContact._id, me: chat.contactId !== activeContact._id}">
-      <a *ngIf="chat.contactId !== activeContact._id" href="" class="toolbar-avatar online"  [ngClass]="{online: user.status === 'online'}">
+      <a *ngIf="chat.contactId !== activeContact._id" href="" class="toolbar-avatar online"  [ngClass]="online">
         <img [src]="profilePicture" [alt]="fullName">
         <span class="status-dot"></span>
       </a>
