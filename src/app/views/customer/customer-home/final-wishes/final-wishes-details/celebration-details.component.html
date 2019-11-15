@@ -28,7 +28,7 @@
                 <mat-icon>library_add</mat-icon>Celebration Of Life
               </div>
               <span class="last--modified--by">Last modified:
-                <span>{{row?.createdOn | date: 'MMM dd, yyyy'}}</span>
+                <span>{{row?.modifiedOn | date: 'MMM dd, yyyy'}}</span>
               </span>
             </div>
             <div class="details--body">
@@ -88,7 +88,26 @@
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
                   <label class="normal--label">{{row?.groupActivities != '' ? row?.groupActivities : "-"}}</label>
                 </div>
-              </div>                 
+              </div>  
+              
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">Mementos or keepsakes to be provided:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{row?.mementos != '' ? row?.mementos : "-"}}</label>
+                </div>
+              </div>
+
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">How will the event be paid for?  Please provide details and payment options such as viatical insurance settlement, life insurance, savings, sock/mattress money, etc. and location:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{row?.paymentOptions != '' ? row?.paymentOptions : "-"}}</label>
+                </div>
+              </div>
+
               <div fxLayout="row wrap" class="mb--10">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Uploaded files:</label>

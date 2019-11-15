@@ -25,10 +25,10 @@
           <div class="details--wrapper mb-1">
             <div class="details--header">
               <div class="d-flex align--items--center">
-                <mat-icon>library_add</mat-icon>Funeral Plans
+                <mat-icon>library_add</mat-icon>Funeral or Memorial Service Arrangements
               </div>
               <span class="last--modified--by">Last modified:
-                <span>{{row?.createdOn | date: 'MMM dd, yyyy'}}</span>
+                <span>{{row?.modifiedOn | date: 'MMM dd, yyyy'}}</span>
               </span>
             </div>
             <div class="details--body">
@@ -43,12 +43,12 @@
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4 && row?.serviceFor == 'Other'">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">The service for other:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.serviceForOther}}</label>
+                  <label class="normal--label">{{row?.serviceForOther != "" ? row?.serviceForOther : "-"}}</label>
                 </div>
               </div>
 
@@ -75,7 +75,7 @@
                   <label class="strong--label">The deceased will wear:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.deceasedWear}}</label>
+                  <label class="normal--label">{{row?.deceasedWear != "" ? row?.deceasedWear : "-"}}</label>
                 </div>
               </div>
 
@@ -87,61 +87,61 @@
                   <label class="strong--label">Service participants:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.serviceParticipants}}</label>
+                  <label class="normal--label">{{row?.serviceParticipants != "" ? row?.serviceParticipants : "-" }}</label>
                 </div>
               </div>
 
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.leaderChecked && row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
-                  <label class="strong--label">Ceremony leader:</label>
+                  <label class="strong--label">Ceremony leader details:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.leaderDescrption}}</label>
+                  <label class="normal--label">{{row?.leaderDescrption != "" ? row?.leaderDescrption : "-" }}</label>
                 </div>
               </div>
 
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.eulogistChecked && row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
-                  <label class="strong--label">Eulogist:</label>
+                  <label class="strong--label">Eulogist details:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.eulogistdescription}}</label>
+                  <label class="normal--label">{{row?.eulogistdescription != "" ? row?.eulogistdescription : "-"}}</label>
                 </div>
               </div>
               
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.reflectionsChecked && row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
-                  <label class="strong--label">Reflections:</label>
+                  <label class="strong--label">Reflections details:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.reflectionsDescription}}</label>
+                  <label class="normal--label">{{row?.reflectionsDescription != "" ? row?.reflectionsDescription : "-"}}</label>
                 </div>
               </div>
 
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.readingsChecked && row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
-                  <label class="strong--label">Readings:</label>
+                  <label class="strong--label">Readings details:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.readingsDescription}}</label>
+                  <label class="normal--label">{{row?.readingsDescription != "" ? row?.readingsDescription : "-"}}</label>
                 </div>
               </div>
 
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.musiciansChecked && row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
-                  <label class="strong--label">Musicians:</label>
+                  <label class="strong--label">Musicians details:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.musiciansDescription}}</label>
+                  <label class="normal--label">{{row?.musiciansDescription != "" ? row?.musiciansDescription : "-"}}</label>
                 </div>
               </div>
 
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.pallbearersChecked  && row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
-                  <label class="strong--label">Pallbearers:</label>
+                  <label class="strong--label">Pallbearers details:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.pallbearersDescription}}</label>
+                  <label class="normal--label">{{row?.pallbearersDescription != "" ? row?.pallbearersDescription : "-"}}</label>
                 </div>
               </div>
 
@@ -150,7 +150,7 @@
                   <label class="strong--label">Additional participants:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.additionalParticipants}}</label>
+                  <label class="normal--label">{{row?.additionalParticipants != "" ? row?.additionalParticipants : "-"}}</label>
                 </div>
               </div>
 
@@ -159,7 +159,7 @@
                   <label class="strong--label">The following readings, poems, hymns, and music will be used during the service:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.servicesUsed}}</label>
+                  <label class="normal--label">{{row?.servicesUsed != "" ? row?.servicesUsed : "-"}}</label>
                 </div>
               </div>
 
@@ -168,7 +168,7 @@
                   <label class="strong--label">The following flowers will be used for the service:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.flowersUsed}}</label>
+                  <label class="normal--label">{{row?.flowersUsed != "" ? row?.flowersUsed : "-"}}</label>
                 </div>
               </div>
 
@@ -195,7 +195,7 @@
                   <label class="strong--label">The following people will help prepare the visual tribute:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.peopleInVisualTribute}}</label>
+                  <label class="normal--label">{{row?.peopleInVisualTribute != "" ? row?.peopleInVisualTribute : "-"}}</label>
                 </div>
               </div>
 
@@ -213,16 +213,16 @@
                   <label class="strong--label">Additional plans and arrangements:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.additionalPlans}}</label>
+                  <label class="normal--label">{{row?.additionalPlans != "" ? row?.additionalPlans : "-"}}</label>
                 </div>
               </div>
 
-              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.havePreparedVisualTribute == 'Yes'  && row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Location of the document:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.locationOfDocuments}}</label>
+                  <label class="normal--label">{{row?.locationOfDocuments != "" ? row?.locationOfDocuments : "-"}}</label>
                 </div>
               </div>
 

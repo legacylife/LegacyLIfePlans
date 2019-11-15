@@ -90,7 +90,7 @@
               <small *ngIf="celebrationFormGroup.controls['documents_temp'].hasError('required') && celebrationFormGroup.controls['documents_temp'].touched" class="form-error-msg"> Please drag your document. </small>
           </mat-form-field>
     
-          <div *ngIf="documentsList" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" >
+          <div *ngIf="documentsList.length > 0" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" >
             <h3 class="header--text fnt--16">Uploaded document</h3>
             <mat-chip-list class="doc--list" *ngFor="let doc of documentsList; index as i">
                 <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove  (click)="documentDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>

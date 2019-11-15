@@ -83,22 +83,22 @@ export class FuneralServiceModalComponent implements OnInit {
 
     this.secondFormGroup = this._formBuilder.group({
       serviceParticipants:new FormControl(''),
-      leaderChecked: new FormControl(''),
+      leaderChecked: new FormControl(false),
       leaderDescrption:new FormControl(''),
 
-      eulogistChecked: new FormControl(''),
+      eulogistChecked: new FormControl(false),
       eulogistdescription:new FormControl(''),     
       
-      reflectionsChecked: new FormControl(''),
+      reflectionsChecked: new FormControl(false),
       reflectionsDescription: new FormControl(''),
 
-      readingsChecked:new FormControl(''),
+      readingsChecked:new FormControl(false),
       readingsDescription: new FormControl(''),
 
-      musiciansChecked:new FormControl(''),
+      musiciansChecked:new FormControl(false),
       musiciansDescription:new FormControl(''),    
       
-      pallbearersChecked: new FormControl(''),
+      pallbearersChecked: new FormControl(false),
       pallbearersDescription:new FormControl(''),
 
       additionalParticipants:new FormControl(''),
@@ -107,10 +107,10 @@ export class FuneralServiceModalComponent implements OnInit {
 
     });
     this.thirdFormGroup = this._formBuilder.group({
-      isFloralArrangements:new FormControl(''),
-      needVisualTribute:new FormControl(''),
-      peopleInVisualTribute:new FormControl(''),
-      havePreparedVisualTribute:new FormControl(''),
+      isFloralArrangements:new FormControl('No'),
+      needVisualTribute:new FormControl('No'),
+      peopleInVisualTribute:new FormControl('No'),
+      havePreparedVisualTribute:new FormControl('No'),
       
       locationOfDocuments:new FormControl(''),
       additionalPlans:new FormControl(''),

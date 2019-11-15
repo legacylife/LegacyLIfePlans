@@ -35,7 +35,7 @@ export class CelebrationDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
-    const filePath = this.userId+'/'+s3Details.obituaryFilePath;
+    const filePath = this.userId+'/'+s3Details.celebrationofLifeFilePath;
     this.docPath = filePath;
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
@@ -64,7 +64,7 @@ export class CelebrationDetailsComponent implements OnInit {
           this.row = result.data;      
           if(this.row){
             this.toUserId = this.row.customerId 
-            this.docPath = this.row.customerId+'/'+s3Details.obituaryFilePath;
+            this.docPath = this.row.customerId+'/'+s3Details.celebrationofLifeFilePath;
             this.customerisValid(this.row);    
           }
         }
@@ -124,7 +124,7 @@ export class CelebrationDetailsComponent implements OnInit {
             query: Object.assign({ _id: this.selectedProfileId }, query),
             fromId:this.userId,
             toId:this.toUserId,
-            folderName:s3Details.obituaryFilePath
+            folderName:s3Details.celebrationofLifeFilePath
           }
           this.userapi.apiRequest('post', 'finalWishes/delete-celebration-finalWish', req_vars).subscribe(result => {
             if (result.status == "error") {
@@ -153,7 +153,7 @@ export class CelebrationDetailsComponent implements OnInit {
       query: Object.assign({ docPath: this.docPath, filename: filename }, query),
       fromId:this.userId,
       toId:this.toUserId,
-      folderName:s3Details.obituaryFilePath,
+      folderName:s3Details.celebrationofLifeFilePath,
       subFolderName:this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
@@ -177,7 +177,7 @@ export class CelebrationDetailsComponent implements OnInit {
       query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query),
       fromId:this.userId,
       toId:this.toUserId,
-      folderName:s3Details.obituaryFilePath,
+      folderName:s3Details.celebrationofLifeFilePath,
       subFolderName:this.subFolderName
     }
     this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');

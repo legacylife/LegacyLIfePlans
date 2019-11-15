@@ -99,47 +99,47 @@
 
                       <div fxLayout="row wrap">
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
-                          <mat-checkbox (change)="leaderChange($event.value)" [formControl]="secondFormGroup.controls['leaderChecked']" value="1">
+                          <mat-checkbox (change)="leaderChange($event.value)" [formControl]="secondFormGroup.controls['leaderChecked']" [checked]="secondFormGroup.controls['leaderChecked'].value">
                             Ceremony leader </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="ceremonySec">
-                            <textarea matInput placeholder="Ceremony leader" [formControl]="secondFormGroup.controls['leaderDescrption']" maxlength="500"></textarea>
+                            <textarea matInput placeholder="Ceremony leader details" [formControl]="secondFormGroup.controls['leaderDescrption']" maxlength="500"></textarea>
                           </mat-form-field>
                         </div>
 
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
-                          <mat-checkbox (change)="eulogistChange($event.value)" [formControl]="secondFormGroup.controls['eulogistChecked']" value="1">
+                          <mat-checkbox (change)="eulogistChange($event.value)" [formControl]="secondFormGroup.controls['eulogistChecked']" [checked]="secondFormGroup.controls['eulogistChecked'].value">
                             Eulogist </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="eulogistSec">
-                            <textarea matInput placeholder="Eulogist" [formControl]="secondFormGroup.controls['eulogistdescription']" maxlength="500"></textarea>
+                            <textarea matInput placeholder="Eulogist details" [formControl]="secondFormGroup.controls['eulogistdescription']" maxlength="500"></textarea>
                           </mat-form-field>
                         </div>
 
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
-                          <mat-checkbox (change)="reflectionsChange($event.value)" [formControl]="secondFormGroup.controls['reflectionsChecked']" value="1">Reflections </mat-checkbox>
+                          <mat-checkbox (change)="reflectionsChange($event.value)" [formControl]="secondFormGroup.controls['reflectionsChecked']" [checked]="secondFormGroup.controls['reflectionsChecked'].value">Reflections </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="reflectionsSec">
-                            <textarea matInput placeholder="Reflections" [formControl]="secondFormGroup.controls['reflectionsDescription']" maxlength="500"></textarea>
+                            <textarea matInput placeholder="Reflections details" [formControl]="secondFormGroup.controls['reflectionsDescription']" maxlength="500"></textarea>
                           </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
-                          <mat-checkbox (change)="readingsChange($event.value)" [formControl]="secondFormGroup.controls['readingsChecked']" value="1">
+                          <mat-checkbox (change)="readingsChange($event.value)" [formControl]="secondFormGroup.controls['readingsChecked']" [checked]="secondFormGroup.controls['readingsChecked'].value">
                             Readings </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="readingsSec">
-                            <textarea matInput placeholder="Readings" [formControl]="secondFormGroup.controls['readingsDescription']" maxlength="500"></textarea>
+                            <textarea matInput placeholder="Readings details" [formControl]="secondFormGroup.controls['readingsDescription']" maxlength="500"></textarea>
                           </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
-                          <mat-checkbox (change)="musiciansChange($event.value)" [formControl]="secondFormGroup.controls['musiciansChecked']" value="1"
+                          <mat-checkbox (change)="musiciansChange($event.value)" [formControl]="secondFormGroup.controls['musiciansChecked']"  [checked]="secondFormGroup.controls['musiciansChecked'].value"
                             formcontrolName="musiciansChecked">Musicians </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="musiciansSec">
-                            <textarea matInput placeholder="Musicians" [formControl]="secondFormGroup.controls['musiciansDescription']" maxlength="500"></textarea>
+                            <textarea matInput placeholder="Musicians details" [formControl]="secondFormGroup.controls['musiciansDescription']" maxlength="500"></textarea>
                           </mat-form-field>
                         </div>
 
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb--5">
-                          <mat-checkbox (change)="pallbearersChange($event.value)" value="1" [formControl]="secondFormGroup.controls['pallbearersChecked']">Pallbearers
+                          <mat-checkbox (change)="pallbearersChange($event.value)" value="1" [formControl]="secondFormGroup.controls['pallbearersChecked']" [checked]="secondFormGroup.controls['pallbearersChecked'].value">Pallbearers
                           </mat-checkbox>
                           <mat-form-field class="full-width mt-1 no-mar" *ngIf="pallbearersSec">
-                            <textarea matInput placeholder="Pallbearers" [formControl]="secondFormGroup.controls['pallbearersDescription']" maxlength="500"></textarea>
+                            <textarea matInput placeholder="Pallbearers details" [formControl]="secondFormGroup.controls['pallbearersDescription']" maxlength="500"></textarea>
                           </mat-form-field>
                         </div>
 
@@ -232,7 +232,7 @@
                               <input matInput name="documents_temp" [formControl]="thirdFormGroup.controls['documents_temp']">
                               <small *ngIf="thirdFormGroup.controls['documents_temp'].hasError('required') && thirdFormGroup.controls['documents_temp'].touched" class="form-error-msg"> Please drag your document. </small>
                         </mat-form-field>
-                        <div *ngIf="documentsList" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" >
+                        <div *ngIf="documentsList.length > 0" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" >
                           <h3 class="header--text fnt--16">Uploaded file/pictures/videos documents </h3>
                           <mat-chip-list class="doc--list" *ngFor="let doc of documentsList; index as i">
                             <mat-chip><a  (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove (click)="FuneralServiceDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>

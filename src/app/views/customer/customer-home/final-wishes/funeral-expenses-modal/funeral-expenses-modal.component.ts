@@ -191,6 +191,13 @@ export class FuneralExpensesModalComponent implements OnInit {
     })
   }
 
+  onlyNumbers(event)
+  {  
+    if ((event.which != 46 ) && (event.which < 48 || event.which > 57)) {
+      event.preventDefault();
+    }
+  }
+
   ExpenseFormSubmit(profileInData = null) {
     var query = {};
     var proquery = {};  

@@ -38,7 +38,7 @@ export class ExpenseDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
-    const filePath = this.userId+'/'+s3Details.obituaryFilePath;
+    const filePath = this.userId+'/'+s3Details.funeralExpensesFilePath;
     this.docPath = filePath;
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
@@ -138,7 +138,7 @@ export class ExpenseDetailsComponent implements OnInit {
             query: Object.assign({ _id: this.selectedProfileId }, query),
             fromId:this.userId,
             toId:this.toUserId,
-            folderName:s3Details.obituaryFilePath
+            folderName:s3Details.funeralExpensesFilePath
           }
           this.userapi.apiRequest('post', 'finalWishes/delete-funeral-expense-finalwish', req_vars).subscribe(result => {
             if (result.status == "error") {
@@ -167,7 +167,7 @@ export class ExpenseDetailsComponent implements OnInit {
       query: Object.assign({ docPath: this.docPath, filename: filename }, query),
       fromId:this.userId,
       toId:this.toUserId,
-      folderName:s3Details.obituaryFilePath,
+      folderName:s3Details.funeralExpensesFilePath,
       subFolderName:this.subFolderName
     }
     this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
@@ -191,7 +191,7 @@ export class ExpenseDetailsComponent implements OnInit {
       query: Object.assign({ _id: this.selectedProfileId, docPath: this.docPath,downloadFileName:ZipName,AllDocuments:this.row.documents }, query),
       fromId:this.userId,
       toId:this.toUserId,
-      folderName:s3Details.obituaryFilePath,
+      folderName:s3Details.funeralExpensesFilePath,
       subFolderName:this.subFolderName
     }
     this.snack.open("Downloading zip file is in process, Please wait some time!", 'OK');

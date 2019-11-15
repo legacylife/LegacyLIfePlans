@@ -30,14 +30,12 @@
              <!-- <div class="cust--user--details mt-1" *ngIf="checkAccess(legal._id)"> -->
               <div class="name--letters">{{legal?.title.charAt(0)+legal?.title.charAt(1)}}</div>
                 <div class="user--name" [routerLink]="[dynamicRoute+'letters-messages-view', legal._id]">
-                  <h5>{{legal?.title}}</h5> 
+                  <h5>{{legal?.title}}, <span class="trustee--count mb-0"><a class="no--of--trustee" *ngIf="showTrusteeCnt"  (click)="openManageTrusteeModal('Letters & Messages','LegacyLifeLettersMessagesManagement',legal?._id,legal?.title,true)">Trustees ({{getTrusteeCount(legal?._id)}})</a></span></h5> 
                   <p class="mb-0">Last modified:
                     <span>{{legal.modifiedOn | date: 'yyyy/MM/dd'}}</span>
                   </p>
                 </div>
-                <div class="user--share">
-                    <p class="mb-0"><a class="no--of--trustee" *ngIf="showTrusteeCnt"  (click)="openManageTrusteeModal('Letters & Messages','LegacyLifeLettersMessagesManagement',legal?._id,legal?.title,true)">Trustees ({{getTrusteeCount(legal?._id)}})</a></p>
-                </div>
+                
               <!-- <div class="user--share">
                 <p class="mb-0"><button mat-raised-button class="llp--primary--btn llp--primary--sm--btn" (click)="openLettersMessagesModal()">+ Add</button></p>
               </div> -->

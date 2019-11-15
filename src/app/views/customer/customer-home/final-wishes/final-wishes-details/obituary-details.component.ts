@@ -131,7 +131,7 @@ export class ObituaryDetailsComponent implements OnInit {
             toId: this.toUserId,
             folderName: s3Details.obituaryFilePath
           }
-          this.userapi.apiRequest('post', 'finalWishes/delete-celebration-finalWish', req_vars).subscribe(result => {
+          this.userapi.apiRequest('post', 'finalWishes/delete-obituary-finalWish', req_vars).subscribe(result => {
             if (result.status == "error") {
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
