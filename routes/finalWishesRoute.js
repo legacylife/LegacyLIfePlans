@@ -33,10 +33,10 @@ const allActivityLog = require('./../helpers/allActivityLogs')
 
 async function finalList(req, res) {
   let { fields, query } = req.body
-  let funeralPlanData = await funeralplan.find(query);
-  let funeralExpenseData = await expenses.find(query);
-  let obituaryData = await obituary.find(query);
-  let celebrationData = await celebration.find(query);
+  let funeralPlanData = await funeralplan.find(query).sort({modifiedOn : -1});
+  let funeralExpenseData = await expenses.find(query).sort({modifiedOn : -1});
+  let obituaryData = await obituary.find(query).sort({modifiedOn : -1});
+  let celebrationData = await celebration.find(query).sort({modifiedOn : -1});
   let trusteeQuery ={}
   let totalFuneralTrusteeRecords = 0;
   
