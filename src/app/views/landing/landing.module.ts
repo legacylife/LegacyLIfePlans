@@ -33,6 +33,7 @@ import { TermsOfUseComponent } from './terms-of-use/terms-of-use.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CountUpModule } from 'countup.js-angular2';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { VideoModalComponent } from './video-modal/video-modal.component';
 console.log('Landing Module..')
 @NgModule({
   imports: [
@@ -68,7 +69,9 @@ console.log('Landing Module..')
     HomeComponent,
     CustAboutUsComponent,
     PrivacyPolicyComponent,
-    TermsOfUseComponent
-  ]
+    TermsOfUseComponent,
+    VideoModalComponent
+  ], 
+  entryComponents: [VideoModalComponent]
 })
 export class LandingModule { }

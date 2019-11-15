@@ -7,7 +7,8 @@ import { debounce } from 'lodash';
 import { UserAPIService } from 'app/userapi.service';
 import { serverUrl, s3Details } from '../../../config';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray} from "@angular/forms";
-import { MatSnackBar, MatDialog } from "@angular/material";
+import { MatSnackBar, MatDialog, MatDialogRef } from "@angular/material";
+import { VideoModalComponent } from '../video-modal/video-modal.component';
 const customerBucketLink = s3Details.awsserverUrl+s3Details.assetsPath+'customer/';
 @Component({
   selector: 'app-landing-home-page',
@@ -109,7 +110,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   customerFreeAccessDays:Number = 0
   customerFreeTrialStatus:Boolean = false
 
-  constructor(private router: Router, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar) { }
+  constructor(private dialog: MatDialog, private router: Router, private userapi: UserAPIService, private fb: FormBuilder, private snack: MatSnackBar) { }
+  
 
   ngOnInit() {
     this.bucketLink = customerBucketLink;
@@ -254,5 +256,12 @@ export class HomeComponent implements OnInit, OnDestroy {
         freeTrialPeriodSettings = returnArr.data
     this.customerFreeAccessDays  = Number(freeTrialPeriodSettings.customerFreeAccessDays)
     this.customerFreeTrialStatus  = freeTrialPeriodSettings.customerStatus == 'On'? true : false
+  }
+
+  openVideoModal() {
+    let dialogRef: MatDialogRef<any> = this.dialog.open(VideoModalComponent, {
+      width: '500px',
+    
+    })
   }
 }
