@@ -79,7 +79,13 @@ function obituaryFormUpdate(req, res) {
   folderName = folderName.replace('/', '');
   let subFolderName = '';
   var logData = {}
-  logData.fileName = proquery.check;
+  if(proquery.check == 'yes'){
+    logData.fileName = 'Prepared an obituary';
+  }
+  else {
+    logData.fileName = 'I don’t have an obituary';
+  }
+  //logData.fileName = proquery.check;
   logData.folderName = 'finalwishes';
   logData.subFolderName = 'obituary';
 
@@ -581,7 +587,7 @@ function expensesFormUpdate(req, res) {
   folderName = folderName.replace('/', '');
   let subFolderName = '';
   var logData = {}
-  logData.fileName = proquery.check;
+  logData.fileName = constants.funeralOptions[proquery.haveFuneralArrangement];
   logData.folderName = 'finalwishes';
   logData.subFolderName = 'expenses';
 
