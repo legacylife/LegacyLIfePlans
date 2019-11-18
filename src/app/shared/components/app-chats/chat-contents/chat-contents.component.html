@@ -58,12 +58,16 @@
   <mat-divider></mat-divider>
   <!-- Input box and send button -->
   <div class="chat-input-actions">
-    <form #msgForm="ngForm" class="inputForm llp-form-wrapper" (ngSubmit)="sendMessage($event)"
+    <form #msgForm="ngForm" class="inputForm llp-form-wrapper align--items--center" (ngSubmit)="sendMessage($event)"
       (keyup.enter)="sendMessage($event)" fxLayout="row">
-      <mat-form-field class="full-width mr-1 no-mar no-pad-mat">
+      <!-- <mat-form-field class="full-width mr-1 no-mar no-pad-mat">
         <textarea matInput #msgInput ngModel placeholder="Type your message" name="message" class="inputText"
           value="" (keyup)="checkSend($event)" (keypress)="checkSend($event)"></textarea>
-      </mat-form-field>
+      </mat-form-field> -->
+
+      <textarea #msgInput ngModel placeholder="Type your message" name="message" class="type--text inputText"
+      value="" (keyup)="checkSend($event)" (keypress)="checkSend($event)"></textarea>
+
       <button mat-fab color="primary" type="submit" class="send--trriger--btn" [disabled]="!isButtonEnabled">
         <mat-icon>send</mat-icon>
       </button>

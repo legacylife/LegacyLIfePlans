@@ -1,3 +1,5 @@
+@import 'llp-global-styles.scss';
+
 .send--trriger--btn{
     background-color: #c72128 !important;
     display: flex;
@@ -6,7 +8,7 @@
     padding: 0;
     border-radius: 50%;
     width: 42px;
-    margin: 15px 0 0 0 !important;
+    margin: 0 !important;
 
     ::ng-deep{
       .mat-button-wrapper{
@@ -20,4 +22,18 @@
 .toolbar-avatar.online > .status-dot {
   background: #f44336 !important;
   color: #ffffff !important;
+}
+.type--text{
+  width: 100%;
+  margin-right: 15px;
+  border-color: #dadce0;
+  padding: 7px;
+  resize: none;
+  height: 35px;
+  font-family: $font--lato--regular;
+  font-size: 14px;
+  border-radius: 2px;
+  &:focus{
+    outline:1px solid #6e7634;
+  }
 }

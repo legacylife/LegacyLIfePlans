@@ -19,11 +19,11 @@
       justify-content: center;
       color: #fff;
       position: absolute;
-      top: -15px;
-      right: -11px;
+      top: 15px;
+      right: 7px;
       z-index: 99999999999;
-      width: 35px;
-      height: 35px;
+      width: 25px;
+      height: 25px;
       padding: 0;
       background: #c72128;
       border-radius: 50%;
@@ -82,7 +82,7 @@
           }
         }
         .conversations-hold{
-          height: calc(100vh - 333px);
+          height: calc(100vh - 289px);
           .single-conversation{
             .toolbar-avatar{
               flex-shrink: 0;
