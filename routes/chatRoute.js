@@ -35,12 +35,27 @@ function loginUser(req, res) {
 
    let chatingData = await chat.find({$or:[{chatfromid:query._id},{ chatwithid:query._id}]}).populate('chatfromid').populate('chatwithid');
    let chatInfolist = [];
-   
+   let chatCount =  0;
    chatingData.forEach( ( val, index ) => {
+   
     let info = val.chatwithid;
     if(query._id==val.chatwithid._id) {
       info = val.chatfromid;
     }
+   //chat.findOne({_id:val._id,chats: { $elemMatch: { contactId: { '$ne': query._id }, status: 'unread' }}});
+   //let chatRecord =  chat.findOne({_id:val._id,chats: { $elemMatch: { status: 'unread' }}});
+      // if(val && val.chats){
+      //   unreadCount =  val.chats.filter((vals) => {   
+      //     if(query._id!=vals.contactId) { 
+      //     if(vals.status && vals.status == 'unread'){
+      //       chatCount++;
+      //     }    
+      //    }
+      //   }); 
+      // }else{
+      //   chatCount =  0
+      // }
+
     let userPicture = "assets/images/arkenea/default.jpg";
 
     if(info.profilePicture!=null){
@@ -53,11 +68,11 @@ function loginUser(req, res) {
       contactId:info._id,
       contactName: info.firstName+' '+info.lastName,
       avatar: userPicture,
-      unread: 6,      
+      unread: chatCount,      
       status: info.loginStatus,
       lastChatTime: val.modifiedOn,
     }
-   // console.log('makeArray',makeArray)
+  
     chatInfolist.push(makeArray);
    })
 
@@ -70,7 +85,7 @@ function loginUser(req, res) {
         chatInfo: chatInfolist
       }
     ];
-
+  //  console.log('user######################################',user)
     res.send(user)
   });
 }
@@ -81,7 +96,8 @@ async function contactList(req, res) {
 
   if(query.userType=='advisor'){
      advisorList = await HiredAdvisors.find({advisorId:query._id,status: {$nin: ["Rejected", "Deleted"]}}).populate('customerId');
-     advisorList.forEach( ( val, index ) => {
+     advisorList.forEach( async ( val, index ) => {
+       let chatCount =  0;
        let info = val.customerId;
        let userPicture = "assets/images/arkenea/default.jpg";
          if(info.profilePicture!=null){
@@ -89,10 +105,25 @@ async function contactList(req, res) {
            userPicture = profilePicturePath+info.profilePicture;
          }
          
+        //  let chatingData = await chat.find({$or:[{chatfromid:val.customerId},{chatwithid:val.customerId}]}).populate('chatfromid').populate('chatwithid');
+
+        //  if(chatingData && chatingData.chats) {
+        //     unreadCount =  val.chats.filter((vals) => {   
+        //       if(val.customerId!=vals.contactId) {
+        //       if(vals.status && vals.status == 'unread') {
+        //         chatCount++;
+        //       }    
+        //     }
+        //     }); 
+        //   }else{
+        //     chatCount =  0
+        //   }
+
          let makeArray = {
            _id: info._id,
            name: info.firstName+' '+info.lastName,
            avatar: userPicture,
+           unread: 0, 
            status: info.loginStatus,
            mood: ""
          }
@@ -100,18 +131,33 @@ async function contactList(req, res) {
      })
   }else{
       let advisorList = await HiredAdvisors.find({customerId:ObjectId(query._id),status:'Active'}, {_id:1,advisorId:1}).populate('advisorId');
-      advisorList.forEach( ( val, index ) => {
+      advisorList.forEach( async ( val, index ) => {
+        let chatCount =  0;
         let info = val.advisorId;
         let userPicture = "assets/images/arkenea/default.jpg";
           if(info.profilePicture!=null){
             let profilePicturePath = constants.s3Details.url + "/" + constants.s3Details.profilePicturesPath;
             userPicture = profilePicturePath+info.profilePicture;
           }
+          // let chatingData = await chat.find({$or:[{chatfromid:val.advisorId},{chatwithid:val.advisorId}]});
+          // //console.log("chatingData>>>>>>>>>>",chatingData);
+          // if(chatingData && chatingData.chats) {
+          //    unreadCount =  val.chats.filter((vals) => {   
+          //     if(val.advisorId!=vals.contactId) {
+          //       if(vals.status && vals.status == 'unread') {
+          //         chatCount++;
+          //       }    
+          //     }
+          //    }); 
+          //  }else{
+          //    chatCount =  0
+          //  }
 
           let makeArray = {
             _id: info._id,
             name: info.firstName+' '+info.lastName,
             avatar: userPicture,
+            unread: 0, 
             status: info.loginStatus,
             mood: ""
           }
