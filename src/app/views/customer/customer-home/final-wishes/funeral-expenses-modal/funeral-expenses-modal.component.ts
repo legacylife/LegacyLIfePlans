@@ -21,7 +21,7 @@ const URL = serverUrl + '/api/documents/funeralExpenses';
 export class FuneralExpensesModalComponent implements OnInit {
 
   public hasBaseDropZoneOver: boolean = false;
-  toppingList = toppingList;
+  toppingList = toppingList.sort();
   userId = localStorage.getItem("endUserId");
   selectedProfileId: string;
   invalidMessage: string;
@@ -196,6 +196,12 @@ export class FuneralExpensesModalComponent implements OnInit {
     if ((event.which != 46 ) && (event.which < 48 || event.which > 57)) {
       event.preventDefault();
     }
+  }
+
+  firstCapitalize(e) {
+    let re = /(^|[.!?]\s+)([a-z])/g;
+    var textBox: HTMLInputElement = <HTMLInputElement>e.target;
+    textBox.value = textBox.value.replace(re, (m, $1, $2) => $1 + $2.toUpperCase());
   }
 
   ExpenseFormSubmit(profileInData = null) {

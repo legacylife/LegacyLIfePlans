@@ -1,20 +1,30 @@
 Arguments: 
-  /usr/bin/node /usr/bin/yarn
+  C:\Program Files\nodejs\node.exe C:\Users\sumantjd\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js upgrade
 
 PATH: 
-  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+  C:\Users\sumantjd\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\sumantjd\bin;C:\MinGW\bin;C:\MinGW\libexec\gcc\x86_64-pc-mingw32\4.9.1;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Lenovo\FusionEngine;C:\Program Files (x86)\Intel\TXE Components\TCS;C:\Program Files\Intel\TXE Components\TCS;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Common Files\lenovo\easyplussdk\bin;C:\msys\1.0\bin;C:\MinGW\1.0\bin;C:\Program Files\Microsoft\Web Platform Installer;C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0;C:\Program Files\Microsoft SQL Server\110\Tools\Binn;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit;C:\Program Files (x86)\Skype\Phone;C:\Program Files\Git\cmd;C:\Program Files\nodejs;C:\WINDOWS\System32\OpenSSH;C:\Program Files\nodejs;C:\Users\sumantjd\AppData\Local\Programs\Python\Python37\Scripts;C:\Users\sumantjd\AppData\Local\Programs\Python\Python37;C:\Users\sumantjd\AppData\Roaming\np;C:\Program Files\MongoDB\Server\3.4\bin;C:\data\db;C:\Program Files\Heroku";C:\Users\sumantjd\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Java\jdk1.8.0_31\bin;D:\Java\apache-maven-3.5.0\bin;C:\Program Files\Microsoft VS Code\bin;C:\Program Files\Heroku\bin;C:\Users\sumantjd\AppData\Local\Programs\Python\Python37\Scripts;C:\Users\sumantjd\AppData\Roaming\npm;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
 
 Yarn version: 
-  1.16.0
+  1.15.2
 
 Node version: 
-  10.16.0
+  10.16.2
 
 Platform: 
-  linux x64
+  win32 x64
 
 Trace: 
-  Error: EACCES: permission denied, unlink '/home/prashant/Arkenea_Workspace/LLP/frontend/node_modules/@syncfusion/ej2-angular-grids/CHANGELOG.md'
+  Error: https://registry.yarnpkg.com/core-js/-/core-js-2.6.10.tgz: ESOCKETTIMEDOUT
+      at ClientRequest.<anonymous> (C:\Users\sumantjd\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:130168:19)
+      at Object.onceWrapper (events.js:286:20)
+      at ClientRequest.emit (events.js:198:13)
+      at TLSSocket.emitRequestTimeout (_http_client.js:662:40)
+      at Object.onceWrapper (events.js:286:20)
+      at TLSSocket.emit (events.js:198:13)
+      at TLSSocket.Socket._onTimeout (net.js:442:8)
+      at ontimeout (timers.js:436:11)
+      at tryOnTimeout (timers.js:300:5)
+      at listOnTimeout (timers.js:263:5)
 
 npm manifest: 
   {

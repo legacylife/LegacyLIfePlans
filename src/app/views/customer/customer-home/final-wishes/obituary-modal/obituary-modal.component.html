@@ -16,7 +16,7 @@
           <mat-radio-button value="no" [checked]="ObituaryFormGroup.controls['check'].value=='no'">I don’t have an obituary.</mat-radio-button>
         </mat-radio-group>
         <mat-form-field class="full-width mt-1 no-mar" *ngIf="obituaryCheck">
-          <textarea matInput placeholder="Who should help prepare the obituary?" [formControl]="ObituaryFormGroup.controls['prepareTo']"
+          <textarea (keyup)="firstCapitalize($event)" matInput placeholder="Who should help prepare the obituary?" [formControl]="ObituaryFormGroup.controls['prepareTo']"
             maxlength="500"></textarea>
         </mat-form-field>
       </div>
@@ -74,7 +74,7 @@
       <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="" *ngIf="obituaryCheck">
         <mat-radio-group class="llp-radio mb-0 mt-1">
           <mat-form-field class="full-width no-mar">
-            <textarea matInput placeholder="The obituary should appear in the following newspapers:" [formControl]="ObituaryFormGroup.controls['media']"
+            <textarea (keyup)="firstCapitalize($event)" matInput placeholder="The obituary should appear in the following newspapers:" [formControl]="ObituaryFormGroup.controls['media']"
               maxlength="1000"></textarea>
           </mat-form-field>
         </mat-radio-group>
@@ -83,7 +83,7 @@
       <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="" *ngIf="obituaryCheck">
         <mat-radio-group class="llp-radio mb-0 mt-1">
           <mat-form-field class="full-width no-mar">
-            <textarea matInput placeholder="Electronic copy of the obituary should be sent to:" [formControl]="ObituaryFormGroup.controls['sentTo']"
+            <textarea (keyup)="firstCapitalize($event)" matInput placeholder="Electronic copy of the obituary should be sent to:" [formControl]="ObituaryFormGroup.controls['sentTo']"
               maxlength="500"></textarea>
           </mat-form-field>
         </mat-radio-group>
@@ -91,7 +91,7 @@
       <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="" *ngIf="obituaryCheck">
         <mat-radio-group class="llp-radio mb-0 mt-1">
           <mat-form-field class="full-width no-mar">
-            <textarea matInput placeholder="The following information is to be included in the obituary:" [formControl]="ObituaryFormGroup.controls['information']"
+            <textarea (keyup)="firstCapitalize($event)" matInput placeholder="The following information is to be included in the obituary:" [formControl]="ObituaryFormGroup.controls['information']"
               maxlength="1000"></textarea>
           </mat-form-field>
         </mat-radio-group>

@@ -184,8 +184,17 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
             this.trust_id = result.data.userDetails._id;
             this.trustFormGroup.controls['firstName'].setValue(result.data.userDetails.firstName);
             this.trustFormGroup.controls['lastName'].setValue(result.data.userDetails.lastName);
-            this.trustFormGroup.controls['firstName'].disable();
-            this.trustFormGroup.controls['lastName'].disable();
+
+            if(result.data.userDetails.firstName.trim() != ''){
+              this.trustFormGroup.controls['firstName'].disable();
+            }
+            if(result.data.userDetails.lastName.trim() != ''){
+              this.trustFormGroup.controls['lastName'].disable();
+            }
+          }
+          else {
+            this.trustFormGroup.controls['firstName'].enable();
+            this.trustFormGroup.controls['lastName'].enable();
           }
         }
       } else {      

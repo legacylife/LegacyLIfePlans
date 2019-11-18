@@ -24,7 +24,7 @@ export class ObituaryModalComponent implements OnInit {
   invalidMessage: string;
   documentsMissing = false;
   documents_temps = false;
-  obituaryCheck: boolean = false;
+  obituaryCheck: boolean = true;
   obituaryCheckPhotos: boolean = false;
   profileIdHiddenVal:boolean = false;
   urlData:any={};	  
@@ -456,6 +456,12 @@ export class ObituaryModalComponent implements OnInit {
       link.click();
       this.snack.dismiss();
     });
+  }
+
+  firstCapitalize(e) {
+    let re = /(^|[.!?]\s+)([a-z])/g;
+    var textBox: HTMLInputElement = <HTMLInputElement>e.target;
+    textBox.value = textBox.value.replace(re, (m, $1, $2) => $1 + $2.toUpperCase());
   }
 
 }

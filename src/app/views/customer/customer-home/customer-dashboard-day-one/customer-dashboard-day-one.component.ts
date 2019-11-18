@@ -27,6 +27,8 @@ export class CustomerDashboardDayOneComponent implements OnInit {
   showAdvisorListing= true;
   showAdvisorListingCnt: any;
   isProUser = false;
+  urlData : any;
+  selectedProfileId : any;
 
   profileUrl = s3Details.url+'/profilePictures/';
   constructor(private router: Router,private fb: FormBuilder, private dialog: MatDialog,private snackBar: MatSnackBar,private userapi: UserAPIService) { }
@@ -148,12 +150,24 @@ export class CustomerDashboardDayOneComponent implements OnInit {
     this.sideNav.opened = !this.sideNav.opened;
   }
 
-  viewDetailsPage(pageUrl){    
+  viewDetailsPage(pageUrl){     
+    this.urlData = this.userapi.getURLData();
+    this.selectedProfileId = this.urlData.lastOne;
+    let firstParam = pageUrl[0];
+      
     this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
     if(this.isProUser)
       this.router.navigate(pageUrl)
     else
-      this.snackBar.open("Currently you don't have access to this folder you have been downgraded to a free account.", 'OK', { duration: 4000 })
+    {
+      if(firstParam == '/customer/dashboard/essential-detail-idbox' || firstParam == '/customer/dashboard/essential-detail-view' || firstParam == '/customer/dashboard/essential-professionals-detail' ||
+      firstParam == '/customer/dashboard/legal-detail-view' || firstParam == '/customer/dashboard/emergency-contacts-details'){
+        this.router.navigate(pageUrl)
+      }
+      else {
+        this.snackBar.open("Currently you don't have access to this folder you have been downgraded to a free account.", 'OK', { duration: 4000 })
+      }
+    }
   }
 
   openAddTrusteeModal(id, isNew?) {  

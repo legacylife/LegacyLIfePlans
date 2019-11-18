@@ -12,6 +12,12 @@
           <p class="sub--head text-center">Add Trustee Details</p>
           <div class="profile--body--scroll">
             <mat-form-field class="full-width">
+              <input matInput name="email" placeholder="Email*" [formControl]="trustFormGroup.controls['email']" (change)="trustFormGroupSubmit('1',trustFormGroup.value)">
+              <mat-icon matTooltip="Please enter email Id" matTooltipClass="llp--tooltip error" *ngIf="trustFormGroup.controls['email'].hasError('required') && trustFormGroup.controls['email'].touched" class="red--alert">help_outline</mat-icon>                         
+              <mat-icon matTooltip="Please enter valid email Id" matTooltipClass="llp--tooltip error" *ngIf="trustFormGroup.controls['email'].hasError('pattern')" class="red--alert">help_outline</mat-icon>
+              <mat-icon matTooltip="{{invalidMessage}}" matTooltipClass="llp--tooltip error" *ngIf="EmailExist" class="red--alert">help_outline</mat-icon>
+            </mat-form-field>
+            <mat-form-field class="full-width">
               <input (keyup)="firstCapitalize($event)" matInput name="firstName" maxlength="20" placeholder="First Name*" [formControl]="trustFormGroup.controls['firstName']">
               <mat-icon matTooltip="Please enter first name" matTooltipClass="llp--tooltip error" *ngIf="trustFormGroup.controls['firstName'].hasError('required') && trustFormGroup.controls['firstName'].touched" class="red--alert">help_outline</mat-icon>
             </mat-form-field>
@@ -19,12 +25,7 @@
                 <input (keyup)="firstCapitalize($event)" matInput name="lastName" maxlength="20" placeholder="Last Name*" [formControl]="trustFormGroup.controls['lastName']">
                 <mat-icon matTooltip="Please enter last name" matTooltipClass="llp--tooltip error" *ngIf="trustFormGroup.controls['lastName'].hasError('required') && trustFormGroup.controls['lastName'].touched" class="red--alert">help_outline</mat-icon>
             </mat-form-field>
-            <mat-form-field class="full-width">
-              <input matInput name="email" placeholder="Email*" [formControl]="trustFormGroup.controls['email']" (change)="trustFormGroupSubmit('1',trustFormGroup.value)">
-              <mat-icon matTooltip="Please enter email Id" matTooltipClass="llp--tooltip error" *ngIf="trustFormGroup.controls['email'].hasError('required') && trustFormGroup.controls['email'].touched" class="red--alert">help_outline</mat-icon>                         
-              <mat-icon matTooltip="Please enter valid email Id" matTooltipClass="llp--tooltip error" *ngIf="trustFormGroup.controls['email'].hasError('pattern')" class="red--alert">help_outline</mat-icon>
-              <mat-icon matTooltip="{{invalidMessage}}" matTooltipClass="llp--tooltip error" *ngIf="EmailExist" class="red--alert">help_outline</mat-icon>
-            </mat-form-field>
+            
            <mat-form-field class="full-width">
                 <mat-label>Relationship *</mat-label>
                 <mat-select (selectionChange)="onRelationshipChange($event.value);" placeholder="Select a relationship type*" name="relation" [formControl]="trustFormGroup.controls['relation']">

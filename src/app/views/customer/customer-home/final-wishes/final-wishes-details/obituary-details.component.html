@@ -33,12 +33,12 @@
             </div>
             <div class="details--body">
               <h3>{{row?.check=='yes' ? "Prepared an obituary" : "Don’t have an obituary"}}</h3>
-              <div fxLayout="row wrap" class="mb--10" *ngIf="displayData">
+              <div fxLayout="row wrap" class="mb--10" *ngIf="row?.check=='yes'">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Who should help prepare the obituary?:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.prepareTo}}</label>
+                  <label class="normal--label">{{row?.prepareTo != '' ? row?.prepareTo : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.check=='yes'">
@@ -55,7 +55,7 @@
                   <label class="strong--label">The obituary should appear in the following newspapers:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.media}}</label>
+                  <label class="normal--label">{{row?.media != '' ? row?.media : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.check=='yes'">
@@ -63,7 +63,7 @@
                   <label class="strong--label">Electronic copy of the obituary should be sent to:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.sentTo}}</label>
+                  <label class="normal--label">{{row?.sentTo != '' ? row?.sentTo : "-"}}</label>
                 </div>
               </div>   
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.check=='yes'">
@@ -71,7 +71,7 @@
                   <label class="strong--label">The following information is to be included in the obituary:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.information}}</label>
+                  <label class="normal--label">{{row?.information != '' ? row?.information : "-"}}</label>
                 </div>
               </div>                 
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.check=='yes'">

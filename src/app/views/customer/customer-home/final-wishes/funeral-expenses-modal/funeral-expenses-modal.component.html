@@ -26,22 +26,22 @@
           <div fxLayout="row wrap" *ngIf="madePrearrangment">
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
-                <textarea matInput placeholder="Funeral home" [formControl]="expensesFormGroup.controls['funeralHome']" maxlength="500"></textarea>
+                <textarea (keyup)="firstCapitalize($event)" matInput placeholder="Funeral home" [formControl]="expensesFormGroup.controls['funeralHome']" maxlength="500"></textarea>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
               <mat-form-field class="full-width">
-                <textarea matInput placeholder="Funeral director" [formControl]="expensesFormGroup.controls['funeralDirector']" maxlength="500"></textarea>
+                <textarea (keyup)="firstCapitalize($event)" matInput placeholder="Funeral director" [formControl]="expensesFormGroup.controls['funeralDirector']" maxlength="500"></textarea>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
-                <textarea matInput placeholder="Address" [formControl]="expensesFormGroup.controls['address']" maxlength="500"></textarea>
+                <textarea (keyup)="firstCapitalize($event)" matInput placeholder="Address" [formControl]="expensesFormGroup.controls['address']" maxlength="500"></textarea>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
               <mat-form-field class="full-width">
-                <textarea autocomplete="off" maxlength="15" (keypress)="onlyNumbers($event)" matInput placeholder="Phone" [formControl]="expensesFormGroup.controls['phoneNumber']"></textarea>                
+                <textarea (keyup)="firstCapitalize($event)" autocomplete="off" maxlength="15" (keypress)="onlyNumbers($event)" matInput placeholder="Phone" [formControl]="expensesFormGroup.controls['phoneNumber']"></textarea>                
               </mat-form-field>
             </div>
           </div>
@@ -50,7 +50,7 @@
           <div fxLayout="row wrap" *ngIf="preneedContract">
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
-                <textarea matInput placeholder="The preneed contract is located:" [formControl]="expensesFormGroup.controls['preneedContractLocation']" maxlength="500"></textarea>
+                <textarea (keyup)="firstCapitalize($event)" matInput placeholder="The preneed contract is located:" [formControl]="expensesFormGroup.controls['preneedContractLocation']" maxlength="500"></textarea>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
@@ -71,7 +71,7 @@
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb-1">
-              <mat-checkbox [formControl]="expensesFormGroup.controls['havePriceList']" value="1"> I have a price list for all funeral goods and services provided by the funeral home.
+              <mat-checkbox [formControl]="expensesFormGroup.controls['havePriceList']" [checked]="expensesFormGroup.controls['havePriceList'].value"> I have a price list for all funeral goods and services provided by the funeral home.
               </mat-checkbox>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
@@ -80,7 +80,7 @@
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb-1">
-              <mat-checkbox [formControl]="expensesFormGroup.controls['haveToPayOnDeath']" value="1"> I have to pay on death (POD) account to be used to pay for funeral expenses.
+              <mat-checkbox [formControl]="expensesFormGroup.controls['haveToPayOnDeath']" [checked]="expensesFormGroup.controls['haveToPayOnDeath'].value"> I have to pay on death (POD) account to be used to pay for funeral expenses.
               </mat-checkbox>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
@@ -95,11 +95,11 @@
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
               <mat-form-field class="full-width">
-                <textarea matInput placeholder="Financial Institution" [formControl]="expensesFormGroup.controls['financialInstitution']"></textarea>
+                <textarea (keyup)="firstCapitalize($event)" matInput placeholder="Financial Institution" [formControl]="expensesFormGroup.controls['financialInstitution']"></textarea>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="mb-1">
-              <mat-checkbox [formControl]="expensesFormGroup.controls['havePooled']" value="1"> I have pooled funeral trust or funeral insurance policy
+              <mat-checkbox [formControl]="expensesFormGroup.controls['havePooled']" [checked]="expensesFormGroup.controls['havePooled'].value"> I have pooled funeral trust or funeral insurance policy
               </mat-checkbox>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
@@ -114,7 +114,7 @@
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
-                <input matInput placeholder="Insurance company:" [formControl]="expensesFormGroup.controls['pooledInsuranceCompany']">
+                <input (keyup)="firstCapitalize($event)" matInput placeholder="Insurance company:" [formControl]="expensesFormGroup.controls['pooledInsuranceCompany']">
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
@@ -162,13 +162,13 @@
 
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
               <mat-form-field class="full-width no-mar ">
-                <textarea matInput placeholder="Comment:" [formControl]="expensesFormGroup.controls['comments']"></textarea>
+                <textarea (keyup)="firstCapitalize($event)" matInput placeholder="Comment:" [formControl]="expensesFormGroup.controls['comments']"></textarea>
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
               <mat-radio-group class="llp-radio mb-0 mt-1">
                 <mat-form-field class="full-width no-mar">
-                  <textarea matInput
+                  <textarea matInput (keyup)="firstCapitalize($event)"
                     placeholder="Provide any additional written instructions or thoughts in the comment section." [formControl]="expensesFormGroup.controls['additionalInstructions']"></textarea>
                 </mat-form-field>
               </mat-radio-group>

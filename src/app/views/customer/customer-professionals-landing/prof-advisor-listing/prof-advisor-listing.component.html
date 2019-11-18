@@ -59,7 +59,7 @@
             </div>
           </mat-card-content>
         </mat-card>
-        <div class="divider" *ngIf="showQualityListing">
+        <div class="divider" *ngIf="showQualityListing && qualityAdvisor.length > 0">
           <p>More quality professional advisors</p>
         </div>
         <mat-card class="appointees--section p-0 " *ngFor="let qualityAd of qualityAdvisor">
