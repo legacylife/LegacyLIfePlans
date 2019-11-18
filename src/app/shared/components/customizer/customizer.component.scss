@@ -91,6 +91,85 @@
               font-family: $font--lato--regular !important;
               color: #222324 !important;
               padding: 0;
+              font-size: 16px;
+            }
+            &.me{
+              margin-left: 20px;
+              .chat--design{
+                margin-left: auto;
+                display: flex;
+                flex-direction: column;
+                .conversation-msg{
+                  background: #cdd2aa !important;
+                  padding: 0 5px;
+                }
+                
+                .arrow_box {
+                  position: relative;
+                }
+                .arrow_box:after, .arrow_box:before {
+                  left: 96%;
+                  top: 50%;
+                  border: solid transparent;
+                  content: " ";
+                  height: 0;
+                  width: 0;
+                  position: absolute;
+                  pointer-events: none;
+                }
+
+                .arrow_box:after {
+                  border-color: rgba(205, 210, 170, 0);
+                  border-left-color: #cdd2aa;
+                  border-width: 17px;
+                  margin-top: -17px;
+                }
+                .arrow_box:before {
+                  border-color: rgba(205, 210, 170, 0);
+                  border-left-color: #cdd2aa;
+                  border-width: 17px;
+                  margin-top: -17px;
+                }
+              }
+            }
+            &.sender{
+              margin-right: 20px;
+              .chat--design{
+                margin-right: auto;
+                display: flex;
+                flex-direction: column;
+                .conversation-msg{
+                  background: #e1e2d7 !important;
+                  padding: 0 5px;
+                }
+
+                .arrow_box {
+                  position: relative;
+                }
+                .arrow_box:after, .arrow_box:before {
+                  right: 97%;
+                  top: 50%;
+                  border: solid transparent;
+                  content: " ";
+                  height: 0;
+                  width: 0;
+                  position: absolute;
+                  pointer-events: none;
+                }
+                
+                .arrow_box:after {
+                  border-color: rgba(225, 226, 215, 0);
+                  border-right-color: #e1e2d7;
+                  border-width: 17px;
+                  margin-top: -17px;
+                }
+                .arrow_box:before {
+                  border-color: rgba(225, 226, 215, 0);
+                  border-right-color: #e1e2d7;
+                  border-width: 17px;
+                  margin-top: -17px;
+                }
+              }
             }
           }          
         }
@@ -107,7 +186,6 @@
   }
 
 }
-
 
 
 

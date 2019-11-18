@@ -43,9 +43,10 @@
         <img [src]="activeContact?.avatar" [alt]="activeContact?.name">
         <span class="status-dot"></span>
       </a>-->
-      <div>
+      <div class="chat--design">
         <!-- <h5 *ngIf="chat.contactId === activeContact._id" class="chat-username text-muted">{{activeContact?.name}}</h5> -->
         <!-- <h5 *ngIf="chat.contactId !== activeContact._id" class="chat-username text-muted">{{fullName}}</h5> -->
+        <div class="arrow_box"></div>
         <div class="conversation-msg">
           {{chat.text}}
         </div>
@@ -59,7 +60,7 @@
   <div class="chat-input-actions">
     <form #msgForm="ngForm" class="inputForm llp-form-wrapper" (ngSubmit)="sendMessage($event)"
       (keyup.enter)="sendMessage($event)" fxLayout="row">
-      <mat-form-field class="full-width mr-1">
+      <mat-form-field class="full-width mr-1 no-mar no-pad-mat">
         <textarea matInput #msgInput ngModel placeholder="Type your message" name="message" class="inputText"
           value="" (keyup)="checkSend($event)" (keypress)="checkSend($event)"></textarea>
       </mat-form-field>
