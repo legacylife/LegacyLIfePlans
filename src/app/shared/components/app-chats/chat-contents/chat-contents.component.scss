@@ -13,6 +13,9 @@
         padding: 0 !important;
       }
     }
+    &[disabled][disabled]{
+      opacity: 0.5;
+    }
 }
 .toolbar-avatar.online > .status-dot {
   background: #f44336 !important;

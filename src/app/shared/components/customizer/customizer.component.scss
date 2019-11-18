@@ -55,7 +55,7 @@
         }
         .chat-sidebar-scroll{
           position: relative;
-          height: calc(100vh - 145px);
+          height: calc(100vh - 219px);
           .inbox-nav-list{
             .mat-list-item{
               height: 57px;
@@ -82,7 +82,7 @@
           }
         }
         .conversations-hold{
-          height: calc(100vh - 257px);
+          height: calc(100vh - 333px);
           .single-conversation{
             .toolbar-avatar{
               flex-shrink: 0;
