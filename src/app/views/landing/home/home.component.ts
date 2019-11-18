@@ -258,10 +258,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.customerFreeTrialStatus  = freeTrialPeriodSettings.customerStatus == 'On'? true : false
   }
 
-  openVideoModal() {
+  openVideoModal(datas) {
     let dialogRef: MatDialogRef<any> = this.dialog.open(VideoModalComponent, {
       width: '500px',
-    
+      data: datas,
     })
   }
 }

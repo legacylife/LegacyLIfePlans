@@ -8,3 +8,18 @@
         border-radius: unset;
     }
 }
+.unread--msg--count{
+    border: 1px solid #ddd;
+    background: #fff;
+    width: 23px;
+    height: 18px;
+    padding: 0;
+    display: flex;
+    color: red;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 12px;
+    line-height: 12px;
+    box-shadow: 0 0 5px #ddd;
+}

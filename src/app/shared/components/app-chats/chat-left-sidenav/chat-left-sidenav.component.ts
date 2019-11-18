@@ -48,8 +48,9 @@ export class ChatLeftSidenavComponent implements OnInit {
           count.map((o) => { 
             console.log("totalCount-----#@@#", totalCount,'--',o.unread);
             totalCount += o.unread;
-            let contactInd = this.contacts.findIndex((c) => c._id == o.user_id)
-            if (contactInd > -1) {
+            let contactInd = this.contacts.findIndex((c) => c._id == o.user_id);
+            console.log('contactInd>>>>>>>>>>><<<<',contactInd)
+            if (contactInd && contactInd > -1) {
               this.contacts[contactInd].unread = o.unread;
               console.log('count code here',contactInd,'>>>>>>>',this.currentUser.chatInfo[contactInd])
               this.currentUser.chatInfo[contactInd].unread = o.unread;

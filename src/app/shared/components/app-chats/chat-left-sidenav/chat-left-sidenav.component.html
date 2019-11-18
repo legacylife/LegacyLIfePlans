@@ -13,7 +13,7 @@
         <img [src]="info.avatar" alt="">
         <span class="status-dot"></span>
       </a>
-      <span class="menuitem-badge mat-bg-warn ng-star-inserted" *ngIf="info.unread>0">{{info.unread}}</span>
+      <span class="unread--msg--count menuitem-badge mat-bg-warn ng-star-inserted" *ngIf="info.unread>0">{{info.unread}}</span>
       <h6 matLine>{{info.contactName}}</h6>
       <p matLine class="text-muted">{{info.lastChatTime  | date}}</p>
     </mat-list-item>    
@@ -30,7 +30,7 @@
         <img [src]="contact.avatar" alt="">
         <span class="status-dot"></span>
       </a>
-      <span class="menuitem-badge mat-bg-warn ng-star-inserted" *ngIf="contact.unread>0">{{contact.unread}}</span>
+      <span class="unread--msg--count menuitem-badge mat-bg-warn ng-star-inserted" *ngIf="contact.unread>0">{{contact.unread}}</span>
       <h6 matLine>{{contact.name}}</h6>
       <!-- <p matLine class="text-muted">{{contact.lastChatTime  | date}}</p> -->
     </mat-list-item>
