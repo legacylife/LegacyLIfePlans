@@ -580,7 +580,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="progress" style="margin-bottom: 0;" *ngIf="currentProgessinPercentProfilePhoto>0">
+                                    <div class="progress" style="margin-bottom: 0;" *ngIf="currentProgessinPercentProfilePhoto[i]>0">
                                         <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercentProfilePhoto + '%' }">{{currentProgessinPercentProfilePhoto}}%</div>
                                         <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="currentProgessinPercentProfilePhoto"></mat-progress-bar>
                                     </div>

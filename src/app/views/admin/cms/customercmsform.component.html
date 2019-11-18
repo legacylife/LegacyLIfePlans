@@ -418,7 +418,6 @@
                                         (click)="deleteTestimonialsPoints(i);">delete</mat-icon></mat-card-title>
                                 <mat-card-content class="p-1">
                                     <div fxLayout="row wrap">
-
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100"
                                             fxFlex.xl="100">
                                             <mat-form-field class="full-width">
@@ -460,10 +459,22 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="progress" style="margin-bottom: 0;" *ngIf="currentProgessinPercentProfilePhoto>0">
+
+                                    <div class="progress" style="margin-bottom: 0;" *ngIf="currentProgessinPercentProfilePhoto>0 && i==0">
                                         <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercentProfilePhoto + '%' }">{{currentProgessinPercentProfilePhoto}}%</div>
                                         <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="currentProgessinPercentProfilePhoto"></mat-progress-bar>
                                     </div>
+
+                                    <div class="progress" style="margin-bottom: 0;" *ngIf="currentProgessinPercentProfilePhoto1>0 && i==1">
+                                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercentProfilePhoto1 + '%' }">{{currentProgessinPercentProfilePhoto1}}%</div>
+                                        <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="currentProgessinPercentProfilePhoto1"></mat-progress-bar>
+                                    </div>
+
+                                    <div class="progress" style="margin-bottom: 0;" *ngIf="currentProgessinPercentProfilePhoto2>0 && i==2">
+                                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercentProfilePhoto2 + '%' }">{{currentProgessinPercentProfilePhoto2}}%</div>
+                                        <mat-progress-bar class="" color="primary" mode="Indeterminate"  [value]="currentProgessinPercentProfilePhoto2"></mat-progress-bar>
+                                    </div>                                    
+
                                 </mat-card-content>
                             </mat-card>
                         </div>

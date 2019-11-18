@@ -50,17 +50,13 @@ export class advisorcmsformComponent implements OnInit {
   sectionEightProgessPer: number = 0;
   sectionEightPath: string
   fileErrorsSectionEight: any;
-
   public uploaderProfilePhoto: FileUploader = new FileUploader({ url: `${URL}` });
-  currentProgessinPercentProfilePhoto: number = 0;
+  currentProgessinPercentProfilePhoto = [];
   fileErrorsProfilePhoto: any;
-
   selectedFAFile: File = null;
   selectedFAFileName:any
-
   selectedFile: File = null;
   selectedFileName:any
-
   benefitsPoints:any;
   testimonials:any;
   sectionTwo:any;
@@ -455,6 +451,7 @@ addTestimonialsPoints() {
 }
 
 uploadTestimonialsFile(fileName,index) {
+  console.log('uploadTestimonialsFile index',index)
   this.uploaderProfilePhoto.onBeforeUploadItem = (item) => {
     item.url = `${URLProfilePhoto}?folderName=${'advisor'}&filenewName=${fileName}`;
   }
@@ -464,15 +461,19 @@ uploadTestimonialsFile(fileName,index) {
           this.uploaderProfilePhoto.uploadItem(fileoOb);
     });
     this.uploaderProfilePhoto.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-       this.uploaderTestimonialsProgressBar(index);
+     //  this.uploaderTestimonialsProgressBar(index);
        setTimeout(()=>{    
         this.testimonialsArray.at(index).patchValue({profilePhoto:fileName});
       }, 5000);
 
     };
-
+    //console.log(this.uploaderProfilePhoto.length)
    if(this.uploaderProfilePhoto.onCompleteAll()){
+        console.log('---------------------',index)
       this.uploaderProfilePhoto.clearQueue();
+      // if(this.currentProgessinPercentProfilePhoto==100){
+      //   this.currentProgessinPercentProfilePhoto = 0;
+      // }  
     }  
   }
 }
@@ -482,13 +483,17 @@ uploaderTestimonialsProgressBar(index){
   // let remainingLength =  this.uploaderProfilePhoto.getNotUploadedItems().length;    
   // this.currentProgessinPercentProfilePhoto = 100 - (remainingLength * 100 / totalLength);
   // this.currentProgessinPercentProfilePhoto = Number(this.currentProgessinPercentProfilePhoto.toFixed());
-  if(this.currentProgessinPercentProfilePhoto==0){
+  //currentProgessinPercentProfilePhotoPer
+
+console.log('uploaderTestimonialsProgressBar index',index)
+  
+  if(this.currentProgessinPercentProfilePhoto[index]==0){
     this.uploaderProfilePhoto.onProgressItem = (progress:any) => {
-      this.currentProgessinPercentProfilePhoto = progress;
+      this.currentProgessinPercentProfilePhoto[index] = progress;
     }
   }
   this.uploaderProfilePhoto.onProgressAll = (progress:any) => {
-    this.currentProgessinPercentProfilePhoto = progress;
+    this.currentProgessinPercentProfilePhoto[index] = progress;
   }
 }
 

@@ -52,7 +52,7 @@ export class ChatLeftSidenavComponent implements OnInit {
             console.log('contactInd>>>>>>>>>>><<<<',contactInd)
             if (contactInd && contactInd > -1) {
               this.contacts[contactInd].unread = o.unread;
-              console.log('count code here',contactInd,'>>>>>>>',this.currentUser.chatInfo[contactInd])
+              console.log('count code here',contactInd,'>>>>>>>',this.currentUser.chatInfo[contactInd]);
               this.currentUser.chatInfo[contactInd].unread = o.unread;
             }
           });
