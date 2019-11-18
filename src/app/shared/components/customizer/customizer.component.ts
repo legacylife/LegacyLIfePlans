@@ -62,7 +62,7 @@ export class CustomizerComponent implements OnInit {
         }
       }     
       console.log("getMessages customizer Cnt ", count)
-      console.log("totalCount", totalCount)
+      console.log("totalCount customizer", totalCount)
 
     });
    
