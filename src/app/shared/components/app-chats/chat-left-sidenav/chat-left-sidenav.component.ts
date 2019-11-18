@@ -51,13 +51,14 @@ export class ChatLeftSidenavComponent implements OnInit {
             let contactInd = this.contacts.findIndex((c) => c._id == o.user_id)
             if (contactInd > -1) {
               this.contacts[contactInd].unread = o.unread;
+              console.log('count code here',contactInd,'>>>>>>>',this.currentUser.chatInfo[contactInd])
               this.currentUser.chatInfo[contactInd].unread = o.unread;
             }
           });
           // this.unreadCount = totalCount+'+';
         }
         console.log("getMessages left side nav  ", count);
-        console.log("totalCount", totalCount);
+        console.log("totalCount>>>>", totalCount);
         console.log("contacts", this.contacts);        
       });
 
