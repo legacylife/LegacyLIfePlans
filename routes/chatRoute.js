@@ -11,8 +11,8 @@ const resFormat = require('./../helpers/responseFormat')
 const { isEmpty } = require('lodash')
 const resMessage  = require('./../helpers/responseMessages')
 let http = require('http');
-
-
+var async = require('async')
+const commonhelper = require('./../helpers/commonhelper')
 let server = http.Server(express);
 var auth = jwt({
   secret: constants.secret,
@@ -20,6 +20,7 @@ var auth = jwt({
 })
 let socketIO = require('socket.io');
 let io = socketIO(server);
+let lodash = require('lodash')
 
 function loginUser(req, res) {
   let { fields, query } = req.body;
@@ -92,11 +93,12 @@ function loginUser(req, res) {
 
 async function contactList(req, res) {
   let { query, fields } = req.body;
-  let advisorList = ''; var contactlist = [];
+  let advisorList = ''; var cList = [];
 
   if(query.userType=='advisor'){
      advisorList = await HiredAdvisors.find({advisorId:query._id,status: {$nin: ["Rejected", "Deleted"]}}).populate('customerId');
-     advisorList.forEach( async ( val, index ) => {
+     //advisorList.forEach( async ( val, index ) => {
+      async.each(advisorList, async function (val){ 
        let chatCount =  0;
        let info = val.customerId;
        let userPicture = "assets/images/arkenea/default.jpg";
@@ -105,33 +107,23 @@ async function contactList(req, res) {
            userPicture = profilePicturePath+info.profilePicture;
          }
          
-        //  let chatingData = await chat.find({$or:[{chatfromid:val.customerId},{chatwithid:val.customerId}]}).populate('chatfromid').populate('chatwithid');
-
-        //  if(chatingData && chatingData.chats) {
-        //     unreadCount =  val.chats.filter((vals) => {   
-        //       if(val.customerId!=vals.contactId) {
-        //       if(vals.status && vals.status == 'unread') {
-        //         chatCount++;
-        //       }    
-        //     }
-        //     }); 
-        //   }else{
-        //     chatCount =  0
-        //   }
-
+         chatCount = await commonhelper.getChatReadCount(query._id,val.customerId);
+     
          let makeArray = {
            _id: info._id,
            name: info.firstName+' '+info.lastName,
            avatar: userPicture,
-           unread: 0, 
+           unread: chatCount, 
            status: info.loginStatus,
            mood: ""
          }
-         contactlist.push(makeArray);  
-     })
+         cList.push(makeArray);  
+        }, (err) => {
+          res.send(cList)   
+        })
   }else{
       let advisorList = await HiredAdvisors.find({customerId:ObjectId(query._id),status:'Active'}, {_id:1,advisorId:1}).populate('advisorId');
-      advisorList.forEach( async ( val, index ) => {
+        async.each(advisorList, async function (val){
         let chatCount =  0;
         let info = val.advisorId;
         let userPicture = "assets/images/arkenea/default.jpg";
@@ -139,33 +131,21 @@ async function contactList(req, res) {
             let profilePicturePath = constants.s3Details.url + "/" + constants.s3Details.profilePicturesPath;
             userPicture = profilePicturePath+info.profilePicture;
           }
-          // let chatingData = await chat.find({$or:[{chatfromid:val.advisorId},{chatwithid:val.advisorId}]});
-          // //console.log("chatingData>>>>>>>>>>",chatingData);
-          // if(chatingData && chatingData.chats) {
-          //    unreadCount =  val.chats.filter((vals) => {   
-          //     if(val.advisorId!=vals.contactId) {
-          //       if(vals.status && vals.status == 'unread') {
-          //         chatCount++;
-          //       }    
-          //     }
-          //    }); 
-          //  }else{
-          //    chatCount =  0
-          //  }
 
+          chatCount = await commonhelper.getChatReadCount(query._id,val.advisorId);
           let makeArray = {
             _id: info._id,
             name: info.firstName+' '+info.lastName,
             avatar: userPicture,
-            unread: 0, 
+            unread: chatCount, 
             status: info.loginStatus,
             mood: ""
           }
-          contactlist.push(makeArray);  
+        cList.push(makeArray);  
+      }, (err) => {
+        res.send(cList)   
       })
   }
-  
-    res.send(contactlist) 
 }
 
 async function chatCollection(req, res) {

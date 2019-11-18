@@ -25,9 +25,9 @@ const apps = express()
      users[socket.id] = data.userId;
     // console.log('a user ' + data.userId +'---' + data.userType + ' connected');
      chats.userStatus(data,'online');
-     var unreadCnt = chats.userMessagesStatus(data.userId,'online');
-     console.log(`loginforonline message-unread-count`);
-     io.emit('message-unread-count-'+data.userId, unreadCnt);
+    //8 var unreadCnt = chats.userMessagesStatus(data.userId,'online');
+    //8 console.log(`loginforonline message-unread-count`);
+   //8  io.emit('message-unread-count-'+data.userId, unreadCnt);
   });
 
   socket.on('offline', function(data){
@@ -53,12 +53,12 @@ const apps = express()
 
   socket.on('message-unread-count', async (data) => {
   console.log(`message-unread-count`);
-      var unreadCnt = await chats.userMessagesStatus(data.userId,'online');
+    //8  var unreadCnt = await chats.userMessagesStatus(data.userId,'online');
     //  io.emit('message-unread-count-'+data.userId, unreadCnt);
     // var userUnreadCnt = [{ user_id: "5d36932ce485cd5cd96bdaf0", unreadCnt: Math.floor((Math.random() * 10) + 1) },
     //                      { user_id: "5cc9cb111955852c18c5b737", unreadCnt: Math.floor((Math.random() * 10) + 1) },
     //                      { user_id: "5d369411e485cd5cd96bdaf6", unreadCnt: Math.floor((Math.random() * 10) + 1) } ]
-    io.emit('message-unread-count-'+data.userId, unreadCnt);
+  //8  io.emit('message-unread-count-'+data.userId, unreadCnt);
   });
 
   socket.on('get-chat-room', (chatId,userId) => {

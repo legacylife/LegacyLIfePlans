@@ -10,6 +10,7 @@ const { isEmpty } = require('lodash')
 const resMessage  = require('./../helpers/responseMessages')
 var async = require('async');
 let http = require('http');
+
 let server = http.Server(express);
 var auth = jwt({
   secret: constants.secret,
@@ -45,24 +46,44 @@ async function chatRoom(chatId,userId) {
 }
 
 async function userMessagesStatus(userId,status) {
-  console.log('******************************************userMessagesStatus --- '+userId,'-----*****************--',status);
   let unreadCount = [];
   if(userId!==undefined){
-    //  unreadCount = await chat.countDocuments({$or:[{chatfromid:userId},{ chatwithid:userId}],"chats.status":'unread'});
-    // var userUnreadCnt = [{ user_id: "5d36932ce485cd5cd96bdaf0", unreadCnt: Math.floor((Math.random() * 10) + 1) },
-    // { user_id: "5cc9cb111955852c18c5b737", unreadCnt: Math.floor((Math.random() * 10) + 1) },
-    // { user_id: "5d369411e485cd5cd96bdaf6", unreadCnt: Math.floor((Math.random() * 10) + 1) } ] //populate('chatfromid').populate('chatwithid');
     let chatingData = await chat.find({$or:[{chatfromid:userId},{ chatwithid:userId}]});
     let index = 0;    let chatInfolist = [];let unreadCnt = 0;
       await Promise.all(chatingData.map(async (val)=>{       
         if(val.chats.length>0){
-          let chatRecord = await chat.findOne({_id:val._id,chats: { $elemMatch: { status: 'unread' }}});
-          if(chatRecord && chatRecord.chats.length>0){
-            unreadCount = chatRecord.chats.filter((vals) => {      
-              return vals.status == 'unread'
-            }); 
-            unreadCnt = unreadCount.length;
-          }          
+          // let chatRecord = await chat.findOne({_id:val._id,chats: { $elemMatch: { status: 'unread' }}});
+          // if(chatRecord && chatRecord.chats.length>0){
+          //   unreadCount = chatRecord.chats.filter((vals) => {      
+          //     return vals.status == 'unread'
+          //   }); 
+          //   unreadCnt = unreadCount.length;console.log('unreadCntunreadCntunreadCnt---------',unreadCnt)
+          // }           
+          let unreadC =   await chat.aggregate([
+            { "$match": {
+                "_id" : val._id,
+                "chats.status": "unread"
+            }},
+            { "$group": {
+                "_id": null,
+                "count": {
+                    "$sum": {
+                        "$size": {
+                            "$filter": {
+                                "input": "$chats",
+                                "as": "el",
+                                "cond": {
+                                    "$eq": [ "$$el.status", "unread" ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }}
+          ]);
+          if(unreadC.length>0){
+            unreadCnt = unreadC[0].count;   
+          }
         }
       let friendId = val.chatfromid;
       if(val.chatfromid==userId) {
@@ -76,7 +97,6 @@ async function userMessagesStatus(userId,status) {
           chatInfolist.push(makeArray);
         }
     }))
-    console.log('Return ---- chatInfolist*************--- ',chatInfolist,'indexindex',index++);
     return chatInfolist;
     // chatingData.forEach(async ( val, callback ) => {
     //   let friendId = '';

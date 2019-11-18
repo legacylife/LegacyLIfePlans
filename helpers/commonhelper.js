@@ -5,7 +5,7 @@ const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('../routes/emailTemplatesRoute.js')
 const Trustee = require('./../models/Trustee.js')
 const HiredAdvisors = require('./../models/HiredAdvisors.js')
-
+const chat = require('./../models/Chat.js')
 const customerAdvisorLegacyNotifications = (sendData) => {
   return new Promise(function() {
     let CUSTOMER_NAME = ''
@@ -57,4 +57,85 @@ const customerTrustees = (trusteeQuery) => {
 }
 
 
-module.exports = { customerAdvisorLegacyNotifications,customerTrustees }
+
+const getChatReadCount = (userId,friendId) => {
+  return new Promise(async function(resolve, reject) {
+    let chatingData = await chat.findOne({$or:[{chatfromid:userId,chatwithid:friendId},{ chatfromid:friendId,chatwithid:userId}]});
+    let chatCount = 0;
+     if(chatingData.chats.length>0) {
+        let unreadC =   await chat.aggregate([
+          { "$match": {
+              "_id" : chatingData._id,
+            // $or:[{chatfromid:userId,chatwithid:friendId},{ chatfromid:friendId,chatwithid:userId}],
+              "chats.status": "unread"
+          }},
+          { "$group": {
+              "_id": null,
+              "count": {
+                  "$sum": {
+                      "$size": {
+                          "$filter": {
+                              "input": "$chats",
+                              "as": "el",
+                              "cond": {
+                                  "$eq": [ "$$el.status", "unread" ]
+                              }
+                          }
+                      }
+                  }
+              }
+          }}
+        ]);
+        if(unreadC.length>0){
+          chatCount = unreadC[0].count;   
+        }
+      }
+        resolve(chatCount);
+  })
+
+  // chat.findOne({$or:[{chatfromid:query._id,chatwithid:val.advisorId},{ chatfromid:val.advisorId,chatwithid:query._id}]}, (err, chatingData) => {
+        //     chat.aggregate([
+        //       { "$match": {
+        //            "_id" : chatingData._id,
+        //             // $or:[{chatfromid:userId,chatwithid:friendId},{ chatfromid:friendId,chatwithid:userId}],
+        //           "chats.status": "unread"
+        //       }},
+        //       { "$group": {
+        //           "_id": null,
+        //           "count": {
+        //               "$sum": {
+        //                   "$size": {
+        //                       "$filter": {
+        //                           "input": "$chats",
+        //                           "as": "el",
+        //                           "cond": {
+        //                               "$eq": [ "$$el.status", "unread" ]
+        //                           }
+        //                       }
+        //                   }
+        //               }
+        //           }
+        //       }}
+        //     ], (err1, unreadC) => {
+
+        //         if(unreadC.length>0){
+        //           console.log('unreadCnt>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',unreadC[0].count)
+        //           chatCount = unreadC[0].count;   
+        //         }
+
+        //         let makeArray = {
+        //           _id: info._id,
+        //           name: info.firstName+' '+info.lastName,
+        //           avatar: userPicture,
+        //           unread: chatCount, 
+        //           status: info.loginStatus,
+        //           mood: ""
+        //         }
+        //         cList.push(makeArray);
+        //         console.log("repeat")
+        //         cb()  
+        //     })
+        // })
+}
+
+module.exports = { customerAdvisorLegacyNotifications,customerTrustees,getChatReadCount }
