@@ -160,9 +160,9 @@ userType = localStorage.getItem('endUserType');
             }
             setTimeout(() => {
               this.endVal1 = this.pageData.facts.savedFiles;
-              this.endVal2 = this.pageData.facts.trustedAdvisors;
-              this.endVal3 = this.pageData.facts.successLogin;
-              this.endVal4 = this.pageData.facts.LLPMembers;   
+              this.endVal2 = this.pageData.facts.LLPMembers;
+              this.endVal3 = this.pageData.facts.trustedAdvisors;
+              this.endVal4 = this.pageData.facts.referralConnection;   
             }, 200);
           }, 100);
         }

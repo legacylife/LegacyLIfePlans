@@ -42,7 +42,7 @@ export class CustomizerComponent implements OnInit {
     this.userId = localStorage.getItem("endUserId");
     this.userType = localStorage.getItem("endUserType");
     this.urlData = this.userapi.getURLData();
-    if(this.urlData.lastOne=="advisor-subscription"){
+    if(this.urlData.lastOne=="advisor-subscription" || this.urlData.lastOne=="customer-subscription"){
       this.invalidPage = false;
     }
     var socket = io(serverUrl);

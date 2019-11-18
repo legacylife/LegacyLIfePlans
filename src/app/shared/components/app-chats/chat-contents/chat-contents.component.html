@@ -39,12 +39,10 @@
         <img [src]="profilePicture" [alt]="fullName">
         <span class="status-dot"></span>
       </a>
-
       <a *ngIf="chat.contactId === activeContact._id" href="" class="toolbar-avatar" [ngClass]="{online: activeContact.status === 'online'}">
         <img [src]="activeContact?.avatar" [alt]="activeContact?.name">
         <span class="status-dot"></span>
       </a>
-
       <div>
         <h5 *ngIf="chat.contactId === activeContact._id" class="chat-username text-muted">{{activeContact?.name}}</h5>
         <h5 *ngIf="chat.contactId !== activeContact._id" class="chat-username text-muted">{{fullName}}</h5>
@@ -52,12 +50,11 @@
           {{chat.text}}
         </div>
         <!-- <p class="chat-date text-muted">{{chat.time | relativeTime}}</p> -->
-        <p class="chat-date text-muted">{{chat.time}}</p>
+        <p class="chat-date text-muted">{{chat.time | relativeTime}}</p>
       </div>
     </div>
   </div>
   <mat-divider></mat-divider>
-
   <!-- Input box and send button -->
   <div class="chat-input-actions">
     <form #msgForm="ngForm" class="inputForm llp-form-wrapper" (ngSubmit)="sendMessage($event)"
@@ -72,8 +69,6 @@
     </form>
   </div>
 </div>
-
-
 <div class="chat-intro" *ngIf="!chatCollection" fxLayout="column" fxLayoutAlign="center center">
   <h6>Select a contact and start chat</h6>
 </div>
