@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from "@angular/core";
 import { ChatService, User } from "../../../services/chat.service";
 import { Subscription } from "rxjs";
+//import { cloneDeep } from "lodash";
 import { AppLoaderService } from '../../../services/app-loader/app-loader.service';
 @Component({
   selector: "app-chat-left-sidenav",
@@ -43,27 +44,28 @@ export class ChatLeftSidenavComponent implements OnInit {
 
       this.chatService.getMessagesUnreadCnt().subscribe((count:any) => {
         console.log('---',this.contacts)
+        var totalCount = 0
+        if(this.contacts!=undefined){
         if(count.length > 0) {// && this.contacts.length>0
-          var totalCount = 0
           count.map((o) => { 
-            console.log("totalCount-----#@@#", totalCount,'--',o.unread);
+           // console.log("totalCount-----#@@#", totalCount,'--',o.unread);
             totalCount += o.unread;
             let contactInd = this.contacts.findIndex((c) => c._id == o.user_id);
-            console.log('contactInd>>>>>>>>>>><<<<',contactInd)
             if (contactInd && contactInd > -1) {
               this.contacts[contactInd].unread = o.unread;
-              console.log('count code here',contactInd,'>>>>>>>',this.currentUser.chatInfo[contactInd]);
               this.currentUser.chatInfo[contactInd].unread = o.unread;
             }
           });
           // this.unreadCount = totalCount+'+';
         }
-        console.log("getMessages left side nav  ", count);
-        console.log("totalCount>>>>", totalCount);
-        console.log("contacts", this.contacts);        
+       }
+        // console.log("getMessages left side nav  ", count);
       });
 
 
+      this.chatService.getOnlineStatus().subscribe((friendId:any) => {
+        this.contacts = this.chatService.contacts;
+      });
 
   }
 
@@ -73,14 +75,24 @@ export class ChatLeftSidenavComponent implements OnInit {
   }
 
   getChatByContact(contactId) { 
-    this.chatWindow = true
-    this.chatWindowToggle.emit(this.chatWindow)
+    this.chatWindow = true;
+    this.chatWindowToggle.emit(this.chatWindow);
+    const selected = ['contactId'];
+    const openwindow = this.currentUser.chatInfo.map(x => {selected.includes(x.contactId); return x.contactId});
+    let contactInd = openwindow.findIndex((c) => c == contactId);
+    //console.log('contactInd',contactInd,'here',this.currentUser.chatInfo[contactInd],'---',this.currentUser.chatInfo[contactInd].unread)
+    this.currentUser.chatInfo[contactInd].unread = 0;
+    //this.currentUser.chatInfo[contactId].unread = 0;
     this.chatService.getChatByContact(contactId)
       .subscribe(res => {
         //console.log('from sub',res);
       }, err => {
-        console.log(err)
+        console.log('err--',err)
       })
   }
   
+ 
+
+
+
 }

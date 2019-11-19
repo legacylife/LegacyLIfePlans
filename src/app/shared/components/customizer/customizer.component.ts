@@ -34,20 +34,21 @@ export class CustomizerComponent implements OnInit {
   unreadCount:any;
   urlData:any;
   constructor(
-    private navService: NavigationService,
-    private layout: LayoutService,private chatService: ChatService,private userapi: UserAPIService
+    private navService: NavigationService,private layout: LayoutService,private chatService: ChatService,private userapi: UserAPIService
   ) {}
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.userType = localStorage.getItem("endUserType");
     this.urlData = this.userapi.getURLData();
+    
     if(this.urlData.lastOne=="advisor-subscription" || this.urlData.lastOne=="customer-subscription"){
       this.invalidPage = false;
     }
     var socket = io(serverUrl);
     socket.emit('message-unread-count',{userId:this.userId,userType:this.userType});
-
+      
+    
     this.chatService.getMessagesUnreadCnt().subscribe((count:any) => {
       if(count.length > 0){
         var totalCount = 0
@@ -61,9 +62,6 @@ export class CustomizerComponent implements OnInit {
           this.unreadCount = '';
         }
       }     
-      console.log("getMessages customizer Cnt ", count)
-      console.log("totalCount customizer", totalCount)
-
     });
    
     // let messages =this.chatService.getMessages().subscribe((message: string) => {
@@ -71,25 +69,36 @@ export class CustomizerComponent implements OnInit {
     //     console.log("thismessages",message)
     // });
     // console.log("thismessages************",messages)
-   
 
     this.layoutConf = this.layout.layoutConf;
     this.selectedLayout = this.layoutConf.navigationPos;
     this.isTopbarFixed = this.layoutConf.topbarFixed;
     this.isRTL = this.layoutConf.dir === 'rtl';
   }
+
+  customizerClose() {    
+    //if(this.isCustomizerOpen==false){
+      var socket = io(serverUrl);
+      socket.emit('message-unread-count',{userId:this.userId,userType:this.userType});
+    //}
+  }
+
   changeLayoutStyle(data) {
     this.layout.publishLayoutChange({navigationPos: this.selectedLayout})
   }
+
   changeSidenav(data) {
     this.navService.publishNavigationChange(data.value)
   }
+
   toggleBreadcrumb(data) {
     this.layout.publishLayoutChange({breadcrumb: data.checked})
   }
+
   toggleTopbarFixed(data) {
     this.layout.publishLayoutChange({topbarFixed: data.checked})
   }
+
   toggleDir(data) {
     let dir = data.checked ? 'rtl' : 'ltr';
     this.layout.publishLayoutChange({dir: dir})
