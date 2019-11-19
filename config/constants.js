@@ -201,12 +201,6 @@ var constants = {
     2:"I would prefer a memorial service",
     3:"I would prefer cremation",
     4:"I do not want a funeral or memorial service"
-  },
-  
-  funeralArrangementOptions : {
-    1:"I have made prearrangements with the funeral home",
-    2:"I have a preneed contract",
-    3:"I do not have any funeral pre-arrangements"
   } 
   
 
