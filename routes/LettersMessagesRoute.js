@@ -17,6 +17,7 @@ const lettersMessage = require('./../models/LettersMessages.js')
 const s3 = require('./../helpers/s3Upload')
 const actitivityLog = require('./../helpers/fileAccessLog')
 const Trustee = require('./../models/Trustee.js')
+const HiredAdvisors = require('./../models/HiredAdvisors')
 const commonhelper = require('./../helpers/commonhelper')
 const resMessage = require('./../helpers/responseMessages')
 const allActivityLog = require('./../helpers/allActivityLogs')
@@ -152,15 +153,9 @@ function LettersMessageList(req, res) {
       } else {
           console.log("trusteeQuery >>>>>>>>>>",trusteeQuery)
 
-         /*Trustee.aggregate([
-            { $match : trusteeQuery},
-            { $unwind :'$userAccess'},
-            { $project : { _id:0, LegacyLifeLettersMessagesManagement : '$userAccess.LegacyLifeLettersMessagesManagement' } }
-          ])*/
+         trusteeQuery.customerId = ObjectId(trusteeQuery.customerId)
 
-          trusteeQuery.customerId = ObjectId(trusteeQuery.customerId)
-
-          Trustee.aggregate( [
+          /*Trustee.aggregate( [
             { $match : trusteeQuery},
             { $unwind :'$userAccess'},
             { $project : { _id:0, LegacyLifeLettersMessagesManagement : '$userAccess.LegacyLifeLettersMessagesManagement' } }
@@ -171,9 +166,31 @@ function LettersMessageList(req, res) {
             console.log("Trustee records >>>>>>>>>>",trusteeRecords)
             res.send(resFormat.rSuccess({lettersMessagesList,totalRecords,totalTrusteeRecords,trusteeRecords}));
             
+          })*/
+
+          trusteeQuery.customerId = ObjectId(trusteeQuery.customerId)
+          let lettersMessagesList = lettersMessagesListTemp;
+          let totalTrusteeRecords = 0;
+          let trusteeRecords = [];
+  
+          trusteeRecords = await Trustee.aggregate([
+            { $match: trusteeQuery },
+            { $unwind: '$userAccess' },
+            { $project: { _id: 0, LegacyLifeLettersMessagesManagement: '$userAccess.LegacyLifeLettersMessagesManagement' } }
+          ], async function (err, trusteeRecordsData) {
+  
+            trusteeRecords = trusteeRecordsData;
+  
+            let hiredRecords = await HiredAdvisors.aggregate([
+              { $match: trusteeQuery },
+              { $unwind: '$userAccess' },
+              { $project: { _id: 0, LegacyLifeLettersMessagesManagement: '$userAccess.LegacyLifeLettersMessagesManagement' } }
+            ],  function (err,hireRecords) {
+             let totalRecords = trusteeRecords.concat(hireRecords)
+             trusteeRecords = totalRecords;
+             res.send(resFormat.rSuccess({ lettersMessagesList, totalRecords, totalTrusteeRecords, trusteeRecords }));    
+            })
           })
-
-
 
           /*Trustee.find(trusteeQuery,{userAccess:1,trustId:1}, function(err, trusteeRecords) {
 
@@ -200,7 +217,6 @@ async function getTrusteeFlag(id,trusteeQuery,trustId) {
 //  console.log("trusteeRecords===>",trusteeRecords);
   if(trusteeRecords){
     trusteeRecords.userAccess.LegacyLifeLettersMessagesManagement.filter(dtype => {
-     // console.log("@@@@@@@@@@@@@@@@@@@@@@@===>",dtype.access)
       return dtype.access;
     });//.map(el => el)
     //  async.each(trusteeRecords, (val, callback) => {
