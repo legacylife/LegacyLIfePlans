@@ -57,7 +57,7 @@
                   <label class="strong--label">The body:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.isBodyPresent}}</label>
+                  <label class="normal--label">{{row?.isBodyPresent != "" ? row?.isBodyPresent : "-"}}</label>
                 </div>
               </div>
               
@@ -66,7 +66,7 @@
                   <label class="strong--label">The casket will be:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.isCasket}}</label>
+                  <label class="normal--label">{{row?.isCasket != "" ? row?.isCasket : "-"}}</label>
                 </div>
               </div>
 
@@ -78,9 +78,6 @@
                   <label class="normal--label">{{row?.deceasedWear != "" ? row?.deceasedWear : "-"}}</label>
                 </div>
               </div>
-
-
-
 
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.funaralServiceType != 4">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
