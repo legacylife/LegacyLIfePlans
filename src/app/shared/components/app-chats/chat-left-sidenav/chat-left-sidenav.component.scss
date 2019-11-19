@@ -4,8 +4,10 @@
 }
 .chat--header--left{
     img{
-        width: auto !important;
+        width: 22px !important;
         border-radius: unset;
+        margin-top: 6px;
+        margin-left: 10px;
     }
 }
 .unread--msg--count{
