@@ -96,8 +96,9 @@ manageTrusteeSubmit(insert = null) {
               this.trusteeFormGroup.controls['code'].setValue(this.code);
               this.accessManagement = this.trusteeFormGroup.get('accessManagement') as FormArray;
               this.accessManagement.removeAt(0);
+              //alert(this.code)
               this.rows.forEach((element: any, index) => {
-                  this.accessManagement.push(this.createDefinition(element.userAccess[this.code],element._id));
+                this.accessManagement.push(this.createDefinition(element.userAccess[this.code],element._id));                    
               })
           }else{
             this.listingCnt = false;
@@ -110,10 +111,36 @@ manageTrusteeSubmit(insert = null) {
   }
 
   createDefinition(values,documentId): FormGroup {
-    return this.fb.group({
-      ids: [documentId+'##'+values],
-      oldValue: [values],
-    });
+    if(this.code == 'LegacyLifeLettersMessagesManagement'){
+      let letterData = values
+      const nowRecords =  letterData.map(f=>{ 
+        if(this.letterId == f.letterId){
+          return f.access;
+        }
+      })
+      // removed undefined values from "nowRecords" array
+      let finalAccessArray = nowRecords.filter(function( element ) {
+        return element !== undefined;
+      });
+      if(finalAccessArray && finalAccessArray.length > 0){
+        letterData = finalAccessArray;
+      }
+      else {
+        letterData = "never";
+      }
+      
+      return this.fb.group({
+        ids: [documentId+'##'+letterData],
+        oldValue: [values],
+      });
+    }
+    else {
+      return this.fb.group({
+        ids: [documentId+'##'+values],
+        oldValue: [values],
+      });
+    }
+    
   }
 
   getAccessVal(accessArray,sectionName,value){
