@@ -68,7 +68,7 @@ const getChatReadCount = (userId,friendId) => {
      let chatCount = 0;
      //friendId = friendId.toString();
     //console.log(' CHAT window ID >>>>>>>>>>',typeof(chatingData._id))
-     if(chatingData.chats.length>0) {
+     if(chatingData && chatingData.chats && chatingData.chats.length>0) {
         let chatId = chatingData._id;
        // chatId = chatId.toString();
        //console.log(' CHAT window ID <<<<<<<<<<<<',typeof(chatId));
