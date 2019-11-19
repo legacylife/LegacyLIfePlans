@@ -34,8 +34,9 @@ async function chatRoom(chatId,userId) {
     if(chatingData) { //await chat.updateMany({_id:found._id},{$set: proquery })
        // await chat.update({_id:found._id,chats: { $elemMatch: { contactId: { '$ne': userId }, status: 'unread' }}},{$set : {'chats.$.status': 'read'}}, {safe: true, multi:true});
        chatingData.chats.forEach( async ( val, index ) => {
+        console.log('-------------',userId,'*************',val.contactId);
           if(userId!=val.contactId) {
-            console.log('_id--------------<<<<<<',val._id)
+            console.log('ID------------------',val._id);
             await chat.updateOne({_id:chatingData._id,'chats.status': 'unread'},{$set : {'chats.$.status': 'read'}});
           }
          })
@@ -49,16 +50,15 @@ async function userMessagesStatus(userId,status) {
   let unreadCount = [];
   if(userId!==undefined){
     let chatingData = await chat.find({$or:[{chatfromid:userId},{ chatwithid:userId}]});
-    let index = 0;    let chatInfolist = [];let unreadCnt = 0;
-      await Promise.all(chatingData.map(async (val)=>{       
+   let chatInfolist = [];let unreadCnt = 0;
+      await Promise.all(chatingData.map(async (val)=>{     
+    //async.each(chatingData, async function (val){ 
+        let friendId = val.chatfromid;
+        if(val.chatfromid==userId){
+          friendId = val.chatwithid;
+        }
         if(val.chats.length>0){
-          // let chatRecord = await chat.findOne({_id:val._id,chats: { $elemMatch: { status: 'unread' }}});
-          // if(chatRecord && chatRecord.chats.length>0){
-          //   unreadCount = chatRecord.chats.filter((vals) => {      
-          //     return vals.status == 'unread'
-          //   }); 
-          //   unreadCnt = unreadCount.length;console.log('unreadCntunreadCntunreadCnt---------',unreadCnt)
-          // }           
+          friendId = friendId.toString()
           let unreadC =   await chat.aggregate([
             { "$match": {
                 "_id" : val._id,
@@ -73,7 +73,8 @@ async function userMessagesStatus(userId,status) {
                                 "input": "$chats",
                                 "as": "el",
                                 "cond": {
-                                    "$eq": [ "$$el.status", "unread" ]
+                                    "$eq": [ "$$el.status", "unread" ],
+                                    "$eq": [ "$$el.contactId",friendId]
                                 }
                             }
                         }
@@ -83,17 +84,15 @@ async function userMessagesStatus(userId,status) {
           ]);
           if(unreadC.length>0){
             unreadCnt = unreadC[0].count;   
-          }
+          }        
         }
-      let friendId = val.chatfromid;
-      if(val.chatfromid==userId) {
-        friendId = val.chatwithid;
-      }
+      
       if(friendId!=null) {
         let makeArray = {
             user_id: friendId,
             unread:unreadCnt,
           }
+       
           chatInfolist.push(makeArray);
         }
     }))

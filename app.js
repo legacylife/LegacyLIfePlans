@@ -25,56 +25,44 @@ const apps = express()
      users[socket.id] = data.userId;
     // console.log('a user ' + data.userId +'---' + data.userType + ' connected');
      chats.userStatus(data,'online');
+     io.emit('online-status',data.userId,'online');
     //8 var unreadCnt = chats.userMessagesStatus(data.userId,'online');
     //8 console.log(`loginforonline message-unread-count`);
    //8  io.emit('message-unread-count-'+data.userId, unreadCnt);
   });
 
   socket.on('offline', function(data){
-    console.log('offline zala re--',data.userId);
     io.emit('offlineContact'+data.userId,data.userId);
     chats.userStatus({userId:data.userId},'offline');
+    io.emit('online-status',data.userId,'offline');
  });
   
   socket.on('new-message', async (message) => {
-    // console.log(`started on port: ${port}`);
-    console.log('new-message-'+message.chatwithid, message);
     io.emit('new-message-'+message.chatwithid, message);
     var unreadCnt = await chats.userMessagesStatus(message.chatwithid,'online');
-    console.log('unreadCnt await ************************',unreadCnt)
-    // io.emit('message-unread-count-'+message.chatwithid, unreadCnt);
-    // var userUnreadCnt = [{ user_id: "5d36932ce485cd5cd96bdaf0", unreadCnt: Math.floor((Math.random() * 10) + 1) },
-    //                      { user_id: "5cc9cb111955852c18c5b737", unreadCnt: Math.floor((Math.random() * 10) + 1) },
-    //                      { user_id: "5d369411e485cd5cd96bdaf6", unreadCnt: Math.floor((Math.random() * 10) + 1) } ]
     //io.emit('message-unread-count-'+message.chatwithid, userUnreadCnt);
-    io.emit('message-unread-count-'+message.chatwithid, unreadCnt);
-    
+    io.emit('message-unread-count-'+message.chatwithid, unreadCnt);    
   });
 
-  socket.on('message-unread-count', async (data) => {
-  console.log(`message-unread-count`);
-    //8  var unreadCnt = await chats.userMessagesStatus(data.userId,'online');
-    //  io.emit('message-unread-count-'+data.userId, unreadCnt);
-    // var userUnreadCnt = [{ user_id: "5d36932ce485cd5cd96bdaf0", unreadCnt: Math.floor((Math.random() * 10) + 1) },
-    //                      { user_id: "5cc9cb111955852c18c5b737", unreadCnt: Math.floor((Math.random() * 10) + 1) },
-    //                      { user_id: "5d369411e485cd5cd96bdaf6", unreadCnt: Math.floor((Math.random() * 10) + 1) } ]
-  //8  io.emit('message-unread-count-'+data.userId, unreadCnt);
+  socket.on('message-unread-count', async (data) => { // functions call when page reload from customizer.ts
+     var unreadCnt = await chats.userMessagesStatus(data.userId,'online');
+    io.emit('message-unread-count-'+data.userId, unreadCnt);
   });
 
   socket.on('get-chat-room', (chatId,userId) => {
-    console.log('======get-chat-room==',chatId,userId)
+    // console.log('======get-chat-room==',chatId,userId)
      chats.chatRoom(chatId,userId);
-   // io.emit('get-chat-rrom'+contactId);
+   // io.emit('get-chat-room'+contactId);
   });
  
   
   socket.on('disconnect', function(){
-    if(users[socket.id]!=='undefined'){
-      console.log('user ' + users[socket.id] + ' disconnected');
+    if(users[socket.id]!==undefined){
       io.emit('offlineContact', users[socket.id]);
       chats.userStatus({userId:users[socket.id]},'offline');
+      io.emit('online-status',users[socket.id],'offline');
     }else{
-      console.log('user ' + users[socket.id] + ' disconnected here');
+    //  console.log('user ' + users + ' disconnected here');
     }
   });
 

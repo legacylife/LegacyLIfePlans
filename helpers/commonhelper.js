@@ -59,14 +59,24 @@ const customerTrustees = (trusteeQuery) => {
 
 
 const getChatReadCount = (userId,friendId) => {
+  
   return new Promise(async function(resolve, reject) {
-    let chatingData = await chat.findOne({$or:[{chatfromid:userId,chatwithid:friendId},{ chatfromid:friendId,chatwithid:userId}]});
-    let chatCount = 0;
+     userId = userId.toString();
+     friendId = friendId.toString();
+     console.log("typeof Friend ID",typeof(friendId))
+     let chatingData = await chat.findOne({$or:[{chatfromid:userId,chatwithid:friendId},{ chatfromid:friendId,chatwithid:userId}]});
+     let chatCount = 0;
+     //friendId = friendId.toString();
+    //console.log(' CHAT window ID >>>>>>>>>>',typeof(chatingData._id))
      if(chatingData.chats.length>0) {
+        let chatId = chatingData._id;
+       // chatId = chatId.toString();
+       //console.log(' CHAT window ID <<<<<<<<<<<<',typeof(chatId));
         let unreadC =   await chat.aggregate([
           { "$match": {
-              "_id" : chatingData._id,
-            // $or:[{chatfromid:userId,chatwithid:friendId},{ chatfromid:friendId,chatwithid:userId}],
+              "_id" : chatId,
+              //"chats.status": "unread"
+              //$or:[{chatfromid:userId,chatwithid:friendId},{ chatfromid:friendId,chatwithid:userId}],
               "chats.status": "unread"
           }},
           { "$group": {
@@ -77,8 +87,9 @@ const getChatReadCount = (userId,friendId) => {
                           "$filter": {
                               "input": "$chats",
                               "as": "el",
-                              "cond": {
-                                  "$eq": [ "$$el.status", "unread" ]
+                              "cond": { 
+                                  "$eq": [ "$$el.status", "unread" ],
+                                  "$eq": [ "$$el.contactId",friendId]
                               }
                           }
                       }
@@ -86,7 +97,8 @@ const getChatReadCount = (userId,friendId) => {
               }
           }}
         ]);
-        if(unreadC.length>0){
+     console.log('unread >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ',unreadC,' chat id ',typeof(chatId),' Friend ID',friendId)
+        if(unreadC && unreadC.length>0){
           chatCount = unreadC[0].count;   
         }
       }

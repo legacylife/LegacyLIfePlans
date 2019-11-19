@@ -107,7 +107,7 @@ async function contactList(req, res) {
            userPicture = profilePicturePath+info.profilePicture;
          }
          
-         chatCount = await commonhelper.getChatReadCount(query._id,val.customerId);
+         chatCount = await commonhelper.getChatReadCount(query._id,info._id);
      
          let makeArray = {
            _id: info._id,
@@ -132,7 +132,7 @@ async function contactList(req, res) {
             userPicture = profilePicturePath+info.profilePicture;
           }
 
-          chatCount = await commonhelper.getChatReadCount(query._id,val.advisorId);
+          chatCount = await commonhelper.getChatReadCount(query._id,info._id);
           let makeArray = {
             _id: info._id,
             name: info.firstName+' '+info.lastName,

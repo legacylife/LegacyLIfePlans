@@ -214,7 +214,7 @@ async function viewDeceased(req, res) {
          if(totalCnt>2 && DeceasedCnt && DeceasedCnt.length>0){
           counterLabel = '<br>'+DeceasedCnt.length+" Trustee mark as deceased out of "+totalCnt;
          }
-
+         console.log('+++++++++++++++++++++++++++',counterLabel)
          //Customer needs to inform he is set mark as deceased now.
          await sendDeceasedNotifyMails('CustomerMarkAsDeceasedNotificationMail',legacyHolderInfo.username,legacyHolderInfo.firstName,legacyHolderInfo.lastName,legacyHolderName,deceasedFromName,userType,lockoutLegacyDateWithLabel,counterLabel);
          await sendDeceasedNotification('MarkAsDeceasedNotificationMail',trustList,advisorList,legacyHolderName,deceasedFromName,userType,fromUserId,counterLabel);
