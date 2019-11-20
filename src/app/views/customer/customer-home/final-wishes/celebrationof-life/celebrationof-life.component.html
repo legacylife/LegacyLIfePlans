@@ -16,7 +16,9 @@
               <mat-form-field class="full-width no-mar">
                 <textarea matInput (keyup)="firstCapitalize($event)" maxlength="500" placeholder="Who will orchestrate or conduct the event?"
                   [formControl]="celebrationFormGroup.controls['eventByName']"></textarea>
-                  
+                <mat-icon matTooltip="Please enter event name" matTooltipClass="llp--tooltip error" *ngIf="celebrationFormGroup.controls['eventByName'].hasError('required') && celebrationFormGroup.controls['eventByName'].touched"
+                  class="red--alert">help_outline</mat-icon>
+
               </mat-form-field>
             </mat-radio-group>
           </div>
@@ -24,6 +26,8 @@
             <mat-radio-group class="llp-radio mb-0 mt-1">
               <mat-form-field class="full-width no-mar">
                 <textarea matInput (keyup)="firstCapitalize($event)" maxlength="500" placeholder="Where should the event take place?" [formControl]="celebrationFormGroup.controls['eventPlace']"></textarea>
+                <mat-icon matTooltip="Please enter event place" matTooltipClass="llp--tooltip error" *ngIf="celebrationFormGroup.controls['eventPlace'].hasError('required') && celebrationFormGroup.controls['eventPlace'].touched"
+                class="red--alert">help_outline</mat-icon>
               </mat-form-field>
             </mat-radio-group>
           </div>
@@ -39,7 +43,8 @@
             <mat-radio-group class="llp-radio mb-0 mt-1">
               <mat-form-field class="full-width no-mar">
                 <textarea matInput (keyup)="firstCapitalize($event)" maxlength="100" placeholder="Who?" [formControl]="celebrationFormGroup.controls['speakerName']"></textarea>
-                <mat-icon matTooltip="Please enter speaker name" matTooltipClass="llp--tooltip error" *ngIf="celebrationFormGroup.controls['speakerName'].hasError('required') && celebrationFormGroup.controls['speakerName'].touched" class="red--alert">help_outline</mat-icon>
+                <mat-icon matTooltip="Please enter speaker name" matTooltipClass="llp--tooltip error" *ngIf="celebrationFormGroup.controls['speakerName'].hasError('required') && celebrationFormGroup.controls['speakerName'].touched"
+                  class="red--alert">help_outline</mat-icon>
               </mat-form-field>
             </mat-radio-group>
           </div>
@@ -131,41 +136,11 @@
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
             <mat-radio-group class="llp-radio mb-0 mt-1">
               <mat-form-field class="full-width no-mar">
-                <textarea matInput [formControl]="celebrationFormGroup.controls['paymentOptions']" (keyup)="firstCapitalize($event)" placeholder="How will the event be paid for?  Please provide details and payment options such as viatical insurance settlement, life insurance, savings, sock/mattress money, etc. and location."></textarea>
+                <textarea matInput [formControl]="celebrationFormGroup.controls['paymentOptions']" (keyup)="firstCapitalize($event)" maxlength="500"
+                  placeholder="How will the event be paid for?  Please provide details and payment options such as viatical insurance settlement, life insurance, savings, sock/mattress money, etc. and location."></textarea>
               </mat-form-field>
             </mat-radio-group>
           </div>
-
-          <!-- <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
-            <mat-radio-group class="llp-radio mb-0 mt-1">
-              <div class="checkbox-label">People to invite</div>
-            </mat-radio-group>
-          </div>
-          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
-            <mat-form-field class="full-width">
-              <input matInput type="text" placeholder="Name">
-            </mat-form-field>
-          </div>
-          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="">
-            <mat-form-field class="full-width">
-              <input matInput type="text" placeholder="Phone number">
-            </mat-form-field>
-          </div>
-          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="100" fxFlex.xl="100" class="">
-            <mat-form-field class="full-width">
-              <input matInput type="text" placeholder="Email">
-            </mat-form-field>
-          </div>
-          <div fxFlex.xs="100">
-            <div class="add--new">
-              <mat-icon>add_circle</mat-icon>
-              Add New
-            </div>
-          </div> -->
-
-
-
-
 
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" formArrayName="invitedPeople">
             <h3 class="header--text fnt--16 mb-1">People to invite</h3>
@@ -181,7 +156,7 @@
                   <input matInput name="phoneNumber" placeholder="Phone Number" formControlName="phoneNumber">
                 </mat-form-field>
               </div>
-              <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="100" fxFlex.xl="100" class="">
+              <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="85" fxFlex.xl="85" class="">
                 <mat-form-field class="full-width">
                   <input matInput name="emailId" placeholder="Email" formControlName="emailId">
                 </mat-form-field>
@@ -189,6 +164,7 @@
               <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" (click)="delete(pointIndex);" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
                 <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
               </div>
+              
             </div>
 
 

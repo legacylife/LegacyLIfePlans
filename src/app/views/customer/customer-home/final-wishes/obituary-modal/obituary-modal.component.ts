@@ -119,6 +119,9 @@ export class ObituaryModalComponent implements OnInit {
           if(this.obituaryList.check && this.obituaryList.check == 'yes'){
             this.obituaryCheck = true;
           } 
+          else {
+            this.obituaryCheck = false;
+          }
 
           if(this.obituaryList.check == 'yes' && this.obituaryList.photos == 'yes'){
             this.obituaryCheckPhotos = true;

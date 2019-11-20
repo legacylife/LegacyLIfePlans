@@ -155,7 +155,7 @@ export class FuneralExpensesModalComponent implements OnInit {
             this.madePrearrangment = false;
             this.preneedContract = true;
           } else {
-            this.preneedContract = false;
+            this.madePrearrangment = false;
             this.preneedContract = false;
           }
 
@@ -490,7 +490,7 @@ export class FuneralExpensesModalComponent implements OnInit {
       this.madePrearrangment = false;
       this.preneedContract = true;
     } else {
-      this.preneedContract = false;
+      this.madePrearrangment = false;
       this.preneedContract = false;
     }
   }

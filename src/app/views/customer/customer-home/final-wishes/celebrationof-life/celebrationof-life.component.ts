@@ -69,7 +69,7 @@ export class CelebrationofLifeComponent implements OnInit {
       invitedPeople: this._formBuilder.array([this._formBuilder.group(
           { name: [''], 
           phoneNumber: [''], 
-          emailId: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]) })]),
+          emailId: new FormControl('') })]),
     });
 
     this.urlData = this.userapi.getURLData();
@@ -252,7 +252,7 @@ export class CelebrationofLifeComponent implements OnInit {
     this.invitedPeoplePoints.push(this._formBuilder.group({
       name: [''],
       phoneNumber: [''],
-      emailId: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)])
+      emailId: new FormControl('')
     }));
   }
 
