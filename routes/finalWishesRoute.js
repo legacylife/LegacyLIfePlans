@@ -254,7 +254,8 @@ function celebrationFormUpdate(req, res) {
     insert.speakerAvailable = proquery.speakerAvailable;
     insert.speakerName = proquery.speakerName;
     insert.foodNMenuItems = proquery.foodNMenuItems;
-    insert.musicNames = proquery.musicNames;
+    insert.musicNames = proquery.musicNames;    
+    insert.invitedPeople = proquery.invitedPeople;      
 
     insert.groupActivities = proquery.groupActivities;
     insert.documentLocation = proquery.documentLocation;
