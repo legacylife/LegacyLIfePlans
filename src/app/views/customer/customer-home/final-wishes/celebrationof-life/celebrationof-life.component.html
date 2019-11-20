@@ -14,7 +14,9 @@
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
             <mat-radio-group class="llp-radio mb-0 mt-1">
               <mat-form-field class="full-width no-mar">
-                <textarea matInput (keyup)="firstCapitalize($event)" maxlength="500" placeholder="Who will orchestrate or conduct the event?" [formControl]="celebrationFormGroup.controls['eventByName']"></textarea>
+                <textarea matInput (keyup)="firstCapitalize($event)" maxlength="500" placeholder="Who will orchestrate or conduct the event?"
+                  [formControl]="celebrationFormGroup.controls['eventByName']"></textarea>
+                  
               </mat-form-field>
             </mat-radio-group>
           </div>
@@ -30,13 +32,14 @@
             <mat-radio-group class="llp-radio mb-0 mt-1" [formControl]="celebrationFormGroup.controls['speakerAvailable']" (change)="onChangeSpeaker($event.value)">
               <div class="checkbox-label">Will there be a speaker?</div>
               <mat-radio-button value="yes" [checked]="celebrationFormGroup.controls['speakerAvailable'].value=='yes'">Yes</mat-radio-button>
-              <mat-radio-button value="no"  [checked]="celebrationFormGroup.controls['speakerAvailable'].value=='no'">No</mat-radio-button>
+              <mat-radio-button value="no" [checked]="celebrationFormGroup.controls['speakerAvailable'].value=='no'">No</mat-radio-button>
             </mat-radio-group>
           </div>
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="" *ngIf="isSpeaker">
             <mat-radio-group class="llp-radio mb-0 mt-1">
               <mat-form-field class="full-width no-mar">
                 <textarea matInput (keyup)="firstCapitalize($event)" maxlength="100" placeholder="Who?" [formControl]="celebrationFormGroup.controls['speakerName']"></textarea>
+                <mat-icon matTooltip="Please enter speaker name" matTooltipClass="llp--tooltip error" *ngIf="celebrationFormGroup.controls['speakerName'].hasError('required') && celebrationFormGroup.controls['speakerName'].touched" class="red--alert">help_outline</mat-icon>
               </mat-form-field>
             </mat-radio-group>
           </div>
@@ -44,8 +47,8 @@
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
             <mat-radio-group class="llp-radio mb-0 mt-1">
               <mat-form-field class="full-width no-mar">
-                <textarea matInput (keyup)="firstCapitalize($event)" 
-                  placeholder="Food and Beverages to be served (catered, potluck, menu items)" maxlength="500" [formControl]="celebrationFormGroup.controls['foodNMenuItems']"></textarea>
+                <textarea matInput (keyup)="firstCapitalize($event)" placeholder="Food and Beverages to be served (catered, potluck, menu items)"
+                  maxlength="500" [formControl]="celebrationFormGroup.controls['foodNMenuItems']"></textarea>
               </mat-form-field>
             </mat-radio-group>
           </div>
@@ -61,8 +64,8 @@
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
             <mat-radio-group class="llp-radio mb-0 mt-1">
               <mat-form-field class="full-width no-mar">
-                <textarea matInput  [formControl]="celebrationFormGroup.controls['groupActivities']" (keyup)="firstCapitalize($event)"
-                  placeholder="What group activities would be appropriate? Open reflections/tributes, readings, any highlights, games" maxlength="500"></textarea>
+                <textarea matInput [formControl]="celebrationFormGroup.controls['groupActivities']" (keyup)="firstCapitalize($event)" placeholder="What group activities would be appropriate? Open reflections/tributes, readings, any highlights, games"
+                  maxlength="500"></textarea>
               </mat-form-field>
             </mat-radio-group>
           </div>
@@ -71,12 +74,9 @@
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
             <div class="upload--buss--docs--sec">
               <label>Upload your documents</label>
-              <div class="upload--box fileupload-drop-zone"
-              ng2FileDrop
-              [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-              (fileOver)="fileOverBase($event)"
-              [uploader]="uploader">
-              <input type="file" name="documents"  ng2FileSelect [uploader]="uploader" multiple  (change)="fileOverBase('')" />  
+              <div class="upload--box fileupload-drop-zone" ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
+                [uploader]="uploader">
+                <input type="file" name="documents" ng2FileSelect [uploader]="uploader" multiple (change)="fileOverBase('')" />
                 <mat-icon class="cloud-icon">cloud_upload</mat-icon>
                 <div class="select--file">Select file from your computer</div>
               </div>
@@ -86,24 +86,31 @@
 
           <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small>
           <mat-form-field class="full-width" *ngIf="documents_temps">
-              <input matInput name="documents_temp" [formControl]="celebrationFormGroup.controls['documents_temp']">
-              <small *ngIf="celebrationFormGroup.controls['documents_temp'].hasError('required') && celebrationFormGroup.controls['documents_temp'].touched" class="form-error-msg"> Please drag your document. </small>
+            <input matInput name="documents_temp" [formControl]="celebrationFormGroup.controls['documents_temp']">
+            <small *ngIf="celebrationFormGroup.controls['documents_temp'].hasError('required') && celebrationFormGroup.controls['documents_temp'].touched"
+              class="form-error-msg"> Please drag your document. </small>
           </mat-form-field>
-    
-          <div *ngIf="documentsList.length > 0" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" >
+
+          <div *ngIf="documentsList.length > 0" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
             <h3 class="header--text fnt--16">Uploaded document</h3>
             <mat-chip-list class="doc--list" *ngFor="let doc of documentsList; index as i">
-                <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove  (click)="documentDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+              <mat-chip>
+                <a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a>
+                <mat-icon matChipRemove (click)="documentDelete(i,doc.title,doc.tmpName)">close</mat-icon>
+              </mat-chip>
             </mat-chip-list>
-    
+
             <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
-                <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
-            </mat-chip-list>  
+              <mat-chip>
+                <mat-error>{{err.error}}</mat-error>
+              </mat-chip>
+            </mat-chip-list>
           </div>
-    
-          <div class="progress" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" style="margin-bottom: 0;" *ngIf="currentProgessinPercent>0">
+
+          <div class="progress" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" style="margin-bottom: 0;"
+            *ngIf="currentProgessinPercent>0">
             <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
-            <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
+            <mat-progress-bar class="" color="primary" mode="Indeterminate" [value]="currentProgessinPercent"></mat-progress-bar>
           </div>
 
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
@@ -113,49 +120,87 @@
           </div>
 
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
-              <mat-radio-group class="llp-radio mb-0 mt-1">
-                <mat-form-field class="full-width no-mar">
-                  <textarea matInput [formControl]="celebrationFormGroup.controls['mementos']" (keyup)="firstCapitalize($event)" maxlength="500"
-                    placeholder="Mementos or keepsakes to be provided"></textarea>
-                </mat-form-field>
-              </mat-radio-group>
-            </div>
+            <mat-radio-group class="llp-radio mb-0 mt-1">
+              <mat-form-field class="full-width no-mar">
+                <textarea matInput [formControl]="celebrationFormGroup.controls['mementos']" (keyup)="firstCapitalize($event)" maxlength="500"
+                  placeholder="Mementos or keepsakes to be provided"></textarea>
+              </mat-form-field>
+            </mat-radio-group>
+          </div>
 
-            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
-              <mat-radio-group class="llp-radio mb-0 mt-1">
-                <mat-form-field class="full-width no-mar">
-                  <textarea matInput [formControl]="celebrationFormGroup.controls['paymentOptions']" (keyup)="firstCapitalize($event)"
-                    placeholder="How will the event be paid for?  Please provide details and payment options such as viatical insurance settlement, life insurance, savings, sock/mattress money, etc. and location."></textarea>
-                </mat-form-field>
-              </mat-radio-group>
-            </div>
+          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+            <mat-radio-group class="llp-radio mb-0 mt-1">
+              <mat-form-field class="full-width no-mar">
+                <textarea matInput [formControl]="celebrationFormGroup.controls['paymentOptions']" (keyup)="firstCapitalize($event)" placeholder="How will the event be paid for?  Please provide details and payment options such as viatical insurance settlement, life insurance, savings, sock/mattress money, etc. and location."></textarea>
+              </mat-form-field>
+            </mat-radio-group>
+          </div>
 
-            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
-                <mat-radio-group class="llp-radio mb-0 mt-1">
-                    <div class="checkbox-label">People to invite</div>                  
-                  </mat-radio-group>               
-              </div>
+          <!-- <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
+            <mat-radio-group class="llp-radio mb-0 mt-1">
+              <div class="checkbox-label">People to invite</div>
+            </mat-radio-group>
+          </div>
+          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
+            <mat-form-field class="full-width">
+              <input matInput type="text" placeholder="Name">
+            </mat-form-field>
+          </div>
+          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="">
+            <mat-form-field class="full-width">
+              <input matInput type="text" placeholder="Phone number">
+            </mat-form-field>
+          </div>
+          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="100" fxFlex.xl="100" class="">
+            <mat-form-field class="full-width">
+              <input matInput type="text" placeholder="Email">
+            </mat-form-field>
+          </div>
+          <div fxFlex.xs="100">
+            <div class="add--new">
+              <mat-icon>add_circle</mat-icon>
+              Add New
+            </div>
+          </div> -->
+
+
+
+
+
+          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" formArrayName="invitedPeople">
+            <h3 class="header--text fnt--16 mb-1">People to invite</h3>
+
+            <div fxLayout="row wrap" *ngFor="let award of invitedPeoplePoints.controls; let pointIndex = index" [formGroupName]="pointIndex">
               <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
-                  <mat-form-field class="full-width">
-                      <input matInput type="text" placeholder="Name">
-                </mat-form-field> 
+                <mat-form-field class="full-width">
+                  <input class="capitalize" matInput name="name" placeholder="Name" formControlName="name">
+                </mat-form-field>
               </div>
               <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="">
-                  <mat-form-field class="full-width">
-                      <input matInput type="text" placeholder="Phone number">
+                <mat-form-field class="full-width">
+                  <input matInput name="phoneNumber" placeholder="Phone Number" formControlName="phoneNumber">
                 </mat-form-field>
               </div>
               <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="100" fxFlex.xl="100" class="">
-                  <mat-form-field class="full-width">
-                      <input matInput type="text" placeholder="Email">
+                <mat-form-field class="full-width">
+                  <input matInput name="emailId" placeholder="Email" formControlName="emailId">
                 </mat-form-field>
               </div>
+              <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" (click)="delete(pointIndex);" fxFlex.lg="5" fxFlex.xl="5" class="text-right">
+                <mat-icon class="mt-1 clr--red cursor-pointer">delete</mat-icon>
+              </div>
+            </div>
+
+
+            <div fxLayout="row wrap">
               <div fxFlex.xs="100">
-                  <div class="add--new">
-                    <mat-icon>add_circle</mat-icon>
-                    Add New
-                  </div>
+                <div class="add--new" (click)="addNewAo();">
+                  <mat-icon>add_circle</mat-icon>
+                  Add New
                 </div>
+              </div>
+            </div>
+          </div>
 
         </div>
       </div>

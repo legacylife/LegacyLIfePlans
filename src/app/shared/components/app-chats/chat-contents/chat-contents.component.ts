@@ -57,12 +57,16 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
     });
 
     this.chatService.getMessagesUnreadCnt().subscribe((count: string) => {
-      console.log("getMessagesUnreadCnt ", count)
+      //console.log("getMessagesUnreadCnt ", count)
     });
    
     this.chatService.getMessages().subscribe((message: string) => {
         this.messages.push(message);
-        console.log("thismessages", this.messages)
+        //console.log("thismessages", this.messages)
+    });
+
+
+    this.chatService.getOnlineStatus().subscribe((friendId:any) => {
     });
 
     // Listen for contact change
@@ -100,7 +104,7 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   }
 
   sendMessage(e) {
-    if(this.msgForm.form.value.message.trim()!=''){
+    if(this.msgForm.form.value.message && this.msgForm.form.value.message.trim()!=''){
     const chat: Chat = {
       contactId: this.chatService.user._id,
       chatwithid: this.activeContact._id,

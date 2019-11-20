@@ -119,7 +119,7 @@
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
               <mat-form-field class="full-width">
-                <input matInput placeholder="Contact info:" [formControl]="expensesFormGroup.controls['ContactInfo']">
+                <input matInput maxlength="15" (keypress)="onlyNumbers($event)" placeholder="Contact info:" [formControl]="expensesFormGroup.controls['ContactInfo']">
               </mat-form-field>
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="cust--gapp">

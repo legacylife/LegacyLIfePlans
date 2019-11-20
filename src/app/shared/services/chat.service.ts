@@ -60,6 +60,9 @@ export class ChatService {
     this.socket.on('disconnect', function(){
      // console.log("socket disconnected",)
     });
+
+
+    
     this.userId = localStorage.getItem("endUserId");
     this.userType = localStorage.getItem("endUserType");
     this.userInfo = this.userapi.getUserInfo();
@@ -68,7 +71,8 @@ export class ChatService {
       this.userId = this.userInfo.endUserId;
       this.userType = this.userInfo.endUserType;
     }
-    console.log('Welcome to chat  User Id ===> ',this.userId,' USer Type',this.userType)
+    console.log('Welcome to chat  User Id ===> ',this.userId,' USer Type',this.userType);
+    //this.loadChatData();
   }
 
   ngOnInit() {
@@ -206,7 +210,7 @@ export class ChatService {
       query: Object.assign({_id:this.userId,userType:this.userType}),
     }
     let contacts =  this.userapi.chatApi(`chatting/getContacts`, req_vars);
-   // console.log(contacts)
+    //console.log(contacts)
     return contacts;
   }
 
@@ -300,6 +304,26 @@ export class ChatService {
   // }
   // this.putMessagesUnreadCnt(message.contactId);
 
+  public getOnlineStatus = () => {
+    this.userInfo = this.userapi.getUserInfo();
+    this.userId = '';
+    if (this.userInfo.endUserType !== '') {
+      this.userId = this.userInfo.endUserId;
+      this.userType = this.userInfo.endUserType;
+    }
+    return Observable.create((observer) => {
+        this.socket.on('online-status', (friendId,status) => {
+          if(friendId!=undefined){
+            let contactInd = this.contacts.findIndex((c) => c._id == friendId);
+            if (contactInd && contactInd > -1) {
+              this.contacts[contactInd].status = status;
+            }
+          }
+        });
+    });
+  }
+
+
   public getMessages = () => {
     this.userInfo = this.userapi.getUserInfo();
     this.userId = '';
@@ -309,10 +333,7 @@ export class ChatService {
     }
     return Observable.create((observer) => {
         this.socket.on('new-message-'+this.userId, (message) => {
-            console.log("received message****",message,'****chatWindow******',this.chatwindow);
-            // this.socket.on('message-unread-count-'+this.userId, (unreadCnt) => {
-            //   console.log(" here I am getMessages  #@#@#  message-unread-count",this.userId,unreadCnt)        
-            // });
+            //console.log("received message****",message,'****chatWindow******',this.chatwindow);
             observer.next(message);
             this.onChatsUpdated.next(message);
         });
@@ -327,7 +348,7 @@ export class ChatService {
         // });
  
        this.socket.on('offlineContact', (offlineId) => {
-        console.log("getMessages  #@#@#   offlineContact----",offlineId)      
+        //console.log("getMessages  #@#@#   offlineContact----",offlineId)      
        });
 
 
@@ -351,11 +372,10 @@ export class ChatService {
       _id: chatid,
       chats: chats
     }
-   // console.log('message >>> ',message)
+   
     this.socket.emit('new-message', message);
     this.socket.emit('message-unread-count', this.userId);
     //return this.http.put<ChatCollection>('api/chat-collections', chatCollection)
-    
     let req_vars = {
       query: Object.assign({_id:chatid,userType:this.userType}),
       message:message,
