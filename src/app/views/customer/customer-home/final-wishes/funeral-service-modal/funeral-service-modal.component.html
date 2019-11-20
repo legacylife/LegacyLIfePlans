@@ -242,7 +242,7 @@
                             <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
                         </mat-chip-list>  
                   
-                        <div class="progress" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" style="margin-bottom: 0;" *ngIf="currentProgessinPercent>0">
+                        <div class="progress mb-1" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" style="margin-bottom: 0;" *ngIf="currentProgessinPercent>0">
                           <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
                           <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
                         </div>           
