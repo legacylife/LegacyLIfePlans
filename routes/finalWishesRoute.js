@@ -588,7 +588,7 @@ function expensesFormUpdate(req, res) {
   folderName = folderName.replace('/', '');
   let subFolderName = '';
   var logData = {}
-  logData.fileName = constants.funeralOptions[proquery.haveFuneralArrangement];
+  logData.fileName = constants.expenseOptions[proquery.haveFuneralArrangement];
   logData.folderName = 'finalwishes';
   logData.subFolderName = 'expenses';
 
