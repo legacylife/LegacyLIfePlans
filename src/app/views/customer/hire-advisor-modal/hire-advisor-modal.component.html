@@ -19,7 +19,7 @@
               </div>              
               <div class="ll--modal--footer text-center">
                   <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" *ngIf="alreadyRequestSend">Continue</button>
-                  <button mat-menu-item  class="llp--primary--btn mb-1" *ngIf="!alreadyRequestSend"><mat-icon>check</mat-icon> Request already sent!</button>
+                  <button mat-menu-item  class="llp--primary--btn mb-1 text-center" *ngIf="!alreadyRequestSend"><mat-icon class="clr--white">check</mat-icon> Request already sent!</button>
                </div>
       </mat-step>
       <mat-step [stepControl]="trusteeFormGroup">            
