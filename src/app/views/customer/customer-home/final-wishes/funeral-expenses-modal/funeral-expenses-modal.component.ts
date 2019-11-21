@@ -283,7 +283,7 @@ export class FuneralExpensesModalComponent implements OnInit {
         this.fileErrors.push(pushArry); 
         setTimeout(()=>{    
           this.fileErrors = []
-        }, 5000);
+        }, 50000);
     
       }
     });
