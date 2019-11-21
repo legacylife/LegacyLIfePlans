@@ -6,7 +6,7 @@ var finalWishesExpensesSchema = new mongoose.Schema({
   customerLegacyId: String,
   customerLegacyType: String,
 
-  haveFuneralArrangement:{ type: String, default:'No' },
+  haveFuneralArrangement:{ type: String, default:'1' },
   funeralHome:String,
   funeralDirector:String,
   address:String,
