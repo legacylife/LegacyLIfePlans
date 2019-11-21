@@ -1,3 +1,6 @@
 @import "../userlist/userlist.component.scss";
 
 
+::ng-deep .datatable-row-wrapper .datatable-body-row .datatable-row-center .datatable-body-cell:first-child{
+    word-break: break-all;
+}
