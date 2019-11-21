@@ -232,7 +232,7 @@
                               <input matInput name="documents_temp" [formControl]="thirdFormGroup.controls['documents_temp']">
                               <small *ngIf="thirdFormGroup.controls['documents_temp'].hasError('required') && thirdFormGroup.controls['documents_temp'].touched" class="form-error-msg"> Please drag your document. </small>
                         </mat-form-field>
-                        <div *ngIf="documentsList.length > 0" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" >
+                        <div class="mb-1" *ngIf="documentsList.length > 0" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" >
                           <h3 class="header--text fnt--16">Uploaded file/pictures/videos documents </h3>
                           <mat-chip-list class="doc--list" *ngFor="let doc of documentsList; index as i">
                             <mat-chip><a  (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove (click)="FuneralServiceDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>

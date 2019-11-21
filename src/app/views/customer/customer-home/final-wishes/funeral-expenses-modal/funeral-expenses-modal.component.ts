@@ -57,7 +57,6 @@ export class FuneralExpensesModalComponent implements OnInit {
     this.documentsList = [];
 
     this.expensesFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required],
       profileId:new FormControl(''),
       toppings : new FormControl(''),
       haveFuneralArrangement : new FormControl('1'),
@@ -283,7 +282,7 @@ export class FuneralExpensesModalComponent implements OnInit {
         this.fileErrors.push(pushArry); 
         setTimeout(()=>{    
           this.fileErrors = []
-        }, 50000);
+        }, 5000);
     
       }
     });
@@ -486,12 +485,111 @@ export class FuneralExpensesModalComponent implements OnInit {
     if (value == "1") {
       this.madePrearrangment = true;
       this.preneedContract = false;
+
+      this.expensesFormGroup = this._formBuilder.group({
+        profileId:new FormControl(this.expensesFormGroup.controls['profileId'].value),
+        toppings : new FormControl(this.expensesFormGroup.controls['toppings'].value),
+        haveFuneralArrangement : new FormControl(this.expensesFormGroup.controls['haveFuneralArrangement'].value),
+        funeralHome : new FormControl(this.expensesFormGroup.controls['funeralHome'].value, Validators.required),
+        funeralDirector : new FormControl(this.expensesFormGroup.controls['funeralDirector'].value),
+        address : new FormControl(this.expensesFormGroup.controls['address'].value),
+        phoneNumber : new FormControl(this.expensesFormGroup.controls['phoneNumber'].value),
+  
+        preneedContractLocation: [this.expensesFormGroup.controls['preneedContractLocation'].value],
+        haveGuarantee : new FormControl(this.expensesFormGroup.controls['haveGuarantee'].value),
+        prepaidFuneralServices : new FormControl(this.expensesFormGroup.controls['prepaidFuneralServices'].value),
+        havePriceList : new FormControl(this.expensesFormGroup.controls['havePriceList'].value),
+        totalAmountPay : new FormControl(this.expensesFormGroup.controls['totalAmountPay'].value),
+        haveToPayOnDeath : new FormControl(this.expensesFormGroup.controls['haveToPayOnDeath'].value),
+        account : new FormControl(this.expensesFormGroup.controls['account'].value),
+  
+        amountInAccount: new FormControl(this.expensesFormGroup.controls['amountInAccount'].value),
+        financialInstitution : new FormControl(this.expensesFormGroup.controls['financialInstitution'].value),
+        havePooled : new FormControl(this.expensesFormGroup.controls['havePooled'].value),
+        pooledAccount : new FormControl(this.expensesFormGroup.controls['pooledAccount'].value),
+        pooledAmount : new FormControl(this.expensesFormGroup.controls['pooledAmount'].value),
+        pooledInsuranceCompany : new FormControl(this.expensesFormGroup.controls['pooledInsuranceCompany'].value),
+        ContactInfo : new FormControl(this.expensesFormGroup.controls['ContactInfo'].value),
+        documents_temp: new FormControl(this.expensesFormGroup.controls['documents_temp'].value),
+        comments : new FormControl(this.expensesFormGroup.controls['comments'].value),
+        additionalInstructions : new FormControl(this.expensesFormGroup.controls['additionalInstructions'].value),
+        
+        
+  
+      });
+
+
     } else  if (value == "2") {
       this.madePrearrangment = false;
       this.preneedContract = true;
+
+      this.expensesFormGroup = this._formBuilder.group({
+        profileId:new FormControl(this.expensesFormGroup.controls['profileId'].value),
+        toppings : new FormControl(this.expensesFormGroup.controls['toppings'].value),
+        haveFuneralArrangement : new FormControl(this.expensesFormGroup.controls['haveFuneralArrangement'].value),
+        funeralHome : new FormControl(this.expensesFormGroup.controls['funeralHome'].value),
+        funeralDirector : new FormControl(this.expensesFormGroup.controls['funeralDirector'].value),
+        address : new FormControl(this.expensesFormGroup.controls['address'].value),
+        phoneNumber : new FormControl(this.expensesFormGroup.controls['phoneNumber'].value),
+  
+        preneedContractLocation: new FormControl(this.expensesFormGroup.controls['preneedContractLocation'].value, Validators.required),
+        haveGuarantee : new FormControl(this.expensesFormGroup.controls['haveGuarantee'].value),
+        prepaidFuneralServices : new FormControl(this.expensesFormGroup.controls['prepaidFuneralServices'].value),
+        havePriceList : new FormControl(this.expensesFormGroup.controls['havePriceList'].value),
+        totalAmountPay : new FormControl(this.expensesFormGroup.controls['totalAmountPay'].value),
+        haveToPayOnDeath : new FormControl(this.expensesFormGroup.controls['haveToPayOnDeath'].value),
+        account : new FormControl(this.expensesFormGroup.controls['account'].value),
+  
+        amountInAccount: new FormControl(this.expensesFormGroup.controls['amountInAccount'].value),
+        financialInstitution : new FormControl(this.expensesFormGroup.controls['financialInstitution'].value),
+        havePooled : new FormControl(this.expensesFormGroup.controls['havePooled'].value),
+        pooledAccount : new FormControl(this.expensesFormGroup.controls['pooledAccount'].value),
+        pooledAmount : new FormControl(this.expensesFormGroup.controls['pooledAmount'].value),
+        pooledInsuranceCompany : new FormControl(this.expensesFormGroup.controls['pooledInsuranceCompany'].value),
+        ContactInfo : new FormControl(this.expensesFormGroup.controls['ContactInfo'].value),
+        documents_temp: new FormControl(this.expensesFormGroup.controls['documents_temp'].value),
+        comments : new FormControl(this.expensesFormGroup.controls['comments'].value),
+        additionalInstructions : new FormControl(this.expensesFormGroup.controls['additionalInstructions'].value)
+        
+        
+  
+      });
+
     } else {
       this.madePrearrangment = false;
       this.preneedContract = false;
+
+      this.expensesFormGroup = this._formBuilder.group({
+        profileId:new FormControl(this.expensesFormGroup.controls['profileId'].value),
+        toppings : new FormControl(this.expensesFormGroup.controls['toppings'].value),
+        haveFuneralArrangement : new FormControl(this.expensesFormGroup.controls['haveFuneralArrangement'].value),
+        funeralHome : new FormControl(this.expensesFormGroup.controls['funeralHome'].value),
+        funeralDirector : new FormControl(this.expensesFormGroup.controls['funeralDirector'].value),
+        address : new FormControl(this.expensesFormGroup.controls['address'].value),
+        phoneNumber : new FormControl(this.expensesFormGroup.controls['phoneNumber'].value),
+  
+        preneedContractLocation: [this.expensesFormGroup.controls['preneedContractLocation'].value],
+        haveGuarantee : new FormControl(this.expensesFormGroup.controls['haveGuarantee'].value),
+        prepaidFuneralServices : new FormControl(this.expensesFormGroup.controls['prepaidFuneralServices'].value),
+        havePriceList : new FormControl(this.expensesFormGroup.controls['havePriceList'].value),
+        totalAmountPay : new FormControl(this.expensesFormGroup.controls['totalAmountPay'].value),
+        haveToPayOnDeath : new FormControl(this.expensesFormGroup.controls['haveToPayOnDeath'].value),
+        account : new FormControl(this.expensesFormGroup.controls['account'].value),
+  
+        amountInAccount: new FormControl(this.expensesFormGroup.controls['amountInAccount'].value),
+        financialInstitution : new FormControl(this.expensesFormGroup.controls['financialInstitution'].value),
+        havePooled : new FormControl(this.expensesFormGroup.controls['havePooled'].value),
+        pooledAccount : new FormControl(this.expensesFormGroup.controls['pooledAccount'].value),
+        pooledAmount : new FormControl(this.expensesFormGroup.controls['pooledAmount'].value),
+        pooledInsuranceCompany : new FormControl(this.expensesFormGroup.controls['pooledInsuranceCompany'].value),
+        ContactInfo : new FormControl(this.expensesFormGroup.controls['ContactInfo'].value),
+        documents_temp: new FormControl(this.expensesFormGroup.controls['documents_temp'].value),
+        comments : new FormControl(this.expensesFormGroup.controls['comments'].value),
+        additionalInstructions : new FormControl(this.expensesFormGroup.controls['additionalInstructions'].value),
+        
+        
+  
+      });
     }
   }
 

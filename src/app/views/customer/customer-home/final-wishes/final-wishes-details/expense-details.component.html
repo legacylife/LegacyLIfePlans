@@ -46,7 +46,7 @@
                   <label class="strong--label">Funeral director:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.funeralDirector != '' ? row?.funeralDirector : "-"}}</label>
+                  <label class="normal--label">{{row?.funeralDirector != '' &&  row?.funeralDirector != null ? row?.funeralDirector : "-"}}</label>
                 </div>
               </div>
 
@@ -55,7 +55,7 @@
                   <label class="strong--label">Address:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.address != '' ? row?.address : "-"}}</label>
+                  <label class="normal--label">{{row?.address != '' &&  row?.address != null ? row?.address : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.haveFuneralArrangement == 1">
@@ -63,7 +63,7 @@
                   <label class="strong--label">Phone:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.phoneNumber != '' ? row?.phoneNumber : "-"}}</label>
+                  <label class="normal--label">{{row?.phoneNumber != '' &&  row?.phoneNumber != null ? row?.phoneNumber : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.haveFuneralArrangement == 2">
@@ -71,7 +71,7 @@
                   <label class="strong--label">The preneed contract is located:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.preneedContractLocation != '' ? row?.preneedContractLocation : "-"}}</label>
+                  <label class="normal--label">{{row?.preneedContractLocation != '' &&  row?.preneedContractLocation != null ? row?.preneedContractLocation : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.haveFuneralArrangement == 2">
@@ -87,7 +87,7 @@
                   <label class="strong--label">The following funeral services have been prepaid:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.prepaidFuneralServices != '' ? getStringWithSpace(row?.prepaidFuneralServices) : "-"}}</label>
+                  <label class="normal--label">{{row?.prepaidFuneralServices != '' &&  row?.prepaidFuneralServices != null ? getStringWithSpace(row?.prepaidFuneralServices) : "-"}}</label>
                 </div>
               </div>
 
@@ -104,7 +104,7 @@
                   <label class="strong--label">Total Amount:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.totalAmountPay != '' ? row?.totalAmountPay : "-"}}</label>
+                  <label class="normal--label">{{row?.totalAmountPay != '' &&  row?.totalAmountPay != null ? row?.totalAmountPay : "-"}}</label>
                 </div>
               </div>
 
@@ -121,7 +121,7 @@
                   <label class="strong--label">Account:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.account != '' ? row?.account : "-"}}</label>
+                  <label class="normal--label">{{row?.account != '' &&  row?.account != null ? row?.account : "-"}}</label>
                 </div>
               </div>
 
@@ -130,7 +130,7 @@
                   <label class="strong--label">Amount in the account:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.amountInAccount != '' ? row?.amountInAccount : "-"}}</label>
+                  <label class="normal--label">{{row?.amountInAccount != '' &&  row?.amountInAccount != null ? row?.amountInAccount : "-"}}</label>
                 </div>
               </div>
 
@@ -139,7 +139,7 @@
                   <label class="strong--label">Financial Institution:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.financialInstitution != '' ? row?.financialInstitution : "-"}}</label>
+                  <label class="normal--label">{{row?.financialInstitution != '' &&  row?.financialInstitution != null ? row?.financialInstitution : "-"}}</label>
                 </div>
               </div>
 
@@ -157,7 +157,7 @@
                   <label class="strong--label">ccount/Policy:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.pooledAccount != '' ? row?.pooledAccount : "-"}}</label>
+                  <label class="normal--label">{{row?.pooledAccount != '' &&  row?.pooledAccount != null ? row?.pooledAccount : "-"}}</label>
                 </div>
               </div>
 
@@ -166,7 +166,7 @@
                   <label class="strong--label">Amount in the trust or policy:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.pooledAmount != '' ? row?.pooledAmount : "-"}}</label>
+                  <label class="normal--label">{{row?.pooledAmount != '' &&  row?.pooledAmount != null ? row?.pooledAmount : "-"}}</label>
                 </div>
               </div>
 
@@ -175,7 +175,7 @@
                   <label class="strong--label">Insurance company:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.pooledInsuranceCompany != '' ? row?.pooledInsuranceCompany : "-"}}</label>
+                  <label class="normal--label">{{row?.pooledInsuranceCompany != '' &&  row?.pooledInsuranceCompany != null ? row?.pooledInsuranceCompany : "-"}}</label>
                 </div>
               </div>
 
@@ -184,7 +184,7 @@
                   <label class="strong--label">Contact info:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.ContactInfo != '' ? row?.ContactInfo : "-"}}</label>
+                  <label class="normal--label">{{row?.ContactInfo != '' &&  row?.ContactInfo != null ? row?.ContactInfo : "-"}}</label>
                 </div>
               </div>
 
@@ -193,7 +193,7 @@
                     <label class="strong--label">Comment:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.comments != '' ? row?.comments : "-"}}</label>
+                    <label class="normal--label">{{row?.comments != '' &&  row?.comments != null ? row?.comments : "-"}}</label>
                   </div>
                 </div>
 
@@ -202,7 +202,7 @@
                       <label class="strong--label">Provide any additional written instructions or thoughts in the comment section:</label>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                      <label class="normal--label">{{row?.additionalInstructions != '' ? row?.additionalInstructions : "-"}}</label>
+                      <label class="normal--label">{{row?.additionalInstructions != '' &&  row?.additionalInstructions != null ? row?.additionalInstructions : "-"}}</label>
                     </div>
                   </div>
 

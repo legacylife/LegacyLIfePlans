@@ -148,7 +148,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       socialMediaLinks: new FormGroup({
         facebook: new FormControl(''),
         twitter: new FormControl(''),
-        linkedIn: new FormControl('')
+        linkedIn: new FormControl(''),
+        instagram: new FormControl('')
       }),
     });
 
@@ -302,6 +303,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         ctrl.controls['facebook'].setValue(this.profile.socialMediaLinks ? this.profile.socialMediaLinks.facebook : "")
         ctrl.controls['twitter'].setValue(this.profile.socialMediaLinks ? this.profile.socialMediaLinks.twitter : "")
         ctrl.controls['linkedIn'].setValue(this.profile.socialMediaLinks ? this.profile.socialMediaLinks.linkedIn : "")
+        ctrl.controls['instagram'].setValue(this.profile.socialMediaLinks ? this.profile.socialMediaLinks.instagram : "")
         this.LicenseForm.controls['activeLicenceHeld'].setValue(this.profile.activeLicenceHeld ? this.profile.activeLicenceHeld : []);
         this.LicenseForm.controls['agencyOversees'].setValue(this.profile.agencyOversees ? this.profile.agencyOversees : "");
         this.LicenseForm.controls['managingPrincipleName'].setValue(this.profile.managingPrincipleName ? this.profile.managingPrincipleName : "");
@@ -420,7 +422,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
 
   AddressSubmit() {
     this.modified = false
-    const { socialMediaLinks: { facebook = '', twitter = '', linkedIn = '' } } = this.AddressForm.value
+    const { socialMediaLinks: { facebook = '', twitter = '', linkedIn = '', instagram = '' } } = this.AddressForm.value
     const formNumbers = <FormArray>this.AddressForm.get('websiteLinks')
     this.websiteLinks = formNumbers.controls.map(o => { return o.value })
 
@@ -453,7 +455,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       socialMediaLinks: ({
         "facebook": facebook,
         "twitter": twitter,
-        "linkedIn": linkedIn
+        "linkedIn": linkedIn,
+        "instagram":instagram
       })
     }
 
