@@ -2,12 +2,23 @@
     display: flex;
     justify-content: space-between;
     .box--cover{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
         background-color: #fff;
         width: 100%;
         height: 150px;
         box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+        margin: 0 15px 30px 0;
         h5{
-            margin: 0
+            margin: 0;
+            font-size: 17px;
+        }
+        h3{
+            margin: 10px 0 0 0;
+            color: #c72128;
+            font-size:  40px;
         }
     }
 }

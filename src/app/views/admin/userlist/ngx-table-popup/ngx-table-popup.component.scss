@@ -1,7 +1,7 @@
 @import 'llp-global-styles.scss';
 
 .modal--body--hgt-upd{
-    max-height: 80vh;
+    height: calc(100vh - 264px);
     overflow: auto;
 }
 
