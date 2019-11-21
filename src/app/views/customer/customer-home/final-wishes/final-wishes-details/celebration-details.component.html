@@ -131,12 +131,39 @@
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">People to invite:</label>
                 </div>
-                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70" *ngFor="let people of row?.invitedPeople;let pointIndex = index">
+                <!-- <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70" *ngFor="let people of row?.invitedPeople;let pointIndex = index">
                   <label class="normal--label">Name : {{people?.name != '' ? people?.name : "-"}}</label><br>
                   <label class="normal--label">Phone Number :{{people?.phoneNumber != '' ? people?.phoneNumber : "-"}}</label><br>
                   <label class="normal--label">Email Id : {{people?.emailId != '' ? people?.emailId : "-"}}</label><br><br>
+                </div> -->
+              </div>
+
+              <div class="add--more--devider" *ngFor="let people of row?.invitedPeople;let pointIndex = index">
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">Name:</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70" >
+                  <label class="normal--label">{{people?.name != '' ? people?.name : "-"}}</label>
                 </div>
               </div>
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">Phone Number :</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{people?.phoneNumber != '' ? people?.phoneNumber : "-"}}</label>
+                </div>
+              </div>
+              <div fxLayout="row wrap" class="mb--10">
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+                  <label class="strong--label">Email Id :</label>
+                </div>
+                <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+                  <label class="normal--label">{{people?.emailId != '' ? people?.emailId : "-"}}</label>
+                </div>
+              </div>
+            </div>
 
             </div>
           </div>

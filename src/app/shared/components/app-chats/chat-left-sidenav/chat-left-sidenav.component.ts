@@ -78,10 +78,17 @@ export class ChatLeftSidenavComponent implements OnInit {
     this.chatWindow = true;
     this.chatWindowToggle.emit(this.chatWindow);
     const selected = ['contactId'];
+
+    console.log("this.currentUser.chatInfo >>>>>>>>>>>>",this.currentUser.chatInfo)
     const openwindow = this.currentUser.chatInfo.map(x => {selected.includes(x.contactId); return x.contactId});
-    let contactInd = openwindow.findIndex((c) => c == contactId);
+    if(this.currentUser.chatInfo.length > 0){
+      let contactInd = openwindow.findIndex((c) => c == contactId);
+      this.currentUser.chatInfo[contactInd].unread = 0;
+    }
+    
+    
     //console.log('contactInd',contactInd,'here',this.currentUser.chatInfo[contactInd],'---',this.currentUser.chatInfo[contactInd].unread)
-    this.currentUser.chatInfo[contactInd].unread = 0;
+    
     //this.currentUser.chatInfo[contactId].unread = 0;
     this.chatService.getChatByContact(contactId)
       .subscribe(res => {

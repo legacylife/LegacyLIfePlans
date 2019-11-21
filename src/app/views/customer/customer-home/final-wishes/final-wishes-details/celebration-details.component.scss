@@ -7,3 +7,12 @@
         }
     }
 }
+.add--more--devider{
+    margin-left: 25px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    &:last-child{
+        border: none
+    }
+}
