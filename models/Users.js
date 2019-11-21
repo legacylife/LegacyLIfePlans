@@ -48,7 +48,8 @@ var userSchema = new mongoose.Schema({
   socialMediaLinks : {
       facebook : String, 
       twitter : String,
-	    linkedIn : String
+      linkedIn : String,
+      instagram : String
   }, 
   websites:[{
 	id: String,  
