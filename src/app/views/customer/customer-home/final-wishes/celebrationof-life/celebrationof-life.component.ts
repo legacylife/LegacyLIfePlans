@@ -43,6 +43,7 @@ export class CelebrationofLifeComponent implements OnInit {
   subFolderName:string = ''
   isSpeaker:boolean = false;
   invitedPeople:any;
+  invitedPeopleData:any = [];
   invited:any;
 
   constructor(private _formBuilder: FormBuilder,private snack: MatSnackBar,public dialog: MatDialog,  private confirmService: AppConfirmService, private loader: AppLoaderService, private router: Router, private userapi: UserAPIService,private fileHandlingService: FileHandlingService,private sharedata: DataSharingService) { }
@@ -66,10 +67,11 @@ export class CelebrationofLifeComponent implements OnInit {
       paymentOptions: new FormControl(''),
       documents_temp: new FormControl(''),
       profileId: new FormControl(''),
-      invitedPeople: this._formBuilder.array([this._formBuilder.group(
-          { name: [''], 
-          phoneNumber: [''], 
-          emailId: new FormControl('') })]),
+      invitedPeople: this._formBuilder.array([this._formBuilder.group({
+            name: [''],
+            phoneNumber: new FormControl('', [Validators.pattern(/^[0-9]+$/i)]),
+          emailId: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)])
+      })]),
     });
 
     this.urlData = this.userapi.getURLData();
@@ -179,7 +181,9 @@ export class CelebrationofLifeComponent implements OnInit {
         paymentOptions: new FormControl(this.celebrationFormGroup.controls['paymentOptions'].value),
         documents_temp: new FormControl(this.celebrationFormGroup.controls['documents_temp'].value),
         profileId: new FormControl(this.celebrationFormGroup.controls['profileId'].value),
-        invitedPeople : <FormArray>this.celebrationFormGroup.get('invitedPeople')
+        invitedPeople : <FormArray>this.celebrationFormGroup.get('invitedPeople') 
+
+
       });
 
     }else{
@@ -208,7 +212,17 @@ export class CelebrationofLifeComponent implements OnInit {
     
     const awardsYearsArr = <FormArray>this.celebrationFormGroup.get('invitedPeople')
     this.invitedPeople = awardsYearsArr.controls.map(o => { return o.value })
-  
+
+    let that = this
+    this.invitedPeople.forEach(element => {
+        if(element.name == "" && element.name == "" && element.name == ""){
+        }else{
+          that.invitedPeopleData.push(element)
+        }
+    });
+    this.invitedPeople = that.invitedPeopleData
+
+    
     let profileIds = this.celebrationFormGroup.controls['profileId'].value;
     if(profileIds){
       this.selectedProfileId = profileIds;
@@ -251,8 +265,8 @@ export class CelebrationofLifeComponent implements OnInit {
   addNewAo() {
     this.invitedPeoplePoints.push(this._formBuilder.group({
       name: [''],
-      phoneNumber: [''],
-      emailId: new FormControl('')
+      phoneNumber: new FormControl('', [Validators.pattern(/^[0-9]+$/i)]),
+      emailId: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)])
     }));
   }
 
@@ -264,8 +278,12 @@ export class CelebrationofLifeComponent implements OnInit {
   editGroup(name, phoneNumber, emailId) {
     return this._formBuilder.group({
       name: [name],
-      phoneNumber: [phoneNumber],
-      emailId: [emailId]
+      //phoneNumber: [phoneNumber],
+      //emailId: [emailId]
+
+      phoneNumber: new FormControl(phoneNumber, [Validators.pattern(/^[0-9]+$/i)]),
+      emailId: new FormControl(emailId, [Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)])
+
     });
   }
 

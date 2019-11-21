@@ -134,7 +134,7 @@ export class FuneralExpensesModalComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        if(result.data){    
+        if(result.data){   
           this.expenseData = result.data;   
           this.toUserId     = this.expenseData.customerId;
           let profileIds    = this.expenseData._id;
@@ -183,7 +183,7 @@ export class FuneralExpensesModalComponent implements OnInit {
           this.expensesFormGroup.controls['comments'].setValue(this.expenseData.comments);
           this.expensesFormGroup.controls['additionalInstructions'].setValue(this.expenseData.additionalInstructions);
 
-        }       
+        }   
       }
     }, (err) => {
       console.error(err);

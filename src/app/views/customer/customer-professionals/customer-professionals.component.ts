@@ -26,6 +26,11 @@ export class CustomerProfessionalComponent implements OnInit {
   userId : string;
   advisorStatus : string='';
   fullName: string;
+  facebook:string = "";
+  twitter:string = "";
+  instagram:string = "";
+  linkedIn:string = "";
+
   constructor(
     private route: ActivatedRoute,private userapi: UserAPIService, 
     private router: Router, private dialog: MatDialog, 
@@ -49,7 +54,25 @@ export class CustomerProfessionalComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.profileData = this.row = result.data;  
+        this.profileData = this.row = result.data; 
+        
+        if(this.profileData.socialMediaLinks){
+          let socialMediaLinks = this.profileData.socialMediaLinks;
+          if(socialMediaLinks.facebook){
+            this.facebook = socialMediaLinks.facebook;
+          }
+          if(socialMediaLinks.twitter){
+            this.twitter = socialMediaLinks.twitter;
+          }
+          if(socialMediaLinks.linkedIn){
+            this.linkedIn = socialMediaLinks.linkedIn;
+          }
+          if(socialMediaLinks.facebook){
+            this.instagram = socialMediaLinks.instagram;
+          }
+        }
+
+
         this.fullName  = result.data.firstName+' '+result.data.lastName;  
         if(result.data.profilePicture){
           this.profilePicture = filePath + result.data.profilePicture;

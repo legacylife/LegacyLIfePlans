@@ -12,7 +12,6 @@
         <mat-radio-group class="llp-radio mb-0" aria-label="Select an option">
 
           <div fxLayout="row wrap">
-
             <mat-radio-group class="llp-radio mt-1" [formControl]="expensesFormGroup.controls['haveFuneralArrangement']"  (change)="onChange($event.value)">
               <div class="checkbox-label">Select any one</div>
               <mat-radio-button value="1">I have made prearrangements with the funeral home.</mat-radio-button>
@@ -128,7 +127,7 @@
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="cust--gapp">
               <div class="upload--buss--docs--sec">
-                  <label>Upload your documents*</label>
+                  <label>Upload your documents</label>
                 <div class="upload--box fileupload-drop-zone"
                     ng2FileDrop
                     [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
@@ -143,16 +142,17 @@
                     <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
                   </mat-chip-list> 
                 </div>
+                <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small>
+                <mat-form-field class="full-width" *ngIf="documents_temps">
+                    <input matInput name="documents_temp" [formControl]="expensesFormGroup.controls['documents_temp']">
+                    <small *ngIf="expensesFormGroup.controls['documents_temp'].hasError('required') && expensesFormGroup.controls['documents_temp'].touched" class="form-error-msg"> Please drag your document. </small>
+                </mat-form-field>
             </div>
 
-            <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small>
-            <mat-form-field class="full-width" *ngIf="documents_temps">
-                <input matInput name="documents_temp" [formControl]="expensesFormGroup.controls['documents_temp']">
-                <small *ngIf="expensesFormGroup.controls['documents_temp'].hasError('required') && expensesFormGroup.controls['documents_temp'].touched" class="form-error-msg"> Please drag your document. </small>
-            </mat-form-field>
+           
             
       
-            <div *ngIf="documentsList" >
+            <div class="mb-1" *ngIf="documentsList" >
               <h3 class="header--text fnt--16">Uploaded document</h3>
               <mat-chip-list class="doc--list" *ngFor="let doc of documentsList; index as i">
                   <mat-chip><a (click)="downloadFile(doc.tmpName)" class="donwload-doc">{{doc.title}}</a><mat-icon matChipRemove  (click)="documentDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>

@@ -13,19 +13,19 @@
       <div fxFlex.xs="100">
 
     <mat-form-field class="full-width">
-        <input matInput name="title" placeholder="Title*" (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="LettersMessagesForm.controls['title']">
+        <input matInput maxlength="250" name="title" placeholder="Title*" (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="LettersMessagesForm.controls['title']">
         <mat-icon matTooltip="Please enter title" matTooltipClass="llp--tooltip error" *ngIf="LettersMessagesForm.controls['title'].hasError('required') && LettersMessagesForm.controls['title'].touched"
         class="red--alert">help_outline</mat-icon>
       </mat-form-field>
 
       <mat-form-field class="full-width">
-        <input matInput name="subject" (keyup)="firstCapitalize($event)"  placeholder="Subject" [formControl]="LettersMessagesForm.controls['subject']">
+        <input matInput maxlength="500" name="subject" (keyup)="firstCapitalize($event)"  placeholder="Subject" [formControl]="LettersMessagesForm.controls['subject']">
         <mat-icon matTooltip="Please enter subject" matTooltipClass="llp--tooltip error" *ngIf="LettersMessagesForm.controls['subject'].hasError('required') && LettersMessagesForm.controls['subject'].touched"
         class="red--alert">help_outline</mat-icon>
       </mat-form-field>
 
       <mat-form-field class="full-width">
-        <input matInput name="letterBox" (keyup)="firstCapitalize($event)"  placeholder="Letter Box*" [formControl]="LettersMessagesForm.controls['letterBox']">
+        <input matInput maxlength="500" name="letterBox" (keyup)="firstCapitalize($event)"  placeholder="Letter Box*" [formControl]="LettersMessagesForm.controls['letterBox']">
         <mat-icon matTooltip="Please enter letter box" matTooltipClass="llp--tooltip error" *ngIf="LettersMessagesForm.controls['letterBox'].hasError('required') && LettersMessagesForm.controls['letterBox'].touched"
         class="red--alert">help_outline</mat-icon>
       </mat-form-field>
@@ -62,7 +62,7 @@
           <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
       </mat-chip-list>    
 
-      <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small>
+      <!-- <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small> -->
 
       <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderCopy.getNotUploadedItems().length || uploader.getNotUploadedItems().length">
         <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>

@@ -109,7 +109,7 @@ export class FuneralServiceModalComponent implements OnInit {
     this.thirdFormGroup = this._formBuilder.group({
       isFloralArrangements:new FormControl('No'),
       needVisualTribute:new FormControl('No'),
-      peopleInVisualTribute:new FormControl('No'),
+      peopleInVisualTribute:new FormControl(''),
       havePreparedVisualTribute:new FormControl('No'),
       
       locationOfDocuments:new FormControl(''),

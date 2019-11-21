@@ -1,137 +1,25 @@
 <div fxLayout="row wrap">
   <div fxFlex="100" fxFlex.gt-md="800px" fxFlex.gt-sm="50">
     <mat-card class="p-0">
-        <mat-card-title class="p-1">Contact Information</mat-card-title>
+      <mat-card-title class="p-1">Contact Information</mat-card-title>
       <mat-tab-group>
         <mat-tab label="Account Settings">
           <mat-card-content class="mt-1">
             <form class="llp-form-wrapper" [formGroup]="llpProfileForm" (ngSubmit)="llpprofile()">
               <mat-form-field class="full-width">
-                <input class="capitalize" matInput name="firstName" [formControl]="llpProfileForm.controls['firstName']" placeholder="First name" value="">
+                <input class="capitalize" matInput name="firstName" [formControl]="llpProfileForm.controls['firstName']" placeholder="First name"
+                  value="">
               </mat-form-field>
               <mat-form-field class="full-width">
-                <input class="capitalize" matInput name="lastName" [formControl]="llpProfileForm.controls['lastName']" placeholder="Last name" value="">
+                <input class="capitalize" matInput name="lastName" [formControl]="llpProfileForm.controls['lastName']" placeholder="Last name"
+                  value="">
               </mat-form-field>
-              <!--<mat-form-field class="full-width">
-                <input matInput name="phoneNumber" [formControl]="llpProfileForm.controls['phoneNumber']" placeholder="Phone" value="">
-              </mat-form-field>
-               <mat-form-field class="full-width">
-              <input
-              matInput
-              name="address_line1"
-              placeholder="Adresss line 1"
-              value="">
-            </mat-form-field>
-            <mat-form-field class="full-width">
-              <input
-              matInput
-              name="address_line2"
-              placeholder="Adresss line 2"
-              value="">
-            </mat-form-field>
-            <mat-form-field class="full-width">
-              <input
-              matInput
-              name="zipcode"
-              placeholder="Zipcode"
-              value="">
-            </mat-form-field>
-            <mat-form-field class="full-width">
-              <input
-              matInput
-              name="city"
-              placeholder="City"
-              value="">
-            </mat-form-field>            
-            <mat-form-field class="full-width">
-              <input
-              matInput
-              name="state"
-              placeholder="State"
-              value="">
-            </mat-form-field>   
-            <mat-form-field class="full-width">
-              <input
-              matInput
-              name="country"
-              placeholder="Country"
-              value="">
-            </mat-form-field>      -->
-              <button mat-raised-button class="llp--primary--btn">Save</button>
+              <button mat-raised-button class="llp--primary--btn" [disabled]="!llpProfileForm.valid">Save</button>
             </form>
           </mat-card-content>
         </mat-tab>
-        <!-- <mat-tab label="Profile Picture">
-      <mat-card-content>
-        <div class="mb-1 mt-1">
-          <p>Upload a profile picture</p>
-          <input type="file" ng2FileSelect [uploader]="uploader" />
-        </div>
 
-        <div class="mb-1">
-          <div ng2FileDrop
-          [ngClass]="{'dz-file-over': hasBaseDropZoneOver}"
-          [uploader]="uploader"
-          (fileOver)="fileOverBase($event)"
-          class="fileupload-drop-zone">
-          Drop png/jpeg file here
-          </div>
-        </div>
-        <table class="default-table mat-box-shadow" style="width: 100%">
-          <thead>
-            <tr>
-                <th width="30%">Name</th>
-                <th>Size</th>
-                <th>Progress</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody *ngIf="uploader.queue.length; else tableNoData">
-            <tr *ngFor="let item of uploader.queue">
-                <td>{{ item?.file?.name }}</td>
-                <td nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
-                <td>
-                    <div class="progress" style="margin-bottom: 0;">
-                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
-                        <mat-progress-bar
-                          class=""
-                          color="primary"
-                          mode="determinate"
-                          [value]="item.progress">
-                        </mat-progress-bar>
-                    </div>
-                </td>
-                <td class="">
-                    <mat-icon *ngIf="item.isSuccess">check</mat-icon>
-                    <mat-icon *ngIf="item.isCancel" color="accent">cancel</mat-icon>
-                    <mat-icon *ngIf="item.isError" color="warn">error</mat-icon>
-                </td>
-                <td nowrap>
-                    <button 
-                    mat-raised-button
-                    class="mat-primary"
-                    (click)="item.upload()"
-                    [disabled]="item.isReady || item.isUploading || item.isSuccess">Upload</button>
-                    <button 
-                    mat-raised-button
-                    class="mat-accent"
-                    (click)="item.cancel()"
-                    [disabled]="!item.isUploading">Cancel</button>
 
-                    <button 
-                    mat-raised-button
-                    class="mat-warn"
-                    (click)="item.remove()">Remove</button>
-                </td>
-            </tr>
-            </tbody>
-            <ng-template #tableNoData>
-              <p [ngStyle]="{padding: '0 1.2rem'}">Queue is empty</p>
-            </ng-template>
-        </table>
-      </mat-card-content>
-    </mat-tab>-->
         <mat-tab label="Change Password">
           <mat-card-content class="mt-1">
             <form class="llp-form-wrapper" [formGroup]="llpPasswordForm" (ngSubmit)="llppassword()">
@@ -140,45 +28,39 @@
                   <input type="password" required [formControl]="llpPasswordForm.controls['password']" matInput name="password" placeholder="Current Password"
                     value="">
 
-                    <mat-icon matTooltip="Please enter current password." matTooltipClass="llp--tooltip error" 
-                    *ngIf="llpPasswordForm.controls['password'].hasError('required') && llpPasswordForm.controls['password'].touched"
-                     class="red--alert">help_outline</mat-icon>
+                  <mat-icon matTooltip="Please enter current password." matTooltipClass="llp--tooltip error" *ngIf="llpPasswordForm.controls['password'].hasError('required') && llpPasswordForm.controls['password'].touched"
+                    class="red--alert">help_outline</mat-icon>
 
-                    <mat-icon matTooltip="Please enter the valid current password." matTooltipClass="llp--tooltip error" 
-                    *ngIf="llpPasswordForm.controls['password'].hasError('invalid') && llpPasswordForm.controls['password'].touched"
-                     class="red--alert">help_outline</mat-icon>
-                    
-                  </mat-form-field>
+                  <mat-icon matTooltip="Please enter the valid current password." matTooltipClass="llp--tooltip error" *ngIf="llpPasswordForm.controls['password'].hasError('invalid') && llpPasswordForm.controls['password'].touched"
+                    class="red--alert">help_outline</mat-icon>
+
+                </mat-form-field>
 
 
                 <mat-form-field class="full-width">
                   <input type="password" required [formControl]="llpPasswordForm.controls['NewPassword']" matInput name="NewPassword" placeholder="New password"
                     value="">
-                   
-                   
-                    <mat-icon matTooltip=" Your password should be minimum 6 characters in length." matTooltipClass="llp--tooltip error" 
-                    *ngIf="llpPasswordForm.controls['NewPassword'].hasError('pattern') && llpPasswordForm.controls['NewPassword'].touched"
-                     class="red--alert">help_outline</mat-icon> 
 
-                     <mat-icon matTooltip="Please enter the valid current password." matTooltipClass="llp--tooltip error" 
-                     *ngIf="llpPasswordForm.controls['NewPassword'].hasError('invalid') && llpPasswordForm.controls['NewPassword'].touched"
-                      class="red--alert">help_outline</mat-icon>
- 
-                     <mat-icon matTooltip="Your password should be minimum 6 characters in length." matTooltipClass="llp--tooltip error" 
-                     *ngIf="llpPasswordForm.controls['NewPassword'].hasError('minlength') && llpPasswordForm.controls['NewPassword'].touched"
-                      class="red--alert">help_outline</mat-icon>
-  
-                  </mat-form-field>
+
+                  <mat-icon matTooltip=" Your password should be minimum 6 characters in length." matTooltipClass="llp--tooltip error" *ngIf="llpPasswordForm.controls['NewPassword'].hasError('pattern') && llpPasswordForm.controls['NewPassword'].touched"
+                    class="red--alert">help_outline</mat-icon>
+
+                  <mat-icon matTooltip="Please enter the valid current password." matTooltipClass="llp--tooltip error" *ngIf="llpPasswordForm.controls['NewPassword'].hasError('invalid') && llpPasswordForm.controls['NewPassword'].touched"
+                    class="red--alert">help_outline</mat-icon>
+
+                  <mat-icon matTooltip="Your password should be minimum 6 characters in length." matTooltipClass="llp--tooltip error" *ngIf="llpPasswordForm.controls['NewPassword'].hasError('minlength') && llpPasswordForm.controls['NewPassword'].touched"
+                    class="red--alert">help_outline</mat-icon>
+
+                </mat-form-field>
 
                 <mat-form-field class="full-width">
                   <input matInput type="password" required [formControl]="llpPasswordForm.controls['confirmPassword']" name="confirmPassword"
-                    placeholder="Confirm new password" value="">                    
+                    placeholder="Confirm new password" value="">
 
-                    <mat-icon matTooltip="Password mismatch." matTooltipClass="llp--tooltip error" 
-                    *ngIf="llpPasswordForm.controls['confirmPassword'].hasError('equalTo') && llpPasswordForm.controls['confirmPassword'].touched"
-                     class="red--alert">help_outline</mat-icon>
-  
-                  </mat-form-field>
+                  <mat-icon matTooltip="Password mismatch." matTooltipClass="llp--tooltip error" *ngIf="llpPasswordForm.controls['confirmPassword'].hasError('equalTo') && llpPasswordForm.controls['confirmPassword'].touched"
+                    class="red--alert">help_outline</mat-icon>
+
+                </mat-form-field>
               </div>
 
               <button mat-raised-button class="llp--primary--btn" [disabled]="llpPasswordForm.invalid">Save</button>
