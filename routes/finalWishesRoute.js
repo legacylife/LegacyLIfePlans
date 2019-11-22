@@ -640,7 +640,7 @@ function expensesFormUpdate(req, res) {
     insert.createdOn = new Date();
     insert.modifiedOn = new Date();
 
-    insert.haveFuneralArrangement = proquery.haveFuneralArrangement;
+    insert.haveFuneralArrangement = proquery.haveFuneralArrangement ? proquery.haveFuneralArrangement : "1";
     insert.funeralHome = proquery.funeralHome;
     insert.funeralDirector = proquery.funeralDirector;
     insert.address = proquery.address;

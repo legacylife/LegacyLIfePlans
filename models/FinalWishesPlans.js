@@ -6,11 +6,11 @@ var finalWishesPlansSchema = new mongoose.Schema({
   customerLegacyId: String,
   customerLegacyType: String,
 
-  funaralServiceType: String,
+  funaralServiceType: { type: String, default:'1' },
   serviceFor: String,
   serviceForOther: String,
   isBodyPresent:{ type: String, default:'No' },
-  isCasket : Array,
+  isCasket : { type: String, default:'No' },
   deceasedWear: String,
 
   serviceParticipants:String,
