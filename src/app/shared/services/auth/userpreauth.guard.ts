@@ -26,7 +26,7 @@ export class UserPreAuthGuard implements CanActivate {
 
     //alert("this.userUrlType >>>>" + this.userUrlType + " <<<<<<<<< " + this.pageUrl)
 
-    if (this.userUrlType == "customer" && this.pageUrl && this.pageUrl == 'signup') {
+    /*if (this.userUrlType == "customer" && this.pageUrl && this.pageUrl == 'signup') {
       this.userapi.userLogout("customer-signup");
       //this.router.navigateByUrl('/customer/signup');
       return true;
@@ -40,7 +40,7 @@ export class UserPreAuthGuard implements CanActivate {
 
     if (this.userUrlType == "advisor" && !this.pageUrl && (this.pageUrl == '' || this.pageUrl == undefined)) {
       return true;
-    }
+    }*/
 
 
     if (typeof this.userInfo.endUserId !== "undefined" && this.userInfo.endUserId) {
@@ -63,11 +63,9 @@ export class UserPreAuthGuard implements CanActivate {
         }
         if (userData && userData.userType == 'advisor' && userData.status == 'Pending') {
           if (userData.profileSetup == 'yes') {
-            alert("Advisor Hi profile setup with yes")
             this.router.navigateByUrl('/advisor/thank-you');
           }
           else {
-            alert("Advisor Hi profile setup with noooooooooooooooooooooo")
             this.router.navigateByUrl('/advisor/business-info');
           }
           return false;
