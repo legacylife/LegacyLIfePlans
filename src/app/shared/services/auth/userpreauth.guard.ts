@@ -28,14 +28,14 @@ export class UserPreAuthGuard implements CanActivate {
 
     if (this.userUrlType == "customer" && this.pageUrl && this.pageUrl == 'signup') {
       this.userapi.userLogout("customer-signup");
-      this.router.navigateByUrl('/customer/signup');
-      return false;
+      //this.router.navigateByUrl('/customer/signup');
+      return true;
     }
 
     if (this.userUrlType == "advisor" && this.pageUrl && this.pageUrl == 'signup') {
       this.userapi.userLogout("advisor-signup");
-      this.router.navigateByUrl('/advisor/signup');
-      return false;
+      //this.router.navigateByUrl('/advisor/signup');
+      return true;
     }
 
     if (this.userUrlType == "advisor" && !this.pageUrl && (this.pageUrl == '' || this.pageUrl == undefined)) {

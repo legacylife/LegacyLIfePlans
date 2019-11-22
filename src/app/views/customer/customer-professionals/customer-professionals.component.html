@@ -29,10 +29,10 @@
                 <button *ngIf="advisorStatus =='Active'" mat-raised-button (click)="removeAdvisor(row?._id)" class="llp--primary--btn w168">Remove Advisor</button>
             </div>
             <div class="text-center social--icons--repeat">
-                <a [routerLink]="facebook" target="_blank"><img src="assets/images/arkenea/1-fb-sm.png" alt=""></a>
-                <a [routerLink]="twitter" target="_blank"><img src="assets/images/arkenea/2-ld-sm.png" alt=""></a>
-                <a [routerLink]="linkedIn" target="_blank"><img src="assets/images/arkenea/3-insta-sm.png" alt=""></a>
-                <a [routerLink]="facebook" target="_blank"><img src="assets/images/arkenea/4-tw-sm.png" alt=""></a>
+                <a href="{{facebook}}" class=" {{facebook ? '' : 'disabled'}}" target="_blank"><img src="assets/images/arkenea/1-fb-sm.png" alt=""></a>
+                <a href="{{linkedIn}}" class=" {{linkedIn ? '' : 'disabled'}}" target="_blank"><img src="assets/images/arkenea/2-ld-sm.png" alt=""></a>
+                <a href="{{instagram}}" class=" {{instagram ? '' : 'disabled'}}" target="_blank"><img src="assets/images/arkenea/3-insta-sm.png" alt=""></a>
+                <a href="{{twitter}}" class=" {{twitter ? '' : 'disabled'}}" target="_blank"><img src="assets/images/arkenea/4-tw-sm.png" alt=""></a>
             </div>
           </div>
         </mat-card>

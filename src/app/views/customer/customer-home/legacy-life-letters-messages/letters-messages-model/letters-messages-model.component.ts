@@ -155,8 +155,8 @@ export class LettersMessagesModelComponent implements OnInit {
       } else {
         if(result.data){    
           this.LetterMessageList = result.data;   
-          this.toUserId          = this.LetterMessageList.customerId
-          let profileIds = this.LetterMessageList._id;
+          this.toUserId  = this.LetterMessageList.customerId;
+          let profileIds = this.selectedProfileId = this.LetterMessageList._id;          
           this.LettersMessagesForm.controls['profileId'].setValue(profileIds);
           this.LettersMessagesForm.controls['title'].setValue(this.LetterMessageList.title);
           this.LettersMessagesForm.controls['letterBox'].setValue(this.LetterMessageList.letterBox);
@@ -219,6 +219,13 @@ export class LettersMessagesModelComponent implements OnInit {
           proceedToUpload = true
         }
         if( proceedToUpload ) {
+
+          if(this.selectedProfileId){
+            this.uploader.onBeforeUploadItem = (item) => {
+              item.url = `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}`;
+            }
+          }
+
           if(this.uploader.getNotUploadedItems().length){
           this.uploaderCopy = cloneDeep(this.uploader)
           this.uploader.queue.splice(1, this.uploader.queue.length - 1)
