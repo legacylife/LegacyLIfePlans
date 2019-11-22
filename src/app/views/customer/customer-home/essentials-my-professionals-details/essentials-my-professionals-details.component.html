@@ -42,7 +42,7 @@
                     <label class="strong--label">Business Name:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.businessName ? row?.businessName : ''}}</label>
+                    <label class="normal--label">{{row?.businessName ? row?.businessName : '-'}}</label>
                   </div>
                 </div>
                 <div fxLayout="row wrap" class="mb--10">
@@ -50,7 +50,7 @@
                     <label class="strong--label">Name:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.name ? row?.name : ''}}</label>
+                    <label class="normal--label">{{row?.name ? row?.name : '-'}}</label>
                   </div>
                 </div>
   
@@ -59,7 +59,7 @@
                       <label class="strong--label">Email:</label>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                      <label class="normal--label">{{row?.mpEmailAddress ? row?.mpEmailAddress : ''}}</label>
+                      <label class="normal--label">{{row?.mpEmailAddress ? row?.mpEmailAddress : '-'}}</label>
                     </div>
                 </div>
   
@@ -68,7 +68,7 @@
                     <label class="strong--label">Phone:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">+1 {{row?.mpPhoneNumbers ? row?.mpPhoneNumbers : ''}}</label>
+                    <label class="normal--label">+1 {{row?.mpPhoneNumbers ? row?.mpPhoneNumbers : '-'}}</label>
                   </div>
                 </div>
                 <div fxLayout="row wrap" class="mb--10">
@@ -76,7 +76,7 @@
                     <label class="strong--label">Address:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.address ? row?.address : row?.address}}</label>
+                    <label class="normal--label">{{row?.address ? row?.address : '-'}}</label>
                   </div>
                 </div>              
               </div>

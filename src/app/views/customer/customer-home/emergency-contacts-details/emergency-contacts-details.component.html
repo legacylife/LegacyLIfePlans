@@ -40,7 +40,7 @@
                   <label class="strong--label">Phone:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">+1 {{row?.phone}}</label>
+                  <label class="normal--label">{{row?.phone ? row?.phone : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -48,7 +48,7 @@
                   <label class="strong--label">Mobile:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.mobile}}</label>
+                  <label class="normal--label">{{row?.mobile ? row?.mobile : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -64,7 +64,7 @@
                   <label class="strong--label">Address:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.address}}</label>
+                  <label class="normal--label">{{row?.address ? row?.address : "-"}}</label>
                 </div>
               </div>
             </div>

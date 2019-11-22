@@ -39,7 +39,7 @@
                     <label class="strong--label">Name of Insured:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.nameOfInsured}}</label>
+                    <label class="normal--label">{{row?.nameOfInsured ? row?.nameOfInsured : "-"}}</label>
                   </div>
                 </div>
               
@@ -48,7 +48,7 @@
                     <label class="strong--label">Company:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.company}}</label>
+                    <label class="normal--label">{{row?.company ? row?.company : "-"}}</label>
                   </div>
                 </div>
 
@@ -57,7 +57,7 @@
                       <label class="strong--label">Policy Number:</label>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                      <label class="normal--label">{{row?.policyNumber}}</label>
+                      <label class="normal--label">{{row?.policyNumber ? row?.policyNumber : "-"}}</label>
                     </div>
                   </div>
 
@@ -66,7 +66,7 @@
                         <label class="strong--label">Contact Person:</label>
                       </div>
                       <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                        <label class="normal--label">{{row?.contactPerson}}</label>
+                        <label class="normal--label">{{row?.contactPerson ? row?.contactPerson : "-"}}</label>
                       </div>
                 </div>
 
@@ -75,7 +75,7 @@
                       <label class="strong--label">Contact Email:</label>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                      <label class="normal--label">{{row?.contactEmail}}</label>
+                      <label class="normal--label">{{row?.contactEmail ? row?.contactEmail : "-"}}</label>
                     </div>
                 </div>
 
@@ -84,7 +84,7 @@
                     <label class="strong--label">Contact Phone:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.contactPhone}}</label>
+                    <label class="normal--label">{{row?.contactPhone ? row?.contactPhone : "-"}}</label>
                   </div>
                 </div>
 
@@ -93,7 +93,7 @@
                     <label class="strong--label">Comments:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.comments}}</label>
+                    <label class="normal--label">{{row?.comments ? row?.comments : "-"}}</label>
                   </div>
                 </div>
              

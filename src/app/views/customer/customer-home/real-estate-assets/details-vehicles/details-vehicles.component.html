@@ -34,7 +34,7 @@
                   <label class="strong--label">Model:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.model}}</label>
+                  <label class="normal--label">{{row?.model ? row?.model : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -42,7 +42,7 @@
                   <label class="strong--label">Year:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.year}}</label>
+                  <label class="normal--label">{{row?.year ? row?.year : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -50,7 +50,7 @@
                   <label class="strong--label">Make:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.make}}</label>
+                  <label class="normal--label">{{row?.make ? row?.make : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -58,7 +58,7 @@
                   <label class="strong--label">Title Location:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.titleLocation}}</label>
+                  <label class="normal--label">{{row?.titleLocation ? row?.titleLocation : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -66,7 +66,7 @@
                   <label class="strong--label">Finance Company Name:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.financeCompanyName}}</label>
+                  <label class="normal--label">{{row?.financeCompanyName ? row?.financeCompanyName : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -74,7 +74,7 @@
                   <label class="strong--label">Account Number:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.accountNumber}}</label>
+                  <label class="normal--label">{{row?.accountNumber ? row?.accountNumber : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -82,7 +82,7 @@
                   <label class="strong--label">Payment:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.payment}}</label>
+                  <label class="normal--label">{{row?.payment ? row?.payment : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -90,7 +90,7 @@
                   <label class="strong--label">Comments:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.comments}}</label>
+                  <label class="normal--label">{{row?.comments ? row?.comments : "-"}}</label>
                 </div>
               </div>
             </div>

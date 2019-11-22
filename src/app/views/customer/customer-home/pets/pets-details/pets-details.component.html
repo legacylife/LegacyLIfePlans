@@ -41,7 +41,7 @@
                   <label class="strong--label">Pet Type:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.petType}}</label>
+                  <label class="normal--label">{{row?.petType ? row?.petType : "-"}}</label>
                 </div>
               </div>
 
@@ -50,7 +50,7 @@
                   <label class="strong--label">Veterinarian:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.veterinarian}}</label>
+                  <label class="normal--label">{{row?.veterinarian ? row?.veterinarian : "-"}}</label>
                 </div>
               </div>
 
@@ -59,7 +59,7 @@
                   <label class="strong--label">Dietary Concerns:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.dietaryConcerns}}</label>
+                  <label class="normal--label">{{row?.dietaryConcerns ? row?.dietaryConcerns : "-"}}</label>
                 </div>
               </div>
 
