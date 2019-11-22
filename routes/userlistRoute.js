@@ -650,9 +650,13 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                 res.status(401).send(resFormat.rError(err))
               }
               else {
+             
                 let userSubscription    = userDetails.subscriptionDetails
-                if(userSubscription.length>0){//check added by pk
-                let latestSubscription  = userSubscription[userSubscription.length-1]
+                let latestSubscription  = userSubscription[0]
+                 if(userSubscription.length>0){//check added by pk
+                 latestSubscription  = userSubscription[userSubscription.length-1]
+                }
+
                 let subscriptionDetails = {"_id" : latestSubscription._id,
                                           "productId" : subscription.items.data[0]['plan']['product'],
                                           "planId" : latestSubscription.planId,
@@ -673,7 +677,7 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                                           "createdBy" : latestSubscription.createdBy
                                         };
                 userSubscription[userSubscription.length-1] = subscriptionDetails
-                }
+               
                 let EmailTemplateName = "NewSubscriptionAdviser";
                 if(userDetails.userType == 'customer') {
                   EmailTemplateName = "NewSubscription";
