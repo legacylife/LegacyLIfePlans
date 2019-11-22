@@ -50,7 +50,8 @@ export class ChatService {
   chatwindow:string;
   onChatSelected = new BehaviorSubject<any>(null);
   onChatsUpdated = new Subject<any>();
-  private userInfo: any
+  private userInfo: any;
+
   constructor(private userapi: UserAPIService,private http: HttpClient) {
     // this.loadChatData()
     this.socket = io(serverUrl)
@@ -258,6 +259,23 @@ export class ChatService {
     return contacts;
    //  return this.http.put<User>(`api/chat-user/${user._id}`, {...user})
   }
+
+
+  public getTyping() {
+    this.userInfo = this.userapi.getUserInfo();
+    this.userId = '';
+    if (this.userInfo.endUserType !== '') {
+      this.userId = this.userInfo.endUserId;
+      this.userType = this.userInfo.endUserType;
+    }
+    return Observable.create((observer) => {
+        this.socket.on('typing-with-'+this.userId, (contactids) => {
+            console.log("typing-with-",this.userId,'contactids',contactids);
+            observer.next(this.userId);
+        });
+    });
+  }
+
 
   public getMessagesUnreadCnt(){
     this.userInfo = this.userapi.getUserInfo();

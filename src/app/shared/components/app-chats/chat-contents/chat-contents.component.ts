@@ -24,6 +24,7 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   fullName : string = '';
   userId : string;
   userType : string;
+  typeing:string = '';
   @Input('matSidenav') matSidenav;
   @ViewChild(PerfectScrollbarDirective) psContainer: PerfectScrollbarDirective;
   @Output() hideWindowToggle = new EventEmitter();
@@ -54,6 +55,13 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
    this.userUpdateSub = this.chatService.onUserUpdated.subscribe(user => {
       //console.log('ngOnInit chat user',user)
       this.user = user;
+    });
+
+    this.chatService.getTyping().subscribe(id => {
+     this.typeing = 'typing...';
+      setTimeout(()=>{           
+        this.typeing = '';
+      },1500); 
     });
 
     this.chatService.getMessagesUnreadCnt().subscribe((count: string) => {
@@ -97,9 +105,12 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
 
   
   checkSend(e) {
+    console.log('Typing/....',e);
     let re = /(^|[.!?]\s+)([a-z])/g;
     var textBox: HTMLInputElement = <HTMLInputElement>e.target;
-    if(textBox.value.trim()){
+    if(textBox.value.trim()){      
+      var socket = io(serverUrl);
+      socket.emit('typing-with',{contactId:this.userId,chatwithid:this.activeContact._id});
       this.isButtonEnabled = true;
     }else{
       this.isButtonEnabled = false;
@@ -107,11 +118,10 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   }
 
   sendMessage(e) {
-  console.log('e...',e)
     if(this.msgForm.form.value.message && this.msgForm.form.value.message.trim()!='') {
       let messageVal = this.msgForm.form.value.message;
       if (e.keyCode == 13) {
-        console.log("Enter pressed " + this.msgForm.form.value.message)
+        //console.log("Enter pressed " + this.msgForm.form.value.message)
         messageVal = this.msgForm.form.value.message;
      }
 
