@@ -104,6 +104,11 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   targetCount:Number = 0
   extendedDays:Number = 0
 
+  facebook:boolean = false
+  twitter:boolean = false
+  instagram:boolean = false
+  linkedIn:boolean = false
+
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
     private loader: AppLoaderService, private confirmService: AppConfirmService, private picService: ProfilePicService, private subscriptionservice:SubscriptionService) { }
@@ -337,7 +342,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
 
   editGroupweb(links) {
     return this.fb.group({
-      links: [links, Validators.required]
+      links: [links, [Validators.required, Validators.compose([CustomValidators.url])]]
     });
   }
 
@@ -843,5 +848,33 @@ downloadFile = (filename) => {
       width: '720px',
       disableClose: true,
     })
+  }
+
+  
+  checkUrl(columnName){
+    var status = false
+    var userInput = this.getFormGroup('socialMediaLinks').controls[columnName].value
+    if(userInput != ''){
+      var patternURL = /^(http|https):\/\/[^ "]+$/;
+      if(!patternURL.test(userInput)){
+        status = true
+      }else{
+        status = false
+      }
+    }
+    switch(columnName){
+      case "facebook":
+        this.facebook = status;
+        break;
+      case "twitter":
+        this.twitter = status;
+        break;
+      case "instagram":
+        this.instagram = status;
+        break;
+      case "linkedIn":
+        this.linkedIn = status;
+        break;
+    }
   }
 }

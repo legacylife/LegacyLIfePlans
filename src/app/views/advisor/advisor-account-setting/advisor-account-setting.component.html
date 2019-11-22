@@ -457,22 +457,27 @@
                     <mat-form-field class="full-width">
                       <input matInput formControlName="facebook" placeholder="Facebook"
                         value="{{socialMediaLinkss.facebook}}"
-                        [formControl]="getFormGroup('socialMediaLinks').controls['facebook']">
+                        [formControl]="getFormGroup('socialMediaLinks').controls['facebook']" (blur)="checkUrl('facebook')">
+                        <mat-icon  matTooltip="Enter valid URL"  matTooltipClass="llp--tooltip error" *ngIf="facebook" class="red--alert">help_outline</mat-icon>
+
                     </mat-form-field>
                     <mat-form-field class="full-width">
                       <input matInput formControlName="twitter" placeholder="Twitter"
                         value="{{socialMediaLinkss.twitter}}"
-                        [formControl]="getFormGroup('socialMediaLinks').controls['twitter']">
+                        [formControl]="getFormGroup('socialMediaLinks').controls['twitter']" (blur)="checkUrl('twitter')">
+                        <mat-icon  matTooltip="Enter valid URL"  matTooltipClass="llp--tooltip error" *ngIf="twitter" class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                     <mat-form-field class="full-width">
                       <input matInput formControlName="linkedIn" placeholder="LinkedIn"
                         value="{{socialMediaLinkss.linkedIn}}"
-                        [formControl]="getFormGroup('socialMediaLinks').controls['linkedIn']">
+                        [formControl]="getFormGroup('socialMediaLinks').controls['linkedIn']" (blur)="checkUrl('linkedIn')">
+                        <mat-icon  matTooltip="Enter valid URL"  matTooltipClass="llp--tooltip error" *ngIf="linkedIn" class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                     <mat-form-field class="full-width">
                       <input matInput matInput formControlName="instagram" placeholder="Instagram"
                       value="{{socialMediaLinkss.instagram}}"
-                      [formControl]="getFormGroup('socialMediaLinks').controls['instagram']">
+                      [formControl]="getFormGroup('socialMediaLinks').controls['instagram']" (blur)="checkUrl('instagram')">
+                      <mat-icon  matTooltip="Enter valid URL"  matTooltipClass="llp--tooltip error" *ngIf="instagram" class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                   </div>
 
