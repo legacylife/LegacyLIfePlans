@@ -18,12 +18,18 @@ export class ChatLeftSidenavComponent implements OnInit {
   contacts: any[];
   chatWindow: boolean = false
   contactsWindow: boolean = false
+  userType : string;
+  contactsWindowError: string = 'Hire an Advisor to start chatting and seek professional help!';
   @Output() chatWindowToggle = new EventEmitter();
 
   constructor(private chatService: ChatService, private loader: AppLoaderService) {}
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    this.userType = localStorage.getItem("endUserType");
+      if(this.userType=='advisor'){
+          this.contactsWindowError = 'Contacts records not Found!';
+      }
     // this.chatService.onChatsUpdated
     //   .subscribe(updatedChats => {
     //     this.chats = updatedChats;

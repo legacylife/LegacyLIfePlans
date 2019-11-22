@@ -170,10 +170,11 @@ export class FinalWishesComponent implements OnInit {
           let obituary = ''; 
           let celebrationLifes = '';
           let funeralExpense = ''
+
           if (this.FuneralPlansManagementSection == 'now') {
             funeralPlans = this.FuneralPlansList;
           }
-          if (this.ExpenseList == 'now') {
+          if (this.FuneralExpenseManagementSection == 'now') {
             funeralExpense = this.ExpenseList;
           }
           if (this.ObituaryManagementSection == 'now') {
@@ -182,6 +183,7 @@ export class FinalWishesComponent implements OnInit {
           if (this.CelebrationLifeManagementSection == 'now') {
             celebrationLifes = this.CelebrationLifesList;
           }
+
           let shareFinalWishes = { FuneralPlansList: funeralPlans , ObituaryList: obituary, funeralExpense: funeralExpense, CelebrationLifesList: celebrationLifes }
           this.sharedata.shareLegacyData(shareFinalWishes);
         }

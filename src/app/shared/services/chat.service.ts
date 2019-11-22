@@ -61,22 +61,17 @@ export class ChatService {
      // console.log("socket disconnected",)
     });
 
-
-    
     this.userId = localStorage.getItem("endUserId");
     this.userType = localStorage.getItem("endUserType");
     this.userInfo = this.userapi.getUserInfo();
-    console.log("userInfo ",this.userInfo);
     if (this.userInfo.endUserType !== '') {
       this.userId = this.userInfo.endUserId;
       this.userType = this.userInfo.endUserType;
     }
-    console.log('Welcome to chat  User Id ===> ',this.userId,' USer Type',this.userType);
     //this.loadChatData();
   }
 
-  ngOnInit() {
-   
+  ngOnInit() {   
   }
 
   ngOnDestroy() {

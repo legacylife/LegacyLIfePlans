@@ -191,7 +191,7 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
       },1000);  
 
       setTimeout(()=>{
-        let celebrationofLifefolderPath = this.getDocPath(this.urlData.lastOne,this.urlData.lastTwo,'celebrationofLifes');  
+        let celebrationofLifefolderPath = this.getDocPath(this.urlData.lastOne,this.urlData.lastTwo,'celebrationLifes');  
         this.DownloadZipFolders(celebrationofLifefolderPath, 'Celebration of Life');
       },1000);       
     }
