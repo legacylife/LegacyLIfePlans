@@ -93,7 +93,11 @@ export class FinalWishesComponent implements OnInit {
     }
   }
 
-  getArrangementName(key){
+  getArrangementName(key){ 
+    if(!key){
+      key = "1"
+    }
+      
     let filteredTyes =this.funeralArrangementOptions.filter(dtype =>{
       return dtype.opt_code === key
     }).map(el => el.opt_name)[0]
@@ -101,10 +105,15 @@ export class FinalWishesComponent implements OnInit {
   }
 
   getServiceName(key) {
+    if(!key){
+      key = "1"
+    }
+   
     let filteredTyes = this.funeralOptions.filter(dtype => {
       return dtype.opt_code === key
     }).map(el => el.opt_name)[0]
     return filteredTyes
+    
   }
 
   getWishList = (query = {}) => {
@@ -156,6 +165,26 @@ export class FinalWishesComponent implements OnInit {
           this.showCelebrationLifesListing = false;
         }
 
+        if (this.shareLegacFlag) {
+          let funeralPlans = ''; 
+          let obituary = ''; 
+          let celebrationLifes = '';
+          let funeralExpense = ''
+          if (this.FuneralPlansManagementSection == 'now') {
+            funeralPlans = this.FuneralPlansList;
+          }
+          if (this.ExpenseList == 'now') {
+            funeralExpense = this.ExpenseList;
+          }
+          if (this.ObituaryManagementSection == 'now') {
+            obituary = this.ObituaryList;
+          }
+          if (this.CelebrationLifeManagementSection == 'now') {
+            celebrationLifes = this.CelebrationLifesList;
+          }
+          let shareFinalWishes = { FuneralPlansList: funeralPlans , ObituaryList: obituary, funeralExpense: funeralExpense, CelebrationLifesList: celebrationLifes }
+          this.sharedata.shareLegacyData(shareFinalWishes);
+        }
 
       }
     }, (err) => {

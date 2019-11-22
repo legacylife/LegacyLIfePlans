@@ -200,21 +200,60 @@
         </mat-card>
         <!-- Subscription ends -->
      </div>
+
      <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
-          <mat-card class="default" *ngIf="row?.userType == 'advisor'">
-              <mat-card-title class="p-1">Uploaded documents</mat-card-title>
-              <mat-card-content class="p-0 border-t">
-                <mat-list class="compact-list mb-1" *ngFor="let doc of row.advisorDocuments">
-                  <mat-list-item  class="msg--hgt--sec">
-                    <div fxLayout="row" fxFlex="100">
-                      <p class="dowloaded--names" (click)="downloadFile(doc.tmpName)"><mat-icon class="mat-icon material-icons" (click)="downloadFile(doc.tmpName)">file_copy</mat-icon>{{doc.title}}</p>
-                     
-                    </div>
-                  </mat-list-item>
-                </mat-list>
-              </mat-card-content>
-          </mat-card>
-        </div>
+        <mat-card class="default" *ngIf="row?.userType == 'advisor'">
+            <mat-card-title class="p-1">Uploaded documents</mat-card-title>
+            <mat-card-content class="p-0 border-t">
+              <mat-list class="compact-list mb-1" *ngFor="let doc of row.advisorDocuments">
+                <mat-list-item  class="msg--hgt--sec">
+                  <div fxLayout="row" fxFlex="100">
+                    <p class="dowloaded--names" (click)="downloadFile(doc.tmpName)"><mat-icon class="mat-icon material-icons" (click)="downloadFile(doc.tmpName)">file_copy</mat-icon>{{doc.title}}</p>
+                   
+                  </div>
+                </mat-list-item>
+              </mat-list>
+            </mat-card-content>
+        </mat-card>
+
+      <mat-card class="default" *ngIf="row?.userType == 'advisor'">
+          <mat-card-title class="p-1">License & documents</mat-card-title>
+          <mat-card-content class="p-0 border-t">
+            <mat-list class="compact-list mb-1">
+              <mat-list-item class="">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">What agency oversees your business?</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.agencyOversees}} </div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Do you manage other products?</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.manageOtherProceducers == "1" ? "Yes" : "No"}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="">
+              <div fxLayout="row" fxFlex="100">
+                <h6 class="m-0 mr-1">Who is your managing principle?</h6>
+                <span fxFlex></span>
+                <div fxFlex="40">{{row?.managingPrincipleName}}</div>
+              </div>
+            </mat-list-item>
+            <mat-list-item class="">
+              <div fxLayout="row" fxFlex="100">
+                <h6 class="m-0 mr-1">Active License Held</h6>
+                <span fxFlex></span>
+                <div fxFlex="40">{{row?.activeLicenceHeld}}</div>
+              </div>
+            </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+      </mat-card>
+    </div>
+
+     
     </div>
   </div>
 </div>

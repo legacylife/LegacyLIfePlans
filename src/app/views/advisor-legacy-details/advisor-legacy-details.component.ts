@@ -176,12 +176,28 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
   }
 
   DownloadZip = () => {  
-   // console.log("DownloadZip")   
-    // this.shareData.userShareDataSource.subscribe((shareFolderData) => {
-    //   console.log("shareFolderData --->",shareFolderData)   
-    // })
+    if(this.urlData.lastTwo=='final-wishes'){
+      let obituaryfolderPath = this.getDocPath(this.urlData.lastOne,this.urlData.lastTwo,'obituary');
+      this.DownloadZipFolders(obituaryfolderPath, 'Obituary');
 
-    if(this.urlData.lastTwo!='insurance-finance-debt'){
+      setTimeout(()=>{
+        let funeralServicesfolderPath = this.getDocPath(this.urlData.lastOne,this.urlData.lastTwo,'funeralPlans');  
+      this.DownloadZipFolders(funeralServicesfolderPath, 'Funeral Plans');
+      },1000);  
+
+      setTimeout(()=>{
+        let funeralExpensesfolderPath = this.getDocPath(this.urlData.lastOne,this.urlData.lastTwo,'funeralExpense');  
+        this.DownloadZipFolders(funeralExpensesfolderPath, 'Funeral Expense');
+      },1000);  
+
+      setTimeout(()=>{
+        let celebrationofLifefolderPath = this.getDocPath(this.urlData.lastOne,this.urlData.lastTwo,'celebrationofLifes');  
+        this.DownloadZipFolders(celebrationofLifefolderPath, 'Celebration of Life');
+      },1000);       
+    }
+
+
+    if(this.urlData.lastTwo!='insurance-finance-debt' && this.urlData.lastTwo!='final-wishes'){
       let folderPath = this.getDocPath(this.urlData.lastOne,this.urlData.lastTwo,'');  
       this.DownloadZipFolders(folderPath);
     }
@@ -200,11 +216,10 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
     }
   }
 
- DownloadZipFolders = (folderPath) => {      
+ DownloadZipFolders = (folderPath, folderError='') => {
     let totalDocs = [];
     let kval = folderPath['key'];
     this.shareData.userShareDataSource.subscribe((shareFolderData) => {
-      //console.log("shareFolderData --->",shareFolderData)   
       let docArray = [];
       forEach(kval, (key, rindex) => {
         forEach(shareFolderData[key], (rows, rindex) => {
@@ -246,7 +261,7 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
           // this.snack.dismiss();
         });
      }else{
-      this.snack.open("Document records not found", 'OK', { duration: 4000 })   
+      this.snack.open("Document records not found of " + folderError, 'OK', { duration: 4000 })   
      }
   }
 
@@ -277,10 +292,22 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
       docPathRes['key']  = ['lettersMessagesList'];      
       docPathRes['path'] = userId+'/'+s3Details.letterMessageDocumentsPath;
     }else if(folderName=='final-wishes'){
-      docPathRes['key']  = ['funeralPlans','obituary','celebrationLifes'];      
-      docPathRes['path'] = userId+'/'+s3Details.finalWishesFilePath;
-    }
- 
+      if(extraKey=='obituary'){
+        docPathRes['key']  = ['ObituaryList'];
+        docPathRes['path'] = userId+'/'+s3Details.obituaryFilePath;
+      }
+      if(extraKey=='funeralPlans'){
+        docPathRes['key']  = ['FuneralPlansList'];
+        docPathRes['path'] = userId+'/'+s3Details.funeralServicesFilePath; 
+      }
+      if(extraKey=='funeralExpense'){
+        docPathRes['key']  = ['funeralExpense'];
+        docPathRes['path'] = userId+'/'+s3Details.funeralExpensesFilePath; 
+      }if(extraKey=='celebrationLifes'){
+        docPathRes['key']  = ['CelebrationLifesList'];
+        docPathRes['path'] = userId+'/'+s3Details.celebrationofLifeFilePath; 
+      }
+    } 
     return docPathRes;
   }
 
