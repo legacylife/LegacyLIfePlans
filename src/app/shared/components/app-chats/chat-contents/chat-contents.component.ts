@@ -61,6 +61,7 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
     });
    
     this.chatService.getMessages().subscribe((message: string) => {
+      console.log('ngOnInit chat res message-###-->',message)
         this.messages.push(message);
         //console.log("thismessages", this.messages)
     });
@@ -71,7 +72,6 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
 
     // Listen for contact change
     this.chatSelectSub = this.chatService.onChatSelected.subscribe(res => {
-     // console.log('ngOnInit chat res',res)
       if (res) {
         this.chatCollection = res.chatCollection;
         this.activeContact = res.contact;
@@ -81,7 +81,10 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
 
     // Listen for chat update
     this.chatUpdateSub = this.chatService.onChatsUpdated.subscribe(chat => {
-        this.chatCollection.chats.push(chat);
+        if (this.chatCollection.chats.indexOf(chat) == -1) {
+          this.chatCollection.chats.push(chat);
+        }
+        
         this.scrollToBottom();
     })
   }
@@ -104,27 +107,37 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   }
 
   sendMessage(e) {
-    if(this.msgForm.form.value.message && this.msgForm.form.value.message.trim()!=''){
-    const chat: Chat = {
-      contactId: this.chatService.user._id,
-      chatwithid: this.activeContact._id,
-      text: this.msgForm.form.value.message,
-      status:'unread',
-      time: new Date().toISOString()
-    };
-    this.chatCollection.chats.push(chat);
-    this.chatService
-      .updateChats(this.chatCollection._id, [...this.chatCollection.chats])
-      .subscribe(res => {
-        this.initMsgForm();
-      });
-      this.isButtonEnabled = false;
-    // Only for demo purpose
-    // this.chatService.autoReply({
-    //   contactId: this.activeContact.id,
-    //   text: `Hi, I\'m ${this.activeContact.name}. Your imaginary friend.`,
-    //   time: new Date().toISOString()
-    // })
+  console.log('e...',e)
+    if(this.msgForm.form.value.message && this.msgForm.form.value.message.trim()!='') {
+      let messageVal = this.msgForm.form.value.message;
+      if (e.keyCode == 13) {
+        console.log("Enter pressed " + this.msgForm.form.value.message)
+        messageVal = this.msgForm.form.value.message;
+     }
+
+    if(messageVal && messageVal.trim()!='') {
+        this.msgForm.reset();
+        const chat: Chat = {
+          contactId: this.chatService.user._id,
+          chatwithid: this.activeContact._id,
+          text: messageVal,
+          status:'unread',
+          time: new Date().toISOString()
+        };
+        this.chatCollection.chats.push(chat);
+        this.chatService
+          .updateChats(this.chatCollection._id, [...this.chatCollection.chats])
+          .subscribe(res => {
+            this.initMsgForm();
+          });
+          this.isButtonEnabled = false;
+        // Only for demo purpose
+        // this.chatService.autoReply({
+        //   contactId: this.activeContact.id,
+        //   text: `Hi, I\'m ${this.activeContact.name}. Your imaginary friend.`,
+        //   time: new Date().toISOString()
+        // })
+     }
    }
   }
 

@@ -191,7 +191,7 @@ export class UserAPIService {
   }
 
   //function to make request to server to logout user
-  public userLogout(): void {
+  public userLogout(urlData = ""): void {
     let userId = localStorage.getItem('endUserId'),
         userType = localStorage.getItem("endUserType");
     this.token = ''    
@@ -227,7 +227,9 @@ export class UserAPIService {
       if(result.status == "error") {
         //this.errorMessage = result.data
       } else {
-        this.router.navigate(["signin"]);
+        if(urlData == ""){
+          this.router.navigate(["signin"]);
+        }        
       }
     }, (err) => {
       console.log("Error in update")

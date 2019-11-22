@@ -55,9 +55,8 @@ export class CustomizerComponent implements OnInit {
         count.map((o) => { totalCount += o.unread; });
         this.unreadCount = totalCount;
         if(totalCount>99){
-          this.unreadCount = totalCount+'+';
+          this.unreadCount = '99+';
         }
-
         if(this.unreadCount==0){
           this.unreadCount = '';
         }
