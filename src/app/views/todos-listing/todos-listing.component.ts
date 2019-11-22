@@ -101,8 +101,9 @@ export class TodosListingComponent implements OnInit {
     this.loader.close();
   }
 
-  edit(rowIndex) {
-    this.viewMode = rowIndex;
+  edit(rowIndex, comments){
+      this.todosUpdateForm.controls["update_comments"].setValue(comments);
+      this.viewMode = rowIndex;
   }
 
   updateCommentCheck(formdata) {

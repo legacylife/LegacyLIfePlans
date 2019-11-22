@@ -160,7 +160,8 @@ export class TodosComponent implements OnInit {
     }
   }
 
-  edit(rowIndex){
+  edit(rowIndex, comments){
+    this.todosUpdateForm.controls["update_comments"].setValue(comments);
     this.viewMode = rowIndex
   }
 
@@ -181,5 +182,5 @@ export class TodosComponent implements OnInit {
     var textBox: HTMLInputElement = <HTMLInputElement>e.target;
     textBox.value = textBox.value.replace(re, (m, $1, $2) => $1 + $2.toUpperCase());
   }
-    
+
 }

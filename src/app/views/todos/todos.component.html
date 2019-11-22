@@ -30,7 +30,7 @@
           </button>
         </mat-list-item>
         <mat-menu #menu1="matMenu" xPosition="before">
-          <button mat-menu-item (click)="edit(rowIndex)">Edit</button>
+          <button mat-menu-item (click)="edit(rowIndex, todo.comments)">Edit</button>
           <button mat-menu-item (click)="delete(todo._id)">Delete</button>
         </mat-menu>
         <span class="when">{{todo.modifiedOn  | date: 'yyyy/MM/dd H:m:s'}}</span>
