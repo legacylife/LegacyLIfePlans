@@ -17,7 +17,7 @@ export class ChatLeftSidenavComponent implements OnInit {
   currentUser: User = new User();
   contacts: any[];
   chatWindow: boolean = false
-
+  contactsWindow: boolean = false
   @Output() chatWindowToggle = new EventEmitter();
 
   constructor(private chatService: ChatService, private loader: AppLoaderService) {}
@@ -33,6 +33,8 @@ export class ChatLeftSidenavComponent implements OnInit {
     this.userUpdateSub = this.chatService.onUserUpdated
       .subscribe(updatedUser => {
         this.currentUser = updatedUser;
+
+
       });
 
     this.loadDataSub = this.chatService.loadChatData()
@@ -71,6 +73,11 @@ export class ChatLeftSidenavComponent implements OnInit {
       });
       this.chatService.getOnlineStatus().subscribe((friendId:any) => {
         this.contacts = this.chatService.contacts;
+        if(this.contacts.length==0){
+          this.contactsWindow = true  
+        }else{
+          this.contactsWindow = false  
+        }
       });
   }
 
