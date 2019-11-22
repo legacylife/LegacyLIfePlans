@@ -10,7 +10,7 @@ const { isEmpty } = require('lodash')
 const resMessage  = require('./../helpers/responseMessages')
 var async = require('async');
 let http = require('http');
-
+const mongoose = require('mongoose');
 let server = http.Server(express);
 var auth = jwt({
   secret: constants.secret,
@@ -49,6 +49,7 @@ async function chatRoom(chatId,userId) {
 async function userMessagesStatus(userId,status) {
   let unreadCount = [];
   if(userId!==undefined){
+    console.log('-------userId->',typeof(userId));
     let chatingData = await chat.find({$or:[{chatfromid:userId},{ chatwithid:userId}]});
    let chatInfolist = [];let unreadCnt = 0;
       await Promise.all(chatingData.map(async (val)=>{     
@@ -58,10 +59,12 @@ async function userMessagesStatus(userId,status) {
           friendId = val.chatwithid;
         }
         if(val.chats.length>0){
-          friendId = friendId.toString()
+          friendId = friendId.toString();
+          valid = val._id.toString();
+//console.log('-------valId->',typeof(val._id),' valid--->',typeof(valid),'friendId--->',typeof(friendId))
           let unreadC =   await chat.aggregate([
             { "$match": {
-                "_id" : val._id,
+                "_id" : mongoose.Types.ObjectId(val._id),
                 "chats.status": "unread"
             }},
             { "$group": {
@@ -72,9 +75,13 @@ async function userMessagesStatus(userId,status) {
                             "$filter": {
                                 "input": "$chats",
                                 "as": "el",
-                                "cond": {
-                                    "$eq": [ "$$el.status", "unread" ],
-                                    "$eq": [ "$$el.contactId",friendId]
+                                // "cond": [ { "$and" : [{
+                                //     "$eq": [ "$$el.contactId",friendId],
+                                //     '$eq': [ "$$el.status", "unread" ]
+                                // }]
+                                "cond":{
+                                  "$eq": [ "$$el.contactId",friendId ],
+                                  '$eq': [ "$$el.status", "unread" ],
                                 }
                             }
                         }
@@ -94,8 +101,11 @@ async function userMessagesStatus(userId,status) {
           }
        
           chatInfolist.push(makeArray);
+         // console.log('makeArray',makeArray)
         }
+       
     }))
+   // console.log('****************userMessagesStatus ---- unreadCount array--- '+chatInfolist);
     return chatInfolist;
     // chatingData.forEach(async ( val, callback ) => {
     //   let friendId = '';

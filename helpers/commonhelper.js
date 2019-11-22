@@ -70,11 +70,11 @@ const getChatReadCount = (userId,friendId) => {
     //console.log(' CHAT window ID >>>>>>>>>>',typeof(chatingData._id))
      if(chatingData && chatingData.chats && chatingData.chats.length>0) {
         let chatId = chatingData._id;
-       // chatId = chatId.toString();
+        chatId = chatId.toString();
        //console.log(' CHAT window ID <<<<<<<<<<<<',typeof(chatId));
         let unreadC =   await chat.aggregate([
           { "$match": {
-              "_id" : chatId,
+              "_id" :  chatId,
               //"chats.status": "unread"
               //$or:[{chatfromid:userId,chatwithid:friendId},{ chatfromid:friendId,chatwithid:userId}],
               "chats.status": "unread"
@@ -91,13 +91,13 @@ const getChatReadCount = (userId,friendId) => {
                                   "$eq": [ "$$el.status", "unread" ],
                                   "$eq": [ "$$el.contactId",friendId]
                               }
-                          }
+                         }
                       }
                   }
               }
           }}
         ]);
-     console.log('unread >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ',unreadC,' chat id ',typeof(chatId),' Friend ID',friendId)
+  //   console.log('unread >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ',unreadC,' chat id ',chatId,'-------typeof-',typeof(chatId),' Friend ID',friendId)
         if(unreadC && unreadC.length>0){
           chatCount = unreadC[0].count;   
         }

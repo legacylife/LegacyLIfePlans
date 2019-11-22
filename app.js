@@ -17,18 +17,17 @@ const apps = express()
 
  var users = {};
  io.on('connection', (socket) => {
-   //console.log('user connected...');  
    // var clients = io.sockets.clients();
    // var clients = io.sockets.clients('new-message'); 
-   socket.on('loginforonline', function(data){
+  socket.on('loginforonline', function(data){
      //saving userId to array with socket ID
      users[socket.id] = data.userId;
-    // console.log('a user ' + data.userId +'---' + data.userType + ' connected');
+     // console.log('a user ' + data.userId +'---' + data.userType + ' connected');
      chats.userStatus(data,'online');
      io.emit('online-status',data.userId,'online');
-    //8 var unreadCnt = chats.userMessagesStatus(data.userId,'online');
-    //8 console.log(`loginforonline message-unread-count`);
-   //8  io.emit('message-unread-count-'+data.userId, unreadCnt);
+     //8 var unreadCnt = chats.userMessagesStatus(data.userId,'online');
+     //8 console.log(`loginforonline message-unread-count`);
+     //8  io.emit('message-unread-count-'+data.userId, unreadCnt);
   });
 
   socket.on('offline', function(data){
@@ -37,11 +36,11 @@ const apps = express()
     io.emit('online-status',data.userId,'offline');
  });
   
-  socket.on('new-message', async (message) => {
+  socket.on('new-message', async (message) => {    
     io.emit('new-message-'+message.chatwithid, message);
     var unreadCnt = await chats.userMessagesStatus(message.chatwithid,'online');
     //io.emit('message-unread-count-'+message.chatwithid, userUnreadCnt);
-    io.emit('message-unread-count-'+message.chatwithid, unreadCnt);    
+     io.emit('message-unread-count-'+message.chatwithid, unreadCnt);    
   });
 
   socket.on('message-unread-count', async (data) => { // functions call when page reload from customizer.ts
@@ -50,28 +49,22 @@ const apps = express()
   });
 
   socket.on('get-chat-room', (chatId,userId) => {
-    // console.log('======get-chat-room==',chatId,userId)
      chats.chatRoom(chatId,userId);
    // io.emit('get-chat-room'+contactId);
   });
- 
-  
+   
   socket.on('disconnect', function(){
     if(users[socket.id]!==undefined){
       io.emit('offlineContact', users[socket.id]);
       chats.userStatus({userId:users[socket.id]},'offline');
       io.emit('online-status',users[socket.id],'offline');
-    }else{
-    //  console.log('user ' + users + ' disconnected here');
     }
   });
-
 });
 
 
 function normalizePort(val) {
   var port = parseInt(val, 10)
-
   if (isNaN(port)) {
     return val
   }
@@ -89,7 +82,6 @@ function onError(error) {
   var bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port
-
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
