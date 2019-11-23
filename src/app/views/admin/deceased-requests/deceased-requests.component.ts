@@ -42,38 +42,44 @@ export class DeceasedRequestsComponent implements OnInit {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        if (result.data.deceasedData) {    
-          this.data = this.temp = result.data.deceasedData;               
-        }        
+        var tempData = [];
+        if (result.data.deceasedData) {
+          result.data.deceasedData.forEach(element => {
+              tempData.push({
+                firstName :  element.customerId.firstName,
+                lastName :  element.customerId.lastName,
+                username:  element.customerId.username,
+                modifiedOn:  element.modifiedOn,
+                status: ( element.status =='Active' ? 'Deceased' :  element.status ),
+                _id:  element._id
+              });
+          });
+          this.data = this.temp = tempData;
+        }
       }
     }, (err) => {
       console.error(err);
     })
   }  
 
-  //table
   updateFilter(event) {
     const val = event.target.value.toLowerCase();
-    var columns = Object.keys(this.temp[0]);
+    var columns = Object.keys(this.temp[0]); 
     if(this.temp[0].customerId){
        columns = Object.keys(this.temp[0].customerId);  
     }
-   // Removes last "$$index" from "column"
     columns.splice(columns.length - 1);
-
-    if (!columns.length)
+    if (!columns.length){
       return;
-
+    }
     const rows = this.temp.filter(function (d) {
       for (let i = 0; i <= columns.length; i++) {
         let column = columns[i];
-        // console.log('-->',column,'--->',d[column]);
         if (d[column] && d[column].toString().toLowerCase().indexOf(val) > -1) {
-          return true;
+            return true;
         }
       }
     });
-
     this.data = rows;
   }
 

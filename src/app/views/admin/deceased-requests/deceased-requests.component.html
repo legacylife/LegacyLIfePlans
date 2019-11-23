@@ -9,12 +9,12 @@
       <ngx-datatable class="material ml-0 mr-0" [rows]="data" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
         <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Full Name" prop="firstName" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{row?.customerId?.firstName}} {{row?.customerId?.lastName}}
+            {{row?.firstName}} {{row?.lastName}}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Email" prop="username" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{row?.customerId?.username}}
+              {{row?.username}}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Date" prop="modifiedOn" [flexGrow]="1">
@@ -22,9 +22,9 @@
               {{row?.modifiedOn | date: 'yyyy/MM/dd HH:mm:ss'}}
             </ng-template>
           </ngx-datatable-column>      
-          <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Date" prop="row?.status" [flexGrow]="1">
+          <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Status" prop="status" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{row?.status=='Active' ? 'Deceased' : row?.status}}
+              {{row?.status}}
             </ng-template>
           </ngx-datatable-column>  
         <ngx-datatable-column [resizeable]="false" name="Actions" [sortable]="false" [draggable]="false" [flexGrow]="1">
@@ -33,7 +33,7 @@
               [routerLink]="['/admin/deceased-requests/view', row._id]">
               <mat-icon style="font-size: 27px;">remove_red_eye</mat-icon>
             </a>
-          </ng-template>
+          </ng-template> 
         </ngx-datatable-column>
       </ngx-datatable>
     </mat-card-content>
