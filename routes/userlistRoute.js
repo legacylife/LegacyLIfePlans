@@ -1103,6 +1103,69 @@ function getUsersListForAdminMap(req, res) {
   })
 }
 
+function getDashbaordDetails(req, res) {
+  let { query } = req.body
+  User.find( query, {_id:1,username:1,userType:1,status:1,sponsoredAdvisor:1,deceased:1}, function (err, userList) {
+    if (err) {
+      res.status(500).send(resFormat.rError(err))
+    }
+    else {
+      if( userList.length > 0 ) {
+          const customersList = userList.filter(dtype => {
+            return dtype.userType == 'customer'
+          }).map(el => el)
+
+          const customerActive = customersList.filter(dtype => {
+            return dtype.status == 'Active'
+          }).map(el => el)
+
+          const customerInactive = customersList.filter(dtype => {
+            return dtype.status == 'Inactive'
+          }).map(el => el)          
+
+          const customerPending = customersList.filter(dtype => {
+            return dtype.status == 'Pending'
+          }).map(el => el)   
+
+          const customerDeceased = customersList.filter(dtype => {
+              return dtype.deceased && dtype.deceased.status == 'Active'
+          }).map(el => el)             
+
+          const advisorList = userList.filter(dtype => {
+            return dtype.userType == 'advisor'
+          }).map(el => el)
+
+          const advisorActive = advisorList.filter(dtype => {
+            return dtype.status == 'Active'
+          }).map(el => el)
+
+          const advisorInactive = advisorList.filter(dtype => {
+            return dtype.status == 'Inactive'
+          }).map(el => el)
+
+          const advisorPending = advisorList.filter(dtype => {
+            return dtype.status == 'Pending'
+          }).map(el => el)          
+
+          const advisorRejected = advisorList.filter(dtype => {
+            return dtype.status == 'Rejected'
+          }).map(el => el)   
+
+          const advisorSponsored = advisorList.filter(dtype => {
+            return dtype.sponsoredAdvisor == 'yes'
+          }).map(el => el)          
+
+          res.status(200).send(resFormat.rSuccess({'totalCustomers':customersList.length,'customerActive':customerActive.length,'customerInactive':customerInactive.length,'customerPending':customerPending.length,
+          'totalAdvisor':advisorList.length,'advisorActive':advisorActive.length,'advisorPending':advisorPending.length,'customerDeceased':customerDeceased.length,'advisorRejected':advisorRejected.length,'advisorInactive':advisorInactive.length,'advisorSponsored':advisorSponsored.length,'alluser':userList.length}));
+      }else{
+        res.status(200).send(resFormat.rSuccess({'totalCustomers':0,'customerActive':0,'customerInactive':0,'customerDeceased':0,'totalAdvisor':0,'advisorRejected':0,'advisorPending':0,'advisorActive':0,'advisorInactive':0,'advisorSponsored':0,'alluser':0}));
+      }
+    }
+  })
+}
+
+
+
 function AddLatitudeLongitude(req, res) {
   let { query } = req.body
   User.find( query, {}, function (err, userList) {
@@ -1130,7 +1193,7 @@ async function calculateZipcode(zipcode,id){
       let setLocation = {latitude:data.latitude,longitude:data.longitude};
       await User.updateOne({_id:id},{$set:{location:setLocation}});
       return true;
-    }else{
+    }else{     
       return false;
     }
   }
@@ -1699,6 +1762,8 @@ router.post(["/viewall"], view);
 router.post("/common", common);
 router.post("/latitudeLongitude", AddLatitudeLongitude);
 router.post(["/renewlegacysubscription"], renewlegacysubscription);
+router.post(["/dashbaorddetails"], getDashbaordDetails);
+
 router.post("/logout", logout)
 /*router.get(["/view/:id", "/:id"], details)*/
 

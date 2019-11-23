@@ -34,8 +34,14 @@ const apps = express()
     io.emit('offlineContact'+data.userId,data.userId);
     chats.userStatus({userId:data.userId},'offline');
     io.emit('online-status',data.userId,'offline');
- });
-  
+  });
+ 
+  socket.on('typing-with', async (withId) => {
+    console.log('withId>>>>>>>',withId)    
+    io.emit('typing-with-'+withId.chatwithid,withId.contactId);
+    //withId.contactId
+  });
+
   socket.on('new-message', async (message) => {    
     io.emit('new-message-'+message.chatwithid, message);
     var unreadCnt = await chats.userMessagesStatus(message.chatwithid,'online');

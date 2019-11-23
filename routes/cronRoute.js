@@ -851,10 +851,12 @@ function sendingMail(templateCode,emailId,toName,deceasedEmail,deceasedFullName,
 
 async function featuredAdvisorFromDate(req, res){
   let AdvData = await advertisement.find({status:"Active",sponsoredStatus:'Pending',"adminReply.status": "Done"},{_id:1,customerId:1,fromDate:1,toDate:1,status:1,zipcodes:1,adminReply:1});
+ 
   if(AdvData.length>0){
       AdvData.forEach( async (key,index) => {   
       let dates = key.fromDate.toISOString().substring(0, 10);
-      if(new Date(dates) <= new Date()){      
+  
+      if(new Date(dates) <= new Date()){            
         let message = key;
         let newArray = [];
         let UserData = await User.findOne({_id:key.customerId},{_id:1,username:1,firstName:1,lastName:1,sponsoredAdvisor:1,status:1,sponsoredZipcodes:1});
@@ -887,7 +889,9 @@ async function featuredAdvisorEndDate(req, res){
   if(AdvData.length>0){
       AdvData.forEach( async (key,index) => {   
       let endDate = key.toDate.toISOString().substring(0, 10);
-      if(new Date(endDate) < new Date()){      
+      let todayDate = new Date(); 
+       todayDate = todayDate.toISOString().substring(0, 10);
+      if(endDate < todayDate){      
         let UserData = await User.findOne({_id:key.customerId},{_id:1,username:1,firstName:1,lastName:1,sponsoredAdvisor:1,status:1,sponsoredZipcodes:1});
         if(UserData){
              await User.updateOne({_id:key.customerId},{sponsoredAdvisor:'no',sponsoredZipcodes:[]});
