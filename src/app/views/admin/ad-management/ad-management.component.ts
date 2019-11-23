@@ -39,6 +39,7 @@ enquiryList = (query = {}, search = false) => {
 		  console.log(result.data)        
       } else {
       this.rows = result.data.advertisementList;
+      this.temp = result.data.advertisementList;
       }
     }, (err) => {
       console.error(err)      

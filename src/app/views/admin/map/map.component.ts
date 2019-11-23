@@ -41,14 +41,11 @@ export class MapComponent implements OnInit {
     this.mapCenter = []
     let req_var, query_var
     if( this.userTypeFilter == 'all' ) {
-      //req_var = { query: { status:'Active', zipcode:{$exists:true} } }
       query_var = { status:'Active', zipcode:{$exists:true, $ne:null} }
-    }
-    else{
-      //req_var = { query: { userType: this.userTypeFilter, /* onBoardBy: this.onBoardByFilter, */ status:'Active', zipcode:{$exists:true} } }
+    }else{
       query_var = { userType: this.userTypeFilter, status:'Active', zipcode:{ $exists:true, $ne:null } }
     }
-
+    
     if( this.onBoardByFilter == 'all' ) {
       query_var = query_var
     }
@@ -56,8 +53,7 @@ export class MapComponent implements OnInit {
       query_var = Object.assign({ invitedBy: this.onBoardByFilter }, query_var)
     }
     req_var = { query: query_var }
-    console.log("?req_var - ",req_var)
-    await this.userapi.apiRequest('post', 'userlist/getuserslistforadminmap', req_var).subscribe( (result) => {
+      await this.userapi.apiRequest('post', 'userlist/getuserslistforadminmap', req_var).subscribe( (result) => {
       result.data.userDetails.forEach((element,index) => {
         let userData = {lat: element.latitude,
                         long: element.longitude,
@@ -67,18 +63,15 @@ export class MapComponent implements OnInit {
                         image:'https://i1.wp.com/arkenea.com/wp-content/uploads/2018/02/company-pic2.jpg?w=1280&ssl=1',
                         address: element.address,
                         business: element.business,
-                        userId: element.userId
-                      }
+                        userId: element.userId}
           this.mapCenter.push(userData)
-
           let userDetails = { fullname: element.fullname,
                               email: element.email,
                               usertype: element.userType,
                               business: element.business,
                               address: element.address,
                               onBoardVia: element.onBoardVia,
-                              lastLogin: element.lastLogin
-                            }
+                              lastLogin: element.lastLogin}
           this.downloadData.push(userDetails)
       })
     })
