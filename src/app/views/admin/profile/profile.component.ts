@@ -36,9 +36,15 @@ export class ProfileComponent implements OnInit {
     this.userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
     this.userType = localStorage.getItem("userType") || sessionStorage.getItem("userType")
 
+
+    // const passwordRegex: any = /^.{6,}$/
+    // const password = new FormControl('', Validators.compose([ Validators.required, Validators.pattern(passwordRegex), this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)]));
+    // const NewPassword = new FormControl('', [Validators.required, Validators.pattern(passwordRegex), Validators.minLength(6)]);
+    // const confirmPassword = new FormControl('', CustomValidators.equalTo(NewPassword));
+
     this.llpProfileForm = new FormGroup({
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
+      firstName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
+      lastName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),      
       //phoneNumber: new FormControl('', Validators.required)		  
     })
 
@@ -49,6 +55,12 @@ export class ProfileComponent implements OnInit {
     });
 
     this.getProfile()
+  }
+
+  public noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
   }
 
   //function to get all events

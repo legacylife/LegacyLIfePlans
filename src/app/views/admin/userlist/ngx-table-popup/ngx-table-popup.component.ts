@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MatDialog,MAT_DIALOG_DATA } from '@angular/material';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup,FormControl } from '@angular/forms';
 import { APIService } from './../../../../api.service';
 import { adminSections } from '../../../../config';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
@@ -36,12 +36,12 @@ export class NgxTablePopupComponent implements OnInit {
   }
 
   buildItemForm(item) {
-   
-    if(this.data.title=='Update member'){
+    if(this.data.title=='Update member'){  
       this.itemForm = this.fb.group({
-        firstName: ['',Validators.required],
-        lastName: ['', Validators.required],
-        username: ['', Validators.required],
+        firstName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
+        lastName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
+        //username: ['', Validators.required],
+        username: new FormControl('', Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)])),
         allowNotifications: [ '',Validators.required],
         status: [false],
         usermanagement: ['', Validators.required],
@@ -54,7 +54,7 @@ export class NgxTablePopupComponent implements OnInit {
         deceasedrequest: [ '', Validators.required],
         adminmanagement: ['', Validators.required]
       })
-  
+      this.itemForm.controls['username'].disable();
       this.itemForm.controls['firstName'].setValue(item.firstName);
       this.itemForm.controls['lastName'].setValue(item.lastName);
       this.itemForm.controls['username'].setValue(item.username);
@@ -69,10 +69,14 @@ export class NgxTablePopupComponent implements OnInit {
       this.itemForm.controls['deceasedrequest'].setValue(item.sectionAccess.deceasedrequest);
       this.itemForm.controls['adminmanagement'].setValue(item.sectionAccess.adminmanagement);
     }else{   
+      console.log('item',item)
     this.itemForm = this.fb.group({
-      firstName: [item.firstName || '', Validators.required],
-      lastName: [item.lastName || '', Validators.required],
-      username: [item.username || '', Validators.required],
+      firstName: new FormControl('', Validators.compose([Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
+      lastName: new FormControl('', Validators.compose([Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
+      // firstName: [item.firstName || '', Validators.required,this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)],
+      // lastName: [item.lastName || '', Validators.required,this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)],
+      username: new FormControl('', Validators.compose([item.username,Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)])),
+      //username: [item.username || '', Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)],
       allowNotifications: [Validators.required],
       status: [item.status || false],
       usermanagement: [(item.sectionAccess && item.sectionAccess.usermanagement) || '', Validators.required],
@@ -99,6 +103,11 @@ export class NgxTablePopupComponent implements OnInit {
   }
 }
 
+public noWhitespaceValidator(control: FormControl) {
+  const isWhitespace = (control.value || '').trim().length === 0;
+  const isValid = !isWhitespace;
+  return isValid ? null : { 'whitespace': true };
+}
   submit() {
     let userData = this.data.payload;
     this.RequestData = {

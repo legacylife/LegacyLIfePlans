@@ -7,26 +7,30 @@
           <mat-card-content class="mt-1">
             <form class="llp-form-wrapper" [formGroup]="llpProfileForm" (ngSubmit)="llpprofile()">
               <mat-form-field class="full-width">
-                <input class="capitalize" matInput name="firstName" [formControl]="llpProfileForm.controls['firstName']" placeholder="First name"
-                  value="">
+                <input class="capitalize" matInput name="firstName" [formControl]="llpProfileForm.controls['firstName']" placeholder="First name" value="">
+                  <mat-icon matTooltip="Please enter first name" matTooltipClass="llp--tooltip error" *ngIf="llpProfileForm.controls['firstName'].hasError('required') && llpProfileForm.controls['firstName'].touched"
+                  class="red--alert">help_outline</mat-icon>
+                  <mat-icon matTooltip="Please enter valid first name." matTooltipClass="llp--tooltip error" *ngIf="llpProfileForm.controls['firstName'].invalid && llpProfileForm.controls['firstName'].touched"
+                  class="red--alert">help_outline</mat-icon>
               </mat-form-field>
               <mat-form-field class="full-width">
-                <input class="capitalize" matInput name="lastName" [formControl]="llpProfileForm.controls['lastName']" placeholder="Last name"
-                  value="">
+                <input class="capitalize" matInput name="lastName" [formControl]="llpProfileForm.controls['lastName']" placeholder="Last name"  value="">
+                <mat-icon matTooltip="Please enter last name" matTooltipClass="llp--tooltip error" *ngIf="llpProfileForm.controls['lastName'].hasError('required') && llpProfileForm.controls['lastName'].touched"
+                class="red--alert">help_outline</mat-icon>
+                <mat-icon matTooltip="Please enter valid last name." matTooltipClass="llp--tooltip error" *ngIf="llpProfileForm.controls['lastName'].invalid && llpProfileForm.controls['lastName'].touched"
+                class="red--alert">help_outline</mat-icon>
               </mat-form-field>
               <button mat-raised-button class="llp--primary--btn" [disabled]="!llpProfileForm.valid">Save</button>
             </form>
           </mat-card-content>
         </mat-tab>
 
-
         <mat-tab label="Change Password">
           <mat-card-content class="mt-1">
             <form class="llp-form-wrapper" [formGroup]="llpPasswordForm" (ngSubmit)="llppassword()">
               <div fxLayout="row wrap">
                 <mat-form-field class="full-width">
-                  <input type="password" required [formControl]="llpPasswordForm.controls['password']" matInput name="password" placeholder="Current Password"
-                    value="">
+                  <input type="password" required [formControl]="llpPasswordForm.controls['password']" matInput name="password" placeholder="Current Password"  value="">
 
                   <mat-icon matTooltip="Please enter current password." matTooltipClass="llp--tooltip error" *ngIf="llpPasswordForm.controls['password'].hasError('required') && llpPasswordForm.controls['password'].touched"
                     class="red--alert">help_outline</mat-icon>

@@ -7,26 +7,30 @@
     <div fxLayout="row wrap">
       <div fxFlex="50"  class="pr-1">
         <mat-form-field class="full-width">
-          <input  class="capitalize"
-          matInput
-          name="firstName"
-          [formControl]="itemForm.controls['firstName']"
-          placeholder="First Name *">
+          <input  class="capitalize"  matInput name="firstName"  [formControl]="itemForm.controls['firstName']"  placeholder="First Name *">
+          <mat-icon matTooltip="Please enter first name" matTooltipClass="llp--tooltip error" *ngIf="itemForm.controls['firstName'].hasError('required') && itemForm.controls['firstName'].touched"
+          class="red--alert">help_outline</mat-icon>
+          <mat-icon matTooltip="Please enter valid first name." matTooltipClass="llp--tooltip error" *ngIf="itemForm.controls['firstName'].invalid && itemForm.controls['firstName'].touched"
+          class="red--alert">help_outline</mat-icon>
         </mat-form-field>
       </div>
-
       <div fxFlex="50"  class="pr-1">
           <mat-form-field class="full-width">
-            <input  class="capitalize"
-            matInput
-            name="lastName"
-            [formControl]="itemForm.controls['lastName']"
-            placeholder="Last Name *">
+            <input  class="capitalize" matInput name="lastName" [formControl]="itemForm.controls['lastName']" placeholder="Last Name *">
+            <mat-icon matTooltip="Please enter last name" matTooltipClass="llp--tooltip error" *ngIf="itemForm.controls['lastName'].hasError('required') && itemForm.controls['lastName'].touched"
+            class="red--alert">help_outline</mat-icon>
+            <mat-icon matTooltip="Please enter valid last name." matTooltipClass="llp--tooltip error" *ngIf="itemForm.controls['lastName'].invalid && itemForm.controls['lastName'].touched"
+            class="red--alert">help_outline</mat-icon>
           </mat-form-field>
         </div>
       <div fxFlex="100"  class="pr-1">
         <mat-form-field class="full-width">
+          
           <input matInput type="email" name="username" [formControl]="itemForm.controls['username']" placeholder="Email *">
+          <mat-icon matTooltip="Please enter email id" matTooltipClass="llp--tooltip error" *ngIf="itemForm.controls['username'].hasError('required') && itemForm.controls['username'].touched"
+          class="red--alert">help_outline</mat-icon>
+        <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" *ngIf="itemForm.controls['username'].hasError('pattern') && itemForm.controls['username'].touched"
+          class="red--alert">help_outline</mat-icon>
           <mat-icon matTooltip="{{invalidMessage}}" matTooltipClass="llp--tooltip error" *ngIf="EmailExist" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
       </div>
