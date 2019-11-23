@@ -5,8 +5,8 @@
         <img src="{{profilePicture}}" alt="">
       </div>
       <div class="profile-title text-center mb-1">
-        <div class="main-title">{{fullname}}</div>
-        <div class="text-muted">{{row?.bioText}}</div>
+        <div class="main-title">{{fullname ? fullname : '--'}}</div>
+        <div class="text-muted">{{row?.bioText ? row?.bioText : '--'}}</div>
       </div>
       <mat-card-content class="pt-0 border-0">
         <mat-list>
@@ -14,10 +14,10 @@
             <mat-icon class="mr-1">email</mat-icon> {{row?.username}}
           </mat-list-item>
           <mat-list-item *ngIf="row?.userType == 'customer' && row?.phoneNumber!=''">
-            <mat-icon class="mr-1">phone</mat-icon> {{row?.phoneNumber}}
+            <mat-icon class="mr-1">phone</mat-icon> {{row?.phoneNumber ? row?.phoneNumber : '--'}}
           </mat-list-item>
           <mat-list-item *ngIf="row?.userType == 'advisor' && row?.businessPhoneNumber!=''">
-            <mat-icon class="mr-1">phone</mat-icon> {{row?.businessPhoneNumber}}
+            <mat-icon class="mr-1">phone</mat-icon> {{row?.businessPhoneNumber ? row?.businessPhoneNumber : '--'}}
           </mat-list-item>
         </mat-list>
       </mat-card-content>
@@ -43,35 +43,35 @@
             <div fxLayout="row" fxFlex="100">
               <h6 class="m-0 mr-1">Address Line 1</h6>
               <span fxFlex></span>
-              <div class="line--hgt--20" fxFlex="40">{{row?.addressLine1}}</div>
+              <div class="line--hgt--20" fxFlex="40">{{row?.addressLine1 ? row?.addressLine1 : '--'}}</div>
             </div>
           </mat-list-item>
           <mat-list-item class="msg--hgt--sec">
             <div fxLayout="row" fxFlex="100">
               <h6 class="m-0 mr-1">Address Line 2</h6>
               <span fxFlex></span>
-              <div class="line--hgt--20" fxFlex="40">{{row?.addressLine2}}</div>
+              <div class="line--hgt--20" fxFlex="40">{{row?.addressLine2 ? row?.addressLine2 : '--'}}</div>
             </div>
           </mat-list-item>
           <mat-list-item class="">
             <div fxLayout="row" fxFlex="100">
               <h6 class="m-0 mr-1">City</h6>
               <span fxFlex></span>
-              <div fxFlex="40">{{row?.city}}</div>
+              <div fxFlex="40">{{row?.city ? row?.city : '--'}}</div>
             </div>
           </mat-list-item>
           <mat-list-item class="">
             <div fxLayout="row" fxFlex="100">
               <h6 class="m-0 mr-1">State</h6>
               <span fxFlex></span>
-              <div fxFlex="40">{{row?.state}}</div>
+              <div fxFlex="40">{{row?.state ? row?.state : '--'}}</div>
             </div>
           </mat-list-item>
           <mat-list-item class="">
             <div fxLayout="row" fxFlex="100">
               <h6 class="m-0 mr-1">Zipcode</h6>
               <span fxFlex></span>
-              <div fxFlex="40">{{row?.zipcode}}</div>
+              <div fxFlex="40">{{row?.zipcode ? row?.zipcode : '--'}}</div>
             </div>
           </mat-list-item>
           <mat-list-item class="">
@@ -83,6 +83,36 @@
               </div>
             </div>
           </mat-list-item>
+
+          <mat-list-item class="">
+            <div fxLayout="row" fxFlex="100">
+              <h6 class="m-0 mr-1">Subscription start date</h6>
+              <span fxFlex></span>
+              <div fxFlex="40">
+                <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{subscriptionStartDate ? (subscriptionStartDate | date: 'yyyy/MM/dd') : '--'}}</mat-chip>
+              </div>
+            </div>
+          </mat-list-item>  
+                 
+          <mat-list-item class="">
+            <div fxLayout="row" fxFlex="100">
+              <h6 class="m-0 mr-1">Subscription end date</h6>
+              <span fxFlex></span>
+              <div fxFlex="40">
+                <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{subscriptionEndDate ? (subscriptionEndDate | date: 'yyyy/MM/dd') : '--'}}</mat-chip>
+              </div>
+            </div>
+          </mat-list-item>    
+          
+          <!-- <mat-list-item class="">
+            <div fxLayout="row" fxFlex="100">
+              <h6 class="m-0 mr-1">Subscription status</h6>
+              <span fxFlex></span>
+              <div fxFlex="40">
+                <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{subscriptionStatus ? subscriptionStatus : '--'}}</mat-chip>
+              </div>
+            </div>
+          </mat-list-item>               -->
           <mat-list-item class="">
             <div fxLayout="row" fxFlex="100">
               <h6 class="m-0 mr-1">Last log in date and time</h6>
@@ -93,12 +123,9 @@
         </mat-list>
       </mat-card-content>
     </mat-card>
-
   </div>
 
-
   <div fxFlex.xs="100" fxFlex.sm="33.33" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
-
     <mat-card class="default mb-1 basic--info--wrapper">
       <mat-card-title class="p-1">Enquiry Info</mat-card-title>
       <mat-card-content class="p-0 border-t">
@@ -135,10 +162,10 @@
           </mat-list-item>
           <mat-list-item class="">
             <div fxLayout="row" fxFlex="100">
-              <h6 class="m-0 mr-1">Status</h6>
+              <h6 class="m-0 mr-1">Sponsored Status</h6>
               <span fxFlex></span>
               <div fxFlex="40">
-                <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{data?.status}}</mat-chip>
+                <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{data?.sponsoredStatus}}</mat-chip>
               </div>
             </div>
           </mat-list-item>
@@ -213,7 +240,7 @@
 
   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="70" fxFlex.lg="50" fxFlex.xl="50" class="enq--form--wrapper" *ngIf="showReplyEnquiryForm">
     <div class="breadcrumb-title pl-0 mt-1 brdr-t-1">
-      <h1 class="bc-title">Reply on Enquiry form.</h1>
+      <h1 class="bc-title">Reply on Enquiry form. (Note : Please check Subscription details before reply.)</h1>
     </div>
     <mat-card class="p-0">
       <mat-card-content class="p-1 border-t">

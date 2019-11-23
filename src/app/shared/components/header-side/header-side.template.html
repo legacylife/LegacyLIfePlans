@@ -1,9 +1,8 @@
 <mat-toolbar class="topbar topbar-white">
     
   <div class="admin--logo">
-      <img src="assets/images/arkenea/small-logo.png" alt="" class="">
+      <img [routerLink]="'/admin/dashboard'" src="assets/images/arkenea/small-logo.png" alt="" class="">
   </div>
-
   <!-- Sidenav toggle button -->
   <button
   *ngIf="layoutConf.sidebarStyle !== 'compact'"

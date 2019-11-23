@@ -196,7 +196,6 @@ export class UserAPIService {
         userType = localStorage.getItem("endUserType");
     this.token = ''    
     var socket = io(serverUrl);
-    console.log('offline socket call')
     socket.emit('offline',{userId:userId,userType:userType});
     this.removeKeyFromStorage('endUserId')
     this.removeKeyFromStorage('endUserType')
@@ -453,7 +452,7 @@ export class UserAPIService {
       });
       response['deathFilesCount'] = count;
       let lockoutLegacyDateExpire = false;
-      if(data.customerId.lockoutLegacyDate && data.customerId.deceased.status=='Pending'){
+      if(data.customerId.lockoutLegacyDate && data.customerId.deceased && data.customerId.deceased.status=='Pending'){
          if(new Date(data.customerId.lockoutLegacyDate) < new Date()) {
                lockoutLegacyDateExpire = true;
                const params = { query: Object.assign({customerId: customerId})}

@@ -47,6 +47,9 @@ export class AddManagementViewComponent implements OnInit {
   paymentLink:String = '-'
   minDate = new Date();
   minDateTo = new Date();
+  subscriptionStartDate :String;
+  subscriptionEndDate:String;
+  subscriptionStatus:String;
   constructor(
     private layout: LayoutService,
     private api: APIService, private route: ActivatedRoute, private fb: FormBuilder, 
@@ -110,6 +113,22 @@ export class AddManagementViewComponent implements OnInit {
         if(this.row.profilePicture){
            this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + this.row.profilePicture;
         }
+       
+       
+       let subscriptionDetails   = this.data.customerId.subscriptionDetails ? this.data.customerId.subscriptionDetails : null;
+        if( subscriptionDetails != null && subscriptionDetails.length > 0 ) {
+          this.subscriptionStartDate = subscriptionDetails[(subscriptionDetails.length-1)]['startDate'];
+          this.subscriptionEndDate   = subscriptionDetails[(subscriptionDetails.length-1)]['endDate'];
+          this.subscriptionStatus    = subscriptionDetails[(subscriptionDetails.length-1)]['status'];
+          //if subscription ends do not sends addon details
+          let addOnDetails      = subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails'];
+          console.log('addOnDetails');
+        }
+
+
+
+
+
         var zipcodes = this.data.zipcodes;
         this.zipcodeList = zipcodes.split(',');
        this.enquiryFormReply.controls['fromDate'].setValue(this.data.fromDate);
