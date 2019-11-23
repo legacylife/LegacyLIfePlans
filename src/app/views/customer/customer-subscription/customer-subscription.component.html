@@ -15,7 +15,8 @@
      
       <div class="pt-1" *ngIf="premiumExpired && freePremiumExpired">
         <div class="expired--user--info" >
-          <p>Your subscription is expired. Please subscribe to Legacy Life plans to access your legacy again!</p>
+          <p *ngIf="subscriptionData && subscriptionData.length > 0">Your subscription is expired. Please subscribe to Legacy Life plans to access your legacy again!</p>
+          <p *ngIf="!subscriptionData">Please subscribe to Legacy Life plans to access your legacy.</p> 
         </div>
       </div>
 

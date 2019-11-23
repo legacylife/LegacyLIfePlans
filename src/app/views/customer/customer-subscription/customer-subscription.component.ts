@@ -3,6 +3,7 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { CardDetailsComponent } from 'app/shared/components/card-details-modal/card-details-modal.component';
 import { SubscriptionService } from '../../../shared/services/subscription.service';
 import { LocationStrategy } from '@angular/common';
+import { UserAPIService } from './../../../userapi.service';
 
 @Component({
   selector: 'app-customer-subscription',
@@ -15,6 +16,7 @@ import { LocationStrategy } from '@angular/common';
   /**
    * declaration: user plan data
    */
+  userId: string;
   productId:any = ""
   planId:any = ""
   planInterval:string = ""
@@ -30,8 +32,9 @@ import { LocationStrategy } from '@angular/common';
 
   addOnSpace:number = 0
   isAddOnPurchased:boolean = false
+  subscriptionData :any;
 
-  constructor(private dialog: MatDialog, private subscriptionservice:SubscriptionService, private locationStrategy: LocationStrategy) { 
+  constructor(private dialog: MatDialog, private subscriptionservice:SubscriptionService, private locationStrategy: LocationStrategy, private userapi: UserAPIService) { 
     this.premiumExpired = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? false : true
     this.freePremiumExpired = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? false : true
     this.preventBackButton()
@@ -47,8 +50,21 @@ import { LocationStrategy } from '@angular/common';
   }
 
   ngOnInit() {
+    this.userId = localStorage.getItem("endUserId"); 
     this.dialog.closeAll();
-    this.getProductDetails()
+    this.getProductDetails();
+
+    const req_vars = { userId: this.userId }    
+    if(this.userId){
+      const req_vars = { _id: this.userId }
+      this.userapi.apiRequest('post', 'auth/view', req_vars).subscribe(result => {  
+        this.subscriptionData = result.data.subscriptionDetails;
+        console.log("zhlxkjcXZKcjhk",this.subscriptionData)
+      }, (err) => {
+        console.error(err)
+      })
+    }
+    
   }
 
   @HostListener("window:beforeunload", ["$event"])
@@ -58,7 +74,8 @@ import { LocationStrategy } from '@angular/common';
       event.returnValue = false;
     }
   }
- 
+
+
   // get product plan
   getProductDetails = (query = {}) => {
     this.subscriptionservice.getProductDetails({}, (returnArr)=>{

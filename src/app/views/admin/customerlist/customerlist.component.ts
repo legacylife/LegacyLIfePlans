@@ -21,7 +21,7 @@ export class customerlistComponent implements OnInit {
   public rows: any[];
   temp = [];
   aceessSection: any;
-  my_messages:any;
+  my_messages: any;
 
   /**
    * Subscription variable declaration
@@ -34,20 +34,20 @@ export class customerlistComponent implements OnInit {
   isSubscribePlan: boolean = false
   isSubscribedBefore: boolean = false
   autoRenewalFlag: boolean = false
-  autoRenewalVal:boolean = false
+  autoRenewalVal: boolean = false
   isPremiumExpired: boolean = false
-  isSubscriptionCanceled:boolean = false
+  isSubscriptionCanceled: boolean = false
   userCreateOn: any
   userSubscriptionDate: any
 
   constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService,
-    private subscriptionservice:SubscriptionService) { }
+    private subscriptionservice: SubscriptionService) { }
   ngOnInit() {
     this.aceessSection = this.api.getUserAccess('usermanagement')
     this.my_messages = {
       'emptyMessage': 'No records Found'
     };
-  
+
     this.getLists();
     //this.loader.open();
   }
@@ -56,20 +56,21 @@ export class customerlistComponent implements OnInit {
   getLists = (query = {}, search = false) => {
     const req_vars = {
       query: Object.assign({ userType: "customer" }, query),
-      order: {"createdOn": -1},
+      order: { "createdOn": -1 },
     }
     this.api.apiRequest('post', 'userlist/list', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
-        this.rows = this.temp = result.data.userList.map(row=>{
-          if(row.userType != 'sysAdmin') {
+        this.rows = this.temp = result.data.userList.map(row => {
+          if (row.userType != 'sysAdmin') {
             let subscriptionData = {}
-            this.subscriptionservice.checkSubscriptionAdminPanel( row, ( returnArr )=> {
-              row['subscriptionData'] = {status : returnArr.isAccountFree && !returnArr.isSubscribePlan ? 'Trial' : ( returnArr.isSubscribePlan && !returnArr.isPremiumExpired ? 'Paid' : 'Expired'),
-                                  endDate: returnArr.subscriptionExpireDate
-                                  }
+            this.subscriptionservice.checkSubscriptionAdminPanel(row, (returnArr) => {
+              row['subscriptionData'] = {
+                status: returnArr.isAccountFree && !returnArr.isSubscribePlan ? 'Trial' : (returnArr.isSubscribePlan && !returnArr.isPremiumExpired ? 'Paid' : 'Expired'),
+                endDate: returnArr.subscriptionExpireDate
+              }
             })
           }
           return row;
@@ -80,18 +81,18 @@ export class customerlistComponent implements OnInit {
     })
   }
   statusChange(row) {
-    var statMsg = "Are you sure you want to re-activate this user, "+row.username+" Access to the website account for the customer, trustees and advisors will be re-opened as per the subscription status of this customer."
-    if(row.status == 'Active'){
-	 statMsg = "Are you sure you want to deactivate this user, "+row.username+" Access to the website account will be locked for the customer, trustees and advisors. This does not affect the data uploaded by the customer."
-	}
-     this.confirmService.confirm({message: statMsg})
+    var statMsg = "Are you sure you want to re-activate this user, " + row.username + " Access to the website account for the customer, trustees and advisors will be re-opened as per the subscription status of this customer."
+    if (row.status == 'Active') {
+      statMsg = "Are you sure you want to deactivate this user, " + row.username + " Access to the website account will be locked for the customer, trustees and advisors. This does not affect the data uploaded by the customer."
+    }
+    this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
         if (res) {
           this.loader.open();
           var query = {};
           const req_vars = {
             query: Object.assign({ _id: row._id }, query),
-            fromId:localStorage.getItem('userId')
+            fromId: localStorage.getItem('userId')
           }
           this.api.apiRequest('post', 'userlist/updatestatus', req_vars).subscribe(result => {
             if (result.status == "error") {

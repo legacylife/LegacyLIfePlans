@@ -11,7 +11,8 @@
     <mat-card-content>
 
       <div class="expired--user--info" *ngIf="premiumExpired && freePremiumExpired">
-        <p>Your license has expired. Please subscribe to Legacy Life Advisor License to access your account again!</p>
+        <p *ngIf="subscriptionData && subscriptionData.length > 0">Your license has expired. Please subscribe to Legacy Life Advisor License to access your account again!</p>
+        <p *ngIf="!subscriptionData">Please subscribe to Legacy Life Advisor License to access your account.</p> 
       </div>
 
       <div class="plans--wrapper ">

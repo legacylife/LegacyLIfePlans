@@ -61,7 +61,7 @@ export class UserPreAuthGuard implements CanActivate {
           this.userapi.userLogout();
           return false;
         }
-        if (userData && userData.userType == 'advisor' && userData.status == 'Pending') {
+        /*if (userData && userData.userType == 'advisor' && userData.status == 'Pending') {
           if (userData.profileSetup == 'yes') {
             this.router.navigateByUrl('/advisor/thank-you');
           }
@@ -69,7 +69,7 @@ export class UserPreAuthGuard implements CanActivate {
             this.router.navigateByUrl('/advisor/business-info');
           }
           return false;
-        }
+        }*/
         if (userData && userData.userType == 'advisor' && userData.status == 'Active') {
           this.router.navigateByUrl('/advisor/dashboard');
           return false;

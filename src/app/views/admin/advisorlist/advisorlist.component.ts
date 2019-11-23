@@ -22,8 +22,8 @@ export class advisorlistComponent implements OnInit {
   temp = [];
   advisorlistdata = [];
   aceessSection: any
-  my_messages:any;
-  constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService, private subscriptionservice:SubscriptionService) { }
+  my_messages: any;
+  constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService, private subscriptionservice: SubscriptionService) { }
   ngOnInit() {
     this.aceessSection = this.api.getUserAccess('advisormanagement');
     this.my_messages = {
@@ -39,19 +39,20 @@ export class advisorlistComponent implements OnInit {
       fields: {},
       offset: '',
       limit: '',
-      order: {"createdOn": -1},
+      order: { "createdOn": -1 },
     }
     this.api.apiRequest('post', 'userlist/list', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        this.advisorlistdata = this.rows = this.temp = result.data.userList.map(row=>{
-          if(row.userType != 'sysAdmin') {
+        this.advisorlistdata = this.rows = this.temp = result.data.userList.map(row => {
+          if (row.userType != 'sysAdmin') {
             let subscriptionData = {}
-            this.subscriptionservice.checkSubscriptionAdminPanel( row, ( returnArr )=> {
-              row['subscriptionData'] = {status : returnArr.isAccountFree && !returnArr.isSubscribePlan ? 'Trial' : ( returnArr.isSubscribePlan && !returnArr.isPremiumExpired ? 'Paid' : 'Expired'),
-                                  endDate: returnArr.subscriptionExpireDate
-                                  }
+            this.subscriptionservice.checkSubscriptionAdminPanel(row, (returnArr) => {
+              row['subscriptionData'] = {
+                status: returnArr.isAccountFree && !returnArr.isSubscribePlan ? 'Trial' : (returnArr.isSubscribePlan && !returnArr.isPremiumExpired ? 'Paid' : 'Expired'),
+                endDate: returnArr.subscriptionExpireDate
+              }
             })
           }
           return row;
@@ -62,19 +63,19 @@ export class advisorlistComponent implements OnInit {
     })
   }
   statusChange(row) {
-    var statMsg = "Are you sure you want to re-activate this user, "+row.username+" Access to the website account for the advisor, trustees and advisors will be re-opened as per the subscription status of this customer."
-    if(row.status == 'Active'){
-	 statMsg = "Are you sure you want to deactivate this user, "+row.username+" Access to the website account will be locked for the advisor, trustees and advisors. This does not affect the data uploaded by the customer."
-	}
-	
-     this.confirmService.confirm({message: statMsg})
+    var statMsg = "Are you sure you want to re-activate this user, " + row.username + " Access to the website account for the advisor, trustees and advisors will be re-opened as per the subscription status of this customer."
+    if (row.status == 'Active') {
+      statMsg = "Are you sure you want to deactivate this user, " + row.username + " Access to the website account will be locked for the advisor, trustees and advisors. This does not affect the data uploaded by the customer."
+    }
+
+    this.confirmService.confirm({ message: statMsg })
       .subscribe(res => {
         if (res) {
           this.loader.open();
           var query = {};
           const req_vars = {
             query: Object.assign({ _id: row._id }, query),
-            fromId:localStorage.getItem('userId')
+            fromId: localStorage.getItem('userId')
           }
           this.api.apiRequest('post', 'userlist/updatestatus', req_vars).subscribe(result => {
             if (result.status == "error") {

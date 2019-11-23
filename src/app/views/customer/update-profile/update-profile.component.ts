@@ -97,6 +97,7 @@ export class UpdateProfileComponent implements OnInit {
     console.log(this.llpCustsignupProfileForm.value)
     let profileInData = this.llpCustsignupProfileForm.value
     profileInData.profileSetup = 'yes';
+    profileInData.status = 'Active';
 
     var query = {};
     var proquery = {};
