@@ -15,9 +15,26 @@ passport.use(new LocalStrategy({
         })
       }
       if (user.status != "Active") {
-        return done(null, false, {
-          message: 'User is not Active'
-        })
+        // return done(null, false, {
+        //   message: 'User is not Active'
+        // })
+
+        if(user.status == 'Pending' && user.profileSetup != 'yes'){
+          return done(null, false, {
+            message: 'User not found'
+          })
+        }
+        else if(user.userType == 'advisor' && user.status == 'Pending' && user.profileSetup == 'yes'){
+          return done(null, false, {
+            message: 'Under review'
+          })
+        }
+        else {
+          return done(null, false, {
+            message: 'User is not Active'
+          })
+        }
+
       }else if (user.deceased != null && user.deceased.status=="Active") {
         return done(null, false, {
           message: 'User is deceased'

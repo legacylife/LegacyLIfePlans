@@ -43,68 +43,73 @@ function signin(req, res) {
       res.status(404).send(resFormat.rError(result));
     }
     else if (user && user.message == "WrongMethod") {
-      let message = resMessage.data( 616, [] )
+      let message = resMessage.data(616, [])
       let result = { "message": message, "invalidEmail": true, "invalidPassword": false }
       res.status(200).send(resFormat.rError(result))
     }
     else if (info && info.message == "User is not Active") {
-      let message = resMessage.data( 609, [{key: '{support_email}',val: 'support@legacylifeplans.com'}] )
+      let message = resMessage.data(609, [{ key: '{support_email}', val: 'support@legacylifeplans.com' }])
       let result = { "message": message, "invalidEmail": true, "invalidPassword": false }
       res.status(200).send(resFormat.rError(result))
     }
     else if (info && info.message == "User is deceased") {
-      let message = resMessage.data( 6099, [{key: '{support_email}',val: 'support@legacylifeplans.com'}] )
+      let message = resMessage.data(6099, [{ key: '{support_email}', val: 'support@legacylifeplans.com' }])
       let result = { "message": message, "invalidEmail": true, "invalidPassword": false }
       res.status(200).send(resFormat.rError(result))
     }
     else if (info && info.message == "Password is wrong") {
-      let message = resMessage.data( 614, [{key: '{field}',val: 'password'}] )
+      let message = resMessage.data(614, [{ key: '{field}', val: 'password' }])
       let result = { "message": message, "invalidEmail": false, "invalidPassword": true }
       res.status(200).send(resFormat.rError(result))
     }
     else if (info && info.message == "User not found") {
-      let message = resMessage.data( 615, [] )
+      let message = resMessage.data(615, [])
       let result = { "message": message, "invalidEmail": true, "invalidPassword": false }
       res.status(200).send(resFormat.rError(result))
     }
-    else if (user) {     
-        var token = user.generateJwt()
-        var params = { lastLoggedInOn: new Date(), loginCount: user.loginCount == undefined ? 1 : user.loginCount + 1 }
-        User.updateOne({ _id: user._id }, { $set: params }, function (err, updatedUser) {
-          if (err) {
-            res.send(resFormat.rError(err))
-          }
-          else {
-            let subscriptionDetails = user.subscriptionDetails ? user.subscriptionDetails : null
-            let subscriptionStartDate = "",
+    else if (info && info.message == "Under review") {
+      let message = resMessage.data(608, [])
+      let result = { "message": message, "invalidEmail": true, "invalidPassword": false }
+      res.status(200).send(resFormat.rError(result))
+    }
+    else if (user) {
+      var token = user.generateJwt()
+      var params = { lastLoggedInOn: new Date(), loginCount: user.loginCount == undefined ? 1 : user.loginCount + 1 }
+      User.updateOne({ _id: user._id }, { $set: params }, function (err, updatedUser) {
+        if (err) {
+          res.send(resFormat.rError(err))
+        }
+        else {
+          let subscriptionDetails = user.subscriptionDetails ? user.subscriptionDetails : null
+          let subscriptionStartDate = "",
             subscriptionEndDate = "",
             subscriptionStatus = "",
             autoRenewal = "",
-            
-            addOnGiven = 'no',
-            isReferAndEarn = user.IamIntrested && user.IamIntrested == 'Yes' ? 'Yes' :  'No'
-            
-            if( subscriptionDetails != null && subscriptionDetails.length >0 ) {
-              isReferAndEarn = 'No'
-              subscriptionStartDate = subscriptionDetails[(subscriptionDetails.length-1)]['startDate']
-              subscriptionEndDate = subscriptionDetails[(subscriptionDetails.length-1)]['endDate']
-              subscriptionStatus = subscriptionDetails[(subscriptionDetails.length-1)]['status']
-              autoRenewal = subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] ? subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] : false
-              //if subscription ends do not sends addon details
-              if( new Date(subscriptionEndDate) > new Date() ) {
-                addOnGiven = subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails'] && subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails']['status'] == 'paid' ? 'yes' : 'no'
-              }
-            }
-            
-            //Update activity logs
-            allActivityLog.updateActivityLogs(user._id, user._id,'Login', user.userType+' has been logged in successfully.')
 
-            let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, profilePicture : user.profilePicture, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false, "createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate" : subscriptionEndDate, "subscriptionStatus" : subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven, "isReferAndEarn": isReferAndEarn,deceased:user.deceased,lockoutLegacyDate:user.lockoutLegacyDate }
-            res.status(200).send(resFormat.rSuccess(result))
+            addOnGiven = 'no',
+            isReferAndEarn = user.IamIntrested && user.IamIntrested == 'Yes' ? 'Yes' : 'No'
+
+          if (subscriptionDetails != null && subscriptionDetails.length > 0) {
+            isReferAndEarn = 'No'
+            subscriptionStartDate = subscriptionDetails[(subscriptionDetails.length - 1)]['startDate']
+            subscriptionEndDate = subscriptionDetails[(subscriptionDetails.length - 1)]['endDate']
+            subscriptionStatus = subscriptionDetails[(subscriptionDetails.length - 1)]['status']
+            autoRenewal = subscriptionDetails[(subscriptionDetails.length - 1)]['autoRenewal'] ? subscriptionDetails[(subscriptionDetails.length - 1)]['autoRenewal'] : false
+            //if subscription ends do not sends addon details
+            if (new Date(subscriptionEndDate) > new Date()) {
+              addOnGiven = subscriptionDetails[(subscriptionDetails.length - 1)]['addOnDetails'] && subscriptionDetails[(subscriptionDetails.length - 1)]['addOnDetails']['status'] == 'paid' ? 'yes' : 'no'
+            }
           }
-        })
+
+          //Update activity logs
+          allActivityLog.updateActivityLogs(user._id, user._id, 'Login', user.userType + ' has been logged in successfully.')
+
+          let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, profilePicture: user.profilePicture, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false, "createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate": subscriptionEndDate, "subscriptionStatus": subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven, "isReferAndEarn": isReferAndEarn, deceased: user.deceased, lockoutLegacyDate: user.lockoutLegacyDate }
+          res.status(200).send(resFormat.rSuccess(result))
+        }
+      })
     } else {
-      let message = resMessage.data( 618, [] )
+      let message = resMessage.data(618, [])
       let result = { "message": message, "invalidEmail": false, "invalidPassword": true }
       res.status(200).send(resFormat.rError(result))
     }
@@ -119,7 +124,7 @@ function create(req, res) {
   user.userType = getuserType = req.body.userType ? req.body.userType : "sysadmin"
   user.lastLoggedInOn = new Date();
   if (req.body.state == '' || req.body.fullName == '' || req.body.lastName == '') {
-    let message = resMessage.data( 619, [] )
+    let message = resMessage.data(619, [])
     res.status(500).send(resFormat.rError(message))
   }
   User.find({ username: req.body.username }, { userType: getuserType }, function (err, result) {
@@ -141,33 +146,33 @@ function create(req, res) {
         } else {
           const { _id, userType, username, firstName, lastName, zipcode } = user
           //Update activity logs
-          allActivityLog.updateActivityLogs(_id, _id, 'Login', userType+' has been logged in successfully.')
-        
+          allActivityLog.updateActivityLogs(_id, _id, 'Login', userType + ' has been logged in successfully.')
+
           //Update latitude longitude
-          if(newUszipcode && _id){
-            calculateZipcode(zipcode,_id);
+          if (newUszipcode && _id) {
+            calculateZipcode(zipcode, _id);
           }
-          let message = resMessage.data( 621, [] )
+          let message = resMessage.data(621, [])
           let result = { userId: _id, userType, username, firstName, lastName, "message": message }
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
     }
-    else {  
+    else {
       user.updateOne({ _id: result._id }, function (err, updatedUser) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
           const { _id, userType, username, firstName, lastName } = user
           //Update activity logs
-          allActivityLog.updateActivityLogs(_id, _id, 'Login', user.userType+' has been logged in successfully.')
+          allActivityLog.updateActivityLogs(_id, _id, 'Login', user.userType + ' has been logged in successfully.')
 
           //Update latitude longitude
-          if(result.zipcode && result._id){
-            calculateZipcode(result.zipcode,result._id);
+          if (result.zipcode && result._id) {
+            calculateZipcode(result.zipcode, result._id);
           }
 
-          let message = resMessage.data( 622, [] )
+          let message = resMessage.data(622, [])
           let result = { userId: _id, userType, username, firstName, lastName, "message": message }
           res.send(resFormat.rSuccess(result))
         }
@@ -176,11 +181,11 @@ function create(req, res) {
   });
 }
 
-async function calculateZipcode(zipcode,id){
+async function calculateZipcode(zipcode, id) {
   var data = zipcodes.lookup(zipcode);
-  if( data ) {
-    if(data.latitude && data.longitude){
-      let userData = await User.updateOne({_id:id},{$set:{location:{latitude:data.latitude,longitude:data.longitude}}});
+  if (data) {
+    if (data.latitude && data.longitude) {
+      let userData = await User.updateOne({ _id: id }, { $set: { location: { latitude: data.latitude, longitude: data.longitude } } });
     }
   }
 }
@@ -188,8 +193,8 @@ async function calculateZipcode(zipcode,id){
 router.post('/updateProfilePic', function (req, res) {
   AWS.config.update({ accessKeyId: constants.s3Details.awsKey, secretAccessKey: constants.s3Details.awsSecret });
   const ss3 = new AWS.S3();
-  let {proquery} = req.body;
-  let {query} = req.body;
+  let { proquery } = req.body;
+  let { query } = req.body;
   const options = { "partSize": 10 * 1024 * 1024, "queueSize": 1 };
   var ext = proquery.profilePicture.split(';')[0].split('/')[1];
   var filename = query._id + '-' + new Date().getTime() + `.${ext}`;
@@ -197,31 +202,31 @@ router.post('/updateProfilePic', function (req, res) {
   var fileBuffer = new Buffer(proquery.profilePicture.replace(/^data:image\/\w+;base64,/, ""), 'base64');
   var abc = fileBuffer.toString('base64');
   const val = Buffer.from(abc, 'base64');
-/******************************upload cropped image*********************************************************************** */
-const params = {
-  Bucket: constants.s3Details.bucketName,
-  "Key": `${profilePicturesPath}${filename}`,
-  "ContentEncoding": 'base64',
-  "Body": fileBuffer,
-  "ACL": "public-read-write",
-  "ContentType": `image/${ext}`
-};
-ss3.upload(params, options, (err, data) => {
-  if(err){
-    res.send(resFormat.rError("Something went wrong "))
-  }else{
+  /******************************upload cropped image*********************************************************************** */
+  const params = {
+    Bucket: constants.s3Details.bucketName,
+    "Key": `${profilePicturesPath}${filename}`,
+    "ContentEncoding": 'base64',
+    "Body": fileBuffer,
+    "ACL": "public-read-write",
+    "ContentType": `image/${ext}`
+  };
+  ss3.upload(params, options, (err, data) => {
+    if (err) {
+      res.send(resFormat.rError("Something went wrong "))
+    } else {
       User.updateOne({ _id: query._id }, { $set: { profilePicture: filename } }, function (err, updatedUser) {
-      if (err) {
-        res.send(resFormat.rError(err))
-      } else {
-        let message = resMessage.data( 607, [{key: '{field}',val: 'Profile picture'}, {key: '{status}',val: 'updated'}] )
-        //Update activity logs
-        allActivityLog.updateActivityLogs(query._id, query._id, 'Profile', message)
-        res.send(resFormat.rSuccess({ message: message, profilePicture: profilePicturesPath+filename}))
-      }
-    })
-  }
- })
+        if (err) {
+          res.send(resFormat.rError(err))
+        } else {
+          let message = resMessage.data(607, [{ key: '{field}', val: 'Profile picture' }, { key: '{status}', val: 'updated' }])
+          //Update activity logs
+          allActivityLog.updateActivityLogs(query._id, query._id, 'Profile', message)
+          res.send(resFormat.rSuccess({ message: message, profilePicture: profilePicturesPath + filename }))
+        }
+      })
+    }
+  })
 })
 
 //function to update user details // NOT in use
@@ -235,10 +240,10 @@ function update(req, res) {
           if (err) {
             res.send(resFormat.rError(err))
           } else {
-            let message = resMessage.data( 607, [{key: '{field}',val: 'Account'}, {key: '{status}',val: 'updated'}] )
+            let message = resMessage.data(607, [{ key: '{field}', val: 'Account' }, { key: '{status}', val: 'updated' }])
             //Update activity logs
             allActivityLog.updateActivityLogs(req.body._id, req.body._id, 'Account', message)
-            
+
             res.send(resFormat.rSuccess(message))
           }
         })
@@ -250,7 +255,7 @@ function update(req, res) {
       if (err) {
         res.send(resFormat.rError(err))
       } else {
-        let message = resMessage.data( 607, [{key: '{field}',val: 'Account details'}, {key: '{status}',val: 'updated'}] )
+        let message = resMessage.data(607, [{ key: '{field}', val: 'Account details' }, { key: '{status}', val: 'updated' }])
         //Update activity logs
         allActivityLog.updateActivityLogs(req.body._id, req.body._id, 'Account', message)
         res.send(resFormat.rSuccess(message))
@@ -261,42 +266,42 @@ function update(req, res) {
 
 //function to update customer details 
 function custProfileUpdate(req, res) {
-  let {query} = req.body;
-  if (query._id) {    
-    User.findOne(query, function(err, updatedUser) {
+  let { query } = req.body;
+  if (query._id) {
+    User.findOne(query, function (err, updatedUser) {
       if (err) {
-        let message = resMessage.data( 603, [] )
+        let message = resMessage.data(603, [])
         let result = { "message": message }
         res.send(resFormat.rError(result));
       }
       else {
-        let {proquery} = req.body;
-        let {from} = req.body;
-        User.updateOne({_id: updatedUser._id}, { $set: proquery }, function (err, updatedDetails) {
+        let { proquery } = req.body;
+        let { from } = req.body;
+        User.updateOne({ _id: updatedUser._id }, { $set: proquery }, function (err, updatedDetails) {
           if (err) {
             res.send(resFormat.rError(err))
           } else {
-            let message = resMessage.data( 607, [{key: '{field}',val: 'User '+from.fromname}, {key: '{status}',val: 'updated'}] )
-            
+            let message = resMessage.data(607, [{ key: '{field}', val: 'User ' + from.fromname }, { key: '{status}', val: 'updated' }])
+
             //Update activity logs
             allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Profile', message)
 
             //Update latitude longitude
-            if(updatedUser.zipcode && updatedUser._id){
-              calculateZipcode(updatedUser.zipcode,updatedUser._id);
+            if (updatedUser.zipcode && updatedUser._id) {
+              calculateZipcode(updatedUser.zipcode, updatedUser._id);
             }
 
             let result = { "message": message }
-            res.status(200).send(resFormat.rSuccess(result))        
+            res.status(200).send(resFormat.rSuccess(result))
           }
         })
       }
     })
   }
-  else{
+  else {
     let result = { "message": "You have logout! Please signin again." }
     res.send(resFormat.rError(result));
-  } 
+  }
 }
 
 //function to get list of user as per given criteria
@@ -326,7 +331,7 @@ function list(req, res) {
 
 //function get details of user from url param
 function details(req, res) {
-  let fields = { id: 1, username: 1, socialMediaToken: 1, salt: 1, fullName: 1, profileSetup:1, status :1, userType :1, sectionAccess :1,profilePicture :1 }
+  let fields = { id: 1, username: 1, socialMediaToken: 1, salt: 1, fullName: 1, profileSetup: 1, status: 1, userType: 1, sectionAccess: 1, profilePicture: 1 }
   if (req.body.fields) {
     fields = req.body.fields
   }
@@ -348,7 +353,7 @@ const changePassword = function (req, res) {
     else {
       const user = new User()
       if (req.body.password && !user.validPassword(req.body.password, userDetails)) {
-        let message = resMessage.data( 627, [{key: '{field}',val: 'current password'}] )
+        let message = resMessage.data(627, [{ key: '{field}', val: 'current password' }])
         res.send(resFormat.rError(message))
       }
       else {
@@ -357,8 +362,8 @@ const changePassword = function (req, res) {
           if (err) {
             res.send({ "message": resFormat.rError(err) })
           } else {
-            let message = resMessage.data( 607, [{key: '{field}',val: 'Password'}, {key: '{status}',val: 'updated'}] )
-            
+            let message = resMessage.data(607, [{ key: '{field}', val: 'Password' }, { key: '{status}', val: 'updated' }])
+
             //Update activity logs
             allActivityLog.updateActivityLogs(req.body.userId, req.body.userId, 'Password', message)
             let result = { "message": message }
@@ -384,13 +389,13 @@ const changeEmail = function (req, res) {
         User.updateOne({ _id: req.body._id }, { $set: set }, { runValidators: true, context: 'query' }, (err, updateUser) => {
           if (err) {
             if (err.name == "ValidationError") {
-              let message = resMessage.data( 624, [] )
+              let message = resMessage.data(624, [])
               res.send(resFormat.rError(message))
             } else {
               res.send(resFormat.rError(err))
             }
           } else {
-            let message = resMessage.data( 607, [{key: '{field}',val: 'Email ID'}, {key: '{status}',val: 'updated'}] )
+            let message = resMessage.data(607, [{ key: '{field}', val: 'Email ID' }, { key: '{status}', val: 'updated' }])
             //Update activity logs
             allActivityLog.updateActivityLogs(req.body._id, req.body._id, 'Email', message)
             res.send(resFormat.rSuccess(message))
@@ -415,10 +420,10 @@ const resetPassword = function (req, res) {
             res.send(resFormat.rError(err))
           } else {
             //let msg = {username : userDetails.username, msg : 'Your password is updated'}
-            let message = resMessage.data( 607, [{key: '{field}',val: 'Password'}, {key: '{status}',val: 'updated'}] )
+            let message = resMessage.data(607, [{ key: '{field}', val: 'Password' }, { key: '{status}', val: 'updated' }])
             //Update activity logs
             allActivityLog.updateActivityLogs(userDetails._id, userDetails._id, 'Reset Password', message)
-            let response = {username : userDetails.username, msg : message}
+            let response = { username: userDetails.username, msg: message }
             res.send(resFormat.rSuccess(response))
           }
         })
@@ -439,19 +444,19 @@ function forgotPassword(req, res) {
       res.status(401).send(resFormat.rError(err))
     }
     else if (!user) {
-      res.send(resFormat.rError({message: "Looks like your account does not exist. Sign up to create an account."}))
+      res.send(resFormat.rError({ message: "Looks like your account does not exist. Sign up to create an account." }))
     }
     else if (user && user.status == 'Active' && !user.salt) {
-      let message = resMessage.data( 616, [] )
-      res.send(resFormat.rError({message: message}))
+      let message = resMessage.data(616, [])
+      res.send(resFormat.rError({ message: message }))
     }
     else if (user && user.status == 'Inactive') {
-      let message = resMessage.data( 609, [{key: '{support_email}',val: 'support@legacylifeplans.com'}] )
-      res.send(resFormat.rError({message: message}))
+      let message = resMessage.data(609, [{ key: '{support_email}', val: 'support@legacylifeplans.com' }])
+      res.send(resFormat.rError({ message: message }))
     }
     else if (user && user.status == 'Pending') {
-      let message = resMessage.data( 699, [{key: '{message}',val: 'You can not use this service as your account is under review.'}] )
-      res.send(resFormat.rError({message: message}))
+      let message = resMessage.data(699, [{ key: '{message}', val: 'You can not use this service as your account is under review.' }])
+      res.send(resFormat.rError({ message: message }))
     }
     else {
       var tokens = generateToken(85);
@@ -483,7 +488,7 @@ function forgotPassword(req, res) {
               html: body
             }
             sendEmail(mailOptions)
-            let message = resMessage.data( 616, [] )
+            let message = resMessage.data(616, [])
             res.send(resFormat.rSuccess(message))
           } else {
             res.status(401).send(resFormat.rError('Some error Occured'))
@@ -504,7 +509,7 @@ function s3Upload(params, options, userId) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
-          let message = resMessage.data( 607, [{key: '{field}',val: 'Account details'}, {key: '{status}',val: 'updated'}] )
+          let message = resMessage.data(607, [{ key: '{field}', val: 'Account details' }, { key: '{status}', val: 'updated' }])
           res.send(resFormat.rSuccess(message))
         }
       })// user update ends
@@ -533,12 +538,12 @@ function common(req, res) {
 router.post('/reset-password-token', function (req, res) {
   User.findOne({ token: req.body.userId }, function (err, userDetails) {
     if (userDetails) {
-      if(userDetails.userType)// == 'advisor'
-        res.send(resFormat.rSuccess({ code: "success", userId: userDetails, username : userDetails.username }))
+      if (userDetails.userType)// == 'advisor'
+        res.send(resFormat.rSuccess({ code: "success", userId: userDetails, username: userDetails.username }))
       else
-        res.send(resFormat.rSuccess('Success')) 
+        res.send(resFormat.rSuccess('Success'))
     } else {
-      let message = resMessage.data( 628, [] )
+      let message = resMessage.data(628, [])
       res.send(resFormat.rError(message))
     }
   })
@@ -552,24 +557,24 @@ function escapeRegExp(string) {
 async function checkEmail(req, res) {
   try {
     const { username } = req.body;
-    User.findOne({ username: {'$regex' : new RegExp(escapeRegExp(username)), '$options' : 'i'} }, { _id :1, username: 1, status:1, userType : 1,profileSetup:1 }, async function (err, user) {
+    User.findOne({ username: { '$regex': new RegExp(escapeRegExp(username)), '$options': 'i' } }, { _id: 1, username: 1, status: 1, userType: 1, profileSetup: 1 }, async function (err, user) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
         if (user && user.status == 'Inactive') {
-          let message = resMessage.data( 609, [{key: '{support_email}',val: 'support@legacylifeplans.com'}] )
+          let message = resMessage.data(609, [{ key: '{support_email}', val: 'support@legacylifeplans.com' }])
           res.send(resFormat.rSuccess({ code: "Exist", message: message }))
         }
         else if (user && user.status == 'Active') {
           res.send(resFormat.rSuccess({ code: "Exist", message: "Looks like you already have an account registered with this email. Log in to access." }))
         }
-        else if (user && user.status == 'Pending') {
-          let message = resMessage.data( 608, [] )
+        else if (user && user.status == 'Pending' && user.userType == "advisor" && user.profileSetup == 'yes') {
+          let message = resMessage.data(608, [])
           res.send(resFormat.rSuccess({ code: "Exist", message: message }))
         }
         else if (user && user.status == 'Rejected') {
-          let message = resMessage.data( 610, [{key: '{support_email}',val: 'support@legacylifeplans.com'}] )
-          res.send(resFormat.rSuccess({ code: "ExistReject", message: message}))
+          let message = resMessage.data(610, [{ key: '{support_email}', val: 'support@legacylifeplans.com' }])
+          res.send(resFormat.rSuccess({ code: "ExistReject", message: message }))
         }
         else {
           /**
@@ -577,46 +582,47 @@ async function checkEmail(req, res) {
            */
           let { inviteCode } = req.body
           let userInvitedBy = ''
-          if(inviteCode) {            
-            let invitesCodeExists = await Invite.find({ inviteCode: inviteCode, email:username, inviteType: req.body.userType }, function (err, data, index) {});
+          if (inviteCode) {
+            let invitesCodeExists = await Invite.find({ inviteCode: inviteCode, email: username, inviteType: req.body.userType }, function (err, data, index) { });
             userInvitedBy = invitesCodeExists.invitedBy
-            if( invitesCodeExists.length < 1 ) {
-              let message = resMessage.data( 627, [{key: '{field}',val: 'Email / Invite Link'}] )
+            if (invitesCodeExists.length < 1) {
+              let message = resMessage.data(627, [{ key: '{field}', val: 'Email / Invite Link' }])
               res.send(resFormat.rSuccess({ code: "InviteReject", message: message }))
             }
           }
 
-          OtpCheck.findOne({ "username": { $regex: new RegExp("^" + username.toLowerCase(), "i") } }, { username: 1 }, function (err, found) {
+          OtpCheck.findOne({ "username": { '$regex': new RegExp(escapeRegExp(username)), '$options': 'i' } }, { username: 1 }, function (err, found) {
             if (err) {
               res.status(401).send(resFormat.rError(err))
             } else {
               var otp = generateOtp(6);
               if (found) {
-                let ustatus = 'Active'
-                if(req.body.userType == 'advisor'){
+                let ustatus = 'Pending';
+                /*if(req.body.userType == 'advisor'){
                   ustatus = 'pending'
-                }
-                
+                }*/
+
                 OtpCheck.updateOne({ _id: found._id }, { $set: { otpCode: otp, status: ustatus } }, function (err, updatedUser) {
                   if (err) {
                     res.send(resFormat.rError(err))
                   } else {
                     stat = sendOtpMail(req.body.username, otp);
-                    let message = resMessage.data( 629, [] )
-                    res.send(resFormat.rSuccess({ code: "success", message: message, invitedBy: userInvitedBy }))                    
+                    let message = resMessage.data(616, [])
+                    res.send(resFormat.rSuccess({ code: "success", message: message, invitedBy: userInvitedBy }))
                   }
                 })
-              } else if(req.body.username){
+              } else if (req.body.username) {
                 let OtpC = new OtpCheck();
                 OtpC.username = req.body.username;
-                if(req.body.password!=''){
-                OtpC.password = req.body.password;
+                if (req.body.password != '') {
+                  OtpC.password = req.body.password;
                 }
                 OtpC.otpCode = otp;
-                if(req.body.userType != 'advisor')
-                  OtpC.status = 'Active';
-                else 
-                  OtpC.status = 'Pending';
+                // if(req.body.userType != 'advisor')
+                //   OtpC.status = 'Active';
+                // else 
+                //   OtpC.status = 'Pending';
+                OtpC.status = 'Pending';
 
                 OtpC.userType = req.body.userType;
                 OtpC.save(function (err, newUser) {
@@ -624,7 +630,7 @@ async function checkEmail(req, res) {
                     res.status(500).send(resFormat.rError(err));
                   } else {
                     stat = sendOtpMail(req.body.username, otp);
-                    let message = resMessage.data( 616, [] )
+                    let message = resMessage.data(616, [])
                     res.send(resFormat.rSuccess({ code: "success", message: message, invitedBy: userInvitedBy }))
                   }
                 }) //update password reset expiry date for user ends          
@@ -632,6 +638,12 @@ async function checkEmail(req, res) {
             }
           });// res.send(resFormat.rSuccess({ code: "NewUser", message: "User not found in database." }))         
         }
+
+
+
+
+
+
       } // end of else of user
     }) //end of user find
   } catch (e) {
@@ -642,34 +654,42 @@ async function checkEmail(req, res) {
 async function checkUserOtp(req, res) {
   try {
     //let { query } = req.body;
-    let query = {username: req.body.query.username, otpCode:req.body.query.otpCode}
+    let query = { username: req.body.query.username, otpCode: req.body.query.otpCode }
     OtpCheck.findOne(query, async function (err, otpdata) {
       if (err) {
         res.send(resFormat.rSuccess({ code: "error", message: "Invalid OTP" }))
       } else {
         if (otpdata) {
+
+          let existUserData = await User.findOne({ "username": { '$regex': new RegExp(escapeRegExp(otpdata.username)), '$options': 'i' } })
+          console.log("exist data>>>>",existUserData)
+          if (existUserData) {            
+            let deleteOldUser = await User.deleteOne({ "_id": ObjectId(existUserData._id) });
+          }
+          console.log("exist data 222222222222222222 >>>>")
+
           let freeTrialPeriodDetails = await FreeTrailPeriodSetting.findOne()
           var newDt = new Date()
           let freeDays = 0;
           var freeStatus = otpdata.userType == 'advisor' ? freeTrialPeriodDetails.advisorStatus : freeTrialPeriodDetails.customerStatus
-          if(freeStatus == 'On'){
+          if (freeStatus == 'On') {
             freeDays = otpdata.userType == 'advisor' ? Number(freeTrialPeriodDetails.advisorFreeDays) : Number(freeTrialPeriodDetails.customerFreeAccessDays);
-          }          
+          }
           newDt.setDate(newDt.getDate() + freeDays)
 
           let freeTrailPeriodObj = {
-            bfrSubFreePremiumDays : otpdata.userType == 'advisor' ? Number(freeTrialPeriodDetails.advisorFreeDays) : Number(freeTrialPeriodDetails.customerFreeAccessDays),
-            aftrSubFreeDays : otpdata.userType == 'advisor' ? 0 : Number(freeTrialPeriodDetails.customerAftrFreeAccessDays),
-            status : freeStatus,
-            endDate : newDt
+            bfrSubFreePremiumDays: otpdata.userType == 'advisor' ? Number(freeTrialPeriodDetails.advisorFreeDays) : Number(freeTrialPeriodDetails.customerFreeAccessDays),
+            aftrSubFreeDays: otpdata.userType == 'advisor' ? 0 : Number(freeTrialPeriodDetails.customerAftrFreeAccessDays),
+            status: freeStatus,
+            endDate: newDt
           }
-  
+
           let userInvitedById = '';
-          if(req.body.query.inviteCode){
-            let invitesCodeExists = await Invite.findOne({ inviteCode: req.body.query.inviteCode, email:otpdata.username, inviteType: otpdata.userType });
-            if( invitesCodeExists ) {
+          if (req.body.query.inviteCode) {
+            let invitesCodeExists = await Invite.findOne({ inviteCode: req.body.query.inviteCode, email: otpdata.username, inviteType: otpdata.userType });
+            if (invitesCodeExists) {
               userInvitedById = ObjectId(invitesCodeExists.inviteById);
-            }     
+            }
           }
           var user = new User()
           user.username = otpdata.username
@@ -682,7 +702,7 @@ async function checkUserOtp(req, res) {
           user.lockoutLegacyPeriod = '2';
           user.userSubscriptionEnddate = newDt;
           user.createdOn = new Date();
-          if(user.userType != 'advisor'){
+          if (user.userType != 'advisor') {
             let userSecurityDetails = user.setPassword(otpdata.password)
             user.salt = userSecurityDetails.salt;
             user.hash = userSecurityDetails.hash;
@@ -699,35 +719,35 @@ async function checkUserOtp(req, res) {
                 "username": newUser.username,
                 "userType": newUser.userType
               }
-              checkTrustee(newUser.userType,newUser._id,newUser.username)
+              checkTrustee(newUser.userType, newUser._id, newUser.username)
               OtpCheck.deleteOne({ "_id": otpdata._id }, function (err, otpdata) {
                 if (err) {
                   res.send(resFormat.rSuccess({ code: "error", message: "Invalid OTP" }))
                 } else {
                   let message = "";
-                  if(newUser.userType == 'customer')
-                    message = resMessage.data( 630, [] )
-                    //message = "Welcome to Legacy Life Plans. Your account credentials are successfully saved.";
+                  if (newUser.userType == 'customer')
+                    message = resMessage.data(630, [])
+                  //message = "Welcome to Legacy Life Plans. Your account credentials are successfully saved.";
                   else
-                    message = resMessage.data( 631, [] )
-                    //message = "You have successfully signup. Please update your profile."; 
-                    let subscriptionDetails   = newUser.subscriptionDetails ? newUser.subscriptionDetails : null
-                    let subscriptionStartDate = "",
-                    subscriptionEndDate       = "",
-                    subscriptionStatus        = "",
-                    autoRenewal               = "";
-                    if( subscriptionDetails != null && subscriptionDetails.length >0 ) {
-                      subscriptionStartDate = subscriptionDetails[(subscriptionDetails.length-1)]['startDate']
-                      subscriptionEndDate   = subscriptionDetails[(subscriptionDetails.length-1)]['endDate']
-                      subscriptionStatus    = subscriptionDetails[(subscriptionDetails.length-1)]['status']
-                      autoRenewal           = subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] ? subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] : false
-                    }
-                    let addOnDetails= user.addOnDetails ? user.addOnDetails : null
-                    let addOnGiven  = 'no'
-                    if( addOnDetails != null && addOnDetails.length >0 ) {
-                      addOnGiven = addOnDetails[(addOnDetails.length-1)]['status'] && addOnDetails[(addOnDetails.length-1)]['status'] == 'paid' ? 'yes' : 'no'
-                    }
-                  res.send(resFormat.rSuccess({ "userId":newUser._id, "profilePicture": newUser.profilePicture, "username": newUser.username, "userType": newUser.userType, code: "success", message: message,"createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate" : subscriptionEndDate, "subscriptionStatus" : subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven }))
+                    message = resMessage.data(631, [])
+                  //message = "You have successfully signup. Please update your profile."; 
+                  let subscriptionDetails = newUser.subscriptionDetails ? newUser.subscriptionDetails : null
+                  let subscriptionStartDate = "",
+                    subscriptionEndDate = "",
+                    subscriptionStatus = "",
+                    autoRenewal = "";
+                  if (subscriptionDetails != null && subscriptionDetails.length > 0) {
+                    subscriptionStartDate = subscriptionDetails[(subscriptionDetails.length - 1)]['startDate']
+                    subscriptionEndDate = subscriptionDetails[(subscriptionDetails.length - 1)]['endDate']
+                    subscriptionStatus = subscriptionDetails[(subscriptionDetails.length - 1)]['status']
+                    autoRenewal = subscriptionDetails[(subscriptionDetails.length - 1)]['autoRenewal'] ? subscriptionDetails[(subscriptionDetails.length - 1)]['autoRenewal'] : false
+                  }
+                  let addOnDetails = user.addOnDetails ? user.addOnDetails : null
+                  let addOnGiven = 'no'
+                  if (addOnDetails != null && addOnDetails.length > 0) {
+                    addOnGiven = addOnDetails[(addOnDetails.length - 1)]['status'] && addOnDetails[(addOnDetails.length - 1)]['status'] == 'paid' ? 'yes' : 'no'
+                  }
+                  res.send(resFormat.rSuccess({ "userId": newUser._id, "profilePicture": newUser.profilePicture, "username": newUser.username, "userType": newUser.userType, code: "success", message: message, "createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate": subscriptionEndDate, "subscriptionStatus": subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven }))
                 }
               })
             }
@@ -742,44 +762,45 @@ async function checkUserOtp(req, res) {
   }
 }
 
-async function checkTrustee(userType,trustId,emailId) {console.log('userType',userType,'trustId',trustId,'emailId',emailId)
+async function checkTrustee(userType, trustId, emailId) {
+  console.log('userType', userType, 'trustId', trustId, 'emailId', emailId)
   let status = "";
-  await trust.findOne({email:emailId}, async function (err, trustDetails) {
+  await trust.findOne({ email: emailId }, async function (err, trustDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      if(trustDetails && trustDetails._id){ 
-        status ='Pending';   
-        if(userType == 'customer'){
+      if (trustDetails && trustDetails._id) {
+        status = 'Pending';
+        if (userType == 'customer') {
           status = 'Active';
-        }else{
+        } else {
           status = 'Deleted';
-          let FoundAdvDetails = await HiredAdvisor.findOne({ _id: trustId });         
-              if(FoundAdvDetails==null){              
-                  var insert = new HiredAdvisor();
-                  insert.customerId = trustDetails.customerId;
-                  insert.selectAll = trustDetails.selectAll;
-                  insert.userAccess = trustDetails.userAccess;
-                  insert.filesCount = trustDetails.filesCount;
-                  insert.folderCount = trustDetails.folderCount;
-                  insert.advisorId = ObjectId(trustId);
-                  insert.status = 'Pending';
-                  insert.createdby = trustDetails.customerId;
-                  insert.modifiedby = trustDetails.customerId;
-                  insert.createdOn = new Date();
-                  insert.modifiedOn = new Date();
-                  let newEntry = await insert.save();
-                  await advisorActivityLog.updateActivityLog(trustDetails.customerId,trustId,'hired',newEntry._id,'','');
+          let FoundAdvDetails = await HiredAdvisor.findOne({ _id: trustId });
+          if (FoundAdvDetails == null) {
+            var insert = new HiredAdvisor();
+            insert.customerId = trustDetails.customerId;
+            insert.selectAll = trustDetails.selectAll;
+            insert.userAccess = trustDetails.userAccess;
+            insert.filesCount = trustDetails.filesCount;
+            insert.folderCount = trustDetails.folderCount;
+            insert.advisorId = ObjectId(trustId);
+            insert.status = 'Pending';
+            insert.createdby = trustDetails.customerId;
+            insert.modifiedby = trustDetails.customerId;
+            insert.createdOn = new Date();
+            insert.modifiedOn = new Date();
+            let newEntry = await insert.save();
+            await advisorActivityLog.updateActivityLog(trustDetails.customerId, trustId, 'hired', newEntry._id, '', '');
 
-                  let message = resMessage.data( 607, [{key:'{field}',val:'Hire advisor request'},{key:'{status}',val:'sent'}] )
-                  await allActivityLog.updateActivityLogs( trustDetails.customerId, trustId, "Hire Advisor Request", message, 'Professionals List', '' )
-              }        
+            let message = resMessage.data(607, [{ key: '{field}', val: 'Hire advisor request' }, { key: '{status}', val: 'sent' }])
+            await allActivityLog.updateActivityLogs(trustDetails.customerId, trustId, "Hire Advisor Request", message, 'Professionals List', '')
+          }
         }
-        let updatedDetails = await trust.updateOne({ _id: trustDetails._id }, { status:status,trustId:ObjectId(trustId),modifiedOn:new Date()});
+        let updatedDetails = await trust.updateOne({ _id: trustDetails._id }, { status: status, trustId: ObjectId(trustId), modifiedOn: new Date() });
         return 'done';
       }
     }
-   });  
+  });
 }
 
 function sendOtpMail(emailId, otpN) {
@@ -795,7 +816,7 @@ function sendOtpMail(emailId, otpN) {
       }
       sendEmail(mailOptions)
     } else {
-      let message = resMessage.data( 604, [] )
+      let message = resMessage.data(604, [])
       res.status(401).send(resFormat.rError(message));
       return false;
     }
@@ -821,19 +842,19 @@ function generateOtp(n) {
 }
 
 async function advdocuments(req, res) {
-  console.log("Auth",req);
+  console.log("Auth", req);
   try {
     let { query } = req.body;
-   
+
   } catch (e) {
     res.status(401).send(resFormat.rError(e.message))
   }
 }
 
 function getProductDetails(req, res) {
-  stripe.plans.list( { limit: 3 }, function(err, plans) {
+  stripe.plans.list({ limit: 3 }, function (err, plans) {
     // asynchronously called
-    res.status(200).send(resFormat.rSuccess( {plans, "message": "Subscription Plans"}))    
+    res.status(200).send(resFormat.rSuccess({ plans, "message": "Subscription Plans" }))
   });
 }
 

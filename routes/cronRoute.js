@@ -76,7 +76,8 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
                                         spaceAlloted: isAddOnPurchase.spaceAlloted
                                       } : {}
                 }
-
+                let subscriptionEndDateNew = new Date(subscriptionData[0]['period']['end']*1000);
+                
                 let subscriptionDetails = {"_id" : objectId,
                                             "productId" : subscriptionData[0]['plan']['product'],
                                             "planId" : subscriptionData[0]['plan']['id'],
@@ -112,7 +113,7 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
                 userSubscription.push(subscriptionDetails)
                 //console.log("userFullName",userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '',"email: -",userProfile.username,  "created on :-",userProfile.createdOn);
                 //Update user details
-                User.updateOne({ _id: userProfile._id }, { $set: { subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, async function (err, updated) {
+                User.updateOne({ _id: userProfile._id }, { $set: { userSubscriptionEnddate : new Date(subscriptionEndDateNew),subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, async function (err, updated) {
                   if (err) {
                     res.send(resFormat.rError(err))
                   }

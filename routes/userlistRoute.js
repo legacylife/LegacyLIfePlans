@@ -683,14 +683,14 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                   EmailTemplateName = "NewSubscription";
                 }
 
-                if( userDetails.subscriptionDetails && userDetails.subscriptionDetails.length > 0 ) {
+                if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
                   EmailTemplateName = "AutoRenewalAdviser"
-                  if(userDetails.userType == 'customer') {
+                  if(userProfile.userType == 'customer') {
                     EmailTemplateName = "AutoRenewal"
                   }
                 }
                 //Update user details
-                User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
+                User.updateOne({ _id: requestParam._id }, { $set: { userSubscriptionEnddate : new Date(subscriptionEndDate),stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
                   if (err) {
                     res.send(resFormat.rError(err))
                   }
@@ -1442,14 +1442,14 @@ function createLegacySubscription( userProfile, stripeCustomerId, planId, reques
                           EmailTemplateName = "NewSubscription";
                         }
 
-                        if( userDetails.subscriptionDetails && userDetails.subscriptionDetails.length > 0 ) {
+                        if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
                           EmailTemplateName = "AutoRenewalAdviser"
                           if(userDetails.userType == 'customer') {
                             EmailTemplateName = "AutoRenewal"
                           }
                         }
                         //Update user details
-                        User.updateOne({ _id: requestParam._id }, { $set: { stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
+                        User.updateOne({ _id: requestParam._id }, { $set: { userSubscriptionEnddate : new Date(subscriptionEndDate), stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
                           if (err) {
                             res.send(resFormat.rError(err))
                           }
