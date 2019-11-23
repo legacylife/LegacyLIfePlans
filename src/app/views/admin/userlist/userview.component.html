@@ -6,7 +6,7 @@
       </div>
       <div class="profile-title text-center mb-1">         
         <div class="main-title">{{fullname}}</div>
-        <div class="text-muted">{{row?.bioText}}</div>
+        <div class="text-muted">{{row?.bioText ? row?.bioText : '--'}}</div>
       </div>
       <div class="profile-actions mb-1" fxLayoutAlign="center center" *ngIf="row?.userType == 'advisor' && row?.status == 'Pending'">
         <button mat-raised-button class="" color="primary" (click)="statusChange(row)">Accept</button>
@@ -18,9 +18,9 @@
           <mat-list-item>
             <mat-icon class="mr-1">email</mat-icon> {{row?.username}}</mat-list-item>
           <mat-list-item *ngIf="row?.userType == 'customer' && row?.phoneNumber!=''">
-            <mat-icon class="mr-1">phone</mat-icon> {{row?.phoneNumber}}</mat-list-item>
+            <mat-icon class="mr-1">phone</mat-icon> {{row?.phoneNumber ? row?.phoneNumber : '--'}}</mat-list-item>
           <mat-list-item *ngIf="row?.userType == 'advisor' && row?.businessPhoneNumber!=''">
-            <mat-icon class="mr-1">phone</mat-icon> {{row?.businessPhoneNumber}}</mat-list-item>          
+            <mat-icon class="mr-1">phone</mat-icon> {{row?.businessPhoneNumber ? row?.businessPhoneNumber : '--'}}</mat-list-item>          
         </mat-list>
       </mat-card-content>
       <div class="profile-actions mb-1" fxLayoutAlign="center center" *ngIf="row?.userType == 'advisor' && row?.status == 'Active' && (row?.IamIntrested && row?.IamIntrested != 'Yes')">
@@ -49,35 +49,35 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Address Line 1</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40" class="line--hgt--20">{{row?.addressLine1}}</div>
+                  <div fxFlex="40" class="line--hgt--20">{{row?.addressLine1 ? row?.addressLine1 : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="msg--hgt--sec" *ngIf="row?.userType != 'sysadmin'">
                 <div fxLayout="row" fxFlex="100" >
                   <h6 class="m-0 mr-1">Address Line 2</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40" class="line--hgt--20">{{row?.addressLine2}}</div>
+                  <div fxFlex="40" class="line--hgt--20">{{row?.addressLine2 ? row?.addressLine2 : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
                   <div fxLayout="row" fxFlex="100">
                     <h6 class="m-0 mr-1">City</h6>
                     <span fxFlex></span>
-                    <div fxFlex="40">{{row?.city}}</div>
+                    <div fxFlex="40">{{row?.city ? row?.city : '--'}}</div>
                   </div>
                 </mat-list-item>
                 <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
                   <div fxLayout="row" fxFlex="100">
                     <h6 class="m-0 mr-1">State</h6>
                     <span fxFlex></span>
-                    <div fxFlex="40">{{row?.state}}</div>
+                    <div fxFlex="40">{{row?.state ? row?.state : '--'}}</div>
                   </div>
                 </mat-list-item>
                 <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
                   <div fxLayout="row" fxFlex="100">
                     <h6 class="m-0 mr-1">Zipcode</h6>
                     <span fxFlex></span>
-                    <div fxFlex="40">{{row?.zipcode}}</div>
+                    <div fxFlex="40">{{row?.zipcode ? row?.zipcode : '--'}}</div>
                   </div>
                 </mat-list-item>
               <mat-list-item class="">
@@ -185,7 +185,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Plan Expire Date</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{subscriptionExpireDate}}</div>
+                  <div fxFlex="40">{{subscriptionExpireDate  | date: 'yyyy/MM/dd'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="">
@@ -224,7 +224,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">What agency oversees your business?</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.agencyOversees}} </div>
+                  <div fxFlex="40">{{row?.agencyOversees ? row?.agencyOversees : ''}} </div>
                 </div>
               </mat-list-item>
               <mat-list-item class="">
@@ -238,22 +238,20 @@
               <div fxLayout="row" fxFlex="100">
                 <h6 class="m-0 mr-1">Who is your managing principle?</h6>
                 <span fxFlex></span>
-                <div fxFlex="40">{{row?.managingPrincipleName}}</div>
+                <div fxFlex="40">{{row?.managingPrincipleName ? row?.managingPrincipleName : '--'}}</div>
               </div>
             </mat-list-item>
             <mat-list-item class="">
               <div fxLayout="row" fxFlex="100">
                 <h6 class="m-0 mr-1">Active License Held</h6>
                 <span fxFlex></span>
-                <div fxFlex="40">{{row?.activeLicenceHeld}}</div>
+                <div fxFlex="40">{{row?.activeLicenceHeld ? row?.activeLicenceHeld : "--"}}</div>
               </div>
             </mat-list-item>
             </mat-list>
           </mat-card-content>
       </mat-card>
-    </div>
-
-     
+    </div>   
     </div>
   </div>
 </div>

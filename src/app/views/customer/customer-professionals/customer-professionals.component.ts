@@ -51,7 +51,10 @@ export class CustomerProfessionalComponent implements OnInit {
       userType: localStorage.getItem('endUserType')
     }
     this.userapi.apiRequest('post', 'userlist/viewall', req_vars).subscribe(result => {
+      console.log('---------result',result)
       if (result.status == "error") {
+        console.log('---------result status',result.status)
+        this.router.navigate(['/', localStorage.getItem("endUserType"), 'dashboard']);
         console.log(result.data)
       } else {
         this.profileData = this.row = result.data; 
