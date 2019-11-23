@@ -4,57 +4,91 @@
     [@animate]="{value:'*',params:{delay:'100ms',scale:'.9', x:'-100px'}}">
     <div class="box--cover">
       <h5>Active Customer</h5>
-      <h3>10</h3>
+      <h3>{{dashboardData.customerActive ? dashboardData.customerActive : '0'}}</h3>
     </div>
   </div>
   <div fxFlex.xs="100" fxFlex.sm="47" fxFlex.md="30" fxFlex.lg="22" fxFlex.xl="22"
     [@animate]="{value:'*',params:{delay:'100ms',scale:'.9', x:'-400px'}}">
     <div class="box--cover">
       <h5>Active Advisor</h5>
-      <h3>15</h3>
+      <h3>{{dashboardData.advisorActive ? dashboardData.advisorActive : '0'}}</h3>
     </div>
   </div>
   <div fxFlex.xs="100" fxFlex.sm="47" fxFlex.md="30" fxFlex.lg="22" fxFlex.xl="22"
     [@animate]="{value:'*',params:{delay:'100ms',scale:'.9', x:'-700px'}}">
     <div class="box--cover">
       <h5>InActive Customer</h5>
-      <h3>20</h3>
+      <h3>{{dashboardData.customerInactive ? dashboardData.customerInactive : '0'}}</h3>
     </div>
   </div>
   <div fxFlex.xs="100" fxFlex.sm="47" fxFlex.md="30" fxFlex.lg="22" fxFlex.xl="22"
     [@animate]="{value:'*',params:{delay:'100ms',scale:'.9', x:'-1000px'}}">
     <div class="box--cover">
       <h5>InActive Advisor</h5>
-      <h3>25</h3>
+      <h3>{{dashboardData.advisorInactive ? dashboardData.advisorInactive : '0'}}</h3>
     </div>
   </div>
 
   <div fxFlex.xs="100" fxFlex.sm="47" fxFlex.md="30" fxFlex.lg="22" fxFlex.xl="22"
-    [@animate]="{value:'*',params:{delay:'100ms',scale:'.9', x:'-1300px'}}">
+    [@animate]="{value:'*',params:{delay:'100ms',scale:'.9', x:'-100px'}}">
     <div class="box--cover">
-      <h5>Featured Advisor</h5>
-      <h3>30</h3>
+      <h5>Pending Customer</h5>
+      <h3>{{dashboardData.customerPending ? dashboardData.customerPending : '0'}}</h3>
     </div>
   </div>
+
+  <div fxFlex.xs="100" fxFlex.sm="47" fxFlex.md="30" fxFlex.lg="22" fxFlex.xl="22" [@animate]="{value:'*',params:{delay:'100ms',scale:'.9', x:'-100px'}}">
+    <div class="box--cover">
+      <h5>Deceased Customer</h5>
+      <h3>{{dashboardData.customerDeceased ? dashboardData.customerDeceased : '0'}}</h3>
+    </div>
+  </div>
+
+  <div fxFlex.xs="100" fxFlex.sm="47" fxFlex.md="30" fxFlex.lg="22" fxFlex.xl="22"
+  [@animate]="{value:'*',params:{delay:'100ms',scale:'.9', x:'-100px'}}">
+  <div class="box--cover">
+    <h5>Pending Advisor</h5>
+    <h3>{{dashboardData.advisorPending ? dashboardData.advisorPending : '0'}}</h3>
+  </div>
+  </div>
+  
   <div fxFlex.xs="100" fxFlex.sm="47" fxFlex.md="30" fxFlex.lg="22" fxFlex.xl="22"
     [@animate]="{value:'*',params:{delay:'100ms',scale:'.9', x:'-1600px'}}">
     <div class="box--cover">
       <h5>Active Featured Advisor</h5>
-      <h3>30</h3>
+      <h3>{{dashboardData.advisorSponsored ? dashboardData.advisorSponsored : '0'}}</h3>
     </div>
   </div>
+
+  <div fxFlex.xs="100" fxFlex.sm="47" fxFlex.md="30" fxFlex.lg="22" fxFlex.xl="22"
+    [@animate]="{value:'*',params:{delay:'100ms',scale:'.9', x:'-1600px'}}">
+    <div class="box--cover">
+      <h5>Rejected Advisor</h5>
+      <h3>{{dashboardData.advisorRejected ? dashboardData.advisorRejected : '0'}}</h3>
+    </div>
+  </div>
+
   <div fxFlex.xs="100" fxFlex.sm="47" fxFlex.md="30" fxFlex.lg="22" fxFlex.xl="22"
     [@animate]="{value:'*',params:{delay:'100ms',scale:'.9', x:'-1900px'}}">
     <div class="box--cover">
       <h5>Signup Advisor</h5>
-      <h3>40</h3>
+      <h3>{{dashboardData.totalAdvisor ? dashboardData.totalAdvisor : '0'}}</h3>
     </div>
   </div>
   <div fxFlex.xs="100" fxFlex.sm="47" fxFlex.md="30" fxFlex.lg="22" fxFlex.xl="22"
     [@animate]="{value:'*',params:{delay:'100ms',scale:'.9', x:'-2100px'}}">
     <div class="box--cover">
       <h5>Signup Customer</h5>
-      <h3>45</h3>
+      <h3>{{dashboardData.totalCustomers ? dashboardData.totalCustomers : '0'}}</h3>
+    </div>
+  </div>
+  
+  
+  <div fxFlex.xs="100" fxFlex.sm="47" fxFlex.md="30" fxFlex.lg="22" fxFlex.xl="22"
+    [@animate]="{value:'*',params:{delay:'100ms',scale:'.9', x:'-1300px'}}">
+    <div class="box--cover">
+      <h5>Total Users</h5>
+      <h3>{{dashboardData.alluser ? dashboardData.alluser : '0'}}</h3>
     </div>
   </div>
 
