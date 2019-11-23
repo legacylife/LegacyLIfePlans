@@ -536,8 +536,8 @@ function revokeOwnerDeceased(req, res) {
   let { order } = req.body;
   let groupObj = { _id:'$customerId',"customerId":{$first:'$customerId'},"advisorId":{$first: '$advisorId'},"trustId":{$first: '$trustId'},"userType": {$first: '$userType'},"documents": {$first: '$documents'},"status": {$first: '$status'}, "createdOn": {$first: '$createdOn'}, "modifiedOn": {$first: '$modifiedOn'}} 
   await MarkDeceased.aggregate([
-   { $match: query }, { $sort : order }, { $group:  groupObj }
-  ]) .exec(function(err, records) { 
+   { $match: query }, { $group:  groupObj }
+  ]).sort(order).exec(function(err, records) { 
     MarkDeceased.populate(records, {path: 'customerId'}, function(err, deceasedData) {
       let message = 'Deceased customer List!';
       if(deceasedData && deceasedData.length==0){
