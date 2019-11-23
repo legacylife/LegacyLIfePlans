@@ -217,7 +217,10 @@ function addEnquiryReply(req, res) {
                 replyContnt['fromDate'] = fromDate1;
                 replyContnt['toDate']   = toDate1;
                 replyContnt['paymentLink'] = PaymentLink
+                if(proquery.message!==null)
                 replyContnt['comment'] = proquery.message;
+                else
+                replyContnt['comment'] = '';
                 //console.log("\n****replyContnt****",replyContnt)
 
                 sendEnquiryReplyMail('AdviserFeturedRequestReply', emailId, toName, replyContnt);
