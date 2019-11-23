@@ -83,7 +83,7 @@ function details(req, res) {
   }
   User.findOne(query, fields, function (err, userList) {
     if (err) {
-      res.status(401).send(resFormat.rError(err))
+      res.status(200).send(resFormat.rError(err))
     } else {
       res.send(resFormat.rSuccess(userList))
     }
@@ -101,7 +101,7 @@ function view(req, res) {
   }
   User.findOne(query, fields, function (err, userList) {
     if (err) {
-      res.status(401).send(resFormat.rError(err))
+      res.status(200).send(resFormat.rError(err))
     } else {
       //Update activity logs
       if(userType != 'sysAdmin'){
@@ -1128,7 +1128,7 @@ function getDashbaordDetails(req, res) {
           }).map(el => el)   
 
           const customerDeceased = customersList.filter(dtype => {
-              return dtype.deceased && dtype.deceased.status == 'Active'
+              return dtype.deceased && dtype.deceased.status && dtype.deceased.status == 'Active'
           }).map(el => el)             
 
           const advisorList = userList.filter(dtype => {

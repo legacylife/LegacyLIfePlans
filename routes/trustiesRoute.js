@@ -67,13 +67,16 @@ function getUserDetails(req, res) {
           res.status(200).send(resFormat.rSuccess(result));
         } else {
           let fields = { _id: 1, userType: 1, firstName: 1, lastName: 1, status: 1 }
-          User.findOne({ "username": query.email }, fields, function (err, userDetails) {
+          User.findOne({ "username": query.email }, fields, async function (err, userDetails) {
             if (err) {
               res.status(401).send(resFormat.rError(err))
             } else {
               if (userDetails && userDetails.userType == 'advisor') {
-                message = "You can't send invitaion '" + query.email + "' this email id is register as advisor.";
-                status = 'Exist';
+               let foundAdv =  await HiredAdvisors.find({ customerId:query.customerId,advisorId:userDetails._id,status:{$nin: ["Rejected", "Deleted"]}});
+                if(foundAdv){
+                  message = "'" + query.email + "' is already trustee.";
+                  status = 'Exist';
+                }
               } else if (userDetails && userDetails.userType == 'sysadmin') {
                 message = "You can't send invitaion '" + query.email + "' this email id is register as system admin.";
                 status = 'Exist';
