@@ -42,7 +42,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Date Of Birth</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.dateOfBirth  | date: 'yyyy/MM/dd'}}</div>
+                  <div fxFlex="40">{{row?.dateOfBirth  ? (row?.dateOfBirth | date: 'yyyy/MM/dd') : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item  class="msg--hgt--sec" *ngIf="row?.userType != 'sysadmin'">
@@ -93,7 +93,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Rejected Reason</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40" class="line--hgt--20">{{row?.approveRejectReason}}</div>
+                  <div fxFlex="40" class="line--hgt--20">{{row?.approveRejectReason ? row?.approveRejectReason : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
@@ -110,7 +110,15 @@
                     <span fxFlex></span>
                     <div fxFlex="40">{{row?.lastLoggedInOn  | date: 'yyyy/MM/dd HH:mm:ss'}}</div>
                   </div>
-                </mat-list-item>
+              </mat-list-item>
+
+              <mat-list-item class="">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Account created date and time</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.createdOn  | date: 'yyyy/MM/dd HH:mm:ss'}}</div>
+                </div>
+            </mat-list-item>
                 
             </mat-list>
           </mat-card-content>
@@ -185,7 +193,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Plan Expire Date</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{subscriptionExpireDate  | date: 'yyyy/MM/dd'}}</div>
+                  <div fxFlex="40">{{subscriptionExpireDate ? (subscriptionExpireDate  | date: 'yyyy/MM/dd') : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="">

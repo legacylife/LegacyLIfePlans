@@ -170,9 +170,9 @@ export class userviewComponent implements OnInit {
           // If user press cancel
           return;
         }
-        this.loader.open();
+        //this.loader.open();
         this.getUser()
-        this.loader.close();
+       // this.loader.close();
         this.snack.open('Advisor has been rejected successfully!', 'OK', { duration: 4000 })
       })
   }

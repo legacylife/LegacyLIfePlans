@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { APIService } from './../../../../api.service';
 
 @Component({
@@ -27,12 +27,19 @@ export class AdvisorRejectPopupComponent implements OnInit {
   }
   buildRejectForm(item) {
     this.itemForm = this.fb.group({
-      approveRejectReason: [item.approveRejectReason || '', Validators.required]
+      //approveRejectReason: [item.approveRejectReason || '', Validators.required]
+      approveRejectReason: new FormControl(item.approveRejectReason || '', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1)]))
     })
   }
 
+  public noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
+  }
+
   submit() {
-    
+ 
     this.RequestData = {
       approveRejectReason: this.itemForm.controls['approveRejectReason'].value
     }

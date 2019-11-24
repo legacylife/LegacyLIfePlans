@@ -36,12 +36,6 @@ export class ProfileComponent implements OnInit {
     this.userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
     this.userType = localStorage.getItem("userType") || sessionStorage.getItem("userType")
 
-
-    // const passwordRegex: any = /^.{6,}$/
-    // const password = new FormControl('', Validators.compose([ Validators.required, Validators.pattern(passwordRegex), this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)]));
-    // const NewPassword = new FormControl('', [Validators.required, Validators.pattern(passwordRegex), Validators.minLength(6)]);
-    // const confirmPassword = new FormControl('', CustomValidators.equalTo(NewPassword));
-
     this.llpProfileForm = new FormGroup({
       firstName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
       lastName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),      
@@ -68,9 +62,9 @@ export class ProfileComponent implements OnInit {
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: "sysadmin" }, query)
     }
-    //this.loader.open();
+    this.loader.open();
     this.api.apiRequest('post', 'userlist/getprofile', req_vars).subscribe(result => {
-      //this.loader.close();
+      this.loader.close();
       if (result.status == "error") {
         this.rows = [];
         console.log(result.data)
