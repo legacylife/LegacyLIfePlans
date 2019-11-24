@@ -24,8 +24,9 @@
               "src/assets/styles/app.scss",
               "node_modules/slick-carousel/slick/slick.scss",
               "node_modules/slick-carousel/slick/slick-theme.scss",
-              "node_modules/patternlock/dist/patternlock.min.css"
-            ],
+              "node_modules/patternlock/dist/patternlock.min.css",
+              "node_modules/@ctrl/ngx-emoji-mart/picker.css"
+            ],           
             "scripts": [ "node_modules/jquery/dist/jquery.min.js",
               "node_modules/slick-carousel/slick/slick.min.js",
               "node_modules/patternlock/dist/patternlock.min.js"

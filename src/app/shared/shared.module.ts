@@ -6,7 +6,8 @@ import { RouterModule } from "@angular/router";
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TranslateModule } from '@ngx-translate/core';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-
+import { IconsModule } from '../icons/icons.module';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { 
   MatSidenavModule,
   MatListModule,
@@ -320,6 +321,8 @@ const classesToInclude = [
     DragDropModule,
     FileUploadModule,
     MatStepperModule,
+    IconsModule,
+    PickerModule
     //AppChatsModule
   ],
   entryComponents: [

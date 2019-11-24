@@ -25,6 +25,7 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   userId : string;
   userType : string;
   typeing:string = '';
+  showEmojiPicker = false;
   @Input('matSidenav') matSidenav;
   @ViewChild(PerfectScrollbarDirective) psContainer: PerfectScrollbarDirective;
   @Output() hideWindowToggle = new EventEmitter();
@@ -69,9 +70,7 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
     });
    
     this.chatService.getMessages().subscribe((message: string) => {
-      console.log('ngOnInit chat res message-###-->',message)
         this.messages.push(message);
-        //console.log("thismessages", this.messages)
     });
 
 
@@ -91,8 +90,7 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
     this.chatUpdateSub = this.chatService.onChatsUpdated.subscribe(chat => {
         if (this.chatCollection.chats.indexOf(chat) == -1) {
           this.chatCollection.chats.push(chat);
-        }
-        
+        }        
         this.scrollToBottom();
     })
   }
@@ -102,19 +100,31 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
     if( this.chatSelectSub ) this.chatSelectSub.unsubscribe();
     if( this.chatUpdateSub ) this.chatUpdateSub.unsubscribe();
   }
-
   
   checkSend(e) {
-    console.log('Typing/....',e);
     let re = /(^|[.!?]\s+)([a-z])/g;
     var textBox: HTMLInputElement = <HTMLInputElement>e.target;
     if(textBox.value.trim()){      
       var socket = io(serverUrl);
-      socket.emit('typing-with',{contactId:this.userId,chatwithid:this.activeContact._id});
+      //8socket.emit('typing-with',{contactId:this.userId,chatwithid:this.activeContact._id});
       this.isButtonEnabled = true;
     }else{
       this.isButtonEnabled = false;
     }
+  }
+
+  toggleEmojiPicker() {
+    this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  addEmoji(event) {
+    let msgText  = this.msgForm.form.value.message;
+    let messageVal = `${event.emoji.native}`;
+    if(msgText && msgText.trim()!=''){
+     messageVal = `${msgText}${event.emoji.native}`;
+    }
+     this.msgForm.controls['message'].setValue(messageVal);
+     this.showEmojiPicker = false;
   }
 
   sendMessage(e) {
@@ -124,6 +134,8 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
         //console.log("Enter pressed " + this.msgForm.form.value.message)
         messageVal = this.msgForm.form.value.message;
      }
+
+console.log(messageVal+'===========')
 
     if(messageVal && messageVal.trim()!='') {
         this.msgForm.reset();

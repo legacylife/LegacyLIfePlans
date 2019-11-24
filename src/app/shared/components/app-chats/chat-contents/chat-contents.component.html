@@ -58,7 +58,7 @@
   </div>
   <mat-divider></mat-divider>
   <!-- Input box and send button -->
-  <div class="chat-input-actions">
+  <div class="chat-input-actions chat-footer">
     <form #msgForm="ngForm" class="inputForm llp-form-wrapper align--items--center" (ngSubmit)="sendMessage($event)"
       (keyup.enter)="sendMessage($event)" fxLayout="row">
       <!-- <mat-form-field class="full-width mr-1 no-mar no-pad-mat">
@@ -66,7 +66,36 @@
           value="" (keyup)="checkSend($event)" (keypress)="checkSend($event)"></textarea>
       </mat-form-field> -->
 
-      <textarea #msgInput ngModel placeholder="Type your message" name="message" class="type--text inputText"
+      <!-- <i-feather name="github" class="someclass"></i-feather>
+      <i-feather name="heart" style="color: green;"></i-feather>
+      <i-feather name="camera"></i-feather>
+      <i-feather name="heart" class="big fill-red"></i-heart> -->
+     
+     
+        <!-- <emoji-mart title="Pick your emoji…" emoji="point_up"></emoji-mart>
+        <emoji-mart set="emojione"></emoji-mart>
+        <emoji-mart (emojiClick)="addEmoji($event)"></emoji-mart>
+        <emoji-mart
+          [style]="{ position: 'absolute', bottom: '20px', right: '20px' }"
+        ></emoji-mart>
+        <emoji-mart
+          [i18n]="{ search: 'Recherche', categories: { search: 'Résultats de recherche', recent: 'Récents' } }"
+        ></emoji-mart> -->
+
+        <!-- <emoji-mart class="emoji-mart" set="emojione" (emojiSelect)="addEmoji($event)" *ngIf="showEmojiPicker" title="Pick your emoji…"></emoji-mart> -->
+        
+        <!-- <emoji-mart set="emojione"></emoji-mart>
+        <emoji-mart (emojiClick)="toggleEmojiPicker($event)"></emoji-mart>
+        <emoji-mart [style]="{ position: 'absolute', bottom: '20px', right: '20px' }"></emoji-mart> -->
+        <main class="chat-window">
+          <section class="chat-session">
+            <emoji-mart class="emoji-mart" set="emojione" (emojiSelect)="addEmoji($event)" *ngIf="showEmojiPicker" title="Pick your emoji…"></emoji-mart>
+          </section>
+        </main>
+        <!-- <emoji-mart (emojiClick)="toggleEmojiPicker($event)"></emoji-mart> -->
+        <button type="button" class="toggle-emoji" (click)="toggleEmojiPicker()"><mat-icon>face</mat-icon></button>
+
+        <textarea #msgInput ngModel placeholder="Type your message" name="message" class="type--text inputText"
       value="" (keydown.enter)="$event.preventDefault()" (keyup)="checkSend($event)" (keypress)="checkSend($event)"></textarea>
 
       <button mat-fab color="primary" type="submit" class="send--trriger--btn" [disabled]="!isButtonEnabled">
