@@ -135,8 +135,6 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
         messageVal = this.msgForm.form.value.message;
      }
 
-console.log(messageVal+'===========')
-
     if(messageVal && messageVal.trim()!='') {
         this.msgForm.reset();
         const chat: Chat = {
