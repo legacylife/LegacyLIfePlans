@@ -252,6 +252,7 @@ export class TimeCapsuleMoalComponent implements OnInit {
             }
           }
           if(this.uploader.getNotUploadedItems().length) {
+            this.currentProgessinPercent = 1;
             this.uploaderCopy = cloneDeep(this.uploader)
             this.uploader.queue.splice(1, this.uploader.queue.length - 1)
             this.uploaderCopy.queue.splice(0, 1);
@@ -260,19 +261,13 @@ export class TimeCapsuleMoalComponent implements OnInit {
               if(this.timeCapsuleDocsList.length < 1){  this.TimeCapsuleForm.controls['documents_temp'].setValue(''); }
                 this.uploader.uploadItem(fileoOb);  
             });
-
-            this.updateProgressBar();
-            // this.uploader.onProgressAll = (item: any, response: any) => {       
-            //   this.updateProgressBar();    
-            // };
-           
+            this.updateProgressBar();           
             this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {              
               this.getTimeCapsuleDocuments();
               setTimeout(()=>{    
                 this.uploader.clearQueue();
                 },800);
             };
-
             this.uploader.onCompleteAll = () => {
               setTimeout(()=>{    
                 this.getTimeCapsuleDocuments();
@@ -282,14 +277,11 @@ export class TimeCapsuleMoalComponent implements OnInit {
         }
       }
     })
-
-
-  }
+   }
   }
 
   updateProgressBar(){
-    let uploaderLength = 0;  let uploaderCopyLength = 0;
-    
+    let uploaderLength = 0;  let uploaderCopyLength = 0;    
     if(this.currentProgessinPercent==0){
       this.uploader.onProgressItem = (progress:any) => {
         this.currentProgessinPercent = progress;
@@ -308,7 +300,6 @@ export class TimeCapsuleMoalComponent implements OnInit {
         this.currentProgessinPercent = totalLength - 100;
       }
     }
-    //console.log('len 1# ',this.uploader.queue.length,'len 2# ',this.uploaderCopy.queue.length,' Processs',this.currentProgessinPercent)
   }
 
   uploadRemainingFiles(profileId) {    

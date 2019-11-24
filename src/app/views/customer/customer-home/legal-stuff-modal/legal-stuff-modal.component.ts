@@ -166,7 +166,6 @@ export class legalStuffModalComponent implements OnInit {
         query: Object.assign({ _id: profileIds })
       }
     }
-
     this.loader.open(); 
     this.userapi.apiRequest('post', 'customer/view-legalStuff-details', req_vars).subscribe(result => {
       this.loader.close();
@@ -177,10 +176,8 @@ export class legalStuffModalComponent implements OnInit {
           this.LegalStuffList = result.data;
           this.subFolderName  = this.LegalStuffList.subFolderName
           this.toUserId       = this.LegalStuffList.customerId
-
           let profileIds = this.LegalStuffList._id;
-          this.LegalForm.controls['profileId'].setValue(profileIds);
-          
+          this.LegalForm.controls['profileId'].setValue(profileIds);          
           this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
           this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileIds}` });
           this.documentsList = result.data.documents;
@@ -209,9 +206,7 @@ export class legalStuffModalComponent implements OnInit {
       var extension = filename.substring(filename.lastIndexOf('.') + 1);
       var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
       let resp = this.isExtension(extension,fileExts);
-
-      totalUploderFileSize += fileoOb.file.size
-
+      totalUploderFileSize += fileoOb.file.size;
       if(!resp){
         var FileMsg = "This file '" + filename + "' is not supported";
         this.uploader.removeFromQueue(fileoOb);
@@ -234,7 +229,6 @@ export class legalStuffModalComponent implements OnInit {
           if (res) {
             console.log("**************",res)
           }
-          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
         })
       }
       else{
@@ -244,6 +238,11 @@ export class legalStuffModalComponent implements OnInit {
           proceedToUpload = true
         }
         if( proceedToUpload ) {
+          if(this.selectedProfileId){
+            this.uploader.onBeforeUploadItem = (item) => {
+              item.url = `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}`;
+            }
+          }
           if(this.uploader.getNotUploadedItems().length){
             this.uploaderCopy = cloneDeep(this.uploader)
             this.uploader.queue.splice(1, this.uploader.queue.length - 1)
@@ -253,13 +252,14 @@ export class legalStuffModalComponent implements OnInit {
               this.LegalForm.controls['documents_temp'].setValue('');
                 this.uploader.uploadItem(fileoOb);
             });
-
-            this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-              this.updateProgressBar();
+            this.updateProgressBar();
+            this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {              
               this.getLegalDocuments();
+              setTimeout(()=>{    
+                this.uploader.clearQueue();
+                },800);
             };
-            this.uploader.onCompleteAll=()=>{
-              this.uploader.clearQueue();
+            this.uploader.onCompleteAll = () => {
               if(!this.uploaderCopy.queue.length){
                 this.currentProgessinPercent = 0;
               }
@@ -271,35 +271,49 @@ export class legalStuffModalComponent implements OnInit {
   }
 
   updateProgressBar(){
-    let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
-    let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
-    this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
-    if(this.uploader.queue.length>0){
-      this.uploader.clearQueue();
+    let uploaderLength = 0;  let uploaderCopyLength = 0;
+    if(this.currentProgessinPercent==0){
+      this.uploader.onProgressItem = (progress:any) => {
+        this.currentProgessinPercent = progress;
+      }
     }
-    this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+    this.uploader.onProgressAll = (progress:any) => {
+      uploaderLength = progress;
+      if(this.uploaderCopy.queue.length==0){
+        this.currentProgessinPercent = uploaderLength;
+      }
+      this.uploaderCopy.onProgressAll = ( progress: any) => {
+        uploaderCopyLength = progress;
+        this.currentProgessinPercent = (uploaderLength + uploaderCopyLength)/100;
+        let totalLength = uploaderLength + uploaderCopyLength;
+        this.currentProgessinPercent = totalLength - 100;
+      }
+    }
   }
 
-  uploadRemainingFiles(profileId) {
+  uploadRemainingFiles(profileId) {    
     this.uploaderCopy.onBeforeUploadItem = (item) => {
       item.url = `${URL}?userId=${this.userId}&folderName=${this.folderName}&ProfileId=${profileId}`;
-      this.LegalForm.controls['documents_temp'].setValue('');
+      this.LegalForm.controls['documents_temp'].setValue('');         
     }
     this.uploaderCopy.queue.forEach((fileoOb, ind) => {
         this.uploaderCopy.uploadItem(fileoOb);
+        
     });
-
+    this.updateProgressBar();
     this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.updateProgressBar();
-      this.getLegalDocuments({}, false, false);    
+      this.uploaderCopy.removeFromQueue(item);
+      this.getLegalDocuments({}, false, false);   
     };
-    this.uploaderCopy.onCompleteAll=()=>{
-      this.uploaderCopy.clearQueue();
-      this.currentProgessinPercent = 0;
-    }
-  }
 
-  getLegalDocuments = (query = {}, search = false, uploadRemained = true) => {    
+    this.uploaderCopy.onCompleteAll = () => {
+      setTimeout(()=>{    
+        this.getLegalDocuments();
+        },5000);
+    }
+}
+
+getLegalDocuments = (query = {}, search = false, uploadRemained = true) => {    
     let profileIds = this.LegalForm.controls['profileId'].value;
     let req_vars = {
       query: Object.assign({customerId: this.userId,subFolderName:this.folderName,status:"Pending" }),
@@ -314,7 +328,7 @@ export class legalStuffModalComponent implements OnInit {
     this.userapi.apiRequest('post', 'customer/view-legalStuff-details', req_vars).subscribe(result => {
       if (result.status == "error") {
       } else {
-        profileIds = result.data._id;
+        profileIds = this.selectedProfileId = result.data._id;
         this.LegalForm.controls['profileId'].setValue(profileIds);
         if(uploadRemained) {
           this.uploadRemainingFiles(result.data._id)
@@ -363,6 +377,9 @@ export class legalStuffModalComponent implements OnInit {
               this.documentsMissing = true;
               this.invalidMessage = "Please drag your document.";
             }
+            if(this.currentProgessinPercent==100){
+              this.currentProgessinPercent = 0;
+            }    
           }, (err) => {
             console.error(err)
             this.loader.close();

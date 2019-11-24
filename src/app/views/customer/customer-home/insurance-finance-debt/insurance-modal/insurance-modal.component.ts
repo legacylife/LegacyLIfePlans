@@ -259,7 +259,6 @@ export class InsuranceModalComponent implements OnInit {
           if (res) {
             console.log("**************",res)
           }
-          this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
         })
       }
       else{
@@ -269,7 +268,13 @@ export class InsuranceModalComponent implements OnInit {
           proceedToUpload = true
         }
         if( proceedToUpload ) {
+          if(this.selectedProfileId){
+            this.uploader.onBeforeUploadItem = (item) => {
+              item.url = `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}`;
+            }
+          }
           if(this.uploader.getNotUploadedItems().length){
+            this.currentProgessinPercent = 1;
             this.uploaderCopy = cloneDeep(this.uploader)
             this.uploader.queue.splice(1, this.uploader.queue.length - 1)
             this.uploaderCopy.queue.splice(0, 1)
@@ -277,12 +282,15 @@ export class InsuranceModalComponent implements OnInit {
               this.InsuranceForm.controls['documents_temp'].setValue('');        
                 this.uploader.uploadItem(fileoOb);
             });
-            this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-              this.updateProgressBar();
+
+            this.updateProgressBar();
+            this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {              
               this.getInsuranceDocuments();
+              setTimeout(()=>{    
+                this.uploader.clearQueue();
+                },800);
             };
-            this.uploader.onCompleteAll=()=>{
-              this.uploader.clearQueue();
+            this.uploader.onCompleteAll = () => {
               if(!this.uploaderCopy.queue.length){
                 this.currentProgessinPercent = 0;
               }
@@ -294,33 +302,49 @@ export class InsuranceModalComponent implements OnInit {
   }
     
   updateProgressBar(){
-    let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
-    let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;
-    this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
-    this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
-    if(this.uploader.queue.length>0){
-      this.uploader.clearQueue();
+    let uploaderLength = 0;  let uploaderCopyLength = 0;
+    if(this.currentProgessinPercent==0){
+      this.uploader.onProgressItem = (progress:any) => {
+        this.currentProgessinPercent = progress;
+      }
+    }
+
+    this.uploader.onProgressAll = (progress:any) => {
+      uploaderLength = progress;
+      if(this.uploaderCopy.queue.length==0){
+        this.currentProgessinPercent = uploaderLength;
+      }
+      this.uploaderCopy.onProgressAll = ( progress: any) => {
+        uploaderCopyLength = progress;
+        this.currentProgessinPercent = (uploaderLength + uploaderCopyLength)/100;
+        let totalLength = uploaderLength + uploaderCopyLength;
+        this.currentProgessinPercent = totalLength - 100;
+      }
     }
   }
 
-  uploadRemainingFiles(profileId) {
+  uploadRemainingFiles(profileId) {    
     this.uploaderCopy.onBeforeUploadItem = (item) => {
       item.url = `${URL}?userId=${this.userId}&ProfileId=${profileId}`;
-      this.InsuranceForm.controls['documents_temp'].setValue('');        
+      this.InsuranceForm.controls['documents_temp'].setValue('');         
     }
     this.uploaderCopy.queue.forEach((fileoOb, ind) => {
         this.uploaderCopy.uploadItem(fileoOb);
+        
     });
-
+    this.updateProgressBar();
     this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      this.updateProgressBar();
-      this.getInsuranceDocuments({}, false, false);      
+      this.uploaderCopy.removeFromQueue(item);
+      this.getInsuranceDocuments({}, false, false);   
     };
-    this.uploaderCopy.onCompleteAll=()=>{
-      this.uploaderCopy.clearQueue();
-      this.currentProgessinPercent = 0;
+
+    this.uploaderCopy.onCompleteAll = () => {
+      setTimeout(()=>{    
+        this.getInsuranceDocuments();
+        },5000);
     }
-  }
+}
+
 
   getInsuranceDocuments = (query = {}, search = false, uploadRemained = true) => {     
     let profileIds = this.InsuranceForm.controls['profileId'].value;
@@ -337,19 +361,20 @@ export class InsuranceModalComponent implements OnInit {
     this.userapi.apiRequest('post', 'insuranceFinanceDebt/view-insurance-details', req_vars).subscribe(result => {
       if (result.status == "error") {
       } else {
-        profileIds = result.data._id;
+        profileIds = this.selectedProfileId = result.data._id;
         this.InsuranceForm.controls['profileId'].setValue(profileIds);
         if(uploadRemained) {
           this.uploadRemainingFiles(profileIds)
         }
-        // this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
-        // this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${profileIds}` });
         this.InsuranceDocsList = result.data.documents;   
         this.InsuranceForm.controls['documents_temp'].setValue('');
         if(this.InsuranceDocsList.length>0){
           this.InsuranceForm.controls['documents_temp'].setValue('1');
           this.documentsMissing = false;
-        }                      
+        }                 
+        if(this.currentProgessinPercent==100){
+          this.currentProgessinPercent = 0;
+        }         
       }
     }, (err) => {
       console.error(err);

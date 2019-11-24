@@ -384,6 +384,7 @@ public fileOverBase(e: any): void {
           }
         }
         if(this.uploader.getNotUploadedItems().length) {
+          this.currentProgessinPercent = 1;
           this.uploaderCopy = cloneDeep(this.uploader)
           this.uploader.queue.splice(1, this.uploader.queue.length - 1)
           this.uploaderCopy.queue.splice(0, 1);

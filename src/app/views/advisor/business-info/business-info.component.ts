@@ -256,10 +256,13 @@ export class BusinessInfoComponent implements OnInit {
     });
 
     if(this.uploader.getNotUploadedItems().length){
+      this.currentProgessinPercent = 1;
+        this.uploader.onProgressItem = (progress:any) => {
+          this.updateProgressBar();
+        }
         this.uploader.uploadAll(); 
         this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => { 
-          this.forthFormGroup.controls['advisorDocuments_temp'].setValue('');
-        this.updateProgressBar();
+        this.forthFormGroup.controls['advisorDocuments_temp'].setValue('');
         this.getProfileField();
       };
       this.uploader.onCompleteAll=()=>{
@@ -270,10 +273,17 @@ export class BusinessInfoComponent implements OnInit {
   }
 
   updateProgressBar(){
-    let totalLength = this.uploader.queue.length;
-    let remainingLength =  this.uploader.getNotUploadedItems().length;
-    this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
-    this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
+    let uploaderLength = 0;  
+    if(this.currentProgessinPercent==0){
+      this.uploader.onProgressItem = (progress:any) => {
+        this.currentProgessinPercent = progress;
+      }
+    }
+    this.uploader.onProgressAll = (progress:any) => {
+      this.currentProgessinPercent = (uploaderLength)/100;
+      let totalLength = progress;
+      this.currentProgessinPercent = totalLength - 100;
+    }
   }
 
    isExtension(ext, extnArray) {
@@ -304,6 +314,9 @@ getProfileField = (query = {}, search = false) => {
           this.forthFormGroup.controls['advisorDocuments_temp'].setValue('1');
           this.documentsMissing = false;
         }
+        if(this.currentProgessinPercent==100){
+          this.currentProgessinPercent = 0;
+        }    
       }
     }, (err) => {
       console.error(err);

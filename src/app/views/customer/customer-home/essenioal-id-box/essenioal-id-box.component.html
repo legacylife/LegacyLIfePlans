@@ -145,7 +145,7 @@
           <!-- <mat-form-field class="full-width" *ngIf="advisorDocumentsHide">
             <input matInput name="documents" [formControl]="IDForm.controls['documents']" >
           </mat-form-field> -->
-          <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderCopy.getNotUploadedItems().length || uploader.getNotUploadedItems().length">
+          <div class="progress" style="margin-bottom: 0;" *ngIf="currentProgessinPercent>0">
             <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
             <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
           </div>

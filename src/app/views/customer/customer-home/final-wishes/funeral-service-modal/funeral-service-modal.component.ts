@@ -401,6 +401,7 @@ public fileOverBase(e: any): void {
           }
         }
         if(this.uploader.getNotUploadedItems().length) {
+          this.currentProgessinPercent = 1;
           this.uploaderCopy = cloneDeep(this.uploader)
           this.uploader.queue.splice(1, this.uploader.queue.length - 1)
           this.uploaderCopy.queue.splice(0, 1);
@@ -417,28 +418,24 @@ public fileOverBase(e: any): void {
               },800);
           };
           this.uploader.onCompleteAll = () => {
-            setTimeout(()=>{    
-              this.getFuneralServiceDocuments();
-              },5000);
+            if(!this.uploaderCopy.queue.length){
+              this.currentProgessinPercent = 0;
+            }
           }
         }
       }
     }
   })
-
-
 }
 }
 
 updateProgressBar(){
   let uploaderLength = 0;  let uploaderCopyLength = 0;
-  
   if(this.currentProgessinPercent==0){
     this.uploader.onProgressItem = (progress:any) => {
       this.currentProgessinPercent = progress;
     }
   }
-
   this.uploader.onProgressAll = (progress:any) => {
     uploaderLength = progress;
     if(this.uploaderCopy.queue.length==0){
@@ -451,7 +448,6 @@ updateProgressBar(){
       this.currentProgessinPercent = totalLength - 100;
     }
   }
-  //console.log('len 1# ',this.uploader.queue.length,'len 2# ',this.uploaderCopy.queue.length,' Processs',this.currentProgessinPercent)
 }
 
 uploadRemainingFiles(profileId) {    

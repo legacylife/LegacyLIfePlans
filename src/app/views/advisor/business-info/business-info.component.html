@@ -237,18 +237,22 @@
                 <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
                     <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
                 </mat-chip-list>    
-               <!-- <div class="progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
-                  <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">{{uploader.progress}}%</div>
-                  <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="uploader.progress"></mat-progress-bar>
-                  <p>&nbsp;</p>
-               </div> -->
+               <!--
 
               <div class="progress" style="margin-bottom: 0;color:#000 !important;" *ngIf="uploader.getNotUploadedItems().length">
                 <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
                 <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
                 <p>&nbsp;</p>
               </div>
-                <div class="text-center">
+              -->
+
+              <div class="progress" style="margin-bottom: 0;" *ngIf="currentProgessinPercent>0">
+                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
+                <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
+                <p>&nbsp;</p>
+              </div>
+
+              <div class="text-center">
                   <button mat-raised-button class="llp--primary--btn full-width mb-1" [disabled]="forthFormGroup.invalid">Complete</button>
                   <button mat-raised-button matStepperPrevious class="llp--back--btn"><mat-icon>arrow_back</mat-icon> Back</button></div>
               </div>

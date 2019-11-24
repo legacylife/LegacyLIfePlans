@@ -288,7 +288,13 @@ export class ObituaryModalComponent implements OnInit {
           proceedToUpload = true
         }
         if( proceedToUpload ) {
+          if(this.selectedProfileId){
+            this.uploader.onBeforeUploadItem = (item) => {
+              item.url = `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}`;
+            }
+          }
           if(this.uploader.getNotUploadedItems().length){
+            this.currentProgessinPercent = 1;
             this.uploaderCopy = cloneDeep(this.uploader)
             this.uploader.queue.splice(1, this.uploader.queue.length - 1)
             this.uploaderCopy.queue.splice(0, 1)
@@ -306,9 +312,9 @@ export class ObituaryModalComponent implements OnInit {
                 },800);
             };
             this.uploader.onCompleteAll = () => {
-              setTimeout(()=>{    
-                this.getObituaryDocuments();
-                },5000);
+              if(!this.uploaderCopy.queue.length){
+                this.currentProgessinPercent = 0;
+              }
             }
           }
         }

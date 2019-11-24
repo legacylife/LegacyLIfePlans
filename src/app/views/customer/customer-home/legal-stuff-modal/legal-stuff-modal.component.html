@@ -48,14 +48,11 @@
         <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
             <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
         </mat-chip-list>    
-
         <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small>
-
-        <div class="progress" style="margin-bottom: 0;" *ngIf="uploaderCopy.getNotUploadedItems().length || uploader.getNotUploadedItems().length">
+        <div class="progress" style="margin-bottom: 0;" *ngIf="currentProgessinPercent>0">
           <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
           <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
         </div>
-
         <mat-form-field class="full-width mt-1">
         <textarea (keyup)="firstCapitalize($event)" maxlength="500" matInput placeholder="Comments" name="comments" [formControl]="LegalForm.controls['comments']"></textarea>
         <div class="char--limit" style="float: right;">{{ 500 - LegalForm.controls['comments'].value?.length }}</div>

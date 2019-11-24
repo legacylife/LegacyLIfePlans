@@ -92,7 +92,7 @@ export class MarkAsDeceasedComponent implements OnInit {
         console.log(result.data)
       } else {
         if(result.data.deceasedData){    
-          this.datas = result.data.deceasedData;                    
+          this.datas =   result.data.deceasedData;                    
           this.selectedProfileId = this.datas._id;
           this.DeceasedForm.controls['profileId'].setValue(this.selectedProfileId);
           this.DocumentsList = this.datas.documents;                   
@@ -185,7 +185,14 @@ public fileOverBase(e: any): void {
         }
       });
 
+
+
       if(this.uploader.getNotUploadedItems().length){
+        if(this.selectedProfileId){
+          this.uploader.onBeforeUploadItem = (item) => {
+            item.url = `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}`;
+          }
+        }
         this.uploaderCopy = cloneDeep(this.uploader);
         this.uploader.queue.splice(1, this.uploader.queue.length - 1)
         this.uploaderCopy.queue.splice(0, 1)
@@ -193,53 +200,70 @@ public fileOverBase(e: any): void {
         this.uploader.onBeforeUploadItem = (item) => {
             item.url = `${URL}?userType=${localStorage.getItem("endUserType")}&userId=${this.customerLegaciesId}&advisorId=${this.advisorId}&trustId=${this.trustId}&ProfileId=${this.selectedProfileId}`;
         }
+        if(this.uploader.getNotUploadedItems().length){
+          this.currentProgessinPercent = 1;
+        }
         this.uploader.queue.forEach((fileoOb, ind) => {
               this.uploader.uploadItem(fileoOb);
          });
-         this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-           this.updateProgressBar();
-           this.getDeceasedView();
-         };
 
-         this.uploader.onCompleteAll=()=>{
-          if(this.uploaderCopy.queue.length==0){  
-            this.uploadingDocs = false;
-          }
-         };
-         this.uploader.onCompleteAll=()=>{
-          this.uploader.clearQueue();
-          this.uploadingDocs = false;    
+        this.updateProgressBar();
+        this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {              
+          this.getDeceasedView();
+          setTimeout(()=>{    
+            this.uploader.clearQueue();
+            },800);
+        };
+        this.uploader.onCompleteAll = () => {
           if(!this.uploaderCopy.queue.length){
+            this.uploadingDocs = false;
             this.currentProgessinPercent = 0;
           }
         }
        }
     }
     
-  updateProgressBar(){
-    let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;
-    let remainingLength =  this.uploader.getNotUploadedItems().length + this.uploaderCopy.getNotUploadedItems().length;    
-    this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
-    this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
-  }
-
-  uploadRemainingFiles(profileId) {
-    if(profileId!=='undefined'){
+    updateProgressBar(){
+      let uploaderLength = 0;  let uploaderCopyLength = 0;
+      if(this.currentProgessinPercent==0){
+        this.uploader.onProgressItem = (progress:any) => {
+          this.currentProgessinPercent = progress;
+        }
+      }
+  
+      this.uploader.onProgressAll = (progress:any) => {
+        uploaderLength = progress;
+        if(this.uploaderCopy.queue.length==0){
+          this.currentProgessinPercent = uploaderLength;
+        }
+        this.uploaderCopy.onProgressAll = ( progress: any) => {
+          uploaderCopyLength = progress;
+          this.currentProgessinPercent = (uploaderLength + uploaderCopyLength)/100;
+          let totalLength = uploaderLength + uploaderCopyLength;
+          this.currentProgessinPercent = totalLength - 100;
+        }
+      }
+    }
+  
+    uploadRemainingFiles(profileId) {    
+      if(profileId!=='undefined'){
       this.uploaderCopy.onBeforeUploadItem = (item) => {
         item.url = `${URL}?userType=${localStorage.getItem("endUserType")}&userId=${this.customerLegaciesId}&advisorId=${this.advisorId}&trustId=${this.trustId}&ProfileId=${profileId}`;
       }
       this.uploaderCopy.queue.forEach((fileoOb, ind) => {
           this.uploaderCopy.uploadItem(fileoOb);
+          
       });
+      this.updateProgressBar();
       this.uploaderCopy.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-        this.updateProgressBar();
-        this.getDeceasedView({}, false, false,false);
+        this.uploaderCopy.removeFromQueue(item);
+        this.getDeceasedView({}, false, false);   
       };
-
-      this.uploaderCopy.onCompleteAll=()=>{
-        this.uploadingDocs = false;    
-        this.uploaderCopy.clearQueue();
-        this.currentProgessinPercent = 0;
+  
+      this.uploaderCopy.onCompleteAll = () => {
+        setTimeout(()=>{    
+          this.getDeceasedView();
+          },5000);
       }
     }
   }
