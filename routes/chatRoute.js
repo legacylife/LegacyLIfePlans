@@ -122,7 +122,8 @@ async function contactList(req, res) {
           res.send(cList)   
         })
   }else{
-      let advisorList = await HiredAdvisors.find({customerId:ObjectId(query._id),status:'Active'}, {_id:1,advisorId:1}).populate('advisorId');
+     let advisorList = await HiredAdvisors.find({customerId:ObjectId(query._id),status:'Active'}, {_id:1,advisorId:1}).populate('advisorId');
+     
         async.each(advisorList, async function (val){
         let chatCount =  0;
         let info = val.advisorId;

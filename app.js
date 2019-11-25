@@ -41,8 +41,8 @@ const apps = express()
     //withId.contactId
   });
 
-  socket.on('new-message', async (message) => {    
-    io.emit('new-message-'+message.chatwithid, message);
+  socket.on('new-message', async (message,chatid) => {    
+    io.emit('new-message-'+message.chatwithid, message,chatid);
     var unreadCnt = await chats.userMessagesStatus(message.chatwithid,'online');
     //io.emit('message-unread-count-'+message.chatwithid, userUnreadCnt);
      io.emit('message-unread-count-'+message.chatwithid, unreadCnt);    

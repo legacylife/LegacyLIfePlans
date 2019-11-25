@@ -32,14 +32,14 @@ async function chatRoom(chatId,userId) {
   console.log('******************************************chatRoom --- '+userId,'-----*****************--',chatId);
     let chatingData = await chat.findOne({_id:chatId});
     if(chatingData) { //await chat.updateMany({_id:found._id},{$set: proquery })
-       // await chat.update({_id:found._id,chats: { $elemMatch: { contactId: { '$ne': userId }, status: 'unread' }}},{$set : {'chats.$.status': 'read'}}, {safe: true, multi:true});
-       chatingData.chats.forEach( async ( val, index ) => {
+        await chat.update({_id:found._id,chats: { $elemMatch: { contactId: { '$ne': userId }, status: 'unread' }}},{$set : {'chats.$[].status': 'read'}}, {safe: true, multi:true});
+       //chatingData.chats.forEach( async ( val, index ) => {
        // console.log('-------------',userId,'*************',val.contactId);
-          if(userId!=val.contactId) {
+         // if(userId!=val.contactId) {
          //   console.log('ID------------------',val._id);
          //   await chat.updateOne({_id:chatingData._id,'chats.status': 'unread'},{$set : {'chats.$.status': 'read'}});
-          }
-         })
+          //}
+        // })
         // await chat.updateOne({_id:found._id,'chats.status': 'unread'},{$set : {'chats.$.status': 'read'}});
         // console.log('Chat ID --- '+chatId,'found-->',found);
     }
