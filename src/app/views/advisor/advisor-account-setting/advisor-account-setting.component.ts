@@ -62,6 +62,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   websiteLinks: any;// websiteLink[] = [{ 'links': "" }]
   specialites: any;
   hobbies: any;
+  sponsoredToDate: any;
   showHowManyProducer: boolean
   advisorDocuments_temps = false;
   uploadedFile: File
@@ -92,6 +93,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   isSubscribedBefore: boolean = false
   autoRenewalFlag: boolean = false
   autoRenewalVal:boolean = false
+  sponsoredAdvisorFlag:boolean = false
   isPremiumExpired: boolean = false
   isSubscriptionCanceled:boolean = false
   userCreateOn: any
@@ -322,6 +324,12 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
           this.LicenseForm.controls['advisorDocuments_temp'].setValue('1');
         }
 
+        if(this.profile.sponsoredAdvisor && this.profile.sponsoredAdvisor=='yes'){
+          if(result.data.advertisementdata){
+            this.sponsoredToDate = result.data.advertisementdata.toDate;
+            this.sponsoredAdvisorFlag = true;
+          }
+        }
 
         this.profile.manageOtherProceducers == 1 ? this.showHowManyProducer = true : this.showHowManyProducer = false
         this.loader.close();

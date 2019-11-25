@@ -54,17 +54,17 @@ import { UserAPIService } from './../../../userapi.service';
     this.dialog.closeAll();
     this.getProductDetails();
 
-    const req_vars = { userId: this.userId }    
     if(this.userId){
-      const req_vars = { _id: this.userId }
+      const req_vars = { userId: this.userId }    
       this.userapi.apiRequest('post', 'auth/view', req_vars).subscribe(result => {  
-        this.subscriptionData = result.data.subscriptionDetails;
-        console.log("zhlxkjcXZKcjhk",this.subscriptionData)
+        this.subscriptionData = [];
+        if(result.data.subscriptionDetails){
+          this.subscriptionData = result.data.subscriptionDetails;
+        }
       }, (err) => {
         console.error(err)
       })
-    }
-    
+   }   
   }
 
   @HostListener("window:beforeunload", ["$event"])
@@ -74,7 +74,6 @@ import { UserAPIService } from './../../../userapi.service';
       event.returnValue = false;
     }
   }
-
 
   // get product plan
   getProductDetails = (query = {}) => {

@@ -32,14 +32,14 @@
             <span>+1 {{phoneval}}</span>
           </div>
 
-          <div class="feature--profile">
+          <div class="feature--profile" *ngIf="sponsoredAdvisorFlag">
             <div class="sett--fp">
               <mat-icon>settings</mat-icon>
               Featured Profile
             </div>
             <p class="pro--info">Your profile information will be visible to the end users on LLP.</p>
             <p class="validate">
-              <span>Valid till:</span> 29 Apr</p>
+              <span>Valid till:</span> {{sponsoredToDate | date: 'mediumDate'}}</p>
           </div>
 
           <div class="feature--profile">

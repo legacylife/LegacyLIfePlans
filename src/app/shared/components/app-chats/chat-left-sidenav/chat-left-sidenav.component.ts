@@ -19,6 +19,7 @@ export class ChatLeftSidenavComponent implements OnInit {
   chatWindow: boolean = false
   contactsWindow: boolean = false
   userType : string;
+  typeing:string = '';
   contactsWindowError: string = 'Hire an Advisor to start chatting and seek professional help!';
   @Output() chatWindowToggle = new EventEmitter();
 
@@ -85,6 +86,19 @@ export class ChatLeftSidenavComponent implements OnInit {
           this.contactsWindow = false  
         }
       });
+
+
+      this.chatService.getTyping().subscribe(id => {
+        if(this.contacts!=undefined){
+              let contactInd = this.contacts.findIndex((c) => c._id == this.userId);
+              if (contactInd && contactInd > -1) {
+                this.contacts[contactInd].typeing = 'typing...';;
+              }
+              setTimeout(()=>{           
+                this.typeing = '';
+              },1500); 
+         }
+       });
   }
 
   ngOnDestroy() {
@@ -92,19 +106,20 @@ export class ChatLeftSidenavComponent implements OnInit {
     if( this.loadDataSub ) this.loadDataSub.unsubscribe();
   }
 
+
+
   getChatByContact(contactId) { 
     this.chatWindow = true;
     this.chatWindowToggle.emit(this.chatWindow);
     const selected = ['contactId'];
     const openwindow = this.currentUser.chatInfo.map(x => {selected.includes(x.contactId); return x.contactId});
-    if(this.currentUser.chatInfo.length > 0){
+    if(this.currentUser.chatInfo && this.currentUser.chatInfo.length > 0){
       let contactInd = openwindow.findIndex((c) => c == contactId);
-      this.currentUser.chatInfo[contactInd].unread = 0;
+      if (contactInd && contactInd > -1) {
+        this.currentUser.chatInfo[contactInd].unread = 0;
+      }
     }
-    
-    //console.log('contactInd',contactInd,'here',this.currentUser.chatInfo[contactInd],'---',this.currentUser.chatInfo[contactInd].unread)
-    
-    //this.currentUser.chatInfo[contactId].unread = 0;
+
     this.chatService.getChatByContact(contactId)
       .subscribe(res => {
         //console.log('from sub',res);

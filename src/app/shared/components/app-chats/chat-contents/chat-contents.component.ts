@@ -104,9 +104,10 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   checkSend(e) {
     let re = /(^|[.!?]\s+)([a-z])/g;
     var textBox: HTMLInputElement = <HTMLInputElement>e.target;
+     //console.log('checkSend',textBox.value)
     if(textBox.value.trim()){      
       var socket = io(serverUrl);
-      //8socket.emit('typing-with',{contactId:this.userId,chatwithid:this.activeContact._id});
+      socket.emit('typing-with',{contactId:this.userId,chatwithid:this.activeContact._id});
       this.isButtonEnabled = true;
     }else{
       this.isButtonEnabled = false;
@@ -124,6 +125,8 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
      messageVal = `${msgText}${event.emoji.native}`;
     }
      this.msgForm.controls['message'].setValue(messageVal);
+     this.msgInput.first.nativeElement.focus();
+     this.isButtonEnabled = true;
      this.showEmojiPicker = false;
   }
 

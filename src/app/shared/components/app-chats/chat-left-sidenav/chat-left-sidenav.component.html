@@ -20,18 +20,14 @@
   </mat-nav-list>
   <!-- <mat-divider></mat-divider> -->
   <mat-nav-list class="inbox-nav-list" role="list" *ngIf='contacts'>
-    <mat-list-item
-    *ngFor="let contact of contacts"
-    (click)="getChatByContact(contact._id)">
-      <a 
-      mat-list-avatar 
-      [ngClass]="{online: contact.status === 'online'}"
+    <mat-list-item *ngFor="let contact of contacts"  (click)="getChatByContact(contact._id)">
+      <a mat-list-avatar [ngClass]="{online: contact.status === 'online'}"
       class="toolbar-avatar">
         <img [src]="contact.avatar" alt="">
         <span class="status-dot"></span>
       </a>
       <span class="unread--msg--count menuitem-badge mat-bg-warn ng-star-inserted" *ngIf="contact.unread>0">{{contact.unread}}</span>
-      <h6 matLine>{{contact.name}}</h6>
+      <h6 matLine>{{contact.name}} {{typeing}}</h6>
       <!-- <p matLine class="text-muted">{{contact.lastChatTime  | date}}</p> -->
     </mat-list-item>
     
