@@ -131,6 +131,7 @@ public noWhitespaceValidator(control: FormControl) {
       }
     }
     if (userData._id) {
+      this.RequestData.status = userData.status;
       this.RequestData._id = userData._id;
       this.url = 'userlist/updateadminprofile';
     }
