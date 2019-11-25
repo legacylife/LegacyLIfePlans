@@ -60,7 +60,8 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
 
     this.chatService.getTyping().subscribe(id => {
      this.typeing = 'typing...';
-      setTimeout(()=>{           
+     this.activeContact.status = 'online'; 
+     setTimeout(()=>{           
         this.typeing = '';
       },1500); 
     });

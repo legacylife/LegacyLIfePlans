@@ -19,7 +19,7 @@
     </mat-list-item>    
   </mat-nav-list>
   <!-- <mat-divider></mat-divider> -->
-  <mat-nav-list class="inbox-nav-list" role="list" *ngIf='contacts'>
+  <mat-nav-list class="inbox-nav-list" role="list" *ngIf="contacts">
     <mat-list-item *ngFor="let contact of contacts; let i = index"  (click)="getChatByContact(contact._id)">
       <a mat-list-avatar [ngClass]="{online: contact.status === 'online'}"
       class="toolbar-avatar">
@@ -32,8 +32,8 @@
     </mat-list-item>
     
   </mat-nav-list>
-    <mat-nav-list class="inbox-nav-list" role="list" *ngIf='contactsWindow'>
-      <mat-list-item>{{contactsWindowError}}</mat-list-item>
-  </mat-nav-list>
+  <mat-nav-list class="inbox-nav-list" role="list" *ngIf="!contactsWindow">
+    <mat-list-item>{{contactsWindowError}}</mat-list-item>
+</mat-nav-list>
 </div>
   

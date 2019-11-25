@@ -312,9 +312,7 @@ export class ChatService {
     });
   }
 
-
-
-  public getOnlineStatus = () => {
+ public getOnlineStatus = () => {
     this.userInfo = this.userapi.getUserInfo();
     this.userId = '';
     if (this.userInfo.endUserType !== '') {
@@ -331,9 +329,9 @@ export class ChatService {
           }
         });
     });
-  }
+ }
 
-  public getMessages = () => {
+ public getMessages = () => {
     this.userInfo = this.userapi.getUserInfo();
     this.userId = '';
     if (this.userInfo.endUserType !== '') {

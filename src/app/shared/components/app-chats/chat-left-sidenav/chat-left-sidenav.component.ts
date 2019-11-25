@@ -28,20 +28,13 @@ export class ChatLeftSidenavComponent implements OnInit {
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.userType = localStorage.getItem("endUserType");
-      if(this.userType=='advisor'){
-          this.contactsWindowError = 'Contacts records not Found!';
+      if(this.userType=='advisor') {
+          this.contactsWindowError = 'Contacts not Found!';
       }
-    // this.chatService.onChatsUpdated
-    //   .subscribe(updatedChats => {
-    //     this.chats = updatedChats;
-    //   });
-    //console.log('chat left side ###########',this.chatService.onUserUpdated);
-    //this.loader.open();
+   
     this.userUpdateSub = this.chatService.onUserUpdated
       .subscribe(updatedUser => {
         this.currentUser = updatedUser;
-
-
       });
 
     this.loadDataSub = this.chatService.loadChatData()
@@ -80,6 +73,7 @@ export class ChatLeftSidenavComponent implements OnInit {
         }
        }
       });
+      
       this.chatService.getOnlineStatus().subscribe((friendId:any) => {
         this.contacts = this.chatService.contacts;
         if(this.contacts.length==0){
@@ -89,12 +83,12 @@ export class ChatLeftSidenavComponent implements OnInit {
         }
       });
 
-
       this.chatService.getFromTyping().subscribe(id => {
         if(this.contacts!=undefined){
               let contactInd = this.contacts.findIndex((c) => c._id == id);
               if (contactInd && contactInd > -1) {
                 this.contacts[contactInd].typeing = 'typing...';
+                this.contacts[contactInd].status = 'online';                
               }
               setTimeout(()=>{           
                 this.contacts[contactInd].typeing = '';
@@ -107,8 +101,6 @@ export class ChatLeftSidenavComponent implements OnInit {
     if( this.userUpdateSub ) this.userUpdateSub.unsubscribe();
     if( this.loadDataSub ) this.loadDataSub.unsubscribe();
   }
-
-
 
   getChatByContact(contactId) { 
     this.chatWindow = true;
@@ -129,9 +121,5 @@ export class ChatLeftSidenavComponent implements OnInit {
         console.log('err--',err)
       })
   }
-  
- 
-
-
 
 }
