@@ -37,6 +37,7 @@ const allActivityLog = require('./../helpers/allActivityLogs')
 
 //function to check and signin user details
 function signin(req, res) {
+  console.log("login data >>>>",req.body)
   passport.authenticate('local', function (err, user, info) {
     if (err) {
       let result = { "message": err };
@@ -69,6 +70,11 @@ function signin(req, res) {
     }
     else if (info && info.message == "Under review") {
       let message = resMessage.data(608, [])
+      let result = { "message": message, "invalidEmail": true, "invalidPassword": false }
+      res.status(200).send(resFormat.rError(result))
+    }
+    else if (user && user.userType == "sysadmin" && req.body.userType != 'sysadmin') {
+      let message = resMessage.data(615, [])
       let result = { "message": message, "invalidEmail": true, "invalidPassword": false }
       res.status(200).send(resFormat.rError(result))
     }
