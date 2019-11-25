@@ -36,8 +36,7 @@ const apps = express()
     io.emit('online-status',data.userId,'offline');
   });
  
-  socket.on('typing-with', async (withId) => {
-    console.log('withId>>>>>>>',withId)    
+  socket.on('typing-with', async (withId) => {  
     io.emit('typing-with-'+withId.chatwithid,withId.contactId);
     //withId.contactId
   });

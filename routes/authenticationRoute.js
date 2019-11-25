@@ -337,7 +337,7 @@ function list(req, res) {
 
 //function get details of user from url param
 function details(req, res) {
-  let fields = { id: 1, username: 1, socialMediaToken: 1, salt: 1, fullName: 1, profileSetup: 1, status: 1, userType: 1, sectionAccess: 1, profilePicture: 1 }
+  let fields = { id: 1, username: 1, socialMediaToken: 1, salt: 1, fullName: 1, profileSetup: 1, status: 1, userType: 1, sectionAccess: 1, profilePicture: 1,subscriptionDetails:1 }
   if (req.body.fields) {
     fields = req.body.fields
   }
