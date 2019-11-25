@@ -39,10 +39,13 @@ export class ChatLeftSidenavComponent implements OnInit {
 
     this.loadDataSub = this.chatService.loadChatData()
       .subscribe(res => {
-        //this.loader.close();
         this.currentUser = this.chatService.user;
-        // this.chats = this.chatService.chats;
         this.contacts = this.chatService.contacts;
+        if(this.contacts.length==0){
+          this.contactsWindow = true  
+        }else{
+          this.contactsWindow = false  
+        }
       });
       this.chatService.getMessagesUnreadCnt().subscribe((count:any) => {
         var totalCount = 0
@@ -51,7 +54,6 @@ export class ChatLeftSidenavComponent implements OnInit {
           count.map((o) => { 
             totalCount += o.unread;
             let contactInd = this.contacts.findIndex((c) => c._id == o.user_id);
-            console.log(contactInd,'-------')
             if (contactInd && contactInd > -1) {
               this.contacts[contactInd].unread = o.unread;
               if(o.unread!=undefined && o.unread>0){
@@ -59,9 +61,7 @@ export class ChatLeftSidenavComponent implements OnInit {
                 if(o.unread>99){
                   unreadCnt = o.unread+'+';
                 }
-               //8 this.currentUser.chatInfo[contactInd].unread = o.unread;
                 this.contacts[contactInd].unread = unreadCnt;
-                console.log(unreadCnt,'--contacts-----',this.contacts)
               }else{
                 this.contacts[contactInd].unread = o.unread;
               }              
@@ -69,7 +69,6 @@ export class ChatLeftSidenavComponent implements OnInit {
               this.currentUser.chatInfo[0].unread = o.unread;
             }
           });
-          // this.unreadCount = totalCount+'+';
         }
        }
       });

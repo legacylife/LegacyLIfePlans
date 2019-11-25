@@ -26,6 +26,7 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   userType : string;
   typeing:string = '';
   showEmojiPicker = false;
+  private socket;    
   @Input('matSidenav') matSidenav;
   @ViewChild(PerfectScrollbarDirective) psContainer: PerfectScrollbarDirective;
   @Output() hideWindowToggle = new EventEmitter();
@@ -33,7 +34,9 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   @ViewChildren("msgInput") msgInput;
   @ViewChild("msgForm") msgForm: NgForm;
 
-  constructor(private chatService: ChatService, private picService : ProfilePicService) {}
+  constructor(private chatService: ChatService, private picService : ProfilePicService) {
+    this.socket = io(serverUrl);
+  }
 
   ngOnInit() {
     this.picService.itemValue.subscribe((nextValue) => {
@@ -59,11 +62,13 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
     });
 
     this.chatService.getTyping().subscribe(id => {
-     this.typeing = 'typing...';
-     this.activeContact.status = 'online'; 
-     setTimeout(()=>{           
-        this.typeing = '';
-      },1500); 
+    if(id==this.activeContact._id){
+      this.typeing = 'typing...';
+      this.activeContact.status = 'online'; 
+      setTimeout(()=>{           
+          this.typeing = '';
+        },1500); 
+    }
     });
 
     this.chatService.getMessagesUnreadCnt().subscribe((count: string) => {
@@ -105,10 +110,10 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   checkSend(e) {
     let re = /(^|[.!?]\s+)([a-z])/g;
     var textBox: HTMLInputElement = <HTMLInputElement>e.target;
-     //console.log('checkSend',textBox.value)
     if(textBox.value.trim()){      
-      var socket = io(serverUrl);
-      socket.emit('typing-with',{contactId:this.userId,chatwithid:this.activeContact._id});
+      if(e.keyCode==32){
+        this.socket.emit('typing-with',{contactId:this.userId,chatwithid:this.activeContact._id});
+      }
       this.isButtonEnabled = true;
     }else{
       this.isButtonEnabled = false;

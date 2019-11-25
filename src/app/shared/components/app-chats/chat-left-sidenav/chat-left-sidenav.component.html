@@ -32,8 +32,13 @@
     </mat-list-item>
     
   </mat-nav-list>
-  <mat-nav-list class="inbox-nav-list" role="list" *ngIf="!contactsWindow">
+  <mat-nav-list class="inbox-nav-list" role="list" *ngIf="contactsWindow">
     <mat-list-item>{{contactsWindowError}}</mat-list-item>
-</mat-nav-list>
+  </mat-nav-list>
+
+  <mat-card *ngIf="!contactsWindow && !contacts" class="text-center mat-card" fxlayout="row" fxlayoutalign="center center" style="height: 120px; width: 120px; border-radius: 50%; flex-direction: row; box-sizing: border-box; display: flex; place-content: center; align-items: center;">
+    <mat-icon class="text-60 mat-icon mat-primary material-icons" color="primary" style="height: 60px; width: 60px;">chat</mat-icon>
+  </mat-card>
+
 </div>
   

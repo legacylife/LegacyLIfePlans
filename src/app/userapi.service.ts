@@ -38,7 +38,10 @@ export class UserAPIService {
   userDeceased:boolean=false;  
   userLockoutPeriod:boolean=false;  
   private returnData:any;
-  constructor(private http: HttpClient,private snack: MatSnackBar, private router: Router) { }
+  private socket;
+  constructor(private http: HttpClient,private snack: MatSnackBar, private router: Router) {
+    this.socket = io(serverUrl);
+   }
 
   //function to save token and user id
   private saveToken(token: string, userId: string, userType: string, username: string, authCode: string, expiryDate: string, emailApiType: string = '', userHeaderDetails: any, mainUserId: any = "", req: any): void {
@@ -195,8 +198,13 @@ export class UserAPIService {
     let userId = localStorage.getItem('endUserId'),
         userType = localStorage.getItem("endUserType");
     this.token = ''    
-    var socket = io(serverUrl);
-    socket.emit('offline',{userId:userId,userType:userType});
+    
+    this.socket.emit('offline',{userId:userId,userType:userType});
+    this.socket.on('disconnect', function(){
+      console.log("socket disconnected logout",)
+     });
+    this.socket.disconnect();
+    
     this.removeKeyFromStorage('endUserId')
     this.removeKeyFromStorage('endUserType')
     this.removeKeyFromStorage('endUsername')

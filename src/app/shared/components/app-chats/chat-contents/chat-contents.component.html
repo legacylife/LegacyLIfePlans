@@ -48,7 +48,8 @@
         <div class="conversation-msg">
           {{chat.text}}
         </div>
-        <p class="chat-date text-muted">{{chat.time | relativeTime}}</p>
+        <!-- relativeTime -->
+        <p class="chat-date text-muted">{{chat.time | date: 'medium'}}</p>
       </div>
     </div>
   </div>
@@ -62,7 +63,7 @@
           </section>
         </main>
         <!-- <button type="button" class="toggle-emoji" (click)="toggleEmojiPicker()" style="cursor: pointer;"><mat-icon>emoji_emotions</mat-icon></button> -->
-        <mat-icon class="toggle-emoji" (click)="toggleEmojiPicker()" style="cursor: pointer;">emoji_emotions</mat-icon>
+        <mat-icon class="toggle-emoji" (click)="toggleEmojiPicker()" style="cursor: pointer;">mood</mat-icon>
         <textarea #msgInput ngModel placeholder="Type your message" name="message" class="type--text inputText"
          value="" (keydown.enter)="$event.preventDefault()" (keyup)="checkSend($event)" (keypress)="checkSend($event)"></textarea>
 
