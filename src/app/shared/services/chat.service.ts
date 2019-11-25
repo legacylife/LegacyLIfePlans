@@ -270,12 +270,25 @@ export class ChatService {
     }
     return Observable.create((observer) => {
         this.socket.on('typing-with-'+this.userId, (contactids) => {
-            console.log("typing-with-",this.userId,'contactids',contactids);
             observer.next(this.userId);
         });
     });
   }
 
+  public getFromTyping() {
+    this.userInfo = this.userapi.getUserInfo();
+    this.userId = '';
+    if (this.userInfo.endUserType !== '') {
+      this.userId = this.userInfo.endUserId;
+      this.userType = this.userInfo.endUserType;
+    }
+    return Observable.create((observer) => {
+        this.socket.on('typing-with-'+this.userId, (contactids) => {
+          //console.log("typing-from-",contactids,'contactids',contactids);
+          observer.next(contactids);
+      });
+    });
+  }
 
   public getMessagesUnreadCnt(){
     this.userInfo = this.userapi.getUserInfo();
@@ -286,13 +299,13 @@ export class ChatService {
     }
     return Observable.create((observer) => {
         this.socket.on('message-unread-count-'+this.userId, (count) => {
-            console.log("get message unread count :-",this.userId,'getMessagesUnreadCnt',count)
+           // console.log("get message unread count :-",this.userId,'getMessagesUnreadCnt',count)
             observer.next(count);
            // this.onChatsUpdated.next(message);
         });
        
         this.socket.on('message-unread-count', (message) => {
-          console.log("****** received message unread count :-",message)
+          //console.log("****** received message unread count :-",message)
           observer.next(message);
          // this.onChatsUpdated.next(message);
         });

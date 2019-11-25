@@ -10,8 +10,7 @@ import { UserAPIService } from './../../../userapi.service';
 
 //const passwordRegex: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!#%*?&])[A-Za-z\d$@$!#%*?&]{6,16}/
 const passwordRegex: any = /^.{6,}$/
-const password = new FormControl('', [Validators.required, Validators.pattern(passwordRegex)]);
-const confirmPassword = new FormControl('', CustomValidators.equalTo(password));
+
 
 @Component({
   selector: 'app-reset-password',
@@ -27,6 +26,9 @@ export class ResetPasswordComponent implements OnInit {
   constructor(private userapi: UserAPIService, private fb: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
 
   ngOnInit() {
+    const password = new FormControl('', [Validators.required, Validators.pattern(passwordRegex),this.noWhitespaceValidator,Validators.minLength(1),Validators.maxLength(50)]);
+    const confirmPassword = new FormControl('', CustomValidators.equalTo(password));
+
     this.resetForm = this.fb.group({
       password: password,
       confirmPassword: confirmPassword
@@ -42,6 +44,13 @@ export class ResetPasswordComponent implements OnInit {
 
     this.checkToken();
   }
+
+  public noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
+  }
+
   onSubmit() {
     this.loader.open();
     const req_vars = { password: this.resetForm.controls['password'].value, token: this.userId, userType: "customer" }

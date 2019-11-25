@@ -54,7 +54,8 @@ export class CustomerSignupComponent implements OnInit {
   ngOnInit() {
     this.llpCustsignupForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
-      password: new FormControl('', [Validators.required, Validators.pattern(this.passwordRegex)])
+     // password: new FormControl('', [Validators.required, Validators.pattern(this.passwordRegex)])
+      password: new FormControl('', Validators.compose([ Validators.required,, Validators.pattern(this.passwordRegex), this.noWhitespaceValidator, Validators.minLength(1)])),   
     });
 
     this.llpCustotpForm = new FormGroup({
@@ -63,6 +64,13 @@ export class CustomerSignupComponent implements OnInit {
     
     this.getFreeTrialSettings()
   }
+
+  public noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
+  }
+
 
   async getFreeTrialSettings(){
     let returnArr = await this.userapi.apiRequest('get', 'freetrialsettings/getdetails', {}).toPromise(),

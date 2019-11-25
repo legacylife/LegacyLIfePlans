@@ -58,6 +58,7 @@ export class ChatLeftSidenavComponent implements OnInit {
           count.map((o) => { 
             totalCount += o.unread;
             let contactInd = this.contacts.findIndex((c) => c._id == o.user_id);
+            console.log(contactInd,'-------')
             if (contactInd && contactInd > -1) {
               this.contacts[contactInd].unread = o.unread;
               if(o.unread!=undefined && o.unread>0){
@@ -66,7 +67,8 @@ export class ChatLeftSidenavComponent implements OnInit {
                   unreadCnt = o.unread+'+';
                 }
                //8 this.currentUser.chatInfo[contactInd].unread = o.unread;
-                this.contacts[contactInd].unread = o.unread;
+                this.contacts[contactInd].unread = unreadCnt;
+                console.log(unreadCnt,'--contacts-----',this.contacts)
               }else{
                 this.contacts[contactInd].unread = o.unread;
               }              
@@ -88,14 +90,14 @@ export class ChatLeftSidenavComponent implements OnInit {
       });
 
 
-      this.chatService.getTyping().subscribe(id => {
+      this.chatService.getFromTyping().subscribe(id => {
         if(this.contacts!=undefined){
-              let contactInd = this.contacts.findIndex((c) => c._id == this.userId);
+              let contactInd = this.contacts.findIndex((c) => c._id == id);
               if (contactInd && contactInd > -1) {
-                this.contacts[contactInd].typeing = 'typing...';;
+                this.contacts[contactInd].typeing = 'typing...';
               }
               setTimeout(()=>{           
-                this.typeing = '';
+                this.contacts[contactInd].typeing = '';
               },1500); 
          }
        });

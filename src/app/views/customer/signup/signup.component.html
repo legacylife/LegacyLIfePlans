@@ -17,11 +17,9 @@
 
               <mat-icon matTooltip="Please enter email id" matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupForm.controls['username'].hasError('required') && llpCustsignupForm.controls['username'].touched"
                 class="red--alert">help_outline</mat-icon>
-
               <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupForm.controls['username'].hasError('pattern')"
                 class="red--alert">help_outline</mat-icon>
               <mat-icon matTooltip="{{invalidMessage}}" matTooltipClass="llp--tooltip error" *ngIf="EmailExist" class="red--alert">help_outline</mat-icon>
-
             </mat-form-field>
           </div>
 
@@ -33,7 +31,11 @@
 
               <mat-icon matTooltip="Your password should be minimum 6 characters in length."
                 matTooltipClass="llp--tooltip error" class="red--alert" *ngIf="llpCustsignupForm.controls['password'].hasError('pattern')">help_outline</mat-icon>
-            </mat-form-field>
+              
+                <mat-icon matTooltip="Please enter valid password." matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupForm.controls['password'].invalid && llpCustsignupForm.controls['password'].touched"
+                class="red--alert">help_outline</mat-icon>
+
+              </mat-form-field>
           </div>
           <button *ngIf="custProceedBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" [disabled]="llpCustsignupForm.invalid"
             (click)="custProceed()">Proceed</button>

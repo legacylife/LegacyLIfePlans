@@ -9,9 +9,6 @@ import { APIService } from './../../../api.service';
 
 //const passwordRegex: any = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!#%*?&])[A-Za-z\d$@$!#%*?&]{6,16}/
 const passwordRegex: any = /^.{6,}$/
-const password = new FormControl('', [Validators.required, Validators.pattern(passwordRegex)]);
-const confirmPassword = new FormControl('', CustomValidators.equalTo(password));
-
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
@@ -26,6 +23,9 @@ export class ResetPasswordComponent implements OnInit {
   constructor(private api: APIService, private fb: FormBuilder, private router: Router, private activatedRoute: ActivatedRoute, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService) { }
 
   ngOnInit() {
+    const password = new FormControl('', [Validators.required, Validators.pattern(passwordRegex),this.noWhitespaceValidator,Validators.minLength(1),Validators.maxLength(50)]);
+    const confirmPassword = new FormControl('', CustomValidators.equalTo(password));
+
     this.resetForm = this.fb.group({
       password: password,
       confirmPassword: confirmPassword
@@ -56,6 +56,13 @@ export class ResetPasswordComponent implements OnInit {
       this.snack.open(err, 'OK', { duration: 4000 })
     })
   }
+
+  public noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
+  }
+
 
   //function to get events
   checkToken() {
