@@ -108,25 +108,73 @@ async function inviteMembers(req, res) {
     }
 
     if(advisorInvite){
-        /* const params = {
+         const params = {
             inviteById: inviteById,
-            inviteType: 'advisor'
+            inviteBy: 'advisor'
         }
         let resultCount = 0
         await Invite.find(params, function (err, data) {
             if (data != null) {
                 resultCount = data.length
             }
-        }) */
+        }) 
+        let advUserData = {};
+        await User.findOne({"_id" : inviteById}, function (err, userdata) {
+            if (userdata) {
+                advUserData = userdata
+            }
+        }) 
+        
+        let newDt = new Date();
+        let today = new Date();
+
+        let targetCount = 0;
+        let noOfDaysExtended = 0;
+        let subscriptionFlag = true;
+        let inviteEndFlag = false;
+
+
+
+        let lastInviteEndDate = new Date();
+        let inviteEndDate  = new Date();
+        let oldEndDate  = new Date();
+
+        if(advUserData){
+            if(advUserData.userSubscriptionEnddate){
+                newDt =  advUserData.userSubscriptionEnddate;
+                inviteEndDate =  advUserData.userSubscriptionEnddate; 
+                oldEndDate  =  advUserData.userSubscriptionEnddate;            
+            }
+            if(advUserData.refereAndEarnSubscriptionDetail && advUserData.refereAndEarnSubscriptionDetail.targetCount){
+                targetCount = advUserData.refereAndEarnSubscriptionDetail.targetCount
+            }
+            if(advUserData.refereAndEarnSubscriptionDetail && advUserData.refereAndEarnSubscriptionDetail.noOfDaysExtended){
+                noOfDaysExtended = advUserData.refereAndEarnSubscriptionDetail.noOfDaysExtended
+            }
+            if(advUserData.refereAndEarnSubscriptionDetail && advUserData.refereAndEarnSubscriptionDetail.endDate && advUserData.refereAndEarnSubscriptionDetail.endDate != ""){
+                inviteEndDate = advUserData.refereAndEarnSubscriptionDetail.endDate
+            }
+            if(advUserData.refereAndEarnSubscriptionDetail && advUserData.refereAndEarnSubscriptionDetail.lastInviteEndDate && advUserData.refereAndEarnSubscriptionDetail.lastInviteEndDate != ""){
+                lastInviteEndDate = advUserData.refereAndEarnSubscriptionDetail.lastInviteEndDate
+            }
+            if(advUserData.subscriptionDetails && advUserData.subscriptionDetails.length > 0){
+                subscriptionFlag = false
+            }
+        }
+        if(today > lastInviteEndDate && today < inviteEndDate){
+            console.log("today >>>>>>>",today," <<<<<< lastInviteEndDate >>>>>",lastInviteEndDate," <<<<<< inviteEndDate >>>>>",inviteEndDate)
+            inviteEndFlag = true
+        }
+        
+        newDt.setDate(newDt.getDate() + noOfDaysExtended)        
+
         // upgrade plan for next 30 days.
-        /* if (resultCount == 5) { //30
-            var newDt = new Date();
-            newDt.setDate(newDt.getDate() + 30);
+         if (resultCount >= targetCount && subscriptionFlag && inviteEndFlag) { //30
             let subscriptionData = {
-                'refereAndEarnSubscriptionDetail.end_date': newDt
+                'refereAndEarnSubscriptionDetail.endDate': newDt, 'userSubscriptionEnddate': newDt, 'refereAndEarnSubscriptionDetail.lastInviteEndDate': inviteEndDate
             }
             User.updateOne({ _id: inviteById }, { $set: subscriptionData }, function (err, updatedDetails) {})
-        } */
+        } 
         
         // delete temp invite files
         await InviteTemp.deleteMany({ inviteById: inviteById });

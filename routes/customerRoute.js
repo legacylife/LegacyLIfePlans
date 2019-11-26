@@ -1037,7 +1037,8 @@ async function referAndEarnParticipate(req, res) {
                                                       targetCount: referEarnTargetCount,
                                                       noOfDaysExtended: referEarnExtendedDays,
                                                       updatedOn: new Date(),
-                                                      status: 'Active'
+                                                      status: 'Active',
+                                                      lastInviteEndDate:new Date()
                                                     }
                   }
   User.updateOne({ _id: ObjectId(req.body.userId) }, params, function (err, updatedDetails) {

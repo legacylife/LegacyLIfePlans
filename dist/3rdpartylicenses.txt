@@ -1627,14 +1627,14 @@ terms above.
 
 @angular/material/select
 
+@angular/material/card
+
 @angular/material/toolbar
 
 @ctrl/ngx-emoji-mart/ngx-emoji
 MIT
 
 @angular/material/divider
-
-@angular/material/card
 
 @angular/material/sidenav
 

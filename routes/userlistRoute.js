@@ -19,7 +19,6 @@ var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
 const sendEmail = require('./../helpers/sendEmail')
 const emailTemplatesRoute = require('./emailTemplatesRoute.js')
-const advertisement = require('./../models/advertisements.js')
 const s3 = require('./../helpers/s3Upload')
 var currencyFormatter = require('currency-formatter');
 var auth = jwt({
@@ -241,15 +240,11 @@ function updateAdminProfile(req, res) {
 function profile(req, res) {
   let { query } = req.body;
   let fields = {}
-  User.findOne(query, fields, async function (err, userProfile) {
+  User.findOne(query, fields, function (err, userProfile) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-        let advertisementdata = [];
-        if(userProfile.userType=='advisor'){
-           advertisementdata = await advertisement.findOne({customerId:userProfile._id,sponsoredStatus:'Active'},{toDate:1}).sort({'modifiedOn':-1})
-        }
-      let result = { userProfile,advertisementdata, "message": "Get profile details successfully!" }
+      let result = { userProfile, "message": "Get profile details successfully!" }
       res.status(200).send(resFormat.rSuccess(result))
     }
   })
