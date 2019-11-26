@@ -32,16 +32,19 @@ async function chatRoom(chatId,userId) {
   console.log('******************************************chatRoom --- '+userId,'-----*****************--',chatId);
     let chatingData = await chat.findOne({_id:chatId});
     if(chatingData) { //await chat.updateMany({_id:found._id},{$set: proquery })
-        await chat.update({_id:found._id,chats: { $elemMatch: { contactId: { '$ne': userId }, status: 'unread' }}},{$set : {'chats.$[].status': 'read'}}, {safe: true, multi:true});
-       //chatingData.chats.forEach( async ( val, index ) => {
+       // await chat.update({_id:found._id,chats: { $elemMatch: { contactId: { '$ne': userId }, status: 'unread' }}},{$set : {'chats.$[].status': 'read'}}, {safe: true, multi:true});
+       let friendId = val.chatfromid;
+       if(val.chatfromid==userId){
+         friendId = val.chatwithid;
+       }
+       await chat.update({_id:found._id,chats: { $elemMatch: { status: 'unread' }}},{$set : {'chats.$[i].status': 'unread'}},{arrayFilters: [{"i.contactId": friendId}],safe: true, multi:true})
+        //chatingData.chats.forEach( async ( val, index ) => {
        // console.log('-------------',userId,'*************',val.contactId);
          // if(userId!=val.contactId) {
          //   console.log('ID------------------',val._id);
          //   await chat.updateOne({_id:chatingData._id,'chats.status': 'unread'},{$set : {'chats.$.status': 'read'}});
           //}
         // })
-        // await chat.updateOne({_id:found._id,'chats.status': 'unread'},{$set : {'chats.$.status': 'read'}});
-        // console.log('Chat ID --- '+chatId,'found-->',found);
     }
   return true;
 }
@@ -61,7 +64,6 @@ async function userMessagesStatus(userId,status) {
         if(val.chats.length>0){
           friendId = friendId.toString();
           valid = val._id.toString();
-//console.log('-------valId->',typeof(val._id),' valid--->',typeof(valid),'friendId--->',typeof(friendId))
           let unreadC =   await chat.aggregate([
             { "$match": {
                 "_id" : mongoose.Types.ObjectId(val._id),
@@ -89,6 +91,7 @@ async function userMessagesStatus(userId,status) {
                 }
             }}
           ]);
+
           if(unreadC.length>0){
             unreadCnt = unreadC[0].count;   
           }        
