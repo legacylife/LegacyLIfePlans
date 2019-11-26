@@ -456,11 +456,11 @@ function revokeOwnerDeceased(req, res) {
   let { folderName }    = req.body
         folderName      = folderName ? folderName.replace('/','') : ''
   let { subFolderName } = req.body
- MarkDeceased.findOne(query,async function (err,deceasedDetails){
+ MarkDeceased.findOne({customerId:query.customerId},async function (err,deceasedDetails){
      if (err) {
        res.status(401).send(resFormat.rError(err));
      } else {
-   if(revokeId==deceasedDetails.customerId){
+   if(deceasedDetails && revokeId==deceasedDetails.customerId){
       let trustId = advisorId = adminId = '';
        if(!userType){
         userType = deceasedDetails.userType;
