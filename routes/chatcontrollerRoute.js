@@ -33,9 +33,9 @@ async function chatRoom(chatId,userId) {
     let chatingData = await chat.findOne({_id:chatId});
     if(chatingData) { //await chat.updateMany({_id:found._id},{$set: proquery })
        // await chat.update({_id:found._id,chats: { $elemMatch: { contactId: { '$ne': userId }, status: 'unread' }}},{$set : {'chats.$[].status': 'read'}}, {safe: true, multi:true});
-       let friendId = val.chatfromid;
-       if(val.chatfromid==userId){
-         friendId = val.chatwithid;
+       let friendId = chatingData.chatfromid;
+       if(chatingData.chatfromid==userId){
+         friendId = chatingData.chatwithid;
        }
        await chat.update({_id:found._id,chats: { $elemMatch: { status: 'unread' }}},{$set : {'chats.$[i].status': 'unread'}},{arrayFilters: [{"i.contactId": friendId}],safe: true, multi:true})
         //chatingData.chats.forEach( async ( val, index ) => {
