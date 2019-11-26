@@ -29,7 +29,7 @@ export class ChatLeftSidenavComponent implements OnInit {
     this.userId = localStorage.getItem("endUserId");
     this.userType = localStorage.getItem("endUserType");
       if(this.userType=='advisor') {
-          this.contactsWindowError = 'Contacts not Found!';
+          this.contactsWindowError = 'Add clients to start chatting and provide professional help!';
       }
    
     this.userUpdateSub = this.chatService.onUserUpdated
