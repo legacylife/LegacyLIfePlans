@@ -3,12 +3,12 @@ var debug = require('debug')('LLP:server')
 const fs = require('fs')
 const http = require('http')
 const https = require('https')
-var port = normalizePort(process.env.PORT || '8080')
+var port = normalizePort(process.env.PORT || '80')
 var express = require('express')
 var router = express.Router()
 const apps = express()
- const server = http.createServer(app).listen(8080, () => {
-   console.log('http server running at ' + 8080)
+ const server = http.createServer(app).listen(80, () => {
+   console.log('http server running at ' + 80)
  })
  var chats = require('./routes/chatcontrollerRoute')
  
@@ -42,9 +42,10 @@ const apps = express()
   });
 
   socket.on('new-message', async (message,chatid) => {    
-    io.emit('new-message-'+message.chatwithid, message,chatid);
-    var unreadCnt = await chats.userMessagesStatus(message.chatwithid,'online');
-    //io.emit('message-unread-count-'+message.chatwithid, userUnreadCnt);
+   // console.log('NEW message -----',message,'chatwithid>>>>>>>',message.chatwithid)
+     io.emit('new-message-'+message.chatwithid, message,chatid);
+    //8 chats.chatRoom(chatid,message.chatwithid);
+     var unreadCnt = await chats.userMessagesStatus(message.chatwithid,'online');  
      io.emit('message-unread-count-'+message.chatwithid, unreadCnt);    
   });
 
@@ -58,6 +59,11 @@ const apps = express()
    // io.emit('get-chat-room'+contactId);
   });
    
+  socket.on('get-chat-room-again', (chatId,userId) => {
+    console.log('NEW message -----',chatId,'userId>>>>>>>',userId)
+    chats.chatRoom(chatId,userId);
+  // io.emit('get-chat-room'+contactId);
+ });  
   socket.on('disconnect', function(){
     if(users[socket.id]!==undefined){
       io.emit('offlineContact', users[socket.id]);

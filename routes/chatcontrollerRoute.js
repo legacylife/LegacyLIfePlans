@@ -37,8 +37,8 @@ async function chatRoom(chatId,userId) {
        if(chatingData.chatfromid==userId){
          friendId = chatingData.chatwithid;
        }
-       await chat.update({_id:chatingData._id,chats: { $elemMatch: { status: 'unread' }}},{$set : {'chats.$[i].status': 'unread'}},{arrayFilters: [{"i.contactId": friendId}],safe: true, multi:true})
-        //chatingData.chats.forEach( async ( val, index ) => {
+       await chat.updateOne({_id:chatingData._id,chats: { $elemMatch: { status: 'unread' }}},{$set : {'chats.$[i].status': 'read'}},{arrayFilters: [{"i.contactId": friendId}],safe: true, multi:true})
+       //chatingData.chats.forEach( async ( val, index ) => {
        // console.log('-------------',userId,'*************',val.contactId);
          // if(userId!=val.contactId) {
          //   console.log('ID------------------',val._id);
@@ -62,10 +62,12 @@ async function userMessagesStatus(userId,status) {
           friendId = val.chatwithid;
         }
         if(val.chats.length>0){
-
+      //  db.getCollection('chats').aggregate([ { '$match': { _id: ObjectId('5ddc00aed8fd473294eeaaa6') } }, 
+      //  { '$group': { _id: null,count: { '$sum': { '$size': { '$filter': { input: '$chats', as: 'el',
+      //   cond: {$and:[ {'$eq': [ "$$el.status", "unread" ]},{'$eq': [ '$$el.contactId', '5d25825e362713b484cf8a70' ]}]} 
+      // } } } } } } ], {})
           friendId = friendId.toString();
           valid = val._id.toString();
-          console.log('-------val._id->',typeof(val._id));
           let unreadC =   await chat.aggregate([
             { "$match": {
                 "_id" : val._id,
@@ -83,20 +85,17 @@ async function userMessagesStatus(userId,status) {
                                 //     "$eq": [ "$$el.contactId",friendId],
                                 //     '$eq': [ "$$el.status", "unread" ]
                                 // }]
-                                "cond":{
-                                  "$eq": [ "$$el.contactId",friendId ],
-                                  '$eq': [ "$$el.status", "unread" ],
-                                }
+                                "cond":{$and:[
+                                  {'$eq': [ "$$el.status", "unread" ]},
+                                  {"$eq": [ "$$el.contactId",friendId ]}
+                                ]}
                             }
                         }
                     }
                 }
             }}
           ]);
-
-    //  chats.aggregate([ { '$match': { _id: ObjectId('5ddc00aed8fd473294eeaaa6'), 'chats.status': 'unread' } }, { '$group': { _id: null, count: { '$sum': { '$size': { '$filter': { input: '$chats', as: 'el', cond: { '$eq': [ '$$el.status', 'unread' ] } } } } } } } ], {})
-
-          console.log('unreadC------',unreadC)
+      
           if(unreadC.length>0){
             unreadCnt = unreadC[0].count;   
           }        
