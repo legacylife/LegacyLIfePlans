@@ -62,9 +62,9 @@ async function userMessagesStatus(userId,status) {
           friendId = val.chatwithid;
         }
         if(val.chats.length>0){
-      //  db.getCollection('chats').aggregate([ { '$match': { _id: ObjectId('5ddc00aed8fd473294eeaaa6') } }, 
+      //  db.getCollection('chats').aggregate([ { '$match': { _id: ObjectId('5dd6308a3eb03b0c781eab10') } }, 
       //  { '$group': { _id: null,count: { '$sum': { '$size': { '$filter': { input: '$chats', as: 'el',
-      //   cond: {$and:[ {'$eq': [ "$$el.status", "unread" ]},{'$eq': [ '$$el.contactId', '5d25825e362713b484cf8a70' ]}]} 
+      //   cond: {$and:[ {'$eq': [ "$$el.status", "unread" ]},{'$eq': [ '$$el.contactId', '5cc9cc301955852c18c5b73a' ]}]} 
       // } } } } } } ], {})
           friendId = friendId.toString();
           valid = val._id.toString();
@@ -110,56 +110,9 @@ async function userMessagesStatus(userId,status) {
           chatInfolist.push(makeArray);
          // console.log('makeArray',makeArray)
         }
-       
     }))
    // console.log('****************userMessagesStatus ---- unreadCount array--- '+chatInfolist);
     return chatInfolist;
-    // chatingData.forEach(async ( val, callback ) => {
-    //   let friendId = '';
-    //   if(val.chatfromid!=userId){
-    //     friendId = val.chatfromid;
-    //   }
-    //   if(val.chatwithid!=userId){
-    //     friendId = val.chatwithid;
-    //   }
-
-    //   unreadCount = await chat.countDocuments({_id:val._id,chats: { $elemMatch: { contactId: { '$ne': userId }, status: 'unread' }}}, {multi:true});
-    //   console.log('****************userMessagesStatus ---- unreadCount--- '+unreadCount,'friendId====',friendId);
-    //   let makeArray = {
-    //     user_id: friendId,
-    //     unreadCnt:unreadCount,
-    //   }
-
-    //   chatInfolist.push(makeArray);
-    //   callback()       
-    // })
-
-
-    // async.each(chatingData,async (val,callback)=>{
-    //   let friendId = '';
-    //   if(val.chatfromid!=userId){
-    //     friendId = val.chatfromid;
-    //   }
-    //   if(val.chatwithid!=userId){
-    //     friendId = val.chatwithid;
-    //   }
-
-    //   unreadCount = await chat.countDocuments({_id:val._id,chats: { $elemMatch: { contactId: { '$ne': userId }, status: 'unread' }}}, {multi:true});
-    //   console.log('****************userMessagesStatus ---- unreadCount--- '+unreadCount,'friendId====',friendId);
-    //   let makeArray = {
-    //     user_id: friendId,
-    //     unreadCnt:unreadCount,
-    //   }
-
-    //   chatInfolist.push(makeArray);   
-    //   callback()                
-    // })
-
-
-
-
-   // console.log('****************userMessagesStatus ----   chatInfolist--- '+chatInfolist);
-     // return chatInfolist;
   }
  // return chatInfolist;
 }
