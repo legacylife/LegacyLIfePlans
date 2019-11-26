@@ -21,6 +21,7 @@ const trust = require('./../models/Trustee.js')
 const HiredAdvisor = require('./../models/HiredAdvisors')
 var zipcodes = require('zipcodes');
 const advisorActivityLog = require('./../helpers/advisorActivityLog')
+const referEarnSettings = require('./../models/ReferEarnSettings')
 ObjectId = require('mongodb').ObjectID;
 const AWS = require('aws-sdk');
 const s3 = require('./../helpers/s3Upload')
@@ -37,7 +38,7 @@ const allActivityLog = require('./../helpers/allActivityLogs')
 
 //function to check and signin user details
 function signin(req, res) {
-  console.log("login data >>>>",req.body)
+  console.log("login data >>>>", req.body)
   passport.authenticate('local', function (err, user, info) {
     if (err) {
       let result = { "message": err };
@@ -337,7 +338,7 @@ function list(req, res) {
 
 //function get details of user from url param
 function details(req, res) {
-  let fields = { id: 1, username: 1, socialMediaToken: 1, salt: 1, fullName: 1, profileSetup: 1, status: 1, userType: 1, sectionAccess: 1, profilePicture: 1,subscriptionDetails:1 }
+  let fields = { id: 1, username: 1, socialMediaToken: 1, salt: 1, fullName: 1, profileSetup: 1, status: 1, userType: 1, sectionAccess: 1, profilePicture: 1, subscriptionDetails: 1 }
   if (req.body.fields) {
     fields = req.body.fields
   }
@@ -667,12 +668,11 @@ async function checkUserOtp(req, res) {
       } else {
         if (otpdata) {
 
+          // Delete previous uncompleted signup entry
           let existUserData = await User.findOne({ "username": { '$regex': new RegExp(escapeRegExp(otpdata.username)), '$options': 'i' } })
-          console.log("exist data>>>>",existUserData)
-          if (existUserData) {            
+          if (existUserData) {
             let deleteOldUser = await User.deleteOne({ "_id": ObjectId(existUserData._id) });
           }
-          console.log("exist data 222222222222222222 >>>>")
 
           let freeTrialPeriodDetails = await FreeTrailPeriodSetting.findOne()
           var newDt = new Date()
@@ -690,6 +690,26 @@ async function checkUserOtp(req, res) {
             endDate: newDt
           }
 
+          // If refer & earn functionality is on then save that data 
+          let referEarnSettingsArr = await referEarnSettings.findOne(); 
+          let refereAndEarnSubscriptionDetailObj = {};     
+
+          if (referEarnSettingsArr && referEarnSettingsArr.status == 'On' && otpdata.userType == 'advisor') {
+
+            const referEarnTargetCount = Number(referEarnSettingsArr.targetCount)
+            const referEarnExtendedDays = Number(referEarnSettingsArr.extendedDays)
+            var newDt = new Date()
+            newDt.setDate(newDt.getDate() + referEarnExtendedDays)
+            refereAndEarnSubscriptionDetailObj = {              
+                endDate: '',
+                targetCount: referEarnTargetCount,
+                noOfDaysExtended: referEarnExtendedDays,
+                updatedOn: new Date(),
+                status: 'Active',
+                lastInviteEndDate: new Date()
+              }            
+          }
+
           let userInvitedById = '';
           if (req.body.query.inviteCode) {
             let invitesCodeExists = await Invite.findOne({ inviteCode: req.body.query.inviteCode, email: otpdata.username, inviteType: otpdata.userType });
@@ -705,6 +725,7 @@ async function checkUserOtp(req, res) {
           user.emailVerified = true;
           user.invitedBy = userInvitedById;
           user.freeTrialPeriod = freeTrailPeriodObj;
+          user.refereAndEarnSubscriptionDetail = refereAndEarnSubscriptionDetailObj;
           user.lockoutLegacyPeriod = '2';
           user.userSubscriptionEnddate = newDt;
           user.createdOn = new Date();

@@ -72,6 +72,7 @@ async function inviteMembers(req, res) {
                 inviteToUserId = data._id
             }
         })
+        
 
         await emailTemplatesRoute.getEmailTemplateByCode(templateType).then((template) => {
             template = JSON.parse(JSON.stringify(template));
@@ -171,7 +172,7 @@ async function inviteMembers(req, res) {
         // upgrade plan for next 30 days.
          if (resultCount >= targetCount && subscriptionFlag && inviteEndFlag) { //30
             let subscriptionData = {
-                'refereAndEarnSubscriptionDetail.endDate': newDt, 'userSubscriptionEnddate': newDt, 'refereAndEarnSubscriptionDetail.lastInviteEndDate': inviteEndDate
+                'refereAndEarnSubscriptionDetail.endDate': newDt, 'userSubscriptionEnddate': newDt, 'refereAndEarnSubscriptionDetail.lastInviteEndDate': oldEndDate
             }
             User.updateOne({ _id: inviteById }, { $set: subscriptionData }, function (err, updatedDetails) {})
         } 

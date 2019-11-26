@@ -1024,7 +1024,7 @@ function viewInviteDetails(req, res) {
   })
 }
 
-async function referAndEarnParticipate(req, res) {
+async function referAndEarnParticipate(req, res) {   
   //Get latest count and status of refer and Earn settings to update for advisor to getting free access
   let referEarnSettingsArr    = await referEarnSettings.findOne()
   const referEarnTargetCount  = Number(referEarnSettingsArr.targetCount)
