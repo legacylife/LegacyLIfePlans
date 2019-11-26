@@ -99,6 +99,10 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
         }        
         this.scrollToBottom();
     })
+
+    setTimeout(()=>{           
+        this.socket.emit('get-chat-room-again',this.chatCollection._id,this.userId);
+    },8000); 
   }
   
   ngOnDestroy() {
