@@ -110,6 +110,7 @@ export class SubscriptionService {
           extendedReferEarnDate = extendedReferEarnProgram.endDate
         }
       }
+      subscriptionEndDate = result.userSubscriptionEnddate;
       /**
        * Reset all locastorage variables to check wheater the subscription ends or not
        */
