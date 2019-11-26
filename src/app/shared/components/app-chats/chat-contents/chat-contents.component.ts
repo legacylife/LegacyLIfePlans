@@ -27,6 +27,7 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
   typeing:string = '';
   showEmojiPicker = false;
   private socket;    
+  private timer;
   @Input('matSidenav') matSidenav;
   @ViewChild(PerfectScrollbarDirective) psContainer: PerfectScrollbarDirective;
   @Output() hideWindowToggle = new EventEmitter();
@@ -99,13 +100,16 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
         }        
         this.scrollToBottom();
     })
-
-    setTimeout(()=>{           
-        this.socket.emit('get-chat-room-again',this.chatCollection._id,this.userId);
-    },8000); 
+    this.timer = setInterval(()=>{           
+      console.log('window starts',this.timer)
+      this.chatCollection._id
+          this.socket.emit('get-chat-room-again',this.chatCollection._id,this.userId);
+      },10000); 
   }
   
   ngOnDestroy() {
+     clearInterval(this.timer);
+     console.log('window ends',this.timer)
     if( this.userUpdateSub ) this.userUpdateSub.unsubscribe();
     if( this.chatSelectSub ) this.chatSelectSub.unsubscribe();
     if( this.chatUpdateSub ) this.chatUpdateSub.unsubscribe();
