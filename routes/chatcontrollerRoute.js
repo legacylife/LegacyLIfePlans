@@ -37,7 +37,7 @@ async function chatRoom(chatId,userId) {
        if(chatingData.chatfromid==userId){
          friendId = chatingData.chatwithid;
        }
-       await chat.update({_id:found._id,chats: { $elemMatch: { status: 'unread' }}},{$set : {'chats.$[i].status': 'unread'}},{arrayFilters: [{"i.contactId": friendId}],safe: true, multi:true})
+       await chat.update({_id:chatingData._id,chats: { $elemMatch: { status: 'unread' }}},{$set : {'chats.$[i].status': 'unread'}},{arrayFilters: [{"i.contactId": friendId}],safe: true, multi:true})
         //chatingData.chats.forEach( async ( val, index ) => {
        // console.log('-------------',userId,'*************',val.contactId);
          // if(userId!=val.contactId) {
@@ -52,7 +52,7 @@ async function chatRoom(chatId,userId) {
 async function userMessagesStatus(userId,status) {
   let unreadCount = [];
   if(userId!==undefined){
-    console.log('-------userId->',typeof(userId));
+  
     let chatingData = await chat.find({$or:[{chatfromid:userId},{ chatwithid:userId}]});
    let chatInfolist = [];let unreadCnt = 0;
       await Promise.all(chatingData.map(async (val)=>{     
@@ -62,11 +62,13 @@ async function userMessagesStatus(userId,status) {
           friendId = val.chatwithid;
         }
         if(val.chats.length>0){
+
           friendId = friendId.toString();
           valid = val._id.toString();
+          console.log('-------val._id->',typeof(val._id));
           let unreadC =   await chat.aggregate([
             { "$match": {
-                "_id" : mongoose.Types.ObjectId(val._id),
+                "_id" : val._id,
                 "chats.status": "unread"
             }},
             { "$group": {
@@ -92,6 +94,9 @@ async function userMessagesStatus(userId,status) {
             }}
           ]);
 
+    //  chats.aggregate([ { '$match': { _id: ObjectId('5ddc00aed8fd473294eeaaa6'), 'chats.status': 'unread' } }, { '$group': { _id: null, count: { '$sum': { '$size': { '$filter': { input: '$chats', as: 'el', cond: { '$eq': [ '$$el.status', 'unread' ] } } } } } } } ], {})
+
+          console.log('unreadC------',unreadC)
           if(unreadC.length>0){
             unreadCnt = unreadC[0].count;   
           }        
