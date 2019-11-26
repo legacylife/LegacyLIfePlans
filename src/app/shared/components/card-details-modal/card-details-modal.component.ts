@@ -255,10 +255,11 @@ export class CardDetailsComponent implements OnInit {
         localStorage.setItem('endUserSubscriptionStatus', "paid");
         let url = '/'+this.endUserType+'/account-setting'
         this.dialog.closeAll(); 
-        this.snack.open("You have successfully purchased this subscription. Please check email for more info.", 'OK', { duration: 4000 })
+        this.loader.close();
+        this.snack.open("You have successfully purchased this subscription. Please check email for more info.", 'OK', { duration: 10000 })
         this.router.navigate([url]);
       }
-      this.loader.close();
+      
     }, (err) => {  
       this.snack.open(err, 'OK', { duration: 4000 })    
       this.loader.close();
@@ -279,8 +280,9 @@ export class CardDetailsComponent implements OnInit {
       else if(result.status=='success') {
         localStorage.setItem('endUserSubscriptionAddon', 'yes');
         this.dialog.closeAll(); 
-        this.snack.open("Successfully added "+this.spaceAlloted+"GB to your legacy. Please check email for more info.", 'OK', { duration: 4000 })
         this.loader.close();
+        this.snack.open("Successfully added "+this.spaceAlloted+"GB to your legacy. Please check email for more info.", 'OK', { duration: 4000 })
+        
       }
       
     }, (err) => {  

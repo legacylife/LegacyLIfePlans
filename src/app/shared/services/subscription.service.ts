@@ -554,9 +554,9 @@ export class SubscriptionService {
       }
       else {
         let returnData = result.data
-        localStorage.setItem('endUserAutoRenewalStatus', returnData.autoRenewalStatus);
-        this.snack.open("Auto renewal status updated.", 'OK', { duration: 4000 })
+        localStorage.setItem('endUserAutoRenewalStatus', returnData.autoRenewalStatus);        
         this.loader.close();
+        this.snack.open("Auto renewal status updated.", 'OK', { duration: 10000 })
         return true
       }
     }, (err) => {
@@ -584,9 +584,9 @@ export class SubscriptionService {
 
         } else {
           let cancelData = result.data
-          localStorage.setItem('endUserSubscriptionStatus', cancelData.subscriptionStatus)
-          this.snack.open("Subscription successfully canceled. Please check email for more info.", 'OK', { duration: 4000 })
+          localStorage.setItem('endUserSubscriptionStatus', cancelData.subscriptionStatus)          
           this.loader.close()
+          this.snack.open("Subscription successfully canceled. Please check email for more info.", 'OK', { duration: 10000 })
           cb(true)
         }
       }, (err) => {
