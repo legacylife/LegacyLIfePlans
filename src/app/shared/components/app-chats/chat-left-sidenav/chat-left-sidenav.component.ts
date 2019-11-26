@@ -54,6 +54,7 @@ export class ChatLeftSidenavComponent implements OnInit {
           count.map((o) => { 
             totalCount += o.unread;
             let contactInd = this.contacts.findIndex((c) => c._id == o.user_id);
+            console.log('Contact sidebar',this.contacts,'Found index',contactInd)
             if (contactInd && contactInd > -1) {
               this.contacts[contactInd].unread = o.unread;
               if(o.unread!=undefined && o.unread>0){
@@ -62,6 +63,7 @@ export class ChatLeftSidenavComponent implements OnInit {
                   unreadCnt = o.unread+'+';
                 }
                 this.contacts[contactInd].unread = unreadCnt;
+                console.log('Contact sidebar',this.contacts,'unreadCnt',unreadCnt)
               }else{
                 this.contacts[contactInd].unread = o.unread;
               }              

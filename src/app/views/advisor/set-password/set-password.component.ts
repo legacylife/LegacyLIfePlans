@@ -12,8 +12,8 @@ import { s3Details } from 'app/config';
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 
 const passwordRegex: any = /^.{6,}$/
-const password = new FormControl('', [Validators.required, Validators.pattern(passwordRegex)]);
-const confirmPassword = new FormControl('', CustomValidators.equalTo(password));
+// const password = new FormControl('', [Validators.required, Validators.pattern(passwordRegex)]);
+// const confirmPassword = new FormControl('', CustomValidators.equalTo(password));
 
 @Component({
   selector: 'app-set-password',
@@ -32,6 +32,9 @@ export class SetPasswordComponent implements OnInit {
     private subscriptionservice:SubscriptionService,private picService : ProfilePicService) { }
 
   ngOnInit() {
+    const password = new FormControl('', [Validators.required, Validators.pattern(passwordRegex),this.noWhitespaceValidator,Validators.minLength(1),Validators.maxLength(50)]);
+    const confirmPassword = new FormControl('', CustomValidators.equalTo(password));
+    
     this.resetForm = this.fb.group({
       password: password,
       confirmPassword: confirmPassword
@@ -41,6 +44,12 @@ export class SetPasswordComponent implements OnInit {
     })
 
     this.checkToken();
+  }
+
+  public noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
   }
 
   onSubmit() {

@@ -52,7 +52,6 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
     }
     this.userId = localStorage.getItem("endUserId");
     this.userType = localStorage.getItem("endUserType");
-
     // var socket = io(serverUrl);
     // console.log('message-unread-count call from chat content')
     // socket.emit('message-unread-count',{userId:this.userId,userType:this.userType});
@@ -80,8 +79,9 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
         this.messages.push(message);
     });
 
-
-    this.chatService.getOnlineStatus().subscribe((friendId:any) => {
+    this.chatService.getOnlineStatus().subscribe((status:any) => {
+      console.log('chat contents status --- ',status)
+      this.activeContact.status = status; 
     });
 
     // Listen for contact change
@@ -104,12 +104,11 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
       console.log('window starts',this.timer)
       this.chatCollection._id
           this.socket.emit('get-chat-room-again',this.chatCollection._id,this.userId);
-      },10000); 
+      },12000); 
   }
   
   ngOnDestroy() {
      clearInterval(this.timer);
-     console.log('window ends',this.timer)
     if( this.userUpdateSub ) this.userUpdateSub.unsubscribe();
     if( this.chatSelectSub ) this.chatSelectSub.unsubscribe();
     if( this.chatUpdateSub ) this.chatUpdateSub.unsubscribe();

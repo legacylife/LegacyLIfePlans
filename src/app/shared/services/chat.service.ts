@@ -315,7 +315,7 @@ export class ChatService {
     }
     return Observable.create((observer) => {
         this.socket.on('message-unread-count-'+this.userId, (count) => {
-           // console.log("get message unread count :-",this.userId,'getMessagesUnreadCnt',count)
+            console.log("get message unread count :-",this.userId,'getMessagesUnreadCnt',count)
             observer.next(count);
            // this.onChatsUpdated.next(message);
         });
@@ -341,6 +341,7 @@ export class ChatService {
             let contactInd = this.contacts.findIndex((c) => c._id == friendId);
             if (contactInd && contactInd > -1) {
               this.contacts[contactInd].status = status;
+              observer.next(status);
             }
           }
         });
@@ -356,7 +357,7 @@ export class ChatService {
     }
     return Observable.create((observer) => {
         this.socket.on('new-message-'+this.userId, (message,chatid) => {
-          console.log('received message********chatWindow******',this.chatwindow,'---',chatid,"userId>>>>>",this.userId,'chatInfo >>>>> ',this.user.chatInfo);
+          //console.log('received message********chatWindow******',this.chatwindow,'---',chatid,"userId>>>>>",this.userId,'chatInfo >>>>> ',this.user.chatInfo);
           //let chatInfo = this.user.chatInfo.find(chat => chat.contactId === this.userId);
           if(this.chatwindow==chatid){
             observer.next(message);
