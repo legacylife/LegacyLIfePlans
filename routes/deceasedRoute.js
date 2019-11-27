@@ -14,6 +14,7 @@ const HiredAdvisors = require('./../models/HiredAdvisors.js')
 const executor = require('./../models/MarkAsExecutor.js')
 const resMessage = require('./../helpers/responseMessages')
 const allActivityLog = require('./../helpers/allActivityLogs')
+var moment    = require('moment');
 
 async function viewDeceased(req, res) {
     let { query } = req.body;
@@ -23,39 +24,23 @@ async function viewDeceased(req, res) {
     }
     let deceasedData = await MarkDeceased.findOne(query,fields, {_id:1}).populate('customerId');
     let findQuery = {}; let alreadyDeceased = '';
-
+    let viewUserId = '';
     if(query.trustId){
       findQuery = {customerId:query.customerId,trustId: { $ne: query.trustId },status:"Active"};
+      viewUserId = query.trustId;
     }else if(query.advisorId){
       findQuery = {customerId:query.customerId,advisorId: { $ne: query.advisorId},status:"Active"};
+      viewUserId = query.advisorId;
     } 
     if(!deceasedData){
       alreadyDeceased = await MarkDeceased.findOne(findQuery, {_id:1,trustId:1,advisorId:1}).populate('customerId');
     }
 
     let message = resMessage.data( 607, [{key: '{field}',val: 'Legacy Details'}, {key: '{status}',val: 'viwed'}] )
-    allActivityLog.updateActivityLogs( query.advisorId, query.customerId, 'Legacy Details', message, 'Legacies')
+    allActivityLog.updateActivityLogs( viewUserId, query.customerId, 'Legacy Details', message, 'Legacies')
     let result = {'deceasedData':deceasedData,'alreadyDeceased':alreadyDeceased}
     res.status(200).send(resFormat.rSuccess(result));
 
-  }
-
-  async function markDeceasedTest(req, res) {
-    let paramData = req.body;
-    
-    let legacyHolderInfo = await User.findOne({_id:'5d25d5f2362713b484d2c4e6'},{_id:1,username:1,firstName:1,lastName:1,deceased:1,lockoutLegacyPeriod:1});
-    var period = constants.lockLegacyPeriodType[legacyHolderInfo.lockoutLegacyPeriod];
-    var today               = new Date();
-
-    if(period==1){
-      var lockoutLegacyDate = new Date(new Date().getTime() + (24 * 60 * 60 * 1000));
-    }else{
-      var lockoutLegacyDate   = new Date().setDate(today.getDate()+period);
-    }
-    console.log("period===> ",period,"date ==>",lockoutLegacyDate);
-    await User.updateOne({_id:'5d25d5f2362713b484d2c4e6'},{lockoutLegacyDate:lockoutLegacyDate});
-    let result = {"message": "Mark as deceased successfully!"}
-    res.status(200).send(resFormat.rSuccess(result));
   }
 
   async function markDeceased(req, res) {
@@ -104,17 +89,19 @@ async function viewDeceased(req, res) {
             insert.userType = userType;
             if(advisorId){    
               insert.advisorId = ObjectId(advisorId);
-              findQuery = {customerId:paramData.customerId,advisorId:advisorId};
+              findQuery = {customerId:paramData.customerId,advisorId:advisorId,status:'Active'};
             }
             if(trustId){    
               insert.trustId = ObjectId(trustId);
-              findQuery = {customerId:paramData.customerId,trustId:trustId};
+              findQuery = {customerId:paramData.customerId,trustId:trustId,status:'Active'};
             }
             if(adminId){    
               insert.adminId = ObjectId(adminId);
-              findQuery = {customerId:paramData.customerId,adminId:adminId};
+              findQuery = {customerId:paramData.customerId,adminId:adminId,status:'Active'};
             }
+           
             alreadyMDeceased = await MarkDeceased.findOne(findQuery, {_id:1,deceased:1})
+  
             if (alreadyMDeceased == null) {
               insert.status = 'Active';
               insert.createdOn = new Date();
@@ -122,21 +109,20 @@ async function viewDeceased(req, res) {
               insert.save();
             }
       }
-    
-      if (alreadyMDeceased == null) {
+
+      if (!alreadyMDeceased) {
         let AllusersData = await getAllTrustUsers(paramData.customerId);
-        let trustList = AllusersData[0]['trustList'];
+          let trustList = AllusersData[0]['trustList'];
         let advisorList = AllusersData[1]['advisorList'];
         var totalCnt = advisorList.length + trustList.length;
-        let counterLabel = '';         
+        let counterLabel = '';       
 
         let finalStatus = 'Pending';
         let lockoutLegacyPeriodFlag = false;
          let DeceasedCnt = await MarkDeceased.find({customerId:paramData.customerId,status:"Active"})
          if(DeceasedCnt.length>=3){//When 3 users set mark as Deceased then customer lockout period is start.
           lockoutLegacyPeriodFlag = true; //finalStatus = 'Active';
-         }
-         
+         }         
 
          if(adminId){ //When admin mark as Deceased then customer lockout period is start.
           lockoutLegacyPeriodFlag = true; //finalStatus = 'Active';
@@ -164,7 +150,6 @@ async function viewDeceased(req, res) {
          }
        
          let legacyHolderData = await User.findOne({_id:paramData.customerId},{_id:1,username:1,firstName:1,lastName:1,deceased:1,lockoutLegacyPeriod:1});
-
          let OldDeceasedinfo = deceasedinfo;
          if(legacyHolderInfo && legacyHolderInfo.deceased.deceasedinfo){
               OldDeceasedinfo = legacyHolderInfo.deceased.deceasedinfo;
@@ -191,6 +176,7 @@ async function viewDeceased(req, res) {
          if(!legacyHolderInfo){
           legacyHolderInfo = legacyHolderData;
          }
+
          let lockoutLegacyDate = '';
          if(lockoutLegacyPeriodFlag && legacyHolderInfo.lockoutLegacyDate == null){
            if(legacyHolderInfo.lockoutLegacyPeriod){
@@ -203,21 +189,23 @@ async function viewDeceased(req, res) {
          }
 
          let deceasedArray = {'status':finalStatus,'trusteeCnt':trustList.length,'advisorCnt':advisorList.length,deceasedinfo:OldDeceasedinfo};
-
-         await User.updateOne({_id:paramData.customerId},{deceased:deceasedArray,lockoutLegacyDate:lockoutLegacyDate});
-        
-         let lockoutLegacyDateWithLabel = '';
+          await User.updateOne({_id:paramData.customerId},{deceased:deceasedArray,lockoutLegacyDate:lockoutLegacyDate});
+            let lockoutLegacyDateWithLabel = '';  
          if(lockoutLegacyDate){
-          lockoutLegacyDateWithLabel = '<br />Lockout Legacy Date: '.lockoutLegacyDate
+            let userdata = await User.findOne({_id:paramData.customerId},{lockoutLegacyDate:1,_id:1});
+            var dates = new Date(userdata.lockoutLegacyDate);
+            var lockoutLegacyDatee = dates.toISOString().substring(0, 10);
+            lockoutLegacyDatee = moment(userdata.lockoutLegacyDate).format("DD-MM-YYYY");
+            lockoutLegacyDateWithLabel = '<br />Lockout Legacy Date: '+lockoutLegacyDatee;
          }
 
-         if(totalCnt>2 && DeceasedCnt && DeceasedCnt.length>0){
+         if(totalCnt>2 && DeceasedCnt && DeceasedCnt.length>0 && !adminId){
           counterLabel = '<br>'+DeceasedCnt.length+" Trustee mark as deceased out of "+totalCnt;
          }
-         console.log('+++++++++++++++++++++++++++',counterLabel)
+
          //Customer needs to inform he is set mark as deceased now.
          await sendDeceasedNotifyMails('CustomerMarkAsDeceasedNotificationMail',legacyHolderInfo.username,legacyHolderInfo.firstName,legacyHolderInfo.lastName,legacyHolderName,deceasedFromName,userType,lockoutLegacyDateWithLabel,counterLabel);
-         await sendDeceasedNotification('MarkAsDeceasedNotificationMail',trustList,advisorList,legacyHolderName,deceasedFromName,userType,fromUserId,counterLabel);
+         await sendDeceasedNotification('MarkAsDeceasedNotificationMail',trustList,advisorList,legacyHolderName,deceasedFromName,userType,fromUserId,lockoutLegacyDateWithLabel,counterLabel);
         
          let message = resMessage.data( 607, [{key: '{field}',val: 'Mark as deceased'}, {key: '{status}',val: 'updated'}] )
          allActivityLog.updateActivityLogs( fromId, toId, 'Mark As Deceased', message)
@@ -259,7 +247,7 @@ async function viewDeceased(req, res) {
   }
 
 
-  function sendDeceasedNotification(template,trustList,advisorList,legacyHolderName,deceasedFromName,userType,fromUserId,counterLabel) {
+  function sendDeceasedNotification(template,trustList,advisorList,legacyHolderName,deceasedFromName,userType,fromUserId,lockoutLegacyDateWithLabel,counterLabel) {
     if(trustList.length>0){
       trustList.forEach( ( val, index ) => {
        if(val.trustId!=fromUserId){
@@ -268,7 +256,7 @@ async function viewDeceased(req, res) {
                   res.status(401).send(resFormat.rError(err));
                 } else {
                   if(userDetails){
-                    sendDeceasedNotifyMails(template,userDetails.username,userDetails.firstName,userDetails.lastName,legacyHolderName,deceasedFromName,userType,'',counterLabel);
+                    sendDeceasedNotifyMails(template,userDetails.username,userDetails.firstName,userDetails.lastName,legacyHolderName,deceasedFromName,userType,lockoutLegacyDateWithLabel,counterLabel);
                   }
                 }
             })
@@ -284,7 +272,7 @@ async function viewDeceased(req, res) {
             res.status(401).send(resFormat.rError(err));
           } else {
              if(userDetails){
-              sendDeceasedNotifyMails(template,userDetails.username,userDetails.firstName,userDetails.lastName,legacyHolderName,deceasedFromName,userType,'',counterLabel);
+              sendDeceasedNotifyMails(template,userDetails.username,userDetails.firstName,userDetails.lastName,legacyHolderName,deceasedFromName,userType,lockoutLegacyDateWithLabel,counterLabel);
              }
           }
         })
@@ -627,7 +615,7 @@ let { fields, offset, query, order, limit, search,customerId } = req.body
   let totalUsers = 0
     userList = await User.aggregate([
       {
-        $match: {userType:'advisor',"subscriptionDetails.endDate": {$gte : new Date()},_id:{'$nin':existingAdv}}
+        $match: {userType:'advisor',status:'Active',"subscriptionDetails.endDate": {$gte : new Date()},_id:{'$nin':existingAdv}}
       },
       {
         $project: {

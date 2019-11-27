@@ -54,18 +54,20 @@ async function userMessagesStatus(userId,status) {
   if(userId!==undefined){
   
     let chatingData = await chat.find({$or:[{chatfromid:userId},{ chatwithid:userId}]});
-   let chatInfolist = [];let unreadCnt = 0;
+   let chatInfolist = []; let unreadCnt = 0;
       await Promise.all(chatingData.map(async (val)=>{     
     //async.each(chatingData, async function (val){ 
         let friendId = val.chatfromid;
         if(val.chatfromid==userId){
           friendId = val.chatwithid;
         }
-        if(val.chats.length>0){
-      //  db.getCollection('chats').aggregate([ { '$match': { _id: ObjectId('5dd6308a3eb03b0c781eab10') } }, 
-      //  { '$group': { _id: null,count: { '$sum': { '$size': { '$filter': { input: '$chats', as: 'el',
-      //   cond: {$and:[ {'$eq': [ "$$el.status", "unread" ]},{'$eq': [ '$$el.contactId', '5cc9cc301955852c18c5b73a' ]}]} 
-      // } } } } } } ], {})
+        if(val.chats.length>0){     
+/*
+      chats.aggregate([ { '$match': { _id: ObjectId('5dd6308a3eb03b0c781eab10'), 'chats.status': 'unread' } }, 
+      { '$group': { _id: null, count: { '$sum': { '$size': { '$filter': { input: '$chats', as: 'el',
+       cond: { '$and': [ { '$eq': [ '$$el.status', 'unread' ] }, { '$eq': [ '$$el.contactId', '5cc9cc301955852c18c5b73a' ] } ] } } } } } } } ], {})
+       */
+
           friendId = friendId.toString();
           valid = val._id.toString();
           let unreadC =   await chat.aggregate([
@@ -95,21 +97,21 @@ async function userMessagesStatus(userId,status) {
                 }
             }}
           ]);
-      
+          console.log('------',typeof(val._id),'----',unreadC.length);
           if(unreadC.length>0){
+            console.log(typeof(val._id),'----',unreadC[0].count,'-----_id-->>',val._id,'--------userId>>>>-----',userId,'---friendId>>>>-----',friendId)
             unreadCnt = unreadC[0].count;   
           }        
         }
       
-      if(friendId!=null) {
+      //if(friendId!=null) {
         let makeArray = {
             user_id: friendId,
             unread:unreadCnt,
-          }
-       
+          }     
           chatInfolist.push(makeArray);
-         // console.log('makeArray',makeArray)
-        }
+          console.log('makeArray aaaa   ',makeArray,'-------',val._id,'-------------',userId,'--------',friendId)
+        //}
     }))
    // console.log('****************userMessagesStatus ---- unreadCount array--- '+chatInfolist);
     return chatInfolist;
