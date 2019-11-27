@@ -59,7 +59,7 @@
     <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="25" fxFlex.lg="20" fxFlex.xl="20" class="reverse--order--sm">
       <div class="right--panel--wrapper">
         <div fxLayout="row wrap">
-          <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" *ngIf="invitedMembersCount < targetCount">
+          <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" *ngIf="invitedMembersCount >= targetCount && (!subscriptionData || (subscriptionData && subscriptionData.length == 0)) "> 
             <div class="right--boxes">
               <mat-card class="p-0" *ngIf="invitedMembersCount < targetCount">
                 <mat-card-title class="">

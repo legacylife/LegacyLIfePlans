@@ -47,6 +47,7 @@ export class AdvisorDashboardComponent implements OnInit {
 
   targetCount:Number = 0
   extendedDays:Number = 0
+  subscriptionData :any 
 
   constructor(
     private userapi: UserAPIService,
@@ -62,6 +63,20 @@ export class AdvisorDashboardComponent implements OnInit {
     this.getAdvisorActivityLogList();
     this.getInviteMembersCount();
     this.getLeadsCount();
+
+    if(this.userId){
+      const req_vars = { userId: this.userId }    
+      this.userapi.apiRequest('post', 'auth/view', req_vars).subscribe(result => {  
+        this.subscriptionData = [];
+        if(result.data.subscriptionDetails){
+          this.subscriptionData = result.data.subscriptionDetails;
+        }
+      }, (err) => {
+        console.error(err)
+      })
+    }
+
+
   }
 
   checkSubscription() {
@@ -111,6 +126,7 @@ export class AdvisorDashboardComponent implements OnInit {
   }
 
   getAdvisorActivityLogList = (query = {}, search = false) => {
+
     const req_vars = {
       query: Object.assign({ advisorId: this.userId }, query),
       fields: {},

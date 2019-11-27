@@ -129,7 +129,10 @@ export class AdvisorHeaderTopComponent implements OnInit, OnDestroy {
       })
     }
     else if( getDiff <= 0) {
-      return false
+      let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
+        width: '720px',
+        disableClose: true,
+      })
     }
     else{
       this.router.navigate(['/subscription'])
