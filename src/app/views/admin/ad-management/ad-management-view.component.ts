@@ -25,6 +25,7 @@ export class AddManagementViewComponent implements OnInit {
   userType: string = ""
   row: any;
   dateError: string = '';
+  paymentError: string = '';
   selectedUserId: string = "";
   docPath:string;
   adminSections = [];
@@ -125,10 +126,6 @@ export class AddManagementViewComponent implements OnInit {
           console.log('addOnDetails');
         }
 
-
-
-
-
         var zipcodes = this.data.zipcodes;
         this.zipcodeList = zipcodes.split(',');
        this.enquiryFormReply.controls['fromDate'].setValue(this.data.fromDate);
@@ -142,10 +139,11 @@ export class AddManagementViewComponent implements OnInit {
 
 
   enquiryFormReplySubmit(formData = null) {
-
     if(new Date(this.enquiryFormReply.controls['toDate'].value) < new Date(this.enquiryFormReply.controls['fromDate'].value)) {
       this.dateError = 'To date should be greater than From date';
+      this.snack.open(this.dateError, 'OK', { duration: 4000 })
     }else{
+      if(formData.cost>0) {
       let FromD = this.enquiryFormReply.controls['fromDate'].value.toString().split('00:00:00');
       let toDate = this.enquiryFormReply.controls['toDate'].value.toString().split('00:00:00');
       let enquiryData = {
@@ -154,6 +152,7 @@ export class AddManagementViewComponent implements OnInit {
         fromDate:new Date(FromD[0]+'00:00:00 UTC'),
         toDate:new Date(toDate[0]+'00:00:00 UTC'),    
       }
+
       this.loader.open();
       this.api.apiRequest('post', 'advertisement/submitEnquiryReply', enquiryData).subscribe(result => {
       this.loader.close();
@@ -165,6 +164,10 @@ export class AddManagementViewComponent implements OnInit {
       }, (err) => {
         this.snack.open(err, 'OK', { duration: 4000 })
       })
+     }else{
+      this.paymentError = 'Please enter valid payment cost.';
+      this.snack.open(this.paymentError, 'OK', { duration: 4000 })
+     }
     }
   }
 
@@ -194,15 +197,20 @@ export class AddManagementViewComponent implements OnInit {
     let zipcodeList = this.enquiryFormReply.controls['zipcodes'].value;
     if(zipcodeList) {
         if(cost) {
+          if(cost>0) {
+            console.log('---',cost)
           /*
           let result = await this.api.apiRequest('post', 'advertisement/generate-invoice-link', {query: {customerId : this.data.customerId}}).toPromise()
           if( result.status == 'error' ) {
             this.snack.open("Please try again.", 'OK', { duration: 4000 })
           } */
-          let invoiceId = 'in_1EufANAnNCwnZeR0xpiNhdIH'//result.data.invoiceId
-          let link = serverUrl+'/advertisement-payment/'+btoa(this.data.customerId)+'/'+btoa(invoiceId)
 
-          this.enquiryFormReply.controls['stripePaymentLink'].setValue(link);
+          // let invoiceId = 'in_1EufANAnNCwnZeR0xpiNhdIH'//result.data.invoiceId
+          // let link = serverUrl+'/advertisement-payment/'+btoa(this.data.customerId)+'/'+btoa(invoiceId)
+          // this.enquiryFormReply.controls['stripePaymentLink'].setValue(link);
+        }else{
+          this.snack.open("Please enter valid payment cost.", 'OK', { duration: 4000 })
+        }
         }else{
           this.snack.open("Please enter payment cost first.", 'OK', { duration: 4000 })
         }

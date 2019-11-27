@@ -48,7 +48,7 @@
       <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="mt-1" *ngIf="imageList.length" >
         <h3 class="header--text fnt--16">Uploaded Images</h3>
         <mat-chip-list class="doc--list" *ngFor="let doc of imageList; index as i">
-          <mat-chip>
+          <mat-chip *ngIf="doc.name">
             <a (click)="downloadFile(doc.name)" class="donwload-doc">{{doc.name}}</a>
             <mat-icon matChipRemove (click)="ImageDelete(i,doc.name,doc.name)">close</mat-icon>
           </mat-chip>

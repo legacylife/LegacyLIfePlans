@@ -291,7 +291,7 @@
                   <mat-icon matTooltip="Please enter numeric value." matTooltipClass="llp--tooltip error" *ngIf="enquiryFormReply.controls['cost'].hasError('pattern') && enquiryFormReply.controls['cost'].touched" class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
               </div>
-
+              <mat-chip-list class="doc--list error--chip" *ngIf="paymentError"><mat-chip><mat-error>{{paymentError}}</mat-error></mat-chip></mat-chip-list>
               <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
                 <mat-form-field class="full-width mt-1">
                   <textarea maxlength="500" matInput placeholder="Reply Message" name="message"

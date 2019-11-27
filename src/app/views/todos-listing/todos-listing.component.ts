@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit,HostListener } from "@angular/core";
 import {
   FormBuilder,
   FormGroup,
@@ -46,6 +46,13 @@ export class TodosListingComponent implements OnInit {
     });
     this.getTodos();
   }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    if(event.srcElement.textContent=='Save'){
+      setTimeout(()=>{
+        this.getTodos();
+      },1000);     
+    } 
+  }
 
   drop(event: CdkDragDrop<string[]>) {
     this.newOrderTodoList = []
@@ -78,7 +85,7 @@ export class TodosListingComponent implements OnInit {
       fields: {},
       offset: 0,
       limit: 0,
-      order: { sortOrder: 1 }
+      order: { sortOrder: -1 }
     };
     await this.userapi.apiRequest("post", "todos/todos-list", params).subscribe(
       result => {

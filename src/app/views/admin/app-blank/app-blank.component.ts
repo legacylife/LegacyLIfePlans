@@ -24,7 +24,7 @@ export class AppBlankComponent implements OnInit {
       limit: '',
       order: {"createdOn": -1},
     }
-    this.loader.open();
+   // this.loader.open();
     this.api.apiRequest('post', 'userlist/dashbaorddetails', req_vars).subscribe(result => {
       if (result.status == "error") {
         this.loader.close();
