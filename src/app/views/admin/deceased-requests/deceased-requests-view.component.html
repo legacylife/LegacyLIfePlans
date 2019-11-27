@@ -22,9 +22,7 @@
           </mat-list-item>
         </mat-list>
       </mat-card-content>
-
       <div class="profile-actions flex-d-c mb-1">
-
         <button mat-raised-button class="llp--primary--btn mb-5p"
           (click)="openAdminHireAdvisorModal(selectedUserId,'','',true)">Assign an Advisor</button>
         <button mat-raised-button class="llp--secondary--btn" *ngIf="!showDeceased"
@@ -132,8 +130,7 @@
         <mat-card class="default mb-1 basic--info--wrapper">
           <mat-card-title class="p-1">Trustee Info</mat-card-title>
           <mat-card-content class="p-0 border-t">
-            <mat-list class="compact-list mb-1">
-              
+            <mat-list class="compact-list mb-1">           
               <mat-list-item class="">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Total Trustee Count</h6>
@@ -141,7 +138,6 @@
                   <div fxFlex="40">{{row?.deceased.trusteeCnt}}</div>
                 </div>
               </mat-list-item>
-
               <mat-list-item class="">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Total Advisor Count</h6>
@@ -149,7 +145,6 @@
                   <div fxFlex="40">{{row?.deceased.advisorCnt}}</div>
                 </div>
               </mat-list-item>
-
               <mat-list-item>
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Executor</h6>
@@ -162,14 +157,39 @@
                   </div>
                 </div>
               </mat-list-item>
-
-              <mat-list-item *ngIf="row.deceased.revokeId">
+              <mat-list-item *ngIf="row?.deceased?.revokeId">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Revoke by</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{revokeIdData.firstName}} {{revokeIdData.lastName}}</div>
+                  <div fxFlex="40">{{revokeIdData?.firstName ? revokeIdData?.firstName : '--'}} {{revokeIdData?.lastName ? revokeIdData?.lastName : '--'}}</div>
                 </div>
               </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+          <mat-card-title class="p-1">Subscription Details</mat-card-title>
+          <mat-card-content class="p-0 border-t">
+            <mat-list class="compact-list mb-1">
+              <mat-list-item class="">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Subscription status</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{isAccountFree ? 'Trial' : ( isSubscribePlan && !isPremiumExpired ? 'Paid' : 'Expired')}} Account</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Plan Expire Date</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{subscriptionExpireDate ? (subscriptionExpireDate  | date: 'yyyy/MM/dd') : '--'}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="">
+              <div fxLayout="row" fxFlex="100">
+                <h6 class="m-0 mr-1">Current Plan</h6>
+                <span fxFlex></span>
+                <div fxFlex="40">{{planName}} Plan</div>
+              </div>
+            </mat-list-item>
             </mat-list>
           </mat-card-content>
         </mat-card>
@@ -177,13 +197,10 @@
     </div>
   </div>
 
-
   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" *ngIf="showPage" class="mb-1">
-
     <div class="breadcrumb-title pl-0 mt-1 brdr-t-1">
       <h1 class="bc-title">Deceased Request Info</h1>
     </div>
-
     <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
       <!-- <mat-card-title class="p-1">Deceased Request Info</mat-card-title> -->
       <mat-card-content class="p-0">
@@ -219,7 +236,6 @@
                       </p>
                 </span>
               </span>
-            
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Time" prop="createdOn" [flexGrow]="1">
@@ -238,12 +254,10 @@
     </mat-card>
   </div>
 
-
   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" *ngIf="showPage" class="mb-1">
       <div class="breadcrumb-title pl-0 mt-1 brdr-t-1">
           <h1 class="bc-title">Advisors Info</h1>
-        </div>
-
+      </div>
     <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
       <!-- <mat-card-title class="p-1">Advisors Info</mat-card-title> -->
       <mat-card-content class="p-0">
@@ -293,19 +307,14 @@
                 (click)="openAdminHireAdvisorModal(selectedUserId,row?._id,row?.advisorId._id,'update',true)" title="Edit">
                 <mat-icon>edit</mat-icon>
               </button>
-
               <button mat-icon-button mat-sm-button color="primary" class="mr-1 p-0 icon--edit"
                 (click)="removeAdvisor(selectedUserId,row?._id,row?.advisorId._id)" title="Remove advisor">
                 <mat-icon>delete</mat-icon>
               </button>
-
-
             </ng-template>
           </ngx-datatable-column>
         </ngx-datatable>
       </mat-card-content>
     </mat-card>
   </div>
-
-
 </div>

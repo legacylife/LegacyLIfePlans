@@ -45,7 +45,25 @@ export class DeceasedRequestsViewComponent implements OnInit {
   my_messages:any;
   executorData:any;
   revokeIdData:any;
+  isAccountFree: boolean = true
+  isSubscribePlan: boolean = false
+  isSubscribedBefore: boolean = false
+  autoRenewalFlag: boolean = false
+  autoRenewalVal:boolean = false
+  isPremiumExpired: boolean = false
+  isSubscriptionCanceled:boolean = false
+  userCreateOn: any
+  userSubscriptionDate: any
+  isExpired:boolean = false
+  autoRenewalStatus: string = 'off'
+  subscriptionExpireDate: string = ''
   lockLegacyList: any[] = lockLegacyPeriodList;
+  planName: string = 'Free'
+  subscriptionDetails:object = {
+    planStatus:'Trial',
+    expiryDate:'',
+    planName: 'Free Plan'
+  }
   constructor(
     private layout: LayoutService,
     private api: APIService, private route: ActivatedRoute, 
@@ -100,19 +118,36 @@ export class DeceasedRequestsViewComponent implements OnInit {
 
         if(this.row.deceased.status=='Active'){
           this.showDeceased = true;
-        }else{
-          this.row.deceased.deceasedinfo.forEach((element: any, index) => {          
-            if(element.adminId && element.status=='Active'){
-              this.showDeceased = true;
-            }
-          })
         }
+        
+        // else{
+        //   this.row.deceased.deceasedinfo.forEach((element: any, index) => {          
+        //     if(element.adminId && element.status=='Active'){
+        //       this.showDeceased = true;
+        //     }
+        //   })
+        // }
 
         if(this.row.deceased && this.row.deceased.revokeId){
          this.revokeIdData = this.row.deceased.revokeId;
         }
 
-
+        this.subscriptionservice.checkSubscriptionAdminPanel( this.row, ( returnArr )=> {
+          this.userCreateOn = returnArr.userCreateOn
+          this.isSubscribedBefore = returnArr.isSubscribedBefore
+          this.isSubscriptionCanceled = returnArr.isSubscriptionCanceled
+          this.autoRenewalFlag = returnArr.autoRenewalFlag
+          this.autoRenewalVal = returnArr.autoRenewalVal
+          this.autoRenewalStatus = returnArr.autoRenewalStatus
+          this.isAccountFree = returnArr.isAccountFree
+          this.isPremiumExpired = returnArr.isPremiumExpired
+          this.isSubscribePlan = returnArr.isSubscribePlan
+          this.planName = returnArr.planName
+          this.subscriptionExpireDate = returnArr.subscriptionExpireDate
+          /* if( new Date(this.subscriptionExpireDate) < new Date() ) {
+            this.isExpired = true
+          } */
+        })
         this.getMarkDeceasedUser(true);
       }
     }, (err) => {
@@ -159,23 +194,12 @@ export class DeceasedRequestsViewComponent implements OnInit {
         if(adminData[0]){
           this.deceasedId = adminData[0]._id;
         }
-        
-      //   if(this.row.deceased.status=='Active'){
-      //     this.showDeceased = true;
-      //   }
 
-      //   this.fullname = '';
-      //   if(this.row.firstName && this.row.firstName!=='undefined' && this.row.lastName && this.row.lastName!=='undefined'){
-      //     this.customerFirstName = this.row.firstName;
-      //     this.fullname = this.row.firstName+' '+this.row.lastName;
-      //   }
-      //   if(this.row.username){
-      //     this.legacyCustomerUsername = this.row.username;
-      //  }
-      //   if(this.row.profilePicture){
-      //      this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + this.row.profilePicture;
-      //   }
-      //   this.showPage = true
+        if(adminData.length>0){
+          if(adminData[0].status=='Active'){
+            this.showDeceased = true;
+          }
+        }
 
         this.advisorsData = result.data.advisorsList;
         this.loader.close();
@@ -291,7 +315,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
           this.api.apiRequest('post', 'deceased/markAsDeceased', req_vars).subscribe(result => { 
           this.loader.close();
           this.getCustomerProfile();
-            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            this.snack.open(result.data.message, 'OK', { duration: 8000 })
           }, (err) => {
             console.error(err)
             this.loader.close();
@@ -327,7 +351,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
       this.loader.open();   
       this.api.apiRequest('post', 'deceased/revokeAsDeceased', req_vars).subscribe(result => {
         this.loader.close();
-        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+        this.snack.open(result.data.message, 'OK', { duration: 6000 })
         this.router.navigate(['/', 'admin', 'deceased-requests'])
         }, (err) => {
           console.error(err)
@@ -341,7 +365,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
   executorCron(){
     const req_vars = {};
     this.api.apiRequest('post', 'cronjobs/deceased-customers-reminders', req_vars).subscribe(result => {
-      this.snack.open("DONE DONA DONE", 'OK', { duration: 4000 })
+      this.snack.open("DONE DONA DONE", 'OK', { duration: 6000 })
       }, (err) => {
         console.error(err)
         this.loader.close();
@@ -359,7 +383,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
           this.api.apiRequest('post', 'customer/legacy-user-remove', req_vars).subscribe(result => {
             this.loader.close();
             this.getCustomerProfile();
-            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+            this.snack.open(result.data.message, 'OK', { duration: 6000 })
           }, (err) => {
             console.error(err)
             this.loader.close();
