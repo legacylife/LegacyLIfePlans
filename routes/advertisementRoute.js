@@ -201,12 +201,12 @@ function addEnquiryReply(req, res) {
                 if(proquery.fromDate){
                   let  fromDate = proquery.fromDate.split("-");
                   let fromDate2 = fromDate[2].split("T");
-                  fromDate1 = fromDate[0]+'/'+fromDate[1]+'/'+fromDate2[0];
+                  fromDate1 = fromDate2[0]+'/'+fromDate[1]+'/'+fromDate[0];
                 }
                 if(proquery.toDate){
                   let toDate = proquery.toDate.split("-");
                   let toDate2 = toDate[2].split("T");
-                  toDate1 = toDate[0]+'/'+toDate[1]+'/'+toDate2[0];
+                  toDate1 = toDate2[0]+'/'+toDate[1]+'/'+toDate[0];
                 }
 
                 let encryptedCustomerId = Buffer.from(String(found.customerId._id), 'binary').toString('base64'),

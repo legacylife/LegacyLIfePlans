@@ -55,6 +55,7 @@ function trustsList(req, res) {
 
 function getUserDetails(req, res) {
   let { query } = req.body;
+  let status = '';
   if (query.email) {
     trust.findOne(query, {}, function (err, trustDetails) {
       if (err) {
@@ -73,7 +74,7 @@ function getUserDetails(req, res) {
             } else {
               if (userDetails && userDetails.userType == 'advisor') {
                let foundAdv =  await HiredAdvisors.find({ customerId:query.customerId,advisorId:userDetails._id,status:{$nin: ["Rejected", "Deleted"]}});
-                if(foundAdv){
+                if(foundAdv.length>0){
                   message = "'" + query.email + "' is already trustee.";
                   status = 'Exist';
                 }

@@ -179,6 +179,7 @@ async function view(req, res) {
 
 async function getMostViewedArticles(req, res) {
   let articles = await CoachCorner.aggregate([
+                  { $match: {status:'On'} },
                   {
                     $project: {
                       _id: 1,
