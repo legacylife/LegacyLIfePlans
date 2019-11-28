@@ -39,7 +39,7 @@ export class customerlistComponent implements OnInit {
   isSubscriptionCanceled: boolean = false
   userCreateOn: any
   userSubscriptionDate: any
-
+  processing: boolean = false
   constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService,
     private subscriptionservice: SubscriptionService) { }
   ngOnInit() {
@@ -58,6 +58,7 @@ export class customerlistComponent implements OnInit {
       query: Object.assign({ userType: "customer" }, query),
       order: { "createdOn": -1 },
     }
+    this.loader.open();
     this.api.apiRequest('post', 'userlist/list', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
@@ -75,6 +76,7 @@ export class customerlistComponent implements OnInit {
           }
           return row;
         })
+        this.processing = true;
       }
     }, (err) => {
       console.error(err)

@@ -8,7 +8,7 @@
     <!-- Icon menu items -->
     <div class="icon-menu-item" *ngFor="let item of menuItems">
       <button *ngIf="!item.disabled && item.type === 'icon'" mat-raised-button [matTooltip]="item.tooltip" routerLink="/{{item.state}}"
-        routerLinkActive="mat-bg-primary">
+        routerLinkActive="mat-bg-primary">{{item.name}}
         <mat-icon>{{item.icon}}</mat-icon>
       </button>
     </div>
@@ -27,7 +27,7 @@
           <span fxFlex></span>
           <span class="menuitem-badge mat-bg-{{ badge.color }}" [ngStyle]="{background: badge.color}" *ngFor="let badge of item.badges">{{ badge.value }}</span>
         </a>
-        <a [href]="item.state" appDropdownToggle matRipple *ngIf="item.type === 'extLink'" >
+        <a (click)="logout()" appDropdownToggle matRipple *ngIf="item.type === 'extLink'" >
           <mat-icon>{{item.icon}}</mat-icon>
           <span class="item-name lvl1">{{item.name | translate}}</span>
           <span fxFlex></span>

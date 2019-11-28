@@ -28,7 +28,7 @@ export class AdvisorRejectPopupComponent implements OnInit {
   buildRejectForm(item) {
     this.itemForm = this.fb.group({
       //approveRejectReason: [item.approveRejectReason || '', Validators.required]
-      approveRejectReason: new FormControl(item.approveRejectReason || '', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1)]))
+      approveRejectReason: new FormControl(item.approveRejectReason || '', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(250)]))
     })
   }
 

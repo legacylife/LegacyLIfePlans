@@ -74,6 +74,7 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
     this.egretThemes = this.themeService.egretThemes;
     this.menuItemSub = this.navService.menuItems$
     .subscribe(res => {
+
       res = res.filter(item => item.type !== 'icon' && item.type !== 'separator');
       let limit = 4
       let mainItems:any[] = res.slice(0, limit)
@@ -90,7 +91,7 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
       })
       this.menuItems = mainItems
     })
-
+ 
     let isProuser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
     let isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
     if(!isProuser) {

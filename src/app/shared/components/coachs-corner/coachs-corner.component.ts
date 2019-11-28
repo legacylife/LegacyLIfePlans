@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output,HostListener } from '@angular/core';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
 import { APIService } from 'app/api.service';
 import { serverUrl, s3Details } from '../../../config';
@@ -25,6 +25,11 @@ export class CoachsCornerComponent implements OnInit {
   }
 
   ngOnInit() {    
+  }
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+      console.log('event',event)
+      // if(event.srcElement.textContent=='Send an Invite'){
+      // }
   }
 
   /**
@@ -70,6 +75,7 @@ export class CoachsCornerComponent implements OnInit {
         this.postList = [];
       }
       else {
+        console.log('POST list',result.data.postList)
         this.postList = result.data.postList.filter((listing: any) => listing.category.status === 'On');
         this.detailsLoaded.emit(true);
       }

@@ -8,7 +8,7 @@
 
 
   <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
-    <mat-card-content class="p-0">
+    <mat-card-content class="p-0" *ngIf="processing">
       <ngx-datatable class="material ml-0 mr-0" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50"
         [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
         <ngx-datatable-column  [resizeable]="false" headerClass="tbl--header" name="Email" prop="username" [flexGrow]="1.2">
@@ -23,10 +23,10 @@
         </ngx-datatable-column>
         <ngx-datatable-column  [resizeable]="false" name="Business Info" prop="businessName" [flexGrow]="1.2">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.businessName }} <br />
-            City : {{ row?.city }} <br />
-            State : {{ row?.state }} <br />
-            Zipcode : {{ row?.zipcode }}
+            {{ row?.businessName ? row?.businessName : '--' }} <br />
+            City : {{ row?.city ? row?.city : '--' }} <br />
+            State : {{ row?.state  ? row?.state : '--'}} <br />
+            Zipcode : {{ row?.zipcode ? row?.zipcode : '--' }}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column  [resizeable]="false" name="Subscription Status" prop="end_date" [flexGrow]="1">

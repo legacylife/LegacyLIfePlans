@@ -4,7 +4,7 @@ import { InviteComponent } from '../header-top/invite-modal/invite-modal.compone
 import { TodosComponent } from 'app/views/todos/todos.component';
 import { LayoutService } from 'app/shared/services/layout.service';
 import { ReferAndEarnModalComponent } from 'app/views/refer-and-earn-modal/refer-and-earn-modal.component';
-
+import { UserAPIService } from './../.../../../../userapi.service';
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.template.html'
@@ -17,6 +17,7 @@ export class SidenavComponent {
   constructor(
     private dialog: MatDialog,
     private layout: LayoutService,
+    private userapi: UserAPIService
   ) { }
   ngOnInit() { }
 
@@ -36,13 +37,15 @@ export class SidenavComponent {
   }
 
   closeSidenav(item?: any) {
-   
     if (!item.state.includes('admin')) {
       this.layout.publishLayoutChange({
         sidebarStyle: 'closed'
       })
     }
-
+  }
+  
+  logout(){
+    this.userapi.userLogout();
   }
 
   openSmModal(name) {

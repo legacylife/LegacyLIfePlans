@@ -93,7 +93,7 @@ export class cmseditComponent implements OnInit {
       } else {
         this.snack.open("Data has been updated successfully", 'OK', { duration: 4000 })
         //this.successMessage = result.data
-        console.log(result.data)
+        this.router.navigate(["admin", "cms"]);
       }
       
     }, (err) => {

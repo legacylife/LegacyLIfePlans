@@ -99,7 +99,7 @@ export class UserAuthGuard implements CanActivate {
     let IdleFlag = localStorage.getItem("setIdleFlag");
     var pathArray = window.location.pathname.split('/');
     // console.log('HERE I AM IdleFlag --- ',IdleFlag,pathArray)
-    if (IdleFlag != '' && IdleFlag == 'true' && pathArray[1] != 'signin') {
+    if (IdleFlag != '' && IdleFlag == 'true' && pathArray[1] != 'signin' && pathArray[1] != 'error') {
       //console.log("LockScreen IdleFlag >> ",IdleFlag)
       this.stopWatching(false);
     }

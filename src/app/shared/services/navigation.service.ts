@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-
 interface IMenuItem {
   type: string,       // Possible values: link/dropDown/icon/separator/extLink
   name?: string,      // Used as display text for item and title for separator type
@@ -9,7 +8,10 @@ interface IMenuItem {
   tooltip?: string,   // Tooltip text 
   disabled?: boolean, // If true, item will not be appeared in sidenav.
   sub?: IChildItem[], // Dropdown items
-  badges?: IBadge[]
+  badges?: IBadge[],
+  logsOut?: boolean;
+  fn?: any;
+  command?:any;
 }
 interface IChildItem {
   type?: string,
@@ -159,7 +161,8 @@ export class NavigationService {
       name: 'Log Out',
       type: 'extLink',
       icon: 'assignment_return',
-      state: '/advisor/dashboard '
+      logsOut: true,
+      state: ''
     }
   ];
 
@@ -204,7 +207,8 @@ export class NavigationService {
       name: 'Log Out',
       type: 'extLink',
       icon: 'assignment_return',
-      state: '/customer/dashboard '
+      logsOut: true,
+      state: ''
     }
   ];
 

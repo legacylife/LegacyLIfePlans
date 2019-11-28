@@ -23,13 +23,14 @@ export class advisorlistComponent implements OnInit {
   advisorlistdata = [];
   aceessSection: any
   my_messages: any;
+  processing: boolean = false
   constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService, private subscriptionservice: SubscriptionService) { }
   ngOnInit() {
     this.aceessSection = this.api.getUserAccess('advisormanagement');
     this.my_messages = {
       'emptyMessage': 'No records Found'
     };
-    this.getLists()
+    this.getLists();
   }
 
   //function to get all events
@@ -41,7 +42,9 @@ export class advisorlistComponent implements OnInit {
       limit: '',
       order: { "createdOn": -1 },
     }
+    this.loader.open();
     this.api.apiRequest('post', 'userlist/list', req_vars).subscribe(result => {
+      this.loader.close();
       if (result.status == "error") {
         console.log(result.data)
       } else {
@@ -57,6 +60,7 @@ export class advisorlistComponent implements OnInit {
           }
           return row;
         })
+        this.processing = true;
       }
     }, (err) => {
       console.error(err)

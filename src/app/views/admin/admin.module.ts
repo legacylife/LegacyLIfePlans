@@ -79,7 +79,7 @@ import { advisorcmsformComponent } from './cms/advisorcmsform.component';
     SharedModule,
     QuillModule,
     MatTooltipModule,
-    AgmCoreModule.forRoot({ apiKey: 'AIzaSyDsp487LM4HTYDV4O7KcFrHkolDZziykjw' }),
+    AgmCoreModule.forRoot({ apiKey: 'AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q' }),//AIzaSyDsp487LM4HTYDV4O7KcFrHkolDZziykjw
     AgmJsMarkerClustererModule,
     AgmMarkerSpiderModule,
     RichTextEditorAllModule,

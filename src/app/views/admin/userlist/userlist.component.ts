@@ -30,6 +30,7 @@ export class userlistComponent implements OnInit {
   aceessSection: any;
   public items: any[];
   my_messages:any;
+  processing: boolean = false
   //public getItemSub: Subscription;
 
   constructor(
@@ -55,13 +56,16 @@ export class userlistComponent implements OnInit {
       limit: '',
       order: {"createdOn": -1},
     }
+    this.loader.open();
     this.api.apiRequest('post', 'userlist/list', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
         this.items = [];
         console.log(result.data)
       } else {
-        this.items = this.rows = this.temp = result.data.userList
+        this.items = this.rows = this.temp = result.data.userList;
+        this.processing = true;
+
         //this.getItemSub = this.totalRecords = result.data.totalUsers
       }
     }, (err) => {

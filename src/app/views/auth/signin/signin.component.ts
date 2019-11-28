@@ -89,13 +89,13 @@ export class SigninComponent implements OnInit {
           setTimeout(() => {
             this.loader.close();
             this.router.navigate(['/', 'customer', 'dashboard']);
-          }, 2000);  //5s
+          }, 3000);  //5s
           
         }else{
           setTimeout(() => {
             this.loader.close();
             this.router.navigate(['/', 'advisor', 'dashboard'])
-          }, 2000);  //5s          
+          }, 3000);  //5s          
         }  
 
         

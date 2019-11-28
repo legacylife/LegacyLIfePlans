@@ -33,8 +33,8 @@
         </ngx-datatable-column>
         <ngx-datatable-column  [resizeable]="false" name="Details" prop="Details" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            Section: {{ row?.activity == 'Profile' || row?.activity == 'Login' || row?.activity == 'User Logout' ? "n/a" : row?.section }} <br>
-            Sub Section: {{ row?.activity == 'Profile' || row?.activity == 'Login' || row?.activity == 'User Logout' ? "n/a" : row?.subSection }}<br>
+            Section: {{ row?.activity == 'Profile' || row?.activity == 'Login' || row?.activity == 'User Logout' || row?.activity == 'Reset Password' || row?.activity == 'Invite' || row?.section == null || row?.section == ''   ? "n/a" : row?.section }} <br>
+            Sub Section: {{ row?.activity == 'Profile' || row?.activity == 'Login' || row?.activity == 'User Logout'  || row?.activity == 'Subscription'  || row?.activity == 'Invite' || row?.subSection == null || row?.subSection == ''  ? "n/a" : row?.subSection }}<br>
             File Name: {{ row?.activity == 'Profile' || row?.activity == 'Login' || row?.activity == 'User Logout' || row?.fileName == null ? "n/a" : row?.fileName }}
          </ng-template>
         </ngx-datatable-column>

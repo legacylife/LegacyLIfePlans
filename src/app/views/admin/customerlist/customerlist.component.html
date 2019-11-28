@@ -7,7 +7,7 @@
   </form>
 
   <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
-    <mat-card-content class="p-0">
+    <mat-card-content class="p-0" *ngIf="processing">
       <ngx-datatable class="material ml-0 mr-0" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" [limit]="10"
         [messages]="my_messages" [rowHeight]="'auto'">
         <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Email" prop="username" [flexGrow]="1">
@@ -27,27 +27,27 @@
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" name="State" prop="state" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.state }}
+            {{ row?.state ? row?.state : '--'  }}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" prop="city" name="City" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.city }}
+            {{ row?.city ? row?.city : '--' }}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" prop="zipcode" name="Zipcode" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.zipcode }}
+            {{ row?.zipcode ? row?.zipcode : '--'  }}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" prop="end_date" name="Subscription Status" [flexGrow]="1.1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.subscriptionData ? row?.subscriptionData.status : ""}}
+            {{ row?.subscriptionData ? row?.subscriptionData.status : "--"}}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" prop="end_date" name="Expiry Date" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.subscriptionData ? row?.subscriptionData.endDate : ""}}
+            {{ row?.subscriptionData ? row?.subscriptionData.endDate : "--"}}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" name="Own legacy count" [flexGrow]="1.1">

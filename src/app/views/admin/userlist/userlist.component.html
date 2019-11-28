@@ -11,7 +11,7 @@
   </form>
 
   <mat-card class="admin--users--table" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
-    <mat-card-content class="p-0">
+    <mat-card-content class="p-0" *ngIf="processing">
       <ngx-datatable class="material ml-0 mr-0" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50"
         [footerHeight]="50" [limit]="10" [messages]="my_messages" [rowHeight]="'auto'">
         <ngx-datatable-column  [resizeable]="false" name="Name" prop="firstName" [flexGrow]="1">
@@ -31,7 +31,7 @@
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" name="Logged On" prop="lastLoggedInOn" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row.lastLoggedInOn | date: 'yyyy/MM/dd HH:mm:ss'}}
+            {{ row.lastLoggedInOn ? (row.lastLoggedInOn | date: 'yyyy/MM/dd HH:mm:ss') : ''}}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">

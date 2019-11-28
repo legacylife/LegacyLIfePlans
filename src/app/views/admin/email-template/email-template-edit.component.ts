@@ -96,6 +96,7 @@ export class EmailTemplateEditComponent implements OnInit {
         this.snack.open(result.data, 'OK', { duration: 4000 })
       } else {
         this.snack.open(result.data, 'OK', { duration: 4000 })
+        this.router.navigate(["admin", "email-template"]);
       }
 
     }, (err) => {

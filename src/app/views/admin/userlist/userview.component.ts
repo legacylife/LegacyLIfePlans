@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
@@ -74,7 +74,9 @@ export class userviewComponent implements OnInit {
     //this.websites = '';
     this.getUser()
   }
-
+  @HostListener('document:click', ['$event']) clickedOutside(event){
+    console.log('event',event)
+  }
   //function to get all events
   getUser = (query = {}, search = false) => {
     this.loader.open()
