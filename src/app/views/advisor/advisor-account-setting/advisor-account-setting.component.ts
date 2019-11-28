@@ -148,7 +148,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       zipcode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
       businessPhoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
       bioText: new FormControl('', Validators.required),
-      websiteLinks: this.fb.array([this.fb.group({ links: ['', Validators.required] })]),
+      websiteLinks: this.fb.array([this.fb.group({ links: ['', Validators.required, Validators.compose([CustomValidators.url])]})]),
       awardsYears: this.fb.array([this.fb.group({ title: ['', Validators.required], year: ['', Validators.required] })]),
       specialites:  this.fb.array([this.fb.group({ name: [''] })]),
       hobbies:  this.fb.array([this.fb.group({ name: [''] })]),
