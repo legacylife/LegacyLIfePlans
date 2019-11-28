@@ -110,7 +110,11 @@ export class SubscriptionService {
           extendedReferEarnDate = extendedReferEarnProgram.endDate
         }
       }
-      //subscriptionEndDate = result.userSubscriptionEnddate;
+
+      else if(userData.subscriptionDetails && userData.subscriptionDetails.length == 0 && userData.refereAndEarnSubscriptionDetail && userData.refereAndEarnSubscriptionDetail.status == 'Active' && isReferAndEarnStatus == 'No'){
+        subscriptionEndDate = result.userSubscriptionEnddate;
+      }
+      
       /**
        * Reset all locastorage variables to check wheater the subscription ends or not
        */
