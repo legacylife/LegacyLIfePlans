@@ -991,7 +991,7 @@ function getSharedLegaciesList(req,res){
   }
   let message = resMessage.data( 607, [{key:'{field}',val: userstring},{key:'{status}',val:'removed'}] )
   //Update activity logs
-  allActivityLog.updateActivityLogs( query.customerId, toId, "Removed Trustee", message )
+  allActivityLog.updateActivityLogs( query.customerId, toId, "Removed Trustee", message ,'Legacy '+query.userType+' remove')
 
   let result = { "message": message }
   res.status(200).send(resFormat.rSuccess(result))   
