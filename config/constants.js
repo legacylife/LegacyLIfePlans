@@ -1,7 +1,7 @@
 var constants = {
   secret: "LLP",
   database: { // mongodb://localhost:27017/llp-pankaj
-    url: process.env.dbURI || 'mongodb://localhost:27017/llp' 
+    url: process.env.dbURI || 'mongodb://llp:l$l!p#123@ds341557.mlab.com:41557/llp' 
   }, // mongodb://llp:llp#123@ds129454.mlab.com:29454/llp, mongodb://llp:l$l!p#123@ds341557.mlab.com:41557/llp  mongodb://llp:llp#123@ds213896.mlab.com:13896/llp-pankaj
   google: {
   },
@@ -10,10 +10,10 @@ var constants = {
     appSecret: "27g7mvf6f606237rhxvsi21v8",
   },
   s3Details: {
-    url : "https://s3.amazonaws.com/llp-staging",
-    bucketName: "llp-staging",
-    awsKey:"AKIAUPQ3GZ6WDCCRWVY5",
-    awsSecret:"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",
+    url : "https://s3.amazonaws.com/llp-production",
+    bucketName: "llp-production",
+    awsKey:"AKIAUPQ3GZ6WND46RVGG",
+    awsSecret:"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",
     profilePicturesPath:"profilePictures/",
     advisorsDocumentsPath:"advisorDocs/",
     myEssentialsDocumentsPath:"myEssentials/",
@@ -33,15 +33,15 @@ var constants = {
     deceasedFilessPath:"deceased/",
     coachCornerArticlePath:"coachCorner/",
     assetsPath:"assets/",
-    serveUrl: "https://llp-staging.s3.amazonaws.com" 
+    serveUrl: "https://llp-production.s3.amazonaws.com" 
   },
   ses: {
     key: "AKIAUPQ3GZ6WJFHZAMNB",
     secret: "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",
     fromEmail: "accountservices@legacylifeplans.com",
   }, // Local - http://localhost:4200 & http://localhost:80
-  clientUrl: process.env.clientUrl || 'http://localhost:4200', // staging - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
-  mailServerUrl : process.env.mailServerUri || 'http://localhost:80', // staging - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
+  clientUrl: process.env.clientUrl || 'http://ec2-52-2-182-205.compute-1.amazonaws.com', // staging - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
+  mailServerUrl : process.env.mailServerUri || 'http://ec2-52-2-182-205.compute-1.amazonaws.com', // staging - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
   socialMedia: {
     facebook: {
       clientId: ''
