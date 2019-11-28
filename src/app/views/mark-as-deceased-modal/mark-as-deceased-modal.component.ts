@@ -156,6 +156,9 @@ markAsDeceased() {
         this.userapi.apiRequest('post', 'deceased/markAsDeceased', req_vars).subscribe(result => {
           this.loader.close();
           this.dialog.closeAll(); 
+          if(localStorage.getItem("endUserType")=='advisor' && result.data.DeceasedCnt && result.data.DeceasedCnt==3){
+            this.router.navigate(['/', 'advisor', 'shared-legacies']);
+          }
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
         }, (err) => {
           console.error(err)

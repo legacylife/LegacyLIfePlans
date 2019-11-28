@@ -252,16 +252,13 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
           document.body.appendChild(link);
           link.click();
           this.snack.dismiss();
-          // var downloadURL =window.URL.createObjectURL(res)
-          // let filePath = downloadURL;
-          // var link=document.createElement('a');
-          // link.href = filePath;
-          // link.download = ZipName;
-          // link.click();
-          // this.snack.dismiss();
         });
      }else{
-      this.snack.open("Document records not found of " + folderError, 'OK', { duration: 4000 })   
+       if(folderError){
+        this.snack.open("Document records not found of " + folderError, 'OK', { duration: 4000 })   
+       }else{
+        this.snack.open("Document records not found", 'OK', { duration: 4000 })   
+       }     
      }
   }
 
