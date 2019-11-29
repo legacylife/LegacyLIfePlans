@@ -31,6 +31,7 @@ export class LegaciesComponent implements OnInit {
   getAdvisorlisting(insert = null) {
       const req_vars = {
         query: Object.assign({advisorId:this.userId, status: { $nin:['Rejected','Deleted'] }}),
+        order: {"modifiedOn": -1},
       } 
       this.loader.open();
       this.userapi.apiRequest('post', 'advisor/hireAdvisorListing', req_vars).subscribe(result => {

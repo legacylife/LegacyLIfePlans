@@ -79,7 +79,7 @@ export class CustomerDashboardDayOneComponent implements OnInit {
       query: Object.assign({ customerId: this.userId, status: { $nin: ['Deleted', 'Rejected'] } }, query),//, status: "Active"
       fields: {},
       limit: 3,
-      order: {"createdOn": -1},
+      order: {"modifiedOn": -1},
     }
     this.userapi.apiRequest('post', 'advisor/hireAdvisorListing', req_vars).subscribe(result => {
       if (result.status == "error") {

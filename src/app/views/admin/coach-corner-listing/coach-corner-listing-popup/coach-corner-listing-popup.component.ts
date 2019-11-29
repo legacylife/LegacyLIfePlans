@@ -126,8 +126,12 @@ export class CoachCornerPopupComponent implements OnInit {
       this.categoryList = [];
     }
     else {
-      this.categoryList = result.data.categoryList
-      this.showButton = this.categoryList.length > 0 ? true : false
+      this.categoryList = result.data.categoryList;
+      if(this.categoryList.length>0){
+        this.showButton =  false;
+      }else{
+        this.showButton =  true;
+      }
     }
   }
 

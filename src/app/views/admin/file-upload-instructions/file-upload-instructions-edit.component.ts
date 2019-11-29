@@ -61,9 +61,7 @@ export class fileUploadInstructionsEditComponent implements OnInit {
     this.activeRoute.params.subscribe(params => {
       this.cmsPageId = params.id;
       this.getPageDetails()
-    });
-
-    
+    }); 
   }
 
   getPageDetails = (query = {}, search = false) => {  
@@ -101,8 +99,7 @@ export class fileUploadInstructionsEditComponent implements OnInit {
         //this.errorMessage = result.data
       } else {
         this.snack.open("Data has been updated successfully", 'OK', { duration: 4000 })
-        //this.successMessage = result.data
-        console.log(result.data)
+        this.router.navigate(["admin", "file-upload-instructions"]);
       }
       
     }, (err) => {

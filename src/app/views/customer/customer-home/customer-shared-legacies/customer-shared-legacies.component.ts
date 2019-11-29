@@ -46,7 +46,8 @@ export class CustomerSharedLegaciesComponent implements OnInit {
 
   getSharedLegacies() {
     const params = {
-      query: Object.assign({ trustId: this.userId, status: { $ne: 'Deleted'} })
+      query: Object.assign({ trustId: this.userId, status: { $ne: 'Deleted'} }),
+      order: {"modifiedOn": -1},
     };
     this.loader.open();
     this.userapi
