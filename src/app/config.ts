@@ -6,30 +6,44 @@ let officeConnectionLinkEnv = ""
 let mailchimpLinkEnv = ""
 let bucketName = ""
 let stripeSecretKey= ""
-//localhost
+let googleauthkey= ""; //AIzaSyDsp487LM4HTYDV4O7KcFrHkolDZziykjw
+
 if(window.location.hostname.indexOf("localhost") > -1){ // local server
   serverUrlEnv = "http://localhost:80"  
   stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
+  googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
 }
 else if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") > -1 || window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com:8080") > -1){ // client server
   serverUrlEnv = "http://ec2-3-212-172-15.compute-1.amazonaws.com:8080"  
   stripeSecretKey = "sk_test_ni2JhTNSaNPgEZVHeiciAVVs00YF0EGLTR"
+  googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
 }
 else if(window.location.hostname.indexOf("ec2-3-209-230-58.compute-1.amazonaws.com") > -1){ // test server
   serverUrlEnv = "http://ec2-3-209-230-58.compute-1.amazonaws.com"  
   stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
+  googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
+}else if(window.location.hostname.indexOf("ec2-52-2-182-205.compute-1.amazonaws.com") > -1){ // LIVE server Production
+  serverUrlEnv = "http://ec2-52-2-182-205.compute-1.amazonaws.com"  
+  stripeSecretKey = ""
+  googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
 }
 else {  //dev server
   serverUrlEnv = "http://ec2-3-212-172-15.compute-1.amazonaws.com:8080" 
   stripeSecretKey = "sk_test_ni2JhTNSaNPgEZVHeiciAVVs00YF0EGLTR"
+  googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
 }
 
-if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") > -1 || window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com:8080") > -1 )
+
+if(window.location.hostname.indexOf("ec2-52-2-182-205.compute-1.amazonaws.com/") > -1){
+  bucketName = "llp-production";
+}else if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") > -1 || window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com:8080") > -1 )
 {
   bucketName = "llp-dev";
 } else {
   bucketName = "llp-staging";
 }
+
+export const googleauthenticationkey = googleauthkey;
 export const stripeKey = stripeSecretKey
 export const serverUrl = serverUrlEnv
 

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { stripeKey } from './config';
-//import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 console.log("App module .....");
 import {
   MatListModule,
@@ -62,7 +61,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PerfectScrollbarModule, PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './shared/inmemory-db/inmemory-db.service';
-//import { AdvisorLandingLayoutComponent } from './shared/components/layouts/advisor-landing-layout/advisor-landing-layout.component';
 import { rootRouterConfig } from './app.routing';
 import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
@@ -81,11 +79,8 @@ import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser'
 import { ChangePicComponent } from './views/change-pic/change-pic.component';
 import { MarkAsDeceasedComponent } from './views/mark-as-deceased-modal/mark-as-deceased-modal.component';
 import { DeceasedComponent } from './views/deceased-modal/deceased-modal.component';
-//import { TodosComponent } from './views/todos/todos.component';
-// import { TodosListingComponent } from './views/todos-listing/todos-listing.component';
 import { lockscreenModalComponent } from './views/lockscreen-modal/lockscreen-modal.component';
 import { ExecutorModalComponent } from './views/executor-modal/executor-modal.component';
-
 import { NgxStripeModule } from 'ngx-stripe';
 import { UserIdleModule } from 'angular-user-idle';
 import { LoginGaurd } from './shared/services/auth/login.guard';
@@ -132,7 +127,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   HttpClientModule,
   PerfectScrollbarModule,
   MatIconModule,
- // ImageCropperModule,
   MatFormFieldModule,
   FileUploadModule,
   LyThemeModule.setTheme('minima-light'),
@@ -141,7 +135,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   LyResizingCroppingImageModule,
   LyIconModule,
   UserIdleModule.forRoot({idle: 900, timeout: 850, ping: 820}),//idle: 5, timeout: 10, ping: 10   idle: 900, timeout: 850, ping: 820
-  NgxStripeModule.forRoot("pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"),//pk_test_mB9cnQ2EBtmIiIPUi0kQgIxC dev server // pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk test server
+  NgxStripeModule.forRoot(stripeKey),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

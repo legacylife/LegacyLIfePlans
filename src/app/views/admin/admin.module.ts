@@ -15,7 +15,6 @@ import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
 import { SharedModule } from './../../shared/shared.module';
 import { AppBlankComponent } from './app-blank/app-blank.component';
 import { AdminRoutes } from "./admin.routing";
-import { LockscreenComponent } from './lockscreen/lockscreen.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ErrorComponent } from './error/error.component';
 import { userlistComponent } from './userlist/userlist.component';
@@ -51,6 +50,7 @@ import { AdminHireAdvisorComponent } from './deceased-requests/hire-advisor-moda
 import { customercmsComponent } from './cms/customercms.component';
 import { customercmsformComponent } from './cms/customercmsform.component';
 import { advisorcmsformComponent } from './cms/advisorcmsform.component';
+import { googleauthenticationkey } from '../../config';
 @NgModule({
   imports: [
     CommonModule,
@@ -79,7 +79,7 @@ import { advisorcmsformComponent } from './cms/advisorcmsform.component';
     SharedModule,
     QuillModule,
     MatTooltipModule,
-    AgmCoreModule.forRoot({ apiKey: 'AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q' }),//AIzaSyDsp487LM4HTYDV4O7KcFrHkolDZziykjw
+    AgmCoreModule.forRoot({ apiKey: googleauthenticationkey }),
     AgmJsMarkerClustererModule,
     AgmMarkerSpiderModule,
     RichTextEditorAllModule,
