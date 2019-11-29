@@ -241,9 +241,9 @@ const inviteeAdd = (req) => {
               if (attachmentsImages) {
                 mailOptions['attachments'] = attachmentsImages
               }
-              //sendRawEmail(mailOptions)
+              sendRawEmail(mailOptions)
             } else {
-              //sendEmail(mailOptions)
+              sendEmail(mailOptions)
             }
           })
           // i++;
