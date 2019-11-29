@@ -109,7 +109,7 @@ function signin(req, res) {
           }
 
           //Update activity logs
-          allActivityLog.updateActivityLogs(user._id, user._id, 'Login', user.userType + ' has been logged in successfully.')
+          allActivityLog.updateActivityLogs(user._id, user._id, 'Login', user.userType + ' has been logged in successfully.','Authentication')
 
           let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, profilePicture: user.profilePicture, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false, "createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate": subscriptionEndDate, "subscriptionStatus": subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven, "isReferAndEarn": isReferAndEarn, deceased: user.deceased, lockoutLegacyDate: user.lockoutLegacyDate }
           res.status(200).send(resFormat.rSuccess(result))
@@ -153,7 +153,7 @@ function create(req, res) {
         } else {
           const { _id, userType, username, firstName, lastName, zipcode } = user
           //Update activity logs
-          allActivityLog.updateActivityLogs(_id, _id, 'Login', userType + ' has been logged in successfully.')
+          allActivityLog.updateActivityLogs(_id, _id, 'Login', userType + ' has been logged in successfully.','Registration')
 
           //Update latitude longitude
           if (newUszipcode && _id) {
@@ -172,7 +172,7 @@ function create(req, res) {
         } else {
           const { _id, userType, username, firstName, lastName } = user
           //Update activity logs
-          allActivityLog.updateActivityLogs(_id, _id, 'Login', user.userType + ' has been logged in successfully.')
+          allActivityLog.updateActivityLogs(_id, _id, 'Login', user.userType + ' has been logged in successfully.','Authentication')
 
           //Update latitude longitude
           if (result.zipcode && result._id) {
@@ -228,7 +228,7 @@ router.post('/updateProfilePic', function (req, res) {
         } else {
           let message = resMessage.data(607, [{ key: '{field}', val: 'Profile picture' }, { key: '{status}', val: 'updated' }])
           //Update activity logs
-          allActivityLog.updateActivityLogs(query._id, query._id, 'Profile', message)
+          allActivityLog.updateActivityLogs(query._id, query._id, 'Profile', message,'Profile Photo')
           res.send(resFormat.rSuccess({ message: message, profilePicture: profilePicturesPath + filename }))
         }
       })
@@ -291,7 +291,7 @@ function custProfileUpdate(req, res) {
             let message = resMessage.data(607, [{ key: '{field}', val: 'User ' + from.fromname }, { key: '{status}', val: 'updated' }])
 
             //Update activity logs
-            allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Profile', message)
+            allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Profile', message,'Update Profile')
 
             //Update latitude longitude
             if (updatedUser.zipcode && updatedUser._id) {
@@ -372,7 +372,7 @@ const changePassword = function (req, res) {
             let message = resMessage.data(607, [{ key: '{field}', val: 'Password' }, { key: '{status}', val: 'updated' }])
 
             //Update activity logs
-            allActivityLog.updateActivityLogs(req.body.userId, req.body.userId, 'Password', message)
+            allActivityLog.updateActivityLogs(req.body.userId, req.body.userId, 'Password', message,'Change Password')
             let result = { "message": message }
             res.status(200).send(resFormat.rSuccess(result))
           }
@@ -404,7 +404,7 @@ const changeEmail = function (req, res) {
           } else {
             let message = resMessage.data(607, [{ key: '{field}', val: 'Email ID' }, { key: '{status}', val: 'updated' }])
             //Update activity logs
-            allActivityLog.updateActivityLogs(req.body._id, req.body._id, 'Email', message)
+            allActivityLog.updateActivityLogs(req.body._id, req.body._id, 'Email', message,'Change Email')
             res.send(resFormat.rSuccess(message))
           }
         })
@@ -429,7 +429,7 @@ const resetPassword = function (req, res) {
             //let msg = {username : userDetails.username, msg : 'Your password is updated'}
             let message = resMessage.data(607, [{ key: '{field}', val: 'Password' }, { key: '{status}', val: 'updated' }])
             //Update activity logs
-            allActivityLog.updateActivityLogs(userDetails._id, userDetails._id, 'Reset Password', message)
+            allActivityLog.updateActivityLogs(userDetails._id, userDetails._id, 'Reset Password', message,'Reset Password')
             let response = { username: userDetails.username, msg: message }
             res.send(resFormat.rSuccess(response))
           }
@@ -790,7 +790,6 @@ async function checkUserOtp(req, res) {
 }
 
 async function checkTrustee(userType, trustId, emailId) {
-  console.log('userType', userType, 'trustId', trustId, 'emailId', emailId)
   let status = "";
   await trust.findOne({ email: emailId }, async function (err, trustDetails) {
     if (err) {
