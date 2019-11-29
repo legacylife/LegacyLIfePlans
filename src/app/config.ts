@@ -6,8 +6,11 @@ let officeConnectionLinkEnv = ""
 let mailchimpLinkEnv = ""
 let bucketName = ""
 let stripeSecretKey= ""
+let awsKey = "AKIAUPQ3GZ6WDCCRWVY5"
+let awsSecret =  "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"
 let googleauthkey= ""; //AIzaSyDsp487LM4HTYDV4O7KcFrHkolDZziykjw
 
+//localhost
 if(window.location.hostname.indexOf("localhost") > -1){ // local server
   serverUrlEnv = "http://localhost:80"  
   stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
@@ -22,9 +25,10 @@ else if(window.location.hostname.indexOf("ec2-3-209-230-58.compute-1.amazonaws.c
   serverUrlEnv = "http://ec2-3-209-230-58.compute-1.amazonaws.com"  
   stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
   googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
-}else if(window.location.hostname.indexOf("ec2-52-2-182-205.compute-1.amazonaws.com") > -1){ // LIVE server Production
+}
+else if(window.location.hostname.indexOf("ec2-52-2-182-205.compute-1.amazonaws.com") > -1){ // LIVE server Production
   serverUrlEnv = "http://ec2-52-2-182-205.compute-1.amazonaws.com"  
-  stripeSecretKey = ""
+  stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
   googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
 }
 else {  //dev server
@@ -33,12 +37,15 @@ else {  //dev server
   googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
 }
 
-
-if(window.location.hostname.indexOf("ec2-52-2-182-205.compute-1.amazonaws.com/") > -1){
-  bucketName = "llp-production";
-}else if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") > -1 || window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com:8080") > -1 )
+if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") > -1 || window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com:8080") > -1 )
 {
   bucketName = "llp-dev";
+}
+else if(window.location.hostname.indexOf("ec2-52-2-182-205.compute-1.amazonaws.com") > -1)
+{
+  bucketName = "llp-production";
+  awsKey = "AKIAUPQ3GZ6WND46RVGG"
+  awsSecret =  "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"
 } else {
   bucketName = "llp-staging";
 }
@@ -53,8 +60,8 @@ export const s3Details = {
   url : "https://s3.amazonaws.com/"+bucketName,
   awsserverUrl : "https://"+bucketName+".s3.amazonaws.com/",
   bucketName: bucketName,
-  awsKey: "AKIAUPQ3GZ6WDCCRWVY5",
-  awsSecret: "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",
+  awsKey: awsKey,
+  awsSecret: awsSecret,
   profilePicturesPath: "profilePictures/",
   advisorsDocumentsPath:"advisorDocs/",
   myEssentialsDocumentsPath:"myEssentials/",
