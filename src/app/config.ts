@@ -12,10 +12,10 @@ let googleauthkey= ""; //AIzaSyDsp487LM4HTYDV4O7KcFrHkolDZziykjw
 
 //localhost
 if(window.location.hostname.indexOf("localhost") > -1){ // local server
-  serverUrlEnv = "http://localhost:80"  
+  serverUrlEnv = "http://localhost:8080"  
   stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
   googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
-}
+} 
 else if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") > -1 || window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com:8080") > -1){ // client server
   serverUrlEnv = "http://ec2-3-212-172-15.compute-1.amazonaws.com:8080"  
   stripeSecretKey = "sk_test_ni2JhTNSaNPgEZVHeiciAVVs00YF0EGLTR"

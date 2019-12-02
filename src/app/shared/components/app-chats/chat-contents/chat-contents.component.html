@@ -11,7 +11,7 @@
     </a>
     <div fxLayout="column">
       <h6 class="m-0 font-normal fz-1">{{activeContact.name}}</h6>
-      <span>{{typeing ? typeing : ''}}</span>
+      <span class="typing--msg">{{typeing ? typeing : ''}}</span>
     </div>
   </div>
   <!-- Right side top menu -->
@@ -63,7 +63,7 @@
           </section>
         </main>
         <!-- <button type="button" class="toggle-emoji" (click)="toggleEmojiPicker()" style="cursor: pointer;"><mat-icon>emoji_emotions</mat-icon></button> -->
-        <mat-icon class="toggle-emoji" (click)="toggleEmojiPicker()" style="cursor: pointer;">mood</mat-icon>
+        <mat-icon class="toggle--emoji toggle-emoji" (click)="toggleEmojiPicker()" style="cursor: pointer;">mood</mat-icon>
         <textarea #msgInput ngModel placeholder="Type your message" name="message" class="type--text inputText"
          value="" (keydown.enter)="$event.preventDefault()" (keyup)="checkSend($event)" (keypress)="checkSend($event)"></textarea>
 
