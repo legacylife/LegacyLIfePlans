@@ -25,3 +25,16 @@
     line-height: 12px;
     box-shadow: 0 0 5px #ddd;
 }
+.msg--loader{
+    height: calc(100vh - 252px);
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .material-icons{
+        height: 30px;
+        width: 30px;
+        font-size: 35px;
+        color: #6e7634;
+    }
+}
