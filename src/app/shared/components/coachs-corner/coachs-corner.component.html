@@ -7,7 +7,7 @@
         <mat-tab label="All Events">
           <div class="content--wrapper" *ngFor="let post of postList">
             <div class="cont--img">
-              <img src="{{articleImagePath}}{{post.image ? post.image : 'coachs-default.png'}}" alt="">
+              <img src="{{articleImagePath}}{{(post.image && post.image.tmpName) ? post.image.tmpName : 'coachs-default.png'}}" alt="">
             </div>
             <div class="cont--desc">
               <h4>{{post.title}}</h4>
@@ -29,7 +29,7 @@
         <mat-tab *ngFor="let category of categoryList" label="{{ category.title | titlecase }}">
           <div class="content--wrapper" *ngFor="let post of filteredPostList">
             <div class="cont--img">
-              <img src="{{articleImagePath}}/{{post.image ? post.image : 'coachs-default.png'}}" alt="">
+              <img src="{{articleImagePath}}/{{(post.image && post.image.tmpName) ? post.image.tmpName : 'coachs-default.png'}}" alt="">
             </div>
             <div class="cont--desc">
               <h4>{{post.title}}</h4>
