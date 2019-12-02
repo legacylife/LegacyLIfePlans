@@ -82,6 +82,7 @@ export class CoachCornerPopupComponent implements OnInit {
     const filePath  = s3Details.coachCornerArticlePath;
     this.docPath    = filePath;
     let item = this.data.payload;     
+  console.log('Item title',this.data.title);
     if(this.data.title=='Update Post') {
       this.selectedProfileId = item;
       this.itemForm = this.fb.group({
@@ -93,19 +94,20 @@ export class CoachCornerPopupComponent implements OnInit {
         documents_temp: ['', Validators.required],
         status: ['', Validators.required]
       })
-      this.itemForm.controls['profileId'].setValue(item);
-      this.getDocuments();
+      this.itemForm.controls['profileId'].setValue(item);     
     } else {
+      console.log('Item title ------>>',this.data.title);
       this.itemForm = this.fb.group({
         title: [item.title || '', [Validators.required,Validators.pattern(this.alphaNumSpechar)]],
         description: [item.description || '', Validators.required],
         category: [item.category ? item.category._id || '' : '', Validators.required],
         // image: [item.image || ''],
         profileId: [item._id],
-        documents_temp: [item.image.tmpName ? item.image.tmpName : '', Validators.required],
+        documents_temp: [(item.image && item.image.tmpName) ? item.image.tmpName : '', Validators.required],
         status: [item.status || true, Validators.required]
       })
     }
+    this.getDocuments();
   }
 
   /**
@@ -322,7 +324,7 @@ export class CoachCornerPopupComponent implements OnInit {
   getUploadedDocuments = (query = {}) => {     
     let profileIds = this.itemForm.controls['profileId'].value;
     let req_vars = {
-      query: Object.assign({customerId: this.userId }),
+      query: Object.assign({createdBy: this.userId,status:"Pending" }),
       fields:{}
     }
     if(profileIds){
@@ -356,16 +358,22 @@ export class CoachCornerPopupComponent implements OnInit {
   }
 
   getDocuments = (query = {}) => {     
-    let profileIds = this.itemForm.controls['profileId'].value;
-    if(profileIds){
-       let req_vars = {
-        query: Object.assign({_id:profileIds}),
+      let profileIds = this.itemForm.controls['profileId'].value;
+      let req_vars = {
+        query: Object.assign({createdBy:this.userId,status:"Pending"}),
         fields:{}
       }
+      
+      if(profileIds) {
+          req_vars = {
+          query: Object.assign({_id:profileIds}),
+          fields:{}
+        }
+      } 
+
       this.loader.open();
       this.api.apiRequest('post', 'coach-corner-post/get-post-details', req_vars).subscribe(result => {
       this.loader.close();
-
       if (result.status == "error") {
         console.log('coach-corner Error',result)
       } else {
@@ -376,14 +384,16 @@ export class CoachCornerPopupComponent implements OnInit {
         this.oldTitle  = item.title;
         this.itemForm.controls['title'].setValue(item.title);
         this.itemForm.controls['category'].setValue('');
-        if(item.category){
+        if(item.category) {
           this.itemForm.controls['category'].setValue(item.category._id);
         }
-        this.itemForm.controls['description'].setValue(item.description);
+        if(item.description){
+           this.itemForm.controls['description'].setValue(item.description);
+        }
         this.itemForm.controls['status'].setValue(item.status == 'On'? true : false );
         this.itemForm.controls['documents_temp'].setValue('');
         this.tmpName = '';this.imageTitle =  '';
-        if(item.image && item.image.tmpName){
+        if(item.image && item.image.tmpName) {
             this.uploadedImage =  this.imageList = item.image;
             this.itemForm.controls['documents_temp'].setValue('1');
             this.imageTitle = item.image.title;
@@ -394,6 +404,6 @@ export class CoachCornerPopupComponent implements OnInit {
    }, (err) => {
     console.error(err);
    })
- }  
+
 }
 }

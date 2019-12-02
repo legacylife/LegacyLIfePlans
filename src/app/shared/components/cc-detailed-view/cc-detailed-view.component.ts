@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Output, EventEmitter } from '@angular/core';
 import { serverUrl, s3Details } from '../../../config';
-
+import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 @Component({
   selector: 'app-cc-detailed-view',
   templateUrl: './cc-detailed-view.component.html',
@@ -26,7 +26,7 @@ export class CcDetailedViewComponent {
 
   @Output() detailsLoaded: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private dialog: MatDialog, private sharedata: DataSharingService, private api: APIService, private route: ActivatedRoute, private http: HttpClient) {
+  constructor(private dialog: MatDialog, private sharedata: DataSharingService, private api: APIService, private route: ActivatedRoute, private http: HttpClient,private loader: AppLoaderService) {
     this.userId = localStorage.getItem("endUserId")
     this.isLoggedIn = this.userId ? true : false
     this.userSubscription = this.route.parent.params.subscribe(params => {
@@ -68,7 +68,9 @@ export class CcDetailedViewComponent {
       fromId: this.userId,
       userIpAddress: this.userIpAddress
     }
+    this.loader.open();
     this.api.apiRequest('post', 'coach-corner-post/view', req_vars).subscribe(result => {
+      this.loader.close();
       if (result.status == "error") {
         this.postDetails = {title:'',description:'',createdOn:'', image:''}
       }

@@ -12,7 +12,8 @@
       <div  fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
         <mat-form-field class="full-width">
           <input class="capitalize" matInput name="title" [formControl]="itemForm.controls['title']" placeholder="Post title *">
-
+          <mat-icon matTooltip="Please enter valid title." matTooltipClass="llp--tooltip error" *ngIf="itemForm.controls['title'].invalid && itemForm.controls['title'].touched"
+          class="red--alert">help_outline</mat-icon>
         </mat-form-field>
       </div>
 
