@@ -2523,6 +2523,7 @@ router.post('/coachCornerArticle', cors(), function(req,res){
           insert.createdBy = userId;
           insert.createdOn = new Date();
           insert.modifiedOn = new Date();
+          insert.status = "Pending";
           insert.save({}, function (err, newEntry) {
            if (err) {
               res.send(resFormat.rError(err))

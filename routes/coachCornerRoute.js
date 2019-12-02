@@ -83,7 +83,7 @@ async function create (req, res) {
       modifiedBy  : fromId,
       modifiedOn  : new Date()
   }
-  console.log("====insert_obj====",insert_obj)
+  //console.log("====insert_obj====",insert_obj)
   let newCoachDetails = new CoachCorner(insert_obj)
       newCoachDetails.save(function(err, newrecord) {
         if (err) {
@@ -124,7 +124,7 @@ async function update(req, res) {
     else {
       let activity = 'Update Post Status'
       let message = ''
-      if( oldStatus != data.status ) {
+      if(oldStatus!='Pending' && oldStatus != data.status ) {
         message = resMessage.data( 607, [{key: '{field}',val: 'Coach corner post status'}, {key: '{status}',val: 'updated'}] )
       }
       else{
@@ -155,14 +155,19 @@ async function view(req, res) {
         totalViewCount      = currentViewDetails.length
         //isViewedDetails     = totalViewCount > 0 ? ( fromId ? currentViewDetails.some( obj => { return obj.userId === fromId} ) : currentViewDetails.some( obj => { return obj.userIpAddress === userIpAddress} ) ) : false
         isViewedDetails     = totalViewCount > 0 ? currentViewDetails.some( obj => { return obj.userIpAddress === userIpAddress} ) : false
-         
+        // if(fromId){
+        //   isViewedDetails     = totalViewCount > 0 ? currentViewDetails.some( obj => { return obj.userId === fromId} ) : false   
+        // }
+        //console.log('updateParam>>>>',updateParam)
     if( !isViewedDetails ) {
       let updateParam = { "userId" : fromId,
                           "userIpAddress" : userIpAddress,
                           "viewedOn" : new Date
                         },
-          queryParam  = query
-          currentViewDetails.push(updateParam)
+          queryParam  = query;
+          //console.log('updateParam>>>>',updateParam)
+          currentViewDetails.push(updateParam);
+          //console.log('currentViewDetails Param>>>>',currentViewDetails)
       let updateCount = await updateViewCount( queryParam, { viewDetails: currentViewDetails} )
       if( updateCount ) {
         totalViewCount = totalViewCount + 1
@@ -272,13 +277,13 @@ async function sharePost(req, res) {
 
 async function getPostDetails(req, res) {
   const { query, fields } = req.body
- CoachCornerDetails  = await CoachCorner.findOne(query, fields).populate('category','title aliasName status')
-
-  if ( !CoachCornerDetails ) {
-    res.status(401).send(resFormat.rError(err))
-  } else {
-    res.send(resFormat.rSuccess(CoachCornerDetails))
-  }
+    CoachCorner.findOne(query, fields, function(err, CoachCornerDetails) {
+      if (err) {
+        res.status(401).send(resFormat.rError(err))
+      } else {
+        res.send(resFormat.rSuccess(CoachCornerDetails));
+      }
+    }).populate('category','title aliasName status')
 }
 
 router.post("/create", create)
