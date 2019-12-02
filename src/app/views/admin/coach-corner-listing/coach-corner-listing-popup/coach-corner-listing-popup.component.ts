@@ -26,13 +26,14 @@ const URL = serverUrl + '/api/documents/coachCornerArticle';
 
 export class CoachCornerPopupComponent implements OnInit {
   
-  userId = localStorage.getItem("endUserId");
-  public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
+  userId = localStorage.getItem("userId");
+  public uploader: FileUploader = new FileUploader({ url: `${URL}?ProfileId=&userId=${this.userId}&prevImage=` });
   public hasBaseDropZoneOver: boolean = false;
   public hasAnotherDropZoneOver: boolean = false;
   fileErrors: any;
   currentProgessinPercent: number = 0;
-
+  documentsMissing = false;
+  invalidMessage: string;
   public itemForm: FormGroup;
   articleURL: String;
   RequestData: any;
@@ -41,9 +42,12 @@ export class CoachCornerPopupComponent implements OnInit {
   categoryList: any = []
   uploadedImage: any = ''
   imageList:any = []
-  
+  documents_temps = false;
+  profileIdHiddenVal:boolean = false;
+  selectedProfileId: string;
   docPath = ''
-
+  tmpName: string;
+  imageTitle: string;
   public tools: object = {
     items: ['Undo', 'Redo', '|',
             'Bold', 'Italic', 'Underline', 'StrikeThrough', '|',
@@ -77,33 +81,28 @@ export class CoachCornerPopupComponent implements OnInit {
   ngOnInit() {
     const filePath  = s3Details.coachCornerArticlePath;
     this.docPath    = filePath;
-
-    let item = this.data.payload
-    console.log("item",item)
+    let item = this.data.payload;     
     if(this.data.title=='Update Post') {
+      this.selectedProfileId = item;
       this.itemForm = this.fb.group({
-        title: ['', [Validators.required]], // Validators.pattern("([A-Za-z0-9]+ )+[A-Za-z0-9]+$|^[A-Za-z0-9]*$")
-        description: ['',Validators.required],
-        category: ['',Validators.required],
-        image: [''],
-        status: [true,Validators.required],
+        title: ['', [Validators.required,Validators.pattern(this.alphaNumSpechar)]],
+        description: ['', Validators.required],
+        category: [ '', Validators.required],
+        // image: [item.image || ''],
+        profileId: [item],
+        documents_temp: ['', Validators.required],
+        status: ['', Validators.required]
       })
-      this.oldStatus = item.status
-      this.oldTitle  = item.title
-      this.imageList.push({name:item.image})
-      this.itemForm.controls['title'].setValue(item.title)
-      this.itemForm.controls['category'].setValue(item.category._id)
-      this.itemForm.controls['description'].setValue(item.description)
-      this.itemForm.controls['status'].setValue(item.status == 'On'? true : false )
-
-      this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&prevImage=${item.image}` });
-    }
-    else{   
+      this.itemForm.controls['profileId'].setValue(item);
+      this.getDocuments();
+    } else {
       this.itemForm = this.fb.group({
         title: [item.title || '', [Validators.required,Validators.pattern(this.alphaNumSpechar)]],
         description: [item.description || '', Validators.required],
         category: [item.category ? item.category._id || '' : '', Validators.required],
-        image: [item.image || ''],
+        // image: [item.image || ''],
+        profileId: [item._id],
+        documents_temp: [item.image.tmpName ? item.image.tmpName : '', Validators.required],
         status: [item.status || true, Validators.required]
       })
     }
@@ -147,7 +146,6 @@ export class CoachCornerPopupComponent implements OnInit {
    * @description : submit post form to add / update post details
    */
   submit() {
-    let postData = this.data.payload;
     let description = this.itemForm.controls['description'].value.replace(/\&nbsp;/g, '')    
     this.RequestData = {
       fromId : localStorage.getItem('userId'),
@@ -159,8 +157,8 @@ export class CoachCornerPopupComponent implements OnInit {
         status: this.itemForm.controls['status'].value ? 'On' : 'Off'
       }
     }
-    if (postData._id) {
-      this.RequestData.data._id   = postData._id;
+    if (this.selectedProfileId) {
+      this.RequestData.data._id   = this.selectedProfileId;
       this.RequestData.oldTitle   = this.oldTitle;
       this.RequestData.oldStatus  = this.oldStatus;
       this.articleURL = 'coach-corner-post/update';
@@ -183,8 +181,7 @@ export class CoachCornerPopupComponent implements OnInit {
     })
   }
 
-  public fileOverBase(e: any): void {
-    
+  public fileOverBase(e: any): void {    
     this.hasBaseDropZoneOver = e;
     this.fileErrors = [];
     this.uploader.queue.forEach((fileoOb) => {
@@ -201,24 +198,47 @@ export class CoachCornerPopupComponent implements OnInit {
         setTimeout(()=>{    
           this.fileErrors = []
         }, 5000);       
-      }
-      else{
-        this.uploader.uploadItem(fileoOb);
-        this.uploader.onProgressItem = (fileItem: any, progress: any) => {
-          this.currentProgessinPercent = progress
-        }
+      } else {
+        let proceed = false;
+        // if(this.imageTitle){
+        //   var statMsg = "Old image '" + this.imageTitle + "' will be replace with new image file. Can we proceed?"
+        //   this.confirmService.confirm({ message: statMsg }).subscribe(res => {
+        //     if (res) {
+        //       console.log('res >>>>>',res)
+        //       proceed = res;
+        //     }
+        //   });
+        // }else{
+        //   proceed = true;
+        // }
+        // if(proceed){
 
-        this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-          if( item && item.isUploaded ) {
-            this.imageList = []
-            this.imageList.push(item.file)
-            this.uploadedImage = item.file.name
+          if(this.selectedProfileId){
+            this.uploader.onBeforeUploadItem = (item) => {
+              item.url = `${URL}?ProfileId=${this.selectedProfileId}&userId=${this.userId}&prevImage=${this.tmpName}`;
+            }
           }
-        }
-        this.uploader.onCompleteAll=()=>{
-          this.uploader.clearQueue();
-            this.currentProgessinPercent = 0;
-        }
+    
+          this.uploader.uploadItem(fileoOb);
+          this.uploader.onProgressItem = (fileItem: any, progress: any) => {
+            this.currentProgessinPercent = progress
+          }
+
+          this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+            if( item && item.isUploaded ) {
+              //this.imageList = []
+              //this.imageList.push(item.file)
+             // this.uploadedImage = item.file.name
+            }
+          }
+          this.uploader.onCompleteAll=()=>{
+            this.uploader.clearQueue();
+              this.currentProgessinPercent = 0;
+              setTimeout(()=>{    
+                this.getUploadedDocuments();
+              },2000);
+          }
+        //}
       }
     });
   }
@@ -237,6 +257,7 @@ export class CoachCornerPopupComponent implements OnInit {
     }
     return result;
   }
+  
   updateProgressBar(){
     let totalLength = this.uploader.queue.length;
     let remainingLength =  this.uploader.getNotUploadedItems().length;
@@ -248,8 +269,8 @@ export class CoachCornerPopupComponent implements OnInit {
     let query = {};
     let req_vars = {
       query: Object.assign({ docPath: this.docPath, filename: filename }, query),
-      fromId: localStorage.getItem('endUserId'),
-      toId: localStorage.getItem('endUserId'),
+      fromId: localStorage.getItem('userId'),
+      toId: localStorage.getItem('userId'),
       folderName: s3Details.coachCornerArticlePath,
       subFolderName: ''
     };
@@ -270,14 +291,14 @@ export class CoachCornerPopupComponent implements OnInit {
     this.confirmService.confirm({ message: statMsg }).subscribe(res => {
       if (res) {
         this.loader.open();
-        this.imageList.splice(doc, 1)
+        this.imageList = {'title':"","size":"","extention":"","tmpName":""};//.splice(doc, 1)
         var query = {};
         const req_vars = {
-          query: Object.assign({ _id: '' }, query),
-          proquery: Object.assign({ documents: this.imageList }, query),
+          query: Object.assign({_id:this.selectedProfileId}, query),
+          proquery: Object.assign({documents:this.imageList}, query),
           fileName: tmName,
-          fromId: localStorage.getItem('endUserId'),
-          toId: localStorage.getItem('endUserId'),
+          fromId: localStorage.getItem('userId'),
+          toId: localStorage.getItem('userId'),
           folderName: s3Details.coachCornerArticlePath,
           subFolderName: ''
         }
@@ -296,4 +317,83 @@ export class CoachCornerPopupComponent implements OnInit {
       }
     })
   }
+
+
+  getUploadedDocuments = (query = {}) => {     
+    let profileIds = this.itemForm.controls['profileId'].value;
+    let req_vars = {
+      query: Object.assign({customerId: this.userId }),
+      fields:{}
+    }
+    if(profileIds){
+       req_vars = {
+        query: Object.assign({ _id:profileIds}),
+        fields:{}
+      }
+    }    
+    this.api.apiRequest('post', 'coach-corner-post/get-post-details', req_vars).subscribe(result => {
+      if (result.status == "error") {
+      } else {
+        profileIds = this.selectedProfileId = result.data._id;
+        this.data.payload = result.data;
+        this.itemForm.controls['profileId'].setValue(profileIds);
+        this.itemForm.controls['documents_temp'].setValue('');
+        this.documentsMissing = false;
+        if(result.data.image){
+          this.imageList = result.data.image;       
+          this.uploadedImage = result.data.image;    
+          this.itemForm.controls['documents_temp'].setValue('1');
+          this.documentsMissing = false;
+          this.tmpName = result.data.image.tmpName; 
+        } 
+        if(this.currentProgessinPercent==100){
+          this.currentProgessinPercent = 0;
+        }        
+      }
+    }, (err) => {
+      console.error(err);
+    })
+  }
+
+  getDocuments = (query = {}) => {     
+    let profileIds = this.itemForm.controls['profileId'].value;
+    if(profileIds){
+       let req_vars = {
+        query: Object.assign({_id:profileIds}),
+        fields:{}
+      }
+      this.loader.open();
+      this.api.apiRequest('post', 'coach-corner-post/get-post-details', req_vars).subscribe(result => {
+      this.loader.close();
+
+      if (result.status == "error") {
+        console.log('coach-corner Error',result)
+      } else {
+        profileIds = this.selectedProfileId = result.data._id;
+        let item = result.data;
+        this.data.payload = result.data;
+        this.oldStatus = item.status;
+        this.oldTitle  = item.title;
+        this.itemForm.controls['title'].setValue(item.title);
+        this.itemForm.controls['category'].setValue('');
+        if(item.category){
+          this.itemForm.controls['category'].setValue(item.category._id);
+        }
+        this.itemForm.controls['description'].setValue(item.description);
+        this.itemForm.controls['status'].setValue(item.status == 'On'? true : false );
+        this.itemForm.controls['documents_temp'].setValue('');
+        this.tmpName = '';this.imageTitle =  '';
+        if(item.image && item.image.tmpName){
+            this.uploadedImage =  this.imageList = item.image;
+            this.itemForm.controls['documents_temp'].setValue('1');
+            this.imageTitle = item.image.title;
+            this.tmpName = item.image.tmpName;
+        }
+        this.uploader = new FileUploader({ url: `${URL}?ProfileId=${item._id}&userId=${this.userId}&prevImage=${this.tmpName}` });
+    }
+   }, (err) => {
+    console.error(err);
+   })
+ }  
+}
 }

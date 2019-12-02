@@ -12,6 +12,7 @@
       <div  fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
         <mat-form-field class="full-width">
           <input class="capitalize" matInput name="title" [formControl]="itemForm.controls['title']" placeholder="Post title *">
+
         </mat-form-field>
       </div>
 
@@ -45,12 +46,12 @@
         <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
       </div>
 
-      <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="mt-1" *ngIf="imageList.length" >
+      <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="mt-1" *ngIf="imageList.tmpName" >
         <h3 class="header--text fnt--16">Uploaded Images</h3>
-        <mat-chip-list class="doc--list" *ngFor="let doc of imageList; index as i">
-          <mat-chip *ngIf="doc.name">
-            <a (click)="downloadFile(doc.name)" class="donwload-doc">{{doc.name}}</a>
-            <mat-icon matChipRemove (click)="ImageDelete(i,doc.name,doc.name)">close</mat-icon>
+        <mat-chip-list class="doc--list">
+          <mat-chip>
+            <a (click)="downloadFile(imageList.tmpName)" class="donwload-doc">{{imageList.title}}</a>
+            <mat-icon matChipRemove (click)="ImageDelete(i,imageList.title,imageList.tmpName)">close</mat-icon>
           </mat-chip>
         </mat-chip-list>
       </div>
@@ -61,10 +62,22 @@
         </mat-chip>
       </mat-chip-list>
 
-      <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="mt-1 progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length">
+      <mat-form-field class="full-width" *ngIf="documents_temps">
+        <input matInput name="documents_temp" [formControl]="itemForm.controls['documents_temp']" />
+        <small *ngIf="itemForm.controls['documents_temp'].hasError('required') && itemForm.controls['documents_temp'].touched" class="form-error-msg">
+            Please drag your document. </small>
+      </mat-form-field>
+
+      <small *ngIf="documentsMissing" class="form-error-msg">{{invalidMessage}}</small>
+
+      <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="mt-1 progress" style="margin-bottom: 0;" *ngIf="uploader.getNotUploadedItems().length && currentProgessinPercent>0">
         <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
         <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
       </div>
+
+      <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
+        <input matInput name="profileId" [formControl]="itemForm.controls['profileId']" readonly="readonly">
+      </mat-form-field>
 
       <div fxFlex="100"  class="pr-0 mt-1">
         <h3 class="header--text fnt--16">Status</h3>
