@@ -956,8 +956,7 @@ function fileActivityLogList(req, res) {
 }
 
 function getSharedLegaciesList(req,res){  
-  let { query } = req.body
-  
+  let { query ,order } = req.body  
   Trustee.find(query, {customerId:1},  function (err, list) {
     let trustLength = list.length;
     if(trustLength>0){
@@ -969,7 +968,7 @@ function getSharedLegaciesList(req,res){
         res.send(resFormat.rSuccess({ results }))
       })
     }
-  })
+  }).sort(order);
 }
 
  function legacyUserRemove(req,res){
@@ -991,7 +990,7 @@ function getSharedLegaciesList(req,res){
   }
   let message = resMessage.data( 607, [{key:'{field}',val: userstring},{key:'{status}',val:'removed'}] )
   //Update activity logs
-  allActivityLog.updateActivityLogs( query.customerId, toId, "Removed Trustee", message )
+  allActivityLog.updateActivityLogs( query.customerId, toId, "Removed Trustee", message ,'Legacy '+query.userType+' remove')
 
   let result = { "message": message }
   res.status(200).send(resFormat.rSuccess(result))   

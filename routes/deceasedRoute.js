@@ -209,12 +209,13 @@ async function viewDeceased(req, res) {
         
          let message = resMessage.data( 607, [{key: '{field}',val: 'Mark as deceased'}, {key: '{status}',val: 'updated'}] )
          allActivityLog.updateActivityLogs( fromId, toId, 'Mark As Deceased', message)
-         let result = { "message": message }
+         let result = { "message": message,"DeceasedCnt":DeceasedCnt }
+
          res.status(200).send(resFormat.rSuccess(result));
    
         }else{
           let message = resMessage.data( 607, [{key: '{field}',val: 'Mark as deceased'}, {key: '{status}',val: 'updated'}] )
-          let result = { "message": message }
+          let result = { "message": message ,"DeceasedCnt":''}
           res.status(200).send(resFormat.rSuccess(result));
         }        
   }

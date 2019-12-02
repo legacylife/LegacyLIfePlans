@@ -1,8 +1,10 @@
 var constants = {
   secret: "LLP",
+
   database: { 
     url: process.env.dbURI || 'mongodb+srv://Leg3RxbWRPMLCy:rw4hXVd4vtvqQPve@production-legacy-aqr1f.mongodb.net/production-legacy' 
   }, 
+
   google: {
   },
   nylas:{
@@ -49,8 +51,10 @@ var constants = {
     google: {
       clientId: ''
     }
+
   },
   stripeSecretKey: "sk_test_ni2JhTNSaNPgEZVHeiciAVVs00YF0EGLTR",
+
 
   basicFolders: [
    "advisorDocs",
