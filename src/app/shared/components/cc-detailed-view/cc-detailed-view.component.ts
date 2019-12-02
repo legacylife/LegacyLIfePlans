@@ -16,7 +16,7 @@ import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.serv
 })
 export class CcDetailedViewComponent {
   aliasName: String = ''
-  postDetails = {title:'',description:'',createdOn:'',image:''}
+  postDetails = {title:'',description:'',createdOn:'',image:{'title':"",'size':"",'extention':"",'tmpName':""}}
   userId: String = ''
   userSubscription: Subscription;
   setupMessage = 'not set up yet';
@@ -72,7 +72,7 @@ export class CcDetailedViewComponent {
     this.api.apiRequest('post', 'coach-corner-post/view', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
-        this.postDetails = {title:'',description:'',createdOn:'', image:''}
+        this.postDetails = {title:'',description:'',createdOn:'',image:{'title':"",'size':"",'extention':"",'tmpName':""}}
       }
       else {
         this.postDetails = result.data.postDetails
