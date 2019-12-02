@@ -1,7 +1,8 @@
 var constants = {
   secret: "LLP",
-  database: { // mongodb://localhost:27017/llp-pankaj
-    url: process.env.dbURI || 'mongodb://llp:l$l!p#123@ds341557.mlab.com:41557/llp' 
+  database: { // mongodb://localhost:27017/llp-pankaj     mongodb://llp:l$l!p#123@ds341557.mlab.com:41557/llp -staging    
+    url: process.env.dbURI || 'mongodb://llp:l$l!p#123@ds341557.mlab.com:41557/llp'// -staging'//'mongodb+srv://leg3rxbwrpmlcy:rw4hxvd4vtvqqpve@legacy-production-aqr1f.mongodb.net/llp-prod?retryWrites=true&w=majority' 
+    //leg3rxbwrpmlcy:rw4hxvd4vtvqqpve@legacy-production-aqr1f.mongodb.net/llp-prod?retryWrites=true
   }, // mongodb://llp:llp#123@ds129454.mlab.com:29454/llp, mongodb://llp:l$l!p#123@ds341557.mlab.com:41557/llp  mongodb://llp:llp#123@ds213896.mlab.com:13896/llp-pankaj
   google: {
   },
@@ -49,8 +50,7 @@ var constants = {
     google: {
       clientId: ''
     }
-
-  },
+  },  
   stripeSecretKey: "sk_test_ni2JhTNSaNPgEZVHeiciAVVs00YF0EGLTR",//sk_test_eXXvQMZIUrR3N1IEAqRQVTlw test server // sk_test_ni2JhTNSaNPgEZVHeiciAVVs00YF0EGLTR // client server
 
   basicFolders: [
@@ -202,7 +202,7 @@ var constants = {
     2:"I would prefer a memorial service",
     3:"I would prefer cremation",
     4:"I do not want a funeral or memorial service"
- }, 
+  }, 
 
   expenseOptions : {
     1:"I have made prearrangements with the funeral home",
