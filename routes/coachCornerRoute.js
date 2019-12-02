@@ -270,11 +270,23 @@ async function sharePost(req, res) {
   }
 }
 
+async function getPostDetails(req, res) {
+  const { query, fields } = req.body
+ CoachCornerDetails  = await CoachCorner.findOne(query, fields).populate('category','title aliasName status')
+
+  if ( !CoachCornerDetails ) {
+    res.status(401).send(resFormat.rError(err))
+  } else {
+    res.send(resFormat.rSuccess(CoachCornerDetails))
+  }
+}
+
 router.post("/create", create)
 router.post("/list", list)
 router.post("/update", update)
 router.post("/delete", deletePosts)
 router.post("/view", view)
+router.post("/get-post-details", getPostDetails)
 router.post("/most-viewed-articles", getMostViewedArticles)
 router.post("/share-post", sharePost)
 

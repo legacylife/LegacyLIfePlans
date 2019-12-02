@@ -1826,8 +1826,14 @@ function deleteInsuranceDocument(req, res) {
 }
 
 function deleteDocumentS3(customerId,filePaths,fileName){
-  let filePath = customerId+'/'+filePaths+fileName;
+  let filePath =  '';
+  if(customerId){
+     filePath = customerId+'/'+filePaths+fileName;
+  }else{
+    filePath = filePaths+fileName;
+  }
   const params = {Bucket: constants.s3Details.bucketName,Key: filePath}
+  console.log('params path >>>>>>>>>>>>>>',params)
   let resMsg = "Something Wrong please try again!";
      try {
          s3.s3.headObject(params).promise()
@@ -2466,104 +2472,116 @@ router.post('/coachCornerArticle', cors(), function(req,res){
     if(ProfileId && ProfileId!='') {
       q = {_id : ProfileId}
     }
-    req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+    req.busboy.on('file', async function (fieldname, file, filename, encoding, mimetype) {
       let tmpallfiles = {};
-      let oldTmpFiles = [];
-      if(userId) {
         let fileExts = ["jpg", "jpeg", "png"],
             ext = filename.split('.')
-            ext = ext[ext.length - 1];
-            
+            ext = ext[ext.length - 1];            
         let resp = isExtension(ext,fileExts);
         if(!resp) {
-          let results = { userId:userId, allDocs:oldTmpFiles, "message": "Invalid file extension!" }
+          let results = { userId:userId, allDocs:filename, "message": "Invalid file extension!" }
           res.send(resFormat.rSuccess(results))
-        }
-        else{
-          /**** for post update remove previous file *****/
-          
+        } else {
+          const newFilename = new Date().getTime() + `.${ext}`
+          if(ProfileId) {  
+            /**** for post update remove previous file *****/          
           if( prevImage ) {
-            let filePath = coachCornerArticlePath + prevImage;
-            const params = { Bucket: constants.s3Details.bucketName, Key: filePath }
-            try {
-              s3.s3.headObject(params).promise()
-              try {
-                s3.s3.deleteObject(params).promise()
-              }
-              catch (err) {
-                let resMsg = "ERROR in file Deleting : " + JSON.stringify(err);
-                res.send(resFormat.rError(resMsg))
-              }
-            }
-            catch (err) {
-              let resMsg = "File not Found ERROR : " + err.code;
-              res.send(resFormat.rSuccess(resMsg))
-            }
+           // let filePath = coachCornerArticlePath + prevImage;           
+            resMsg = await deleteDocumentS3('',coachCornerArticlePath,prevImage);
           }
-          /****************************/
-         
-          //Add 
-          const newFilename = filename//new Date().getTime() + `.${ext}`
-                fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+          /**** for post update remove previous file *****/          
+          fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
           file.pipe(fstream);
-
           fstream.on('close', async function () {
-            let uploadImage =  await s3.uploadFilePublic(newFilename,coachCornerArticlePath);  
+              await s3.uploadFilePublic(newFilename,coachCornerArticlePath);  
             tmpallfiles = {
               "title" : filename,
               "size" : encoding,
               "extention" : mimetype,
               "tmpName" : newFilename
-            }
-            
+            }              
+            coachCorner.updateOne(q, { $set: { image: tmpallfiles } }, function (err, updatedRecord) {
+              let message = resMessage.data( 607, [{key: '{field}',val: 'Coach Corner Image'}, {key: '{status}',val: 'uploaded'}] )
+              //Update activity logs
+              allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, coachCornerArticlePath, '', filename)
+              return res.send(resFormat.rSuccess(tmpallfiles))
+           })
+          })      
+      }else{
+        fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename);
+        file.pipe(fstream);
+        fstream.on('close', async function () {
+          await s3.uploadFilePublic(newFilename,coachCornerArticlePath);  
+          tmpallfiles = {
+            "title" : filename,
+            "size" : encoding,
+            "extention" : mimetype,
+            "tmpName" : newFilename
+          }
+          var insert = new coachCorner();
+          insert.image = tmpallfiles;
+          insert.createdBy = userId;
+          insert.createdOn = new Date();
+          insert.modifiedOn = new Date();
+          insert.save({}, function (err, newEntry) {
+           if (err) {
+              res.send(resFormat.rError(err))
+           } else {
             let message = resMessage.data( 607, [{key: '{field}',val: 'Coach Corner Image'}, {key: '{status}',val: 'uploaded'}] )
             //Update activity logs
             allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, coachCornerArticlePath, '', filename)
-
+            //let result = { "message": message,"newEntry":newEntry }
             return res.send(resFormat.rSuccess(tmpallfiles))
-            //res.status(200).send(resFormat.rSuccess(tmpallfiles))
+            }
           })
-          
-        } 
-      }
-      else {
-        res.status(401).send(resFormat.rError("User token mismatch."))
-      }
+         })
+       }     
+     } 
     })
   }
 })
 
 function deleteCoachCornerImage(req, res) {
   let { fileName }      = req.body,
+      { query }         = req.body,
       { fromId }        = req.body,
       { toId }          = req.body,
       { folderName }    = req.body
         folderName      = folderName ? folderName.replace('/','') : ''
   let { subFolderName } = req.body,
         filePath        = coachCornerArticlePath+fileName;
-  
-  const params = { Bucket: constants.s3Details.bucketName, Key: filePath }
-  let resMsg    = "";
-  try {
-    s3.s3.headObject(params).promise()
-    try {
-      s3.s3.deleteObject(params).promise()
+        let message = '';
+    //CoachCornerDetails  = await CoachCorner.findOne(query, fields)
+    coachCorner.findOne({_id:query._id}, {},async function (err, found) {
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {    
+        if (found) {
+          const params = { Bucket: constants.s3Details.bucketName, Key: filePath }
+          try {
+            s3.s3.headObject(params).promise()
+            try {
+             //s3.s3.deleteObject(params).promise()
+             await deleteDocumentS3('',coachCornerArticlePath,fileName);
+             let tmpallfiles = {"title" : '',"size" : '',"extention" : '',"tmpName" : ''}
+             await coachCorner.updateOne({_id:query._id},{ $set: { image: tmpallfiles } });
+              message = resMessage.data( 607, [{key: '{field}',val: 'Coach Corner Image'}, {key: '{status}',val: 'deleted'}] )
+             //Update activity logs
+             allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
+            } catch (err) {
+              message = "ERROR in file Deleting : " + JSON.stringify(err);
+            }
+          } catch (err) {
+            message = "File not Found ERROR : " + err.code;
+          }
+          // update CoachCorner and remove image from list
+          let result = { "message": message }
+          res.send(resFormat.rSuccess(result))
+        }else{
+          res.send(resFormat.rSuccess({}))
+        }
     }
-    catch (err) {
-      resMsg = "ERROR in file Deleting : " + JSON.stringify(err);
-      res.send(resFormat.rError(resMsg))
-    }
-  }
-  catch (err) {
-    resMsg = "File not Found ERROR : " + err.code;
-    res.send(resFormat.rSuccess(resMsg))
-  }
-
-  let message = resMessage.data( 607, [{key: '{field}',val: 'Coach Corner Image'}, {key: '{status}',val: 'deleted'}] )
-  //Update activity logs
-  allActivityLog.updateActivityLogs( fromId, toId, "File Deleted", message, folderName, subFolderName, fileName.docName)
-  let result = { "message": message }
-  res.send(resFormat.rSuccess(result))
+  });
 }
 
 router.post("/deleteCoachCornerImage", deleteCoachCornerImage);
