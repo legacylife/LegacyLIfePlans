@@ -178,6 +178,7 @@ async function getInviteMembersCount(req, res) {
     let searchParam = { _id: paramData.inviteById, userType: paramData.inviteType }
     let userDetails = await User.find(searchParam)
     if (userDetails && userDetails.length > 0) {
+        extendedDays = 0;
         let userCreatedOn = userDetails[0]['createdOn'],
             today = moment().toDate(),
             completedDays = getDateDiff(today, moment(userCreatedOn).toDate(), 'asDays'),
@@ -212,7 +213,7 @@ async function getInviteMembersCount(req, res) {
         //paramData.createdOn = { $gte: new Date(startDate) , $lte: new Date(endDate) }
 
         let data = await Invite.find(queryparam)
-        console.log("completedMonths ===== ", completedMonths, "\n createdOn ===== ", userDetails[0]['createdOn'], "\n paramData ===== ", paramData.createdOn, "remainingDays", remainingDays, "extendedDays", extendedDays)
+        console.log("data--->",data,"-----completedMonths ===== ", completedMonths, "\n createdOn ===== ", userDetails[0]['createdOn'], "\n paramData ===== ", paramData, "remainingDays", remainingDays, "extendedDays", extendedDays)
 
         if (data != null) {
             resultCount = data.length
@@ -231,6 +232,9 @@ async function getInviteMembersCount(req, res) {
         remainingDays = resultCount >= targetCount ? remainingDays + extendedDays : remainingDays
         //}
         result = { "count": resultCount, "remainingDays": remainingDays, "completedMonths": completedMonths, "targetCount": targetCount, "extendedDays": extendedDays }
+        res.status(200).send(resFormat.rSuccess(result))
+    }else{
+        result = { "count": 0, "remainingDays": 0, "completedMonths": 0, "targetCount": 0, "extendedDays": 0 }
         res.status(200).send(resFormat.rSuccess(result))
     }
 }
