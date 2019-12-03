@@ -16,6 +16,7 @@ var objectId = mongoose.Types.ObjectId();
 const HiredAdvisors = require('./../models/HiredAdvisors')
 const trust = require('./../models/Trustee.js')
 var FreeTrailPeriodSetting = require('./../models/FreeTrialPeriodSettings')
+const allActivityLog = require('./../helpers/allActivityLogs')
 async function getSelectedPlanDetails( planId ) {
   return await stripe.plans.retrieve( planId );
 }
@@ -721,6 +722,8 @@ function getDateDiff( startDate, endDate, returnAs=null ) {
 
 
 async function deceasedCustomers(req, res){
+  let message = 'Mark as deceased by cron job working';
+  allActivityLog.updateActivityLogs('', '', 'Mark As Deceased cron job', message)
   await User.find({'deceased':{$ne:null},'deceased.status':{$ne:'Active'},'lockoutLegacyDate':{$ne:null}},{}, async function (err, result) {
     if (err) {
       res.status(500).send(resFormat.rError(err))
@@ -731,17 +734,22 @@ async function deceasedCustomers(req, res){
           let OldDeceasedinfo = key.deceased.deceasedinfo;
           let deceasedArray = {'status':'Active','trusteeCnt':key.deceased.trusteeCnt,'advisorCnt':key.deceased.advisorCnt,deceasedinfo:OldDeceasedinfo};
            await User.updateOne({_id:key._id},{deceased:deceasedArray});
+           let message = 'Mark as deceased by cron job';
+           allActivityLog.updateActivityLogs(key._id, key._id, 'Mark As Deceased cron job', message)
         }
       });
      }
     }
   })
+
 }
 
 /*
 After customer deceased and subscription expire 90 free access for trustee, advisors then system sent and email to executor.
 */
 async function deceasedCustomersReminders(req, res){
+  let message = 'Mark as deceased reminders by cron job working';
+  allActivityLog.updateActivityLogs('', '', 'Mark As Deceased Reminders cron job', message)
   await User.find({'userType':"customer",'deceased':{$ne:null},'deceased.status':'Active',status:'Active'},{_id:1,username:1,firstName:1,lastName:1,subscriptionDetails:1,createdOn:1}, async function (err, result) {
     if (err) {
       res.status(500).send(resFormat.rError(err))
@@ -797,9 +805,16 @@ async function deceasedCustomersReminders(req, res){
                       }
                       if(executor){
                         console.log('executor',executor)
+                        message = deceasedFullName+' deceased and his executor is '+executor.username+' by cron job ';
+                        allActivityLog.updateActivityLogs(key._id, key._id, 'Mark As Deceased executor cron job', message)
+
                         await sendingMail('DeceasedRemiderEmailToExecutor',executor.username,executor.firstName,deceasedEmail,deceasedFullName,subscriptionEndDate,AfterExAccDate);
                       }else{//send mail to admin to inform deceased user scrscription date and deceased user didn't have any executor
-                        let adminUSer = await User.find({userType:"sysadmin","sectionAccess.deceasedrequest":"fullaccess"},{_id:1,firstName:1,lastName:1,username:1});
+                   
+                      message = deceasedFullName+' deceased  and have not executor by cron job ';
+                      allActivityLog.updateActivityLogs(key._id, key._id, 'Mark As Deceased executor cron job', message)
+                   
+                      let adminUSer = await User.find({userType:"sysadmin","sectionAccess.deceasedrequest":"fullaccess"},{_id:1,firstName:1,lastName:1,username:1});
                           adminUSer.forEach( async (row,index) => {   
                             await sendingMail('DeceasedRemiderEmailToAdmin',row.username,row.firstName,deceasedEmail,deceasedFullName,subscriptionEndDate,AfterExAccDate);
                           });
@@ -978,6 +993,7 @@ router.get("/auto-renewal-on-reminder-email", autoRenewalOnReminderEmail);
 router.get("/auto-renewal-off-reminder-email", autoRenewalOffReminderEmail);
 router.get("/before-subscription-reminder-email", beforeSubscriptionReminderEmail);
 router.get("/check-deceased-customers", deceasedCustomers);
+router.get("/deceased-customers-reminders", deceasedCustomersReminders);
 router.post("/deceased-customers-reminders", deceasedCustomersReminders);
 router.get("/check-featured-advisor-frmdate", featuredAdvisorFromDate);
 router.get("/check-featured-advisor-enddate", featuredAdvisorEndDate);
