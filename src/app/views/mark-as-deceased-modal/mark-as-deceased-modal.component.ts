@@ -103,6 +103,9 @@ export class MarkAsDeceasedComponent implements OnInit {
         if(uploadRemained) {
           this.uploadRemainingFiles(this.selectedProfileId)
         }  
+        if(this.currentProgessinPercent==100){
+          this.currentProgessinPercent = 0;
+        }
         this.uploadingDocs = false;
       }
     }, (err) => {
@@ -212,7 +215,8 @@ public fileOverBase(e: any): void {
          });
 
         this.updateProgressBar();
-        this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {              
+        this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => { 
+          this.uploadingDocs = false;             
           this.getDeceasedView();
           setTimeout(()=>{    
             this.uploader.clearQueue();

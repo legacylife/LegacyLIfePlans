@@ -475,12 +475,20 @@ export class UserAPIService {
       if(data && data.customerId && data.customerId.deceased && data.customerId.deceased.status=='Active') {
         response['userDeceased'] = true;
       }
-      
-      if((data && data.customerId && data.customerId.deceased && data.customerId.deceased.status=='Active') || lockoutLegacyDateExpire){//When user deceased afterDeath files shoulde be display           
+      //When user deceased afterDeath files shoulde be display           
+      if((data && data.customerId && data.customerId.deceased && data.customerId.deceased.status=='Active') || lockoutLegacyDateExpire){
         Object.keys(userAccess).forEach((key,index) => {   
-          if(userAccess[key]=='afterDeath'){
-           userAccess[key] = 'now';
-          }          
+          if(key=='LegacyLifeLettersMessagesManagement'){
+              Object.keys(userAccess[key]).forEach((lkey,lindex) => {   
+                if(userAccess[key][lkey].access=='afterDeath'){
+                  userAccess[key][lkey].access = 'now';
+                }    
+              });        
+          }else{
+            if(userAccess[key]=='afterDeath'){
+              userAccess[key] = 'now';
+            }     
+          }     
         });
         response['userAccess'] = userAccess;
       }

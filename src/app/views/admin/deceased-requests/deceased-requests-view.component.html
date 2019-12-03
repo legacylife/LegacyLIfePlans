@@ -211,6 +211,7 @@
               <span *ngIf="row?.trustId">{{row?.trustId?.firstName}} {{row?.trustId?.lastName}}</span>
               <span *ngIf="row?.advisorId">{{row?.advisorId?.firstName}} {{row?.advisorId?.lastName}}</span>
               <span *ngIf="row?.adminId">{{row?.adminId?.firstName}} {{row?.adminId?.lastName}}</span>
+              <span *ngIf="!row?.adminId && !row?.advisorId  && !row?.trustId">{{row?.customerId?.firstName}} {{row?.customerId?.lastName}} (Legacy Holder)</span>
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Email" prop="trustId" [flexGrow]="1">
@@ -218,6 +219,7 @@
               <span *ngIf="row?.trustId">{{row?.trustId?.username}}</span>
               <span *ngIf="row?.advisorId">{{row?.advisorId?.username}}</span>
               <span *ngIf="row?.adminId">{{row?.adminId?.username}}</span>
+              <span *ngIf="!row?.adminId && !row?.advisorId  && !row?.trustId">{{row?.customerId?.username}}</span>
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Type" prop="userType" [flexGrow]="1">
