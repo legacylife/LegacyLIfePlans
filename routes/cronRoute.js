@@ -749,6 +749,7 @@ After customer deceased and subscription expire 90 free access for trustee, advi
 */
 async function deceasedCustomersReminders(req, res){
   let message = 'Mark as deceased reminders by cron job working';
+  console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',message)
   allActivityLog.updateActivityLogs('', '', 'Mark As Deceased Reminders cron job', message)
   await User.find({'userType':"customer",'deceased':{$ne:null},'deceased.status':'Active',status:'Active'},{_id:1,username:1,firstName:1,lastName:1,subscriptionDetails:1,createdOn:1}, async function (err, result) {
     if (err) {
