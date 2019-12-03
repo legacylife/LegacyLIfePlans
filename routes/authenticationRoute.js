@@ -692,7 +692,9 @@ async function checkUserOtp(req, res) {
 
           // If refer & earn functionality is on then save that data 
           let referEarnSettingsArr = await referEarnSettings.findOne(); 
-          let refereAndEarnSubscriptionDetailObj = {};     
+          let refereAndEarnSubscriptionDetailObj = {};  
+          
+          console.log("referEarnSettingsArr >>>>>>>>",referEarnSettingsArr)
 
           if (referEarnSettingsArr && referEarnSettingsArr.status == 'On' && otpdata.userType == 'advisor') {
 

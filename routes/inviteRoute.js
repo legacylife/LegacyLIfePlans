@@ -111,7 +111,7 @@ async function inviteMembers(req, res) {
                 subscriptionFlag = false
             }
         }
-        //console.log("today >>>>>>>", today, " <<<<<< lastInviteEndDate >>>>>", lastInviteEndDate, " <<<<<< inviteEndDate >>>>>", inviteEndDate)
+        console.log("today >>>>>>>", today, " <<<<<< lastInviteEndDate >>>>>", lastInviteEndDate, " <<<<<< inviteEndDate >>>>>", inviteEndDate)
        
         if (today > lastInviteEndDate && today < inviteEndDate) {
             //console.log("today >>>>>>>",today," <<<<<< lastInviteEndDate >>>>>",lastInviteEndDate," <<<<<< inviteEndDate >>>>>",inviteEndDate)
@@ -177,8 +177,9 @@ async function getInviteMembersCount(req, res) {
     let resultCount = 0
     let searchParam = { _id: paramData.inviteById, userType: paramData.inviteType }
     let userDetails = await User.find(searchParam)
+    
     if (userDetails && userDetails.length > 0) {
-        extendedDays = 0;
+        
         let userCreatedOn = userDetails[0]['createdOn'],
             today = moment().toDate(),
             completedDays = getDateDiff(today, moment(userCreatedOn).toDate(), 'asDays'),
