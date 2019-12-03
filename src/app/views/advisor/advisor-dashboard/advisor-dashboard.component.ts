@@ -8,6 +8,7 @@ import { UserAPIService } from './../../../userapi.service';
 import { s3Details } from '../../../config';
 import { ReferAndEarnModalComponent } from 'app/views/refer-and-earn-modal/refer-and-earn-modal.component';
 import { SubscriptionService } from 'app/shared/services/subscription.service';
+import * as moment from 'moment';
 //import { ReferAndEarnModalComponent } from '../legacies/refer-and-earn-modal/refer-and-earn-modal.component';
 
 const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
@@ -24,9 +25,9 @@ export class AdvisorDashboardComponent implements OnInit {
   recentActivityLogList: any;
   profileFilePath: string = profileFilePath;
   invitedMembersCount: any = 0
-  remainingDays:any = 0
+  remainingDays: any = 0
   LeadsCount: any = 0
-  invitedMembersCountDefault:string='5'
+  invitedMembersCountDefault: string = '5'
 
   /**
    * Subscription variable declaration
@@ -39,36 +40,36 @@ export class AdvisorDashboardComponent implements OnInit {
   isSubscribePlan: boolean = false
   isSubscribedBefore: boolean = false
   autoRenewalFlag: boolean = false
-  autoRenewalVal:boolean = false
+  autoRenewalVal: boolean = false
   isPremiumExpired: boolean = false
-  isSubscriptionCanceled:boolean = false
+  isSubscriptionCanceled: boolean = false
   userCreateOn: any
   userSubscriptionDate: any
 
-  targetCount:Number = 0
-  extendedDays:Number = 0
-  subscriptionData :any 
+  targetCount: Number = 0
+  extendedDays: Number = 0
+  subscriptionData: any
 
   constructor(
     private userapi: UserAPIService,
     private router: Router, private dialog: MatDialog,
     private snack: MatSnackBar, private confirmService: AppConfirmService,
     private loader: AppLoaderService,
-    private subscriptionservice:SubscriptionService
+    private subscriptionservice: SubscriptionService
   ) { }
 
-  
+
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.getAdvisorActivityLogList();
     this.getInviteMembersCount();
     this.getLeadsCount();
 
-    if(this.userId){
-      const req_vars = { userId: this.userId }    
-      this.userapi.apiRequest('post', 'auth/view', req_vars).subscribe(result => {  
+    if (this.userId) {
+      const req_vars = { userId: this.userId }
+      this.userapi.apiRequest('post', 'auth/view', req_vars).subscribe(result => {
         this.subscriptionData = [];
-        if(result.data.subscriptionDetails){
+        if (result.data.subscriptionDetails) {
           this.subscriptionData = result.data.subscriptionDetails;
         }
       }, (err) => {
@@ -80,7 +81,7 @@ export class AdvisorDashboardComponent implements OnInit {
   }
 
   checkSubscription() {
-    this.subscriptionservice.checkSubscription( '', ( returnArr )=> {
+    this.subscriptionservice.checkSubscription('', (returnArr) => {
       this.userCreateOn = returnArr.userCreateOn
       this.isSubscribedBefore = returnArr.isSubscribedBefore
       this.isSubscriptionCanceled = returnArr.isSubscriptionCanceled
@@ -95,12 +96,12 @@ export class AdvisorDashboardComponent implements OnInit {
     })
   }
 
-  @HostListener('document:click', ['$event']) clickedOutside(event){
-    if(event.srcElement.outerText=='Invite'){
-      setTimeout(()=>{     
-        this.getInviteMembersCount();    
-      },2000);     
-    } 
+  @HostListener('document:click', ['$event']) clickedOutside(event) {
+    if (event.srcElement.outerText == 'Invite') {
+      setTimeout(() => {
+        this.getInviteMembersCount();
+      }, 2000);
+    }
   }
 
   getInviteMembersCount() {
@@ -192,12 +193,30 @@ export class AdvisorDashboardComponent implements OnInit {
   }
 
   openInviteModal(data: any = {}, isNew?) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
+    /*let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
       width: '720px',
       disableClose: true,
     })
 
     dialogRef.afterClosed()
+    .subscribe(res => {
+      this.getInviteMembersCount();
+      if (!res) {
+        // If user press cancel
+        return;
+      }
+    })*/
+
+
+    let subscriptionEndDate = localStorage.getItem('endUserSubscriptionEndDate')
+    let getDiff = subscriptionEndDate ? this.subscriptionservice.getDateDiff(moment().toDate(), moment(subscriptionEndDate).toDate()) : 0
+    if (localStorage.getItem('endisReferAndEarn') === 'Yes' || localStorage.getItem('isSubscribedBefore') === 'true') {
+      let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
+        width: '720px',
+        disableClose: true,
+      })
+
+      dialogRef.afterClosed()
       .subscribe(res => {
         this.getInviteMembersCount();
         if (!res) {
@@ -205,5 +224,26 @@ export class AdvisorDashboardComponent implements OnInit {
           return;
         }
       })
+    }
+    else if (getDiff <= 0) {
+      let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
+        width: '720px',
+        disableClose: true,
+      })
+
+      dialogRef.afterClosed()
+      .subscribe(res => {
+        this.getInviteMembersCount();
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
+    }
+    else {
+      this.router.navigate(['/subscription'])
+    }
+
+    
   }
 }

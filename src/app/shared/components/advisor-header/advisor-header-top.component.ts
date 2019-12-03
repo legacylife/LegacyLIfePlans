@@ -121,7 +121,7 @@ export class AdvisorHeaderTopComponent implements OnInit, OnDestroy {
   openInviteModal(data: any = {}, isNew?) {
     let subscriptionEndDate = localStorage.getItem('endUserSubscriptionEndDate')
     let getDiff = subscriptionEndDate ? this.subscription.getDateDiff( moment().toDate(), moment(subscriptionEndDate).toDate() ) : 0
-    console.log("getDiff",getDiff)
+    console.log("localStorage >>>>>> ",localStorage)
     if( localStorage.getItem('endisReferAndEarn') === 'Yes' || localStorage.getItem('isSubscribedBefore') === 'true' ) {
       let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
         width: '720px',

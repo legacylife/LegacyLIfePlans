@@ -4,7 +4,7 @@
       <div class="propic text-center" *ngIf="row?.userType != 'sysadmin'">
         <img src="{{profilePicture}}" alt="">
       </div>
-      <div class="profile-title text-center mb-1">         
+      <div class="profile-title text-center mb-1">
         <div class="main-title">{{fullname}}</div>
         <div class="text-muted">{{row?.bioText ? row?.bioText : '--'}}</div>
       </div>
@@ -23,13 +23,13 @@
           <mat-list-item *ngIf="row?.userType == 'customer' && row?.phoneNumber!=''">
             <mat-icon class="mr-1">phone</mat-icon> {{row?.phoneNumber ? row?.phoneNumber : '--'}}</mat-list-item>
           <mat-list-item *ngIf="row?.userType == 'advisor' && row?.businessPhoneNumber!=''">
-            <mat-icon class="mr-1">phone</mat-icon> {{row?.businessPhoneNumber ? row?.businessPhoneNumber : '--'}}</mat-list-item>          
+            <mat-icon class="mr-1">phone</mat-icon> {{row?.businessPhoneNumber ? row?.businessPhoneNumber : '--'}}</mat-list-item>
         </mat-list>
       </mat-card-content>
-      <div class="profile-actions mb-1" fxLayoutAlign="center center" *ngIf="row?.userType == 'advisor' && row?.status == 'Active' && (row?.IamIntrested && row?.IamIntrested != 'Yes')">
+      <div class="profile-actions mb-1" fxLayoutAlign="center center" *ngIf="row?.userType == 'advisor' && row?.status == 'Active' && (row?.IamIntrested && row?.IamIntrested != 'Yes') && (row?.refereAndEarnSubscriptionDetail && row?.refereAndEarnSubscriptionDetail.status == 'Active' && row?.refereAndEarnSubscriptionDetail.endDate == '')">
         <button mat-raised-button class="" color="primary" (click)="reactivateReferEarn(row)">Reactivate Refer N Earn</button>
       </div>
-    </mat-card> 
+    </mat-card>
   </div>
 
   <!-- Profile Views -->
@@ -45,10 +45,10 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Date Of Birth</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.dateOfBirth  ? (row?.dateOfBirth | date: 'yyyy/MM/dd') : '--'}}</div>
+                  <div fxFlex="40">{{row?.dateOfBirth ? (row?.dateOfBirth | date: 'yyyy/MM/dd') : '--'}}</div>
                 </div>
               </mat-list-item>
-              <mat-list-item  class="msg--hgt--sec" *ngIf="row?.userType != 'sysadmin'">
+              <mat-list-item class="msg--hgt--sec" *ngIf="row?.userType != 'sysadmin'">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Address Line 1</h6>
                   <span fxFlex></span>
@@ -56,40 +56,40 @@
                 </div>
               </mat-list-item>
               <mat-list-item class="msg--hgt--sec" *ngIf="row?.userType != 'sysadmin'">
-                <div fxLayout="row" fxFlex="100" >
+                <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Address Line 2</h6>
                   <span fxFlex></span>
                   <div fxFlex="40" class="line--hgt--20">{{row?.addressLine2 ? row?.addressLine2 : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
-                  <div fxLayout="row" fxFlex="100">
-                    <h6 class="m-0 mr-1">City</h6>
-                    <span fxFlex></span>
-                    <div fxFlex="40">{{row?.city ? row?.city : '--'}}</div>
-                  </div>
-                </mat-list-item>
-                <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
-                  <div fxLayout="row" fxFlex="100">
-                    <h6 class="m-0 mr-1">State</h6>
-                    <span fxFlex></span>
-                    <div fxFlex="40">{{row?.state ? row?.state : '--'}}</div>
-                  </div>
-                </mat-list-item>
-                <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
-                  <div fxLayout="row" fxFlex="100">
-                    <h6 class="m-0 mr-1">Zipcode</h6>
-                    <span fxFlex></span>
-                    <div fxFlex="40">{{row?.zipcode ? row?.zipcode : '--'}}</div>
-                  </div>
-                </mat-list-item>
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">City</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.city ? row?.city : '--'}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">State</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.state ? row?.state : '--'}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Zipcode</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.zipcode ? row?.zipcode : '--'}}</div>
+                </div>
+              </mat-list-item>
               <mat-list-item class="">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Status</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40" >
-                  <mat-chip  mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{row?.status}}</mat-chip>
-                </div>
+                  <div fxFlex="40">
+                    <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{row?.status}}</mat-chip>
+                  </div>
                 </div>
               </mat-list-item>
               <mat-list-item class="msg--hgt--sec" *ngIf="row?.userType != 'sysadmin'">
@@ -108,28 +108,28 @@
               </mat-list-item>
 
               <mat-list-item class="">
-                  <div fxLayout="row" fxFlex="100">
-                    <h6 class="m-0 mr-1">Last log in date and time</h6>
-                    <span fxFlex></span>
-                    <div fxFlex="40">{{row?.lastLoggedInOn  | date: 'yyyy/MM/dd HH:mm:ss'}}</div>
-                  </div>
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Last log in date and time</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.lastLoggedInOn | date: 'yyyy/MM/dd HH:mm:ss'}}</div>
+                </div>
               </mat-list-item>
 
               <mat-list-item class="">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Account created date and time</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.createdOn  | date: 'yyyy/MM/dd HH:mm:ss'}}</div>
+                  <div fxFlex="40">{{row?.createdOn | date: 'yyyy/MM/dd HH:mm:ss'}}</div>
                 </div>
-            </mat-list-item>
-            <mat-list-item class="">
+              </mat-list-item>
+              <mat-list-item class="">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Allow To Receive Notification* (New admin member notification)</h6>
                   <span fxFlex></span>
                   <div fxFlex="40">{{(row?.allowNotifications && row?.allowNotifications=='yes') ? 'Yes' : 'No'}}</div>
                 </div>
-            </mat-list-item>
-                
+              </mat-list-item>
+
             </mat-list>
           </mat-card-content>
         </mat-card>
@@ -137,8 +137,9 @@
 
         <!-- Admin panel section list  -->
         <mat-card class="default" *ngIf="row?.userType == 'sysadmin' && row?.sectionAccess">
-          <mat-card-title class="p-1">Access To Sections 
-            <p class="access--note">Selected boxes represents access for the sections. You can ask to grant permission for unselected sections.</p></mat-card-title>
+          <mat-card-title class="p-1">Access To Sections
+            <p class="access--note">Selected boxes represents access for the sections. You can ask to grant permission for unselected sections.</p>
+          </mat-card-title>
           <mat-card-content class="p-0 border-t">
             <div class="list-tasktype">
               <div class="tasktype-item">
@@ -177,12 +178,12 @@
                 <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess.adminmanagement === 'fullaccess'"></mat-checkbox>
                 <span>Admin Management</span>
               </div>
-<!-- 
+              <!-- 
               <div class="tasktype-item">
                   <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess?.allowNotifications === 'yes'"></mat-checkbox>
                   <span>Allow To Receive Notification* (New admin member notification)</span>
                 </div> -->
-            </div>           
+            </div>
           </mat-card-content>
         </mat-card>
         <!-- Admin panel section list ends -->
@@ -203,38 +204,39 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Plan Expire Date</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{subscriptionExpireDate ? (subscriptionExpireDate  | date: 'yyyy/MM/dd') : '--'}}</div>
+                  <div fxFlex="40">{{subscriptionExpireDate ? (subscriptionExpireDate | date: 'yyyy/MM/dd') : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="">
-              <div fxLayout="row" fxFlex="100">
-                <h6 class="m-0 mr-1">Current Plan</h6>
-                <span fxFlex></span>
-                <div fxFlex="40">{{planName}} Plan</div>
-              </div>
-            </mat-list-item>
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Current Plan</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{planName}} Plan</div>
+                </div>
+              </mat-list-item>
             </mat-list>
           </mat-card-content>
         </mat-card>
         <!-- Subscription ends -->
-     </div>
+      </div>
 
-     <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
+      <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
         <mat-card class="default" *ngIf="row?.userType == 'advisor'">
-            <mat-card-title class="p-1">Uploaded documents</mat-card-title>
-            <mat-card-content class="p-0 border-t">
-              <mat-list class="compact-list mb-1" *ngFor="let doc of row.advisorDocuments">
-                <mat-list-item  class="msg--hgt--sec">
-                  <div fxLayout="row" fxFlex="100">
-                    <p class="dowloaded--names" (click)="downloadFile(doc.tmpName)"><mat-icon class="mat-icon material-icons" (click)="downloadFile(doc.tmpName)">file_copy</mat-icon>{{doc.title}}</p>
-                   
-                  </div>
-                </mat-list-item>
-              </mat-list>
-            </mat-card-content>
+          <mat-card-title class="p-1">Uploaded documents</mat-card-title>
+          <mat-card-content class="p-0 border-t">
+            <mat-list class="compact-list mb-1" *ngFor="let doc of row.advisorDocuments">
+              <mat-list-item class="msg--hgt--sec">
+                <div fxLayout="row" fxFlex="100">
+                  <p class="dowloaded--names" (click)="downloadFile(doc.tmpName)">
+                    <mat-icon class="mat-icon material-icons" (click)="downloadFile(doc.tmpName)">file_copy</mat-icon>{{doc.title}}</p>
+
+                </div>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
         </mat-card>
 
-      <mat-card class="default" *ngIf="row?.userType == 'advisor'">
+        <mat-card class="default" *ngIf="row?.userType == 'advisor'">
           <mat-card-title class="p-1">License & documents</mat-card-title>
           <mat-card-content class="p-0 border-t">
             <mat-list class="compact-list mb-1">
@@ -253,23 +255,23 @@
                 </div>
               </mat-list-item>
               <mat-list-item class="">
-              <div fxLayout="row" fxFlex="100">
-                <h6 class="m-0 mr-1">Who is your managing principle?</h6>
-                <span fxFlex></span>
-                <div fxFlex="40">{{row?.managingPrincipleName ? row?.managingPrincipleName : '--'}}</div>
-              </div>
-            </mat-list-item>
-            <mat-list-item class="">
-              <div fxLayout="row" fxFlex="100">
-                <h6 class="m-0 mr-1">Active License Held</h6>
-                <span fxFlex></span>
-                <div fxFlex="40">{{row?.activeLicenceHeld ? row?.activeLicenceHeld : "--"}}</div>
-              </div>
-            </mat-list-item>
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Who is your managing principle?</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.managingPrincipleName ? row?.managingPrincipleName : '--'}}</div>
+                </div>
+              </mat-list-item>
+              <mat-list-item class="">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Active License Held</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{row?.activeLicenceHeld ? row?.activeLicenceHeld : "--"}}</div>
+                </div>
+              </mat-list-item>
             </mat-list>
           </mat-card-content>
-      </mat-card>
-    </div>   
+        </mat-card>
+      </div>
     </div>
   </div>
 </div>

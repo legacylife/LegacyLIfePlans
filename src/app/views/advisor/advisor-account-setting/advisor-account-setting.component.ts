@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild ,HostListener} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { UserAPIService } from './../../../userapi.service';
@@ -19,11 +19,11 @@ import { ProfilePicService } from 'app/shared/services/profile-pic.service';
 import { ChangePicComponent } from './../../change-pic/change-pic.component';
 import { CanComponentDeactivate } from '../../../shared/services/auth/can-deactivate.guard';
 import { SubscriptionService } from '../../../shared/services/subscription.service';
-import  * as moment  from 'moment'
+import * as moment from 'moment'
 import { ReferAndEarnModalComponent } from 'app/views/refer-and-earn-modal/refer-and-earn-modal.component';
 //import { ReferAndEarnModalComponent } from '../legacies/refer-and-earn-modal/refer-and-earn-modal.component';
 
-const filePath = s3Details.url+'/'+s3Details.advisorsDocumentsPath;
+const filePath = s3Details.url + '/' + s3Details.advisorsDocumentsPath;
 const URL = serverUrl + '/api/documents/advisorDocument';
 interface websiteLink {
   links: string;
@@ -71,14 +71,14 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   industryDomainList: string[] = industryDomain.sort()
   businessTypeList: string[] = businessType.sort()
   yearsOfServiceList: string[] = yearsOfService
-  cityval:string
-  stateval:string
-  zipcodeval:string
-  firstNameval:string
-  lastNameval:string
-  phoneval:string
-  docPath:string
-  invitedMembersCountDefault:string = '5'
+  cityval: string
+  stateval: string
+  zipcodeval: string
+  firstNameval: string
+  lastNameval: string
+  phoneval: string
+  docPath: string
+  invitedMembersCountDefault: string = '5'
   modified = false // display confirmation popup if user click on other link
 
   /**
@@ -92,31 +92,32 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   isSubscribePlan: boolean = false
   isSubscribedBefore: boolean = false
   autoRenewalFlag: boolean = false
-  autoRenewalVal:boolean = false
-  sponsoredAdvisorFlag:boolean = false
+  autoRenewalVal: boolean = false
+  sponsoredAdvisorFlag: boolean = false
   isPremiumExpired: boolean = false
-  isSubscriptionCanceled:boolean = false
+  isSubscriptionCanceled: boolean = false
   userCreateOn: any
   userSubscriptionDate: any
   today: Date = moment().toDate()
-  currentProgessinPercent:number = 0;
+  currentProgessinPercent: number = 0;
   invitedMembersCount: any = 0
-  remainingDays:any = 0
+  remainingDays: any = 0
 
-  targetCount:Number = 0
-  extendedDays:Number = 0
+  targetCount: Number = 0
+  extendedDays: Number = 0
 
-  facebook:boolean = false
-  twitter:boolean = false
-  instagram:boolean = false
-  linkedIn:boolean = false
+  facebook: boolean = false
+  twitter: boolean = false
+  instagram: boolean = false
+  linkedIn: boolean = false
+  subscriptionData: any
 
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
-    private loader: AppLoaderService, private confirmService: AppConfirmService, private picService: ProfilePicService, private subscriptionservice:SubscriptionService) { }
+    private loader: AppLoaderService, private confirmService: AppConfirmService, private picService: ProfilePicService, private subscriptionservice: SubscriptionService) { }
 
   ngOnInit() {
-    const filePath = this.userId+'/'+s3Details.advisorsDocumentsPath;
+    const filePath = this.userId + '/' + s3Details.advisorsDocumentsPath;
     this.docPath = filePath;
     this.picService.itemValue.subscribe((nextValue) => {
       this.profilePicture = nextValue
@@ -148,10 +149,10 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       zipcode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
       businessPhoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
       bioText: new FormControl('', Validators.required),
-      websiteLinks: this.fb.array([this.fb.group({ links: ['', Validators.required, Validators.compose([CustomValidators.url])]})]),
+      websiteLinks: this.fb.array([this.fb.group({ links: ['', Validators.required, Validators.compose([CustomValidators.url])] })]),
       awardsYears: this.fb.array([this.fb.group({ title: ['', Validators.required], year: ['', Validators.required] })]),
-      specialites:  this.fb.array([this.fb.group({ name: [''] })]),
-      hobbies:  this.fb.array([this.fb.group({ name: [''] })]),
+      specialites: this.fb.array([this.fb.group({ name: [''] })]),
+      hobbies: this.fb.array([this.fb.group({ name: [''] })]),
       socialMediaLinks: new FormGroup({
         facebook: new FormControl(''),
         twitter: new FormControl(''),
@@ -168,16 +169,16 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       activeLicenceHeld: new FormControl([], Validators.required),
       agencyOversees: new FormControl('', Validators.required),
       managingPrincipleName: new FormControl('', Validators.required),
-      manageOtherProceducers: new FormControl('',Validators.required),
-      howManyProducers: new FormControl('',[Validators.pattern(/^[0-9]*$/)]),
-      advisorDocuments: new FormControl('',),
-      advisorDocuments_temp: new FormControl([],Validators.required)
+      manageOtherProceducers: new FormControl('', Validators.required),
+      howManyProducers: new FormControl('', [Validators.pattern(/^[0-9]*$/)]),
+      advisorDocuments: new FormControl('', ),
+      advisorDocuments_temp: new FormControl([], Validators.required)
     });
-  //  this.LicenseForm.controls['advisorDocuments_temp'].setValue('1');
+    //  this.LicenseForm.controls['advisorDocuments_temp'].setValue('1');
     this.LicenseForm.valueChanges.subscribe(val => {
       this.modified = true
     })
-  // console.log('dirty',this.LicenseForm.dirty); console.log('value',this.LicenseForm.value)
+    // console.log('dirty',this.LicenseForm.dirty); console.log('value',this.LicenseForm.value)
 
     this.profile = [];
     this.socialMediaLinkss = [];
@@ -189,18 +190,18 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
      * Check the user subscription details
      */
     this.checkSubscription()
-    
+
   }
 
-  @HostListener('document:click', ['$event']) clickedOutside(event){
-    if(event.srcElement.outerText=='Invite'){
-      setTimeout(()=>{     
-        this.getInviteMembersCount();    
-      },2000);     
-    } 
+  @HostListener('document:click', ['$event']) clickedOutside(event) {
+    if (event.srcElement.outerText == 'Invite') {
+      setTimeout(() => {
+        this.getInviteMembersCount();
+      }, 2000);
+    }
   }
   checkSubscription() {
-    this.subscriptionservice.checkSubscription( '', ( returnArr )=> {
+    this.subscriptionservice.checkSubscription('', (returnArr) => {
       this.userCreateOn = returnArr.userCreateOn
       this.isSubscribedBefore = returnArr.isSubscribedBefore
       this.isSubscriptionCanceled = returnArr.isSubscriptionCanceled
@@ -243,6 +244,11 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.loader.close();
       } else {
 
+        this.subscriptionData = [];
+        if (result.data.subscriptionDetails) {
+          this.subscriptionData = result.data.subscriptionDetails;
+        }
+
         this.profile = result.data.userProfile;
         this.ProfileForm.controls['firstName'].setValue(this.profile.firstName ? this.profile.firstName : "");
         this.ProfileForm.controls['lastName'].setValue(this.profile.lastName ? this.profile.lastName : "");
@@ -275,7 +281,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.firstNameval = this.profile.firstName ? this.profile.firstName : ""
         this.lastNameval = this.profile.lastName ? this.profile.lastName : ""
         this.phoneval = this.profile.businessPhoneNumber ? this.profile.businessPhoneNumber : ""
-      
+
         if (this.profile.profilePicture) {
           this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + this.profile.profilePicture;
           localStorage.setItem('endUserProfilePicture', this.profilePicture)
@@ -320,12 +326,12 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         //this.LicenseForm.controls['advisorDocuments'].setValue(this.profile.advisorDocuments ? "" : "11");
 
         this.LicenseForm.controls['advisorDocuments_temp'].setValue('');
-        if(this.profile.advisorDocuments.length>0){
+        if (this.profile.advisorDocuments.length > 0) {
           this.LicenseForm.controls['advisorDocuments_temp'].setValue('1');
         }
 
-        if(this.profile.sponsoredAdvisor && this.profile.sponsoredAdvisor=='yes'){
-          if(result.data.advertisementdata){
+        if (this.profile.sponsoredAdvisor && this.profile.sponsoredAdvisor == 'yes') {
+          if (result.data.advertisementdata) {
             this.sponsoredToDate = result.data.advertisementdata.toDate;
             this.sponsoredAdvisorFlag = true;
           }
@@ -424,7 +430,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       } else {
         //this.prodata = result.data.userProfile;
         localStorage.setItem("endUserFirstName", this.ProfileForm.controls['firstName'].value);
-         localStorage.setItem("endUserLastName", this.ProfileForm.controls['lastName'].value);  
+        localStorage.setItem("endUserLastName", this.ProfileForm.controls['lastName'].value);
         //this.getProfile();
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
@@ -443,7 +449,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     this.awardsYears = awardsYearsArr.controls.map(o => { return o.value })
 
     const specialitesGroupArr = <FormArray>this.AddressForm.get('specialites')
-    this.specialites = specialitesGroupArr.controls.map(o => { return o.value }) 
+    this.specialites = specialitesGroupArr.controls.map(o => { return o.value })
 
     const hobbiesGroupArr = <FormArray>this.AddressForm.get('hobbies')
     this.hobbies = hobbiesGroupArr.controls.map(o => { return o.value })
@@ -469,7 +475,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         "facebook": facebook,
         "twitter": twitter,
         "linkedIn": linkedIn,
-        "instagram":instagram
+        "instagram": instagram
       })
     }
 
@@ -506,53 +512,53 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       let filename = fileoOb.file.name;
       var extension = filename.substring(filename.lastIndexOf('.') + 1);
       var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
-      let resp = this.isExtension(extension,fileExts);
-      if(!resp){
+      let resp = this.isExtension(extension, fileExts);
+      if (!resp) {
         var FileMsg = "This file '" + filename + "' is not supported";
         this.uploader.removeFromQueue(fileoOb);
-        let pushArry = {"error":FileMsg} 
-        this.fileErrors.push(pushArry); 
-        setTimeout(()=>{    
+        let pushArry = { "error": FileMsg }
+        this.fileErrors.push(pushArry);
+        setTimeout(() => {
           this.fileErrors = []
-        }, 5000);    
+        }, 5000);
       }
     });
 
-    if(this.uploader.getNotUploadedItems().length){
+    if (this.uploader.getNotUploadedItems().length) {
       this.uploader.uploadAll();
       //this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
       this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
         this.updateProgressBar();
         this.getProfileField();
       };
-      this.uploader.onCompleteAll=()=>{
+      this.uploader.onCompleteAll = () => {
         this.uploader.clearQueue();
         this.currentProgessinPercent = 0;
       }
     }
   }
 
-  updateProgressBar(){
+  updateProgressBar() {
     let totalLength = this.uploader.queue.length;
-    let remainingLength =  this.uploader.getNotUploadedItems().length;
+    let remainingLength = this.uploader.getNotUploadedItems().length;
     this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
     this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
   }
-  
+
   isExtension(ext, extnArray) {
     var result = false;
     var i;
     if (ext) {
-        ext = ext.toLowerCase();
-        for (i = 0; i < extnArray.length; i++) {
-            if (extnArray[i].toLowerCase() === ext) {
-                result = true;
-                break;
-            }
+      ext = ext.toLowerCase();
+      for (i = 0; i < extnArray.length; i++) {
+        if (extnArray[i].toLowerCase() === ext) {
+          result = true;
+          break;
         }
+      }
     }
     return result;
-}
+  }
 
 
   LicenseSubmit() {
@@ -565,36 +571,36 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     //   this.advisorDocumentsMissing = true;
     //   this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': true })
     // } else {
-     // this.advisorDocumentsMissing = false;
-     // this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': false })
-      let LicensInData = {
-        activeLicenceHeld: this.LicenseForm.controls['activeLicenceHeld'].value,
-        agencyOversees: this.LicenseForm.controls['agencyOversees'].value,
-        managingPrincipleName: this.LicenseForm.controls['managingPrincipleName'].value,
-        manageOtherProceducers: this.LicenseForm.controls['manageOtherProceducers'].value,
-        howManyProducers: this.LicenseForm.controls['howManyProducers'].value,
+    // this.advisorDocumentsMissing = false;
+    // this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': false })
+    let LicensInData = {
+      activeLicenceHeld: this.LicenseForm.controls['activeLicenceHeld'].value,
+      agencyOversees: this.LicenseForm.controls['agencyOversees'].value,
+      managingPrincipleName: this.LicenseForm.controls['managingPrincipleName'].value,
+      manageOtherProceducers: this.LicenseForm.controls['manageOtherProceducers'].value,
+      howManyProducers: this.LicenseForm.controls['howManyProducers'].value,
+    }
+    var query = {};
+    var proquery = {};
+    const req_vars = {
+      query: Object.assign({ _id: this.userId, userType: "advisor" }),
+      proquery: Object.assign(LicensInData),
+      from: Object.assign({ fromname: "License & documents" })
+    }
+    this.loader.open();
+    this.userapi.apiRequest('post', 'auth/cust-profile-update', req_vars).subscribe(result => {
+      this.loader.close();
+      if (result.status == "error") {
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
+      } else {
+        // this.advisorDocumentsMissing = false;
+        // this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': false })
+        this.snack.open(result.data.message, 'OK', { duration: 4000 })
       }
-      var query = {};
-      var proquery = {};
-      const req_vars = {
-        query: Object.assign({ _id: this.userId, userType: "advisor" }),
-        proquery: Object.assign(LicensInData),
-        from: Object.assign({ fromname: "License & documents" })
-      }
-      this.loader.open();
-      this.userapi.apiRequest('post', 'auth/cust-profile-update', req_vars).subscribe(result => {
-        this.loader.close();
-        if (result.status == "error") {
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
-        } else {
-         // this.advisorDocumentsMissing = false;
-         // this.LicenseForm.controls['advisorDocuments'].setErrors({ 'advisorDocumentsMissing': false })
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
-        }
-      }, (err) => {
-        console.error(err)
-      })
-  //  }
+    }, (err) => {
+      console.error(err)
+    })
+    //  }
   }
 
   docDelete(doc, name, tmName) {
@@ -615,9 +621,9 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
-              if(this.advisorDocumentsList.length<1){
+              if (this.advisorDocumentsList.length < 1) {
                 this.LicenseForm.controls['advisorDocuments_temp'].setValue('');
-              }  
+              }
               this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
@@ -758,10 +764,10 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       } else {
         this.profile = result.data.userProfile;
         this.advisorDocumentsList = this.profile.advisorDocuments;
-        if(this.profile.advisorDocuments.length>0){
+        if (this.profile.advisorDocuments.length > 0) {
           this.LicenseForm.controls['advisorDocuments_temp'].setValue('1');
         }
-       
+
       }
     }, (err) => {
       console.error(err);
@@ -781,96 +787,116 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
 
   showHowManyProducts(showVal) {
     this.showHowManyProducer = showVal === '1';
-   if(!this.showHowManyProducer){
+    if (!this.showHowManyProducer) {
       this.LicenseForm.controls['howManyProducers'].setValue(0);
-    }else{
-       this.LicenseForm.controls['howManyProducers'].setValue('');
+    } else {
+      this.LicenseForm.controls['howManyProducers'].setValue('');
     }
-    return this.showHowManyProducer    
+    return this.showHowManyProducer
   }
 
   autoRenewal() {
-    if( this.autoRenewalVal ) {
+    if (this.autoRenewalVal) {
       this.autoRenewalStatus = 'off'
       this.autoRenewalVal = false
     }
-    else{
+    else {
       this.autoRenewalStatus = 'on'
       this.autoRenewalVal = true
     }
-    
-    this.subscriptionservice.updateAutoRenewalStatus( this.userId, this.autoRenewalVal )
+
+    this.subscriptionservice.updateAutoRenewalStatus(this.userId, this.autoRenewalVal)
   }
 
-  cancelSubscription= (query = {}) => {
+  cancelSubscription = (query = {}) => {
     this.confirmService.confirm({ message: 'Are you sure you want to cancel current subscription?' }).subscribe(res => {
       if (res) {
-        this.subscriptionservice.cancelSubscription( this.userId, this.isSubscriptionCanceled, (value) =>{ 
+        this.subscriptionservice.cancelSubscription(this.userId, this.isSubscriptionCanceled, (value) => {
           this.isSubscriptionCanceled = value
-          console.log("this.isSubscriptionCanceled",this.isSubscriptionCanceled)
+          console.log("this.isSubscriptionCanceled", this.isSubscriptionCanceled)
           this.checkSubscription()
         })
       }
     })
   }
 
-  
-downloadFile = (filename) => {    
-  let query = {};
-  let req_vars = {
-    query: Object.assign({ docPath: this.docPath, filename: filename }, query),
-    fromId:this.userId,
-    toId:this.userId,
-    folderName:s3Details.advisorsDocumentsPath,
-    subFolderName:''
+
+  downloadFile = (filename) => {
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      fromId: this.userId,
+      toId: this.userId,
+      folderName: s3Details.advisorsDocumentsPath,
+      subFolderName: ''
+    }
+    this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
+    this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
+      var newBlob = new Blob([res])
+      var downloadURL = window.URL.createObjectURL(newBlob);
+      let filePath = downloadURL;
+      var link = document.createElement('a');
+      link.href = filePath;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      this.snack.dismiss();
+      //  var newBlob = new Blob([res], {type: "application/jpg"})
+      //   var downloadURL = window.URL.createObjectURL(newBlob);
+      //   let filePath = downloadURL;
+      //   var link=document.createElement('a');
+      //   link.href = filePath;
+      //   link.download = filename;
+      //   document.body.appendChild(link);
+      //   link.click(); 
+      //   setTimeout(function(){
+      //     document.body.removeChild(link);
+      //     window.URL.revokeObjectURL(downloadURL);
+      //   }, 1000);
+      //   this.snack.dismiss();
+    });
   }
-  this.snack.open("Downloading file is in process, Please wait some time!", 'OK');
-  this.userapi.download('documents/downloadDocument', req_vars).subscribe(res => {
-    var newBlob = new Blob([res])
-    var downloadURL = window.URL.createObjectURL(newBlob);
-    let filePath = downloadURL;
-    var link=document.createElement('a');
-    link.href = filePath;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click(); 
-    this.snack.dismiss();
-  //  var newBlob = new Blob([res], {type: "application/jpg"})
-  //   var downloadURL = window.URL.createObjectURL(newBlob);
-  //   let filePath = downloadURL;
-  //   var link=document.createElement('a');
-  //   link.href = filePath;
-  //   link.download = filename;
-  //   document.body.appendChild(link);
-  //   link.click(); 
-  //   setTimeout(function(){
-  //     document.body.removeChild(link);
-  //     window.URL.revokeObjectURL(downloadURL);
-  //   }, 1000);
-  //   this.snack.dismiss();
-  });
-}
 
   openInviteModal(data: any = {}, isNew?) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
-      width: '720px',
-      disableClose: true,
-    })
+    // let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
+    //   width: '720px',
+    //   disableClose: true,
+    // })
+
+    let subscriptionEndDate = localStorage.getItem('endUserSubscriptionEndDate')
+    let getDiff = subscriptionEndDate ? this.subscriptionservice.getDateDiff(moment().toDate(), moment(subscriptionEndDate).toDate()) : 0
+    if (localStorage.getItem('endisReferAndEarn') === 'Yes' || localStorage.getItem('isSubscribedBefore') === 'true') {
+      let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
+        width: '720px',
+        disableClose: true,
+      })
+    }
+    else if (getDiff <= 0) {
+      let dialogRef: MatDialogRef<any> = this.dialog.open(ReferAndEarnModalComponent, {
+        width: '720px',
+        disableClose: true,
+      })
+    }
+    else {
+      this.router.navigate(['/subscription'])
+    }
+
+
   }
 
-  
-  checkUrl(columnName){
+
+  checkUrl(columnName) {
     var status = false
     var userInput = this.getFormGroup('socialMediaLinks').controls[columnName].value
-    if(userInput != ''){
+    if (userInput != '') {
       var patternURL = /^(http|https):\/\/[^ "]+$/;
-      if(!patternURL.test(userInput)){
+      if (!patternURL.test(userInput)) {
         status = true
-      }else{
+      } else {
         status = false
       }
     }
-    switch(columnName){
+    switch (columnName) {
       case "facebook":
         this.facebook = status;
         break;
