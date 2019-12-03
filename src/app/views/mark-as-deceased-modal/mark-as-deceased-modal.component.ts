@@ -103,6 +103,7 @@ export class MarkAsDeceasedComponent implements OnInit {
         if(uploadRemained) {
           this.uploadRemainingFiles(this.selectedProfileId)
         }  
+        this.uploadingDocs = false;
       }
     }, (err) => {
       console.error(err);

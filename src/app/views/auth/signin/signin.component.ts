@@ -72,7 +72,7 @@ export class SigninComponent implements OnInit {
         localStorage.setItem("setIdleFlag",'false');
         localStorage.setItem("endUserDeceased",'false');
         localStorage.setItem("endUserlockoutLegacyDate",'');
-        if(userData.deceased && userData.deceased.status && userData.deceased.status=='Active' && userData.lockoutLegacyDate!=null){
+        if(userData.deceased && userData.deceased.status && userData.lockoutLegacyDate!=null){
           localStorage.setItem("endUserDeceased",'true');
           localStorage.setItem("endUserlockoutLegacyDate",userData.lockoutLegacyDate);
         }       

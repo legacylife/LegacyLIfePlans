@@ -61,9 +61,7 @@ export class customercmsformComponent implements OnInit {
   currentProgessinPercentQOW1: number = 0;
   currentProgessinPercentQOW2: number = 0;
   currentProgessinPercentProfilePhoto: number = 0;
-  currentProgessinPercentProfilePhoto1: number = 0;
-  currentProgessinPercentProfilePhoto2: number = 0;
-  currentProgessinPercentProfilePhoto3: number = 0;
+  currentProgessinPercentProfilePhotoIndex: number = 0;
   profileId: string;
   row : any
   aceessSection : any;
@@ -378,13 +376,9 @@ getDocument() {
         if(this.row.quickOverview2.videoLink){
           this.QOW2Path = this.row.quickOverview2.videoLink;
         }
-
-
-        // this.currentProgessinPercentProfilePhoto = 0;
-        // this.currentProgessinPercentProfilePhoto1 = 0;
-        // this.currentProgessinPercentProfilePhoto2 = 0;
-
-
+        if(this.currentProgessinPercentProfilePhoto==100){
+          this.currentProgessinPercentProfilePhoto = 0;
+        }  
     }
   }, (err) => {
     console.error(err)
@@ -572,10 +566,17 @@ uploadTestimonialsFile(fileName,index) {
     this.updateProgressBarProfilePhoto(index);
 
     this.uploaderProfilePhoto.onCompleteItem = (item: any, response: any, status: any, headers: any) => {   
-      this.uploaderProfilePhoto.clearQueue();   
+    
        setTimeout(()=>{    
         this.testimonialsArray.at(index).patchValue({profilePhoto:fileName});
       }, 5000);
+      setTimeout(()=>{    
+          this.getDocument()   
+          if(this.currentProgessinPercentProfilePhoto==100){
+            this.currentProgessinPercentProfilePhoto = 0;
+          } 
+      },5000);    
+      this.uploaderProfilePhoto.clearQueue();  
     };
 
     if(this.uploaderProfilePhoto.onCompleteAll()){
@@ -583,57 +584,28 @@ uploadTestimonialsFile(fileName,index) {
       this.getDocument()      
       setTimeout(()=>{    
           this.getDocument()   
-          this.currentProgessinPercentProfilePhoto = 0;
-          this.currentProgessinPercentProfilePhoto1 = 0;
-          this.currentProgessinPercentProfilePhoto2 = 0;
-      },5000);
+          if(this.currentProgessinPercentProfilePhoto==100){
+            this.currentProgessinPercentProfilePhoto = 0;
+          } 
+      },8000);      
     }  
   }
+ 
 }
 
-
 updateProgressBarProfilePhoto(index){
-
-  if(index==0){
+  this.currentProgessinPercentProfilePhotoIndex = index;
     if(this.currentProgessinPercentProfilePhoto==0){
       this.uploaderProfilePhoto.onProgressItem = (progress:any) => {
         this.currentProgessinPercentProfilePhoto = progress;
       }
     }
-
     this.uploaderProfilePhoto.onProgressAll = (progress:any) => {
       this.currentProgessinPercentProfilePhoto = progress;
     }
-  }
-  if(index==1){
-
-    if(this.currentProgessinPercentProfilePhoto1==0){
-      this.uploaderProfilePhoto.onProgressItem = (progress:any) => {
-        this.currentProgessinPercentProfilePhoto1 = progress;
-      }
-    }
-
-    this.uploaderProfilePhoto.onProgressAll = (progress:any) => {
-      this.currentProgessinPercentProfilePhoto1 = progress;
-    }
-  }
-
-    if(index==2){    
-    this.uploaderProfilePhoto.onProgressAll = (progress:any) => {
-      this.currentProgessinPercentProfilePhoto2 = progress;
-    }
-
-    this.uploaderProfilePhoto.onProgressAll = (progress:any) => {
-      this.currentProgessinPercentProfilePhoto2 = progress;
-    }
-  }
 }
 
 updateProgressBar(){
-  // let totalLength = this.uploader.queue.length;
-  // let remainingLength =  this.uploader.getNotUploadedItems().length;    
-  // this.currentProgessinPercent = 100 - (remainingLength * 100 / totalLength);
-  // this.currentProgessinPercent = Number(this.currentProgessinPercent.toFixed());
   if(this.currentProgessinPercent==0){
     this.uploader.onProgressItem = (progress:any) => {
       this.currentProgessinPercent = progress;
@@ -645,10 +617,6 @@ updateProgressBar(){
 }
 
 updateProgressBarMiddle(){
-  // let totalLength = this.uploaderMiddleBanner.queue.length;
-  // let remainingLength =  this.uploaderMiddleBanner.getNotUploadedItems().length;    
-  // this.currentProgessinPercentMiddle = 100 - (remainingLength * 100 / totalLength);
-  // this.currentProgessinPercentMiddle = Number(this.currentProgessinPercentMiddle.toFixed());
   if(this.currentProgessinPercentMiddle==0){
     this.uploaderMiddleBanner.onProgressItem = (progress:any) => {
       this.currentProgessinPercentMiddle = progress;
@@ -660,10 +628,6 @@ updateProgressBarMiddle(){
 }
 
 updateProgressBarLower(){
-  // let totalLength = this.uploaderLowerBanner.queue.length;
-  // let remainingLength =  this.uploaderLowerBanner.getNotUploadedItems().length;    
-  // this.currentProgessinPercentLower = 100 - (remainingLength * 100 / totalLength);
-  // this.currentProgessinPercentLower = Number(this.currentProgessinPercentLower.toFixed());
   if(this.currentProgessinPercentLower==0){
     this.uploaderLowerBanner.onProgressItem = (progress:any) => {
       this.currentProgessinPercentLower = progress;
@@ -675,10 +639,6 @@ updateProgressBarLower(){
 }
 
 updateProgressBarQOW1(){
-  // let totalLength = this.uploaderQOW1.queue.length;
-  // let remainingLength =  this.uploaderQOW1.getNotUploadedItems().length;    
-  // this.currentProgessinPercentQOW1 = 100 - (remainingLength * 100 / totalLength);
-  // this.currentProgessinPercentQOW1 = Number(this.currentProgessinPercentQOW1.toFixed());
   if(this.currentProgessinPercentQOW1==0){
     this.uploaderQOW1.onProgressItem = (progress:any) => {
       this.currentProgessinPercentQOW1 = progress;
@@ -690,10 +650,6 @@ updateProgressBarQOW1(){
 }
 
 updateProgressBarQOW2(){
-  // let totalLength = this.uploaderQOW2.queue.length;
-  // let remainingLength =  this.uploaderQOW2.getNotUploadedItems().length;    
-  // this.currentProgessinPercentQOW2 = 100 - (remainingLength * 100 / totalLength);
-  // this.currentProgessinPercentQOW2 = Number(this.currentProgessinPercentQOW2.toFixed());
   if(this.currentProgessinPercentQOW2==0){
     this.uploaderQOW2.onProgressItem = (progress:any) => {
       this.currentProgessinPercentQOW2 = progress;

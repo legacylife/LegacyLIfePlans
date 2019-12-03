@@ -4,7 +4,33 @@
     font-family: $font--lato--regular !important;
     font-size: 16px;
 }
+.clr--indicators{
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    .box{
+        box-shadow: 0 0 5px #ddd;
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        margin-right: 25px;
+        font-family: $font--lato--bold !important;
+        font-size: 15px;
 
+        &.cust{
+            span{
+                background-color: yellow;
+            }
+        }
+        span{
+            width: 50px;
+            height: 25px;
+            background-color: red;
+            margin-left: 25px;
+        }
+    }
+    
+}
 .mat-card-header{
     padding: 0 25px;
     height: 55px;

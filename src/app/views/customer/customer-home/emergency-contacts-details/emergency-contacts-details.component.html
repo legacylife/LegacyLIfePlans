@@ -26,13 +26,13 @@
               </span>
             </div>
             <div class="details--body">
-              <h3>{{row?.name}}</h3>
+              <h3>{{row?.name ? row?.name : '-'}}</h3>
               <div fxLayout="row wrap" class="mb--10">
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
                   <label class="strong--label">Email Address:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.emailAddress}}</label>
+                  <label class="normal--label">{{row?.emailAddress ? row?.emailAddress : '-'}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">

@@ -98,16 +98,23 @@ export class UserAuthGuard implements CanActivate {
     //https://www.npmjs.com/package/angular-user-idle
     let IdleFlag = localStorage.getItem("setIdleFlag");
     var pathArray = window.location.pathname.split('/');
-    // console.log('HERE I AM IdleFlag --- ',IdleFlag,pathArray)
+    //console.log('HERE I AM IdleFlag --- ',IdleFlag,pathArray)
     if (IdleFlag != '' && IdleFlag == 'true' && pathArray[1] != 'signin' && pathArray[1] != 'error') {
       //console.log("LockScreen IdleFlag >> ",IdleFlag)
-      this.stopWatching(false);
+      if(IdleFlag == 'true'){
+      this.stopWatching(true);
+      }else{
+        this.stopWatching(false);
+      }
     }
     this.userIdle.startWatching();
     this.userIdle.onTimerStart().subscribe(
-      //  count => console.log("home here",count)
+        count => console.log("home here",count)
     );
-    this.userIdle.onTimeout().subscribe(() => this.stopWatching(true));
+    //if (pathArray[1] != 'signin' && pathArray[1] != 'error') {
+        this.userIdle.onTimeout().subscribe(() => this.stopWatching(true));
+    //}
+    //console.log("home here we are",IdleFlag,pathArray);
   }
 
   stop() {
@@ -115,6 +122,8 @@ export class UserAuthGuard implements CanActivate {
   }
 
   stopWatching(flag) {
+    var pathArray = window.location.pathname.split('/');
+    //console.log('stopWatching - flag>>>',flag,'pathArray-->',pathArray);
     localStorage.setItem("setIdleFlag", "true");
     if (localStorage.getItem("endUserId") != '' && localStorage.getItem("endUserId") != 'undefined') {
       if (this.dialog) {
@@ -126,7 +135,7 @@ export class UserAuthGuard implements CanActivate {
           }
         }
       }
-
+  if(flag==true && pathArray[1] != 'signin' && pathArray[1] != 'error'){
       let dialogRef: MatDialogRef<any> = this.dialog.open(lockscreenModalComponent, {
         width: '720px',
         disableClose: true,
@@ -143,6 +152,8 @@ export class UserAuthGuard implements CanActivate {
           return;
         }
       })
+    }
+
       this.userIdle.stopWatching();
     } else if (localStorage.getItem("endUserId") == '' || localStorage.getItem("endUserId") == 'undefined') {
       //console.log("User logout")

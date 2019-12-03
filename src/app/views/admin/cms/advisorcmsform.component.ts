@@ -45,13 +45,14 @@ export class advisorcmsformComponent implements OnInit {
   sectionFAPer: number = 0;
   sectionFA: string
   fileErrorsFA: any;
-
+  sectionFAPerindex: number = 0;
   public uploaderSectionEight: FileUploader = new FileUploader({ url: `${URL}` });
   sectionEightProgessPer: number = 0;
   sectionEightPath: string
   fileErrorsSectionEight: any;
   public uploaderProfilePhoto: FileUploader = new FileUploader({ url: `${URL}` });
-  currentProgessinPercentProfilePhoto = [];
+  currentProgessinPercentProfilePhoto: number = 0;
+  currentProgessinPercentProfilePhotoIndex: number = 0;
   fileErrorsProfilePhoto: any;
   selectedFAFile: File = null;
   selectedFAFileName:any
@@ -211,6 +212,7 @@ getPageDetails = (query = {}, search = false) => {
           const featuredAdvisorsctrls = this.advisorCmsForm.get('featuredAdvisors') as FormArray;
           featuredAdvisorsctrls.removeAt(0)
           this.featuredAdvisors.forEach((element: any, index) => {
+            console.log('----',index,'--->>---',element.profilePhoto);
             featuredAdvisorsctrls.push(this.editFaturedAdvisorsPoints(element.name,element.certifications,element.profilePhoto))
           })
         }
@@ -376,21 +378,23 @@ uploaderFeature(fileName,index) {
     this.uploaderFeatureProgressBar(index);
     this.uploaderFeaturedAdvisors.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
        setTimeout(()=>{    
+        if(this.sectionFAPer==100){
+          this.sectionFAPer = 0;
+        }
         this.featuredAdvisorsArray.at(index).patchValue({profilePhoto:fileName});
       }, 5000);
     };
-
-   if(this.uploaderFeaturedAdvisors.onCompleteAll()){
-      this.uploaderFeaturedAdvisors.clearQueue();
+    if(this.uploaderFeaturedAdvisors.onCompleteAll()){
+      this.uploaderFeaturedAdvisors.clearQueue();  
+      setTimeout(()=>{    
+        this.featuredAdvisorsArray.at(index).patchValue({profilePhoto:fileName});
+      }, 5000);
     }  
-  }
+  } 
 }
 
 uploaderFeatureProgressBar(index){
-  // let totalLength = this.uploaderFeaturedAdvisors.queue.length;
-  // let remainingLength =  this.uploaderFeaturedAdvisors.getNotUploadedItems().length;    
-  // this.sectionFAPer = 100 - (remainingLength * 100 / totalLength);
-  // this.sectionFAPer = Number(this.sectionFAPer.toFixed());
+  this.sectionFAPerindex = index;
   if(this.sectionFAPer==0){
     this.uploaderFeaturedAdvisors.onProgressItem = (progress:any) => {
       this.sectionFAPer = progress;
@@ -451,7 +455,6 @@ addTestimonialsPoints() {
 }
 
 uploadTestimonialsFile(fileName,index) {
-  console.log('uploadTestimonialsFile index',index)
   this.uploaderProfilePhoto.onBeforeUploadItem = (item) => {
     item.url = `${URLProfilePhoto}?folderName=${'advisor'}&filenewName=${fileName}`;
   }
@@ -460,40 +463,34 @@ uploadTestimonialsFile(fileName,index) {
     this.uploaderProfilePhoto.queue.forEach((fileoOb, ind) => {
           this.uploaderProfilePhoto.uploadItem(fileoOb);
     });
+    this.uploaderTestimonialsProgressBar(index);
     this.uploaderProfilePhoto.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-     //  this.uploaderTestimonialsProgressBar(index);
        setTimeout(()=>{    
         this.testimonialsArray.at(index).patchValue({profilePhoto:fileName});
-      }, 5000);
-
+      }, 6000);
+      if(this.currentProgessinPercentProfilePhoto==100){
+        this.currentProgessinPercentProfilePhoto = 0;
+      }  
     };
-    //console.log(this.uploaderProfilePhoto.length)
+    
    if(this.uploaderProfilePhoto.onCompleteAll()){
-        console.log('---------------------',index)
+      setTimeout(()=>{    
+        this.testimonialsArray.at(index).patchValue({profilePhoto:fileName});
+      }, 4000);
       this.uploaderProfilePhoto.clearQueue();
-      // if(this.currentProgessinPercentProfilePhoto==100){
-      //   this.currentProgessinPercentProfilePhoto = 0;
-      // }  
     }  
   }
 }
 
-uploaderTestimonialsProgressBar(index){
-  // let totalLength = this.uploaderProfilePhoto.queue.length;
-  // let remainingLength =  this.uploaderProfilePhoto.getNotUploadedItems().length;    
-  // this.currentProgessinPercentProfilePhoto = 100 - (remainingLength * 100 / totalLength);
-  // this.currentProgessinPercentProfilePhoto = Number(this.currentProgessinPercentProfilePhoto.toFixed());
-  //currentProgessinPercentProfilePhotoPer
-
-console.log('uploaderTestimonialsProgressBar index',index)
-  
-  if(this.currentProgessinPercentProfilePhoto[index]==0){
+uploaderTestimonialsProgressBar(index){  
+  this.currentProgessinPercentProfilePhotoIndex = index;
+  if(this.currentProgessinPercentProfilePhoto==0){
     this.uploaderProfilePhoto.onProgressItem = (progress:any) => {
-      this.currentProgessinPercentProfilePhoto[index] = progress;
+      this.currentProgessinPercentProfilePhoto = progress;
     }
   }
   this.uploaderProfilePhoto.onProgressAll = (progress:any) => {
-    this.currentProgessinPercentProfilePhoto[index] = progress;
+    this.currentProgessinPercentProfilePhoto = progress;
   }
 }
 
@@ -706,13 +703,7 @@ isExtension(ext, extnArray) {
   return result;
 }
 
-
-
 updateProgressBarTopBanner(){
-  // let totalLength = this.uploaderTopBanner.queue.length;
-  // let remainingLength =  this.uploaderTopBanner.getNotUploadedItems().length;    
-  // this.topBannerProgessPer = 100 - (remainingLength * 100 / totalLength);
-  // this.topBannerProgessPer = Number(this.topBannerProgessPer.toFixed());
   if(this.topBannerProgessPer==0){
     this.uploaderTopBanner.onProgressItem = (progress:any) => {
       this.topBannerProgessPer = progress;
@@ -723,13 +714,7 @@ updateProgressBarTopBanner(){
   }
 }
 
-
-
 updateProgressBarSectionThree(){
-  // let totalLength = this.uploaderSectionThree.queue.length;
-  // let remainingLength =  this.uploaderSectionThree.getNotUploadedItems().length;    
-  // this.sectionThreeProgessPer = 100 - (remainingLength * 100 / totalLength);
-  // this.sectionThreeProgessPer = Number(this.sectionThreeProgessPer.toFixed());
   if(this.sectionThreeProgessPer==0){
     this.uploaderSectionThree.onProgressItem = (progress:any) => {
       this.sectionThreeProgessPer = progress;
@@ -741,10 +726,6 @@ updateProgressBarSectionThree(){
 }
 
 updateProgressBarSectionFour(){
-  // let totalLength = this.uploaderSectionFour.queue.length;
-  // let remainingLength =  this.uploaderSectionFour.getNotUploadedItems().length;    
-  // this.sectionFourProgessPer = 100 - (remainingLength * 100 / totalLength);
-  // this.sectionFourProgessPer = Number(this.sectionFourProgessPer.toFixed());
   if(this.sectionFourProgessPer==0){
     this.uploaderSectionFour.onProgressItem = (progress:any) => {
       this.sectionFourProgessPer = progress;
@@ -756,10 +737,6 @@ updateProgressBarSectionFour(){
 }
 
 updateProgressBarSectionEight(){
-  // let totalLength = this.uploaderSectionEight.queue.length;
-  // let remainingLength =  this.uploaderSectionEight.getNotUploadedItems().length;    
-  // this.sectionEightProgessPer = 100 - (remainingLength * 100 / totalLength);
-  // this.sectionEightProgessPer = Number(this.sectionEightProgessPer.toFixed());
   if(this.sectionEightProgessPer==0){
     this.uploaderSectionEight.onProgressItem = (progress:any) => {
       this.sectionEightProgessPer = progress;
@@ -781,7 +758,6 @@ getDocument() {
       console.log(result.data)
     } else {
         this.row = result.data;
-
         if(this.row.sectionOne.topBanner){
           this.topBannerPath = this.filePath+this.row.sectionOne.topBanner;       
         }
@@ -795,7 +771,6 @@ getDocument() {
         if(this.row.sectionEight.bannerImage){
           this.sectionEightPath = this.filePath+this.row.sectionEight.bannerImage;
         }
-
     }
   }, (err) => {
     console.error(err)

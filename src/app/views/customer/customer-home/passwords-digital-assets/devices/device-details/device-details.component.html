@@ -41,7 +41,7 @@
                   <label class="strong--label">Username:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.username}}</label>
+                  <label class="normal--label">{{row?.username ? row?.username : '-'}}</label>
                 </div>
               </div>
 
@@ -59,7 +59,7 @@
                     <label class="strong--label">Password:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.password}}</label>
+                    <label class="normal--label">{{row?.password ? row?.password : '-'}}</label>
                   </div>
               </div>
 
@@ -68,7 +68,7 @@
                     <label class="strong--label">Pin:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.pin}}</label>
+                    <label class="normal--label">{{row?.pin ? row?.pin : '-'}}</label>
                   </div>
               </div>
 

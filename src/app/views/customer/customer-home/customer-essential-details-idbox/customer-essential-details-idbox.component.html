@@ -28,8 +28,8 @@
                 <mat-icon>library_add</mat-icon>ID Box
               </div>
               <span class="last--modified--by">Last modified:
-                <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                <span *ngIf="!row?.modifiedOn">{{row?.createdOn | date: 'yyyy/MM/dd'}}</span>
+                <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn ? (row?.modifiedOn | date: 'yyyy/MM/dd') : '-'}}</span>
+                <span *ngIf="!row?.modifiedOn">{{row?.createdOn ? (row?.createdOn | date: 'yyyy/MM/dd') : '-'}}</span>
               </span>
             </div>
             <div class="details--body">
@@ -40,7 +40,7 @@
                   <label class="strong--label">License Number:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.licenseNumber}}</label>
+                  <label class="normal--label">{{row?.licenseNumber ? row?.licenseNumber : '-'}}</label>
                 </div>
               </div>
 
@@ -49,7 +49,7 @@
                     <label class="strong--label">Non-Driver ID Number:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.nonDriverIDNumber}}</label>
+                    <label class="normal--label">{{row?.nonDriverIDNumber ? row?.nonDriverIDNumber : '-'}}</label>
                   </div>
                 </div>
 
@@ -58,7 +58,7 @@
                   <label class="strong--label">State (US states):</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.state}}</label>
+                  <label class="normal--label">{{(row?.state && row?.state!='0') ? row?.state : '-'}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 3 || row?.documentType == 4 || row?.documentType == 5 || row?.documentType == 7">
@@ -66,7 +66,7 @@
                   <label class="strong--label">Expiration Date:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.expirationDate | date: 'yyyy/MM/dd'}}</label>
+                  <label class="normal--label">{{row?.expirationDate ? (row?.expirationDate | date: 'yyyy/MM/dd') : '-'}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 3 || row?.documentType == 4">
@@ -74,7 +74,7 @@
                   <label class="strong--label">Location of Driver's License:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.locationDriverLicense}}</label>
+                  <label class="normal--label">{{row?.locationDriverLicense ? row?.locationDriverLicense : '-'}}</label>
                 </div>
               </div>
 
@@ -83,7 +83,7 @@
                     <label class="strong--label">DoD ID Number:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.DoDIDNumber}}</label>
+                    <label class="normal--label">{{row?.DoDIDNumber ? row?.DoDIDNumber : '-'}}</label>
                   </div>
                 </div>
   
@@ -92,7 +92,7 @@
                       <label class="strong--label">DoD Benefits Number (DBN):</label>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                      <label class="normal--label">{{row?.DBN}}</label>
+                      <label class="normal--label">{{row?.DBN ? row?.DBN : '-'}}</label>
                     </div>
                   </div>
   
@@ -101,7 +101,7 @@
                     <label class="strong--label">Location of DoD ID:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.locationDoDID}}</label>
+                    <label class="normal--label">{{row?.locationDoDID ? row?.locationDoDID : '-'}}</label>
                   </div>
                 </div>
 
@@ -110,7 +110,7 @@
                       <label class="strong--label">Place of Birth:</label>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                      <label class="normal--label">{{row?.placeOfBirth}}</label>
+                      <label class="normal--label">{{row?.placeOfBirth ? row?.placeOfBirth : '-'}}</label>
                     </div>
                   </div>
   
@@ -119,7 +119,7 @@
                     <label class="strong--label">File Number:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.fileNumber}}</label>
+                    <label class="normal--label">{{row?.fileNumber ? row?.fileNumber : '-'}}</label>
                   </div>
                 </div>
 
@@ -128,7 +128,7 @@
                       <label class="strong--label">Social Security Number:</label>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                      <label class="normal--label">{{row?.socialSecurityNumber}}</label>
+                      <label class="normal--label">{{row?.socialSecurityNumber ? row?.socialSecurityNumber : '-'}}</label>
                     </div>
                   </div>
   
@@ -137,7 +137,7 @@
                     <label class="strong--label">Location of Social Security Card:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.locationSocialSecurityCard}}</label>
+                    <label class="normal--label">{{row?.locationSocialSecurityCard ? row?.locationSocialSecurityCard : '-'}}</label>
                   </div>
                 </div>
 
@@ -146,7 +146,7 @@
                       <label class="strong--label">Country of issue:</label>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                      <label class="normal--label">{{row?.countryOfIssue}}</label>
+                      <label class="normal--label">{{row?.countryOfIssue ? row?.countryOfIssue : '-'}}</label>
                     </div>
                   </div>
   
@@ -155,7 +155,7 @@
                     <label class="strong--label">Passport Number:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.passportNumber}}</label>
+                    <label class="normal--label">{{row?.passportNumber ? row?.passportNumber : '-'}}</label>
                   </div>
                 </div>
 
@@ -164,7 +164,7 @@
                       <label class="strong--label">Expiration Date:</label>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                      <label class="normal--label">{{row?.expirationDate | date: 'yyyy/MM/dd'}}</label>
+                      <label class="normal--label">{{row?.expirationDate ? (row?.expirationDate | date: 'yyyy/MM/dd') : '-'}}</label>
                     </div>
                   </div>
   
@@ -173,7 +173,7 @@
                     <label class="strong--label">Location of Passport:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.locationPassport}}</label>
+                    <label class="normal--label">{{row?.locationPassport ? row?.locationPassport : '-'}}</label>
                   </div>
                 </div>
 
@@ -182,7 +182,7 @@
                       <label class="strong--label">Country of issue:</label>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                      <label class="normal--label">{{row?.countryOfIssue}}</label>
+                      <label class="normal--label">{{row?.countryOfIssue ? row?.countryOfIssue : '-'}}</label>
                     </div>
                   </div>
   
@@ -191,7 +191,7 @@
                     <label class="strong--label">Expiration Date:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.expirationDate | date: 'yyyy/MM/dd'}}</label>
+                    <label class="normal--label">{{row?.expirationDate ? (row?.expirationDate | date: 'yyyy/MM/dd') : '-'}}</label>
                   </div>
                 </div>
 
@@ -200,7 +200,7 @@
                       <label class="strong--label">Location of Work Permit or Visa:</label>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                      <label class="normal--label">{{row?.LocationWorkPermitVisa}}</label>
+                      <label class="normal--label">{{row?.LocationWorkPermitVisa ? row?.LocationWorkPermitVisa : '-'}}</label>
                     </div>
                   </div>
 
