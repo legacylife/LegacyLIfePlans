@@ -117,15 +117,15 @@ async function viewDeceased(req, res) {
         var totalCnt = advisorList.length + trustList.length;
         let counterLabel = '';       
 
-        let finalStatus = 'Pending';
+        let finalStatus = 'Pending'; //finalStatus will be active means user deceased when logout period is end. (using cronjob customer will be deceased.)
         let lockoutLegacyPeriodFlag = false;
          let DeceasedCnt = await MarkDeceased.find({customerId:paramData.customerId,status:"Active"})
          if(DeceasedCnt.length>=3){//When 3 users set mark as Deceased then customer lockout period is start.
-          lockoutLegacyPeriodFlag = true; finalStatus = 'Active';
+          lockoutLegacyPeriodFlag = true; 
          }         
 
          if(adminId){ //When admin mark as Deceased then customer lockout period is start.
-          lockoutLegacyPeriodFlag = true; finalStatus = 'Active';
+          lockoutLegacyPeriodFlag = true; 
          }
 
          let searchQuery = {customerId:paramData.customerId};
