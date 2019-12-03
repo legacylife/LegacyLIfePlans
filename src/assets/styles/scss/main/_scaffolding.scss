@@ -726,8 +726,23 @@ body .mat-select-trigger {
 }
 
 /*------ Map ------*/
+.gm-style-iw-c{
+  padding: 10px !important;
+}
 .agm-info-window-content {
   color: rgba(0, 0, 0, .87);
+  text-align: center;
+  img{
+    margin-bottom: 20px;    
+  }
+  p{
+    font-size: 14px;
+    text-align: left;
+    margin-bottom: 10px;
+    strong{
+      margin-right: 10px;
+    }
+  }
 }
 /*-------- Chart js ---------*/
 .chart {
