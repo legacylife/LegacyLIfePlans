@@ -86,12 +86,13 @@ export class userviewComponent implements OnInit {
     }
 
     this.api.apiRequest('post', 'userlist/viewall', req_vars).subscribe(result => {
+      this.loader.close()
       if (result.status == "error") {
         console.log(result.data)
-        this.loader.close()
         this.showPage = true
       } else {
         this.row = result.data;
+        console.log('----->>',this.row.sectionAccess,'>>>>',this.row)
         this.fullname = '';
         if(this.row.firstName && this.row.firstName!=='undefined' && this.row.lastName && this.row.lastName!=='undefined'){
           this.fullname = this.row.firstName+' '+this.row.lastName;
@@ -115,10 +116,8 @@ export class userviewComponent implements OnInit {
             /* if( new Date(this.subscriptionExpireDate) < new Date() ) {
               this.isExpired = true
             } */
-          })
-          
+          })          
         }
-        this.loader.close()
         this.showPage = true
       }
     }, (err) => {

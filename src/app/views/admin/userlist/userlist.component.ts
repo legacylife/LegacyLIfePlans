@@ -135,6 +135,7 @@ export class userlistComponent implements OnInit {
     }
 
     this.confirmService.confirm({ message: statMsg }).subscribe(res => {
+   
       if (res) {
         this.loader.open();
         var query = {};
@@ -143,17 +144,16 @@ export class userlistComponent implements OnInit {
           fromId:localStorage.getItem('userId')
         }
         this.api.apiRequest('post', 'userlist/updatestatus', req_vars).subscribe(result => {
+          this.loader.close();
           if (result.status == "error") {
-            this.loader.close();
             this.snack.open(result.data.message, 'OK', { duration: 4000 })
           } else {
-            this.getLists()
-            this.loader.close();
+            this.getLists()         
             this.snack.open(result.data.message, 'OK', { duration: 4000 })
           }
         }, (err) => {
-          console.error(err)
           this.loader.close();
+          console.error(err)
         })
       }
     })

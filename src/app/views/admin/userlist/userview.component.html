@@ -122,6 +122,13 @@
                   <div fxFlex="40">{{row?.createdOn  | date: 'yyyy/MM/dd HH:mm:ss'}}</div>
                 </div>
             </mat-list-item>
+            <mat-list-item class="">
+                <div fxLayout="row" fxFlex="100">
+                  <h6 class="m-0 mr-1">Allow To Receive Notification* (New admin member notification)</h6>
+                  <span fxFlex></span>
+                  <div fxFlex="40">{{(row?.allowNotifications && row?.allowNotifications=='yes') ? 'Yes' : 'No'}}</div>
+                </div>
+            </mat-list-item>
                 
             </mat-list>
           </mat-card-content>
@@ -129,7 +136,7 @@
         <!-- Basic Info ends -->
 
         <!-- Admin panel section list  -->
-        <mat-card class="default" *ngIf="row?.userType == 'sysadmin'">
+        <mat-card class="default" *ngIf="row?.userType == 'sysadmin' && row?.sectionAccess">
           <mat-card-title class="p-1">Access To Sections 
             <p class="access--note">Selected boxes represents access for the sections. You can ask to grant permission for unselected sections.</p></mat-card-title>
           <mat-card-content class="p-0 border-t">
@@ -170,11 +177,11 @@
                 <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess.adminmanagement === 'fullaccess'"></mat-checkbox>
                 <span>Admin Management</span>
               </div>
-
+<!-- 
               <div class="tasktype-item">
-                  <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess.allowNotifications === 'yes'"></mat-checkbox>
+                  <mat-checkbox class="mr-1" disabled [checked]="row?.sectionAccess?.allowNotifications === 'yes'"></mat-checkbox>
                   <span>Allow To Receive Notification* (New admin member notification)</span>
-                </div>
+                </div> -->
             </div>           
           </mat-card-content>
         </mat-card>
