@@ -121,11 +121,11 @@ async function viewDeceased(req, res) {
         let lockoutLegacyPeriodFlag = false;
          let DeceasedCnt = await MarkDeceased.find({customerId:paramData.customerId,status:"Active"})
          if(DeceasedCnt.length>=3){//When 3 users set mark as Deceased then customer lockout period is start.
-          lockoutLegacyPeriodFlag = true; //finalStatus = 'Active';
+          lockoutLegacyPeriodFlag = true; finalStatus = 'Active';
          }         
 
          if(adminId){ //When admin mark as Deceased then customer lockout period is start.
-          lockoutLegacyPeriodFlag = true; //finalStatus = 'Active';
+          lockoutLegacyPeriodFlag = true; finalStatus = 'Active';
          }
 
          let searchQuery = {customerId:paramData.customerId};
