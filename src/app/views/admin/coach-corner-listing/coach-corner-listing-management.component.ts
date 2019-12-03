@@ -56,7 +56,7 @@ export class CoachCornerListingManagementComponent implements OnInit {
   //function to get all events
   getLists = (query = {}, search = false) => {
     const req_vars = {
-      query: {},
+      query: {status : {$ne :'Pending'}},
       fields: {},
       offset: '',
       limit: '',
