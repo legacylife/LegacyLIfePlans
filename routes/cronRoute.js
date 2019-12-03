@@ -133,7 +133,9 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
                         body = body.replace("{end_date}",subscriptionDetails.endDate);
                         if(userProfile.userType == 'customer') {
                           body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
-                          body = body.replace("{more_space}", subscriptionData.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
+                          if(subscriptionData.items.data){ //added by PK
+                            body = body.replace("{more_space}", subscriptionData.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
+                          }
                         }
                         body = body.replace("{subscription_id}",subscriptionDetails.subscriptionId);
                         const mailOptions = {
@@ -750,7 +752,8 @@ After customer deceased and subscription expire 90 free access for trustee, advi
 async function deceasedCustomersReminders(req, res){
   let message = 'Mark as deceased reminders by cron job working';
   console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',message)
-  allActivityLog.updateActivityLogs('', '', 'Mark As Deceased Reminders cron job', message)
+  allActivityLog.updateActivityLogs('', '', 'Mark As Deceased Reminders cron job', message);
+
   await User.find({'userType':"customer",'deceased':{$ne:null},'deceased.status':'Active',status:'Active'},{_id:1,username:1,firstName:1,lastName:1,subscriptionDetails:1,createdOn:1}, async function (err, result) {
     if (err) {
       res.status(500).send(resFormat.rError(err))
@@ -995,7 +998,7 @@ router.get("/auto-renewal-off-reminder-email", autoRenewalOffReminderEmail);
 router.get("/before-subscription-reminder-email", beforeSubscriptionReminderEmail);
 router.get("/check-deceased-customers", deceasedCustomers);
 router.get("/deceased-customers-reminders", deceasedCustomersReminders);
-router.post("/deceased-customers-reminders", deceasedCustomersReminders);
+//router.post("/deceased-customers-reminders", deceasedCustomersReminders);
 router.get("/check-featured-advisor-frmdate", featuredAdvisorFromDate);
 router.get("/check-featured-advisor-enddate", featuredAdvisorEndDate);
 router.get("/check-featured-advisor-remider-mail", featuredAdvisorReminder);
