@@ -133,7 +133,7 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
                         body = body.replace("{end_date}",subscriptionDetails.endDate);
                         if(userProfile.userType == 'customer') {
                           body = body.replace("{space_alloted}",subscriptionDetails.defaultSpace+' '+subscriptionDetails.spaceDimension);
-                          if(subscriptionData.items.data){ //added by PK
+                          if(subscriptionData.items && subscriptionData.items.data){ //added by PK
                             body = body.replace("{more_space}", subscriptionData.items.data[0]['plan']['metadata']['addOnSpace']+' '+subscriptionDetails.spaceDimension);
                           }
                         }
