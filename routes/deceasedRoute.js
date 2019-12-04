@@ -461,17 +461,8 @@ function revokeOwnerDeceased(req, res) {
        if(!userType){
         userType = deceasedDetails.userType;
        }
-       let searchDeceasedQuery = {};  
-       if(userType=='customer'){
-        trustId = deceasedDetails.trustId;
-        searchDeceasedQuery = {customerId:deceasedDetails.customerId,'trustId':ObjectId(revokeId)};
-       }else if(userType=='advisor'){
-        advisorId = deceasedDetails.advisorId;
-        searchDeceasedQuery = {customerId:deceasedDetails.customerId,'advisorId':ObjectId(revokeId)};
-       }else if(userType=='sysadmin'){
-        adminId = deceasedDetails.adminId;
-        searchDeceasedQuery = {customerId:deceasedDetails.customerId,'adminId':ObjectId(revokeId)};
-       }
+       //customerId:deceasedDetails.customerId,trustId:{$eq:null},adminId:{$eq:null},advisorId:{$eq:null}
+       let searchDeceasedQuery = {customerId:deceasedDetails.customerId,'trustId':ObjectId(revokeId)};
        let MarkDeceaseddata = '';
        if(searchDeceasedQuery){
           MarkDeceaseddata = await MarkDeceased.findOne(searchDeceasedQuery);
@@ -481,15 +472,7 @@ function revokeOwnerDeceased(req, res) {
            var insert = new MarkDeceased();
            insert.customerId = deceasedDetails.customerId;
            insert.userType = userType;
-           if(advisorId){    
-             insert.advisorId = ObjectId(advisorId);
-           }
-           if(trustId){    
-             insert.trustId = ObjectId(trustId);
-           }
-           if(adminId){    
-             insert.adminId = ObjectId(adminId);
-           }
+           insert.revokeId = ObjectId(revokeId);
            insert.status = 'Revoke';
            insert.createdOn = new Date();
            insert.modifiedOn = new Date();
