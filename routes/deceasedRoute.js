@@ -494,9 +494,13 @@ function revokeOwnerDeceased(req, res) {
            insert.createdOn = new Date();
            insert.modifiedOn = new Date();
            insert.save();
+         }else{
+          let proquery = {status:"Revoke",revokeId:ObjectId(revokeId),'modifiedOn': new Date()};
+          await MarkDeceased.updateOne({_id:MarkDeceaseddata._id,status: { $ne: 'Revoke' }},{$set: proquery })
          }
-         let proquery = {status:"Revoke",revokeId:ObjectId(revokeId),'modifiedOn': new Date()};
-         await MarkDeceased.updateMany({customerId:deceasedDetails.customerId,status: { $ne: 'Revoke' }},{$set: proquery })
+
+         let proquery = {status:"Revoke",revokeId:ObjectId(revokeId)};
+         await MarkDeceased.updateMany({customerId:MarkDeceaseddata.customerId,status: { $ne: 'Revoke' }},{$set: proquery })
 
          let LegacyUserData = await User.findOne({_id:deceasedDetails.customerId},{_id:1,username:1,firstName:1,lastName:1,deceased:1});
          let updateDeceasedinfo = {'status':'Revoke','userType':userType,trustId:ObjectId(revokeId),'createdOn':new Date()};
