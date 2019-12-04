@@ -765,7 +765,7 @@ async function deceasedCustomersReminders(req, res){
           var currentSubscriptionEndDate = '';
           let updateuser = false
           let subscriptionDetails   = key.subscriptionDetails ? key.subscriptionDetails : null;
-      testingmessage = deceasedEmail+'/n';
+ 
           if( subscriptionDetails != null && subscriptionDetails.length > 0 ) {
               isAddOnPurchase    = subscriptionDetails[subscriptionDetails.length - 1]['addOnDetails']
               checkWhetherAddOn  = isAddOnPurchase ? true : false
@@ -775,7 +775,7 @@ async function deceasedCustomersReminders(req, res){
               if( subscriptionStatus != 'canceled' && currentSubscriptionEndDate < currentDate ) {
                 updateuser = true
               }
-              testingmessage = testingmessage+'subscription found';
+              testingmessage = deceasedEmail+' -----   '+testingmessage+'subscription found';
           }else{  //Never subscribe
             updateuser = true;                           
             let FreeTrail = await FreeTrailPeriodSetting.findOne({}, {});
@@ -786,7 +786,7 @@ async function deceasedCustomersReminders(req, res){
             if(currentSubscriptionEndDate < currentDate){
               updateuser = true
             }      
-            testingmessage = testingmessage+'Never subscribe';  
+            testingmessage = deceasedEmail+' -----   '+testingmessage+'Never subscribe';  
           }
           message = testingmessage;
           allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job', message);    
