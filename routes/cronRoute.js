@@ -799,6 +799,7 @@ async function deceasedCustomersReminders(req, res){
             testingmessage = testingmessage+= ' <br> start:'+start+' -- AfterExAccDays:'+AfterExAccDays+' currentDate:'+currentDate;
             allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job', message);            
             if(AfterExAccDays > currentDate) {
+              testingmessage = '';
              for(var i=0;i<=12;i++) {
               if ((i % 2) === 0) {
                 if(i>0) {
@@ -836,6 +837,7 @@ async function deceasedCustomersReminders(req, res){
               }               
             }//weekly For loop
           }//Accound should be close for these customers.          
+          testingmessage = '';
           //   res.send(resFormat.rSuccess({"Meesage":"1234566768"}))
           }     
         });
