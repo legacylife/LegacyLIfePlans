@@ -752,7 +752,7 @@ After customer deceased and subscription expire 90 free access for trustee, advi
 async function deceasedCustomersReminders(req, res){
   let message = 'Mark as deceased reminders by cron job hit working';
   //console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',message)
-  allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job', message);
+//  allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job', message);
   let testingmessage = '';
   await User.find({'userType':"customer",'deceased':{$ne:null},'deceased.status':'Active',status:'Active'},{_id:1,username:1,firstName:1,lastName:1,subscriptionDetails:1,createdOn:1}, async function (err, result) {
     if (err) {
@@ -778,7 +778,7 @@ async function deceasedCustomersReminders(req, res){
               testingmessage = 'currentSubscriptionEndDate:- '+currentSubscriptionEndDate +' currentDate:- '+currentDate+' updateuser:'+updateuser;
               testingmessage = deceasedEmail+' -----   '+testingmessage+'subscription found';
           }else{  //Never subscribe
-            updateuser = true;                           
+            //updateuser = true;                           
             let FreeTrail = await FreeTrailPeriodSetting.findOne({}, {});
             let start = moment(key.createdOn, 'YYYY-MM-DD');         
             //FreeTrail.customerFreeAccessDays
@@ -791,7 +791,7 @@ async function deceasedCustomersReminders(req, res){
             testingmessage = deceasedEmail+' -----   '+testingmessage+' Never subscribe';  
           }
           message = testingmessage;
-          allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job', message);    
+          allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job'+deceasedEmail, message);    
         if(updateuser){
             let exAccDays = 90;
             let start = moment(currentSubscriptionEndDate,'YYYY-MM-DD');
@@ -799,7 +799,7 @@ async function deceasedCustomersReminders(req, res){
             var AfterExAccDays = new Date(timestamp); //After  90 days date
 
             testingmessage = testingmessage+= ' <br> start:'+start+' -- AfterExAccDays:'+AfterExAccDays+' currentDate:'+currentDate;
-            allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job', message);            
+            allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job next step'+deceasedEmail, message);            
             if(AfterExAccDays > currentDate) {
               testingmessage = '';
              for(var i=0;i<=12;i++) {
