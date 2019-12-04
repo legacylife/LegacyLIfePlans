@@ -49,6 +49,7 @@ export class AdvisorDashboardComponent implements OnInit {
   targetCount: Number = 0
   extendedDays: Number = 0
   subscriptionData: any
+  displayFreeFlag:boolean = false
 
   constructor(
     private userapi: UserAPIService,
@@ -71,6 +72,10 @@ export class AdvisorDashboardComponent implements OnInit {
         this.subscriptionData = [];
         if (result.data.subscriptionDetails) {
           this.subscriptionData = result.data.subscriptionDetails;
+        }
+        console.log("this.subscriptionData >>> ",this.subscriptionData)
+        if (this.subscriptionData.length == 0 && (result.data.IamIntrested && result.data.IamIntrested == 'Yes') && (result.data.refereAndEarnSubscriptionDetail && result.data.refereAndEarnSubscriptionDetail.endDate != '')) {
+          this.displayFreeFlag = true;
         }
       }, (err) => {
         console.error(err)

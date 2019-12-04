@@ -192,7 +192,7 @@
                       </mat-card>
 
 
-                      <mat-card class="mt-1 p-0 black--header" *ngIf="invitedMembersCount >= targetCount && !isSubscribedBefore">
+                      <mat-card class="mt-1 p-0 black--header" *ngIf="invitedMembersCount >= targetCount && this.displayFreeFlag">
                         <mat-card-content class="">
                           <div class="header--wrapper">
                             <header class="sub--header"

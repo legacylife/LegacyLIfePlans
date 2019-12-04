@@ -137,9 +137,8 @@
 
         <!-- Admin panel section list  -->
         <mat-card class="default" *ngIf="row?.userType == 'sysadmin' && row?.sectionAccess">
-          <mat-card-title class="p-1">Access To Sections
-            <p class="access--note">Selected boxes represents access for the sections. You can ask to grant permission for unselected sections.</p>
-          </mat-card-title>
+          <mat-card-title class="p-1">Access To Sections 
+            <p class="access--note">Selected boxes represents access for the sections. You can ask to grant permission for unselected sections.</p></mat-card-title>
           <mat-card-content class="p-0 border-t">
             <div class="list-tasktype">
               <div class="tasktype-item">
@@ -204,7 +203,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Plan Expire Date</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{subscriptionExpireDate ? (subscriptionExpireDate | date: 'yyyy/MM/dd') : '--'}}</div>
+                  <div fxFlex="40">{{(subscriptionExpireDate && subscriptionExpireDate!=null) ? (subscriptionExpireDate  | date: 'yyyy/MM/dd') : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="">
@@ -222,18 +221,17 @@
 
       <div fxLayout="column" fxFlex="100" fxFlex.gt-md="50">
         <mat-card class="default" *ngIf="row?.userType == 'advisor'">
-          <mat-card-title class="p-1">Uploaded documents</mat-card-title>
-          <mat-card-content class="p-0 border-t">
-            <mat-list class="compact-list mb-1" *ngFor="let doc of row.advisorDocuments">
-              <mat-list-item class="msg--hgt--sec">
-                <div fxLayout="row" fxFlex="100">
-                  <p class="dowloaded--names" (click)="downloadFile(doc.tmpName)">
-                    <mat-icon class="mat-icon material-icons" (click)="downloadFile(doc.tmpName)">file_copy</mat-icon>{{doc.title}}</p>
-
-                </div>
-              </mat-list-item>
-            </mat-list>
-          </mat-card-content>
+            <mat-card-title class="p-1">Uploaded documents</mat-card-title>
+            <mat-card-content class="p-0 border-t">
+              <mat-list class="compact-list mb-1" *ngFor="let doc of row.advisorDocuments">
+                <mat-list-item  class="msg--hgt--sec">
+                  <div fxLayout="row" fxFlex="100">
+                    <p class="dowloaded--names" (click)="downloadFile(doc.tmpName)"><mat-icon class="mat-icon material-icons" (click)="downloadFile(doc.tmpName)">file_copy</mat-icon>{{doc.title}}</p>
+                   
+                  </div>
+                </mat-list-item>
+              </mat-list>
+            </mat-card-content>
         </mat-card>
 
         <mat-card class="default" *ngIf="row?.userType == 'advisor'">

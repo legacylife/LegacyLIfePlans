@@ -111,6 +111,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   instagram: boolean = false
   linkedIn: boolean = false
   subscriptionData: any
+  displayFreeFlag:boolean = false
 
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
@@ -245,11 +246,17 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       } else {
 
         this.subscriptionData = [];
-        if (result.data.subscriptionDetails) {
-          this.subscriptionData = result.data.subscriptionDetails;
+        this.profile = result.data.userProfile;
+
+        if (this.profile.subscriptionDetails) {
+          this.subscriptionData = this.profile.subscriptionDetails;
+        } 
+        console.log("this.subscriptionData >>>>>>>>>>>>> ",this.profile.subscriptionDetails)        
+
+        if (this.subscriptionData.length == 0 && (this.profile.IamIntrested && this.profile.IamIntrested == 'Yes') && (this.profile.refereAndEarnSubscriptionDetail && this.profile.refereAndEarnSubscriptionDetail.endDate != '')) {
+          this.displayFreeFlag = true;
         }
 
-        this.profile = result.data.userProfile;
         this.ProfileForm.controls['firstName'].setValue(this.profile.firstName ? this.profile.firstName : "");
         this.ProfileForm.controls['lastName'].setValue(this.profile.lastName ? this.profile.lastName : "");
         this.ProfileForm.controls['phoneNumber'].setValue(this.profile.phoneNumber ? this.profile.phoneNumber : "");
