@@ -791,15 +791,15 @@ async function deceasedCustomersReminders(req, res){
             testingmessage = deceasedEmail+' -----   '+testingmessage+' Never subscribe';  
           }
           message = testingmessage;
-          allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job'+deceasedEmail, message);    
+          allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job step1-'+deceasedEmail, message);    
         if(updateuser){
             let exAccDays = 90;
             let start = moment(currentSubscriptionEndDate,'YYYY-MM-DD');
             var timestamp = start.add(exAccDays, 'days');
             var AfterExAccDays = new Date(timestamp); //After  90 days date
 
-            testingmessage = testingmessage+= ' <br> start:'+start+' -- AfterExAccDays:'+AfterExAccDays+' currentDate:'+currentDate;
-            allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job next step'+deceasedEmail, message);            
+            message = testingmessage+= ' <br> start:'+start+' -- AfterExAccDays:'+AfterExAccDays+' currentDate:'+currentDate;           
+            allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job step2-'+deceasedEmail, message);            
             if(AfterExAccDays > currentDate) {
               testingmessage = '';
              for(var i=0;i<=12;i++) {
@@ -809,6 +809,9 @@ async function deceasedCustomersReminders(req, res){
                   var timestamp2 = m.add(i, 'week');
                   var weekDate = new Date(timestamp2,'YYYY-MM-DD');
                   let todayDate = new Date('','YYYY-MM-DD');
+
+                  message = testingmessage+= ' <br> todayDate:'+todayDate+' -- weekDate:'+weekDate+'-- AfterExAccDays:'+AfterExAccDays+'---weekDate:'+weekDate;           
+                  allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job step3-'+deceasedEmail, message);                              
                   if(AfterExAccDays>weekDate && todayDate==weekDate) {
                     let subscriptionEndDate =  moment(currentSubscriptionEndDate);
                     let AfterExAccDate = moment(AfterExAccDays);
