@@ -765,7 +765,7 @@ async function deceasedCustomersReminders(req, res){
           var currentSubscriptionEndDate = '';
           let updateuser = false
           let subscriptionDetails   = key.subscriptionDetails ? key.subscriptionDetails : null;
-       
+      testingmessage = deceasedEmail+'/n';
           if( subscriptionDetails != null && subscriptionDetails.length > 0 ) {
               isAddOnPurchase    = subscriptionDetails[subscriptionDetails.length - 1]['addOnDetails']
               checkWhetherAddOn  = isAddOnPurchase ? true : false
