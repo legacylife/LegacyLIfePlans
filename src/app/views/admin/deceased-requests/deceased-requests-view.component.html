@@ -7,7 +7,7 @@
       <div class="profile-title text-center mb-1">
         <div class="main-title">{{fullname}}</div>
         <div class="text-muted">{{row?.bioText}}</div>
-        <div class="text-muted">Last log in on {{row?.lastLoggedInOn  | date: 'yyyy/MM/dd HH:mm:ss'}}</div>
+        <div class="text-muted">Last log in on {{row?.lastLoggedInOn  | date: 'MM/dd/yyyy HH:mm:ss'}}</div>
       </div>
       <mat-card-content class="pt-0 border-0">
         <mat-list>
@@ -45,42 +45,42 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Date Of Birth</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.dateOfBirth  | date: 'yyyy/MM/dd'}}</div>
+                  <div fxFlex="40">{{row?.dateOfBirth  | date: 'MM/dd/yyyy'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Address Line 1</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.addressLine1}}</div>
+                  <div fxFlex="40">{{row?.addressLine1 ? row?.addressLine1 : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Address Line 2</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.addressLine2}}</div>
+                  <div fxFlex="40">{{row?.addressLine2 ? row?.addressLine2 : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">City</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.city}}</div>
+                  <div fxFlex="40">{{row?.city ? row?.city : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">State</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.state}}</div>
+                  <div fxFlex="40">{{row?.state ? row?.state : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="" *ngIf="row?.userType != 'sysadmin'">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Zipcode</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.zipcode}}</div>
+                  <div fxFlex="40">{{row?.zipcode ? row?.zipcode : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="">
@@ -97,7 +97,7 @@
                   <h6 class="m-0 mr-1">Deceased Status</h6>
                   <span fxFlex></span>
                   <div fxFlex="40">
-                    <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{row?.deceased?.status}}
+                    <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{row?.deceased?.status=='Active' ? 'Deceased' : row?.deceased?.status}}
                     </mat-chip>
                   </div>
                 </div>
@@ -118,7 +118,7 @@
                   <span fxFlex></span>
                   <div fxFlex="40">
                     <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">
-                      {{row?.lockoutLegacyDate | date: 'yyyy/MM/dd HH:mm'}}</mat-chip>
+                      {{row?.lockoutLegacyDate | date: 'dd/MM/yyyy HH:mm'}}</mat-chip>
                   </div>
                 </div>
               </mat-list-item>
@@ -180,7 +180,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Plan Expire Date</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{subscriptionExpireDate ? (subscriptionExpireDate  | date: 'yyyy/MM/dd') : '--'}}</div>
+                  <div fxFlex="40">{{subscriptionExpireDate ? (subscriptionExpireDate  | date: 'MM/dd/yyyy') : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="">
@@ -242,13 +242,12 @@
           </ngx-datatable-column>
           <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Time" prop="createdOn" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{row?.createdOn | date: 'yyyy/MM/dd HH:mm'}}
+              {{row?.createdOn | date: 'MM/dd/yyyy HH:mm'}}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status"
-                (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
+              <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status" title="Status">{{row.status=='Active' ? 'Mark As Deceased' : row.status}}</mat-chip>
             </ng-template>
           </ngx-datatable-column>
         </ngx-datatable>
@@ -293,13 +292,12 @@
           <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Created/Modified Time"
             prop="createdOn" [flexGrow]="1.5">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{row?.createdOn | date: 'yyyy/MM/dd'}} , {{row?.modifiedOn | date: 'yyyy/MM/dd'}}
+              {{row?.createdOn | date: 'MM/dd/yyyy'}} , {{row?.modifiedOn | date: 'MM/dd/yyyy'}}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status"
-                (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
+              <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status"  title="Status">{{row.status}}</mat-chip>
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column [resizeable]="false" name="Actions" [sortable]="false" [draggable]="false"
