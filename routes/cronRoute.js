@@ -724,7 +724,7 @@ function getDateDiff( startDate, endDate, returnAs=null ) {
 
 
 async function deceasedCustomers(req, res){
-  let message = 'Mark as deceased by cron job working';
+  let message = 'Mark as deceased by cron job hit working';
   allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased cron job', message)
   await User.find({'deceased':{$ne:null},'deceased.status':{$ne:'Active'},'lockoutLegacyDate':{$ne:null}},{}, async function (err, result) {
     if (err) {
@@ -750,8 +750,8 @@ async function deceasedCustomers(req, res){
 After customer deceased and subscription expire 90 free access for trustee, advisors then system sent and email to executor.
 */
 async function deceasedCustomersReminders(req, res){
-  let message = 'Mark as deceased reminders by cron job working';
-  console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',message)
+  let message = 'Mark as deceased reminders by cron job hit working';
+  //console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',message)
   allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job', message);
 
   await User.find({'userType':"customer",'deceased':{$ne:null},'deceased.status':'Active',status:'Active'},{_id:1,username:1,firstName:1,lastName:1,subscriptionDetails:1,createdOn:1}, async function (err, result) {
