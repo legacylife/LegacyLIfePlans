@@ -50,7 +50,7 @@ export class DeceasedRequestsComponent implements OnInit {
                 lastName :  element.customerId.lastName,
                 username:  element.customerId.username,
                 modifiedOn:  element.modifiedOn,
-                status: ( (element.customerId.deceased && element.customerId.deceased.status) =='Active' ? 'Deceased' :  element.customerId.deceased.status ),
+                status: ( element.customerId.deceased.status=='Active' ? 'Deceased' :  element.customerId.deceased.status ),
                 _id:  element._id
               });
           });
