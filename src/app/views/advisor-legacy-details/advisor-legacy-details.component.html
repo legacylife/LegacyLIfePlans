@@ -15,7 +15,7 @@
               <mat-icon class="mat-icon material-icons" role="img">star</mat-icon> Standard member
             </div>
             <p class="mb-0">Last Login:
-              <span>{{customerData?.lastLoggedInOn | date: 'yyyy/MM/dd'}}</span>
+              <span>{{customerData?.lastLoggedInOn | date: 'MM/dd/yyyy'}}</span>
             </p>
           </div>
           <button mat-icon-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu1">

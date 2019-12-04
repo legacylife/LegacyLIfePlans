@@ -33,7 +33,7 @@
           <button mat-menu-item (click)="edit(rowIndex, todo.comments)">Edit</button>
           <button mat-menu-item (click)="delete(todo._id)">Delete</button>
         </mat-menu>
-        <span class="when">{{todo.modifiedOn  | date: 'yyyy/MM/dd H:m:s'}}</span>
+        <span class="when">{{todo.modifiedOn  | date: 'MM/dd/yyyy H:m:s'}}</span>
       </mat-nav-list>
       <form class="llp-form-wrapper" [formGroup]="todosUpdateForm" (ngSubmit)="todosFormUpdate()">
         <mat-nav-list class="pt-0" *ngIf="viewMode == rowIndex">

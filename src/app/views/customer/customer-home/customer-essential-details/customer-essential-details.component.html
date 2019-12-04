@@ -27,8 +27,8 @@
                   <mat-icon>person</mat-icon>Personal Profile
                 </div>
                 <span class="last--modified--by">Last modified:
-                  <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                  <span *ngIf="!row?.modifiedOn">{{row?.createdOn | date: 'yyyy/MM/dd'}}</span>
+                  <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn | date: 'MM/dd/yyyy'}}</span>
+                  <span *ngIf="!row?.modifiedOn">{{row?.createdOn | date: 'MM/dd/yyyy'}}</span>
                 </span>
             </div>
 
@@ -40,7 +40,7 @@
                   <label class="strong--label">Date of Birth:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.ppDateOfBirth ? (row?.ppDateOfBirth  | date: 'yyyy/MM/dd') : "-"}}</label>
+                  <label class="normal--label">{{row?.ppDateOfBirth ? (row?.ppDateOfBirth  | date: 'MM/dd/yyyy') : "-"}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10">
@@ -77,8 +77,8 @@
                       <mat-icon>description</mat-icon>Work Profile
                     </div>
                     <span class="last--modified--by">Last modified:
-                        <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn ? (row?.modifiedOn | date: 'yyyy/MM/dd') : "-"}}</span>
-                        <span *ngIf="!row?.modifiedOn">{{row?.createdOn ? (row?.createdOn | date: 'yyyy/MM/dd') : "-"}}</span>
+                        <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn ? (row?.modifiedOn | date: 'MM/dd/yyyy') : "-"}}</span>
+                        <span *ngIf="!row?.modifiedOn">{{row?.createdOn ? (row?.createdOn | date: 'MM/dd/yyyy') : "-"}}</span>
                     </span>
                 </div>
 
@@ -151,8 +151,8 @@
                       <mat-icon>content_paste</mat-icon>Civic/Club, Religious Info 
                     </div>
                     <span class="last--modified--by">Last modified:
-                        <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                        <span *ngIf="!row?.modifiedOn">{{row?.createdOn | date: 'yyyy/MM/dd'}}</span>
+                        <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn | date: 'MM/dd/yyyy'}}</span>
+                        <span *ngIf="!row?.modifiedOn">{{row?.createdOn | date: 'MM/dd/yyyy'}}</span>
                     </span>
                 </div>
 

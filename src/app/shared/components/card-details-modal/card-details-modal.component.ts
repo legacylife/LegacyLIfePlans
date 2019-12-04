@@ -14,7 +14,7 @@ import { SubscriptionService } from 'app/shared/services/subscription.service';
 import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog, MatSnackBar } from '@angular/material';
 import  * as moment  from 'moment'
-
+import { stripeKey } from '../../../config'
 @Component({
   selector: 'card-details-modal',
   templateUrl: './card-details-modal.component.html',
@@ -164,10 +164,12 @@ export class CardDetailsComponent implements OnInit {
 
   // mount user card on HTML Element
   mountCard = () => {
+    console.log('mountCard----',this.elementsOptions,'----',stripeKey);
     //create stripe card form here
     this.stripeService.elements(this.elementsOptions)
       .subscribe(elements => {
         this.elements = elements;
+        console.log('mountCard elements----',this.elements);
         if (!this.card) {
           this.card = this.elements.create('card', {
             style: {
@@ -188,6 +190,7 @@ export class CardDetailsComponent implements OnInit {
       this.card.mount('#card-fields');
       this.loader.close();
       this.isButtonEnabled = true
+      console.log('mountCard card----',this.card);
     });
   }
 

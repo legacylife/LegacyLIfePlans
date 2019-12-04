@@ -28,8 +28,8 @@
                 <mat-icon>library_add</mat-icon>ID Box
               </div>
               <span class="last--modified--by">Last modified:
-                <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn ? (row?.modifiedOn | date: 'yyyy/MM/dd') : '-'}}</span>
-                <span *ngIf="!row?.modifiedOn">{{row?.createdOn ? (row?.createdOn | date: 'yyyy/MM/dd') : '-'}}</span>
+                <span *ngIf="row?.modifiedOn && row?.modifiedOn != ''">{{row?.modifiedOn ? (row?.modifiedOn | date: 'MM/dd/yyyy') : '-'}}</span>
+                <span *ngIf="!row?.modifiedOn">{{row?.createdOn ? (row?.createdOn | date: 'MM/dd/yyyy') : '-'}}</span>
               </span>
             </div>
             <div class="details--body">
@@ -66,7 +66,7 @@
                   <label class="strong--label">Expiration Date:</label>
                 </div>
                 <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                  <label class="normal--label">{{row?.expirationDate ? (row?.expirationDate | date: 'yyyy/MM/dd') : '-'}}</label>
+                  <label class="normal--label">{{row?.expirationDate ? (row?.expirationDate | date: 'MM/dd/yyyy') : '-'}}</label>
                 </div>
               </div>
               <div fxLayout="row wrap" class="mb--10" *ngIf="row?.documentType == 3 || row?.documentType == 4">
@@ -164,7 +164,7 @@
                       <label class="strong--label">Expiration Date:</label>
                     </div>
                     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                      <label class="normal--label">{{row?.expirationDate ? (row?.expirationDate | date: 'yyyy/MM/dd') : '-'}}</label>
+                      <label class="normal--label">{{row?.expirationDate ? (row?.expirationDate | date: 'MM/dd/yyyy') : '-'}}</label>
                     </div>
                   </div>
   
@@ -191,7 +191,7 @@
                     <label class="strong--label">Expiration Date:</label>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
-                    <label class="normal--label">{{row?.expirationDate ? (row?.expirationDate | date: 'yyyy/MM/dd') : '-'}}</label>
+                    <label class="normal--label">{{row?.expirationDate ? (row?.expirationDate | date: 'MM/dd/yyyy') : '-'}}</label>
                   </div>
                 </div>
 

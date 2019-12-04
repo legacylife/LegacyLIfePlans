@@ -37,12 +37,12 @@
         </ngx-datatable-column>
         <ngx-datatable-column  [resizeable]="false" name="Sign up Request" prop="createdOn" [flexGrow]="1.1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{  row?.createdOn | date: 'yyyy/MM/dd HH:mm:ss'}}
+            {{  row?.createdOn | date: 'MM/dd/yyyy HH:mm:ss'}}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column  [resizeable]="false" name="Sign up approval" prop="signupApprovalDate" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{ row?.signupApprovalDate | date: 'yyyy/MM/dd HH:mm:ss'}}
+            {{ row?.signupApprovalDate | date: 'MM/dd/yyyy HH:mm:ss'}}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column  [resizeable]="false" name="Email Verified" prop="status" [flexGrow]="1">

@@ -120,10 +120,10 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
             this.finallyDeceased = true;
           }
         }
-        console.log('Here I am 1st ')
+        //console.log('Here I am 1st ')
         this.shareData.userShareDataDeathFileSource.subscribe((shareDeathFileCount) => {
           this.shareDeathFileCount = shareDeathFileCount;
-          console.log('Here I am 2nd',this.shareDeathFileCount)
+          //console.log('Here I am 2nd',this.shareDeathFileCount)
         })
       }
     }, (err) => {

@@ -32,8 +32,8 @@
                 <h5>{{getType(profileData.estateType,'RealEstate')}}</h5>
                 <p class="mb-0">Last modified:
                   <span
-                    *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                  <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+                    *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'MM/dd/yyyy'}}</span>
+                  <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'MM/dd/yyyy'}}</span>
                 </p>
               </div>
             </div>
@@ -71,8 +71,8 @@
                 <h5>{{vehicleData.model}}</h5>
                 <p class="mb-0">Last modified:
                   <span
-                    *ngIf="vehicleData.modifiedOn && vehicleData.modifiedOn != ''">{{vehicleData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                  <span *ngIf="!vehicleData.modifiedOn">{{vehicleData.createdOn | date: 'yyyy/MM/dd'}}</span>
+                    *ngIf="vehicleData.modifiedOn && vehicleData.modifiedOn != ''">{{vehicleData.modifiedOn | date: 'MM/dd/yyyy'}}</span>
+                  <span *ngIf="!vehicleData.modifiedOn">{{vehicleData.createdOn | date: 'MM/dd/yyyy'}}</span>
                 </p>
               </div>
             </div>
@@ -109,8 +109,8 @@
                 <h5>{{ profileData?.asset == 6 ? profileData?.assetNew : getType(profileData?.asset,'Assets') }}</h5>
                 <p class="mb-0">Last modified:
                   <span
-                    *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                  <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+                    *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'MM/dd/yyyy'}}</span>
+                  <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'MM/dd/yyyy'}}</span>
                 </p>
               </div>
             </div>

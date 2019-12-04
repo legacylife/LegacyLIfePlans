@@ -45,7 +45,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Date Of Birth</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.dateOfBirth ? (row?.dateOfBirth | date: 'yyyy/MM/dd') : '--'}}</div>
+                  <div fxFlex="40">{{row?.dateOfBirth ? (row?.dateOfBirth | date: 'MM/dd/yyyy') : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="msg--hgt--sec" *ngIf="row?.userType != 'sysadmin'">
@@ -111,7 +111,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Last log in date and time</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.lastLoggedInOn | date: 'yyyy/MM/dd HH:mm:ss'}}</div>
+                  <div fxFlex="40">{{row?.lastLoggedInOn | date: 'MM/dd/yyyy HH:mm:ss'}}</div>
                 </div>
               </mat-list-item>
 
@@ -119,7 +119,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Account created date and time</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{row?.createdOn | date: 'yyyy/MM/dd HH:mm:ss'}}</div>
+                  <div fxFlex="40">{{row?.createdOn | date: 'MM/dd/yyyy HH:mm:ss'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="">
@@ -203,7 +203,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Plan Expire Date</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{(subscriptionExpireDate && subscriptionExpireDate!=null) ? (subscriptionExpireDate  | date: 'yyyy/MM/dd') : '--'}}</div>
+                  <div fxFlex="40">{{(subscriptionExpireDate && subscriptionExpireDate!=null) ? (subscriptionExpireDate  | date: 'MM/dd/yyyy') : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="">

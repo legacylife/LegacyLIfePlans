@@ -183,11 +183,11 @@
                             {{item.zipcodes}}
                           </mat-panel-description>
                           <mat-panel-description>
-                            {{item.createdOn | date: 'yyyy/MM/dd'}}
+                            {{item.createdOn | date: 'MM/dd/yyyy'}}
                           </mat-panel-description>
                         </mat-expansion-panel-header>
-                        <p><b>From date:</b> {{item.fromDate | date: 'yyyy/MM/dd'}} <b>To date:</b>
-                          {{item.toDate  | date: 'yyyy/MM/dd'}}</p>
+                        <p><b>From date:</b> {{item.fromDate | date: 'MM/dd/yyyy'}} <b>To date:</b>
+                          {{item.toDate  | date: 'MM/dd/yyyy'}}</p>
                         <p>Message: {{item.message}}</p>
                         <div *ngIf="item.status!='Reject'">
                           <div *ngFor="let row of item.adminReply">

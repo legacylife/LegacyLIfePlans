@@ -36,7 +36,7 @@
             <div fxLayout="row" fxFlex="100">
               <h6 class="m-0 mr-1">Date Of Birth</h6>
               <span fxFlex></span>
-              <div fxFlex="40">{{row?.dateOfBirth  | date: 'yyyy/MM/dd'}}</div>
+              <div fxFlex="40">{{row?.dateOfBirth  | date: 'MM/dd/yyyy'}}</div>
             </div>
           </mat-list-item>
           <mat-list-item class="msg--hgt--sec">
@@ -89,7 +89,7 @@
               <h6 class="m-0 mr-1">Subscription start date</h6>
               <span fxFlex></span>
               <div fxFlex="40">
-                <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{subscriptionStartDate ? (subscriptionStartDate | date: 'yyyy/MM/dd') : '--'}}</mat-chip>
+                <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{subscriptionStartDate ? (subscriptionStartDate | date: 'MM/dd/yyyy') : '--'}}</mat-chip>
               </div>
             </div>
           </mat-list-item>  
@@ -99,7 +99,7 @@
               <h6 class="m-0 mr-1">Subscription end date</h6>
               <span fxFlex></span>
               <div fxFlex="40">
-                <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{subscriptionEndDate ? (subscriptionEndDate | date: 'yyyy/MM/dd') : '--'}}</mat-chip>
+                <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">{{subscriptionEndDate ? (subscriptionEndDate | date: 'MM/dd/yyyy') : '--'}}</mat-chip>
               </div>
             </div>
           </mat-list-item>    
@@ -117,7 +117,7 @@
             <div fxLayout="row" fxFlex="100">
               <h6 class="m-0 mr-1">Last log in date and time</h6>
               <span fxFlex></span>
-              <div fxFlex="40">{{row?.lastLoggedInOn  | date: 'yyyy/MM/dd HH:mm:ss'}}</div>
+              <div fxFlex="40">{{row?.lastLoggedInOn  | date: 'MM/dd/yyyy HH:mm:ss'}}</div>
             </div>
           </mat-list-item>
         </mat-list>
@@ -142,7 +142,7 @@
               <h6 class="m-0 mr-1">From Date</h6>
               <span fxFlex></span>
               <div fxFlex="40">
-                {{data?.fromDate | date: 'yyyy/MM/dd'}}
+                {{data?.fromDate | date: 'MM/dd/yyyy'}}
               </div>
             </div>
           </mat-list-item>
@@ -150,7 +150,7 @@
             <div fxLayout="row" fxFlex="100">
               <h6 class="m-0 mr-1">To Date</h6>
               <span fxFlex></span>
-              <div fxFlex="40">{{data?.toDate | date: 'yyyy/MM/dd'}}</div>
+              <div fxFlex="40">{{data?.toDate | date: 'MM/dd/yyyy'}}</div>
             </div>
           </mat-list-item>
           <mat-list-item class="msg--hgt--sec">

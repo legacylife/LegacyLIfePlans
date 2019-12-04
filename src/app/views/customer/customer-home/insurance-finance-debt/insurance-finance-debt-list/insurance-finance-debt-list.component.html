@@ -34,8 +34,8 @@
                 <h5>{{getType(profileData?.policyType,'insurance')}}</h5>
                 <p class="mb-0">Last modified:
                   <span
-                    *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                  <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+                    *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'MM/dd/yyyy'}}</span>
+                  <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'MM/dd/yyyy'}}</span>
                 </p>
               </div>
             </div>
@@ -70,8 +70,8 @@
                 <h5>{{getType(profileData?.financesType,'finance')}}</h5>
                 <p class="mb-0">Last modified:
                   <span
-                    *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                  <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+                    *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'MM/dd/yyyy'}}</span>
+                  <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'MM/dd/yyyy'}}</span>
                 </p>
               </div>
             </div>
@@ -106,8 +106,8 @@
                 <h5>{{getType(profileData?.debtsType,'debts')}}</h5>
                 <p class="mb-0">Last modified:
                   <span
-                    *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'yyyy/MM/dd'}}</span>
-                  <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'yyyy/MM/dd'}}</span>
+                    *ngIf="profileData.modifiedOn && profileData.modifiedOn != ''">{{profileData.modifiedOn | date: 'MM/dd/yyyy'}}</span>
+                  <span *ngIf="!profileData.modifiedOn">{{profileData.createdOn | date: 'MM/dd/yyyy'}}</span>
                 </p>
               </div>
             </div>
