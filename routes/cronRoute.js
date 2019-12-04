@@ -753,7 +753,7 @@ async function deceasedCustomersReminders(req, res){
   let message = 'Mark as deceased reminders by cron job hit working';
   //console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',message)
   allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job', message);
-
+  let testingmessage = '';
   await User.find({'userType':"customer",'deceased':{$ne:null},'deceased.status':'Active',status:'Active'},{_id:1,username:1,firstName:1,lastName:1,subscriptionDetails:1,createdOn:1}, async function (err, result) {
     if (err) {
       res.status(500).send(resFormat.rError(err))
@@ -775,6 +775,7 @@ async function deceasedCustomersReminders(req, res){
               if( subscriptionStatus != 'canceled' && currentSubscriptionEndDate < currentDate ) {
                 updateuser = true
               }
+              testingmessage = 'subscription found';
           }else{  //Never subscribe
             updateuser = true;                           
             let FreeTrail = await FreeTrailPeriodSetting.findOne({}, {});
@@ -783,7 +784,8 @@ async function deceasedCustomersReminders(req, res){
             currentSubscriptionEndDate = new Date(timestamp);    
             if(currentSubscriptionEndDate < currentDate){
               updateuser = true
-            }        
+            }      
+            testingmessage = 'Never subscribe';  
           }
          
         if(updateuser){
@@ -791,6 +793,9 @@ async function deceasedCustomersReminders(req, res){
             let start = moment(currentSubscriptionEndDate,'YYYY-MM-DD');
             var timestamp = start.add(exAccDays, 'days');
             var AfterExAccDays = new Date(timestamp); //After  90 days date
+
+            testingmessage += ' <br> start:'+start+' -- AfterExAccDays:'+AfterExAccDays+' currentDate:'+currentDate;
+            allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job', message);            
             if(AfterExAccDays > currentDate) {
              for(var i=0;i<=12;i++) {
               if ((i % 2) === 0) {
