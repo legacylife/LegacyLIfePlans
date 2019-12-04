@@ -242,7 +242,7 @@
           </ngx-datatable-column>
           <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Time" prop="createdOn" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{row?.createdOn | date: 'MM/dd/yyyy HH:mm'}}
+              {{row?.modifiedOn | date: 'MM/dd/yyyy HH:mm'}}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">

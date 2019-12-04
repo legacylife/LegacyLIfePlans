@@ -165,7 +165,7 @@ export class DeceasedRequestsViewComponent implements OnInit {
       query: Object.assign({customerId:this.selectedUserId}, query),
       adminQuery: Object.assign({userType:'sysadmin'}, query),
       fields: {},      
-      order: { "createdOn": -1 },
+      order: { "modifiedOn": -1 },
     }
     this.loader.open()
     this.api.apiRequest('post', 'deceased/deceaseView', req_vars).subscribe(result => {
