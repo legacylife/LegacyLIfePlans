@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,HostListener,ViewChild } from '@angular/core';
 import { MatDialogRef, MatDialog } from '@angular/material';
+import { MatMenuTrigger } from '@angular/material/menu';
 import { InviteComponent } from '../header-top/invite-modal/invite-modal.component';
 import { TodosComponent } from 'app/views/todos/todos.component';
 import { LayoutService } from 'app/shared/services/layout.service';
@@ -13,14 +14,30 @@ export class SidenavComponent {
   @Input('items') public menuItems: any[] = [];
   @Input('hasIconMenu') public hasIconTypeMenuItem: boolean;
   @Input('iconMenuTitle') public iconTypeMenuTitle: string;
-
+  @ViewChild('clickHoverMenuTrigger') clickHoverMenuTrigger: MatMenuTrigger;
+  activeHeading: string = "";
   constructor(
     private dialog: MatDialog,
     private layout: LayoutService,
     private userapi: UserAPIService
   ) { }
-  ngOnInit() { }
+  ngOnInit() {
+   }
 
+   @HostListener('document:click', ['$event']) clickedOutside(event){
+      const loc = location.href;
+      const locArray = loc.split('/')
+      this.activeHeading = '';
+      if(locArray && locArray[4]){
+        this.activeHeading = locArray[4];
+      }   
+    }
+
+    openOnMouseClick() {
+      //this.clickHoverMenuTrigger.triggersSubmenu();
+      //this.clickHoverMenuTrigger.toggleMenu();
+    }
+  
   // Only for demo purpose
   addMenuItem() {
     this.menuItems.push({

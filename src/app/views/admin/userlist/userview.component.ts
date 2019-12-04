@@ -1,5 +1,5 @@
-import { Component, OnInit,HostListener } from '@angular/core';
-import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
+import { Component, OnInit, ViewChild,AfterViewInit } from '@angular/core';
+import { MatDialogRef, MatDialog, MatSnackBar,MatMenuTrigger } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
 import { adminSections } from '../../../config';
@@ -18,7 +18,7 @@ const filePath = s3Details.url+'/'+s3Details.profilePicturesPath;
   templateUrl: './userview.component.html',
   styleUrls: ['./userlist.component.scss']
 })
-export class userviewComponent implements OnInit {
+export class userviewComponent implements OnInit,AfterViewInit  {
   layoutConf: any;
   userId: string
   successMessage: string = ""
@@ -56,6 +56,7 @@ export class userviewComponent implements OnInit {
   today: Date = moment().toDate()
   showPage:boolean = false
   isExpired:boolean = false
+  
  // websites:any;
   constructor(
     private layout: LayoutService,
@@ -63,6 +64,9 @@ export class userviewComponent implements OnInit {
     private router: Router, private snack: MatSnackBar, private dialog: MatDialog,
     private confirmService: AppConfirmService, private loader: AppLoaderService,
     private subscriptionservice:SubscriptionService) { }
+ ngAfterViewInit(): void {
+     // throw new Error("Method not implemented.");
+    }
   ngOnInit() {
     this.userId = localStorage.getItem('userId')
     this.layoutConf = this.layout.layoutConf;
@@ -74,9 +78,7 @@ export class userviewComponent implements OnInit {
     //this.websites = '';
     this.getUser()
   }
-  @HostListener('document:click', ['$event']) clickedOutside(event){
-    console.log('event',event)
-  }
+
   //function to get all events
   getUser = (query = {}, search = false) => {
     this.loader.open()
@@ -92,7 +94,6 @@ export class userviewComponent implements OnInit {
         this.showPage = true
       } else {
         this.row = result.data;
-        console.log('----->>',this.row.sectionAccess,'>>>>',this.row)
         this.fullname = '';
         if(this.row.firstName && this.row.firstName!=='undefined' && this.row.lastName && this.row.lastName!=='undefined'){
           this.fullname = this.row.firstName+' '+this.row.lastName;

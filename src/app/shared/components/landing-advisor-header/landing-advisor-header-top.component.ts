@@ -5,6 +5,7 @@ import { ThemeService } from '../../../shared/services/theme.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LayoutService } from '../../services/layout.service';
 import { NavigationService } from '../../../shared/services/navigation.service';
+import { Router } from '@angular/router';
 // import { AdvisorNavigationService } from '../../../shared/services/pre-login-advisor.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class LandingAdvisorHeaderTopComponent implements OnInit, OnDestroy {
   layoutConf: any;
   menuItems: any;
   menuItemSub: Subscription;
+  headerOff : boolean = true
   egretThemes: any[] = [];
   currentLang = 'en'; routeParts: any[];
   availableLangs = [{
@@ -31,7 +33,7 @@ export class LandingAdvisorHeaderTopComponent implements OnInit, OnDestroy {
     private navService: LandingAdvisorNavService,
     public themeService: ThemeService,
     public translate: TranslateService,
-    private renderer: Renderer2,
+    private renderer: Renderer2,private router: Router, 
   ) { }
 
   ngOnInit() {
@@ -55,7 +57,14 @@ export class LandingAdvisorHeaderTopComponent implements OnInit, OnDestroy {
         })
         this.menuItems = mainItems
       })
-    const locArray = location.href.split("#")
+    const locArray = location.href.split("#");
+    if(locArray[1]==undefined){
+      const locationArray = location.href.split("/");
+      if(locationArray[3]=='coachs-corner'){
+          this.headerOff = false;
+      }
+    }
+
     this.contentScroll(locArray[1])
   }
   ngOnDestroy() {
@@ -84,12 +93,20 @@ export class LandingAdvisorHeaderTopComponent implements OnInit, OnDestroy {
   contentScroll(scrolldivid) {
     var content = document.getElementById("advisor-home-content")
     // console.log(content)
-    var scrolldiv = document.getElementById(scrolldivid)
+    var scrolldiv = document.getElementById(scrolldivid);
+    if(scrolldivid=='ad-home'){
+      const locationArray = location.href.split("/");
+      console.log('locations',locationArray)
+      if(locationArray[3]=='coachs-corner' || (locationArray[3]=='advisor' && locationArray[4]=='our-plan')){
+        console.log('locations>>>>>',locationArray[2],locationArray[3],locationArray[4])
+          this.headerOff = false;
+          this.router.navigateByUrl('/');
+      }
+    }
     var topPos = scrolldiv ? scrolldiv.offsetTop : 0;
     if(content) {
       content.scrollTop = topPos;
     }
-
     // var scrolldiv = document.getElementById(scrolldivid)
     // scrolldiv.scrollIntoView()
   }

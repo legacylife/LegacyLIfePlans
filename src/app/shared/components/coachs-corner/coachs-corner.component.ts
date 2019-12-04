@@ -75,7 +75,6 @@ export class CoachsCornerComponent implements OnInit {
         this.postList = [];
       }
       else {
-        console.log('POST list--->',result.data.postList)
         this.postList = result.data.postList.filter((listing: any) => (listing.category && listing.category.status) === 'On');
         this.detailsLoaded.emit(true);
       }
