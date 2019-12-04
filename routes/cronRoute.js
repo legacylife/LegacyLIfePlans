@@ -780,7 +780,8 @@ async function deceasedCustomersReminders(req, res){
             updateuser = true;                           
             let FreeTrail = await FreeTrailPeriodSetting.findOne({}, {});
             let start = moment(key.createdOn, 'YYYY-MM-DD');         
-            var timestamp = start.add(FreeTrail.customerFreeAccessDays, 'days');
+            //FreeTrail.customerFreeAccessDays
+            var timestamp = start.add(1, 'days');
             currentSubscriptionEndDate = new Date(timestamp);    
             if(currentSubscriptionEndDate < currentDate){
               updateuser = true
