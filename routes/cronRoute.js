@@ -787,7 +787,8 @@ async function deceasedCustomersReminders(req, res){
             }      
             testingmessage = testingmessage+'Never subscribe';  
           }
-         
+          message = testingmessage;
+          allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job', message);    
         if(updateuser){
             let exAccDays = 90;
             let start = moment(currentSubscriptionEndDate,'YYYY-MM-DD');
