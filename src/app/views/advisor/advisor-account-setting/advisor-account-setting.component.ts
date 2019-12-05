@@ -251,7 +251,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         if (this.profile.subscriptionDetails) {
           this.subscriptionData = this.profile.subscriptionDetails;
         } 
-        console.log("this.subscriptionData >>>>>>>>>>>>> ",this.profile.subscriptionDetails)        
+        //console.log("this.subscriptionData >>>>>>>>>>>>> ",this.profile.subscriptionDetails)        
 
         if (this.subscriptionData.length == 0 && (this.profile.IamIntrested && this.profile.IamIntrested == 'Yes') && (this.profile.refereAndEarnSubscriptionDetail && this.profile.refereAndEarnSubscriptionDetail.endDate != '')) {
           this.displayFreeFlag = true;
@@ -303,7 +303,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
 
         const webctrls = this.AddressForm.get('websiteLinks') as FormArray;
         webctrls.removeAt(0)
-        this.websiteLinks.forEach((element: any, index) => {
+        this.websiteLinks.forEach((element: any, index) => {         
           webctrls.push(this.editGroupweb(element.links))
         })
 
@@ -331,7 +331,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.LicenseForm.controls['howManyProducers'].setValue(this.profile.howManyProducers ? this.profile.howManyProducers : "");
 
         //this.LicenseForm.controls['advisorDocuments'].setValue(this.profile.advisorDocuments ? "" : "11");
-
+       
         this.LicenseForm.controls['advisorDocuments_temp'].setValue('');
         if (this.profile.advisorDocuments.length > 0) {
           this.LicenseForm.controls['advisorDocuments_temp'].setValue('1');
@@ -343,9 +343,17 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
             this.sponsoredAdvisorFlag = true;
           }
         }
-
+       
         this.profile.manageOtherProceducers == 1 ? this.showHowManyProducer = true : this.showHowManyProducer = false
         this.loader.close();
+        setTimeout(() => {
+          if(this.profile.socialMediaLinks) {
+            this.checkUrl('facebook')
+            this.checkUrl('twitter')
+            this.checkUrl('linkedIn')
+            this.checkUrl('instagram')
+          }
+        }, 5000);
         this.modified = false
       }
     }, (err) => {
@@ -898,8 +906,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     if (userInput != '') {
       var patternURL = /^(http|https):\/\/[^ "]+$/;
       if (!patternURL.test(userInput)) {
-        status = true
-      } else {
+        status = true      
+      } else {          
         status = false
       }
     }
@@ -917,5 +925,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.linkedIn = status;
         break;
     }
+
+    
   }
 }
