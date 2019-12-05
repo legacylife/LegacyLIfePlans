@@ -59,7 +59,7 @@ function leadsList(req, res) {
     })
   }
 
-  lead.count(query, function (err, listCount) {
+  lead.countDocuments(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
     }

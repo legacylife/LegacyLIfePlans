@@ -36,7 +36,7 @@ function timeCapsulesList(req, res) {
       }
     })
   }
-  timeCapsule.count(query, function (err, listCount) {
+  timeCapsule.countDocuments(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
     }

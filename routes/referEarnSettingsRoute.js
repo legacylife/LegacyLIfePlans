@@ -34,7 +34,7 @@ function list(req, res) {
       }
     })
   }
-  ReferEarnSetting.count(query, function(err, referEarnCount) {
+  ReferEarnSetting.countDocuments(query, function(err, referEarnCount) {
     if(referEarnCount) {
       totalRecords = referEarnCount
     }

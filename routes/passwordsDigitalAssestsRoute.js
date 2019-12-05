@@ -102,7 +102,7 @@ function DeviceList(req, res) {
       }
     })
   }
-  PDA.count(query, function (err, listCount) {
+  PDA.countDocuments(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
     }
@@ -365,7 +365,7 @@ function electronicMediaList(req, res) {
       }
     })
   }
-  EMedia.count(query, function (err, listCount) {
+  EMedia.countDocuments(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
     }
@@ -546,7 +546,7 @@ function digitalPublicationList(req, res) {
       }
     })
   }
-  DigitalPublications.count(query, function (err, listCount) {
+  DigitalPublications.countDocuments(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
     }

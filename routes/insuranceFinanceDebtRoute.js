@@ -37,7 +37,7 @@ function insuranceList(req, res) {
       }
     })
   }
-  insurance.count(query, function (err, listCount) {
+  insurance.countDocuments(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
     }
@@ -176,7 +176,7 @@ function financeList(req, res) {
       }
     })
   }
-  Finance.count(query, function (err, listCount) {
+  Finance.countDocuments(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
     }
@@ -317,7 +317,7 @@ function debtList(req, res) {
       }
     })
   }
-  Debts.count(query, function (err, listCount) {
+  Debts.countDocuments(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
     }

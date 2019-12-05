@@ -322,7 +322,7 @@ function list(req, res) {
       }
     })
   }
-  User.count(query, function (err, userCount) {
+  User.countDocuments(query, function (err, userCount) {
     if (userCount) {
       totalUsers = userCount
     }
