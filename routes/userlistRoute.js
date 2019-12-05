@@ -201,7 +201,11 @@ function updateProfile(req, res) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
+          
           User.findOne(query, function (err, updatedUser) {
+            if (updatedUser && updatedUser.zipcode && updatedUser.zipcode != '') {
+              calculateZipcode(updatedUser.zipcode,updatedUser._id);
+            }
             let result = { "userProfile": { userId: updatedUser._id, userType: updatedUser.userType, firstName: updatedUser.firstName, lastName: updatedUser.lastName, phoneNumber: updatedUser.phoneNumber,profilePicture:updatedUser.profilePicture }, "message": "Profile update successfully!" }
             res.status(200).send(resFormat.rSuccess(result));
           });
@@ -1076,9 +1080,9 @@ function getUsersListForAdminMap(req, res) {
       if( userList.length > 0 ) {
         let userDetails = []
         userList.forEach( (details, index) => {
-          if (details && details.zipcode && details.zipcode != '') {
-            var data = zipcodes.lookup(details.zipcode);
-            if( data ) {
+          if (details && details.zipcode && details.zipcode != '' && details.location) {// 
+           // var data = zipcodes.lookup(details.zipcode); //No need to call again this function
+            //if( data ) {
               let userData = {userId: details._id,
                               fullname: details.firstName!= "" ? details.firstName+' '+(details.lastName != "" ? details.lastName : '') : '',
                               profileImage: '',
@@ -1086,15 +1090,15 @@ function getUsersListForAdminMap(req, res) {
                               address: details.addressLine1 ? details.addressLine1 + (details.city ? ', '+details.city : '') + (details.state ? ', '+details.state : '') + (details.country ? ', '+details.country : '') : '',
                               zipcode: details.zipcode,
                               business: details.businessType && details.businessType.length > 0 ? details.businessType.join(): '',
-                              latitude: data.latitude,
-                              longitude: data.longitude,
-                              location: data.location,
+                              // latitude: data.latitude,
+                              // longitude: data.longitude,
+                              location: details.location,
                               email: details.username,
-                              onBoardVia: details.invitedBy && details.invitedBy != "" ? details.invitedBy : 'Self',
+                              onBoardVia: details.invitedBy && details.invitedBy != "" ? 'Invited' : 'Self',
                               lastLogin: moment(details.lastLoggedInOn).format("YYYY-MM-DD hh:mm a")
                             }
               userDetails.push(userData)
-            }
+           // }
           }
         })
         res.send(resFormat.rSuccess({ userDetails }))
