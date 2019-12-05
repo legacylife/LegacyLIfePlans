@@ -5,10 +5,10 @@ let gmailConnectionLinkEnv = ""
 let officeConnectionLinkEnv = ""
 let mailchimpLinkEnv = ""
 let bucketName = ""
-let stripeSecretKey= ""
 let awsKey = "AKIAUPQ3GZ6WDCCRWVY5"
 let awsSecret =  "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"
-let googleauthkey= ""; //AIzaSyDsp487LM4HTYDV4O7KcFrHkolDZziykjw
+let googleauthkey= "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"; //AIzaSyDsp487LM4HTYDV4O7KcFrHkolDZziykjw
+let stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk";
 
 //localhost
 if(window.location.hostname.indexOf("localhost") > -1){ // local server

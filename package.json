@@ -7,7 +7,7 @@
     "start": "ng serve",
     "build-serve": "node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng serve",
     "serveProd": "ng serve --environment=prod",
-    "build": "node --max_old_space_size=8194 ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer --extract-css --output-path=../backend/dist/ --output-hashing all",
+    "build": "node --max_old_space_size=8194 ./node_modules/@angular/cli/bin/ng build --prod --build-optimizer --extract-css --output-path=../backend/dist/ --output-hashing all --aot=true",
     "build-aot": "ng build --aot=true --prod=true --build-optimizer=true --extract-css=true --output-path=../backend/dist/ --output-hashing=all",
     "test": "ng test",
     "lint": "ng lint",
