@@ -195,7 +195,7 @@ async function viewDeceased(req, res) {
             let userdata = await User.findOne({_id:paramData.customerId},{lockoutLegacyDate:1,_id:1});
             var dates = new Date(userdata.lockoutLegacyDate);
             var lockoutLegacyDatee = dates.toISOString().substring(0, 10);
-            lockoutLegacyDatee = moment(userdata.lockoutLegacyDate).format("DD-MM-YYYY");
+            lockoutLegacyDatee = moment(userdata.lockoutLegacyDate).format("MM/DD/YYYY");
             lockoutLegacyDateWithLabel = '<br />Lockout Legacy Date: '+lockoutLegacyDatee;
          }
 

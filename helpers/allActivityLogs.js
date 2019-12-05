@@ -43,4 +43,39 @@ const updateActivityLogs = (fromUserId, toUserId, activity, activityMessage = ""
     })
   })
 }
-module.exports = { updateActivityLogs }
+
+const cronjobsLogs = (activity, activityMessage ) => {
+    return new Promise(function (resolve, reject) {
+      // User.findOne({ _id: fromUserId }, { firstName: 1, lastName: 1, profilePicture: 1 }, function (err, userList) {
+      //   if (err) {
+      //     let result = { "message": "Something Wrong!" }
+      //     resolve("error");
+      //   }
+      //   else {
+          var activityLog                 = new ActivityLogs();
+              activityLog.fromUserId      = '';
+              activityLog.toUserId        = '';
+              activityLog.activity        = activity;
+              activityLog.description     = activityMessage;
+              activityLog.section         = '';
+              activityLog.subSection      = '';
+              activityLog.fileName        = '';
+              activityLog.createdOn       = new Date();
+              activityLog.modifiedOn      = new Date();
+              // activityLog.createdBy       = mongoose.Types.ObjectId(fromUserId);
+              // activityLog.modifiedBy      = mongoose.Types.ObjectId(fromUserId);
+  
+          activityLog.save({}, function (err, newEntry) {
+            if (err) {
+              resolve("error");
+            } else {
+              resolve("success");
+            }
+          })
+       // }
+      //})
+    })
+  }
+
+
+module.exports = { updateActivityLogs,cronjobsLogs }

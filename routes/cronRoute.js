@@ -14,6 +14,7 @@ const mongoose = require('mongoose')
 const advertisement = require('./../models/advertisements.js')
 var objectId = mongoose.Types.ObjectId();
 const HiredAdvisors = require('./../models/HiredAdvisors')
+const TrackDeceasedReminder = require('./../models/deceasedReminder')
 const trust = require('./../models/Trustee.js')
 var FreeTrailPeriodSetting = require('./../models/FreeTrialPeriodSettings')
 const allActivityLog = require('./../helpers/allActivityLogs')
@@ -725,7 +726,7 @@ function getDateDiff( startDate, endDate, returnAs=null ) {
 
 async function deceasedCustomers(req, res){
   let message = 'Mark as deceased by cron job hit working';
-  allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased cron job', message)
+  allActivityLog.cronjobsLogs('Mark As Deceased cron job', message)
   await User.find({'deceased':{$ne:null},'deceased.status':{$ne:'Active'},'lockoutLegacyDate':{$ne:null}},{}, async function (err, result) {
     if (err) {
       res.status(500).send(resFormat.rError(err))
@@ -751,99 +752,116 @@ After customer deceased and subscription expire 90 free access for trustee, advi
 */
 async function deceasedCustomersReminders(req, res){
   let message = 'Mark as deceased reminders by cron job hit working';
-  //console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>',message)
-//  allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job', message);
+  allActivityLog.cronjobsLogs('Mark As Deceased Reminders cron job', message);
   let testingmessage = '';
-  await User.find({'userType':"customer",'deceased':{$ne:null},'deceased.status':'Active',status:'Active'},{_id:1,username:1,firstName:1,lastName:1,subscriptionDetails:1,createdOn:1}, async function (err, result) {
+  await User.find({'userType':"customer",'deceased':{$ne:null},'deceased.status':'Active',status:'Active'},{_id:1,username:1,firstName:1,lastName:1,subscriptionDetails:1,userSubscriptionEnddate:1,createdOn:1}, async function (err, result) {
     if (err) {
       res.status(500).send(resFormat.rError(err))
     } else if (result) {     
      if(result.length>0){
-         result.forEach( async (key,index) => {   
+         result.forEach( async (key,index) => { 
+          testingmessage = ' Deceased Count'+result.length;  
           let deceasedEmail = key.username;let deceasedFullName = key.firstName+' '+key.lastName;
           var currentDate  = new Date();
-          var currentSubscriptionEndDate = '';
+          var currentSubscriptionEndDate = new Date(key.userSubscriptionEnddate);
           let updateuser = false
           let subscriptionDetails   = key.subscriptionDetails ? key.subscriptionDetails : null;
  
           if( subscriptionDetails != null && subscriptionDetails.length > 0 ) {
-              isAddOnPurchase    = subscriptionDetails[subscriptionDetails.length - 1]['addOnDetails']
-              checkWhetherAddOn  = isAddOnPurchase ? true : false
-              subscriptionEndDate   = subscriptionDetails[(subscriptionDetails.length-1)]['endDate'];
+              // isAddOnPurchase    = subscriptionDetails[subscriptionDetails.length - 1]['addOnDetails']
+              // checkWhetherAddOn  = isAddOnPurchase ? true : false
+              //subscriptionEndDate   = subscriptionDetails[(subscriptionDetails.length-1)]['endDate'];
               subscriptionStatus    = subscriptionDetails[(subscriptionDetails.length-1)]['status']
-              currentSubscriptionEndDate = new Date(subscriptionEndDate)
+              // subscriptionEndDate   = key.userSubscriptionEnddate
+              // currentSubscriptionEndDate = new Date(subscriptionEndDate)
               if( subscriptionStatus != 'canceled' && currentSubscriptionEndDate < currentDate ) {
                 updateuser = true
               }
-              testingmessage = 'currentSubscriptionEndDate:- '+currentSubscriptionEndDate +' currentDate:- '+currentDate+' updateuser:'+updateuser;
-              testingmessage = deceasedEmail+' -----   '+testingmessage+'subscription found';
+              testingmessage = ' Subscription found ';
           }else{  //Never subscribe
-            //updateuser = true;                           
-            let FreeTrail = await FreeTrailPeriodSetting.findOne({}, {});
-            let start = moment(key.createdOn, 'YYYY-MM-DD');         
-            //FreeTrail.customerFreeAccessDays
-            var timestamp = start.add(0, 'days');
-            currentSubscriptionEndDate = new Date(timestamp);    
+            //let FreeTrail = await FreeTrailPeriodSetting.findOne({}, {});
+            //let start = moment(key.createdOn, 'YYYY-MM-DD');         
+            // var timestamp = start.add(FreeTrail.customerFreeAccessDays, 'days');
+            // currentSubscriptionEndDate = new Date(timestamp);    
             if(currentSubscriptionEndDate < currentDate){
               updateuser = true
             }      
-            testingmessage = 'currentSubscriptionEndDate:- '+currentSubscriptionEndDate +' currentDate:- '+currentDate+' updateuser:'+updateuser;
-            testingmessage = deceasedEmail+' -----   '+testingmessage+' Never subscribe';  
+            testingmessage = ' Never subscribe ';  
           }
-          message = testingmessage;
-          allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job step1-'+deceasedEmail, message);    
+      //allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job step1-'+deceasedEmail, message);    
         if(updateuser){
             let exAccDays = 90;
             let start = moment(currentSubscriptionEndDate,'YYYY-MM-DD');
             var timestamp = start.add(exAccDays, 'days');
             var AfterExAccDays = new Date(timestamp); //After  90 days date
-
-            message = testingmessage+= ' <br> start:'+start+' -- AfterExAccDays:'+AfterExAccDays+' currentDate:'+currentDate;           
-            allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job step2-'+deceasedEmail, message);            
             if(AfterExAccDays > currentDate) {
-              testingmessage = '';
-             for(var i=0;i<=12;i++) {
+              for(var i=0;i<=2;i++) {               
               if ((i % 2) === 0) {
                 if(i>0) {
                   m = moment(currentSubscriptionEndDate,'YYYY-MM-DD');
-                  var timestamp2 = m.add(i, 'week');
-                  var weekDate = new Date(timestamp2,'YYYY-MM-DD');
-                  let todayDate = new Date('','YYYY-MM-DD');
+                  var timestamp2 = m.add(i, 'weeks');
+                  var weekDate = new Date(timestamp2); 
+                  var todayDate = currentDate;
+                  message = testingmessage+'  Subscription End Date  '+moment(currentSubscriptionEndDate).format("MM/DD/YYYY")+'  Week Date '+moment(weekDate).format("MM/DD/YYYY")+'  After Expire Account Date '+moment(AfterExAccDays).format("MM/DD/YYYY");
+                  let checkRemider = await TrackDeceasedReminder.findOne({customerId:key._id});
+                   let alreadySend = 1;
+                  if(checkRemider){// && checkRemider.deceasedReminder.length>0
+                    let deceasedReminderArray = checkRemider.deceasedReminder;
+                    alreadySend = deceasedReminderArray.findIndex( (x)=> { 
+                      const status = moment(x.reminderDate).isSame(moment(), 'day'); 
+                      return status
+                    });
+                  }
 
-                  message = testingmessage+= ' <br> todayDate:'+todayDate+' -- weekDate:'+weekDate+'-- AfterExAccDays:'+AfterExAccDays+'---weekDate:'+weekDate;           
-                  allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job step3-'+deceasedEmail, message);                              
-                  if(AfterExAccDays>weekDate && todayDate==weekDate) {
-                    let subscriptionEndDate =  moment(currentSubscriptionEndDate);
-                    let AfterExAccDate = moment(AfterExAccDays);
+                  if(AfterExAccDays>weekDate) {//  && todayDate==weekDate  && alreadySend==1
+                    let subscriptionEndDate =  moment(currentSubscriptionEndDate).format("MM/DD/YYYY");
+                    let AfterExAccDate = moment(AfterExAccDays).format("MM/DD/YYYY");
+
+                    let executorId = '';
+                    let adminId = '';let reminderinfo = [];
                       let executor = await HiredAdvisors.findOne({_id:ObjectId(key._id),'executorStatus':'Active'},{_id:1,username:1,firstName:1,lastName:1});  
-                    // testing  let executor = await User.findOne({_id:ObjectId("5cf60d6525b0a12c70d8bae5")},{_id:1,username:1,firstName:1,lastName:1});  
+                      //Testing // let executor = await User.findOne({_id:ObjectId("5cf60d6525b0a12c70d8bae5")},{_id:1,username:1,firstName:1,lastName:1});  
                       if(!executor){
                         executor = await trust.findOne({_id:ObjectId(key._id),'executorStatus':'Active'},{_id:1,username:1,firstName:1,lastName:1});
                       }
                       if(executor){
-                        console.log('executor',executor)
-                        message = deceasedFullName+' deceased and his executor is '+executor.username+' by cron job ';
-                        allActivityLog.updateActivityLogs(key._id, key._id, 'Mark As Deceased executor cron job', message)
-
+                        executorId = executor._id;
+                        message = message+' '+deceasedFullName+' deceased and his executor is '+executor.username+'';
+                        allActivityLog.updateActivityLogs(key._id, key._id, 'Mark As Deceased account close reminder cron job', message)
+                        reminderinfo = [{'executorId':executorId,'reminderDate':currentDate,'mailStatus':'success'}];
                         await sendingMail('DeceasedRemiderEmailToExecutor',executor.username,executor.firstName,deceasedEmail,deceasedFullName,subscriptionEndDate,AfterExAccDate);
-                      }else{//send mail to admin to inform deceased user scrscription date and deceased user didn't have any executor
-                   
-                      message = deceasedFullName+' deceased  and have not executor by cron job ';
-                      allActivityLog.updateActivityLogs(key._id, key._id, 'Mark As Deceased executor cron job', message)
-                   
-                      let adminUSer = await User.find({userType:"sysadmin","sectionAccess.deceasedrequest":"fullaccess"},{_id:1,firstName:1,lastName:1,username:1});
+                      }else{
+                        //send mail to admin to inform deceased user scrscription date and deceased user didn't have any executor                   
+                       message = message+' '+deceasedFullName+' deceased and have not executor';
+                       allActivityLog.updateActivityLogs(key._id, key._id, 'Mark As Deceased account close reminder cron job', message)
+                       let adminUSer = await User.find({userType:"sysadmin","sectionAccess.deceasedrequest":"fullaccess"},{_id:1,firstName:1,lastName:1,username:1});
                           adminUSer.forEach( async (row,index) => {   
+                            adminId = row._id;
                             await sendingMail('DeceasedRemiderEmailToAdmin',row.username,row.firstName,deceasedEmail,deceasedFullName,subscriptionEndDate,AfterExAccDate);
                           });
-                      }
-                      //res.send(resFormat.rSuccess({"Meesage":"123","Executor":executor,"EndDate":currentSubscriptionEndDate}))
+                           reminderinfo = [{'adminId':adminId,'reminderDate':currentDate,'mailStatus':'success'}];
+                      }  
+                     
+                    if(checkRemider == null){
+                      var insert = new TrackDeceasedReminder();
+                      insert.customerId = key._id;
+                      insert.subscriptionEndDate = currentSubscriptionEndDate;
+                      insert.deceasedReminder = reminderinfo;
+                      insert.createdOn = new Date();
+                      insert.save();
+                    }     
                   }
+                  //console.log('FOR LOOP '+i)             
                 }
-              }               
+              }
+              //callback()     
             }//weekly For loop
+           //}, (err) => {
+        //     console.log("inserted array >>>>>>>>>>>>>>>>",err)
+          
+        //  })
           }//Accound should be close for these customers.          
           testingmessage = '';
-          //   res.send(resFormat.rSuccess({"Meesage":"1234566768"}))
           }     
         });
       }else{
@@ -851,7 +869,6 @@ async function deceasedCustomersReminders(req, res){
       }
     }
   })
-
   res.send(resFormat.rSuccess({"Meesage":""}))
 }
 
@@ -1011,8 +1028,8 @@ router.get("/auto-renewal-on-reminder-email", autoRenewalOnReminderEmail);
 router.get("/auto-renewal-off-reminder-email", autoRenewalOffReminderEmail);
 router.get("/before-subscription-reminder-email", beforeSubscriptionReminderEmail);
 router.get("/check-deceased-customers", deceasedCustomers);
-router.get("/deceased-customers-reminders", deceasedCustomersReminders);
-//router.post("/deceased-customers-reminders", deceasedCustomersReminders);
+//router.get("/deceased-customers-reminders", deceasedCustomersReminders);
+router.post("/deceased-customers-reminders", deceasedCustomersReminders);
 router.get("/check-featured-advisor-frmdate", featuredAdvisorFromDate);
 router.get("/check-featured-advisor-enddate", featuredAdvisorEndDate);
 router.get("/check-featured-advisor-remider-mail", featuredAdvisorReminder);
