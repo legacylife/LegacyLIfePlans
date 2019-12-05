@@ -332,7 +332,9 @@ export class SubscriptionService {
   checkSubscriptionAdminPanel = (userDetails,callback) => {
     let returnArr = {}
     if(userDetails.userType != 'sysAdmin') {
+
       let subscriptions = userDetails.subscriptionDetails ? userDetails.subscriptionDetails : null
+    
       if( subscriptions != null ) {
         let currentSubscription = subscriptions[subscriptions.length-1]
         let diff: any
@@ -345,7 +347,6 @@ export class SubscriptionService {
           this.isAccountFree    = true
           this.isSubscribePlan  = false
           diff                  = this.getDateDiff( this.userCreateOn.toDate(), this.today )
-
           if( diff <= 30 ) {
             expireDate            = this.userCreateOn.add(30,"days")
             this.isPremiumExpired = false

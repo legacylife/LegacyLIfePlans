@@ -29,7 +29,7 @@
           (click)="markAsDeceased({}, true)">Mark as Deceased</button>
         <button mat-raised-button class="llp--secondary--btn" *ngIf="showDeceased"
           (click)="revokeAsDeceased({}, true)">Revoke as Deceased</button>
-        <!-- <button mat-raised-button class="llp--secondary--btn" (click)="executorCron({}, true)">Executor Cronjob</button> -->
+        <button mat-raised-button class="llp--secondary--btn" (click)="executorCron({}, true)">Executor Cronjob</button>
       </div>
     </mat-card>
   </div>
@@ -118,7 +118,7 @@
                   <span fxFlex></span>
                   <div fxFlex="40">
                     <mat-chip mat-sm-chip [color]="'warn'" class="warn active--status--chip">
-                      {{row?.lockoutLegacyDate | date: 'dd/MM/yyyy HH:mm'}}</mat-chip>
+                      {{row?.lockoutLegacyDate | date: 'MM/dd/yyyy HH:mm'}}</mat-chip>
                   </div>
                 </div>
               </mat-list-item>

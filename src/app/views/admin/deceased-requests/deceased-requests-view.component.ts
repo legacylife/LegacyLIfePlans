@@ -131,7 +131,6 @@ export class DeceasedRequestsViewComponent implements OnInit {
         if(this.row.deceased && this.row.deceased.revokeId){
          this.revokeIdData = this.row.deceased.revokeId;
         }
-
         this.subscriptionservice.checkSubscriptionAdminPanel( this.row, ( returnArr )=> {
           this.userCreateOn = returnArr.userCreateOn
           this.isSubscribedBefore = returnArr.isSubscribedBefore
