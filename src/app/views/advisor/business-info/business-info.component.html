@@ -54,15 +54,22 @@
                   <mat-icon matTooltip="Please select business type" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['businessType'].hasError('required') && firstFormGroup.controls['businessType'].touched"
                     class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
-
+              
                 <mat-form-field class="full-width">
+                  <input matInput name="websiteDomain" placeholder="Website Domain" value="" [formControl]="firstFormGroup.controls['websiteDomain']" maxlength="100">
+                  <mat-icon matTooltip="Please enter website domain" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['websiteDomain'].hasError('required') && firstFormGroup.controls['websiteDomain'].touched"
+                    class="red--alert">help_outline</mat-icon>
+                    <mat-icon matTooltip="Please enter valid website domain." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['websiteDomain'].invalid && firstFormGroup.controls['websiteDomain'].touched"
+                    class="red--alert">help_outline</mat-icon>                          
+                </mat-form-field>
+                <!-- <mat-form-field class="full-width">
                   <mat-select placeholder="Industry/Domain*" name="industryDomain" [formControl]="firstFormGroup.controls['industryDomain']"
                     multiple>
                     <mat-option *ngFor="let idl of industryDomainList" [value]="idl">{{idl}}</mat-option>
                   </mat-select>
                   <mat-icon matTooltip="Please select industry/domain type" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['industryDomain'].hasError('required') && firstFormGroup.controls['industryDomain'].touched"
                     class="red--alert">help_outline</mat-icon>
-                </mat-form-field>
+                </mat-form-field> -->
                 <div>
                   <button mat-raised-button matStepperNext class="llp--primary--btn full-width mb-0" [disabled]="firstFormGroup.invalid">Next</button>
                 </div>
@@ -128,6 +135,14 @@
                   class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
 
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Business Mobile Number" type="tel" value="" class="example-right-align" (keypress)="onlyNumbers($event)" maxlength="15" name="businessMobileNumber" [formControl]="secondFormGroup.controls['businessMobileNumber']">
+                  <mat-icon matTooltip="Please enter business mobile number" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['businessMobileNumber'].hasError('required') && secondFormGroup.controls['businessMobileNumber'].touched"
+                    class="red--alert">help_outline</mat-icon>
+                  <mat-icon matTooltip="Please enter valid business mobile number." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['businessMobileNumber'].hasError('pattern') && secondFormGroup.controls['businessMobileNumber'].touched"
+                  class="red--alert">help_outline</mat-icon>
+                </mat-form-field>
+
                 <div class="text-center">
                   <button mat-raised-button matStepperNext class="llp--primary--btn full-width mb-1" [disabled]="secondFormGroup.invalid">Next</button>
                   <button mat-raised-button matStepperPrevious class="llp--back--btn">
@@ -175,7 +190,7 @@
                 </mat-form-field>
 
                 <mat-radio-group aria-label="Select An Option" class="llp-radio" [formControl]="thirdFormGroup.controls['manageOtherProceducers']">
-                  <div class="checkbox-label">Do you manage other products?</div>
+                  <div class="checkbox-label">Do you manage other producers?</div>
                   <mat-radio-button (change)="showHowManyProducts('1')" value="1" class="ml-0" [checked]="profile.manageOtherProceducers && profile.manageOtherProceducers == '1'">Yes</mat-radio-button>
                   <mat-radio-button (change)="showHowManyProducts('2')" value="2" class="" [checked]="profile && !profile.manageOtherProceducers">No</mat-radio-button>
                 </mat-radio-group>

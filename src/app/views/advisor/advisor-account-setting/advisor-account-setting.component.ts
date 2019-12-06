@@ -68,7 +68,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   uploadedFile: File
   profilePicture: any = "assets/images/arkenea/default.jpg"
   activeLicenseList: string[] = activeLicense
-  industryDomainList: string[] = industryDomain.sort()
+  //industryDomainList: string[] = industryDomain.sort()// Remove as per client requirement check MOM on basecamp
   businessTypeList: string[] = businessType.sort()
   yearsOfServiceList: string[] = yearsOfService
   cityval: string
@@ -142,13 +142,15 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       businessName: new FormControl('', Validators.required),
       yearsOfService: new FormControl('', Validators.required),
       businessType: new FormControl([], Validators.required),
-      industryDomain: new FormControl([], Validators.required),
+     // industryDomain: new FormControl([], Validators.required),
+      websiteDomain: new FormControl('',Validators.compose([CustomValidators.url])),
       addressLine1: new FormControl('', Validators.required),
       addressLine2: new FormControl(''),
       city: new FormControl('', Validators.required),
       state: new FormControl('', Validators.required),
       zipcode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
       businessPhoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
+      businessMobileNumber: new FormControl(''),
       bioText: new FormControl('', Validators.required),
       websiteLinks: this.fb.array([this.fb.group({ links: ['', Validators.required, Validators.compose([CustomValidators.url])] })]),
       awardsYears: this.fb.array([this.fb.group({ title: ['', Validators.required], year: ['', Validators.required] })]),
@@ -267,7 +269,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.AddressForm.controls['businessName'].setValue(this.profile.businessName ? this.profile.businessName : "");
         this.AddressForm.controls['yearsOfService'].setValue(this.profile.yearsOfService ? this.profile.yearsOfService : "");
         this.AddressForm.controls['businessType'].setValue(this.profile.businessType ? this.profile.businessType : []);
-        this.AddressForm.controls['industryDomain'].setValue(this.profile.industryDomain ? this.profile.industryDomain : []);
+        this.AddressForm.controls['websiteDomain'].setValue(this.profile.websiteDomain ? this.profile.websiteDomain : []);
         this.AddressForm.controls['addressLine1'].setValue(this.profile.addressLine1 ? this.profile.addressLine1 : "");
         this.AddressForm.controls['addressLine2'].setValue(this.profile.addressLine2 ? this.profile.addressLine2 : "");
         this.AddressForm.controls['city'].setValue(this.profile.city ? this.profile.city : "");
@@ -275,6 +277,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.AddressForm.controls['zipcode'].setValue(this.profile.zipcode ? this.profile.zipcode : "");
         this.AddressForm.controls['bioText'].setValue(this.profile.bioText ? this.profile.bioText : "");
         this.AddressForm.controls['businessPhoneNumber'].setValue(this.profile.businessPhoneNumber ? this.profile.businessPhoneNumber : "");
+        this.AddressForm.controls['businessMobileNumber'].setValue(this.profile.businessMobileNumber ? this.profile.businessMobileNumber : "");
 
         this.awards = this.profile.awardsYears;
         this.websiteLinks = this.profile.websiteLinks;
@@ -479,8 +482,9 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       businessName: this.AddressForm.controls['businessName'].value,
       yearsOfService: this.AddressForm.controls['yearsOfService'].value,
       businessType: this.AddressForm.controls['businessType'].value,
-      industryDomain: this.AddressForm.controls['industryDomain'].value,
+      websiteDomain: this.AddressForm.controls['websiteDomain'].value,
       businessPhoneNumber: this.AddressForm.controls['businessPhoneNumber'].value,
+      businessMobileNumber: this.AddressForm.controls['businessMobileNumber'].value,
       bioText: this.AddressForm.controls['bioText'].value,
       websiteLinks: this.websiteLinks,
       awardsYears: this.awardsYears,
@@ -895,10 +899,14 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     else {
       this.router.navigate(['/subscription'])
     }
-
-
   }
 
+  onlyNumbers(event)
+  {  
+    if ((event.which != 46 ) && (event.which < 48 || event.which > 57)) {
+      event.preventDefault();
+    }
+  }
 
   checkUrl(columnName) {
     var status = false
@@ -924,8 +932,6 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       case "linkedIn":
         this.linkedIn = status;
         break;
-    }
-
-    
+    }  
   }
 }

@@ -265,13 +265,16 @@
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
-                      <mat-label>Industry/Domain*</mat-label>
-                      <mat-select name="industryDomain" [formControl]="AddressForm.controls['industryDomain']" multiple>
+                      <mat-label>Website Domain</mat-label>
+                      <!-- <mat-select name="industryDomain" [formControl]="AddressForm.controls['industryDomain']" multiple>
                         <mat-option *ngFor="let idl of industryDomainList" [value]="idl">{{idl}}</mat-option>
                       </mat-select>
                       <mat-icon matTooltip="Please select industry/domain" matTooltipClass="llp--tooltip error"
                         *ngIf="AddressForm.controls['industryDomain'].hasError('required') && AddressForm.controls['industryDomain'].touched"
-                        class="red--alert">help_outline</mat-icon>
+                        class="red--alert">help_outline</mat-icon> -->
+                     <input matInput name="websiteDomain" placeholder="Website Domain" value="" [formControl]="AddressForm.controls['websiteDomain']" maxlength="100">
+                      <mat-icon matTooltip="Please enter website domain" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['websiteDomain'].hasError('required') && AddressForm.controls['websiteDomain'].touched" class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please enter valid website domain." matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['websiteDomain'].invalid && AddressForm.controls['websiteDomain'].touched" class="red--alert">help_outline</mat-icon>        
                     </mat-form-field>
                   </div>
                 </div>
@@ -331,20 +334,34 @@
                     </mat-form-field>
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
-
+                  <mat-form-field class="full-width">
+                    <input matInput placeholder="Business Phone*" type="tel" value="" class=""
+                      name="businessPhoneNumber" [formControl]="AddressForm.controls['businessPhoneNumber']">
+                    <span matPrefix>+1</span>
+                    <mat-icon matTooltip="Please enter business phone" matTooltipClass="llp--tooltip error"
+                      *ngIf="AddressForm.controls['businessPhoneNumber'].hasError('required') && AddressForm.controls['businessPhoneNumber'].touched"
+                      class="red--alert">help_outline</mat-icon>
+                    <mat-icon matTooltip="Please enter valid business phone number."
+                      matTooltipClass="llp--tooltip error"
+                      *ngIf="AddressForm.controls['businessPhoneNumber'].hasError('pattern') && AddressForm.controls['businessPhoneNumber'].touched"
+                      class="red--alert">help_outline</mat-icon>
+                  </mat-form-field>
+                  </div>
+                  </div>
+                  <div fxLayout="row wrap">
+                  <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Business Phone*" type="tel" value="" class=""
-                        name="businessPhoneNumber" [formControl]="AddressForm.controls['businessPhoneNumber']">
-                      <span matPrefix>+1</span>
-                      <mat-icon matTooltip="Please enter business phone" matTooltipClass="llp--tooltip error"
-                        *ngIf="AddressForm.controls['businessPhoneNumber'].hasError('required') && AddressForm.controls['businessPhoneNumber'].touched"
+                      <input matInput placeholder="Business Mobile Number" type="tel" value="" class="" (keypress)="onlyNumbers($event)" maxlength="15" name="businessMobileNumber" [formControl]="AddressForm.controls['businessMobileNumber']">
+                      <mat-icon matTooltip="Please enter business mobile number" matTooltipClass="llp--tooltip error"
+                        *ngIf="AddressForm.controls['businessMobileNumber'].hasError('required') && AddressForm.controls['businessMobileNumber'].touched"
                         class="red--alert">help_outline</mat-icon>
-                      <mat-icon matTooltip="Please enter valid business phone number."
+                      <mat-icon matTooltip="Please enter valid business mobile number."
                         matTooltipClass="llp--tooltip error"
-                        *ngIf="AddressForm.controls['businessPhoneNumber'].hasError('pattern') && AddressForm.controls['businessPhoneNumber'].touched"
+                        *ngIf="AddressForm.controls['businessMobileNumber'].hasError('pattern') && AddressForm.controls['businessMobileNumber'].touched"
                         class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
-                  </div>
+                    </div>
+
                 </div>
                 <h3 class="header--text">Featured Information</h3>
                 <div fxLayout="row wrap">
@@ -562,7 +579,7 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-radio-group aria-label="Select an option" class="llp-radio" name="Producers"
                       [formControl]="LicenseForm.controls['manageOtherProceducers']">
-                      <div class="checkbox-label">Do you manage other products?</div>
+                      <div class="checkbox-label">Do you manage other producers?</div>
                       <mat-radio-button (change)="showHowManyProducts('1')" value="1" class=""
                         [checked]="profile.howManyProducers !== ''">Yes</mat-radio-button>
                       <mat-radio-button (change)="showHowManyProducts('2')" value="2" class=""

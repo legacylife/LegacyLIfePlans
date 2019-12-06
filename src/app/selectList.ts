@@ -491,6 +491,14 @@ export const businessType = [
   "Accountant",
   "Attorney",
   "Financial Planner",
+  "Insurance Agent",  
+  "Tax Specialist"
+];
+
+export const businessTypeOld = [
+  "Accountant",
+  "Attorney",
+  "Financial Planner",
   "Health",  
   "Insurance Agent",  
   "Life",  
@@ -498,7 +506,8 @@ export const businessType = [
   "Tax Specialist"
 ];
 
-export const businessTypeIcon = [
+
+export const businessTypeIconOLd = [
   {
     opt_name: "Accountant",
     opt_code: "edit"
@@ -533,6 +542,28 @@ export const businessTypeIcon = [
   }
 ];
 
+export const businessTypeIcon = [
+  {
+    opt_name: "Accountant",
+    opt_code: "edit"
+  },
+  {
+    opt_name: "Attorney",
+    opt_code: "people"
+  },
+  {
+    opt_name: "Financial Planner",
+    opt_code: "local_hospital"
+  },
+  {
+    opt_name: "Insurance Agent",
+    opt_code: "settings_input_svideo"
+  },  
+  {
+    opt_name: "Tax Specialist",
+    opt_code: "insert_drive_file"
+  }
+];
 export const yearsOfService = [
   "0 - 5 years",
   "5 - 10 years",

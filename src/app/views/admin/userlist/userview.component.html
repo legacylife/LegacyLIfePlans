@@ -23,7 +23,13 @@
           <mat-list-item *ngIf="row?.userType == 'customer' && row?.phoneNumber!=''">
             <mat-icon class="mr-1">phone</mat-icon> {{row?.phoneNumber ? row?.phoneNumber : '--'}}</mat-list-item>
           <mat-list-item *ngIf="row?.userType == 'advisor' && row?.businessPhoneNumber!=''">
-            <mat-icon class="mr-1">phone</mat-icon> {{row?.businessPhoneNumber ? row?.businessPhoneNumber : '--'}}</mat-list-item>
+          <mat-icon class="mr-1">phone</mat-icon> {{row?.businessPhoneNumber ? row?.businessPhoneNumber : '--'}}</mat-list-item>            
+          <mat-list-item *ngIf="row?.userType == 'advisor' && row?.businessMobileNumber!=''">
+              <mat-icon class="mr-1">smartphone</mat-icon> {{row?.businessMobileNumber ? row?.businessMobileNumber : '--'}}</mat-list-item>            
+          
+          <mat-list-item *ngIf="row?.userType == 'advisor' && row?.websiteDomain!=''">
+                <mat-icon class="mr-1">link</mat-icon><a href="{{row?.websiteDomain ? row?.websiteDomain : '#'}}" target="_blanck">{{row?.websiteDomain ? row?.websiteDomain : '--'}}</a></mat-list-item>            
+
         </mat-list>
       </mat-card-content>
       <div class="profile-actions mb-1" fxLayoutAlign="center center" *ngIf="row?.userType == 'advisor' && row?.status == 'Active' && (row?.IamIntrested && row?.IamIntrested != 'Yes') && (row?.refereAndEarnSubscriptionDetail && row?.refereAndEarnSubscriptionDetail.status == 'Active' && row?.refereAndEarnSubscriptionDetail.endDate == '')">

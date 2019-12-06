@@ -38,7 +38,7 @@ export class BusinessInfoComponent implements OnInit {
   advisorDocumentsList: any;
   yearsOfServiceLists: any;
   businessTypeLists: any;
-  industryDomainLists: any;
+  //industryDomainLists: any; Removed as per client requirement jira 433 (basecamp MOM)
   licenceHeldLists: any;
   step: any;
   profile: any;
@@ -78,7 +78,8 @@ export class BusinessInfoComponent implements OnInit {
       yearsOfService: new FormControl('', Validators.required),
       businessName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
       businessType: new FormControl([], Validators.required),
-      industryDomain: new FormControl([], Validators.required)
+      //industryDomain: new FormControl([], Validators.required)
+      websiteDomain: new FormControl('',Validators.compose([CustomValidators.url]))
     });
 
     this.secondFormGroup = this.fb.group({
@@ -87,7 +88,8 @@ export class BusinessInfoComponent implements OnInit {
       city: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1)])),//, Validators.maxLength(50)
       state: new FormControl('', Validators.required),
       zipcode: new FormControl('', [Validators.required,Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
-      businessPhoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)])
+      businessPhoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
+      businessMobileNumber: new FormControl('')
     });
 
     this.thirdFormGroup = this.fb.group({
@@ -189,18 +191,17 @@ export class BusinessInfoComponent implements OnInit {
     }
     // this.loader.open();
     this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe(result => {
+      this.loader.close();
       if (result.status == "error") {
         this.profile = [];
-        this.loader.close();
       } else {
         this.profile = result.data.userProfile;
-
         this.firstFormGroup.controls['firstName'].setValue(this.profile.firstName);
         this.firstFormGroup.controls['lastName'].setValue(this.profile.lastName);
         this.firstFormGroup.controls['yearsOfService'].setValue(this.profile.yearsOfService ? this.profile.yearsOfService : "");
         this.firstFormGroup.controls['businessName'].setValue(this.profile.businessName ? this.profile.businessName : "");
         this.firstFormGroup.controls['businessType'].setValue(this.profile.businessType ? this.profile.businessType : []);
-        this.firstFormGroup.controls['industryDomain'].setValue(this.profile.industryDomain ? this.profile.industryDomain : []);
+        this.firstFormGroup.controls['websiteDomain'].setValue(this.profile.websiteDomain ? this.profile.websiteDomain : '');
 
         this.secondFormGroup.controls['addressLine1'].setValue(this.profile.addressLine1);
         this.secondFormGroup.controls['addressLine2'].setValue(this.profile.addressLine2);
@@ -208,25 +209,22 @@ export class BusinessInfoComponent implements OnInit {
         this.secondFormGroup.controls['city'].setValue(this.profile.city);
         this.secondFormGroup.controls['state'].setValue(this.profile.state);
         this.secondFormGroup.controls['businessPhoneNumber'].setValue(this.profile.businessPhoneNumber);
+        this.secondFormGroup.controls['businessMobileNumber'].setValue(this.profile.businessMobileNumber ? this.profile.businessMobileNumber :"");
 
-          this.thirdFormGroup.controls['activeLicenceHeld'].setValue(this.profile.activeLicenceHeld ? this.profile.activeLicenceHeld : []);
-          this.thirdFormGroup.controls['agencyOversees'].setValue(this.profile.agencyOversees);
-          this.thirdFormGroup.controls['managingPrincipleName'].setValue(this.profile.managingPrincipleName);
-          this.thirdFormGroup.controls['manageOtherProceducers'].setValue(this.profile.manageOtherProceducers);
-          this.thirdFormGroup.controls['howManyProducers'].setValue(this.profile.howManyProducers);
-          this.profile.manageOtherProceducers == 1 ? this.showHowManyProducer = true : this.showHowManyProducer = false;
-          this.forthFormGroup.controls['advisorDocuments_temp'].setValue('');
+        this.thirdFormGroup.controls['activeLicenceHeld'].setValue(this.profile.activeLicenceHeld ? this.profile.activeLicenceHeld : []);
+        this.thirdFormGroup.controls['agencyOversees'].setValue(this.profile.agencyOversees);
+        this.thirdFormGroup.controls['managingPrincipleName'].setValue(this.profile.managingPrincipleName);
+        this.thirdFormGroup.controls['manageOtherProceducers'].setValue(this.profile.manageOtherProceducers);
+        this.thirdFormGroup.controls['howManyProducers'].setValue(this.profile.howManyProducers);
+        this.profile.manageOtherProceducers == 1 ? this.showHowManyProducer = true : this.showHowManyProducer = false;
+        this.forthFormGroup.controls['advisorDocuments_temp'].setValue('');
 
-          this.advisorDocumentsList = this.profile.advisorDocuments;
-          if(this.profile.advisorDocuments.length>0){
-            this.forthFormGroup.controls['advisorDocuments_temp'].setValue('1');
-            this.documentsMissing = false;
-          }
-          
-          this.loader.close();
-        }
-
-        this.loader.close();
+        this.advisorDocumentsList = this.profile.advisorDocuments;
+        if(this.profile.advisorDocuments.length>0){
+          this.forthFormGroup.controls['advisorDocuments_temp'].setValue('1');
+          this.documentsMissing = false;
+        }                  
+       }
       }, 
     (err) => {
       console.error(err);
@@ -354,4 +352,11 @@ getProfileField = (query = {}, search = false) => {
     textBox.value = textBox.value.replace(re, (m, $1, $2) => $1 + $2.toUpperCase());
   }
 
+  onlyNumbers(event)
+  {  
+    if ((event.which != 46 ) && (event.which < 48 || event.which > 57)) {
+      event.preventDefault();
+    }
+  }
+  
 }
