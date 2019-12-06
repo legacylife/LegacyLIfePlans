@@ -6,16 +6,19 @@ For deceased user subscription ends, system sent an email to executor / admin.
 var deceasedSchema = new mongoose.Schema({
   customerId:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   subscriptionEndDate:String,
-  deceasedReminder : {
+  deceasedReminder : [{
     //lockoutLegacyDate: String,
-    reminderCount:String,
-    trustId:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},    
-    reminders:[{      
-      reminderDate:Date,
-      mailStatus: String
-    }]
-  },
-  remaining: String,
+    //reminderCount:String,
+    executorId:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},    
+    adminId:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},    
+    reminderDate:Date,
+    mailStatus: String
+    // reminders:[{      
+    //   reminderDate:Date,
+    //   mailStatus: String
+    // }]
+  }],
+ // remaining: String,
   createdOn: Date
 })
 

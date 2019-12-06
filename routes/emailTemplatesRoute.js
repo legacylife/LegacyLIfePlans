@@ -35,7 +35,7 @@ function list(req, res) {
       }
     })
   }
-  EmailTemplate.count(query, function(err, templateCount) {
+  EmailTemplate.countDocuments(query, function(err, templateCount) {
     if(templateCount) {
       totalRecords = templateCount
     }

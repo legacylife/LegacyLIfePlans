@@ -50,7 +50,7 @@ function list(req, res) {
       }
     })
   }
-  GlobalSetting.count(query, function(err, globalCount) {
+  GlobalSetting.countDocuments(query, function(err, globalCount) {
     if(globalCount) {
       totalRecords = globalCount
     }

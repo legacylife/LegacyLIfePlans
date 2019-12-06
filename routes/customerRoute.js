@@ -502,8 +502,8 @@ function deleteProfile(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(profileInfo._id);         
-          allActivityLog.updateActivityLogs( fromId, updatedinfo.customerId, 'Personal Profile Details Deleted', message, 'My Essentials', 'Personal Profile' )
           let message = resMessage.data( 607, [{key:'{field}',val:'Record'},{key:'{status}',val:'deleted'}] )
+          allActivityLog.updateActivityLogs( fromId, updatedinfo.customerId, 'Personal Profile Details Deleted', message, 'My Essentials', 'Personal Profile' )
           let result = { "message": message }
           res.status(200).send(resFormat.rSuccess(result))
         }
@@ -616,9 +616,8 @@ function deleteProfessionals(req, res) {
           res.send(resFormat.rError(err))
         } else {
           actitivityLog.removeActivityLog(profileInfo._id);
-        
-          allActivityLog.updateActivityLogs( fromId, updatedinfo.customerId, 'My Professional Details Deleted', message, 'My Essentials', 'My Professionals' )
           let message = resMessage.data( 607, [{key:'{field}',val:'Record'},{key:'{status}',val:'deleted'}] )
+          allActivityLog.updateActivityLogs( fromId, updatedinfo.customerId, 'My Professional Details Deleted', message, 'My Essentials', 'My Professionals' )
           let result = { "message": message }
           res.status(200).send(resFormat.rSuccess(result))
         }

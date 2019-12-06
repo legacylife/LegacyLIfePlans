@@ -36,9 +36,13 @@ passport.use(new LocalStrategy({
         }
 
       }else if (user.deceased != null && user.deceased.status=="Active") {
-        return done(null, false, {
-          message: 'User is deceased'
-        })
+        var legacyEndDate = new Date(user.lockoutLegacyDate);
+        var currentDate  = new Date();
+        if(legacyEndDate < currentDate ) {
+          return done(null, false, {
+            message: 'User is deceased'
+          })
+        }
       }
 
       const validator = user.validPassword(password, user)

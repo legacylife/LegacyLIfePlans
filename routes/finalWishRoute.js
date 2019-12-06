@@ -34,7 +34,7 @@ function finalList(req, res) {
       }
     })
   }
-  finalWish.count(query, function (err, listCount) {
+  finalWish.countDocuments(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
     }

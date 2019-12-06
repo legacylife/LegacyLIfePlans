@@ -37,7 +37,7 @@ function LettersMessageList12(req, res) {
       }
     })
   }
-  lettersMessage.count(query, function (err, listCount) {
+  lettersMessage.countDocuments(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
     }
@@ -143,7 +143,7 @@ function LettersMessageList(req, res) {
       }
     })
   }
-  lettersMessage.count(query, function (err, listCount) {
+  lettersMessage.countDocuments(query, function (err, listCount) {
     if (listCount) {
       totalRecords = listCount
     }

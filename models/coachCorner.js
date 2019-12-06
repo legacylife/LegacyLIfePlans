@@ -13,7 +13,14 @@ var coachCornerSchema = new mongoose.Schema({
   title: String,
   description: String,
   category: { type: mongoose.Types.ObjectId, ref: 'coach_corner_category' },
-  image: String,
+  //image: String,
+  //image:Array,
+  image : {
+    title : String,
+    size : String,
+    extention : String,
+    tmpName : String
+  }, 
   viewDetails: [{
     userId: { type: mongoose.Types.ObjectId, ref: 'users' },
     userIpAddress: String,

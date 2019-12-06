@@ -211,7 +211,6 @@ const inviteeAdd = (req) => {
           inviteToUserId = data._id;
           insertUserExistFlag = false; // if email exist in system do not insert so flag becomes false
         }
-
         var InviteObj = new Invite();
         InviteObj.inviteById = inviteById;
         InviteObj.inviteToId = inviteToUserId;
@@ -252,7 +251,7 @@ const inviteeAdd = (req) => {
       })
       
     }, (err) => {
-        console.log("inserted array >>>>>>>>>>>>>>>>",insertedArray,"-----------members.length>>>>>>>>>>>",members.length)
+        //console.log("inserted array >>>>>>>>>>>>>>>>",insertedArray,"-----------members.length>>>>>>>>>>>",members.length)
         resolve(members.length);
     })
   })

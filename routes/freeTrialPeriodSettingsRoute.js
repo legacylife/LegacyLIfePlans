@@ -23,7 +23,7 @@ function list(req, res) {
       }
     })
   }
-  FreeTrailPeriodSetting.count(query, function(err, freeTrialCount) {
+  FreeTrailPeriodSetting.countDocuments(query, function(err, freeTrialCount) {
     if(freeTrialCount) {
       totalRecords = freeTrialCount
     }

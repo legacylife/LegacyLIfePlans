@@ -772,11 +772,12 @@ async function reactivateReferEarn(req, res) {
         var newDt = new Date()
             newDt.setDate(newDt.getDate() + referEarnExtendedDays)
         var params = {  IamIntrested: 'Yes',
-                        refereAndEarnSubscriptionDetail: {  endDate: newDt,
+                        refereAndEarnSubscriptionDetail: {  endDate: "",
                                                             targetCount: referEarnTargetCount,
                                                             noOfDaysExtended: referEarnExtendedDays,
                                                             updatedOn: new Date(),
-                                                            status: 'Active'
+                                                            status: 'Active',
+                                                            lastInviteEndDate:new Date(),
                                                           }
                       }
         User.update({ _id: userList._id }, { $set: params }, function (err, updatedUser) {
