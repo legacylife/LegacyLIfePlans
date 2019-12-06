@@ -44,6 +44,7 @@ var userSchema = new mongoose.Schema({
   businessType : Array, 
   yearsOfService : String, 
   industryDomain : Array, 
+  websiteDomain : String, 
   bioText : String, 
   socialMediaLinks : {
       facebook : String, 
@@ -60,6 +61,7 @@ var userSchema = new mongoose.Schema({
   websiteLinks:Array,
   businessPhonePrefix : String, 
   businessPhoneNumber : String, 
+  businessMobileNumber : String, 
   activeLicenceHeld : Array, 
   agencyOversees : String, 
   managingPrincipleName : String, 

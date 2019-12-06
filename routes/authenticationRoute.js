@@ -694,7 +694,7 @@ async function checkUserOtp(req, res) {
           let referEarnSettingsArr = await referEarnSettings.findOne(); 
           let refereAndEarnSubscriptionDetailObj = {};  
           
-          console.log("referEarnSettingsArr >>>>>>>>",referEarnSettingsArr)
+          //console.log("referEarnSettingsArr >>>>>>>>",referEarnSettingsArr)
 
           if (referEarnSettingsArr && referEarnSettingsArr.status == 'On' && otpdata.userType == 'advisor') {
 
@@ -716,7 +716,7 @@ async function checkUserOtp(req, res) {
           if (req.body.query.inviteCode) {
             let invitesCodeExists = await Invite.findOne({ inviteCode: req.body.query.inviteCode, email: otpdata.username, inviteType: otpdata.userType });
             if (invitesCodeExists) {
-              userInvitedById = ObjectId(invitesCodeExists.inviteById);
+              userInvitedById = invitesCodeExists.inviteById;
             }
           }
           var user = new User()
@@ -725,7 +725,9 @@ async function checkUserOtp(req, res) {
           user.status = otpdata.status
           user.lastLoggedInOn = new Date();
           user.emailVerified = true;
-          user.invitedBy = userInvitedById;
+          if(userInvitedById){
+            user.invitedBy = userInvitedById;
+          }
           user.freeTrialPeriod = freeTrailPeriodObj;
           user.refereAndEarnSubscriptionDetail = refereAndEarnSubscriptionDetailObj;
           user.lockoutLegacyPeriod = '2';
