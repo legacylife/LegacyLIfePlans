@@ -245,23 +245,15 @@
                 <div *ngIf="advisorDocumentsList" class="doc--uploaded">
                   <h3 class="header--text fnt--16">Uploaded documents</h3>
                   <mat-chip-list class="doc--list" *ngFor="let doc of advisorDocumentsList; index as i">
-                      <mat-chip><a href="{{docPath}}{{doc.tmpName}}" target="_blanck" >{{doc.title}}</a><mat-icon matChipRemove  (click)="docDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
+                      <mat-chip><a (click)="downloadFile(doc.tmpName)"  target="_blanck" >{{doc.title}}</a><mat-icon matChipRemove  (click)="docDelete(i,doc.title,doc.tmpName)">close</mat-icon></mat-chip>
                   </mat-chip-list>
                 </div>
 
                 <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
                     <mat-chip><mat-error>{{err.error}}</mat-error></mat-chip>
                 </mat-chip-list>    
-               <!--
 
-              <div class="progress" style="margin-bottom: 0;color:#000 !important;" *ngIf="uploader.getNotUploadedItems().length">
-                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
-                <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
-                <p>&nbsp;</p>
-              </div>
-              -->
-
-              <div class="progress" style="margin-bottom: 0;" *ngIf="currentProgessinPercent>0">
+              <div class="progress" style="margin-bottom: 0;color:#000 !important;" *ngIf="currentProgessinPercent>0">
                 <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': currentProgessinPercent + '%' }">{{currentProgessinPercent}}%</div>
                 <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
                 <p>&nbsp;</p>

@@ -57,7 +57,8 @@ export class BusinessInfoComponent implements OnInit {
     private loader: AppLoaderService,private confirmService: AppConfirmService) {}//,private http: Http, private el: ElementRef
   
   ngOnInit() {
-    this.docPath = filePath;   
+    const filePath = this.userId+'/'+s3Details.advisorsDocumentsPath;
+    this.docPath = filePath; 
     localStorage.setItem("step",'0');
     this.userId = localStorage.getItem("endUserId");
     this.stateList = states;
@@ -265,12 +266,13 @@ export class BusinessInfoComponent implements OnInit {
       };
       this.uploader.onCompleteAll=()=>{
         this.uploader.clearQueue();
-        this.currentProgessinPercent = 0;
+        //this.currentProgessinPercent = 0;
       }
     }
   }
 
   updateProgressBar(){
+    console.log('here1',this.currentProgessinPercent)
     let uploaderLength = 0;  
     if(this.currentProgessinPercent==0){
       this.uploader.onProgressItem = (progress:any) => {
@@ -278,10 +280,11 @@ export class BusinessInfoComponent implements OnInit {
       }
     }
     this.uploader.onProgressAll = (progress:any) => {
-      this.currentProgessinPercent = (uploaderLength)/100;
-      let totalLength = progress;
-      this.currentProgessinPercent = totalLength - 100;
+      // this.currentProgessinPercent = (uploaderLength)/100;
+      // let totalLength = progress;
+      this.currentProgessinPercent = progress;//totalLength - 100;
     }
+    console.log('here--->',this.currentProgessinPercent)
   }
 
    isExtension(ext, extnArray) {
@@ -357,6 +360,23 @@ getProfileField = (query = {}, search = false) => {
     if ((event.which != 46 ) && (event.which < 48 || event.which > 57)) {
       event.preventDefault();
     }
+  }
+
+  downloadFile = filename => {
+    let query = {};
+    let req_vars = {
+      query: Object.assign({ docPath: this.docPath, filename: filename }, query),
+      folderName:s3Details.advisorsDocumentsPath,
+      subFolderName:'Business Info'
+    };
+    this.userapi.download("documents/downloadDocument", req_vars).subscribe(res => {
+        var downloadURL = window.URL.createObjectURL(res);
+        let filePath = downloadURL;
+        var link=document.createElement('a');
+        link.href = filePath;
+        link.download = filename;
+        link.click();
+      });
   }
   
 }
