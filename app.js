@@ -7,7 +7,19 @@ var port = normalizePort(process.env.PORT || '443')
 var express = require('express')
 var router = express.Router()
 const apps = express()
- const server = http.createServer(app).listen(443, () => {
+
+
+
+
+
+
+var options = {
+    key: fs.readFileSync('../llp-privatekey.pem'),
+    cert: fs.readFileSync('../llp-server.crt'),
+};
+
+
+ const server = http.createServer(options, app).listen(443, () => {
    console.log('http server running at ' + 443)
  })
  var chats = require('./routes/chatcontrollerRoute')
