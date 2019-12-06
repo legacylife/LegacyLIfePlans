@@ -19,8 +19,8 @@ var options = {
 };
 
 
- const server = http.createServer(options, app).listen(443, () => {
-   console.log('http server running at ' + 443)
+ const server = https.createServer(options, app).listen(443, () => {
+   console.log('https server running at ' + 443)
  })
  var chats = require('./routes/chatcontrollerRoute')
  
