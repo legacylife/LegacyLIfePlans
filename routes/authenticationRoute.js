@@ -694,7 +694,7 @@ async function checkUserOtp(req, res) {
           let referEarnSettingsArr = await referEarnSettings.findOne(); 
           let refereAndEarnSubscriptionDetailObj = {};  
           
-          console.log("referEarnSettingsArr >>>>>>>>",referEarnSettingsArr)
+          //console.log("referEarnSettingsArr >>>>>>>>",referEarnSettingsArr)
 
           if (referEarnSettingsArr && referEarnSettingsArr.status == 'On' && otpdata.userType == 'advisor') {
 
@@ -725,10 +725,11 @@ async function checkUserOtp(req, res) {
           user.status = otpdata.status
           user.lastLoggedInOn = new Date();
           user.emailVerified = true;
-          if(userInvitedById)
-          {
+
+          if(userInvitedById){
             user.invitedBy = userInvitedById;
-          }          
+          }
+
           user.freeTrialPeriod = freeTrailPeriodObj;
           user.refereAndEarnSubscriptionDetail = refereAndEarnSubscriptionDetailObj;
           user.lockoutLegacyPeriod = '2';
