@@ -1634,7 +1634,7 @@ function deleteDoc(req, res) {
           res.send(resFormat.rError(err))
         } else {
           resMsg = deleteDocumentS3(fileDetails.customerId,docFilePath,fileName.docName);
-          getuserFolderSize(fileDetails.customerId);
+          getuserFolderSize(fileDetails._id);
           let result = { userId:fileDetails._id, "message": resMsg }
           res.send(resFormat.rSuccess(result))
         }
@@ -2304,8 +2304,10 @@ function downloadDocs(req,res) {
     });
     stream.pipe(res);
     let message = resMessage.data( 607, [{key: '{field}',val: 'File'}, {key: '{status}',val: 'downloaded'}] )
-    //Update activity logs
-    allActivityLog.updateActivityLogs( fromId, toId, "File Download", message, folderName, subFolderName, filename)
+    if(fromId && toId){
+      //Update activity logs
+      allActivityLog.updateActivityLogs( fromId, toId, "File Download", message, folderName, subFolderName, filename)
+    }
   } catch (error) {
     res.status(401).send(resFormat.rError({message :error}))  
   }

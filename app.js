@@ -9,19 +9,20 @@ var router = express.Router()
 const apps = express()
 
 
+ /*const server = http.createServer(app).listen(80, () => {
+   console.log('http server running at ' + 80)
+ })*/
 
-
-
-
-var options = {
-    key: fs.readFileSync('../llp-privatekey.pem'),
-    cert: fs.readFileSync('../llp-server.crt'),
+ var options = {
+  key: fs.readFileSync('../llp-privatekey.pem'),
+  cert: fs.readFileSync('../llp-server.crt'),
 };
+const server = https.createServer(options, app).listen(443, () => {
+ console.log('https server running at ' + 443)
+})
 
 
- const server = https.createServer(options, app).listen(443, () => {
-   console.log('https server running at ' + 443)
- })
+
  var chats = require('./routes/chatcontrollerRoute')
  
  let socketIO = require('socket.io');
