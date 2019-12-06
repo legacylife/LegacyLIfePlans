@@ -40,8 +40,8 @@ var constants = {
     secret: "GI/4d3sT5WtV4Rg/QtxRPVo2RsRn71PH/ZdKHt99",
     fromEmail: "accountservices@legacylifeplans.com",
   }, 
-  clientUrl: process.env.clientUrl || 'http://ec2-52-2-182-205.compute-1.amazonaws.com', 
-  mailServerUrl : process.env.mailServerUri || 'http://ec2-52-2-182-205.compute-1.amazonaws.com', 
+  clientUrl: process.env.clientUrl || 'https://ec2-52-2-182-205.compute-1.amazonaws.com', 
+  mailServerUrl : process.env.mailServerUri || 'https://ec2-52-2-182-205.compute-1.amazonaws.com', 
   socialMedia: {
     facebook: {
       clientId: ''
