@@ -725,9 +725,11 @@ async function checkUserOtp(req, res) {
           user.status = otpdata.status
           user.lastLoggedInOn = new Date();
           user.emailVerified = true;
+
           if(userInvitedById){
             user.invitedBy = userInvitedById;
           }
+
           user.freeTrialPeriod = freeTrailPeriodObj;
           user.refereAndEarnSubscriptionDetail = refereAndEarnSubscriptionDetailObj;
           user.lockoutLegacyPeriod = '2';
