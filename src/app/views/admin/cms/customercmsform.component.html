@@ -1,5 +1,6 @@
-<form class="llp-form-wrapper pt-1" [formGroup]="customerCmsForm" method="post"  (ngSubmit)="updatePage(customerCmsForm.value)">
-    <div fxLayout="row wrap"  *ngIf="aceessSection">
+<form class="llp-form-wrapper pt-1" [formGroup]="customerCmsForm" (ngSubmit)="updatePage(customerCmsForm.value)" >
+     <!-- -->
+    <div fxLayout="row wrap" *ngIf="aceessSection">
          <!-- Section 1 -->
         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
             <mat-card class="p-0 mb-1">
@@ -8,54 +9,52 @@
                     <div fxLayout="row wrap">
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
                             class="cust--gapp">
-                            <label class="sections--label">Title</label>
+                            <label class="sections--label">Title*</label>
                             <mat-form-field class="full-width">
-                                <input matInput name="pagetitle" [formControl]="customerCmsForm.controls['pageTitle']"
-                                    value="">
+                                <input matInput name="pagetitle" maxlength="35" [formControl]="customerCmsForm.controls['pageTitle']"  value="">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
-                            <label class="sections--label">Sub Title</label>
+                            <label class="sections--label">Sub Title*</label>
                             <mat-form-field class="full-width">
-                                <input matInput name="pagesubTitle"
-                                    [formControl]="customerCmsForm.controls['pagesubTitle']" value="">
+                                <input matInput name="pagesubTitle" maxlength="160" [formControl]="customerCmsForm.controls['pagesubTitle']" value="">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60"
-                            class="cust--gapp">
-                            <label class="sections--label">Top Banner</label>
-                            <div class="upload--buss--docs--sec">
-                                <div class="upload--box fileupload-drop-zone" ng2FileDrop
-                                    [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
-                                    [uploader]="uploader">
-                                    <input type="file" name="documents" ng2FileSelect [uploader]="uploader"
-                                        (change)="fileOverBase('')" />
-                                    <mat-icon class="cloud-icon">cloud_upload</mat-icon>
-                                    <div class="select--file">Select file from your computer</div>
-                                </div>
-                                <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
+                        class="cust--gapp">
+                        <label class="sections--label">Top Banner*</label>
+                        <div class="upload--buss--docs--sec">
+                            <div class="upload--box fileupload-drop-zone" ng2FileDrop
+                                [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
+                                [uploader]="uploader">
+                                <input type="file" name="documents" ng2FileSelect [uploader]="uploader"
+                                    (change)="fileOverBase('')" />
+                                <mat-icon class="cloud-icon">cloud_upload</mat-icon>
+                                <div class="select--file">Select file from your computer</div>
+                            </div>
+                            <div class="file--details mb-1">Supported formats JPEG, JPG, PNG</div>
 
-                                <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
-                                    <mat-chip>
-                                        <mat-error>{{err.error}}</mat-error>
-                                    </mat-chip>
-                                </mat-chip-list>
+                            <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrors;">
+                                <mat-chip>
+                                    <mat-error>{{err.error}}</mat-error>
+                                </mat-chip>
+                            </mat-chip-list>
 
-                                <div class="progress" style="margin-bottom: 0;"
-                                    *ngIf="currentProgessinPercent>0">
-                                    <div class="progress-bar" role="progressbar"
-                                        [ngStyle]="{ 'width': currentProgessinPercent + '%' }">
-                                        {{currentProgessinPercent}}%</div>
-                                    <mat-progress-bar class="" color="primary" mode="Indeterminate"
-                                        [value]="currentProgessinPercent"></mat-progress-bar>
-                                </div>
+                            <div class="progress" style="margin-bottom: 0;"
+                                *ngIf="currentProgessinPercent>0">
+                                <div class="progress-bar" role="progressbar"
+                                    [ngStyle]="{ 'width': currentProgessinPercent + '%' }">
+                                    {{currentProgessinPercent}}%</div>
+                                <mat-progress-bar class="" color="primary" mode="Indeterminate"
+                                    [value]="currentProgessinPercent"></mat-progress-bar>
                             </div>
                         </div>
-                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
-                            <div *ngIf="topBannerPath" class="banner--thumbnail">
-                                <img src="{{topBannerPath}}" style="height: 220px;" name="topBanner" />
-                            </div>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
+                        <div *ngIf="topBannerPath" class="banner--thumbnail">
+                            <img src="{{topBannerPath}}" style="height: 220px;" name="topBanner" />
                         </div>
+                    </div>
                     </div>
                 </mat-card-content>
             </mat-card>
@@ -68,26 +67,28 @@
                 <mat-card-content class="p-1">
                     <div fxLayout="row wrap">
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
-                            <label class="sections--label">Title</label>
+                            <label class="sections--label">Title*</label>
                             <mat-form-field class="full-width">
-                                <input matInput name="middleTitle"
-                                    [formControl]="customerCmsForm.controls['middleTitle']" value="">
+                                <input matInput name="middleTitle" maxlength="105" [formControl]="customerCmsForm.controls['middleTitle']" value="">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
                             class="mb-1">
-                            <label class="sections--label">Middle Text</label>
+                            <label class="sections--label">Middle Text*</label>
                             <mat-card class="p-0 mt-1">
                                 <mat-card-content class="p-0">
-                                    <ejs-richtexteditor class="free--text" id='defaultRTE1'
-                                        [formControl]="customerCmsForm.controls['middleText']" [toolbarSettings]='tools'
-                                        [quickToolbarSettings]='quickTools'></ejs-richtexteditor>
+                                <ejs-richtexteditor class="free--text" id='defaultRTE1'  [height]='heightMiddleText' [showCharCount]='true' [maxLength]='maxLengthMiddleText' [formControl]="customerCmsForm.controls['middleText']" [toolbarSettings]='tools' [quickToolbarSettings]='quickTools'></ejs-richtexteditor>
+                                    <div class="error" *ngIf="customerCmsForm.controls.middleText.invalid && (customerCmsForm.controls.middleText.dirty || customerCmsForm.controls.middleText.touched)" class="alert alert-danger">
+                                            <div *ngIf="customerCmsForm.controls.middleText.errors.required">
+                                                Text is required.
+                                            </div>
+                                        </div>
                                 </mat-card-content>
                             </mat-card>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60"
                             class="cust--gapp">
-                            <label class="sections--label">Middle Banner</label>
+                            <label class="sections--label">Middle Banner*</label>
                             <div class="upload--buss--docs--sec">
                                 <div class="upload--box fileupload-drop-zone" ng2FileDrop
                                     [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
@@ -121,7 +122,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </mat-card-content>
             </mat-card>
@@ -134,28 +134,30 @@
                 <mat-card-content class="p-1">
                     <div fxLayout="row wrap">
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
-                            <label class="sections--label">Title</label>
+                            <label class="sections--label">Title*</label>
                             <mat-form-field class="full-width">
-                                <input matInput name="lowerTitle" [formControl]="customerCmsForm.controls['lowerTitle']"
-                                    value="">
+                                <input matInput name="lowerTitle" [formControl]="customerCmsForm.controls['lowerTitle']" maxlength="40" value="">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100"
                             class="mb-1">
-                            <label class="sections--label">Lower Text</label>
+                            <label class="sections--label">Lower Text*</label>
                             <mat-card class="p-0 mt-1">
                                 <mat-card-content class="p-0">
-                                    <ejs-richtexteditor class="free--text" id='defaultRTE2'
-                                        [formControl]="customerCmsForm.controls['lowerText']" [toolbarSettings]='tools'
-                                        [quickToolbarSettings]='quickTools'></ejs-richtexteditor>
+                                    <ejs-richtexteditor class="free--text" id='defaultRTE'  [height]='heightlowerText' [showCharCount]='true' [maxLength]='maxLengthlowerText' 
+                                    [formControl]="customerCmsForm.controls['lowerText']" [toolbarSettings]='tools' [quickToolbarSettings]='quickTools'></ejs-richtexteditor>
+                                    <div class="error" *ngIf="customerCmsForm.controls.lowerText.invalid && (customerCmsForm.controls.lowerText.dirty || customerCmsForm.controls.lowerText.touched)" class="alert alert-danger">
+                                        <div *ngIf="customerCmsForm.controls.lowerText.errors.required">
+                                            Text is required.
+                                        </div>
+                                    </div>              
+                                                         
                                 </mat-card-content>
                             </mat-card>
-
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60"
                             class="cust--gapp">
-                            <label class="sections--label">Lower Banner</label>
-
+                            <label class="sections--label">Lower Banner*</label>
                             <div class="upload--buss--docs--sec">
                                 <div class="upload--box fileupload-drop-zone" ng2FileDrop
                                     [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
@@ -182,7 +184,6 @@
                                         [value]="currentProgessinPercentLower"></mat-progress-bar>
                                 </div>
                             </div>
-
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
                             <div class="banner--thumbnail">
@@ -191,12 +192,10 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </mat-card-content>
             </mat-card>
         </div>
-
          <!-- Section 4 -->
         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
             <mat-card class="p-0 mb-1">
@@ -210,7 +209,7 @@
                                     <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95"
                                         class="pr-2">
                                         <mat-form-field class="full-width">
-                                            <input matInput placeholder="Name" formControlName="name">
+                                            <input matInput placeholder="Name*" maxlength="130" formControlName="name">
                                         </mat-form-field>
                                     </div>
                                     <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5"
@@ -233,7 +232,6 @@
                 </mat-card-content>
             </mat-card>
         </div>
-
          <!-- Section 5 -->
         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
             <mat-card class="p-0 mb-1">
@@ -243,32 +241,30 @@
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
                             <div formGroupName="facts">
                                 <mat-form-field class="full-width">
-                                    <input matInput placeholder="Title" formControlName="title" value=""
-                                        [formControl]="getFormGroup('facts').controls['title']">
+                                    <input matInput placeholder="Title*" formControlName="title" value="" maxlength="50" [formControl]="getFormGroup('facts').controls['title']">
                                 </mat-form-field>
 
                                 <mat-form-field class="full-width">
-                                    <input matInput placeholder="Sub Title" formControlName="subTitle" value=""
-                                        [formControl]="getFormGroup('facts').controls['subTitle']">
+                                    <input matInput placeholder="Sub Title*" formControlName="subTitle" value="" maxlength="100" [formControl]="getFormGroup('facts').controls['subTitle']">
                                 </mat-form-field>
 
                                 <mat-form-field class="full-width">
-                                    <input matInput placeholder="Saved File" formControlName="savedFiles" value=""
+                                    <input matInput placeholder="Saved File*" formControlName="savedFiles"  (keypress)="onlyNumbers($event)" maxlength="15" value=""
                                         [formControl]="getFormGroup('facts').controls['savedFiles']">
                                 </mat-form-field>
 
                                 <mat-form-field class="full-width">
-                                    <input matInput placeholder="Trusted Advisors" formControlName="trustedAdvisors"
+                                    <input matInput placeholder="Trusted Advisors*" formControlName="trustedAdvisors"  (keypress)="onlyNumbers($event)" maxlength="15"
                                         value="" [formControl]="getFormGroup('facts').controls['trustedAdvisors']">
                                 </mat-form-field>
 
                                 <mat-form-field class="full-width">
-                                    <input matInput placeholder="Success Login" formControlName="successLogin" value=""
+                                    <input matInput placeholder="Success Login*" formControlName="successLogin" value="" (keypress)="onlyNumbers($event)" maxlength="15"
                                         [formControl]="getFormGroup('facts').controls['successLogin']">
                                 </mat-form-field>
 
                                 <mat-form-field class="full-width">
-                                    <input matInput placeholder="LLP Members" formControlName="LLPMembers" value=""
+                                    <input matInput placeholder="LLP Members*" formControlName="LLPMembers" value="" (keypress)="onlyNumbers($event)" maxlength="15"
                                         [formControl]="getFormGroup('facts').controls['LLPMembers']">
                                 </mat-form-field>
                             </div>
@@ -286,12 +282,10 @@
                     <div fxLayout="row wrap" formGroupName="quickOverview1">
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
                             <mat-form-field class="full-width">
-                                <input matInput formControlName="title" placeholder="title" value=""
-                                    [formControl]="getFormGroup('quickOverview1').controls['title']">
+                                <input matInput formControlName="title" placeholder="title*" value=""  maxlength="30" [formControl]="getFormGroup('quickOverview1').controls['title']">
                             </mat-form-field>
                             <mat-form-field class="full-width">
-                                <input matInput formControlName="subTitle" placeholder="subTitle" value=""
-                                    [formControl]="getFormGroup('quickOverview1').controls['subTitle']">
+                                <input matInput formControlName="subTitle" placeholder="subTitle*" value="" maxlength="45" [formControl]="getFormGroup('quickOverview1').controls['subTitle']">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
@@ -306,9 +300,7 @@
                                     <div class="select--file pl-1 pr-1">Select quick overview video from your computer
                                     </div>
                                 </div>
-                                <div class="file--details mb-0">Supported formats
-                                    mov, mp3, mpeg, wav, ogg, opus, bmp, tiff, svg, webm, mpeg4, 3gpp, mpegps, wmv,
-                                    flv</div>
+                                <div class="file--details mb-0">Supported formats mov, mp3, mpeg, wav, ogg, opus, bmp, tiff, svg, webm, mpeg4, 3gpp, mpegps, wmv,flv</div>
 
                                 <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrorsQOW1;">
                                     <mat-chip>
@@ -341,7 +333,7 @@
             </mat-card>
         </div>
 
-        <!-- Section 7 -->
+     
         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
             <mat-card class="p-0 mb-1">
                 <mat-card-title class="p-1">Section 07 - Quick Overview 2</mat-card-title>
@@ -349,12 +341,10 @@
                     <div fxLayout="row wrap" formGroupName="quickOverview2">
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
                             <mat-form-field class="full-width">
-                                <input matInput formControlName="title" placeholder="title" value=""
-                                    [formControl]="getFormGroup('quickOverview2').controls['title']">
+                                <input matInput formControlName="title" placeholder="Title*" value="" maxlength="30" [formControl]="getFormGroup('quickOverview2').controls['title']">
                             </mat-form-field>
                             <mat-form-field class="full-width">
-                                <input matInput formControlName="subTitle" placeholder="subTitle" value=""
-                                    [formControl]="getFormGroup('quickOverview2').controls['subTitle']">
+                                <input matInput formControlName="subTitle" placeholder="subTitle*" value="" maxlength="45" [formControl]="getFormGroup('quickOverview2').controls['subTitle']">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
@@ -369,9 +359,7 @@
                                     <div class="select--file pr-1 pl-1">Select quick overview video from your computer
                                     </div>
                                 </div>
-                                <div class="file--details mb-0">Supported formats
-                                    mov, mp3, mpeg, wav, ogg, opus, bmp, tiff, svg, webm, mpeg4, 3gpp, avi, mpegps, wmv,
-                                    flv</div>
+                                <div class="file--details mb-0">Supported formats mov, mp3, mpeg, wav, ogg, opus, bmp, tiff, svg, webm, mpeg4, 3gpp, avi, mpegps, wmv,flv</div>
 
                                 <mat-chip-list class="doc--list error--chip" *ngFor="let err of fileErrorsQOW2;">
                                     <mat-chip>
@@ -419,15 +407,14 @@
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100"
                                             fxFlex.xl="100">
                                             <mat-form-field class="full-width">
-                                                <input matInput placeholder="Name" formControlName="name">
+                                                <input matInput placeholder="Name*" formControlName="name" maxlength="50">
                                             </mat-form-field>
                                             <mat-form-field class="full-width">
-                                                <input matInput placeholder="Certifications"
-                                                    formControlName="certifications">
+                                                <input matInput placeholder="Certifications*" maxlength="50" formControlName="certifications">
                                             </mat-form-field>
 
                                             <mat-form-field class="full-width">
-                                                <input matInput placeholder="Comment" formControlName="comment">
+                                                <input matInput placeholder="Comment*" maxlength="100"  formControlName="comment">
                                             </mat-form-field>
                                         </div>
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60"
@@ -465,7 +452,6 @@
                                 </mat-card-content>
                             </mat-card>
                         </div>
-
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
                             <div *ngIf="testimonialsArray.length < 10">
                                 <div class="add--new mt-1" (click)="addTestimonialsPoints();">
@@ -478,11 +464,9 @@
                 </mat-card-content>
             </mat-card>
         </div>
-
-        
         <!-- Footer -->
         <div class="ad--footer">
-                <button mat-raised-button class="llp--primary--btn">Submit</button>
+                <button mat-raised-button class="llp--primary--btn" [disabled]="!customerCmsForm.valid">Submit</button>
         </div>
     </div>
     <div class="row" *ngIf="!aceessSection">

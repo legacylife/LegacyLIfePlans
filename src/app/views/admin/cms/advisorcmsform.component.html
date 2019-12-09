@@ -1,5 +1,4 @@
-<form class="llp-form-wrapper pt-1" [formGroup]="advisorCmsForm" method="post"
-    (ngSubmit)="updatePage(advisorCmsForm.value)">
+<form class="llp-form-wrapper pt-1" [formGroup]="advisorCmsForm" method="post" (ngSubmit)="updatePage(advisorCmsForm.value)">
     <div fxLayout="row wrap" *ngIf="aceessSection">
 
         <!-- Section 1 -->
@@ -11,20 +10,19 @@
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
                             class="cust--gapp">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Title" formControlName="title" value=""
-                                    [formControl]="getFormGroup('sectionOne').controls['title']">
+                                <input matInput placeholder="Title*" formControlName="title" value=""  maxlength="55" 
+                                [formControl]="getFormGroup('sectionOne').controls['title']">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Middle Title" formControlName="middleTitle" value=""
+                                <input matInput placeholder="Middle Title*" formControlName="middleTitle" value="" maxlength="50"
                                     [formControl]="getFormGroup('sectionOne').controls['middleTitle']">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Sub Title" formControlName="subTitle" value=""
-                                    [formControl]="getFormGroup('sectionOne').controls['subTitle']">
+                                <input matInput placeholder="Sub Title*" formControlName="subTitle" value="" maxlength="110" [formControl]="getFormGroup('sectionOne').controls['subTitle']">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60"
@@ -85,12 +83,12 @@
                             class="cust--gapp">
 
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Title" formControlName="title">
+                                <input matInput placeholder="Title*" maxlength="22" formControlName="title">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Sub Title" formControlName="subTitle">
+                                <input matInput placeholder="Sub Title*" maxlength="135" formControlName="subTitle">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
@@ -114,14 +112,14 @@
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
                             class="cust--gapp">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Title" formControlName="title" value=""
+                                <input matInput placeholder="Title*" maxlength="100" formControlName="title" value=""
                                     [formControl]="getFormGroup('sectionThree').controls['title']">
                             </mat-form-field>
 
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Sub Title" formControlName="subTitle" value=""
+                                <input matInput placeholder="Sub Title*" formControlName="subTitle" value="" maxlength="600" 
                                     [formControl]="getFormGroup('sectionThree').controls['subTitle']">
                             </mat-form-field>
                         </div>
@@ -177,13 +175,13 @@
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
                             class="cust--gapp">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Title" formControlName="title" value=""
+                                <input matInput placeholder="Title*" formControlName="title" value="" maxlength="34" 
                                     [formControl]="getFormGroup('sectionFour').controls['title']">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Sub Title" formControlName="subTitle" value=""
+                                <input matInput placeholder="Sub Title*" formControlName="subTitle" value="" maxlength="70"
                                     [formControl]="getFormGroup('sectionFour').controls['subTitle']">
                             </mat-form-field>
                         </div>
@@ -241,10 +239,10 @@
                         <div fxFlex.xs="45" fxFlex.sm="45" fxFlex.md="45" fxFlex.lg="45" fxFlex.xl="45"
                             class="cust--gapp">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Title" formControlName="title"></mat-form-field>
+                                <input matInput placeholder="Title*" maxlength="25" formControlName="title"></mat-form-field>
                         </div>
                         <div fxFlex.xs="45" fxFlex.sm="45" fxFlex.md="45" fxFlex.lg="45" fxFlex.xl="45">
-                            <mat-form-field class="full-width"><input matInput placeholder="Sub Title"
+                            <mat-form-field class="full-width"><input matInput placeholder="Sub Title*" maxlength="330"
                                     formControlName="subTitle"></mat-form-field>
                         </div>
                         <div fxFlex.xs="10" fxFlex.sm="10" fxFlex.md="10" fxFlex.lg="10" fxFlex.xl="10"
@@ -274,14 +272,14 @@
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
                             class="cust--gapp">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Title" formControlName="title" value=""
+                                <input matInput placeholder="Title*" formControlName="title" value="" maxlength="50"
                                     [formControl]="getFormGroup('facts').controls['title']">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
 
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Sub Title" formControlName="subTitle" value=""
+                                <input matInput placeholder="Sub Title*" formControlName="subTitle" maxlength="100" value=""
                                     [formControl]="getFormGroup('facts').controls['subTitle']">
                             </mat-form-field>
                         </div>
@@ -289,32 +287,38 @@
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
                             class="cust--gapp">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Saved File" formControlName="savedFiles" value=""
+                                <input matInput placeholder="Saved File*" formControlName="savedFiles" pattern="[0-9]*" (keypress)="onlyNumbers($event)" maxlength="15" value=""
                                     [formControl]="getFormGroup('facts').controls['savedFiles']">
                             </mat-form-field>
                         </div>
 
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Advisors" formControlName="trustedAdvisors"
+                                <input matInput placeholder="Advisors*" formControlName="trustedAdvisors" (keypress)="onlyNumbers($event)" pattern="[0-9]*" maxlength="15"
                                     value="" [formControl]="getFormGroup('facts').controls['trustedAdvisors']">
+                              <!-- <mat-icon matTooltip="Please enter value" matTooltipClass="llp--tooltip error"
+                                    *ngIf="advisorCmsForm.controls['trustedAdvisors'].hasError('required') && advisorCmsForm.controls['trustedAdvisors'].touched"
+                                    class="red--alert">help_outline</mat-icon>
+
+                                    <mat-icon matTooltip="Please enter numeric value only" matTooltipClass="llp--tooltip error"
+                                    *ngIf="advisorCmsForm.controls['trustedAdvisors'].hasError('pattern') && advisorCmsForm.controls['trustedAdvisors'].touched"
+                                    class="red--alert">help_outline</mat-icon> -->
                             </mat-form-field>
                         </div>
 
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
                             class="cust--gapp">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="LLP Plans" formControlName="LLPMembers" value=""
+                                <input matInput placeholder="LLP Plans*" formControlName="LLPMembers" pattern="[0-9]*" (keypress)="onlyNumbers($event)" value="" maxlength="15"
                                     [formControl]="getFormGroup('facts').controls['LLPMembers']">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Referral Connection" formControlName="referralConnection"
+                                <input matInput placeholder="Referral Connection*" pattern="[0-9]*" (keypress)="onlyNumbers($event)" formControlName="referralConnection" maxlength="15"
                                     value="" [formControl]="getFormGroup('facts').controls['referralConnection']">
                             </mat-form-field>
                         </div>
-
                     </div>
                 </mat-card-content>
             </mat-card>
@@ -329,14 +333,11 @@
                         <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
                             class="cust--gapp">
                             <mat-form-field class="full-width">
-                                <input matInput placeholder="Title" formControlName="title"
-                                    [formControl]="getFormGroup('sectionSix').controls['title']">
+                                <input matInput placeholder="Title*" formControlName="title" maxlength="35" [formControl]="getFormGroup('sectionSix').controls['title']">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
-                            <mat-form-field class="full-width"><input matInput placeholder="Sub Title"
-                                    formControlName="subTitle"
-                                    [formControl]="getFormGroup('sectionSix').controls['subTitle']">
+                            <mat-form-field class="full-width"><input matInput placeholder="Sub Title*" maxlength="80" formControlName="subTitle" [formControl]="getFormGroup('sectionSix').controls['subTitle']">
                             </mat-form-field>
                         </div>
                     </div>
@@ -357,12 +358,12 @@
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100"
                                             fxFlex.xl="100">
                                             <mat-form-field class="full-width">
-                                                <input matInput placeholder="Certifications"
+                                                <input matInput placeholder="Certifications*" maxlength="50"
                                                     formControlName="certifications">
                                             </mat-form-field>
 
                                             <mat-form-field class="full-width">
-                                                <input matInput placeholder="Name" formControlName="name">
+                                                <input matInput placeholder="Name*" maxlength="50" formControlName="name">
                                             </mat-form-field>
                                         </div>
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="70">
@@ -378,11 +379,11 @@
                                                     <div class="select--file">Select profile phto from your computer
                                                     </div>
                                                 </div>
-                                                <div class="file--details mb-1">Supported formats JPEG, JPG, PNG  --- {{web.profilePhoto}}</div>
+                                                <div class="file--details mb-1">Supported formats JPEG, JPG, PNG </div>
                                             </div>
                                         </div>
                                         <mat-form-field class="full-width" *ngIf="profilePhotoHiddenVal">
-                                            <input matInput name="profilePhoto" placeholder="profilePhoto" formControlName="profilePhoto" readonly="readonly">
+                                            <input matInput name="profilePhoto" placeholder="profilePhoto*" formControlName="profilePhoto" readonly="readonly">
                                         </mat-form-field>
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="30">
                                             <div class="testi--userprofile">                                                                                         
@@ -428,12 +429,12 @@
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100"
                                             fxFlex.xl="100">
                                             <mat-form-field class="full-width">
-                                                <input matInput placeholder="Title" formControlName="title" value=""
+                                                <input matInput placeholder="Title*" formControlName="title" value="" maxlength="40"
                                                     [formControl]="getFormGroup('sectionEight').controls['title']">
                                             </mat-form-field>
                                             <mat-form-field class="full-width">
-                                                <input matInput placeholder="Sub Title" formControlName="subTitle"
-                                                    value=""
+                                                <input matInput placeholder="Sub Title*" formControlName="subTitle"
+                                                    value="" maxlength="650"
                                                     [formControl]="getFormGroup('sectionEight').controls['subTitle']">
                                             </mat-form-field>
                                         </div>
@@ -494,8 +495,8 @@
                                             fxFlex.lg="100" fxFlex.xl="100">
                                             <!-- <mat-label> {{i+1}}) </mat-label> -->
                                             <div fxFlex.xs="95" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95">
-                                                <mat-form-field class="full-width"><input matInput placeholder="Name"
-                                                        formControlName="name"></mat-form-field>
+                                                <mat-form-field class="full-width">
+                                                    <input matInput placeholder="Name*" maxlength="120" formControlName="name"></mat-form-field>
                                             </div>
                                             <div fxFlex.xs="5" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5"
                                                 class="text-right">
@@ -539,15 +540,14 @@
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100"
                                             fxFlex.xl="100">
                                             <mat-form-field class="full-width">
-                                                <input matInput placeholder="Name" formControlName="name">
+                                                <input matInput placeholder="Name*" maxlength="50" formControlName="name">
                                             </mat-form-field>
                                             <mat-form-field class="full-width">
-                                                <input matInput placeholder="Certifications"
-                                                    formControlName="certifications">
+                                                <input matInput placeholder="Certifications*" maxlength="50"  formControlName="certifications">
                                             </mat-form-field>
 
                                             <mat-form-field class="full-width">
-                                                <input matInput placeholder="Comment" formControlName="comment">
+                                                <input matInput placeholder="Comment*" maxlength="100" formControlName="comment">
                                             </mat-form-field>
                                         </div>
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60"
@@ -569,7 +569,7 @@
                                             </div>
                                         </div>
                                         <mat-form-field class="full-width" *ngIf="profilePhotoHiddenVal">
-                                            <input matInput name="profilePhoto" placeholder="profilePhoto" formControlName="profilePhoto" readonly="readonly">
+                                            <input matInput name="profilePhoto" placeholder="profilePhoto*" formControlName="profilePhoto" readonly="readonly">
                                         </mat-form-field>
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40"
                                             fxFlex.xl="30">
@@ -585,9 +585,7 @@
                                 </mat-card-content>
                             </mat-card>
                         </div>
-
-                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
-
+                       <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
                             <div *ngIf="testimonialsArray.length < 9">
                                 <div class="add--new mt-1" (click)="addTestimonialsPoints();">
                                     <mat-icon>add_circle</mat-icon>Add New
@@ -599,8 +597,8 @@
             </mat-card>
         </div>
         <!-- Footer -->
-        <div class="ad--footer">
-                <button mat-raised-button class="llp--primary--btn">Submit</button>
+        <div class="ad--footer">{{advisorCmsForm.valid}} -- {{advisorCmsForm.invalid}}
+                <button mat-raised-button class="llp--primary--btn" [disabled]="!advisorCmsForm.valid">Submit</button>
         </div>
     </div>
     <div fxLayout="row wrap" *ngIf="!aceessSection">

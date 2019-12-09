@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Validators, FormGroup, FormControl, FormBuilder,FormArray } from '@angular/forms';
+import { Component, OnInit ,Inject} from '@angular/core';
+import { Validators, FormGroup, FormControl, FormBuilder,FormArray} from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
 import { Router, ActivatedRoute } from '@angular/router';
 import { APIService } from './../../../api.service';
@@ -66,6 +66,7 @@ export class customercmsformComponent implements OnInit {
   row : any
   aceessSection : any;
   profilePhotoHiddenVal:boolean = false;
+
   public tools: object = {
       items: ['Undo', 'Redo', '|',
           'Bold', 'Italic', 'Underline', 'StrikeThrough', '|',
@@ -80,50 +81,62 @@ export class customercmsformComponent implements OnInit {
       image: [
           'Replace', 'Align', 'Caption', 'Remove', 'InsertLink', '-', 'Display', 'AltText', 'Dimension']
   };
-
-  constructor(private router: Router, private activeRoute: ActivatedRoute, private snack: MatSnackBar, private api: APIService, private fb: FormBuilder, private loader: AppLoaderService) { }
+  public maxLengthMiddleText = 500;
+  public heightMiddleText: number = 300;  
+  public maxLengthlowerText = 630;
+  public heightlowerText: number = 300;  
+  constructor( private router: Router, private activeRoute: ActivatedRoute, private snack: MatSnackBar,
+   private api: APIService, private fb: FormBuilder, private loader: AppLoaderService) { }
 
   ngOnInit() {
-    this.aceessSection = this.api.getUserAccess('cms')
+    this.aceessSection = this.api.getUserAccess('cms');
 
     this.customerCmsForm = this.fb.group({
-      pageTitle: new FormControl('', [Validators.required]),
-      pagesubTitle: new FormControl(''),
-      topBanner: new FormControl('', []),
+      pageTitle: new FormControl('',[Validators.required]),
+      pagesubTitle: new FormControl('',[Validators.required]),
+      topBanner: new FormControl(''),
       middleBanner: new FormControl(''),
-      middleTitle: new FormControl(''),
-      middleText: new FormControl(''),
-      lowerTitle: new FormControl(''),
-      lowerText: new FormControl(''),
+      middleTitle: new FormControl('',[Validators.required]),
+      middleText: new FormControl('',[Validators.required]),
+      lowerTitle: new FormControl('',[Validators.required]),
+      lowerText: new FormControl('',[Validators.required]),
       lowerBanner: new FormControl(''),
-      bulletPoints:  this.fb.array([this.fb.group({name: ['']})]),
+     bulletPoints:  this.fb.array([this.fb.group({name: ['',[Validators.required]]})]),
       facts: new FormGroup({
-        title: new FormControl(''),
-        subTitle: new FormControl(''),
-        savedFiles: new FormControl(''),
-        trustedAdvisors: new FormControl(''),
-        successLogin: new FormControl(''),
-        LLPMembers: new FormControl('')
+        title: new FormControl('',[Validators.required]),
+        subTitle: new FormControl('',[Validators.required]),
+        savedFiles: new FormControl('',[Validators.required]),
+        trustedAdvisors: new FormControl('',[Validators.required]),
+        successLogin: new FormControl('',[Validators.required]),
+        LLPMembers: new FormControl('',[Validators.required])
       }),
       quickOverview1: new FormGroup({
-        title: new FormControl(''),
-        subTitle: new FormControl(''),
+        title: new FormControl('',[Validators.required]),
+        subTitle: new FormControl('',[Validators.required]),
        // videoLink: new FormControl('')
       }),
       quickOverview2: new FormGroup({
-        title: new FormControl(''),
-        subTitle: new FormControl(''),
+        title: new FormControl('',[Validators.required]),
+        subTitle: new FormControl('',[Validators.required]),
         //videoLink: new FormControl('')
       }),
-      testimonials: this.fb.array([this.fb.group({name:[''],profilePhoto:[''],certifications:[''],comment:['']})]),
+     testimonials: this.fb.array([this.fb.group({name:['',Validators.required],profilePhoto:[''],certifications:['',Validators.required],comment:['',Validators.required]})]),      
     })
     
     this.activeRoute.params.subscribe(params => {
       if(params.id){
-        this.customercmsPageId = params.id;
-        this.getPageDetails()
+        this.customercmsPageId = params.id;       
+          this.getPageDetails()
       }
     });
+
+}
+
+onlyNumbers(event)
+{  
+  if ((event.which != 46 ) && (event.which < 48 || event.which > 57)) {
+    event.preventDefault();
+  }
 }
 
 getFormGroup(controlName) {
@@ -132,7 +145,7 @@ getFormGroup(controlName) {
 
 editGroupPoints(name) {
   return this.fb.group({
-    name: [name, Validators.required]
+    name: [name]
   });
 }
 
@@ -142,7 +155,7 @@ get bulletsPointsArray() {
 
 addBulletsPoints() {
   this.bulletsPointsArray.push(this.fb.group({
-    name: ['', [Validators.required]]
+    name: ['']
   }));
 }
 
@@ -153,9 +166,9 @@ deleteBulletsPoints(i) {
 
 editTestimonials(name,certifications,comment,profilePhoto) {
   return this.fb.group({
-    name: [name, Validators.required],
-    certifications: [certifications, [Validators.required]],
-    comment: [comment, [Validators.required]],    
+    name: [name,Validators.required],
+    certifications: [certifications,Validators.required],
+    comment: [comment,Validators.required],    
     profilePhoto: [profilePhoto],
   });
 }
@@ -172,10 +185,10 @@ onFileSelected(event,i) {
 
 addTestimonialsPoints() {
   this.testimonialsArray.push(this.fb.group({
-    name:['',[Validators.required]],
+    name:['',Validators.required],
     profilePhoto:[this.selectedFileName],
-    certifications:['',[Validators.required]],
-    comment:['',[Validators.required]],    
+    certifications:['',Validators.required],
+    comment:['',Validators.required],    
   }));
 }
 
@@ -197,9 +210,9 @@ getPageDetails = (query = {}, search = false) => {
         this.customerCmsForm.controls['pageTitle'].setValue(this.row.pageTitle); 
         this.customerCmsForm.controls['pagesubTitle'].setValue(this.row.pagesubTitle);
         this.customerCmsForm.controls['lowerTitle'].setValue(this.row.lowerTitle);
+        this.customerCmsForm.controls['middleTitle'].setValue(this.row.middleTitle);
         this.customerCmsForm.controls['middleText'].setValue(this.row.middleText);
-        this.customerCmsForm.controls['lowerText'].setValue(this.row.lowerText);
-
+        
         const ctrl = this.getFormGroup('facts')
         ctrl.controls['title'].setValue(this.row.facts.title ? this.row.facts.title : "")
         ctrl.controls['subTitle'].setValue(this.row.facts.subTitle ? this.row.facts.subTitle : "")
@@ -240,6 +253,7 @@ getPageDetails = (query = {}, search = false) => {
         if(this.row.quickOverview2.videoLink){
           this.QOW2Path = this.row.quickOverview2.videoLink;
         }
+        this.customerCmsForm.controls['lowerText'].setValue(this.row.lowerText);
       }
     }, (err) => {
       console.error(err)
@@ -562,11 +576,8 @@ uploadTestimonialsFile(fileName,index) {
     this.uploaderProfilePhoto.queue.forEach((fileoOb, ind) => {
           this.uploaderProfilePhoto.uploadItem(fileoOb);
     }); 
-
     this.updateProgressBarProfilePhoto(index);
-
-    this.uploaderProfilePhoto.onCompleteItem = (item: any, response: any, status: any, headers: any) => {   
-    
+    this.uploaderProfilePhoto.onCompleteItem = (item: any, response: any, status: any, headers: any) => {       
        setTimeout(()=>{    
         this.testimonialsArray.at(index).patchValue({profilePhoto:fileName});
       }, 5000);
@@ -589,8 +600,7 @@ uploadTestimonialsFile(fileName,index) {
           } 
       },8000);      
     }  
-  }
- 
+  } 
 }
 
 updateProgressBarProfilePhoto(index){

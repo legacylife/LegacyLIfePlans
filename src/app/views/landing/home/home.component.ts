@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   resetCounter : any;
   bucketLink : string;
   topBanner : string;
+  pageTitle : string = '';
   middleBanner : string;
   lowerBanner : string;
   userId = localStorage.getItem('endUserId');
@@ -198,6 +199,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       } else {
         if(result.data){
           this.pageData = result.data;        
+          this.pageTitle = this.pageData.pageTitle;
           this.topBanner = this.bucketLink+this.pageData.topBanner;
           this.middleBanner = this.bucketLink+this.pageData.middleBanner;
           this.lowerBanner = this.bucketLink+this.pageData.lowerBanner;

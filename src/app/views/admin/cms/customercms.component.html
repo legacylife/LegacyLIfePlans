@@ -20,11 +20,11 @@
               {{ row?.modifiedOn | date: 'MM/dd/yyyy HH:mm:ss' }}
           </ng-template>
         </ngx-datatable-column>
-        <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">
+        <!-- <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <mat-chip class="active--status--chip" mat-sm-chip>{{row.status ? 'Active' : 'In-Active'}}</mat-chip>
           </ng-template>
-        </ngx-datatable-column>
+        </ngx-datatable-column> -->
         <ngx-datatable-column [resizeable]="false" name="Actions" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <a mat-icon-button mat-sm-button color="primary" class="mb-1" *ngIf="row.pageFor=='customer'" [routerLink]="['/admin/customercmsedit', row._id]" title="View">

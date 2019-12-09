@@ -6,7 +6,7 @@
       </div>
       <div class="profile-title text-center mb-1">
         <div class="main-title">{{fullname}}</div>
-        <div class="text-muted">{{row?.bioText ? row?.bioText : '--'}}</div>
+        <div class="text-muted">{{row?.bioText ? row?.bioText : ''}}</div>
       </div>
       <div class="profile-actions mb-1" fxLayoutAlign="center center" *ngIf="row?.userType == 'advisor' && row?.status == 'Pending' && row?.profileSetup && row?.profileSetup == 'yes'">
         <button mat-raised-button class="" color="primary" (click)="statusChange(row)">Accept</button>

@@ -82,43 +82,43 @@ export class advisorcmsformComponent implements OnInit {
     this.aceessSection = this.api.getUserAccess('cms')
     this.advisorCmsForm = this.fb.group({
       sectionOne: new FormGroup({
-        title: new FormControl(''),
-        middleTitle: new FormControl(''),
-        subTitle: new FormControl(''),
+        title: new FormControl('',[Validators.required]),
+        middleTitle: new FormControl('',[Validators.required]),
+        subTitle: new FormControl('',[Validators.required]),
         topBanner: new FormControl('')
       }),
-      sectionTwo:  this.fb.array([this.fb.group({title: [''],subTitle: ['']})]),
+      sectionTwo:  this.fb.array([this.fb.group({title: ['',[Validators.required]],subTitle: ['',[Validators.required]]})]),
       sectionThree: new FormGroup({
-        title: new FormControl(''),
-        subTitle: new FormControl(''),
+        title: new FormControl('',[Validators.required]),
+        subTitle: new FormControl('',[Validators.required]),
         bannerImage: new FormControl(''),
       }),
       sectionFour: new FormGroup({
-        title: new FormControl(''),
-        subTitle: new FormControl(''),
+        title: new FormControl('',[Validators.required]),
+        subTitle: new FormControl('',[Validators.required]),
         bannerImage: new FormControl(''),
       }),
-      sectionFive:  this.fb.array([this.fb.group({title: [''],subTitle: ['']})]),
+      sectionFive:  this.fb.array([this.fb.group({title: ['',[Validators.required]],subTitle: ['',[Validators.required]]})]),
       facts: new FormGroup({
-        title: new FormControl(''),
-        subTitle: new FormControl(''),
-        savedFiles: new FormControl(''),
-        trustedAdvisors: new FormControl(''),
-        LLPMembers: new FormControl(''),
-        referralConnection: new FormControl(''),
+        title: new FormControl('',[Validators.required]),
+        subTitle: new FormControl('',[Validators.required]),
+        savedFiles: new FormControl('',[Validators.required]),
+        trustedAdvisors: new FormControl('',[Validators.required]),
+        LLPMembers: new FormControl('',[Validators.required]),
+        referralConnection: new FormControl('',[Validators.required]),
       }),
       sectionSix: new FormGroup({
-        title: new FormControl(''),
-        subTitle: new FormControl('')
+        title: new FormControl('',[Validators.required]),
+        subTitle: new FormControl('',[Validators.required])
       }),
-      featuredAdvisors:  this.fb.array([this.fb.group({name: [''],certifications: [''],profilePhoto: ['']})]),
+      featuredAdvisors:  this.fb.array([this.fb.group({name: ['',[Validators.required]],certifications: ['',[Validators.required]],profilePhoto: ['']})]),
       sectionEight: new FormGroup({
-        title: new FormControl(''),
-        subTitle: new FormControl(''),
+        title: new FormControl('',[Validators.required]),
+        subTitle: new FormControl('',[Validators.required]),
         bannerImage: new FormControl(''),
-        benefitsPoints: this.fb.array([this.fb.group({name: ['']})]),
+        benefitsPoints: this.fb.array([this.fb.group({name: ['',[Validators.required]]})]),
       }),
-      testimonials: this.fb.array([this.fb.group({name:[''],profilePhoto:[''],certifications:[''],comment:['']})]),
+      testimonials: this.fb.array([this.fb.group({name:['',[Validators.required]],profilePhoto:[''],certifications:['',[Validators.required]],comment:['',[Validators.required]]})]),
     })
     
     this.activeRoute.params.subscribe(params => {
@@ -775,6 +775,14 @@ getDocument() {
   }, (err) => {
     console.error(err)
   })
+}
+
+
+onlyNumbers(event)
+{  
+  if ((event.which != 46 ) && (event.which < 48 || event.which > 57)) {
+    event.preventDefault();
+  }
 }
 
 
