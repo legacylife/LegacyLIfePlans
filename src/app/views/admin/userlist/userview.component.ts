@@ -26,7 +26,7 @@ export class userviewComponent implements OnInit,AfterViewInit  {
   userType: string = ""
   row: any;
   dpPath: string = ""
-  selectedUserId: string = "";
+  selectedUserId: string = ""
   docPath:string;
   adminSections = [];
   loggedInUserDetails: any;
@@ -37,6 +37,10 @@ export class userviewComponent implements OnInit,AfterViewInit  {
     expiryDate:'',
     planName: 'Free Plan'
   }
+  subscriptionStatus : string = ""
+  currentPlan: string = ""
+  userSubscriptionEnddate: string = "" 
+  
     /**
    * Subscription variable declaration
    */
@@ -95,6 +99,10 @@ export class userviewComponent implements OnInit,AfterViewInit  {
       } else {
         this.row = result.data;
         this.fullname = '';
+        
+        this.userSubscriptionEnddate = this.row.userSubscriptionEnddate;
+        this.planName = this.row.userType == 'advisor' ? 'Standard' : 'Legacy Life';
+
         if(this.row.firstName && this.row.firstName!=='undefined' && this.row.lastName && this.row.lastName!=='undefined'){
           this.fullname = this.row.firstName+' '+this.row.lastName;
         }
@@ -102,6 +110,27 @@ export class userviewComponent implements OnInit,AfterViewInit  {
            this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + result.data.profilePicture;
         }
         if(this.row.userType != 'sysAdmin') {
+
+          let subscriptions = this.row.subscriptionDetails ? this.row.subscriptionDetails : null;
+          if(subscriptions && subscriptions.length > 0){
+
+            let currentSubscription = subscriptions[subscriptions.length-1];
+            if(currentSubscription.status == 'trialing'){
+              this.subscriptionStatus = "Trialing";
+              this.planName         = 'Free';  
+            }
+            else if(currentSubscription.status == 'canceled'){
+              this.subscriptionStatus = "Canceled";
+            }
+            else {
+              this.subscriptionStatus = "Paid";              
+            }
+          }
+          else {
+            this.subscriptionStatus = "Trialing";
+            this.planName         = 'Free';  
+          }
+
           this.subscriptionservice.checkSubscriptionAdminPanel( this.row, ( returnArr )=> {
             this.userCreateOn = returnArr.userCreateOn
             this.isSubscribedBefore = returnArr.isSubscribedBefore
@@ -112,12 +141,25 @@ export class userviewComponent implements OnInit,AfterViewInit  {
             this.isAccountFree = returnArr.isAccountFree
             this.isPremiumExpired = returnArr.isPremiumExpired
             this.isSubscribePlan = returnArr.isSubscribePlan
-            this.planName = returnArr.planName
+            //this.planName = returnArr.planName
             this.subscriptionExpireDate = returnArr.subscriptionExpireDate
             /* if( new Date(this.subscriptionExpireDate) < new Date() ) {
               this.isExpired = true
             } */
-          })          
+          })  
+
+          if(this.userSubscriptionEnddate && this.userSubscriptionEnddate!= ''){
+            //let endDate = this.userSubscriptionEnddate.toDate();
+            let endDate = new Date(this.userSubscriptionEnddate)
+            let today = new Date(this.today)
+            if(endDate < today){
+              this.subscriptionStatus = "Expired";
+            }
+          }
+          else {
+            this.userSubscriptionEnddate = this.subscriptionExpireDate;
+          }
+
         }
         this.showPage = true
       }

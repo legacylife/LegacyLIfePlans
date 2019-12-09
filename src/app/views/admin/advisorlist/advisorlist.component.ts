@@ -6,6 +6,7 @@ import { AppConfirmService } from '../../../shared/services/app-confirm/app-conf
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { egretAnimations } from "../../../shared/animations/egret-animations";
 import { SubscriptionService } from 'app/shared/services/subscription.service';
+import  * as moment  from 'moment'
 
 @Component({
   selector: 'advisorlist',
@@ -24,6 +25,7 @@ export class advisorlistComponent implements OnInit {
   aceessSection: any
   my_messages: any;
   processing: boolean = false
+  today: Date = moment().toDate()
   constructor(private api: APIService, private route: ActivatedRoute, private router: Router, private snack: MatSnackBar, private confirmService: AppConfirmService, private loader: AppLoaderService, private subscriptionservice: SubscriptionService) { }
   ngOnInit() {
     this.aceessSection = this.api.getUserAccess('advisormanagement');
@@ -50,13 +52,19 @@ export class advisorlistComponent implements OnInit {
       } else {
         this.advisorlistdata = this.rows = this.temp = result.data.userList.map(row => {
           if (row.userType != 'sysAdmin') {
-            let subscriptionData = {}
-            this.subscriptionservice.checkSubscriptionAdminPanel(row, (returnArr) => {
+            //let subscriptionData = {}
+            let subscriptionData = this.subscriptionDetails(row);
+            row['subscriptionData'] = {
+              status: subscriptionData.subscriptionStatus,
+              endDate: subscriptionData.userSubscriptionEnddate ? subscriptionData.userSubscriptionEnddate : "-"
+            }
+            /*this.subscriptionservice.checkSubscriptionAdminPanel(row, (returnArr) => {
               row['subscriptionData'] = {
                 status: returnArr.isAccountFree && !returnArr.isSubscribePlan ? 'Trial' : (returnArr.isSubscribePlan && !returnArr.isPremiumExpired ? 'Paid' : 'Expired'),
                 endDate: returnArr.subscriptionExpireDate
               }
-            })
+            })*/
+
           }
           return row;
         })
@@ -118,6 +126,51 @@ export class advisorlistComponent implements OnInit {
       }
     });
     this.rows = rows;
+
+  }
+
+
+  subscriptionDetails(row) {
+    let userSubscriptionEnddate = row.userSubscriptionEnddate;
+    let planName = row.userType == 'advisor' ? 'Standard' : 'Legacy Life';
+    let subscriptionStatus = "Paid";
+
+
+    let subscriptions = row.subscriptionDetails ? row.subscriptionDetails : null;
+    if (subscriptions && subscriptions.length > 0) {
+
+      let currentSubscription = subscriptions[subscriptions.length - 1];
+      if (currentSubscription.status == 'trialing') {
+        subscriptionStatus = "Trialing";
+        planName = 'Free';
+      }
+      else if (currentSubscription.status == 'canceled') {
+        subscriptionStatus = "Canceled";
+      }
+      else {
+        subscriptionStatus = "Paid";
+      }
+    }
+    else {
+      subscriptionStatus = "Trialing";
+      planName = 'Free';
+    }
+
+    if (userSubscriptionEnddate && userSubscriptionEnddate != '') {
+      let endDate = new Date(userSubscriptionEnddate)
+      let today = new Date(this.today)
+      if (endDate < today) {
+        subscriptionStatus = "Expired";
+      }
+    }
+
+    let subscriptionData = {
+      "userSubscriptionEnddate" : userSubscriptionEnddate,
+      "subscriptionStatus" : subscriptionStatus,
+      "planName" : planName
+    }
+
+    return subscriptionData;
 
   }
 

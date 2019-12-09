@@ -334,6 +334,9 @@ export class SubscriptionService {
     if(userDetails.userType != 'sysAdmin') {
 
       let subscriptions = userDetails.subscriptionDetails ? userDetails.subscriptionDetails : null
+      let freeDays = userDetails.freeTrialPeriod && userDetails.freeTrialPeriod.bfrSubFreePremiumDays ? userDetails.freeTrialPeriod.bfrSubFreePremiumDays : 0
+      let freeAfterDays = userDetails.freeTrialPeriod && userDetails.freeTrialPeriod.aftrSubFreeDays ? userDetails.freeTrialPeriod.aftrSubFreeDays : 0
+      let totalFreeDays = freeDays + freeAfterDays
     
       if( subscriptions != null ) {
         let currentSubscription = subscriptions[subscriptions.length-1]
@@ -347,16 +350,16 @@ export class SubscriptionService {
           this.isAccountFree    = true
           this.isSubscribePlan  = false
           diff                  = this.getDateDiff( this.userCreateOn.toDate(), this.today )
-          if( diff <= 30 ) {
-            expireDate            = this.userCreateOn.add(30,"days")
+          if( diff <= freeDays ) {
+            expireDate            = this.userCreateOn.add(freeDays,"days")
             this.isPremiumExpired = false
           }
           else {
             if( userDetails.userType == 'customer' ) {
-              expireDate            = this.userCreateOn.add(60,"days")
+              expireDate            = this.userCreateOn.add(totalFreeDays,"days")
             }
             else{
-              expireDate            = this.userCreateOn.add(30,"days")
+              expireDate            = this.userCreateOn.add(freeDays,"days")
             }  
             let freeAccessDiff  = this.getDateDiff( this.today, expireDate.toDate() )
             if( freeAccessDiff >= 0 ) {
@@ -391,7 +394,7 @@ export class SubscriptionService {
           }
           else {
             if( userDetails.userType == 'customer' ) {
-              expireDate          = this.userSubscriptionDate.add(30,"days")
+              expireDate          = this.userSubscriptionDate.add(freeDays,"days")
             }
             else{
               expireDate            = this.userSubscriptionDate

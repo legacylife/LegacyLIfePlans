@@ -8,7 +8,7 @@ let bucketName = ""
 let awsKey = "AKIAUPQ3GZ6WDCCRWVY5"
 let awsSecret =  "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"
 let googleauthkey= "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"; //AIzaSyDsp487LM4HTYDV4O7KcFrHkolDZziykjw
-let stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk";
+let stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk";  // live - pk_live_PX4dfXzyG69jyl8h1n6IUAPZ00JVMDwHdw
 
 //localhost
 if(window.location.hostname.indexOf("localhost") > -1){ // local server
@@ -27,8 +27,8 @@ else if(window.location.hostname.indexOf("ec2-3-209-230-58.compute-1.amazonaws.c
   googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
 }
 else if(window.location.hostname.indexOf("ec2-52-2-182-205.compute-1.amazonaws.com") > -1){ // LIVE server Production
-  serverUrlEnv = "http://ec2-52-2-182-205.compute-1.amazonaws.com"  
-  stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
+  serverUrlEnv = "https://ec2-52-2-182-205.compute-1.amazonaws.com"  
+  stripeSecretKey = "pk_live_PX4dfXzyG69jyl8h1n6IUAPZ00JVMDwHdw"
   googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
 }
 else {  //dev server
