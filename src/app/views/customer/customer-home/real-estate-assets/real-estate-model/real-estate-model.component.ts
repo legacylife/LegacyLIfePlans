@@ -6,6 +6,7 @@ import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.serv
 import { UserAPIService } from 'app/userapi.service';
 import { RealEstateType } from 'app/selectList';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
+import { AsYouType } from 'libphonenumber-js'
 @Component({
   selector: 'app-real-estate-model',
   templateUrl: './real-estate-model.component.html',
@@ -34,7 +35,7 @@ export class RealEstateModelComponent implements OnInit {
       address: new FormControl(''),
       mortgageHolder: new FormControl(''),
       accountNumber: new FormControl(''),
-      phoneContact: new FormControl('',Validators.pattern(/^[0-9]{7,15}$/)),
+      phoneContact: new FormControl('',[Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/),Validators.minLength(10)]),
       deedLocation: new FormControl(''),
       comments: new FormControl(''),
       profileId: new FormControl('')
@@ -136,4 +137,15 @@ export class RealEstateModelComponent implements OnInit {
     return ((key > 64 && key < 91) || (key > 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57));
   }
 
+  checkPhoneNumber(event)
+  {  
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }else{
+      const AsouType = new AsYouType('US');
+      let phoneNumber = AsouType.input(this.realEstateForm.controls['phoneContact'].value);
+      this.realEstateForm.controls['phoneContact'].setValue(phoneNumber);
+    }
+  }
 }

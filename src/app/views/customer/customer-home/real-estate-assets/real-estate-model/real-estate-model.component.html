@@ -36,10 +36,9 @@
         </mat-form-field>
 
         <mat-form-field class="full-width">
-          <input maxlength="15" (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput name="phoneContact"
-            placeholder="Phone Contact" [formControl]="realEstateForm.controls['phoneContact']">
-          <mat-icon matTooltip="Please enter minimum 7 & maximum 15 numbers only" matTooltipClass="llp--tooltip error" *ngIf="realEstateForm.controls['phoneContact'].hasError('pattern') && realEstateForm.controls['phoneContact'].touched"
-          class="red--alert">help_outline</mat-icon>
+          <input maxlength="14" (keypress)="checkPhoneNumber($event)" (keyup)="checkPhoneNumber($event)"  matInput name="phoneContact" placeholder="Phone Contact" [formControl]="realEstateForm.controls['phoneContact']">
+          <mat-icon matTooltip="Please enter valid contact phone number." matTooltipClass="llp--tooltip error" *ngIf="realEstateForm.controls['phoneContact'].hasError('pattern') && realEstateForm.controls['phoneContact'].touched"  class="red--alert">help_outline</mat-icon>
+          <mat-icon matTooltip="Please enter minimum 7 & maximum 14 numbers only" matTooltipClass="llp--tooltip error" *ngIf="realEstateForm.controls['phoneContact'].hasError('minlength') && realEstateForm.controls['phoneContact'].touched"  class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
         <mat-form-field class="full-width">

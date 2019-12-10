@@ -46,9 +46,10 @@
         </mat-form-field>
 
         <mat-form-field class="full-width">
-          <input matInput name="contactPhone" maxlength="15" placeholder="Contact Phone" [formControl]="InsuranceForm.controls['contactPhone']">
-          <mat-icon matTooltip="Please enter minimum 7 & maximum 15 numbers only" matTooltipClass="llp--tooltip error" *ngIf="InsuranceForm.controls['contactPhone'].hasError('pattern') && InsuranceForm.controls['contactPhone'].touched"
+          <input matInput name="contactPhone" maxlength="14" (keypress)="checkPhoneNumber($event)" (keyup)="checkPhoneNumber($event)" placeholder="Contact Phone" [formControl]="InsuranceForm.controls['contactPhone']">
+          <mat-icon matTooltip="Please enter minimum 7 & maximum 14 numbers only" matTooltipClass="llp--tooltip error" *ngIf="InsuranceForm.controls['contactPhone'].hasError('minlength') && InsuranceForm.controls['contactPhone'].touched"
             class="red--alert">help_outline</mat-icon>
+          <mat-icon matTooltip="Please enter valid contact phone number." matTooltipClass="llp--tooltip error" *ngIf="InsuranceForm.controls['contactPhone'].hasError('pattern') && InsuranceForm.controls['contactPhone'].touched" class="red--alert">help_outline</mat-icon>
         </mat-form-field>
 
         <div class="upload--buss--docs--sec">

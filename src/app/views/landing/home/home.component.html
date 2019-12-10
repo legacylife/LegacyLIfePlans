@@ -286,10 +286,7 @@
           </div>
         </div>
       </div>
-
     </section>
-
-
     <!-- footer -->
     <footer class="main--footer--wrapper" id="contact-us">
       <div class="llp--container">
@@ -326,17 +323,17 @@
                   <li>
                     <a href="#">Our Company</a>
                   </li>
-                  <li>
+                  <li (click)="contentScroll('how-llp-works')">
                     <a>How it Works</a>
                   </li>
                   <li>
                     <a>Secure Data</a>
                   </li>
                   <li>
-                    <a>Terms of Usage</a>
+                    <a routerLink="/terms-of-use">Terms of Usage</a>
                   </li>
                   <li>
-                    <a>Privacy Policy</a>
+                    <a matRipple routerLink="/privacy-policy">Privacy Policy</a>
                   </li>
                   <li>
                     <a>FAQ</a>
@@ -349,9 +346,9 @@
                     <a href="#">Social Media</a>
                   </li>
                   <li>
-                    <a routerLink="coachs-corner">Coach’s Corner</a>
+                    <a  routerLink="coachs-corner">Coach’s Corner</a>
                   </li>
-                  <li>
+                  <li (click)="contentScroll('pricing-plan')">
                     <a href="#">Pricing</a>
                   </li>
                   <LI>

@@ -9,7 +9,7 @@
     <div fxLayout="row wrap" fxLayout.lt-sm="column">
       <div fxFlex="100" class="pr-1">
         <mat-form-field class="full-width">
-          <textarea matInput maxlength="150" placeholder="Reject Reason" [formControl]="itemForm.controls['approveRejectReason']" name="approveRejectReason"></textarea>
+          <textarea matInput maxlength="250" placeholder="Reject Reason" [formControl]="itemForm.controls['approveRejectReason']" name="approveRejectReason"></textarea>
           <mat-icon matTooltip="Please enter reject reason." matTooltipClass="llp--tooltip error" *ngIf="itemForm.controls['approveRejectReason'].invalid && itemForm.controls['approveRejectReason'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>

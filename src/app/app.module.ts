@@ -85,7 +85,8 @@ import { NgxStripeModule } from 'ngx-stripe';
 import { UserIdleModule } from 'angular-user-idle';
 import { LoginGaurd } from './shared/services/auth/login.guard';
 import { GuestGaurd } from './shared/services/auth/guest.guard';
-
+import { PrivacyPolicyComponent } from './views/landing/privacy-policy/privacy-policy.component';
+import { TermsOfUseComponent } from './views/landing/terms-of-use/terms-of-use.component';
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }
@@ -156,7 +157,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     { provide: LY_THEME, useClass: MinimaDark, multi: true },// name: `minima-dark`
     { provide: LY_THEME_GLOBAL_VARIABLES,useClass: GlobalVariables    } 
   ],
-  declarations: [AppComponent, ChangePicComponent, InviteComponent, ReferAndEarnModalComponent,lockscreenModalComponent,ExecutorModalComponent,MarkAsDeceasedComponent,DeceasedComponent],
+  declarations: [AppComponent, ChangePicComponent, InviteComponent, ReferAndEarnModalComponent,lockscreenModalComponent,ExecutorModalComponent,MarkAsDeceasedComponent,DeceasedComponent,PrivacyPolicyComponent,TermsOfUseComponent],
   entryComponents: [ChangePicComponent,lockscreenModalComponent,ExecutorModalComponent, InviteComponent, ReferAndEarnModalComponent,MarkAsDeceasedComponent,DeceasedComponent],
 })
 export class AppModule { }

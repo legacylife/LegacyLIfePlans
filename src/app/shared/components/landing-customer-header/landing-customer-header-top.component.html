@@ -17,19 +17,19 @@
         <li>
           <a matRipple routerLink="">Home</a>
         </li>-->
-        <li (click)="contentScroll('about-us')">
+        <li (click)="contentScroll('about-us')" *ngIf="headerOff">
           <a matRipple>About Us</a>
         </li>
-        <li (click)="contentScroll('how-llp-works')">
+        <li (click)="contentScroll('how-llp-works')" *ngIf="headerOff">
           <a matRipple >How LLP Works</a>
         </li>
-        <li (click)="contentScroll('pricing-plan')">
+        <li (click)="contentScroll('pricing-plan')" *ngIf="headerOff">
           <a matRipple>Pricing Plans</a>
         </li>
-        <li (click)="contentScroll('testimonialss')">
+        <li (click)="contentScroll('testimonialss')" *ngIf="headerOff">
           <a matRipple>Testimonials</a>
         </li>
-        <li (click)="contentScroll('contact-us')">
+        <li (click)="contentScroll('contact-us')" *ngIf="headerOff">
           <a matRipple>Contact Us</a>
         </li>
         

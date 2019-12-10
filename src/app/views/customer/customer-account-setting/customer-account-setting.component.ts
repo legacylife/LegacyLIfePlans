@@ -22,6 +22,7 @@ import  * as moment  from 'moment'
 import { CardDetailsComponent } from 'app/shared/components/card-details-modal/card-details-modal.component';
 import { LocationStrategy } from '@angular/common';
 import { lockLegacyPeriodList } from '../../../selectList';
+import { AsYouType } from 'libphonenumber-js'
 @Component({
   selector: 'app-customer-account-setting',
   templateUrl: './customer-account-setting.component.html',
@@ -79,7 +80,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   getAddOn:boolean = false
   modified = false // display confirmation popup if user click on other link
   isGetAddOn:boolean = false
-
+  
   isDialogOpen:boolean = false
 
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder,
@@ -110,6 +111,8 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   //   if(typeof this.userId !== "undefined") {
   //     this.router.navigate(['/', 'auth','signin']);
   // }
+    
+
     this.picService.itemValue.subscribe((nextValue) => {
       this.profilePicture =  nextValue
     })
@@ -119,8 +122,9 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     this.ProfileForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
-      phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
-      landlineNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
+      //phoneNumber: new FormControl('', [Validators.required]),
+      phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/),Validators.minLength(10)]),
+      landlineNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/),Validators.minLength(10)]),
       dateOfBirth: new FormControl('', ),
       username: new FormControl('', ),
       lockoutLegacyPeriod: new FormControl('', )
@@ -149,6 +153,21 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
      * Check the user subscription details
      */
     this.checkSubscription()
+  }
+
+  
+  checkPhoneNumber(from,event)
+  {  
+    const charCode = (event.which) ? event.which : event.keyCode;
+    //console.log('=====',event.charCode,':',event.key,':',event.which,':',event.keyCode)
+    //console.log('number is valid ',AsouType.getNumber().isValid(),'--------'); 
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }else{
+      const AsouType = new AsYouType('US');
+      let phoneNumber = AsouType.input(this.ProfileForm.controls[from].value);
+      this.ProfileForm.controls[from].setValue(phoneNumber);
+    }
   }
 
   checkSubscription() {

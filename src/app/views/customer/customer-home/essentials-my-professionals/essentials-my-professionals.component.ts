@@ -8,6 +8,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { myProfessionals } from '../../../../selectList';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
+import { AsYouType } from 'libphonenumber-js'
 @Component({
   selector: 'app-essentials-id-box',
   templateUrl: './essentials-my-professionals.component.html',
@@ -34,7 +35,7 @@ export class essentialsMyProfessionalsComponent implements OnInit {
         businessName: new FormControl(''),
         name: new FormControl('', Validators.required),
         address: new FormControl(''),
-        mpPhoneNumbers: new FormControl(''),
+        mpPhoneNumbers: new FormControl('',[Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/),Validators.minLength(10)]),
         mpEmailAddress: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]), 
         profileId: new FormControl('')
       });
@@ -141,4 +142,17 @@ export class essentialsMyProfessionalsComponent implements OnInit {
         event.preventDefault();
       }
     }
+
+      
+  checkPhoneNumber(event)
+  {  
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }else{
+      const AsouType = new AsYouType('US');
+      let phoneNumber = AsouType.input(this.professionalForm.controls['mpPhoneNumbers'].value);
+      this.professionalForm.controls['mpPhoneNumbers'].setValue(phoneNumber);
+    }
+  }
 }

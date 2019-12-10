@@ -39,9 +39,10 @@
       </mat-form-field>
 
       <mat-form-field class="full-width">
-          <input matInput name="contactPhone" placeholder="Phone Number"  (keypress)="onlyNumbers($event)" maxlength="15" [formControl]="DebtForm.controls['contactPhone']">
-          <mat-icon matTooltip="Please enter minimum 7 & maximum 15 numbers only" matTooltipClass="llp--tooltip error" *ngIf="DebtForm.controls['contactPhone'].hasError('pattern') && DebtForm.controls['contactPhone'].touched" class="red--alert">help_outline</mat-icon>
-      </mat-form-field>
+          <input matInput name="contactPhone" placeholder="Phone Number" maxlength="14" (keypress)="checkPhoneNumber($event)" (keyup)="checkPhoneNumber($event)" [formControl]="DebtForm.controls['contactPhone']">
+          <mat-icon matTooltip="Please enter valid contact phone number." matTooltipClass="llp--tooltip error" *ngIf="DebtForm.controls['contactPhone'].hasError('pattern') && DebtForm.controls['contactPhone'].touched" class="red--alert">help_outline</mat-icon>
+          <mat-icon matTooltip="Please enter minimum 7 & maximum 14 numbers only" matTooltipClass="llp--tooltip error" *ngIf="DebtForm.controls['contactPhone'].hasError('minlength') && DebtForm.controls['contactPhone'].touched" class="red--alert">help_outline</mat-icon>
+        </mat-form-field>
 
       <mat-form-field class="full-width mt-1">
               <textarea (keyup)="firstCapitalize($event)" maxlength="500" matInput placeholder="Comments" name="comments" [formControl]="DebtForm.controls['comments']"></textarea>

@@ -12,6 +12,8 @@ import { CoachsCornerComponent } from './shared/components/coachs-corner/coachs-
 import { AdvisorLayoutComponent } from './shared/components/layouts/advisor-layout/advisor-layout.component';
 import { LoginGaurd } from './shared/services/auth/login.guard';
 import { GuestGaurd } from './shared/services/auth/guest.guard';
+import { PrivacyPolicyComponent } from './views/landing/privacy-policy/privacy-policy.component';
+import { TermsOfUseComponent } from './views/landing/terms-of-use/terms-of-use.component';
 console.log('App---routing');
 export const rootRouterConfig: Routes = [
   {
@@ -29,7 +31,13 @@ export const rootRouterConfig: Routes = [
         pathMatch: 'full', //Newly added
         loadChildren: './views/landing/landing.module#LandingModule',
         data: { title: 'LLP Customer'}
-      },   
+      },        
+      // {
+      //   path: 'privacy-policy',
+      //   pathMatch: 'full', //Newly added
+      //   loadChildren: './views/landing/landing.module#LandingModule',
+      //   data: { title: 'LLP Customer'}
+      // },        
     ],
   },
   {
@@ -43,6 +51,30 @@ export const rootRouterConfig: Routes = [
       },        
     ],
   },
+
+  {
+    path: 'privacy-policy',
+    component: LandingLayoutComponent,
+    data: { title: 'Privacy Policy' },
+    children: [
+      {
+        path: '',
+        component: PrivacyPolicyComponent,
+      }
+    ]
+  },
+  {
+    path: 'terms-of-use',
+    component: LandingLayoutComponent,
+    data: { title: 'Terms Of Use' },
+    children: [
+      {
+        path: '',
+        component: TermsOfUseComponent,
+      }
+    ]
+  },
+  
   {
     path: '',
     pathMatch: 'prefix' ,
@@ -69,7 +101,7 @@ export const rootRouterConfig: Routes = [
       data: { title: 'Advisor Dashboard' }
       },
     ]
-  }, 
+  },  
   {
     path: 'llp-admin',
     pathMatch: 'prefix' ,

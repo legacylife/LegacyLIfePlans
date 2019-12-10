@@ -60,7 +60,7 @@
             <div formArrayName="ppLandlineNumbers">
               <div fxLayout="row wrap" *ngFor="let a of landlineNumbersList.controls; let pointIndex = index" [formGroupName]="pointIndex">
                 <mat-form-field class="full-width no-mar">
-                  <input matInput name="phone" placeholder="Phone"  formControlName="phone" type="tel" maxlength="15">
+                  <input matInput name="phone" placeholder="Phone"  formControlName="phone" type="tel" maxlength='14' (keypress)="checkPhoneNumber('ppLandlineNumbers',pointIndex,$event)" (keyup)="checkPhoneNumber('ppLandlineNumbers',pointIndex,$event)">
                   <mat-icon matTooltip="Please enter valid number only." matTooltipClass="llp--tooltip error" *ngIf="a.touched && a.invalid" class="red--alert" style="padding-right: 25px;">help_outline</mat-icon>
                   <mat-icon (click)="delete(pointIndex,'ppLandlineNumbers');" class="clr--red cursor-pointer delete--emails" *ngIf="pointIndex != 0">delete</mat-icon>
                   <span matPrefix>+1</span>
@@ -158,7 +158,7 @@
             <div formArrayName="wpLandlineNumbers">
               <div fxLayout="row wrap" *ngFor="let a of wpLandlineNumberList.controls; let pointIndex = index" [formGroupName]="pointIndex">
                 <mat-form-field class="full-width no-mar">
-                  <input  matInput name="phone" placeholder="Work Phone" formControlName="phone" type="tel" maxlength="15">
+                  <input  matInput name="phone" placeholder="Work Phone" formControlName="phone" type="tel" maxlength='14' (keypress)="checkPhoneNumber('wpLandlineNumbers',pointIndex,$event)" (keyup)="checkPhoneNumber('wpLandlineNumbers',pointIndex,$event)">
                   <mat-icon (click)="deletewp(pointIndex,'wpLandlineNumbers');" class="clr--red cursor-pointer delete--emails" *ngIf="pointIndex != 0">delete</mat-icon>
                   <span matPrefix>+1</span>
                 </mat-form-field>
@@ -267,7 +267,7 @@
             <div formArrayName="ccWorkLandlineNumbers">
               <div fxLayout="row wrap" *ngFor="let a of ccWorkLandlineNumberList.controls; let pointIndex = index" [formGroupName]="pointIndex">
                 <mat-form-field class="full-width no-mar">
-                  <input matInput name="phone" placeholder="Work Phone" formControlName="phone" type="tel" maxlength="15">
+                  <input matInput name="phone" placeholder="Work Phone" formControlName="phone" type="tel" maxlength='14' (keypress)="checkPhoneNumber('ccWorkLandlineNumbers',pointIndex,$event)" (keyup)="checkPhoneNumber('ccWorkLandlineNumbers',pointIndex,$event)">
                   <mat-icon (click)="deletecc(pointIndex,'ccWorkLandlineNumbers');" class="clr--red cursor-pointer delete--emails" *ngIf="pointIndex != 0">delete</mat-icon>
                   <span matPrefix>+1</span>
                 </mat-form-field>
@@ -287,7 +287,7 @@
             <div formArrayName="cclandlineNumbers">
               <div fxLayout="row wrap" *ngFor="let a of cclandlineNumbersList.controls; let pointIndex = index" [formGroupName]="pointIndex">
                 <mat-form-field class="full-width no-mar">
-                  <input matInput name="phone" placeholder="Contact Person Phone" formControlName="phone" maxlength="15">
+                  <input matInput name="phone" placeholder="Contact Person Phone" (keypress)="checkPhoneNumber($event)" (keyup)="checkPhoneNumber('cclandlineNumbers',pointIndex,$event)" formControlName="phone" maxlength="14">
                   <mat-icon (click)="deletecc(pointIndex,'cclandlineNumbers');" class="clr--red cursor-pointer delete--emails" *ngIf="pointIndex != 0">delete</mat-icon>
                   <span matPrefix>+1</span>
                 </mat-form-field>

@@ -7,6 +7,7 @@ import { UserAPIService } from 'app/userapi.service';
 import { RelationshipType } from '../../../../selectList';
 import { ManageTrusteeModalComponent } from '../manage-trustee-modal/manage-trustee-modal.component';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
+import { AsYouType } from 'libphonenumber-js'
 @Component({
   selector: 'app-emergency-contacts',
   templateUrl: './emergency-contacts.component.html',
@@ -55,8 +56,8 @@ export class EmergencyContactsComponent implements OnInit {
       name: new FormControl('', Validators.required),
       relationship: new FormControl('',Validators.required),
       address: new FormControl(''),
-      phone: new FormControl(''),
-      mobile: new FormControl(''),
+      phone: new FormControl('',[Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/),Validators.minLength(10)]),
+      mobile: new FormControl('',[Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/),Validators.minLength(10)]),
       emailAddress: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
       profileId: new FormControl('')
     });
@@ -219,5 +220,18 @@ export class EmergencyContactsComponent implements OnInit {
       }
     })
    }
+
+   
+  checkPhoneNumber(from,event)
+  {  
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }else{
+      const AsouType = new AsYouType('US');
+      let phoneNumber = AsouType.input(this.eContactFormGroup.controls[from].value);
+      this.eContactFormGroup.controls[from].setValue(phoneNumber);
+    }
+  }
    
 }

@@ -84,13 +84,15 @@
           (keypress)="checkSpecialChar($event)" maxlength="100">
       </mat-form-field>
       <mat-form-field class="full-width">
-        <input maxlength="15" (keypress)="onlyNumbers($event)" (keyup)="firstCapitalize($event)" matInput name="phone" placeholder="Phone"
-          [formControl]="eContactFormGroup.controls['phone']" autocomplete="off">
+        <input maxlength="14" matInput name="phone" (keypress)="checkPhoneNumber('phone',$event)" (keyup)="checkPhoneNumber('phone',$event)" placeholder="Phone" [formControl]="eContactFormGroup.controls['phone']" autocomplete="off">
         <span matPrefix>+1</span>
+        <mat-icon matTooltip="Please enter valid contact phone number." matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['phone'].hasError('pattern') && eContactFormGroup.controls['phone'].touched" class="red--alert">help_outline</mat-icon>
+        <mat-icon matTooltip="Please enter minimum 7 & maximum 14 numbers only" matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['phone'].hasError('minlength') && eContactFormGroup.controls['phone'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
       <mat-form-field class="full-width">
-        <input maxlength="15" (keypress)="onlyNumbers($event)" (keyup)="firstCapitalize($event)" matInput name="mobile" placeholder="Mobile"
-          [formControl]="eContactFormGroup.controls['mobile']" autocomplete="off">
+        <input maxlength="14" (keypress)="checkPhoneNumber('mobile',$event)" (keyup)="checkPhoneNumber('mobile',$event)" matInput name="mobile" placeholder="Mobile" [formControl]="eContactFormGroup.controls['mobile']" autocomplete="off">
+        <mat-icon matTooltip="Please enter valid contact phone number." matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['mobile'].hasError('pattern') && eContactFormGroup.controls['mobile'].touched" class="red--alert">help_outline</mat-icon>
+        <mat-icon matTooltip="Please enter minimum 7 & maximum 14 numbers only" matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['mobile'].hasError('minlength') && eContactFormGroup.controls['mobile'].touched" class="red--alert">help_outline</mat-icon>        
       </mat-form-field>
       <mat-form-field class="full-width">
         <input matInput name="emailAddress" placeholder="Email*" [formControl]="eContactFormGroup.controls['emailAddress']" autocomplete="off">

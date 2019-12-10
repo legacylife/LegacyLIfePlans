@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray} from "@angu
 import { MatSnackBar, MatDialog, MatDialogRef } from "@angular/material";
 import { VideoModalComponent } from '../video-modal/video-modal.component';
 const customerBucketLink = s3Details.awsserverUrl+s3Details.assetsPath+'customer/';
+console.log('Home Page')
 @Component({
   selector: 'app-landing-home-page',
   templateUrl: './home.component.html',
@@ -251,6 +252,20 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.endVal4 = this.pageData.facts.LLPMembers;   
       this.resetCounter();
     }
+  }
+
+  contentScroll(scrolldivid) {
+    console.log('>>>>>>>>>>>>>scrolldivid',scrolldivid)
+    var content = document.getElementById("customer-home-content")
+    // console.log(content)
+    var scrolldiv = document.getElementById(scrolldivid)
+    var topPos = scrolldiv ? scrolldiv.offsetTop : 0;
+    if(content) {
+      content.scrollTop = topPos;
+    }
+
+    // var scrolldiv = document.getElementById(scrolldivid)
+    // scrolldiv.scrollIntoView()
   }
 
   async getFreeTrialSettings(){

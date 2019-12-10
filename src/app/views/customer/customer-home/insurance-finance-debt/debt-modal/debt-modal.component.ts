@@ -11,6 +11,7 @@ import { cloneDeep } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 import { DebtType } from '../../../../../selectList';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
+import { AsYouType } from 'libphonenumber-js'
 const URL = serverUrl + '/api/documents/debtDocuments';
 @Component({
   selector: 'app-essenioal-id-box',
@@ -52,7 +53,7 @@ export class DebtModalComponent implements OnInit {
           bankLendarName: new FormControl('',Validators.required),
           accountNumber: new FormControl(''),
           contactEmail: new FormControl('',Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
-          contactPhone: new FormControl('',Validators.pattern(/^[0-9]{7,15}$/)),
+          contactPhone: new FormControl('',[Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/),Validators.minLength(10)]),
           comments: new FormControl(''),
           profileId: new FormControl('')
         });
@@ -95,7 +96,7 @@ export class DebtModalComponent implements OnInit {
           bankLendarName: new FormControl(this.DebtForm.controls['bankLendarName'].value,Validators.required),
           accountNumber: new FormControl(this.DebtForm.controls['accountNumber'].value,),
           contactEmail: new FormControl(this.DebtForm.controls['contactEmail'].value,Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
-          contactPhone: new FormControl(this.DebtForm.controls['contactPhone'].value,Validators.pattern(/^[0-9]{7,15}$/)),
+          contactPhone: new FormControl(this.DebtForm.controls['contactPhone'].value,Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/)),
           comments: new FormControl(this.DebtForm.controls['comments'].value,),
           profileId: new FormControl(this.DebtForm.controls['profileId'].value,)
         });
@@ -107,7 +108,7 @@ export class DebtModalComponent implements OnInit {
           bankLendarName: new FormControl(this.DebtForm.controls['bankLendarName'].value,Validators.required),
           accountNumber: new FormControl(this.DebtForm.controls['accountNumber'].value,),
           contactEmail: new FormControl(this.DebtForm.controls['contactEmail'].value,Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
-          contactPhone: new FormControl(this.DebtForm.controls['contactPhone'].value,Validators.pattern(/^[0-9]{7,15}$/)),
+          contactPhone: new FormControl(this.DebtForm.controls['contactPhone'].value,Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/)),
           comments: new FormControl(this.DebtForm.controls['comments'].value,),
           profileId: new FormControl(this.DebtForm.controls['profileId'].value,)
         });
@@ -272,4 +273,15 @@ export class DebtModalComponent implements OnInit {
     });
   }
 
+  checkPhoneNumber(event)
+  {  
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }else{
+      const AsouType = new AsYouType('US');
+      let phoneNumber = AsouType.input(this.DebtForm.controls['contactPhone'].value);
+      this.DebtForm.controls['contactPhone'].setValue(phoneNumber);
+    }
+  }
 }

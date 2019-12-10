@@ -5,7 +5,7 @@ import { ThemeService } from '../../../shared/services/theme.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LayoutService } from '../../services/layout.service';
 import { NavigationService } from '../../services/navigation.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-landing-customer-header-top',
   templateUrl: './landing-customer-header-top.component.html',
@@ -16,6 +16,7 @@ export class LandingCustomerHeaderTopComponent implements OnInit, OnDestroy {
   menuItems:any;
   menuItemSub: Subscription;
   egretThemes: any[] = [];
+  headerOff : boolean = true
   currentLang = 'en';
   availableLangs = [{
     name: 'English',
@@ -30,7 +31,7 @@ export class LandingCustomerHeaderTopComponent implements OnInit, OnDestroy {
     private navService: NavigationService,//LandingCustomerNavService,
     public themeService: ThemeService,
     public translate: TranslateService,
-    private renderer: Renderer2
+    private renderer: Renderer2,private router: Router
   ) { }
 
   ngOnInit() {
@@ -56,6 +57,12 @@ export class LandingCustomerHeaderTopComponent implements OnInit, OnDestroy {
     })
 
     const locArray = location.href.split("#")
+    if(locArray[1]==undefined){
+      const locationArray = location.href.split("/");
+      if(locationArray[3]=='privacy-policy' || locationArray[3]=='terms-of-use'){
+          this.headerOff = false;
+      }
+    }
     this.contentScroll(locArray[1])
   }
   ngOnDestroy() {
@@ -83,13 +90,19 @@ export class LandingCustomerHeaderTopComponent implements OnInit, OnDestroy {
 
   contentScroll(scrolldivid) {
     var content = document.getElementById("customer-home-content")
-    // console.log(content)
     var scrolldiv = document.getElementById(scrolldivid)
     var topPos = scrolldiv ? scrolldiv.offsetTop : 0;
+  
+    if(scrolldivid=='cu-home'){
+      const locationArray = location.href.split("/");
+        if(locationArray[3]=='privacy-policy' || locationArray[3]=='terms-of-use'){        
+          this.headerOff = false;
+          this.router.navigateByUrl('/');
+      }
+    }    
     if(content) {
       content.scrollTop = topPos;
     }
-
     // var scrolldiv = document.getElementById(scrolldivid)
     // scrolldiv.scrollIntoView()
   }
