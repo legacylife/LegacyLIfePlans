@@ -26,6 +26,7 @@ var advertisementsSchema = new mongoose.Schema({
   }], */
   uniqueId: String,
   status: String,
+  paymentStatus: String,
   sponsoredStatus: String,
   remiderMailstatus: Array,//count days 3 or 7
   createdOn: Date,

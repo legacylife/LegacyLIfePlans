@@ -95,14 +95,20 @@ function addEnquiryReply(req, res) {
         res.status(401).send(resFormat.rError(err))
       } else {         
         if(found) {
-            let adminReplyArr = {'status':'Pending',adminId:ObjectId(query.adminId),'zipcodes':proquery.zipcodes,'cost':proquery.cost,'message':proquery.message,'createdOn':new Date()};
+            let adminReplyArr = {'status':'Pending',adminId:ObjectId(query.adminId),'zipcodes':proquery.zipcodes,'paymentStatus':proquery.paymentStatus,'cost':proquery.cost,'message':proquery.message,'createdOn':new Date()};
             let adminReplyData = '', invoiceDetails = ''
             let userData = await User.findOne({_id: found.customerId},{})
             
             if( !userData ) {
               res.send(resFormat.rError('Not found'))
             }
-          
+
+            let newArray = [];
+            if(proquery.cost==0){
+              newArray = proquery.zipcodes;
+              adminReplyArr = {'status':'Active',adminId:ObjectId(query.adminId),'zipcodes':proquery.zipcodes,'sponsoredStatus':'Active','paymentStatus':proquery.paymentStatus,'cost':'0','message':proquery.message,'createdOn':new Date()};
+            }
+
             if( found.adminReply.length > 0 ) {
               adminReplyData = found.adminReply;
               let newarry = [];  
@@ -128,11 +134,12 @@ function addEnquiryReply(req, res) {
               })
               
 
+              if(proquery.cost>0){
               /**
                * Create stripe user if not exists
                */
               let userDetails = found.customerId,
-                  stripeCustomerId = userDetails.stripeCustomerId
+                  stripeCustomerId = userDetails.stripeCustomerId;
               /**
                * Add payment link data
                */
@@ -148,8 +155,8 @@ function addEnquiryReply(req, res) {
                 }
                 adminReplyArr = Object.assign(adminReplyArr,{paymentDetails:paymentDetails})
               })
-
-              adminReplyData =  adminReplyData.concat(adminReplyArr);
+                adminReplyData =  adminReplyData.concat(adminReplyArr);
+              }
             }
             else {
               adminReplyData = adminReplyArr;
@@ -162,8 +169,8 @@ function addEnquiryReply(req, res) {
               /**
                * Add payment link data
                */
-              
-              await stripeHelper.createInvoice(userData.username, stripeCustomerId, proquery.cost, 'USD', userDetails ).then( async(response) => {
+              if(proquery.cost>0){
+               await stripeHelper.createInvoice(userData.username, stripeCustomerId, proquery.cost, 'USD', userDetails ).then( async(response) => {
                 invoiceDetails = response
                 newStripeCustomerId = invoiceDetails.stripeCustomerId
                 let paymentDetails = {
@@ -177,58 +184,64 @@ function addEnquiryReply(req, res) {
                 if( !stripeCustomerId && newStripeCustomerId != "" ) {
                   await User.updateOne({_id: userDetails._id}, {stripeCustomerId:newStripeCustomerId})
                 }
-
-              })
+               })
+              }
             }
+
             let uniqueId = Math.random().toString(36).slice(2)
-            advertisement.updateOne({_id:query._id}, {fromDate:proquery.fromDate,toDate:proquery.toDate,adminReply:adminReplyData,uniqueId:uniqueId}, function (err, logDetails) {
+            advertisement.updateOne({_id:query._id}, {fromDate:proquery.fromDate,toDate:proquery.toDate,adminReply:adminReplyData,uniqueId:uniqueId}, async function (err, logDetails) {
               if (err) {
                 res.send(resFormat.rError(err))
               } else {
                 let toName = found.customerId.firstName;
                 let emailId = found.customerId.username;
                 let zips = [];
-                if(proquery.zipcodes){
+                if(proquery.zipcodes) {
                   zips = proquery.zipcodes.join(",")
                 }
                 
-
                 let replyContnt = [];
                 replyContnt['zipcodes'] = zips;
                 replyContnt['cost'] = proquery.cost;
-
                 let fromDate1 = '';let toDate1 = '';
-                if(proquery.fromDate){
+                if(proquery.fromDate) {
                   let  fromDate = proquery.fromDate.split("-");
                   let fromDate2 = fromDate[2].split("T");
                   fromDate1 = fromDate2[0]+'/'+fromDate[1]+'/'+fromDate[0];
                 }
-                if(proquery.toDate){
+                if(proquery.toDate) {
                   let toDate = proquery.toDate.split("-");
                   let toDate2 = toDate[2].split("T");
                   toDate1 = toDate2[0]+'/'+toDate[1]+'/'+toDate[0];
                 }
 
-                let encryptedCustomerId = Buffer.from(String(found.customerId._id), 'binary').toString('base64'),
-                    encryptedInvoiceId  = Buffer.from(String(invoiceDetails.invoiceId), 'binary').toString('base64')
-
-                let PaymentLink = constants.clientUrl+'/advertisement-payment/'+encryptedCustomerId+'/'+encryptedInvoiceId+'/'+uniqueId
-              //  console.log("\n****PaymentLink****",PaymentLink)
+                if(invoiceDetails) {
+                  let encryptedCustomerId = Buffer.from(String(found.customerId._id), 'binary').toString('base64'),
+                      encryptedInvoiceId  = Buffer.from(String(invoiceDetails.invoiceId), 'binary').toString('base64')
+                  let PaymentLink = constants.clientUrl+'/advertisement-payment/'+encryptedCustomerId+'/'+encryptedInvoiceId+'/'+uniqueId;
+                  replyContnt['paymentLink'] = PaymentLink;
+                }
+                //console.log("\n****PaymentLink****",PaymentLink)
                 replyContnt['fromDate'] = fromDate1;
                 replyContnt['toDate']   = toDate1;
-                replyContnt['paymentLink'] = PaymentLink
+                
                 if(proquery.message!==null)
                 replyContnt['comment'] = proquery.message;
                 else
                 replyContnt['comment'] = '';
-                //console.log("\n****replyContnt****",replyContnt)
 
-                sendEnquiryReplyMail('AdviserFeturedRequestReply', emailId, toName, replyContnt);
+                let message = '';
+                if(invoiceDetails) {
+                  sendEnquiryReplyMail('AdviserFeturedRequestReply', emailId, toName, replyContnt);
+                  message = resMessage.data( 607, [{key: '{field}',val: 'Payment link'}, {key: '{status}',val: 'sent'}]) 
+                }else{
+                  sendEnquiryReplyMail('AdviserFeturedRequestReplyWithoutCost', emailId, toName, replyContnt);
+                  message = resMessage.data( 607, [{key: '{field}',val: 'Free featured account'}, {key: '{status}',val: 'sent'}]) 
+                  await User.updateOne({_id:found.customerId._id},{sponsoredAdvisor:'yes',sponsoredZipcodes:newArray});
+                }
                 
-                let message = resMessage.data( 607, [{key: '{field}',val: 'Payment link'}, {key: '{status}',val: 'sent'}] ) 
                 //Update activity logs
-                allActivityLog.updateActivityLogs( query.adminId, found.customerId._id, "Advertisement Enquiry Reply", message, "Admin Panel" )
-                
+                allActivityLog.updateActivityLogs( query.adminId, found.customerId._id, "Advertisement Enquiry Reply", message, "Admin Panel")
                 let result = { "message": message,'logDetails':logDetails }
                 res.status(200).send(resFormat.rSuccess(result))
               }
@@ -301,12 +314,14 @@ function sendEnquiryReplyMail(templateCode,emailId, toName, replyContnt) {
       body = body.replace("{cost}",replyContnt['cost']);
       body = body.replace("{fromdate}",replyContnt['fromDate']);
       body = body.replace("{toDate}",replyContnt['toDate']);
-      body = body.replace("{paymentLink}",replyContnt['paymentLink']);
+      if(replyContnt['paymentLink']){
+        body = body.replace("{paymentLink}",replyContnt['paymentLink']);
+      }
       body = body.replace("{comment}",replyContnt['comment']);
       }
       body = body.replace("{SERVER_LINK}",serverUrl);
       const mailOptions = {
-        to: emailId,
+        to: 'pankajk@arkenea.com',//emailId,
         subject: template.mailSubject,
         html: body
       }
@@ -376,8 +391,13 @@ async function completeTransaction( req, res ) {
     let invoiceSentDays = getDateDiff( advertisementData.fromDate, moment() ) */
     let invoiceStatus = adminReply[0]['paymentDetails']['status']
     if( invoiceStatus === 'Pending') {
-      stripeHelper.payInvoice( invoiceId, token, advertisementData.customerId.stripeCustomerId ).then(async(response) => {
-        if( response ) {
+      stripeHelper.payInvoice( invoiceId, token, advertisementData.customerId.stripeCustomerId ).then(async(err, response) => {
+
+        if (err) {
+          console.log('err--->',err)
+          stripeErrors( err, res )          
+        } else if( response ) {
+          console.log('response--->',response)
           let currentInvoiceIndex = OldAdminReply.findIndex(elem => elem.status==='Pending' && elem.paymentDetails.invoiceId === invoiceId)
           let oldPaymentDetails   = OldAdminReply[currentInvoiceIndex]['paymentDetails'];
           let newPaymentDetails   = Object.assign({}, oldPaymentDetails, { "status": "Done" });

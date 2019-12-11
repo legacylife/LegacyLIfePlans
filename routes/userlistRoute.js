@@ -971,6 +971,7 @@ function autoRenewalUpdate(req, res) {
               if( err ) {
                 stripeErrors( err, res )
               }
+              else{
               let updatedSubscriptionObject = subscriptionDetails
               updatedSubscriptionObject[updatedSubscriptionObject.length-1]['autoRenewal'] = autoRenewalStatus
               User.updateOne({ _id: requestParam._id }, { $set: { subscriptionDetails : updatedSubscriptionObject } }, function (err, updated) {
@@ -981,7 +982,8 @@ function autoRenewalUpdate(req, res) {
                 allActivityLog.updateActivityLogs(userProfile._id, userProfile._id, 'Auto Renewal Status', message,'Account settings')
                 res.status(200).send(resFormat.rSuccess({'autoRenewalStatus': autoRenewalStatus, 'message':message}));
               })
-          });
+            }
+           });
         }
         else{
           let message = resMessage.data( 632, [] )
