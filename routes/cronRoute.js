@@ -777,7 +777,7 @@ async function deceasedCustomersReminders(req, res){
               if( subscriptionStatus != 'canceled' && currentSubscriptionEndDate < currentDate ) {
                 updateuser = true
               }
-              testingmessage = ' Subscription found ';
+              testingmessage = ' Subscription found:- ';
           }else{  //Never subscribe
             //let FreeTrail = await FreeTrailPeriodSetting.findOne({}, {});
             //let start = moment(key.createdOn, 'YYYY-MM-DD');         
@@ -786,7 +786,7 @@ async function deceasedCustomersReminders(req, res){
             if(currentSubscriptionEndDate < currentDate){
               updateuser = true
             }      
-            testingmessage = ' Never subscribe ';  
+            testingmessage = ' Never subscribe:- ';  
           }
       //allActivityLog.updateActivityLogs('5d08f91a8d5c2e0cfcd8aad0', '5d08f91a8d5c2e0cfcd8aad0', 'Mark As Deceased Reminders cron job step1-'+deceasedEmail, message);    
         if(updateuser){
@@ -802,7 +802,7 @@ async function deceasedCustomersReminders(req, res){
                   var timestamp2 = m.add(i, 'weeks');
                   var weekDate = new Date(timestamp2); 
                   var todayDate = currentDate;
-                  message = testingmessage+'  Subscription End Date  '+moment(currentSubscriptionEndDate).format("MM/DD/YYYY")+'  Week Date '+moment(weekDate).format("MM/DD/YYYY")+'  After Expire Account Date '+moment(AfterExAccDays).format("MM/DD/YYYY");
+                  message = testingmessage+'  Subscription End Date  '+moment(currentSubscriptionEndDate).format("MM/DD/YYYY")+', Email Week Date '+moment(weekDate).format("MM/DD/YYYY")+',  After Expire Account Date '+moment(AfterExAccDays).format("MM/DD/YYYY")+' ,';
                   let checkRemider = await TrackDeceasedReminder.findOne({customerId:key._id});
                    let alreadySend = 1;
                   if(checkRemider){// && checkRemider.deceasedReminder.length>0
@@ -826,13 +826,13 @@ async function deceasedCustomersReminders(req, res){
                       }
                       if(executor){
                         executorId = executor._id;
-                        message = message+' '+deceasedFullName+' deceased and his executor is '+executor.username+'';
+                        message = message+' '+' his executor is '+executor.username+',';
                         allActivityLog.updateActivityLogs(key._id, key._id, 'Mark As Deceased account close reminder cron job', message)
                         reminderinfo = [{'executorId':executorId,'reminderDate':currentDate,'mailStatus':'success'}];
                         await sendingMail('DeceasedRemiderEmailToExecutor',executor.username,executor.firstName,deceasedEmail,deceasedFullName,subscriptionEndDate,AfterExAccDate);
                       }else{
                         //send mail to admin to inform deceased user scrscription date and deceased user didn't have any executor                   
-                       message = message+' '+deceasedFullName+' deceased and have not executor';
+                       message = message+' Do not have executor';
                        allActivityLog.updateActivityLogs(key._id, key._id, 'Mark As Deceased account close reminder cron job', message)
                        let adminUSer = await User.find({userType:"sysadmin","sectionAccess.deceasedrequest":"fullaccess"},{_id:1,firstName:1,lastName:1,username:1});
                           adminUSer.forEach( async (row,index) => {   
