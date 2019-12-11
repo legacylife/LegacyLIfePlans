@@ -3,72 +3,83 @@ var debug = require('debug')('LLP:server')
 const fs = require('fs')
 const http = require('http')
 const https = require('https')
-var port = normalizePort(process.env.PORT || '80') 
+var port = normalizePort(process.env.PORT || '443')
 var express = require('express')
 var router = express.Router()
 const apps = express()
- const server = http.createServer(app).listen(80, () => {
-   console.log('http server running at ' + 80)
- })
- var chats = require('./routes/chatcontrollerRoute')
- 
- let socketIO = require('socket.io');
- let io = socketIO(server);
 
- var users = {};
- io.on('connection', (socket) => {
-   // var clients = io.sockets.clients();
-   // var clients = io.sockets.clients('new-message'); 
-  socket.on('loginforonline', function(data){
-     //saving userId to array with socket ID
-     users[socket.id] = data.userId;
-     // console.log('a user ' + data.userId +'---' + data.userType + ' connected');
-     chats.userStatus(data,'online');
-     io.emit('online-status',data.userId,'online');
-     //8 var unreadCnt = chats.userMessagesStatus(data.userId,'online');
-     //8 console.log(`loginforonline message-unread-count`);
-     //8  io.emit('message-unread-count-'+data.userId, unreadCnt);
+
+/*const server = http.createServer(app).listen(80, () => {
+  console.log('http server running at ' + 80)
+})*/
+
+/*var options = {
+  key: fs.readFileSync('../llp-privatekey.pem'),
+  cert: fs.readFileSync('../llp-server.crt'),
+};
+const server = https.createServer(options, app).listen(443, () => {
+  console.log('https server running at ' + 443)
+})*/
+
+var chats = require('./routes/chatcontrollerRoute')
+
+let socketIO = require('socket.io');
+let io = socketIO(server);
+
+var users = {};
+io.on('connection', (socket) => {
+  // var clients = io.sockets.clients();
+  // var clients = io.sockets.clients('new-message'); 
+  socket.on('loginforonline', function (data) {
+    //saving userId to array with socket ID
+    users[socket.id] = data.userId;
+    // console.log('a user ' + data.userId +'---' + data.userType + ' connected');
+    chats.userStatus(data, 'online');
+    io.emit('online-status', data.userId, 'online');
+    //8 var unreadCnt = chats.userMessagesStatus(data.userId,'online');
+    //8 console.log(`loginforonline message-unread-count`);
+    //8  io.emit('message-unread-count-'+data.userId, unreadCnt);
   });
 
-  socket.on('offline', function(data){
-    io.emit('offlineContact'+data.userId,data.userId);
-    chats.userStatus({userId:data.userId},'offline');
-    io.emit('online-status',data.userId,'offline');
+  socket.on('offline', function (data) {
+    io.emit('offlineContact' + data.userId, data.userId);
+    chats.userStatus({ userId: data.userId }, 'offline');
+    io.emit('online-status', data.userId, 'offline');
   });
- 
-  socket.on('typing-with', async (withId) => {  
-    io.emit('typing-with-'+withId.chatwithid,withId.contactId);
+
+  socket.on('typing-with', async (withId) => {
+    io.emit('typing-with-' + withId.chatwithid, withId.contactId);
     //withId.contactId
   });
 
-  socket.on('new-message', async (message,chatid) => {    
-   // console.log('NEW message -----',message,'chatwithid>>>>>>>',message.chatwithid)
-     io.emit('new-message-'+message.chatwithid, message,chatid);
+  socket.on('new-message', async (message, chatid) => {
+    // console.log('NEW message -----',message,'chatwithid>>>>>>>',message.chatwithid)
+    io.emit('new-message-' + message.chatwithid, message, chatid);
     //8 chats.chatRoom(chatid,message.chatwithid);
-     var unreadCnt = await chats.userMessagesStatus(message.chatwithid,'online');  
-     io.emit('message-unread-count-'+message.chatwithid, unreadCnt);    
+    var unreadCnt = await chats.userMessagesStatus(message.chatwithid, 'online');
+    io.emit('message-unread-count-' + message.chatwithid, unreadCnt);
   });
 
   socket.on('message-unread-count', async (data) => { // functions call when page reload from customizer.ts
-     var unreadCnt = await chats.userMessagesStatus(data.userId,'online');
-    io.emit('message-unread-count-'+data.userId, unreadCnt);
+    var unreadCnt = await chats.userMessagesStatus(data.userId, 'online');
+    io.emit('message-unread-count-' + data.userId, unreadCnt);
   });
 
-  socket.on('get-chat-room', (chatId,userId) => {
-     chats.chatRoom(chatId,userId);
-   // io.emit('get-chat-room'+contactId);
+  socket.on('get-chat-room', (chatId, userId) => {
+    chats.chatRoom(chatId, userId);
+    // io.emit('get-chat-room'+contactId);
   });
-   
-  socket.on('get-chat-room-again', (chatId,userId) => {
-    console.log('NEW message -----',chatId,'userId>>>>>>>',userId)
-    chats.chatRoom(chatId,userId);
-  // io.emit('get-chat-room'+contactId);
- });  
-  socket.on('disconnect', function(){
-    if(users[socket.id]!==undefined){
+
+  socket.on('get-chat-room-again', (chatId, userId) => {
+    console.log('NEW message -----', chatId, 'userId>>>>>>>', userId)
+    chats.chatRoom(chatId, userId);
+    // io.emit('get-chat-room'+contactId);
+  });
+  socket.on('disconnect', function () {
+    if (users[socket.id] !== undefined) {
       io.emit('offlineContact', users[socket.id]);
-      chats.userStatus({userId:users[socket.id]},'offline');
-      io.emit('online-status',users[socket.id],'offline');
+      chats.userStatus({ userId: users[socket.id] }, 'offline');
+      io.emit('online-status', users[socket.id], 'offline');
     }
   });
 });
@@ -118,3 +129,25 @@ function onListening() {
   debug('Listening on ' + bind)
   console.log("server started on port" + addr.port)
 }
+
+/**
+ * 443 https port & redirection of http to https
+ */
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+app.set('port', (process.env.PORT || 443));
+
+// start server
+var options = {
+	key: fs.readFileSync('../llp-privatekey.pem'),
+  cert: fs.readFileSync('../llp-server.crt'),
+};
+var server = https.createServer(options, app).listen(app.get('port'), function(){
+  console.log("Express server listening on port " + app.get('port'));
+});
+
+// Redirect from http port 80 to https
+//var http = require('http');
+http.createServer(function (req, res) {
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
+}).listen(80); 
