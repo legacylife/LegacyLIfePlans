@@ -10,8 +10,8 @@ import { serverUrl, s3Details } from '../../../../../config';
 import { cloneDeep } from 'lodash';
 import { FileHandlingService } from 'app/shared/services/file-handling.service';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
+import { AsYouType } from 'libphonenumber-js'
 const URL = serverUrl + '/api/documents/celebrationofLife';
-
 @Component({
   selector: 'app-celebrationof-life',
   templateUrl: './celebrationof-life.component.html',
@@ -69,8 +69,8 @@ export class CelebrationofLifeComponent implements OnInit {
       profileId: new FormControl(''),
       invitedPeople: this._formBuilder.array([this._formBuilder.group({
             name: [''],
-            phoneNumber: new FormControl('', [Validators.pattern(/^[0-9]+$/i)]),
-          emailId: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)])
+            phoneNumber: new FormControl('', [Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/),Validators.minLength(10)]),
+            emailId: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)])
       })]),
     });
 
@@ -265,7 +265,8 @@ export class CelebrationofLifeComponent implements OnInit {
   addNewAo() {
     this.invitedPeoplePoints.push(this._formBuilder.group({
       name: [''],
-      phoneNumber: new FormControl('', [Validators.pattern(/^[0-9]+$/i)]),
+    //  phoneNumber: new FormControl('', [Validators.pattern(/^[0-9]+$/i)]),
+      phoneNumber: new FormControl('', [Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/),Validators.minLength(10)]),
       emailId: new FormControl('', [Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)])
     }));
   }
@@ -280,8 +281,7 @@ export class CelebrationofLifeComponent implements OnInit {
       name: [name],
       //phoneNumber: [phoneNumber],
       //emailId: [emailId]
-
-      phoneNumber: new FormControl(phoneNumber, [Validators.pattern(/^[0-9]+$/i)]),
+      phoneNumber: new FormControl(phoneNumber, [Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/),Validators.minLength(10)]),
       emailId: new FormControl(emailId, [Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)])
 
     });
@@ -530,5 +530,19 @@ downloadFile = (filename) => {
     link.click();this.snack.dismiss();
   });
 }
+
+checkPhoneNumber(index,event)
+{  
+  const charCode = (event.which) ? event.which : event.keyCode;
+  if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+    return false;
+  }else{
+    const AsouType = new AsYouType('US');
+    let control = <FormArray>this.celebrationFormGroup.controls['invitedPeople'];
+    let phoneValue = control.controls[index].value.phoneNumber;
+    let phoneNumber = AsouType.input(phoneValue);
+    control.controls[index]['controls']['phoneNumber'].setValue(phoneNumber);
+  }
+ }
 
 }

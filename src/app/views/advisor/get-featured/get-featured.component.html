@@ -75,7 +75,8 @@
                           <mat-panel-title>
                               <div class="display--data m-0">
                                   <label class="left--label mb-0">Status:</label>
-                                  <label class="right--label" *ngIf="item.status!='Reject'">{{ item.adminReply.length > 0 ? (item.adminReply[item.adminReply.length-1]['paymentDetails'] && item.adminReply[item.adminReply.length-1]['paymentDetails']['status'] != 'Expired' ? 'Payment '+item.adminReply[item.adminReply.length-1]['paymentDetails']['status'] : 'Link Expired') : 'Payment Pending' }}</label>
+                                  <label class="right--label" *ngIf="item.status=='!Reject' && item.adminReply[item.adminReply.length-1]['paymentStatus']=='2'">Free Account</label>
+                                  <label class="right--label" *ngIf="item.status!='Reject'">{{ item.adminReply.length > 0 ? (item.adminReply[item.adminReply.length-1]['paymentDetails'] && item.adminReply[item.adminReply.length-1]['paymentDetails']['status'] != 'Expired' ? 'Payment '+item.adminReply[item.adminReply.length-1]['paymentDetails']['status'] : (item.adminReply[item.adminReply.length-1]['paymentStatus']=='2' ? 'Free Account' : 'Link Expired')) : 'Payment Pending' }}</label>
                                   <label class="right--label" *ngIf="item.status=='Reject'">Rejected</label>
                                 </div>
                           </mat-panel-title>

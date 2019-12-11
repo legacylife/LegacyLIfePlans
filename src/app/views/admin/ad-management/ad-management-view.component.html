@@ -196,48 +196,54 @@
               {{row?.zipcodes && row?.zipcodes.length > 0 ? arrayToString(row?.zipcodes) : ""}}
             </ng-template>
           </ngx-datatable-column>
+
           <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Cost" prop="cost" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{row?.cost}}
+              {{row?.cost>0 ? '$'+row?.cost : ''}} {{row?.paymentStatus=='2' ? 'Free' : '' }}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Message" prop="message"
-            [flexGrow]="1">
+
+          <!-- <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Price" prop="paymentStatus" [flexGrow]="1">
+              <ng-template let-row="row" ngx-datatable-cell-template>                
+              </ng-template>
+          </ngx-datatable-column> -->
+
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Message" prop="message" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{row?.message}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Payment Link" prop="Payment Link"
-            [flexGrow]="1">
+
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Payment Link" prop="Payment Link" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{row?.paymentDetails?.status ==='Pending' ? paymentLink : 'Expired'}}
+              {{row?.paymentDetails ? (row?.paymentDetails?.status ==='Pending' ? paymentLink : 'Expired') : '--'}}
             </ng-template>
           </ngx-datatable-column>
+            
           <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Time" prop="createdOn" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{row?.createdOn | date: 'short'}}
+              {{row?.createdOn | date: 'MM/dd/yyyy HH:mm:ss'}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Payment Status" prop="Payment Status"
-            [flexGrow]="1">
+
+          <ngx-datatable-column [resizeable]="false" headerClass="tbl--header" name="Payment Status" prop="Payment Status" [flexGrow]="1">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{row?.status}}
+              {{row?.status=='Active' ? 'Done' : row?.status}}
             </ng-template>
           </ngx-datatable-column>
+         
           <!-- <ngx-datatable-column [resizeable]="false" name="Status">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <mat-chip class="active--status--chip" mat-sm-chip [color]="'primary'" [selected]="row.status"
                 (click)="statusChange(row)" title="Status">{{row.status}}</mat-chip>
             </ng-template>
           </ngx-datatable-column> -->
+
         </ngx-datatable>
       </mat-card-content>
     </mat-card>
   </div>
-
   <!-- <button mat-raised-button class="llp--secondary--btn mr-1" (click)="remiderTesting()">remiderTesting</button> -->
-
-
   <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="70" fxFlex.lg="50" fxFlex.xl="50" class="enq--form--wrapper" *ngIf="showReplyEnquiryForm">
     <div class="breadcrumb-title pl-0 mt-1 brdr-t-1">
       <h1 class="bc-title">Reply on Enquiry form. (Note : Please check Subscription details before reply.)</h1>
@@ -280,15 +286,21 @@
                   *ngIf="enquiryFormReply.controls['toDate'].hasError('required') && enquiryFormReply.controls['toDate'].touched">help_outline</mat-icon>
                 </mat-form-field>
               </div>
-
               <mat-chip-list class="doc--list error--chip" *ngIf="dateError"><mat-chip><mat-error>{{dateError}}</mat-error></mat-chip></mat-chip-list>
-
+            
               <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
-                <mat-form-field class="full-width">
+                <mat-radio-group aria-label="Select an option" class="llp-radio" name="paymentStatus"  [formControl]="enquiryFormReply.controls['paymentStatus']">
+                    <div class="checkbox-label">Do you want to create paymemt link?</div>
+                    <mat-radio-button (change)="showPaymentStatus('1')" value="1" [checked]="true">Yes</mat-radio-button>
+                    <mat-radio-button (change)="showPaymentStatus('2')" value="2">No</mat-radio-button>
+                  <mat-icon matTooltip="Please select option yes or no to manage payment"  matTooltipClass="llp--tooltip error"  *ngIf="enquiryFormReply.controls['cost'].hasError('required') && enquiryFormReply.controls['cost'].touched"  class="red--alert">help_outline</mat-icon>
+                </mat-radio-group>
+
+                <mat-form-field class="full-width" *ngIf="showPayment">
                   <mat-label>Payment Cost in $*</mat-label>
-                  <input matInput value="" placeholder="Payment Cost in $" [formControl]="enquiryFormReply.controls['cost']">
-                  <mat-icon matTooltip="Please enter payment cost" matTooltipClass="llp--tooltip error" *ngIf="enquiryFormReply.controls['cost'].hasError('required') && enquiryFormReply.controls['cost'].touched" class="red--alert">help_outline</mat-icon>
-                  <mat-icon matTooltip="Please enter numeric value." matTooltipClass="llp--tooltip error" *ngIf="enquiryFormReply.controls['cost'].hasError('pattern') && enquiryFormReply.controls['cost'].touched" class="red--alert">help_outline</mat-icon>
+                    <input matInput value="" placeholder="Payment Cost in $" [formControl]="enquiryFormReply.controls['cost']">
+                    <mat-icon matTooltip="Please enter payment cost" matTooltipClass="llp--tooltip error" *ngIf="enquiryFormReply.controls['cost'].hasError('required') && enquiryFormReply.controls['cost'].touched" class="red--alert">help_outline</mat-icon>
+                    <mat-icon matTooltip="Please enter numeric value." matTooltipClass="llp--tooltip error" *ngIf="enquiryFormReply.controls['cost'].hasError('pattern') && enquiryFormReply.controls['cost'].touched" class="red--alert">help_outline</mat-icon>
                 </mat-form-field>
               </div>
               <mat-chip-list class="doc--list error--chip" *ngIf="paymentError"><mat-chip><mat-error>{{paymentError}}</mat-error></mat-chip></mat-chip-list>

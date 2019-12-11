@@ -11,8 +11,8 @@ import { cloneDeep } from 'lodash';
 import { FileHandlingService } from 'app/shared/services/file-handling.service';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
 import { toppingList } from '../../../../../selectList';
+import { AsYouType } from 'libphonenumber-js'
 const URL = serverUrl + '/api/documents/funeralExpenses';
-
 @Component({
   selector: 'app-funeral-expenses-modal',
   templateUrl: './funeral-expenses-modal.component.html',
@@ -596,6 +596,20 @@ export class FuneralExpensesModalComponent implements OnInit {
         
   
       });
+    }
+  }
+
+
+  
+  checkPhoneNumber(event)
+  {  
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }else{
+      const AsouType = new AsYouType('US');
+      let phoneNumber = AsouType.input(this.expensesFormGroup.controls['phoneNumber'].value);
+      this.expensesFormGroup.controls['phoneNumber'].setValue(phoneNumber);
     }
   }
 

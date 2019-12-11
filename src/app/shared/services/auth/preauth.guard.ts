@@ -16,12 +16,11 @@ export class PreAuthGuard implements CanActivate {
       this.userInfo = this.api.getUserInfo();
       if (this.userInfo && this.userInfo.userType == 'sysadmin') {
         //this.api.logout();
-       // const locationArray = location.href.split('/');
-      //  console.log('Preauth---',locationArray,"=2nd",locationArray[locationArray.length - 2],' 3rd---',locationArray[locationArray.length - 3],' 4th---',locationArray[locationArray.length - 4]);
-       // if(locationArray[locationArray.length - 3]!='admin' || locationArray[locationArray.length - 4]!='admin'){
+        const locationArray = location.href.split('/');
+//        console.log('Preauth---',locationArray,"=2nd",locationArray[locationArray.length - 2],' 3rd---',locationArray[locationArray.length - 3],' 4th---',locationArray[locationArray.length - 4]);
+        if(locationArray[locationArray.length - 2]!='admin'){
           this.router.navigateByUrl('/admin/dashboard');
-        //}
-
+        }
         return false;     
       }
     return true;

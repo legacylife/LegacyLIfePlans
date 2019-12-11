@@ -42,7 +42,7 @@
             </div>
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
               <mat-form-field class="full-width">
-                <textarea (keyup)="firstCapitalize($event)" autocomplete="off" maxlength="15" (keypress)="onlyNumbers($event)" matInput placeholder="Phone" [formControl]="expensesFormGroup.controls['phoneNumber']"></textarea>                
+                <textarea (keyup)="firstCapitalize($event)" autocomplete="off" maxlength="14"  (keypress)="checkPhoneNumber($event)" (keyup)="checkPhoneNumber($event)" matInput placeholder="Phone" [formControl]="expensesFormGroup.controls['phoneNumber']"></textarea>                
               </mat-form-field>
             </div>
           </div>

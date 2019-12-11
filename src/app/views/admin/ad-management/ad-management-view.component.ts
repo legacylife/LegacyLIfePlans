@@ -51,6 +51,7 @@ export class AddManagementViewComponent implements OnInit {
   subscriptionStartDate :String;
   subscriptionEndDate:String;
   subscriptionStatus:String;
+  showPayment: boolean = true
   constructor(
     private layout: LayoutService,
     private api: APIService, private route: ActivatedRoute, private fb: FormBuilder, 
@@ -58,21 +59,22 @@ export class AddManagementViewComponent implements OnInit {
     private confirmService: AppConfirmService, private loader: AppLoaderService) { }
   ngOnInit() {
     this.layoutConf = this.layout.layoutConf;
-    const locationArray = location.href.split('/')
-    this.selectedUserId = locationArray[locationArray.length - 1]
-    this.loggedInUserDetails = this.api.getUser()
+    const locationArray = location.href.split('/');
+    this.selectedUserId = locationArray[locationArray.length - 1];
+    this.loggedInUserDetails = this.api.getUser();
     this.adminSections = adminSections;
     this.userId = localStorage.getItem("userId");
     this.enquiryFormReply = this.fb.group({
       zipcodes: new FormControl('', Validators.required),
       fromDate: new FormControl('', Validators.required),
       toDate: new FormControl('', Validators.required),
+      paymentStatus: new FormControl('1', [Validators.pattern(/^[0-9]*$/)]),
       cost: new FormControl('', [Validators.required,Validators.pattern(/^[0-9]*$/)]),
       message: new FormControl(),
       stripePaymentLink: new FormControl()
     });
     
-    this.my_messages = {'emptyMessage': 'No records Found'};    
+    this.my_messages = {'emptyMessage': 'No records Found'};       
     this.getUser()
   }
 
@@ -81,7 +83,7 @@ export class AddManagementViewComponent implements OnInit {
     const req_vars = {
       query: Object.assign({_id:this.selectedUserId},query)
     }
-    this.loader.open()
+    this.loader.open();
     this.api.apiRequest('post', 'advertisement/viewEnquiry', req_vars).subscribe(result => {
     this.loader.close()
       if (result.status == "error") {
@@ -91,19 +93,22 @@ export class AddManagementViewComponent implements OnInit {
       this.data = result.data.enquirydata;    
       this.showPage = true;
         this.row = result.data.enquirydata.customerId;
+
         if(result.data.enquirydata.adminReply){
           this.replyData = result.data.enquirydata.adminReply;
            if( this.replyData.length < 1 ) {
             this.showReplyEnquiryForm = true
           }
-          let currentRecord = this.replyData.slice(-1)[0]
+          let currentRecord = this.replyData.slice(-1)[0];
           if( currentRecord ) {
           this.showReplyEnquiryForm = currentRecord['status'] === 'Pending' ? true : false 
 
           //if( currentRecord.paymentDetails ) {
-            let encryptedCustomerId = btoa(this.data.customerId._id),
-                encryptedInvoiceId  = btoa(currentRecord.paymentDetails.invoiceId)
-            this.paymentLink = serverUrl+'/advertisement-payment/'+encryptedCustomerId+'/'+encryptedInvoiceId+'/'+this.data.uniqueId
+            if(currentRecord.paymentDetails && currentRecord.paymentDetails.invoiceId){
+              let encryptedCustomerId = btoa(this.data.customerId._id),
+                  encryptedInvoiceId  = btoa(currentRecord.paymentDetails.invoiceId)
+              this.paymentLink = serverUrl+'/advertisement-payment/'+encryptedCustomerId+'/'+encryptedInvoiceId+'/'+this.data.uniqueId;
+            }
           }
         }
         
@@ -123,9 +128,9 @@ export class AddManagementViewComponent implements OnInit {
           this.subscriptionStatus    = subscriptionDetails[(subscriptionDetails.length-1)]['status'];
           //if subscription ends do not sends addon details
           let addOnDetails      = subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails'];
-          console.log('addOnDetails');
+          
         }
-
+        console.log('replyData------',this.replyData,'======',typeof(this.replyData[0].paymentStatus),'--',typeof(this.replyData[1].paymentStatus));
         var zipcodes = this.data.zipcodes;
         this.zipcodeList = zipcodes.split(',');
        this.enquiryFormReply.controls['fromDate'].setValue(this.data.fromDate);
@@ -137,22 +142,22 @@ export class AddManagementViewComponent implements OnInit {
     })
   }
 
-
   enquiryFormReplySubmit(formData = null) {
     if(new Date(this.enquiryFormReply.controls['toDate'].value) < new Date(this.enquiryFormReply.controls['fromDate'].value)) {
       this.dateError = 'To date should be greater than From date';
       this.snack.open(this.dateError, 'OK', { duration: 4000 })
     }else{
-      if(formData.cost>0) {
-      let FromD = this.enquiryFormReply.controls['fromDate'].value.toString().split('00:00:00');
-      let toDate = this.enquiryFormReply.controls['toDate'].value.toString().split('00:00:00');
+      let paymentStatus = this.enquiryFormReply.controls['paymentStatus'].value;
+      if(paymentStatus==2 || (paymentStatus==1 && formData.cost>0)) {
+      let FromD = this.enquiryFormReply.controls['fromDate'].value.toString().split('T00:00:00.000Z');
+      let toDate = this.enquiryFormReply.controls['toDate'].value.toString().split('T00:00:00.000Z');
       let enquiryData = {
         query: Object.assign({_id:this.data._id,adminId:this.userId}),
         proquery: Object.assign(formData),
-        fromDate:new Date(FromD[0]+'00:00:00 UTC'),
-        toDate:new Date(toDate[0]+'00:00:00 UTC'),    
+        fromDate:FromD[0],
+        toDate:toDate[0],    
       }
-
+      console.log('paymentStatus>>>',enquiryData,'--------',new Date(FromD));
       this.loader.open();
       this.api.apiRequest('post', 'advertisement/submitEnquiryReply', enquiryData).subscribe(result => {
       this.loader.close();
@@ -170,7 +175,6 @@ export class AddManagementViewComponent implements OnInit {
      }
     }
   }
-
 
   // remiderTesting() {
   //     let enquiryData = { }
@@ -251,5 +255,15 @@ export class AddManagementViewComponent implements OnInit {
     this.layout.publishLayoutChange({
       sidebarStyle: 'closed'
     })
+  }
+
+  showPaymentStatus(showVal) {
+    this.showPayment = showVal === '1';
+    if (!this.showPayment) {
+      this.enquiryFormReply.controls['cost'].setValue(0);
+    } else {
+      this.enquiryFormReply.controls['cost'].setValue('');
+    }
+    return this.showPayment
   }
 }
