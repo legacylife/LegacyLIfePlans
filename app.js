@@ -130,8 +130,8 @@ app.set('port', (process.env.PORT || 443));
 
 // start server
 var options = {
-	key: fs.readFileSync('../llp-privatekeyTest.pem'),
-  cert: fs.readFileSync('../llp-serverTest.crt'),
+	//key: fs.readFileSync('../llp-privatekeyTest.pem'),
+  //cert: fs.readFileSync('../llp-serverTest.crt'),
 };
 var server = https.createServer(options, app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
