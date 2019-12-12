@@ -130,7 +130,7 @@ export class AddManagementViewComponent implements OnInit {
           let addOnDetails      = subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails'];
           
         }
-        console.log('replyData------',this.replyData,'======',typeof(this.replyData[0].paymentStatus),'--',typeof(this.replyData[1].paymentStatus));
+  
         var zipcodes = this.data.zipcodes;
         this.zipcodeList = zipcodes.split(',');
        this.enquiryFormReply.controls['fromDate'].setValue(this.data.fromDate);
@@ -157,7 +157,6 @@ export class AddManagementViewComponent implements OnInit {
         fromDate:FromD[0],
         toDate:toDate[0],    
       }
-      console.log('paymentStatus>>>',enquiryData,'--------',new Date(FromD));
       this.loader.open();
       this.api.apiRequest('post', 'advertisement/submitEnquiryReply', enquiryData).subscribe(result => {
       this.loader.close();
@@ -171,7 +170,7 @@ export class AddManagementViewComponent implements OnInit {
       })
      }else{
       this.paymentError = 'Please enter valid payment cost.';
-      this.snack.open(this.paymentError, 'OK', { duration: 4000 })
+      this.snack.open(this.paymentError, 'OK', { duration: 5000 })
      }
     }
   }

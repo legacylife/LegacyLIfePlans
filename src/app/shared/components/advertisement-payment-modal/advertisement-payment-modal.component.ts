@@ -125,7 +125,7 @@ export class AdvertisementPaymentModalComponent implements OnInit {
       
       this.isButtonEnabled = true
       if (result.status == "error") {
-        this.snack.open(result.data, 'OK', { duration: 4000 })
+        this.snack.open(result.data, 'OK', { duration: 10000 })
         this.loader.close();
       }      
       if(result.status=='success') {

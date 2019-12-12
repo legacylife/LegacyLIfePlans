@@ -19,19 +19,19 @@
             </mat-form-field>
 
             <mat-form-field class="full-width">
-              <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)"  matInput name="ppFirstName" placeholder="First Name*" value="" [formControl]="firstFormGroup.controls['ppFirstName']">
+              <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)"  matInput name="ppFirstName" placeholder="First Name*" [formControl]="firstFormGroup.controls['ppFirstName']">
               <mat-icon matTooltip="Please enter first name." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['ppFirstName'].hasError('required') && firstFormGroup.controls['ppFirstName'].touched"
                 class="red--alert">help_outline</mat-icon>
             </mat-form-field>
 
             <mat-form-field class="full-width">
-              <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)"  matInput name="ppMiddleName" placeholder="Middle Name" value="" [formControl]="firstFormGroup.controls['ppMiddleName']">
+              <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)"  matInput name="ppMiddleName" placeholder="Middle Name" [formControl]="firstFormGroup.controls['ppMiddleName']">
               <mat-icon matTooltip="Please enter middle name." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['ppMiddleName'].hasError('required') && firstFormGroup.controls['ppMiddleName'].touched"
                 class="red--alert">help_outline</mat-icon>
             </mat-form-field>
 
             <mat-form-field class="full-width">
-              <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)"  matInput name="ppLastName" placeholder="Last Name*" value="" [formControl]="firstFormGroup.controls['ppLastName']">
+              <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)"  matInput name="ppLastName" placeholder="Last Name*" [formControl]="firstFormGroup.controls['ppLastName']">
               <mat-icon matTooltip="Please enter last name." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['ppLastName'].hasError('required') && firstFormGroup.controls['ppLastName'].touched"
                 class="red--alert">help_outline</mat-icon>
             </mat-form-field>
@@ -62,6 +62,7 @@
                 <mat-form-field class="full-width no-mar">
                   <input matInput name="phone" placeholder="Phone"  formControlName="phone" type="tel" maxlength='14' (keypress)="checkPhoneNumber('ppLandlineNumbers',pointIndex,$event)" (keyup)="checkPhoneNumber('ppLandlineNumbers',pointIndex,$event)">
                   <mat-icon matTooltip="Please enter valid number only." matTooltipClass="llp--tooltip error" *ngIf="a.touched && a.invalid" class="red--alert" style="padding-right: 25px;">help_outline</mat-icon>
+                  <mat-icon matTooltip="Please enter minimum 7 & maximum 14 numbers only" matTooltipClass="llp--tooltip error" *ngIf="a.hasError('minlength') && a.touched" style="padding-right: 25px;" class="red--alert">help_outline</mat-icon>                           
                   <mat-icon (click)="delete(pointIndex,'ppLandlineNumbers');" class="clr--red cursor-pointer delete--emails" *ngIf="pointIndex != 0">delete</mat-icon>
                   <span matPrefix>+1</span>
                 </mat-form-field>
@@ -287,7 +288,7 @@
             <div formArrayName="cclandlineNumbers">
               <div fxLayout="row wrap" *ngFor="let a of cclandlineNumbersList.controls; let pointIndex = index" [formGroupName]="pointIndex">
                 <mat-form-field class="full-width no-mar">
-                  <input matInput name="phone" placeholder="Contact Person Phone" (keypress)="checkPhoneNumber($event)" (keyup)="checkPhoneNumber('cclandlineNumbers',pointIndex,$event)" formControlName="phone" maxlength="14">
+                  <input matInput name="phone" placeholder="Contact Person Phone" (keypress)="checkPhoneNumber('cclandlineNumbers',pointIndex,$event)" (keyup)="checkPhoneNumber('cclandlineNumbers',pointIndex,$event)" formControlName="phone" maxlength="14">
                   <mat-icon (click)="deletecc(pointIndex,'cclandlineNumbers');" class="clr--red cursor-pointer delete--emails" *ngIf="pointIndex != 0">delete</mat-icon>
                   <span matPrefix>+1</span>
                 </mat-form-field>
@@ -327,7 +328,7 @@
             <div formArrayName="ccChurchLandlineNumbers">
               <div fxLayout="row wrap" *ngFor="let a of ChurchlandlineNumbersList.controls; let pointIndex = index" [formGroupName]="pointIndex">
                 <mat-form-field class="full-width no-mar">
-                  <input  matInput name="phone" placeholder="Phone" formControlName="phone" maxlength="15">
+                  <input  matInput name="phone" placeholder="Phone" formControlName="phone" maxlength="14" (keypress)="checkPhoneNumber('ccChurchLandlineNumbers',pointIndex,$event)" (keyup)="checkPhoneNumber('ccChurchLandlineNumbers',pointIndex,$event)" >
                   <mat-icon (click)="deletecc(pointIndex,'ccChurchLandlineNumbers');" class="clr--red cursor-pointer delete--emails" *ngIf="pointIndex != 0">delete</mat-icon>
                   <span matPrefix>+1</span>
                 </mat-form-field>

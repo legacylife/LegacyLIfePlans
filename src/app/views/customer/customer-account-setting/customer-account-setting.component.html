@@ -83,20 +83,19 @@
                     </mat-form-field>
 
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Mobile Number*" type="tel" maxlength='14' (keypress)="checkPhoneNumber('phoneNumber',$event)" [formControl]="ProfileForm.controls['phoneNumber']">
+                      <input matInput placeholder="Mobile Number*" type="tel" maxlength='14' (keypress)="checkPhoneNumber('phoneNumber',$event)" (keyup)="checkPhoneNumber('phoneNumber',$event)" [formControl]="ProfileForm.controls['phoneNumber']">
                       <span matPrefix>+1</span>
                       <mat-icon matTooltip="Please enter mobile number." matTooltipClass="llp--tooltip error"
                         *ngIf="ProfileForm.controls['phoneNumber'].hasError('required') && ProfileForm.controls['phoneNumber'].touched"
                         class="red--alert">help_outline</mat-icon>
                         <mat-icon matTooltip="Please enter minimum 7 & maximum 14 numbers only" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['phoneNumber'].hasError('minlength') && ProfileForm.controls['phoneNumber'].touched"
-            class="red--alert">help_outline</mat-icon>
+              class="red--alert">help_outline</mat-icon>
                       <mat-icon matTooltip="Please enter valid mobile number." matTooltipClass="llp--tooltip error"
                         *ngIf="ProfileForm.controls['phoneNumber'].hasError('pattern') && ProfileForm.controls['phoneNumber'].touched"
                         class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Landline Number*" type="tel" maxlength='14' (keypress)="checkPhoneNumber('landlineNumber',$event)"
-                        [formControl]="ProfileForm.controls['landlineNumber']">
+                      <input matInput placeholder="Landline Number*" type="tel" maxlength='14' (keypress)="checkPhoneNumber('landlineNumber',$event)" (keyup)="checkPhoneNumber('landlineNumber',$event)" [formControl]="ProfileForm.controls['landlineNumber']">
                       <span matPrefix>+1</span>
                       <mat-icon matTooltip="Please enter landline number." matTooltipClass="llp--tooltip error"
                         *ngIf="ProfileForm.controls['landlineNumber'].hasError('required') && ProfileForm.controls['landlineNumber'].touched"

@@ -21,6 +21,7 @@ import { CanComponentDeactivate } from '../../../shared/services/auth/can-deacti
 import { SubscriptionService } from '../../../shared/services/subscription.service';
 import * as moment from 'moment'
 import { ReferAndEarnModalComponent } from 'app/views/refer-and-earn-modal/refer-and-earn-modal.component';
+import { AsYouType } from 'libphonenumber-js'
 //import { ReferAndEarnModalComponent } from '../legacies/refer-and-earn-modal/refer-and-earn-modal.component';
 
 const filePath = s3Details.url + '/' + s3Details.advisorsDocumentsPath;
@@ -129,8 +130,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
       username: new FormControl('', Validators.required),
-      phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
-      landlineNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
+      phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/),Validators.minLength(10)]),
+      landlineNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/),Validators.minLength(10)]),      
       dateOfBirth: new FormControl('', Validators.required)
     });
 
@@ -149,8 +150,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       city: new FormControl('', Validators.required),
       state: new FormControl('', Validators.required),
       zipcode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
-      businessPhoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
-      businessMobileNumber: new FormControl(''),
+      businessPhoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/),Validators.minLength(10)]),
+      businessMobileNumber: new FormControl('', [Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/),Validators.minLength(10)]),      
       bioText: new FormControl('', Validators.required),
       websiteLinks: this.fb.array([this.fb.group({ links: ['', Validators.required, Validators.compose([CustomValidators.url])] })]),
       awardsYears: this.fb.array([this.fb.group({ title: ['', Validators.required], year: ['', Validators.required] })]),
@@ -175,6 +176,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       manageOtherProceducers: new FormControl('', Validators.required),
       howManyProducers: new FormControl('', [Validators.pattern(/^[0-9]*$/)]),
       advisorDocuments: new FormControl('', ),
+
       advisorDocuments_temp: new FormControl([], Validators.required)
     });
     //  this.LicenseForm.controls['advisorDocuments_temp'].setValue('1');
@@ -934,4 +936,23 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         break;
     }  
   }
+
+  checkPhoneNumber(from,event)
+  {  
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }else{
+      const AsouType = new AsYouType('US');
+       if(from=='phoneNumber' || from=='landlineNumber'){
+          let phoneNumber = AsouType.input(this.ProfileForm.controls[from].value);
+          this.ProfileForm.controls[from].setValue(phoneNumber);
+       }
+       if(from=='businessPhoneNumber' || from=='businessMobileNumber'){
+        let phoneNumber = AsouType.input(this.AddressForm.controls[from].value);
+        this.AddressForm.controls[from].setValue(phoneNumber);
+      }
+    }
+  }
+
 }

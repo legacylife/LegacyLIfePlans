@@ -10,7 +10,9 @@ import { Angular5Csv } from '../../../../../node_modules/angular5-csv/dist/Angul
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
-  zoom = 0;
+  zoom = 3;
+  lat = -28.024; 
+  long = 140.887;
   /*
     https://sites.google.com/site/gmapsdevelopment/
     'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
@@ -53,10 +55,12 @@ export class MapComponent implements OnInit {
       query_var = Object.assign({ invitedBy: this.onBoardByFilter }, query_var)
     }
     req_var = { query: query_var }
-      await this.userapi.apiRequest('post', 'userlist/getuserslistforadminmap', req_var).subscribe( (result) => {
+      await this.userapi.apiRequest('post', 'userlist/getuserslistforadminmap', req_var).subscribe( (result) => {      
+       let arrays = [];
       result.data.userDetails.forEach((element,index) => {
-        let userData = {lat: element.latitude,
-                        long: element.longitude,
+        if(element.location && element.location.latitude){
+          let  userData = {lat: element.location.latitude,
+                        long: element.location.longitude,
                         label: element.userType,
                         icon: 'http://maps.google.com/mapfiles/kml/paddle/'+(element.userType == 'customer' ? 'C.png': 'A.png'),
                         fullname: element.fullname,
@@ -64,8 +68,8 @@ export class MapComponent implements OnInit {
                         address: element.address,
                         business: element.business,
                         userId: element.userId}
-          this.mapCenter.push(userData)
-          let userDetails = { fullname: element.fullname,
+           this.mapCenter.push(userData)
+           let  userDetails = { fullname: element.fullname,
                               email: element.email,
                               usertype: element.userType,
                               business: element.business,
@@ -73,7 +77,10 @@ export class MapComponent implements OnInit {
                               onBoardVia: element.onBoardVia,
                               lastLogin: element.lastLogin}
           this.downloadData.push(userDetails)
-      })
+        }else{
+          //arrays.push(element._id);
+        }        
+      });
     })
   }
 

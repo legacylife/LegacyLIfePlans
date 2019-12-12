@@ -93,24 +93,22 @@
 
                     <mat-form-field class="full-width">
                       <input matInput placeholder="Mobile Number*" name="phoneNumber" type="tel"
-                        [formControl]="ProfileForm.controls['phoneNumber']">
+                        [formControl]="ProfileForm.controls['phoneNumber']" maxlength='14' (keypress)="checkPhoneNumber('phoneNumber',$event)"  (keyup)="checkPhoneNumber('phoneNumber',$event)" [formControl]="ProfileForm.controls['phoneNumber']">
                       <span matPrefix>+1</span>
-                      <mat-icon matTooltip="Please enter mobile number" matTooltipClass="llp--tooltip error"
-                        *ngIf="ProfileForm.controls['phoneNumber'].hasError('required') && ProfileForm.controls['phoneNumber'].touched"
-                        class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please enter minimum 7 & maximum 14 numbers only" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['phoneNumber'].hasError('minlength') && ProfileForm.controls['phoneNumber'].touched"
+                      class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please enter mobile number" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['phoneNumber'].hasError('required') && ProfileForm.controls['phoneNumber'].touched" class="red--alert">help_outline</mat-icon>
                       <mat-icon matTooltip="Please enter valid mobile number." matTooltipClass="llp--tooltip error"
-                        *ngIf="ProfileForm.controls['phoneNumber'].hasError('pattern') && ProfileForm.controls['phoneNumber'].touched"
-                        class="red--alert">help_outline</mat-icon>
+                        *ngIf="ProfileForm.controls['phoneNumber'].hasError('pattern') && ProfileForm.controls['phoneNumber'].touched" class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Landline Number*" name="landlineNumber" type="tel"
-                        [formControl]="ProfileForm.controls['landlineNumber']">
+                      <input matInput placeholder="Landline Number*" name="landlineNumber" type="tel" maxlength='14' (keypress)="checkPhoneNumber('landlineNumber',$event)" (keyup)="checkPhoneNumber('landlineNumber',$event)" [formControl]="ProfileForm.controls['landlineNumber']">
                       <span matPrefix>+1</span>
-                      <mat-icon matTooltip="Please enter landline number" matTooltipClass="llp--tooltip error"
-                        *ngIf="ProfileForm.controls['phoneNumber'].hasError('required') && ProfileForm.controls['phoneNumber'].touched"
+                      <mat-icon matTooltip="Please enter minimum 7 & maximum 14 numbers only" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['landlineNumber'].hasError('minlength') && ProfileForm.controls['landlineNumber'].touched"
+                      class="red--alert">help_outline</mat-icon>
+                      <mat-icon matTooltip="Please enter landline number" matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['landlineNumber'].hasError('required') && ProfileForm.controls['landlineNumber'].touched"
                         class="red--alert">help_outline</mat-icon>
-                      <mat-icon matTooltip="Please enter valid landline number." matTooltipClass="llp--tooltip error"
-                        *ngIf="ProfileForm.controls['landlineNumber'].hasError('pattern') && ProfileForm.controls['landlineNumber'].touched"
+                      <mat-icon matTooltip="Please enter valid landline number." matTooltipClass="llp--tooltip error" *ngIf="ProfileForm.controls['landlineNumber'].hasError('pattern') && ProfileForm.controls['landlineNumber'].touched"
                         class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
 
@@ -335,9 +333,11 @@
                   </div>
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                   <mat-form-field class="full-width">
-                    <input matInput placeholder="Business Phone*" type="tel" value="" class=""
+                    <input matInput placeholder="Business Phone*" type="tel" maxlength='14' (keypress)="checkPhoneNumber('businessPhoneNumber',$event)"  (keyup)="checkPhoneNumber('businessPhoneNumber',$event)" 
                       name="businessPhoneNumber" [formControl]="AddressForm.controls['businessPhoneNumber']">
                     <span matPrefix>+1</span>
+                    <mat-icon matTooltip="Please enter minimum 7 & maximum 14 numbers only" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessPhoneNumber'].hasError('minlength') && AddressForm.controls['businessPhoneNumber'].touched"
+                    class="red--alert">help_outline</mat-icon>                    
                     <mat-icon matTooltip="Please enter business phone" matTooltipClass="llp--tooltip error"
                       *ngIf="AddressForm.controls['businessPhoneNumber'].hasError('required') && AddressForm.controls['businessPhoneNumber'].touched"
                       class="red--alert">help_outline</mat-icon>
@@ -351,7 +351,10 @@
                   <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-form-field class="full-width">
-                      <input matInput placeholder="Business Mobile Number" type="tel" value="" class="" (keypress)="onlyNumbers($event)" maxlength="15" name="businessMobileNumber" [formControl]="AddressForm.controls['businessMobileNumber']">
+                      <input matInput placeholder="Business Mobile Number" type="tel" maxlength='14' (keypress)="checkPhoneNumber('businessMobileNumber',$event)"  (keyup)="checkPhoneNumber('businessMobileNumber',$event)" name="businessMobileNumber" [formControl]="AddressForm.controls['businessMobileNumber']">                      
+                      <span matPrefix>+1</span>
+                      <mat-icon matTooltip="Please enter minimum 7 & maximum 14 numbers only" matTooltipClass="llp--tooltip error" *ngIf="AddressForm.controls['businessMobileNumber'].hasError('minlength') && AddressForm.controls['businessMobileNumber'].touched"
+                      class="red--alert">help_outline</mat-icon>
                       <mat-icon matTooltip="Please enter business mobile number" matTooltipClass="llp--tooltip error"
                         *ngIf="AddressForm.controls['businessMobileNumber'].hasError('required') && AddressForm.controls['businessMobileNumber'].touched"
                         class="red--alert">help_outline</mat-icon>
