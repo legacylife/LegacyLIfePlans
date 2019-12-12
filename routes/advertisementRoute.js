@@ -387,17 +387,16 @@ async function completeTransaction( req, res ) {
   let adminReply = advertisementData.adminReply.filter( elem => elem.status==='Pending' && elem.paymentDetails.invoiceId === invoiceId )
   let advertisementDetails = {}; 
   if( adminReply ) {
+   
     /* let totalDays = getDateDiff( advertisementData.fromDate, advertisementData.toDate)
     let invoiceSentDays = getDateDiff( advertisementData.fromDate, moment() ) */
     let invoiceStatus = adminReply[0]['paymentDetails']['status']
     if( invoiceStatus === 'Pending') {
       stripeHelper.payInvoice( invoiceId, token, advertisementData.customerId.stripeCustomerId ).then(async(err, response) => {
-
         if (err) {
-          console.log('err--->',err)
-          stripeErrors( err, res )          
+          stripeErrors( err, res )   
+          res.send(resFormat.rError(err));       
         } else if( response ) {
-          console.log('response--->',response)
           let currentInvoiceIndex = OldAdminReply.findIndex(elem => elem.status==='Pending' && elem.paymentDetails.invoiceId === invoiceId)
           let oldPaymentDetails   = OldAdminReply[currentInvoiceIndex]['paymentDetails'];
           let newPaymentDetails   = Object.assign({}, oldPaymentDetails, { "status": "Done" });
@@ -408,17 +407,13 @@ async function completeTransaction( req, res ) {
           /*
           If advisor from date is today date and complete his payment then he should be directly sponsored advisor
           */
-          console.log("add data >>>>",advertisementData)
-         console.log('advertisementData fromDate-=====>',advertisementData.fromDate)
           let updateStatus = advertisementData.sponsoredStatus;
           let dates = advertisementData.fromDate.toISOString().substring(0, 10);
           if(new Date(dates) <= new Date()){  
-            console.log('first date ', new Date(dates) ,'======', new Date());
             updateStatus = 'Active';
             let newArray = [];
             let UserData = await User.findOne({_id:customerId},{_id:1,username:1,firstName:1,lastName:1,sponsoredAdvisor:1,status:1,sponsoredZipcodes:1});
             if(UserData){
-                  console.log('adminReply-=====>',adminReply)                  
                   if(adminReply[0].zipcodes.length > 0) {
                     newArray = adminReply[0].zipcodes;
                   }
