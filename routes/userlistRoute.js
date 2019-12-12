@@ -109,7 +109,7 @@ function view(req, res) {
       }     
       res.send(resFormat.rSuccess(userList))
     }
-  }).populate('invitedBy')
+  })
 }
 
 function updateStatus(req, res) {
