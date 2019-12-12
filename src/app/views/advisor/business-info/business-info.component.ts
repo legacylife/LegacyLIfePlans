@@ -9,6 +9,7 @@ import { MatStepperModule, MatStepper } from '@angular/material/stepper';
 import { yearsOfServiceList, businessTypeList, industryDomainList, licenceHeldList, activeLicense, industryDomain, businessType, yearsOfService } from '../../../selectList';
 import { states } from '../../../state';
 import { FileUploader } from 'ng2-file-upload';
+import { AsYouType } from 'libphonenumber-js'
 import "rxjs/add/operator/do";
 import "rxjs/add/operator/map";
 import { serverUrl, s3Details } from '../../../config';
@@ -89,8 +90,9 @@ export class BusinessInfoComponent implements OnInit {
       city: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1)])),//, Validators.maxLength(50)
       state: new FormControl('', Validators.required),
       zipcode: new FormControl('', [Validators.required,Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
-      businessPhoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
-      businessMobileNumber: new FormControl('')
+      //businessPhoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
+      businessPhoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/),Validators.minLength(10)]),
+      businessMobileNumber: new FormControl('', [Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/),Validators.minLength(10)]),      
     });
 
     this.thirdFormGroup = this.fb.group({
@@ -379,4 +381,18 @@ getProfileField = (query = {}, search = false) => {
       });
   }
   
+
+  checkPhoneNumber(from,event)
+  {  
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }else{
+      const AsouType = new AsYouType('US');
+       if(from=='businessPhoneNumber' || from=='businessMobileNumber'){
+        let phoneNumber = AsouType.input(this.secondFormGroup.controls[from].value);
+        this.secondFormGroup.controls[from].setValue(phoneNumber);
+      }
+    }
+  }
 }

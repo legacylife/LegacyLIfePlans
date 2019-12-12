@@ -161,9 +161,12 @@ export class AddManagementViewComponent implements OnInit {
       this.api.apiRequest('post', 'advertisement/submitEnquiryReply', enquiryData).subscribe(result => {
       this.loader.close();
         if (result.status=="success") {     
-          this.enquiryFormReply.reset(); 
+          
           this.getUser();
           this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          setTimeout(() => {
+            this.enquiryFormReply.reset(); 
+          }, 3000);  
         }     
       }, (err) => {
         this.snack.open(err, 'OK', { duration: 4000 })

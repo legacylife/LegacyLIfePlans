@@ -164,7 +164,7 @@ export class ChatContentsComponent implements OnInit, OnDestroy {
         this.chatService
           .updateChats(this.chatCollection._id, [...this.chatCollection.chats])
           .subscribe(res => {
-            this.initMsgForm();
+            this.initMsgForm();            
           });
           this.isButtonEnabled = false;
         // Only for demo purpose

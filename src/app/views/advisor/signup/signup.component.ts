@@ -129,6 +129,7 @@ export class AdvisorSignupComponent implements OnInit {
     let req_vars = {
       username: this.llpAdvsignupForm.controls['username'].value,
       otpCode: this.llpAdvotpForm.controls['otp'].value,
+      inviteCode: this.inviteCode,
       invitedBy: this.invitedBy
     }
     this.loader.open();

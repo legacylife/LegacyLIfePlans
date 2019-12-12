@@ -125,6 +125,7 @@ export class AdvertisementPaymentModalComponent implements OnInit {
       
       this.isButtonEnabled = true
       if (result.status == "error") {
+       // this.stripePayment.controls['name'].markAsUntouched();
         this.snack.open(result.data, 'OK', { duration: 10000 })
         this.loader.close();
       }      

@@ -33,6 +33,7 @@ export class AdvisorHomeComponent implements OnInit, OnDestroy {
   revokeAsDeceased:boolean = false;
   alreadyRevokeAsDeceased:boolean = false;
   finallyDeceased:boolean = false;
+  prospectsCount:number=0;
   datas: any;
   constructor(
     private fb: FormBuilder,private snack: MatSnackBar,private userapi: UserAPIService,
@@ -47,6 +48,7 @@ export class AdvisorHomeComponent implements OnInit, OnDestroy {
       this.myLegacy= false
       this.sharedLegacies =true 
       this.checkDeceasedStatus();
+      this.getMutualFriend();
     }
     const loc = location.href;
     const locArray = loc.split('/')
@@ -63,10 +65,9 @@ export class AdvisorHomeComponent implements OnInit, OnDestroy {
     if(locArray && locArray[5]){
       this.activeHeading = locArray[5];
     }   
-}
+ }
 
   ngOnDestroy() {
-
   }
 
   checkDeceasedStatus(query = {}){
@@ -110,6 +111,21 @@ export class AdvisorHomeComponent implements OnInit, OnDestroy {
       console.error(err);
     })
   }
+  
+  getMutualFriend(){
+    const params = {
+      query: Object.assign({ customerId: this.customerLegaicesId, advisorId :this.userId })
+    }
+    this.userapi.apiRequest('post', 'lead/get-mutual-friend', params).subscribe(result => {
+        var fData = result.data
+        if(result.status == 'success' && fData.length > 0){
+          this.prospectsCount = fData.length
+        }
+    }, (err) => {
+      console.error("error : ", err)
+    })
+  }
+
 
   toggleSideNav() {
     this.sideNav.opened = !this.sideNav.opened;

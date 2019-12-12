@@ -52,6 +52,7 @@ export class ChatService {
   currentId:string;
   onChatSelected = new BehaviorSubject<any>(null);
   onChatsUpdated = new Subject<any>();
+  putMessageResp:any;
   private userInfo: any;
 
   constructor(private userapi: UserAPIService,private http: HttpClient) {
@@ -316,6 +317,7 @@ export class ChatService {
     return Observable.create((observer) => {
         this.socket.on('message-unread-count-'+this.userId, (count) => {
             console.log("get message unread count :-",this.userId,'getMessagesUnreadCnt',count)
+
             observer.next(count);
            // this.onChatsUpdated.next(message);
         });
@@ -397,13 +399,23 @@ export class ChatService {
     //8 }
    
     this.socket.emit('new-message',message,chatid);
-    this.socket.emit('message-unread-count', this.userId);
+   //888 this.socket.emit('message-unread-count', this.userId);
     //return this.http.put<ChatCollection>('api/chat-collections', chatCollection)
     let req_vars = {
       query: Object.assign({_id:chatid,userType:this.userType}),
       message:message,
     }
    
+
+    // return this.userapi.chatApi(`chatting/putMessage`,req_vars).subscribe(
+    //   result => {
+    //    console.log('result',result)
+    //   
+    //    this.putMessageResp = result
+    //   });
+     
+    //  return this.putMessageResp
+
    return this.userapi.chatApi(`chatting/putMessage`,req_vars);
   }
 

@@ -86,26 +86,22 @@ export class SigninComponent implements OnInit {
         this.subscriptionservice.checkSubscription( '',( returnArr )=> {}) // IMP for subscription
         //this.snack.open(result.data.message, 'OK', { duration: 4000 })
         if(userData.userType=='customer'){
+          this.router.navigate(['/', 'customer', 'dashboard']);
           setTimeout(() => {
             this.loader.close();
-            this.router.navigate(['/', 'customer', 'dashboard']);
-          }, 3000);  //5s
+          }, 2000);  //5s
           
         }else{
+          this.router.navigate(['/', 'advisor', 'dashboard'])
           setTimeout(() => {
             this.loader.close();
-            this.router.navigate(['/', 'advisor', 'dashboard'])
-          }, 3000);  //5s          
+          }, 2000);  //5s          
         }  
-
-        
       } else {
         this.loader.close();
        // this.llpCustsigninForm.controls['username'].enable();
         var emails = this.llpCustsigninForm.controls['username'].value
-        //console.log('0000000000')
         if(result.data.invalidEmail){
-          //console.log('11111')
           this.invalidEmail = true;
           this.invalidMessage = result.data.message
           this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : true})
@@ -113,7 +109,6 @@ export class SigninComponent implements OnInit {
           //this.llpCustsigninForm.controls['username'].markAsUntouched();
         //  this.llpCustsigninForm.controls['username'].markAsTouched();
         }else if(result.data.invalidPassword){
-          //console.log('2222222222')
           //this.llpCustsigninForm.controls['username'].markAsTouched();
           this.llpCustsigninForm.controls['password'].setErrors({'invalid' : true});
           //this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false});
@@ -121,7 +116,6 @@ export class SigninComponent implements OnInit {
           this.llpCustsigninForm.controls['password'].markAsUntouched();
           this.invalidEmail = false;
         }else{
-          //console.log('3333333333')
           this.llpCustsigninForm.controls['username'].markAsUntouched();
           this.invalidEmail = false;
           this.llpCustsigninForm.controls['username'].setErrors({'invalidEmail' : false})

@@ -16,6 +16,7 @@ export class UserAuthGuard implements CanActivate {
   private userUrlType: any
   private freeSignup: boolean = false;
   private pageUrl: any
+  counts:any;
   constructor(private router: Router, private userapi: UserAPIService, private route: ActivatedRoute, private subscriptionservice: SubscriptionService, private userIdle: UserIdleService, private dialog: MatDialog) { }
 
   canActivate(
@@ -109,8 +110,9 @@ export class UserAuthGuard implements CanActivate {
     }
     this.userIdle.startWatching();
     this.userIdle.onTimerStart().subscribe(
-        count => console.log("home here",count)
+        count =>console.log("home here",count)
     );
+   
     //if (pathArray[1] != 'signin' && pathArray[1] != 'error') {
         this.userIdle.onTimeout().subscribe(() => this.stopWatching(true));
     //}

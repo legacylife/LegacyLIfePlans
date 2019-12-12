@@ -126,9 +126,11 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="Business Phone" type="tel" value="" class="example-right-align" name="businessPhoneNumber" [formControl]="secondFormGroup.controls['businessPhoneNumber']">
+                  <input matInput placeholder="Business Phone" type="tel"  maxlength='14' (keypress)="checkPhoneNumber('businessPhoneNumber',$event)"  (keyup)="checkPhoneNumber('businessPhoneNumber',$event)" class="example-right-align" name="businessPhoneNumber" [formControl]="secondFormGroup.controls['businessPhoneNumber']">
                   <span matPrefix>+1</span>
                   <span matSuffix>.00</span>
+                  <mat-icon matTooltip="Please enter minimum 7 & maximum 14 numbers only" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['businessPhoneNumber'].hasError('minlength') && secondFormGroup.controls['businessPhoneNumber'].touched"
+                  class="red--alert">help_outline</mat-icon>   
                   <mat-icon matTooltip="Please enter business Phone" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['businessPhoneNumber'].hasError('required') && secondFormGroup.controls['businessPhoneNumber'].touched"
                     class="red--alert">help_outline</mat-icon>
                   <mat-icon matTooltip="Please enter valid business Phone." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['businessPhoneNumber'].hasError('pattern') && secondFormGroup.controls['businessPhoneNumber'].touched"
@@ -136,7 +138,9 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="Business Mobile Number" type="tel" value="" class="example-right-align" (keypress)="onlyNumbers($event)" maxlength="15" name="businessMobileNumber" [formControl]="secondFormGroup.controls['businessMobileNumber']">
+                  <input matInput placeholder="Business Mobile Number" type="tel"  maxlength='14' (keypress)="checkPhoneNumber('businessMobileNumber',$event)"  (keyup)="checkPhoneNumber('businessMobileNumber',$event)" class="example-right-align" (keypress)="onlyNumbers($event)" name="businessMobileNumber" [formControl]="secondFormGroup.controls['businessMobileNumber']">
+                  <mat-icon matTooltip="Please enter minimum 7 & maximum 14 numbers only" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['businessMobileNumber'].hasError('minlength') && secondFormGroup.controls['businessMobileNumber'].touched"
+                  class="red--alert">help_outline</mat-icon>   
                   <mat-icon matTooltip="Please enter business mobile number" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['businessMobileNumber'].hasError('required') && secondFormGroup.controls['businessMobileNumber'].touched"
                     class="red--alert">help_outline</mat-icon>
                   <mat-icon matTooltip="Please enter valid business mobile number." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['businessMobileNumber'].hasError('pattern') && secondFormGroup.controls['businessMobileNumber'].touched"
