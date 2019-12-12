@@ -321,7 +321,7 @@ function sendEnquiryReplyMail(templateCode,emailId, toName, replyContnt) {
       }
       body = body.replace("{SERVER_LINK}",serverUrl);
       const mailOptions = {
-        to: 'pankajk@arkenea.com',//emailId,
+        to: emailId,
         subject: template.mailSubject,
         html: body
       }
