@@ -28,12 +28,9 @@ let io = socketIO(server);
 
 var users = {};
 io.on('connection', (socket) => {
-  // var clients = io.sockets.clients();
-  // var clients = io.sockets.clients('new-message'); 
   socket.on('loginforonline', function (data) {
     //saving userId to array with socket ID
     users[socket.id] = data.userId;
-    // console.log('a user ' + data.userId +'---' + data.userType + ' connected');
     chats.userStatus(data, 'online');
     io.emit('online-status', data.userId, 'online');
     //8 var unreadCnt = chats.userMessagesStatus(data.userId,'online');
@@ -53,9 +50,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('new-message', async (message, chatid) => {
-    // console.log('NEW message -----',message,'chatwithid>>>>>>>',message.chatwithid)
     io.emit('new-message-' + message.chatwithid, message, chatid);
-    //8 chats.chatRoom(chatid,message.chatwithid);
     var unreadCnt = await chats.userMessagesStatus(message.chatwithid, 'online');
     io.emit('message-unread-count-' + message.chatwithid, unreadCnt);
   });
@@ -67,13 +62,10 @@ io.on('connection', (socket) => {
 
   socket.on('get-chat-room', (chatId, userId) => {
     chats.chatRoom(chatId, userId);
-    // io.emit('get-chat-room'+contactId);
   });
 
   socket.on('get-chat-room-again', (chatId, userId) => {
-    console.log('NEW message -----', chatId, 'userId>>>>>>>', userId)
     chats.chatRoom(chatId, userId);
-    // io.emit('get-chat-room'+contactId);
   });
   socket.on('disconnect', function () {
     if (users[socket.id] !== undefined) {
@@ -138,8 +130,8 @@ app.set('port', (process.env.PORT || 443));
 
 // start server
 var options = {
-	key: fs.readFileSync('../llp-privatekey.pem'),
-  cert: fs.readFileSync('../llp-server.crt'),
+	key: fs.readFileSync('../llp-privatekeyTest.pem'),
+  cert: fs.readFileSync('../llp-serverTest.crt'),
 };
 var server = https.createServer(options, app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

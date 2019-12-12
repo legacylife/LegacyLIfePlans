@@ -971,6 +971,7 @@ function autoRenewalUpdate(req, res) {
               if( err ) {
                 stripeErrors( err, res )
               }
+              else{
               let updatedSubscriptionObject = subscriptionDetails
               updatedSubscriptionObject[updatedSubscriptionObject.length-1]['autoRenewal'] = autoRenewalStatus
               User.updateOne({ _id: requestParam._id }, { $set: { subscriptionDetails : updatedSubscriptionObject } }, function (err, updated) {
@@ -981,7 +982,8 @@ function autoRenewalUpdate(req, res) {
                 allActivityLog.updateActivityLogs(userProfile._id, userProfile._id, 'Auto Renewal Status', message,'Account settings')
                 res.status(200).send(resFormat.rSuccess({'autoRenewalStatus': autoRenewalStatus, 'message':message}));
               })
-          });
+            }
+           });
         }
         else{
           let message = resMessage.data( 632, [] )
@@ -1081,7 +1083,7 @@ function getUsersListForAdminMap(req, res) {
         let userDetails = []
         userList.forEach( (details, index) => {
         //  userList.forEach(async function(details){
-          if (details && details.zipcode && details.zipcode != '' && details.location) {
+          if (details && details.zipcode && details.zipcode != '') {
             //  console.log('details',details)             
             // let invitedByRecord = '';
             //   if(details.invitedBy){
@@ -1095,11 +1097,13 @@ function getUsersListForAdminMap(req, res) {
                               address: details.addressLine1 ? details.addressLine1 + (details.city ? ', '+details.city : '') + (details.state ? ', '+details.state : '') + (details.country ? ', '+details.country : '') : '',
                               zipcode: details.zipcode,
                               business: details.businessType && details.businessType.length > 0 ? details.businessType.join(): '',
+                              latitude: details.location.latitude,
+                              longitude: details.location.longitude,
                               location: details.location,
                               email: details.username,
                               //onBoardVia: invitedByRecord != "" ? 'Invited By '+invitedByRecord.firstName+' '+invitedByRecord.lastName+' ('+invitedByRecord.userType+')' : 'Self',
                               //onBoardVia: details.invitedBy && details.invitedBy != "" ? 'Invited By '+details.invitedBy.firstName+' '+details.invitedBy.lastName+' ('+details.invitedBy.userType+')' : 'Self',
-                              onBoardVia: details.invitedBy && details.invitedBy != "" ? 'Invited' : 'Self',                              
+                              onBoardVia: details.invitedBy && details.invitedBy != "" ? 'Invited' : 'Self',
                               lastLogin: moment(details.lastLoggedInOn).format("YYYY-MM-DD hh:mm a")
                             }
               userDetails.push(userData)
