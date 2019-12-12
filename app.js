@@ -48,7 +48,7 @@ var router = express.Router()
    // console.log('NEW message -----',message,'chatwithid>>>>>>>',message.chatwithid)
      io.emit('new-message-'+message.chatwithid, message,chatid);
     //8 chats.chatRoom(chatid,message.chatwithid);
-     var unreadCnt = await chats.userMessagesStatus(message.chatwithid,'online');  
+     var unreadCnt = await chats.userMessagesStatus(message.chatwithid,'online','NewMessage');  
      io.emit('message-unread-count-'+message.chatwithid, unreadCnt);    
   });
 
@@ -63,7 +63,7 @@ var router = express.Router()
   });
    
   socket.on('get-chat-room-again', (chatId,userId) => {
-    console.log('NEW message -----',chatId,'userId>>>>>>>',userId)
+    //console.log('NEW message -----',chatId,'userId>>>>>>>',userId)
     chats.chatRoom(chatId,userId);
   // io.emit('get-chat-room'+contactId);
  });  
@@ -119,5 +119,5 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port
   debug('Listening on ' + bind)
-  console.log("server started on port" + addr.port)
+  //console.log("server started on port" + addr.port)
 }
