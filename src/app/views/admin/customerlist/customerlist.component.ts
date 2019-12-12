@@ -107,12 +107,11 @@ export class customerlistComponent implements OnInit {
             fromId: localStorage.getItem('userId')
           }
           this.api.apiRequest('post', 'userlist/updatestatus', req_vars).subscribe(result => {
+            this.loader.close();
             if (result.status == "error") {
-              this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             } else {
               this.getLists()
-              this.loader.close();
               this.snack.open(result.data.message, 'OK', { duration: 4000 })
             }
           }, (err) => {
