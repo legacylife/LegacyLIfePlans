@@ -113,11 +113,11 @@
                 </div>
               </mat-list-item>
 
-              <mat-list-item class="" *ngIf="row?.invitedBy != ''">
+              <mat-list-item class="">
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Invited By</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{ row?.invitedBy.firstName ? row?.invitedBy.firstName : '' }} {{ row?.invitedBy.lastName ? row?.invitedBy.lastName : '' }} ({{ row?.invitedBy.userType }})</div>
+                  <div fxFlex="40">{{row?.invitedBy!='' ? 'Invited' : 'Self' }}</div>                  
                 </div>
               </mat-list-item>
 

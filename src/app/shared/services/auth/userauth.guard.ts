@@ -86,18 +86,19 @@ export class UserAuthGuard implements CanActivate {
         })
       } else {
         if (localStorage.getItem("setIdleFlag") != '') {
-          this.autologFunction();
+          this.autologFunction('111');
         } else {
           return;
         }
       }
     }
+   // this.autologFunction('222');
   }
 
-  autologFunction() {
-    // console.log("LockScreen Here >> ")
+  autologFunction(ids) {
     //https://www.npmjs.com/package/angular-user-idle
     let IdleFlag = localStorage.getItem("setIdleFlag");
+    //console.log("LockScreen Here >> ",ids,'>>>>>>>>>',IdleFlag)
     var pathArray = window.location.pathname.split('/');
     //console.log('HERE I AM IdleFlag --- ',IdleFlag,pathArray)
     if (IdleFlag != '' && IdleFlag == 'true' && pathArray[1] != 'signin' && pathArray[1] != 'error') {
@@ -110,7 +111,7 @@ export class UserAuthGuard implements CanActivate {
     }
     this.userIdle.startWatching();
     this.userIdle.onTimerStart().subscribe(
-        count =>console.log("home here",count)
+        count =>console.log("home here",count,ids)
     );
    
     //if (pathArray[1] != 'signin' && pathArray[1] != 'error') {
@@ -125,7 +126,6 @@ export class UserAuthGuard implements CanActivate {
 
   stopWatching(flag) {
     var pathArray = window.location.pathname.split('/');
-    //console.log('stopWatching - flag>>>',flag,'pathArray-->',pathArray);
     localStorage.setItem("setIdleFlag", "true");
     if (localStorage.getItem("endUserId") != '' && localStorage.getItem("endUserId") != 'undefined') {
       if (this.dialog) {
@@ -133,11 +133,11 @@ export class UserAuthGuard implements CanActivate {
         if (this.dialog.openDialogs.length > 0) {
           let temp1 = this.dialog.openDialogs[0].componentInstance;
           if (temp1.lockscreenModalFlag && temp1.lockscreenModalFlag == true) {
-            return;
+            return false;
           }
         }
       }
-  if(flag==true && pathArray[1] != 'signin' && pathArray[1] != 'error'){
+  if(flag==true && pathArray[1] != 'signin' && pathArray[1] != 'error'){    
       let dialogRef: MatDialogRef<any> = this.dialog.open(lockscreenModalComponent, {
         width: '720px',
         disableClose: true,
@@ -146,7 +146,7 @@ export class UserAuthGuard implements CanActivate {
         backdropClass: 'lock--backdrop'
       })
       dialogRef.afterClosed().subscribe(res => {
-        console.log("LockScreen afterClosed >> ")
+        //console.log("LockScreen afterClosed >> ")
         this.restart();
         this.startWatching();
         if (!res) {

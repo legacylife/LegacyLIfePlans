@@ -1,54 +1,10 @@
 
-let serverUrlEnv= ""
-let nylasConnectionLinkEnv = ""
-let gmailConnectionLinkEnv = ""
-let officeConnectionLinkEnv = ""
-let mailchimpLinkEnv = ""
-let bucketName = ""
-let awsKey = "AKIAUPQ3GZ6WDCCRWVY5"
-let awsSecret =  "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"
-let googleauthkey= "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"; //AIzaSyDsp487LM4HTYDV4O7KcFrHkolDZziykjw
-let stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk";  // live - pk_live_PX4dfXzyG69jyl8h1n6IUAPZ00JVMDwHdw
-
-//localhost
-if(window.location.hostname.indexOf("localhost") > -1){ // local server
-  serverUrlEnv = "http://localhost:80"  
-  stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
-  googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
-} 
-else if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") > -1 || window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com:8080") > -1){ // client server
-  serverUrlEnv = "http://ec2-3-212-172-15.compute-1.amazonaws.com:8080"  
-  stripeSecretKey = "sk_test_ni2JhTNSaNPgEZVHeiciAVVs00YF0EGLTR"
-  googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
-}
-else if(window.location.hostname.indexOf("ec2-3-209-230-58.compute-1.amazonaws.com") > -1){ // test server
-  serverUrlEnv = "http://ec2-3-209-230-58.compute-1.amazonaws.com"  
-  stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
-  googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
-}
-else if(window.location.hostname.indexOf("ec2-52-2-182-205.compute-1.amazonaws.com") > -1){ // LIVE server Production
-  serverUrlEnv = "https://ec2-52-2-182-205.compute-1.amazonaws.com"  
-  stripeSecretKey = "pk_live_PX4dfXzyG69jyl8h1n6IUAPZ00JVMDwHdw"
-  googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
-}
-else {  //dev server
-  serverUrlEnv = "http://ec2-3-212-172-15.compute-1.amazonaws.com:8080" 
-  stripeSecretKey = "sk_test_ni2JhTNSaNPgEZVHeiciAVVs00YF0EGLTR"
-  googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
-}
-
-if(window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com") > -1 || window.location.hostname.indexOf("ec2-3-212-172-15.compute-1.amazonaws.com:8080") > -1 )
-{
-  bucketName = "llp-dev";
-}
-else if(window.location.hostname.indexOf("ec2-52-2-182-205.compute-1.amazonaws.com") > -1)
-{
-  bucketName = "llp-production";
-  awsKey = "AKIAUPQ3GZ6WND46RVGG"
-  awsSecret =  "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"
-} else {
-  bucketName = "llp-staging";
-}
+let serverUrlEnv= "https://legacylifeplans.com"
+let bucketName = "llp-production";
+let awsKey = "AKIAUPQ3GZ6WND46RVGG"
+let awsSecret =  "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"
+let googleauthkey= "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"; 
+let stripeSecretKey = "pk_live_PX4dfXzyG69jyl8h1n6IUAPZ00JVMDwHdw"; 
 
 export const googleauthenticationkey = googleauthkey;
 export const stripeKey = stripeSecretKey
@@ -243,4 +199,3 @@ export const userSections = [
 ]
 //   name: 'My People',
 //   code: "MyPeopleManagement"
-

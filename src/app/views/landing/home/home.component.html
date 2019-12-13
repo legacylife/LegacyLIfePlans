@@ -4,8 +4,8 @@
     <section>
       <div class="get--hired--wrapper bottom-space safe--place--wrapper" [ngStyle]="{ 'backgroundImage': getUrl('topBanner') }">
         <div class="banner--content">
-          <!-- <h3 [innerHtml]="pageTitle"></h3> -->
-          <div class="pageTitle" [innerHtml]="pageTitle"></div>
+          <h3 [innerHtml]="pageTitle"></h3>
+          <!-- <div class="pageTitle" [innerHtml]="pageTitle"></div> -->
           <h6 class="info">{{pageData?.pagesubTitle}}</h6>
           <button mat-raised-button class="landing--primary--btn" [routerLink]="['/customer/signup']">{{customerFreeTrialStatus ? 'Start a Free Trial' : 'Sign Up'}}</button>
           <button mat-raised-button class="landing--secondary--btn">See How LLP Works</button>

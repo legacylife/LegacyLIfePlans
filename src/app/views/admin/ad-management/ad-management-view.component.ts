@@ -96,6 +96,15 @@ export class AddManagementViewComponent implements OnInit {
 
         if(result.data.enquirydata.adminReply){
           this.replyData = result.data.enquirydata.adminReply;
+         // console.log('<<<<<',this.replyData)
+         // this.replyData = this.replyData.sort((a,b) => -a);
+         // console.log('>>>',this.replyData)
+          let flattenArray = [];
+          this.replyData.forEach(function(val, index){
+            console.log('>>>',val)
+            flattenArray.push(val);
+          })
+          console.log('>>>',flattenArray)
            if( this.replyData.length < 1 ) {
             this.showReplyEnquiryForm = true
           }
@@ -227,8 +236,12 @@ export class AddManagementViewComponent implements OnInit {
 
 
   rejectEnquiry() {
-    let zipcodeList = this.enquiryFormReply.controls['zipcodes'].value;
-    if(zipcodeList) {
+    //let zipcodeList = this.enquiryFormReply.controls['zipcodes'].value;
+   // if(zipcodeList) {
+    this.statMsg = "Are you sure you want to reject this request?";
+    this.confirmService.confirm({ message: this.statMsg })
+      .subscribe(res => {
+        if (res) {     
       let enquiryData = {
         query: Object.assign({_id:this.data._id,adminId:this.userId})
       }
@@ -243,9 +256,11 @@ export class AddManagementViewComponent implements OnInit {
         this.snack.open(err, 'OK', { duration: 10000 })
       })
     }
-    else{
-      this.snack.open("Please select atleast one zipcode.", 'OK', { duration: 10000 })
-    }
+  })
+    // }
+    // else{
+    //   this.snack.open("Please select atleast one zipcode.", 'OK', { duration: 10000 })
+    // }
   }
   
   toggleSidenav() {
