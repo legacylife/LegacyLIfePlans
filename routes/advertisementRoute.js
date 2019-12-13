@@ -386,17 +386,17 @@ async function completeTransaction( req, res ) {
   let OldAdminReply = advertisementData.adminReply
   let adminReply = advertisementData.adminReply.filter( elem => elem.status==='Pending' && elem.paymentDetails.invoiceId === invoiceId )
   let advertisementDetails = {}; 
-  if( adminReply ) {
-   
+  if( adminReply ) {   
     /* let totalDays = getDateDiff( advertisementData.fromDate, advertisementData.toDate)
     let invoiceSentDays = getDateDiff( advertisementData.fromDate, moment() ) */
     let invoiceStatus = adminReply[0]['paymentDetails']['status']
     if( invoiceStatus === 'Pending') {
-      stripeHelper.payInvoice( invoiceId, token, advertisementData.customerId.stripeCustomerId ).then(async(err, response) => {
-        if (err) {
-          stripeErrors( err, res )   
-          res.send(resFormat.rError(err));       
-        } else if( response ) {
+      stripeHelper.payInvoice( invoiceId, token, advertisementData.customerId.stripeCustomerId ).then(async(response) => {
+        console.log('response>>>>>>>>>',response)
+        if (response.error) {
+          //stripeErrors( err, res )   
+          res.status(200).send(resFormat.rError(response.response))     
+        } else if( !response.error ) {
           let currentInvoiceIndex = OldAdminReply.findIndex(elem => elem.status==='Pending' && elem.paymentDetails.invoiceId === invoiceId)
           let oldPaymentDetails   = OldAdminReply[currentInvoiceIndex]['paymentDetails'];
           let newPaymentDetails   = Object.assign({}, oldPaymentDetails, { "status": "Done" });
