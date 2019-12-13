@@ -91,31 +91,31 @@ module.exports = {
                             case 'StripeCardError':
                               // A declined card error
                               //err.message; // => e.g. "Your card's expiration year is invalid."
-                              reject(err.message);
+                              resolve(true,err.message);
                               break;
                             case 'StripeRateLimitError':
                               // Too many requests made to the API too quickly
-                              reject(err.message);
+                              resolve(true,err.message);
                               break;
                             case 'StripeInvalidRequestError':
                               // Invalid parameters were supplied to Stripe's API
-                              reject(err.message);
+                              resolve(true,err.message);
                               break;
                             case 'StripeAPIError':
                               // An error occurred internally with Stripe's API
-                              reject(err.message);
+                              resolve(true,err.message);
                               break;
                             case 'StripeConnectionError':
                               // Some kind of error occurred during the HTTPS communication
-                              reject(err.message);
+                              resolve(true,err.message);
                               break;
                             case 'StripeAuthenticationError':
                               // You probably used an incorrect API key
-                              reject(err.message);
+                              resolve(true,err.message);
                               break;
                             default:
                               // Handle any other types of unexpected errors
-                              reject("Invalid access. Try again");
+                              resolve(true,"Invalid access. Try again");
                               break;
                           }
                       }
@@ -129,39 +129,39 @@ module.exports = {
                                   case 'StripeCardError':
                                     // A declined card error
                                     //err.message; // => e.g. "Your card's expiration year is invalid."
-                                    reject(err.message);
+                                    resolve(true,err.message);
                                     break;
                                   case 'StripeRateLimitError':
                                     // Too many requests made to the API too quickly
-                                    reject(err.message);
+                                    resolve(true,err.message);
                                     break;
                                   case 'StripeInvalidRequestError':
                                     // Invalid parameters were supplied to Stripe's API
-                                    reject(err.message);
+                                    resolve(true,err.message);
                                     break;
                                   case 'StripeAPIError':
                                     // An error occurred internally with Stripe's API
-                                    reject(err.message);
+                                    resolve(true,err.message);
                                     break;
                                   case 'StripeConnectionError':
                                     // Some kind of error occurred during the HTTPS communication
-                                    reject(err.message);
+                                    resolve(true,err.message);
                                     break;
                                   case 'StripeAuthenticationError':
                                     // You probably used an incorrect API key
-                                    reject(err.message);
+                                    resolve(true,err.message);
                                     break;
                                   default:
                                     // Handle any other types of unexpected errors
-                                    reject("Invalid access. Try again");
+                                    resolve(true,"Invalid access. Try again");
                                     break;
                                 }
                               }
                             else if( response.status === 'paid' && response.paid === true ) {
-                                resolve(true)
+                                resolve(false,response)
                             }
                             else{
-                                reject(false)
+                                resolve(true,response)
                             }
                         }
                     );
