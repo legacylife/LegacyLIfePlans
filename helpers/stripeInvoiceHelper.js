@@ -123,7 +123,7 @@ module.exports = {
                         invoiceId,
                         function(err, response) {
                             console.log("****err*****",err)
-                          //  console.log("****response*****",response)
+                            console.log("****response*****",response)
                             if ( err ) {
                                 switch (err.type) {
                                   case 'StripeCardError':
