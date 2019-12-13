@@ -137,6 +137,7 @@ module.exports = {
                                     break;
                                   case 'StripeInvalidRequestError':
                                     // Invalid parameters were supplied to Stripe's API
+                                    console.log("****err 0000000    *****",err.message)
                                     resolve(true,err.message);
                                     break;
                                   case 'StripeAPIError':
@@ -158,9 +159,11 @@ module.exports = {
                                 }
                               }
                             else if( response.status === 'paid' && response.paid === true ) {
+                                console.log("****response 2222222 *****",response)
                                 resolve(false,response)
                             }
                             else{
+                                console.log("****response 3333333333 *****",response)
                                 resolve(true,response)
                             }
                         }
