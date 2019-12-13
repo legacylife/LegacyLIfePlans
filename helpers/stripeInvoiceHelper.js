@@ -129,7 +129,7 @@ module.exports = {
                                   case 'StripeCardError':
                                     // A declined card error
                                     //err.message; // => e.g. "Your card's expiration year is invalid."
-                                    resolve(err.message);
+                                    reject(err.message);
                                     break;
                                   case 'StripeRateLimitError':
                                     // Too many requests made to the API too quickly
