@@ -124,47 +124,66 @@ module.exports = {
                         function(err, response) {
                             console.log("****err*****",err)
                             console.log("****response*****",response)
+                            let res = {};
                             if ( err ) {
                                 switch (err.type) {
                                   case 'StripeCardError':
                                     // A declined card error
                                     //err.message; // => e.g. "Your card's expiration year is invalid."
-                                    resolve(true,err.message);
+                                    res.error = true;
+                                    res.response = err.message;
+                                    resolve(res);
                                     break;
                                   case 'StripeRateLimitError':
                                     // Too many requests made to the API too quickly
-                                    resolve(true,err.message);
+                                    res.error = true;
+                                    res.response = err.message;
+                                    resolve(res);
                                     break;
                                   case 'StripeInvalidRequestError':
                                     // Invalid parameters were supplied to Stripe's API
                                     console.log("****err 0000000    *****",err.message)
-                                    resolve(true,err.message);
+                                    res.error = true;
+                                    res.response = err.message;
+                                    resolve(res);
                                     break;
                                   case 'StripeAPIError':
                                     // An error occurred internally with Stripe's API
-                                    resolve(true,err.message);
+                                    res.error = true;
+                                    res.response = err.message;
+                                    resolve(res);
                                     break;
                                   case 'StripeConnectionError':
                                     // Some kind of error occurred during the HTTPS communication
-                                    resolve(true,err.message);
+                                    res.error = true;
+                                    res.response = err.message;
+                                    resolve(res);
                                     break;
                                   case 'StripeAuthenticationError':
                                     // You probably used an incorrect API key
-                                    resolve(true,err.message);
+                                    res.error = true;
+                                    res.response = err.message;
+                                    resolve(res);
                                     break;
                                   default:
                                     // Handle any other types of unexpected errors
-                                    resolve(true,"Invalid access. Try again");
+                                    res.error = true;
+                                    res.response = 'Invalid access. Try again';
+                                    resolve(res);
                                     break;
                                 }
                               }
                             else if( response.status === 'paid' && response.paid === true ) {
                                 console.log("****response 2222222 *****",response)
-                                resolve(false,response)
+                                res.error = false;
+                                res.response = response;
+                                resolve(res)
                             }
                             else{
                                 console.log("****response 3333333333 *****",response)
-                                resolve(true,response)
+                                res.error = true;
+                                res.response = response;
+                                resolve(res)
                             }
                         }
                     );
