@@ -392,7 +392,6 @@ async function completeTransaction( req, res ) {
     let invoiceStatus = adminReply[0]['paymentDetails']['status']
     if( invoiceStatus === 'Pending') {
       stripeHelper.payInvoice( invoiceId, token, advertisementData.customerId.stripeCustomerId ).then(async(response) => {
-        console.log('err<<<<<<<<<<<<<<<<<<',err)
         console.log('response>>>>>>>>>',response)
         if (response.error) {
           //stripeErrors( err, res )   
