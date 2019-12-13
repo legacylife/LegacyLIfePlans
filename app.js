@@ -9,17 +9,20 @@ var router = express.Router()
 const apps = express()
 
 
-/*const server = http.createServer(app).listen(80, () => {
-  console.log('http server running at ' + 80)
-})*/
+/**
+ * 443 https port & redirection of http to https
+ */
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+app.set('port', (process.env.PORT || 443));
 
-/*var options = {
-  key: fs.readFileSync('../llp-privatekey.pem'),
+// start server
+var options = {
+	key: fs.readFileSync('../llp-privatekey.pem'),
   cert: fs.readFileSync('../llp-server.crt'),
 };
-const server = https.createServer(options, app).listen(443, () => {
-  console.log('https server running at ' + 443)
-})*/
+var server = https.createServer(options, app).listen(app.get('port'), function(){
+  console.log("Express server listening on port " + app.get('port'));
+});
 
 var chats = require('./routes/chatcontrollerRoute')
 
@@ -122,20 +125,7 @@ function onListening() {
   console.log("server started on port" + addr.port)
 }
 
-/**
- * 443 https port & redirection of http to https
- */
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-app.set('port', (process.env.PORT || 443));
 
-// start server
-var options = {
-	key: fs.readFileSync('../llp-privatekey.pem'),
-  cert: fs.readFileSync('../llp-server.crt'),
-};
-var server = https.createServer(options, app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
-});
 
 // Redirect from http port 80 to https
 //var http = require('http');
