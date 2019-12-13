@@ -101,11 +101,18 @@ function contactUs(req, res){
       let body = template.mailBody.replace("{email}",fromEmail);
       body = body.replace("{message}",message);
       const mailOptions = {
-        to: "subodh@arkenea.com",
+        to: "accountservices@legacylifeplans.com",
         subject: template.mailSubject,
         html: body
       }
       sendEmail(mailOptions);
+
+      const mailOptions1 = {
+        to: "subodh@arkenea.com",
+        subject: template.mailSubject,
+        html: body
+      }
+      sendEmail(mailOptions1);
     } 
   })
   
