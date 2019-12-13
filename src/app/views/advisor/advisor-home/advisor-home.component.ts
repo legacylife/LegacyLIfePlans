@@ -135,6 +135,9 @@ export class AdvisorHomeComponent implements OnInit, OnDestroy {
     let dialogRef: MatDialogRef<any> = this.dialog.open(MarkAsDeceasedComponent, {
       width: '720px',
       disableClose: true,
+      data: {
+        customerLegaicesId: this.customerLegaicesId,
+      }
     });
     dialogRef.afterClosed()
     .subscribe(res => {

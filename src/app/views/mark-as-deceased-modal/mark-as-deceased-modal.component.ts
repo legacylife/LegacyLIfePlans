@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Inject } from '@angular/core';
 import { UserAPIService } from './../../userapi.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AppConfirmService } from '../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../shared/services/app-loader/app-loader.service';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar,MAT_DIALOG_DATA } from '@angular/material';
 import { Router } from '@angular/router';
 import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../config';
@@ -39,7 +39,7 @@ export class MarkAsDeceasedComponent implements OnInit {
   subFolderName:string = 'Finance'
   
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,private confirmService: AppConfirmService,
-    private loader: AppLoaderService, private router: Router,private userapi: UserAPIService) { }
+    private loader: AppLoaderService, private router: Router,private userapi: UserAPIService,@Inject(MAT_DIALOG_DATA) public data: any) { this.customerLegaciesId = data.customerLegaicesId; }
 
   ngOnInit() {
     const filePath = this.userId+'/'+s3Details.deceasedFilessPath;
@@ -51,7 +51,7 @@ export class MarkAsDeceasedComponent implements OnInit {
     
     this.urlData = this.userapi.getURLData();
     if (this.urlData.lastThird == "legacies") {
-        this.customerLegaciesId = this.urlData.lastOne;
+       //this.customerLegaciesId = this.urlData.lastOne;
         this.customerLegacyType =  this.urlData.userType;          
     }
   
