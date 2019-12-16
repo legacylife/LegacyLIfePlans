@@ -20,7 +20,7 @@ var options = {
 	key: fs.readFileSync('../llp-privatekey.pem'),
   cert: fs.readFileSync('../llp-server.crt'),
 };
-var server = https.createServer(app).listen(app.get('port'), function(){
+var server = https.createServer({}, app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
 
