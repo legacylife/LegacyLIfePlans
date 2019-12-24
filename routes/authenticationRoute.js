@@ -38,7 +38,6 @@ const allActivityLog = require('./../helpers/allActivityLogs')
 
 //function to check and signin user details
 function signin(req, res) {
-  console.log("login data >>>>", req.body)
   passport.authenticate('local', function (err, user, info) {
     if (err) {
       let result = { "message": err };
@@ -284,22 +283,38 @@ function custProfileUpdate(req, res) {
       else {
         let { proquery } = req.body;
         let { from } = req.body;
-        User.updateOne({ _id: updatedUser._id }, { $set: proquery }, function (err, updatedDetails) {
+        User.updateOne({ _id: updatedUser._id }, { $set: proquery },async function (err, updatedDetails) {
           if (err) {
             res.send(resFormat.rError(err))
           } else {
-            let message = resMessage.data(607, [{ key: '{field}', val: 'User ' + from.fromname }, { key: '{status}', val: 'updated' }])
-
-            //Update activity logs
-            allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Profile', message,'Update Profile')
-
-            //Update latitude longitude
-            if (updatedUser.zipcode && updatedUser._id) {
-              calculateZipcode(updatedUser.zipcode, updatedUser._id);
+          if(updatedDetails){     
+            let userInvitedById = '';let inviteCodeexist = true;
+            if (proquery.referCode) {
+              let invitesCodeExists = await Invite.findOne({inviteCode: proquery.referCode});//,email: updatedUser.username   , inviteType: updatedUser.userType 
+              if (invitesCodeExists) {
+                userInvitedById = invitesCodeExists.inviteById;
+                proquery.invitedBy = userInvitedById;
+                inviteCodeexist = true;
+              }else{
+                inviteCodeexist = false;
+              }
             }
 
-            let result = { "message": message }
-            res.status(200).send(resFormat.rSuccess(result))
+            if(inviteCodeexist){
+                let message = resMessage.data(607, [{ key: '{field}', val: 'User ' + from.fromname }, { key: '{status}', val: 'updated' }])
+                //Update activity logs
+                allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Profile', message,'Update Profile')
+
+                //Update latitude longitude
+                if (updatedUser.zipcode && updatedUser._id) {
+                  calculateZipcode(updatedUser.zipcode, updatedUser._id);
+                }
+                let result = {  code: "success","message": message }
+                res.status(200).send(resFormat.rSuccess(result))
+            }else{
+                res.send(resFormat.rSuccess({ code: "error",invalidCode:true, message: "Invalid Referal/Invite Code" }))
+            }
+            }
           }
         })
       }
@@ -873,8 +888,7 @@ function generateOtp(n) {
   return token;
 }
 
-async function advdocuments(req, res) {
-  console.log("Auth", req);
+async function advdocuments(req, res) {  
   try {
     let { query } = req.body;
 

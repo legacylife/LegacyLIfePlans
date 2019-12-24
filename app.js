@@ -6,14 +6,13 @@ const https = require('https')
 var port = normalizePort(process.env.PORT || '80') 
 var express = require('express')
 var router = express.Router()
-
+var chats = require('./routes/chatcontrollerRoute')
 //  const server = http.createServer(app).listen(80, () => {
 //    console.log('http server running at ' + 80)
 //  })
  var server = app.listen(80, function(){
   console.log('http server running at ' + 80)
-});
- var chats = require('./routes/chatcontrollerRoute')
+ });
  
  let socketIO = require('socket.io');
  let io = socketIO(server);

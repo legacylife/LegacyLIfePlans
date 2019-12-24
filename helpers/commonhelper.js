@@ -191,16 +191,16 @@ const inviteeAdd = (req) => {
     }
     let insertedArray = [];
     async.each(members, function (val, callback) {
-
-      let inviteCode = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+     // let inviteCode = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      let inviteCode = Math.floor(100000 + Math.random() * 900000);
       let insertInviteDataFlag = true;
       let insertUserExistFlag = true;
       if (val.relation == "Advisor") {
         templateType = 'InviteAdvisor';
-        clientUrl = constants.clientUrl + "/advisor/signup/" + inviteCode;
+        clientUrl = constants.clientUrl + "/advisor";
       } else {
         templateType = 'InviteCustomer';
-        clientUrl = constants.clientUrl + "/customer/signup/" + inviteCode;
+        clientUrl = constants.clientUrl + "/customer";
       }
       let emailId = val.email
       let inviteToName = val.name
@@ -215,7 +215,7 @@ const inviteeAdd = (req) => {
         InviteObj.inviteById = inviteById;
         InviteObj.inviteToId = inviteToUserId;
         InviteObj.inviteType = val.relation == "Advisor" ? "advisor" : "customer";
-        InviteObj.inviteBy = inviteType
+        InviteObj.inviteBy = inviteType;
         InviteObj.name = inviteToName;
         InviteObj.email = emailId;
         InviteObj.relation = val.relation;
@@ -228,9 +228,10 @@ const inviteeAdd = (req) => {
           insertedArray.push(newEntry) 
           emailTemplatesRoute.getEmailTemplateByCode(templateType).then((template) => {
             template = JSON.parse(JSON.stringify(template));
-            let body = template.mailBody.replace("{LINK}", clientUrl);
-            body = body.replace("{inviteToName}", inviteToName);
-            body = body.replace("{inviteByName}", inviteByName);
+            let body = template.mailBody.replace("{LINK}",clientUrl);
+            body = body.replace("{inviteToName}",inviteToName);
+            body = body.replace("{inviteByName}",inviteByName);
+            body = body.replace("{ReferInviteCode}",inviteCode);
             const mailOptions = {
               to: emailId,
               subject: template.mailSubject,
@@ -240,13 +241,13 @@ const inviteeAdd = (req) => {
               if (attachmentsImages) {
                 mailOptions['attachments'] = attachmentsImages
               }
-              sendRawEmail(mailOptions)
+              sendRawEmail(mailOptions);
             } else {
-              sendEmail(mailOptions)
+              sendEmail(mailOptions);
             }
           })
           // i++;
-          callback()
+          callback();
         })
       })
       

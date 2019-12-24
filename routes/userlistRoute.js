@@ -13,7 +13,7 @@ var nodemailer = require('nodemailer')
 const { isEmpty, cloneDeep } = require('lodash')
 const Busboy = require('busboy')
 // const Mailchimp = require('mailchimp-api-v3')
-
+const Invite = require('./../models/Invite.js')
 const User = require('./../models/Users')
 var constants = require('./../config/constants')
 const resFormat = require('./../helpers/responseFormat')
@@ -192,25 +192,41 @@ function updateStatus(req, res) {
 function updateProfile(req, res) {
   let {query} = req.body;
   let fields = { id:1, username: 1 , status: 1 }
-  User.findOne(query, function(err, updatedUser) {
+  User.findOne(query,async function(err, updatedUser) {
     if (err) {
      res.status(401).send(resFormat.rError(err))
-    } else {      
-      let {proquery} = req.body;
-      User.update({ _id:updatedUser._id},{$set:proquery},function(err,updated){
-        if (err) {
-          res.send(resFormat.rError(err))
-        } else {
-          
-          User.findOne(query, function (err, updatedUser) {
-            if (updatedUser && updatedUser.zipcode && updatedUser.zipcode != '') {
-              calculateZipcode(updatedUser.zipcode,updatedUser._id);
-            }
-            let result = { "userProfile": { userId: updatedUser._id, userType: updatedUser.userType, firstName: updatedUser.firstName, lastName: updatedUser.lastName, phoneNumber: updatedUser.phoneNumber,profilePicture:updatedUser.profilePicture }, "message": "Profile update successfully!" }
-            res.status(200).send(resFormat.rSuccess(result));
-          });
+    } else { 
+      if(updatedUser){   
+        let {proquery} = req.body;
+        let userInvitedById = '';let inviteCodeexist = true;
+        if (proquery.referCode) {
+          let invitesCodeExists = await Invite.findOne({inviteCode: proquery.referCode});//,email: updatedUser.username, inviteType: updatedUser.userType 
+          if (invitesCodeExists) {
+            userInvitedById = invitesCodeExists.inviteById;
+            proquery.invitedBy = userInvitedById;
+            inviteCodeexist = true;
+          }else{
+            inviteCodeexist = false;
+          }
         }
-      })
+        if(inviteCodeexist){
+          User.update({ _id:updatedUser._id},{$set:proquery},function(err,updated){
+            if (err) {
+              res.send(resFormat.rError(err))
+            } else {
+              User.findOne(query, function (err, updatedUser) {
+                if (updatedUser && updatedUser.zipcode && updatedUser.zipcode != '') {
+                  calculateZipcode(updatedUser.zipcode,updatedUser._id);
+                }
+                let result = { code: "success","userProfile": { userId: updatedUser._id, userType: updatedUser.userType, firstName: updatedUser.firstName, lastName: updatedUser.lastName, phoneNumber: updatedUser.phoneNumber,profilePicture:updatedUser.profilePicture }, "message": "Profile update successfully!" }
+                res.status(200).send(resFormat.rSuccess(result));
+              });
+            }
+          })
+        }else{
+          res.send(resFormat.rSuccess({ code: "error",invalidCode:true, message: "Invalid Referal/Invite Code" }))
+        }
+     }
     }
   })
 }
@@ -480,8 +496,7 @@ function getCustomerCard(req, res) {
             let result = {}
           // asynchronously called
           if(cards && cards.data.length > 0) {
-            let cardData = cards.data[0]
-            //console.log(cardData)
+            let cardData = cards.data[0]            
             result = { exp_month:cardData.exp_month, exp_year:cardData.exp_year, type:cardData.funding, last4:cardData.last4, brand:cardData.brand, "message": "Yes" }
           }
           res.status(200).send(resFormat.rSuccess(result))
@@ -573,8 +588,7 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
     startDate = userProfile.userSubscriptionEnddate;
     let start = moment(userProfile.userSubscriptionEnddate, 'YYYY-MM-DD');
     startDate = new Date(start);
-  }
-  console.log("start date>>>>",startDate)
+  }  
   let subscriptions = []
   let subscriptionStatus = 'added'
   let subscriptionDetails = {"_id" : objectId,
@@ -630,8 +644,7 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
       }
 
 
-      stripe.subscriptions.create(stripeObj, function(err, subscription) {
-        console.log("subscription >> ",subscription)
+      stripe.subscriptions.create(stripeObj, function(err, subscription) {        
         if (err) {
           stripeErrors( err, res )          
         }
@@ -1192,7 +1205,7 @@ function AddLatitudeLongitude(req, res) {
             calculateZipcode(details.zipcode,details._id);
           }
         })
-        res.send(resFormat.rSuccess({ userDetails }))
+        res.send(resFormat.rSuccess({ userList }))
       }
     }
   })
@@ -1203,7 +1216,9 @@ async function calculateZipcode(zipcode,id){
   if( data ) {
     if(data.latitude && data.longitude){
       let setLocation = {latitude:data.latitude,longitude:data.longitude};
-      await User.updateOne({_id:id},{$set:{location:setLocation}});
+      let coordinate = [data.longitude,data.latitude];
+      console.log('coordinate',coordinate)
+      await User.updateOne({_id:id},{$set:{location:setLocation,coordinates:coordinate}});
       return true;
     }else{     
       return false;

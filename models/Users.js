@@ -94,6 +94,10 @@ var userSchema = new mongoose.Schema({
   ipAddress : String, 
   // latitude : String, 
   // longitude : String,  
+  coordinates: {
+    type: [Number],
+    default: [0, 0],
+  },
   location: {
     latitude: String,
     longitude: String,
