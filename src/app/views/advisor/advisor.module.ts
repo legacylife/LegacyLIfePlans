@@ -53,7 +53,6 @@ import { MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
 import { NumericTextBoxModule } from '@syncfusion/ej2-angular-inputs';
 import { MultiSelectModule } from '@syncfusion/ej2-angular-dropdowns';
 //import { CheckBoxModule, ButtonModule } from '@syncfusion/ej2-angular-buttons';
-console.log("Advisor Module");
 export class GlobalVariables {
   testVal = '#00bcd4';
   Quepal = {

@@ -110,7 +110,7 @@ export class UserAuthGuard implements CanActivate {
     }
     this.userIdle.startWatching();
     this.userIdle.onTimerStart().subscribe(
-        count =>console.log("home here",count)
+       // count =>console.log("home here",count)
     );
    
     //if (pathArray[1] != 'signin' && pathArray[1] != 'error') {

@@ -126,7 +126,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="Business Phone" type="tel"  maxlength='14' (keypress)="checkPhoneNumber('businessPhoneNumber',$event)"  (keyup)="checkPhoneNumber('businessPhoneNumber',$event)" class="example-right-align" name="businessPhoneNumber" [formControl]="secondFormGroup.controls['businessPhoneNumber']">
+                  <input matInput placeholder="Business Phone" type="tel" maxlength='14' (keypress)="checkPhoneNumber('businessPhoneNumber',$event)"  (keyup)="checkPhoneNumber('businessPhoneNumber',$event)" class="example-right-align" name="businessPhoneNumber" [formControl]="secondFormGroup.controls['businessPhoneNumber']">
                   <span matPrefix>+1</span>
                   <span matSuffix>.00</span>
                   <mat-icon matTooltip="Please enter minimum 7 & maximum 14 numbers only" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['businessPhoneNumber'].hasError('minlength') && secondFormGroup.controls['businessPhoneNumber'].touched"
@@ -262,6 +262,14 @@
                 <mat-progress-bar class=""  color="primary" mode="Indeterminate"  [value]="currentProgessinPercent"></mat-progress-bar>
                 <p>&nbsp;</p>
               </div>
+
+              <mat-form-field class="full-width">
+                <input matInput name="referCode" placeholder="Referal/Invite Code" [formControl]="forthFormGroup.controls['referCode']">
+                <mat-icon matTooltip="Please enter referal/invite code" matTooltipClass="llp--tooltip error" *ngIf="forthFormGroup.controls['referCode'].hasError('required') && forthFormGroup.controls['referCode'].touched"
+                class="red--alert">help_outline</mat-icon>
+                <mat-icon matTooltip="Please enter valid referal/invite code." matTooltipClass="llp--tooltip error" *ngIf="forthFormGroup.controls['referCode'].invalid && invalidCode"
+                class="red--alert">help_outline</mat-icon>
+              </mat-form-field>                   
 
               <div class="text-center">
                   <button mat-raised-button class="llp--primary--btn full-width mb-1" [disabled]="forthFormGroup.invalid">Complete</button>

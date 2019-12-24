@@ -44,7 +44,6 @@ import { HireAdvisorComponent } from './hire-advisor-modal/hire-advisor-modal.co
 import { ProfAddTrusteeModalComponent } from './customer-professionals/prof-add-trustee-modal/prof-add-trustee-modal.component';
 import { ProfAdvisorListingComponent } from './customer-professionals-landing/prof-advisor-listing/prof-advisor-listing.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-console.log("Customer module .....");
 /** Import themes */
 import { MinimaLight, MinimaDark } from '@alyle/ui/themes/minima';
 // import { FuneralServiceModalComponent } from './customer-home/final-wishes/funeral-service-modal/funeral-service-modal.component';

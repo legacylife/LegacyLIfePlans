@@ -34,7 +34,6 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CountUpModule } from 'countup.js-angular2';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { VideoModalComponent } from './video-modal/video-modal.component';
-console.log('Landing Module..')
 @NgModule({
   imports: [
     CommonModule,
