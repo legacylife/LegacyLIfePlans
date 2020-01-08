@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       {
         breakpoint: 820,
         settings: {
-          arrows: false,
+          arrows: true,
           centerMode: true,
           centerPadding: '40px',
           slidesToShow: 1
