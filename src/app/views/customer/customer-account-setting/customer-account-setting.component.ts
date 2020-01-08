@@ -312,7 +312,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     //function to get all events
     getLatitudeLongitude = (query = {}, search = false) => {
       const req_vars = {
-        query: Object.assign({_id: this.userId}, query)
+        query: Object.assign({}, query)
       }
       this.userapi.apiRequest('post', 'userlist/latitudeLongitude', req_vars).subscribe(result => {
         if (result.status == "error") {

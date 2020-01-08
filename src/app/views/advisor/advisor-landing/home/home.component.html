@@ -166,10 +166,11 @@
           <div class="fa--slider relative">
             <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" (init)="slickInit($event)" (breakpoint)="breakpoint($event)"
               (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
-              <div ngxSlickItem *ngFor="let slide of pageData?.featuredAdvisors" class="slide">
+              <div ngxSlickItem *ngFor="let slide of featuredAdvisorsdata" class="slide">
                 <div class="advisor--details">
                   <div class="advisor--photo">
-                    <img src="{{bucketLink}}{{slide?.profilePhoto}}" alt="{{slide?.profilePhoto}}"/>
+                    <img *ngIf="actualUsers" src="{{bucketLink}}{{slide?.profilePhoto}}" alt="{{slide?.profilePhoto}}"/>
+                    <img *ngIf="!actualUsers" src="{{slide?.profilePhoto}}" alt="{{slide?.profilePhoto}}"/>
                   </div>
                   <div class="advisor--name">
                     {{slide.name}}

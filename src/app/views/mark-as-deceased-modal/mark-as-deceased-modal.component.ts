@@ -1,4 +1,4 @@
-import { Component, OnInit,Inject } from '@angular/core';
+import { Component, OnInit,Inject,Input,EventEmitter } from '@angular/core';
 import { UserAPIService } from './../../userapi.service';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { AppConfirmService } from '../../shared/services/app-confirm/app-confirm.service';
@@ -37,7 +37,7 @@ export class MarkAsDeceasedComponent implements OnInit {
   customerLegacyType:string='customer';
   toUserId:string = ''
   subFolderName:string = 'Finance'
-  
+  @Input() private customerLegacyId: EventEmitter<string>;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,private confirmService: AppConfirmService,
     private loader: AppLoaderService, private router: Router,private userapi: UserAPIService,@Inject(MAT_DIALOG_DATA) public data: any) { this.customerLegaciesId = data.customerLegaicesId; }
 
@@ -50,6 +50,19 @@ export class MarkAsDeceasedComponent implements OnInit {
     });
     
     this.urlData = this.userapi.getURLData();
+    console.log(this.customerLegaciesId,">>>>> data >>>>>>>",this.customerLegacyId)
+    if( this.customerLegacyId ) {
+      this.customerLegacyId.subscribe(data => {
+        console.log(" data >>>>>>>",data)
+        if( data ) {
+          console.log(this.customerLegaciesId,'>>>>data<<<<<',data)
+          this.customerLegaciesId = data;
+        }
+      })
+    }
+
+
+
     if (this.urlData.lastThird == "legacies") {
        //this.customerLegaciesId = this.urlData.lastOne;
         this.customerLegacyType =  this.urlData.userType;          

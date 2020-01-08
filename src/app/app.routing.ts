@@ -14,7 +14,6 @@ import { LoginGaurd } from './shared/services/auth/login.guard';
 import { GuestGaurd } from './shared/services/auth/guest.guard';
 import { PrivacyPolicyComponent } from './views/landing/privacy-policy/privacy-policy.component';
 import { TermsOfUseComponent } from './views/landing/terms-of-use/terms-of-use.component';
-console.log('App---routing');
 export const rootRouterConfig: Routes = [
   {
     path: '',

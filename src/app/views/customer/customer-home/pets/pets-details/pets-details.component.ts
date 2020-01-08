@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild ,Output, EventEmitter  } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
@@ -29,6 +29,7 @@ export class PetsDetailsComponent implements OnInit {
   toUserId:string = ''
   subFolderName:string = ''
   LegacyPermissionError:string="You don't have access to this section";
+  @Output() customerLegacyId: EventEmitter<string> = new EventEmitter();
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -64,7 +65,8 @@ export class PetsDetailsComponent implements OnInit {
           if(this.urlData.userType == 'advisor' && !result.data.customerLegacyType){
             this.trusteeLegaciesAction = false;
           }
-          this.row = result.data;       
+          this.row = result.data;   
+          console.log('##########>>>>>>>',this.row)    
           if(this.row) {
             this.toUserId = this.row.customerId 
             this.docPath = this.row.customerId+'/'+s3Details.petsFilePath;
@@ -77,7 +79,15 @@ export class PetsDetailsComponent implements OnInit {
     })
   }
 
+
+  legacyCustomerId(customerId){
+    console.log('##########',customerId)
+    this.customerLegacyId.emit(customerId);
+  }
+
   customerisValid(data){
+    console.log('##########',data.customerId)
+    this.legacyCustomerId(data.customerId);
     if (this.urlData.lastThird == "legacies") {
       this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
         if(userLockoutPeriod || userDeceased){

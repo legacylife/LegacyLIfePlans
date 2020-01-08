@@ -29,6 +29,7 @@ export class BusinessInfoComponent implements OnInit {
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public hasBaseDropZoneOver: boolean = false;
   documentsMissing = false;
+  invalidCode:boolean = false;
   invalidMessage: string;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
@@ -103,7 +104,8 @@ export class BusinessInfoComponent implements OnInit {
       howManyProducers: new FormControl('',[Validators.pattern(/^[0-9]*$/),Validators.maxLength(12)]),
     });
     this.forthFormGroup = this.fb.group({
-      advisorDocuments_temp: new FormControl([], Validators.required)
+      advisorDocuments_temp: new FormControl([], Validators.required),
+      referCode: new FormControl(''),
     });
     if (this.step || this.userId) {
       this.getAdvDetails(this.step);
@@ -152,7 +154,6 @@ export class BusinessInfoComponent implements OnInit {
   }
 
   signupSubmit(steps = null, profileInData = null) {
-    console.log(steps);
     let msgName = '';
     if (steps == 1) msgName = "business information";
     else if (steps == 2) msgName = "business address";
@@ -163,25 +164,27 @@ export class BusinessInfoComponent implements OnInit {
       profileInData.profileSetup = 'yes';
 
     }
-
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: "advisor" }),
       proquery: Object.assign(profileInData),
       from: Object.assign({ fromname: msgName })
     }
     this.loader.open();
-
     this.userapi.apiRequest('post', 'auth/cust-profile-update', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {
         this.snack.open(result.data.message, 'OK', { duration: 4000 })
       } else {
-        //this.prodata = result.data.userProfile;
-        localStorage.setItem("step", steps);
-        if (steps == 4) {
-
-          this.router.navigate(['/', 'advisor', 'thank-you']);
-        }
+        if(result.data.code=='error' && result.data.invalidCode){
+          this.invalidCode = true;
+          this.forthFormGroup.controls['referCode'].setErrors({ 'invalid': true });
+        }else{
+          //this.prodata = result.data.userProfile;
+          localStorage.setItem("step", steps);
+          if (steps == 4) {
+            this.router.navigate(['/', 'advisor', 'thank-you']);
+          }
+       }
       }
     }, (err) => {
       console.error(err)
@@ -274,7 +277,6 @@ export class BusinessInfoComponent implements OnInit {
   }
 
   updateProgressBar(){
-    console.log('here1',this.currentProgessinPercent)
     let uploaderLength = 0;  
     if(this.currentProgessinPercent==0){
       this.uploader.onProgressItem = (progress:any) => {
@@ -285,8 +287,7 @@ export class BusinessInfoComponent implements OnInit {
       // this.currentProgessinPercent = (uploaderLength)/100;
       // let totalLength = progress;
       this.currentProgessinPercent = progress;//totalLength - 100;
-    }
-    console.log('here--->',this.currentProgessinPercent)
+    }    
   }
 
    isExtension(ext, extnArray) {

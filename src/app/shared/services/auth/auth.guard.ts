@@ -9,7 +9,8 @@ export class AuthGuard implements CanActivate {
   private isAuthenticated = false; // Set this value dynamically
   private userInfo: any
   
-  constructor(private router: Router, private api: APIService, private snack: MatSnackBar) {}
+  constructor(private router: Router, private api: APIService, private snack: MatSnackBar) {
+  }
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -18,7 +19,6 @@ export class AuthGuard implements CanActivate {
       this.userInfo = this.api.getUserInfo();
       if (this.userInfo.userType == '') {
         //this.router.navigateByUrl('/llp-admin/signin');
-        console.log("Logout >> ",this.userInfo)
         this.api.logout();
         return false;
       }

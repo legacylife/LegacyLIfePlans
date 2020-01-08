@@ -31,12 +31,52 @@ export class LayoutService {
   public isMobile: boolean;
   public currentRoute: string;
   public fullWidthRoutes = ['shop'];
-
+  displayLocationInfo: any;
+  handleLocationError: any;
   constructor(
     private router: Router
   ) {
     this.setAppLayout();
+   // navigator.geolocation.getCurrentPosition(this.displayLocationInfo,this.handleLocationError, { timeout: 0 });
   }
+
+  // getCurrentPosition(position) {
+  //   console.log('position >>>',position);
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(this.displayLocationInfo,this.handleLocationError, { timeout: 0 });
+
+  //     const lng = position.coords.longitude;
+  //     const lat = position.coords.latitude;
+  //     console.log(`longitude: ${ lng } | latitude: ${ lat }`);
+  //   }
+  // }
+
+  // displayLocationInfo1(position) {
+  //   console.log('position >>>',position);
+  //   const lng = position.coords.longitude;
+  //   const lat = position.coords.latitude;
+  
+  //   console.log(`longitude: ${lng} | latitude: ${lat}`);
+  // }
+  
+  // handleLocationError(error) {
+  //   console.log('position >>>',error);
+  //   switch (error.code) {
+  //     case 3:
+  //       // timeout was hit, meaning nothing's in the cache
+  //       // let's provide a default location:
+  //       console.log('3',error)
+  //       this.displayLocationInfo({ coords: { longitude: 33.631839, latitude: 27.380583 } });  
+  //       // now let's make a non-cached request to get the actual position
+  //       navigator.geolocation.getCurrentPosition(this.displayLocationInfo, this.handleLocationError);
+  //       break;
+  //     case 2:
+  //      console.log('2',error)
+  //       break;
+  //     case 1:
+  //       console.log('1',error)
+  //   }
+  // }
 
   setAppLayout() {
     //******** SET YOUR LAYOUT OPTIONS HERE *********
@@ -47,8 +87,7 @@ export class LayoutService {
       "useBreadcrumb": true,
       "topbarFixed": false,
       "breadcrumb": "title"       // simple, title
-    }
-
+    }    
     //******* Only for demo purpose ***
     this.setLayoutFromQuery();
     //**********************

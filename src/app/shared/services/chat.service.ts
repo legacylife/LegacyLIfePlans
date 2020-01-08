@@ -316,7 +316,7 @@ export class ChatService {
     }
     return Observable.create((observer) => {
         this.socket.on('message-unread-count-'+this.userId, (count) => {
-            console.log("get message unread count :-",this.userId,'getMessagesUnreadCnt',count)
+          //8  console.log("get message unread count :-",this.userId,'getMessagesUnreadCnt',count)
 
             observer.next(count);
            // this.onChatsUpdated.next(message);

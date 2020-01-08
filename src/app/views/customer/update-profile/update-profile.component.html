@@ -50,13 +50,15 @@
 
           <mat-form-field class="full-width">
             <input matInput placeholder="Mobile Number*" type="tel" value="" name="phoneNumber" class="example-right-align"
-              [formControl]="llpCustsignupProfileForm.controls['phoneNumber']">
+              [formControl]="llpCustsignupProfileForm.controls['phoneNumber']" maxlength='14' (keypress)="checkPhoneNumber('phoneNumber',$event)"  (keyup)="checkPhoneNumber('phoneNumber',$event)">
             <span matPrefix>+1</span>
             <span matSuffix>.00</span>
             <mat-icon matTooltip="Please enter mobile number" matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['phoneNumber'].hasError('required') && llpCustsignupProfileForm.controls['phoneNumber'].touched"
             class="red--alert">help_outline</mat-icon>
             <mat-icon matTooltip="Please enter valid mobile number." matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['phoneNumber'].hasError('pattern') && llpCustsignupProfileForm.controls['phoneNumber'].touched"
             class="red--alert">help_outline</mat-icon>
+            <mat-icon matTooltip="Please enter minimum 7 & maximum 14 numbers only" matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['phoneNumber'].hasError('minlength') && llpCustsignupProfileForm.controls['phoneNumber'].touched"
+            class="red--alert">help_outline</mat-icon> 
           </mat-form-field>
 
           <div>
@@ -95,6 +97,15 @@
             <mat-icon matTooltip="Please enter valid zipcode." matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['zipcode'].hasError('pattern') && llpCustsignupProfileForm.controls['zipcode'].touched"
             class="red--alert">help_outline</mat-icon>
           </mat-form-field>
+
+
+          <mat-form-field class="full-width">
+            <input matInput name="referCode" placeholder="Referal/Invite Code" [formControl]="llpCustsignupProfileForm.controls['referCode']">
+            <mat-icon matTooltip="Please enter referal/invite code" matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['referCode'].hasError('required') && llpCustsignupProfileForm.controls['referCode'].touched"
+            class="red--alert">help_outline</mat-icon>
+            <mat-icon matTooltip="Please enter valid referal/invite code." matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['referCode'].invalid && invalidCode"
+            class="red--alert">help_outline</mat-icon>
+          </mat-form-field>          
 
           <button mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" [disabled]="llpCustsignupProfileForm.invalid">Update and Proceed</button>
 <!-- 

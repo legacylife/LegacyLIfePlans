@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-console.log('Landing Routing..')
 import { HomeComponent } from './home/home.component';
 import { CustAboutUsComponent } from './about-us/about-us.component';
 //import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
