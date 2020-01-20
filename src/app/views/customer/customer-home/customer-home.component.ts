@@ -41,6 +41,7 @@ export class CustomerHomeComponent implements OnInit,AfterViewInit, OnDestroy {
   revokeAsDeceased:boolean = false;
   alreadyRevokeAsDeceased:boolean = false;
   finallyDeceased:boolean = false;
+  settingFlag:boolean = false;
   datas: any;
   @Input() private customerLegacyId: EventEmitter<string>;
 
@@ -56,6 +57,7 @@ export class CustomerHomeComponent implements OnInit,AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+    this.settingFlag = localStorage.getItem("endUserlegacySetting") == 'yes' ? false : true
     let urlData = this.userapi.getURLData();
     
       if(urlData.lastThird == 'legacies' && urlData.lastOne){

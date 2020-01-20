@@ -69,6 +69,7 @@ import { ProUserAuthGuard as ProUserGuard } from '../../shared/services/auth/pro
 import { ErrorComponent } from './../error/error.component';
 import { CoachsCornerComponent } from 'app/shared/components/coachs-corner/coachs-corner.component';
 import { CcDetailedViewComponent } from 'app/shared/components/cc-detailed-view/cc-detailed-view.component';
+import { legacySettingPageComponent } from './customer-home/legacy-setting/legacy-setting-page/legacy-setting-page.component';
 console.log("cutostomer routing...")
 export const CustomerRoutes: Routes = [
   {
@@ -115,6 +116,11 @@ export const CustomerRoutes: Routes = [
           //   loadChildren: '../../shared/components/app-chats/app-chats.module#AppChatsModule', 
           //   data: { title: 'Chat', breadcrumb: 'CHAT'}
           // },
+          {
+            path: 'legacy-setting',
+            component: legacySettingPageComponent,
+            data: { title: 'Legacy setting' }
+          },
           {
             path: 'customer-day-one',
             component: CustomerDashboardDayOneComponent,

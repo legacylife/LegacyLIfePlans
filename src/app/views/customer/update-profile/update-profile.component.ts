@@ -56,7 +56,7 @@ export class UpdateProfileComponent implements OnInit {
       zipcode: new FormControl('',[Validators.required,Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
       referCode: new FormControl(''),
     });
-
+   
     if(this.userId){
       const req_vars = { userId: this.userId }
       this.userapi.apiRequest('post', 'auth/view', req_vars).subscribe(result => {  
@@ -127,8 +127,8 @@ export class UpdateProfileComponent implements OnInit {
           }
           this.snack.open('Your profile information has been updated successfully.', 'OK', { duration: 4000 })
           setTimeout(() => {
-            this.router.navigate(['/', 'customer', 'dashboard']);
-          }, 2000);  
+            this.router.navigate(['/', 'customer', 'dashboard','legacy-setting']);
+          }, 1500);  
         }else if(result.data.code=='error' && result.data.invalidCode){
           this.invalidCode = true;
           this.llpCustsignupProfileForm.controls['referCode'].setErrors({ 'invalid': true });

@@ -82,10 +82,15 @@ export class SigninComponent implements OnInit {
           localStorage.setItem('endUserProfilePicture', this.profilePicture)
           this.picService.setProfilePic = this.profilePicture;
         }
+        let legacySetting = '';
+        if(userData.legacySetting){
+          legacySetting = userData.legacySetting;
+        }
 
         this.subscriptionservice.checkSubscription( '',( returnArr )=> {}) // IMP for subscription
         //this.snack.open(result.data.message, 'OK', { duration: 4000 })
         if(userData.userType=='customer'){
+          localStorage.setItem("endUserlegacySetting",legacySetting);
           this.router.navigate(['/', 'customer', 'dashboard']);
           setTimeout(() => {
             this.loader.close();

@@ -65,7 +65,6 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   totalSpaceAlloted: number = 1
   spaceProgressBar:any = 100
   totalUsedSpace:any = 0
-
   isAccountFree: boolean = true
   isSubscribePlan: boolean = false
   isSubscribedBefore: boolean = false
@@ -79,10 +78,8 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   isProUser:boolean = false
   getAddOn:boolean = false
   modified = false // display confirmation popup if user click on other link
-  isGetAddOn:boolean = false
-  
+  isGetAddOn:boolean = false  
   isDialogOpen:boolean = false
-
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder,
     private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
     private loader: AppLoaderService, private picService: ProfilePicService, private confirmService: AppConfirmService,
@@ -147,12 +144,13 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     })
  
     this.profile = [];
-    this.getProfile();
-
     /**
      * Check the user subscription details
-     */
-    this.checkSubscription()
+     */    
+    if(localStorage.getItem("endUserlegacySetting") && localStorage.getItem("endUserlegacySetting")=='yes'){
+      this.checkSubscription()
+    }
+    this.getProfile();
   }
 
   
@@ -246,7 +244,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
             }
           }
         }
-        console.log("totalUsedSpace",this.totalUsedSpace,"totalSpaceAlloted",this.totalSpaceAlloted,"spaceProgressBar",this.spaceProgressBar)
+       // console.log("totalUsedSpace",this.totalUsedSpace,"totalSpaceAlloted",this.totalSpaceAlloted,"spaceProgressBar",this.spaceProgressBar)
       })
     })
     this.spaceProgressBar = (this.totalUsedSpace * 100 / this.totalSpaceAlloted).toFixed(2)

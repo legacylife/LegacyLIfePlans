@@ -106,6 +106,8 @@ import { SubscriptionService } from './services/subscription.service';
 import { PetsListComponent } from 'app/views/customer/customer-home/pets/pets-list/pets-list.component';
 import { PetsDetailsComponent } from 'app/views/customer/customer-home/pets/pets-details/pets-details.component';
 import { PetsModalComponent } from 'app/views/customer/customer-home/pets/pets-modal/pets-modal.component';
+import { legacySettingPageComponent } from 'app/views/customer/customer-home/legacy-setting/legacy-setting-page/legacy-setting-page.component';
+import { legacySettingModalComponent } from 'app/views/customer/customer-home/legacy-setting/legacy-setting-modal/legacy-setting-modal.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { CustomerEssentialDayOneComponent } from 'app/views/customer/customer-home/customer-essential-day-one/customer-essential-day-one.component';
 import { PersonalProfileModalComponent } from 'app/views/customer/customer-home/personal-profile-modal/personal-profile-modal.component';
@@ -218,7 +220,9 @@ const classesToInclude = [
   InviteComponent,
   PetsListComponent,
   PetsDetailsComponent,
+  legacySettingPageComponent,
   PetsModalComponent,
+  legacySettingModalComponent,
   CustomerEssentialDayOneComponent,
   PersonalProfileModalComponent,
   CustomerEssentialDetailsComponent,
@@ -327,7 +331,7 @@ const classesToInclude = [
   ],
   entryComponents: [
     AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,ReferNEarnPopUpComponent,
-    PetsModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent,SpecialNeedsModelComponent,
+    PetsModalComponent,legacySettingModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent,SpecialNeedsModelComponent,
     DevicesModalComponent,ElectronicMediaModalComponent,DigitalPublicationsModalComponent,AssetsModelComponent,
     VehicleModelComponent,RealEstateModelComponent,TimeCapsuleMoalComponent,legalStuffModalComponent,InsuranceModalComponent,
     FinanceModalComponent,DebtModalComponent,FinalWishesFormModalComponent,LettersMessagesModelComponent, InviteComponent, CcShareViaEmailModelComponent,

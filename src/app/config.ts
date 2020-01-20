@@ -12,7 +12,7 @@ let stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk";  // live - p
 
 //localhost
 if(window.location.hostname.indexOf("localhost") > -1){ // local server
-  serverUrlEnv = "http://localhost:80"  
+  serverUrlEnv = "http://localhost:8080"  
   stripeSecretKey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk"
   googleauthkey = "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"
 } 

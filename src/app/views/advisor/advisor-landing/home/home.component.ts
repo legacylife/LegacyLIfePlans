@@ -2,14 +2,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CountUp, CountUpOptions } from 'countup.js';
 import * as $ from 'jquery'
-import { debounce } from 'lodash'
+import { debounce,forEach } from 'lodash'
 import { APIService } from 'app/api.service';
 import { UserAPIService } from 'app/userapi.service';
 import { serverUrl, s3Details } from '../../../../config';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray} from "@angular/forms";
 import { MatSnackBar, MatDialog } from "@angular/material";
-import { forEach } from "lodash";
 const advisorBucketLink = s3Details.awsserverUrl+s3Details.assetsPath+'advisor/';
+console.log('advisor home')
 @Component({
   selector: 'app-landing-home-page',
   templateUrl: './home.component.html',
@@ -24,9 +24,33 @@ export class HomeComponent implements OnInit, OnDestroy {
       name: 'John Smith',
       photo: "assets/images/arkenea/john.png",
       title: 'CFC, CIF'
-    }
+    },
+    {
+      name: 'Emily Doe',
+      photo: "assets/images/arkenea/emily.png",
+      title: 'CFC, CIF'
+    },
+    {
+      name: 'James Anderson',
+      photo: "assets/images/arkenea/james.png",
+      title: 'CFC, CIF'
+    },
+    {
+      name: '4 John Smith',
+      photo: "assets/images/arkenea/john.png",
+      title: 'CFC, CIF'
+    },
+    {
+      name: '5 Emily Doe',
+      photo: "assets/images/arkenea/emily.png",
+      title: 'CFC, CIF'
+    },
+    {
+      name: '6 James Anderson',
+      photo: "assets/images/arkenea/james.png",
+      title: 'CFC, CIF'
+    },
   ];
-
 
   slideConfig = {
     'slidesToShow': 3, 'slidesToScroll': 1, responsive: [
@@ -41,7 +65,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       {
         breakpoint: 820,
         settings: {
-          arrows: true,
+          arrows: false,
           centerMode: true,
           centerPadding: '40px',
           slidesToShow: 1
@@ -93,43 +117,52 @@ lowerBanner : string;
 sectionEightBanner : string;
 userId = localStorage.getItem('endUserId');
 userType = localStorage.getItem('endUserType');
-latitude: Number;
-longitude: Number;
+latitude: Number = 0;
+longitude: Number = 0;
   constructor(private api:APIService, private userapi:UserAPIService, private fb: FormBuilder, private snack: MatSnackBar) { }
-
   ngOnInit() {
     this.bucketLink = advisorBucketLink;
+    const watcher = navigator.geolocation.watchPosition(this.displayLocationInfo);
+    console.log('here I am---',navigator.geolocation);
     //https://alligator.io/js/geolocation-api/
     //https://medium.com/@balramchavan/display-and-track-users-current-location-using-google-map-geolocation-in-angular-5-c259ec801d58
-    if(navigator.geolocation){
+    this.getCMSpageDetails(this.longitude,this.latitude);
+    //if(navigator.geolocation){
+      console.log('here I am again---####',navigator.geolocation,'###########');
       navigator.geolocation.getCurrentPosition((position) => {
         console.log(position.coords,">>>>>> Position >>>>>>>",position.coords.longitude,',',position.coords.latitude);       
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
         this.getCMSpageDetails(this.longitude,this.latitude);
       });
-    }else{
-      this.getCMSpageDetails(this.longitude,this.latitude);
-    }
+    // }else{
+    //   console.log("Geolocation is not supported by this browser.");
+    // }
 
-    this.opts = {
-      duration: 2
-    };
+    this.opts = {duration: 2};
+
     this.contactForm = this.fb.group({
       email: new FormControl("", [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
       message: new FormControl("", Validators.required)
     });
 
     window.addEventListener('scroll', this.isScrolledIntoView, true);
-    this.getFreeTrialSettings()
+    setTimeout(() => {
+      navigator.geolocation.clearWatch(watcher);
+    }, 15000);
+    this.getFreeTrialSettings();
   }
 
+   displayLocationInfo(position) {
+    console.log('here I am displayLocationInfo--->',position);
+  }
 
   ngOnDestroy() {
     window.removeEventListener('scroll', this.isScrolledIntoView, true);
   }
 
   getCMSpageDetails(latitude,longitude){       
+    console.log('getCMSpageDetails',latitude,'------------',longitude)
     let query = {}; 
     const req_vars = {
       query: Object.assign({status:'Active' }, query),
@@ -142,7 +175,7 @@ longitude: Number;
         if(result.data.cmsDetails) {
           this.pageData = result.data.cmsDetails;     
           this.featuredAdvisorsdata = this.pageData.featuredAdvisors;
-          if(result.data.usersData) {
+          if(result.data.usersData.length>0) {
             this.featuredAdvisorsdata = [];           
             this.actualUsers = false;
             forEach(result.data.usersData,(element, index) => {
@@ -210,26 +243,19 @@ longitude: Number;
           console.error(err);
         }
       );
-    }  
-    else {
+    } else {
       if(this.contactForm.controls['email'].invalid)
         this.contactForm.controls['email'].markAsTouched();
       if(this.contactForm.controls['message'].invalid)
         this.contactForm.controls['message'].markAsTouched();
-    }
-      
+    }      
   }
-
-
-
 
   isScrolledIntoView = () => {
     const docViewTop = $(window).scrollTop();
     const docViewBottom = docViewTop + $(window).height();
-
     const elemTop = $('#leadsNumbers').offset().top;
     const elemBottom = elemTop + $('#leadsNumbers').height();
-
     if ((elemBottom <= docViewBottom) && (elemTop >= docViewTop)) {
       this.opts = {
         duration: 0.1
@@ -242,7 +268,6 @@ longitude: Number;
     }
   }
 
-
   removeSlide() {
     this.slides.length = this.slides.length - 1;
   }
@@ -254,7 +279,6 @@ longitude: Number;
   slickInit2(e) {
     //  console.log('slick initialized');
   }
-
 
   breakpoint(e) {
     // console.log('breakpoint');
@@ -270,7 +294,6 @@ longitude: Number;
 
   gotoTop() {
     const content = document.getElementsByClassName('rightside-content-hold')[0]
-
     content.scroll({
       top: 0,
       left: 0,
@@ -284,5 +307,4 @@ longitude: Number;
     this.bfrSubAdvPremiumAccess  = Number(freeTrialPeriodSettings.advisorFreeDays)
     this.advisorFreeTrialStatus  = freeTrialPeriodSettings.advisorStatus == 'On'? true : false
   }
-
 }
