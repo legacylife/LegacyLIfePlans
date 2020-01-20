@@ -3,15 +3,15 @@ var debug = require('debug')('LLP:server')
 const fs = require('fs')
 const http = require('http')
 const https = require('https')
-var port = normalizePort(process.env.PORT || '80') 
+var port = normalizePort(process.env.PORT || '8080') 
 var express = require('express')
 var router = express.Router()
 var chats = require('./routes/chatcontrollerRoute')
 //  const server = http.createServer(app).listen(80, () => {
 //    console.log('http server running at ' + 80)
 //  })
- var server = app.listen(80, function(){
-  console.log('http server running at ' + 80)
+ var server = app.listen(8080, function(){
+  console.log('http server running at ' + 8080)
  });
  
  let socketIO = require('socket.io');

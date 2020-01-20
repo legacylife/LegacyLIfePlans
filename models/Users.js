@@ -102,6 +102,7 @@ var userSchema = new mongoose.Schema({
     latitude: String,
     longitude: String,
   }, 
+  legacySetting : String, 
   signupApprovalDate : Date, 
   signupArrovalStatus : String, 
   approveRejectReason : String,      

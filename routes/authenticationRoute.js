@@ -605,7 +605,7 @@ async function checkEmail(req, res) {
           let { inviteCode } = req.body
           let userInvitedBy = ''
           if (inviteCode) {
-            let invitesCodeExists = await Invite.find({ inviteCode: inviteCode, email: username, inviteType: req.body.userType }, function (err, data, index) { });
+            let invitesCodeExists = await Invite.find({ inviteCode: inviteCode}, function (err, data, index) { });//, email: username, inviteType: req.body.userType 
             userInvitedBy = invitesCodeExists.invitedBy
             if (invitesCodeExists.length < 1) {
               let message = resMessage.data(627, [{ key: '{field}', val: 'Email / Invite Link' }])
