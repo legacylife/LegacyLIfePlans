@@ -39,13 +39,14 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
   row: any = [];
   hideFirstStep : Boolean = true;
   defaultPermission : Boolean = true;
+  disabledFlag: boolean = true;
   constructor(
     private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private stepper: MatStepperModule,
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService,@Inject(MAT_DIALOG_DATA) public data: any
   ) { this.ids = data.id; }
  
-  ngOnInit() {console.log('event')
+  ngOnInit() {
     this.buildItemForm();
     this.userSections = userSections;  
     this.mainHead = 'Add a Trustee to your Legacy!';
@@ -103,6 +104,8 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
        this.thirdFormGroup = this.fb.group({
         messages: new FormControl(''),           
        });
+
+       this.disabledFlag = true;
   }
 
   ngAfterViewInit(){ 
@@ -168,6 +171,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
     }
 
     this.userapi.apiRequest('post', 'trustee/get-user', req_vars).subscribe(result => {
+      this.disabledFlag = false;
       if (result.status == "success") {
         if (result.data.code == "Exist") {
           this.trustFormGroup.controls['email'].enable();

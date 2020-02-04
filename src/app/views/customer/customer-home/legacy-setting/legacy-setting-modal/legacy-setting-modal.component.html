@@ -1,5 +1,5 @@
 <div class="ll--modal--header">
-  Legacy Life Plans Subscription
+  Access restricted
   <button class="modal--close" [mat-dialog-close]="">
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
@@ -8,13 +8,14 @@
     <div fxLayout="row wrap" class="pt-1">
       <div fxFlex.xs="100">
         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="">
-             Please subscribe to Legacy Life plans to access.        
+          <p class="fnt--18">You do not have an active subscription to access to your legacy files. Please subscribe to our yearly plan to manage your legacy life plans.</p>
         </div>
       </div>
     </div>
   </div>
   <div class="ll--modal--footer text-center">
     <div class="manage--cancel">
-      <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/customer/customer-subscription'">Purchase Subscription</button>
+      <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/customer/customer-subscription'">Subscribe</button>
+      <!-- <button mat-raised-button class="llp--primary--green--btn" [routerLink]="'/customer/customer-subscription'">Not now</button> -->
     </div>
   </div>

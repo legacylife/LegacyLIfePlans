@@ -42,6 +42,7 @@ export class InsuranceDetailsComponent implements OnInit {
     const filePath = this.userId+'/'+s3Details.insuranceFilePath;
     this.docPath = filePath;
     this.urlData = this.userapi.getURLData();
+    this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
     this.selectedProfileId = this.urlData.lastOne
     this.toUserId = this.userId;
     this.getInsuranceView();    

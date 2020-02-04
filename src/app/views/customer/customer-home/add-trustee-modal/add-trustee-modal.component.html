@@ -51,7 +51,7 @@
               </mat-form-field>
           </div>
           <div class="mt-1 text-center">
-            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" id="pk534" id="trustFormGroupBtn" [disabled]="trustFormGroup.invalid">Assign Permissions</button>   
+            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" [disabled]="disabledFlag && trustFormGroup.invalid">Assign Permissions</button>   
           </div>    
         </form>      
       </mat-step>
