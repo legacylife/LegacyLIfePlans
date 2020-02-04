@@ -10,6 +10,7 @@ import { UserAPIService } from './../../../../userapi.service';
 import { AppLoaderService } from '../../../../shared/services/app-loader/app-loader.service';
 import { PersonalProfileModalComponent } from '../personal-profile-modal/personal-profile-modal.component';
 import { AppConfirmService } from '../../../../shared/services/app-confirm/app-confirm.service';
+import { DataSharingService } from 'app/shared/services/data-sharing.service';
 
 @Component({
   selector: 'app-customer-home',
@@ -42,7 +43,7 @@ export class CustomerEssentialDetailsComponent implements OnInit {
   constructor(
     // private shopService: ShopService,
     private fb: FormBuilder,
-    private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
+    private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,private sharedata: DataSharingService,
     private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router
   ) { }
 
@@ -89,6 +90,7 @@ export class CustomerEssentialDetailsComponent implements OnInit {
   }
 
   customerisValid(data){
+    this.sharedata.shareLegacyCustomerIdData(data.customerId);
     if (this.urlData.lastThird == "legacies") {
       this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
         if(userLockoutPeriod || userDeceased){

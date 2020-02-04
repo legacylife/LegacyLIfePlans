@@ -14,6 +14,11 @@ export class DataSharingService {
   private shareDataDeathFileSource = new BehaviorSubject("");
   userShareDataDeathFileSource = this.shareDataDeathFileSource.asObservable();
 
+
+  private shareDataCustomerIdSource = new BehaviorSubject("");
+  userShareCustomerIdSource = this.shareDataCustomerIdSource.asObservable();
+ 
+
   private shareCoachesData = new BehaviorSubject("");
   userShareCochesSource = this.shareCoachesData.asObservable();
 
@@ -29,6 +34,10 @@ export class DataSharingService {
 
   shareLegacyDeathfileCountData(data: any) {
     this.shareDataDeathFileSource.next(data)
+  }
+
+  shareLegacyCustomerIdData(data: any) {
+    this.shareDataCustomerIdSource.next(data)
   }
 
   shareChochesData(data: any) {

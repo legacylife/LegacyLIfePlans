@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild ,Output, EventEmitter  } from '@angular/core';
+import { Component, OnInit,AfterViewInit,ViewChild  } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
@@ -15,7 +15,7 @@ import { DataSharingService } from 'app/shared/services/data-sharing.service';
   styleUrls: ['./pets-details.component.scss'],
   animations: [egretAnimations]
 })
-export class PetsDetailsComponent implements OnInit {
+export class PetsDetailsComponent implements OnInit,AfterViewInit {
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   userId: string;
   selectedProfileId: string = "";
@@ -24,13 +24,13 @@ export class PetsDetailsComponent implements OnInit {
   docPath: string; 
   urlData:any={};
   customerLegaciesId: string;
+  parentCustomerLegaciesId: string;
   customerLegacyType:string='customer';
   trusteeLegaciesAction:boolean=true;
   toUserId:string = ''
   subFolderName:string = ''
   LegacyPermissionError:string="You don't have access to this section";
-  @Output() customerLegacyId: EventEmitter<string> = new EventEmitter();
-  constructor( // private shopService: ShopService,
+  constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
     private userapi: UserAPIService, private loader: AppLoaderService, private snack: MatSnackBar, private router: Router,private sharedata: DataSharingService
@@ -45,6 +45,9 @@ export class PetsDetailsComponent implements OnInit {
     this.trusteeLegaciesAction = this.urlData.trusteeLegaciesAction
     this.toUserId = this.userId
     this.getPetsView();
+  }
+  
+  ngAfterViewInit() {
   }
 
   //function to get all events
@@ -66,7 +69,6 @@ export class PetsDetailsComponent implements OnInit {
             this.trusteeLegaciesAction = false;
           }
           this.row = result.data;   
-          console.log('##########>>>>>>>',this.row)    
           if(this.row) {
             this.toUserId = this.row.customerId 
             this.docPath = this.row.customerId+'/'+s3Details.petsFilePath;
@@ -79,15 +81,8 @@ export class PetsDetailsComponent implements OnInit {
     })
   }
 
-
-  legacyCustomerId(customerId){
-    console.log('##########',customerId)
-    this.customerLegacyId.emit(customerId);
-  }
-
   customerisValid(data){
-    console.log('##########',data.customerId)
-    this.legacyCustomerId(data.customerId);
+    this.sharedata.shareLegacyCustomerIdData(data.customerId);
     if (this.urlData.lastThird == "legacies") {
       this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
         if(userLockoutPeriod || userDeceased){

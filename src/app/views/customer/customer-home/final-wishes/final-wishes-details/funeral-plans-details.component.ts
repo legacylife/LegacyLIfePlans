@@ -86,6 +86,7 @@ export class FuneralPlansDetailsComponent implements OnInit {
   }
 
   customerisValid(data){
+    this.sharedata.shareLegacyCustomerIdData(data.customerId);
     if (this.urlData.lastThird == "legacies") {
       this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
         if(userLockoutPeriod || userDeceased){

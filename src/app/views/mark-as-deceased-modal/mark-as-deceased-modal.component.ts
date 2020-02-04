@@ -39,7 +39,8 @@ export class MarkAsDeceasedComponent implements OnInit {
   subFolderName:string = 'Finance'
   @Input() private customerLegacyId: EventEmitter<string>;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder,private confirmService: AppConfirmService,
-    private loader: AppLoaderService, private router: Router,private userapi: UserAPIService,@Inject(MAT_DIALOG_DATA) public data: any) { this.customerLegaciesId = data.customerLegaicesId; }
+    private loader: AppLoaderService, private router: Router,private userapi: UserAPIService,@Inject(MAT_DIALOG_DATA) public data: any) { 
+      this.customerLegaciesId = data.customerLegaicesId; }
 
   ngOnInit() {
     const filePath = this.userId+'/'+s3Details.deceasedFilessPath;
@@ -50,19 +51,6 @@ export class MarkAsDeceasedComponent implements OnInit {
     });
     
     this.urlData = this.userapi.getURLData();
-    console.log(this.customerLegaciesId,">>>>> data >>>>>>>",this.customerLegacyId)
-    if( this.customerLegacyId ) {
-      this.customerLegacyId.subscribe(data => {
-        console.log(" data >>>>>>>",data)
-        if( data ) {
-          console.log(this.customerLegaciesId,'>>>>data<<<<<',data)
-          this.customerLegaciesId = data;
-        }
-      })
-    }
-
-
-
     if (this.urlData.lastThird == "legacies") {
        //this.customerLegaciesId = this.urlData.lastOne;
         this.customerLegacyType =  this.urlData.userType;          
@@ -204,8 +192,6 @@ public fileOverBase(e: any): void {
           }, 5000);      
         }
       });
-
-
 
       if(this.uploader.getNotUploadedItems().length){
         if(this.selectedProfileId){
