@@ -8,6 +8,7 @@ import { UserAPIService } from './../../../userapi.service';
 import { s3Details } from '../../../config';
 import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
+import { legacySettingModalComponent } from '../customer-home/legacy-setting/legacy-setting-modal/legacy-setting-modal.component';
 
 const filePath = s3Details.url+'/'+s3Details.profilePicturesPath;
 @Component({
@@ -30,6 +31,8 @@ export class CustomerProfessionalComponent implements OnInit {
   twitter:string = "";
   instagram:string = "";
   linkedIn:string = "";
+  isProUser = false;
+  isFreeProuser = false;
 
   constructor(
     private route: ActivatedRoute,private userapi: UserAPIService, 
@@ -39,6 +42,8 @@ export class CustomerProfessionalComponent implements OnInit {
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
+    this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+    this.isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
     const locationArray = location.href.split('/')
     this.selectedProfileId = locationArray[locationArray.length - 1];
     this.getAdvisorView();
@@ -51,11 +56,8 @@ export class CustomerProfessionalComponent implements OnInit {
       userType: localStorage.getItem('endUserType')
     }
     this.userapi.apiRequest('post', 'userlist/viewall', req_vars).subscribe(result => {
-      console.log('---------result',result)
       if (result.status == "error") {
-        console.log('---------result status',result.status)
         this.router.navigate(['/', localStorage.getItem("endUserType"), 'dashboard']);
-        console.log(result.data)
       } else {
         this.profileData = this.row = result.data; 
         
@@ -105,13 +107,27 @@ export class CustomerProfessionalComponent implements OnInit {
   }
 
   openSendEmailModal(id: any = {}, isNew?) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(SendAnEmailComponent, {
-      width: '720px',
-      disableClose: true,
-      data: {
-        id: id
-      },
-    })
+    if (!this.isProUser && !this.isFreeProuser) {
+      let dialogRef: MatDialogRef<any> = this.dialog.open(legacySettingModalComponent, {     
+        width: '720px',
+        disableClose: true,
+      });
+      dialogRef.afterClosed()
+      .subscribe(res => {
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
+    }else{
+      let dialogRef: MatDialogRef<any> = this.dialog.open(SendAnEmailComponent, {
+        width: '720px',
+        disableClose: true,
+        data: {
+          id: id
+        },
+      })
+    }
   }
 
   toggleSideNav() {
@@ -119,15 +135,29 @@ export class CustomerProfessionalComponent implements OnInit {
   }
 
   openHireAdvisorModal(id: any = {},update: any = {}, isNew?,hireFullName='') {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(HireAdvisorComponent, {
-      width: '720px',
-      disableClose: true,
-      data: {
-        id: id,
-        update: update,
-        hireFullName: hireFullName,
-      },
-    })
+    if (!this.isProUser && !this.isFreeProuser) {
+      let dialogRef: MatDialogRef<any> = this.dialog.open(legacySettingModalComponent, {     
+        width: '720px',
+        disableClose: true,
+      });
+      dialogRef.afterClosed()
+      .subscribe(res => {
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
+    }else{
+      let dialogRef: MatDialogRef<any> = this.dialog.open(HireAdvisorComponent, {
+        width: '720px',
+        disableClose: true,
+        data: {
+          id: id,
+          update: update,
+          hireFullName: hireFullName,
+        },
+      })
+    }
   }
 
   getAdvisorSpecilities(businessType){

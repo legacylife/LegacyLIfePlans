@@ -149,6 +149,8 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
      */    
     if(localStorage.getItem("endUserlegacySetting") && localStorage.getItem("endUserlegacySetting")=='yes'){
       this.checkSubscription()
+    }else{
+      this.spaceProgressBar = 0;
     }
     this.getProfile();
   }
@@ -157,7 +159,6 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   checkPhoneNumber(from,event)
   {  
     const charCode = (event.which) ? event.which : event.keyCode;
-    //console.log('=====',event.charCode,':',event.key,':',event.which,':',event.keyCode)
     //console.log('number is valid ',AsouType.getNumber().isValid(),'--------'); 
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false;
@@ -184,7 +185,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       this.defaultSpace = returnArr.defaultSpace
       this.addOnSpace = returnArr.addOnSpace
      // console.log("isAccountFree",this.isAccountFree,"isSubscribePlan",this.isSubscribePlan,"isPremiumExpired",this.isPremiumExpired)
-      
+
       let devideAmount = 1048576
       if( ( Number(returnArr.totalUsedSpace) >= 1073741824 ) ) { //If used space is greater or equal to 1 GB
         this.usedSpaceDimension = 'GB'
@@ -195,6 +196,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
         devideAmount = 1048576
       }
       this.totalUsedSpace = ( Number(returnArr.totalUsedSpace) / devideAmount ).toFixed(2)
+
       this.totalSpaceAlloted = ( this.defaultSpace + this.addOnSpace )
 
       if( this.isAccountFree && !this.isPremiumExpired ) {
@@ -244,9 +246,9 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
             }
           }
         }
-       // console.log("totalUsedSpace",this.totalUsedSpace,"totalSpaceAlloted",this.totalSpaceAlloted,"spaceProgressBar",this.spaceProgressBar)
       })
     })
+    
     this.spaceProgressBar = (this.totalUsedSpace * 100 / this.totalSpaceAlloted).toFixed(2)
     this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
   }

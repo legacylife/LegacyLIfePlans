@@ -8,7 +8,7 @@
               <div class="card-title-text">To Do's List</div>
               <mat-divider></mat-divider>
             </mat-card-title>
-            <button mat-menu-item (click)="lockScrinModal()">lockScreen</button>
+            <!-- <button mat-menu-item (click)="lockScrinModal()">lockScreen</button> -->
             <div class="container todo-collection-list" cdkDropList (cdkDropListDropped)="drop($event)">
               <div class="todos--list mt-1 todo-collection-box" *ngFor="let todo of todoList; let rowIndex = index" cdkDrag>
                 <mat-card-content>

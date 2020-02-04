@@ -32,6 +32,8 @@ export class UserAuthGuard implements CanActivate {
     if (pathArray[2]) {
       this.pageUrl = pathArray[2];
     }
+    //console.log(pathArray[1],'>>',pathArray[2],'>>',pathArray[3])
+
     if (localStorage.getItem('endUserProFreeSubscription') == 'yes') {
       this.freeSignup = true;
     }
@@ -45,15 +47,16 @@ export class UserAuthGuard implements CanActivate {
       this.subscriptionservice.checkSubscription('', (returnArr) => {
         let isProuser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
         let isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
-
         if (localStorage.getItem("endUserDeceased") == 'true') { isProuser = true; }//If user mark as deceased then deceased popup will be shown, No need to redirect on subscription
 
         //let acceptedUrls = ['/'+this.userInfo.endUserType+'/account-setting','/'+this.userInfo.endUserType+'/'+this.userInfo.endUserType+'-subscription']
         let acceptedUrls = ['/' + this.userInfo.endUserType + '/' + this.userInfo.endUserType + '-subscription']
         if (!isProuser) {
           if (!isFreeProuser) {
-            if (currentUrl && acceptedUrls.indexOf(currentUrl) == -1) {
-              //this.router.navigate(['/'+this.userInfo.endUserType+'/account-setting']);
+            if(this.userInfo.endUserType=='customer' && (pathArray[2]!='legacies' || pathArray[3]!='shared-legacies')){
+              this.router.navigate(['/' + this.userInfo.endUserType + '/' + this.userInfo.endUserType + '-subscription']);
+              return false;
+            }else if (currentUrl && acceptedUrls.indexOf(currentUrl) == -1) {
               this.router.navigate(['/' + this.userInfo.endUserType + '/' + this.userInfo.endUserType + '-subscription']);
               return false;
             }
@@ -72,7 +75,6 @@ export class UserAuthGuard implements CanActivate {
     if (localStorage.getItem("endUserId")) {
       let DeceasedFlag = localStorage.getItem("endUserDeceased");
       var pathArray = window.location.pathname.split('/');
-      //console.log('checkDeceased user auth--- ',DeceasedFlag,pathArray)
       if (DeceasedFlag != '' && DeceasedFlag == 'true') {
         let dialogRef: MatDialogRef<any> = this.dialog.open(DeceasedComponent, {
           width: '720px',

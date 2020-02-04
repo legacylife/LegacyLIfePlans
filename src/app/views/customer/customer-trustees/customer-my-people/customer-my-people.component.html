@@ -16,7 +16,7 @@
           </mat-select>
         </div>
       </mat-card-header>
-      <div *ngIf="executorAssigned" class="havent--assign"><p>You haven't assigned any executor yet, please assign an executor.  </p></div>
+      <div *ngIf="executorAssigned && showallPeoplesListingCnt>0" class="havent--assign"><p>You haven't assigned any executor yet, please assign an executor.  </p></div>
       <mat-card-content class="appointees--wrapper box--scroll" *ngIf="this.showallPeoplesListing">
       
         <mat-card class="appointees--section p-0 {{peoples.status === 'Pending' ? 'pending' : ''}}" *ngFor="let peoples of allPeoples">
@@ -117,7 +117,7 @@
       </mat-card-content>
 
       <mat-card-content class="appointees--wrapper" *ngIf="!this.showallPeoplesListing">
-          <div class="files--folder mt-1">{{searchMessage}}.</div>
+          <div class="files--folder mt-1">{{searchMessage}}</div>
           <!-- <label class="normal--label" (click)="FolderSize()">Check Directory size</label> -->
       </mat-card-content>
     </mat-card>

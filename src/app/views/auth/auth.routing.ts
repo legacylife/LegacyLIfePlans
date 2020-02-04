@@ -10,7 +10,6 @@ import { ForgotPasswordSuccessfulComponent } from './password-reset-successful/f
 import { UserPreAuthGuard } from '../../shared/services/auth/userpreauth.guard';
 import { SubscriptionComponent } from './subscription/subscription.component';
 
-console.log('Auth---routing');
 export const AuthRoutes: Routes = [
   {
     path: 'forgot-password',

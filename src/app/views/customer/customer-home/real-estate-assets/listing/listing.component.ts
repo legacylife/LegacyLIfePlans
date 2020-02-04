@@ -64,7 +64,7 @@ export class ListingComponent implements OnInit {
       });
       this.showTrusteeCnt = false;
     }else{      
-      this.userapi.getFolderInstructions('real_estates_assets', (returnData) => {
+      this.userapi.getFolderInstructions('real_estates_assets', (returnData) => { 
         this.instruction_data = returnData;
         if(this.instruction_data){this.instruction_data_flag = true;}
       });

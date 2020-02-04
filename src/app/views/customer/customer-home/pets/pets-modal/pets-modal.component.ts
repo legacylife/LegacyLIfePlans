@@ -342,22 +342,24 @@ getPetsDocuments = (query = {}, search = false, uploadRemained = true) => {
       this.userapi.apiRequest('post', 'pets/view-pets-details', req_vars).subscribe(result => {
         if (result.status == "error") {
         } else {
-          profileIds = this.selectedProfileId = result.data._id;
-          this.PetForm.controls['profileId'].setValue(profileIds);
-         
-          this.PetForm.controls['documents_temp'].setValue('');
-          this.documentsMissing = false;
-          if(uploadRemained) {
-            this.uploadRemainingFiles(profileIds)
-          }
-          this.petDocumentsList = result.data.documents;       
-          if(this.petDocumentsList.length>0){
-            this.PetForm.controls['documents_temp'].setValue('1');
-            this.documentsMissing = false;
-          } 
-          if(this.currentProgessinPercent==100){
-            this.currentProgessinPercent = 0;
-          }        
+          if(result.data._id){
+              profileIds = this.selectedProfileId = result.data._id;
+              this.PetForm.controls['profileId'].setValue(profileIds);
+           
+              this.PetForm.controls['documents_temp'].setValue('');
+              this.documentsMissing = false;
+              if(uploadRemained) {
+                this.uploadRemainingFiles(profileIds)
+              }
+              this.petDocumentsList = result.data.documents;       
+              if(this.petDocumentsList.length>0){
+                this.PetForm.controls['documents_temp'].setValue('1');
+                this.documentsMissing = false;
+              } 
+              if(this.currentProgessinPercent==100){
+                this.currentProgessinPercent = 0;
+              }   
+         }
         }
       }, (err) => {
         console.error(err);

@@ -78,7 +78,6 @@ export class CardDetailsComponent implements OnInit {
       this.forUserType = this.data.endUserType
       this.expiryDate = this.data.expiryDate
       let daysRemaining = this.data.daysRemaining
-      console.log("daysRemaining",daysRemaining)
       this.isAvailablePayment = ( daysRemaining > 30 && daysRemaining < 60 ) ? false : true
       let query = { _id: this.data.userId, userType:this.data.endUserType }
       this.getLegacyUserProductDetails( query )
@@ -164,12 +163,10 @@ export class CardDetailsComponent implements OnInit {
 
   // mount user card on HTML Element
   mountCard = () => {
-    console.log('mountCard----',this.elementsOptions,'----',stripeKey);
     //create stripe card form here
     this.stripeService.elements(this.elementsOptions)
       .subscribe(elements => {
         this.elements = elements;
-        console.log('mountCard elements----',this.elements);
         if (!this.card) {
           this.card = this.elements.create('card', {
             style: {
@@ -190,7 +187,6 @@ export class CardDetailsComponent implements OnInit {
       this.card.mount('#card-fields');
       this.loader.close();
       this.isButtonEnabled = true
-      console.log('mountCard card----',this.card);
     });
   }
 

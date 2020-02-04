@@ -106,7 +106,6 @@ import { SubscriptionService } from './services/subscription.service';
 import { PetsListComponent } from 'app/views/customer/customer-home/pets/pets-list/pets-list.component';
 import { PetsDetailsComponent } from 'app/views/customer/customer-home/pets/pets-details/pets-details.component';
 import { PetsModalComponent } from 'app/views/customer/customer-home/pets/pets-modal/pets-modal.component';
-import { legacySettingPageComponent } from 'app/views/customer/customer-home/legacy-setting/legacy-setting-page/legacy-setting-page.component';
 import { legacySettingModalComponent } from 'app/views/customer/customer-home/legacy-setting/legacy-setting-modal/legacy-setting-modal.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { CustomerEssentialDayOneComponent } from 'app/views/customer/customer-home/customer-essential-day-one/customer-essential-day-one.component';
@@ -219,8 +218,7 @@ const classesToInclude = [
   AdvertisementPaymentModalComponent,
   InviteComponent,
   PetsListComponent,
-  PetsDetailsComponent,
-  legacySettingPageComponent,
+  PetsDetailsComponent,  
   PetsModalComponent,
   legacySettingModalComponent,
   CustomerEssentialDayOneComponent,

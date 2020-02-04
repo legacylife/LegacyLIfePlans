@@ -83,7 +83,7 @@ export class SigninComponent implements OnInit {
           this.picService.setProfilePic = this.profilePicture;
         }
         let legacySetting = '';
-        if(userData.legacySetting){
+        if(userData.legacySetting!='undefined' && userData.legacySetting){
           legacySetting = userData.legacySetting;
         }
 

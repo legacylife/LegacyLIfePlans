@@ -11,9 +11,9 @@ import { MarkAsDeceasedComponent } from './../../../views/mark-as-deceased-modal
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
-import { PetsDetailsComponent } from './pets/pets-details/pets-details.component';
-//import { ChatService } from 'app/shared/components/app-chats/chat.service';
-//import { AppChatsModule } from '../../../shared/components/app-chats/app-chats.module';
+import { legacySettingModalComponent } from './legacy-setting/legacy-setting-modal/legacy-setting-modal.component';
+import { SubscriptionService } from 'app/shared/services/subscription.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './customer-home.component.html',
@@ -27,8 +27,8 @@ export class CustomerHomeComponent implements OnInit,AfterViewInit, OnDestroy {
   public currentPage: any;
   layout = null;
   isProUser: boolean = false
+  isFreeProuser: boolean = false
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
-  @ViewChild(PetsDetailsComponent) childReferance;
   
   customerLegaicesId:string=''
   activeHeading: string = "";
@@ -41,7 +41,7 @@ export class CustomerHomeComponent implements OnInit,AfterViewInit, OnDestroy {
   revokeAsDeceased:boolean = false;
   alreadyRevokeAsDeceased:boolean = false;
   finallyDeceased:boolean = false;
-  settingFlag:boolean = false;
+  //settingFlag:boolean = false;
   datas: any;
   @Input() private customerLegacyId: EventEmitter<string>;
 
@@ -50,14 +50,14 @@ export class CustomerHomeComponent implements OnInit,AfterViewInit, OnDestroy {
     private userapi:UserAPIService,
     private loader: AppLoaderService,
     private dialog: MatDialog,private confirmService: AppConfirmService,
-    private shareData: DataSharingService   
+    private shareData: DataSharingService, private subscriptionservice:SubscriptionService, private router: Router,   
   ) {
     this.layout = layoutServ.layoutConf
    }
 
   ngOnInit() {
     this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
-    this.settingFlag = localStorage.getItem("endUserlegacySetting") == 'yes' ? false : true
+    //this.settingFlag = localStorage.getItem("endUserlegacySetting") == 'yes' ? false : true
     let urlData = this.userapi.getURLData();
     
       if(urlData.lastThird == 'legacies' && urlData.lastOne){
@@ -73,6 +73,13 @@ export class CustomerHomeComponent implements OnInit,AfterViewInit, OnDestroy {
     if(locArray && locArray[5]){
       this.activeHeading = locArray[5];
     }   
+
+    if(!this.isProUser){
+      this.subscriptionservice.checkSubscription( '',( returnArr )=> {
+        this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+        this.isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
+      })
+    }
   }
 
   @HostListener('document:click', ['$event']) clickedOutside(event){
@@ -85,13 +92,11 @@ export class CustomerHomeComponent implements OnInit,AfterViewInit, OnDestroy {
   }
   
   ngAfterViewInit() {
-    //  console.log(" data 1 >>>>>>>",this.childReferance)
-    //  this.customerLegaicesId = this.childReferance.legacyCustomerId;
-    //  console.log(" data 2 >>>>>>>",this.customerLegaicesId)
+    
   }
  
   checkDeceasedStatus(query = {}){
-    console.log(" here we are >>>>>>>",this.customerLegaicesId,'--------',this.customerLegacyId);
+    //console.log(" here we are >>>>>>>",this.customerLegaicesId,'--------',this.customerLegacyId);
     if( this.customerLegacyId ) {
       this.customerLegacyId.subscribe(data => {
         console.log(" data >>>>>>>",data)
@@ -165,18 +170,36 @@ export class CustomerHomeComponent implements OnInit,AfterViewInit, OnDestroy {
     }  
   }
 
+  checkLegacySetting(path) {
+    if (!this.isProUser && !this.isFreeProuser) {
+      let dialogRef: MatDialogRef<any> = this.dialog.open(legacySettingModalComponent, {     
+        width: '720px',
+        disableClose: true,
+      });
+      dialogRef.afterClosed()
+      .subscribe(res => {
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
+    }else{
+      this.router.navigate([path])
+    }
+  }
+
   markAsDeceasedModal(data: any = {}) {
    
-    // if( this.customerLegacyId || this.customerLegacyId==undefined ) {  
-    //     this.customerLegacyId.subscribe(data => {
-    //       console.log(" data >>>>>>>",data)
-    //       if( data ) {
-    //         console.log(this.customerLegaicesId,'>>>>data<<<<<',data)
-    //         this.customerLegaicesId = data;
-    //       }
-    //     })
-    //   }
-    this.customerLegaicesId = this.childReferance.legacyCustomerId;
+    if( this.customerLegacyId || this.customerLegacyId==undefined ) {  
+        this.customerLegacyId.subscribe(data => {
+          console.log(" data >>>>>>>",data)
+          if( data ) {
+            console.log(this.customerLegaicesId,'>>>>data<<<<<',data)
+            this.customerLegaicesId = data;
+          }
+        })
+      }
+  
     console.log(" data markAsDeceasedModal",this.customerLegaicesId)
     let dialogRef: MatDialogRef<any> = this.dialog.open(MarkAsDeceasedComponent, {
       width: '720px',
