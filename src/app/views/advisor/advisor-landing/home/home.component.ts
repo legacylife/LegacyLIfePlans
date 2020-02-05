@@ -9,7 +9,6 @@ import { serverUrl, s3Details } from '../../../../config';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray} from "@angular/forms";
 import { MatSnackBar, MatDialog } from "@angular/material";
 const advisorBucketLink = s3Details.awsserverUrl+s3Details.assetsPath+'advisor/';
-console.log('advisor home')
 @Component({
   selector: 'app-landing-home-page',
   templateUrl: './home.component.html',
@@ -123,14 +122,14 @@ longitude: Number = 0;
   ngOnInit() {
     this.bucketLink = advisorBucketLink;
     const watcher = navigator.geolocation.watchPosition(this.displayLocationInfo);
-    console.log('here I am---',navigator.geolocation);
+    console.log('navigator',navigator.geolocation);
     //https://alligator.io/js/geolocation-api/
     //https://medium.com/@balramchavan/display-and-track-users-current-location-using-google-map-geolocation-in-angular-5-c259ec801d58
     this.getCMSpageDetails(this.longitude,this.latitude);
     //if(navigator.geolocation){
-      console.log('here I am again---####',navigator.geolocation,'###########');
+      console.log('navigator.geolocation###########',navigator.geolocation,'>>>>>>>');
       navigator.geolocation.getCurrentPosition((position) => {
-        console.log(position.coords,">>>>>> Position >>>>>>>",position.coords.longitude,',',position.coords.latitude);       
+       // console.log(position.coords,">>>>>> Position >>>>>>>",position.coords.longitude,',',position.coords.latitude);       
         this.latitude = position.coords.latitude;
         this.longitude = position.coords.longitude;
         this.getCMSpageDetails(this.longitude,this.latitude);
@@ -154,7 +153,7 @@ longitude: Number = 0;
   }
 
    displayLocationInfo(position) {
-    console.log('here I am displayLocationInfo--->',position);
+    console.log('DisplayLocationInfo--->',position);
   }
 
   ngOnDestroy() {
@@ -162,7 +161,7 @@ longitude: Number = 0;
   }
 
   getCMSpageDetails(latitude,longitude){       
-    console.log('getCMSpageDetails',latitude,'-------------',longitude)
+   // console.log('getCMSpageDetails',latitude,'-------------',longitude)
     let query = {}; 
     const req_vars = {
       query: Object.assign({status:'Active' }, query),
