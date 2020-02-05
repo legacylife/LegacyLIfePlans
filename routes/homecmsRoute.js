@@ -154,7 +154,7 @@ function viewAdvisordetails (req, res) {
             //"maxDistance": 2000000, 
             "query":{"userType": "advisor","status":"Active"},
             "includeLocs":'coordinates', 
-            "limit": 20, 
+            "$limit": 20, 
             "spherical" :true
           }},
           {"$sort":{"distance":-1}}      
