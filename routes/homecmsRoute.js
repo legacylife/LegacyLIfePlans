@@ -157,7 +157,7 @@ function viewAdvisordetails (req, res) {
             "$limit": 20, 
             "spherical" :true
           }},
-          {"$sort":{"distance":-1}}      
+          {"$sort":{"distance":1}}      
         ], async function (err, usersData) {
           if(err) {
             console.log(err);console.log(JSON.stringify(res));
