@@ -7,6 +7,7 @@ var constants = require('./../config/constants')
 var jwt = require('express-jwt')
 var Q = require('q')
 const resFormat = require('./../helpers/responseFormat')
+const User = require('./../models/Users')
 const { isEmpty } = require('lodash')
 const resMessage  = require('./../helpers/responseMessages')
 var auth = jwt({secret: constants.secret,userProperty: 'payload'})
@@ -67,7 +68,6 @@ function customerUpdate(req, res) {
       })
   }
 }
-
 
 //function to get list of cms pages
 async function list(req, res) {
@@ -136,12 +136,44 @@ function advisorUpdate(req, res) {
 
 //function get details of page
 function viewAdvisordetails (req, res) {
-  const  query  = req.body
-  advisorCms.findOne(query , function(err, cmsDetails) {
+  const  query  = req.body.query;
+  const  location  = req.body.location;
+  advisorCms.findOne(query ,async function(err, cmsDetails) {
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {
-      res.send(resFormat.rSuccess(cmsDetails))
+    let usersData = {};
+    if(location.longitude && location.latitude){
+        await User.aggregate([
+          {"$geoNear": { 
+            "near" : {
+              "type": 'Point',    
+              "coordinates": [location.longitude,location.latitude] 
+            }, 
+            "distanceField": 'distance', 
+            //"maxDistance": 2000000, 
+            "query":{"userType": "advisor","status":"Active"},
+            "includeLocs":'coordinates', 
+            "num": 20, 
+            "spherical" :true
+          }},
+          {"$sort":{"distance":-1}}      
+        ], async function (err, usersData) {
+          if(err) {
+            console.log(err);console.log(JSON.stringify(res));
+          }else{
+            if(usersData.length>0){
+            }else{
+              usersData = await User.find({"userType": "advisor","status":"Active"},{});
+            }
+            let result = {cmsDetails:cmsDetails,usersData:usersData,"message":"data fetch successfully!"}
+            res.send(resFormat.rSuccess(result))
+          }
+         });
+      }else{
+        let result = {cmsDetails:cmsDetails,usersData:usersData,"message":"data fetch successfully!"}
+        res.send(resFormat.rSuccess(result))
+      }    
     }
   })
 }

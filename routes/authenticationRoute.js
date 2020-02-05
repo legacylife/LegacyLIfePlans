@@ -38,7 +38,6 @@ const allActivityLog = require('./../helpers/allActivityLogs')
 
 //function to check and signin user details
 function signin(req, res) {
-  console.log("login data >>>>", req.body)
   passport.authenticate('local', function (err, user, info) {
     if (err) {
       let result = { "message": err };
@@ -111,7 +110,7 @@ function signin(req, res) {
           //Update activity logs
           allActivityLog.updateActivityLogs(user._id, user._id, 'Login', user.userType + ' has been logged in successfully.','Authentication')
 
-          let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, profilePicture: user.profilePicture, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false, "createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate": subscriptionEndDate, "subscriptionStatus": subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven, "isReferAndEarn": isReferAndEarn, deceased: user.deceased, lockoutLegacyDate: user.lockoutLegacyDate }
+          let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, profilePicture: user.profilePicture, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false, "createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate": subscriptionEndDate, "subscriptionStatus": subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven, "isReferAndEarn": isReferAndEarn, deceased: user.deceased, lockoutLegacyDate: user.lockoutLegacyDate, legacySetting: user.legacySetting }
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
@@ -284,22 +283,38 @@ function custProfileUpdate(req, res) {
       else {
         let { proquery } = req.body;
         let { from } = req.body;
-        User.updateOne({ _id: updatedUser._id }, { $set: proquery }, function (err, updatedDetails) {
+        User.updateOne({ _id: updatedUser._id }, { $set: proquery },async function (err, updatedDetails) {
           if (err) {
             res.send(resFormat.rError(err))
           } else {
-            let message = resMessage.data(607, [{ key: '{field}', val: 'User ' + from.fromname }, { key: '{status}', val: 'updated' }])
-
-            //Update activity logs
-            allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Profile', message,'Update Profile')
-
-            //Update latitude longitude
-            if (updatedUser.zipcode && updatedUser._id) {
-              calculateZipcode(updatedUser.zipcode, updatedUser._id);
+          if(updatedDetails){     
+            let userInvitedById = '';let inviteCodeexist = true;
+            if (proquery.referCode) {
+              let invitesCodeExists = await Invite.findOne({inviteCode: proquery.referCode});//,email: updatedUser.username   , inviteType: updatedUser.userType 
+              if (invitesCodeExists) {
+                userInvitedById = invitesCodeExists.inviteById;
+                proquery.invitedBy = userInvitedById;
+                inviteCodeexist = true;
+              }else{
+                inviteCodeexist = false;
+              }
             }
 
-            let result = { "message": message }
-            res.status(200).send(resFormat.rSuccess(result))
+            if(inviteCodeexist){
+                let message = resMessage.data(607, [{ key: '{field}', val: 'User ' + from.fromname }, { key: '{status}', val: 'updated' }])
+                //Update activity logs
+                allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Profile', message,'Update Profile')
+
+                //Update latitude longitude
+                if (updatedUser.zipcode && updatedUser._id) {
+                  calculateZipcode(updatedUser.zipcode, updatedUser._id);
+                }
+                let result = {  code: "success","message": message }
+                res.status(200).send(resFormat.rSuccess(result))
+            }else{
+                res.send(resFormat.rSuccess({ code: "error",invalidCode:true, message: "Invalid Referal/Invite Code" }))
+            }
+            }
           }
         })
       }
@@ -590,7 +605,7 @@ async function checkEmail(req, res) {
           let { inviteCode } = req.body
           let userInvitedBy = ''
           if (inviteCode) {
-            let invitesCodeExists = await Invite.find({ inviteCode: inviteCode, email: username, inviteType: req.body.userType }, function (err, data, index) { });
+            let invitesCodeExists = await Invite.find({ inviteCode: inviteCode}, function (err, data, index) { });//, email: username, inviteType: req.body.userType 
             userInvitedBy = invitesCodeExists.invitedBy
             if (invitesCodeExists.length < 1) {
               let message = resMessage.data(627, [{ key: '{field}', val: 'Email / Invite Link' }])
@@ -873,8 +888,7 @@ function generateOtp(n) {
   return token;
 }
 
-async function advdocuments(req, res) {
-  console.log("Auth", req);
+async function advdocuments(req, res) {  
   try {
     let { query } = req.body;
 

@@ -132,7 +132,6 @@ async function inviteMembers(req, res) {
         await InviteTemp.deleteMany({ inviteById: inviteById });
     }
 
-    console.log("jhasdgfkjasdgfjkgasdfjhgasdjfg")
 
 
 

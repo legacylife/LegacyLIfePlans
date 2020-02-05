@@ -582,7 +582,7 @@ function generateToken(n) {
 }
 
 //function to get list of user as per given criteria
-function professionalsListing(req, res) {
+function professionalsListingOLd(req, res) {
 
   let { fields, offset, query, order, limit, search,searchString,extraQuery } = req.body;//console.log("limit >>> ",limit)
   let totalUsers = 0
@@ -658,6 +658,103 @@ function professionalsListing(req, res) {
     }).sort(order).skip(offset).limit(limit)
   })
 }
+
+//function to get list of user as per given criteria
+function professionalsListing(req, res) {
+
+  let { fields, offset, query, order, limit, search,searchString,extraQuery } = req.body;//console.log("limit >>> ",limit)
+  let totalUsers = 0
+
+  if(search && searchString && searchString.trim() != "") {
+    const regSearch = new RegExp(searchString , "i")
+      var firstName = regSearch;
+      var lastName = regSearch;
+      var explode = searchString.split(" ");
+     
+      if(explode[0]){
+        firstName = new RegExp(explode[0] , "i");
+      }
+      if(explode[1]){
+        lastName = new RegExp(explode[1] , "i");
+      }
+    
+      query["$or"] = [
+        { "firstName": firstName },
+        { "lastName": lastName },
+        { "zipcode": regSearch },        
+      ]
+    //  console.log("search",search,"searchString",searchString," query ->",query);
+  }
+
+  User.findOne(extraQuery, { location: 1 },async function (err, getdata) {
+    if (err) {
+      res.status(500).send(resFormat.rError(err))
+    } else {
+        if(getdata && getdata.location){
+          let location = getdata.location;
+          var longitude = parseFloat(location.longitude);
+          var latitude = parseFloat(location.latitude);
+         
+          await User.aggregate([
+            {"$geoNear": { 
+              "near" : {
+                "type": 'Point',    
+                "coordinates": [longitude,latitude] 
+              }, 
+              "distanceField": 'distance', 
+              //"maxDistance": 2000000, 
+              //"query":{"userType": "advisor","status":"Active"},
+              "query":query,
+              "includeLocs":'coordinates', 
+              //"num": 20, 
+              "spherical" :true
+            }},
+            {"$sort":{"distance":1}}      
+          ], async function (err, usersData) {
+            if(err) {
+              console.log(err);console.log(JSON.stringify(res));
+            }else{
+              let totalUsers = usersData.length;
+              if(totalUsers>0){
+              }else{
+                usersData = await User.find({"userType": "advisor","status":"Active"},{});
+                totalUsers = usersData.length;
+              }
+              let distanceUserList = usersData;
+              res.send(resFormat.rSuccess({ distanceUserList, totalUsers, "message":"data fetch successfully!"}))
+            }
+          });
+        }else{
+          User.find(query, function (err, userList) {
+            let contacts = [];
+            async.each(userList, function (contact, callback) {
+              let newContact = JSON.parse(JSON.stringify(contact))
+            }, function (exc) {
+              contacts.sort((a, b) => (a.createdOn > b.createdOn) ? -1 : ((b.createdOn > a.createdOn) ? 1 : 0));
+              if (err) {
+               // res.status(401).send(resFormat.rError(err))
+              } else {
+               // res.send(resFormat.rSuccess({ userList: contacts, totalUsers }))
+              }
+            }) //end of async
+            if (err) {
+              res.status(401).send(resFormat.rError(err))
+            } else {
+              let totalUsers = userList.length;
+              if (totalUsers>0) {
+                let distanceUserList = userList;
+                res.send(resFormat.rSuccess({ distanceUserList, totalUsers }))
+              }else{         
+                distanceUserList = [];
+                res.send(resFormat.rSuccess({ distanceUserList, totalUsers }))
+              }
+            }
+          }).sort(order);//.skip(offset).limit(limit)
+        }  
+    }
+  })
+}
+
 
 function myPeoplesListOLD(req, res) {
   let { fields, offset, advquery, trustquery, order, limit, search } = req.body;

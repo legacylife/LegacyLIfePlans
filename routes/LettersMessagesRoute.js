@@ -151,10 +151,7 @@ function LettersMessageList(req, res) {
       if (err) {
         res.status(401).send(resFormat.rError(err))
       } else {
-          console.log("trusteeQuery >>>>>>>>>>",trusteeQuery)
-
          trusteeQuery.customerId = ObjectId(trusteeQuery.customerId)
-
           /*Trustee.aggregate( [
             { $match : trusteeQuery},
             { $unwind :'$userAccess'},

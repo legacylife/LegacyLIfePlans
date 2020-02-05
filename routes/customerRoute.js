@@ -1069,6 +1069,28 @@ function getuserFolderSize(folder,res) {
  });
 }
 
+
+async function legacySettings(req, res) {
+  let { query } = req.body;
+  const data = await User.findOne(query); 
+  console.log("Data --->>> ",data);
+  if(data._id) {
+    let { proquery } = req.body;
+    User.updateOne({ _id: ObjectId(data._id) }, { $set: proquery }, function (err, updatedDetails) {  
+      //User.updateOne({ _id: ObjectId(data._id) }, params, function (err, updatedDetails) {
+      if (err) {
+        res.send(resFormat.rError(err))
+      } else {
+        let result = { "message": "Legacy setting updated successfully."}
+        res.status(200).send(resFormat.rSuccess(result))
+      }
+    })
+  }else{
+    let result = { "message":"Customer Not Found"}
+    res.status(200).send(resFormat.rSuccess(result))
+  }
+}
+
 router.post("/my-essentials-req", myEssentialsUpdate)
 router.post("/essential-profile-list", essentialProfileList)
 router.post("/essential-id-list", essentialIdList)
@@ -1094,5 +1116,6 @@ router.post("/shared-legacies-list", getSharedLegaciesList)
 router.post("/legacy-user-remove", legacyUserRemove)
 router.post("/view-invite-details", viewInviteDetails)
 router.post("/refer-and-earn-participate", referAndEarnParticipate)
+router.post("/legacy-setting", legacySettings)
 
 module.exports = router
