@@ -110,7 +110,7 @@ function signin(req, res) {
           //Update activity logs
           allActivityLog.updateActivityLogs(user._id, user._id, 'Login', user.userType + ' has been logged in successfully.','Authentication')
 
-          let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, profilePicture: user.profilePicture, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false, "createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate": subscriptionEndDate, "subscriptionStatus": subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven, "isReferAndEarn": isReferAndEarn, deceased: user.deceased, lockoutLegacyDate: user.lockoutLegacyDate }
+          let result = { token, userId: user._id, userType: user.userType, firstName: user.firstName, lastName: user.lastName, sectionAccess: user.sectionAccess, profilePicture: user.profilePicture, "message": "Successfully logged in!", "invalidEmail": false, "invalidPassword": false, "createdOn": user.createdOn, "subscriptionStartDate": subscriptionStartDate, "subscriptionEndDate": subscriptionEndDate, "subscriptionStatus": subscriptionStatus, "autoRenewalStatus": autoRenewal, "addOnGiven": addOnGiven, "isReferAndEarn": isReferAndEarn, deceased: user.deceased, lockoutLegacyDate: user.lockoutLegacyDate, legacySetting: user.legacySetting }
           res.status(200).send(resFormat.rSuccess(result))
         }
       })
