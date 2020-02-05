@@ -77,19 +77,19 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
 
   onScrollDown (ev) {
     //console.log('scrolled down!!', ev,this.searchVal);
-    this.nextOffset++;
-    this.data.currentMessage.subscribe((searchKey) => { 
-      this.searchVal = searchKey; 
-      let searchString = this.searchForm.controls['search'].value.trim();
-      if(searchString){
-        this.searchStatus = true;
-      }
-      if(this.searchVal && this.searchVal!=='All'){
-        this.getAdvisorLists('',this.searchVal,this.resultLimit,(this.nextOffset*this.resultLimit),this.searchStatus,searchString,false)
-      }else{
-        this.getAdvisorLists('','',this.resultLimit,(this.nextOffset*this.resultLimit),this.searchStatus,searchString,false);
-      }
-    })
+    // this.nextOffset++;
+    // this.data.currentMessage.subscribe((searchKey) => { 
+    //   this.searchVal = searchKey; 
+    //   let searchString = this.searchForm.controls['search'].value.trim();
+    //   if(searchString){
+    //     this.searchStatus = true;
+    //   }
+    //   if(this.searchVal && this.searchVal!=='All'){
+    //     this.getAdvisorLists('',this.searchVal,this.resultLimit,(this.nextOffset*this.resultLimit),this.searchStatus,searchString,false)
+    //   }else{
+    //     this.getAdvisorLists('','',this.resultLimit,(this.nextOffset*this.resultLimit),this.searchStatus,searchString,false);
+    //   }
+    // })
   }
   
   searching() {
@@ -127,7 +127,6 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
    // clearInterval(this.interval);
   }
 
-  //function to get all events
   getAdvisorLists = (query: any = {},searchbType: any =false,limits,offset,search=false,searchString=false,loader=false) => {
     let req_vars = {
       query: Object.assign({ userType: "advisor", status: "Active" }, query),
@@ -157,11 +156,11 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
       this.loader.open();
     }
     this.userapi.apiRequest('post', 'advisor/professionalsList', req_vars).subscribe(result => {
-         this.loader.close();
       if (result.status == "error") {
+        this.loader.close();
         console.log(result.data)
       } else {        
-        this.advisorData = this.advisorData.concat(result.data.distanceUserList);
+        this.advisorData = result.data.distanceUserList;//this.advisorData.concat(result.data.distanceUserList);
         let resultData = this.advisorData;
         if (resultData && resultData.length) {
           this.adListings = resultData.filter(dtype => {
@@ -194,8 +193,10 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
           this.showAdvisorListing = false; 
           this.showQualityListing = false; 
         }
+        this.loader.close();
       }
     }, (err) => {
+      this.loader.close();
       console.error(err)
     })
   }

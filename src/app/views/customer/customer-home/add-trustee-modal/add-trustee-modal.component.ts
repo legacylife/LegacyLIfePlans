@@ -39,7 +39,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
   row: any = [];
   hideFirstStep : Boolean = true;
   defaultPermission : Boolean = true;
-  disabledFlag: boolean = true;
+  disabledFlag: boolean = false;
   constructor(
     private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, private stepper: MatStepperModule,
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
@@ -103,6 +103,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
      
        this.thirdFormGroup = this.fb.group({
         messages: new FormControl(''),           
+        emailValidation: new FormControl('',[Validators.required]),      
        });
 
        this.disabledFlag = true;
@@ -154,8 +155,7 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
   }
   
   trustFormGroupSubmit(step, insert = null) {
-    var query = {};
-    var proquery = {};
+    var query = {};var proquery = {};
     let req_vars = {};
     let profileIds = this.selectedProfileId;
 
@@ -170,16 +170,19 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
       } 
     }
 
-    this.userapi.apiRequest('post', 'trustee/get-user', req_vars).subscribe(result => {
-      this.disabledFlag = false;
+    this.userapi.apiRequest('post', 'trustee/get-user', req_vars).subscribe(result => {      
       if (result.status == "success") {
         if (result.data.code == "Exist") {
           this.trustFormGroup.controls['email'].enable();
           this.invalidMessage = result.data.message;
-          this.EmailExist = true;
-          this.trustFormGroup.controls['email'].setErrors({ 'EmailExist': true })          
+          this.EmailExist = true;this.disabledFlag = true;
+          this.Email_USER = this.trustFormGroup.controls['email'].value; 
+          this.thirdFormGroup.controls['emailValidation'].setValue('');     
+          this.trustFormGroup.controls['email'].setErrors({ 'EmailExist': true })               
         } else {                       
+          this.disabledFlag = false;
           this.trustFormGroup.controls['emailValidation'].setValue('1');
+          this.thirdFormGroup.controls['emailValidation'].setValue('1');     
           this.invalidMessage = '';
           this.EmailExist = false;         
           this.Email_USER = this.trustFormGroup.controls['email'].value;     
