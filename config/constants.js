@@ -1,7 +1,7 @@
 var constants = {
   secret: "LLP",
   database: { // mongodb://localhost:27017/llp-pankaj     mongodb://llp:l$l!p#123@ds341557.mlab.com:41557/llp -staging    
-    url: process.env.dbURI || 'mongodb://localhost:27017/llp-pankaj'//'mongodb+srv://leg3rxbwrpmlcy:rw4hxvd4vtvqqpve@legacy-production-aqr1f.mongodb.net/llp-prod?retryWrites=true&w=majority' 
+    url: process.env.dbURI || 'mongodb://llp:l$l!p#123@ds341557.mlab.com:41557/llp'//'mongodb+srv://leg3rxbwrpmlcy:rw4hxvd4vtvqqpve@legacy-production-aqr1f.mongodb.net/llp-prod?retryWrites=true&w=majority' 
     //leg3rxbwrpmlcy:rw4hxvd4vtvqqpve@legacy-production-aqr1f.mongodb.net/llp-prod?retryWrites=true
   }, // mongodb://llp:llp#123@ds129454.mlab.com:29454/llp, mongodb://llp:l$l!p#123@ds341557.mlab.com:41557/llp  mongodb://llp:llp#123@ds213896.mlab.com:13896/llp-pankaj
   google: {
@@ -41,8 +41,8 @@ var constants = {
     secret: "GI/4d3sT5WtV4Rg/QtxRPVo2RsRn71PH/ZdKHt99",
     fromEmail: "accountservices@legacylifeplans.com",
   }, // Local - http://localhost:4200 & http://localhost:80
-  clientUrl: process.env.clientUrl || 'http://localhost:4200', // staging - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
-  mailServerUrl : process.env.mailServerUri || 'http://localhost:8080', // staging - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
+  clientUrl: process.env.clientUrl || 'http://ec2-3-209-230-58.compute-1.amazonaws.com', // staging - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
+  mailServerUrl : process.env.mailServerUri || 'http://ec2-3-209-230-58.compute-1.amazonaws.com', // staging - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
   socialMedia: {
     facebook: {
       clientId: ''
