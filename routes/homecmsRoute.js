@@ -179,8 +179,9 @@ function viewAdvisordetails (req, res) {
           }
          });
       }else{
-        let result = {cmsDetails:cmsDetails,usersData:usersData,"message":"data fetch successfully!"}
-        res.send(resFormat.rSuccess(result))
+        // let result = {cmsDetails:cmsDetails,usersData:usersData,"message":"data fetch successfully!"}
+        // res.send(resFormat.rSuccess(result))
+        res.send(resFormat.rSuccess(cmsDetails))
       }    
     }
   })
