@@ -18,6 +18,8 @@ function customerUpdate(req, res) {
   let { query, proquery } = req.body;
 
   if(req.body._id){
+    query.modifiedBy = proquery.userId,
+    query.modifiedOn = new Date();
     customerCms.updateOne({ _id: req.body._id },{ $set: query} ,(err, updateCms)=>{
       if (err) {
         res.send(resFormat.rError(err))
@@ -110,6 +112,7 @@ function getCmsByCode (code) {
 function advisorUpdate(req, res) {
   let { query, proquery } = req.body;
   if(req.body._id){
+    query.modifiedOn = new Date();
     advisorCms.updateOne(proquery,{ $set:query} ,(err, updateCms)=>{
       if (err) {
         res.send(resFormat.rError(err))
@@ -121,6 +124,11 @@ function advisorUpdate(req, res) {
     })
   }else{
   let insert_obj = query;
+  query.status     = 'Active',
+  query.createdBy  = proquery.userId,
+  query.modifiedBy = proquery.userId,
+  query.createdOn  = new Date(),
+  query.modifiedOn = new Date();
   let advCmsDetails = new advisorCms(insert_obj)
   advCmsDetails.save(function(err, newrecord) {
       if (err) {
