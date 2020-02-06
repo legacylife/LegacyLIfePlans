@@ -170,7 +170,7 @@ const inviteeAdd = (req) => {
     let inviteType = req.body.inviteType;
     let inviteByName = req.body.inviteByFullName;
     let membersLength = members.length
-    let clientUrl = '';
+    let clientUrl = constants.clientUrl;
     let templateType = '';
     let inviteToUserId = '';
     let attachmentsImages = [];
