@@ -151,7 +151,8 @@ function viewAdvisordetails (req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {
     let usersData = {};
-    if(location && location.longitude && location.latitude){
+    if(location){
+    if(location.longitude && location.latitude){
         await User.aggregate([
           {"$geoNear": { 
             "near" : {
@@ -179,10 +180,12 @@ function viewAdvisordetails (req, res) {
           }
          });
       }else{
-        // let result = {cmsDetails:cmsDetails,usersData:usersData,"message":"data fetch successfully!"}
-        // res.send(resFormat.rSuccess(result))
-        res.send(resFormat.rSuccess(cmsDetails))
+        let result = {cmsDetails:cmsDetails,usersData:usersData,"message":"data fetch successfully!"}
+        res.send(resFormat.rSuccess(result))
       }    
+      }else{
+        res.send(resFormat.rSuccess(cmsDetails))
+      }
     }
   })
 }
