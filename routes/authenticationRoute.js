@@ -727,11 +727,12 @@ async function checkUserOtp(req, res) {
               }            
           }
 
-          let userInvitedById = '';
+          let userInvitedById = ''; let userInvitedByType = ''
           if (req.body.query.inviteCode) {
             let invitesCodeExists = await Invite.findOne({ inviteCode: req.body.query.inviteCode, email: otpdata.username, inviteType: otpdata.userType });
             if (invitesCodeExists) {
               userInvitedById = invitesCodeExists.inviteById;
+              userInvitedByType = invitesCodeExists.inviteBy;
             }
           }
           var user = new User()
@@ -743,6 +744,7 @@ async function checkUserOtp(req, res) {
 
           if(userInvitedById){
             user.invitedBy = userInvitedById;
+            user.invitedByType = userInvitedByType;
           }
 
           user.freeTrialPeriod = freeTrailPeriodObj;
