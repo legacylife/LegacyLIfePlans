@@ -127,7 +127,6 @@ function obituaryFormUpdate(req, res) {
       }
     })
   } else {
-    let { proquery } = req.body;
     var insert = new obituary();
     insert.customerId = proquery.customerId;
     insert.customerLegacyId = proquery.customerLegacyId;
@@ -149,7 +148,7 @@ function obituaryFormUpdate(req, res) {
         if (proquery.customerLegacyType == "advisor") {
           var sendData = {}
           sendData.sectionName = "Final Wishes obituary";
-          sendData.customerId = proquery.customerId;
+          sendData.customerId = newEntry.customerId;
           sendData.customerLegacyId = proquery.customerLegacyId;
           commonhelper.customerAdvisorLegacyNotifications(sendData)
         }
@@ -243,7 +242,6 @@ function celebrationFormUpdate(req, res) {
       }
     })
   } else {
-    let { proquery } = req.body;
     var insert = new celebration();
     insert.customerId = proquery.customerId;
     insert.customerLegacyId = proquery.customerLegacyId;
@@ -273,12 +271,12 @@ function celebrationFormUpdate(req, res) {
         if (proquery.customerLegacyType == "advisor") {
           var sendData = {}
           sendData.sectionName = "Final Wishes celebration of life";
-          sendData.customerId = proquery.customerId;
-          sendData.customerLegacyId = proquery.customerLegacyId;
+          sendData.customerId = newEntry.customerId;
+          sendData.customerLegacyId = newEntry.customerLegacyId;
           commonhelper.customerAdvisorLegacyNotifications(sendData)
         }
 
-        logData.customerId = query.customerId;
+        logData.customerId = newEntry.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
@@ -446,7 +444,6 @@ function funeralPlanFormUpdate(req, res) {
       }
     })
   } else {
-    let { proquery } = req.body;
     var insert = new funeralplan(); 
     insert.customerId = proquery.customerId;
     insert.customerLegacyId = proquery.customerLegacyId;
@@ -486,22 +483,21 @@ function funeralPlanFormUpdate(req, res) {
     insert.havePreparedVisualTribute= proquery.havePreparedVisualTribute
     insert.locationOfDocuments= proquery.locationOfDocuments
     insert.additionalPlans= proquery.additionalPlans
-
     insert.save(proquery, function (err, newEntry) {
-      console.log("Error >>>>",err)
       if (err) {
+        console.log("Error >>>>",err)
         res.send(resFormat.rError(err))
       } else {
         //created helper for customer to send email about files added by advisor
         if (proquery.customerLegacyType == "advisor") {
           var sendData = {}
           sendData.sectionName = "Final Wishes funeral plans";
-          sendData.customerId = proquery.customerId;
-          sendData.customerLegacyId = proquery.customerLegacyId;
+          sendData.customerId = newEntry.customerId;
+          sendData.customerLegacyId = newEntry.customerLegacyId;
           commonhelper.customerAdvisorLegacyNotifications(sendData)
         }
 
-        logData.customerId = query.customerId;
+        logData.customerId = newEntry.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
@@ -672,12 +668,12 @@ function expensesFormUpdate(req, res) {
         if (proquery.customerLegacyType == "advisor") {
           var sendData = {}
           sendData.sectionName = "Final Wishes expenses";
-          sendData.customerId = proquery.customerId;
-          sendData.customerLegacyId = proquery.customerLegacyId;
+          sendData.customerId = newEntry.customerId;
+          sendData.customerLegacyId = newEntry.customerLegacyId;
           commonhelper.customerAdvisorLegacyNotifications(sendData)
         }
 
-        logData.customerId = query.customerId;
+        logData.customerId = newEntry.customerId;
         logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
