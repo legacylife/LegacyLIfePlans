@@ -299,16 +299,14 @@ function custProfileUpdate(req, res) {
                 inviteCodeexist = false;
               }
             }
-
+                //Update latitude longitude
+              if (updatedUser.zipcode && updatedUser._id) {
+                calculateZipcode(updatedUser.zipcode, updatedUser._id);
+              }
             if(inviteCodeexist){
                 let message = resMessage.data(607, [{ key: '{field}', val: 'User ' + from.fromname }, { key: '{status}', val: 'updated' }])
                 //Update activity logs
                 allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Profile', message,'Update Profile')
-
-                //Update latitude longitude
-                if (updatedUser.zipcode && updatedUser._id) {
-                  calculateZipcode(updatedUser.zipcode, updatedUser._id);
-                }
                 let result = {  code: "success","message": message }
                 res.status(200).send(resFormat.rSuccess(result))
             }else{
