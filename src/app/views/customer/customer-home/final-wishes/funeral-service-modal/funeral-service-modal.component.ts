@@ -285,9 +285,6 @@ export class FuneralServiceModalComponent implements OnInit {
 
     Object.keys(stepThreeData)
       .forEach(key => profileInData[key] = stepThreeData[key]);
-
-    console.log("result >>>>>",profileInData)
-
     const req_vars = {
       query: Object.assign({ _id: this.selectedProfileId }),
       proquery: Object.assign(profileInData),

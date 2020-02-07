@@ -104,18 +104,13 @@ export const CustomerRoutes: Routes = [
       {
         path: '',
         component: CustomerHomeComponent,
-        canActivate: [UserAuthGuard,ProUserGuard],  
+        canActivate: [UserAuthGuard],  //,ProUserGuard
         children: [
           {
             path: '',
             // component: CustomerDashboardComponent
             component: CustomerDashboardDayOneComponent
           },
-          // {
-          //   path: 'chat', 
-          //   loadChildren: '../../shared/components/app-chats/app-chats.module#AppChatsModule', 
-          //   data: { title: 'Chat', breadcrumb: 'CHAT'}
-          // },
           {
             path: 'customer-day-one',
             component: CustomerDashboardDayOneComponent,
@@ -169,6 +164,7 @@ export const CustomerRoutes: Routes = [
 	        {
             path: 'legal-detail-view/:id',
             component: CustomerLegalStuffDetailsComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Legal-Stuff Detail' }
           },
           {
@@ -179,12 +175,13 @@ export const CustomerRoutes: Routes = [
           {
             path: 'emergency-contacts-details/:id',
             component: EmergencyContactsDetailsComponent,
+            canActivate: [ProUserGuard],
             data: { title: 'Emergency Contacts Details' }
           },
           {
             path: 'real-estate-assets',
             component: ListingComponent,
-            canActivate: [ProUserGuard],
+           // canActivate: [ProUserGuard],
             data: { title: 'Real Estates' }
           },
           {
@@ -207,7 +204,7 @@ export const CustomerRoutes: Routes = [
           }, {
             path: 'final-wishes',
             component: FinalWishesComponent,
-            canActivate: [ProUserGuard],
+            //canActivate: [ProUserGuard],
             data: { title: 'Final Wishes' }
           },
           {
@@ -243,7 +240,7 @@ export const CustomerRoutes: Routes = [
           {
             path: 'pets',
             component: PetsListComponent,
-            canActivate: [ProUserGuard],
+            //canActivate: [ProUserGuard],
             data: { title: 'Pets List' }
           },
           {
@@ -255,7 +252,7 @@ export const CustomerRoutes: Routes = [
           {
             path: 'time-capsule',
             component: TimeCapsuleListComponent,
-            canActivate: [ProUserGuard],
+            //canActivate: [ProUserGuard],
             data: { title: 'Time Capsule List' }
           },         
           {
@@ -267,7 +264,7 @@ export const CustomerRoutes: Routes = [
           {
             path: 'special-needs',
             component: SpecialNeedsListingComponent,
-            canActivate: [ProUserGuard],
+           // canActivate: [ProUserGuard],
             data: { title: 'Special Needs List' }
           },
           {
@@ -279,7 +276,7 @@ export const CustomerRoutes: Routes = [
           {
             path: 'insurance-finance-debt',
             component: InsuranceFinanceDebtListComponent,
-            canActivate: [ProUserGuard],
+            //canActivate: [ProUserGuard],
             data: { title: 'Insurance-Finance-Debt List' }
           },
           {
@@ -303,7 +300,7 @@ export const CustomerRoutes: Routes = [
           {
             path: 'passwords-digital-assests',
             component: PasswordsDigitalAssetsListComponent,
-            canActivate: [ProUserGuard],
+            //canActivate: [ProUserGuard],
             data: { title: 'Passwords Digital Assests List' }
           },         
           {
@@ -315,7 +312,7 @@ export const CustomerRoutes: Routes = [
           {
             path: 'letters-messages',
             component: LettersMessagesListingComponent,
-            canActivate: [ProUserGuard],
+            //canActivate: [ProUserGuard],
             data: { title: 'Letters Messages List' }
           },         
           {

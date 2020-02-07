@@ -21,14 +21,16 @@ export class EmailTemplateComponent implements OnInit {
   rows = [];
   columns = [];
   temp = [];
+  aceessSection : any;
   my_messages:any;
  constructor(private api: APIService, private route: ActivatedRoute, private router:Router) { }   
   ngOnInit() {
     this.userId = localStorage.getItem("userId") || sessionStorage.getItem("userId")
     this.userType = localStorage.getItem("userType") || sessionStorage.getItem("userType")
+    this.aceessSection = this.api.getUserAccess('emailTemplate')
     this.my_messages = {
       'emptyMessage': 'No records Found'
-    };
+    }; 
     this.getLists()
   }
 

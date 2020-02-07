@@ -8,9 +8,7 @@ export class PreAuthGuard implements CanActivate {
   private isAuthenticated = false; // Set this value dynamically
   private userInfo: any
   
-  constructor(private router: Router, private api: APIService) {
-    console.log('Preauth guard services')
-  }
+  constructor(private router: Router, private api: APIService) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,

@@ -43,7 +43,7 @@ export class signinComponent implements OnInit {
     }
     this.loader.open();
     this.api.apiRequest('post', 'auth/signin', signInData).subscribe(result => {
-      this.loader.close();
+
       if (result.status == "success") {
         userData = result.data;
         localStorage.setItem("userId", userData.userId)
@@ -51,11 +51,13 @@ export class signinComponent implements OnInit {
         localStorage.setItem("firstName", userData.firstName)
         localStorage.setItem("lastName", userData.lastName)
         localStorage.setItem("sectionAccess", JSON.stringify(userData.sectionAccess))
-
+        setTimeout(() => {
+          this.loader.close();
+        }, 2000); 
         //this.snack.open(result.data.message, 'OK', { duration: 4000 })
         this.router.navigate(['/', 'admin', 'dashboard'])
-
       } else {
+        this.loader.close();
       //  this.llpsigninForm.controls['username'].enable();
         var emails = this.llpsigninForm.controls['username'].value;      
         if(result.data.invalidEmail){

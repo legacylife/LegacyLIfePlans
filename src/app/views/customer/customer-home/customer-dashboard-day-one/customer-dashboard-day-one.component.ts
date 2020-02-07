@@ -142,20 +142,34 @@ export class CustomerDashboardDayOneComponent implements OnInit {
     this.urlData = this.userapi.getURLData();
     this.selectedProfileId = this.urlData.lastOne;
     let firstParam = pageUrl[0];
-      
-    this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
-    if(this.isProUser)
-      this.router.navigate(pageUrl)
-    else
-    {
-      if(firstParam == '/customer/dashboard/essential-detail-idbox' || firstParam == '/customer/dashboard/essential-detail-view' || firstParam == '/customer/dashboard/essential-professionals-detail' ||
-      firstParam == '/customer/dashboard/legal-detail-view' || firstParam == '/customer/dashboard/emergency-contacts-details'){
+    if (!this.isProUser && !this.isFreeProuser) {
+      let dialogRef: MatDialogRef<any> = this.dialog.open(legacySettingModalComponent, {     
+        width: '720px',
+        disableClose: true,
+      });
+      dialogRef.afterClosed()
+      .subscribe(res => {
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
+    }else{
+      this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+      if(this.isProUser)
         this.router.navigate(pageUrl)
+      else
+      {
+        if(firstParam == '/customer/dashboard/essential-detail-idbox' || firstParam == '/customer/dashboard/essential-detail-view' || firstParam == '/customer/dashboard/essential-professionals-detail' ||
+        firstParam == '/customer/dashboard/legal-detail-view' || firstParam == '/customer/dashboard/emergency-contacts-details'){
+          this.router.navigate(pageUrl)
+        }
+        else {
+          this.snackBar.open("Currently you don't have access to this folder you have been downgraded to a free account.", 'OK', { duration: 8000 })
+        }
       }
-      else {
-        this.snackBar.open("Currently you don't have access to this folder you have been downgraded to a free account.", 'OK', { duration: 4000 })
-      }
-    }
+    } 
+
   }
 
   checkLegacySetting(path) {

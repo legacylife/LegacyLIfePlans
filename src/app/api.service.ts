@@ -243,7 +243,6 @@ export class APIService {
     this.removeKeyFromStorage('endUserProSubscription')
     this.removeKeyFromStorage('endUserProFreeSubscription')
     this.removeKeyFromStorage('endisReferAndEarn')
-    this.removeKeyFromStorage('endUserlegacySetting')
     localStorage.clear();
 
     this.apiRequest('post', 'userlist/logout', {fromId: userId, userType: userType}).subscribe(result => {

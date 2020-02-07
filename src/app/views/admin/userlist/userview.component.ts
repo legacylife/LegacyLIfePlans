@@ -110,6 +110,9 @@ export class userviewComponent implements OnInit,AfterViewInit  {
            this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + result.data.profilePicture;
         }
         if(this.row.userType != 'sysAdmin') {
+         
+          // if(this.row.invitedBy && this.row.invitedBy!=''){
+          // }
 
           let subscriptions = this.row.subscriptionDetails ? this.row.subscriptionDetails : null;
           if(subscriptions && subscriptions.length > 0){
@@ -306,4 +309,10 @@ export class userviewComponent implements OnInit,AfterViewInit  {
       sidebarStyle: 'closed'
     })
   }
+ 
+  clickHere() {
+
+      this.getUser()
+  }
+
 }

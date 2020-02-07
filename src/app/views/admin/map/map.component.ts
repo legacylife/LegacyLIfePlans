@@ -52,7 +52,7 @@ export class MapComponent implements OnInit {
       query_var = query_var
     }
     else{
-      query_var = Object.assign({ invitedBy: this.onBoardByFilter }, query_var)
+      query_var = Object.assign({ invitedByType: this.onBoardByFilter }, query_var)
     }
     req_var = { query: query_var }
       await this.userapi.apiRequest('post', 'userlist/getuserslistforadminmap', req_var).subscribe( (result) => {      

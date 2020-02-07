@@ -126,7 +126,7 @@ longitude: Number = 0;
     //https://alligator.io/js/geolocation-api/
     //https://medium.com/@balramchavan/display-and-track-users-current-location-using-google-map-geolocation-in-angular-5-c259ec801d58
     this.getCMSpageDetails(this.longitude,this.latitude);
-    //if(navigator.geolocation){
+    if(navigator.geolocation){
       console.log('navigator.geolocation###########',navigator.geolocation,'>>>>>>>');
       navigator.geolocation.getCurrentPosition((position) => {
        // console.log(position.coords,">>>>>> Position >>>>>>>",position.coords.longitude,',',position.coords.latitude);       
@@ -134,6 +134,7 @@ longitude: Number = 0;
         this.longitude = position.coords.longitude;
         this.getCMSpageDetails(this.longitude,this.latitude);
       });
+    }
     // }else{
     //   console.log("Geolocation is not supported by this browser.");
     // }

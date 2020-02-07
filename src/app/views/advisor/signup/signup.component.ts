@@ -168,6 +168,9 @@ export class AdvisorSignupComponent implements OnInit {
   }
 
   ResendOtpProceed() {
+    this.invalidOTP = false;
+    this.llpAdvotpForm.controls['otp'].setErrors({ 'invalidOTP': false })
+    this.llpAdvsignupForm.controls['username'].markAsUntouched();
     this.advProceed();
   }
 

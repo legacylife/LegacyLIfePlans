@@ -56,7 +56,7 @@ export class advisorlistComponent implements OnInit {
             let subscriptionData = this.subscriptionDetails(row);
             row['subscriptionData'] = {
               status: subscriptionData.subscriptionStatus,
-              endDate: subscriptionData.userSubscriptionEnddate ? subscriptionData.userSubscriptionEnddate : "-"
+              endDate: subscriptionData.userSubscriptionEnddate ? subscriptionData.userSubscriptionEnddate : ""
             }
             /*this.subscriptionservice.checkSubscriptionAdminPanel(row, (returnArr) => {
               row['subscriptionData'] = {

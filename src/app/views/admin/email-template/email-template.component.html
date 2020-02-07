@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="aceessSection">
 
   <form class="llp-form-wrapper">
     <mat-form-field class="no-mar full-width">
@@ -43,4 +43,7 @@
       </ngx-datatable>
     </mat-card-content>
   </mat-card>
+</div>
+<div class="row" *ngIf="!aceessSection">
+  <p>You don't have permission to this section.</p>
 </div>

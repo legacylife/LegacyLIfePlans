@@ -546,6 +546,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     });
 
     if (this.uploader.getNotUploadedItems().length) {
+      this.LicenseForm.controls['advisorDocuments_temp'].setValue('');
       this.uploader.uploadAll();
       //this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
       this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
@@ -553,6 +554,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.getProfileField();
       };
       this.uploader.onCompleteAll = () => {
+        this.LicenseForm.controls['advisorDocuments_temp'].setValue('1');
         this.uploader.clearQueue();
         this.currentProgessinPercent = 0;
       }

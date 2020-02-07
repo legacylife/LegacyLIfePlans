@@ -53,9 +53,9 @@ export class UserAuthGuard implements CanActivate {
         let acceptedUrls = ['/' + this.userInfo.endUserType + '/' + this.userInfo.endUserType + '-subscription']
         if (!isProuser) {
           if (!isFreeProuser) {
-            if(this.userInfo.endUserType=='customer' && (pathArray[2]!='legacies' || pathArray[3]!='shared-legacies')){
-              this.router.navigate(['/' + this.userInfo.endUserType + '/' + this.userInfo.endUserType + '-subscription']);
-              return false;
+            if(this.userInfo.endUserType=='customer'){// && (pathArray[2]!='legacies' || pathArray[3]!='shared-legacies')
+              //this.router.navigate(['/' + this.userInfo.endUserType + '/' + this.userInfo.endUserType + '-subscription']);
+              return true;
             }else if (currentUrl && acceptedUrls.indexOf(currentUrl) == -1) {
               this.router.navigate(['/' + this.userInfo.endUserType + '/' + this.userInfo.endUserType + '-subscription']);
               return false;

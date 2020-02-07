@@ -188,12 +188,13 @@ export class CustomerSignupComponent implements OnInit {
       password: this.llpCustsignupForm.controls['password'].value,
       userType: "customer"
     }
-    console.log(req_vars);
     //this.successMessage = "Congratulations! You are signed up successfully."
-
   }
 
   ResendOtpProceed() {
+    this.invalidOTP = false;
+    this.llpCustotpForm.controls['otp'].setErrors({ 'invalidOTP': false })
+    this.llpCustsignupForm.controls['username'].markAsUntouched();
     this.custProceed();
   }
 

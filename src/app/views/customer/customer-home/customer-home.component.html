@@ -11,14 +11,7 @@
                 </mat-panel-title> 
               </mat-expansion-panel-header>                    
               <!-- li  routerLinkActive="active" -->
-              <ul class="legacy--list m-0 p-0">
-                <!-- <li *ngIf="settingFlag" (click)="toggleSideNav()"  class="{{activeHeading=='legacy-setting' ? 'active' : ''}}">
-                  <a [routerLink]="['/customer/dashboard/legacy-setting']">
-                    <mat-icon class="icon-file">settings</mat-icon> Legacy Setting
-                    <mat-icon class="active--right">keyboard_arrow_right</mat-icon>
-                  </a>
-                </li> -->
-                
+              <ul class="legacy--list m-0 p-0">              
                 <li (click)="toggleSideNav()"  class="{{activeHeading=='essential-day-one' || activeHeading=='essential-detail-view' || activeHeading=='essential-detail-idbox' || activeHeading=='essential-professionals-detail' ? 'active' : ''}}">
                   <a (click)="checkLegacySetting('/customer/dashboard/essential-day-one')">
                     <mat-icon class="icon-file">insert_drive_file</mat-icon> My Essentials

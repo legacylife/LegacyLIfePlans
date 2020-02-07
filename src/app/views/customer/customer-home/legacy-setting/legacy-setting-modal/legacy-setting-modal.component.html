@@ -1,5 +1,5 @@
 <div class="ll--modal--header">
-  Access restricted
+  Access Restricted
   <button class="modal--close" [mat-dialog-close]="">
     <mat-icon class="icon--cross">cancel</mat-icon>
   </button>
@@ -12,6 +12,72 @@
         </div>
       </div>
     </div>
+
+    <div class="container subscription--wrapper">
+    <div class="plans--wrapper">
+      <div fxLayout="row wrap" fxLayoutAlign="center">
+          <div fxFlex="100">
+            <div class="plan--text">
+              <div class="plan--header">
+                <img alt="" class="cornar--stars" src="assets/images/arkenea/star.png">
+                <div class="plan--type">Legacy Life Plan</div>
+                <div class="relative">
+                  <span class="doller">{{planAmount | currency : planCurrency : 'symbol': '.0-0' | slice :0:1}}</span>
+                  <span class="amt">{{planAmount | number : '.0-0'}}</span>
+                  <span class="duration">a {{planInterval}}</span>
+                </div>
+                <div class="space">
+                  For {{defaultSpace}} {{spaceDimension}} {{ isAddOnPurchased ? '+ '+addOnSpace+' '+spaceDimension : ''}} Space
+                </div>
+              </div>
+              <div class="plan--body">
+                <h5>Legacy Life Plan Features</h5>
+                <mat-list class="p-0">
+                  <div fxLayout="row wrap">
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                      <mat-list-item>
+                        <mat-icon>check</mat-icon> In-Depth Estate Planning Platform
+                      </mat-list-item>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                      <mat-list-item>
+                        <mat-icon>check</mat-icon> Professional Resources and Guides
+                      </mat-list-item>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                      <mat-list-item>
+                        <mat-icon>check</mat-icon> Secure Encrypted Document Storage
+                      </mat-list-item>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                      <mat-list-item>
+                        <mat-icon>check</mat-icon> Online Help
+                      </mat-list-item>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                      <mat-list-item>
+                        <mat-icon>check</mat-icon> Unlimited Trustees
+                      </mat-list-item>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                      <mat-list-item>
+                        <mat-icon>check</mat-icon> Video & Picture Time Capsule
+                      </mat-list-item>
+                    </div>
+                    <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                      <mat-list-item>
+                        <mat-icon>check</mat-icon> Local Advisor Directory
+                      </mat-list-item>
+                    </div>
+                  </div>
+                </mat-list>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   </div>
   <div class="ll--modal--footer text-center">
     <div class="manage--cancel">

@@ -138,7 +138,7 @@ public noWhitespaceValidator(control: FormControl) {
     else {
       this.url = 'userlist/addmember';
     }
-    this.loader.open();
+    //8 this.loader.open();
     this.api.apiRequest('post', this.url, this.RequestData).subscribe(result => {    
       if(result.status == "success") {
         if(result.data.code == "Exist") {

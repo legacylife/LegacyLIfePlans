@@ -18,6 +18,7 @@ export class CcDetailedViewComponent {
   aliasName: String = ''
   postDetails = {title:'',description:'',createdOn:'',image:{'title':"",'size':"",'extention':"",'tmpName':""}}
   userId: String = ''
+  userType: String = ''
   userSubscription: Subscription;
   setupMessage = 'not set up yet';
   userIpAddress: any
@@ -28,6 +29,7 @@ export class CcDetailedViewComponent {
 
   constructor(private dialog: MatDialog, private sharedata: DataSharingService, private api: APIService, private route: ActivatedRoute, private http: HttpClient,private loader: AppLoaderService) {
     this.userId = localStorage.getItem("endUserId")
+    this.userType = localStorage.getItem("endUserType")
     this.isLoggedIn = this.userId ? true : false
     this.userSubscription = this.route.parent.params.subscribe(params => {
       this.setupComponent( params.aliasName )

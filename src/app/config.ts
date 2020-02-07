@@ -113,6 +113,9 @@ export const adminSections = [{
 }, {
   name: 'Admin Management',
   code: "adminmanagement"
+}, {
+  name: 'EmailTemplate Management',
+  code: "emailTemplate"
 }]
 
 export const userSections = [

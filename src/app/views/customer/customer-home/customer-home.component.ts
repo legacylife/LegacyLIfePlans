@@ -54,7 +54,6 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
-    //this.settingFlag = localStorage.getItem("endUserlegacySetting") == 'yes' ? false : true
     let urlData = this.userapi.getURLData();
     
     if(urlData.lastThird == 'legacies' && urlData.lastOne){ 

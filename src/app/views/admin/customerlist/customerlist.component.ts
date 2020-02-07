@@ -73,7 +73,7 @@ export class customerlistComponent implements OnInit {
             let subscriptionData = this.subscriptionDetails(row);
             row['subscriptionData'] = {
               status: subscriptionData.subscriptionStatus,
-              endDate: subscriptionData.userSubscriptionEnddate ? subscriptionData.userSubscriptionEnddate : "-"
+              endDate: subscriptionData.userSubscriptionEnddate ? subscriptionData.userSubscriptionEnddate : ''
             }
             /*this.subscriptionservice.checkSubscriptionAdminPanel(row, (returnArr) => {
               row['subscriptionData'] = {
@@ -81,8 +81,6 @@ export class customerlistComponent implements OnInit {
                 endDate: returnArr.subscriptionExpireDate
               }
             })*/
-
-
           }
           return row;
         })
@@ -147,10 +145,12 @@ export class customerlistComponent implements OnInit {
   }
 
   subscriptionDetails(row) {
-    let userSubscriptionEnddate = row.userSubscriptionEnddate;
+    let userSubscriptionEnddate = '';
+    if(row.userSubscriptionEnddate){
+      userSubscriptionEnddate = row.userSubscriptionEnddate;
+    }
     let planName = row.userType == 'advisor' ? 'Standard' : 'Legacy Life';
     let subscriptionStatus = "Paid";
-
 
     let subscriptions = row.subscriptionDetails ? row.subscriptionDetails : null;
     if (subscriptions && subscriptions.length > 0) {
