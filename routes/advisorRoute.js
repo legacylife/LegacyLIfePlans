@@ -767,7 +767,8 @@ function professionalsListing(req, res) {
             {"$sort":{"distance":1}}      
           ], async function (err, usersData) {
             if(err) {
-              console.log(err);console.log(JSON.stringify(res));
+              console.log(err);
+             // console.log(JSON.stringify(res));
             }else{
               let totalUsers = usersData.length;
               if(totalUsers>0){
