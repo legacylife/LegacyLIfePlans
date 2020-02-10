@@ -38,6 +38,8 @@ export class ListingComponent implements OnInit {
   showTrusteeCnt:boolean=true;
   instruction_data:any;
   instruction_data_flag:boolean=false;  
+  isProUser = false;
+  isFreeProuser = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -64,6 +66,11 @@ export class ListingComponent implements OnInit {
       });
       this.showTrusteeCnt = false;
     }else{      
+      this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+      this.isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
+      if (!this.isProUser && !this.isFreeProuser) {
+        this.router.navigate(['/', 'customer', 'dashboard']);
+      }
       this.userapi.getFolderInstructions('real_estates_assets', (returnData) => { 
         this.instruction_data = returnData;
         if(this.instruction_data){this.instruction_data_flag = true;}

@@ -61,6 +61,8 @@ export class EssenioalIdBoxComponent implements OnInit {
   subFolderName:string = 'ID Box'
   LegacyPermissionError:string="You don't have access to this section";
   trusteeLegaciesAction:boolean=true;
+  isProUser = false;
+  isFreeProuser = false;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService, private fileHandlingService: FileHandlingService,private sharedata: DataSharingService  ) 
@@ -115,6 +117,12 @@ export class EssenioalIdBoxComponent implements OnInit {
             }           
           });             
           this.selectedProfileId = "";                  
+      }else{
+        this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+        this.isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
+        if (!this.isProUser && !this.isFreeProuser) {
+          this.router.navigate(['/', 'customer', 'dashboard']);
+        }
       }
       this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
       this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });

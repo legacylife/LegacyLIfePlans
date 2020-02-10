@@ -46,6 +46,8 @@ export class CustomerLegalStuffComponent implements OnInit {
   instruction_data:any;
   instruction_data_flag:boolean=false;  
   shareLegacFlag:boolean=false;  
+  isProUser = false;
+  isFreeProuser = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,
@@ -74,6 +76,11 @@ export class CustomerLegalStuffComponent implements OnInit {
       this.shareLegacFlag = true;
       //this.clearMessages();
     }else{      
+      this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+      this.isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
+      if (!this.isProUser && !this.isFreeProuser) {
+        this.router.navigate(['/', 'customer', 'dashboard']);
+      }
       this.userapi.getFolderInstructions('legal_stuff', (returnData) => {
         this.instruction_data = returnData;
         if(this.instruction_data){this.instruction_data_flag = true;}

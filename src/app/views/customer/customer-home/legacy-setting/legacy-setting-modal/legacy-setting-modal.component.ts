@@ -20,9 +20,9 @@ export class legacySettingModalComponent implements OnInit {
 
   productId:any = ""
   planId:any = ""
-  planInterval:string = ""
-  planAmount:number = 0
-  planCurrency:string = ""
+  planInterval:string = "  "
+  planAmount:number = 85
+  planCurrency:string = " "
   defaultSpace:number = 0
   spaceDimension:string = 'GB'
   premiumExpired:boolean = false

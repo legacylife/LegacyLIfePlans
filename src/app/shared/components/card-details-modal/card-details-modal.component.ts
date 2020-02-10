@@ -192,6 +192,10 @@ export class CardDetailsComponent implements OnInit {
 
   //function to generate stripe token
   completePayment = () => {
+    this.loader.open();
+    setTimeout(() => {
+      this.loader.close();
+    }, 2000);
     if( this.oldCard !== "" && !this.payUsingNewCardCheckbox ) {
       if( this.for == 'subscription' ) {
         this.getSubscription();

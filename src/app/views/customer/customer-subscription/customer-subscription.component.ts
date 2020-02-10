@@ -105,6 +105,9 @@ import { UserAPIService } from './../../../userapi.service';
       history.pushState(null, null, location.href);
     })
     dialogRef.afterClosed().subscribe(result => {
+      this.subscriptionservice.checkSubscription( '',( returnArr )=> {
+            console.log('checkSubscriptionReturnArr>>>',returnArr)
+      })
       this.isDialogOpen = false
     })
 
