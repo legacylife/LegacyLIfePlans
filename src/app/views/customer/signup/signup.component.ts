@@ -79,7 +79,7 @@ export class CustomerSignupComponent implements OnInit {
     this.customerFreeTrialStatus  = freeTrialPeriodSettings.customerStatus == 'On'? true : false
   }
 
-  custProceed() {
+  custProceed(from) {
     let req_vars = {
       username: this.llpCustsignupForm.controls['username'].value,
       password: this.llpCustsignupForm.controls['password'].value,
@@ -111,7 +111,11 @@ export class CustomerSignupComponent implements OnInit {
           this.custOtpSec = true;
           this.llpCustsignupForm.controls['username'].setErrors({ 'EmailExist': false })
           this.EmailExist = false;
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          if(from=='ResendOtp'){
+            this.snack.open("OTP sent successfully please check your email", 'OK', { duration: 4000 })
+          }else{
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          }
           this.clockCall();
         }
       } else {
@@ -195,7 +199,7 @@ export class CustomerSignupComponent implements OnInit {
     this.invalidOTP = false;
     this.llpCustotpForm.controls['otp'].setErrors({ 'invalidOTP': false })
     this.llpCustsignupForm.controls['username'].markAsUntouched();
-    this.custProceed();
+    this.custProceed('ResendOtp');
   }
 
   clockCall() {

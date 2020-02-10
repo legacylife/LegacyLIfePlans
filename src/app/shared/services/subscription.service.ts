@@ -148,7 +148,6 @@ export class SubscriptionService {
           let isProFreeAdviser      = true;
           //If user not taken any paid subscription
 
-          console.log(' ###checkSubscription ',this.isSubscribedBefore,'---',freeTrialPeriodStatus)    
           if( !this.isSubscribedBefore && freeTrialPeriodStatus ) {
             this.isAccountFree    = true
             this.isSubscribePlan  = false
@@ -196,7 +195,6 @@ export class SubscriptionService {
                 }
               }
               else{
-                console.log('here ###')
                 this.planName = 'Legacy Life'
                 localStorage.setItem('endUserProSubscription', 'yes');
                 localStorage.setItem('endUserProFreeSubscription', 'yes');
@@ -206,8 +204,6 @@ export class SubscriptionService {
               if( this.usertype == 'customer' ) {
                 let totalFreeAccessDays = (bfrSubCustFreeAccess+bfrSubCustPremiumAccess)
                     expireDate          = moment( new Date(localStorage.getItem("endUserCreatedOn"))).add(totalFreeAccessDays,"days")
-             
-                    console.log(' Here@@@@ ',bfrSubCustFreeAccess,'+',bfrSubCustPremiumAccess,'----',diff ,'<=', totalFreeAccessDays)     
                if( diff <= totalFreeAccessDays ) {
                   localStorage.setItem('endUserProFreeSubscription', 'yes');
                   localStorage.setItem('endUserProSubscription', 'no');
@@ -251,7 +247,6 @@ export class SubscriptionService {
                 }
                 else{
                   expireDate  = moment( new Date(localStorage.getItem("endUserCreatedOn"))).add(bfrSubAdvPremiumAccess,"days")
-                  console.log(' ###expireDate ',expireDate)     
                   localStorage.setItem('endUserProFreeSubscription', 'no');
                   localStorage.setItem('endUserProSubscription', 'no');
                 }
@@ -262,7 +257,6 @@ export class SubscriptionService {
             this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
           }
           else if( this.isSubscribedBefore ) {
-            console.log(' ###isSubscribedBefore ',this.isSubscribedBefore)     
             this.isSubscriptionCanceled = ( localStorage.getItem("endUserSubscriptionStatus") && localStorage.getItem("endUserSubscriptionStatus") == 'canceled' ) ? true : false
             this.autoRenewalFlag = ( localStorage.getItem("endUserAutoRenewalStatus") && localStorage.getItem("endUserAutoRenewalStatus") == 'true' ) ? true : false
             this.autoRenewalVal = this.autoRenewalFlag

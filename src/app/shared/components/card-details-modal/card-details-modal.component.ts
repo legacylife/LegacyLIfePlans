@@ -78,6 +78,7 @@ export class CardDetailsComponent implements OnInit {
       this.forUserType = this.data.endUserType
       this.expiryDate = this.data.expiryDate
       let daysRemaining = this.data.daysRemaining
+
       this.isAvailablePayment = ( daysRemaining > 30 && daysRemaining < 60 ) ? false : true
       let query = { _id: this.data.userId, userType:this.data.endUserType }
       this.getLegacyUserProductDetails( query )

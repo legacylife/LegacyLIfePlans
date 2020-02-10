@@ -1,0 +1,16 @@
+<div class="ll--modal--header">
+  Subscription Details
+  <button class="modal--close" [mat-dialog-close]="">
+    <mat-icon class="icon--cross">cancel</mat-icon>
+  </button>
+</div>
+
+  <div class="ll--modal--body payment--modal--wrapper">
+    <div class="plan-details">
+      <h5 class="text-center" *ngIf="userName">Legacy For: <span>{{userName}} ({{forUserType}})</span></h5>
+      <h5 *ngIf="expiryDate">Expiry Date: <span>{{expiryDate | date : 'dd/MM/yyyy'}}</span></h5>
+      <h5>Amount to be paid: <span>{{planAmount | currency : planCurrency : 'symbol'}}</span></h5>
+    </div>
+    <div>
+    </div>
+  </div>

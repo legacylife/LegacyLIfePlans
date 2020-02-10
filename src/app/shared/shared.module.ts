@@ -100,6 +100,7 @@ import { TodosListingComponent } from './../views/todos-listing/todos-listing.co
 import { TodosComponent } from './../views/todos/todos.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CardDetailsComponent } from './components/card-details-modal/card-details-modal.component';
+import { RenewSubscriptionComponent } from './components/renew-subscription-modal/renew-subscription-modal.component';
 import { AdvertisementPaymentModalComponent } from './components/advertisement-payment-modal/advertisement-payment-modal.component';
 import { InviteComponent } from './components/header-top/invite-modal/invite-modal.component';
 import { SubscriptionService } from './services/subscription.service';
@@ -215,6 +216,7 @@ const classesToInclude = [
   TodosListingComponent,
   TodosComponent,
   CardDetailsComponent,
+  RenewSubscriptionComponent,
   AdvertisementPaymentModalComponent,
   InviteComponent,
   PetsListComponent,
@@ -328,7 +330,7 @@ const classesToInclude = [
     //AppChatsModule
   ],
   entryComponents: [
-    AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,ReferNEarnPopUpComponent,
+    AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,RenewSubscriptionComponent,ReferNEarnPopUpComponent,
     PetsModalComponent,legacySettingModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent,SpecialNeedsModelComponent,
     DevicesModalComponent,ElectronicMediaModalComponent,DigitalPublicationsModalComponent,AssetsModelComponent,
     VehicleModelComponent,RealEstateModelComponent,TimeCapsuleMoalComponent,legalStuffModalComponent,InsuranceModalComponent,

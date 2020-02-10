@@ -38,7 +38,7 @@
               </mat-form-field>
           </div>
           <button *ngIf="custProceedBtn" mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" [disabled]="llpCustsignupForm.invalid"
-            (click)="custProceed()">Proceed</button>
+            (click)="custProceed('Proceed')">Proceed</button>
         </form>
         <form class="llp-form-wrapper" [formGroup]="llpCustotpForm">
           <div class="otp-sec" *ngIf="custOtpSec">
