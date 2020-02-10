@@ -152,7 +152,7 @@ function viewAdvisordetails (req, res) {
     } else {
     let usersData = {};
     if(location){
-    if(location.longitude && location.latitude){
+    if(location.longitude && location.latitude && location.longitude!=undefined){
         await User.aggregate([
           {"$geoNear": { 
             "near" : {

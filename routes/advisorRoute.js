@@ -746,7 +746,6 @@ function professionalsListing(req, res) {
     if (err) {
       res.status(500).send(resFormat.rError(err))
     } else {
-      console.log('>>>>>>',getdata.location.longitude,'########',getdata.location)
         if(getdata && getdata.location && getdata.location.longitude!='undefined' && getdata.location.longitude!=undefined){
           let location = getdata.location;
           var longitude = parseFloat(location.longitude);
