@@ -659,6 +659,62 @@ function professionalsListingOLd(req, res) {
   })
 }
 
+function professionalsListingtest(req, res) {
+
+  let { fields, offset, query, order, limit, search,searchString,extraQuery } = req.body;//console.log("limit >>> ",limit)
+  let totalUsers = 0
+
+  if(search && searchString && searchString.trim() != "") {
+    const regSearch = new RegExp(searchString , "i")
+      var firstName = regSearch;
+      var lastName = regSearch;
+      var explode = searchString.split(" ");
+     
+      if(explode[0]){
+        firstName = new RegExp(explode[0] , "i");
+      }
+      if(explode[1]){
+        lastName = new RegExp(explode[1] , "i");
+      }
+    
+      query["$or"] = [
+        { "firstName": firstName },
+        { "lastName": lastName },
+        { "zipcode": regSearch },        
+      ]
+    //  console.log("search",search,"searchString",searchString," query ->",query);
+  }
+  
+  User.aggregate([
+    {
+      $match: {
+        userType: 'advisor',
+      }
+    },
+    {
+      $sort: order
+    },
+    {
+      $lookup:
+        {
+          from: "hired_advisors",
+          localField: "customerId",
+          foreignField: "_id",
+          as: "userInfo"
+        }
+    }
+  ], function (err, logList) {      
+    if (err) {
+      res.status(401).send(resFormat.rError(err))
+    } else {
+      let distanceUserList = usersData;
+      res.send(resFormat.rSuccess({ distanceUserList, totalUsers, "message":"data fetch successfully!"}))
+
+      //res.send(resFormat.rSuccess({ logList, totalRecords }))
+    }
+  }).sort(order).skip(offset).limit(limit)
+}
+
 //function to get list of user as per given criteria
 function professionalsListing(req, res) {
 
@@ -690,7 +746,7 @@ function professionalsListing(req, res) {
     if (err) {
       res.status(500).send(resFormat.rError(err))
     } else {
-        if(getdata && getdata.location){
+        if(getdata && getdata.location && getdata.location.longitude!='undefined' && getdata.location.longitude!=undefined){
           let location = getdata.location;
           var longitude = parseFloat(location.longitude);
           var latitude = parseFloat(location.latitude);
@@ -703,7 +759,6 @@ function professionalsListing(req, res) {
               }, 
               "distanceField": 'distance', 
               //"maxDistance": 2000000, 
-              //"query":{"userType": "advisor","status":"Active"},
               "query":query,
               "includeLocs":'coordinates', 
               //"num": 20, 
@@ -712,7 +767,8 @@ function professionalsListing(req, res) {
             {"$sort":{"distance":1}}      
           ], async function (err, usersData) {
             if(err) {
-              console.log(err);console.log(JSON.stringify(res));
+              console.log(err);
+             // console.log(JSON.stringify(res));
             }else{
               let totalUsers = usersData.length;
               if(totalUsers>0){

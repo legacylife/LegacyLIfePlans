@@ -226,7 +226,6 @@ const inviteeAdd = (req) => {
         InviteObj.modifiedOn = new Date();
         InviteObj.save({}, function (err, newEntry) { 
           insertedArray.push(newEntry) 
-          console.log(templateType,'>>>>>>>>>>>>>>>>>>>>>>>>>>>>#########>>>>>>>>>',clientUrl)
           emailTemplatesRoute.getEmailTemplateByCode(templateType).then((template) => {
             template = JSON.parse(JSON.stringify(template));
             let body = template.mailBody.replace("{LINK}",clientUrl);

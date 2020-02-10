@@ -10,7 +10,7 @@ var async = require('async')
 var crypto = require('crypto')
 var fs = require('fs')
 var nodemailer = require('nodemailer')
-const { isEmpty, cloneDeep } = require('lodash')
+const { isEmpty, cloneDeep, map, sortBy } = require('lodash')
 const Busboy = require('busboy')
 // const Mailchimp = require('mailchimp-api-v3')
 const Invite = require('./../models/Invite.js')
@@ -99,10 +99,16 @@ function view(req, res) {
   if (req.body.fields) {
     fields = req.body.fields
   }
-  User.findOne(query, fields, function (err, userList) {
+  User.findOne(query, fields, async function (err, userList) {
     if (err) {
       res.status(200).send(resFormat.rError(err))
     } else {
+      if(userList){
+          if(userList.invitedBy && userList.invitedBy!=''){
+            let inviteData = await User.findOne({_id:userList.invitedBy},{firstName:1,lastName:1,username:1,userType:1});
+            userList = Object.assign({}, userList._doc, { "invitedByName": inviteData.firstName+' '+inviteData.lastName ,"invitedByType": inviteData.userType});
+          }      
+      } 
       //Update activity logs
       if(userType != 'sysAdmin'){
         allActivityLog.updateActivityLogs(fromId, query._id, 'Details Viewed', userType+' has been viewed details successfully', 'Professionals')
