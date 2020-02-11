@@ -162,6 +162,29 @@ const getChatReadCount = (userId, friendId) => {
 /**
  * Function to store invitee * 
  */
+const inviteeAdd1 = (req) => {
+  return new Promise(async function (resolve, reject) {
+
+    let members = req.body.data.inviteMembers;
+    let inviteById = req.body.inviteById;
+    let inviteType = req.body.inviteType;
+    let inviteByName = req.body.inviteByFullName;
+    console.log('#>>>>',members,'##>>>>',inviteById,'###>>>>',inviteType,'####>>>>',inviteByName);
+
+    let inviteCode = Math.floor(100000 + Math.random() * 900000); 
+    let fromData = await User.findOne({_id:inviteById},{_id:1,username:1,firstName:1,lastName:1,inviteCode:1});
+    if(fromData && fromData.inviteCode){
+      inviteCode = fromData.inviteCode;
+    }else{
+     await User.updateOne({_id:inviteById},{ $set: {inviteCode:inviteCode} });
+    }
+   
+
+
+  });
+  }
+
+
 const inviteeAdd = (req) => {
   return new Promise(async function (resolve, reject) {
 
@@ -190,9 +213,17 @@ const inviteeAdd = (req) => {
       }
     }
     let insertedArray = [];
+    let inviteCode = Math.floor(100000 + Math.random() * 900000); 
+    let fromData = await User.findOne({_id:inviteById},{_id:1,username:1,firstName:1,lastName:1,inviteCode:1});
+    if(fromData && fromData.inviteCode){
+      inviteCode = fromData.inviteCode;
+    }else{
+     await User.updateOne({_id:inviteById},{ $set: {inviteCode:inviteCode} });
+    }
+   console.log('inviteCode>>>',inviteCode)
     async.each(members, function (val, callback) {
      // let inviteCode = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-      let inviteCode = Math.floor(100000 + Math.random() * 900000);
+    //  let inviteCode = Math.floor(100000 + Math.random() * 900000); 
       let insertInviteDataFlag = true;
       let insertUserExistFlag = true;
       if (val.relation == "Advisor") {

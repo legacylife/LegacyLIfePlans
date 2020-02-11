@@ -1134,16 +1134,18 @@ function getUsersListForAdminMap(req, res) {
             //     invitedByRecord = await User.findOne({_id:details.invitedBy},{firstName:1,lastName:1,userType:1});
             //   }
               // onBoardVia: invitedByRecord != "" ? 'Invited By '+invitedByRecord.firstName+' '+invitedByRecord.lastName+' ('+invitedByRecord.userType+')' : 'Self',
-              let userData = {userId: details._id,
+                  let latitude =  parseFloat(details.location.latitude);
+                  let longitude =  parseFloat(details.location.longitude);
+                    let userData = {userId: details._id,
                               fullname: details.firstName!= "" ? details.firstName+' '+(details.lastName != "" ? details.lastName : '') : '',
                               profileImage: '',
                               userType: details.userType,
                               address: details.addressLine1 ? details.addressLine1 + (details.city ? ', '+details.city : '') + (details.state ? ', '+details.state : '') + (details.country ? ', '+details.country : '') : '',
                               zipcode: details.zipcode,
                               business: details.businessType && details.businessType.length > 0 ? details.businessType.join(): '',
-                              latitude: details.location.latitude,
-                              longitude: details.location.longitude,
-                              location: details.location,
+                              latitude: latitude,
+                              longitude: longitude,
+                              location: {"latitude":latitude,"longitude":longitude},//details.location,
                               email: details.username,
                               //onBoardVia: invitedByRecord != "" ? 'Invited By '+invitedByRecord.firstName+' '+invitedByRecord.lastName+' ('+invitedByRecord.userType+')' : 'Self',
                               //onBoardVia: details.invitedBy && details.invitedBy != "" ? 'Invited By '+details.invitedBy.firstName+' '+details.invitedBy.lastName+' ('+details.invitedBy.userType+')' : 'Self',
