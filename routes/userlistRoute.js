@@ -637,7 +637,16 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
     }
     else {
       let stripeObj = {};
-      if((userProfile.userSubscriptionEnddate && today < userProfile.userSubscriptionEnddate)){
+      let trialPeriod = false;
+      // prepare condition for free trial
+      if(userProfile.userSubscriptionEnddate &&  today < userProfile.userSubscriptionEnddate && userProfile.freeTrialPeriod && userProfile.freeTrialPeriod.status == 'On'){
+        trialPeriod = true;
+      }
+      if(userProfile.userType == 'advisor' && userProfile.userSubscriptionEnddate &&  today < userProfile.userSubscriptionEnddate && ((userProfile.freeTrialPeriod && userProfile.freeTrialPeriod.status == 'On') || (userProfile.refereAndEarnSubscriptionDetail && userProfile.refereAndEarnSubscriptionDetail.endDate != '')) ){
+        trialPeriod = true;
+      }
+
+      if(trialPeriod){
         stripeObj.customer = stripeCustomerId;
         stripeObj.items = [ 
           { plan: planId }
@@ -691,7 +700,7 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                                           "interval" : subscription.items.data[0]['plan']['interval'],
                                           "currency" : subscription.items.data[0]['plan']['currency'],
                                           "amount" : subscription.items.data[0]['plan']['amount'] / 100,
-                                          "status" : 'paid',
+                                          "status" : subscription.status,
                                           "autoRenewal": subscription.collection_method == 'charge_automatically' ? true : false,
                                           "paymentMode" : 'online',
                                           "planName" : subscription.items.data[0]['plan']['metadata']['name']+' Plan',
@@ -706,6 +715,14 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                 let EmailTemplateName = "NewSubscriptionAdviser";
                 if(userDetails.userType == 'customer') {
                   EmailTemplateName = "NewSubscription";
+                  if(subscription.status == 'trialing'){                    
+                    EmailTemplateName = "NewTrailSubscriptionCustomer";
+                  }                  
+                }
+                else {
+                  if(subscription.status == 'trialing'){                    
+                    EmailTemplateName = "NewTrialSubscriptionAdviser";
+                  }
                 }
 
                 if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
@@ -714,6 +731,7 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                     EmailTemplateName = "AutoRenewal"
                   }
                 }
+
                 //Update user details
                 User.updateOne({ _id: requestParam._id }, { $set: { userSubscriptionEnddate : new Date(subscriptionEndDate),stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
                   if (err) {
@@ -728,6 +746,11 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                         let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
                         body = body.replace("{plan_name}",subscriptionDetails.planName);
                         body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
+
+                        if(subscription.status == 'trialing'){
+                          body = body.replace("{amount}", currencyFormatter.format(0.00, { code: (subscriptionDetails.currency).toUpperCase() }));
+                        }
+                        
                         body = body.replace("{duration}",subscriptionDetails.interval);
                         body = body.replace("{paid_on}",subscriptionDetails.paidOn);
                         body = body.replace("{start_date}",subscriptionDetails.startDate);
