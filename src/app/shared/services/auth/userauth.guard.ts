@@ -112,13 +112,16 @@ export class UserAuthGuard implements CanActivate {
     }
     this.userIdle.startWatching();
     this.userIdle.onTimerStart().subscribe(
-       // count =>console.log("home here",count)
+        count =>console.log("home here",count)
     );
    
     //if (pathArray[1] != 'signin' && pathArray[1] != 'error') {
         this.userIdle.onTimeout().subscribe(() => this.stopWatching(true));
     //}
-    //console.log("home here we are",IdleFlag,pathArray);
+    if (pathArray[1] == 'signin' || pathArray[1] == 'error') {
+      this.stopWatching(true);
+      console.log('HERE the Error Page',pathArray)
+    }
   }
 
   stop() {
@@ -127,7 +130,6 @@ export class UserAuthGuard implements CanActivate {
 
   stopWatching(flag) {
     var pathArray = window.location.pathname.split('/');
-    //console.log('stopWatching - flag>>>',flag,'pathArray-->',pathArray);
     localStorage.setItem("setIdleFlag", "true");
     if (localStorage.getItem("endUserId") != '' && localStorage.getItem("endUserId") != 'undefined') {
       if (this.dialog) {
@@ -139,27 +141,37 @@ export class UserAuthGuard implements CanActivate {
           }
         }
       }
-  if(flag==true && pathArray[1] != 'signin' && pathArray[1] != 'error' && !this.dialog){
-      let dialogRef: MatDialogRef<any> = this.dialog.open(lockscreenModalComponent, {
-        width: '720px',
-        disableClose: true,
-        id: 'lockscreenModalopened',
-        panelClass: 'lock--panel',
-        backdropClass: 'lock--backdrop'
-      })
-      dialogRef.afterClosed().subscribe(res => {
-        console.log("LockScreen afterClosed >> ")
-        this.restart();
-        this.startWatching();
-        if (!res) {
-          // If user press cancel
-          return;
-        }
-      })
-    }else{
-      console.log('>>>',this.dialog)
-    }
 
+    let doNotOpen = true;
+  if(flag==true && pathArray[1] != 'signin' && pathArray[1] != 'error'){
+    this.dialog.openDialogs.find(function (dialog) {
+      if(dialog.id=='lockscreenModalopened') {
+        console.log('here I am >>>',doNotOpen)
+        doNotOpen = false;
+      }
+     // return dialog.id === id; 
+    });
+    console.log('PathArray >>>> ',pathArray,'>>>',doNotOpen)
+    if(doNotOpen){
+          let dialogRef: MatDialogRef<any> = this.dialog.open(lockscreenModalComponent, {
+            width: '720px',
+            disableClose: true,
+            id: 'lockscreenModalopened',
+            panelClass: 'lock--panel',
+            backdropClass: 'lock--backdrop'
+          })
+          dialogRef.afterClosed().subscribe(res => {
+            this.restart();
+            this.startWatching();
+            if (!res) {
+              // If user press cancel
+              return;
+            }
+          })
+      }else{
+        console.log('>>>',this.dialog)
+      }
+    }
       this.userIdle.stopWatching();
     } else if (localStorage.getItem("endUserId") == '' || localStorage.getItem("endUserId") == 'undefined') {
       //console.log("User logout")

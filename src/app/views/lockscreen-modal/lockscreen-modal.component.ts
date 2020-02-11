@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatSnackBar, MatDialog,MatDialogRef } from '@angular/material';
 import { UserAPIService } from 'app/userapi.service';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
-
 @Component({
-  selector: 'app-invite-modal',
+  selector: 'app-lockscreen-modal',
   templateUrl: './lockscreen-modal.component.html',
   styleUrls: ['./lockscreen-modal.component.scss']
 })
@@ -22,8 +21,8 @@ export class lockscreenModalComponent implements OnInit {
   emailHiddenVal:boolean = false;
   profilePicture: any = "assets/images/arkenea/default.jpg"
   lockscreenModalFlag:boolean = false;
-  constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
-    private loader: AppLoaderService, private confirmService: AppConfirmService) {
+  constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar,
+     public dialog: MatDialog,public dialogRef: MatDialogRef<lockscreenModalComponent>, private userapi: UserAPIService,private loader: AppLoaderService, private confirmService: AppConfirmService) {
   }
 
   ngOnInit() {
@@ -75,7 +74,8 @@ lockScreenFormSubmit(userData = null) {
       userData = result.data;
         //close the popup here
         localStorage.setItem("setIdleFlag", "false");
-        this.dialog.closeAll(); 
+        this.dialogRef.close()
+        //this.dialog.closeAll(); 
     } else {
       if(result.data.message){
         if(result.data.invalidPassword){       
