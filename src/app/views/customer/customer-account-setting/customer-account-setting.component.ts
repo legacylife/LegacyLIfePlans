@@ -147,11 +147,8 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     /**
      * Check the user subscription details
      */    
-    if(localStorage.getItem("endUserlegacySetting") && localStorage.getItem("endUserlegacySetting")=='yes'){
-      this.checkSubscription()
-    }else{
-      this.spaceProgressBar = 0;
-    }
+    this.checkSubscription()
+    this.spaceProgressBar = 0;
     this.getProfile();
   }
 
@@ -171,6 +168,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
 
   checkSubscription() {
     this.subscriptionservice.checkSubscription( '',( returnArr )=> {
+      console.log('>>>>>returnArr',returnArr)
       this.userCreateOn = returnArr.userCreateOn
       this.isSubscribedBefore = returnArr.isSubscribedBefore
       this.isSubscriptionCanceled = returnArr.isSubscriptionCanceled

@@ -139,7 +139,7 @@ export class UserAuthGuard implements CanActivate {
           }
         }
       }
-  if(flag==true && pathArray[1] != 'signin' && pathArray[1] != 'error'){
+  if(flag==true && pathArray[1] != 'signin' && pathArray[1] != 'error' && !this.dialog){
       let dialogRef: MatDialogRef<any> = this.dialog.open(lockscreenModalComponent, {
         width: '720px',
         disableClose: true,
@@ -156,6 +156,8 @@ export class UserAuthGuard implements CanActivate {
           return;
         }
       })
+    }else{
+      console.log('>>>',this.dialog)
     }
 
       this.userIdle.stopWatching();
