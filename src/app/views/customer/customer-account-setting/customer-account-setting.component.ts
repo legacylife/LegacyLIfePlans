@@ -70,6 +70,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   isSubscribedBefore: boolean = false
   autoRenewalFlag: boolean = false
   autoRenewalVal:boolean = false
+  paymentStatus:any
   isPremiumExpired: boolean = false
   isSubscriptionCanceled:boolean = false
   userCreateOn: any
@@ -182,6 +183,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
       this.defaultSpace = returnArr.defaultSpace
       this.addOnSpace = returnArr.addOnSpace
+      this.paymentStatus = returnArr.paymentStatus
      // console.log("isAccountFree",this.isAccountFree,"isSubscribePlan",this.isSubscribePlan,"isPremiumExpired",this.isPremiumExpired)
 
       let devideAmount = 1048576

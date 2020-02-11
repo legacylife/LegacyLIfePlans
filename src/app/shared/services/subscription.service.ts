@@ -314,7 +314,8 @@ export class SubscriptionService {
                             subscriptionExpireDate : this.subscriptionExpireDate,
                             totalUsedSpace: totalUsedSpace,
                             defaultSpace: Number( defaultSpace ),
-                            addOnSpace: Number( addOnSpace )
+                            addOnSpace: Number( addOnSpace ),
+                            paymentStatus: subscriptionStatus
                           }
           callback(returnArr)
         })

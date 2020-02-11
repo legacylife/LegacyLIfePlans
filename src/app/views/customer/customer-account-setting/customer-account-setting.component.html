@@ -133,18 +133,23 @@
                       <a class="clr--red fnt--16" (click)="changePasspordModal()">Change password</a>
                     </div>
                   </div>
-                  <div fxFlex.xs="100" fxFlex.sm="60" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60">
+                  <div fxFlex.xs="100" fxFlex.sm="60" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60"> 
                     <div class="manage--sub--section">
                       <header>
                         <div class="stan--plan"> {{planName}} plan</div>
-                        <div class="ur--sub" *ngIf="isSubscribePlan && autoRenewalVal && !isSubscriptionCanceled">Your subscription will automatically renew on
+                        <div class="ur--sub" *ngIf="isSubscribePlan && autoRenewalVal && !isSubscriptionCanceled && paymentStatus=='trialing'">Currently your are in trial period till {{subscriptionExpireDate}} with no cost. Your subscription will automatically renew on
                           <span>{{subscriptionExpireDate}}</span>
                         </div>
-                        <div class="ur--sub" *ngIf="isSubscribePlan && (!autoRenewalVal || isSubscriptionCanceled)">Your subscription will expire on
+                        <div class="ur--sub" *ngIf="isSubscribePlan && autoRenewalVal && !isSubscriptionCanceled && paymentStatus!='trialing'">Your subscription will automatically renew on
                           <span>{{subscriptionExpireDate}}</span>
                         </div>
-                        <div class="ur--sub" *ngIf="isAccountFree || (!isSubscribePlan && isPremiumExpired)">Your plan will expire on
+                        <div class="ur--sub" *ngIf="isSubscribePlan && (!autoRenewalVal || isSubscriptionCanceled) && paymentStatus!='trialing'">Your subscription will expire on
                           <span>{{subscriptionExpireDate}}</span>
+                        </div>
+                        <div class="ur--sub" *ngIf="subscriptionExpireDate && (isAccountFree || (!isSubscribePlan && isPremiumExpired))">Your plan will expire on
+                          <span>{{subscriptionExpireDate}}</span>
+                        </div>
+                        <div class="ur--sub" *ngIf="!subscriptionExpireDate">You do not have an active subscription to access to your legacy files. Please subscribe to our yearly plan to manage your legacy life plans.
                         </div>
                       </header>
                       <div class="llp--slide--wrapper">

@@ -97,6 +97,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   sponsoredAdvisorFlag: boolean = false
   isPremiumExpired: boolean = false
   isSubscriptionCanceled: boolean = false
+  paymentStatus:any
   userCreateOn: any
   userSubscriptionDate: any
   today: Date = moment().toDate()
@@ -218,6 +219,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       this.isSubscribePlan = returnArr.isSubscribePlan
       this.planName = returnArr.planName
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
+      this.paymentStatus = returnArr.paymentStatus
     })
   }
   getInviteMembersCount() {
