@@ -40,20 +40,14 @@ async function inviteMembers(req, res) {
     let inviteToUserId = '';
     let attachmentsImages = [];
     let advisorInvite = false
-
-    console.log("inviteType>>>", inviteType)
-
-
+    
     if (inviteType == "advisor") {
         advisorInvite = true
     }
 
     let insertCount = await commonhelper.inviteeAdd(req);
-    console.log('insertCount', insertCount, 'advisorInvite---', advisorInvite)
-
 
     if (insertCount && insertCount > 0 && advisorInvite) {
-        //console.log('HERE I AMMMMMMMMMMMMMMMMMMMMMMM>>>>>>>>>>>>>>>>>>>>>---')
         const params = {
             inviteById: inviteById,
             inviteBy: 'advisor'
@@ -70,8 +64,6 @@ async function inviteMembers(req, res) {
                 advUserData = userdata
             }
         })
-
-        console.log("resultCount >>>>>", resultCount)
 
         let newDt = new Date();
         let today = new Date();
@@ -111,7 +103,6 @@ async function inviteMembers(req, res) {
                 subscriptionFlag = false
             }
         }
-        console.log("today >>>>>>>", today, " <<<<<< lastInviteEndDate >>>>>", lastInviteEndDate, " <<<<<< inviteEndDate >>>>>", inviteEndDate)
        
         if (today > lastInviteEndDate && today < inviteEndDate) {
             //console.log("today >>>>>>>",today," <<<<<< lastInviteEndDate >>>>>",lastInviteEndDate," <<<<<< inviteEndDate >>>>>",inviteEndDate)

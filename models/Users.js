@@ -125,6 +125,7 @@ var userSchema = new mongoose.Schema({
   upgradeReminderEmailDay:Array,
   renewalOnReminderEmailDay:Array,
   renewalOffReminderEmailDay:Array,
+  inviteCode:String,
   invitedBy:String,
   invitedByType:String,
   //invitedBy:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},   

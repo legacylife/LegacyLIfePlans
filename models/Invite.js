@@ -2,7 +2,8 @@ var mongoose = require( 'mongoose' )
 var constants = require("./../config/constants")
 
 var inviteSchema = new mongoose.Schema({
-  inviteById: String,
+  //inviteById: String,
+  inviteById:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},  
   inviteToId: String,
   inviteType: String,
   inviteBy: String,

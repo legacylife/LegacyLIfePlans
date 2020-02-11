@@ -210,6 +210,7 @@ function updateProfile(req, res) {
           if (invitesCodeExists) {
             userInvitedById = invitesCodeExists.inviteById;
             proquery.invitedBy = userInvitedById;
+            proquery.invitedByType = invitesCodeExists.inviteBy;
             inviteCodeexist = true;
           }else{
             inviteCodeexist = false;
@@ -461,8 +462,9 @@ function getPlanDetails(req, res) {
             function(err, plan) {
               if (err) {
                 res.status(200).send(resFormat.rError(err))
+              }else{
+                res.status(200).send(resFormat.rSuccess( {plan, "message": "Plan Details"}))    
               }
-              res.status(200).send(resFormat.rSuccess( {plan, "message": "Plan Details"}))    
           });
         }
         else{

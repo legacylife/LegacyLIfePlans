@@ -727,7 +727,7 @@ async function checkUserOtp(req, res) {
 
           let userInvitedById = ''; let userInvitedByType = ''
           if (req.body.query.inviteCode) {
-            let invitesCodeExists = await Invite.findOne({ inviteCode: req.body.query.inviteCode, email: otpdata.username, inviteType: otpdata.userType });
+            let invitesCodeExists = await Invite.findOne({ inviteCode: req.body.query.inviteCode.trim(), email: otpdata.username, inviteType: otpdata.userType });
             if (invitesCodeExists) {
               userInvitedById = invitesCodeExists.inviteById;
               userInvitedByType = invitesCodeExists.inviteBy;
