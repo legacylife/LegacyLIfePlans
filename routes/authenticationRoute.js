@@ -188,7 +188,9 @@ function create(req, res) {
 }
 
 async function calculateZipcode(zipcode, id) {
+  
   var data = zipcodes.lookup(zipcode);
+  console.log(id,'>>#########>>>>>>>',zipcode,'$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',data)
   if (data) {
     if (data.latitude && data.longitude) {
       let setLocation = {latitude:data.latitude,longitude:data.longitude};
@@ -301,9 +303,10 @@ function custProfileUpdate(req, res) {
                 inviteCodeexist = false;
               }
             }
+console.log('>>#########>>>>>>>',updatedDetails)
                 //Update latitude longitude
-              if (updatedDetails.zipcode && updatedDetails._id) {
-                calculateZipcode(updatedDetails.zipcode, updatedDetails._id);
+              if (proquery.zipcode && updatedUser._id) {
+                calculateZipcode(proquery.zipcode, updatedUser._id);
               }
             if(inviteCodeexist){
                 let message = resMessage.data(607, [{ key: '{field}', val: 'User ' + from.fromname }, { key: '{status}', val: 'updated' }])

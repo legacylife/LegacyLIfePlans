@@ -55,7 +55,7 @@ function trustsList(req, res) {
 
 function getUserDetails(req, res) {
   let { query } = req.body;
-  let status = '';
+  let status = '';  let message = '';
   if (query.email) {
     trust.findOne(query, {}, function (err, trustDetails) {
       if (err) {
