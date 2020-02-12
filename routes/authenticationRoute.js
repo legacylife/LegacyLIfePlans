@@ -302,8 +302,8 @@ function custProfileUpdate(req, res) {
               }
             }
                 //Update latitude longitude
-              if (updatedUser.zipcode && updatedUser._id) {
-                calculateZipcode(updatedUser.zipcode, updatedUser._id);
+              if (updatedDetails.zipcode && updatedDetails._id) {
+                calculateZipcode(updatedDetails.zipcode, updatedDetails._id);
               }
             if(inviteCodeexist){
                 let message = resMessage.data(607, [{ key: '{field}', val: 'User ' + from.fromname }, { key: '{status}', val: 'updated' }])
