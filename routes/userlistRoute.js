@@ -1250,15 +1250,11 @@ async function calculateZipcode(zipcode,id){
     if(data.latitude && data.longitude){
       let setLocation = {latitude:data.latitude,longitude:data.longitude};
       let coordinate = [data.longitude,data.latitude];
-      console.log('coordinate',coordinate)
       await User.updateOne({_id:id},{$set:{location:setLocation,coordinates:coordinate}});
       return true;
     }else{     
-      console.log('<<<<<<<id>>>',id)
       return false;
     }
-  }else{
-    console.log(zipcode,'id>>>',id)
   }
 }
 
