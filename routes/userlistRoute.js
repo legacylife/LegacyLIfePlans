@@ -1258,7 +1258,7 @@ async function calculateZipcode(zipcode,id){
       return false;
     }
   }else{
-    console.log('id>>>',id)
+    console.log(zipcode,'id>>>',id)
   }
 }
 
