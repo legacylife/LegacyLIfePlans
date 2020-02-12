@@ -166,10 +166,10 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
     }
   }
 
-  openAddTrusteeModal(id,isNew?) {
+  openAddTrusteeModal(id,isNew?) { 
     let isProuser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
     let isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
-    if(!isProuser && isFreeProuser){
+    if(!isProuser && !isFreeProuser){
       this.allowAddTrustee = false;
       let dialogRef: MatDialogRef<any> = this.dialog.open(legacySettingModalComponent, {     
         width: '720px',

@@ -9,11 +9,30 @@ import { Router } from '@angular/router';
 })
 export class ReferAndEarnComponent implements OnInit {
   userId = "";
+  description: any;
   constructor(private userapi: UserAPIService, private router: Router) {
   }
 
   ngOnInit() {
+      this.getView();
   }
+
+  getView = (query = {}, search = false) => { 
+    let req_vars = {
+      query: Object.assign({ aliasName:"edit-refer-earn-settings"})
+    }
+    this.userapi.apiRequest('post', 'referearnsettings/view', req_vars).subscribe(result => {
+      if (result.status == "error") {
+        console.log(result.data)
+      } else {
+        if(result.data.description){
+          this.description = result.data.description;
+        }       
+      }
+    }, (err) => {
+      console.error(err);
+    })
+  } 
 
   referAndEarnParticipate(){
     let req_vars = {

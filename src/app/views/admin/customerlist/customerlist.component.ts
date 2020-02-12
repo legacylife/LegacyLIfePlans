@@ -69,18 +69,29 @@ export class customerlistComponent implements OnInit {
         this.rows = this.temp = result.data.userList.map(row => {
           if (row.userType != 'sysAdmin') {
             //let subscriptionData = {}
-            
-            let subscriptionData = this.subscriptionDetails(row);
-            row['subscriptionData'] = {
-              status: subscriptionData.subscriptionStatus,
-              endDate: subscriptionData.userSubscriptionEnddate ? subscriptionData.userSubscriptionEnddate : ''
-            }
-            /*this.subscriptionservice.checkSubscriptionAdminPanel(row, (returnArr) => {
-              row['subscriptionData'] = {
-                status: returnArr.isAccountFree && !returnArr.isSubscribePlan ? 'Trial' : (returnArr.isSubscribePlan && !returnArr.isPremiumExpired ? 'Paid' : 'Expired'),
-                endDate: returnArr.subscriptionExpireDate
+            this.subscriptionservice.checkSubscriptionAdminPanel({userId:row._id,userType:row.userType},( returnArr )=> {
+              let subscriptionExpireDate = '';
+              let subscriptionStatus = returnArr.planName+' Plan';
+              let targetCount = returnArr.targetCount;
+              if(returnArr.subscriptionExpireDate) {
+                 console.log('returnArr>>>',returnArr.subscriptionExpireDate,'--',returnArr.paymentStatus,'-----',returnArr.planName)
+                 subscriptionExpireDate = returnArr.subscriptionExpireDate                 
               }
-            })*/
+              row['subscriptionData'] = {
+                status: subscriptionStatus,
+                targetCount: targetCount,
+                endDate: subscriptionExpireDate ? subscriptionExpireDate : ''
+              }
+                // this.isPremiumExpired = returnArr.isPremiumExpired;
+                // this.isSubscribePlan = returnArr.isSubscribePlan;
+                // this.planName = returnArr.planName;
+                // this.subscriptionExpireDate = returnArr.subscriptionExpireDate;
+            });
+            // let subscriptionData = this.subscriptionDetails(row);
+            // row['subscriptionData'] = {
+            //   status: subscriptionData.subscriptionStatus,
+            //   endDate: subscriptionData.userSubscriptionEnddate ? subscriptionData.userSubscriptionEnddate : ''
+            // }
           }
           return row;
         })
@@ -90,6 +101,7 @@ export class customerlistComponent implements OnInit {
       console.error(err)
     })
   }
+
   statusChange(row) {
     var statMsg = "Are you sure you want to re-activate this user, " + row.username + " Access to the website account for the customer, trustees and advisors will be re-opened as per the subscription status of this customer."
     if (row.status == 'Active') {
@@ -143,6 +155,7 @@ export class customerlistComponent implements OnInit {
 
     this.rows = rows;
   }
+
 
   subscriptionDetails(row) {
     let userSubscriptionEnddate = '';

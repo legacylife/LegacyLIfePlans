@@ -20,6 +20,8 @@ export class CustomerProfileComponent implements OnInit {
   row: any;
   userId : string;
   fullName: string;
+  isPremiumExpired: boolean = false
+  isSubscribePlan: boolean = false
   constructor(
     private route: ActivatedRoute,private userapi: UserAPIService, 
     private router: Router, private dialog: MatDialog, 
@@ -46,6 +48,15 @@ export class CustomerProfileComponent implements OnInit {
         if(result.data.profilePicture){
           this.profilePicture = filePath + result.data.profilePicture;
         }        
+
+        let subscriptionDetails = this.row.subscriptionDetails
+        if( subscriptionDetails && subscriptionDetails.length > 0 ) {
+          //get last element from array i.e current subscription details
+          let currentSubscription     = subscriptionDetails.slice(-1)[0]
+            this.isPremiumExpired = currentSubscription.isPremiumExpired
+            this.isSubscribePlan = currentSubscription.isSubscribePlan;
+        }
+
       }
     }, (err) => {
       console.error(err)

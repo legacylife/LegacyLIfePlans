@@ -340,7 +340,278 @@ export class SubscriptionService {
     return result
   }
 
-  checkSubscriptionAdminPanel = (userDetails,callback) => {
+
+  checkSubscriptionAdminPanel = async (legacyUserData, callback) => {
+    
+    this.userId = legacyUserData.userId
+    this.usertype = legacyUserData.userType
+    let checkSubscription = false;
+      if(this.usertype=='customer'){ //If Customer Wants to create his legacy then we check subscription New condition added By PK
+        checkSubscription = true;
+      } else if(this.usertype=='advisor'){
+        checkSubscription = true;
+      }
+   
+      const req_vars = {
+        query: Object.assign({ _id: this.userId, userType: this.usertype }, {})
+      }
+ 
+    if(checkSubscription){
+        await this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe( async (result) => {
+        // console.log('data subscription service',result.data.userProfile)
+          let targetCount = 0;
+          let userData                = result.data.userProfile,
+              bfrSubCustPremiumAccess = 0, // Before subscription customer's premium access days
+              bfrSubCustFreeAccess    = 0, // Before premium access / subscription customer's free access days
+              bfrSubAdvPremiumAccess  = 0, // Before subscription adviser's premium access days
+              freeTrialPeriodStatus   = false
+
+          if( userData.freeTrialPeriod ) {
+              bfrSubCustPremiumAccess = Number(userData.freeTrialPeriod.bfrSubFreePremiumDays), // Before subscription customer's premium access days
+              bfrSubCustFreeAccess    = Number(userData.freeTrialPeriod.aftrSubFreeDays), // Before premium access / subscription customer's free access days
+              bfrSubAdvPremiumAccess  = Number(userData.freeTrialPeriod.bfrSubFreePremiumDays),  // Before subscription adviser's premium access days
+              freeTrialPeriodStatus   = userData.freeTrialPeriod.status == 'On' ? true : false
+          }
+
+          let aftRegistrationDaysDiff = this.usertype == 'customer' ? bfrSubCustPremiumAccess : bfrSubAdvPremiumAccess,
+              defaultSpace          = 1,
+              addOnSpace            = 0,
+              subscriptionDetails   = userData.subscriptionDetails ? userData.subscriptionDetails : null,
+              subscriptionStartDate = "",
+              subscriptionEndDate   = "",
+              subscriptionStatus    = "",
+              autoRenewal           = "",
+              addOnGiven            = 'no',
+              isReferAndEarnStatus  = userData.IamIntrested && userData.IamIntrested == 'Yes' ? 'Yes' :  'No',
+              extendedReferEarnDate = '',
+              totalUsedSpace        = userData.s3Size && userData.s3Size != 0 ? userData.s3Size : 0;
+          
+          if( subscriptionDetails != null && subscriptionDetails.length > 0 ) {
+            isReferAndEarnStatus  = 'No'
+            subscriptionStartDate = subscriptionDetails[(subscriptionDetails.length-1)]['startDate']
+            subscriptionEndDate   = subscriptionDetails[(subscriptionDetails.length-1)]['endDate']
+            subscriptionStatus    = subscriptionDetails[(subscriptionDetails.length-1)]['status']
+            defaultSpace          = subscriptionDetails[(subscriptionDetails.length-1)]['defaultSpace']
+            autoRenewal           = subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] ? subscriptionDetails[(subscriptionDetails.length-1)]['autoRenewal'] : false
+            
+            //if subscription ends do not sends addon details
+            let addOnDetails      = subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails']
+            if( new Date(subscriptionEndDate) > new Date() ) {
+              addOnGiven = subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails'] && subscriptionDetails[(subscriptionDetails.length-1)]['addOnDetails']['status'] == 'paid' ? 'yes' : 'no'
+              addOnSpace = addOnGiven == 'yes' ? addOnDetails['spaceAlloted'] : 0
+            }
+          }
+          else if( isReferAndEarnStatus == 'Yes' ) {
+            let extendedReferEarnProgram = userData.refereAndEarnSubscriptionDetail
+            if( Object.keys(extendedReferEarnProgram).length > 0 && extendedReferEarnProgram.status == 'Active') {
+              extendedReferEarnDate = extendedReferEarnProgram.endDate
+            }
+          }
+
+          else if(userData.subscriptionDetails && userData.subscriptionDetails.length == 0 && userData.refereAndEarnSubscriptionDetail && userData.refereAndEarnSubscriptionDetail.status == 'Active' && isReferAndEarnStatus == 'No'){
+            subscriptionEndDate = result.userSubscriptionEnddate;
+          }
+          
+          /**
+           * Reset all locastorage variables to check wheater the subscription ends or not
+           */
+          // localStorage.setItem("endUserCreatedOn", userData.createdOn)
+          // localStorage.setItem("endUserSubscriptionStartDate", subscriptionStartDate)
+          // localStorage.setItem("endUserSubscriptionEndDate", subscriptionEndDate)
+          // localStorage.setItem("endUserSubscriptionStatus", subscriptionStatus)
+          // localStorage.setItem("endUserAutoRenewalStatus", autoRenewal)
+          // localStorage.setItem("endUserProSubscription", 'no')
+          // localStorage.setItem("endUserProFreeSubscription", 'no')
+          // localStorage.setItem("endUserSubscriptionAddon", addOnGiven)
+          // localStorage.setItem("endisReferAndEarn", isReferAndEarnStatus)
+
+          /**
+           * Setting all variables for displaying the subscription details on account setting page
+           */
+          let diff: any
+          let expireDate: any
+          let subscriptionDate      = subscriptionStartDate
+          this.userCreateOn         = moment( new Date(userData.createdOn))
+          this.isSubscribedBefore   = ( subscriptionDate !== 'undefined' && subscriptionDate !== null && subscriptionDate !== "") ? true : false
+          let isReferAndEarn        = isReferAndEarnStatus && isReferAndEarnStatus == 'Yes' ? true : false
+          let isProFreeAdviser      = true;
+          //If user not taken any paid subscription
+
+          if( !this.isSubscribedBefore && freeTrialPeriodStatus ) {
+            this.isAccountFree    = true
+            this.isSubscribePlan  = false
+            diff                  = this.getDateDiff( this.userCreateOn.toDate(), this.today )
+            
+            //check if user completed or not free 30 days (i.e aftRegistrationDaysDiff) for registration
+            if( diff <= aftRegistrationDaysDiff ) {
+              defaultSpace = 7
+              //check if the advisor participate into refer and earn program and he acheived the monthly invitation sent target
+              if( isReferAndEarn && this.usertype == 'advisor') {
+                let result        = await this.getInviteMembersCount(),
+                    extendedDays  = result.data.extendedDays
+                    targetCount = result.data.targetCount
+                if( result.data.count >= result.data.targetCount ) {
+                  extendedDays     = bfrSubAdvPremiumAccess + (extendedDays * (result.data.completedMonths > 1 ? result.data.completedMonths : 1))
+                  isProFreeAdviser = true
+                  expireDate       = moment( new Date(userData.createdOn)).add(extendedDays,"days")
+                }
+                else{
+                  let isReferEarnExpire = extendedReferEarnDate != '' ? this.getDateDiff( this.today, moment(extendedReferEarnDate).toDate() ) : 0
+                  if( extendedReferEarnDate != '' && isReferEarnExpire >= 0 ) {
+                    isProFreeAdviser = true
+                    expireDate       = moment(extendedReferEarnDate)
+                  }
+                  else{
+                    expireDate       = moment( new Date(userData.createdOn)).add(bfrSubAdvPremiumAccess,"days")
+                    let registrationCompleteDays     = this.getDateDiff( moment( new Date(userData.createdOn)).toDate(), this.today )
+                    isProFreeAdviser = registrationCompleteDays <= bfrSubAdvPremiumAccess ? true: false
+                  }
+                }
+              }
+              else{
+                expireDate            = moment( new Date(userData.createdOn)).add(bfrSubCustPremiumAccess,"days")
+              }
+              this.isPremiumExpired = false
+
+              if(this.usertype == 'advisor') {
+                this.planName = 'Standard'
+                // if( isProFreeAdviser ) {
+                //   localStorage.setItem('endUserProSubscription', 'yes');
+                //   localStorage.setItem('endUserProFreeSubscription', 'yes');
+                // }
+                // else{
+                //   localStorage.setItem('endUserProSubscription', 'yes');
+                //   localStorage.setItem('endUserProFreeSubscription', 'no');
+                // }
+              }
+              else{
+                this.planName = 'Legacy Life'
+                // localStorage.setItem('endUserProSubscription', 'yes');
+                // localStorage.setItem('endUserProFreeSubscription', 'yes');
+              }
+            }
+            else {
+              if( this.usertype == 'customer' ) {
+                let totalFreeAccessDays = (bfrSubCustFreeAccess+bfrSubCustPremiumAccess)
+                    expireDate          = moment( new Date(userData.createdOn)).add(totalFreeAccessDays,"days")
+               if( diff <= totalFreeAccessDays ) {
+                  // localStorage.setItem('endUserProFreeSubscription', 'yes');
+                  // localStorage.setItem('endUserProSubscription', 'no');
+                }
+                else{
+                  // localStorage.setItem('endUserProFreeSubscription', 'no');
+                  // localStorage.setItem('endUserProSubscription', 'no');
+                }
+              }
+              else{
+                if( isReferAndEarn && this.usertype == 'advisor' ) {
+                  let result        = await this.getLastInviteMembersCount(),
+                      extendedDays  = result.data.extendedDays
+                      targetCount = result.data.targetCount
+                  if( result.data.count >= result.data.targetCount ) {
+                    extendedDays     = bfrSubAdvPremiumAccess + (extendedDays * (result.data.completedMonths > 1 ? result.data.completedMonths : 1))
+                    isProFreeAdviser = true
+                    expireDate       = moment( new Date(userData.createdOn)).add(extendedDays,"days")
+                  }
+                  else{
+                    let isReferEarnExpire = extendedReferEarnDate != '' ? this.getDateDiff( this.today, moment(extendedReferEarnDate).toDate() ) : 0
+                    if( extendedReferEarnDate != '' && isReferEarnExpire >= 0 ) {
+                      isProFreeAdviser = true
+                      expireDate       = moment(extendedReferEarnDate)
+                    }
+                    else{
+                      expireDate       = moment( new Date(userData.createdOn)).add(bfrSubAdvPremiumAccess,"days")
+                      let registrationCompleteDays = this.getDateDiff( moment( new Date(userData.createdOn)).toDate(), this.today )
+                      isProFreeAdviser = registrationCompleteDays <= bfrSubAdvPremiumAccess ? true: false
+                    }
+                  }              
+                  
+                  if( isProFreeAdviser ) {
+                    // localStorage.setItem('endUserProFreeSubscription', 'yes');
+                    // localStorage.setItem('endUserProSubscription', 'yes');
+                  }
+                  else{
+                    // localStorage.setItem('endUserProFreeSubscription', 'no');
+                    // localStorage.setItem('endUserProSubscription', 'no');
+                  }
+                }
+                else{
+                  expireDate  = moment( new Date(userData.createdOn)).add(bfrSubAdvPremiumAccess,"days")
+                  // localStorage.setItem('endUserProFreeSubscription', 'no');
+                  // localStorage.setItem('endUserProSubscription', 'no');
+                }
+              }
+              this.planName         = 'Free'
+              this.isPremiumExpired = true
+            }
+            this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
+          }
+          else if( this.isSubscribedBefore ) {
+            this.isSubscriptionCanceled = ( subscriptionStatus && subscriptionStatus == 'canceled' ) ? true : false
+            this.autoRenewalFlag = ( autoRenewal && autoRenewal == 'true' ) ? true : false
+            this.autoRenewalVal = this.autoRenewalFlag
+            this.autoRenewalStatus = this.autoRenewalVal ? 'on' : 'off'
+            this.userSubscriptionDate = moment( subscriptionEndDate )
+            this.isAccountFree    = false
+            diff                  = this.getDateDiff( this.today, this.userSubscriptionDate.toDate() )
+            
+            if( diff >= 0 ) {
+              expireDate            = this.userSubscriptionDate
+              this.isPremiumExpired = false
+              this.isSubscribePlan  = true
+              if(this.usertype == 'advisor') {
+                this.planName         = 'Standard'
+              }
+              else{
+                this.planName         = 'Legacy Life'
+              }
+              // localStorage.setItem('endUserProFreeSubscription', 'yes');
+              // localStorage.setItem('endUserProSubscription', 'yes');
+            }
+            else {
+              if( this.usertype == 'customer' ) {
+                expireDate          = this.userSubscriptionDate.add(bfrSubCustFreeAccess,"days")
+                let freeAccessDiff  = this.getDateDiff( this.today, expireDate.toDate() )
+                if( freeAccessDiff >= 0 ) {
+                 // localStorage.setItem('endUserProFreeSubscription', 'yes');
+                }
+                else {
+                 // localStorage.setItem('endUserProFreeSubscription', 'no');
+                }
+              }
+              else{
+                expireDate            = this.userSubscriptionDate
+              }
+              this.isPremiumExpired = true
+              this.isSubscribePlan  = false
+              this.planName         = 'Free'
+            }
+            this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
+          }
+
+          let returnArr = { userCreateOn:  this.userCreateOn,
+                            isSubscribedBefore: this.isSubscribedBefore,
+                            isSubscriptionCanceled : this.isSubscriptionCanceled,
+                            autoRenewalFlag : this.autoRenewalFlag,
+                            autoRenewalVal : this.autoRenewalVal,
+                            autoRenewalStatus : this.autoRenewalStatus,
+                            isAccountFree: this.isAccountFree,
+                            isPremiumExpired : this.isPremiumExpired,
+                            isSubscribePlan : this.isSubscribePlan,
+                            planName : this.planName,
+                            subscriptionExpireDate : this.subscriptionExpireDate,
+                            totalUsedSpace: totalUsedSpace,
+                            defaultSpace: Number( defaultSpace ),
+                            addOnSpace: Number( addOnSpace ),
+                            paymentStatus: subscriptionStatus,
+                            targetCount: targetCount
+                          }
+          callback(returnArr)
+        })
+    }    
+  }
+
+  checkSubscriptionAdminPanelOLD = (userDetails,callback) => {
     let returnArr = {}
     if(userDetails.userType != 'sysAdmin') {
 

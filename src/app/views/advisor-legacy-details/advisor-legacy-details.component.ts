@@ -176,7 +176,7 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
           let userData = {userId:this.toUserId,userType:this.endUserType}
           this.subscription.checkSubscription(userData,( returnArr )=> {
             this.isPremiumExpired = returnArr.isPremiumExpired
-            this.isSubscribePlan = returnArr.isSubscribePlan
+            this.isSubscribePlan = returnArr.isSubscribePlan;
             this.planName = returnArr.planName
             this.subscriptionExpireDate = returnArr.subscriptionExpireDate
           })

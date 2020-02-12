@@ -9,7 +9,6 @@ import { s3Details } from '../../../config';
 import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { legacySettingModalComponent } from '../customer-home/legacy-setting/legacy-setting-modal/legacy-setting-modal.component';
-
 const filePath = s3Details.url+'/'+s3Details.profilePicturesPath;
 @Component({
   selector: 'app-customer-professionals',
@@ -33,6 +32,9 @@ export class CustomerProfessionalComponent implements OnInit {
   linkedIn:string = "";
   isProUser = false;
   isFreeProuser = false;
+  isPremiumExpired: boolean = false
+  isSubscribePlan: boolean = false
+  planName: any;
 
   constructor(
     private route: ActivatedRoute,private userapi: UserAPIService, 
@@ -82,6 +84,15 @@ export class CustomerProfessionalComponent implements OnInit {
         if(result.data.profilePicture){
           this.profilePicture = filePath + result.data.profilePicture;
         }        
+
+        let subscriptionDetails = this.profileData.subscriptionDetails
+        if( subscriptionDetails && subscriptionDetails.length > 0 ) {
+          //get last element from array i.e current subscription details
+          let currentSubscription     = subscriptionDetails.slice(-1)[0]
+            this.isPremiumExpired = currentSubscription.isPremiumExpired
+            this.isSubscribePlan = currentSubscription.isSubscribePlan;
+        }
+
         this.leadsCount();
         this.checkAdvisorView(this.profileData._id)
       }
@@ -194,7 +205,6 @@ export class CustomerProfessionalComponent implements OnInit {
     this.userapi.apiRequest('post', 'advisor/checkHireAdvisor', req_vars).subscribe(result => {
         if(result.status == "success" && result.data.RequestData){
           this.advisorStatus  = result.data.RequestData.status;
-          console.log("advisorStatus :", this.advisorStatus);
         }
       }, (err) => {
       console.error(err)

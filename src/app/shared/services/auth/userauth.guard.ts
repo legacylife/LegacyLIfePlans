@@ -97,7 +97,7 @@ export class UserAuthGuard implements CanActivate {
   }
 
   autologFunction() {
-    // console.log("LockScreen Here >> ")
+     console.log("LockScreen Here >> ")
     //https://www.npmjs.com/package/angular-user-idle
     let IdleFlag = localStorage.getItem("setIdleFlag");
     var pathArray = window.location.pathname.split('/');
@@ -142,14 +142,15 @@ export class UserAuthGuard implements CanActivate {
         }
       }
 
-    let doNotOpen = true;
+  let doNotOpen = true;
   if(flag==true && pathArray[1] != 'signin' && pathArray[1] != 'error'){
-    this.dialog.openDialogs.find(function (dialog) {
+    this.dialog.openDialogs.find(dialog => {
       if(dialog.id=='lockscreenModalopened') {
         console.log('here I am >>>',doNotOpen)
         doNotOpen = false;
       }
      // return dialog.id === id; 
+     return true; 
     });
     console.log('PathArray >>>> ',pathArray,'>>>',doNotOpen)
     if(doNotOpen){

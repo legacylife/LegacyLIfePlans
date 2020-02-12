@@ -163,10 +163,11 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
         this.advisorData = result.data.distanceUserList;//this.advisorData.concat(result.data.distanceUserList);
         let resultData = this.advisorData;
         if (resultData && resultData.length) {
+
           this.adListings = resultData.filter(dtype => {
             return dtype.sponsoredAdvisor == 'yes'
           }).map(el => el)
-
+          
           this.showAdvisorListingCnt = result.data.totalUsers;
 
           if (result.data.totalUsers > 0) {

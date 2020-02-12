@@ -52,7 +52,8 @@ export class NgxTablePopupComponent implements OnInit {
         referral: ['', Validators.required],
         addmanagement: ['', Validators.required],
         deceasedrequest: [ '', Validators.required],
-        adminmanagement: ['', Validators.required]
+        adminmanagement: ['', Validators.required],
+        emailTemplate: ['', Validators.required]
       })
       this.itemForm.controls['username'].disable();
       this.itemForm.controls['firstName'].setValue(item.firstName);
@@ -68,6 +69,7 @@ export class NgxTablePopupComponent implements OnInit {
       this.itemForm.controls['addmanagement'].setValue(item.sectionAccess.addmanagement);
       this.itemForm.controls['deceasedrequest'].setValue(item.sectionAccess.deceasedrequest);
       this.itemForm.controls['adminmanagement'].setValue(item.sectionAccess.adminmanagement);
+      this.itemForm.controls['emailTemplate'].setValue(item.sectionAccess.emailTemplate);
     }else{   
       console.log('item',item)
     this.itemForm = this.fb.group({
@@ -87,7 +89,8 @@ export class NgxTablePopupComponent implements OnInit {
       referral: [(item.sectionAccess && item.sectionAccess.referral) || '', Validators.required],
       addmanagement: [(item.sectionAccess && item.sectionAccess.addmanagement) || '', Validators.required],
       deceasedrequest: [(item.sectionAccess && item.sectionAccess.deceasedrequest) || '', Validators.required],
-      adminmanagement: [(item.sectionAccess && item.sectionAccess.adminmanagement) || '', Validators.required]
+      adminmanagement: [(item.sectionAccess && item.sectionAccess.adminmanagement) || '', Validators.required],
+      emailTemplate: [(item.sectionAccess && item.sectionAccess.emailTemplate) || '', Validators.required]
     })
     
     this.itemForm.controls['allowNotifications'].setValue('no');          
@@ -100,6 +103,7 @@ export class NgxTablePopupComponent implements OnInit {
     this.itemForm.controls['addmanagement'].setValue('fullaccess');
     this.itemForm.controls['deceasedrequest'].setValue('fullaccess');
     this.itemForm.controls['adminmanagement'].setValue('fullaccess');
+    this.itemForm.controls['emailTemplate'].setValue('fullaccess');
   }
 }
 
@@ -127,7 +131,8 @@ public noWhitespaceValidator(control: FormControl) {
         "referral": this.itemForm.controls['referral'].value,
         "addmanagement": this.itemForm.controls['addmanagement'].value,
         "deceasedrequest": this.itemForm.controls['deceasedrequest'].value,
-        "adminmanagement": this.itemForm.controls['adminmanagement'].value
+        "adminmanagement": this.itemForm.controls['adminmanagement'].value,
+        "emailTemplate": this.itemForm.controls['emailTemplate'].value
       }
     }
     if (userData._id) {

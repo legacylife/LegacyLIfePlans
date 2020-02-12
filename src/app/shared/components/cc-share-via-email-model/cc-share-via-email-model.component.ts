@@ -34,7 +34,7 @@ export class CcShareViaEmailModelComponent implements OnInit {
   initItemRows() {
     return this.fb.group({
       // list all your form controls here, which belongs to your form array
-      itemname: ['',[Validators.required, Validators.email]]
+      itemname: ['',[Validators.required,Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]]
     });
   }
 

@@ -80,7 +80,7 @@ export class SpecialNeedsModelComponent implements OnInit {
     if (this.selectedProfileId) {
       profileIds = this.selectedProfileId;
       req_vars = {
-        query: Object.assign({ _id:profileIds, customerId: this.userId })
+        query: Object.assign({_id:profileIds})
       }
     }
 

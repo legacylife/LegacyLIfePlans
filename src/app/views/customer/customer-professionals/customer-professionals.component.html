@@ -12,7 +12,7 @@
             <h2>{{row?.firstName}} {{row?.lastName}}</h2>
             <p>{{row?.businessName ? row?.businessName : ""}}</p>
             <div class="sta--m">
-              <mat-icon>star</mat-icon> Premium member</div>
+              <mat-icon>star</mat-icon> {{isSubscribePlan ? 'Subscribed ' : 'Free '}}member </div>
           </div>
           <div class="sett--fp">
             <mat-icon>school</mat-icon>
