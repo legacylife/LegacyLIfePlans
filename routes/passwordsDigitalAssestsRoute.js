@@ -179,6 +179,7 @@ function deviceFormUpdate(req, res) {
             insert.customerLegacyId = proquery.customerLegacyId;
             insert.customerLegacyType = proquery.customerLegacyType;
             insert.deviceName = proquery.deviceName;
+            insert.pin = proquery.pin;
             insert.deviceList = proquery.deviceList;            
             insert.username = proquery.username;
             insert.passwordType = proquery.passwordType;
