@@ -1254,8 +1254,11 @@ async function calculateZipcode(zipcode,id){
       await User.updateOne({_id:id},{$set:{location:setLocation,coordinates:coordinate}});
       return true;
     }else{     
+      console.log('<<<<<<<id>>>',id)
       return false;
     }
+  }else{
+    console.log('id>>>',id)
   }
 }
 
