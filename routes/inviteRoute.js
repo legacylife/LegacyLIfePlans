@@ -234,9 +234,10 @@ async function getLastInviteMembersCount(req, res) {
     let paramData = req.body
     let resultCount = 0
     let searchParam = { _id: paramData.inviteById, userType: paramData.inviteType }
-    let userDetails = await User.find(searchParam)
-    if (userDetails && userDetails.length > 0) {
-        let userCreatedOn = userDetails[0]['createdOn'],
+    let userDetails = await User.findOne(searchParam)
+    let targetCount = 0;
+    if (userDetails) {
+        let userCreatedOn = userDetails.createdOn
             today = moment().toDate(),
             completedMonths = getDateDiff(today, moment(userCreatedOn).toDate()),
             startDate = new Date(userCreatedOn),
@@ -253,12 +254,9 @@ async function getLastInviteMembersCount(req, res) {
         let remainingDays = Math.abs(Math.round(getDateDiff(today, moment(endDate).toDate(), 'asDays')))
         paramData.createdOn = { $gte: new Date(startDate), $lte: new Date(endDate) }
 
-        let targetCount = userDetails[0]['refereAndEarnSubscriptionDetail']['targetCount'],
-            extendedDays = userDetails[0]['refereAndEarnSubscriptionDetail']['noOfDaysExtended']
+        targetCount = (userDetails.refereAndEarnSubscriptionDetail && userDetails.refereAndEarnSubscriptionDetail.targetCount) ? userDetails.refereAndEarnSubscriptionDetail.targetCount : 0;
+        extendedDays = (userDetails.refereAndEarnSubscriptionDetail && userDetails.refereAndEarnSubscriptionDetail.noOfDaysExtended) ? userDetails.refereAndEarnSubscriptionDetail.noOfDaysExtended : 0;
         let data = await Invite.find(paramData)
-
-        //console.log("completedMonths ===== ",completedMonths,"\n createdOn ===== ",userDetails[0]['createdOn'],"\n paramData ===== ",paramData.createdOn,"remainingDays",remainingDays,"extendedDays",extendedDays)
-
         if (data != null) {
             resultCount = data.length
         }
