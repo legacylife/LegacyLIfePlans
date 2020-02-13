@@ -221,7 +221,6 @@ function addEnquiryReply(req, res) {
                   let PaymentLink = constants.clientUrl+'/advertisement-payment/'+encryptedCustomerId+'/'+encryptedInvoiceId+'/'+uniqueId;
                   replyContnt['paymentLink'] = PaymentLink;
                 }
-                //console.log("\n****PaymentLink****",PaymentLink)
                 replyContnt['fromDate'] = fromDate1;
                 replyContnt['toDate']   = toDate1;
                 
@@ -392,7 +391,6 @@ async function completeTransaction( req, res ) {
     let invoiceStatus = adminReply[0]['paymentDetails']['status']
     if( invoiceStatus === 'Pending') {
       stripeHelper.payInvoice( invoiceId, token, advertisementData.customerId.stripeCustomerId ).then(async(response) => {
-        console.log('response>>>>>>>>>',response)
         if (response.error) {
           //stripeErrors( err, res )   
           res.status(200).send(resFormat.rError(response.response))     
@@ -419,8 +417,8 @@ async function completeTransaction( req, res ) {
                   }
                  await User.updateOne({_id:customerId},{sponsoredAdvisor:'yes',sponsoredZipcodes:newArray});
             }
-          }else{  console.log(' date not match ', new Date(dates) ,'======', new Date());}  
-        
+          }
+          
           advertisement.updateOne({customerId: customerId, uniqueId: uniqueId},{sponsoredStatus:updateStatus,adminReply: newAdminReply}, function (err, logDetails) {
             if( err ) {
               res.send(resFormat.rError(err))
@@ -467,14 +465,10 @@ async function manageSponsoredStatus(req, res){
                   UserData.sponsoredZipcodes.forEach((key,index) => {   
                     var found = oldArray.indexOf(key);
                     if(!found){         
-                      console.log('------',key)            
                       //newArray = newArray.concat(key);
                       newArray = newArray[key];
-                    }else{
-                      console.log('+++++',key)            
                     }
                 });
-                console.log('------####+++++++++++---',UserData.sponsoredZipcodes,"newArray  ",newArray);
                 //newArray = AdvData.zipcodes.concat(UserData.sponsoredZipcodes);
               }
              //await User.updateOne({_id:key.customerId},{sponsoredAdvisor:'no'});

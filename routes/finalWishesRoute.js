@@ -485,7 +485,6 @@ function funeralPlanFormUpdate(req, res) {
     insert.additionalPlans= proquery.additionalPlans
     insert.save(proquery, function (err, newEntry) {
       if (err) {
-        console.log("Error >>>>",err)
         res.send(resFormat.rError(err))
       } else {
         //created helper for customer to send email about files added by advisor

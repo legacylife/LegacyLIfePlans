@@ -568,8 +568,7 @@ function checkHireAdvisorRequest(req, res) {
   }).populate('advisorId');
 }
 
-function fileupload(req, res) {
-  console.log(req);
+function fileupload(req, res) {  
 }
 
 function generateToken(n) {
@@ -584,7 +583,7 @@ function generateToken(n) {
 //function to get list of user as per given criteria
 function professionalsListingOLd(req, res) {
 
-  let { fields, offset, query, order, limit, search,searchString,extraQuery } = req.body;//console.log("limit >>> ",limit)
+  let { fields, offset, query, order, limit, search,searchString,extraQuery } = req.body;
   let totalUsers = 0
   // if (search && !isEmpty(query)) {
   //   Object.keys(query).map(function (key, index) {
@@ -601,7 +600,6 @@ function professionalsListingOLd(req, res) {
         { "lastName": regSearch },
         { "zipcode": regSearch },        
       ]
-      console.log("search",search,"searchString",searchString," query ->",query);
   }
 
   User.countDocuments(query, function (err, userCount) {
@@ -627,7 +625,6 @@ function professionalsListingOLd(req, res) {
         res.status(401).send(resFormat.rError(err))
       } else {
         if (totalUsers>0) {
-         // console.log("userList >>> ",userList.length,'contacts >>>',contacts.length)
           // let distanceUserList = sortBy(map(userList, (user, index)=>{
           //   var dist = zipcodes.distance('89103',user.zipcode);
           //   let newRow = Object.assign({}, user._doc, {"distance": `${dist}`})
@@ -661,7 +658,7 @@ function professionalsListingOLd(req, res) {
 
 function professionalsListingtest(req, res) {
 
-  let { fields, offset, query, order, limit, search,searchString,extraQuery } = req.body;//console.log("limit >>> ",limit)
+  let { fields, offset, query, order, limit, search,searchString,extraQuery } = req.body;
   let totalUsers = 0
 
   if(search && searchString && searchString.trim() != "") {
@@ -681,8 +678,7 @@ function professionalsListingtest(req, res) {
         { "firstName": firstName },
         { "lastName": lastName },
         { "zipcode": regSearch },        
-      ]
-    //  console.log("search",search,"searchString",searchString," query ->",query);
+      ]    
   }
   
   User.aggregate([
@@ -718,7 +714,7 @@ function professionalsListingtest(req, res) {
 //function to get list of user as per given criteria
 function professionalsListing(req, res) {
 
-  let { fields, offset, query, order, limit, search,searchString,extraQuery } = req.body;//console.log("limit >>> ",limit)
+  let { fields, offset, query, order, limit, search,searchString,extraQuery } = req.body;
   let totalUsers = 0
 
   if(search && searchString && searchString.trim() != "") {
@@ -738,8 +734,7 @@ function professionalsListing(req, res) {
         { "firstName": firstName },
         { "lastName": lastName },
         { "zipcode": regSearch },        
-      ]
-    //  console.log("search",search,"searchString",searchString," query ->",query);
+      ]    
   }
 
   User.findOne(extraQuery, { location: 1 },async function (err, getdata) {
@@ -767,8 +762,7 @@ function professionalsListing(req, res) {
             {"$sort":{"distance":1}}      
           ], async function (err, usersData) {
             if(err) {
-              console.log(err);
-             // console.log(JSON.stringify(res));
+              console.log(err);             
             }else{
               let totalUsers = usersData.length;
               if(totalUsers>0){
@@ -823,8 +817,7 @@ function myPeoplesListOLD(req, res) {
       trust.find(trustquery, fields, function (err, trustList) {
         if (err) {
           res.status(401).send(resFormat.rError(err))
-        } else {
-          //console.log("trustList:- ",trustList,"advisorList :- ",advisorList);
+        } else {          
           totalTrustRecords = trustList.length;
           totalAdvRecords = advisorList.length;
 

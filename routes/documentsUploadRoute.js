@@ -1458,7 +1458,6 @@ router.post('/customerHomeDocuments', cors(), function(req,res){
               }else if(attrName=='quickOverview2.videoLink'){
                 updateFields = {"quickOverview2.videoLink":newFilename};
               }
-              console.log('updateFields    ',updateFields);
               fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
               file.pipe(fstream);
               fstream.on('close', async function () {
@@ -1467,7 +1466,6 @@ router.post('/customerHomeDocuments', cors(), function(req,res){
                   if (err) {
                     res.send(resFormat.rError(err))
                   } else {
-                    console.log('updatedUser',updatedUser);
                     //resMsg = deleteDocumentS3(fileDetails.customerId,docFilePath,fileName.docName);
                     let message = 'File uploaded successfully!';
                     let result = { docId:docId,filename:newFilename, "message": message }
@@ -1552,7 +1550,6 @@ router.post('/advisorHomeDocuments', cors(), function(req,res){
               const newFilename = new Date().getTime() + `.${ext}`;
               let updateFields = '';
               let updatedFields = {};
-              console.log('attrName    ',attrName);
               if(attrName=='sectionOne.topBanner'){
                 updateFields = result.sectionOne;
                 updateFields.topBanner = newFilename
@@ -1561,19 +1558,15 @@ router.post('/advisorHomeDocuments', cors(), function(req,res){
                 updateFields = result.sectionThree;
                 updateFields.bannerImage = newFilename
                 updatedFields = {sectionThree:updateFields}   
-                console.log('sectionThree  #####################    ',newFilename,' updateFields ', updateFields);
               }else if(attrName=='sectionFour.bannerImage'){
                 updateFields = result.sectionFour;
                 updateFields.bannerImage = newFilename;
                 updatedFields = {sectionFour:updateFields}   
-                console.log('sectionFour  #####################    ',newFilename,' updateFields ', updateFields);
               }else if(attrName=='sectionEight.bannerImage'){
                 updateFields = result.sectionEight;
                 updateFields.bannerImage = newFilename;
-                console.log('sectionEight  #####################    ',newFilename,' updateFields ', updateFields);
                 updatedFields = {sectionEight:updateFields}   
               }
-              console.log('updateFields    ',updateFields);
               fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
               file.pipe(fstream);
               fstream.on('close', async function () {
@@ -1582,7 +1575,6 @@ router.post('/advisorHomeDocuments', cors(), function(req,res){
                   if (err) {
                     res.send(resFormat.rError(err))
                   } else {
-                    console.log('updatedUser',updatedUser);
                     //resMsg = deleteDocumentS3(fileDetails.customerId,docFilePath,fileName.docName);
                     let message = 'File uploaded successfully!';
                     let result = { docId:docId,filename:newFilename, "message": message }
@@ -1833,7 +1825,6 @@ function deleteDocumentS3(customerId,filePaths,fileName){
     filePath = filePaths+fileName;
   }
   const params = {Bucket: constants.s3Details.bucketName,Key: filePath}
-  console.log('params path >>>>>>>>>>>>>>',params)
   let resMsg = "Something Wrong please try again!";
      try {
          s3.s3.headObject(params).promise()
@@ -1846,11 +1837,9 @@ function deleteDocumentS3(customerId,filePaths,fileName){
          }
          catch (err) {
            resMsg = "ERROR in file Deleting : " + JSON.stringify(err);
-           console.log("0",resMsg)
          }
      } catch (err) {
              resMsg = "File not Found ERROR : " + err.code;
-             console.log("00",resMsg)
      }
     return resMsg;
 }
@@ -2359,7 +2348,7 @@ function getuserFolderSize(folder,res) {
     });
 
     s3Sizer.getFolderSize(constants.s3Details.bucketName, folder, function(err, size) {
-      console.log("**************",size,'****************')
+      //console.log("**************",size,'****************')
       User.updateOne({ _id: folder }, { $set: { s3Size: size } }, function (err, updatedUser) {
         if (err) {
           return err;

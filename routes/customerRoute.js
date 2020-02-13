@@ -1058,7 +1058,6 @@ function getuserFolderSize(folder,res) {
   });
 
   s3Sizer.getFolderSize(constants.s3Details.bucketName, folder, function(err, size) {
-   // console.log("**************",size,'****************')
     User.updateOne({ _id: folder }, { $set: { s3Size: size } }, function (err, updatedUser) {
       if (err) {
         return err;
@@ -1073,7 +1072,6 @@ function getuserFolderSize(folder,res) {
 async function legacySettings(req, res) {
   let { query } = req.body;
   const data = await User.findOne(query); 
-  console.log("Data --->>> ",data);
   if(data._id) {
     let { proquery } = req.body;
     User.updateOne({ _id: ObjectId(data._id) }, { $set: proquery }, function (err, updatedDetails) {  

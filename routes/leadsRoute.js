@@ -144,7 +144,6 @@ function userView(req, res) {
 
       // trust.countDocuments({trustId:userDetails._id}, function (err, TrusteeCount) {
       //       TrusteeCounts = TrusteeCount;
-      //       console.log("CNT",TrusteeCount)
       //       let result = { userDetails: userDetails, TrusteeCount: TrusteeCounts, "message": "Status Updated successfully!" }
       //       res.status(200).send(resFormat.rSuccess(result))
       // });
@@ -153,7 +152,6 @@ function userView(req, res) {
           { $match: { "trustId": userDetails._id } },
           { $group: { _id: null, filesCount: { $sum: "$filesCount" }, folderCount: { $sum: "$folderCount" }, recordCount: { $sum: 1 } } }
         ], function (err, statisticsCounts) {
-          //console.log("CNT",statisticsCounts);
           filesCount = statisticsCounts[0] ? statisticsCounts[0].filesCount : 0;
           folderCount = statisticsCounts[0] ? statisticsCounts[0].folderCount : 0;
           recordCount = statisticsCounts[0] ? statisticsCounts[0].recordCount : 0;

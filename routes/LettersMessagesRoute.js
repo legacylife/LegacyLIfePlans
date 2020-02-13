@@ -56,14 +56,10 @@ function LettersMessageList12(req, res) {
             async.each(trusteeRecords, (val, callback) => {
               if(val.userAccess.LegacyLifeLettersMessagesManagement.length>0){
                 let cnt = 1;let index = 0;
-//console.log("var->",val.userAccess.LegacyLifeLettersMessagesManagement)
-
                 // const found = val.userAccess.LegacyLifeLettersMessagesManagement.filter((o) => o.access == "now")
-                // console.log('found',found)
                 // if(found.length > 0) {
                 //   //accessCount[found[0].letterId] = cnt++;
                 //   accessCount =  found[0].letterId+'_'+cnt++;
-               
                 //   index++;
                 // }
                 // accessCounts.push(accessCount); 
@@ -86,47 +82,26 @@ function LettersMessageList12(req, res) {
                  
                 }, () => {
                   callback()
-                  console.log("iterate1 complete")
                 })
                 accessCounts.push(accessCount); 
               } else {
                 callback()
-                console.log("iterate2")
               }
               
             }, function(err) {
               console.log(err)
-              console.log("result")
-             // console.log("--accessCounts--####->",Object.assign([], accessCount))
-             // console.log("--accessCounts--####->",accessCounts)
-
-              // forEach(accessCount, (user) => {
-              //   console.log(user);
-              // });
-            
-            
-              // accessCount.forEach( ( val, index ) => {
-              //   console.log("====>",index,val);
-              //  })
-
-
              // let accessCounts = {accessCount:'123',accessCount2:'234'};
             //  res.send(resFormat.rSuccess({lettersMessagesList,totalRecords,totalTrusteeRecords,accessCounts}));
             })
-            console.log("--accessCounts--####->",accessCounts)
             res.send(resFormat.rSuccess({lettersMessagesList,totalRecords,totalTrusteeRecords,accessCounts}));
           }else{
-            console.log("--accessCount---==----->",accessCount)
-             
           }
         })
-
           // let lettersMessagesListTemp = map(lettersMessagesList, (row, index) => {
           //   let updateVl =  _.findIndex(accessCount, function(o) { if( o == row._id) {return o[row._id]}else{ return 0}});
           //   let newRow = Object.assign({}, row, { "count": `${updateVl}` })
           //   return newRow
           // });
-          //console.log('lettersMessagesList---',lettersMessagesListTemp);         
       }
     }).sort(order).skip(offset).limit(limit)
   })
@@ -157,12 +132,9 @@ function LettersMessageList(req, res) {
             { $unwind :'$userAccess'},
             { $project : { _id:0, LegacyLifeLettersMessagesManagement : '$userAccess.LegacyLifeLettersMessagesManagement' } }
           ], function (err, trusteeRecords) {
-
             let totalTrusteeRecords = 0;
             let lettersMessagesList = lettersMessagesListTemp;
-            console.log("Trustee records >>>>>>>>>>",trusteeRecords)
             res.send(resFormat.rSuccess({lettersMessagesList,totalRecords,totalTrusteeRecords,trusteeRecords}));
-            
           })*/
 
           trusteeQuery.customerId = ObjectId(trusteeQuery.customerId)
@@ -190,9 +162,6 @@ function LettersMessageList(req, res) {
           })
 
           /*Trustee.find(trusteeQuery,{userAccess:1,trustId:1}, function(err, trusteeRecords) {
-
-            console.log("Trustee records >>>>>>>>>>",trusteeRecords)
-
             let totalTrusteeRecords = 0;
             let lettersMessagesList = lettersMessagesListTemp;
             /*let lettersMessagesList = map(lettersMessagesListTemp,  (row, index) => {
@@ -209,15 +178,12 @@ function LettersMessageList(req, res) {
 }
 
 async function getTrusteeFlag(id,trusteeQuery,trustId) {
-  //console.log("===>",id);
   let trusteeRecords = await Trustee.findOne({"userAccess.LegacyLifeLettersMessagesManagement.letterId":id,"trustId":trustId,status:"Active"},{});
-//  console.log("trusteeRecords===>",trusteeRecords);
   if(trusteeRecords){
     trusteeRecords.userAccess.LegacyLifeLettersMessagesManagement.filter(dtype => {
       return dtype.access;
     });//.map(el => el)
     //  async.each(trusteeRecords, (val, callback) => {
-    //     console.log("===>",val.userAccess.LegacyLifeLettersMessagesManagement);
     //     return
     //   })
   }else{

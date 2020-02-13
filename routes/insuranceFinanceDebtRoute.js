@@ -136,7 +136,7 @@ function insuranceFormUpdate(req, res) {
         }
 
         logData.customerId = proquery.customerId;
-        logData.fileId = newEntry._id;console.log("logData",logData);
+        logData.fileId = newEntry._id;
         actitivityLog.updateActivityLog(logData);
 
         let message = resMessage.data( 607, [{key:'{field}',val:"Insurance details"},{key:'{status}',val: 'added'}] )

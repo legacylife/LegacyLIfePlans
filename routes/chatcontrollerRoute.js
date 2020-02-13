@@ -22,14 +22,12 @@ async function userStatus(data,status) {
       let found = await User.findOne({_id:data.userId},{_id:1});
       if(found){
          await User.updateOne({_id:found._id},{loginStatus:status});
-         console.log('Chat online --- '+data.userId,'status-->',status);
       }
     }
     return true;
 }
 
 async function chatRoom(chatId,userId) {
- // console.log('******************************************chatRoom --- '+userId,'-----*****************--',chatId);
     let chatingData = await chat.findOne({_id:chatId});
     if(chatingData) { //await chat.updateMany({_id:found._id},{$set: proquery })
        // await chat.update({_id:found._id,chats: { $elemMatch: { contactId: { '$ne': userId }, status: 'unread' }}},{$set : {'chats.$[].status': 'read'}}, {safe: true, multi:true});
@@ -38,13 +36,6 @@ async function chatRoom(chatId,userId) {
          friendId = chatingData.chatwithid;
        }
        await chat.updateOne({_id:chatingData._id,chats: { $elemMatch: { status: 'unread' }}},{$set : {'chats.$[i].status': 'read'}},{arrayFilters: [{"i.contactId": friendId}],safe: true, multi:true})
-       //chatingData.chats.forEach( async ( val, index ) => {
-       // console.log('-------------',userId,'*************',val.contactId);
-         // if(userId!=val.contactId) {
-         //   console.log('ID------------------',val._id);
-         //   await chat.updateOne({_id:chatingData._id,'chats.status': 'unread'},{$set : {'chats.$.status': 'read'}});
-          //}
-        // })
     }
   return true;
 }
@@ -53,11 +44,9 @@ async function userMessagesStatus(userId,status,from='') {
   let unreadCount = [];
   if(userId!==undefined){
     let makeArray = [];
-  //console.log('from pk ><>>>>>>>>>>>>>>>>>>>>>>>',from)
    let chatingData = await chat.find({$or:[{chatfromid:userId},{ chatwithid:userId}]});
    let chatInfolist = []; let unreadCnt = 0;
       await Promise.all(chatingData.map(async (val)=>{     
-    //async.each(chatingData, async function (val){ 
         let friendId = val.chatfromid;
         if(val.chatfromid==userId){
           friendId = val.chatwithid;
@@ -98,9 +87,8 @@ async function userMessagesStatus(userId,status,from='') {
                 }
             }}
           ]);
-        //  console.log('------',typeof(val._id),'----',unreadC.length,'>>>>>>>>>>>>>>>>>>>>>',from);
+
           if(unreadC.length>0){
-            //console.log(typeof(val._id),'----',unreadC[0].count,'-----_id-->>',val._id,'--------userId>>>>-----',userId,'---friendId>>>>-----',friendId)
             unreadCnt = unreadC[0].count;   
           }else if(userId!=friendId && from=='NewMessage'){
             unreadCnt = 1;   
@@ -113,10 +101,7 @@ async function userMessagesStatus(userId,status,from='') {
             unread:unreadCnt,
           }     
           chatInfolist.push(makeArray);
-          //console.log('makeArray aaaa   ',makeArray,'-------',val._id,'-------------',userId,'--------',friendId,'>>>>>>>>>>>>>>>>>>>>>',from)
-        //}
     }))
-    //console.log('****************userMessagesStatus ---- unreadCount array--- '+chatInfolist);
     return chatInfolist;
   }
  // return chatInfolist;

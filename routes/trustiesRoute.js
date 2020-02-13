@@ -286,7 +286,6 @@ function getSubSectionsListOLD(req, res){
         if (err) {
           res.status(401).send(resFormat.rError(err))
         } else {
-          //  console.log("trusteeUsersList",trusteeUsersList)
             trusteeCount = trusteeUsersList.length;
             res.status(200).send(resFormat.rSuccess({trusteeUsersList,trusteeCount}));
         }
@@ -331,7 +330,6 @@ function trusteePermissionsUpdateOLD(req, res){
                           updateArray = oldvalues;
             }else{
               updateArray = oldvalues;
-              console.log("updated>>>>>>>>>>>>>",updateArray)
               updateObj = {"letterId" : mongoose.Types.ObjectId(updateExtra.letterId),
                             "access" : value,
                             "updatedOn" : new Date(),
@@ -415,7 +413,6 @@ function trusteePermissionsUpdateOLD(req, res){
                             updateArray = oldvalues;
               }else{
                 updateArray = oldvalues;
-                console.log("updated>>>>>>>>>>>>>",updateArray)
                 updateObj = {"letterId" : mongoose.Types.ObjectId(updateExtra.letterId),
                               "access" : value,
                               "updatedOn" : new Date(),

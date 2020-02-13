@@ -15,7 +15,6 @@ var auth = jwt({
 
 //function to update cms page content
 function update(req, res) {
-  console.log(req.body)
   let { fromId } = req.body
   Cms.updateOne({ _id: req.body._id },{ $set: req.body} ,(err, updateCms)=>{
     if (err) {
@@ -56,7 +55,6 @@ function list(req, res) {
 
 //function get details of page
 function view (req, res) {
-  console.log(req.body)
   const  query  = req.body
   Cms.findOne(query , function(err, cmsDetails) {
     if (err) {

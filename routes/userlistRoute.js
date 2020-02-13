@@ -1128,7 +1128,6 @@ function getUsersListForAdminMap(req, res) {
         userList.forEach( (details, index) => {
         //  userList.forEach(async function(details){
           if (details && details.zipcode && details.zipcode != '') {
-            //  console.log('details',details)             
             // let invitedByRecord = '';
             //   if(details.invitedBy){
             //     invitedByRecord = await User.findOne({_id:details.invitedBy},{firstName:1,lastName:1,userType:1});

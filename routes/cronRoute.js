@@ -113,7 +113,6 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
                   }
                 }
                 userSubscription.push(subscriptionDetails)
-                //console.log("userFullName",userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : '',"email: -",userProfile.username,  "created on :-",userProfile.createdOn);
                 //Update user details
                 User.updateOne({ _id: userProfile._id }, { $set: { userSubscriptionEnddate : new Date(subscriptionEndDateNew),subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, async function (err, updated) {
                   if (err) {
@@ -145,7 +144,6 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
                           html: body
                         }
                         sendEmail(mailOptions)
-                        console.log("email sent")
                         if( userProfile.userType == 'customer' && checkWhetherAddOn ) {
                           chargeForAddon( userDetails, stripeCustomerId, newRequestParam, res )
                         }
@@ -153,7 +151,6 @@ function autoRenewalOnUpdateSubscription ( req, res ) {
                           res.json({received: true});
                         }
                       } else {
-                        console.log("email sent")
                         if( userProfile.userType == 'customer' && checkWhetherAddOn ) {
                           chargeForAddon( userDetails, stripeCustomerId, newRequestParam, res )
                         }
@@ -350,7 +347,6 @@ function updateSubscriptionDetailsIfFails ( req, res ) {
                   EmailTemplateName = "AutoRenewal"
                 }
               }
-              //console.log("usersSubscription",usersSubscription)
               //return false;
               //Update user details
               User.updateOne({ _id: userProfile._id }, { $set: { subscriptionDetails : usersSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
@@ -382,10 +378,8 @@ function updateSubscriptionDetailsIfFails ( req, res ) {
                       }
                       
                       sendEmail(mailOptions)
-                      console.log("email sent")
                       res.json({received: true});
                     } else {
-                      console.log("email sent")
                       res.json({received: true});
                     }
                   })
@@ -452,7 +446,6 @@ function autoRenewalOnReminderEmail() {
               freeAccessRemainingDays   = '1 day'
             }
             
-            //console.log("userFullName",userFullName,"email: -",val.username,  "created on :-",val.createdOn,  'freePremiumAccessRemainDays:- ',daysRemainingToExpire ,"reminder:-",whichDayEmailReminderSend);
             //send email reminder if above conditions true
             if( sendEmailReminder && whichDayEmailReminderSend != null ) {
               let reminderSentDays = []
@@ -486,7 +479,7 @@ function autoRenewalOnReminderEmail() {
                     if( response ) {
                       User.updateOne({ _id: val._id }, { $set: { renewalOnReminderEmailDay: reminderSentDays } }, function (err, updated) {
                         if ( !err ) {
-                          console.log("updated")
+                          //console.log("updated")
                         }
                       })
                     }
@@ -569,7 +562,6 @@ function autoRenewalOffReminderEmail() {
               freeAccessRemainingDays   = '1 day'
             }
             
-            //console.log("userFullName",userFullName,"email: -",val.username,  "created on :-",val.createdOn, 'daysRemainingToExpire:-',daysRemainingToExpire, 'freePremiumAccessRemainDays:- ',freeAccessRemainingDays ,"reminder:-",whichDayEmailReminderSend);
             //send email reminder if above conditions true
             if( sendEmailReminder && whichDayEmailReminderSend != null ) {
               let reminderSentDays = []
@@ -603,7 +595,7 @@ function autoRenewalOffReminderEmail() {
                     if( response ) {
                       User.updateOne({ _id: val._id }, { $set: { renewalOffReminderEmailDay: reminderSentDays } }, function (err, updated) {
                         if ( !err ) {
-                          console.log("updated")
+                          //console.log("updated")
                         }
                       })
                     }
@@ -660,8 +652,7 @@ function beforeSubscriptionReminderEmail() {
           sendEmailReminder       = true
           whichDayEmailReminderSend  = 1
           freeAccessRemainingDays = '1 day'
-        }
-        //console.log("userType",val.userType,"email: -",val.username,  "created on :-",val.createdOn,  " date diff:-",diff, 'freePremiumAccessRemainDays:- ',freePremiumAccessRemainDays ,"reminder:-",whichDayEmailReminderSend);
+        }        
         //send email reminder if above conditions true
         if( sendEmailReminder && whichDayEmailReminderSend != null ) {
           let reminderSentDays = []
@@ -687,7 +678,7 @@ function beforeSubscriptionReminderEmail() {
                 if( response ) {
                   User.updateOne({ _id: val._id }, { $set: { upgradeReminderEmailDay: reminderSentDays } }, function (err, updated) {
                     if ( !err ) {
-                      console.log("updated")
+                      //console.log("updated")
                     }
                   })
                 }
@@ -851,21 +842,14 @@ async function deceasedCustomersReminders(req, res){
                       insert.save();
                     }     
                   }
-                  //console.log('FOR LOOP '+i)             
                 }
               }
-              //callback()     
             }//weekly For loop
-           //}, (err) => {
-        //     console.log("inserted array >>>>>>>>>>>>>>>>",err)
-          
-        //  })
           }//Accound should be close for these customers.          
           testingmessage = '';
           }     
         });
       }else{
-        console.log('Record not found')  
       }
     }
   })
@@ -979,13 +963,7 @@ async function featuredAdvisorReminder(req, res){
                   let replyContnt = [];
                   replyContnt['zipcodes'] = zips;
                   replyContnt['days'] = days;
-                  replyContnt['toDate'] = key.toDate;
-                  // if(key.toDate){
-                  //   console.log('key.toDate',key.toDate)
-                  //   let toDate2 = key.toDate.split("T"); console.log('key.toDate ))))) ',toDate2)
-                  //   toDate1 = toDate2[0];//+'/'+toDate2[1]+'/'+toDate2[0];
-                  //   replyContnt['toDate'] = toDate1;
-                  // }
+                  replyContnt['toDate'] = key.toDate;                
                   await sendFeaturedAdvisorMail('AdviserFeturedRemiderEmail',userData.username,userData.firstName,replyContnt);
                 }
                await advertisement.updateOne({_id:key._id},{remiderMailstatus:remiderMail});

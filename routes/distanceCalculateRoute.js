@@ -16,17 +16,12 @@ function calculateZipcodeDistance(req, res) {
   
   var from = zipcodes.lookup(query.from);
   var to = zipcodes.lookup(query.to);
-  console.log("From >> ", from,' TO >>',to)
-
 
   var dist = zipcodes.distance(query.from,query.to);
-  console.log(" dist  >> ", dist)
 
   var distkm = zipcodes.toKilometers(dist);
-  console.log(" dist km >> ", dist)
 
-  var miles = zipcodes.toMiles(distkm); 
-  console.log(" dist miles >> ", miles)
+  var miles = zipcodes.toMiles(distkm);   
 
 }
 

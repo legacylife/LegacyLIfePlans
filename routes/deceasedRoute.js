@@ -325,7 +325,6 @@ function revokeDeceased(req, res) {
           res.status(401).send(resFormat.rError(err));
         } else {
           let trustId = advisorId = adminId = '';
-          console.log('deceasedDetails>>>>>',deceasedDetails,'revokeId>>>>',revokeId,'userType>>>',userType)     
           let searchDeceasedQuery = {};  
           if(userType=='customer'){
             trustId = revokeId;
@@ -342,12 +341,10 @@ function revokeDeceased(req, res) {
           if(searchDeceasedQuery){
             MarkDeceaseddata = await MarkDeceased.findOne(searchDeceasedQuery);
           }
-          console.log('MarkDeceaseddata',MarkDeceaseddata,'searchDeceasedQuery',searchDeceasedQuery)
           if (MarkDeceaseddata == null) {
             var insert = new MarkDeceased();
             insert.customerId = deceasedDetails.customerId;
             insert.userType = userType;
-            console.log('HERE I AM-----------------',MarkDeceaseddata,'userType>>>',userType)
             if(advisorId){    
               insert.advisorId = advisorId;
             }
@@ -363,7 +360,6 @@ function revokeDeceased(req, res) {
             insert.modifiedOn = new Date();
             insert.save();
           }else{
-            console.log('>>>>>>>>>>> here i am >>>>>>>>>>>>',MarkDeceaseddata,'>>>>>',searchDeceasedQuery)
             let proquery = {status:"Revoke",revokeId:revokeId,'modifiedOn': new Date()};
             //{customerId:deceasedDetails.customerId,status: { $ne: 'Revoke' }
             await MarkDeceased.updateOne(searchDeceasedQuery,{$set: proquery })

@@ -590,7 +590,6 @@ function deleteDigitalPublication(req, res) {
   let { subFolderName } = req.body
 
   DigitalPublications.findOne(query, fields, function (err, ElectronicMediaInfo) {
-    console.log("asaHDKJhasdkhj >>>>"+ElectronicMediaInfo)
     if (err) {
       res.status(401).send(resFormat.rError(err))
     } else {

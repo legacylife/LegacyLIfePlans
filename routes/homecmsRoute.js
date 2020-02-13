@@ -169,7 +169,7 @@ function viewAdvisordetails (req, res) {
           {"$sort":{"distance":1}}      
         ], async function (err, usersData) {
           if(err) {
-            console.log(err);console.log(JSON.stringify(res));
+            console.log('geoNear>>>',err);console.log('geoNear>>>>>',JSON.stringify(res));
           }else{
             if(usersData.length>0){
             }else{

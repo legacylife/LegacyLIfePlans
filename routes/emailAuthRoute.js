@@ -160,7 +160,6 @@ router.post('/deleteThread', function(req,res){
         if (error) {
           res.status(401).send(resFormat.rError(error))
         } else {
-          console.log(response.body)
           res.send(resFormat.rSuccess(body.data))
         }
       })//end of request
@@ -234,7 +233,6 @@ router.post('/sendEmail', function(req,res){
             options.body.creds = user.officeCreds
           }
           request(options, function (error, response, body) {
-            console.log(body)
             if (error) {
               res.status(401).send(resFormat.rError(error))
             } else {
@@ -287,7 +285,6 @@ router.use('/getAttachmentContent', function(req,res){
         if (error) {
           res.status(401).send(resFormat.rError(error))
         } else {
-          console.log(response.body)
           res.send(resFormat.rSuccess(body.data))
         }
       })

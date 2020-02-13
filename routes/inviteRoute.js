@@ -105,7 +105,6 @@ async function inviteMembers(req, res) {
         }
        
         if (today > lastInviteEndDate && today < inviteEndDate) {
-            //console.log("today >>>>>>>",today," <<<<<< lastInviteEndDate >>>>>",lastInviteEndDate," <<<<<< inviteEndDate >>>>>",inviteEndDate)
             inviteEndFlag = true
         }
 
@@ -142,20 +141,11 @@ async function inviteMemberCheckEmail(req, res) {
         result = { "status": true }
     }
 
-    console.log("userExistData >>>>", userExistData)
-
-
     let inviteExistData = await Invite.find({ "email": { '$regex': new RegExp(escapeRegExp(paramData.email)), '$options': 'i' } });
     if (inviteExistData && inviteExistData.length > 0) {
         result = { "status": true }
     }
-
-    console.log("userExistData >>>>", userExistData)
-    console.log("result >>>>", result)
-
     res.status(200).send(resFormat.rSuccess(result))
-
-
 }
 
 function escapeRegExp(string) {
@@ -179,8 +169,7 @@ async function getInviteMembersCount(req, res) {
             freePremiumDays = userDetails[0]['freeTrialPeriod'] ? userDetails[0]['freeTrialPeriod']['bfrSubFreePremiumDays'] : 0,
             targetCount = userDetails[0]['refereAndEarnSubscriptionDetail'] ? userDetails[0]['refereAndEarnSubscriptionDetail']['targetCount'] : 0,
             extendedDays = userDetails[0]['refereAndEarnSubscriptionDetail'] ? userDetails[0]['refereAndEarnSubscriptionDetail']['noOfDaysExtended'] : 0
-
-        //console.log("completedDays",completedDays,"freePremiumDays",freePremiumDays)
+        
         if (completedDays <= freePremiumDays) {
             endDate.setDate(endDate.getDate() + (freePremiumDays));
         }
@@ -195,7 +184,7 @@ async function getInviteMembersCount(req, res) {
         else {
             endDate.setMonth(endDate.getMonth() + (completedMonths + 1));
         }
-        console.log("startDate", startDate, "endDate", endDate)
+        
         let remainingDays = Math.abs(Math.round(getDateDiff(today, moment(endDate).toDate(), 'asDays')))
         let queryparam = {
             inviteById: paramData.inviteById,
@@ -204,19 +193,15 @@ async function getInviteMembersCount(req, res) {
         //paramData.createdOn = { $gte: new Date(startDate) , $lte: new Date(endDate) }
 
         let data = await Invite.find(queryparam)
-        console.log("data--->",data,"-----completedMonths ===== ", completedMonths, "\n createdOn ===== ", userDetails[0]['createdOn'], "\n paramData ===== ", paramData, "remainingDays", remainingDays, "extendedDays", extendedDays)
 
         if (data != null) {
             resultCount = data.length
         }
         let completedDaysToRegister = Math.abs(getDateDiff(today, moment(userCreatedOn).toDate(), 'asDays'))
-        //console.log("\n freePrimiumExpireDays",freePrimiumExpireDays)
         /* if( completedDaysToRegister > 30 ) {
             let newDate = new Date(userCreatedOn)
                 newDate.setMonth( newDate.getMonth() + completedMonths)
                 newDate.setDate( newDate.getDate() + extendedDays)
-            
-            console.log("\n newDate ==== ",newDate)
             remainingDays = Math.abs(Math.round(getDateDiff( moment(newDate).toDate(), today, 'asDays' )))//remainingDays + extendedDays
         }
         else{ */

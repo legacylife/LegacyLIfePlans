@@ -83,7 +83,6 @@ async function create (req, res) {
       modifiedBy  : fromId,
       modifiedOn  : new Date()
   }
-  //console.log("====insert_obj====",insert_obj)
   let newCoachDetails = new CoachCorner(insert_obj)
       newCoachDetails.save(function(err, newrecord) {
         if (err) {
@@ -158,16 +157,13 @@ async function view(req, res) {
         // if(fromId){
         //   isViewedDetails     = totalViewCount > 0 ? currentViewDetails.some( obj => { return obj.userId === fromId} ) : false   
         // }
-        //console.log('updateParam>>>>',updateParam)
     if( !isViewedDetails ) {
       let updateParam = { "userId" : fromId,
                           "userIpAddress" : userIpAddress,
                           "viewedOn" : new Date
                         },
           queryParam  = query;
-          //console.log('updateParam>>>>',updateParam)
           currentViewDetails.push(updateParam);
-          //console.log('currentViewDetails Param>>>>',currentViewDetails)
       let updateCount = await updateViewCount( queryParam, { viewDetails: currentViewDetails} )
       if( updateCount ) {
         totalViewCount = totalViewCount + 1

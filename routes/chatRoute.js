@@ -86,7 +86,6 @@ function loginUser(req, res) {
         chatInfo: chatInfolist
       }
     ];
-  //  console.log('user######################################',user)
     res.send(user)
   });
 }
@@ -190,10 +189,8 @@ async function chatCollection(req, res) {
         }
       }
   } else {
-  //  chating = await chat.updateOne({_id:chating._id},{modifiedOn:new Date()});
     chatCollection = chating;
   }    
-  //console.log('chatCollection',chatCollection)
   res.send(chatCollection);
 }
 
@@ -203,7 +200,6 @@ async function saveMessage(req, res) {
   if (chating!=null) { 
     io.on('connection', (socket) => {
       socket.on('new-message', (message) => {
-        console.log("app js message",message);
       });
    }); 
     await chat.updateOne({_id:query._id},{$push:{chats:message}});

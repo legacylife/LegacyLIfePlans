@@ -15,7 +15,6 @@ function zipcodesList(req, res) {
   if (search) {
     search = search.split("'");
     query = {'ZIP':{'$regex':search[1]}};
-    console.log("search....",query)
   } 
 
   location.find(query, {ZIP:1}, function(err, locationList) {
