@@ -52,19 +52,7 @@ export class advisorlistComponent implements OnInit {
       } else {
         this.advisorlistdata = this.rows = this.temp = result.data.userList.map(row => {
           if (row.userType != 'sysAdmin') {
-            //let subscriptionData = {}
-            let subscriptionData = this.subscriptionDetails(row);
-            row['subscriptionData'] = {
-              status: subscriptionData.subscriptionStatus,
-              endDate: subscriptionData.userSubscriptionEnddate ? subscriptionData.userSubscriptionEnddate : ""
-            }
-            /*this.subscriptionservice.checkSubscriptionAdminPanel(row, (returnArr) => {
-              row['subscriptionData'] = {
-                status: returnArr.isAccountFree && !returnArr.isSubscribePlan ? 'Trial' : (returnArr.isSubscribePlan && !returnArr.isPremiumExpired ? 'Paid' : 'Expired'),
-                endDate: returnArr.subscriptionExpireDate
-              }
-            })*/
-
+            row['subscriptionData'] = this.subscriptionservice.checkSubscriptionAdminPanel(row);
           }
           return row;
         })
@@ -127,51 +115,5 @@ export class advisorlistComponent implements OnInit {
     this.rows = rows;
 
   }
-
-
-  subscriptionDetails(row) {
-    let userSubscriptionEnddate = row.userSubscriptionEnddate;
-    let planName = row.userType == 'advisor' ? 'Standard' : 'Legacy Life';
-    let subscriptionStatus = "Paid";
-
-
-    let subscriptions = row.subscriptionDetails ? row.subscriptionDetails : null;
-    if (subscriptions && subscriptions.length > 0) {
-
-      let currentSubscription = subscriptions[subscriptions.length - 1];
-      if (currentSubscription.status == 'trialing') {
-        subscriptionStatus = "Trialing";
-        planName = 'Free';
-      }
-      else if (currentSubscription.status == 'canceled') {
-        subscriptionStatus = "Canceled";
-      }
-      else {
-        subscriptionStatus = "Paid";
-      }
-    }
-    else {
-      subscriptionStatus = "Trialing";
-      planName = 'Free';
-    }
-
-    if (userSubscriptionEnddate && userSubscriptionEnddate != '') {
-      let endDate = new Date(userSubscriptionEnddate)
-      let today = new Date(this.today)
-      if (endDate < today) {
-        subscriptionStatus = "Expired";
-      }
-    }
-
-    let subscriptionData = {
-      "userSubscriptionEnddate" : userSubscriptionEnddate,
-      "subscriptionStatus" : subscriptionStatus,
-      "planName" : planName
-    }
-
-    return subscriptionData;
-
-  }
-
 
 }

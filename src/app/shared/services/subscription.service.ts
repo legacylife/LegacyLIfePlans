@@ -215,11 +215,11 @@ export class SubscriptionService {
               }
               else{
                 if( isReferAndEarn && this.usertype == 'advisor' ) {
-                  let result        = await this.getLastInviteMembersCount(),
-                      extendedDays  = result.data.extendedDays
+                  let inviteResult        = await this.getLastInviteMembersCount(),
+                      extendedDays  = inviteResult.data.extendedDays
                     
-                  if( result.data.count >= result.data.targetCount ) {
-                    extendedDays     = bfrSubAdvPremiumAccess + (extendedDays * (result.data.completedMonths > 1 ? result.data.completedMonths : 1))
+                  if( inviteResult.data.count >= inviteResult.data.targetCount ) {
+                    extendedDays     = bfrSubAdvPremiumAccess + (extendedDays * (inviteResult.data.completedMonths > 1 ? inviteResult.data.completedMonths : 1))
                     isProFreeAdviser = true
                     expireDate       = moment( new Date(localStorage.getItem("endUserCreatedOn"))).add(extendedDays,"days")
                   }
@@ -340,25 +340,74 @@ export class SubscriptionService {
     return result
   }
 
+  checkSubscriptionAdminPanel(row) {
+    let userSubscriptionEnddate = row.userSubscriptionEnddate;
+    let planName = row.userType == 'advisor' ? 'Standard' : 'Legacy Life';
+    let subscriptionStatus = "Paid";
 
-  checkSubscriptionAdminPanel = async (legacyUserData, callback) => {
-    this.userId = legacyUserData.userId
-    this.usertype = legacyUserData.userType
-    let checkSubscription = false;
-      if(this.usertype=='customer'){ //If Customer Wants to create his legacy then we check subscription New condition added By PK
-        checkSubscription = true;
-      } else if(this.usertype=='advisor'){
-        checkSubscription = true;
+
+    let subscriptions = row.subscriptionDetails ? row.subscriptionDetails : null;
+    if (subscriptions && subscriptions.length > 0) {
+
+      let currentSubscription = subscriptions[subscriptions.length - 1];
+      if (currentSubscription.status == 'trialing') {
+        subscriptionStatus = "Trialing";
+        planName = 'Free';
       }
-   
-      const req_vars = {
-        query: Object.assign({ _id: this.userId, userType: this.usertype }, {})
+      else if (currentSubscription.status == 'canceled') {
+        subscriptionStatus = "Canceled";
       }
- 
-    if(checkSubscription){
-        await this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe( async (result) => {
+      else {
+        subscriptionStatus = "Paid";
+      }
+    }
+    else {
+      subscriptionStatus = "Trialing";
+      planName = 'Free';
+    }
+
+    if (userSubscriptionEnddate && userSubscriptionEnddate != '') {
+      let endDate = new Date(userSubscriptionEnddate)
+      let today = new Date(this.today)
+      if (endDate < today) {
+        subscriptionStatus = "Expired";
+        // check end date with premium extended date for customer after subscription or free trial expire
+        if(row.userType == 'customer'){
+          if( row.freeTrialPeriod ) {
+            let bfrSubCustPremiumAccess = Number(row.freeTrialPeriod.bfrSubFreePremiumDays) // Before subscription customer's premium access days
+            let bfrSubCustFreeAccess    = Number(row.freeTrialPeriod.aftrSubFreeDays) // Before premium access / subscription customer's free access days
+            let bfrSubAdvPremiumAccess  = Number(row.freeTrialPeriod.bfrSubFreePremiumDays)  // Before subscription adviser's premium access days
+            let freeTrialPeriodStatus   = row.freeTrialPeriod.status == 'On' ? true : false
+            if(freeTrialPeriodStatus){
+              let expireDate          = moment( new Date(endDate)).add(bfrSubAdvPremiumAccess,"days")
+              let freeAccessDiff  = this.getDateDiff( this.today, expireDate.toDate() )
+              if( freeAccessDiff >= 0 ) {
+                subscriptionStatus = "Premium extended";
+                userSubscriptionEnddate = expireDate.toISOString()
+              }
+            }
+          }          
+        }
+      } 
+    }
+
+    let subscriptionData = {
+      "userSubscriptionEnddate" : userSubscriptionEnddate,
+      "planName" : planName,
+      'status': subscriptionStatus,
+      'endDate': userSubscriptionEnddate ? userSubscriptionEnddate : ""
+    }
+
+    return subscriptionData;
+
+  }
+
+
+
+  checkSubscriptionAdminPanelpk = async (result, callback) => {
+        // console.log('data subscription service',result)
           let targetCount = 0;
-          let userData                = result.data.userProfile,
+          let userData                = result,
               bfrSubCustPremiumAccess = 0, // Before subscription customer's premium access days
               bfrSubCustFreeAccess    = 0, // Before premium access / subscription customer's free access days
               bfrSubAdvPremiumAccess  = 0, // Before subscription adviser's premium access days
@@ -409,7 +458,7 @@ export class SubscriptionService {
           else if(userData.subscriptionDetails && userData.subscriptionDetails.length == 0 && userData.refereAndEarnSubscriptionDetail && userData.refereAndEarnSubscriptionDetail.status == 'Active' && isReferAndEarnStatus == 'No'){
             subscriptionEndDate = result.userSubscriptionEnddate;
           }
-
+       
           /**
            * Setting all variables for displaying the subscription details on account setting page
            */
@@ -421,12 +470,11 @@ export class SubscriptionService {
           let isReferAndEarn        = isReferAndEarnStatus && isReferAndEarnStatus == 'Yes' ? true : false
           let isProFreeAdviser      = true;
           //If user not taken any paid subscription
-
           if( !this.isSubscribedBefore && freeTrialPeriodStatus ) {
             this.isAccountFree    = true
             this.isSubscribePlan  = false
             diff                  = this.getDateDiff( this.userCreateOn.toDate(), this.today )
-            
+          
             //check if user completed or not free 30 days (i.e aftRegistrationDaysDiff) for registration
             if( diff <= aftRegistrationDaysDiff ) {
               defaultSpace = 7
@@ -456,14 +504,7 @@ export class SubscriptionService {
               else{
                 expireDate            = moment( new Date(userData.createdOn)).add(bfrSubCustPremiumAccess,"days")
               }
-              this.isPremiumExpired = false
-
-              if(this.usertype == 'advisor') {
-                this.planName = 'Standard'
-              }
-              else{
-                this.planName = 'Legacy Life'
-              }
+              this.isPremiumExpired = false             
             }
             else {
               if( this.usertype == 'customer' ) {
@@ -472,11 +513,11 @@ export class SubscriptionService {
               }
               else{
                 if( isReferAndEarn && this.usertype == 'advisor' ) {
-                  let result        = await this.getLastInviteMembersCount(),
-                      extendedDays  = result.data.extendedDays
-                      targetCount = result.data.targetCount
-                  if( result.data.count >= result.data.targetCount ) {
-                    extendedDays     = bfrSubAdvPremiumAccess + (extendedDays * (result.data.completedMonths > 1 ? result.data.completedMonths : 1))
+                      let inviteResult        = await this.getLastInviteMembersCount(),
+                      extendedDays  = inviteResult.data.extendedDays ? inviteResult.data.extendedDays : 0;
+                      targetCount = inviteResult.data.targetCount ? inviteResult.data.targetCount : 0;
+                  if( inviteResult.data.count >= targetCount ) {
+                    extendedDays     = bfrSubAdvPremiumAccess + (extendedDays * (inviteResult.data.completedMonths > 1 ? inviteResult.data.completedMonths : 1))
                     isProFreeAdviser = true
                     expireDate       = moment( new Date(userData.createdOn)).add(extendedDays,"days")
                   }
@@ -491,10 +532,12 @@ export class SubscriptionService {
                       let registrationCompleteDays = this.getDateDiff( moment( new Date(userData.createdOn)).toDate(), this.today )
                       isProFreeAdviser = registrationCompleteDays <= bfrSubAdvPremiumAccess ? true: false
                     }
-                  }                                
+                  }           
                 }
                 else{
                   expireDate  = moment( new Date(userData.createdOn)).add(bfrSubAdvPremiumAccess,"days")
+                  // localStorage.setItem('endUserProFreeSubscription', 'no');
+                  // localStorage.setItem('endUserProSubscription', 'no');
                 }
               }
               this.planName         = 'Free'
@@ -521,11 +564,11 @@ export class SubscriptionService {
               else{
                 this.planName         = 'Legacy Life'
               }
-              
             }
             else {
               if( this.usertype == 'customer' ) {
                 expireDate          = this.userSubscriptionDate.add(bfrSubCustFreeAccess,"days")
+                let freeAccessDiff  = this.getDateDiff( this.today, expireDate.toDate() )
               }
               else{
                 expireDate            = this.userSubscriptionDate
@@ -535,6 +578,19 @@ export class SubscriptionService {
               this.planName         = 'Free'
             }
             this.subscriptionExpireDate = expireDate.format("DD/MM/YYYY")
+          }
+          // expire date difference 
+          let difference = 0
+          let expiredStatus = '';
+          if(expireDate && this.usertype == 'customer'){
+            difference = this.getDateDiff( this.today, expireDate.toDate() )
+          }
+          if(expireDate && this.usertype == 'advisor'){
+            difference = this.getDateDiff( this.today, this.userSubscriptionDate.toDate() )
+          }
+
+          if(difference < 0){
+            expiredStatus = 'expired';
           }
 
           let returnArr = { userCreateOn:  this.userCreateOn,
@@ -553,11 +609,9 @@ export class SubscriptionService {
                             addOnSpace: Number( addOnSpace ),
                             paymentStatus: subscriptionStatus,
                             targetCount: targetCount,
-                            diff: diff
-                          }
-          callback(returnArr)
-        })
-    }    
+                            expiredStatus:expiredStatus
+                          }        
+         callback(returnArr)
   }
 
   checkSubscriptionAdminPanelOLD = (userDetails,callback) => {

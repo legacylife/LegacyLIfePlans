@@ -217,7 +217,7 @@
                 <div fxLayout="row" fxFlex="100">
                   <h6 class="m-0 mr-1">Plan Expire Date</h6>
                   <span fxFlex></span>
-                  <div fxFlex="40">{{(row?.userSubscriptionEnddate && row?.userSubscriptionEnddate != null) ? (row?.userSubscriptionEnddate  | date: 'MM/dd/yyyy') : '--'}}</div>
+                  <div fxFlex="40">{{userSubscriptionEnddate ? (userSubscriptionEnddate  | date: 'MM/dd/yyyy') : '--'}}</div>
                 </div>
               </mat-list-item>
               <mat-list-item class="">
