@@ -339,8 +339,12 @@ export class SubscriptionService {
     let result = await this.userapi.apiRequest('post', 'invite/get-last-invite-members-count', params).toPromise()
     return result
   }
-
-  checkSubscriptionAdminPanel(row) {
+  
+  /**
+   * 
+   * Functiona to display customer & advisor subscription details on listing & view detail page
+   */
+  viewSubscriptionAdminPanel(row) {
     let userSubscriptionEnddate = row.userSubscriptionEnddate;
     let planName = row.userType == 'advisor' ? 'Standard' : 'Legacy Life';
     let subscriptionStatus = "Paid";
@@ -401,12 +405,9 @@ export class SubscriptionService {
     return subscriptionData;
 
   }
-
-
-
   
 
-  checkSubscriptionAdminPanelOLD = (userDetails,callback) => {
+  checkSubscriptionAdminPanel = (userDetails,callback) => {
     let returnArr = {}
     if(userDetails.userType != 'sysAdmin') {
 

@@ -111,7 +111,7 @@ export class userviewComponent implements OnInit,AfterViewInit  {
         }
 
         if (this.row.userType != 'sysAdmin') {
-          this.row['subscriptionData'] = this.subscriptionservice.checkSubscriptionAdminPanel(this.row);
+          this.row['subscriptionData'] = this.subscriptionservice.viewSubscriptionAdminPanel(this.row);
           this.planName         = this.row['subscriptionData']['planName'];
           this.subscriptionStatus = this.row['subscriptionData']['status'];
           this.userSubscriptionEnddate = this.row['subscriptionData']['endDate'];

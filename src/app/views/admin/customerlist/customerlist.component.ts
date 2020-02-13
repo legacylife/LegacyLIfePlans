@@ -68,7 +68,7 @@ export class customerlistComponent implements OnInit {
       } else {
         this.rows = this.temp = result.data.userList.map(row => {
           if (row.userType != 'sysAdmin') {
-            row['subscriptionData'] = this.subscriptionservice.checkSubscriptionAdminPanel(row);
+            row['subscriptionData'] = this.subscriptionservice.viewSubscriptionAdminPanel(row);
           }
           return row;
         })
