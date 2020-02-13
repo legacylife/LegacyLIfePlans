@@ -60,6 +60,9 @@
                     flex-shrink: 0;
                     overflow: hidden;
                     margin: 15px 0px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
                 .details{
                     font-size: 16px; 
