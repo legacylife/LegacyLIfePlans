@@ -10,6 +10,7 @@ import { CustomValidators } from 'ng2-validation';
 import { ChangePassComponent } from './change-pass/change-pass.component';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { map, delay } from 'rxjs/operators';
+import { debounce } from 'lodash'
 import { Subscription, Observable, of } from 'rxjs';
 import { states } from '../../../state';
 import { FileUploader } from 'ng2-file-upload';
@@ -528,7 +529,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     })
   }
 
-  public fileOverBase(e: any): void {
+  public fileOverBase = debounce((e: any) => {
     this.hasBaseDropZoneOver = e;
     this.fileErrors = [];
     this.uploader.queue.forEach((fileoOb) => {
@@ -561,7 +562,8 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.currentProgessinPercent = 0;
       }
     }
-  }
+  }, 300)
+
 
   updateProgressBar() {
     let totalLength = this.uploader.queue.length;

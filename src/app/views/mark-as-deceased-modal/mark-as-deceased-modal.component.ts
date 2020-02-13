@@ -7,7 +7,7 @@ import { MatDialog, MatSnackBar,MAT_DIALOG_DATA } from '@angular/material';
 import { Router } from '@angular/router';
 import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../config';
-import { cloneDeep } from 'lodash'
+import { cloneDeep,debounce } from 'lodash'
 const URL = serverUrl + '/api/documents/deceasedDocuments';
 @Component({
   selector: 'app-mark-as-deceased-modal',
@@ -172,7 +172,7 @@ markAsDeceased() {
 }
 
 
-public fileOverBase(e: any): void {
+public fileOverBase = debounce((e: any) => {
       this.uploadingDocs = true;
       this.hasBaseDropZoneOver = e;
       this.fileErrors = [];
@@ -228,7 +228,7 @@ public fileOverBase(e: any): void {
           }
         }
        }
-    }
+    },300)
     
     updateProgressBar(){
       let uploaderLength = 0;  let uploaderCopyLength = 0;

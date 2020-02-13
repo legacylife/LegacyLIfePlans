@@ -15,7 +15,7 @@ import "rxjs/add/operator/map";
 import { serverUrl, s3Details } from '../../../config';
 const URL = serverUrl + '/api/documents/advisorDocument';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
-import { forEach } from "lodash";
+import { forEach,debounce } from "lodash";
 const filePath = s3Details.url+'/'+s3Details.advisorsDocumentsPath;
 @Component({
   selector: 'app-business-info',
@@ -238,7 +238,7 @@ export class BusinessInfoComponent implements OnInit {
     })
   }
 
-  public fileOverBase(e:any):void {    
+  public fileOverBase = debounce((e: any) => {
     this.hasBaseDropZoneOver = e;
     var cnt = 0;
     this.fileErrors = [];
@@ -274,7 +274,7 @@ export class BusinessInfoComponent implements OnInit {
         //this.currentProgessinPercent = 0;
       }
     }
-  }
+  }, 300)
 
   updateProgressBar(){
     let uploaderLength = 0;  

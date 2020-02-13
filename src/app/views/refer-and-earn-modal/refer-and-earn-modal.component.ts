@@ -7,7 +7,7 @@ import { UserAPIService } from 'app/userapi.service';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
 import { FileUploader } from 'ng2-file-upload';
-import { cloneDeep } from 'lodash'
+import { cloneDeep,debounce } from 'lodash'
 import { serverUrl, s3Details } from 'app/config';
 const URL = serverUrl + '/api/documents/invite';
 const filePath = s3Details.url + '/' + s3Details.inviteDocumentsPath;
@@ -145,7 +145,7 @@ export class ReferAndEarnModalComponent implements OnInit {
     })
   }
 
-  public fileOverBase(e: any): void {
+  public fileOverBase = debounce((e: any) => {
     this.hasBaseDropZoneOver = e;
     this.fileErrors = [];
     //console.log(" 1 ==> ",this.uploader.queue.length);
@@ -191,7 +191,7 @@ export class ReferAndEarnModalComponent implements OnInit {
         }
       }
     }
-  }
+  },300)
 
   updateProgressBar(){
     let totalLength = this.uploaderCopy.queue.length + this.uploader.queue.length;

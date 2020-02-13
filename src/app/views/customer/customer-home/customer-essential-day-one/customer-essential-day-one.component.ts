@@ -48,6 +48,8 @@ export class CustomerEssentialDayOneComponent implements OnInit {
   shareLegacFlag:boolean=false;  
   LegacyPermissionError:string="You don't have access to this section";
   shareLegacyFlag:boolean=false;  
+  isProUser = false;
+  isFreeProuser = false;
   //this.LegacyPermissionError ="You don't have access to this section, Legacy details is in lockout period";
   //this.LegacyPermissionError ="You don't have access to this section, Legacy owner is Deceased";
   constructor(
@@ -77,6 +79,12 @@ export class CustomerEssentialDayOneComponent implements OnInit {
       });
       this.showTrusteeCnt = false;this.shareLegacFlag = true;
     }else{      
+      this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+      this.isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
+      if (!this.isProUser && !this.isFreeProuser) {
+        this.router.navigateByUrl('/customer/dashboard');
+      }
+
       this.userapi.getFolderInstructions('My_Essentials', (returnData) => {
         this.instruction_data = returnData;
         if(this.instruction_data){this.instruction_data_flag = true;}

@@ -8,7 +8,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../../config';
-import { cloneDeep } from 'lodash';
+import { cloneDeep,debounce } from 'lodash';
 import { FileHandlingService } from 'app/shared/services/file-handling.service';
 import { funeralOptions } from '../../../../../selectList';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
@@ -347,7 +347,7 @@ export class FuneralServiceModalComponent implements OnInit {
       })
 }
 
-public fileOverBase(e: any): void {
+public fileOverBase = debounce((e: any) => {
   this.currentProgessinPercent = 0;
   this.hasBaseDropZoneOver = e;
   this.fileErrors = [];
@@ -424,7 +424,7 @@ public fileOverBase(e: any): void {
     }
   })
 }
-}
+},300)
 
 updateProgressBar(){
   let uploaderLength = 0;  let uploaderCopyLength = 0;

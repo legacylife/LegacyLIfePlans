@@ -69,29 +69,11 @@ export class customerlistComponent implements OnInit {
         this.rows = this.temp = result.data.userList.map(row => {
           if (row.userType != 'sysAdmin') {
             //let subscriptionData = {}
-            this.subscriptionservice.checkSubscriptionAdminPanel({userId:row._id,userType:row.userType},( returnArr )=> {
-              let subscriptionExpireDate = '';
-              let subscriptionStatus = returnArr.planName+' Plan';
-              let targetCount = returnArr.targetCount;
-              if(returnArr.subscriptionExpireDate) {
-                 console.log('returnArr>>>',returnArr.subscriptionExpireDate,'--',returnArr.paymentStatus,'-----',returnArr.planName)
-                 subscriptionExpireDate = returnArr.subscriptionExpireDate                 
-              }
-              row['subscriptionData'] = {
-                status: subscriptionStatus,
-                targetCount: targetCount,
-                endDate: subscriptionExpireDate ? subscriptionExpireDate : ''
-              }
-                // this.isPremiumExpired = returnArr.isPremiumExpired;
-                // this.isSubscribePlan = returnArr.isSubscribePlan;
-                // this.planName = returnArr.planName;
-                // this.subscriptionExpireDate = returnArr.subscriptionExpireDate;
-            });
-            // let subscriptionData = this.subscriptionDetails(row);
-            // row['subscriptionData'] = {
-            //   status: subscriptionData.subscriptionStatus,
-            //   endDate: subscriptionData.userSubscriptionEnddate ? subscriptionData.userSubscriptionEnddate : ''
-            // }
+            let subscriptionData = this.subscriptionDetails(row);
+            row['subscriptionData'] = {
+              status: subscriptionData.subscriptionStatus,
+              endDate: subscriptionData.userSubscriptionEnddate ? subscriptionData.userSubscriptionEnddate : ''
+            }
           }
           return row;
         })

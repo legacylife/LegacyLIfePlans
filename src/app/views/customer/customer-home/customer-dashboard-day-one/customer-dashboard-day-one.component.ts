@@ -38,7 +38,6 @@ export class CustomerDashboardDayOneComponent implements OnInit {
     this.userId = localStorage.getItem("endUserId");
     this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
     this.isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
-
     this.getFileActivityLogList();
     this.getTrusteeList();
     this.getAdvisorList();
@@ -173,6 +172,8 @@ export class CustomerDashboardDayOneComponent implements OnInit {
   }
 
   checkLegacySetting(path) {
+    this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+    this.isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
     if (!this.isProUser && !this.isFreeProuser) {
       let dialogRef: MatDialogRef<any> = this.dialog.open(legacySettingModalComponent, {     
         width: '720px',

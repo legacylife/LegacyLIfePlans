@@ -118,10 +118,6 @@ export class UserAuthGuard implements CanActivate {
     //if (pathArray[1] != 'signin' && pathArray[1] != 'error') {
         this.userIdle.onTimeout().subscribe(() => this.stopWatching(true));
     //}
-    if (pathArray[1] == 'signin' || pathArray[1] == 'error') {
-      this.stopWatching(true);
-      console.log('HERE the Error Page',pathArray)
-    }
   }
 
   stop() {

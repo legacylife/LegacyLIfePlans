@@ -11,7 +11,7 @@ import { documentTypes } from '../../../../selectList';
 import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../config';
 import { states } from '../../../../state';
-import { cloneDeep } from 'lodash'
+import { cloneDeep,debounce } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 import { FileHandlingService } from 'app/shared/services/file-handling.service';
 const URL = serverUrl + '/api/documents/myEssentialsID';
@@ -509,7 +509,7 @@ export class EssenioalIdBoxComponent implements OnInit {
         })
   }
 
-  public fileOverBase(e: any): void {
+  public fileOverBase = debounce((e: any) => {
       this.hasBaseDropZoneOver = e;
       this.fileErrors = [];
       let totalItemsToBeUpload = this.uploader.queue.length,
@@ -588,7 +588,7 @@ export class EssenioalIdBoxComponent implements OnInit {
           }
         }
       })
-    }
+    }, 300)
 
     updateProgressBar(){
       let uploaderLength = 0;  let uploaderCopyLength = 0;

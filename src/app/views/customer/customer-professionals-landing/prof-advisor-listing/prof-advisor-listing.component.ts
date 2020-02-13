@@ -153,6 +153,7 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
     }
 
     //if(loader){ 
+      this.loader.close();
       this.loader.open();
   //  }
     this.userapi.apiRequest('post', 'advisor/professionalsList', req_vars).subscribe(result => {
@@ -194,7 +195,7 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
           this.showAdvisorListing = false; 
           this.showQualityListing = false; 
         }
-        
+        this.loader.close();
         setTimeout(()=>{           
           this.loader.close();
         },1500); 

@@ -47,12 +47,12 @@
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" prop="end_date" name="Expiry Date" [flexGrow]="1">
           <ng-template let-row="row" ngx-datatable-cell-template>
-            {{  (row?.subscriptionData && row?.subscriptionData.endDate) ? row.subscriptionData.endDate : "--"}}
+            {{ row?.subscriptionData.endDate ? (row?.subscriptionData.endDate | date: 'MM/dd/yyyy') : "--"}}
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" name="Own legacy count" [flexGrow]="1.1">
           <ng-template let-row="row" ngx-datatable-cell-template>            
-            {{ (row?.subscriptionData && row?.subscriptionData.targetCount) ? row.subscriptionData.targetCount : "0"}}
+          0
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column [resizeable]="false" name="Status" [flexGrow]="1">

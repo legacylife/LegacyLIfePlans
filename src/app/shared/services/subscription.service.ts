@@ -342,7 +342,6 @@ export class SubscriptionService {
 
 
   checkSubscriptionAdminPanel = async (legacyUserData, callback) => {
-    
     this.userId = legacyUserData.userId
     this.usertype = legacyUserData.userType
     let checkSubscription = false;
@@ -358,7 +357,6 @@ export class SubscriptionService {
  
     if(checkSubscription){
         await this.userapi.apiRequest('post', 'userlist/getprofile', req_vars).subscribe( async (result) => {
-        // console.log('data subscription service',result.data.userProfile)
           let targetCount = 0;
           let userData                = result.data.userProfile,
               bfrSubCustPremiumAccess = 0, // Before subscription customer's premium access days
@@ -411,19 +409,6 @@ export class SubscriptionService {
           else if(userData.subscriptionDetails && userData.subscriptionDetails.length == 0 && userData.refereAndEarnSubscriptionDetail && userData.refereAndEarnSubscriptionDetail.status == 'Active' && isReferAndEarnStatus == 'No'){
             subscriptionEndDate = result.userSubscriptionEnddate;
           }
-          
-          /**
-           * Reset all locastorage variables to check wheater the subscription ends or not
-           */
-          // localStorage.setItem("endUserCreatedOn", userData.createdOn)
-          // localStorage.setItem("endUserSubscriptionStartDate", subscriptionStartDate)
-          // localStorage.setItem("endUserSubscriptionEndDate", subscriptionEndDate)
-          // localStorage.setItem("endUserSubscriptionStatus", subscriptionStatus)
-          // localStorage.setItem("endUserAutoRenewalStatus", autoRenewal)
-          // localStorage.setItem("endUserProSubscription", 'no')
-          // localStorage.setItem("endUserProFreeSubscription", 'no')
-          // localStorage.setItem("endUserSubscriptionAddon", addOnGiven)
-          // localStorage.setItem("endisReferAndEarn", isReferAndEarnStatus)
 
           /**
            * Setting all variables for displaying the subscription details on account setting page
@@ -475,33 +460,15 @@ export class SubscriptionService {
 
               if(this.usertype == 'advisor') {
                 this.planName = 'Standard'
-                // if( isProFreeAdviser ) {
-                //   localStorage.setItem('endUserProSubscription', 'yes');
-                //   localStorage.setItem('endUserProFreeSubscription', 'yes');
-                // }
-                // else{
-                //   localStorage.setItem('endUserProSubscription', 'yes');
-                //   localStorage.setItem('endUserProFreeSubscription', 'no');
-                // }
               }
               else{
                 this.planName = 'Legacy Life'
-                // localStorage.setItem('endUserProSubscription', 'yes');
-                // localStorage.setItem('endUserProFreeSubscription', 'yes');
               }
             }
             else {
               if( this.usertype == 'customer' ) {
                 let totalFreeAccessDays = (bfrSubCustFreeAccess+bfrSubCustPremiumAccess)
                     expireDate          = moment( new Date(userData.createdOn)).add(totalFreeAccessDays,"days")
-               if( diff <= totalFreeAccessDays ) {
-                  // localStorage.setItem('endUserProFreeSubscription', 'yes');
-                  // localStorage.setItem('endUserProSubscription', 'no');
-                }
-                else{
-                  // localStorage.setItem('endUserProFreeSubscription', 'no');
-                  // localStorage.setItem('endUserProSubscription', 'no');
-                }
               }
               else{
                 if( isReferAndEarn && this.usertype == 'advisor' ) {
@@ -524,21 +491,10 @@ export class SubscriptionService {
                       let registrationCompleteDays = this.getDateDiff( moment( new Date(userData.createdOn)).toDate(), this.today )
                       isProFreeAdviser = registrationCompleteDays <= bfrSubAdvPremiumAccess ? true: false
                     }
-                  }              
-                  
-                  if( isProFreeAdviser ) {
-                    // localStorage.setItem('endUserProFreeSubscription', 'yes');
-                    // localStorage.setItem('endUserProSubscription', 'yes');
-                  }
-                  else{
-                    // localStorage.setItem('endUserProFreeSubscription', 'no');
-                    // localStorage.setItem('endUserProSubscription', 'no');
-                  }
+                  }                                
                 }
                 else{
                   expireDate  = moment( new Date(userData.createdOn)).add(bfrSubAdvPremiumAccess,"days")
-                  // localStorage.setItem('endUserProFreeSubscription', 'no');
-                  // localStorage.setItem('endUserProSubscription', 'no');
                 }
               }
               this.planName         = 'Free'
@@ -565,19 +521,11 @@ export class SubscriptionService {
               else{
                 this.planName         = 'Legacy Life'
               }
-              // localStorage.setItem('endUserProFreeSubscription', 'yes');
-              // localStorage.setItem('endUserProSubscription', 'yes');
+              
             }
             else {
               if( this.usertype == 'customer' ) {
                 expireDate          = this.userSubscriptionDate.add(bfrSubCustFreeAccess,"days")
-                let freeAccessDiff  = this.getDateDiff( this.today, expireDate.toDate() )
-                if( freeAccessDiff >= 0 ) {
-                 // localStorage.setItem('endUserProFreeSubscription', 'yes');
-                }
-                else {
-                 // localStorage.setItem('endUserProFreeSubscription', 'no');
-                }
               }
               else{
                 expireDate            = this.userSubscriptionDate
@@ -604,7 +552,8 @@ export class SubscriptionService {
                             defaultSpace: Number( defaultSpace ),
                             addOnSpace: Number( addOnSpace ),
                             paymentStatus: subscriptionStatus,
-                            targetCount: targetCount
+                            targetCount: targetCount,
+                            diff: diff
                           }
           callback(returnArr)
         })
