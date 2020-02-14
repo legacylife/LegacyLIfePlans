@@ -191,7 +191,9 @@ async function calculateZipcode(zipcode, id) {
   var data = zipcodes.lookup(zipcode);
   if (data) {
     if (data.latitude && data.longitude) {
-      let userData = await User.updateOne({ _id: id }, { $set: { location: { latitude: data.latitude, longitude: data.longitude } } });
+      let setLocation = {latitude:data.latitude,longitude:data.longitude};
+      let coordinate = [data.longitude,data.latitude];
+      await User.updateOne({_id:id},{$set:{location:setLocation,coordinates:coordinate}});
     }
   }
 }
@@ -283,35 +285,36 @@ function custProfileUpdate(req, res) {
       else {
         let { proquery } = req.body;
         let { from } = req.body;
+        let userInvitedById = '';let inviteCodeexist = true;
+        if (proquery.referCode) {
+          let invitesCodeExists = await Invite.findOne({inviteCode: proquery.referCode});//,email: updatedUser.username   , inviteType: updatedUser.userType 
+          if (invitesCodeExists) {
+            userInvitedById = invitesCodeExists.inviteById;
+            proquery.invitedBy = userInvitedById;
+            proquery.invitedByType = invitesCodeExists.inviteBy;
+            inviteCodeexist = true;
+          }else{
+            inviteCodeexist = false;
+          }
+        }
+
         User.updateOne({ _id: updatedUser._id }, { $set: proquery },async function (err, updatedDetails) {
           if (err) {
             res.send(resFormat.rError(err))
           } else {
-          if(updatedDetails){     
-            let userInvitedById = '';let inviteCodeexist = true;
-            if (proquery.referCode) {
-              let invitesCodeExists = await Invite.findOne({inviteCode: proquery.referCode});//,email: updatedUser.username   , inviteType: updatedUser.userType 
-              if (invitesCodeExists) {
-                userInvitedById = invitesCodeExists.inviteById;
-                proquery.invitedBy = userInvitedById;
-                inviteCodeexist = true;
+              if(updatedDetails){     //Update latitude longitude
+                if (proquery.zipcode && updatedUser._id) {
+                  calculateZipcode(proquery.zipcode, updatedUser._id);
+                }
+              if(inviteCodeexist){
+                  let message = resMessage.data(607, [{ key: '{field}', val: 'User ' + from.fromname }, { key: '{status}', val: 'updated' }])
+                  //Update activity logs
+                  allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Profile', message,'Update Profile')
+                  let result = {  code: "success","message": message }
+                  res.status(200).send(resFormat.rSuccess(result))
               }else{
-                inviteCodeexist = false;
+                  res.send(resFormat.rSuccess({ code: "error",invalidCode:true, message: "Invalid Referal/Invite Code" }))
               }
-            }
-                //Update latitude longitude
-              if (updatedUser.zipcode && updatedUser._id) {
-                calculateZipcode(updatedUser.zipcode, updatedUser._id);
-              }
-            if(inviteCodeexist){
-                let message = resMessage.data(607, [{ key: '{field}', val: 'User ' + from.fromname }, { key: '{status}', val: 'updated' }])
-                //Update activity logs
-                allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Profile', message,'Update Profile')
-                let result = {  code: "success","message": message }
-                res.status(200).send(resFormat.rSuccess(result))
-            }else{
-                res.send(resFormat.rSuccess({ code: "error",invalidCode:true, message: "Invalid Referal/Invite Code" }))
-            }
             }
           }
         })
@@ -706,8 +709,6 @@ async function checkUserOtp(req, res) {
           // If refer & earn functionality is on then save that data 
           let referEarnSettingsArr = await referEarnSettings.findOne(); 
           let refereAndEarnSubscriptionDetailObj = {};  
-          
-          //console.log("referEarnSettingsArr >>>>>>>>",referEarnSettingsArr)
 
           if (referEarnSettingsArr && referEarnSettingsArr.status == 'On' && otpdata.userType == 'advisor') {
 
@@ -727,7 +728,7 @@ async function checkUserOtp(req, res) {
 
           let userInvitedById = ''; let userInvitedByType = ''
           if (req.body.query.inviteCode) {
-            let invitesCodeExists = await Invite.findOne({ inviteCode: req.body.query.inviteCode, email: otpdata.username, inviteType: otpdata.userType });
+            let invitesCodeExists = await Invite.findOne({ inviteCode: req.body.query.inviteCode.trim(), email: otpdata.username, inviteType: otpdata.userType });
             if (invitesCodeExists) {
               userInvitedById = invitesCodeExists.inviteById;
               userInvitedByType = invitesCodeExists.inviteBy;
