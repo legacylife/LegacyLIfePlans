@@ -18,10 +18,12 @@ var chats = require('./routes/chatcontrollerRoute')
  let io = socketIO(server);
 
  var users = {};
+ console.log('Socket Clients Count >>>>>>>>>>>>>',io.engine.clientsCount)
  io.on('connection', (socket) => {
    // var clients = io.sockets.clients();
    // var clients = io.sockets.clients('new-message'); 
   socket.on('loginforonline', function(data){
+    console.log(`Socket ${socket.id} connected.`,'Socket Clients connection Count >>>>>>>>>>>>>',io.engine.clientsCount);
      //saving userId to array with socket ID
      users[socket.id] = data.userId;
      // console.log('a user ' + data.userId +'---' + data.userType + ' connected');
@@ -33,6 +35,7 @@ var chats = require('./routes/chatcontrollerRoute')
   });
 
   socket.on('offline', function(data){
+    console.log(`Socket ${socket.id} connected.`,'Socket Clients offline connection Count >>>>>>>>>>>>>',io.engine.clientsCount);
     io.emit('offlineContact'+data.userId,data.userId);
     chats.userStatus({userId:data.userId},'offline');
     io.emit('online-status',data.userId,'offline');
@@ -44,7 +47,7 @@ var chats = require('./routes/chatcontrollerRoute')
   });
 
   socket.on('new-message', async (message,chatid) => {    
-   // console.log('NEW message -----',message,'chatwithid>>>>>>>',message.chatwithid)
+    console.log(`Socket ${socket.id} connected.`,'Socket Clients new-message connection Count >>>>>>>>>>>>>',io.engine.clientsCount);
      io.emit('new-message-'+message.chatwithid, message,chatid);
     //8 chats.chatRoom(chatid,message.chatwithid);
      var unreadCnt = await chats.userMessagesStatus(message.chatwithid,'online','NewMessage');  
@@ -57,17 +60,20 @@ var chats = require('./routes/chatcontrollerRoute')
   });
 
   socket.on('get-chat-room', (chatId,userId) => {
+    console.log(`Socket ${socket.id} connected.`,'Socket Clients get-chat-room connection Count >>>>>>>>>>>>>',io.engine.clientsCount);
      chats.chatRoom(chatId,userId);
    // io.emit('get-chat-room'+contactId);
   });
    
   socket.on('get-chat-room-again', (chatId,userId) => {
+    console.log(`Socket ${socket.id} connected.`,'Socket Clients get-chat-room-again connection Count >>>>>>>>>>>>>',io.engine.clientsCount);
     //console.log('NEW message -----',chatId,'userId>>>>>>>',userId)
     chats.chatRoom(chatId,userId);
   // io.emit('get-chat-room'+contactId);
  });  
   socket.on('disconnect', function(){
     if(users[socket.id]!==undefined){
+      console.log(`Socket ${socket.id} disconnect.`,'Socket Clients disconnect connection Count >>>>>>>>>>>>>',io.engine.clientsCount);
       io.emit('offlineContact', users[socket.id]);
       chats.userStatus({userId:users[socket.id]},'offline');
       io.emit('online-status',users[socket.id],'offline');
