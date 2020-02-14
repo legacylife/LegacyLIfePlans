@@ -276,7 +276,7 @@ function update(req, res) {
 function custProfileUpdate(req, res) {
   let { query } = req.body;
   if (query._id) {
-    User.findOne(query, function (err, updatedUser) {
+    User.findOne(query, async function (err, updatedUser) {
       if (err) {
         let message = resMessage.data(603, [])
         let result = { "message": message }
