@@ -181,7 +181,7 @@ function updateStatus(req, res) {
         }
       }
       var params = { status: upStatus }
-      User.update({ _id: userList._id }, { $set: params }, function (err, updatedUser) {
+      User.updateOne({ _id: userList._id }, { $set: params }, function (err, updatedUser) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
@@ -210,13 +210,14 @@ function updateProfile(req, res) {
           if (invitesCodeExists) {
             userInvitedById = invitesCodeExists.inviteById;
             proquery.invitedBy = userInvitedById;
+            proquery.invitedByType = invitesCodeExists.inviteBy;
             inviteCodeexist = true;
           }else{
             inviteCodeexist = false;
           }
         }
         if(inviteCodeexist){
-          User.update({ _id:updatedUser._id},{$set:proquery},function(err,updated){
+          User.updateOne({ _id:updatedUser._id},{$set:proquery},function(err,updated){
             if (err) {
               res.send(resFormat.rError(err))
             } else {
@@ -246,7 +247,7 @@ function updateAdminProfile(req, res) {
       res.status(401).send(resFormat.rError(err))
     } else {      
       let  proquery  = req.body;
-      User.update({ _id: updatedUser._id }, { $set: proquery }, function (err, updated) {
+      User.updateOne({ _id: updatedUser._id }, { $set: proquery }, function (err, updated) {
         if (err) {
           res.send(resFormat.rError(err))
         } else {
@@ -461,8 +462,9 @@ function getPlanDetails(req, res) {
             function(err, plan) {
               if (err) {
                 res.status(200).send(resFormat.rError(err))
+              }else{
+                res.status(200).send(resFormat.rSuccess( {plan, "message": "Plan Details"}))    
               }
-              res.status(200).send(resFormat.rSuccess( {plan, "message": "Plan Details"}))    
           });
         }
         else{
@@ -635,7 +637,16 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
     }
     else {
       let stripeObj = {};
-      if((userProfile.userSubscriptionEnddate && today < userProfile.userSubscriptionEnddate)){
+      let trialPeriod = false;
+      // prepare condition for free trial
+      if(userProfile.userSubscriptionEnddate &&  today < userProfile.userSubscriptionEnddate && userProfile.freeTrialPeriod && userProfile.freeTrialPeriod.status == 'On'){
+        trialPeriod = true;
+      }
+      if(userProfile.userType == 'advisor' && userProfile.userSubscriptionEnddate &&  today < userProfile.userSubscriptionEnddate && ((userProfile.freeTrialPeriod && userProfile.freeTrialPeriod.status == 'On') || (userProfile.refereAndEarnSubscriptionDetail && userProfile.refereAndEarnSubscriptionDetail.endDate != '')) ){
+        trialPeriod = true;
+      }
+
+      if(trialPeriod){
         stripeObj.customer = stripeCustomerId;
         stripeObj.items = [ 
           { plan: planId }
@@ -689,7 +700,7 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                                           "interval" : subscription.items.data[0]['plan']['interval'],
                                           "currency" : subscription.items.data[0]['plan']['currency'],
                                           "amount" : subscription.items.data[0]['plan']['amount'] / 100,
-                                          "status" : 'paid',
+                                          "status" : subscription.status,
                                           "autoRenewal": subscription.collection_method == 'charge_automatically' ? true : false,
                                           "paymentMode" : 'online',
                                           "planName" : subscription.items.data[0]['plan']['metadata']['name']+' Plan',
@@ -704,6 +715,14 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                 let EmailTemplateName = "NewSubscriptionAdviser";
                 if(userDetails.userType == 'customer') {
                   EmailTemplateName = "NewSubscription";
+                  if(subscription.status == 'trialing'){                    
+                    EmailTemplateName = "NewTrailSubscriptionCustomer";
+                  }                  
+                }
+                else {
+                  if(subscription.status == 'trialing'){                    
+                    EmailTemplateName = "NewTrialSubscriptionAdviser";
+                  }
                 }
 
                 if( userProfile.subscriptionDetails && userProfile.subscriptionDetails.length > 0 ) {
@@ -712,6 +731,7 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                     EmailTemplateName = "AutoRenewal"
                   }
                 }
+
                 //Update user details
                 User.updateOne({ _id: requestParam._id }, { $set: { userSubscriptionEnddate : new Date(subscriptionEndDate),stripeCustomerId : stripeCustomerId, subscriptionDetails : userSubscription, upgradeReminderEmailDay: [], renewalOnReminderEmailDay:[], renewalOffReminderEmailDay:[] } }, function (err, updated) {
                   if (err) {
@@ -726,6 +746,11 @@ function createSubscription( userProfile, stripeCustomerId, planId, requestParam
                         let body = template.mailBody.replace("{full_name}", userProfile.firstName ? userProfile.firstName+' '+ (userProfile.lastName ? userProfile.lastName:'') : 'User');
                         body = body.replace("{plan_name}",subscriptionDetails.planName);
                         body = body.replace("{amount}", currencyFormatter.format(subscriptionDetails.amount, { code: (subscriptionDetails.currency).toUpperCase() }));
+
+                        if(subscription.status == 'trialing'){
+                          body = body.replace("{amount}", currencyFormatter.format(0.00, { code: (subscriptionDetails.currency).toUpperCase() }));
+                        }
+                        
                         body = body.replace("{duration}",subscriptionDetails.interval);
                         body = body.replace("{paid_on}",subscriptionDetails.paidOn);
                         body = body.replace("{start_date}",subscriptionDetails.startDate);
@@ -1103,22 +1128,23 @@ function getUsersListForAdminMap(req, res) {
         userList.forEach( (details, index) => {
         //  userList.forEach(async function(details){
           if (details && details.zipcode && details.zipcode != '') {
-            //  console.log('details',details)             
             // let invitedByRecord = '';
             //   if(details.invitedBy){
             //     invitedByRecord = await User.findOne({_id:details.invitedBy},{firstName:1,lastName:1,userType:1});
             //   }
               // onBoardVia: invitedByRecord != "" ? 'Invited By '+invitedByRecord.firstName+' '+invitedByRecord.lastName+' ('+invitedByRecord.userType+')' : 'Self',
-              let userData = {userId: details._id,
+                  let latitude =  parseFloat(details.location.latitude);
+                  let longitude =  parseFloat(details.location.longitude);
+                    let userData = {userId: details._id,
                               fullname: details.firstName!= "" ? details.firstName+' '+(details.lastName != "" ? details.lastName : '') : '',
                               profileImage: '',
                               userType: details.userType,
                               address: details.addressLine1 ? details.addressLine1 + (details.city ? ', '+details.city : '') + (details.state ? ', '+details.state : '') + (details.country ? ', '+details.country : '') : '',
                               zipcode: details.zipcode,
                               business: details.businessType && details.businessType.length > 0 ? details.businessType.join(): '',
-                              latitude: details.location.latitude,
-                              longitude: details.location.longitude,
-                              location: details.location,
+                              latitude: latitude,
+                              longitude: longitude,
+                              location: {"latitude":latitude,"longitude":longitude},//details.location,
                               email: details.username,
                               //onBoardVia: invitedByRecord != "" ? 'Invited By '+invitedByRecord.firstName+' '+invitedByRecord.lastName+' ('+invitedByRecord.userType+')' : 'Self',
                               //onBoardVia: details.invitedBy && details.invitedBy != "" ? 'Invited By '+details.invitedBy.firstName+' '+details.invitedBy.lastName+' ('+details.invitedBy.userType+')' : 'Self',
@@ -1223,7 +1249,6 @@ async function calculateZipcode(zipcode,id){
     if(data.latitude && data.longitude){
       let setLocation = {latitude:data.latitude,longitude:data.longitude};
       let coordinate = [data.longitude,data.latitude];
-      console.log('coordinate',coordinate)
       await User.updateOne({_id:id},{$set:{location:setLocation,coordinates:coordinate}});
       return true;
     }else{     
