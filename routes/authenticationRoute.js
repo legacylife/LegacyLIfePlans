@@ -276,7 +276,7 @@ function update(req, res) {
 function custProfileUpdate(req, res) {
   let { query } = req.body;
   if (query._id) {
-    User.findOne(query, function (err, updatedUser) {
+    User.findOne(query, async function (err, updatedUser) {
       if (err) {
         let message = resMessage.data(603, [])
         let result = { "message": message }
@@ -285,35 +285,36 @@ function custProfileUpdate(req, res) {
       else {
         let { proquery } = req.body;
         let { from } = req.body;
+        let userInvitedById = '';let inviteCodeexist = true;
+        if (proquery.referCode) {
+          let invitesCodeExists = await Invite.findOne({inviteCode: proquery.referCode});//,email: updatedUser.username   , inviteType: updatedUser.userType 
+          if (invitesCodeExists) {
+            userInvitedById = invitesCodeExists.inviteById;
+            proquery.invitedBy = userInvitedById;
+            proquery.invitedByType = invitesCodeExists.inviteBy;
+            inviteCodeexist = true;
+          }else{
+            inviteCodeexist = false;
+          }
+        }
+
         User.updateOne({ _id: updatedUser._id }, { $set: proquery },async function (err, updatedDetails) {
           if (err) {
             res.send(resFormat.rError(err))
           } else {
-          if(updatedDetails){     
-            let userInvitedById = '';let inviteCodeexist = true;
-            if (proquery.referCode) {
-              let invitesCodeExists = await Invite.findOne({inviteCode: proquery.referCode});//,email: updatedUser.username   , inviteType: updatedUser.userType 
-              if (invitesCodeExists) {
-                userInvitedById = invitesCodeExists.inviteById;
-                proquery.invitedBy = userInvitedById;
-                inviteCodeexist = true;
+              if(updatedDetails){     //Update latitude longitude
+                if (proquery.zipcode && updatedUser._id) {
+                  calculateZipcode(proquery.zipcode, updatedUser._id);
+                }
+              if(inviteCodeexist){
+                  let message = resMessage.data(607, [{ key: '{field}', val: 'User ' + from.fromname }, { key: '{status}', val: 'updated' }])
+                  //Update activity logs
+                  allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Profile', message,'Update Profile')
+                  let result = {  code: "success","message": message }
+                  res.status(200).send(resFormat.rSuccess(result))
               }else{
-                inviteCodeexist = false;
+                  res.send(resFormat.rSuccess({ code: "error",invalidCode:true, message: "Invalid Referal/Invite Code" }))
               }
-            }
-                //Update latitude longitude
-              if (proquery.zipcode && updatedUser._id) {
-                calculateZipcode(proquery.zipcode, updatedUser._id);
-              }
-            if(inviteCodeexist){
-                let message = resMessage.data(607, [{ key: '{field}', val: 'User ' + from.fromname }, { key: '{status}', val: 'updated' }])
-                //Update activity logs
-                allActivityLog.updateActivityLogs(updatedUser._id, updatedUser._id, 'Profile', message,'Update Profile')
-                let result = {  code: "success","message": message }
-                res.status(200).send(resFormat.rSuccess(result))
-            }else{
-                res.send(resFormat.rSuccess({ code: "error",invalidCode:true, message: "Invalid Referal/Invite Code" }))
-            }
             }
           }
         })
