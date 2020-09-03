@@ -47,7 +47,7 @@ export class FreeTrialPeriodManagementComponent implements OnInit {
       customerFreeAccessDays: new FormControl('', [Validators.required, Validators.min(1), Validators.max(999)]),
       customerAftrFreeAccessDays: new FormControl('', [Validators.required, Validators.min(1), Validators.max(999)]),
       advisorFreeDays: new FormControl('', [Validators.required, Validators.min(1), Validators.max(999)]),
-      customerStatus: new FormControl('', [Validators.required]),
+      customerStatus: new FormControl(true, [Validators.required]),
       advisorStatus: new FormControl('', [Validators.required]),
     })
   }
@@ -61,7 +61,7 @@ export class FreeTrialPeriodManagementComponent implements OnInit {
     this.freeTrialForm.controls['customerFreeAccessDays'].setValue(this.rows.customerFreeAccessDays)
     this.freeTrialForm.controls['customerAftrFreeAccessDays'].setValue(this.rows.customerAftrFreeAccessDays)
     this.freeTrialForm.controls['advisorFreeDays'].setValue(this.rows.advisorFreeDays)
-    this.freeTrialForm.controls['customerStatus'].setValue( this.rows.customerStatus == 'On'? true : false )
+    this.freeTrialForm.controls['customerStatus'].setValue( this.rows.customerStatus == 'On'? true : true )
     this.freeTrialForm.controls['advisorStatus'].setValue( this.rows.advisorStatus == 'On'? true : false )
   }
 
@@ -69,8 +69,9 @@ export class FreeTrialPeriodManagementComponent implements OnInit {
     let req_vars = this.freeTrialForm.value
         delete req_vars.customerStatus
         delete req_vars.advisorStatus
+        //customerStatus: this.freeTrialForm.controls['customerStatus'].value ? 'On' : 'Off',  old code maintaing customer free trial
         req_vars = Object.assign( { _id: this.rows._id, 
-                                    customerStatus: this.freeTrialForm.controls['customerStatus'].value ? 'On' : 'Off',
+                                    customerStatus: 'On',
                                     advisorStatus: this.freeTrialForm.controls['advisorStatus'].value ? 'On' : 'Off',
                                     fromId: this.userId,
                                     oldAStatus: this.oldAStatus,
@@ -82,6 +83,7 @@ export class FreeTrialPeriodManagementComponent implements OnInit {
         this.snack.open(result.data, 'OK', { duration: 4000 })
       }
       else {
+        this.getFreeTrialPeriodSettings()
         this.snack.open(result.data, 'OK', { duration: 4000 })
       }
     }, (err) => {

@@ -31,11 +31,11 @@ export const LandingRoutes: Routes = [
   //   component: TermsOfUseComponent,
   //   data: { title: 'Tearns Of Use' }
   // }
-  {
+  /*{
     path: 'aboutus',
     component: CustAboutUsComponent,
     data: { title: 'AdvisorHome' }
-  }
+  }*/
   /*{
     path: '',
     component: HomeComponent,
