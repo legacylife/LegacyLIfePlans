@@ -228,10 +228,10 @@ const inviteeAdd = (req) => {
       let insertUserExistFlag = true;
       if (val.relation == "Advisor") {
         templateType = 'InviteAdvisor';
-        clientUrl = constants.clientUrl + "/advisor";
+        clientUrl = constants.clientUrl + "/advisor/signup";
       } else {
         templateType = 'InviteCustomer';
-        clientUrl = constants.clientUrl + "/customer";
+        clientUrl = constants.clientUrl + "/customer/signup";
       }
       let emailId = val.email
       let inviteToName = val.name
@@ -241,6 +241,7 @@ const inviteeAdd = (req) => {
         } else {
           inviteToUserId = data._id;
           insertUserExistFlag = false; // if email exist in system do not insert so flag becomes false
+          clientUrl = constants.clientUrl + "/signin";
         }
         var InviteObj = new Invite();
         InviteObj.inviteById = inviteById;
