@@ -242,15 +242,17 @@ export class CardDetailsComponent implements OnInit {
 
   // function to subscribe a paid plan
   getSubscription = ( token = null) => {
-    //this.loader.open();
+    this.loader.open();
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: this.endUserType, token:token, planId: this.planId }, {})
     }
     this.userapi.apiRequest('post', 'userlist/getsubscription', req_vars).subscribe(result => {
       const data = result.data
       if (result.status == "error") {
-        this.snack.open(result.data, 'OK', { duration: 4000 })
         this.loader.close();
+        this.dialog.closeAll();
+        this.snack.open(result.data, 'OK', { duration: 10000 })
+        
       }      
       if(result.status=='success') {
         localStorage.setItem('endUserSubscriptionStartDate', data.subscriptionStartDate);
@@ -278,8 +280,9 @@ export class CardDetailsComponent implements OnInit {
     }
     this.userapi.apiRequest('post', 'userlist/getaddon', req_vars).subscribe(result => {
       if (result.status == "error") {
-        this.snack.open(result.data, 'OK', { duration: 4000 })
+        this.dialog.closeAll(); 
         this.loader.close();
+        this.snack.open(result.data, 'OK', { duration: 4000 })
       }
       else if(result.status=='success') {
         localStorage.setItem('endUserSubscriptionAddon', 'yes');
@@ -308,12 +311,14 @@ export class CardDetailsComponent implements OnInit {
     this.userapi.apiRequest('post', 'userlist/renewlegacysubscription', req_vars).subscribe(result => {
       const data = result.data
       if (result.status == "error") {
-        this.snack.open(result.data, 'OK', { duration: 4000 })
+        this.dialog.closeAll();
         this.loader.close();
+        this.snack.open(result.data, 'OK', { duration: 10000 })
+        
       }      
       if(result.status=='success') {
         this.dialog.closeAll(); 
-        this.snack.open("You have successfully renewed subscription for this user. Please check email for more info.", 'OK', { duration: 4000 })
+        this.snack.open("You have successfully renewed subscription for this user. Please check email for more info.", 'OK', { duration: 10000 })
       }
       this.loader.close();
     }, (err) => {  

@@ -59,7 +59,7 @@ export class LandingCustomerHeaderTopComponent implements OnInit, OnDestroy {
     const locArray = location.href.split("#")
     if(locArray[1]==undefined){
       const locationArray = location.href.split("/");
-      if(locationArray[3]=='privacy-policy' || locationArray[3]=='terms-of-use'){
+      if(locationArray[3]=='privacy-policy' || locationArray[3]=='terms-of-use' || locationArray[3]=='faq' || locationArray[3]=='our-company' || locationArray[3]=='secure-data'){
           this.headerOff = false;
       }
     }
@@ -95,7 +95,7 @@ export class LandingCustomerHeaderTopComponent implements OnInit, OnDestroy {
   
     if(scrolldivid=='cu-home'){
       const locationArray = location.href.split("/");
-        if(locationArray[3]=='privacy-policy' || locationArray[3]=='terms-of-use'){        
+        if(locationArray[3]=='privacy-policy' || locationArray[3]=='terms-of-use' || locationArray[3]=='faq' || locationArray[3]=='our-company' || locationArray[3]=='secure-data'){        
           this.headerOff = false;
           this.router.navigateByUrl('/');
       }
