@@ -150,8 +150,7 @@ export class CardDetailsComponent implements OnInit {
   }
 
   payUsingNewCard = () => {
-    if( !this.payUsingNewCardCheckbox ) {
-      this.loader.open();
+    if( !this.payUsingNewCardCheckbox ) {      
       this.payUsingNewCardCheckbox = true
       this.hideNewCardForm = false
       this.mountCard()
@@ -164,6 +163,7 @@ export class CardDetailsComponent implements OnInit {
 
   // mount user card on HTML Element
   mountCard = () => {
+    this.loader.open();
     //create stripe card form here
     this.stripeService.elements(this.elementsOptions)
       .subscribe(elements => {
@@ -193,10 +193,10 @@ export class CardDetailsComponent implements OnInit {
 
   //function to generate stripe token
   completePayment = () => {
-    this.loader.open();
-    setTimeout(() => {
+    //this.loader.open();
+    /*setTimeout(() => {
       this.loader.close();
-    }, 2000);
+    }, 2000);*/
     if( this.oldCard !== "" && !this.payUsingNewCardCheckbox ) {
       if( this.for == 'subscription' ) {
         this.getSubscription();
@@ -210,7 +210,7 @@ export class CardDetailsComponent implements OnInit {
     }
     else {
       const name = this.stripePayment.get('name').value;
-      this.loader.open();
+      //this.loader.open();
       this.stripeService.createToken(this.card, { name })
         .subscribe(result => {
           if (result && result.token) {
@@ -228,12 +228,12 @@ export class CardDetailsComponent implements OnInit {
           }
           else if (result.error) {
             // Error creating the token
-            this.loader.close();
+            //this.loader.close();
             this.stripePaymentError = result.error.message;
             setTimeout( function() {
               this.stripePaymentError="";
             }.bind(this),5000);
-            this.loader.close();
+            //this.loader.close();
           }
         }
       );
@@ -250,7 +250,7 @@ export class CardDetailsComponent implements OnInit {
       const data = result.data
       if (result.status == "error") {
         this.loader.close();
-        this.dialog.closeAll();
+        //this.dialog.closeAll();
         this.snack.open(result.data, 'OK', { duration: 10000 })
         
       }      
@@ -274,13 +274,13 @@ export class CardDetailsComponent implements OnInit {
 
   // function to subscribe a paid addon plan
   getAddOn = ( token = null) => {
-    //this.loader.open();
+    this.loader.open();
     const req_vars = {
       query: Object.assign({ _id: this.userId, userType: this.endUserType, token:token, currency: (this.planCurrency).toLocaleLowerCase(), amount: this.planAmount, spaceAlloted: this.spaceAlloted }, {})
     }
     this.userapi.apiRequest('post', 'userlist/getaddon', req_vars).subscribe(result => {
       if (result.status == "error") {
-        this.dialog.closeAll(); 
+        //this.dialog.closeAll(); 
         this.loader.close();
         this.snack.open(result.data, 'OK', { duration: 4000 })
       }
@@ -305,22 +305,24 @@ export class CardDetailsComponent implements OnInit {
    * @returns: success error message
    */
   renewLegacyUserSubscription = ( token = null) => {
+    this.loader.open();
     const req_vars = {
       query: Object.assign({ _id: this.data.userId, userType: this.data.endUserType, token:token, planId: this.planId, requestFrom: this.userId }, {})
     }
     this.userapi.apiRequest('post', 'userlist/renewlegacysubscription', req_vars).subscribe(result => {
       const data = result.data
       if (result.status == "error") {
-        this.dialog.closeAll();
+        //this.dialog.closeAll();
         this.loader.close();
         this.snack.open(result.data, 'OK', { duration: 10000 })
         
       }      
       if(result.status=='success') {
         this.dialog.closeAll(); 
+        this.loader.close();
         this.snack.open("You have successfully renewed subscription for this user. Please check email for more info.", 'OK', { duration: 10000 })
       }
-      this.loader.close();
+      //this.loader.close();
     }, (err) => {  
       this.snack.open(err, 'OK', { duration: 4000 })    
       this.loader.close();

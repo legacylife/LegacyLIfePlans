@@ -118,6 +118,7 @@ export class UpdateProfileComponent implements OnInit {
           let profileData = result.data.userProfile;  
           localStorage.setItem("endUserFirstName", profileData.firstName)
           localStorage.setItem("endUserLastName", profileData.lastName)
+          localStorage.setItem("endUserProSubscription", "yes"); 
           if (profileData.profilePicture) {
             this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + profileData.profilePicture;
             localStorage.setItem('endUserProfilePicture', this.profilePicture)

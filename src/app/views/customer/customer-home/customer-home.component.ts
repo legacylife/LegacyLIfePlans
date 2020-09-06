@@ -53,7 +53,17 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
-    this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+    // new code on 6th sept 2020
+    /*let freeUser = localStorage.getItem('endUserProFreeSubscription')
+    let proUser = localStorage.getItem('endUserProSubscription')
+    if((freeUser && freeUser == 'yes') || (proUser && proUser == 'yes')){
+      this.isProUser = true
+    }
+    else {
+      this.isProUser = false
+    }*/
+
+    this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false     // old code
     let urlData = this.userapi.getURLData();
     
     if(urlData.lastThird == 'legacies' && urlData.lastOne){ 
