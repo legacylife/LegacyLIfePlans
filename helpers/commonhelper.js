@@ -251,25 +251,30 @@ const inviteeAdd = (req) => {
         InviteObj.modifiedOn = new Date();
         InviteObj.save({}, async function (err, newEntry) { 
           insertedArray.push(newEntry) 
-
+          let link = ''
           if(newEntry.inviteToId && newEntry.inviteToId !=''){
-            clientUrl = constants.clientUrl + "/signin";
+             link = constants.clientUrl + "/signin";
+            if (newEntry.inviteType == "advisor") {
+              templateType = 'InviteAdvisor';
+            } else {
+              templateType = 'InviteCustomer';
+            }
           }
           else {
             if (newEntry.inviteType == "advisor") {
               templateType = 'InviteAdvisor';
-              clientUrl = constants.clientUrl + "/advisor/signup";
+              link = constants.clientUrl + "/advisor/signup";
             } else {
               templateType = 'InviteCustomer';
-              clientUrl = constants.clientUrl + "/customer/signup";
+              link = constants.clientUrl + "/customer/signup";
             }
           }
           
-          console.log("newEntry.inviteType >>>> "+newEntry.inviteType+" >>>>clientUrl >>>>>",clientUrl+"----------"+emailId)
+          console.log("newEntry.inviteType >>>> "+newEntry.inviteType+" >>>>clientUrl >>>>>",link+"----------"+emailId)
           let template = await EmailTemplates.findOne({code: templateType,status:'active'},{}); 
 
           if(template != ''){
-            let body = template.mailBody.replace("{LINK}",clientUrl);
+            let body = template.mailBody.replace("{LINK}",link);
             body = body.replace("{inviteToName}",inviteToName);
             body = body.replace("{inviteByName}",inviteByName);
             body = body.replace("{ReferInviteCode}",inviteCode);
