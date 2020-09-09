@@ -88,18 +88,20 @@ export class UserAuthGuard implements CanActivate {
         })
       } else {
         if (localStorage.getItem("setIdleFlag") != '') {
-          this.autologFunction();
+          this.autologFunction('111');
         } else {
           return;
         }
       }
     }
+   // this.autologFunction('222');
   }
 
-  autologFunction() {
-     console.log("LockScreen Here >> ")
+  autologFunction(ids) {
+
     //https://www.npmjs.com/package/angular-user-idle
     let IdleFlag = localStorage.getItem("setIdleFlag");
+    //console.log("LockScreen Here >> ",ids,'>>>>>>>>>',IdleFlag)
     var pathArray = window.location.pathname.split('/');
     //console.log('HERE I AM IdleFlag --- ',IdleFlag,pathArray)
     if (IdleFlag != '' && IdleFlag == 'true' && pathArray[1] != 'signin' && pathArray[1] != 'error') {
@@ -112,7 +114,7 @@ export class UserAuthGuard implements CanActivate {
     }
     this.userIdle.startWatching();
     this.userIdle.onTimerStart().subscribe(
-        count =>console.log("home here",count)
+        count =>console.log("home here",count,ids)
     );
    
     //if (pathArray[1] != 'signin' && pathArray[1] != 'error') {
@@ -133,7 +135,7 @@ export class UserAuthGuard implements CanActivate {
         if (this.dialog.openDialogs.length > 0) {
           let temp1 = this.dialog.openDialogs[0].componentInstance;
           if (temp1.lockscreenModalFlag && temp1.lockscreenModalFlag == true) {
-            return;
+            return false;
           }
         }
       }
@@ -168,6 +170,7 @@ export class UserAuthGuard implements CanActivate {
       }else{
         console.log('>>>',this.dialog)
       }
+
     }
       this.userIdle.stopWatching();
     } else if (localStorage.getItem("endUserId") == '' || localStorage.getItem("endUserId") == 'undefined') {

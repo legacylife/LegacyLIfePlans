@@ -7,12 +7,11 @@ import {
   FormArray
 } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
-import { MatSnackBar, MatDialog,MatDialogRef  } from "@angular/material";
+import { MatSnackBar, MatDialog  } from "@angular/material";
 import { UserAPIService } from "app/userapi.service";
 import { AppLoaderService } from "app/shared/services/app-loader/app-loader.service";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { AppConfirmService } from "app/shared/services/app-confirm/app-confirm.service";
-import { lockscreenModalComponent } from '../lockscreen-modal/lockscreen-modal.component';
 @Component({
   selector: "app-todos-listing",
   templateUrl: "./todos-listing.component.html",
@@ -52,20 +51,6 @@ export class TodosListingComponent implements OnInit {
         this.getTodos();
       },1000);     
     } 
-  }
-
-  lockScrinModal(data: any = {}) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(lockscreenModalComponent, {
-      width: '720px',
-      disableClose: false,
-    });
-    dialogRef.afterClosed()
-    .subscribe(res => {
- 
-      if (!res) {
-        return;
-      }
-    })
   }
 
   drop(event: CdkDragDrop<string[]>) {

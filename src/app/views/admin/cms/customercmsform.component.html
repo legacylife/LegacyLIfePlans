@@ -241,30 +241,30 @@
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
                             <div formGroupName="facts">
                                 <mat-form-field class="full-width">
-                                    <input matInput placeholder="Title*" formControlName="title" value="" maxlength="50" [formControl]="getFormGroup('facts').controls['title']">
+                                    <input matInput placeholder="Title*" formControlName="title" value="" maxlength="30" [formControl]="getFormGroup('facts').controls['title']">
                                 </mat-form-field>
 
                                 <mat-form-field class="full-width">
-                                    <input matInput placeholder="Sub Title*" formControlName="subTitle" value="" maxlength="100" [formControl]="getFormGroup('facts').controls['subTitle']">
+                                    <input matInput placeholder="Sub Title*" formControlName="subTitle" value="" maxlength="80" [formControl]="getFormGroup('facts').controls['subTitle']">
                                 </mat-form-field>
 
                                 <mat-form-field class="full-width">
-                                    <input matInput placeholder="Saved File*" formControlName="savedFiles"  (keypress)="onlyNumbers($event)" maxlength="15" value=""
+                                    <input matInput placeholder="Saved File*" formControlName="savedFiles"  (keypress)="onlyNumbers($event)" maxlength="8" value=""
                                         [formControl]="getFormGroup('facts').controls['savedFiles']">
                                 </mat-form-field>
 
                                 <mat-form-field class="full-width">
-                                    <input matInput placeholder="Trusted Advisors*" formControlName="trustedAdvisors"  (keypress)="onlyNumbers($event)" maxlength="15"
+                                    <input matInput placeholder="Trusted Advisors*" formControlName="trustedAdvisors"  (keypress)="onlyNumbers($event)" maxlength="8"
                                         value="" [formControl]="getFormGroup('facts').controls['trustedAdvisors']">
                                 </mat-form-field>
 
                                 <mat-form-field class="full-width">
-                                    <input matInput placeholder="Success Login*" formControlName="successLogin" value="" (keypress)="onlyNumbers($event)" maxlength="15"
+                                    <input matInput placeholder="Success Login*" formControlName="successLogin" value="" (keypress)="onlyNumbers($event)" maxlength="8"
                                         [formControl]="getFormGroup('facts').controls['successLogin']">
                                 </mat-form-field>
 
                                 <mat-form-field class="full-width">
-                                    <input matInput placeholder="LLP Members*" formControlName="LLPMembers" value="" (keypress)="onlyNumbers($event)" maxlength="15"
+                                    <input matInput placeholder="LLP Members*" formControlName="LLPMembers" value="" (keypress)="onlyNumbers($event)" maxlength="8"
                                         [formControl]="getFormGroup('facts').controls['LLPMembers']">
                                 </mat-form-field>
                             </div>
@@ -282,10 +282,10 @@
                     <div fxLayout="row wrap" formGroupName="quickOverview1">
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
                             <mat-form-field class="full-width">
-                                <input matInput formControlName="title" placeholder="title*" value=""  maxlength="30" [formControl]="getFormGroup('quickOverview1').controls['title']">
+                                <input matInput formControlName="title" placeholder="title*" value=""  maxlength="25" [formControl]="getFormGroup('quickOverview1').controls['title']">
                             </mat-form-field>
                             <mat-form-field class="full-width">
-                                <input matInput formControlName="subTitle" placeholder="subTitle*" value="" maxlength="45" [formControl]="getFormGroup('quickOverview1').controls['subTitle']">
+                                <input matInput formControlName="subTitle" placeholder="subTitle*" value="" maxlength="30" [formControl]="getFormGroup('quickOverview1').controls['subTitle']">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
@@ -341,10 +341,10 @@
                     <div fxLayout="row wrap" formGroupName="quickOverview2">
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
                             <mat-form-field class="full-width">
-                                <input matInput formControlName="title" placeholder="Title*" value="" maxlength="30" [formControl]="getFormGroup('quickOverview2').controls['title']">
+                                <input matInput formControlName="title" placeholder="Title*" value="" maxlength="25" [formControl]="getFormGroup('quickOverview2').controls['title']">
                             </mat-form-field>
                             <mat-form-field class="full-width">
-                                <input matInput formControlName="subTitle" placeholder="subTitle*" value="" maxlength="45" [formControl]="getFormGroup('quickOverview2').controls['subTitle']">
+                                <input matInput formControlName="subTitle" placeholder="subTitle*" value="" maxlength="30" [formControl]="getFormGroup('quickOverview2').controls['subTitle']">
                             </mat-form-field>
                         </div>
                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50"
@@ -407,14 +407,14 @@
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100"
                                             fxFlex.xl="100">
                                             <mat-form-field class="full-width">
-                                                <input matInput placeholder="Name*" formControlName="name" maxlength="50">
+                                                <input matInput placeholder="Name*" formControlName="name" maxlength="20">
                                             </mat-form-field>
                                             <mat-form-field class="full-width">
-                                                <input matInput placeholder="Certifications*" maxlength="50" formControlName="certifications">
+                                                <input matInput placeholder="Certifications*" maxlength="20" formControlName="certifications">
                                             </mat-form-field>
 
                                             <mat-form-field class="full-width">
-                                                <input matInput placeholder="Comment*" maxlength="100"  formControlName="comment">
+                                                <input matInput placeholder="Comment*" maxlength="80"  formControlName="comment">
                                             </mat-form-field>
                                         </div>
                                         <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60"
@@ -466,7 +466,8 @@
         </div>
         <!-- Footer -->
         <div class="ad--footer">
-                <button mat-raised-button class="llp--primary--btn" [disabled]="!customerCmsForm.valid">Submit</button>
+                <button mat-raised-button class="llp--primary--btn">Submit</button>
+                <!-- [disabled]="!customerCmsForm.valid" -->
         </div>
     </div>
     <div class="row" *ngIf="!aceessSection">
