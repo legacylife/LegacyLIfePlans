@@ -1,93 +1,128 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { APIService } from './../../../api.service';
-import { MatDialog,MatSnackBar, MatSidenav } from '@angular/material';
-import {Idle, DEFAULT_INTERRUPTSOURCES} from '@ng-idle/core';
-import {Keepalive} from '@ng-idle/keepalive';
+import { MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 
-@Injectable()
+const MINUTES_UNITL_AUTO_LOGOUT = 15 // in mins
+const CHECK_INTERVAL = 5000 // in ms
+const STORE_KEY = 'lastAction';
+
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthGuard implements CanActivate {
+  val: any;
+  private userId: string = localStorage.getItem('userId');
   public authToken;
   private isAuthenticated = false; // Set this value dynamically
   private userInfo: any
-  idleState = 'Not started.';
-  timedOut = false;
-  lastPing?: Date = null;
-  
-  constructor(private router: Router, private api: APIService, private snack: MatSnackBar, private idle: Idle, private keepalive: Keepalive) {
+  private myVar : any;
 
-    // sets an idle timeout of 900 seconds i.e 15 mins, for testing purposes.
-    idle.setIdle(900);
-    // sets a timeout period of 5 seconds. after 905 seconds of inactivity, the user will be considered timed out.
-    idle.setTimeout(5);
-    // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
-    idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
+  constructor(private router: Router, private api: APIService, private snack: MatSnackBar) {
+    if (this.userId) {       
+      if(localStorage.getItem(STORE_KEY) == null){
+        this.setLastAction(Date.now());
+      }
+      //this.check();  
+      this.initListener();      
+      this.initInterval();      
+    } else {
+      clearInterval(CHECK_INTERVAL);
+    }
+  }
 
-    idle.onIdleEnd.subscribe(() => {
-      alert("You session has been inactivated.")
-      console.log('?????',this.idleState)
-      this.idleState = 'No longer idle.'
-      this.api.logout()
-      
-    });
-    idle.onTimeout.subscribe(() => {      
-      this.idleState = 'Timed out!';
-      this.timedOut = true;
-    });
-    idle.onIdleStart.subscribe(() => this.idleState = 'You\'ve gone idle!'); 
-    idle.onTimeoutWarning.subscribe((countdown) => 
-        this.idleState = 'You will time out in ' + countdown + ' seconds!'        
-    );
-    
+  public getLastAction() {
+    return parseInt(localStorage.getItem(STORE_KEY));
+  }
 
-    // sets the ping interval to 15 seconds
-    keepalive.interval(900);
+  public setLastAction(lastAction: number) {
+    localStorage.setItem(STORE_KEY, lastAction.toString());
+  }
 
-    keepalive.onPing.subscribe(() => this.lastPing = new Date());
-
-    this.reset();
-
+  initListener() {
+    console.log('initListener' )
+    document.body.addEventListener('click', () => this.reset());
+    //document.body.addEventListener('mouseover',()=> this.reset());
+    //document.body.addEventListener('mouseout',() => this.reset());
+    document.body.addEventListener('keydown', () => this.reset());
+    document.body.addEventListener('keyup', () => this.reset());
+    document.body.addEventListener('keypress', () => this.reset());
+    window.addEventListener("storage", () => this.storageEvt());
   }
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
 
-      this.userInfo = this.api.getUserInfo();
-      if (this.userInfo.userType == '') {
-        //this.router.navigateByUrl('/llp-admin/signin');
+    this.userInfo = this.api.getUserInfo();
+    if (this.userInfo.userType == '') {
+      this.api.logout();
+      return false;
+    }
+
+    const req_vars = { userId: this.userInfo.userId }
+    this.api.apiRequest('post', 'auth/view', req_vars).subscribe(result => {
+      let userData = result.data;
+      localStorage.setItem('sectionAccess', JSON.stringify(userData.sectionAccess))
+      if (userData && (userData.status == 'Inactive' || userData.status == 'Inactive')) {
+        this.snack.open("Your account has been inactivated.", 'OK', { duration: 4000 })
         this.api.logout();
         return false;
       }
-     
-      const req_vars = { userId: this.userInfo.userId }
-      this.api.apiRequest('post', 'auth/view', req_vars).subscribe(result => { 
-        let userData = result.data;   
-        localStorage.setItem('sectionAccess', JSON.stringify(userData.sectionAccess))
-        if(userData && (userData.status == 'Inactive' || userData.status == 'Inactive')){
-          this.snack.open("Your account has been inactivated.", 'OK', { duration: 4000 })
-          //this.router.navigateByUrl('/llp-admin/signin');
-          this.api.logout(); 
-          return false;
-         }
-         else {
-          this.reset();
-         }
-        
-      }, (err) => {
-        //console.error(err)
-      })
-    
+      else {
+        this.initInterval();
+      }
+
+    }, (err) => {
+      //console.error(err)
+    })
+
     return true;
   }
 
-
-  reset() {
-    console.log('Idle state started....');
-    this.idle.watch();
-    this.idleState = 'Started.';
-    this.timedOut = false;
+  storageEvt() {
+    this.val = localStorage.getItem(STORE_KEY);
   }
 
+  reset() {
+    this.userId = localStorage.getItem('userId');
+    if (this.userId) {
+      this.setLastAction(Date.now());
+      console.log('store key',localStorage.getItem(STORE_KEY));
+    }
+  }
 
+  initInterval() {
+    this.myVar = setInterval(() => {
+      this.userId = localStorage.getItem('userId');
+      //console.log("localStorage.getItem(STORE_KEY) >>>>>",localStorage.getItem(STORE_KEY))
+      /*if(localStorage.getItem(STORE_KEY)==null){
+        localStorage.setItem(STORE_KEY,Date.now().toString());
+      }*/
+      if(this.userId && localStorage.getItem(STORE_KEY)) {
+        this.check();
+      }else{
+        //console.log("this.myVar in abv11")
+        this.stopIntervalCall()
+      }
+    }, CHECK_INTERVAL);
+  }
+
+  stopIntervalCall(){
+    //console.log("this.myVar in abv22")
+    clearInterval(this.myVar);
+  }
+
+  check() {
+    const now = Date.now();
+    const timeleft = this.getLastAction() + MINUTES_UNITL_AUTO_LOGOUT * 60 * 1000;
+    const diff = timeleft - now;
+    //console.log('difference',diff,' >>>>>>>>>>>>>>>>>>>>>',this.userId)
+
+    const isTimeout = diff < 0;
+    if (isTimeout) {
+      clearInterval(this.myVar);
+      this.api.logout();
+    }
+  }
 }

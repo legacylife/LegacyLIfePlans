@@ -87,7 +87,7 @@ import { GuestGaurd } from './shared/services/auth/guest.guard';
 import { PrivacyPolicyComponent } from './views/landing/privacy-policy/privacy-policy.component';
 import { TermsOfUseComponent } from './views/landing/terms-of-use/terms-of-use.component'; 
 import { StaticPagesComponent } from './views/landing/static-pages/static-pages.component';
-import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
+
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }
@@ -146,8 +146,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       }
     }),
     InMemoryWebApiModule.forRoot(InMemoryDataService, { passThruUnknownUrl: true }),
-    RouterModule.forRoot(rootRouterConfig, { useHash: false }),
-    NgIdleKeepaliveModule.forRoot(),
+    RouterModule.forRoot(rootRouterConfig, { useHash: false })
   ],
   exports: [ChangePicComponent],
   bootstrap: [AppComponent], 
