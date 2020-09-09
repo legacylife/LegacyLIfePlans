@@ -9,6 +9,7 @@ const chat = require('./../models/Chat.js')
 var async = require('async')
 const Invite = require('./../models/Invite.js')
 const InviteTemp = require('./../models/InviteTemp.js')
+const EmailTemplates = require('./../models/EmailTemplates.js')
 const sendRawEmail = require('./../helpers/sendRawEmail')
 
 const customerAdvisorLegacyNotifications = (sendData) => {
@@ -190,18 +191,18 @@ const inviteeAdd = (req) => {
       }
     }
     let insertedArray = [];
+    let inviteCode = Math.floor(100000 + Math.random() * 900000); 
+    let fromData = await User.findOne({_id:inviteById},{_id:1,username:1,firstName:1,lastName:1,inviteCode:1});
+    if(fromData && fromData.inviteCode){
+      inviteCode = fromData.inviteCode;
+    }else{
+     await User.updateOne({_id:inviteById},{ $set: {inviteCode:inviteCode} });
+    }
     async.each(members, function (val, callback) {
      // let inviteCode = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-      let inviteCode = Math.floor(100000 + Math.random() * 900000);
+    //  let inviteCode = Math.floor(100000 + Math.random() * 900000); 
       let insertInviteDataFlag = true;
       let insertUserExistFlag = true;
-      if (val.relation == "Advisor") {
-        templateType = 'InviteAdvisor';
-        clientUrl = constants.clientUrl + "/advisor";
-      } else {
-        templateType = 'InviteCustomer';
-        clientUrl = constants.clientUrl + "/customer";
-      }
       let emailId = val.email
       let inviteToName = val.name
       User.findOne({ "username": { '$regex': new RegExp(escapeRegExp(emailId)), '$options': 'i' } }, async function (err, data) {
@@ -224,11 +225,32 @@ const inviteeAdd = (req) => {
         InviteObj.status = 'Active';
         InviteObj.createdOn = new Date();
         InviteObj.modifiedOn = new Date();
-        InviteObj.save({}, function (err, newEntry) { 
+        InviteObj.save({}, async function (err, newEntry) { 
           insertedArray.push(newEntry) 
-          emailTemplatesRoute.getEmailTemplateByCode(templateType).then((template) => {
-            template = JSON.parse(JSON.stringify(template));
-            let body = template.mailBody.replace("{LINK}",clientUrl);
+          let link = ''
+          if(newEntry.inviteToId && newEntry.inviteToId !=''){
+             link = constants.clientUrl + "/signin";
+            if (newEntry.inviteType == "advisor") {
+              templateType = 'InviteAdvisor';
+            } else {
+              templateType = 'InviteCustomer';
+            }
+          }
+          else {
+            if (newEntry.inviteType == "advisor") {
+              templateType = 'InviteAdvisor';
+              link = constants.clientUrl + "/advisor/signup";
+            } else {
+              templateType = 'InviteCustomer';
+              link = constants.clientUrl + "/customer/signup";
+            }
+          }
+          
+          console.log("newEntry.inviteType >>>> "+newEntry.inviteType+" >>>>clientUrl >>>>>",link+"----------"+emailId)
+          let template = await EmailTemplates.findOne({code: templateType,status:'active'},{}); 
+
+          if(template != ''){
+            let body = template.mailBody.replace("{LINK}",link);
             body = body.replace("{inviteToName}",inviteToName);
             body = body.replace("{inviteByName}",inviteByName);
             body = body.replace("{ReferInviteCode}",inviteCode);
@@ -245,7 +267,9 @@ const inviteeAdd = (req) => {
             } else {
               sendEmail(mailOptions);
             }
-          })
+          }
+
+          
           // i++;
           callback();
         })
