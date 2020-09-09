@@ -266,7 +266,7 @@ const inviteeAdd = (req) => {
           }
           
           console.log("newEntry.inviteType >>>> "+newEntry.inviteType+" >>>>clientUrl >>>>>",clientUrl+"----------"+emailId)
-          /*let template = await EmailTemplates.findOne({code: templateType,status:'active'},{}); 
+          let template = await EmailTemplates.findOne({code: templateType,status:'active'},{}); 
 
           if(template != ''){
             let body = template.mailBody.replace("{LINK}",clientUrl);
@@ -286,9 +286,9 @@ const inviteeAdd = (req) => {
             } else {
               sendEmail(mailOptions);
             }
-          }*/
+          }
 
-          emailTemplatesRoute.getEmailTemplateByCode(templateType).then((template) => {
+          /*emailTemplatesRoute.getEmailTemplateByCode(templateType).then((template) => {
             template = JSON.parse(JSON.stringify(template));
             let body = template.mailBody.replace("{LINK}",clientUrl);
             body = body.replace("{inviteToName}",inviteToName);
@@ -307,7 +307,7 @@ const inviteeAdd = (req) => {
             } else {
               sendEmail(mailOptions);
             }
-          })
+          })*/
           // i++;
           callback();
         })
