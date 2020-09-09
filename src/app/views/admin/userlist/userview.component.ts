@@ -109,58 +109,14 @@ export class userviewComponent implements OnInit,AfterViewInit  {
         if(result.data.profilePicture){
            this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + result.data.profilePicture;
         }
-        if(this.row.userType != 'sysAdmin') {
 
-          let subscriptions = this.row.subscriptionDetails ? this.row.subscriptionDetails : null;
-          if(subscriptions && subscriptions.length > 0){
-
-            let currentSubscription = subscriptions[subscriptions.length-1];
-            if(currentSubscription.status == 'trialing'){
-              this.subscriptionStatus = "Trialing";
-              this.planName         = 'Free';  
-            }
-            else if(currentSubscription.status == 'canceled'){
-              this.subscriptionStatus = "Canceled";
-            }
-            else {
-              this.subscriptionStatus = "Paid";              
-            }
-          }
-          else {
-            this.subscriptionStatus = "Trialing";
-            this.planName         = 'Free';  
-          }
-
-          this.subscriptionservice.checkSubscriptionAdminPanel( this.row, ( returnArr )=> {
-            this.userCreateOn = returnArr.userCreateOn
-            this.isSubscribedBefore = returnArr.isSubscribedBefore
-            this.isSubscriptionCanceled = returnArr.isSubscriptionCanceled
-            this.autoRenewalFlag = returnArr.autoRenewalFlag
-            this.autoRenewalVal = returnArr.autoRenewalVal
-            this.autoRenewalStatus = returnArr.autoRenewalStatus
-            this.isAccountFree = returnArr.isAccountFree
-            this.isPremiumExpired = returnArr.isPremiumExpired
-            this.isSubscribePlan = returnArr.isSubscribePlan
-            //this.planName = returnArr.planName
-            this.subscriptionExpireDate = returnArr.subscriptionExpireDate
-            /* if( new Date(this.subscriptionExpireDate) < new Date() ) {
-              this.isExpired = true
-            } */
-          })  
-
-          if(this.userSubscriptionEnddate && this.userSubscriptionEnddate!= ''){
-            //let endDate = this.userSubscriptionEnddate.toDate();
-            let endDate = new Date(this.userSubscriptionEnddate)
-            let today = new Date(this.today)
-            if(endDate < today){
-              this.subscriptionStatus = "Expired";
-            }
-          }
-          else {
-            this.userSubscriptionEnddate = this.subscriptionExpireDate;
-          }
-
+        if (this.row.userType != 'sysAdmin') {
+          this.row['subscriptionData'] = this.subscriptionservice.viewSubscriptionAdminPanel(this.row);
+          this.planName         = this.row['subscriptionData']['planName'];
+          this.subscriptionStatus = this.row['subscriptionData']['status'];
+          this.userSubscriptionEnddate = this.row['subscriptionData']['endDate'];
         }
+
         this.showPage = true
       }
     }, (err) => {
@@ -306,4 +262,10 @@ export class userviewComponent implements OnInit,AfterViewInit  {
       sidebarStyle: 'closed'
     })
   }
+ 
+  clickHere() {
+
+      this.getUser()
+  }
+
 }

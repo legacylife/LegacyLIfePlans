@@ -17,7 +17,7 @@
               <div class="pb-0">
                 <mat-label>Premium Access Free Days For Customer</mat-label>
                 <mat-form-field class="full-width">
-                  <input matInput type="number" name="title" [formControl]="freeTrialForm.controls['customerFreeAccessDays']" value="">
+                  <input matInput  aria-readonly="true" readonly type="number" name="title" [formControl]="freeTrialForm.controls['customerFreeAccessDays']" value="">
                 </mat-form-field>
               </div>
             </div>
@@ -28,7 +28,7 @@
               <div class="pb-0">
                 <mat-label>After Premium Access Free Days For Customer</mat-label>
                 <mat-form-field class="full-width">
-                  <input matInput type="number" name="title" [formControl]="freeTrialForm.controls['customerAftrFreeAccessDays']" value="">
+                  <input matInput aria-readonly="true" readonly type="number" name="title" [formControl]="freeTrialForm.controls['customerAftrFreeAccessDays']" value="">
                 </mat-form-field>
               </div>
             </div>
@@ -38,7 +38,7 @@
             <div fxFlex="100" fxFlex.gt-xs="300" class="pr-0">
               <div class="pb-0">
                 <mat-label>Customer Free Trial On/Off Status</mat-label>
-                <mat-slide-toggle class="llp--slide--toggle full-width" [formControl]="freeTrialForm.controls['customerStatus']" [checked]="freeTrialForm.controls['customerStatus']">{{freeTrialForm.controls['customerStatus'].value ? 'ON' : 'OFF'}}</mat-slide-toggle>
+                <mat-slide-toggle aria-readonly="true" readonly class="llp--slide--toggle full-width" [formControl]="freeTrialForm.controls['customerStatus']" [checked]="freeTrialForm.controls['customerStatus']">{{freeTrialForm.controls['customerStatus'].value ? 'ON' : 'OFF'}}</mat-slide-toggle>
               </div>
             </div>
 

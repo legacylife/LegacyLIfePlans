@@ -51,7 +51,7 @@
               </mat-form-field>
           </div>
           <div class="mt-1 text-center">
-            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" id="pk534" id="trustFormGroupBtn" [disabled]="trustFormGroup.invalid">Assign Permissions</button>   
+            <button mat-raised-button matStepperNext class="llp--primary--btn mb-1" [disabled]="disabledFlag && trustFormGroup.invalid">Assign Permissions</button>   
           </div>    
         </form>      
       </mat-step>
@@ -145,18 +145,22 @@
       <mat-step  *ngIf="hideFirstStep" [stepControl]="thirdFormGroup">
         <form [formGroup]="thirdFormGroup" class="llp-form-wrapper" (ngSubmit)="thirdFormGroupSubmit('3',thirdFormGroup.value)">     
           <h3 class="main--head text-center">{{mainHead}}</h3>
-          <p class="sub--head text-center">We're ready to email {{Email_USER}} an invitation asking to be a Trustee to your Legacy.</p>
+          <p class="sub--head text-center" *ngIf="!disabledFlag">We're ready to email {{Email_USER}} an invitation asking to be a Trustee to your Legacy.</p>
+          <p class="sub--head text-center emailError" *ngIf="disabledFlag">{{Email_USER}} has already been invited as a trustee.</p>
           <div class="profile--body--scroll">
             <mat-form-field class="full-width mt-1">
               <textarea (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" rows="7" maxlength="256" matInput placeholder="Add a personal message"  name="messages" [formControl]="thirdFormGroup.controls['messages']"></textarea>
               <mat-icon matTooltip="Please enter personal message" matTooltipClass="llp--tooltip error" *ngIf="thirdFormGroup.controls['messages'].hasError('required') && thirdFormGroup.controls['messages'].touched" class="red--alert">help_outline</mat-icon>
               <div class="char--limit" style="float: right;">{{ 256 - thirdFormGroup.controls['messages'].value?.length }}</div>
             </mat-form-field>
+            <mat-form-field class="full-width" *ngIf="validationEmailVal">
+              <input matInput name="emailValidation" [formControl]="thirdFormGroup.controls['emailValidation']">
+            </mat-form-field>
           </div>
           <div class="mt-1 text-center">
             <button mat-raised-button matStepperPrevious class="llp--back--btn">
               <mat-icon>arrow_back</mat-icon> Back</button>
-            <button mat-raised-button matStepperNext  class="llp--primary--btn mb-1" [disabled]="thirdFormGroup.invalid">Send an Invite</button>
+            <button mat-raised-button matStepperNext  class="llp--primary--btn mb-1" [disabled]="disabledFlag && thirdFormGroup.invalid">Send an Invite</button>
           </div>
       </form>
       </mat-step>

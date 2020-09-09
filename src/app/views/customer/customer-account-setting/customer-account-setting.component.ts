@@ -65,12 +65,12 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   totalSpaceAlloted: number = 1
   spaceProgressBar:any = 100
   totalUsedSpace:any = 0
-
   isAccountFree: boolean = true
   isSubscribePlan: boolean = false
   isSubscribedBefore: boolean = false
   autoRenewalFlag: boolean = false
   autoRenewalVal:boolean = false
+  paymentStatus:any
   isPremiumExpired: boolean = false
   isSubscriptionCanceled:boolean = false
   userCreateOn: any
@@ -79,10 +79,8 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
   isProUser:boolean = false
   getAddOn:boolean = false
   modified = false // display confirmation popup if user click on other link
-  isGetAddOn:boolean = false
-  
+  isGetAddOn:boolean = false  
   isDialogOpen:boolean = false
-
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder,
     private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
     private loader: AppLoaderService, private picService: ProfilePicService, private confirmService: AppConfirmService,
@@ -147,19 +145,18 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     })
  
     this.profile = [];
-    this.getProfile();
-
     /**
      * Check the user subscription details
-     */
+     */    
     this.checkSubscription()
+    this.spaceProgressBar = 0;
+    this.getProfile();
   }
 
   
   checkPhoneNumber(from,event)
   {  
     const charCode = (event.which) ? event.which : event.keyCode;
-    //console.log('=====',event.charCode,':',event.key,':',event.which,':',event.keyCode)
     //console.log('number is valid ',AsouType.getNumber().isValid(),'--------'); 
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false;
@@ -172,6 +169,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
 
   checkSubscription() {
     this.subscriptionservice.checkSubscription( '',( returnArr )=> {
+      console.log('>>>>>returnArr',returnArr)
       this.userCreateOn = returnArr.userCreateOn
       this.isSubscribedBefore = returnArr.isSubscribedBefore
       this.isSubscriptionCanceled = returnArr.isSubscriptionCanceled
@@ -185,8 +183,9 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
       this.defaultSpace = returnArr.defaultSpace
       this.addOnSpace = returnArr.addOnSpace
+      this.paymentStatus = returnArr.paymentStatus
      // console.log("isAccountFree",this.isAccountFree,"isSubscribePlan",this.isSubscribePlan,"isPremiumExpired",this.isPremiumExpired)
-      
+
       let devideAmount = 1048576
       if( ( Number(returnArr.totalUsedSpace) >= 1073741824 ) ) { //If used space is greater or equal to 1 GB
         this.usedSpaceDimension = 'GB'
@@ -197,6 +196,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
         devideAmount = 1048576
       }
       this.totalUsedSpace = ( Number(returnArr.totalUsedSpace) / devideAmount ).toFixed(2)
+
       this.totalSpaceAlloted = ( this.defaultSpace + this.addOnSpace )
 
       if( this.isAccountFree && !this.isPremiumExpired ) {
@@ -246,9 +246,9 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
             }
           }
         }
-        console.log("totalUsedSpace",this.totalUsedSpace,"totalSpaceAlloted",this.totalSpaceAlloted,"spaceProgressBar",this.spaceProgressBar)
       })
     })
+    
     this.spaceProgressBar = (this.totalUsedSpace * 100 / this.totalSpaceAlloted).toFixed(2)
     this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
   }
@@ -312,7 +312,7 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
     //function to get all events
     getLatitudeLongitude = (query = {}, search = false) => {
       const req_vars = {
-        query: Object.assign({_id: this.userId}, query)
+        query: Object.assign({}, query)
       }
       this.userapi.apiRequest('post', 'userlist/latitudeLongitude', req_vars).subscribe(result => {
         if (result.status == "error") {

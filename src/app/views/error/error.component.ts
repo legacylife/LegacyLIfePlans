@@ -17,7 +17,7 @@ export class ErrorComponent implements OnInit {
     this.userType = localStorage.getItem("endUserType");
     if(this.userId){
       this.loginFlag = false;
-      console.log('type',this.userType,'id',this.userId);
+      
       if(this.userType=='sysadmin'){//this.userType!='undefined' && this.userType!='customer' && this.userType!='advisor' && 
         this.router.navigate(['/', 'admin', 'dashboard'])
       }

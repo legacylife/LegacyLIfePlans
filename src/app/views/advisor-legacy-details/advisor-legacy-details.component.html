@@ -12,7 +12,7 @@
           <div mat-line class="user--name">
             <h5>{{customerData?.firstName}} {{customerData?.lastName}} {{customerData?.deceased && customerData?.deceased.status == 'Active' ? '(Deceased)' : ''}}</h5>
             <div class="sta--m">
-              <mat-icon class="mat-icon material-icons" role="img">star</mat-icon> Standard member
+              <mat-icon class="mat-icon material-icons" role="img">star</mat-icon> {{isSubscribePlan ? 'Subscribed ' : 'Free '}}member 
             </div>
             <p class="mb-0">Last Login:
               <span>{{customerData?.lastLoggedInOn | date: 'MM/dd/yyyy'}}</span>

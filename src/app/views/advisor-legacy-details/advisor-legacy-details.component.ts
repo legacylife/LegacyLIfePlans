@@ -11,6 +11,7 @@ import { LocationStrategy } from "@angular/common";
 import { CardDetailsComponent } from "app/shared/components/card-details-modal/card-details-modal.component";
 import { SubscriptionService } from "app/shared/services/subscription.service";
 import * as moment from 'moment'
+import { RenewSubscriptionComponent } from "app/shared/components/renew-subscription-modal/renew-subscription-modal.component";
 
 @Component({
   selector: "advisor-legacy-details",
@@ -34,6 +35,10 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
   subscriptionExpiryDate:String = ''
   daysRemaining:Number = 0
 
+  isPremiumExpired: boolean = false
+  isSubscribePlan: boolean = false
+  planName: string = 'free'
+  subscriptionExpireDate: string = ''
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -78,29 +83,66 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
   }
 
   openCardDetailsModal() {
-    console.log("asdasd")
-    let dialogRef: MatDialogRef<any> = this.dialog.open(CardDetailsComponent, {
-      width: '500px',
-      disableClose: true,
-      closeOnNavigation:false,
-      data: {
-        for: 'legacyRenew',
-        userId: this.urlData.lastOne,
-        endUserType: this.endUserType,
-        userName: this.customerData.firstName+' '+this.customerData.lastName,
-        expiryDate: this.subscriptionExpiryDate,
-        daysRemaining: this.daysRemaining
-      }
+
+    let userData = {userId:this.urlData.lastOne,userType:'customer'}
+    this.subscription.checkSubscription(userData,( returnArr )=> {
+      this.isPremiumExpired = returnArr.isPremiumExpired;
+      this.isSubscribePlan = returnArr.isSubscribePlan;
+      this.planName = returnArr.planName;
+      this.subscriptionExpireDate = returnArr.subscriptionExpireDate;
+
+      if(this.isSubscribePlan && !this.isPremiumExpired){
+        let dialogRef: MatDialogRef<any> = this.dialog.open(RenewSubscriptionComponent, {
+          width: '500px',
+          disableClose: true,
+          closeOnNavigation:false,
+          data: {
+            for: 'legacyRenew',
+            userId: this.urlData.lastOne,
+            endUserType: this.endUserType,
+            userName: this.customerData.firstName+' '+this.customerData.lastName,
+            expiryDate: this.subscriptionExpiryDate,
+            daysRemaining: this.daysRemaining,
+            isPremiumExpired:this.isPremiumExpired,
+            isSubscribePlan:this.isSubscribePlan
+          }
+        })
+        dialogRef.afterClosed()
+        .subscribe(res => {
+          this.activateRenewSubscriptonBtn = false;
+          this.isDialogOpen = false
+          this.getCustomerDetails()
+        })
+
+      }else{
+
+        let dialogRef: MatDialogRef<any> = this.dialog.open(CardDetailsComponent, {
+          width: '500px',
+          disableClose: true,
+          closeOnNavigation:false,
+          data: {
+            for: 'legacyRenew',
+            userId: this.urlData.lastOne,
+            endUserType: this.endUserType,
+            userName: this.customerData.firstName+' '+this.customerData.lastName,
+            expiryDate: this.subscriptionExpiryDate,
+            daysRemaining: this.daysRemaining,
+            isPremiumExpired:this.isPremiumExpired,
+            isSubscribePlan:this.isSubscribePlan
+          }
+        })
+        dialogRef.afterOpened().subscribe(result => {
+          this.isDialogOpen = true
+          history.pushState(null, null, location.href);
+        })
+        dialogRef.afterClosed()
+        .subscribe(res => {
+          this.activateRenewSubscriptonBtn = false;
+          this.isDialogOpen = false
+          this.getCustomerDetails()
+        })
+      } 
     })
-    dialogRef.afterOpened().subscribe(result => {
-      this.isDialogOpen = true
-      history.pushState(null, null, location.href);
-    })
-    dialogRef.afterClosed()
-      .subscribe(res => {
-        this.isDialogOpen = false
-        this.getCustomerDetails()
-      })
   }
 
   getCustomerDetails(query = {}){
@@ -130,6 +172,15 @@ export class AdvisorLegacyDetailsComponent implements OnInit {
           let remainingDays           = await this.subscription.getDateDiff( moment().toDate(), moment(currentSubscription.endDate).toDate())
           this.subscriptionExpiryDate = currentSubscription.endDate
           this.daysRemaining          = remainingDays
+
+          let userData = {userId:this.toUserId,userType:this.endUserType}
+          this.subscription.checkSubscription(userData,( returnArr )=> {
+            this.isPremiumExpired = returnArr.isPremiumExpired
+            this.isSubscribePlan = returnArr.isSubscribePlan;
+            this.planName = returnArr.planName
+            this.subscriptionExpireDate = returnArr.subscriptionExpireDate
+          })
+
           if( remainingDays <= 60 ) {
             this.activateRenewSubscriptonBtn = true
           }

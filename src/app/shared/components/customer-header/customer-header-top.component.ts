@@ -15,6 +15,7 @@ import { serverUrl, s3Details } from '../../../config';
 import { TodosComponent } from 'app/views/todos/todos.component';
 import { addTrusteeModalComponent } from 'app/views/customer/customer-home/add-trustee-modal/add-trustee-modal.component';
 import * as io from 'socket.io-client';
+import { legacySettingModalComponent } from 'app/views/customer/customer-home/legacy-setting/legacy-setting-modal/legacy-setting-modal.component';
 @Component({
   selector: 'app-customer-header-top',
   templateUrl: './customer-header-top.component.html'
@@ -145,26 +146,58 @@ export class customerHeaderTopComponent implements OnInit, OnDestroy {
   }  
 
   openTodosModal(data: any = {}, isNew?) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(TodosComponent, {
-      width: '1100px',
-      disableClose: true,
-    })
+    if(!this.allowAddToDo){
+      let dialogRef: MatDialogRef<any> = this.dialog.open(legacySettingModalComponent, {     
+        width: '720px',
+        disableClose: true,
+      });
+      dialogRef.afterClosed()
+      .subscribe(res => {
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
+    }else{
+      let dialogRef: MatDialogRef<any> = this.dialog.open(TodosComponent, {
+        width: '1100px',
+        disableClose: true,
+      })
+    }
   }
 
-  openAddTrusteeModal(id,isNew?) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(addTrusteeModalComponent, {     
-      width: '720px',
-      data: {
-        id: id,
-      },
-      disableClose: true,
-    });
-    dialogRef.afterClosed()
-    .subscribe(res => {
-      //this.getTrusteeList('All','-1');
-      if (!res) {
-        return;
-      }
-    })
+  openAddTrusteeModal(id,isNew?) { 
+    let isProuser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+    let isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
+    if(!isProuser && !isFreeProuser){
+      this.allowAddTrustee = false;
+      let dialogRef: MatDialogRef<any> = this.dialog.open(legacySettingModalComponent, {     
+        width: '720px',
+        disableClose: true,
+      });
+      dialogRef.afterClosed()
+      .subscribe(res => {
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
+    }else{
+      let dialogRef: MatDialogRef<any> = this.dialog.open(addTrusteeModalComponent, {     
+        width: '720px',
+        data: {
+          id: id,
+        },
+        disableClose: true,
+      });
+      dialogRef.afterClosed()
+      .subscribe(res => {
+        //this.getTrusteeList('All','-1');
+        if (!res) {
+          return;
+        }
+      })
+    }
+    
   }
 }

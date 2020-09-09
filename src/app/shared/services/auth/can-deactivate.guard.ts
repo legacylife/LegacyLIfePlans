@@ -23,7 +23,7 @@ export class CanDeactivateGuard implements CanDeactivate<CanComponentDeactivate>
     nextState?: RouterStateSnapshot
   ) {
     let url: string = state.url;
-    console.log('Url: ' + nextState);
+    // console.log('Url: ' + nextState);
     if (component.canDeactivate()) {
       return this.allowRedirect
     } else {

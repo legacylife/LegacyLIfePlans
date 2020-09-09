@@ -10,6 +10,7 @@ import { AppLoaderService } from '../../../../shared/services/app-loader/app-loa
 import { s3Details } from '../../../../config';
 import { HireAdvisorComponent } from '../../hire-advisor-modal/hire-advisor-modal.component';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
+import { legacySettingModalComponent } from '../../customer-home/legacy-setting/legacy-setting-modal/legacy-setting-modal.component';
 const profileFilePath = s3Details.url + '/' + s3Details.profilePicturesPath;
 @Component({
   selector: 'app-prof-advisor-listing',
@@ -41,6 +42,8 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
   searchVal:string;
   searchForm: FormGroup;  
   searchStatus: boolean = false
+  isProUser = false;
+  isFreeProuser = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router, private dialog: MatDialog,private fb: FormBuilder,
@@ -51,6 +54,8 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId"); 
+    this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+    this.isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
     this.getAdvisorLists('','',this.resultLimit,0,false,false,false);
  
     this.data.currentMessage.subscribe( (searchKey) => {
@@ -61,7 +66,6 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
         if(searchString){
           this.searchStatus = true;
         }
-        console.log("here 1 ->",this.searchVal,'searchStatus->',this.searchStatus,'searchString->',searchString);
         this.getAdvisorLists('',this.searchVal,this.resultLimit,0,this.searchStatus,searchString,true)
       }
     })
@@ -73,19 +77,19 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
 
   onScrollDown (ev) {
     //console.log('scrolled down!!', ev,this.searchVal);
-    this.nextOffset++;
-    this.data.currentMessage.subscribe((searchKey) => { 
-      this.searchVal = searchKey; 
-      let searchString = this.searchForm.controls['search'].value.trim();
-      if(searchString){
-        this.searchStatus = true;
-      }
-      if(this.searchVal && this.searchVal!=='All'){
-        this.getAdvisorLists('',this.searchVal,this.resultLimit,(this.nextOffset*this.resultLimit),this.searchStatus,searchString,false)
-      }else{
-        this.getAdvisorLists('','',this.resultLimit,(this.nextOffset*this.resultLimit),this.searchStatus,searchString,false);
-      }
-    })
+    // this.nextOffset++;
+    // this.data.currentMessage.subscribe((searchKey) => { 
+    //   this.searchVal = searchKey; 
+    //   let searchString = this.searchForm.controls['search'].value.trim();
+    //   if(searchString){
+    //     this.searchStatus = true;
+    //   }
+    //   if(this.searchVal && this.searchVal!=='All'){
+    //     this.getAdvisorLists('',this.searchVal,this.resultLimit,(this.nextOffset*this.resultLimit),this.searchStatus,searchString,false)
+    //   }else{
+    //     this.getAdvisorLists('','',this.resultLimit,(this.nextOffset*this.resultLimit),this.searchStatus,searchString,false);
+    //   }
+    // })
   }
   
   searching() {
@@ -123,7 +127,6 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
    // clearInterval(this.interval);
   }
 
-  //function to get all events
   getAdvisorLists = (query: any = {},searchbType: any =false,limits,offset,search=false,searchString=false,loader=false) => {
     let req_vars = {
       query: Object.assign({ userType: "advisor", status: "Active" }, query),
@@ -149,22 +152,23 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
       }
     }
 
-    if(loader){ 
+    //if(loader){ 
+      this.loader.close();
       this.loader.open();
-    }
+  //  }
     this.userapi.apiRequest('post', 'advisor/professionalsList', req_vars).subscribe(result => {
-         this.loader.close();
       if (result.status == "error") {
+        this.loader.close();
         console.log(result.data)
       } else {        
-        this.advisorData = this.advisorData.concat(result.data.distanceUserList);
+        this.advisorData = result.data.distanceUserList;//this.advisorData.concat(result.data.distanceUserList);
         let resultData = this.advisorData;
-        console.log("resultData",resultData)
         if (resultData && resultData.length) {
+
           this.adListings = resultData.filter(dtype => {
             return dtype.sponsoredAdvisor == 'yes'
           }).map(el => el)
-
+          
           this.showAdvisorListingCnt = result.data.totalUsers;
 
           if (result.data.totalUsers > 0) {
@@ -191,40 +195,59 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
           this.showAdvisorListing = false; 
           this.showQualityListing = false; 
         }
+        this.loader.close();
+        setTimeout(()=>{           
+          this.loader.close();
+        },1500); 
       }
     }, (err) => {
+      this.loader.close();
       console.error(err)
     })
   }
 
   //function to send contact details of advisor
   sendContactDetails = (advisorDetails, query = {}) => {
-    let search = false;
-    const req_vars = {
-      query: Object.assign({ _id: this.userId }, query),
-      advisorDetails: {
-        "advisorFullname": advisorDetails.firstName + ' ' + advisorDetails.lastName,
-        "advisorEmail": advisorDetails.username,
-        "advisorPhone": advisorDetails.businessPhoneNumber,
-        "advisorAddress": advisorDetails.addressLine1 + ' ' + advisorDetails.city + ' ' + advisorDetails.state + ' ' + advisorDetails.zipcode,
-        "advisorId": advisorDetails._id
-      }
-    }
-    this.userapi.apiRequest('post', 'advisor/contactadvisor', req_vars).subscribe(result => {
-      if (result.status == "error") {
-        console.log(result.data)
-      } else {
-        if (result.status == "error") {
-          this.loader.close();
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
-        } else {
-          this.loader.close();
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
+    if (!this.isProUser && !this.isFreeProuser) {
+      let dialogRef: MatDialogRef<any> = this.dialog.open(legacySettingModalComponent, {     
+        width: '720px',
+        disableClose: true,
+      });
+      dialogRef.afterClosed()
+      .subscribe(res => {
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
+    }else{
+      let search = false;
+      const req_vars = {
+        query: Object.assign({ _id: this.userId }, query),
+        advisorDetails: {
+          "advisorFullname": advisorDetails.firstName + ' ' + advisorDetails.lastName,
+          "advisorEmail": advisorDetails.username,
+          "advisorPhone": advisorDetails.businessPhoneNumber,
+          "advisorAddress": advisorDetails.addressLine1 + ' ' + advisorDetails.city + ' ' + advisorDetails.state + ' ' + advisorDetails.zipcode,
+          "advisorId": advisorDetails._id
         }
       }
-    }, (err) => {
-      console.error(err)
-    })
+      this.userapi.apiRequest('post', 'advisor/contactadvisor', req_vars).subscribe(result => {
+        if (result.status == "error") {
+          console.log(result.data)
+        } else {
+          if (result.status == "error") {
+            this.loader.close();
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          } else {
+            this.loader.close();
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          }
+        }
+      }, (err) => {
+        console.error(err)
+      })
+    }
   }
 
   getProfileImage(fileName) {
@@ -237,15 +260,29 @@ export class ProfAdvisorListingComponent implements OnInit, OnDestroy {
   }
 
   openHireAdvisorModal(id: any = {}, update: any = {}, isNew?, hireFullName='') {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(HireAdvisorComponent, {
-      width: '720px',
-      disableClose: true,
-      data: {
-        id: id,
-        update: update,
-        hireFullName:hireFullName
-      },
-    })
+    if (!this.isProUser && !this.isFreeProuser) {
+      let dialogRef: MatDialogRef<any> = this.dialog.open(legacySettingModalComponent, {     
+        width: '720px',
+        disableClose: true,
+      });
+      dialogRef.afterClosed()
+      .subscribe(res => {
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
+    }else{
+      let dialogRef: MatDialogRef<any> = this.dialog.open(HireAdvisorComponent, {
+        width: '720px',
+        disableClose: true,
+        data: {
+          id: id,
+          update: update,
+          hireFullName:hireFullName
+        },
+      })
+    }
   }
 
   CalculateDistance() {  //Test function not in use

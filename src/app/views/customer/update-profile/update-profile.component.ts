@@ -11,7 +11,7 @@ import { states } from '../../../state';
 import { ChangePicComponent } from './../../change-pic/change-pic.component';
 import { serverUrl, s3Details } from '../../../config'
 import { ProfilePicService } from 'app/shared/services/profile-pic.service';
-
+import { AsYouType } from 'libphonenumber-js'
 @Component({
   selector: 'app-update-profile',
   templateUrl: './update-profile.component.html',
@@ -30,6 +30,7 @@ export class UpdateProfileComponent implements OnInit {
   short_code: string;
   uploadedFile: File
   maxDate = new Date(new Date())
+  invalidCode:boolean = false;
   profilePicture: any = "assets/images/arkenea/default.jpg"
 
   customerFreeAccessDays:Number = 0
@@ -45,15 +46,17 @@ export class UpdateProfileComponent implements OnInit {
     this.userType = localStorage.getItem("endUserType");
     this.stateList = states;
     this.llpCustsignupProfileForm = new FormGroup({
-      firstName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
-      lastName: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
-      phoneNumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
-      dateOfBirth: new FormControl('', Validators.required),
-      city: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
-      state: new FormControl('', Validators.required),
-      zipcode: new FormControl('', [Validators.required, , Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
+      firstName: new FormControl('',Validators.compose([Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
+      lastName: new FormControl('',Validators.compose([Validators.required, this.noWhitespaceValidator, Validators.minLength(1), Validators.maxLength(50)])),
+     // phoneNumber: new FormControl('',[Validators.required,Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/)]),
+      phoneNumber: new FormControl('', [Validators.pattern(/^(1\s?)?((\([0-9]{3}\))|[0-9]{3})[\s\-]?[\0-9]{3}[\s\-]?[0-9]{4}$/),Validators.minLength(10)]),  
+      dateOfBirth: new FormControl('',Validators.required),
+      city: new FormControl('',Validators.compose([Validators.required,this.noWhitespaceValidator,Validators.minLength(1),Validators.maxLength(50)])),
+      state: new FormControl('',Validators.required),
+      zipcode: new FormControl('',[Validators.required,Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)]),
+      referCode: new FormControl(''),
     });
-
+   
     if(this.userId){
       const req_vars = { userId: this.userId }
       this.userapi.apiRequest('post', 'auth/view', req_vars).subscribe(result => {  
@@ -94,7 +97,6 @@ export class UpdateProfileComponent implements OnInit {
   llpCustSignup() {
     this.loader.open();
     let img = document.getElementById('profilePicture') as HTMLInputElement
-    console.log(this.llpCustsignupProfileForm.value)
     let profileInData = this.llpCustsignupProfileForm.value
     profileInData.profileSetup = 'yes';
     profileInData.status = 'Active';
@@ -112,24 +114,26 @@ export class UpdateProfileComponent implements OnInit {
       }
       if (result.status == "success") {
         this.loader.close();
-
-        let profileData = result.data.userProfile;  
-        localStorage.setItem("endUserFirstName", profileData.firstName)
-        localStorage.setItem("endUserLastName", profileData.lastName)
-        
-        if (profileData.profilePicture) {
-          this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + profileData.profilePicture;
-          localStorage.setItem('endUserProfilePicture', this.profilePicture)
-          this.picService.setProfilePic = this.profilePicture;
+        if (result.data.code == "success") {
+          let profileData = result.data.userProfile;  
+          localStorage.setItem("endUserFirstName", profileData.firstName)
+          localStorage.setItem("endUserLastName", profileData.lastName)
+          localStorage.setItem("endUserProSubscription", "yes"); 
+          if (profileData.profilePicture) {
+            this.profilePicture = s3Details.url + "/" + s3Details.profilePicturesPath + profileData.profilePicture;
+            localStorage.setItem('endUserProfilePicture', this.profilePicture)
+            this.picService.setProfilePic = this.profilePicture;
+          } else {
+            this.picService.setProfilePic = this.profilePicture;
+          }
+          this.snack.open('Your profile information has been updated successfully.', 'OK', { duration: 4000 })
+          setTimeout(() => {
+            this.router.navigate(['/', 'customer', 'dashboard']);
+          }, 1500);  
+        }else if(result.data.code=='error' && result.data.invalidCode){
+          this.invalidCode = true;
+          this.llpCustsignupProfileForm.controls['referCode'].setErrors({ 'invalid': true });
         }
-        else {
-          this.picService.setProfilePic = this.profilePicture;
-        }
-
-        this.snack.open('Your profile information has been updated successfully.', 'OK', { duration: 4000 })
-        setTimeout(() => {
-          this.router.navigate(['/', 'customer', 'dashboard']);
-        }, 2000);  
       } else {
         this.loader.close();
         this.snack.open(result.data, 'OK', { duration: 4000 })
@@ -169,8 +173,7 @@ export class UpdateProfileComponent implements OnInit {
     this.uploadedFile = img.files[0]
     const filenameArray = this.uploadedFile.name.split('.')
     const ext = filenameArray[filenameArray.length - 1].toLowerCase()
-    const validExt = ['jpg', 'jpeg', 'png', 'gif']
-    //console.log(this.uploadedFile)
+    const validExt = ['jpg', 'jpeg', 'png', 'gif']    
     if (this.uploadedFile.size > 5242880) {
       this.snack.open("Profile picture must be less than 5 MB.", 'OK', { duration: 4000 })      
     } else if (validExt.indexOf(ext) > -1) {
@@ -206,6 +209,18 @@ export class UpdateProfileComponent implements OnInit {
     key = event.charCode;
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
   } 
+
+  checkPhoneNumber(from,event)
+  {  
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }else{
+        const AsouType = new AsYouType('US');
+        let phoneNumber = AsouType.input(this.llpCustsignupProfileForm.controls[from].value);
+        this.llpCustsignupProfileForm.controls[from].setValue(phoneNumber);
+    }
+  }
 
 }
 

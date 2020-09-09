@@ -321,13 +321,13 @@
               <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                 <ul class="footer--services">
                   <li>
-                    <a href="#">Our Company</a>
+                    <a routerLink="/our-company">Our Company</a>
                   </li>
                   <li (click)="contentScroll('how-llp-works')">
                     <a>How it Works</a>
                   </li>
                   <li>
-                    <a>Secure Data</a>
+                    <a routerLink="/secure-data">Secure Data</a>
                   </li>
                   <li>
                     <a routerLink="/terms-of-use">Terms of Usage</a>
@@ -336,7 +336,7 @@
                     <a matRipple routerLink="/privacy-policy">Privacy Policy</a>
                   </li>
                   <li>
-                    <a>FAQ</a>
+                    <a routerLink="/faq">FAQ</a>
                   </li>
                 </ul>
               </div>
@@ -349,11 +349,11 @@
                     <a  routerLink="coachs-corner">Coach’s Corner</a>
                   </li>
                   <li (click)="contentScroll('pricing-plan')">
-                    <a href="#">Pricing</a>
+                    <a>Pricing</a>
                   </li>
-                  <LI>
-                    <A href="#">Free Account</A>
-                  </LI>
+                  <li>
+                    <a routerLink="/customer/signup">Free Account</a>
+                  </li>
                   <li>
                     <a routerLink="/advisor">For Advisors</a>
                   </li>

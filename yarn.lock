@@ -283,6 +283,16 @@
   dependencies:
     tslib "^1.9.0"
 
+"@ng-idle/core@^9.0.0-beta.1":
+  version "9.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@ng-idle/core/-/core-9.0.0-beta.1.tgz#6cc3b24f4ff6ccdc07b41db7e8afb0bccb2edc12"
+  integrity sha512-gkfpco6zaBiPRyk9Xd1r4vycwLHXqrkNGQOKLgobo79W50Qg2qqhkMOgVmndnyK6XQyQLQNsVESUca8cLNV4nA==
+
+"@ng-idle/keepalive@^9.0.0-beta.1":
+  version "9.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@ng-idle/keepalive/-/keepalive-9.0.0-beta.1.tgz#9cd17c6cd58442b82a536d2b1e962b5e75ee6bc9"
+  integrity sha512-UwRPXTy0r/gozvQBBg/z4wJya1QzD1tlrRtlpc6xCF0YrGrOPebN22pG6p3OEIEG/CD+sNUWt7xPmKKNOL6rEQ==
+
 "@ngtools/webpack@7.0.7":
   version "7.0.7"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-7.0.7.tgz#0cd933534a878f25f69448435302c82a861096a6"
@@ -1507,6 +1517,13 @@ bluebird@^3.3.0, bluebird@^3.4.6, bluebird@^3.5.1, bluebird@^3.5.3:
   version "3.5.4"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.4.tgz#d6cc661595de30d5b3af5fcedd3c0b3ef6ec5714"
   integrity sha512-FG+nFEZChJrbQ9tIccIfZJBz3J7mLrAhxakAbnrJWn8d7aKOC+LWifa0G+p4ZqKp4y13T7juYvdhq9NzKdsrjw==
+
+bn-ng-idle@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/bn-ng-idle/-/bn-ng-idle-1.0.1.tgz#ef40bb62c8fea8e6f57fd7e31c481ec70b5dcbff"
+  integrity sha512-qLAx2m12VfiI399Hlae+3ZF87WttKS6FafHM5YMibZQoeu6XUoIOCESJM+hm/ZhIk8cieKBzP3y92QEW14B4CQ==
+  dependencies:
+    tslib "^1.9.0"
 
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.8"

@@ -21,8 +21,7 @@ export class ProUserAuthGuard implements CanActivate {
       if (this.userId != null && this.userId != "") {          
         if( (isProUser || isFreeProuser) && this.userType && this.userType == 'customer' ) {
           return true
-        }
-        else {
+        } else {
           this.router.navigate(['/customer/account-setting'])
         }
       }

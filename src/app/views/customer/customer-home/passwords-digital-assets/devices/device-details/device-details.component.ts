@@ -78,6 +78,7 @@ export class DeviceDetailsComponent implements OnInit {
             this.trusteeLegaciesAction = false;
           }
           this.row = result.data;
+          console.log('>>>>>>>',this.row)
           this.toUserId =  this.row.customerId;
           //this.IsVisible = true;
           if(this.row.passwordPattern && typeof this.row.passwordPattern!=='undefined' && this.row.passwordPattern!==''){
@@ -95,6 +96,7 @@ export class DeviceDetailsComponent implements OnInit {
   }
 
   customerisValid(data){
+    this.sharedata.shareLegacyCustomerIdData(data.customerId);
     if (this.urlData.lastThird == "legacies") {
       this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
         if(userLockoutPeriod || userDeceased){

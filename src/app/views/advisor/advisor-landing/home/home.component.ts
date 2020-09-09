@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { CountUp, CountUpOptions } from 'countup.js';
 import * as $ from 'jquery'
-import { debounce } from 'lodash'
+import { debounce,forEach } from 'lodash'
 import { APIService } from 'app/api.service';
 import { UserAPIService } from 'app/userapi.service';
 import { serverUrl, s3Details } from '../../../../config';
@@ -16,6 +16,8 @@ const advisorBucketLink = s3Details.awsserverUrl+s3Details.assetsPath+'advisor/'
 })
 export class HomeComponent implements OnInit, OnDestroy {
   contactForm: FormGroup;
+  featuredAdvisorsdata:any;
+  actualUsers:boolean=true;
   slides = [
     {
       name: 'John Smith',
@@ -48,7 +50,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       title: 'CFC, CIF'
     },
   ];
-
 
   slideConfig = {
     'slidesToShow': 3, 'slidesToScroll': 1, responsive: [
@@ -101,13 +102,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   endVal3: number = 405
   endVal4: number = 320
   opts: CountUpOptions;
-
   // autoplay : true, autoplaySpeed: 1000 
-
   bfrSubAdvPremiumAccess:Number = 0
   advisorFreeTrialStatus:Boolean = false
-
-///
+  //
 pageData : any;
  testomonials : any;
  resetCounter : any;
@@ -118,37 +116,80 @@ lowerBanner : string;
 sectionEightBanner : string;
 userId = localStorage.getItem('endUserId');
 userType = localStorage.getItem('endUserType');
-
+latitude: Number = 0;
+longitude: Number = 0;
   constructor(private api:APIService, private userapi:UserAPIService, private fb: FormBuilder, private snack: MatSnackBar) { }
-
   ngOnInit() {
     this.bucketLink = advisorBucketLink;
-    this.getCMSpageDetails();
-    this.opts = {
-      duration: 2
-    };
+    const watcher = navigator.geolocation.watchPosition(this.displayLocationInfo);
+    console.log('navigator',navigator.geolocation);
+    //https://alligator.io/js/geolocation-api/
+    //https://medium.com/@balramchavan/display-and-track-users-current-location-using-google-map-geolocation-in-angular-5-c259ec801d58
+    this.getCMSpageDetails(this.longitude,this.latitude);
+    if(navigator.geolocation){
+      console.log('navigator.geolocation###########',navigator.geolocation,'>>>>>>>');
+      navigator.geolocation.getCurrentPosition((position) => {
+       // console.log(position.coords,">>>>>> Position >>>>>>>",position.coords.longitude,',',position.coords.latitude);       
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
+        this.getCMSpageDetails(this.longitude,this.latitude);
+      });
+    }
+    // }else{
+    //   console.log("Geolocation is not supported by this browser.");
+    // }
+
+    this.opts = {duration: 2};
+
     this.contactForm = this.fb.group({
       email: new FormControl("", [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
       message: new FormControl("", Validators.required)
     });
 
     window.addEventListener('scroll', this.isScrolledIntoView, true);
-    this.getFreeTrialSettings()
+    setTimeout(() => {
+      navigator.geolocation.clearWatch(watcher);
+    }, 15000);
+    this.getFreeTrialSettings();
   }
 
+   displayLocationInfo(position) {
+    console.log('DisplayLocationInfo--->',position);
+  }
 
   ngOnDestroy() {
     window.removeEventListener('scroll', this.isScrolledIntoView, true);
   }
 
-  getCMSpageDetails(query = {}){
-    const req_vars = { status:'Active' }
+  getCMSpageDetails(latitude,longitude){       
+   // console.log('getCMSpageDetails',latitude,'-------------',longitude)
+    let query = {}; 
+    const req_vars = {
+      query: Object.assign({status:'Active' }, query),
+      location:Object.assign({longitude:longitude,latitude:latitude})
+    }
     this.userapi.apiRequest('post', 'homecms/advisorView', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)
       } else {
-        if(result.data){
-          this.pageData = result.data;        
+        if(result.data.cmsDetails) {
+          this.pageData = result.data.cmsDetails;     
+          this.featuredAdvisorsdata = this.pageData.featuredAdvisors;
+          if(result.data.usersData.length>0) {
+            this.featuredAdvisorsdata = [];           
+            this.actualUsers = false;
+            forEach(result.data.usersData,(element, index) => {
+              let udata = [];
+              udata['name'] = element.firstName+' '+element.lastName;
+              udata['certifications'] = element.businessType.join(', ');
+              if(element.profilePicture){
+                udata['profilePhoto'] = s3Details.url + "/" + s3Details.profilePicturesPath + element.profilePicture;
+              }else{
+                udata['profilePhoto'] = "assets/images/arkenea/default.jpg"
+              }              
+              this.featuredAdvisorsdata.push(udata);
+            });
+          }
           this.topBanner = this.bucketLink+this.pageData.sectionOne.topBanner;     
           this.middleBanner = this.bucketLink+this.pageData.sectionThree.bannerImage;
           this.lowerBanner = this.bucketLink+this.pageData.sectionFour.bannerImage;
@@ -202,26 +243,19 @@ userType = localStorage.getItem('endUserType');
           console.error(err);
         }
       );
-    }  
-    else {
+    } else {
       if(this.contactForm.controls['email'].invalid)
         this.contactForm.controls['email'].markAsTouched();
       if(this.contactForm.controls['message'].invalid)
         this.contactForm.controls['message'].markAsTouched();
-    }
-      
+    }      
   }
-
-
-
 
   isScrolledIntoView = () => {
     const docViewTop = $(window).scrollTop();
     const docViewBottom = docViewTop + $(window).height();
-
     const elemTop = $('#leadsNumbers').offset().top;
     const elemBottom = elemTop + $('#leadsNumbers').height();
-
     if ((elemBottom <= docViewBottom) && (elemTop >= docViewTop)) {
       this.opts = {
         duration: 0.1
@@ -234,7 +268,6 @@ userType = localStorage.getItem('endUserType');
     }
   }
 
-
   removeSlide() {
     this.slides.length = this.slides.length - 1;
   }
@@ -246,7 +279,6 @@ userType = localStorage.getItem('endUserType');
   slickInit2(e) {
     //  console.log('slick initialized');
   }
-
 
   breakpoint(e) {
     // console.log('breakpoint');
@@ -262,7 +294,6 @@ userType = localStorage.getItem('endUserType');
 
   gotoTop() {
     const content = document.getElementsByClassName('rightside-content-hold')[0]
-
     content.scroll({
       top: 0,
       left: 0,
@@ -276,5 +307,4 @@ userType = localStorage.getItem('endUserType');
     this.bfrSubAdvPremiumAccess  = Number(freeTrialPeriodSettings.advisorFreeDays)
     this.advisorFreeTrialStatus  = freeTrialPeriodSettings.advisorStatus == 'On'? true : false
   }
-
 }

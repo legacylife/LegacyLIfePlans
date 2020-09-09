@@ -27,7 +27,6 @@ export class CoachsCornerComponent implements OnInit {
   ngOnInit() {    
   }
   @HostListener('document:click', ['$event']) clickedOutside(event){
-      console.log('event',event)
       // if(event.srcElement.textContent=='Send an Invite'){
       // }
   }

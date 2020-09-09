@@ -1,5 +1,5 @@
 <div class="container cc--detailed" [class.mt-1]="!isLoggedIn">
-  <button mat-raised-button class="llp--secondary--btn back--btn tran--bg backBtn--with--icon" routerLink="/advisor/coachs-corner" *ngIf="isLoggedIn">
+  <button mat-raised-button class="llp--secondary--btn back--btn tran--bg backBtn--with--icon" routerLink="/{{userType}}/coachs-corner" *ngIf="isLoggedIn">
     <mat-icon>arrow_back</mat-icon> Back
   </button>
 

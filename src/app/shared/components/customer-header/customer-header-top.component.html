@@ -43,12 +43,12 @@
             </button> -->
 
             <ul class="menu header--ul m-0 p-0">
-              <li class="mat-menu-item">
-                <a matRipple  (click)="allowAddTrustee && openAddTrusteeModal('', true)">
+              <li class="mat-menu-item" (click)="openAddTrusteeModal('', true)">
+                <a matRipple>
                   <mat-icon>group_add</mat-icon> Add Trustees
                 </a>
               </li>
-              <li class="mat-menu-item" (click)="allowAddToDo && openTodosModal({})">
+              <li class="mat-menu-item" (click)="openTodosModal({})">
                 <a matRipple><mat-icon>list</mat-icon> To dos</a>
               </li>
               <li class="mat-menu-item">

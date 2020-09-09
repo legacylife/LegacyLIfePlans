@@ -12,7 +12,7 @@
             <h2>{{row?.firstName}} {{row?.lastName}}</h2>
             <p><mat-icon>markunread</mat-icon>{{row?.username}}</p>
             <div class="sta--m">
-              <mat-icon>star</mat-icon> Premium member
+              <mat-icon>star</mat-icon> {{isSubscribePlan ? 'Subscribed ' : 'Free '}}member
             </div>
           </div>
         </mat-card>

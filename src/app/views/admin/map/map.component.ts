@@ -10,9 +10,9 @@ import { Angular5Csv } from '../../../../../node_modules/angular5-csv/dist/Angul
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
-  zoom = 3;
-  lat = -28.024; 
-  long = 140.887;
+  zoom = 4;
+  lat = 36.778259;//51.673858;//-28.024; 
+  long = -119.417931;//7.815982;//140.887;
   /*
     https://sites.google.com/site/gmapsdevelopment/
     'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
@@ -43,24 +43,24 @@ export class MapComponent implements OnInit {
     this.mapCenter = []
     let req_var, query_var
     if( this.userTypeFilter == 'all' ) {
-      query_var = { status:'Active', zipcode:{$exists:true, $ne:null} }
+      query_var = { status:'Active', location:{$exists:true, $ne:null} }
     }else{
-      query_var = { userType: this.userTypeFilter, status:'Active', zipcode:{ $exists:true, $ne:null } }
+      query_var = { userType: this.userTypeFilter, status:'Active', location:{ $exists:true, $ne:null } }
     }
     
     if( this.onBoardByFilter == 'all' ) {
       query_var = query_var
     }
     else{
-      query_var = Object.assign({ invitedBy: this.onBoardByFilter }, query_var)
+      query_var = Object.assign({ invitedByType: this.onBoardByFilter }, query_var)
     }
     req_var = { query: query_var }
       await this.userapi.apiRequest('post', 'userlist/getuserslistforadminmap', req_var).subscribe( (result) => {      
        let arrays = [];
       result.data.userDetails.forEach((element,index) => {
         if(element.location && element.location.latitude){
-          let  userData = {lat: element.location.latitude,
-                        long: element.location.longitude,
+          let  userData = {lat: element.latitude,
+                        long: element.longitude,
                         label: element.userType,
                         icon: 'http://maps.google.com/mapfiles/kml/paddle/'+(element.userType == 'customer' ? 'C.png': 'A.png'),
                         fullname: element.fullname,

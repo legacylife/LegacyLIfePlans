@@ -68,21 +68,7 @@ export class customerlistComponent implements OnInit {
       } else {
         this.rows = this.temp = result.data.userList.map(row => {
           if (row.userType != 'sysAdmin') {
-            //let subscriptionData = {}
-            
-            let subscriptionData = this.subscriptionDetails(row);
-            row['subscriptionData'] = {
-              status: subscriptionData.subscriptionStatus,
-              endDate: subscriptionData.userSubscriptionEnddate ? subscriptionData.userSubscriptionEnddate : "-"
-            }
-            /*this.subscriptionservice.checkSubscriptionAdminPanel(row, (returnArr) => {
-              row['subscriptionData'] = {
-                status: returnArr.isAccountFree && !returnArr.isSubscribePlan ? 'Trial' : (returnArr.isSubscribePlan && !returnArr.isPremiumExpired ? 'Paid' : 'Expired'),
-                endDate: returnArr.subscriptionExpireDate
-              }
-            })*/
-
-
+            row['subscriptionData'] = this.subscriptionservice.viewSubscriptionAdminPanel(row);
           }
           return row;
         })
@@ -92,6 +78,7 @@ export class customerlistComponent implements OnInit {
       console.error(err)
     })
   }
+
   statusChange(row) {
     var statMsg = "Are you sure you want to re-activate this user, " + row.username + " Access to the website account for the customer, trustees and advisors will be re-opened as per the subscription status of this customer."
     if (row.status == 'Active') {
@@ -144,50 +131,6 @@ export class customerlistComponent implements OnInit {
     });
 
     this.rows = rows;
-  }
-
-  subscriptionDetails(row) {
-    let userSubscriptionEnddate = row.userSubscriptionEnddate;
-    let planName = row.userType == 'advisor' ? 'Standard' : 'Legacy Life';
-    let subscriptionStatus = "Paid";
-
-
-    let subscriptions = row.subscriptionDetails ? row.subscriptionDetails : null;
-    if (subscriptions && subscriptions.length > 0) {
-
-      let currentSubscription = subscriptions[subscriptions.length - 1];
-      if (currentSubscription.status == 'trialing') {
-        subscriptionStatus = "Trialing";
-        planName = 'Free';
-      }
-      else if (currentSubscription.status == 'canceled') {
-        subscriptionStatus = "Canceled";
-      }
-      else {
-        subscriptionStatus = "Paid";
-      }
-    }
-    else {
-      subscriptionStatus = "Trialing";
-      planName = 'Free';
-    }
-
-    if (userSubscriptionEnddate && userSubscriptionEnddate != '') {
-      let endDate = new Date(userSubscriptionEnddate)
-      let today = new Date(this.today)
-      if (endDate < today) {
-        subscriptionStatus = "Expired";
-      }
-    }
-
-    let subscriptionData = {
-      "userSubscriptionEnddate" : userSubscriptionEnddate,
-      "subscriptionStatus" : subscriptionStatus,
-      "planName" : planName
-    }
-
-    return subscriptionData;
-
   }
 
 }

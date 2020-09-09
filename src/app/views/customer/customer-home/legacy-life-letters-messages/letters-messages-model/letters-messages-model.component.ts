@@ -4,7 +4,7 @@ import { CustomValidators } from 'ng2-validation';
 import { MatDialog, MatSnackBar  } from '@angular/material';
 import { Router } from '@angular/router';
 import { FileUploader } from 'ng2-file-upload';
-import { cloneDeep } from 'lodash'
+import { cloneDeep,debounce } from 'lodash'
 import { UserAPIService } from 'app/userapi.service';
 import { AppConfirmService } from 'app/shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
@@ -175,7 +175,7 @@ export class LettersMessagesModelComponent implements OnInit {
     })
   }
 
-  public fileOverBase(e: any): void {
+  public fileOverBase = debounce((e: any) => {
     this.hasBaseDropZoneOver = e;
     this.fileErrors = [];
     let totalItemsToBeUpload = this.uploader.queue.length,
@@ -252,7 +252,7 @@ export class LettersMessagesModelComponent implements OnInit {
         }
       }
     })
-  }
+  },300)
 
   updateProgressBar(){
     let uploaderLength = 0;  let uploaderCopyLength = 0;

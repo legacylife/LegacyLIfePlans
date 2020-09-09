@@ -27,7 +27,7 @@
 
               </mat-form-field>
             </div>
-            <button mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" (click)="advProceed();" *ngIf="proceedBtn" [disabled]="llpAdvsignupForm.invalid">Proceed</button>
+            <button mat-raised-button class="llp--primary--btn full-width form--action--btn mt-1" (click)="advProceed('Proceed');" *ngIf="proceedBtn" [disabled]="llpAdvsignupForm.invalid">Proceed</button>
            </form>
             <form class="llp-form-wrapper" [formGroup]="llpAdvotpForm">
               <div class="otp-sec" *ngIf="advisorOtp">

@@ -108,7 +108,7 @@ export class userlistComponent implements OnInit {
           // If user press cancel
           return;
         }
-        this.loader.open();
+       //8 this.loader.open();
         if (isNew) {
           this.addItem(res)
             .subscribe(data => {

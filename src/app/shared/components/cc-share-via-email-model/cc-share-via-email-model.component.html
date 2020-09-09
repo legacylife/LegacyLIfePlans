@@ -12,7 +12,9 @@
       <div fxLayout="row wrap" *ngFor="let itemrow of formArr.controls; let i=index " [formGroupName]="i">
         <div fxFlex.xs="90" fxFlex.sm="95" fxFlex.md="95" fxFlex.lg="95" fxFlex.xl="95">
           <mat-form-field class="full-width">
-            <input class="" matInput placeholder="Email" formControlName="itemname" required >          
+            <input class="" matInput placeholder="Email" formControlName="itemname">              
+          <mat-icon matTooltip="Please enter email id" matTooltipClass="llp--tooltip error" *ngIf="itemrow.controls['itemname'].hasError('required') && itemrow.controls['itemname'].touched" class="red--alert">help_outline</mat-icon>
+          <mat-icon matTooltip="Please enter valid email Id." matTooltipClass="llp--tooltip error" *ngIf="itemrow.controls['itemname'].hasError('pattern') && itemrow.controls['itemname'].touched" class="red--alert">help_outline</mat-icon>        
           </mat-form-field>
         </div>            
         <div fxFlex.xs="10" fxFlex.sm="5" fxFlex.md="5" fxFlex.lg="5" fxFlex.xl="5"class="text-right" *ngIf="emailIdForm.controls.itemRows.controls.length > 1" (click)="deleteRow(i)">

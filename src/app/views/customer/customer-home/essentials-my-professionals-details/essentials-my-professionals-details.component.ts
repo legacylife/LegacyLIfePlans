@@ -24,6 +24,7 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
   urlData:any={};
   trusteeLegaciesAction:boolean=true;
   LegacyPermissionError:string="You don't have access to this section";
+  subFolderName:string = ''
   constructor( // private shopService: ShopService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar, private dialog: MatDialog, private confirmService: AppConfirmService,
@@ -61,6 +62,7 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
   }
 
   customerisValid(data){
+    this.sharedata.shareLegacyCustomerIdData(data.customerId);
     if (this.urlData.lastThird == "legacies") {
       this.userapi.getUserAccess(data.customerId,(userAccess,userDeathFilesCnt,userLockoutPeriod,userDeceased) => { 
         if(userLockoutPeriod || userDeceased){
@@ -127,5 +129,5 @@ export class EssentialsMyProfessionalsDetailsComponent implements OnInit {
           })
         }
       })
-  }
+  } 
 }

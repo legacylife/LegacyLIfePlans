@@ -9,7 +9,7 @@ import { MatDialog, MatSnackBar,MAT_DIALOG_DATA  } from '@angular/material';
 import { Router } from '@angular/router';
 import { EstateTypeOfDocument,HealthcareTypeOfDocument,PersonalAffairsTypeOfDocument } from '../../../../selectList';
 import { FileUploader } from 'ng2-file-upload';
-import { cloneDeep } from 'lodash'
+import { cloneDeep,debounce } from 'lodash'
 import { serverUrl, s3Details } from '../../../../config';
 import { NumberValueAccessor } from '@angular/forms/src/directives';
 import { FileHandlingService } from 'app/shared/services/file-handling.service';
@@ -194,7 +194,7 @@ export class legalStuffModalComponent implements OnInit {
     })
   }
 
-  public fileOverBase(e: any): void {
+  public fileOverBase = debounce((e: any) => {
     this.hasBaseDropZoneOver = e;
     this.fileErrors = [];
     let totalItemsToBeUpload = this.uploader.queue.length,
@@ -268,7 +268,7 @@ export class legalStuffModalComponent implements OnInit {
         }
       }
     })
-  }
+  },300)
 
   updateProgressBar(){
     let uploaderLength = 0;  let uploaderCopyLength = 0;

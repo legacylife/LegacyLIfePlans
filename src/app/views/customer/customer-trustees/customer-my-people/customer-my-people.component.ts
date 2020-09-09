@@ -24,7 +24,7 @@ export class CustomerMyPeopleComponent implements OnInit {
   advisorListing: any[];
   showallPeoplesListing: boolean = true;
   executorAssigned: boolean = false;
-  showallPeoplesListingCnt: any;
+  showallPeoplesListingCnt: any = 0;
   userId: string;
   listingAsc: boolean = true;
   profileFilePath: string = profileFilePath;

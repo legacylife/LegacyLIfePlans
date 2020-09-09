@@ -67,7 +67,7 @@ export class AdvisorSignupComponent implements OnInit {
     this.advisorFreeTrialStatus  = freeTrialPeriodSettings.advisorStatus == 'On'? true : false
   }
 
-  advProceed() {
+  advProceed(from) {
     let req_vars = {
       username: this.llpAdvsignupForm.controls['username'].value,
       userType: 'advisor',
@@ -106,7 +106,11 @@ export class AdvisorSignupComponent implements OnInit {
           this.advisorOtp = true;
           this.llpAdvsignupForm.controls['username'].setErrors({ 'EmailExist': false })
           this.EmailExist = false;
-          this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          if(from=='ResendOtp'){
+            this.snack.open("OTP sent successfully please check your email", 'OK', { duration: 4000 })
+          }else{
+            this.snack.open(result.data.message, 'OK', { duration: 4000 })
+          }
           this.clockCall();
         }
       } else {
@@ -168,7 +172,10 @@ export class AdvisorSignupComponent implements OnInit {
   }
 
   ResendOtpProceed() {
-    this.advProceed();
+    this.invalidOTP = false;
+    this.llpAdvotpForm.controls['otp'].setErrors({ 'invalidOTP': false })
+    this.llpAdvsignupForm.controls['username'].markAsUntouched();
+    this.advProceed('ResendOtp');
   }
 
   toproceed() {

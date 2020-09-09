@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild,HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,HostListener ,Input, EventEmitter } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar, MatSidenav } from '@angular/material';
 import { Product } from '../../../shared/models/product.model';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms'
@@ -11,8 +11,10 @@ import { MarkAsDeceasedComponent } from './../../../views/mark-as-deceased-modal
 import { AppLoaderService } from '../../../shared/services/app-loader/app-loader.service';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
-//import { ChatService } from 'app/shared/components/app-chats/chat.service';
-//import { AppChatsModule } from '../../../shared/components/app-chats/app-chats.module';
+import { legacySettingModalComponent } from './legacy-setting/legacy-setting-modal/legacy-setting-modal.component';
+import { SubscriptionService } from 'app/shared/services/subscription.service';
+//import { PetsDetailsComponent } from './pets/pets-details/pets-details.component';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-customer-home',
   templateUrl: './customer-home.component.html',
@@ -26,6 +28,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   public currentPage: any;
   layout = null;
   isProUser: boolean = false
+  isFreeProuser: boolean = false
   @ViewChild(MatSidenav) private sideNav: MatSidenav;
   
   customerLegaicesId:string=''
@@ -40,25 +43,41 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
   alreadyRevokeAsDeceased:boolean = false;
   finallyDeceased:boolean = false;
   datas: any;
+  
   constructor(private layoutServ: LayoutService,
     private fb: FormBuilder,private snack: MatSnackBar,
-    private userapi:UserAPIService,
-    private loader: AppLoaderService,
-    private dialog: MatDialog,private confirmService: AppConfirmService,
-    private shareData: DataSharingService   
+    private userapi:UserAPIService,private loader: AppLoaderService,private dialog: MatDialog,private confirmService: AppConfirmService,
+    private shareData: DataSharingService, private subscriptionservice:SubscriptionService, private router: Router,   
   ) {
     this.layout = layoutServ.layoutConf
    }
 
   ngOnInit() {
-    this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+    // new code on 6th sept 2020
+    /*let freeUser = localStorage.getItem('endUserProFreeSubscription')
+    let proUser = localStorage.getItem('endUserProSubscription')
+    if((freeUser && freeUser == 'yes') || (proUser && proUser == 'yes')){
+      this.isProUser = true
+    }
+    else {
+      this.isProUser = false
+    }*/
+
+    this.isProUser = localStorage.getItem('endUserProSubscription') == 'yes' ? true : false     // old code
     let urlData = this.userapi.getURLData();
-    if(urlData.lastThird == 'legacies' && urlData.lastOne){
-      this.customerLegaicesId = urlData.lastOne
-      this.myLegacy= false
-      this.sharedLegacies =true 
+    
+    if(urlData.lastThird == 'legacies' && urlData.lastOne){ 
+      this.customerLegaicesId = urlData.lastOne;
+      this.myLegacy = false
+      this.sharedLegacies = true
       this.checkDeceasedStatus();
     }
+
+    this.shareData.userShareCustomerIdSource.subscribe((ids) => {
+      if(ids && ids!=='undefined'){
+        this.customerLegaicesId = ids;
+      }
+   })
 
     const loc = location.href;
     const locArray = loc.split('/')
@@ -66,6 +85,13 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
     if(locArray && locArray[5]){
       this.activeHeading = locArray[5];
     }   
+
+    if(!this.isProUser){
+      this.subscriptionservice.checkSubscription( '',( returnArr )=> {
+        this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+        this.isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
+      })
+    }
   }
 
   @HostListener('document:click', ['$event']) clickedOutside(event){
@@ -75,9 +101,20 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
       if(locArray && locArray[5]){
         this.activeHeading = locArray[5];
       }   
+      let urlData = this.userapi.getURLData();
+      if(urlData.lastThird == 'legacies' && urlData.lastOne){ 
+        this.customerLegaicesId = urlData.lastOne;
+        this.myLegacy= false
+        this.sharedLegacies =true 
+      }
   }
-  
+
   checkDeceasedStatus(query = {}){
+    this.shareData.userShareCustomerIdSource.subscribe((ids) => {
+      if(ids){
+        this.customerLegaicesId = ids;
+      }
+   })
     let req_vars = {};
     if(localStorage.getItem("endUserType")=='customer'){
       req_vars = {
@@ -120,10 +157,10 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
             this.finallyDeceased = true;
           }
         }
-        //console.log('Here I am 1st ')
+        
         this.shareData.userShareDataDeathFileSource.subscribe((shareDeathFileCount) => {
           this.shareDeathFileCount = shareDeathFileCount;
-          //console.log('Here I am 2nd',this.shareDeathFileCount)
+        
         })
       }
     }, (err) => {
@@ -131,8 +168,8 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
     })
   }
 
-  ngOnDestroy() {
 
+  ngOnDestroy() {
   }
 
   toggleSideNav() {
@@ -141,21 +178,61 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
     }  
   }
 
-  markAsDeceasedModal(data: any = {}) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(MarkAsDeceasedComponent, {
-      width: '720px',
-      disableClose: true,
-    });
-    dialogRef.afterClosed()
-    .subscribe(res => {
-      this.checkDeceasedStatus();
-      if (!res) {
-        return;
-      }
-    })
+  checkLegacySetting(path) {
+    if (!this.isProUser && !this.isFreeProuser) {
+      let dialogRef: MatDialogRef<any> = this.dialog.open(legacySettingModalComponent, {     
+        width: '720px',
+        disableClose: true,
+      });
+      dialogRef.afterClosed()
+      .subscribe(res => {
+        if (!res) {
+          // If user press cancel
+          return;
+        }
+      })
+    }else{
+      this.router.navigate([path])
+    }
   }
 
+  markAsDeceasedModal(data: any = {}) {
+     this.shareData.userShareCustomerIdSource.subscribe((ids) => {
+        if(ids){
+          this.customerLegaicesId = ids;
+        }
+     })
+     this.markAsDeceasedModalOpen(this.customerLegaicesId);
+  }
+
+  markAsDeceasedModalOpen(customerLegaicesId) {
+    if(customerLegaicesId){
+        let dialogRef: MatDialogRef<any> = this.dialog.open(MarkAsDeceasedComponent, {
+          width: '720px',
+          disableClose: true,
+          data: {
+            customerLegaicesId: customerLegaicesId,
+          }
+        });
+        dialogRef.afterClosed()
+        .subscribe(res => {
+          this.checkDeceasedStatus();
+          if (!res) {
+            return;
+          }
+        })
+    }
+  }
+
+
   revokeAsDeceasedModal() {
+    this.shareData.userShareCustomerIdSource.subscribe((ids) => {
+      this.customerLegaicesId = ids;
+      this.revokeAsDeceasedModalOpen(this.customerLegaicesId);
+   })
+  }
+
+  revokeAsDeceasedModalOpen(customerLegaicesId) {
     // if(!this.documentId){
     //   this.snack.open("Something wrong, Please try again", 'OK', { duration: 4000 })
     // }else{
@@ -169,7 +246,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
           if(this.documentId){
             criteria = {_id:this.documentId};
           }else{
-            criteria = {customerId:this.customerLegaicesId,status:'Active'};
+            criteria = {customerId:customerLegaicesId,status:'Active'};
           }
 
           const req_vars = {
@@ -178,7 +255,7 @@ export class CustomerHomeComponent implements OnInit, OnDestroy {
             userType:localStorage.getItem("endUserType"),
             deceasedFromName:localStorage.getItem("endUserFirstName") + " " + localStorage.getItem("endUserLastName"),
             fromId:this.userId,
-            toId:this.customerLegaicesId,
+            toId:customerLegaicesId,
             folderName:'',
             subFolderName:''
           }

@@ -11,7 +11,7 @@ import { documentTypes } from '../../../../selectList';
 import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../config';
 import { states } from '../../../../state';
-import { cloneDeep } from 'lodash'
+import { cloneDeep,debounce } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 import { FileHandlingService } from 'app/shared/services/file-handling.service';
 const URL = serverUrl + '/api/documents/myEssentialsID';
@@ -61,6 +61,8 @@ export class EssenioalIdBoxComponent implements OnInit {
   subFolderName:string = 'ID Box'
   LegacyPermissionError:string="You don't have access to this section";
   trusteeLegaciesAction:boolean=true;
+  isProUser = false;
+  isFreeProuser = false;
   constructor(private snack: MatSnackBar,public dialog: MatDialog, private fb: FormBuilder, 
     private confirmService: AppConfirmService,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService, private fileHandlingService: FileHandlingService,private sharedata: DataSharingService  ) 
@@ -115,6 +117,12 @@ export class EssenioalIdBoxComponent implements OnInit {
             }           
           });             
           this.selectedProfileId = "";                  
+      }else{
+        this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+        this.isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
+        if (!this.isProUser && !this.isFreeProuser) {
+          this.router.navigate(['/', 'customer', 'dashboard']);
+        }
       }
       this.uploader = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
       this.uploaderCopy = new FileUploader({ url: `${URL}?userId=${this.userId}&ProfileId=${this.selectedProfileId}` });
@@ -501,7 +509,7 @@ export class EssenioalIdBoxComponent implements OnInit {
         })
   }
 
-  public fileOverBase(e: any): void {
+  public fileOverBase = debounce((e: any) => {
       this.hasBaseDropZoneOver = e;
       this.fileErrors = [];
       let totalItemsToBeUpload = this.uploader.queue.length,
@@ -580,7 +588,7 @@ export class EssenioalIdBoxComponent implements OnInit {
           }
         }
       })
-    }
+    }, 300)
 
     updateProgressBar(){
       let uploaderLength = 0;  let uploaderCopyLength = 0;

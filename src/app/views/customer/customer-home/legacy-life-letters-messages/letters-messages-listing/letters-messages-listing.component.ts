@@ -34,6 +34,8 @@ export class LettersMessagesListingComponent implements OnInit {
   instruction_data_flag:boolean=false;  
   shareLegacFlag:boolean=false;
   trusteeLettersMessageRecords:any;  
+  isProUser = false;
+  isFreeProuser = false;
   constructor(private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private userapi: UserAPIService, private loader: AppLoaderService,private sharedata: DataSharingService) {  }
 
   ngOnInit() {
@@ -56,6 +58,11 @@ export class LettersMessagesListingComponent implements OnInit {
       });
       this.showTrusteeCnt = false;this.shareLegacFlag = true;
     }else{ 
+      this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+      this.isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
+      if (!this.isProUser && !this.isFreeProuser) {
+        this.router.navigate(['/', 'customer', 'dashboard']);
+      }
       this.userapi.getFolderInstructions('legacy_life_letters_messages', (returnData) => {
         this.instruction_data = returnData;
         if(this.instruction_data){this.instruction_data_flag = true;}
@@ -73,7 +80,6 @@ export class LettersMessagesListingComponent implements OnInit {
   }
 
   getLetterMessageList = (query = {},fileLevelAccess) => {
-    console.log("getLetterMessageList")
     let trusteeQuery = {};
     const req_vars = {
       query: Object.assign({ customerId: this.userId, status: "Active" }, query),
@@ -99,8 +105,6 @@ export class LettersMessagesListingComponent implements OnInit {
           });
           this.lettersMessagesList = accessFiles;
         }
-
-
 
         this.trusteeLettersMessageRecords = result.data.trusteeRecords;
         if(this.shareLegacFlag){

@@ -32,6 +32,8 @@ export class UserAuthGuard implements CanActivate {
     if (pathArray[2]) {
       this.pageUrl = pathArray[2];
     }
+    //console.log(pathArray[1],'>>',pathArray[2],'>>',pathArray[3])
+
     if (localStorage.getItem('endUserProFreeSubscription') == 'yes') {
       this.freeSignup = true;
     }
@@ -45,15 +47,16 @@ export class UserAuthGuard implements CanActivate {
       this.subscriptionservice.checkSubscription('', (returnArr) => {
         let isProuser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
         let isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
-
         if (localStorage.getItem("endUserDeceased") == 'true') { isProuser = true; }//If user mark as deceased then deceased popup will be shown, No need to redirect on subscription
 
         //let acceptedUrls = ['/'+this.userInfo.endUserType+'/account-setting','/'+this.userInfo.endUserType+'/'+this.userInfo.endUserType+'-subscription']
         let acceptedUrls = ['/' + this.userInfo.endUserType + '/' + this.userInfo.endUserType + '-subscription']
         if (!isProuser) {
           if (!isFreeProuser) {
-            if (currentUrl && acceptedUrls.indexOf(currentUrl) == -1) {
-              //this.router.navigate(['/'+this.userInfo.endUserType+'/account-setting']);
+            if(this.userInfo.endUserType=='customer'){// && (pathArray[2]!='legacies' || pathArray[3]!='shared-legacies')
+              //this.router.navigate(['/' + this.userInfo.endUserType + '/' + this.userInfo.endUserType + '-subscription']);
+              return true;
+            }else if (currentUrl && acceptedUrls.indexOf(currentUrl) == -1) {
               this.router.navigate(['/' + this.userInfo.endUserType + '/' + this.userInfo.endUserType + '-subscription']);
               return false;
             }
@@ -72,7 +75,6 @@ export class UserAuthGuard implements CanActivate {
     if (localStorage.getItem("endUserId")) {
       let DeceasedFlag = localStorage.getItem("endUserDeceased");
       var pathArray = window.location.pathname.split('/');
-      //console.log('checkDeceased user auth--- ',DeceasedFlag,pathArray)
       if (DeceasedFlag != '' && DeceasedFlag == 'true') {
         let dialogRef: MatDialogRef<any> = this.dialog.open(DeceasedComponent, {
           width: '720px',
@@ -96,6 +98,7 @@ export class UserAuthGuard implements CanActivate {
   }
 
   autologFunction(ids) {
+
     //https://www.npmjs.com/package/angular-user-idle
     let IdleFlag = localStorage.getItem("setIdleFlag");
     //console.log("LockScreen Here >> ",ids,'>>>>>>>>>',IdleFlag)
@@ -117,7 +120,6 @@ export class UserAuthGuard implements CanActivate {
     //if (pathArray[1] != 'signin' && pathArray[1] != 'error') {
         this.userIdle.onTimeout().subscribe(() => this.stopWatching(true));
     //}
-    //console.log("home here we are",IdleFlag,pathArray);
   }
 
   stop() {
@@ -137,25 +139,39 @@ export class UserAuthGuard implements CanActivate {
           }
         }
       }
-  if(flag==true && pathArray[1] != 'signin' && pathArray[1] != 'error'){    
-      let dialogRef: MatDialogRef<any> = this.dialog.open(lockscreenModalComponent, {
-        width: '720px',
-        disableClose: true,
-        id: 'lockscreenModalopened',
-        panelClass: 'lock--panel',
-        backdropClass: 'lock--backdrop'
-      })
-      dialogRef.afterClosed().subscribe(res => {
-        //console.log("LockScreen afterClosed >> ")
-        this.restart();
-        this.startWatching();
-        if (!res) {
-          // If user press cancel
-          return;
-        }
-      })
-    }
 
+  let doNotOpen = true;
+  if(flag==true && pathArray[1] != 'signin' && pathArray[1] != 'error'){
+    this.dialog.openDialogs.find(dialog => {
+      if(dialog.id=='lockscreenModalopened') {
+        console.log('here I am >>>',doNotOpen)
+        doNotOpen = false;
+      }
+     // return dialog.id === id; 
+     return true; 
+    });
+    console.log('PathArray >>>> ',pathArray,'>>>',doNotOpen)
+    if(doNotOpen){
+          let dialogRef: MatDialogRef<any> = this.dialog.open(lockscreenModalComponent, {
+            width: '720px',
+            disableClose: true,
+            id: 'lockscreenModalopened',
+            panelClass: 'lock--panel',
+            backdropClass: 'lock--backdrop'
+          })
+          dialogRef.afterClosed().subscribe(res => {
+            this.restart();
+            this.startWatching();
+            if (!res) {
+              // If user press cancel
+              return;
+            }
+          })
+      }else{
+        console.log('>>>',this.dialog)
+      }
+
+    }
       this.userIdle.stopWatching();
     } else if (localStorage.getItem("endUserId") == '' || localStorage.getItem("endUserId") == 'undefined') {
       //console.log("User logout")

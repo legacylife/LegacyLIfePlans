@@ -1,0 +1,179 @@
+@import 'llp-global-styles.scss';
+
+.subscription--wrapper{
+    .plans--wrapper{
+        padding: 10px 0;
+        margin: 0 auto;
+        .plan--text{
+            
+            .plan--header{
+                height: 135px;
+                padding: 12px;
+                display: flex;
+                flex-direction: column;
+                background: #ecca40;
+                margin-bottom: 15px;
+                position: relative;
+                align-items: center;
+                border-radius: 4px;
+               
+                .cornar--stars{
+                    position: absolute;
+                    right: 12px;
+                    top: 11px;                
+                }
+                .plan--type{
+                    color: #222324;
+                    font-size: 18px;
+                    text-transform: uppercase;
+                    margin-left: -30px;
+                }
+                .doller{
+                    color: #222324;
+                    font-size: 28px;
+                    font-family: $font--lato--regular;
+                }
+                .amt{
+                    color: #222324;
+                    font-size: 50px;
+                    font-family: $font--lato--bold;
+                    line-height: 50px;
+                }
+                .duration{
+                    color: #222324;
+                    font-size: 18px;
+                    font-family: $font--lato--regular;
+                    margin-left: 10px;
+                }
+                .space{
+                    height: 39px;
+                    background-color: #a4891b;
+                    align-items: center;
+                    color: #fff;
+                    font-size: 18px;
+                    font-family: $font--lato--bold;
+                    width: 100%;
+                    position: absolute;
+                    bottom: 0;
+                    text-align: center;
+                    border-bottom-left-radius: 4px;
+                    border-bottom-right-radius: 4px;
+                    padding-top: 5px; 
+                }
+            }
+            .plan--body{
+                border: solid 1px #ebebeb;
+                background-color: #f6f7f7;
+                border-radius: 4px;
+                margin-bottom: 25px;
+                padding: 0 10px 10px 10px;
+                h5{
+                    margin: 20px 0 18px 0;
+                    text-align: center;
+                    font-size: 18px;
+                    color: #222324;
+                }
+                .mat-list{
+                    ::ng-deep .mat-list-item{
+                        min-height: 50px;
+                        height: auto;
+                        display: flex;
+                        .mat-list-item-content{
+                            font-size: 16px !important;
+                            color: #222324;
+                            font-family: $font--lato--regular;
+
+                            .mat-icon{
+                                height: 24px;
+                                width: 25px;
+                                font-size: 25px;
+                                margin-right: 15px;
+                                color: #727a33;
+                            }
+                        }
+                    }
+                }
+            }
+            .extra--price{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 25px;
+            }
+        }
+    }
+
+    .expired--user--info{ 
+        height: 120px;
+        background: #c72128;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        box-shadow: 0 0 5px #e6979a; 
+        padding: 10px 20px;
+        border-radius: 4px;
+        margin-top: 25px;
+        
+        p{
+            margin: 0;
+            font-size: 18px;
+            color: #fff;
+        }
+    }
+}
+
+@media only screen and (max-width: 599px) {
+    .subscription--wrapper .plans--wrapper {
+        padding: 15px 0;
+        width: 100%;
+    }
+    .mat-card.p-0 .mat-card-content{
+        padding: 0 10px;
+    }
+    .subscription--wrapper .plans--wrapper .plan--text .plan--body .mat-list ::ng-deep .mat-list-item .mat-list-item-content {
+        font-size: 13px !important;
+        padding: 0;
+    }
+    .subscription--wrapper .plans--wrapper .plan--text .plan--body .mat-list ::ng-deep .mat-list-item .mat-list-item-content .mat-icon {
+        height: 18px;
+        width: 18px;
+        font-size: 20px;
+        margin-right: 12px;
+    }
+    .subscription--wrapper .plans--wrapper .plan--text .plan--body h5 {
+        margin: 14px 0 10px 0;
+    }
+    .subscription--wrapper .plans--wrapper .plan--text .plan--header .plan--type {
+        font-size: 15px;
+    }
+    .subscription--wrapper .plans--wrapper .plan--text .plan--header .amt {
+        font-size: 38px;
+        line-height: 40px;
+    }
+    .subscription--wrapper .plans--wrapper .plan--text .plan--header .duration {
+        font-size: 15px;
+        margin-left: 5px;
+    }
+    .subscription--wrapper .plans--wrapper .plan--text .plan--header .space{
+        font-size: 15px;
+        padding-top: 8px;
+    }
+    .subscription--wrapper .plans--wrapper .plan--text .plan--header{
+        height: 123px;
+    }
+    ::ng-deep .mat-checkbox-layout{
+        white-space: normal !important;
+    }
+    ::ng-deep .mat-checkbox .mat-checkbox-inner-container {
+        margin-right: 10px;
+    }
+    ::ng-deep .mat-checkbox .mat-checkbox-label {
+        font-size: 14px;
+    }
+    .expired--user--info{
+        width: 100%;
+    }
+    .purchase--pn--btn{
+        margin-bottom: 20px;
+    }
+}

@@ -38,7 +38,8 @@ export class EmergencyContactsComponent implements OnInit {
 
   toUserId:string = ''
   subFolderName:string = 'Contacts'
-
+  isProUser = false;
+  isFreeProuser = false;
   constructor(private route: ActivatedRoute,
     private snack: MatSnackBar,
     private router: Router,
@@ -90,6 +91,11 @@ export class EmergencyContactsComponent implements OnInit {
         }); 
         this.showTrusteeCnt = false;
       }else{      
+        this.isProUser = localStorage.getItem('endUserProSubscription') && localStorage.getItem('endUserProSubscription') == 'yes' ? true : false
+        this.isFreeProuser = localStorage.getItem('endUserProFreeSubscription') && localStorage.getItem('endUserProFreeSubscription') == 'yes' ? true : false
+        if (!this.isProUser && !this.isFreeProuser) {
+          this.router.navigate(['/', 'customer', 'dashboard']);
+        }
         this.userapi.getFolderInstructions('emergency_contacts', (returnData) => {
           this.instruction_data = returnData;
           if(this.instruction_data){this.instruction_data_flag = true;}

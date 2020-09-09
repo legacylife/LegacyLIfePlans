@@ -100,12 +100,14 @@ import { TodosListingComponent } from './../views/todos-listing/todos-listing.co
 import { TodosComponent } from './../views/todos/todos.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CardDetailsComponent } from './components/card-details-modal/card-details-modal.component';
+import { RenewSubscriptionComponent } from './components/renew-subscription-modal/renew-subscription-modal.component';
 import { AdvertisementPaymentModalComponent } from './components/advertisement-payment-modal/advertisement-payment-modal.component';
 import { InviteComponent } from './components/header-top/invite-modal/invite-modal.component';
 import { SubscriptionService } from './services/subscription.service';
 import { PetsListComponent } from 'app/views/customer/customer-home/pets/pets-list/pets-list.component';
 import { PetsDetailsComponent } from 'app/views/customer/customer-home/pets/pets-details/pets-details.component';
 import { PetsModalComponent } from 'app/views/customer/customer-home/pets/pets-modal/pets-modal.component';
+import { legacySettingModalComponent } from 'app/views/customer/customer-home/legacy-setting/legacy-setting-modal/legacy-setting-modal.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { CustomerEssentialDayOneComponent } from 'app/views/customer/customer-home/customer-essential-day-one/customer-essential-day-one.component';
 import { PersonalProfileModalComponent } from 'app/views/customer/customer-home/personal-profile-modal/personal-profile-modal.component';
@@ -214,11 +216,13 @@ const classesToInclude = [
   TodosListingComponent,
   TodosComponent,
   CardDetailsComponent,
+  RenewSubscriptionComponent,
   AdvertisementPaymentModalComponent,
   InviteComponent,
   PetsListComponent,
-  PetsDetailsComponent,
+  PetsDetailsComponent,  
   PetsModalComponent,
+  legacySettingModalComponent,
   CustomerEssentialDayOneComponent,
   PersonalProfileModalComponent,
   CustomerEssentialDetailsComponent,
@@ -326,8 +330,8 @@ const classesToInclude = [
     //AppChatsModule
   ],
   entryComponents: [
-    AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,ReferNEarnPopUpComponent,
-    PetsModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent,SpecialNeedsModelComponent,
+    AppComfirmComponent, AppLoaderComponent,TodosComponent, CardDetailsComponent,RenewSubscriptionComponent,ReferNEarnPopUpComponent,
+    PetsModalComponent,legacySettingModalComponent,PersonalProfileModalComponent,EssenioalIdBoxComponent,essentialsMyProfessionalsComponent,SpecialNeedsModelComponent,
     DevicesModalComponent,ElectronicMediaModalComponent,DigitalPublicationsModalComponent,AssetsModelComponent,
     VehicleModelComponent,RealEstateModelComponent,TimeCapsuleMoalComponent,legalStuffModalComponent,InsuranceModalComponent,
     FinanceModalComponent,DebtModalComponent,FinalWishesFormModalComponent,LettersMessagesModelComponent, InviteComponent, CcShareViaEmailModelComponent,

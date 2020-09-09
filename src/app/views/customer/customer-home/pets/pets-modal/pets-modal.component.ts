@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { documentTypes } from '../../../../../selectList';
 import { FileUploader } from 'ng2-file-upload';
 import { serverUrl, s3Details } from '../../../../../config';
-import { cloneDeep } from 'lodash'
+import { cloneDeep,debounce } from 'lodash'
 import { controlNameBinding } from '@angular/forms/src/directives/reactive_directives/form_control_name';
 import { FileHandlingService } from 'app/shared/services/file-handling.service';
 import { DataSharingService } from 'app/shared/services/data-sharing.service';
@@ -207,7 +207,7 @@ export class PetsModalComponent implements OnInit {
         })
   }
 
-  public fileOverBase(e: any): void {
+  public fileOverBase = debounce((e: any) => {
     this.hasBaseDropZoneOver = e;
     this.fileErrors = [];
     let totalItemsToBeUpload = this.uploader.queue.length,
@@ -281,7 +281,7 @@ export class PetsModalComponent implements OnInit {
         }
       }
     })
-  }
+  },300)
 
   updateProgressBar(){
     let uploaderLength = 0;  let uploaderCopyLength = 0;
@@ -342,22 +342,24 @@ getPetsDocuments = (query = {}, search = false, uploadRemained = true) => {
       this.userapi.apiRequest('post', 'pets/view-pets-details', req_vars).subscribe(result => {
         if (result.status == "error") {
         } else {
-          profileIds = this.selectedProfileId = result.data._id;
-          this.PetForm.controls['profileId'].setValue(profileIds);
-         
-          this.PetForm.controls['documents_temp'].setValue('');
-          this.documentsMissing = false;
-          if(uploadRemained) {
-            this.uploadRemainingFiles(profileIds)
-          }
-          this.petDocumentsList = result.data.documents;       
-          if(this.petDocumentsList.length>0){
-            this.PetForm.controls['documents_temp'].setValue('1');
-            this.documentsMissing = false;
-          } 
-          if(this.currentProgessinPercent==100){
-            this.currentProgessinPercent = 0;
-          }        
+          if(result.data._id){
+              profileIds = this.selectedProfileId = result.data._id;
+              this.PetForm.controls['profileId'].setValue(profileIds);
+           
+              this.PetForm.controls['documents_temp'].setValue('');
+              this.documentsMissing = false;
+              if(uploadRemained) {
+                this.uploadRemainingFiles(profileIds)
+              }
+              this.petDocumentsList = result.data.documents;       
+              if(this.petDocumentsList.length>0){
+                this.PetForm.controls['documents_temp'].setValue('1');
+                this.documentsMissing = false;
+              } 
+              if(this.currentProgessinPercent==100){
+                this.currentProgessinPercent = 0;
+              }   
+         }
         }
       }, (err) => {
         console.error(err);

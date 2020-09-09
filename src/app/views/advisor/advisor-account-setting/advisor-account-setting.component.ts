@@ -10,6 +10,7 @@ import { CustomValidators } from 'ng2-validation';
 import { ChangePassComponent } from './change-pass/change-pass.component';
 import { AppConfirmService } from '../../../shared/services/app-confirm/app-confirm.service';
 import { map, delay } from 'rxjs/operators';
+import { debounce } from 'lodash'
 import { Subscription, Observable, of } from 'rxjs';
 import { states } from '../../../state';
 import { FileUploader } from 'ng2-file-upload';
@@ -97,6 +98,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
   sponsoredAdvisorFlag: boolean = false
   isPremiumExpired: boolean = false
   isSubscriptionCanceled: boolean = false
+  paymentStatus:any
   userCreateOn: any
   userSubscriptionDate: any
   today: Date = moment().toDate()
@@ -218,6 +220,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
       this.isSubscribePlan = returnArr.isSubscribePlan
       this.planName = returnArr.planName
       this.subscriptionExpireDate = returnArr.subscriptionExpireDate
+      this.paymentStatus = returnArr.paymentStatus
     })
   }
   getInviteMembersCount() {
@@ -526,7 +529,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     })
   }
 
-  public fileOverBase(e: any): void {
+  public fileOverBase = debounce((e: any) => {
     this.hasBaseDropZoneOver = e;
     this.fileErrors = [];
     this.uploader.queue.forEach((fileoOb) => {
@@ -546,6 +549,7 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     });
 
     if (this.uploader.getNotUploadedItems().length) {
+      this.LicenseForm.controls['advisorDocuments_temp'].setValue('');
       this.uploader.uploadAll();
       //this.uploader.onAfterAddingFile = (file)=> { file.withCredentials = false; };
       this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
@@ -553,11 +557,13 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
         this.getProfileField();
       };
       this.uploader.onCompleteAll = () => {
+        this.LicenseForm.controls['advisorDocuments_temp'].setValue('1');
         this.uploader.clearQueue();
         this.currentProgessinPercent = 0;
       }
     }
-  }
+  }, 300)
+
 
   updateProgressBar() {
     let totalLength = this.uploader.queue.length;

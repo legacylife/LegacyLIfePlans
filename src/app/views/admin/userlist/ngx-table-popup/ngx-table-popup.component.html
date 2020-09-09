@@ -3,9 +3,9 @@
   <button class="modal--close" ><mat-icon (click)="dialogRef.close()" class="icon--cross">cancel</mat-icon></button>  
 </div>
 <form [formGroup]="itemForm" class="llp-form-wrapper" (ngSubmit)="submit()">
-  <div class="ll--modal--body modal--body--hgt-upd">
+  <div class="ll--modal--body modal--body--hgt-upd mt-1">
     <div fxLayout="row wrap">
-      <div fxFlex="50"  class="pr-1">
+      <div fxFlex="50"  class="pr-1 ">
         <mat-form-field class="full-width">
           <input  class="capitalize"  matInput name="firstName"  [formControl]="itemForm.controls['firstName']"  placeholder="First Name *">
           <mat-icon matTooltip="Please enter first name" matTooltipClass="llp--tooltip error" *ngIf="itemForm.controls['firstName'].hasError('required') && itemForm.controls['firstName'].touched"

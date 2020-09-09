@@ -14,7 +14,7 @@ import { LoginGaurd } from './shared/services/auth/login.guard';
 import { GuestGaurd } from './shared/services/auth/guest.guard';
 import { PrivacyPolicyComponent } from './views/landing/privacy-policy/privacy-policy.component';
 import { TermsOfUseComponent } from './views/landing/terms-of-use/terms-of-use.component';
-console.log('App---routing');
+import { StaticPagesComponent } from './views/landing/static-pages/static-pages.component';
 export const rootRouterConfig: Routes = [
   {
     path: '',
@@ -59,7 +59,18 @@ export const rootRouterConfig: Routes = [
     children: [
       {
         path: '',
-        component: PrivacyPolicyComponent,
+        component: StaticPagesComponent,
+      }
+    ]
+  },
+  {
+    path: 'our-company',
+    component: LandingLayoutComponent,
+    data: { title: 'Our Company' },
+    children: [
+      {
+        path: '',
+        component: StaticPagesComponent,
       }
     ]
   },
@@ -70,7 +81,30 @@ export const rootRouterConfig: Routes = [
     children: [
       {
         path: '',
-        component: TermsOfUseComponent,
+        component: StaticPagesComponent,
+      }
+    ]
+  },
+
+  {
+    path: 'faq',
+    component: LandingLayoutComponent,
+    data: { title: 'FAQ' },
+    children: [
+      {
+        path: '',
+        component: StaticPagesComponent,
+      }
+    ]
+  },
+  {
+    path: 'secure-data',
+    component: LandingLayoutComponent,
+    data: { title: 'Secure Data' },
+    children: [
+      {
+        path: '',
+        component: StaticPagesComponent,
       }
     ]
   },

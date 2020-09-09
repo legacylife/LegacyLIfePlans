@@ -10,7 +10,6 @@ import { FormBuilder, FormGroup, Validators, FormControl, FormArray} from "@angu
 import { MatSnackBar, MatDialog, MatDialogRef } from "@angular/material";
 import { VideoModalComponent } from '../video-modal/video-modal.component';
 const customerBucketLink = s3Details.awsserverUrl+s3Details.assetsPath+'customer/';
-console.log('Home Page')
 @Component({
   selector: 'app-landing-home-page',
   templateUrl: './home.component.html',
@@ -185,15 +184,13 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.contactForm.controls['email'].markAsTouched();
       if(this.contactForm.controls['message'].invalid)
         this.contactForm.controls['message'].markAsTouched();
-    }
-      
+    }      
   }
 
   getCMSpageDetails(query = {}){
     const req_vars = {
       status:'Active'
     }
-    console.log('query >>> ',query)
     this.userapi.apiRequest('post', 'homecms/view', req_vars).subscribe(result => {
       if (result.status == "error") {
         console.log(result.data)

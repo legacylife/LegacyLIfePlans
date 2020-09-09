@@ -22,7 +22,7 @@ export class CustomerProfessionalsLandingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.data.currentMessage.subscribe(message => this.message = message)
+   // this.data.currentMessage.subscribe(message => this.message = message)
   }
 
   changeTrigger(key,index){
