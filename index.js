@@ -32,6 +32,12 @@ app.use(cookieParser())
 app.use(cors({credentials: true, origin: constants.clientUrl}))
 app.use(passport.initialize())
 
+// www to non www redirection
+app.use(function(req, res, next) {
+  if (req.headers.host.match(/^www/)) res.redirect('http://' + req.headers.host.replace(/^www\./, '') + req.url, 301);
+  else next();
+});
+
 app.use('/api', routesApi);
 app.use(express.static(path.join(__dirname, 'dist')));
 app.use('/', express.static(path.join(__dirname, 'dist')))
