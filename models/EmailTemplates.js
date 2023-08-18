@@ -3,7 +3,8 @@ var constants = require("./../config/constants")
 
 var emailTemplateSchema = new mongoose.Schema({
   type: String,
-  templateCode: String,
+  code: String,
+  //templateCode: String,// this key not in used
   title: String,
   mailSubject: String,
   mailBody: String,
