@@ -1,12 +1,11 @@
-let serverUrlEnv= "https://legacylifeplans.com"
+let serverUrlEnv= 'http://localhost:3000'// "https://legacylifeplans.com"
 let bucketName = "llp-production";
 let awsKey = "AKIAUPQ3GZ6WND46RVGG"
 let awsSecret =  "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"
 let googleauthkey= "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"; 
-let stripeSecretKey = "pk_live_PX4dfXzyG69jyl8h1n6IUAPZ00JVMDwHdw"; 
-
+let stripePublishablekey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk" //sandbox
 export const googleauthenticationkey = googleauthkey;
-export const stripeKey = stripeSecretKey
+export const stripeKey = stripePublishablekey
 export const serverUrl = serverUrlEnv
 
 export const emailLimit = 20
@@ -38,8 +37,6 @@ export const s3Details = {
   assetsPath:"assets/",
   apiGatewayUrl: ""
 }
-
-export const stripePublishableKey = ""
 
 export const adminSections = [{
   name: 'Customer Management',
@@ -199,5 +196,3 @@ export const userSections = [
     }],
   }
 ]
-//   name: 'My People',
-//   code: "MyPeopleManagement"

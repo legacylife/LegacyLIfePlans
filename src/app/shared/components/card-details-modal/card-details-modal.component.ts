@@ -14,7 +14,6 @@ import { SubscriptionService } from 'app/shared/services/subscription.service';
 import { Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog, MatSnackBar } from '@angular/material';
 import  * as moment  from 'moment'
-import { stripeKey } from '../../../config'
 @Component({
   selector: 'card-details-modal',
   templateUrl: './card-details-modal.component.html',
