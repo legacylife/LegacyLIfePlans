@@ -13,8 +13,8 @@ var constants = {
   s3Details: {
     url : "https://s3.amazonaws.com/llp-dev",
     bucketName: "llp-dev",
-    awsKey:"AKIATWZWUVETTHIEDBHK",
-    awsSecret:"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",
+    awsKey:"AKIATWZWUVETWRGZ3DCN",
+    awsSecret:"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",
     profilePicturesPath:"profilePictures/",
     advisorsDocumentsPath:"advisorDocs/",
     myEssentialsDocumentsPath:"myEssentials/",
@@ -34,7 +34,7 @@ var constants = {
     deceasedFilessPath:"deceased/",
     coachCornerArticlePath:"coachCorner/",
     assetsPath:"assets/",
-    serveUrl: "https://llp-dev.s3.amazonaws.com" 
+    serveUrl: "https://llp-dev.s3.amazonaws.com"
   },
   ses: {
     key: "AKIAUPQ3GZ6WJFHZAMNB",
