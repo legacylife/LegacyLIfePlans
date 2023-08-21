@@ -73,7 +73,6 @@ export class AdvisorDashboardComponent implements OnInit {
         if (result.data.subscriptionDetails) {
           this.subscriptionData = result.data.subscriptionDetails;
         }
-        console.log("this.subscriptionData >>> ",this.subscriptionData)
         if (this.subscriptionData.length == 0 && (result.data.IamIntrested && result.data.IamIntrested == 'Yes') && (result.data.refereAndEarnSubscriptionDetail && result.data.refereAndEarnSubscriptionDetail.endDate != '')) {
           this.displayFreeFlag = true;
         }

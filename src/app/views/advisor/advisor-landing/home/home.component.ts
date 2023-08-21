@@ -162,7 +162,6 @@ longitude: Number = 0;
   }
 
   getCMSpageDetails(latitude,longitude){       
-   // console.log('getCMSpageDetails',latitude,'-------------',longitude)
     let query = {}; 
     const req_vars = {
       query: Object.assign({status:'Active' }, query),
