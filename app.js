@@ -8,7 +8,7 @@ var express = require('express')
 var router = express.Router()
 var chats = require('./routes/chatcontrollerRoute')
 const server = http.createServer(app).listen(port, () => {
-  console.log('*******http server running at port: ' + port)
+  console.log('*******http server running at port******' + port)
 })
 //  var server = server.listen(port, function(){
 //   console.log('*******http server running at port: ' + port)
