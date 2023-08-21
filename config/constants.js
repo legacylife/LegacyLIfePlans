@@ -11,10 +11,10 @@ var constants = {
     appSecret: "27g7mvf6f606237rhxvsi21v8",
   },
   s3Details: {
-    url : "https://s3.amazonaws.com/llp-staging",
-    bucketName: "llp-staging",
-    awsKey:"AKIAUPQ3GZ6WDCCRWVY5",
-    awsSecret:"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",
+    url : "https://s3.amazonaws.com/llp-dev",
+    bucketName: "llp-dev",
+    awsKey:"AKIATWZWUVETTHIEDBHK",
+    awsSecret:"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",
     profilePicturesPath:"profilePictures/",
     advisorsDocumentsPath:"advisorDocs/",
     myEssentialsDocumentsPath:"myEssentials/",
@@ -34,15 +34,15 @@ var constants = {
     deceasedFilessPath:"deceased/",
     coachCornerArticlePath:"coachCorner/",
     assetsPath:"assets/",
-    serveUrl: "https://llp-staging.s3.amazonaws.com" 
+    serveUrl: "https://llp-dev.s3.amazonaws.com" 
   },
   ses: {
     key: "AKIAUPQ3GZ6WJFHZAMNB",
     secret: "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",
     fromEmail: "accountservices@legacylifeplans.com",
   },
-  clientUrl: process.env.clientUrl || 'http://ec2-3-209-230-58.compute-1.amazonaws.com', // staging - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
-  mailServerUrl : process.env.mailServerUri || 'http://ec2-3-209-230-58.compute-1.amazonaws.com', // staging - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
+  clientUrl: process.env.clientUrl || 'http://ec2-44-212-224-69.compute-1.amazonaws.com', // Dev - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
+  mailServerUrl : process.env.mailServerUri || 'http://ec2-44-212-224-69.compute-1.amazonaws.com', // Dev - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
   socialMedia: {
     facebook: {
       clientId: ''
