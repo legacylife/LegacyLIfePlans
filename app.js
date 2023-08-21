@@ -7,12 +7,12 @@ var port = normalizePort(process.env.PORT || '3000')
 var express = require('express')
 var router = express.Router()
 var chats = require('./routes/chatcontrollerRoute')
-//  const server = http.createServer(app).listen(80, () => {
-//    console.log('http server running at ' + 80)
-//  })
- var server = app.listen(port, function(){
+const server = http.createServer(app).listen(port, () => {
   console.log('*******http server running at port: ' + port)
- });
+})
+//  var server = server.listen(port, function(){
+//   console.log('*******http server running at port: ' + port)
+//  });
  
  let socketIO = require('socket.io');
  let io = socketIO(server);
