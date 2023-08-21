@@ -1,4 +1,4 @@
-let serverUrlEnv= "http://ec2-44-212-224-69.compute-1.amazonaws.com:3000" // 'http://localhost:3000' // "https://legacylifeplans.com"
+let serverUrlEnv= "http://ec2-44-212-224-69.compute-1.amazonaws.com" // 'http://localhost:3000' // "https://legacylifeplans.com"
 let bucketName = "llp-dev";
 let awsKey = "AKIATWZWUVETTHIEDBHK"
 let awsSecret =  "xd+/siN9UWwb3h0cCLyTc3tXen4s2Shk2ku2IC+5/H"
