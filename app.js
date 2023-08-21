@@ -18,12 +18,12 @@ const server = http.createServer(app).listen(port, () => {
  let io = socketIO(server);
 
  var users = {};
- console.log('Socket Clients Count >>>>>>>>>>>>>',io.engine.clientsCount)
+ //console.log('Socket Clients Count >>>>>>>>>>>>>',io.engine.clientsCount)
  io.on('connection', (socket) => {
    // var clients = io.sockets.clients();
    // var clients = io.sockets.clients('new-message'); 
   socket.on('loginforonline', function(data){
-    console.log(`Socket ${socket.id} connected.`,'Socket Clients connection Count >>>>>>>>>>>>>',io.engine.clientsCount);
+    //console.log(`Socket ${socket.id} connected.`,'Socket Clients connection Count >>>>>>>>>>>>>',io.engine.clientsCount);
      //saving userId to array with socket ID
      users[socket.id] = data.userId;
      // console.log('a user ' + data.userId +'---' + data.userType + ' connected');
