@@ -1,7 +1,7 @@
 let serverUrlEnv= "http://ec2-44-212-224-69.compute-1.amazonaws.com" // 'http://localhost:3000' // "https://legacylifeplans.com"
 let bucketName = "llp-dev";
-let awsKey = "AKIATWZWUVETTHIEDBHK"
-let awsSecret =  "xd+/siN9UWwb3h0cCLyTc3tXen4s2Shk2ku2IC+5/H"
+let awsKey = "AKIATWZWUVETWRGZ3DCN"
+let awsSecret =  "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"
 let googleauthkey= "AIzaSyA_UFLb71U2E5y_O7F967fwj5KjUfQcz1Q"; 
 let stripePublishablekey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk" //sandbox
 export const googleauthenticationkey = googleauthkey;
