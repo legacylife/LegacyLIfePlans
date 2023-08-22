@@ -1,8 +1,8 @@
+require('dotenv').config();
 var constants = {
   secret: "LLP",
   database: {
-    //dev database
-    url: process.env.dbURI || "mongodb+srv://llp-dev:gdPVYZL23IXFPPWd@cluster0.jru3r.mongodb.net/llp-dev-db?retryWrites=true&w=majority"
+    url: process.env.DATABASE //value set in .env file
   }, 
   google: {
   },
@@ -11,10 +11,10 @@ var constants = {
     appSecret: "27g7mvf6f606237rhxvsi21v8",
   },
   s3Details: {
-    url : "https://s3.amazonaws.com/llp-dev",
-    bucketName: "llp-dev",
-    awsKey:"AKIATWZWUVETWRGZ3DCN",
-    awsSecret:"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",
+    url : "https://s3.amazonaws.com/"+process.env.S3_BUCKET_NAME,
+    bucketName: process.env.S3_BUCKET_NAME,
+    awsKey: process.env.S3_AWS_KEY,
+    awsSecret:process.env.S3_AWS_SECRET,
     profilePicturesPath:"profilePictures/",
     advisorsDocumentsPath:"advisorDocs/",
     myEssentialsDocumentsPath:"myEssentials/",
@@ -34,15 +34,15 @@ var constants = {
     deceasedFilessPath:"deceased/",
     coachCornerArticlePath:"coachCorner/",
     assetsPath:"assets/",
-    serveUrl: "https://llp-dev.s3.amazonaws.com"
+    serveUrl: "https://"+process.env.S3_BUCKET_NAME+".s3.amazonaws.com"
   },
   ses: {
-    key: "AKIAUPQ3GZ6WJFHZAMNB",
-    secret: "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",
-    fromEmail: "accountservices@legacylifeplans.com",
+    key: process.env.SES_KEY,
+    secret: process.env.SES_SECRET,
+    fromEmail: process.env.FROM_EMAIL,
   },
-  clientUrl: process.env.clientUrl || 'http://ec2-44-212-224-69.compute-1.amazonaws.com', // Dev - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
-  mailServerUrl : process.env.mailServerUri || 'http://ec2-44-212-224-69.compute-1.amazonaws.com', // Dev - http://ec2-3-209-230-58.compute-1.amazonaws.com // client - http://ec2-3-212-172-15.compute-1.amazonaws.com:8080
+  clientUrl: process.env.CLIENT_URL,
+  mailServerUrl : process.env.MAIL_SERVER_URL,
   socialMedia: {
     facebook: {
       clientId: ''
@@ -51,7 +51,7 @@ var constants = {
       clientId: ''
     }
   },  
-  stripeSecretKey: "sk_test_ni2JhTNSaNPgEZVHeiciAVVs00YF0EGLTR", //sandbox  
+  stripeSecretKey: process.env.STRIPE_SECRET_KEY,
 
   basicFolders: [
    "advisorDocs",
@@ -209,7 +209,6 @@ var constants = {
     2:"I have a preneed contract",
     3:"I do not have any funeral pre-arrangements"
   }
-  
 
 }
 

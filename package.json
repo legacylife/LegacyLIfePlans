@@ -46,6 +46,7 @@
     "s3-archiver": "^1.0.4",
     "socket.io": "^2.3.0",
     "stripe": "^6.36.0",
-    "zipcodes": "^8.0.0"
+    "zipcodes": "^8.0.0",
+    "dotenv": "^16.3.1"
   }
 }
