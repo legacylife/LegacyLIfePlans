@@ -413,13 +413,6 @@ buildmail@4.0.1:
     nodemailer-shared "1.1.0"
     punycode "1.4.1"
 
-busboy@*:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/busboy/-/busboy-1.6.0.tgz#966ea36a9502e43cdb9146962523b92f531f6893"
-  integrity sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==
-  dependencies:
-    streamsearch "^1.1.0"
-
 busboy@^0.2.11:
   version "0.2.14"
   resolved "https://registry.yarnpkg.com/busboy/-/busboy-0.2.14.tgz#6c2a622efcf47c57bbbe1e2a9c37ad36c7925453"
@@ -427,6 +420,13 @@ busboy@^0.2.11:
   dependencies:
     dicer "0.2.5"
     readable-stream "1.1.x"
+
+busboy@^1.0.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/busboy/-/busboy-1.6.0.tgz#966ea36a9502e43cdb9146962523b92f531f6893"
+  integrity sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==
+  dependencies:
+    streamsearch "^1.1.0"
 
 bytes@3.0.0:
   version "3.0.0"
@@ -575,12 +575,12 @@ concat-stream@^1.5.2:
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
 
-connect-busboy@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/connect-busboy/-/connect-busboy-0.0.2.tgz#ac5c9c96672171885e576c66b2bfd95d3bb11097"
-  integrity sha512-/Wi+zhcjivLU6dtsVGXWtRoVs4F7jdE9FUp0tXkbV9gCN7MdRQAgBqQ0xH0Iv9g00Z5EuioJo7ihxOAdZOzZ8w==
+connect-busboy@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/connect-busboy/-/connect-busboy-1.0.0.tgz#7ac826e4c60e09934e049c406866f235efdc3d59"
+  integrity sha512-dKON178N/CpPSeJ8E+kfOekSUBx0nQo5kyIekry7YpM+qRhgHmSRVUN5D2hpLA8SQBV0ZNMF/aG7njDzE8Gl2A==
   dependencies:
-    busboy "*"
+    busboy "^1.0.0"
 
 constantinople@~3.0.1:
   version "3.0.2"
