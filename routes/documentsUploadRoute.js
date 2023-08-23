@@ -132,15 +132,15 @@ router.post('/myEssentialsID', cors(), function(req,res){
   
   if (req.busboy) {
     req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
+      console.log("******************fieldname***************", fieldname)
+      console.log("******************val***************", val)
       authTokens[fieldname] = val
     })
     const {query:{userId}} = req;
     const {query:{ProfileId}} = req;
   
     console.log("******************userId***************", userId)
-    console.log("******************ProfileId***************", ProfileId)
-    console.log("******************fieldname***************", fieldname)
-    console.log("******************val***************", val)
+    console.log("******************ProfileId***************", ProfileId) 
      
     let q = {customerId: userId}
     if(ProfileId && ProfileId!=''){
