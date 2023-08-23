@@ -126,39 +126,21 @@ router.post('/advisorDocument', cors(), function(req,res){
 router.post('/myEssentialsID', cors(), function(req,res){
   var fstream;
   let authTokens = { authCode: "" }
-
-  console.log("******************myEssentialsID***************")
-  console.log("******************req.busboy***************", req.busboy)
-  
   if (req.busboy) {
     req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
-      console.log("******************fieldname***************", fieldname)
-      console.log("******************val***************", val)
       authTokens[fieldname] = val
     })
     const {query:{userId}} = req;
     const {query:{ProfileId}} = req;
-  
-    console.log("******************userId***************", userId)
-    console.log("******************ProfileId***************", ProfileId) 
-     
     let q = {customerId: userId}
     if(ProfileId && ProfileId!=''){
       q = {_id : ProfileId}
     }
     req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
-
-      console.log("********Hi**********fieldname***************", fieldname)
-      console.log("******************file***************", file)
-      console.log("******************filename***************", filename)
-      console.log("******************encoding***************", encoding)
-      console.log("******************mimetype***************", mimetype)
       let tmpallfiles = {};
       let oldTmpFiles = [];
       if(userId){
           let ext = filename.split('.')
-          console.log("******************ext***************", ext)
-
           ext = ext[ext.length - 1];
           var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
           let resp = isExtension(ext,fileExts);
@@ -177,8 +159,7 @@ router.post('/myEssentialsID', cors(), function(req,res){
                     "size" : encoding,
                     "extention" : mimetype,
                     "tmpName" : newFilename
-                  }
-              
+                  }              
                   personalIdProof.findOne(q,{documents:1,_id:1}, function (err, result) {
                     if (err) {
                         res.status(500).send(resFormat.rError(err))
@@ -207,18 +188,10 @@ router.post('/myEssentialsID', cors(), function(req,res){
                   })
               }else{
                 const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
-
-                console.log("******************newFilename***************", newFilename)
-
-                console.log("******************dirname with tmp***************", __dirname + '/../tmp/' + newFilename)
-                
-
                 fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
-                console.log("******************fstream***************", fstream)
                 file.pipe(fstream);
                 fstream.on('close', async function () {
                   await s3.uploadFile(newFilename,userId+'/'+IDdocFilePath);  
-                  
                   tmpallfiles = {
                     "title" : filename,
                     "size" : encoding,
@@ -226,7 +199,6 @@ router.post('/myEssentialsID', cors(), function(req,res){
                     "tmpName" : newFilename
                   }
                 oldTmpFiles.push(tmpallfiles); 
-                console.log("******************oldTmpFiles***************", oldTmpFiles)
                 var personal = new personalIdProof();
                 personal.customerId = userId;
                 personal.documents = oldTmpFiles;
@@ -236,12 +208,11 @@ router.post('/myEssentialsID', cors(), function(req,res){
                 if (err) {
                   res.send(resFormat.rError(err))
                    } else {
-                     getuserFolderSize(userId);
-                     let message = resMessage.data( 607, [{key: '{field}',val: 'ID proof Document'}, {key: '{status}',val: 'uploaded'}] )
-                    //Update activity logs
-                    allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, IDdocFilePath, '', filename)
-                    let result = { "message": message }
-                     
+                      getuserFolderSize(userId);
+                      let message = resMessage.data( 607, [{key: '{field}',val: 'ID proof Document'}, {key: '{status}',val: 'uploaded'}] )
+                      //Update activity logs
+                      allActivityLog.updateActivityLogs( userId, userId, "File Uploaded", message, IDdocFilePath, '', filename)
+                      let result = { "message": message } 
                      res.status(200).send(resFormat.rSuccess(result))
                    }
                  })
