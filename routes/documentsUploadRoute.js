@@ -126,6 +126,10 @@ router.post('/advisorDocument', cors(), function(req,res){
 router.post('/myEssentialsID', cors(), function(req,res){
   var fstream;
   let authTokens = { authCode: "" }
+
+  console.log("******************myEssentialsID***************")
+  console.log("******************req.busboy***************", req.busboy)
+  
   if (req.busboy) {
     req.busboy.on('field', function (fieldname, val, something, encoding, mimetype) {
       authTokens[fieldname] = val
@@ -133,15 +137,28 @@ router.post('/myEssentialsID', cors(), function(req,res){
     const {query:{userId}} = req;
     const {query:{ProfileId}} = req;
   
+    console.log("******************userId***************", userId)
+    console.log("******************ProfileId***************", ProfileId)
+    console.log("******************fieldname***************", fieldname)
+    console.log("******************val***************", val)
+     
     let q = {customerId: userId}
     if(ProfileId && ProfileId!=''){
       q = {_id : ProfileId}
     }
     req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+
+      console.log("********Hi**********fieldname***************", fieldname)
+      console.log("******************file***************", file)
+      console.log("******************filename***************", filename)
+      console.log("******************encoding***************", encoding)
+      console.log("******************mimetype***************", mimetype)
       let tmpallfiles = {};
       let oldTmpFiles = [];
       if(userId){
           let ext = filename.split('.')
+          console.log("******************ext***************", ext)
+
           ext = ext[ext.length - 1];
           var fileExts = ["jpg", "jpeg", "png", "txt", "pdf", "docx", "doc"];
           let resp = isExtension(ext,fileExts);
@@ -190,7 +207,14 @@ router.post('/myEssentialsID', cors(), function(req,res){
                   })
               }else{
                 const newFilename = userId + '-' + new Date().getTime() + `.${ext}`
+
+                console.log("******************newFilename***************", newFilename)
+
+                console.log("******************dirname with tmp***************", __dirname + '/../tmp/' + newFilename)
+                
+
                 fstream = fs.createWriteStream(__dirname + '/../tmp/' + newFilename)
+                console.log("******************fstream***************", fstream)
                 file.pipe(fstream);
                 fstream.on('close', async function () {
                   await s3.uploadFile(newFilename,userId+'/'+IDdocFilePath);  
@@ -202,6 +226,7 @@ router.post('/myEssentialsID', cors(), function(req,res){
                     "tmpName" : newFilename
                   }
                 oldTmpFiles.push(tmpallfiles); 
+                console.log("******************oldTmpFiles***************", oldTmpFiles)
                 var personal = new personalIdProof();
                 personal.customerId = userId;
                 personal.documents = oldTmpFiles;
