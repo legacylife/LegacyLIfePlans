@@ -1249,7 +1249,7 @@ async function calculateZipcode(zipcode,id){
     if(data.latitude && data.longitude){
       let setLocation = {latitude:data.latitude,longitude:data.longitude};
       let coordinate = [data.longitude,data.latitude];
-      await User.updateOne({_id:id},{$set:{location:setLocation,coordinates:coordinate}});
+      await User.updateOne({_id:id},{$set:{location:coordinate,coordinates:coordinate}});
       return true;
     }else{     
       return false;

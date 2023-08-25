@@ -92,15 +92,13 @@ var userSchema = new mongoose.Schema({
     required: true
   },  
   ipAddress : String, 
-  // latitude : String, 
-  // longitude : String,  
   coordinates: {
     type: [Number],
     default: [0, 0],
   },
   location: {
-    latitude: String,
-    longitude: String,
+    type: [Number],
+    default: [0, 0]    
   }, 
   legacySetting : String, 
   signupApprovalDate : Date, 
@@ -133,7 +131,7 @@ var userSchema = new mongoose.Schema({
   userSubscriptionEnddate: Date, 
   freeTrialPeriod:Object
 })
-
+userSchema.index({ location: '2dsphere' }) //Also,need to create index in database directly through UI "Add Index"
 //function to set password
 userSchema.methods.setPassword = (password) => {
   this.salt = crypto.randomBytes(16).toString('hex')
@@ -161,7 +159,6 @@ userSchema.methods.generateJwt = () => {
     fullName: this.fullName,
     exp: parseInt(expiry.getTime() / 1000),
   }, constants.secret)
-}
-
+} 
 module.exports = mongoose.model('User', userSchema)
 userSchema.plugin(uniqueValidator)

@@ -736,29 +736,23 @@ function professionalsListing(req, res) {
         { "zipcode": regSearch },        
       ]    
   }
-
   User.findOne(extraQuery, { location: 1 },async function (err, getdata) {
     if (err) {
       res.status(500).send(resFormat.rError(err))
     } else {
-        if(getdata && getdata.location && getdata.location.longitude!='undefined' && getdata.location.longitude!=undefined){
-          let location = getdata.location;
-          var longitude = parseFloat(location.longitude);
-          var latitude = parseFloat(location.latitude);
-         
+        if(getdata && getdata.location && getdata.location !='undefined'){
           await User.aggregate([
             {"$geoNear": { 
               "near" : {
                 "type": 'Point',    
-                "coordinates": [longitude,latitude] 
+                "coordinates": getdata.location 
               }, 
               "distanceField": 'distance', 
               //"maxDistance": 2000000, 
               "query":query,
               "includeLocs":'coordinates', 
-              //"num": 20, 
               "spherical" :true
-            }},
+            }}, 
             {"$sort":{"distance":1}}      
           ], async function (err, usersData) {
             if(err) {
