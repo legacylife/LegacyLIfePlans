@@ -91,7 +91,7 @@
           </mat-form-field>
 
           <mat-form-field class="full-width">
-            <input matInput name="zipcode" placeholder="Zip Code*" value="" [formControl]="llpCustsignupProfileForm.controls['zipcode']">
+            <input maxlength="5" matInput name="zipcode" placeholder="Zip Code*" value="" [formControl]="llpCustsignupProfileForm.controls['zipcode']">
             <mat-icon matTooltip="Please enter zipcode" matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['zipcode'].hasError('required') && llpCustsignupProfileForm.controls['zipcode'].touched"
             class="red--alert">help_outline</mat-icon>
             <mat-icon matTooltip="Please enter valid zipcode." matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['zipcode'].hasError('pattern') && llpCustsignupProfileForm.controls['zipcode'].touched"

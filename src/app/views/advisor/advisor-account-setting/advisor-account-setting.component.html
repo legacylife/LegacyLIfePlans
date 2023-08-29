@@ -337,7 +337,7 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input matInput name="zipcode" maxlength="10" placeholder="Zip Code*" value=""
+                      <input matInput name="zipcode" maxlength="5" placeholder="Zip Code*" value=""
                         [formControl]="AddressForm.controls['zipcode']">
                       <mat-icon matTooltip="Please enter zipcode" matTooltipClass="llp--tooltip error"
                         *ngIf="AddressForm.controls['zipcode'].hasError('required') && AddressForm.controls['zipcode'].touched"
