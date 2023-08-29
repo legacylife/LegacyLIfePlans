@@ -73,5 +73,9 @@ export class InviteComponent implements OnInit {
       console.error(err)
     })
   }
-
+  
+  //function to trim the input value
+  trimInput(event, colName){
+    this.inviteForm.controls[colName].setValue(event.target.value.trim())
+  }
 }

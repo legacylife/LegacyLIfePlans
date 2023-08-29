@@ -412,4 +412,9 @@ getPetsDocuments = (query = {}, search = false, uploadRemained = true) => {
         link.click();
       });
   }
+
+  //function to trim the input value
+  trimInput(event, colName){
+    this.PetForm.controls[colName].setValue(event.target.value.trim())
+  }
 }

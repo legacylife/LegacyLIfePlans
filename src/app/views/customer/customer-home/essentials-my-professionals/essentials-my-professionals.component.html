@@ -26,7 +26,7 @@
           </mat-form-field>
 
           <mat-form-field class="full-width">
-            <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="name" placeholder="Name*" [formControl]="professionalForm.controls['name']">
+            <input (blur)="trimInput($event, 'name')" (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="name" placeholder="Name*" [formControl]="professionalForm.controls['name']">
             <mat-icon matTooltip="Please enter name" matTooltipClass="llp--tooltip error" 
             *ngIf="professionalForm.controls['name'].hasError('required') && professionalForm.controls['name'].touched" class="red--alert">help_outline</mat-icon>
           </mat-form-field>

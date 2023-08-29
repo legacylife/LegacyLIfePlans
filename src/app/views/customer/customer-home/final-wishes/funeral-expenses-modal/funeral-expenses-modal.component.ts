@@ -613,4 +613,9 @@ export class FuneralExpensesModalComponent implements OnInit {
     }
   }
 
+  //function to trim the input value
+  trimInput(event, colName){
+    this.expensesFormGroup.controls[colName].setValue(event.target.value.trim())
+  }
+
 }

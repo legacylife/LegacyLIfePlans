@@ -18,11 +18,11 @@
               <mat-icon matTooltip="{{invalidMessage}}" matTooltipClass="llp--tooltip error" *ngIf="EmailExist" class="red--alert">help_outline</mat-icon>
             </mat-form-field>
             <mat-form-field class="full-width">
-              <input (keyup)="firstCapitalize($event)" matInput name="firstName" maxlength="20" placeholder="First Name*" [formControl]="trustFormGroup.controls['firstName']">
+              <input (blur)="trimInput($event, 'firstName')" (keyup)="firstCapitalize($event)" matInput name="firstName" maxlength="20" placeholder="First Name*" [formControl]="trustFormGroup.controls['firstName']">
               <mat-icon matTooltip="Please enter first name" matTooltipClass="llp--tooltip error" *ngIf="trustFormGroup.controls['firstName'].hasError('required') && trustFormGroup.controls['firstName'].touched" class="red--alert">help_outline</mat-icon>
             </mat-form-field>
             <mat-form-field class="full-width">
-                <input (keyup)="firstCapitalize($event)" matInput name="lastName" maxlength="20" placeholder="Last Name*" [formControl]="trustFormGroup.controls['lastName']">
+                <input (blur)="trimInput($event, 'lastName')" (keyup)="firstCapitalize($event)" matInput name="lastName" maxlength="20" placeholder="Last Name*" [formControl]="trustFormGroup.controls['lastName']">
                 <mat-icon matTooltip="Please enter last name" matTooltipClass="llp--tooltip error" *ngIf="trustFormGroup.controls['lastName'].hasError('required') && trustFormGroup.controls['lastName'].touched" class="red--alert">help_outline</mat-icon>
             </mat-form-field>
             

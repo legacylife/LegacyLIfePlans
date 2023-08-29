@@ -417,4 +417,9 @@ export class TimeCapsuleMoalComponent implements OnInit {
       link.click();this.snack.dismiss();
     });
   }
+  
+  //function to trim the input value
+  trimInput(event, colName){
+    this.TimeCapsuleForm.controls[colName].setValue(event.target.value.trim())
+  }
 }

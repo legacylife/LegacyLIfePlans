@@ -486,4 +486,9 @@ export class FinanceModalComponent implements OnInit {
       this.FinanceForm.controls['contactPhone'].setValue(phoneNumber);
     }
   }
+
+  //function to trim the input value
+  trimInput(event, colName){
+    this.FinanceForm.controls[colName].setValue(event.target.value.trim())
+  }
 }

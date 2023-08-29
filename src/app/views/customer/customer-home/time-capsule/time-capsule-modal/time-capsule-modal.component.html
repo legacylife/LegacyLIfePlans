@@ -12,7 +12,7 @@
     <div fxLayout="row wrap" class="pt-1">
       <div fxFlex.xs="100">
         <mat-form-field class="full-width">
-          <input matInput name="name" maxlength="20" placeholder="Name*"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="TimeCapsuleForm.controls['name']">
+          <input (blur)="trimInput($event, 'name')" matInput name="name" maxlength="20" placeholder="Name*"  (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="TimeCapsuleForm.controls['name']">
           <mat-icon matTooltip="Please enter time capsule name" matTooltipClass="llp--tooltip error" *ngIf="TimeCapsuleForm.controls['name'].hasError('required') && TimeCapsuleForm.controls['name'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>       

@@ -66,7 +66,7 @@
                   <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
 
                     <mat-form-field class="full-width">
-                      <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput
+                      <input (blur)="trimInput($event, 'firstName')" (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput
                         name="firstName" placeholder="First Name*" value=""
                         [formControl]="ProfileForm.controls['firstName']">
                       <mat-icon matTooltip="Please enter first name." matTooltipClass="llp--tooltip error"
@@ -74,7 +74,7 @@
                         class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput
+                      <input (blur)="trimInput($event, 'lastName')" (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput
                         name="lastName" placeholder="Last Name*" value=""
                         [formControl]="ProfileForm.controls['lastName']">
                       <mat-icon matTooltip="Please enter last name." matTooltipClass="llp--tooltip error"
@@ -203,7 +203,7 @@
                 <div fxLayout="row wrap" fxLayoutGap-sm="5px">
                   <div fxFlex.xs="100" fxFlex.sm="46" fxFlex.md="46" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput
+                      <input (blur)="trimInput2($event, 'addressLine1')" (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput
                         name="addressLine1" placeholder="Address Line 1*" value=""
                         [formControl]="AddressForm.controls['addressLine1']" maxlength="100">
                       <mat-icon matTooltip="Please enter address in line 1." matTooltipClass="llp--tooltip error"
@@ -222,7 +222,7 @@
                 <div fxLayout="row wrap" fxLayoutGap-sm="5px">
                   <div fxFlex.xs="100" fxFlex.sm="46" fxFlex.md="46" fxFlex.lg="48" fxFlex.xl="48" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput
+                      <input (blur)="trimInput2($event, 'city')" (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" matInput
                         name="City" placeholder="City*" value="" [formControl]="AddressForm.controls['city']">
                       <mat-icon matTooltip="Please enter city." matTooltipClass="llp--tooltip error"
                         *ngIf="AddressForm.controls['city'].hasError('required') && AddressForm.controls['city'].touched"

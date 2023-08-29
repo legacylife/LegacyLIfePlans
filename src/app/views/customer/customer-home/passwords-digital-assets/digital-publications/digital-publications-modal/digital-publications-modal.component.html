@@ -13,13 +13,13 @@
       <div fxFlex.xs="100">
 
         <mat-form-field class="full-width">
-          <input matInput name="title"  placeholder="Title of Publication *" [formControl]="digitalPublicationForm.controls['title']">
+          <input (blur)="trimInput($event, 'title')" matInput name="title"  placeholder="Title of Publication *" [formControl]="digitalPublicationForm.controls['title']">
           <mat-icon matTooltip="Please enter title of publication" matTooltipClass="llp--tooltip error" *ngIf="digitalPublicationForm.controls['title'].hasError('required') && digitalPublicationForm.controls['title'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
         
         <mat-form-field class="full-width">
-          <input matInput name="username"  placeholder="Username*" [formControl]="digitalPublicationForm.controls['username']">
+          <input (blur)="trimInput($event, 'username')" matInput name="username"  placeholder="Username*" [formControl]="digitalPublicationForm.controls['username']">
           <mat-icon matTooltip="Please enter username" matTooltipClass="llp--tooltip error" *ngIf="digitalPublicationForm.controls['username'].hasError('required') && digitalPublicationForm.controls['username'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>

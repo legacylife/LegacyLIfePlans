@@ -13,7 +13,7 @@
       <div fxFlex.xs="100">
 
     <mat-form-field class="full-width">
-        <input matInput maxlength="250" name="title" placeholder="Title*" (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="LettersMessagesForm.controls['title']">
+        <input (blur)="trimInput($event, 'title')" matInput maxlength="250" name="title" placeholder="Title*" (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" [formControl]="LettersMessagesForm.controls['title']">
         <mat-icon matTooltip="Please enter title" matTooltipClass="llp--tooltip error" *ngIf="LettersMessagesForm.controls['title'].hasError('required') && LettersMessagesForm.controls['title'].touched"
         class="red--alert">help_outline</mat-icon>
       </mat-form-field>
@@ -25,7 +25,7 @@
       </mat-form-field>
 
       <mat-form-field class="full-width">
-        <input matInput maxlength="500" name="letterBox" (keyup)="firstCapitalize($event)"  placeholder="Letter Box*" [formControl]="LettersMessagesForm.controls['letterBox']">
+        <input (blur)="trimInput($event, 'letterBox')" matInput maxlength="500" name="letterBox" (keyup)="firstCapitalize($event)"  placeholder="Letter Box*" [formControl]="LettersMessagesForm.controls['letterBox']">
         <mat-icon matTooltip="Please enter letter box" matTooltipClass="llp--tooltip error" *ngIf="LettersMessagesForm.controls['letterBox'].hasError('required') && LettersMessagesForm.controls['letterBox'].touched"
         class="red--alert">help_outline</mat-icon>
       </mat-form-field>

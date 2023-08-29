@@ -424,4 +424,9 @@ export class LettersMessagesModelComponent implements OnInit {
       this.snack.dismiss();
     });
   }
+  
+  //function to trim the input value
+  trimInput(event, colName){
+    this.LettersMessagesForm.controls[colName].setValue(event.target.value.trim())
+  }
 }

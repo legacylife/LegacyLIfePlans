@@ -21,7 +21,7 @@
         </mat-form-field>
         
         <mat-form-field class="full-width">
-          <input matInput name="username"  placeholder="Username*" [formControl]="ElectronicMediaForm.controls['username']" autocomplete="off">
+          <input (blur)="trimInput($event, 'username')" matInput name="username"  placeholder="Username*" [formControl]="ElectronicMediaForm.controls['username']" autocomplete="off">
           <mat-icon matTooltip="Please enter username" matTooltipClass="llp--tooltip error" *ngIf="ElectronicMediaForm.controls['username'].hasError('required') && ElectronicMediaForm.controls['username'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>

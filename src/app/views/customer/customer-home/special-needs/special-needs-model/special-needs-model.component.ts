@@ -150,9 +150,8 @@ export class SpecialNeedsModelComponent implements OnInit {
     return ((key > 64 && key < 91) || (key > 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57));
   }
 
-  trimInput(formData)
-  {
-    this.specialNeedsForm.controls['comments'].setValue(formData.value.comments.trim());
-  }
-
+  //function to trim the input value
+  trimInput(event, colName){
+    this.specialNeedsForm.controls[colName].setValue(event.target.value.trim())
+  } 
 }

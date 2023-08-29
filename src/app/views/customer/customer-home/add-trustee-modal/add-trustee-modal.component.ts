@@ -447,6 +447,10 @@ export class addTrusteeModalComponent implements OnInit, AfterViewInit {
     return((key > 64 && key < 91) || (key> 96 && key < 123) || key == 8 || key == 32 || (key >= 48 && key <= 57)); 
   }
 
+  //function to trim the input value
+  trimInput(event, colName){
+    this.trustFormGroup.controls[colName].setValue(event.target.value.trim())
+  }
 }
 
 

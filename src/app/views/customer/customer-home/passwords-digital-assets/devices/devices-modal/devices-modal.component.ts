@@ -360,4 +360,9 @@ export class DevicesModalComponent implements OnInit {
    // console.log("Get pattern :- ",pattern);    
     return pattern;
   }
+
+  //function to trim the input value
+  trimInput(event, colName){
+    this.DevicesForm.controls[colName].setValue(event.target.value.trim())
+  }
 }

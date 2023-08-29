@@ -15,11 +15,11 @@
           <p class="sub--head text-center">Add Personal Details</p>
           <div class="profile--body--scroll">
             <mat-form-field class="full-width" *ngIf="profileIdHiddenVal">
-              <input matInput name="profileId" [formControl]="firstFormGroup.controls['profileId']" readonly="readonly">
+              <input  matInput name="profileId" [formControl]="firstFormGroup.controls['profileId']" readonly="readonly">
             </mat-form-field>
 
             <mat-form-field class="full-width">
-              <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)"  matInput name="ppFirstName" placeholder="First Name*" [formControl]="firstFormGroup.controls['ppFirstName']">
+              <input (blur)="trimInput($event, 'ppFirstName')" (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)"  matInput name="ppFirstName" placeholder="First Name*" [formControl]="firstFormGroup.controls['ppFirstName']">
               <mat-icon matTooltip="Please enter first name." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['ppFirstName'].hasError('required') && firstFormGroup.controls['ppFirstName'].touched"
                 class="red--alert">help_outline</mat-icon>
             </mat-form-field>
@@ -31,7 +31,7 @@
             </mat-form-field>
 
             <mat-form-field class="full-width">
-              <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)"  matInput name="ppLastName" placeholder="Last Name*" [formControl]="firstFormGroup.controls['ppLastName']">
+              <input (blur)="trimInput($event, 'ppLastName')" (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)"  matInput name="ppLastName" placeholder="Last Name*" [formControl]="firstFormGroup.controls['ppLastName']">
               <mat-icon matTooltip="Please enter last name." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['ppLastName'].hasError('required') && firstFormGroup.controls['ppLastName'].touched"
                 class="red--alert">help_outline</mat-icon>
             </mat-form-field>

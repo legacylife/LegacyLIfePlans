@@ -155,4 +155,9 @@ export class essentialsMyProfessionalsComponent implements OnInit {
       this.professionalForm.controls['mpPhoneNumbers'].setValue(phoneNumber);
     }
   }
+
+  //function to trim the input value
+  trimInput(event, colName){
+    this.professionalForm.controls[colName].setValue(event.target.value.trim())
+  }
 }

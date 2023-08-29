@@ -25,7 +25,7 @@
           <div fxLayout="row wrap" *ngIf="madePrearrangment">
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
-                <textarea (keyup)="firstCapitalize($event)" matInput placeholder="Funeral home" [formControl]="expensesFormGroup.controls['funeralHome']" maxlength="500"></textarea>
+                <textarea (blur)="trimInput($event, 'funeralHome')" (keyup)="firstCapitalize($event)" matInput placeholder="Funeral home*" [formControl]="expensesFormGroup.controls['funeralHome']" maxlength="500"></textarea>
                 <mat-icon matTooltip="Please enter funeral home" matTooltipClass="llp--tooltip error" *ngIf="expensesFormGroup.controls['funeralHome'].hasError('required') && expensesFormGroup.controls['funeralHome'].touched"
                 class="red--alert">help_outline</mat-icon>
               </mat-form-field>
@@ -51,7 +51,7 @@
           <div fxLayout="row wrap" *ngIf="preneedContract">
             <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="cust--gapp">
               <mat-form-field class="full-width">
-                <textarea (keyup)="firstCapitalize($event)" matInput placeholder="The preneed contract is located:" [formControl]="expensesFormGroup.controls['preneedContractLocation']" maxlength="500"></textarea>
+                <textarea  (blur)="trimInput($event, 'preneedContractLocation')" (keyup)="firstCapitalize($event)" matInput placeholder="The preneed contract is located: *" [formControl]="expensesFormGroup.controls['preneedContractLocation']" maxlength="500"></textarea>
                 <mat-icon matTooltip="Please enter preneed contract location" matTooltipClass="llp--tooltip error" *ngIf="expensesFormGroup.controls['preneedContractLocation'].hasError('required') && expensesFormGroup.controls['preneedContractLocation'].touched"
                 class="red--alert">help_outline</mat-icon>
               </mat-form-field>

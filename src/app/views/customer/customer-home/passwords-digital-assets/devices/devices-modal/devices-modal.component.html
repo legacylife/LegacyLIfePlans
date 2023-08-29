@@ -21,7 +21,7 @@
         </mat-form-field>
 
         <mat-form-field class="full-width">
-          <input matInput name="deviceName" (keyup)="firstCapitalize($event)" placeholder="Device Name*"   [formControl]="DevicesForm.controls['deviceName']">
+          <input (blur)="trimInput($event, 'deviceName')" matInput name="deviceName" (keyup)="firstCapitalize($event)" placeholder="Device Name*"   [formControl]="DevicesForm.controls['deviceName']">
           <mat-icon matTooltip="Please enter device name" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['deviceName'].hasError('required') && DevicesForm.controls['deviceName'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>
@@ -36,7 +36,7 @@
         </mat-form-field>
 
         <mat-form-field class="full-width">
-          <input matInput name="username"  placeholder="Username*" [formControl]="DevicesForm.controls['username']" autocomplete="off">
+          <input (blur)="trimInput($event, 'username')" matInput name="username"  placeholder="Username*" [formControl]="DevicesForm.controls['username']" autocomplete="off">
           <mat-icon matTooltip="Please enter username" matTooltipClass="llp--tooltip error" *ngIf="DevicesForm.controls['username'].hasError('required') && DevicesForm.controls['username'].touched"
           class="red--alert">help_outline</mat-icon>
         </mat-form-field>

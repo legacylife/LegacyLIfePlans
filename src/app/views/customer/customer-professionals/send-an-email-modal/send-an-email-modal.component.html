@@ -8,13 +8,13 @@
 <form class="llp-form-wrapper" (ngSubmit)="sendEmailFormSubmit(sendEmailForm.value)">
   <div class="ll--modal--body idbox--modal--hgt">
       <mat-form-field class="full-width">
-        <input matInput placeholder="Your Name" [formControl]="sendEmailForm.controls['name']" name="name">
+        <input (blur)="trimInput($event, 'name')" matInput placeholder="Your Name*" [formControl]="sendEmailForm.controls['name']" name="name">
 
         <mat-icon matTooltip="Please enter full name" matTooltipClass="llp--tooltip error" *ngIf="sendEmailForm.controls['name'].hasError('required') && sendEmailForm.controls['name'].touched" class="red--alert">help_outline</mat-icon>
       </mat-form-field>
 
       <mat-form-field class="full-width">
-        <input matInput value="" placeholder="Email" [formControl]="sendEmailForm.controls['email']">
+        <input (blur)="trimInput($event, 'email')" matInput value="" placeholder="Email*" [formControl]="sendEmailForm.controls['email']">
 
         <mat-icon matTooltip="Please enter email id" matTooltipClass="llp--tooltip error" *ngIf="sendEmailForm.controls['email'].hasError('required') && sendEmailForm.controls['email'].touched"     class="red--alert">help_outline</mat-icon>
 
@@ -22,7 +22,7 @@
       </mat-form-field>
 
       <mat-form-field class="full-width">
-          <textarea (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" maxlength="500" matInput placeholder="Message or Questions for Advisor*" name="message" [formControl]="sendEmailForm.controls['message']"></textarea>
+          <textarea (blur)="trimInput($event, 'message')" (keyup)="firstCapitalize($event)" (keypress)="checkSpecialChar($event)" maxlength="500" matInput placeholder="Message or Questions for Advisor*" name="message" [formControl]="sendEmailForm.controls['message']"></textarea>
           <div class="char--limit" style="float: right;">{{ 500 - sendEmailForm.controls['message'].value?.length }}</div>
 
           <mat-icon matTooltip="Please enter email message" matTooltipClass="llp--tooltip error" *ngIf="sendEmailForm.controls['message'].hasError('required') && sendEmailForm.controls['message'].touched" class="red--alert">help_outline</mat-icon>

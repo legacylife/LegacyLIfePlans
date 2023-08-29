@@ -537,5 +537,12 @@ export class CustomerAccountSettingComponent implements OnInit, OnDestroy {
         this.spaceProgressBar = (this.totalUsedSpace * 100 / this.totalSpaceAlloted).toFixed(2)
       })
   }
-  
+  //function to trim the input value
+  trimInput(event, colName){
+    this.ProfileForm.controls[colName].setValue(event.target.value.trim())
+  }
+
+  trimInput2(event, colName){
+    this.AddressForm.controls[colName].setValue(event.target.value.trim())
+  }
 }

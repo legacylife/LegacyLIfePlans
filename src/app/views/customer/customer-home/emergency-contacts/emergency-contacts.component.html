@@ -65,7 +65,7 @@
     <div class="ll--modal--body modal--body--hgt-upd ">
 
       <mat-form-field class="full-width">
-        <input (keyup)="firstCapitalize($event)" matInput name="name" placeholder="Name*" [formControl]="eContactFormGroup.controls['name']"
+        <input (blur)="trimInput($event, 'name')" (keyup)="firstCapitalize($event)" matInput name="name" placeholder="Name*" [formControl]="eContactFormGroup.controls['name']"
           (keypress)="checkSpecialChar($event)">
         <mat-icon matTooltip="Please enter name" matTooltipClass="llp--tooltip error" *ngIf="eContactFormGroup.controls['name'].hasError('required') && eContactFormGroup.controls['name'].touched"
           class="red--alert">help_outline</mat-icon>

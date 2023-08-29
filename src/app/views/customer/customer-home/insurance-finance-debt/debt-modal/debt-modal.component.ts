@@ -284,4 +284,9 @@ export class DebtModalComponent implements OnInit {
       this.DebtForm.controls['contactPhone'].setValue(phoneNumber);
     }
   }
+  
+  //function to trim the input value
+  trimInput(event, colName){
+    this.DebtForm.controls[colName].setValue(event.target.value.trim())
+  }
 }

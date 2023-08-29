@@ -239,5 +239,9 @@ export class EmergencyContactsComponent implements OnInit {
       this.eContactFormGroup.controls[from].setValue(phoneNumber);
     }
   }
-   
+  
+  //function to trim the input value
+  trimInput(event, colName){
+    this.eContactFormGroup.controls[colName].setValue(event.target.value.trim())
+  }
 }

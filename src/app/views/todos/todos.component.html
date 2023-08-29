@@ -8,7 +8,7 @@
 <div class="ll--modal--body todo--modal--hgt">
   <form class="llp-form-wrapper mt-1" [formGroup]="todosForm" (ngSubmit)="todosFormSubmit()">
     <mat-form-field class="full-width no-mar">
-      <textarea rows="4" (blur)="trimInput(todosForm.value)" matInput placeholder="Add Your To-Do's Here" name="comments"
+      <textarea rows="4" (blur)="trimInput(todosForm.value)" matInput placeholder="Add Your To-Do's Here*" name="comments"
         [formControl]="todosForm.controls['comments']" (keyup)="firstCapitalize($event)"></textarea>
       <mat-icon matTooltip="Please enter your to-do's" matTooltipClass="llp--tooltip error"
         *ngIf="todosForm.controls['comments'].hasError('required') && todosForm.controls['comments'].touched"
