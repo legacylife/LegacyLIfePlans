@@ -396,4 +396,14 @@ getProfileField = (query = {}, search = false) => {
       }
     }
   }
+
+  //function to trim the input value
+  trimInput(event, colName){
+    this.firstFormGroup.controls[colName].setValue(event.target.value.trim())
+  }
+
+  //function to trim the input value
+  trimInput2(event, colName){
+    this.secondFormGroup.controls[colName].setValue(event.target.value.trim())
+  }
 }

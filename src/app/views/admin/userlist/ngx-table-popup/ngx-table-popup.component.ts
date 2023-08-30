@@ -107,6 +107,7 @@ export class NgxTablePopupComponent implements OnInit {
   }
 }
 
+// input trim, no white space 
 public noWhitespaceValidator(control: FormControl) {
   const isWhitespace = (control.value || '').trim().length === 0;
   const isValid = !isWhitespace;

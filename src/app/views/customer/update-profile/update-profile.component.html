@@ -26,7 +26,7 @@
             <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
               <div class="pb-1">
                 <mat-form-field class="full-width">
-                  <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="firstName" placeholder="First Name*" value="" [formControl]="llpCustsignupProfileForm.controls['firstName']">
+                  <input (blur)="trimInput($event, 'firstName')" (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="firstName" placeholder="First Name*" value="" [formControl]="llpCustsignupProfileForm.controls['firstName']">
                   <mat-icon matTooltip="Please enter first name" matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['firstName'].hasError('required') && llpCustsignupProfileForm.controls['firstName'].touched"
                   class="red--alert">help_outline</mat-icon>
                   <mat-icon matTooltip="Please enter valid first name." matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['firstName'].invalid && llpCustsignupProfileForm.controls['firstName'].touched"
@@ -38,7 +38,7 @@
             <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
               <div class="pb-1">
                 <mat-form-field class="full-width">
-                  <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="lastName" placeholder="Last Name*" value="" [formControl]="llpCustsignupProfileForm.controls['lastName']">
+                  <input (blur)="trimInput($event, 'lastName')" (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="lastName" placeholder="Last Name*" value="" [formControl]="llpCustsignupProfileForm.controls['lastName']">
                   <mat-icon matTooltip="Please enter last name" matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['lastName'].hasError('required') && llpCustsignupProfileForm.controls['lastName'].touched"
                   class="red--alert">help_outline</mat-icon>
                   <mat-icon matTooltip="Please enter valid last name." matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['lastName'].invalid && llpCustsignupProfileForm.controls['lastName'].touched"
@@ -73,7 +73,7 @@
             </mat-form-field>
           </div>
           <mat-form-field class="full-width">
-            <input (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="city" placeholder="City*" value="" [formControl]="llpCustsignupProfileForm.controls['city']">
+            <input (blur)="trimInput($event, 'city')" (keyup)="firstCapitalize($event)"  (keypress)="checkSpecialChar($event)" matInput name="city" placeholder="City*" value="" [formControl]="llpCustsignupProfileForm.controls['city']">
             <mat-icon matTooltip="Please enter city" matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['city'].hasError('required') && llpCustsignupProfileForm.controls['city'].touched"
             class="red--alert">help_outline</mat-icon>
             <mat-icon matTooltip="Please enter valid city." matTooltipClass="llp--tooltip error" *ngIf="llpCustsignupProfileForm.controls['city'].invalid && llpCustsignupProfileForm.controls['city'].touched"

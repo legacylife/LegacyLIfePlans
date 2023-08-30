@@ -7,7 +7,7 @@
     <div fxLayout="row wrap">
       <div fxFlex="100"  class="pr-0">
         <mat-form-field class="full-width">
-          <input  class="capitalize" matInput name="title" [formControl]="itemForm.controls['title']" placeholder="Category Name *">
+          <input (blur)="trimInput($event, 'title')" class="capitalize" matInput name="title" [formControl]="itemForm.controls['title']" placeholder="Category Name *">
         </mat-form-field>
       </div>
       <div fxFlex="100"  class="pr-0">

@@ -961,4 +961,14 @@ export class AdvisorAccountSettingComponent implements OnInit, CanComponentDeact
     }
   }
 
+  //function to trim the input value
+  trimInput(event, colName){
+    this.ProfileForm.controls[colName].setValue(event.target.value.trim())
+  }
+  
+  //function to trim the input value
+  trimInput2(event, colName){
+    this.AddressForm.controls[colName].setValue(event.target.value.trim())
+  }
+
 }

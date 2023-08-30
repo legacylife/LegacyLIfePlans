@@ -16,7 +16,7 @@
                   <p class="login-header-desc">Please use the same full legal name and address as specified in the business license.</p>
                 </div>
                 <mat-form-field class="full-width">
-                  <input (keyup)="firstCapitalize($event)" matInput placeholder="First Name*" maxlength="30" name="firstName" [formControl]="firstFormGroup.controls['firstName']">
+                  <input (blur)="trimInput($event, 'firstName')" (keyup)="firstCapitalize($event)" matInput placeholder="First Name*" maxlength="30" name="firstName" [formControl]="firstFormGroup.controls['firstName']">
                   <mat-icon matTooltip="Please enter first name" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['firstName'].hasError('required') && firstFormGroup.controls['firstName'].touched"
                     class="red--alert">help_outline</mat-icon>
                     <mat-icon matTooltip="Please enter valid first name." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['firstName'].invalid && firstFormGroup.controls['firstName'].touched"
@@ -24,7 +24,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input (keyup)="firstCapitalize($event)" matInput placeholder="Last Name*" maxlength="30" name="lastName" [formControl]="firstFormGroup.controls['lastName']">
+                  <input (blur)="trimInput($event, 'lastName')" (keyup)="firstCapitalize($event)" matInput placeholder="Last Name*" maxlength="30" name="lastName" [formControl]="firstFormGroup.controls['lastName']">
                   <mat-icon matTooltip="Please enter last name" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['lastName'].hasError('required') && firstFormGroup.controls['lastName'].touched"
                     class="red--alert">help_outline</mat-icon>
                     <mat-icon matTooltip="Please enter valid last name." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['lastName'].invalid && firstFormGroup.controls['lastName'].touched"
@@ -40,7 +40,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input (keyup)="firstCapitalize($event)" matInput name="businessName" placeholder="Business Name*" value="" [formControl]="firstFormGroup.controls['businessName']" maxlength="20">
+                  <input (blur)="trimInput($event, 'businessName')" (keyup)="firstCapitalize($event)" matInput name="businessName" placeholder="Business Name*" value="" [formControl]="firstFormGroup.controls['businessName']" maxlength="20">
                   <mat-icon matTooltip="Please enter business name" matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['businessName'].hasError('required') && firstFormGroup.controls['businessName'].touched"
                     class="red--alert">help_outline</mat-icon>
                     <mat-icon matTooltip="Please enter valid business name." matTooltipClass="llp--tooltip error" *ngIf="firstFormGroup.controls['businessName'].invalid && firstFormGroup.controls['businessName'].touched"
@@ -87,7 +87,7 @@
                   <p class="login-header-desc">Enter the same address as shown on your business certificate</p>
                 </div>
                 <mat-form-field class="full-width">
-                  <input  (keyup)="firstCapitalize($event)" matInput name="addressLine1" placeholder="Address Line 1*" value="" [formControl]="secondFormGroup.controls['addressLine1']" maxlength="100">
+                  <input (blur)="trimInput($event, 'addressLine1')" (keyup)="firstCapitalize($event)" matInput name="addressLine1" placeholder="Address Line 1*" value="" [formControl]="secondFormGroup.controls['addressLine1']" maxlength="100">
                   <mat-icon matTooltip="Please enter your address" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['addressLine1'].hasError('required') && secondFormGroup.controls['addressLine1'].touched"
                     class="red--alert">help_outline</mat-icon>
                     <mat-icon matTooltip="Please enter valid address." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['addressLine1'].invalid && secondFormGroup.controls['addressLine1'].touched"
@@ -109,7 +109,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input (keyup)="firstCapitalize($event)" matInput name="City" placeholder="City*" value="" [formControl]="secondFormGroup.controls['city']">
+                  <input (blur)="trimInput($event, 'city')" (keyup)="firstCapitalize($event)" matInput name="City" placeholder="City*" value="" [formControl]="secondFormGroup.controls['city']">
                   <mat-icon matTooltip="Please enter city" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['city'].hasError('required') && secondFormGroup.controls['city'].touched"
                     class="red--alert">help_outline</mat-icon>
                     <mat-icon matTooltip="Please enter valid city." matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['city'].invalid && secondFormGroup.controls['city'].touched"
@@ -126,7 +126,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="Business Phone" type="tel" maxlength='14' (keypress)="checkPhoneNumber('businessPhoneNumber',$event)"  (keyup)="checkPhoneNumber('businessPhoneNumber',$event)" class="example-right-align" name="businessPhoneNumber" [formControl]="secondFormGroup.controls['businessPhoneNumber']">
+                  <input matInput placeholder="Business Phone*" type="tel" maxlength='14' (keypress)="checkPhoneNumber('businessPhoneNumber',$event)"  (keyup)="checkPhoneNumber('businessPhoneNumber',$event)" class="example-right-align" name="businessPhoneNumber" [formControl]="secondFormGroup.controls['businessPhoneNumber']">
                   <span matPrefix>+1</span>
                   <span matSuffix>.00</span>
                   <mat-icon matTooltip="Please enter minimum 7 & maximum 14 numbers only" matTooltipClass="llp--tooltip error" *ngIf="secondFormGroup.controls['businessPhoneNumber'].hasError('minlength') && secondFormGroup.controls['businessPhoneNumber'].touched"

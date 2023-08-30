@@ -36,16 +36,22 @@ export class EmailTemplateEditComponent implements OnInit {
       image: [
           'Replace', 'Align', 'Caption', 'Remove', 'InsertLink', '-', 'Display', 'AltText', 'Dimension']
   };
-
+    
+  public noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
+  }
+  
   constructor(private router: Router, private activeRoute: ActivatedRoute, private api: APIService, private fb: FormBuilder, private loader: AppLoaderService, private snack: MatSnackBar) { }
 
   ngOnInit() {
 
     this.EmailTempForm = new FormGroup({
       code: new FormControl('', [Validators.required]),
-      title: new FormControl('', [Validators.required]),
-      mailSubject: new FormControl('', [Validators.required]),
-      mailBody: new FormControl('', [Validators.required]),
+      title: new FormControl('', [Validators.required,this.noWhitespaceValidator, Validators.minLength(3)]),
+      mailSubject: new FormControl('', [Validators.required, this.noWhitespaceValidator, Validators.minLength(3)]),
+      mailBody: new FormControl('', [Validators.required, this.noWhitespaceValidator, Validators.minLength(3)]),
     })
 
     this.activeRoute.params.subscribe(params => {

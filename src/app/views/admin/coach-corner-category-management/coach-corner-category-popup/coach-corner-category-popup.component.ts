@@ -87,4 +87,9 @@ export class CoachCornerCategoryPopupComponent implements OnInit {
       console.error(err)
     })
   }
+
+  //function to trim the input value
+  trimInput(event, colName){
+    this.itemForm.controls[colName].setValue(event.target.value.trim())
+  }
 }

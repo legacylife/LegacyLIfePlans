@@ -77,14 +77,14 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="40" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="firstName" maxlength="20" placeholder="First Name*"
+                      <input (blur)="trimInput($event, 'firstName')" class="capitalize" matInput name="firstName" maxlength="20" placeholder="First Name*"
                         value="" [formControl]="ProfileForm.controls['firstName']">
                       <mat-icon matTooltip="Please enter first name" matTooltipClass="llp--tooltip error"
                         *ngIf="ProfileForm.controls['firstName'].hasError('required') && ProfileForm.controls['firstName'].touched"
                         class="red--alert">help_outline</mat-icon>
                     </mat-form-field>
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="lastName" maxlength="20" placeholder="Last Name*"
+                      <input (blur)="trimInput($event, 'lastName')" class="capitalize" matInput name="lastName" maxlength="20" placeholder="Last Name*"
                         value="" [formControl]="ProfileForm.controls['lastName']">
                       <mat-icon matTooltip="Please enter last name" matTooltipClass="llp--tooltip error"
                         *ngIf="ProfileForm.controls['lastName'].hasError('required') && ProfileForm.controls['lastName'].touched"
@@ -246,7 +246,7 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="businessName" placeholder="Business Name*" value=""
+                      <input (blur)="trimInput2($event, 'businessName')" class="capitalize" matInput name="businessName" placeholder="Business Name*" value=""
                         [formControl]="AddressForm.controls['businessName']" maxlength="100">
                       <mat-icon matTooltip="Please enter business name" matTooltipClass="llp--tooltip error"
                         *ngIf="AddressForm.controls['businessName'].hasError('required') && AddressForm.controls['businessName'].touched"
@@ -296,7 +296,7 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="addressLine1" placeholder="Address Line 1*" value=""
+                      <input (blur)="trimInput2($event, 'addressLine1')" class="capitalize" matInput name="addressLine1" placeholder="Address Line 1*" value=""
                         [formControl]="AddressForm.controls['addressLine1']" maxlength="100">
                       <mat-icon matTooltip="Please enter address line 1" matTooltipClass="llp--tooltip error"
                         *ngIf="AddressForm.controls['addressLine1'].hasError('required') && AddressForm.controls['addressLine1'].touched"
@@ -313,7 +313,7 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width">
-                      <input class="capitalize" matInput name="City" placeholder="City*" value=""
+                      <input (blur)="trimInput2($event, 'city')" class="capitalize" matInput name="city" placeholder="City*" value=""
                         [formControl]="AddressForm.controls['city']">
                       <mat-icon matTooltip="Please enter city" matTooltipClass="llp--tooltip error"
                         *ngIf="AddressForm.controls['city'].hasError('required') && AddressForm.controls['city'].touched"
@@ -391,7 +391,7 @@
                 <div fxLayout="row wrap">
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="pad--r--lg">
                     <mat-form-field class="full-width about--txtarea">
-                      <textarea matInput placeholder="About You*" maxlength="500"
+                      <textarea (blur)="trimInput2($event, 'bioText')" matInput placeholder="About You*" maxlength="500"
                         value="Your professional summary, achievements, client experience" name="bioText"
                         [formControl]="AddressForm.controls['bioText']"></textarea>
                       <!-- <div class="char--limit">0 / 500 chars</div> -->

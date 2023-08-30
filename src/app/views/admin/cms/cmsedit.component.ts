@@ -35,7 +35,12 @@ export class cmseditComponent implements OnInit {
       image: [
           'Replace', 'Align', 'Caption', 'Remove', 'InsertLink', '-', 'Display', 'AltText', 'Dimension']
   };
-
+  // input trim, no white space 
+  public noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
+  }
   constructor(private router: Router, private activeRoute: ActivatedRoute, private snack: MatSnackBar, private api: APIService, private fb: FormBuilder, private loader: AppLoaderService) { }
 
   ngOnInit() {
@@ -43,8 +48,8 @@ export class cmseditComponent implements OnInit {
     this.aceessSection = this.api.getUserAccess('cms')
 
     this.cmsForm = new FormGroup({
-      pageTitle: new FormControl('', [Validators.required]),
-      pageBody: new FormControl('', [Validators.required]),
+      pageTitle: new FormControl('', [Validators.required, this.noWhitespaceValidator, Validators.minLength(3)]),
+      pageBody: new FormControl('', [Validators.required, this.noWhitespaceValidator, Validators.minLength(3)]),
       pageFor: new FormControl('', [Validators.required]),
     })
 

@@ -222,5 +222,9 @@ export class UpdateProfileComponent implements OnInit {
     }
   }
 
+  //function to trim the input value
+  trimInput(event, colName){
+    this.llpCustsignupProfileForm.controls[colName].setValue(event.target.value.trim())
+  }
 }
 
