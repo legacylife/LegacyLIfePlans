@@ -19,6 +19,12 @@ export class InviteComponent implements OnInit {
   userFullName: string
   endUserType: string
 
+  // input trim, no white space 
+  public noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
+  }
   constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snack: MatSnackBar, public dialog: MatDialog, private userapi: UserAPIService,
     private loader: AppLoaderService, private confirmService: AppConfirmService) {
   }
@@ -29,7 +35,7 @@ export class InviteComponent implements OnInit {
     this.endUserType = localStorage.getItem("endUserType");
     this.inviteForm = this.fb.group({
       inviteMembers: this.fb.array([this.fb.group({
-        name: ['', Validators.required],
+        name: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1)])),
         email: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
         relation: ['', Validators.required]
       })]),
@@ -42,7 +48,7 @@ export class InviteComponent implements OnInit {
 
   addRow() {
     this.inviteMembersList.push(this.fb.group({
-      name: ['', Validators.required],
+      name: new FormControl('', Validators.compose([ Validators.required, this.noWhitespaceValidator, Validators.minLength(1)])),
       email: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)]),
       relation: ['', Validators.required]
     }));
@@ -53,6 +59,7 @@ export class InviteComponent implements OnInit {
     control.removeAt(i);
   }
 
+  
   inviteSubmit() {
     const inviteData = {
       data: this.inviteForm.value,
@@ -72,10 +79,5 @@ export class InviteComponent implements OnInit {
     }, (err) => {
       console.error(err)
     })
-  }
-  
-  //function to trim the input value
-  trimInput(event, colName){
-    this.inviteForm.controls[colName].setValue(event.target.value.trim())
-  }
+  }   
 }
