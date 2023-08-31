@@ -39,17 +39,6 @@ app.get('/*', (req, res) => {
   res.sendFile(__dirname + '/dist/index.html');
 })
 
-
-
-/*
-app.use(function(req, res, next) {
-  console.log('hget')
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header('Access-Control-Allow-Methods', 'POST,GET');
-  next();
-});
-*/
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found')
@@ -72,16 +61,6 @@ if (app.get('env') !== 'development') {
         }
     })
 }
-/*
-app.use(function (req, res, next) {
-  console.log('HERE 11')
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept,X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    res.setHeader('Access-Control-Allow-Methods', 'POST,GET');    
-    next();
-  });
-  */ 
 
 app.get('/robots.txt', function (req, res) {
     res.type('text/plain');
