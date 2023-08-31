@@ -15,9 +15,6 @@ import { SubscriptionService } from 'app/shared/services/subscription.service';
 export class legacySettingModalComponent implements OnInit {
   userId = localStorage.getItem("endUserId");
   urlData:any={};
-
-
-
   productId:any = ""
   planId:any = ""
   planInterval:string = "  "
@@ -31,21 +28,16 @@ export class legacySettingModalComponent implements OnInit {
   addOnSpace:number = 0
   isAddOnPurchased:boolean = false
   subscriptionData :any;
-
-
-
   constructor(private snack: MatSnackBar,public dialog: MatDialog,private loader: AppLoaderService, private router: Router,
     private userapi: UserAPIService, private fileHandlingService: FileHandlingService,private sharedata: DataSharingService, private subscriptionservice:SubscriptionService) { }
 
   ngOnInit() {
     this.userId = localStorage.getItem("endUserId");
     this.urlData = this.userapi.getURLData();
-
     this.getProductDetails();
   }
 
-
-    // get product plan
+   // get product plan
     getProductDetails = (query = {}) => {
       this.subscriptionservice.getProductDetails({}, (returnArr)=>{
         this.productId    = returnArr.productId

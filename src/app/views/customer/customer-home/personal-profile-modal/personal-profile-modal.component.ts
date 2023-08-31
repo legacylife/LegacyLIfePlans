@@ -53,7 +53,6 @@ export class PersonalProfileModalComponent implements OnInit {
     this.countryList = countries;
     this.userId = localStorage.getItem("endUserId");
     this.urlData = this.userapi.getURLData();
-
     this.selectedProfileId = this.urlData.lastOne;
     if (this.selectedProfileId && this.selectedProfileId == 'essential-day-one' && this.urlData.lastThird != "legacies") {
       this.selectedProfileId = "";
@@ -138,8 +137,7 @@ export class PersonalProfileModalComponent implements OnInit {
   }
 
 
-  checkPhoneNumber(from,index,event)
-  {  
+  checkPhoneNumber(from,index,event){
     const charCode = (event.which) ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false;
