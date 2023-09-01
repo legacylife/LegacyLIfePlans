@@ -111,7 +111,8 @@ export class FinanceModalComponent implements OnInit {
         contactEmail: new FormControl(this.FinanceForm.controls['contactEmail'].value, Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
         contactPhone: new FormControl(this.FinanceForm.controls['contactPhone'].value,Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/)),
         comments: new FormControl(this.FinanceForm.controls['comments'].value,),
-        profileId: new FormControl(this.FinanceForm.controls['profileId'].value,)
+        profileId: new FormControl(this.FinanceForm.controls['profileId'].value,),
+        documents_temp: new FormControl(this.FinanceForm.controls['documents_temp'].value, Validators.required)
       });
     }  
     else {
@@ -125,7 +126,8 @@ export class FinanceModalComponent implements OnInit {
         contactEmail: new FormControl(this.FinanceForm.controls['contactEmail'].value,Validators.pattern(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i)),
         contactPhone: new FormControl(this.FinanceForm.controls['contactPhone'].value,Validators.pattern(/^(\(?\+?[0-9]*\)?)?[0-9_\- \(\)]*$/)),
         comments: new FormControl(this.FinanceForm.controls['comments'].value,),
-        profileId: new FormControl(this.FinanceForm.controls['profileId'].value,)
+        profileId: new FormControl(this.FinanceForm.controls['profileId'].value,),
+        documents_temp: new FormControl(this.FinanceForm.controls['documents_temp'].value, Validators.required)
       });
     }    
   }

@@ -577,7 +577,7 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-radio-group aria-label="Select an option" class="llp-radio"
                       [formControl]="LicenseForm.controls['agencyOversees']">
-                      <div class="checkbox-label">What agency oversees your business?</div>
+                      <div class="checkbox-label">What agency oversees your business?*</div>
                       <mat-radio-button value="FINRA" class="" [checked]="profile.agencyOversees === 'FINRA'">FINRA
                       </mat-radio-button>
                       <mat-radio-button value="SEC" class="" [checked]="profile.agencyOversees === 'SEC'">SEC
@@ -598,7 +598,7 @@
                   <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
                     <mat-radio-group aria-label="Select an option" class="llp-radio" name="Producers"
                       [formControl]="LicenseForm.controls['manageOtherProceducers']">
-                      <div class="checkbox-label">Do you manage other producers?</div>
+                      <div class="checkbox-label">Do you manage other producers?*</div>
                       <mat-radio-button (change)="showHowManyProducts('1')" value="1" class=""
                         [checked]="profile.howManyProducers !== ''">Yes</mat-radio-button>
                       <mat-radio-button (change)="showHowManyProducts('2')" value="2" class=""

@@ -49,14 +49,19 @@ export class CelebrationofLifeComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder,private snack: MatSnackBar,public dialog: MatDialog,  private confirmService: AppConfirmService, private loader: AppLoaderService, private router: Router, private userapi: UserAPIService,private fileHandlingService: FileHandlingService,private sharedata: DataSharingService) { }
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
-
+  // input trim, nowhitespace 
+  public noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
+  }
   ngOnInit() {
     const filePath = this.userId+'/'+s3Details.celebrationofLifeFilePath;
     this.docPath = filePath;
     this.documentsList = [];
     this.celebrationFormGroup = this._formBuilder.group({
-      eventByName: new FormControl('',Validators.required),
-      eventPlace: new FormControl('',Validators.required),
+      eventByName: new FormControl('', [Validators.required, this.noWhitespaceValidator, Validators.minLength(3)]),
+      eventPlace: new FormControl('', [Validators.required, this.noWhitespaceValidator, Validators.minLength(3)]),
       speakerAvailable: new FormControl('no'),
       speakerName: new FormControl(''),
       foodNMenuItems: new FormControl(''),
