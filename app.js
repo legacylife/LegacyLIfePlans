@@ -7,12 +7,17 @@ var port = normalizePort(process.env.PORT || '80')
 var express = require('express')
 var router = express.Router()
 var chats = require('./routes/chatcontrollerRoute')
-const server = http.createServer(app).listen(port, () => {
-  console.log('*******http server running at port******' + port)
+// const server = http.createServer(app).listen(port, () => {
+//   console.log('*******http server running at port******' + port)
+// })
+
+const httpsOptions = {
+  key: fs.readFileSync('private.key'),
+  cert: fs.readFileSync('certs.crt')
+}
+const server = https.createServer(httpsOptions, app).listen(443, () => {
+  console.log('*************HTTPS server running at **********' + 443)
 })
-//  var server = server.listen(port, function(){
-//   console.log('*******http server running at port: ' + port)
-//  });
  
  let socketIO = require('socket.io');
  let io = socketIO(server);
