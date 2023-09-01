@@ -3,7 +3,7 @@ var debug = require('debug')('LLP:server')
 const fs = require('fs')
 const http = require('http')
 const https = require('https')
-var port = normalizePort(process.env.PORT || '80') 
+var port = normalizePort(process.env.PORT || '443') 
 var express = require('express')
 var router = express.Router()
 var chats = require('./routes/chatcontrollerRoute')
@@ -12,8 +12,8 @@ var chats = require('./routes/chatcontrollerRoute')
 // })
 
 const httpsOptions = {
-  key: fs.readFileSync('private.key'),
-  cert: fs.readFileSync('certs.crt')
+  key: fs.readFileSync('/etc/ssl/private/nginx-selfsigned.key'),
+  cert: fs.readFileSync('/etc/ssl/certs/nginx-selfsigned.crt')
 }
 const server = https.createServer(httpsOptions, app).listen(443, () => {
   console.log('*************HTTPS server running at **********' + 443)
