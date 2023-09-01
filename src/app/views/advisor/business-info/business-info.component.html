@@ -194,7 +194,7 @@
                 </mat-form-field>
 
                 <mat-radio-group aria-label="Select An Option" class="llp-radio" [formControl]="thirdFormGroup.controls['manageOtherProceducers']">
-                  <div class="checkbox-label">Do you manage other producers?</div>
+                  <div class="checkbox-label">Do you manage other producers?*</div>
                   <mat-radio-button (change)="showHowManyProducts('1')" value="1" class="ml-0" [checked]="profile.manageOtherProceducers && profile.manageOtherProceducers == '1'">Yes</mat-radio-button>
                   <mat-radio-button (change)="showHowManyProducts('2')" value="2" class="" [checked]="profile && !profile.manageOtherProceducers">No</mat-radio-button>
                 </mat-radio-group>

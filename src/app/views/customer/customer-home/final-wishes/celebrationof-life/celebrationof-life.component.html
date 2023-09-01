@@ -42,7 +42,7 @@
           <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100" class="" *ngIf="isSpeaker">
             <mat-radio-group class="llp-radio mb-0 mt-1">
               <mat-form-field class="full-width no-mar">
-                <textarea matInput (keyup)="firstCapitalize($event)" maxlength="100" placeholder="Who?" [formControl]="celebrationFormGroup.controls['speakerName']"></textarea>
+                <textarea matInput (keyup)="firstCapitalize($event)" maxlength="100" placeholder="Who?*" [formControl]="celebrationFormGroup.controls['speakerName']"></textarea>
                 <mat-icon matTooltip="Please enter speaker name" matTooltipClass="llp--tooltip error" *ngIf="celebrationFormGroup.controls['speakerName'].hasError('required') && celebrationFormGroup.controls['speakerName'].touched"
                   class="red--alert">help_outline</mat-icon>
               </mat-form-field>
