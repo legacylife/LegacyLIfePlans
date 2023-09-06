@@ -7,6 +7,7 @@ var port = normalizePort(process.env.PORT || '443')
 var express = require('express')
 var router = express.Router()
 var chats = require('./routes/chatcontrollerRoute')
+
 // const server = http.createServer(app).listen(port, () => {
 //   console.log('*******http server running at port******' + port)
 // })
@@ -15,8 +16,8 @@ const httpsOptions = {
   key: fs.readFileSync('/etc/ssl/private/nginx-selfsigned.key'),
   cert: fs.readFileSync('/etc/ssl/certs/nginx-selfsigned.crt')
 }
-const server = https.createServer(httpsOptions, app).listen(443, () => {
-  console.log('*************HTTPS server running at **********' + 443)
+const server = https.createServer(httpsOptions, app).listen(port, () => {
+  console.log('*************HTTPS server running at **********' + port)
 })
  
  let socketIO = require('socket.io');
