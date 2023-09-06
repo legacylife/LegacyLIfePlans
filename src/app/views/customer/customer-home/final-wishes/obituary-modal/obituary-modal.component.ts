@@ -39,6 +39,7 @@ export class ObituaryModalComponent implements OnInit {
   documentsList: any;
   docPath: string;  
   subFolderName:string = ''
+  formProcessing:boolean=false
   constructor(private _formBuilder: FormBuilder,private snack: MatSnackBar,public dialog: MatDialog,  private confirmService: AppConfirmService, private loader: AppLoaderService, private router: Router, private userapi: UserAPIService,private fileHandlingService: FileHandlingService,private sharedata: DataSharingService) { }
   public uploader: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
   public uploaderCopy: FileUploader = new FileUploader({ url: `${URL}?userId=${this.userId}` });
@@ -209,9 +210,8 @@ export class ObituaryModalComponent implements OnInit {
       toId:this.toUserId,
       folderName:s3Details.obituaryFilePath
     }
-
-
-    //this.loader.open();     
+    this.loader.open();
+    this.formProcessing = true
     this.userapi.apiRequest('post', 'finalwishes/obituary-form-submit', req_vars).subscribe(result => {
       this.loader.close();
       if (result.status == "error") {

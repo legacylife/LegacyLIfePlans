@@ -187,6 +187,6 @@
   </div>
 
   <div class="ll--modal--footer text-center">
-    <button mat-raised-button class="llp--primary--btn" [disabled]="!expensesFormGroup.valid">Save</button>
+    <button mat-raised-button class="llp--primary--btn" [disabled]="!expensesFormGroup.valid || formProcessing">Save</button>
   </div>
 </form>
