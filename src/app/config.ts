@@ -1,5 +1,6 @@
-let serverUrlEnv= "https://ec2-44-219-56-236.compute-1.amazonaws.com"//staging // "https://legacylifeplans.com"
-let bucketName = "llp-dev";
+//let serverUrlEnv= "https://ec2-44-219-56-236.compute-1.amazonaws.com"//
+let serverUrlEnv= "https://legacylifeplans.com"
+let bucketName = "llp-prod";
 let googleauthkey= "AIzaSyDOIjrH80OfNH7O1wwmFADBVyadAGx6wOs"; //LLP-API-key
 let stripePublishablekey = "pk_test_K9i8VTQjzDdEwtjyKLZLLtjA00ukf8cqnk" //sandbox
 export const googleauthenticationkey = googleauthkey;
